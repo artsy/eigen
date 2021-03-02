@@ -1,10 +1,9 @@
+import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { Action, action, thunk, Thunk } from "easy-peasy"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
 import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
-import { requestPhotos } from "lib/utils/requestPhotos"
+import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { uniqBy } from "lodash"
-import { ActionSheetIOS } from "react-native"
-import ImagePicker from "react-native-image-crop-picker"
 
 import { Metric } from "../Screens/ArtworkFormModal/Components/Dimensions"
 
@@ -23,8 +22,8 @@ export interface ArtworkFormValues {
   artistIds: string[]
   artistSearchResult: AutosuggestResult | null
   category: string // this refers to "materials" in UI
-  costMinor: string
-  costCurrencyCode: string
+  pricePaidDollars: string
+  pricePaidCurrency: string
   date: string
   depth: string
   editionSize: string
@@ -44,8 +43,8 @@ export const initialFormValues: ArtworkFormValues = {
   artistIds: [],
   artistSearchResult: null,
   category: "",
-  costMinor: "", // in cents
-  costCurrencyCode: "",
+  pricePaidDollars: "",
+  pricePaidCurrency: "",
   date: "",
   depth: "",
   editionSize: "",
@@ -81,7 +80,7 @@ export interface MyCollectionArtworkModel {
 
   startEditingArtwork: Thunk<
     MyCollectionArtworkModel,
-    Partial<ArtworkFormValues> & {
+    Partial<MyCollectionArtwork_sharedProps> & {
       internalID: string
       id: string
       artist: { internalID: string }
@@ -155,32 +154,9 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   }),
 
   takeOrPickPhotos: thunk((actions, _payload) => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: ["Photo Library", "Take Photo", "Cancel"],
-        cancelButtonIndex: 2,
-      },
-      async (buttonIndex) => {
-        try {
-          let photos = null
-
-          if (buttonIndex === 0) {
-            photos = await requestPhotos()
-          }
-          if (buttonIndex === 1) {
-            photos = await ImagePicker.openCamera({
-              mediaType: "photo",
-            })
-          }
-
-          if (photos) {
-            actions.addPhotos(photos as any) // FIXME: any
-          }
-        } catch (error) {
-          // Photo picker closes by throwing error that we need to catch
-        }
-      }
-    )
+    showPhotoActionSheet().then((photos) => {
+      actions.addPhotos(photos)
+    })
   }),
 
   /**
@@ -192,6 +168,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       artworkId: artwork.internalID,
     })
 
+    const pricePaidDollars = artwork.pricePaid ? artwork.pricePaid.minor / 100 : null
+
     const editProps: any /* FIXME: any */ = {
       artistSearchResult: {
         internalID: artwork?.artist?.internalID,
@@ -201,8 +179,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       category: artwork.category,
       date: artwork.date,
       depth: artwork.depth,
-      costMinor: artwork.costMinor,
-      costCurrencyCode: artwork.costCurrencyCode,
+      pricePaidDollars: pricePaidDollars?.toString() ?? "",
+      pricePaidCurrency: artwork.pricePaid?.currencyCode ?? "",
       editionSize: artwork.editionSize,
       editionNumber: artwork.editionNumber,
       height: artwork.height,

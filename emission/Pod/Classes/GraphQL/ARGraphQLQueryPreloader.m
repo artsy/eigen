@@ -101,7 +101,7 @@ RCT_EXPORT_MODULE();
 - (void)preloadQueries:(NSArray<ARGraphQLQuery *> *)queries;
 {
     AREmission *emission = [AREmission sharedInstance];
-    NSString *metaphysicsURLString = [emission stateStringForKey:[ARStateKey metaphysicsURL]];
+    NSString *metaphysicsURLString = [emission reactStateStringForKey:[ARReactStateKey metaphysicsURL]];
     NSString *userAgent = [emission stateStringForKey:[ARStateKey userAgent]];
     NSString *authenticationToken = [emission stateStringForKey:[ARStateKey authenticationToken]];
     NSString *userID = [emission stateStringForKey:[ARStateKey userID]];

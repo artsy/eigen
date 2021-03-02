@@ -67,9 +67,9 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
         dimensionRange: { type: "String", defaultValue: "*-*" }
+        additionalGeneIDs: { type: "[String]" }
         inquireableOnly: { type: "Boolean" }
         majorPeriods: { type: "[String]" }
-        medium: { type: "String", defaultValue: "*" }
         offerable: { type: "Boolean" }
         priceRange: { type: "String" }
         sort: { type: "String", defaultValue: "-partner_updated_at" }
@@ -83,10 +83,10 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
           attributionClass: $attributionClass
           color: $color
           dimensionRange: $dimensionRange
+          additionalGeneIDs: $additionalGeneIDs
           first: $count
           inquireableOnly: $inquireableOnly
           majorPeriods: $majorPeriods
-          medium: $medium
           offerable: $offerable
           priceRange: $priceRange
           sort: $sort
@@ -129,10 +129,10 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
         $count: Int!
         $cursor: String
         $dimensionRange: String
+        $additionalGeneIDs: [String]
         $id: String!
         $inquireableOnly: Boolean
         $majorPeriods: [String]
-        $medium: String
         $offerable: Boolean
         $priceRange: String
         $sort: String
@@ -146,9 +146,9 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
               count: $count
               cursor: $cursor
               dimensionRange: $dimensionRange
+              additionalGeneIDs: $additionalGeneIDs
               inquireableOnly: $inquireableOnly
               majorPeriods: $majorPeriods
-              medium: $medium
               offerable: $offerable
               priceRange: $priceRange
               sort: $sort

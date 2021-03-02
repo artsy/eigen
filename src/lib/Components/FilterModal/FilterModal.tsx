@@ -24,6 +24,7 @@ import { FlatList, TouchableOpacity, View, ViewProperties } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
+import { AdditionalGeneIDsOptionsScreen } from "../ArtworkFilterOptions/AdditionalGeneIDsOptions"
 import { ArtistIDsOptionsScreen } from "../ArtworkFilterOptions/ArtistIDsOptionsScreen"
 import { AttributionClassOptionsScreen } from "../ArtworkFilterOptions/AttributionClassOptions"
 import { CategoriesOptionsScreen } from "../ArtworkFilterOptions/CategoriesOptions"
@@ -44,11 +45,12 @@ import { YearOptionsScreen } from "../ArtworkFilterOptions/YearOptions"
 import { FancyModal } from "../FancyModal/FancyModal"
 
 export type FilterScreen =
+  | "additionalGeneIDs"
   | "artistIDs"
   | "artistsIFollow"
   | "attributionClass"
-  | "color"
   | "categories"
+  | "color"
   | "dimensionRange"
   | "estimateRange"
   | "gallery"
@@ -56,11 +58,11 @@ export type FilterScreen =
   | "majorPeriods"
   | "medium"
   | "priceRange"
-  | "sort"
   | "sizes"
+  | "sort"
   | "viewAs"
-  | "year"
   | "waysToBuy"
+  | "year"
 
 export interface FilterDisplayConfig {
   filterType: FilterScreen
@@ -94,9 +96,11 @@ interface FilterModalProps extends ViewProperties {
 // see src/lib/Scenes/MyCollection/Screens/ArtworkFormModal/MyCollectionArtworkFormModal.tsx#L35
 // tslint:disable-next-line:interface-over-type-literal
 export type FilterModalNavigationStack = {
+  AdditionalGeneIDsOptionsScreen: undefined
   ArtistIDsOptionsScreen: undefined
-  ColorOptionsScreen: undefined
   AttributionClassOptionsScreen: undefined
+  CategoriesOptionsScreen: undefined
+  ColorOptionsScreen: undefined
   EstimateRangeOptionsScreen: undefined
   FilterOptionsScreen: FilterOptionsScreenParams
   GalleryOptionsScreen: undefined
@@ -108,9 +112,8 @@ export type FilterModalNavigationStack = {
   SortOptionsScreen: undefined
   TimePeriodOptionsScreen: undefined
   ViewAsOptionsScreen: undefined
-  YearOptionsScreen: undefined
   WaysToBuyOptionsScreen: undefined
-  CategoriesOptionsScreen: undefined
+  YearOptionsScreen: undefined
 }
 
 const Stack = createStackNavigator<FilterModalNavigationStack>()
@@ -208,6 +211,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
             <Stack.Screen name="ColorOptionsScreen" component={ColorOptionsScreen} />
             <Stack.Screen name="EstimateRangeOptionsScreen" component={EstimateRangeOptionsScreen} />
             <Stack.Screen name="GalleryOptionsScreen" component={GalleryOptionsScreen} />
+            <Stack.Screen name="AdditionalGeneIDsOptionsScreen" component={AdditionalGeneIDsOptionsScreen} />
             <Stack.Screen name="InstitutionOptionsScreen" component={InstitutionOptionsScreen} />
             <Stack.Screen name="MediumOptionsScreen" component={MediumOptionsScreen} />
             <Stack.Screen name="PriceRangeOptionsScreen" component={PriceRangeOptionsScreen} />
@@ -663,7 +667,7 @@ const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string
   GALLERY: "gallery",
   INSTITUTION: "institution",
   MAJOR_PERIOD: FilterParamName.timePeriod,
-  MEDIUM: FilterParamName.medium,
+  MEDIUM: FilterParamName.additionalGeneIDs,
   PRICE_RANGE: FilterParamName.priceRange,
   FOLLOWED_ARTISTS: "artistsIFollow",
   ARTIST: "artistIDs",
@@ -672,6 +676,11 @@ const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string
 }
 
 export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
+  additionalGeneIDs: {
+    displayText: FilterDisplayName.additionalGeneIDs,
+    filterType: "additionalGeneIDs",
+    ScreenComponent: "AdditionalGeneIDsOptionsScreen",
+  },
   artistIDs: {
     displayText: FilterDisplayName.artistIDs,
     filterType: "artistIDs",
@@ -757,6 +766,7 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
 const CollectionFiltersSorted: FilterScreen[] = [
   "sort",
   "medium",
+  "additionalGeneIDs",
   "attributionClass",
   "priceRange",
   "waysToBuy",
@@ -769,6 +779,7 @@ const CollectionFiltersSorted: FilterScreen[] = [
 const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "sort",
   "medium",
+  "additionalGeneIDs",
   "attributionClass",
   "priceRange",
   "waysToBuy",
@@ -781,6 +792,7 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
 const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "sort",
   "medium",
+  "additionalGeneIDs",
   "attributionClass",
   "priceRange",
   "waysToBuy",
@@ -795,6 +807,7 @@ const FairFiltersSorted: FilterScreen[] = [
   "artistIDs",
   "artistsIFollow",
   "medium",
+  "additionalGeneIDs",
   "attributionClass",
   "priceRange",
   "waysToBuy",
@@ -804,6 +817,13 @@ const FairFiltersSorted: FilterScreen[] = [
   "gallery",
   "institution",
 ]
-const SaleArtworksFiltersSorted: FilterScreen[] = ["sort", "viewAs", "estimateRange", "artistIDs", "medium"]
+const SaleArtworksFiltersSorted: FilterScreen[] = [
+  "sort",
+  "viewAs",
+  "estimateRange",
+  "artistIDs",
+  "medium",
+  "additionalGeneIDs",
+]
 
 const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories", "sizes", "year"]

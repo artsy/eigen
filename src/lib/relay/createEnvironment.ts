@@ -1,8 +1,8 @@
-import { errorMiddleware, loggerMiddleware, RelayNetworkLayer, urlMiddleware } from "react-relay-network-modern/node8"
+import { loggerMiddleware, RelayNetworkLayer, urlMiddleware } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
 
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
 import { cacheMiddleware } from "./middlewares/cacheMiddleware"
 import { checkAuthenticationMiddleware } from "./middlewares/checkAuthenticationMiddleware"
 import { metaphysicsExtensionsLoggerMiddleware } from "./middlewares/metaphysicsMiddleware"
@@ -20,7 +20,7 @@ export default function createEnvironment() {
       cacheMiddleware(),
       rateLimitMiddleware(),
       urlMiddleware({
-        url: () => getCurrentEmissionState().metaphysicsURL,
+        url: () => unsafe__getEnvironment().metaphysicsURL,
         headers: () => {
           const { userAgent, userID, authenticationToken } = getCurrentEmissionState()
           return {
@@ -38,9 +38,6 @@ export default function createEnvironment() {
       // session is still valid. This is why we need to keep it as low as possible in the middlewares array.
       checkAuthenticationMiddleware(),
       loggerMiddleware(),
-      errorMiddleware({
-        disableServerMiddlewareTip: true,
-      }),
       metaphysicsExtensionsLoggerMiddleware(),
       timingMiddleware(),
     ],

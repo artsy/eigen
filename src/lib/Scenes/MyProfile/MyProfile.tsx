@@ -1,10 +1,10 @@
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { presentEmailComposer } from "lib/NativeModules/presentEmailComposer"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -152,7 +152,7 @@ export function confirmLogout() {
     {
       text: "Log out",
       style: "destructive",
-      onPress: () => LegacyNativeModules.ARNotificationsManager.postNotificationName("ARUserRequestedLogout", {}),
+      onPress: () => GlobalStore.actions.signOut(),
     },
   ])
 }

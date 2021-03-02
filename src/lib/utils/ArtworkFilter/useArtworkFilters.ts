@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react"
 import { RelayPaginationProp } from "react-relay"
-import { ArtworkFilterContext } from "./ArtworkFiltersStore"
-import { filterArtworksParams } from "./FilterArtworksHelpers"
+import { ArtworkFilterContext, selectedOptionsUnion } from "./ArtworkFiltersStore"
+import { aggregationForFilter, filterArtworksParams, FilterParamName } from "./FilterArtworksHelpers"
 
 export const useArtworkFilters = ({
   relay,
@@ -19,7 +19,7 @@ export const useArtworkFilters = ({
   }, [aggregations])
 
   useEffect(() => {
-    if (relay && state.applyFilters) {
+    if (relay !== undefined && state.applyFilters) {
       relay.refetchConnection(
         30,
         (error) => {
@@ -36,5 +36,26 @@ export const useArtworkFilters = ({
     dispatch,
     state,
     filterParams,
+  }
+}
+
+export const useArtworkFiltersAggregation = ({ paramName }: { paramName: FilterParamName }) => {
+  const { dispatch, state } = useContext(ArtworkFilterContext)
+
+  const aggregation = aggregationForFilter(paramName, state.aggregations)
+
+  const selectedOptions = selectedOptionsUnion({
+    selectedFilters: state.selectedFilters,
+    previouslyAppliedFilters: state.previouslyAppliedFilters,
+    filterType: state.filterType,
+  })
+
+  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
+
+  return {
+    dispatch,
+    state,
+    aggregation,
+    selectedOption,
   }
 }

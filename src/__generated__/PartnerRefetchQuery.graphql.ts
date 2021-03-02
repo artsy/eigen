@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2b6746089f025938a356d853007393bc */
+/* @relayHash ee5938bb907da6c82d5118f9a537ad6e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -109,7 +109,7 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
 fragment PartnerArtwork_partner on Partner {
   internalID
   slug
-  artworks: filterArtworksConnection(aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], dimensionRange: "*-*", first: 10, medium: "*", sort: "-partner_updated_at") {
+  artworks: filterArtworksConnection(aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], dimensionRange: "*-*", first: 10, sort: "-partner_updated_at") {
     aggregations {
       slice
       counts {
@@ -376,11 +376,6 @@ v8 = [
     "value": "*-*"
   },
   (v7/*: any*/),
-  {
-    "kind": "Literal",
-    "name": "medium",
-    "value": "*"
-  },
   {
     "kind": "Literal",
     "name": "sort",
@@ -899,7 +894,7 @@ return {
                     "abstractKey": "__isArtworkConnectionInterface"
                   }
                 ],
-                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,medium:\"*\",sort:\"-partner_updated_at\")"
+                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,sort:\"-partner_updated_at\")"
               },
               {
                 "alias": "artworks",
@@ -910,9 +905,9 @@ return {
                   "attributionClass",
                   "color",
                   "dimensionRange",
+                  "additionalGeneIDs",
                   "inquireableOnly",
                   "majorPeriods",
-                  "medium",
                   "offerable",
                   "priceRange",
                   "sort"
@@ -1299,7 +1294,7 @@ return {
     ]
   },
   "params": {
-    "id": "2b6746089f025938a356d853007393bc",
+    "id": "ee5938bb907da6c82d5118f9a537ad6e",
     "metadata": {},
     "name": "PartnerRefetchQuery",
     "operationKind": "query",

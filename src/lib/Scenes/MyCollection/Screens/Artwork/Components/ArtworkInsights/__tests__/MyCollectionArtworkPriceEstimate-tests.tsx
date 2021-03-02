@@ -67,8 +67,9 @@ describe("MyCollectionArtworkPriceEstimate", () => {
     const wrapper = renderWithWrappers(<TestRenderer />)
     resolveData({
       Artwork: () => ({
-        costMinor: 2000,
-        costCurrencyCode: "USD",
+        pricePaid: {
+          display: "$200",
+        },
       }),
       MarketPriceInsights: () => ({
         artsyQInventory: 20,
@@ -85,7 +86,7 @@ describe("MyCollectionArtworkPriceEstimate", () => {
     expect(text).toContain("Sold price range")
     expect(text).toContain("$2 – $6")
     expect(text).toContain("Your price paid for this work")
-    expect(text).toContain("USD 2000")
+    expect(text).toContain("$200")
   })
 
   it("tracks analytics event when info button is tapped", () => {

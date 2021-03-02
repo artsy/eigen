@@ -1,4 +1,5 @@
 import React from "react"
+import { Image as RNCImage } from "react-native-image-crop-picker"
 import { ConsignmentsHomeQueryRenderer } from "./ConsignmentsHome/ConsignmentsHome"
 
 /** The metadata for a consigned work */
@@ -31,7 +32,7 @@ export interface ArtistResult {
 export type SearchResult = LocationResult | ArtistResult
 
 export interface Photo {
-  file: string
+  image: RNCImage
   uploaded?: boolean
   uploading?: boolean
 }

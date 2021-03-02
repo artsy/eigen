@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 40445c90220600398eec78a294e13bcb */
+/* @relayHash 0df3fb69e35272f5787c567d0ede52dc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -98,7 +98,7 @@ fragment FairAllFollowedArtists_fairForFilters on Fair {
 fragment FairArtworks_fair_485l1x on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", includeArtworksByFollowedArtists: true, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
+  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", dimensionRange: "*-*", includeArtworksByFollowedArtists: true, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
     aggregations {
       slice
       counts {
@@ -212,11 +212,6 @@ v5 = [
     "kind": "Literal",
     "name": "includeArtworksByFollowedArtists",
     "value": true
-  },
-  {
-    "kind": "Literal",
-    "name": "medium",
-    "value": "*"
   },
   {
     "kind": "Literal",
@@ -673,14 +668,14 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,includeArtworksByFollowedArtists:true,medium:\"*\",sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,includeArtworksByFollowedArtists:true,sort:\"-decayed_merch\")"
           },
           {
             "alias": "fairArtworks",
             "args": (v5/*: any*/),
             "filters": [
               "sort",
-              "medium",
+              "additionalGeneIDs",
               "priceRange",
               "color",
               "partnerID",
@@ -751,7 +746,7 @@ return {
     ]
   },
   "params": {
-    "id": "40445c90220600398eec78a294e13bcb",
+    "id": "0df3fb69e35272f5787c567d0ede52dc",
     "metadata": {},
     "name": "FairAllFollowedArtistsQuery",
     "operationKind": "query",

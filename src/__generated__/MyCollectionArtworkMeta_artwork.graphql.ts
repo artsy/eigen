@@ -9,8 +9,9 @@ export type MyCollectionArtworkMeta_artwork = {
     readonly internalID: string;
     readonly artistNames: string | null;
     readonly category: string | null;
-    readonly costMinor: number | null;
-    readonly costCurrencyCode: string | null;
+    readonly pricePaid: {
+        readonly display: string | null;
+    } | null;
     readonly date: string | null;
     readonly depth: string | null;
     readonly editionNumber: string | null;
@@ -67,15 +68,19 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "costMinor",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "costCurrencyCode",
+      "concreteType": "Money",
+      "kind": "LinkedField",
+      "name": "pricePaid",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "display",
+          "storageKey": null
+        }
+      ],
       "storageKey": null
     },
     {
@@ -145,5 +150,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '32cc24cec59381a9ee19a8e44115a815';
+(node as any).hash = '426642dd1112093075014b6afbae61ae';
 export default node;

@@ -30,10 +30,10 @@ describe("volleyClient", () => {
     await volleyClient.send({ type: "increment", name: "counter" })
     jest.advanceTimersByTime(3000)
     expect(fetch).toHaveBeenCalledTimes(1)
-    expect(fetch.mock.calls[0][0]).toBe("fake-volley-url")
+    expect(fetch.mock.calls[0][0]).toBe("https://volley-staging.artsy.net/report")
     expect(fetch.mock.calls[0][1]).toMatchInlineSnapshot(`
       Object {
-        "body": "{\\"serviceName\\":\\"eigen\\",\\"metrics\\":[{\\"type\\":\\"increment\\",\\"name\\":\\"counter\\",\\"tags\\":[\\"device:testDevice\\",\\"network:cellular\\",\\"effective_network:5g\\"]}]}",
+        "body": "{\\"serviceName\\":\\"eigen-staging\\",\\"metrics\\":[{\\"type\\":\\"increment\\",\\"name\\":\\"counter\\",\\"tags\\":[\\"device:testDevice\\",\\"network:cellular\\",\\"effective_network:5g\\"]}]}",
         "headers": Object {
           "Content-Type": "application/json",
         },
@@ -50,7 +50,7 @@ describe("volleyClient", () => {
     expect(fetch).toHaveBeenCalledTimes(1)
     expect(fetch.mock.calls[0][1]).toMatchInlineSnapshot(`
       Object {
-        "body": "{\\"serviceName\\":\\"eigen\\",\\"metrics\\":[{\\"type\\":\\"increment\\",\\"name\\":\\"counter one\\",\\"tags\\":[\\"device:testDevice\\",\\"network:cellular\\",\\"effective_network:5g\\"]},{\\"type\\":\\"increment\\",\\"name\\":\\"counter two\\",\\"tags\\":[\\"device:testDevice\\",\\"network:cellular\\",\\"effective_network:5g\\"]},{\\"type\\":\\"decrement\\",\\"name\\":\\"counter one\\",\\"tags\\":[\\"device:testDevice\\",\\"network:cellular\\",\\"effective_network:5g\\"]}]}",
+        "body": "{\\"serviceName\\":\\"eigen-staging\\",\\"metrics\\":[{\\"type\\":\\"increment\\",\\"name\\":\\"counter one\\",\\"tags\\":[\\"device:testDevice\\",\\"network:cellular\\",\\"effective_network:5g\\"]},{\\"type\\":\\"increment\\",\\"name\\":\\"counter two\\",\\"tags\\":[\\"device:testDevice\\",\\"network:cellular\\",\\"effective_network:5g\\"]},{\\"type\\":\\"decrement\\",\\"name\\":\\"counter one\\",\\"tags\\":[\\"device:testDevice\\",\\"network:cellular\\",\\"effective_network:5g\\"]}]}",
         "headers": Object {
           "Content-Type": "application/json",
         },
@@ -61,7 +61,7 @@ describe("volleyClient", () => {
 
   describe("in production", () => {
     it("has a different URL", async () => {
-      __globalStoreTestUtils__?.injectState({ native: { sessionState: { env: "production" } } })
+      __globalStoreTestUtils__?.setProductionMode()
       await volleyClient.send({ type: "increment", name: "counter" })
       jest.advanceTimersByTime(3000)
       expect(fetch).toHaveBeenCalledTimes(1)

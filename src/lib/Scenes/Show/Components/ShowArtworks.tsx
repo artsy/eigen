@@ -106,7 +106,7 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
         count: { type: "Int", defaultValue: 30 }
         cursor: { type: "String" }
         sort: { type: "String", defaultValue: "partner_show_position" }
-        medium: { type: "String", defaultValue: "*" }
+        additionalGeneIDs: { type: "[String]" }
         priceRange: { type: "String" }
         color: { type: "String" }
         dimensionRange: { type: "String", defaultValue: "*-*" }
@@ -123,7 +123,7 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
           first: 30
           after: $cursor
           sort: $sort
-          medium: $medium
+          additionalGeneIDs: $additionalGeneIDs
           priceRange: $priceRange
           color: $color
           dimensionRange: $dimensionRange
@@ -178,7 +178,7 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
         $count: Int!
         $cursor: String
         $sort: String
-        $medium: String
+        $additionalGeneIDs: [String]
         $priceRange: String
         $color: String
         $dimensionRange: String
@@ -195,7 +195,7 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
               count: $count
               cursor: $cursor
               sort: $sort
-              medium: $medium
+              additionalGeneIDs: $additionalGeneIDs
               color: $color
               priceRange: $priceRange
               dimensionRange: $dimensionRange

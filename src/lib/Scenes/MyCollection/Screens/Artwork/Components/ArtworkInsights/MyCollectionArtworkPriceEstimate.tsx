@@ -94,9 +94,6 @@ const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimat
   const midRangeDollars = formatCentsToDollars(Number(midRangeCents))
   const highRangeDollars = formatCentsToDollars(Number(highRangeCents))
 
-  // TODO: costMinor needs to be converted from cents to dollars
-  const pricePaid = artwork.costCurrencyCode && artwork.costMinor && `${artwork.costCurrencyCode} ${artwork.costMinor}`
-
   return (
     <ScreenMargin>
       <InfoButton
@@ -130,7 +127,7 @@ const MyCollectionArtworkPriceEstimate: React.FC<MyCollectionArtworkPriceEstimat
 
       <Field label="Sold price range" value={`${lowRangeDollars} – ${highRangeDollars}`} />
 
-      {!!pricePaid && <Field label="Your price paid for this work" value={pricePaid} />}
+      {!!artwork.pricePaid && <Field label="Your price paid for this work" value={artwork.pricePaid.display} />}
     </ScreenMargin>
   )
 }
@@ -140,8 +137,9 @@ export const MyCollectionArtworkPriceEstimateFragmentContainer = createFragmentC
   {
     artwork: graphql`
       fragment MyCollectionArtworkPriceEstimate_artwork on Artwork {
-        costCurrencyCode
-        costMinor
+        pricePaid {
+          display
+        }
         internalID
         sizeBucket
         slug

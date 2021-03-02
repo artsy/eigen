@@ -27,6 +27,8 @@
 #import <AFNetworking/AFURLSessionManager.h>
 #import <AFNetworking/AFHTTPSessionManager.h>
 
+#import <AREmission.h>
+
 static AFHTTPSessionManager *staticHTTPClient = nil;
 static NSSet *artsyHosts = nil;
 
@@ -44,10 +46,9 @@ static NSString *hostFromString(NSString *string)
     NSString *productionDeprecatedMobileWeb = hostFromString(ARBaseDeprecatedMobileWebURL);
     NSString *productionAPI = hostFromString(ARBaseApiURL);
 
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *stagingWeb = hostFromString([defaults stringForKey:ARStagingWebURLDefault]);
+    NSString *stagingWeb = @"staging.artsy.net";
     NSString *stagingDeprecatedMobileWeb = hostFromString(ARStagingBaseDeprecatedMobileWebURL);
-    NSString *stagingAPI = hostFromString([defaults stringForKey:ARStagingAPIURLDefault]);
+    NSString *stagingAPI = @"api-staging.artsy.net";
 
     artsyHosts = [NSSet setWithArray:@[
         @"artsy.net",
@@ -55,8 +56,7 @@ static NSString *hostFromString(NSString *string)
         stagingAPI, stagingWeb, stagingDeprecatedMobileWeb
     ]];
 
-    [ARRouter setupWithBaseApiURL:[ARRouter baseApiURL]];
-
+    [self setupHttpClient];
     [self setupUserAgent];
 }
 
@@ -67,44 +67,23 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURL *)baseApiURL
 {
-    if ([AROptions boolForOption:ARUseStagingDefault]) {
-        NSString *stagingBaseAPI = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingAPIURLDefault];
-        return [NSURL URLWithString:stagingBaseAPI];
-    } else {
-        return [NSURL URLWithString:ARBaseApiURL];
-    }
+    return [NSURL URLWithString:[[AREmission sharedInstance] reactStateStringForKey:[ARReactStateKey gravityURL]]];
 }
 
 + (NSString *)baseMetaphysicsApiURLString
 {
-    if ([AROptions boolForOption:ARUseStagingDefault]) {
-        NSString *stagingBaseAPI = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingMetaphysicsURLDefault];
-        return stagingBaseAPI;
-    } else {
-        return ARBaseMetaphysicsApiURL;
-    }
+    return [[AREmission sharedInstance] reactStateStringForKey:[ARReactStateKey metaphysicsURL]];
 }
 
 + (NSString *)baseCausalitySocketURLString
 {
-    return [self causalitySocketURLStringWithProduction:ARCausalitySocketURL];
+    return [[AREmission sharedInstance] reactStateStringForKey:[ARReactStateKey causalityURL]];
 }
 
-+ (NSString *)causalitySocketURLStringWithProduction:(NSString *)productionURL;
-{
-    if ([AROptions boolForOption:ARUseStagingDefault]) {
-        NSString *stagingSocketURLString = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingLiveAuctionSocketURLDefault];
-        return stagingSocketURLString;
-    } else {
-        return productionURL;
-    }
-}
 
 + (NSURL *)baseWebURL
 {
-    NSString *stagingBaseWebURL = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingWebURLDefault];
-    NSString *url = [AROptions boolForOption:ARUseStagingDefault] ? stagingBaseWebURL : ARBaseWebURL;
-    return [NSURL URLWithString:url];
+    return [NSURL URLWithString:[[AREmission sharedInstance] reactStateStringForKey:[ARReactStateKey webURL]]];
 }
 
 + (NSURL *)resolveRelativeUrl:(NSString *)path
@@ -112,9 +91,9 @@ static NSString *hostFromString(NSString *string)
     return [NSURL URLWithString:path relativeToURL:[ARRouter baseWebURL]];
 }
 
-+ (void)setupWithBaseApiURL:(NSURL *)baseApiURL
++ (void)setupHttpClient
 {
-    staticHTTPClient = [[AFHTTPSessionManager alloc] initWithBaseURL:baseApiURL];
+    staticHTTPClient = [[AFHTTPSessionManager alloc] initWithBaseURL:[self baseApiURL]];
     [staticHTTPClient.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
             switch (status) {
                 case AFNetworkReachabilityStatusUnknown:

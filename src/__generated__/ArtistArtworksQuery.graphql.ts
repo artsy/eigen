@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 353c24cb19397d74957101b29a6369b8 */
+/* @relayHash 97c25020becf362a37274e1897a49cdd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -10,7 +10,7 @@ export type ArtistArtworksQueryVariables = {
     count: number;
     cursor?: string | null;
     sort?: string | null;
-    medium?: string | null;
+    additionalGeneIDs?: Array<string | null> | null;
     priceRange?: string | null;
     color?: string | null;
     partnerID?: string | null;
@@ -40,7 +40,7 @@ query ArtistArtworksQuery(
   $count: Int!
   $cursor: String
   $sort: String
-  $medium: String
+  $additionalGeneIDs: [String]
   $priceRange: String
   $color: String
   $partnerID: ID
@@ -55,17 +55,17 @@ query ArtistArtworksQuery(
   node(id: $id) {
     __typename
     ... on Artist {
-      ...ArtistArtworks_artist_3FXTiz
+      ...ArtistArtworks_artist_4kOA9y
     }
     id
   }
 }
 
-fragment ArtistArtworks_artist_3FXTiz on Artist {
+fragment ArtistArtworks_artist_4kOA9y on Artist {
   id
   slug
   internalID
-  artworks: filterArtworksConnection(first: $count, after: $cursor, sort: $sort, medium: $medium, priceRange: $priceRange, color: $color, partnerID: $partnerID, dimensionRange: $dimensionRange, majorPeriods: $majorPeriods, acquireable: $acquireable, inquireableOnly: $inquireableOnly, atAuction: $atAuction, offerable: $offerable, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], attributionClass: $attributionClass) {
+  artworks: filterArtworksConnection(first: $count, after: $cursor, sort: $sort, additionalGeneIDs: $additionalGeneIDs, priceRange: $priceRange, color: $color, partnerID: $partnerID, dimensionRange: $dimensionRange, majorPeriods: $majorPeriods, acquireable: $acquireable, inquireableOnly: $inquireableOnly, atAuction: $atAuction, offerable: $offerable, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], attributionClass: $attributionClass) {
     aggregations {
       slice
       counts {
@@ -250,52 +250,52 @@ var v0 = {
 v1 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "atAuction"
+  "name": "additionalGeneIDs"
 },
 v2 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "attributionClass"
+  "name": "atAuction"
 },
 v3 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "color"
+  "name": "attributionClass"
 },
 v4 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "count"
+  "name": "color"
 },
 v5 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "cursor"
+  "name": "count"
 },
 v6 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "dimensionRange"
+  "name": "cursor"
 },
 v7 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "id"
+  "name": "dimensionRange"
 },
 v8 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "inquireableOnly"
+  "name": "id"
 },
 v9 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "majorPeriods"
+  "name": "inquireableOnly"
 },
 v10 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "medium"
+  "name": "majorPeriods"
 },
 v11 = {
   "defaultValue": null,
@@ -331,38 +331,38 @@ v16 = {
 },
 v17 = {
   "kind": "Variable",
+  "name": "additionalGeneIDs",
+  "variableName": "additionalGeneIDs"
+},
+v18 = {
+  "kind": "Variable",
   "name": "atAuction",
   "variableName": "atAuction"
 },
-v18 = {
+v19 = {
   "kind": "Variable",
   "name": "attributionClass",
   "variableName": "attributionClass"
 },
-v19 = {
+v20 = {
   "kind": "Variable",
   "name": "color",
   "variableName": "color"
 },
-v20 = {
+v21 = {
   "kind": "Variable",
   "name": "dimensionRange",
   "variableName": "dimensionRange"
 },
-v21 = {
+v22 = {
   "kind": "Variable",
   "name": "inquireableOnly",
   "variableName": "inquireableOnly"
 },
-v22 = {
+v23 = {
   "kind": "Variable",
   "name": "majorPeriods",
   "variableName": "majorPeriods"
-},
-v23 = {
-  "kind": "Variable",
-  "name": "medium",
-  "variableName": "medium"
 },
 v24 = {
   "kind": "Variable",
@@ -414,6 +414,7 @@ v31 = {
 },
 v32 = [
   (v16/*: any*/),
+  (v17/*: any*/),
   {
     "kind": "Variable",
     "name": "after",
@@ -432,16 +433,15 @@ v32 = [
       "PRICE_RANGE"
     ]
   },
-  (v17/*: any*/),
   (v18/*: any*/),
   (v19/*: any*/),
   (v20/*: any*/),
+  (v21/*: any*/),
   {
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
   },
-  (v21/*: any*/),
   (v22/*: any*/),
   (v23/*: any*/),
   (v24/*: any*/),
@@ -571,6 +571,7 @@ return {
                   (v17/*: any*/),
                   (v18/*: any*/),
                   (v19/*: any*/),
+                  (v20/*: any*/),
                   {
                     "kind": "Variable",
                     "name": "count",
@@ -581,7 +582,6 @@ return {
                     "name": "cursor",
                     "variableName": "cursor"
                   },
-                  (v20/*: any*/),
                   (v21/*: any*/),
                   (v22/*: any*/),
                   (v23/*: any*/),
@@ -607,21 +607,21 @@ return {
   "kind": "Request",
   "operation": {
     "argumentDefinitions": [
-      (v7/*: any*/),
-      (v4/*: any*/),
-      (v5/*: any*/),
-      (v14/*: any*/),
-      (v10/*: any*/),
-      (v13/*: any*/),
-      (v3/*: any*/),
-      (v12/*: any*/),
-      (v6/*: any*/),
-      (v9/*: any*/),
-      (v0/*: any*/),
       (v8/*: any*/),
+      (v5/*: any*/),
+      (v6/*: any*/),
+      (v14/*: any*/),
       (v1/*: any*/),
+      (v13/*: any*/),
+      (v4/*: any*/),
+      (v12/*: any*/),
+      (v7/*: any*/),
+      (v10/*: any*/),
+      (v0/*: any*/),
+      (v9/*: any*/),
+      (v2/*: any*/),
       (v11/*: any*/),
-      (v2/*: any*/)
+      (v3/*: any*/)
     ],
     "kind": "Operation",
     "name": "ArtistArtworksQuery",
@@ -950,7 +950,7 @@ return {
                 "args": (v32/*: any*/),
                 "filters": [
                   "sort",
-                  "medium",
+                  "additionalGeneIDs",
                   "priceRange",
                   "color",
                   "partnerID",
@@ -1272,7 +1272,7 @@ return {
     ]
   },
   "params": {
-    "id": "353c24cb19397d74957101b29a6369b8",
+    "id": "97c25020becf362a37274e1897a49cdd",
     "metadata": {},
     "name": "ArtistArtworksQuery",
     "operationKind": "query",
@@ -1280,5 +1280,5 @@ return {
   }
 };
 })();
-(node as any).hash = '847fa3cef271f76f7b28bb9612468eb2';
+(node as any).hash = '72b95c442bf71a622e3d5be207418c7b';
 export default node;

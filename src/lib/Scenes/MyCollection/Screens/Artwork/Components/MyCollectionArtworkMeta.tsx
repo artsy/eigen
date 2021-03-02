@@ -20,8 +20,7 @@ const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwo
   const {
     artistNames,
     category,
-    costMinor,
-    costCurrencyCode,
+    pricePaid,
     date,
     depth,
     editionNumber,
@@ -52,10 +51,7 @@ const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwo
         <Field label="Dimensions" value={dimensions} />
         <Field label="Edition number" value={editionNumber} />
         <Field label="Edition size" value={editionSize} />
-        {/* FIXME:
-            If null is submitted to MP/Grav on artwork create, it will return 0,
-            falsly populating this field */}
-        {!!(costMinor && costCurrencyCode) && <Field label="Price paid" value={`${costMinor} ${costCurrencyCode}`} />}
+        {!!pricePaid && <Field label="Price paid" value={pricePaid.display} />}
       </ScreenMargin>
     )
   } else {
@@ -65,12 +61,7 @@ const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwo
         <Field label="Dimensions" value={dimensions} />
         <Field label="Edition number" value={editionNumber} />
         <Field label="Edition size" value={editionSize} />
-
-        {/* FIXME:
-            If null is submitted to MP/Grav on artwork create, it will return 0,
-            falsly populating this field */}
-        {!!(costMinor && costCurrencyCode) && <Field label="Price paid" value={`${costMinor} ${costCurrencyCode}`} />}
-
+        {!!pricePaid && <Field label="Price paid" value={pricePaid.display} />}
         <Spacer my={0.5} />
 
         <CaretButton
@@ -92,8 +83,9 @@ export const MyCollectionArtworkMetaFragmentContainer = createFragmentContainer(
       internalID
       artistNames
       category
-      costMinor
-      costCurrencyCode
+      pricePaid {
+        display
+      }
       date
       depth
       editionNumber

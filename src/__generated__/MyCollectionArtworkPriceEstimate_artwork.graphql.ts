@@ -5,8 +5,9 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkPriceEstimate_artwork = {
-    readonly costCurrencyCode: string | null;
-    readonly costMinor: number | null;
+    readonly pricePaid: {
+        readonly display: string | null;
+    } | null;
     readonly internalID: string;
     readonly sizeBucket: string | null;
     readonly slug: string;
@@ -29,15 +30,19 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "costCurrencyCode",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "costMinor",
+      "concreteType": "Money",
+      "kind": "LinkedField",
+      "name": "pricePaid",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "display",
+          "storageKey": null
+        }
+      ],
       "storageKey": null
     },
     {
@@ -65,5 +70,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = 'eeb8d9a7b7e2d6070f0b60177d063b49';
+(node as any).hash = '098ffa3b63ff9bf2439ba32161ca998a';
 export default node;

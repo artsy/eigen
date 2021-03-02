@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 322747e1630483a5f2b107977f8e6f87 */
+/* @relayHash 6bf26a868d9fbc9812153ce2d5e48f4c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -10,7 +10,7 @@ export type FairArtworksInfiniteScrollGridQueryVariables = {
     count: number;
     cursor?: string | null;
     sort?: string | null;
-    medium?: string | null;
+    additionalGeneIDs?: Array<string | null> | null;
     priceRange?: string | null;
     color?: string | null;
     partnerID?: string | null;
@@ -41,7 +41,7 @@ query FairArtworksInfiniteScrollGridQuery(
   $id: String!
   $cursor: String
   $sort: String
-  $medium: String
+  $additionalGeneIDs: [String]
   $priceRange: String
   $color: String
   $partnerID: ID
@@ -56,7 +56,7 @@ query FairArtworksInfiniteScrollGridQuery(
   $attributionClass: [String]
 ) {
   fair(id: $id) {
-    ...FairArtworks_fair_1Fr0Af
+    ...FairArtworks_fair_BsKMG
     id
   }
 }
@@ -96,10 +96,10 @@ fragment ArtworkGridItem_artwork on Artwork {
   }
 }
 
-fragment FairArtworks_fair_1Fr0Af on Fair {
+fragment FairArtworks_fair_BsKMG on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, after: $cursor, sort: $sort, medium: $medium, priceRange: $priceRange, color: $color, partnerID: $partnerID, dimensionRange: $dimensionRange, majorPeriods: $majorPeriods, acquireable: $acquireable, inquireableOnly: $inquireableOnly, atAuction: $atAuction, offerable: $offerable, includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists, artistIDs: $artistIDs, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST], attributionClass: $attributionClass) {
+  fairArtworks: filterArtworksConnection(first: 30, after: $cursor, sort: $sort, additionalGeneIDs: $additionalGeneIDs, priceRange: $priceRange, color: $color, partnerID: $partnerID, dimensionRange: $dimensionRange, majorPeriods: $majorPeriods, acquireable: $acquireable, inquireableOnly: $inquireableOnly, atAuction: $atAuction, offerable: $offerable, includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists, artistIDs: $artistIDs, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST], attributionClass: $attributionClass) {
     aggregations {
       slice
       counts {
@@ -162,62 +162,62 @@ var v0 = {
 v1 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "artistIDs"
+  "name": "additionalGeneIDs"
 },
 v2 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "atAuction"
+  "name": "artistIDs"
 },
 v3 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "attributionClass"
+  "name": "atAuction"
 },
 v4 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "color"
+  "name": "attributionClass"
 },
 v5 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "count"
+  "name": "color"
 },
 v6 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "cursor"
+  "name": "count"
 },
 v7 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "dimensionRange"
+  "name": "cursor"
 },
 v8 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "id"
+  "name": "dimensionRange"
 },
 v9 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "includeArtworksByFollowedArtists"
+  "name": "id"
 },
 v10 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "inquireableOnly"
+  "name": "includeArtworksByFollowedArtists"
 },
 v11 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "majorPeriods"
+  "name": "inquireableOnly"
 },
 v12 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "medium"
+  "name": "majorPeriods"
 },
 v13 = {
   "defaultValue": null,
@@ -253,48 +253,48 @@ v18 = {
 },
 v19 = {
   "kind": "Variable",
+  "name": "additionalGeneIDs",
+  "variableName": "additionalGeneIDs"
+},
+v20 = {
+  "kind": "Variable",
   "name": "artistIDs",
   "variableName": "artistIDs"
 },
-v20 = {
+v21 = {
   "kind": "Variable",
   "name": "atAuction",
   "variableName": "atAuction"
 },
-v21 = {
+v22 = {
   "kind": "Variable",
   "name": "attributionClass",
   "variableName": "attributionClass"
 },
-v22 = {
+v23 = {
   "kind": "Variable",
   "name": "color",
   "variableName": "color"
 },
-v23 = {
+v24 = {
   "kind": "Variable",
   "name": "dimensionRange",
   "variableName": "dimensionRange"
 },
-v24 = {
+v25 = {
   "kind": "Variable",
   "name": "includeArtworksByFollowedArtists",
   "variableName": "includeArtworksByFollowedArtists"
 },
-v25 = {
+v26 = {
   "kind": "Variable",
   "name": "inquireableOnly",
   "variableName": "inquireableOnly"
 },
-v26 = {
+v27 = {
   "kind": "Variable",
   "name": "majorPeriods",
   "variableName": "majorPeriods"
-},
-v27 = {
-  "kind": "Variable",
-  "name": "medium",
-  "variableName": "medium"
 },
 v28 = {
   "kind": "Variable",
@@ -332,6 +332,7 @@ v33 = {
 },
 v34 = [
   (v18/*: any*/),
+  (v19/*: any*/),
   {
     "kind": "Variable",
     "name": "after",
@@ -352,17 +353,16 @@ v34 = [
       "ARTIST"
     ]
   },
-  (v19/*: any*/),
   (v20/*: any*/),
   (v21/*: any*/),
   (v22/*: any*/),
   (v23/*: any*/),
+  (v24/*: any*/),
   {
     "kind": "Literal",
     "name": "first",
     "value": 30
   },
-  (v24/*: any*/),
   (v25/*: any*/),
   (v26/*: any*/),
   (v27/*: any*/),
@@ -432,6 +432,7 @@ return {
               (v20/*: any*/),
               (v21/*: any*/),
               (v22/*: any*/),
+              (v23/*: any*/),
               {
                 "kind": "Variable",
                 "name": "count",
@@ -442,7 +443,6 @@ return {
                 "name": "cursor",
                 "variableName": "cursor"
               },
-              (v23/*: any*/),
               (v24/*: any*/),
               (v25/*: any*/),
               (v26/*: any*/),
@@ -465,23 +465,23 @@ return {
   "kind": "Request",
   "operation": {
     "argumentDefinitions": [
-      (v8/*: any*/),
-      (v5/*: any*/),
+      (v9/*: any*/),
       (v6/*: any*/),
-      (v16/*: any*/),
-      (v12/*: any*/),
-      (v15/*: any*/),
-      (v4/*: any*/),
-      (v14/*: any*/),
       (v7/*: any*/),
-      (v11/*: any*/),
+      (v16/*: any*/),
+      (v1/*: any*/),
+      (v15/*: any*/),
+      (v5/*: any*/),
+      (v14/*: any*/),
+      (v8/*: any*/),
+      (v12/*: any*/),
       (v0/*: any*/),
+      (v11/*: any*/),
+      (v3/*: any*/),
+      (v13/*: any*/),
       (v10/*: any*/),
       (v2/*: any*/),
-      (v13/*: any*/),
-      (v9/*: any*/),
-      (v1/*: any*/),
-      (v3/*: any*/)
+      (v4/*: any*/)
     ],
     "kind": "Operation",
     "name": "FairArtworksInfiniteScrollGridQuery",
@@ -870,7 +870,7 @@ return {
             "args": (v34/*: any*/),
             "filters": [
               "sort",
-              "medium",
+              "additionalGeneIDs",
               "priceRange",
               "color",
               "partnerID",
@@ -897,7 +897,7 @@ return {
     ]
   },
   "params": {
-    "id": "322747e1630483a5f2b107977f8e6f87",
+    "id": "6bf26a868d9fbc9812153ce2d5e48f4c",
     "metadata": {},
     "name": "FairArtworksInfiniteScrollGridQuery",
     "operationKind": "query",
@@ -905,5 +905,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'd3e376a72e3f56bdb9f63cbeabe97394';
+(node as any).hash = 'e5122e782ea1d4f454e9d5d5001fab2f';
 export default node;

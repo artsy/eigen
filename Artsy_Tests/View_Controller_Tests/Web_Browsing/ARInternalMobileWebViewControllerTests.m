@@ -4,6 +4,7 @@
 #import "ARUserManager.h"
 #import "ARNetworkConstants.h"
 #import "ARInternalShareValidator.h"
+#import <Emission/AREmission.h>
 
 
 static WKNavigationAction *StubNavActionForRequest(NSURLRequest *request, WKNavigationType type)
@@ -27,8 +28,15 @@ SpecBegin(ARInternalMobileViewController);
 
 describe(@"initWithURL", ^{
     describe(@"in production", ^{
-        beforeEach(^{
-            [AROptions setBool:false forOption:ARUseStagingDefault];
+        
+        beforeAll(^{
+            [[[AREmission sharedInstance] notificationsManagerModule] updateReactState:@{@"webURL": @"https://www.artsy.net"}];
+            [ARRouter setup];
+        });
+        
+        afterAll(^{
+            [[[AREmission sharedInstance] notificationsManagerModule] updateReactState:@{@"webURL": @"https://staging.artsy.net"}];
+            [ARRouter setup];
         });
 
         it(@"rewrites the scheme", ^{
@@ -60,28 +68,24 @@ describe(@"initWithURL", ^{
             ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://example.com/foo/bar"]];
             expect([controller currentURL].absoluteString).to.equal(@"http://example.com/foo/bar");
         });
-    });
+        
+        describe(@"on ipad", ^{
+            beforeEach(^{
+                [ARTestContext stubDevice:ARDeviceTypePad];
+            });
 
-    describe(@"in production on ipad", ^{
-        beforeEach(^{
-            [AROptions setBool:false forOption:ARUseStagingDefault];
-            [ARTestContext stubDevice:ARDeviceTypePad];
-        });
+            afterEach(^{
+                [ARTestContext stopStubbing];
+            });
 
-        afterEach(^{
-            [ARTestContext stopStubbing];
-        });
-
-        it(@"with a relative url on ipad", ^{
-            ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/foo/bar"]];
-            expect([controller currentURL].absoluteString).to.equal(@"https://www.artsy.net/foo/bar");
+            it(@"with a relative url", ^{
+                ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/foo/bar"]];
+                expect([controller currentURL].absoluteString).to.equal(@"https://www.artsy.net/foo/bar");
+            });
         });
     });
 
     describe(@"in staging", ^{
-        beforeEach(^{
-            [AROptions setBool:true forOption:ARUseStagingDefault];
-        });
 
         it(@"rewrites the scheme", ^{
             ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://staging.artsy.net/foo/bar"]];

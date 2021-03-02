@@ -71,6 +71,7 @@ import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { ToastProvider } from "./Components/Toast/toastHook"
+import { useSentryConfig } from "./ErrorReporting"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
@@ -86,6 +87,7 @@ import { GlobalStore, GlobalStoreProvider, useSelectedTab } from "./store/Global
 import { AdminMenu } from "./utils/AdminMenu"
 import { Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
+import { useStripeConfig } from "./utils/useStripeConfig"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -401,6 +403,9 @@ const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.native.sessionState.userID)
   const onboardingState = GlobalStore.useAppState((state) => state.native.sessionState.onboardingState)
+
+  useSentryConfig()
+  useStripeConfig()
 
   if (!isHydrated) {
     return <View />

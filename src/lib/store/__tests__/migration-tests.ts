@@ -178,3 +178,23 @@ describe("App version Versions.RemoveMyCollectionNavigationState", () => {
     expect("navigation" in migratedState.myCollection).toBe(false)
   })
 })
+
+describe("App version Versions.RefactorConfigModel", () => {
+  it("moves the feature flag overrides and echo state to their own models", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: Versions.RefactorConfigModel - 1,
+    }) as any
+
+    previousState.config.adminFeatureFlagOverrides = { MySpecialFlag: true }
+    previousState.config.echoState = { created_at: "yesterday" }
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: Versions.RefactorConfigModel,
+    }) as any
+
+    expect(migratedState.config.features.adminOverrides).toEqual({ MySpecialFlag: true })
+    expect(migratedState.config.echo.state).toEqual({ created_at: "yesterday" })
+  })
+})

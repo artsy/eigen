@@ -1,11 +1,10 @@
 import NetInfo from "@react-native-community/netinfo"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
 import { throttle } from "lodash"
 
 const URLS = {
   production: "https://volley.artsy.net/report",
   staging: "https://volley-staging.artsy.net/report",
-  test: "fake-volley-url",
 }
 
 type Tags = string[]
@@ -66,6 +65,9 @@ export type VolleyMetric =
 
 class VolleyClient {
   queue: VolleyMetric[] = []
+  get serviceName() {
+    return unsafe__getEnvironment().env === "staging" ? "eigen-staging" : "eigen"
+  }
   private _dispatch = throttle(
     () => {
       const metrics = this.queue
@@ -75,7 +77,7 @@ class VolleyClient {
         console.log("DATADOG", metrics)
       }
 
-      const volleyURL = URLS[getCurrentEmissionState().env]
+      const volleyURL = URLS[unsafe__getEnvironment().env]
       if (!volleyURL) {
         return
       }
@@ -98,7 +100,6 @@ class VolleyClient {
       trailing: true,
     }
   )
-  constructor(public readonly serviceName: string) {}
   async send(metric: VolleyMetric) {
     this.queue.push({
       ...metric,
@@ -122,4 +123,4 @@ async function getNetworkTags() {
   }
 }
 
-export const volleyClient = new VolleyClient(getCurrentEmissionState().env === "staging" ? "eigen-staging" : "eigen")
+export const volleyClient = new VolleyClient()

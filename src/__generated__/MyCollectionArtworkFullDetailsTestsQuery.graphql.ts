@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8c60d07ed8e12fe3cb60d63bc7d70b1d */
+/* @relayHash 97d72a0af2c078d7721246141082205b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,8 +33,11 @@ fragment MyCollectionArtworkFullDetails_artwork on Artwork {
   }
   artistNames
   category
-  costMinor
-  costCurrencyCode
+  pricePaid {
+    display
+    minor
+    currencyCode
+  }
   date
   depth
   editionSize
@@ -64,8 +67,9 @@ fragment MyCollectionArtworkMeta_artwork on Artwork {
   internalID
   artistNames
   category
-  costMinor
-  costCurrencyCode
+  pricePaid {
+    display
+  }
   date
   depth
   editionNumber
@@ -209,15 +213,33 @@ return {
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
-            "name": "costMinor",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "costCurrencyCode",
+            "concreteType": "Money",
+            "kind": "LinkedField",
+            "name": "pricePaid",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "display",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "minor",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "currencyCode",
+                "storageKey": null
+              }
+            ],
             "storageKey": null
           },
           {
@@ -328,7 +350,7 @@ return {
     ]
   },
   "params": {
-    "id": "8c60d07ed8e12fe3cb60d63bc7d70b1d",
+    "id": "97d72a0af2c078d7721246141082205b",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -347,8 +369,6 @@ return {
         "artwork.artist.internalID": (v5/*: any*/),
         "artwork.artistNames": (v6/*: any*/),
         "artwork.category": (v6/*: any*/),
-        "artwork.costCurrencyCode": (v6/*: any*/),
-        "artwork.costMinor": (v7/*: any*/),
         "artwork.date": (v6/*: any*/),
         "artwork.depth": (v6/*: any*/),
         "artwork.editionNumber": (v6/*: any*/),
@@ -375,6 +395,25 @@ return {
         "artwork.isEdition": (v8/*: any*/),
         "artwork.medium": (v6/*: any*/),
         "artwork.metric": (v6/*: any*/),
+        "artwork.pricePaid": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Money"
+        },
+        "artwork.pricePaid.currencyCode": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "String"
+        },
+        "artwork.pricePaid.display": (v6/*: any*/),
+        "artwork.pricePaid.minor": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "Int"
+        },
         "artwork.provenance": (v6/*: any*/),
         "artwork.slug": (v5/*: any*/),
         "artwork.title": (v6/*: any*/),

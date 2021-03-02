@@ -14,7 +14,7 @@ import { AttributionClassOptionsScreen } from "../AttributionClassOptions"
 import { OptionListItem } from "../MultiSelectOption"
 import { getEssentialProps } from "./helper"
 
-describe("Ways to Buy Options Screen", () => {
+describe("AttributionClassOptions Screen", () => {
   let state: ArtworkFilterContextState
 
   beforeEach(() => {

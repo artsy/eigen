@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 97396d53e8317450bbd85096ce63517b */
+/* @relayHash 0fcb402763f36997809340746cb9bfa5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,7 +28,7 @@ query ArtistSeriesArtworksTestsQuery {
 fragment ArtistSeriesArtworks_artistSeries on ArtistSeries {
   slug
   internalID
-  artistSeriesArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch", medium: "*", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  artistSeriesArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -161,11 +161,6 @@ v3 = [
     "kind": "Literal",
     "name": "first",
     "value": 20
-  },
-  {
-    "kind": "Literal",
-    "name": "medium",
-    "value": "*"
   },
   {
     "kind": "Literal",
@@ -627,14 +622,14 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:20,medium:\"*\",sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:20,sort:\"-decayed_merch\")"
           },
           {
             "alias": "artistSeriesArtworks",
             "args": (v3/*: any*/),
             "filters": [
               "sort",
-              "medium",
+              "additionalGeneIDs",
               "priceRange",
               "color",
               "partnerID",
@@ -658,7 +653,7 @@ return {
     ]
   },
   "params": {
-    "id": "97396d53e8317450bbd85096ce63517b",
+    "id": "0fcb402763f36997809340746cb9bfa5",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artistSeries": {
@@ -704,6 +699,7 @@ return {
             "FOLLOWED_ARTISTS",
             "GALLERY",
             "INSTITUTION",
+            "LOCATION_CITY",
             "MAJOR_PERIOD",
             "MEDIUM",
             "MERCHANDISABLE_ARTISTS",

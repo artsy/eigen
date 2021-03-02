@@ -10,34 +10,34 @@
 
 @implementation ARStateKey
 // These should match the values in src/lib/store/NativeModel.ts
-+ (NSString *)selectedTab { return @"selectedTab"; }
 + (NSString *)userID { return @"userID"; }
 + (NSString *)authenticationToken { return @"authenticationToken"; }
 + (NSString *)launchCount { return @"launchCount"; }
 + (NSString *)onboardingState { return @"onboardingState"; }
 
-+ (NSString *)gravityURL { return @"gravityURL"; }
-+ (NSString *)metaphysicsURL { return @"metaphysicsURL"; }
-+ (NSString *)predictionURL { return @"predictionURL"; }
-+ (NSString *)webURL { return @"webURL"; }
 + (NSString *)userAgent { return @"userAgent"; }
-
-+ (NSString *)legacyFairSlugs { return @"legacyFairSlugs"; }
-+ (NSString *)legacyFairProfileSlugs { return @"legacyFairProfileSlugs"; }
 
 + (NSString *)env { return @"env"; }
 + (NSString *)deviceId { return @"deviceId"; }
 
-+ (NSString *)stripePublishableKey { return @"stripePublishableKey"; }
-+ (NSString *)sentryDSN { return @"sentryDSN"; };
+@end
+
+@implementation ARReactStateKey
++ (NSString *)gravityURL { return @"gravityURL"; };
++ (NSString *)metaphysicsURL { return @"metaphysicsURL"; };
++ (NSString *)predictionURL { return @"predictionURL"; };
++ (NSString *)webURL { return @"webURL"; };
++ (NSString *)causalityURL { return @"causalityURL"; };
++ (NSString *)env { return @"env"; };
 @end
 
 
 @interface ARNotificationsManager ()
 @property (nonatomic, assign, readwrite) BOOL isBeingObserved;
 @property (strong, nonatomic, readwrite) NSDictionary *state;
+@property (strong, nonatomic, readwrite) NSMutableDictionary *reactState;
 
-@property (readwrite, nonatomic, strong) NSMutableArray<void (^)()> *bootstrapQueue;
+@property (readwrite, nonatomic, strong) NSMutableArray<void (^)(void)> *bootstrapQueue;
 @property (readwrite, nonatomic, assign) BOOL didBootStrap;
 @end
 
@@ -45,7 +45,7 @@
 // These should match the values in src/lib/store/NativeModel.ts
 static const NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
 static const NSString *stateChanged = @"STATE_CHANGED";
-static const NSString *resetState = @"RESET_APP_STATE";
+static const NSString *reactStateChanged = @"STATE_CHANGED";
 static const NSString *requestNavigation = @"REQUEST_NAVIGATION";
 
 
@@ -59,6 +59,7 @@ RCT_EXPORT_MODULE();
     if (self) {
         _state = [state copy];
         _bootstrapQueue = [[NSMutableArray alloc] init];
+        _reactState = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -111,11 +112,6 @@ RCT_EXPORT_MODULE();
     [self dispatch:notificationReceived data:@{}];
 }
 
-- (void)reset
-{
-    [self dispatch:resetState data:self.state];
-}
-
 - (void)requestNavigation:(NSString *)route
 {
     __weak typeof(self) wself = self;
@@ -162,6 +158,18 @@ RCT_EXPORT_METHOD(didFinishBootstrapping)
         [self.bootstrapQueue removeObjectAtIndex:0];
         completion();
     }
+}
+
+- (void)updateReactState:(nonnull NSDictionary *)reactState
+{
+    @synchronized (self) {
+        [_reactState addEntriesFromDictionary:reactState];
+    }
+}
+
+RCT_EXPORT_METHOD(reactStateUpdated:(nonnull NSDictionary *)reactState)
+{
+    [self updateReactState:reactState];
 }
 
 // All notification JS methods occur on the main queue/thread.
