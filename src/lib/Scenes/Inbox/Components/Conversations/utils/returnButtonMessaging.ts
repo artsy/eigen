@@ -1,19 +1,19 @@
 interface ReturnButtonMessaging {
   state: string
   stateReason: string | null
-  nodeCount: number
+  isCounter: boolean
   lastOfferFromParticipant: string | null | undefined
-  hoursTillExpiration: string
+  hoursTillExpiration?: string
 }
 
 export const returnButtonMessaging = ({
   state,
   stateReason,
-  nodeCount,
+  isCounter,
   lastOfferFromParticipant,
   hoursTillExpiration,
 }: ReturnButtonMessaging) => {
-  const offerType = nodeCount > 1 ? "Counteroffer" : "Offer"
+  const offerType = isCounter ? "Counteroffer" : "Offer"
   let message = ""
   let subMessage = "Tap to view"
   let backgroundColor = "green100"

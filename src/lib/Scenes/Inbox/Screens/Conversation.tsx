@@ -148,6 +148,7 @@ export class Conversation extends React.Component<Props, State> {
     const showOfferableInquiryButton =
       conversation?.items?.[0]?.item?.__typename === "Artwork" && conversation?.items?.[0]?.item?.isOfferableFromInquiry
 
+    console.warn("CONVO ID", conversation.internalID)
     return (
       <Composer
         disabled={this.state.sendingMessage || !this.state.isConnected}

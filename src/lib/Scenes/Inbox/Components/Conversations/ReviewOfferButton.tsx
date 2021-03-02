@@ -26,12 +26,12 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
   })
 
   useEffect(() => {
-    const nodeCount = extractNodes(order.offers).length
+    const isCounter = extractNodes(order.offers).length > 1
 
     const { backgroundColor, message, subMessage, showMoneyIcon } = returnButtonMessaging({
       state: order.state,
       stateReason: order.stateReason,
-      nodeCount,
+      isCounter,
       lastOfferFromParticipant: order.lastOffer?.fromParticipant,
       hoursTillExpiration: hours,
     })

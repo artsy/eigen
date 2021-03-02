@@ -7,6 +7,8 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 import styled from "styled-components/native"
 import { MessageGroup } from "./MessageGroup"
 
+import { sortBy } from "lodash"
+import { DateTime } from "luxon"
 import { groupMessages, MessageGroup as MessageGroupType } from "./utils/groupMessages"
 
 const isPad = Dimensions.get("window").width > 700
@@ -15,7 +17,6 @@ interface Props {
   conversation: Messages_conversation
   relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
-  order: Messages_orderConnection
 }
 
 const LoadingIndicator = styled.ActivityIndicator`
@@ -28,9 +29,12 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   const [fetchingMoreData, setFetchingMoreData] = useState(false)
   const [reloadingData, setReloadingData] = useState(false)
 
+  const orders = extractNodes(conversation?.orderConnection)
+  const allOffers = orders?.[0]?.offers?.nodes || []
+
   const [messages, setMessages] = useState<MessageGroupType[]>()
   useEffect(() => {
-    const nodes = extractNodes(conversation.messagesConnection)
+    const messageNodes = extractNodes(conversation.messagesConnection)
       .filter((node) => {
         if (node.isFirstMessage) {
           return true
@@ -41,7 +45,9 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
         return { key: node.id, ...node }
       })
       .reverse()
-    setMessages(groupMessages(nodes))
+    const allMessages = sortBy([...allOffers, ...messageNodes], (message) => DateTime.fromISO(message.createdAt))
+
+    setMessages(groupMessages(allMessages))
   }, [conversation.messagesConnection])
 
   const flatList = useRef<FlatList>(null)
@@ -103,10 +109,6 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
         alignSelf: "center",
       }
     : {}
-
-  const allOffers = extractNodes(conversation?.orderConnection)?.[0]?.offers?.nodes
-
-  console.warn("OFFWAES", allOffers[0].state)
 
   return (
     <FlatList
@@ -194,22 +196,30 @@ export default createPaginationContainer(
             }
           }
         }
-        orderConnection(first: $count, after: $after, participantType: BUYER)
-          @connection(key: "Messages_orderConnection", filters: []) {
+        orderConnection(first: 10, participantType: BUYER) {
           edges {
             node {
               ... on CommerceOfferOrder {
+                internalID
                 isInquiryOrder
                 state
                 stateReason
                 stateUpdatedAt
-                offers {
+                offers(first: 100) {
                   nodes {
+                    __typename
                     amount
                     createdAt
                     fromParticipant
                     from {
                       __typename
+                    }
+                    respondsTo {
+                      fromParticipant
+                    }
+                    order {
+                      state
+                      stateReason
                     }
                   }
                 }

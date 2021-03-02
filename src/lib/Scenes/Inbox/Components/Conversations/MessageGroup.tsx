@@ -5,10 +5,11 @@ import styled from "styled-components/native"
 import { Message_message } from "__generated__/Message_message.graphql"
 import { Messages_conversation } from "__generated__/Messages_conversation.graphql"
 import moment from "moment"
-import { Flex, Spacer } from "palette"
+import { Flex, Spacer, Text } from "palette"
 
 import { navigate } from "lib/navigation/navigate"
 import { Message } from "./Message"
+import { OfferNotification } from "./OfferNotification"
 import ArtworkPreview from "./Preview/ArtworkPreview"
 import ShowPreview from "./Preview/ShowPreview"
 import { TimeSince } from "./TimeSince"
@@ -46,6 +47,7 @@ export class MessageGroup extends React.Component<MessageGroupProps> {
             )}
           </SubjectContainer>
         )}
+        {!!message.fromParticipant && <OfferNotification offer={message} />}
         {!!message.body && (
           <Message
             message={message}

@@ -2,7 +2,7 @@ import moment from "moment"
 
 import { Message_message } from "__generated__/Message_message.graphql"
 
-export type MessageGroup = Array<Partial<Message_message>>
+export type MessageGroup = Array<Partial<Message_message> | any>
 /**
  * Combines messages into groups of messages sent by the same party and
  * separated out into different groups if sent across multiple days
