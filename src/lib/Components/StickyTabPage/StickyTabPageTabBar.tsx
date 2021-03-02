@@ -43,12 +43,19 @@ export const StickyTabPageTabBar: React.FC<{ onTabPress?(tab: { label: string; i
       ref={scrollViewRef}
       horizontal
       showsHorizontalScrollIndicator={false}
-      style={{
-        borderBottomWidth: 1,
-        borderBottomColor: color("black30"),
-      }}
       contentContainerStyle={{ minWidth: "100%" }}
     >
+      {/* bottom border */}
+      <View
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          borderBottomWidth: 1,
+          borderBottomColor: color("black30"),
+        }}
+      />
       <View
         style={{
           flex: 1,
@@ -149,7 +156,7 @@ const ActiveTabBorder: React.FC<{ tabLayouts: LayoutRectangle[]; activeTabIndex:
         width: preTransformSpan,
         backgroundColor: "black",
         position: "absolute",
-        bottom: -1,
+        bottom: 0,
         left: space(2),
         transform: [
           {
