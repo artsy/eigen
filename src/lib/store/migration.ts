@@ -15,9 +15,10 @@ export const Versions = {
   AddAuthAndConfigState: 5,
   AddFeatureFlagInfra: 6,
   RefactorConfigModel: 7,
+  FixEnvironmentMigrationBug: 8,
 }
 
-export const CURRENT_APP_VERSION = Versions.RefactorConfigModel
+export const CURRENT_APP_VERSION = Versions.FixEnvironmentMigrationBug
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -59,6 +60,9 @@ export const artsyAppMigrations: Migrations = {
     newConfig.echo = { state: state.config.echoState }
     newConfig.environment = { adminOverrides: {}, env: "staging" }
     state.config = newConfig
+  },
+  [Versions.FixEnvironmentMigrationBug]: (state) => {
+    state.config.environment.env = __TEST__ ? "staging" : "production"
   },
 }
 
