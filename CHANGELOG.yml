@@ -4,7 +4,7 @@ upcoming:
   dev:
     - Fix sticky tab page layout problems on android - david
   user_facing:
-    - 
+    - Fix env migration bug - david
 
 releases:
   - version: 6.7.9
