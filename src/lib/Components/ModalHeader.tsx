@@ -14,8 +14,8 @@ export const ModalHeader: React.FC = () => {
           <View style={{ width: 75, height: 4, borderRadius: 2, backgroundColor: color("black30") }}></View>
         </View>
       ) : (
-        /* close button for iOS 12 full screen modals */
-        <View style={{ position: "absolute", top: 0, right: 15 }}>
+        /* close button for iOS 12 + android full screen modals */
+        <View style={{ position: "absolute", top: 20, right: 15 }}>
           <Touchable
             onPress={dismissModal}
             hitSlop={{

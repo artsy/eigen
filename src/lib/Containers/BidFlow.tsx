@@ -1,6 +1,6 @@
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
-import { ViewProperties } from "react-native"
+import { Platform, ViewProperties } from "react-native"
 
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
@@ -76,7 +76,7 @@ export const BidFlowQueryRenderer: React.FC<{ artworkID?: string; saleID: string
           <BidFlowFragmentContainer sale_artwork={props.artwork.sale_artwork} me={props.me} />
         ))}
       />
-      <ModalHeader />
+      {Platform.OS === "ios" ? null : <ModalHeader />}
     </>
   )
 }

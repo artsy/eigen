@@ -135,7 +135,7 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
     } else if ([moduleName isEqualToString:@"Auction"]) {
         vc = [self.class loadAuctionWithID:props[@"id"]];
     } else if ([moduleName isEqualToString:@"AuctionRegistration"]) {
-        vc = [self.class loadAuctionRegistrationWithID:props[@"id"] skipBidFlow:[props[@"skip_bid_flow"] boolValue]];
+        vc = [self.class loadAuctionRegistrationWithID:props[@"saleID"] skipBidFlow:[props[@"skip_bid_flow"] boolValue]];
     } else if ([moduleName isEqualToString:@"AuctionBidArtwork"]) {
         vc = [self.class loadBidUIForArtwork:props[@"artwork_id"] inSale:props[@"id"]];
     } else if ([moduleName isEqualToString:@"LiveAuction"]) {
