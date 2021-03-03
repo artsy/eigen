@@ -46,7 +46,7 @@ export type MyBids_me = {
             readonly node: {
                 readonly lot: {
                     readonly internalID: string;
-                } | null;
+                };
                 readonly saleArtwork: {
                     readonly internalID: string;
                     readonly position: number | null;

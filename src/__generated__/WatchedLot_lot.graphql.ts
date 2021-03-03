@@ -13,7 +13,7 @@ export type WatchedLot_lot = {
             readonly display: string | null;
         } | null;
         readonly soldStatus: AuctionsSoldStatus;
-    } | null;
+    };
     readonly saleArtwork: {
         readonly artwork: {
             readonly internalID: string;
