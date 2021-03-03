@@ -3,7 +3,7 @@ import React, { useContext, useRef, useState } from "react"
 import { FlatList, FlatListProps } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./reanimatedHelpers"
-import { useStickyTabPageContext } from "./StickyTabPage"
+import { useStickyTabPageContext } from "./SitckyTabPageContext"
 
 interface FlatListRequiredContext {
   tabIsActive: Animated.Node<number>

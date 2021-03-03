@@ -2,7 +2,7 @@ upcoming:
   version: 6.8.0
   date: TBD
   dev:
-    - Improve relay environment setup - david
+    - Fix sticky tab page layout problems on android - david
   user_facing:
     - 
 
