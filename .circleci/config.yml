@@ -431,7 +431,7 @@ workflows:
   metaphysics-check:
     triggers:
       - schedule:
-          cron: "0 */2 * * *"
+          cron: "13 * * * *"
           filters:
             branches:
               only:
