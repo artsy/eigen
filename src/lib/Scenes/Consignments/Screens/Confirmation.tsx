@@ -1,4 +1,3 @@
-import { StackNavigationProp } from "@react-navigation/stack"
 import Spinner from "lib/Components/Spinner"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -62,7 +61,13 @@ export default class Confirmation extends React.Component<Props, State> {
   }
 
   handleBackButton = () => {
-    dismissModal()
+    if (this.state.submissionState === SubmissionTypes.Submitting) {
+      Alert.alert("Consignment Submission In Progress", "Please wait until your consignment has been submitted.", [
+        { text: "OK" },
+      ])
+    } else {
+      dismissModal()
+    }
     return true
   }
 

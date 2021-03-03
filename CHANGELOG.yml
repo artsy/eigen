@@ -11,6 +11,7 @@ upcoming:
     - Adds inquiry checkout offer status CTA - lily
     - Update consignment photo selection flow for iOS 14 - brian
     - Allow adding pricePaid info in my collection - barry, brian
+    - Override Android back button in consignment form - adam
 
 releases:
   - version: 6.7.8
@@ -20,7 +21,7 @@ releases:
       - Migrate feature flag infrastructure to easy-peasy - david
       - Update artist insights flag and set readyToRelease to true - mounir
       - use native webview to share auth creds in checkout - brian
-    useser_facing:
+    useser_facing
       - Fix issue where user's watched lots are not always up to date - erik
       - Add custom ShareSheet and sharing to Instagram Stories - pavlos
       - MarketStats on auction results - pepopowitz, mounir

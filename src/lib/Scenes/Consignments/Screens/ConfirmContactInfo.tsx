@@ -1,4 +1,4 @@
-import { useFocusEffect, useNavigation } from "@react-navigation/native"
+import { useFocusEffect } from "@react-navigation/native"
 import { captureException } from "@sentry/react-native"
 import { ConfirmContactInfo_me } from "__generated__/ConfirmContactInfo_me.graphql"
 import { ConfirmContactInfoQuery } from "__generated__/ConfirmContactInfoQuery.graphql"
@@ -37,14 +37,20 @@ const ConfirmContactInfo: React.FC<{
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
-        dismissModal()
+        if (!submissionRequestValidationCheck()) {
+          Alert.alert("Consignment Submission In Progress", "Please wait until your consignment has been submitted.", [
+            { text: "OK" },
+          ])
+        } else {
+          dismissModal()
+        }
         return true
       }
 
       BackHandler.addEventListener("hardwareBackPress", onBackPress)
 
       return () => BackHandler.removeEventListener("hardwareBackPress", onBackPress)
-    }, [])
+    }, [submissionRequestValidationCheck])
   )
 
   const submit = async () => {
