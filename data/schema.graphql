@@ -7879,8 +7879,15 @@ type Partner implements Node {
     imageCountLessThan: Int
     last: Int
 
+    # Return artworks that are missing priority metadata
+    missingPriorityMetadata: Boolean
+
     # Return artworks published less than x seconds ago.
     publishedWithin: Int
+
+    # Only allowed for authorized admin/partner requests. When false fetch :all
+    # properties on an artwork, when true or not present fetch artwork :short properties
+    shallow: Boolean
     sort: ArtworkSorts
   ): ArtworkConnection
   cached: Int
@@ -8473,6 +8480,9 @@ type Query {
   # Do not use (only used internally for stitching)
   _do_not_use_image: Image
 
+  # Returns a lot with specific `id`.
+  _unused_auctionsLot(id: ID!): AuctionsLotState
+
   # Lot standings for a user
   _unused_auctionsLotStandingConnection(
     after: String
@@ -8729,9 +8739,6 @@ type Query {
     # The ID of the auction result
     id: String!
   ): AuctionResult
-
-  # Returns a lot with specific `id`.
-  auctionsLot(id: ID!): AuctionsLotState
 
   # A list of cities
   cities(featured: Boolean = false): [City!]!
