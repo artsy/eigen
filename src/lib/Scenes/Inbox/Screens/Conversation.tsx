@@ -9,6 +9,7 @@ import { sendConversationMessage } from "lib/Scenes/Inbox/Components/Conversatio
 import { updateConversation } from "lib/Scenes/Inbox/Components/Conversations/UpdateConversation"
 import { GlobalStore } from "lib/store/GlobalStore"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
+import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { color, Flex, Text, Touchable } from "palette"
@@ -148,6 +149,7 @@ export class Conversation extends React.Component<Props, State> {
     const showOfferableInquiryButton =
       conversation?.items?.[0]?.item?.__typename === "Artwork" && conversation?.items?.[0]?.item?.isOfferableFromInquiry
 
+    const conversationOrder = extractNodes(conversation?.orderConnection)[0]
     console.warn("CONVO ID", conversation.internalID)
     return (
       <Composer
@@ -157,6 +159,7 @@ export class Conversation extends React.Component<Props, State> {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         value={this.state.failedMessageText}
         artworkID={artworkSlug}
+        order={conversationOrder as any}
         isOfferableFromInquiry={showOfferableInquiryButton}
         onSubmit={(text) => {
           this.setState({ sendingMessage: true, failedMessageText: null })
@@ -243,6 +246,16 @@ export const ConversationFragmentContainer = createFragmentContainer(Conversatio
         }
         from {
           email
+        }
+        orderConnection(first: 10, participantType: BUYER) {
+          edges {
+            node {
+              ... on CommerceOrder {
+                internalID
+                ...ReviewOfferButton_order
+              }
+            }
+          }
         }
         ...Messages_conversation
       }

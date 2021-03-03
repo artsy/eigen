@@ -1,3 +1,4 @@
+import { ReviewOfferButton_order } from "__generated__/ReviewOfferButton_order.graphql"
 import colors from "lib/data/colors"
 import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import { Schema, Track, track as _track } from "lib/utils/track"
@@ -7,6 +8,7 @@ import React from "react"
 import { Dimensions, TextInput, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 import { InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
+import { ReviewOfferButton } from "./ReviewOfferButton"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -35,6 +37,7 @@ interface Props {
   value?: string
   artworkID?: string | null
   isOfferableFromInquiry?: boolean | null
+  order: ReviewOfferButton_order
 }
 
 interface State {
@@ -95,6 +98,7 @@ export default class Composer extends React.Component<Props, State> {
     // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
     const showInquiryMakeOfferButton =
       unsafe_getFeatureFlag("AROptionsInquiryCheckout") && this.props.isOfferableFromInquiry
+
     return (
       <ScreenDimensionsContext.Consumer>
         {({ safeAreaInsets }) => (
@@ -104,6 +108,7 @@ export default class Composer extends React.Component<Props, State> {
               {!!showInquiryMakeOfferButton && this.props.artworkID != null && (
                 <InquiryMakeOfferButton artworkID={this.props.artworkID} />
               )}
+              <ReviewOfferButton order={this.props.order} />
               <Container active={this.state.active}>
                 <TextInput
                   placeholder={"Type your message"}
