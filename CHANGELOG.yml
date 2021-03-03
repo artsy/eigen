@@ -1,10 +1,10 @@
 upcoming:
-  - version: 6.8.0
-    date: TBD
-    dev:
-      - Improve relay environment setup - david
-    user_facing:
-      - Override Android back button in consignment form - adam
+  version: 6.8.0
+  date: TBD
+  dev:
+    - Improve relay environment setup - david
+  user_facing:
+    - Override Android back button in consignment form - adam
 
 releases:
   - version: 6.7.9
