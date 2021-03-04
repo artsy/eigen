@@ -65,7 +65,7 @@ export const RegistrationFlowQueryRenderer: React.FC<{ saleID: string }> = ({ sa
         }}
         render={renderWithLoadProgress(RegistrationFlowFragmentContainer)}
       />
-      {Platform.OS === "ios" ? null : <ModalHeader />}
+      <ModalHeader />
     </>
   )
 }

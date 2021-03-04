@@ -319,7 +319,6 @@ export const modules = defineModules({
     Platform.OS === "ios"
       ? nativeModule({
           alwaysPresentModally: true,
-          hasOwnModalCloseButton: false,
         })
       : reactModule(RegistrationFlowQueryRenderer, {
           alwaysPresentModally: true,
@@ -329,7 +328,6 @@ export const modules = defineModules({
     Platform.OS === "ios"
       ? nativeModule({
           alwaysPresentModally: true,
-          hasOwnModalCloseButton: true,
         })
       : reactModule(BidFlowQueryRenderer, {
           alwaysPresentModally: true,
