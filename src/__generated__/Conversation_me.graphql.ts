@@ -4,8 +4,6 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type CommerceOrderParticipantEnum = "BUYER" | "SELLER" | "%future added value";
-export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FULFILLED" | "PENDING" | "REFUNDED" | "SUBMITTED" | "%future added value";
 export type Conversation_me = {
     readonly conversation: {
         readonly items: ReadonlyArray<{
@@ -36,22 +34,7 @@ export type Conversation_me = {
         readonly orderConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
-                    readonly __typename: string;
-                    readonly internalID: string;
-                    readonly state: CommerceOrderStateEnum;
-                    readonly stateReason: string | null;
-                    readonly stateExpiresAt: string | null;
-                    readonly lastOffer?: {
-                        readonly fromParticipant: CommerceOrderParticipantEnum | null;
-                        readonly createdAt: string;
-                    } | null;
-                    readonly reviewOffers?: {
-                        readonly edges: ReadonlyArray<{
-                            readonly node: {
-                                readonly internalID: string;
-                            } | null;
-                        } | null> | null;
-                    } | null;
+                    readonly " $fragmentRefs": FragmentRefs<"ReviewOfferButton_reviewOrder">;
                 } | null;
             } | null> | null;
         } | null;
@@ -72,21 +55,7 @@ var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "__typename",
-  "storageKey": null
-},
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "href",
-  "storageKey": null
-},
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
   "storageKey": null
 };
 return {
@@ -130,11 +99,17 @@ return {
               "name": "item",
               "plural": false,
               "selections": [
-                (v0/*: any*/),
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
+                  "storageKey": null
+                },
                 {
                   "kind": "InlineFragment",
                   "selections": [
-                    (v1/*: any*/),
+                    (v0/*: any*/),
                     {
                       "alias": null,
                       "args": null,
@@ -156,7 +131,7 @@ return {
                 {
                   "kind": "InlineFragment",
                   "selections": [
-                    (v1/*: any*/)
+                    (v0/*: any*/)
                   ],
                   "type": "Show",
                   "abstractKey": null
@@ -167,7 +142,13 @@ return {
           ],
           "storageKey": null
         },
-        (v2/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "internalID",
+          "storageKey": null
+        },
         {
           "alias": null,
           "args": null,
@@ -260,106 +241,10 @@ return {
                   "name": "node",
                   "plural": false,
                   "selections": [
-                    (v0/*: any*/),
-                    (v2/*: any*/),
                     {
-                      "alias": null,
                       "args": null,
-                      "kind": "ScalarField",
-                      "name": "state",
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "stateReason",
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": [
-                        {
-                          "kind": "Literal",
-                          "name": "format",
-                          "value": "MMM D"
-                        }
-                      ],
-                      "kind": "ScalarField",
-                      "name": "stateExpiresAt",
-                      "storageKey": "stateExpiresAt(format:\"MMM D\")"
-                    },
-                    {
-                      "kind": "InlineFragment",
-                      "selections": [
-                        {
-                          "alias": null,
-                          "args": null,
-                          "concreteType": "CommerceOffer",
-                          "kind": "LinkedField",
-                          "name": "lastOffer",
-                          "plural": false,
-                          "selections": [
-                            {
-                              "alias": null,
-                              "args": null,
-                              "kind": "ScalarField",
-                              "name": "fromParticipant",
-                              "storageKey": null
-                            },
-                            {
-                              "alias": null,
-                              "args": null,
-                              "kind": "ScalarField",
-                              "name": "createdAt",
-                              "storageKey": null
-                            }
-                          ],
-                          "storageKey": null
-                        },
-                        {
-                          "alias": "reviewOffers",
-                          "args": [
-                            {
-                              "kind": "Literal",
-                              "name": "first",
-                              "value": 5
-                            }
-                          ],
-                          "concreteType": "CommerceOfferConnection",
-                          "kind": "LinkedField",
-                          "name": "offers",
-                          "plural": false,
-                          "selections": [
-                            {
-                              "alias": null,
-                              "args": null,
-                              "concreteType": "CommerceOfferEdge",
-                              "kind": "LinkedField",
-                              "name": "edges",
-                              "plural": true,
-                              "selections": [
-                                {
-                                  "alias": null,
-                                  "args": null,
-                                  "concreteType": "CommerceOffer",
-                                  "kind": "LinkedField",
-                                  "name": "node",
-                                  "plural": false,
-                                  "selections": [
-                                    (v2/*: any*/)
-                                  ],
-                                  "storageKey": null
-                                }
-                              ],
-                              "storageKey": null
-                            }
-                          ],
-                          "storageKey": "offers(first:5)"
-                        }
-                      ],
-                      "type": "CommerceOfferOrder",
-                      "abstractKey": null
+                      "kind": "FragmentSpread",
+                      "name": "ReviewOfferButton_reviewOrder"
                     }
                   ],
                   "storageKey": null
@@ -383,5 +268,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'b4bd706c559cdc87674a7c314b2623a6';
+(node as any).hash = 'fbccab8c1926a5f5f551ff483995a9cc';
 export default node;

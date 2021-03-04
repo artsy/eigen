@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 07bc7e696671764dadfa2eb6162dbe00 */
+/* @relayHash 52f74e5e053534fece10e8105ea9f3dc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -81,25 +81,7 @@ fragment Conversation_me on Me {
       edges {
         node {
           __typename
-          internalID
-          state
-          stateReason
-          stateExpiresAt(format: "MMM D")
-          ... on CommerceOfferOrder {
-            lastOffer {
-              fromParticipant
-              createdAt
-              id
-            }
-            reviewOffers: offers(first: 5) {
-              edges {
-                node {
-                  internalID
-                  id
-                }
-              }
-            }
-          }
+          ...ReviewOfferButton_reviewOrder
           id
         }
       }
@@ -245,6 +227,27 @@ fragment Messages_conversation on Conversation {
 fragment PDFPreview_attachment on Attachment {
   fileName
   ...AttachmentPreview_attachment
+}
+
+fragment ReviewOfferButton_reviewOrder on CommerceOfferOrder {
+  __typename
+  internalID
+  state
+  stateReason
+  stateExpiresAt(format: "MMM D")
+  lastOffer {
+    fromParticipant
+    createdAt
+    id
+  }
+  reviewOffers: offers(first: 5) {
+    edges {
+      node {
+        internalID
+        id
+      }
+    }
+  }
 }
 
 fragment ShowPreview_show on Show {
@@ -659,26 +662,26 @@ return {
                         "plural": false,
                         "selections": [
                           (v1/*: any*/),
-                          (v4/*: any*/),
-                          (v13/*: any*/),
-                          (v14/*: any*/),
-                          {
-                            "alias": null,
-                            "args": [
-                              {
-                                "kind": "Literal",
-                                "name": "format",
-                                "value": "MMM D"
-                              }
-                            ],
-                            "kind": "ScalarField",
-                            "name": "stateExpiresAt",
-                            "storageKey": "stateExpiresAt(format:\"MMM D\")"
-                          },
                           (v7/*: any*/),
                           {
                             "kind": "InlineFragment",
                             "selections": [
+                              (v4/*: any*/),
+                              (v13/*: any*/),
+                              (v14/*: any*/),
+                              {
+                                "alias": null,
+                                "args": [
+                                  {
+                                    "kind": "Literal",
+                                    "name": "format",
+                                    "value": "MMM D"
+                                  }
+                                ],
+                                "kind": "ScalarField",
+                                "name": "stateExpiresAt",
+                                "storageKey": "stateExpiresAt(format:\"MMM D\")"
+                              },
                               {
                                 "alias": null,
                                 "args": null,
@@ -1017,7 +1020,7 @@ return {
     ]
   },
   "params": {
-    "id": "07bc7e696671764dadfa2eb6162dbe00",
+    "id": "52f74e5e053534fece10e8105ea9f3dc",
     "metadata": {},
     "name": "ConversationQuery",
     "operationKind": "query",

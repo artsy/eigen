@@ -251,25 +251,25 @@ export const ConversationFragmentContainer = createFragmentContainer(Conversatio
         orderConnection(first: 10, participantType: BUYER) {
           edges {
             node {
-              # ...ReviewOfferButton_reviewOrder
-              __typename
-              internalID
-              state
-              stateReason
-              stateExpiresAt(format: "MMM D")
-              ... on CommerceOfferOrder {
-                lastOffer {
-                  fromParticipant
-                  createdAt
-                }
-                reviewOffers: offers(first: 5) {
-                  edges {
-                    node {
-                      internalID
-                    }
-                  }
-                }
-              }
+              ...ReviewOfferButton_reviewOrder
+              # __typename
+              # internalID
+              # state
+              # stateReason
+              # stateExpiresAt(format: "MMM D")
+              # ... on CommerceOfferOrder {
+              #   lastOffer {
+              #     fromParticipant
+              #     createdAt
+              #   }
+              #   reviewOffers: offers(first: 5) {
+              #     edges {
+              #       node {
+              #         internalID
+              #       }
+              #     }
+              #   }
+              # }
             }
           }
         }
