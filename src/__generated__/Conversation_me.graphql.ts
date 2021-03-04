@@ -34,8 +34,8 @@ export type Conversation_me = {
         readonly orderConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
-                    readonly internalID?: string;
-                    readonly " $fragmentRefs": FragmentRefs<"ReviewOfferButton_order">;
+                    readonly internalID: string;
+                    readonly " $fragmentRefs": FragmentRefs<"ReviewOfferButton_reviewOrder">;
                 } | null;
             } | null> | null;
         } | null;
@@ -243,18 +243,11 @@ return {
                   "name": "node",
                   "plural": false,
                   "selections": [
+                    (v1/*: any*/),
                     {
-                      "kind": "InlineFragment",
-                      "selections": [
-                        (v1/*: any*/),
-                        {
-                          "args": null,
-                          "kind": "FragmentSpread",
-                          "name": "ReviewOfferButton_order"
-                        }
-                      ],
-                      "type": "CommerceOfferOrder",
-                      "abstractKey": null
+                      "args": null,
+                      "kind": "FragmentSpread",
+                      "name": "ReviewOfferButton_reviewOrder"
                     }
                   ],
                   "storageKey": null
@@ -278,5 +271,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '0332b1f886c054f6b0487debf9e6030b';
+(node as any).hash = 'cda5dd8e0a08cc141ccbcb3aa831b281';
 export default node;

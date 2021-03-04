@@ -23,7 +23,7 @@ describe("ReviewOfferButton", () => {
       query={graphql`
         query ReviewOfferButtonTestsQuery($orderID: ID!) @relay_test_operation {
           order: commerceOrder(id: $orderID) {
-            ...ReviewOfferButton_order
+            ...ReviewOfferButton_reviewOrder
           }
         }
       `}

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 87a6183f6c300a1cd8e15988881faeab */
+/* @relayHash 498216fb5fe8267c4471b957ac926128 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -10,7 +10,7 @@ export type ReviewOfferButtonTestsQueryVariables = {
 };
 export type ReviewOfferButtonTestsQueryResponse = {
     readonly order: {
-        readonly " $fragmentRefs": FragmentRefs<"ReviewOfferButton_order">;
+        readonly " $fragmentRefs": FragmentRefs<"ReviewOfferButton_reviewOrder">;
     } | null;
 };
 export type ReviewOfferButtonTestsQuery = {
@@ -26,12 +26,12 @@ query ReviewOfferButtonTestsQuery(
 ) {
   order: commerceOrder(id: $orderID) {
     __typename
-    ...ReviewOfferButton_order
+    ...ReviewOfferButton_reviewOrder
     id
   }
 }
 
-fragment ReviewOfferButton_order on CommerceOrder {
+fragment ReviewOfferButton_reviewOrder on CommerceOrder {
   __isCommerceOrder: __typename
   __typename
   internalID
@@ -44,7 +44,7 @@ fragment ReviewOfferButton_order on CommerceOrder {
       createdAt
       id
     }
-    offers(first: 5) {
+    reviewOffers: offers(first: 5) {
       edges {
         node {
           internalID
@@ -127,7 +127,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "ReviewOfferButton_order"
+            "name": "ReviewOfferButton_reviewOrder"
           }
         ],
         "storageKey": null
@@ -220,7 +220,7 @@ return {
                 "storageKey": null
               },
               {
-                "alias": null,
+                "alias": "reviewOffers",
                 "args": [
                   {
                     "kind": "Literal",
@@ -270,7 +270,7 @@ return {
     ]
   },
   "params": {
-    "id": "87a6183f6c300a1cd8e15988881faeab",
+    "id": "498216fb5fe8267c4471b957ac926128",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "order": {
@@ -295,21 +295,21 @@ return {
           "type": "CommerceOrderParticipantEnum"
         },
         "order.lastOffer.id": (v5/*: any*/),
-        "order.offers": {
+        "order.reviewOffers": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "CommerceOfferConnection"
         },
-        "order.offers.edges": {
+        "order.reviewOffers.edges": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "CommerceOfferEdge"
         },
-        "order.offers.edges.node": (v6/*: any*/),
-        "order.offers.edges.node.id": (v5/*: any*/),
-        "order.offers.edges.node.internalID": (v5/*: any*/),
+        "order.reviewOffers.edges.node": (v6/*: any*/),
+        "order.reviewOffers.edges.node.id": (v5/*: any*/),
+        "order.reviewOffers.edges.node.internalID": (v5/*: any*/),
         "order.state": {
           "enumValues": [
             "ABANDONED",
@@ -334,5 +334,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'e05e7f152950ace6b33fe6675ee32439';
+(node as any).hash = '137bd3cdd292001530c9c5acc64b51ee';
 export default node;

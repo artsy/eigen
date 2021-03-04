@@ -18,7 +18,6 @@ export const returnButtonMessaging = ({
   let subMessage = "Tap to view"
   let backgroundColor = "green100"
   let showMoneyIcon = true
-  console.warn("WOOO", state, stateReason, lastOfferFromParticipant)
 
   if (state === "CANCELED" && stateReason?.includes("seller_rejected")) {
     message = `${offerType} Declined`

@@ -252,7 +252,7 @@ export const ConversationFragmentContainer = createFragmentContainer(Conversatio
             node {
               ... on CommerceOrder {
                 internalID
-                ...ReviewOfferButton_order
+                ...ReviewOfferButton_reviewOrder
               }
             }
           }

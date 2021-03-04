@@ -14,7 +14,6 @@ export const OfferNotification: React.FC<OfferNotificationProps> = ({ offer, sho
   const [showMoneyIconInNotification, setShowMoneyIconInNotification] = React.useState(true)
 
   useEffect(() => {
-    console.warn("responds to", offer.respondsTo)
     if (offer.fromParticipant === "BUYER" && offer.respondsTo === null) {
       setNotificationMessage(`You sent an offer for ${offer.amount}`)
     } else if (offer.fromParticipant === "BUYER" && offer.respondsTo !== null) {

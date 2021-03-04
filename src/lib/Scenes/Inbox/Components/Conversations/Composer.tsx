@@ -1,4 +1,4 @@
-import { ReviewOfferButton_order } from "__generated__/ReviewOfferButton_order.graphql"
+import { ReviewOfferButton_reviewOrder } from "__generated__/ReviewOfferButton_reviewOrder.graphql"
 import colors from "lib/data/colors"
 import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import { Schema, Track, track as _track } from "lib/utils/track"
@@ -37,7 +37,7 @@ interface Props {
   value?: string
   artworkID?: string | null
   isOfferableFromInquiry?: boolean | null
-  order: ReviewOfferButton_order
+  order: ReviewOfferButton_reviewOrder
 }
 
 interface State {

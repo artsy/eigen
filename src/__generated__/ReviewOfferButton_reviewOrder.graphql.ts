@@ -6,7 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CommerceOrderParticipantEnum = "BUYER" | "SELLER" | "%future added value";
 export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FULFILLED" | "PENDING" | "REFUNDED" | "SUBMITTED" | "%future added value";
-export type ReviewOfferButton_order = {
+export type ReviewOfferButton_reviewOrder = {
     readonly __typename: string;
     readonly internalID: string;
     readonly state: CommerceOrderStateEnum;
@@ -16,19 +16,19 @@ export type ReviewOfferButton_order = {
         readonly fromParticipant: CommerceOrderParticipantEnum | null;
         readonly createdAt: string;
     } | null;
-    readonly offers?: {
+    readonly reviewOffers?: {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly internalID: string;
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "ReviewOfferButton_order";
+    readonly " $refType": "ReviewOfferButton_reviewOrder";
 };
-export type ReviewOfferButton_order$data = ReviewOfferButton_order;
-export type ReviewOfferButton_order$key = {
-    readonly " $data"?: ReviewOfferButton_order$data;
-    readonly " $fragmentRefs": FragmentRefs<"ReviewOfferButton_order">;
+export type ReviewOfferButton_reviewOrder$data = ReviewOfferButton_reviewOrder;
+export type ReviewOfferButton_reviewOrder$key = {
+    readonly " $data"?: ReviewOfferButton_reviewOrder$data;
+    readonly " $fragmentRefs": FragmentRefs<"ReviewOfferButton_reviewOrder">;
 };
 
 
@@ -45,7 +45,7 @@ return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "ReviewOfferButton_order",
+  "name": "ReviewOfferButton_reviewOrder",
   "selections": [
     {
       "alias": null,
@@ -111,7 +111,7 @@ return {
           "storageKey": null
         },
         {
-          "alias": null,
+          "alias": "reviewOffers",
           "args": [
             {
               "kind": "Literal",
@@ -159,5 +159,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = 'dc4619f8864aa50efde32fd4a92b2eb9';
+(node as any).hash = '052a7450407bc6bf56144f0731e1feee';
 export default node;

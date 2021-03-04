@@ -1,4 +1,4 @@
-import { ReviewOfferButton_order } from "__generated__/ReviewOfferButton_order.graphql"
+import { ReviewOfferButton_reviewOrder } from "__generated__/ReviewOfferButton_reviewOrder.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { useEventTiming } from "lib/utils/useEventTiming"
@@ -10,10 +10,15 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { returnButtonMessaging } from "./utils/returnButtonMessaging"
 
 export interface ReviewOfferButtonProps {
-  order: ReviewOfferButton_order
+  order: ReviewOfferButton_reviewOrder
 }
 
 export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) => {
+  if (order.lastOffer?.fromParticipant === "BUYER") {
+    return null
+  }
+
+  console.log("ORDER", order)
   const [buttonBackgroundColor, setButtonBackgroundColor] = React.useState("green100")
   const [buttonMessage, setButtonMessage] = React.useState("")
   const [buttonSubMessage, setButtonSubMessage] = React.useState("Tap to view")
@@ -26,7 +31,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
   })
 
   useEffect(() => {
-    const isCounter = extractNodes(order.offers).length > 1
+    const isCounter = extractNodes(order.reviewOffers).length > 1
 
     const { backgroundColor, message, subMessage, showMoneyIcon } = returnButtonMessaging({
       state: order.state,
@@ -84,8 +89,8 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
 }
 
 export const ReviewOfferButtonFragmentContainer = createFragmentContainer(ReviewOfferButton, {
-  order: graphql`
-    fragment ReviewOfferButton_order on CommerceOrder {
+  reviewOrder: graphql`
+    fragment ReviewOfferButton_reviewOrder on CommerceOrder {
       __typename
       internalID
       state
@@ -96,7 +101,7 @@ export const ReviewOfferButtonFragmentContainer = createFragmentContainer(Review
           fromParticipant
           createdAt
         }
-        offers(first: 5) {
+        reviewOffers: offers(first: 5) {
           edges {
             node {
               internalID

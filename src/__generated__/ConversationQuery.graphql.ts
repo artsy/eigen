@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 28f33490374aa79d0e1ca24205df2f01 */
+/* @relayHash b480e55e17209461d6d81f93dfd6bba9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -81,10 +81,9 @@ fragment Conversation_me on Me {
       edges {
         node {
           __typename
-          ... on CommerceOfferOrder {
-            internalID
-            ...ReviewOfferButton_order
-          }
+          __isCommerceOrder: __typename
+          internalID
+          ...ReviewOfferButton_reviewOrder
           id
         }
       }
@@ -232,7 +231,7 @@ fragment PDFPreview_attachment on Attachment {
   ...AttachmentPreview_attachment
 }
 
-fragment ReviewOfferButton_order on CommerceOrder {
+fragment ReviewOfferButton_reviewOrder on CommerceOrder {
   __isCommerceOrder: __typename
   __typename
   internalID
@@ -245,7 +244,7 @@ fragment ReviewOfferButton_order on CommerceOrder {
       createdAt
       id
     }
-    offers(first: 5) {
+    reviewOffers: offers(first: 5) {
       edges {
         node {
           internalID
@@ -393,14 +392,14 @@ v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "createdAt",
+  "name": "fromParticipant",
   "storageKey": null
 },
 v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "fromParticipant",
+  "name": "createdAt",
   "storageKey": null
 },
 v17 = [
@@ -668,11 +667,85 @@ return {
                         "plural": false,
                         "selections": [
                           (v1/*: any*/),
+                          {
+                            "kind": "TypeDiscriminator",
+                            "abstractKey": "__isCommerceOrder"
+                          },
+                          (v4/*: any*/),
+                          (v13/*: any*/),
+                          (v14/*: any*/),
+                          {
+                            "alias": null,
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "format",
+                                "value": "MMM D"
+                              }
+                            ],
+                            "kind": "ScalarField",
+                            "name": "stateExpiresAt",
+                            "storageKey": "stateExpiresAt(format:\"MMM D\")"
+                          },
                           (v7/*: any*/),
                           {
                             "kind": "InlineFragment",
                             "selections": [
-                              (v4/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "CommerceOffer",
+                                "kind": "LinkedField",
+                                "name": "lastOffer",
+                                "plural": false,
+                                "selections": [
+                                  (v15/*: any*/),
+                                  (v16/*: any*/),
+                                  (v7/*: any*/)
+                                ],
+                                "storageKey": null
+                              },
+                              {
+                                "alias": "reviewOffers",
+                                "args": [
+                                  {
+                                    "kind": "Literal",
+                                    "name": "first",
+                                    "value": 5
+                                  }
+                                ],
+                                "concreteType": "CommerceOfferConnection",
+                                "kind": "LinkedField",
+                                "name": "offers",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "CommerceOfferEdge",
+                                    "kind": "LinkedField",
+                                    "name": "edges",
+                                    "plural": true,
+                                    "selections": [
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "CommerceOffer",
+                                        "kind": "LinkedField",
+                                        "name": "node",
+                                        "plural": false,
+                                        "selections": [
+                                          (v4/*: any*/),
+                                          (v7/*: any*/)
+                                        ],
+                                        "storageKey": null
+                                      }
+                                    ],
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": "offers(first:5)"
+                              },
                               {
                                 "alias": null,
                                 "args": null,
@@ -680,8 +753,6 @@ return {
                                 "name": "isInquiryOrder",
                                 "storageKey": null
                               },
-                              (v13/*: any*/),
-                              (v14/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -719,8 +790,8 @@ return {
                                         "name": "amount",
                                         "storageKey": null
                                       },
-                                      (v15/*: any*/),
                                       (v16/*: any*/),
+                                      (v15/*: any*/),
                                       {
                                         "alias": null,
                                         "args": null,
@@ -741,7 +812,7 @@ return {
                                         "name": "respondsTo",
                                         "plural": false,
                                         "selections": [
-                                          (v16/*: any*/),
+                                          (v15/*: any*/),
                                           (v7/*: any*/)
                                         ],
                                         "storageKey": null
@@ -767,88 +838,6 @@ return {
                                   }
                                 ],
                                 "storageKey": "offers(first:100)"
-                              },
-                              {
-                                "kind": "InlineFragment",
-                                "selections": [
-                                  {
-                                    "alias": null,
-                                    "args": [
-                                      {
-                                        "kind": "Literal",
-                                        "name": "format",
-                                        "value": "MMM D"
-                                      }
-                                    ],
-                                    "kind": "ScalarField",
-                                    "name": "stateExpiresAt",
-                                    "storageKey": "stateExpiresAt(format:\"MMM D\")"
-                                  },
-                                  {
-                                    "kind": "InlineFragment",
-                                    "selections": [
-                                      {
-                                        "alias": null,
-                                        "args": null,
-                                        "concreteType": "CommerceOffer",
-                                        "kind": "LinkedField",
-                                        "name": "lastOffer",
-                                        "plural": false,
-                                        "selections": [
-                                          (v16/*: any*/),
-                                          (v15/*: any*/),
-                                          (v7/*: any*/)
-                                        ],
-                                        "storageKey": null
-                                      },
-                                      {
-                                        "alias": null,
-                                        "args": [
-                                          {
-                                            "kind": "Literal",
-                                            "name": "first",
-                                            "value": 5
-                                          }
-                                        ],
-                                        "concreteType": "CommerceOfferConnection",
-                                        "kind": "LinkedField",
-                                        "name": "offers",
-                                        "plural": false,
-                                        "selections": [
-                                          {
-                                            "alias": null,
-                                            "args": null,
-                                            "concreteType": "CommerceOfferEdge",
-                                            "kind": "LinkedField",
-                                            "name": "edges",
-                                            "plural": true,
-                                            "selections": [
-                                              {
-                                                "alias": null,
-                                                "args": null,
-                                                "concreteType": "CommerceOffer",
-                                                "kind": "LinkedField",
-                                                "name": "node",
-                                                "plural": false,
-                                                "selections": [
-                                                  (v4/*: any*/),
-                                                  (v7/*: any*/)
-                                                ],
-                                                "storageKey": null
-                                              }
-                                            ],
-                                            "storageKey": null
-                                          }
-                                        ],
-                                        "storageKey": "offers(first:5)"
-                                      }
-                                    ],
-                                    "type": "CommerceOfferOrder",
-                                    "abstractKey": null
-                                  }
-                                ],
-                                "type": "CommerceOrder",
-                                "abstractKey": "__isCommerceOrder"
                               }
                             ],
                             "type": "CommerceOfferOrder",
@@ -963,7 +952,7 @@ return {
                             "name": "body",
                             "storageKey": null
                           },
-                          (v15/*: any*/),
+                          (v16/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -1040,7 +1029,7 @@ return {
     ]
   },
   "params": {
-    "id": "28f33490374aa79d0e1ca24205df2f01",
+    "id": "b480e55e17209461d6d81f93dfd6bba9",
     "metadata": {},
     "name": "ConversationQuery",
     "operationKind": "query",
