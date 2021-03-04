@@ -14,11 +14,10 @@ export interface ReviewOfferButtonProps {
 }
 
 export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) => {
-  if (order.lastOffer?.fromParticipant === "BUYER") {
-    return null
-  }
+  // if (order.state == null || order.lastOffer?.fromParticipant === "BUYER") {
+  //   return null
+  // }
 
-  console.log("ORDER", order)
   const [buttonBackgroundColor, setButtonBackgroundColor] = React.useState("green100")
   const [buttonMessage, setButtonMessage] = React.useState("")
   const [buttonSubMessage, setButtonSubMessage] = React.useState("Tap to view")
@@ -90,22 +89,20 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
 
 export const ReviewOfferButtonFragmentContainer = createFragmentContainer(ReviewOfferButton, {
   reviewOrder: graphql`
-    fragment ReviewOfferButton_reviewOrder on CommerceOrder {
+    fragment ReviewOfferButton_reviewOrder on CommerceOfferOrder {
       __typename
       internalID
       state
       stateReason
       stateExpiresAt(format: "MMM D")
-      ... on CommerceOfferOrder {
-        lastOffer {
-          fromParticipant
-          createdAt
-        }
-        reviewOffers: offers(first: 5) {
-          edges {
-            node {
-              internalID
-            }
+      lastOffer {
+        fromParticipant
+        createdAt
+      }
+      reviewOffers: offers(first: 5) {
+        edges {
+          node {
+            internalID
           }
         }
       }

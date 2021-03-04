@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 498216fb5fe8267c4471b957ac926128 */
+/* @relayHash 173e95ea6b63c6154406d70427f7e11b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,25 +31,22 @@ query ReviewOfferButtonTestsQuery(
   }
 }
 
-fragment ReviewOfferButton_reviewOrder on CommerceOrder {
-  __isCommerceOrder: __typename
+fragment ReviewOfferButton_reviewOrder on CommerceOfferOrder {
   __typename
   internalID
   state
   stateReason
   stateExpiresAt(format: "MMM D")
-  ... on CommerceOfferOrder {
-    lastOffer {
-      fromParticipant
-      createdAt
-      id
-    }
-    reviewOffers: offers(first: 5) {
-      edges {
-        node {
-          internalID
-          id
-        }
+  lastOffer {
+    fromParticipant
+    createdAt
+    id
+  }
+  reviewOffers: offers(first: 5) {
+    edges {
+      node {
+        internalID
+        id
       }
     }
   }
@@ -75,14 +72,14 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "internalID",
+  "name": "id",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "internalID",
   "storageKey": null
 },
 v4 = {
@@ -157,42 +154,38 @@ return {
             "name": "__typename",
             "storageKey": null
           },
-          {
-            "kind": "TypeDiscriminator",
-            "abstractKey": "__isCommerceOrder"
-          },
           (v2/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "state",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "stateReason",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "format",
-                "value": "MMM D"
-              }
-            ],
-            "kind": "ScalarField",
-            "name": "stateExpiresAt",
-            "storageKey": "stateExpiresAt(format:\"MMM D\")"
-          },
-          (v3/*: any*/),
           {
             "kind": "InlineFragment",
             "selections": [
+              (v3/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "state",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "stateReason",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "format",
+                    "value": "MMM D"
+                  }
+                ],
+                "kind": "ScalarField",
+                "name": "stateExpiresAt",
+                "storageKey": "stateExpiresAt(format:\"MMM D\")"
+              },
               {
                 "alias": null,
                 "args": null,
@@ -215,7 +208,7 @@ return {
                     "name": "createdAt",
                     "storageKey": null
                   },
-                  (v3/*: any*/)
+                  (v2/*: any*/)
                 ],
                 "storageKey": null
               },
@@ -249,8 +242,8 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/),
-                          (v3/*: any*/)
+                          (v3/*: any*/),
+                          (v2/*: any*/)
                         ],
                         "storageKey": null
                       }
@@ -270,7 +263,7 @@ return {
     ]
   },
   "params": {
-    "id": "498216fb5fe8267c4471b957ac926128",
+    "id": "173e95ea6b63c6154406d70427f7e11b",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "order": {
@@ -279,7 +272,6 @@ return {
           "plural": false,
           "type": "CommerceOrder"
         },
-        "order.__isCommerceOrder": (v4/*: any*/),
         "order.__typename": (v4/*: any*/),
         "order.id": (v5/*: any*/),
         "order.internalID": (v5/*: any*/),

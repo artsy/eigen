@@ -149,8 +149,9 @@ export class Conversation extends React.Component<Props, State> {
     const showOfferableInquiryButton =
       conversation?.items?.[0]?.item?.__typename === "Artwork" && conversation?.items?.[0]?.item?.isOfferableFromInquiry
 
+    console.warn("WOO", conversation?.orderConnection)
     const conversationOrder = extractNodes(conversation?.orderConnection)[0]
-    console.warn("CONVO ID", conversation.internalID)
+    console.log("CONVO order", conversationOrder.state)
     return (
       <Composer
         disabled={this.state.sendingMessage || !this.state.isConnected}
@@ -250,9 +251,24 @@ export const ConversationFragmentContainer = createFragmentContainer(Conversatio
         orderConnection(first: 10, participantType: BUYER) {
           edges {
             node {
-              ... on CommerceOrder {
-                internalID
-                ...ReviewOfferButton_reviewOrder
+              # ...ReviewOfferButton_reviewOrder
+              __typename
+              internalID
+              state
+              stateReason
+              stateExpiresAt(format: "MMM D")
+              ... on CommerceOfferOrder {
+                lastOffer {
+                  fromParticipant
+                  createdAt
+                }
+                reviewOffers: offers(first: 5) {
+                  edges {
+                    node {
+                      internalID
+                    }
+                  }
+                }
               }
             }
           }

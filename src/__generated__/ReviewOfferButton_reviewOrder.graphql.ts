@@ -7,22 +7,22 @@ import { FragmentRefs } from "relay-runtime";
 export type CommerceOrderParticipantEnum = "BUYER" | "SELLER" | "%future added value";
 export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FULFILLED" | "PENDING" | "REFUNDED" | "SUBMITTED" | "%future added value";
 export type ReviewOfferButton_reviewOrder = {
-    readonly __typename: string;
     readonly internalID: string;
     readonly state: CommerceOrderStateEnum;
     readonly stateReason: string | null;
     readonly stateExpiresAt: string | null;
-    readonly lastOffer?: {
+    readonly lastOffer: {
         readonly fromParticipant: CommerceOrderParticipantEnum | null;
         readonly createdAt: string;
     } | null;
-    readonly reviewOffers?: {
+    readonly reviewOffers: {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly internalID: string;
             } | null;
         } | null> | null;
     } | null;
+    readonly __typename: "CommerceOfferOrder";
     readonly " $refType": "ReviewOfferButton_reviewOrder";
 };
 export type ReviewOfferButton_reviewOrder$data = ReviewOfferButton_reviewOrder;
@@ -83,81 +83,74 @@ return {
       "storageKey": "stateExpiresAt(format:\"MMM D\")"
     },
     {
-      "kind": "InlineFragment",
+      "alias": null,
+      "args": null,
+      "concreteType": "CommerceOffer",
+      "kind": "LinkedField",
+      "name": "lastOffer",
+      "plural": false,
       "selections": [
         {
           "alias": null,
           "args": null,
-          "concreteType": "CommerceOffer",
-          "kind": "LinkedField",
-          "name": "lastOffer",
-          "plural": false,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "fromParticipant",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "createdAt",
-              "storageKey": null
-            }
-          ],
+          "kind": "ScalarField",
+          "name": "fromParticipant",
           "storageKey": null
         },
         {
-          "alias": "reviewOffers",
-          "args": [
-            {
-              "kind": "Literal",
-              "name": "first",
-              "value": 5
-            }
-          ],
-          "concreteType": "CommerceOfferConnection",
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "createdAt",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": "reviewOffers",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 5
+        }
+      ],
+      "concreteType": "CommerceOfferConnection",
+      "kind": "LinkedField",
+      "name": "offers",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "CommerceOfferEdge",
           "kind": "LinkedField",
-          "name": "offers",
-          "plural": false,
+          "name": "edges",
+          "plural": true,
           "selections": [
             {
               "alias": null,
               "args": null,
-              "concreteType": "CommerceOfferEdge",
+              "concreteType": "CommerceOffer",
               "kind": "LinkedField",
-              "name": "edges",
-              "plural": true,
+              "name": "node",
+              "plural": false,
               "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "CommerceOffer",
-                  "kind": "LinkedField",
-                  "name": "node",
-                  "plural": false,
-                  "selections": [
-                    (v0/*: any*/)
-                  ],
-                  "storageKey": null
-                }
+                (v0/*: any*/)
               ],
               "storageKey": null
             }
           ],
-          "storageKey": "offers(first:5)"
+          "storageKey": null
         }
       ],
-      "type": "CommerceOfferOrder",
-      "abstractKey": null
+      "storageKey": "offers(first:5)"
     }
   ],
-  "type": "CommerceOrder",
-  "abstractKey": "__isCommerceOrder"
+  "type": "CommerceOfferOrder",
+  "abstractKey": null
 };
 })();
-(node as any).hash = '052a7450407bc6bf56144f0731e1feee';
+(node as any).hash = '60b5d1eef63463213d50d5b140d75f41';
 export default node;

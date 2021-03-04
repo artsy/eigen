@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b480e55e17209461d6d81f93dfd6bba9 */
+/* @relayHash 07bc7e696671764dadfa2eb6162dbe00 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -81,9 +81,25 @@ fragment Conversation_me on Me {
       edges {
         node {
           __typename
-          __isCommerceOrder: __typename
           internalID
-          ...ReviewOfferButton_reviewOrder
+          state
+          stateReason
+          stateExpiresAt(format: "MMM D")
+          ... on CommerceOfferOrder {
+            lastOffer {
+              fromParticipant
+              createdAt
+              id
+            }
+            reviewOffers: offers(first: 5) {
+              edges {
+                node {
+                  internalID
+                  id
+                }
+              }
+            }
+          }
           id
         }
       }
@@ -229,30 +245,6 @@ fragment Messages_conversation on Conversation {
 fragment PDFPreview_attachment on Attachment {
   fileName
   ...AttachmentPreview_attachment
-}
-
-fragment ReviewOfferButton_reviewOrder on CommerceOrder {
-  __isCommerceOrder: __typename
-  __typename
-  internalID
-  state
-  stateReason
-  stateExpiresAt(format: "MMM D")
-  ... on CommerceOfferOrder {
-    lastOffer {
-      fromParticipant
-      createdAt
-      id
-    }
-    reviewOffers: offers(first: 5) {
-      edges {
-        node {
-          internalID
-          id
-        }
-      }
-    }
-  }
 }
 
 fragment ShowPreview_show on Show {
@@ -667,10 +659,6 @@ return {
                         "plural": false,
                         "selections": [
                           (v1/*: any*/),
-                          {
-                            "kind": "TypeDiscriminator",
-                            "abstractKey": "__isCommerceOrder"
-                          },
                           (v4/*: any*/),
                           (v13/*: any*/),
                           (v14/*: any*/),
@@ -1029,7 +1017,7 @@ return {
     ]
   },
   "params": {
-    "id": "b480e55e17209461d6d81f93dfd6bba9",
+    "id": "07bc7e696671764dadfa2eb6162dbe00",
     "metadata": {},
     "name": "ConversationQuery",
     "operationKind": "query",
