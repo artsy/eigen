@@ -29,7 +29,7 @@
           <data android:scheme="https"
               android:host="www.artsy.net" />
               <data android:scheme="https"
-              android:host="www.m.artsy.net" />
+              android:host="m.artsy.net" />
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />

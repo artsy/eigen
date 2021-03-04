@@ -11,9 +11,6 @@ export interface AuthModel {
   userAccessTokenExpiresIn: string | null
   xAppToken: string | null
   xApptokenExpiresIn: string | null
-  sessionState: {
-    url: string | null
-  }
 
   // Actions
   setState: Action<AuthModel, Partial<StateMapper<AuthModel, "1">>>
@@ -40,9 +37,6 @@ export const AuthModel: AuthModel = {
   userAccessTokenExpiresIn: null,
   xAppToken: null,
   xApptokenExpiresIn: null,
-  sessionState: {
-    url: null,
-  },
   setState: action((state, payload) => Object.assign(state, payload)),
   getXAppToken: thunk(async (actions, _payload, context) => {
     const xAppToken = context.getState().xAppToken
