@@ -5,6 +5,10 @@ upcoming:
     - Fix sticky tab page layout problems on android - david
   user_facing:
     - Fix env migration bug - david
+    - Adds inquiry checkout offer status CTA - lily
+    - Update consignment photo selection flow for iOS 14 - brian
+    - Allow adding pricePaid info in my collection - barry, brian
+    - Adds inquiry make offer button - lily
 
 releases:
   - version: 6.7.9
