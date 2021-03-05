@@ -37,7 +37,7 @@ interface Props {
   value?: string
   artworkID?: string | null
   isOfferableFromInquiry?: boolean | null
-  order: ReviewOfferButton_reviewOrder
+  order?: ReviewOfferButton_reviewOrder
 }
 
 interface State {
@@ -108,7 +108,7 @@ export default class Composer extends React.Component<Props, State> {
               {!!showInquiryMakeOfferButton && this.props.artworkID != null && (
                 <InquiryMakeOfferButton artworkID={this.props.artworkID} />
               )}
-              <ReviewOfferButton order={this.props.order} />
+              {!!this.props.order && <ReviewOfferButton order={this.props.order} />}
               <Container active={this.state.active}>
                 <TextInput
                   placeholder={"Type your message"}

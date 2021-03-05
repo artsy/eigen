@@ -14,9 +14,9 @@ export interface ReviewOfferButtonProps {
 }
 
 export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) => {
-  // if (order.state == null || order.lastOffer?.fromParticipant === "BUYER") {
-  //   return null
-  // }
+  if (order.state == null) {
+    return null
+  }
 
   const [buttonBackgroundColor, setButtonBackgroundColor] = React.useState("green100")
   const [buttonMessage, setButtonMessage] = React.useState("")

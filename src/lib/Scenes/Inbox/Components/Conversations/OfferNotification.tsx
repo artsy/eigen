@@ -1,7 +1,6 @@
 import { AlertCircleFillIcon, Flex, MoneyFillIcon, Text } from "palette"
 import React, { useEffect } from "react"
-import { TimeSince } from "./TimeSince"
-import { returnButtonMessaging } from "./utils/returnButtonMessaging"
+import { TimeSince } from "./TimeSince"\
 
 export interface OfferNotificationProps {
   offer: any
@@ -24,12 +23,6 @@ export const OfferNotification: React.FC<OfferNotificationProps> = ({ offer, sho
       } else {
         setNotificationMessage(`You recieved a counteroffer for ${offer.amount}`)
       }
-      // const { message, backgroundColor, showMoneyIcon } = returnButtonMessaging({
-      //   state: offer.order.state,
-      //   stateReason: offer.order.stateReason,
-      //   isCounter: offer.respondsTo.fromParticipant != null,
-      //   lastOfferFromParticipant: offer.fromParticipant,
-      // })
       setShowMoneyIconInNotification(false)
       setNotificationColor("copper100")
     }
