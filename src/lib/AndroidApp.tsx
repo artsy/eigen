@@ -1,5 +1,5 @@
 import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
-import { Theme } from "palette"
+import { Flex, Text, Theme } from "palette"
 import React, { useEffect, useRef } from "react"
 import { useCallback } from "react"
 import { Linking, View } from "react-native"
@@ -20,6 +20,7 @@ const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const launchURL = useRef<string | null>(null)
+  const forceUpdateMessage = GlobalStore.useAppState((state) => state.config.echo.forceUpdateMessage)
 
   useSentryConfig()
   useStripeConfig()
@@ -66,6 +67,15 @@ const Main: React.FC<{}> = track()(({}) => {
   if (!isHydrated) {
     return <View></View>
   }
+
+  if (forceUpdateMessage) {
+    return (
+      <Flex flex={1} justifyContent="center" alignItems="center">
+        <Text variant="largeTitle">{forceUpdateMessage}</Text>
+      </Flex>
+    )
+  }
+
   if (!isLoggedIn) {
     return <Onboarding />
   }

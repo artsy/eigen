@@ -128,6 +128,7 @@
     "relay-runtime": "^10.0.1",
     "remove-markdown": "0.1.0",
     "rn-fetch-blob": "0.12.0",
+    "semver": "^7.3.4",
     "simple-markdown": "0.7.2",
     "styled-components": "4.2.0",
     "styled-system": "5.1.5",
