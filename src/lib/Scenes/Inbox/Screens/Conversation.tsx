@@ -152,7 +152,7 @@ export class Conversation extends React.Component<Props, State> {
     const conversationOrder = extractNodes(conversation?.orderConnection)[0]
     return (
       <Composer
-        order={conversationOrder}
+        order={conversationOrder as any}
         conversationID={conversation?.internalID}
         disabled={this.state.sendingMessage || !this.state.isConnected}
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
