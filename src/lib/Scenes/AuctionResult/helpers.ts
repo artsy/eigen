@@ -1,11 +1,11 @@
 import { AuctionResult_auctionResult } from "__generated__/AuctionResult_auctionResult.graphql"
-import { AuctionResult_auctionResultListItem } from "__generated__/AuctionResult_auctionResultListItem.graphql"
+import { AuctionResultListItem_auctionResult } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import moment from "moment"
 
 type AuctionResultHelperNeededData = "currency" | "boughtIn" | "priceRealized" | "saleDate"
 // This type just mirrors the types that come back from metaphysics.
 export type AuctionResultHelperData =
-  | Pick<AuctionResult_auctionResultListItem, AuctionResultHelperNeededData>
+  | Pick<AuctionResultListItem_auctionResult, AuctionResultHelperNeededData>
   | Pick<AuctionResult_auctionResult, AuctionResultHelperNeededData>
 
 export const auctionResultHasPrice = (auctionResult: AuctionResultHelperData): boolean => {
