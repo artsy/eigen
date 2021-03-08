@@ -26,32 +26,27 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
   })
 
   useEffect(() => {
-    const nodeCount = extractNodes(order.offers).length
+    const isCounter = extractNodes(order.offers).length > 1
 
     const { backgroundColor, message, subMessage, showMoneyIcon } = returnButtonMessaging({
       state: order.state,
       stateReason: order.stateReason,
-      nodeCount,
+      isCounter,
       lastOfferFromParticipant: order.lastOffer?.fromParticipant,
       hoursTillExpiration: hours,
     })
 
     setButtonMessage(message)
-    setButtonSubMessage(subMessage)
     setShowMoneyIconInButton(showMoneyIcon)
     setButtonBackgroundColor(backgroundColor)
   })
 
-  const onTap = (orderID: string | null, state: string | null) => {
-    if (state === "PENDING") {
-      // ORDER CONFIRMATION PAGE DOESN'T EXIST YET
-    } else {
-      navigate(`/orders/${orderID}/review`)
-    }
+  const onTap = (orderID: string | null) => {
+    navigate(`/orders/${orderID}/review`)
   }
 
   return (
-    <TouchableWithoutFeedback onPress={() => onTap(order?.internalID, order?.state)}>
+    <TouchableWithoutFeedback onPress={() => onTap(order?.internalID)}>
       <Flex
         px={2}
         justifyContent="space-between"
@@ -71,7 +66,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
               {buttonMessage}
             </Text>
             <Text color="white100" variant="caption">
-              {buttonSubMessage}
+              Tap to view
             </Text>
           </Flex>
         </Flex>
@@ -85,7 +80,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
 
 export const ReviewOfferButtonFragmentContainer = createFragmentContainer(ReviewOfferButton, {
   order: graphql`
-    fragment ReviewOfferButton_order on CommerceOrder {
+    fragment ReviewOfferButton_order on CommerceOfferOrder {
       __typename
       internalID
       state
