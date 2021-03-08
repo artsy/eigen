@@ -8,6 +8,7 @@ import React from "react"
 import { Dimensions, TextInput, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
+import { ReviewOfferButton } from "./ReviewOfferButton"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -108,6 +109,7 @@ export default class Composer extends React.Component<Props, State> {
               {!!showOpenInquiryModalButton && this.props.artworkID != null && (
                 <OpenInquiryModalButton artworkID={this.props.artworkID} conversationID={this.props.conversationID} />
               )}
+              {!!showOpenInquiryModalButton && !!this.props.order && <ReviewOfferButton order={this.props.order} />}
               <Container active={this.state.active}>
                 <TextInput
                   placeholder={"Type your message"}

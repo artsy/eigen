@@ -1,35 +1,38 @@
 interface ReturnButtonMessaging {
   state: string
   stateReason: string | null
-  nodeCount: number
+  isCounter: boolean
   lastOfferFromParticipant: string | null | undefined
-  hoursTillExpiration: string
+  hoursTillExpiration?: string
 }
 
 export const returnButtonMessaging = ({
   state,
   stateReason,
-  nodeCount,
+  isCounter,
   lastOfferFromParticipant,
   hoursTillExpiration,
 }: ReturnButtonMessaging) => {
-  const offerType = nodeCount > 1 ? "Counteroffer" : "Offer"
+  const offerType = isCounter ? "Counteroffer" : "Offer"
   let message = ""
   let subMessage = "Tap to view"
   let backgroundColor = "green100"
   let showMoneyIcon = true
 
-  if (state === "PENDING") {
-    message = `${offerType} Accepted - Please Confirm`
-    subMessage = `Expires in ${hoursTillExpiration}hr`
-  } else if (state === "CANCELED" && stateReason?.includes("seller_rejected")) {
+  if (state === "CANCELED" && stateReason?.includes("seller_rejected")) {
     message = `${offerType} Declined`
     backgroundColor = "red100"
+  } else if (state === "CANCELED" && stateReason?.includes("_lapsed")) {
+    message = `${offerType} Expired`
+    backgroundColor = "black60"
   } else if (lastOfferFromParticipant === "SELLER") {
     backgroundColor = "copper100"
     message = `${offerType} Received`
     subMessage = `Expires in ${hoursTillExpiration}hr`
     showMoneyIcon = false
+  } else if (state === "PENDING" && lastOfferFromParticipant === "BUYER") {
+    message = `${offerType} Accepted - Please Confirm`
+    subMessage = `Expires in ${hoursTillExpiration}hr`
   }
   return {
     backgroundColor,
