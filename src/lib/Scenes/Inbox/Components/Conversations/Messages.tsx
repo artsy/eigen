@@ -207,20 +207,21 @@ export default createPaginationContainer(
                 stateUpdatedAt
                 offers(first: 100) {
                   nodes {
+                    ...OfferNotification_offer
                     __typename
-                    amount
+                    # amount
                     createdAt
-                    fromParticipant
-                    from {
-                      __typename
-                    }
-                    respondsTo {
-                      fromParticipant
-                    }
-                    order {
-                      state
-                      stateReason
-                    }
+                    # fromParticipant
+                    # from {
+                    #   __typename
+                    # }
+                    # respondsTo {
+                    #   fromParticipant
+                    # }
+                    # order {
+                    #   state
+                    #   stateReason
+                    # }
                   }
                 }
               }

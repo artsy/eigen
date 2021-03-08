@@ -121,6 +121,7 @@ export class Message extends React.Component<Props> {
 export default createFragmentContainer(Message, {
   message: graphql`
     fragment Message_message on Message {
+      __typename
       body
       createdAt
       internalID

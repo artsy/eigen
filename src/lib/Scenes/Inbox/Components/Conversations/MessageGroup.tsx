@@ -21,7 +21,7 @@ const SubjectContainer = styled(Flex)`
 type Item = NonNullable<NonNullable<Messages_conversation["items"]>[0]>["item"]
 
 interface MessageGroupProps {
-  group: Message_message[]
+  group: Message_message | OfferNotification_order[]
   conversationId: string
   subjectItem: Item
 }
@@ -47,7 +47,7 @@ export class MessageGroup extends React.Component<MessageGroupProps> {
             )}
           </SubjectContainer>
         )}
-        {!!message.fromParticipant && (
+        {!!message.__typename === "CommerceOffer" && (
           <OfferNotification
             offer={message}
             showTimeSince={!!(message.createdAt && today && group.length - 1 === messageIndex)}

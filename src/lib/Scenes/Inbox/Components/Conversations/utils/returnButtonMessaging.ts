@@ -22,6 +22,9 @@ export const returnButtonMessaging = ({
   if (state === "CANCELED" && stateReason?.includes("seller_rejected")) {
     message = `${offerType} Declined`
     backgroundColor = "red100"
+  } else if (state === "CANCELED" && stateReason?.includes("_lapsed")) {
+    message = `${offerType} Expired`
+    backgroundColor = "black60"
   } else if (lastOfferFromParticipant === "SELLER") {
     backgroundColor = "copper100"
     message = `${offerType} Received`

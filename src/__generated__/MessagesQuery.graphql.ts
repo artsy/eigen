@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2f665c4f3c120979eff1051cb4497ec4 */
+/* @relayHash 7743e411575952d109e02d1335f0dbfd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -67,6 +67,7 @@ fragment ImagePreview_attachment on Attachment {
 }
 
 fragment Message_message on Message {
+  __typename
   body
   createdAt
   internalID
@@ -145,23 +146,9 @@ fragment Messages_conversation_2QE1um on Conversation {
           stateUpdatedAt
           offers(first: 100) {
             nodes {
+              ...OfferNotification_offer
               __typename
-              amount
               createdAt
-              fromParticipant
-              from {
-                __typename
-              }
-              respondsTo {
-                fromParticipant
-                id
-              }
-              order {
-                __typename
-                state
-                stateReason
-                id
-              }
               id
             }
           }
@@ -186,6 +173,26 @@ fragment Messages_conversation_2QE1um on Conversation {
         id
       }
     }
+  }
+}
+
+fragment OfferNotification_offer on CommerceOffer {
+  __typename
+  amount
+  createdAt
+  fromParticipant
+  from {
+    __typename
+  }
+  respondsTo {
+    fromParticipant
+    id
+  }
+  order {
+    __typename
+    state
+    stateReason
+    id
   }
 }
 
@@ -612,6 +619,7 @@ return {
                             ],
                             "storageKey": null
                           },
+                          (v12/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -624,8 +632,7 @@ return {
                               (v8/*: any*/)
                             ],
                             "storageKey": null
-                          },
-                          (v12/*: any*/)
+                          }
                         ],
                         "storageKey": null
                       }
@@ -926,7 +933,7 @@ return {
     ]
   },
   "params": {
-    "id": "2f665c4f3c120979eff1051cb4497ec4",
+    "id": "7743e411575952d109e02d1335f0dbfd",
     "metadata": {},
     "name": "MessagesQuery",
     "operationKind": "query",

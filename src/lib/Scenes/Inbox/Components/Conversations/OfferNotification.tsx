@@ -1,9 +1,11 @@
+import { OfferNotification_offer } from "__generated__/OfferNotification_offer.graphql"
 import { AlertCircleFillIcon, Flex, MoneyFillIcon, Text } from "palette"
 import React, { useEffect } from "react"
-import { TimeSince } from "./TimeSince"\
+import { createFragmentContainer, graphql } from "react-relay"
+import { TimeSince } from "./TimeSince"
 
 export interface OfferNotificationProps {
-  offer: any
+  offer: OfferNotification_offer
   showTimeSince: boolean
 }
 
@@ -50,3 +52,24 @@ export const OfferNotification: React.FC<OfferNotificationProps> = ({ offer, sho
     </Flex>
   )
 }
+
+export const OfferNotificationFragmentContainer = createFragmentContainer(OfferNotification, {
+  offer: graphql`
+    fragment OfferNotification_offer on CommerceOffer {
+      __typename
+      amount
+      createdAt
+      fromParticipant
+      from {
+        __typename
+      }
+      respondsTo {
+        fromParticipant
+      }
+      order {
+        state
+        stateReason
+      }
+    }
+  `,
+})

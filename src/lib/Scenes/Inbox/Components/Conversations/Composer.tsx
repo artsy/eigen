@@ -108,7 +108,7 @@ export default class Composer extends React.Component<Props, State> {
               {!!showInquiryMakeOfferButton && this.props.artworkID != null && (
                 <InquiryMakeOfferButton artworkID={this.props.artworkID} />
               )}
-              {!!this.props.order && <ReviewOfferButton order={this.props.order} />}
+              {!!showInquiryMakeOfferButton && !!this.props.order && <ReviewOfferButton order={this.props.order} />}
               <Container active={this.state.active}>
                 <TextInput
                   placeholder={"Type your message"}

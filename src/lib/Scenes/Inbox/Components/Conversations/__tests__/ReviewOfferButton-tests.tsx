@@ -30,7 +30,7 @@ describe("ReviewOfferButton", () => {
       variables={{ orderID: "test-order" }}
       render={({ error, props }) => {
         if (props?.order) {
-          return <ReviewOfferButtonFragmentContainer order={props.reviewOrder} />
+          return <ReviewOfferButtonFragmentContainer order={props.order} />
         } else if (error) {
           console.error(error)
         }

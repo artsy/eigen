@@ -32,7 +32,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
   useEffect(() => {
     const isCounter = extractNodes(order.reviewOffers).length > 1
 
-    const { backgroundColor, message, subMessage, showMoneyIcon } = returnButtonMessaging({
+    const { backgroundColor, message, showMoneyIcon } = returnButtonMessaging({
       state: order.state,
       stateReason: order.stateReason,
       isCounter,
@@ -41,17 +41,12 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
     })
 
     setButtonMessage(message)
-    setButtonSubMessage(subMessage)
     setShowMoneyIconInButton(showMoneyIcon)
     setButtonBackgroundColor(backgroundColor)
   })
 
-  const onTap = (orderID: string | null, state: string | null) => {
-    if (state === "PENDING") {
-      // ORDER CONFIRMATION PAGE DOESN'T EXIST YET
-    } else {
-      navigate(`/orders/${orderID}/review`)
-    }
+  const onTap = (orderID: string | null) => {
+    navigate(`/orders/${orderID}/review`)
   }
 
   return (
@@ -75,7 +70,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
               {buttonMessage}
             </Text>
             <Text color="white100" variant="caption">
-              {buttonSubMessage}
+              Tap to view
             </Text>
           </Flex>
         </Flex>
