@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 // When we unify modal presentation we should be able to remove this code
 export const backButtonTopPadding = () => {
   if (Platform.OS === "ios") {
-    return 13
+    return 0
   } else {
     return 13 + useSafeAreaInsets().top
   }

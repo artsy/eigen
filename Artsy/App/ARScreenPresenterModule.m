@@ -87,6 +87,8 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
 
     BOOL hasOwnModalCloseButton = viewDescriptor[@"hasOwnModalCloseButton"];
 
+    BOOL fullBleed = viewDescriptor[@"fullBleed"];
+
     NSString *stackID = [[NSUUID UUID] UUIDString];
 
     UINavigationController *stack = nil;
@@ -99,6 +101,7 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
     }
 
     ARModalWithBottomSafeAreaViewController *modal = [[ARModalWithBottomSafeAreaViewController alloc] initWithStack:stack];
+    modal.fullBleed = fullBleed;
     modal.modalPresentationStyle = modalPresentationStyle;
 
     [[self.class currentlyPresentedVC] presentViewController:modal animated:YES completion:^ {

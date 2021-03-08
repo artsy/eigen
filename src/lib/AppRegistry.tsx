@@ -319,6 +319,7 @@ export const modules = defineModules({
     Platform.OS === "ios"
       ? nativeModule({
           alwaysPresentModally: true,
+          fullBleed: true,
         })
       : reactModule(RegistrationFlowQueryRenderer, {
           alwaysPresentModally: true,
@@ -328,6 +329,7 @@ export const modules = defineModules({
     Platform.OS === "ios"
       ? nativeModule({
           alwaysPresentModally: true,
+          fullBleed: true,
         })
       : reactModule(BidFlowQueryRenderer, {
           alwaysPresentModally: true,
