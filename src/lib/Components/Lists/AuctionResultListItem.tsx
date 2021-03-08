@@ -1,4 +1,4 @@
-import { AuctionResult_auctionResult } from "__generated__/AuctionResult_auctionResult.graphql"
+import { AuctionResultListItem_auctionResult } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { auctionResultHasPrice, auctionResultText } from "lib/Scenes/AuctionResult/helpers"
 import { capitalize } from "lodash"
@@ -9,11 +9,11 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { AuctionResultsMidEstimate } from "../AuctionResult/AuctionResultMidEstimate"
 
 interface Props {
-  auctionResult: AuctionResult_auctionResult
+  auctionResult: AuctionResultListItem_auctionResult
   onPress: () => void
 }
 
-const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
+const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress }) => {
   return (
     <Touchable underlayColor={color("black5")} onPress={onPress}>
       <Flex py="2" px={2} flexDirection="row">
@@ -91,9 +91,9 @@ const AuctionResult: React.FC<Props> = ({ auctionResult, onPress }) => {
   )
 }
 
-export const AuctionResultFragmentContainer = createFragmentContainer(AuctionResult, {
+export const AuctionResultFragmentContainer = createFragmentContainer(AuctionResultListItem, {
   auctionResult: graphql`
-    fragment AuctionResult_auctionResult on AuctionResult {
+    fragment AuctionResultListItem_auctionResult on AuctionResult {
       currency
       dateText
       id
