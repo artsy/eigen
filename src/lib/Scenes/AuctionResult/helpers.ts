@@ -1,16 +1,13 @@
+import { AuctionResult_auctionResult } from "__generated__/AuctionResult_auctionResult.graphql"
+import { AuctionResult_auctionResultListItem } from "__generated__/AuctionResult_auctionResultListItem.graphql"
 import moment from "moment"
 
 // This interface just mirrors the types that come back from metaphysics.
 // If tests or types break, the fix should be to just update this interface with the new metaphysics types.
-export interface AuctionResultHelperData {
-  currency: string | null
-  boughtIn: boolean | null
-  priceRealized: {
-    display: string | null
-    cents: number | null
-  } | null
-  saleDate: string | null
-}
+type AuctionResultHelperNeededData = "currency" | "boughtIn" | "priceRealized" | "saleDate"
+export type AuctionResultHelperData =
+  | Pick<AuctionResult_auctionResultListItem, AuctionResultHelperNeededData>
+  | Pick<AuctionResult_auctionResult, AuctionResultHelperNeededData>
 
 export const auctionResultHasPrice = (auctionResult: AuctionResultHelperData): boolean => {
   if (
