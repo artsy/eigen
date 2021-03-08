@@ -1,4 +1,5 @@
 import { dismissModal } from "lib/navigation/navigate"
+import { backButtonTopPadding } from "lib/utils/platformUtil"
 import { CloseIcon, color, Touchable } from "palette"
 import React from "react"
 import { Platform, View } from "react-native"
@@ -15,7 +16,7 @@ export const ModalHeader: React.FC = () => {
         </View>
       ) : (
         /* close button for iOS 12 + android full screen modals */
-        <View style={{ position: "absolute", top: 40, right: 15 }}>
+        <View style={{ position: "absolute", top: backButtonTopPadding(), right: 15 }}>
           <Touchable
             onPress={dismissModal}
             hitSlop={{
