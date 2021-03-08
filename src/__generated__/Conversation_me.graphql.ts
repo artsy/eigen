@@ -40,6 +40,13 @@ export type Conversation_me = {
         readonly from: {
             readonly email: string;
         };
+        readonly orderConnection: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
+                    readonly " $fragmentRefs": FragmentRefs<"ReviewOfferButton_order">;
+                } | null;
+            } | null> | null;
+        } | null;
         readonly " $fragmentRefs": FragmentRefs<"Messages_conversation">;
     } | null;
     readonly " $refType": "Conversation_me";
@@ -61,6 +68,11 @@ var v0 = {
   "storageKey": null
 },
 v1 = {
+  "kind": "Literal",
+  "name": "participantType",
+  "value": "BUYER"
+},
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -154,11 +166,7 @@ return {
         {
           "alias": "submittedOrderConnection",
           "args": [
-            {
-              "kind": "Literal",
-              "name": "participantType",
-              "value": "BUYER"
-            },
+            (v1/*: any*/),
             {
               "kind": "Literal",
               "name": "state",
@@ -189,7 +197,7 @@ return {
                     {
                       "kind": "InlineFragment",
                       "selections": [
-                        (v1/*: any*/),
+                        (v2/*: any*/),
                         {
                           "alias": null,
                           "args": null,
@@ -210,7 +218,7 @@ return {
           ],
           "storageKey": "orderConnection(participantType:\"BUYER\",state:\"SUBMITTED\")"
         },
-        (v1/*: any*/),
+        (v2/*: any*/),
         {
           "alias": null,
           "args": null,
@@ -269,6 +277,51 @@ return {
           "storageKey": null
         },
         {
+          "alias": null,
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "first",
+              "value": 10
+            },
+            (v1/*: any*/)
+          ],
+          "concreteType": "CommerceOrderConnectionWithTotalCount",
+          "kind": "LinkedField",
+          "name": "orderConnection",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "CommerceOrderEdge",
+              "kind": "LinkedField",
+              "name": "edges",
+              "plural": true,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": null,
+                  "kind": "LinkedField",
+                  "name": "node",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "args": null,
+                      "kind": "FragmentSpread",
+                      "name": "ReviewOfferButton_order"
+                    }
+                  ],
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": "orderConnection(first:10,participantType:\"BUYER\")"
+        },
+        {
           "args": null,
           "kind": "FragmentSpread",
           "name": "Messages_conversation"
@@ -281,5 +334,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '9369e76be9c70a8ed3602af733e49d88';
+(node as any).hash = 'c636e056a603bddb7a5721e123949577';
 export default node;
