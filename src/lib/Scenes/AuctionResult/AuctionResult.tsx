@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
+import { AuctionResult_auctionResult } from "__generated__/AuctionResult_auctionResult.graphql"
 import { AuctionResultQuery, AuctionResultQueryResponse } from "__generated__/AuctionResultQuery.graphql"
 import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
@@ -24,7 +25,7 @@ const CONTAINER_HEIGHT = 80
 
 interface Props {
   artist: AuctionResultQueryResponse["artist"]
-  auctionResult: AuctionResultQueryResponse["auctionResult"]
+  auctionResult: AuctionResult_auctionResult
 }
 
 const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
@@ -229,47 +230,51 @@ export const AuctionResultQueryRenderer: React.FC<{
     <QueryRenderer<AuctionResultQuery>
       environment={environment || defaultEnvironment}
       query={graphql`
-        query AuctionResultQuery($auctionResultInternalID: String!, $artistID: String!) {
-          auctionResult(id: $auctionResultInternalID) {
-            internalID
-            artistID
-            boughtIn
-            categoryText
-            dateText
-            description
-            dimensions {
+        fragment AuctionResult_auctionResult on AuctionResult {
+          internalID
+          artistID
+          boughtIn
+          categoryText
+          dateText
+          description
+          dimensions {
+            height
+            width
+          }
+          dimensionText
+          estimate {
+            display
+            high
+            low
+          }
+          images {
+            thumbnail {
+              url(version: "square140")
               height
               width
+              aspectRatio
             }
-            dimensionText
-            estimate {
-              display
-              high
-              low
-            }
-            images {
-              thumbnail {
-                url(version: "square140")
-                height
-                width
-                aspectRatio
-              }
-            }
-            location
-            mediumText
-            organization
-            performance {
-              mid
-            }
-            currency
-            priceRealized {
-              cents
-              centsUSD
-              display
-            }
-            saleDate
-            saleTitle
-            title
+          }
+          location
+          mediumText
+          organization
+          performance {
+            mid
+          }
+          currency
+          priceRealized {
+            cents
+            centsUSD
+            display
+          }
+          saleDate
+          saleTitle
+          title
+        }
+
+        query AuctionResultQuery($auctionResultInternalID: String!, $artistID: String!) {
+          auctionResult(id: $auctionResultInternalID) {
+            ...AuctionResult_auctionResult
           }
           artist(id: $artistID) {
             name

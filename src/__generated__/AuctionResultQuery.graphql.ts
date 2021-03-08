@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0fa740da036f93b658e9d989f2899e34 */
+/* @relayHash d56b037f57d6d8016def009a85aa5de7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -11,7 +11,7 @@ export type AuctionResultQueryVariables = {
 };
 export type AuctionResultQueryResponse = {
     readonly auctionResult: {
-        readonly " $fragmentRefs": FragmentRefs<"AuctionResult_auctionResult1">;
+        readonly " $fragmentRefs": FragmentRefs<"AuctionResult_auctionResult">;
     } | null;
     readonly artist: {
         readonly name: string | null;
@@ -31,7 +31,7 @@ query AuctionResultQuery(
   $artistID: String!
 ) {
   auctionResult(id: $auctionResultInternalID) {
-    ...AuctionResult_auctionResult1
+    ...AuctionResult_auctionResult
     id
   }
   artist(id: $artistID) {
@@ -41,7 +41,7 @@ query AuctionResultQuery(
   }
 }
 
-fragment AuctionResult_auctionResult1 on AuctionResult {
+fragment AuctionResult_auctionResult on AuctionResult {
   internalID
   artistID
   boughtIn
@@ -172,7 +172,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "AuctionResult_auctionResult1"
+            "name": "AuctionResult_auctionResult"
           }
         ],
         "storageKey": null
@@ -457,7 +457,7 @@ return {
     ]
   },
   "params": {
-    "id": "0fa740da036f93b658e9d989f2899e34",
+    "id": "d56b037f57d6d8016def009a85aa5de7",
     "metadata": {},
     "name": "AuctionResultQuery",
     "operationKind": "query",
@@ -465,5 +465,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'aab1ff6b172cfbf76c48bf785dde9a61';
+(node as any).hash = '066ff62dc4e33871d234ca9428191362';
 export default node;
