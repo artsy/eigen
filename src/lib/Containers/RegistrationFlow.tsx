@@ -1,6 +1,6 @@
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
-import { Platform, ViewProperties } from "react-native"
+import { ViewProperties } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 import { RegistrationFlow_me } from "__generated__/RegistrationFlow_me.graphql"
