@@ -1,16 +1,20 @@
 upcoming:
-  version: 6.8.0
+  version: 6.8.1
   date: TBD
   dev:
     - Fix sticky tab page layout problems on android - david
   user_facing:
-    - Fix env migration bug - david
     - Adds inquiry checkout offer status CTA - lily
     - Update consignment photo selection flow for iOS 14 - brian
     - Allow adding pricePaid info in my collection - barry, brian
     - Adds inquiry make offer button - lily
 
 releases:
+  - version: 6.8.0
+    date: Mar 3, 2021
+    user_facing:
+      - Fix a bug causing users to be signed into a test environment - david
+
   - version: 6.7.9
     date: Mar 2, 2021
     dev:
