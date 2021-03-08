@@ -9,6 +9,7 @@ import { sendConversationMessage } from "lib/Scenes/Inbox/Components/Conversatio
 import { updateConversation } from "lib/Scenes/Inbox/Components/Conversations/UpdateConversation"
 import { GlobalStore } from "lib/store/GlobalStore"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
+import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { color, Flex, Text, Touchable } from "palette"
@@ -148,8 +149,10 @@ export class Conversation extends React.Component<Props, State> {
     const hasActiveOrder = conversation?.submittedOrderConnection?.edges?.length
     const showOfferableInquiryButton = !!(isOfferableFromInquiry && !hasActiveOrder)
 
+    const conversationOrder = extractNodes(conversation?.orderConnection)[0]
     return (
       <Composer
+        order={conversationOrder}
         conversationID={conversation?.internalID}
         disabled={this.state.sendingMessage || !this.state.isConnected}
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -253,6 +256,13 @@ export const ConversationFragmentContainer = createFragmentContainer(Conversatio
         }
         from {
           email
+        }
+        orderConnection(first: 10, participantType: BUYER) {
+          edges {
+            node {
+              ...ReviewOfferButton_order
+            }
+          }
         }
         ...Messages_conversation
       }
