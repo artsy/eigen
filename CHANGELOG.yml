@@ -23,6 +23,7 @@ upcoming:
     - Fix fancy modal height on android - mounir
     - Fix fancy modal status bar color - mounir
     - Fix fancy modal border radius animating on non shrinking backgrounds - mounir
+    - Hooks up offer CTA to conversation order - lily
 
 releases:
   - version: 6.8.0
