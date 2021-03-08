@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9e7485fbcdba12f2d4f14fe7a5fbeb9a */
+/* @relayHash 0892c7157511badc06e4c65395dc9afc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -88,6 +88,15 @@ fragment Conversation_me on Me {
     from {
       email
       id
+    }
+    orderConnection(first: 10, participantType: BUYER) {
+      edges {
+        node {
+          __typename
+          ...ReviewOfferButton_order
+          id
+        }
+      }
     }
     ...Messages_conversation
   }
@@ -193,6 +202,26 @@ fragment Messages_conversation on Conversation {
 fragment PDFPreview_attachment on Attachment {
   fileName
   ...AttachmentPreview_attachment
+}
+
+fragment ReviewOfferButton_order on CommerceOfferOrder {
+  internalID
+  state
+  stateReason
+  stateExpiresAt(format: "MMM D")
+  lastOffer {
+    fromParticipant
+    createdAt
+    id
+  }
+  offers(first: 5) {
+    edges {
+      node {
+        internalID
+        id
+      }
+    }
+  }
 }
 
 fragment ShowPreview_show on Show {
@@ -303,18 +332,38 @@ v10 = {
   "abstractKey": "__isNode"
 },
 v11 = {
+  "kind": "Literal",
+  "name": "participantType",
+  "value": "BUYER"
+},
+v12 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "state",
+  "storageKey": null
+},
+v13 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "email",
   "storageKey": null
 },
-v12 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 10
-  },
+v14 = {
+  "kind": "Literal",
+  "name": "first",
+  "value": 10
+},
+v15 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "createdAt",
+  "storageKey": null
+},
+v16 = [
+  (v14/*: any*/),
   {
     "kind": "Literal",
     "name": "sort",
@@ -509,11 +558,7 @@ return {
               {
                 "alias": "submittedOrderConnection",
                 "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "participantType",
-                    "value": "BUYER"
-                  },
+                  (v11/*: any*/),
                   {
                     "kind": "Literal",
                     "name": "state",
@@ -547,13 +592,7 @@ return {
                             "kind": "InlineFragment",
                             "selections": [
                               (v4/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "state",
-                                "storageKey": null
-                              }
+                              (v12/*: any*/)
                             ],
                             "type": "CommerceOfferOrder",
                             "abstractKey": null
@@ -601,11 +640,139 @@ return {
                 "name": "from",
                 "plural": false,
                 "selections": [
-                  (v11/*: any*/),
+                  (v13/*: any*/),
                   (v7/*: any*/),
                   (v6/*: any*/)
                 ],
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": [
+                  (v14/*: any*/),
+                  (v11/*: any*/)
+                ],
+                "concreteType": "CommerceOrderConnectionWithTotalCount",
+                "kind": "LinkedField",
+                "name": "orderConnection",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "CommerceOrderEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": null,
+                        "kind": "LinkedField",
+                        "name": "node",
+                        "plural": false,
+                        "selections": [
+                          (v1/*: any*/),
+                          (v7/*: any*/),
+                          {
+                            "kind": "InlineFragment",
+                            "selections": [
+                              (v4/*: any*/),
+                              (v12/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "stateReason",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": [
+                                  {
+                                    "kind": "Literal",
+                                    "name": "format",
+                                    "value": "MMM D"
+                                  }
+                                ],
+                                "kind": "ScalarField",
+                                "name": "stateExpiresAt",
+                                "storageKey": "stateExpiresAt(format:\"MMM D\")"
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "CommerceOffer",
+                                "kind": "LinkedField",
+                                "name": "lastOffer",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "fromParticipant",
+                                    "storageKey": null
+                                  },
+                                  (v15/*: any*/),
+                                  (v7/*: any*/)
+                                ],
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": [
+                                  {
+                                    "kind": "Literal",
+                                    "name": "first",
+                                    "value": 5
+                                  }
+                                ],
+                                "concreteType": "CommerceOfferConnection",
+                                "kind": "LinkedField",
+                                "name": "offers",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "CommerceOfferEdge",
+                                    "kind": "LinkedField",
+                                    "name": "edges",
+                                    "plural": true,
+                                    "selections": [
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "CommerceOffer",
+                                        "kind": "LinkedField",
+                                        "name": "node",
+                                        "plural": false,
+                                        "selections": [
+                                          (v4/*: any*/),
+                                          (v7/*: any*/)
+                                        ],
+                                        "storageKey": null
+                                      }
+                                    ],
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": "offers(first:5)"
+                              }
+                            ],
+                            "type": "CommerceOfferOrder",
+                            "abstractKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": "orderConnection(first:10,participantType:\"BUYER\")"
               },
               {
                 "alias": null,
@@ -616,7 +783,7 @@ return {
               },
               {
                 "alias": null,
-                "args": (v12/*: any*/),
+                "args": (v16/*: any*/),
                 "concreteType": "MessageConnection",
                 "kind": "LinkedField",
                 "name": "messagesConnection",
@@ -707,13 +874,7 @@ return {
                             "name": "body",
                             "storageKey": null
                           },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "createdAt",
-                            "storageKey": null
-                          },
+                          (v15/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -757,7 +918,7 @@ return {
                             "plural": false,
                             "selections": [
                               (v6/*: any*/),
-                              (v11/*: any*/)
+                              (v13/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -773,7 +934,7 @@ return {
               },
               {
                 "alias": null,
-                "args": (v12/*: any*/),
+                "args": (v16/*: any*/),
                 "filters": [],
                 "handle": "connection",
                 "key": "Messages_messagesConnection",
@@ -790,7 +951,7 @@ return {
     ]
   },
   "params": {
-    "id": "9e7485fbcdba12f2d4f14fe7a5fbeb9a",
+    "id": "0892c7157511badc06e4c65395dc9afc",
     "metadata": {},
     "name": "ConversationQuery",
     "operationKind": "query",
