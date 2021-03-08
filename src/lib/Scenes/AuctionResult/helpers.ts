@@ -2,9 +2,8 @@ import { AuctionResult_auctionResult } from "__generated__/AuctionResult_auction
 import { AuctionResult_auctionResultListItem } from "__generated__/AuctionResult_auctionResultListItem.graphql"
 import moment from "moment"
 
-// This interface just mirrors the types that come back from metaphysics.
-// If tests or types break, the fix should be to just update this interface with the new metaphysics types.
 type AuctionResultHelperNeededData = "currency" | "boughtIn" | "priceRealized" | "saleDate"
+// This type just mirrors the types that come back from metaphysics.
 export type AuctionResultHelperData =
   | Pick<AuctionResult_auctionResultListItem, AuctionResultHelperNeededData>
   | Pick<AuctionResult_auctionResult, AuctionResultHelperNeededData>
