@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 464620e99d3a25943d7b1f7283ceefe5 */
+/* @relayHash e737622125978cf3c8147f7c7d82a27e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -67,13 +67,13 @@ fragment CollapsibleArtworkDetails_artwork on Artwork {
   artistNames
 }
 
-fragment MakeOfferButton_artwork on Artwork {
+fragment InquiryMakeOfferButton_artwork on Artwork {
   internalID
 }
 
 fragment MakeOfferModal_artwork on Artwork {
   ...CollapsibleArtworkDetails_artwork
-  ...MakeOfferButton_artwork
+  ...InquiryMakeOfferButton_artwork
 }
 */
 
@@ -335,7 +335,7 @@ return {
     ]
   },
   "params": {
-    "id": "464620e99d3a25943d7b1f7283ceefe5",
+    "id": "e737622125978cf3c8147f7c7d82a27e",
     "metadata": {},
     "name": "MakeOfferModalQuery",
     "operationKind": "query",
