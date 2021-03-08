@@ -2,12 +2,7 @@ upcoming:
   version: 6.8.0
   date: TBD
   dev:
-    - Migrate LoadFailureView to typescript - adam, brian, david, mounir, pavlos
-    - Migrate environment configuration to TypeScript - david
     - Fix auction results showing zero price - pavlos, steve
-    - Improve bottom tabs dev state management  - david, mounir
-    - Use adjustPan for windowSoftInputMode  - mounir
-    - Make android app full-bleed - david
     - Fix sticky tab page layout problems on android - david
   user_facing:
     - Fix env migration bug - david
