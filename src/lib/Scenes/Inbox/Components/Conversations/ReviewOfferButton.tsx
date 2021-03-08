@@ -28,7 +28,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
   useEffect(() => {
     const isCounter = extractNodes(order.offers).length > 1
 
-    const { backgroundColor, message, subMessage, showMoneyIcon } = returnButtonMessaging({
+    const { backgroundColor, message, showMoneyIcon } = returnButtonMessaging({
       state: order.state,
       stateReason: order.stateReason,
       isCounter,
@@ -81,21 +81,18 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
 export const ReviewOfferButtonFragmentContainer = createFragmentContainer(ReviewOfferButton, {
   order: graphql`
     fragment ReviewOfferButton_order on CommerceOfferOrder {
-      __typename
       internalID
       state
       stateReason
       stateExpiresAt(format: "MMM D")
-      ... on CommerceOfferOrder {
-        lastOffer {
-          fromParticipant
-          createdAt
-        }
-        offers(first: 5) {
-          edges {
-            node {
-              internalID
-            }
+      lastOffer {
+        fromParticipant
+        createdAt
+      }
+      offers(first: 5) {
+        edges {
+          node {
+            internalID
           }
         }
       }
