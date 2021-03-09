@@ -14,6 +14,7 @@ export interface ReviewOfferButtonProps {
 }
 
 export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) => {
+  console.warn("order state fp", order.lastOffer?.fromParticipant)
   if (order.state == null || order.state === "ABANDONED" || order.state === "PENDING") {
     return null
   }
