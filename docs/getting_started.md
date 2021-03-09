@@ -12,6 +12,18 @@ Currently we require developers to use Xcode 12, with the latest version (12.2.0
 
 Currently we use Android Studio 4.1.1. You can download it from [here](https://developer.android.com/studio#downloads).
 
+Once that's setup, you'll want to update your `.bashrc` or `.zshrc` (or whatever tool you use to manage your terminal) with the proper `ENV` vars:
+
+```shell
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+```
+
+Refresh / restart your terminal and you should be good to go.
+
 ### Clone
 
 Follow the instructions in [the README](https://github.com/artsy/eigen).
