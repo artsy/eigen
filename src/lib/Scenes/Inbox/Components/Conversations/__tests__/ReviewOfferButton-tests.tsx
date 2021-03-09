@@ -2,6 +2,8 @@ import { ReviewOfferButtonTestsQuery } from "__generated__/ReviewOfferButtonTest
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { AlertCircleFillIcon } from "palette"
+import { MoneyFillIcon } from "palette/svgs/MoneyFillIcon"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -61,12 +63,51 @@ describe("ReviewOfferButton", () => {
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Offer Declined")
+    expect(text).toContain("Tap to view")
+    expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(1)
+  })
+
+  it("shows correct message for expired offers", () => {
+    const wrapper = getWrapper({
+      CommerceOrder: () => ({
+        state: "CANCELED",
+        stateReason: "seller_lapsed",
+      }),
+    })
+
+    const text = extractText(wrapper.root)
+    expect(text).toContain("Offer Expired")
+    expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(1)
+  })
+
+  it("doesn't render for pending orders", () => {
+    const wrapper = getWrapper({
+      CommerceOrder: () => ({
+        state: "PENDING",
+      }),
+    })
+    const text = extractText(wrapper.root)
+    expect(text).not.toContain("Offer")
+    expect(text).not.toContain("Tap to view")
+    expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(0)
+  })
+
+  it("doesn't render for abandoned orders", () => {
+    const wrapper = getWrapper({
+      CommerceOrder: () => ({
+        state: "ABANDONED",
+      }),
+    })
+    const text = extractText(wrapper.root)
+    expect(text).not.toContain("Offer")
+    expect(text).not.toContain("Tap to view")
+    expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(0)
   })
 
   it("shows correct message for accepted offers", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
-        state: "PENDING",
+        state: "APPROVED",
       }),
     })
 
@@ -74,7 +115,7 @@ describe("ReviewOfferButton", () => {
     expect(text).toContain("Offer Accepted - Please Confirm")
   })
 
-  it("shows correct message for received counteroffers", () => {
+  it.only("shows correct message and icon for received counteroffers", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
         state: "SUBMITTED",
@@ -86,11 +127,14 @@ describe("ReviewOfferButton", () => {
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Offer Received")
+    // expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(1)
   })
 
-  it("shows correct messaging when offer is a counteroffer", () => {
+  it("shows correct messaging and icon when offer is a counteroffer", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
+        state: "SUBMITTED",
         lastOffer: {
           fromParticipant: "SELLER",
         },
@@ -102,11 +146,13 @@ describe("ReviewOfferButton", () => {
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Counteroffer Received")
+    expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
   })
 
   it("tapping it opens the review offer webview when an order has not yet been approved", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
+        state: "SUBMITTED",
         offers: {
           edges: [{ node: { internalID: "1234" } }, { node: { internalID: "4567" } }],
         },
@@ -114,6 +160,6 @@ describe("ReviewOfferButton", () => {
     })
 
     wrapper.root.findByType(TouchableWithoutFeedback).props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/orders/<CommerceOrder-mock-id-1>/review")
+    expect(navigate).toHaveBeenCalledWith("/orders/<CommerceOfferOrder-mock-id-2>/review")
   })
 })

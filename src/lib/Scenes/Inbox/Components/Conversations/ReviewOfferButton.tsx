@@ -14,8 +14,13 @@ export interface ReviewOfferButtonProps {
 }
 
 export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) => {
+  if (order.state == null || order.state === "ABANDONED" || order.state === "PENDING") {
+    return null
+  }
+
   const [buttonBackgroundColor, setButtonBackgroundColor] = React.useState("green100")
   const [buttonMessage, setButtonMessage] = React.useState("")
+  const [buttonSubMessage, setButtonSubMessage] = React.useState("Tap to view")
   const [showMoneyIconInButton, setShowMoneyIconInButton] = React.useState(true)
 
   const { hours } = useEventTiming({
@@ -27,7 +32,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
   useEffect(() => {
     const isCounter = extractNodes(order.offers).length > 1
 
-    const { backgroundColor, message, showMoneyIcon } = returnButtonMessaging({
+    const { backgroundColor, message, subMessage, showMoneyIcon } = returnButtonMessaging({
       state: order.state,
       stateReason: order.stateReason,
       isCounter,
@@ -35,9 +40,13 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
       hoursTillExpiration: hours,
     })
 
+    console.log("showmoneyicon", showMoneyIcon)
+
     setButtonMessage(message)
+    setButtonSubMessage(subMessage)
     setShowMoneyIconInButton(showMoneyIcon)
     setButtonBackgroundColor(backgroundColor)
+    console.log("showmoneyicon IN BUTTON", showMoneyIconInButton)
   })
 
   const onTap = (orderID: string | null) => {
@@ -65,7 +74,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
               {buttonMessage}
             </Text>
             <Text color="white100" variant="caption">
-              Tap to view
+              {buttonSubMessage}
             </Text>
           </Flex>
         </Flex>
