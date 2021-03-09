@@ -87,6 +87,8 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
 
     BOOL hasOwnModalCloseButton = viewDescriptor[@"hasOwnModalCloseButton"];
 
+    BOOL fullBleed = viewDescriptor[@"fullBleed"];
+
     NSString *stackID = [[NSUUID UUID] UUIDString];
 
     UINavigationController *stack = nil;
@@ -99,6 +101,7 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
     }
 
     ARModalWithBottomSafeAreaViewController *modal = [[ARModalWithBottomSafeAreaViewController alloc] initWithStack:stack];
+    modal.fullBleed = fullBleed;
     modal.modalPresentationStyle = modalPresentationStyle;
 
     [[self.class currentlyPresentedVC] presentViewController:modal animated:YES completion:^ {
@@ -135,9 +138,9 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
     } else if ([moduleName isEqualToString:@"Auction"]) {
         vc = [self.class loadAuctionWithID:props[@"id"]];
     } else if ([moduleName isEqualToString:@"AuctionRegistration"]) {
-        vc = [self.class loadAuctionRegistrationWithID:props[@"id"] skipBidFlow:[props[@"skip_bid_flow"] boolValue]];
+        vc = [self.class loadAuctionRegistrationWithID:props[@"saleID"] skipBidFlow:[props[@"skip_bid_flow"] boolValue]];
     } else if ([moduleName isEqualToString:@"AuctionBidArtwork"]) {
-        vc = [self.class loadBidUIForArtwork:props[@"artwork_id"] inSale:props[@"id"]];
+        vc = [self.class loadBidUIForArtwork:props[@"artworkID"] inSale:props[@"saleID"]];
     } else if ([moduleName isEqualToString:@"LiveAuction"]) {
         if ([AROptions boolForOption:AROptionsDisableNativeLiveAuctions] || [self.class requiresUpdateForWebSocketVersionUpdate]) {
             NSString *slug = props[@"slug"];

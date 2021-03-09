@@ -26,6 +26,10 @@
           <category android:name="android.intent.category.DEFAULT" />
           <category android:name="android.intent.category.BROWSABLE" />
           <data android:scheme="artsy" />
+          <data android:scheme="https"
+              android:host="www.artsy.net" />
+              <data android:scheme="https"
+              android:host="m.artsy.net" />
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />

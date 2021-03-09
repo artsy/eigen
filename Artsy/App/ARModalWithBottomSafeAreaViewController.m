@@ -23,8 +23,12 @@
 {
     [super viewWillLayoutSubviews];
     UIEdgeInsets screenInsets = [UIApplication sharedApplication].keyWindow.safeAreaInsets;
-    
-    CGFloat top = self.modalPresentationStyle == UIModalPresentationFullScreen ? screenInsets.top : 0;
+
+    CGFloat top = 0;
+    if (self.modalPresentationStyle == UIModalPresentationFullScreen && !self.fullBleed) {
+        top = screenInsets.top;
+    }
+
     self.additionalSafeAreaInsets = UIEdgeInsetsMake(top, screenInsets.left, screenInsets.bottom, screenInsets.right);
 }
 

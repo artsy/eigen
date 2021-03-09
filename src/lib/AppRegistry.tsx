@@ -315,8 +315,26 @@ export const modules = defineModules({
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
   AuctionResult: reactModule(AuctionResultQueryRenderer),
-  AuctionRegistration: nativeModule({ alwaysPresentModally: true }),
-  AuctionBidArtwork: nativeModule({ alwaysPresentModally: true }),
+  AuctionRegistration:
+    Platform.OS === "ios"
+      ? nativeModule({
+          alwaysPresentModally: true,
+          fullBleed: true,
+        })
+      : reactModule(RegistrationFlowQueryRenderer, {
+          alwaysPresentModally: true,
+          hasOwnModalCloseButton: true,
+        }),
+  AuctionBidArtwork:
+    Platform.OS === "ios"
+      ? nativeModule({
+          alwaysPresentModally: true,
+          fullBleed: true,
+        })
+      : reactModule(BidFlowQueryRenderer, {
+          alwaysPresentModally: true,
+          hasOwnModalCloseButton: true,
+        }),
   BidFlow: reactModule(BidderFlow),
   BottomTabs: reactModule(BottomTabs, { fullBleed: true }),
   City: reactModule(CityView, { fullBleed: true }),
