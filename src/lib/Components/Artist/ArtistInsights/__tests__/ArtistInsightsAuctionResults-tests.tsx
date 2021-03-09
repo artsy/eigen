@@ -9,7 +9,7 @@ import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { mockEnvironmentPayload } from "../../../../tests/mockEnvironmentPayload"
-import { AuctionResultFragmentContainer } from "../../../Lists/AuctionResult"
+import { AuctionResultFragmentContainer } from "../../../Lists/AuctionResultListItem"
 import { ArtistInsightsAuctionResultsPaginationContainer, SortMode } from "../ArtistInsightsAuctionResults"
 
 jest.unmock("react-relay")

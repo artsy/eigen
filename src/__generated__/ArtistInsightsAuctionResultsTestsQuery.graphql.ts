@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b41b24bb5adc6e48dc3a1a3affe5557e */
+/* @relayHash e29b2b1bad66930dfeea3f6b1fbad988 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -41,7 +41,7 @@ fragment ArtistInsightsAuctionResults_artist on Artist {
       node {
         id
         internalID
-        ...AuctionResult_auctionResult
+        ...AuctionResultListItem_auctionResult
         __typename
       }
       cursor
@@ -53,7 +53,7 @@ fragment ArtistInsightsAuctionResults_artist on Artist {
   }
 }
 
-fragment AuctionResult_auctionResult on AuctionResult {
+fragment AuctionResultListItem_auctionResult on AuctionResult {
   currency
   dateText
   id
@@ -514,7 +514,7 @@ return {
     ]
   },
   "params": {
-    "id": "b41b24bb5adc6e48dc3a1a3affe5557e",
+    "id": "e29b2b1bad66930dfeea3f6b1fbad988",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {

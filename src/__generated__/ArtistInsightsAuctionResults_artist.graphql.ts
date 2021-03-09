@@ -19,7 +19,7 @@ export type ArtistInsightsAuctionResults_artist = {
             readonly node: {
                 readonly id: string;
                 readonly internalID: string;
-                readonly " $fragmentRefs": FragmentRefs<"AuctionResult_auctionResult">;
+                readonly " $fragmentRefs": FragmentRefs<"AuctionResultListItem_auctionResult">;
             } | null;
         } | null> | null;
     } | null;
@@ -221,7 +221,7 @@ return {
                 {
                   "args": null,
                   "kind": "FragmentSpread",
-                  "name": "AuctionResult_auctionResult"
+                  "name": "AuctionResultListItem_auctionResult"
                 }
               ],
               "storageKey": null
@@ -269,5 +269,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'ecf483180f50bb5ad551070484de1045';
+(node as any).hash = 'e007772a86b76ef047e934bbb4506ee3';
 export default node;

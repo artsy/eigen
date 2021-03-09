@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f08de7fcc5f06a9183c9e665dd50b190 */
+/* @relayHash 216f8976bb48f67f09b3d3d39bc48549 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,7 +33,7 @@ query MyCollectionArtworkInsightsTestsQuery {
   }
 }
 
-fragment AuctionResult_auctionResult on AuctionResult {
+fragment AuctionResultListItem_auctionResult on AuctionResult {
   currency
   dateText
   id
@@ -103,7 +103,7 @@ fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
         node {
           id
           internalID
-          ...AuctionResult_auctionResult
+          ...AuctionResultListItem_auctionResult
         }
       }
     }
@@ -842,7 +842,7 @@ return {
     ]
   },
   "params": {
-    "id": "f08de7fcc5f06a9183c9e665dd50b190",
+    "id": "216f8976bb48f67f09b3d3d39bc48549",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
