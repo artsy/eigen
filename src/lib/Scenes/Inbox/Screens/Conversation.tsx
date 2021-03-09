@@ -150,6 +150,7 @@ export class Conversation extends React.Component<Props, State> {
     const showOfferableInquiryButton = !!(isOfferableFromInquiry && !hasActiveOrder)
 
     const conversationOrder = extractNodes(conversation?.orderConnection)[0]
+
     return (
       <Composer
         order={conversationOrder as any}
@@ -260,6 +261,7 @@ export const ConversationFragmentContainer = createFragmentContainer(Conversatio
         orderConnection(first: 10, participantType: BUYER) {
           edges {
             node {
+              state
               ...ReviewOfferButton_order
             }
           }

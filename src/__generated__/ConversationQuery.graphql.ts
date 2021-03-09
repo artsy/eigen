@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0892c7157511badc06e4c65395dc9afc */
+/* @relayHash 52a211d55b890c6782858234fd7f1802 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -93,6 +93,7 @@ fragment Conversation_me on Me {
       edges {
         node {
           __typename
+          state
           ...ReviewOfferButton_order
           id
         }
@@ -674,12 +675,12 @@ return {
                         "plural": false,
                         "selections": [
                           (v1/*: any*/),
+                          (v12/*: any*/),
                           (v7/*: any*/),
                           {
                             "kind": "InlineFragment",
                             "selections": [
                               (v4/*: any*/),
-                              (v12/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -951,7 +952,7 @@ return {
     ]
   },
   "params": {
-    "id": "0892c7157511badc06e4c65395dc9afc",
+    "id": "52a211d55b890c6782858234fd7f1802",
     "metadata": {},
     "name": "ConversationQuery",
     "operationKind": "query",

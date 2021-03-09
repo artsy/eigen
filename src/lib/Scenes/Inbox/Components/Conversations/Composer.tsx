@@ -106,7 +106,7 @@ export default class Composer extends React.Component<Props, State> {
           <StyledKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={safeAreaInsets.top}>
             {this.props.children}
             <Flex flexDirection="column">
-              {!!showOpenInquiryModalButton && this.props.artworkID != null && (
+              {!!showOpenInquiryModalButton && this.props.artworkID != null && !this.props.order && (
                 <OpenInquiryModalButton artworkID={this.props.artworkID} conversationID={this.props.conversationID} />
               )}
               {!!showOpenInquiryModalButton && !!this.props.order && <ReviewOfferButton order={this.props.order} />}
