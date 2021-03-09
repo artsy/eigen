@@ -7,6 +7,7 @@ upcoming:
     - Improve bottom tabs dev state management  - david, mounir
     - Use adjustPan for windowSoftInputMode  - mounir
     - Make android app full-bleed - david
+    - Make auction screens mountable on android - barry, brian
     - Support deep links on android - adam, barry, brian, david, mounir, steven
     - Fix sticky tab page layout problems on android - david
   user_facing:

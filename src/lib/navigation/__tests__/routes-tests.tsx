@@ -244,7 +244,7 @@ describe("artsy.net routes", () => {
       Object {
         "module": "AuctionRegistration",
         "params": Object {
-          "id": "special-auction",
+          "saleID": "special-auction",
         },
         "type": "match",
       }
@@ -253,7 +253,7 @@ describe("artsy.net routes", () => {
       Object {
         "module": "AuctionRegistration",
         "params": Object {
-          "id": "other-auction",
+          "saleID": "other-auction",
         },
         "type": "match",
       }
@@ -291,8 +291,8 @@ describe("artsy.net routes", () => {
       Object {
         "module": "AuctionBidArtwork",
         "params": Object {
-          "artwork_id": "josef-albers-homage-to-the-square",
-          "id": "special-auction",
+          "artworkID": "josef-albers-homage-to-the-square",
+          "saleID": "special-auction",
         },
         "type": "match",
       }
@@ -301,8 +301,8 @@ describe("artsy.net routes", () => {
       Object {
         "module": "AuctionBidArtwork",
         "params": Object {
-          "artwork_id": "yayoi-kusama-red-pumpkin",
-          "id": "other-auction",
+          "artworkID": "yayoi-kusama-red-pumpkin",
+          "saleID": "other-auction",
         },
         "type": "match",
       }

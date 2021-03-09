@@ -210,7 +210,6 @@ static CGFloat exitButtonDimension = 40;
 {
     UIImage *image = [[UIImage imageNamed:@"serif_modal_close"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     ARSerifToolbarButtonItem *exit = [[ARSerifToolbarButtonItem alloc] initWithImage:image];
-
     [exit.button addTarget:self action:@selector(closeModal) forControlEvents:UIControlEventTouchUpInside];
     [exit.button ar_extendHitTestSizeByWidth:10 andHeight:10];
     return exit;

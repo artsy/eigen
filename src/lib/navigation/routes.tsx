@@ -73,13 +73,13 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     // For artists in a gallery context, like https://artsy.net/spruth-magers/artist/astrid-klein . Until we have a native
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
     new RouteMatcher("/:profile_id_ignored/artist/:artistID", "Artist"),
-    new RouteMatcher("/auction-registration/:id", "AuctionRegistration"),
+    new RouteMatcher("/auction-registration/:saleID", "AuctionRegistration"),
     unsafe_getFeatureFlag("AROptionsNewSalePage")
       ? new RouteMatcher("/auction/:saleID", "Auction2")
       : new RouteMatcher("/auction/:id", "Auction"),
     unsafe_getFeatureFlag("AROptionsNewSalePage") ? new RouteMatcher("/auction/:saleID/info", "AuctionInfo") : null,
     new RouteMatcher("/auction-faq", "AuctionFAQ"),
-    new RouteMatcher("/auction/:id/bid/:artwork_id", "AuctionBidArtwork"),
+    new RouteMatcher("/auction/:saleID/bid/:artworkID", "AuctionBidArtwork"),
     new RouteMatcher("/gene/:geneID", "Gene"),
     new RouteMatcher("/show/:showID", "Show"),
     new RouteMatcher("/show/:showID/info", "ShowMoreInfo"),
