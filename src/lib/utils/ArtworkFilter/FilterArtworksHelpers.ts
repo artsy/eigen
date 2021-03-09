@@ -1,4 +1,5 @@
 import { FilterScreen } from "lib/Components/FilterModal"
+import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import {
   AggregationName,
   Aggregations,
@@ -199,6 +200,7 @@ export const selectedOption = ({
   filterType?: FilterType
   aggregations: Aggregations
 }) => {
+  const useImprovedArtworkFilters = unsafe_getFeatureFlag("ARUseNewArtworkFilters")
   const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
 
   if (filterScreen === "additionalGeneIDs") {
@@ -258,6 +260,17 @@ export const selectedOption = ({
       }
       return `${firstSelectedSize}, ${numSelectedSizesToDisplay - 1} more`
     }
+    return "All"
+  }
+
+  if (useImprovedArtworkFilters && filterScreen === "majorPeriods") {
+    let selection = selectedOptions.find((filter) => filter.paramName === FilterParamName.timePeriod)?.paramValue
+
+    if (Array.isArray(selection) && selection.length > 0) {
+      selection = selection.map((s) => getDisplayNameForTimePeriod(s))
+      return selection.join(", ")
+    }
+
     return "All"
   }
 
@@ -384,4 +397,24 @@ export const aggregationForFilter = (filterKey: string, aggregations: Aggregatio
   const aggregationName = aggregationNameFromFilter[filterKey]
   const aggregation = aggregations!.find((value) => value.slice === aggregationName)
   return aggregation
+}
+
+export const getDisplayNameForTimePeriod = (aggregationName: string) => {
+  const DISPLAY_TEXT: Record<string, string> = {
+    "2020": "2020-today",
+    "2010": "2010-2019",
+    "2000": "2000-2009",
+    "1990": "1990-1999",
+    "1980": "1980-1989",
+    "1970": "1970-1979",
+    "1960": "1960-1969",
+    "1950": "1950-1959",
+    "1940": "1940-1949",
+    "1930": "1930-1939",
+    "1920": "1920-1929",
+    "1910": "1910-1919",
+    "1900": "1900-1909",
+  }
+
+  return DISPLAY_TEXT[aggregationName] ?? aggregationName
 }
