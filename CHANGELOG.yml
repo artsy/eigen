@@ -7,6 +7,7 @@ upcoming:
     - Improve bottom tabs dev state management  - david, mounir
     - Use adjustPan for windowSoftInputMode  - mounir
     - Make android app full-bleed - david
+    - Make auction screens mountable on android - barry, brian
   user_facing:
     - Adds inquiry checkout offer status CTA - lily
     - Update consignment photo selection flow for iOS 14 - brian
