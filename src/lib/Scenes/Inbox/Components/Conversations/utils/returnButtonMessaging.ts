@@ -29,8 +29,9 @@ export const returnButtonMessaging = ({
     backgroundColor = "copper100"
     message = `${offerType} Received`
     subMessage = `Expires in ${hoursTillExpiration}hr`
+    console.log("WOOO")
     showMoneyIcon = false
-  } else if (state === "PENDING" && lastOfferFromParticipant === "BUYER") {
+  } else if (state === "APPROVED" && lastOfferFromParticipant === "BUYER") {
     message = `${offerType} Accepted - Please Confirm`
     subMessage = `Expires in ${hoursTillExpiration}hr`
   }
