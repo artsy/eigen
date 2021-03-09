@@ -3,6 +3,8 @@ import { ActionSheetIOS, Platform } from "react-native"
 import ImagePicker, { Image } from "react-native-image-crop-picker"
 import { osMajorVersion } from "./hardware"
 
+/* ... */
+
 export async function requestPhotos(): Promise<Image[]> {
   if (Platform.OS === "ios" && osMajorVersion() >= 14) {
     return LegacyNativeModules.ARPHPhotoPickerModule.requestPhotos()

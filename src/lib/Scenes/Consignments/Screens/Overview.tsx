@@ -6,6 +6,7 @@ import AsyncStorage from "@react-native-community/async-storage"
 import type NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Dimensions, ScrollView, View } from "react-native"
 
+import { ActionSheetOptions, connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet"
 import { AddEditPhotos } from "lib/Components/Photos/AddEditPhotos"
 import { dismissModal } from "lib/navigation/navigate"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
@@ -28,6 +29,7 @@ const consignmentsStateKey = "ConsignmentsStoredState"
 interface Props {
   navigator: NavigatorIOS
   setup: ConsignmentSetup
+  showActionSheetWithOptions: (options: ActionSheetOptions, callback: (i: number) => void) => void
 }
 
 interface State extends ConsignmentSetup {
@@ -43,7 +45,7 @@ const track: Track<Props, State> = _track
   context_screen: Schema.PageNames.ConsignmentsOverView,
   context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
 })
-export default class Overview extends React.Component<Props, State> {
+class Overview extends React.Component<Props, State> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
@@ -87,10 +89,36 @@ export default class Overview extends React.Component<Props, State> {
         passProps: { initialPhotos: this.state.photos, photosUpdated: this.photosUpdated },
       })
     } else {
-      showPhotoActionSheet().then((images) => {
-        this.updatePhotos(images)
-      })
+      console.log("DEBUGANDROID called gotoPhotos")
+
+      console.log("DEBUGANDROID called showActionSheet prop", this.props.showActionSheetWithOptions)
+
+      this._onOpenActionSheet()
+      // showPhotoActionSheet().then((images) => {
+      //   this.updatePhotos(images)
+      // })
     }
+  }
+
+  _onOpenActionSheet = () => {
+    // Same interface as https://facebook.github.io/react-native/docs/actionsheetios.html
+    const options = ["Delete", "Save", "Cancel"]
+    const destructiveButtonIndex = 0
+    const cancelButtonIndex = 2
+
+    console.log("DEBUGANDROID on open action sheet")
+
+    this.props.showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+        destructiveButtonIndex,
+        useModal: true,
+      },
+      (buttonIndex) => {
+        // Do something here depending on the button index selected
+      }
+    )
   }
 
   goToMetadataTapped = () =>
@@ -311,3 +339,6 @@ export default class Overview extends React.Component<Props, State> {
     )
   }
 }
+
+const ConnectedOverview = connectActionSheet(Overview)
+export default ConnectedOverview
