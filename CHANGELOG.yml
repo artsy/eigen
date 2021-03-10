@@ -17,6 +17,7 @@ upcoming:
     - Allow adding pricePaid info in my collection - barry, brian
     - Adds inquiry make offer button - lily
     - Add extra safety to extractNodes - david, mounir
+    - Display make offer button in conversation only when there is no active order - starsirius
 
 releases:
   - version: 6.8.0
