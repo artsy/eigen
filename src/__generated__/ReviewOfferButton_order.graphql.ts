@@ -63,16 +63,10 @@ return {
     },
     {
       "alias": null,
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "format",
-          "value": "MMM D"
-        }
-      ],
+      "args": null,
       "kind": "ScalarField",
       "name": "stateExpiresAt",
-      "storageKey": "stateExpiresAt(format:\"MMM D\")"
+      "storageKey": null
     },
     {
       "alias": null,
@@ -144,5 +138,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'e6c099c6aa75c3a44b092e0285c714e9';
+(node as any).hash = '3d06ea178ff25f84f9120cbaae133d3d';
 export default node;

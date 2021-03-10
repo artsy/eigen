@@ -25,11 +25,10 @@ export const returnButtonMessaging = ({
   } else if (state === "CANCELED" && stateReason?.includes("_lapsed")) {
     message = `${offerType} Expired`
     backgroundColor = "black60"
-  } else if (lastOfferFromParticipant === "SELLER") {
+  } else if (state === "SUBMITTED" && lastOfferFromParticipant === "SELLER") {
     backgroundColor = "copper100"
     message = `${offerType} Received`
     subMessage = `Expires in ${hoursTillExpiration}hr`
-    console.log("WOOO")
     showMoneyIcon = false
   } else if (state === "APPROVED" && lastOfferFromParticipant === "BUYER") {
     message = `${offerType} Accepted - Please Confirm`
