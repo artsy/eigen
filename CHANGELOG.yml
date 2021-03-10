@@ -16,6 +16,7 @@ upcoming:
     - Update consignment photo selection flow for iOS 14 - brian
     - Allow adding pricePaid info in my collection - barry, brian
     - Adds inquiry make offer button - lily
+    - Add extra safety to extractNodes - david, mounir
 
 releases:
   - version: 6.8.0
