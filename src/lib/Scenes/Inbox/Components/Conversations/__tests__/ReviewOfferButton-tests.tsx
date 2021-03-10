@@ -163,7 +163,7 @@ describe("ReviewOfferButton", () => {
     expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
   })
 
-  it.only("tapping it opens the review offer webview", () => {
+  it("tapping it opens the review offer webview", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
         state: "SUBMITTED",
