@@ -52,8 +52,10 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
   })
 
   const onTap = (orderID: string | null) => {
-    console.log("TAP!")
-    navigate(`/orders/${orderID}`)
+    navigate(`/orders/${orderID}`, {
+      modal: true,
+      passProps: { orderID },
+    })
   }
 
   return (
