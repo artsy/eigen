@@ -133,7 +133,7 @@ export function unsafe_getFeatureFlag(key: FeatureName) {
 
 export function getCurrentEmissionState() {
   const state = globalStoreInstance?.getState() ?? null
-  if (Platform.OS === "ios") {
+  if (Platform.OS === "ios" && !__TEST__) {
     return state?.native.sessionState ?? LegacyNativeModules.ARNotificationsManager.nativeState
   }
 
@@ -167,6 +167,7 @@ export function useIsStaging() {
  * This is safe to use in contexts that don't require reactivity, e.g. onPress handlers.
  */
 export function unsafe__getEnvironment() {
+  console.log("gettin environment")
   const {
     environment: { env, strings },
     echo: { stripePublishableKey },

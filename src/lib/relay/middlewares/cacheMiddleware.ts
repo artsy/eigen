@@ -7,6 +7,9 @@ const IGNORE_CACHE_CLEAR_MUTATION_ALLOWLIST = ["ArtworkMarkAsRecentlyViewedQuery
 
 export const cacheMiddleware = () => {
   return (next: MiddlewareNextFn) => async (req: GraphQLRequest) => {
+    if (__TEST__) {
+      return next(req)
+    }
     const { cacheConfig, operation, variables } = req
     const isQuery = operation.operationKind === "query"
     const queryID = operation.id
