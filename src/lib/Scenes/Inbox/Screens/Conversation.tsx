@@ -1,6 +1,7 @@
 import NetInfo from "@react-native-community/netinfo"
 import { Conversation_me } from "__generated__/Conversation_me.graphql"
 import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
+import { ReviewOfferButton_order } from "__generated__/ReviewOfferButton_order.graphql"
 import ConnectivityBanner from "lib/Components/ConnectivityBanner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import Composer from "lib/Scenes/Inbox/Components/Conversations/Composer"
@@ -153,7 +154,7 @@ export class Conversation extends React.Component<Props, State> {
 
     return (
       <Composer
-        order={conversationOrder as any}
+        order={(conversationOrder as unknown) as ReviewOfferButton_order}
         conversationID={conversation?.internalID}
         disabled={this.state.sendingMessage || !this.state.isConnected}
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -261,7 +262,6 @@ export const ConversationFragmentContainer = createFragmentContainer(Conversatio
         orderConnection(first: 10, participantType: BUYER) {
           edges {
             node {
-              state
               ...ReviewOfferButton_order
             }
           }

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 52a211d55b890c6782858234fd7f1802 */
+/* @relayHash 1c5cbf5c25a2cafba1f047a0e17da814 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -93,7 +93,6 @@ fragment Conversation_me on Me {
       edges {
         node {
           __typename
-          state
           ...ReviewOfferButton_order
           id
         }
@@ -209,7 +208,7 @@ fragment ReviewOfferButton_order on CommerceOfferOrder {
   internalID
   state
   stateReason
-  stateExpiresAt(format: "MMM D")
+  stateExpiresAt
   lastOffer {
     fromParticipant
     createdAt
@@ -675,12 +674,12 @@ return {
                         "plural": false,
                         "selections": [
                           (v1/*: any*/),
-                          (v12/*: any*/),
                           (v7/*: any*/),
                           {
                             "kind": "InlineFragment",
                             "selections": [
                               (v4/*: any*/),
+                              (v12/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -690,16 +689,10 @@ return {
                               },
                               {
                                 "alias": null,
-                                "args": [
-                                  {
-                                    "kind": "Literal",
-                                    "name": "format",
-                                    "value": "MMM D"
-                                  }
-                                ],
+                                "args": null,
                                 "kind": "ScalarField",
                                 "name": "stateExpiresAt",
-                                "storageKey": "stateExpiresAt(format:\"MMM D\")"
+                                "storageKey": null
                               },
                               {
                                 "alias": null,
@@ -952,7 +945,7 @@ return {
     ]
   },
   "params": {
-    "id": "52a211d55b890c6782858234fd7f1802",
+    "id": "1c5cbf5c25a2cafba1f047a0e17da814",
     "metadata": {},
     "name": "ConversationQuery",
     "operationKind": "query",

@@ -104,6 +104,21 @@ describe("ReviewOfferButton", () => {
     expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(0)
   })
 
+  it("doesn't render when the last offer is from a buyer and it has not been accepted or rejected by the seller", () => {
+    const wrapper = getWrapper({
+      CommerceOrder: () => ({
+        state: "SUBMITTED",
+        lastOffer: {
+          fromParticipant: "BUYER",
+        },
+      }),
+    })
+
+    const text = extractText(wrapper.root)
+    expect(text).not.toContain("Offer Received")
+    expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(0)
+  })
+
   it("shows correct message for accepted offers", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
@@ -115,7 +130,7 @@ describe("ReviewOfferButton", () => {
     expect(text).toContain("Offer Accepted - Please Confirm")
   })
 
-  it.only("shows correct message and icon for received counteroffers", () => {
+  it("shows correct message and icon for received counteroffers", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
         state: "SUBMITTED",
@@ -127,8 +142,7 @@ describe("ReviewOfferButton", () => {
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Offer Received")
-    // expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
-    expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
   })
 
   it("shows correct messaging and icon when offer is a counteroffer", () => {
@@ -149,10 +163,13 @@ describe("ReviewOfferButton", () => {
     expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
   })
 
-  it("tapping it opens the review offer webview when an order has not yet been approved", () => {
+  it.only("tapping it opens the review offer webview", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
         state: "SUBMITTED",
+        lastOffer: {
+          fromParticipant: "SELLER",
+        },
         offers: {
           edges: [{ node: { internalID: "1234" } }, { node: { internalID: "4567" } }],
         },
@@ -160,6 +177,6 @@ describe("ReviewOfferButton", () => {
     })
 
     wrapper.root.findByType(TouchableWithoutFeedback).props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/orders/<CommerceOfferOrder-mock-id-2>/review")
+    expect(navigate).toHaveBeenCalledWith("/orders/<CommerceOfferOrder-mock-id-2>")
   })
 })

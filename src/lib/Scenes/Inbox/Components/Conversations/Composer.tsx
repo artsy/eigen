@@ -8,7 +8,7 @@ import React from "react"
 import { Dimensions, TextInput, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
-import { ReviewOfferButton } from "./ReviewOfferButton"
+import { ReviewOfferButtonFragmentContainer as ReviewOfferButton } from "./ReviewOfferButton"
 
 const isPad = Dimensions.get("window").width > 700
 

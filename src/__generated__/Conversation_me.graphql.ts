@@ -43,7 +43,6 @@ export type Conversation_me = {
         readonly orderConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
-                    readonly state: CommerceOrderStateEnum;
                     readonly " $fragmentRefs": FragmentRefs<"ReviewOfferButton_order">;
                 } | null;
             } | null> | null;
@@ -78,13 +77,6 @@ v2 = {
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
-  "storageKey": null
-},
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "state",
   "storageKey": null
 };
 return {
@@ -206,7 +198,13 @@ return {
                       "kind": "InlineFragment",
                       "selections": [
                         (v2/*: any*/),
-                        (v3/*: any*/)
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "state",
+                          "storageKey": null
+                        }
                       ],
                       "type": "CommerceOfferOrder",
                       "abstractKey": null
@@ -309,7 +307,6 @@ return {
                   "name": "node",
                   "plural": false,
                   "selections": [
-                    (v3/*: any*/),
                     {
                       "args": null,
                       "kind": "FragmentSpread",
@@ -337,5 +334,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'aa4ddb613c608fdf9d07380f3150e58b';
+(node as any).hash = 'c636e056a603bddb7a5721e123949577';
 export default node;

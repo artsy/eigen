@@ -14,8 +14,12 @@ export interface ReviewOfferButtonProps {
 }
 
 export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) => {
-  console.warn("order state fp", order.lastOffer?.fromParticipant)
-  if (order.state == null || order.state === "ABANDONED" || order.state === "PENDING") {
+  if (
+    order.state == null ||
+    order.state === "ABANDONED" ||
+    order.state === "PENDING" ||
+    (order.state === "SUBMITTED" && order.lastOffer?.fromParticipant === "BUYER")
+  ) {
     return null
   }
 
@@ -41,17 +45,15 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
       hoursTillExpiration: hours,
     })
 
-    console.log("showmoneyicon", showMoneyIcon)
-
     setButtonMessage(message)
     setButtonSubMessage(subMessage)
     setShowMoneyIconInButton(showMoneyIcon)
     setButtonBackgroundColor(backgroundColor)
-    console.log("showmoneyicon IN BUTTON", showMoneyIconInButton)
   })
 
   const onTap = (orderID: string | null) => {
-    navigate(`/orders/${orderID}/review`)
+    console.log("TAP!")
+    navigate(`/orders/${orderID}`)
   }
 
   return (
@@ -66,9 +68,9 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
       >
         <Flex flexDirection="row">
           {showMoneyIconInButton ? (
-            <AlertCircleFillIcon mt="3px" fill="white100" />
-          ) : (
             <MoneyFillIcon mt="3px" fill="white100" />
+          ) : (
+            <AlertCircleFillIcon mt="3px" fill="white100" />
           )}
           <Flex flexDirection="column" pl={1}>
             <Text color="white100" variant="mediumText">
@@ -93,7 +95,7 @@ export const ReviewOfferButtonFragmentContainer = createFragmentContainer(Review
       internalID
       state
       stateReason
-      stateExpiresAt(format: "MMM D")
+      stateExpiresAt
       lastOffer {
         fromParticipant
         createdAt
