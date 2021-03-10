@@ -20,7 +20,7 @@
             return nil;
         }
     }];
-    [[NSOperationQueue mainQueue] addOperation:operation];
+    [[NSOperationQueue new] addOperation:operation];
 }
 
 @end
