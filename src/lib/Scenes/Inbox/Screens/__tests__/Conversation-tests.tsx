@@ -58,6 +58,65 @@ it("clicking on detail link opens pushes detail screen into navigator", () => {
   })
 })
 
+describe("isOfferableFromInquiry prop", () => {
+  describe("artwork is offerable from inquiry and there is no submitted order", () => {
+    it("is true", () => {
+      const conversation = renderWithWrappers(
+        <ConversationFragmentContainer me={props as any} navigator={mockNavigator as any} />
+      )
+      expect(conversation.root.findByType(Composer).props.isOfferableFromInquiry).toBe(true)
+    })
+  })
+
+  describe("artwork is not offerable from inquiry and there is no submitted order", () => {
+    it("is false", () => {
+      props.conversation.items[0].item.isOfferableFromInquiry = false
+
+      const conversation = renderWithWrappers(
+        <ConversationFragmentContainer me={props as any} navigator={mockNavigator as any} />
+      )
+      expect(conversation.root.findByType(Composer).props.isOfferableFromInquiry).toBe(false)
+    })
+  })
+
+  describe("artwork is offerable from inquiry and there is a submitted order", () => {
+    it("is false", () => {
+      props.conversation.submittedOrderConnection.edges = [
+        {
+          node: {
+            internalID: "401",
+            state: "SUBMITTED",
+          },
+        },
+      ]
+
+      const conversation = renderWithWrappers(
+        <ConversationFragmentContainer me={props as any} navigator={mockNavigator as any} />
+      )
+      expect(conversation.root.findByType(Composer).props.isOfferableFromInquiry).toBe(false)
+    })
+  })
+
+  describe("artwork is not offerable from inquiry and there is a submitted order", () => {
+    it("is false", () => {
+      props.conversation.items[0].item.isOfferableFromInquiry = false
+      props.conversation.submittedOrderConnection.edges = [
+        {
+          node: {
+            internalID: "401",
+            state: "SUBMITTED",
+          },
+        },
+      ]
+
+      const conversation = renderWithWrappers(
+        <ConversationFragmentContainer me={props as any} navigator={mockNavigator as any} />
+      )
+      expect(conversation.root.findByType(Composer).props.isOfferableFromInquiry).toBe(false)
+    })
+  })
+})
+
 const props = {
   initials: "JC",
   conversation: {
@@ -100,6 +159,7 @@ const props = {
           title: "The Mythic Being: Sol’s Drawing #1–5",
           date: "1974",
           artist_names: "Adrian Piper",
+          isOfferableFromInquiry: true,
           image: {
             url: "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
             image_url: "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
@@ -107,5 +167,8 @@ const props = {
         },
       },
     ],
+    submittedOrderConnection: {
+      edges: [] as any[],
+    },
   },
 }
