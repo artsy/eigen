@@ -154,6 +154,7 @@ static ARAppDelegate *_sharedInstance = nil;
     _landingURLRepresentation = self.landingURLRepresentation ?: @"https://artsy.net";
 
     [[ARLogger sharedLogger] startLogging];
+    [ARRouter setup];
 
     [self setupEmission];
     self.viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Main" initialProperties:@{}];
