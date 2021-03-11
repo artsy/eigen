@@ -17,7 +17,8 @@ upcoming:
     - Allow adding pricePaid info in my collection - barry, brian
     - Adds inquiry make offer button - lily
     - Add extra safety to extractNodes - david, mounir
-    - Fix fancy modal height on android- mounir
+    - Fix sailthru deeplinks causing crash - brian, barry, steven
+    - Fix fancy modal height on android - mounir
 
 releases:
   - version: 6.8.0
