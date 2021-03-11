@@ -62,8 +62,9 @@ export default class Confirmation extends React.Component<Props, State> {
 
   handleBackButton = () => {
     if (this.state.submissionState === SubmissionTypes.Submitting) {
-      Alert.alert("Consignment Submission In Progress", "Please wait until your consignment has been submitted.", [
-        { text: "OK" },
+      Alert.alert("Leave this screen?", "Your consignment submission is still in progress", [
+        { text: "Leave Now", onPress: () => dismissModal() },
+        { text: "Wait", style: "default" },
       ])
     } else {
       dismissModal()

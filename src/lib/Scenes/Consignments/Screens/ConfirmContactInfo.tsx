@@ -39,7 +39,7 @@ const ConfirmContactInfo: React.FC<{
       const onBackPress = () => {
         if (!submissionRequestValidationCheck()) {
           Alert.alert("Leave this screen?", "Your consignment submission is still in progress", [
-            { text: "Leave Now", onPress: dismissModal },
+            { text: "Leave Now", onPress: () => dismissModal() },
             { text: "Wait", style: "default" },
           ])
         } else {
