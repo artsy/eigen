@@ -19,6 +19,7 @@ upcoming:
     - Add extra safety to extractNodes - david, mounir
     - Fix sailthru deeplinks causing crash - brian, barry, steven
     - Fix fancy modal height on android - mounir
+    - Fix fancy modal status bar color - mounir
 
 releases:
   - version: 6.8.0
