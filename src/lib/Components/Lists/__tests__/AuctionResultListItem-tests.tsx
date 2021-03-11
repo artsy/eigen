@@ -1,4 +1,4 @@
-import { AuctionResultTestsQuery } from "__generated__/AuctionResultTestsQuery.graphql"
+import { AuctionResultListItemTestsQuery } from "__generated__/AuctionResultListItemTestsQuery.graphql"
 import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -7,7 +7,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { mockEnvironmentPayload } from "../../../tests/mockEnvironmentPayload"
-import { AuctionResultFragmentContainer } from "../AuctionResult"
+import { AuctionResultFragmentContainer } from "../AuctionResultListItem"
 
 jest.unmock("react-relay")
 
@@ -16,16 +16,16 @@ describe("AuctionResults", () => {
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   const TestRenderer = () => (
-    <QueryRenderer<AuctionResultTestsQuery>
+    <QueryRenderer<AuctionResultListItemTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query AuctionResultTestsQuery @relay_test_operation {
+        query AuctionResultListItemTestsQuery @relay_test_operation {
           artist(id: "some-id") {
             auctionResultsConnection(first: 1) {
               edges {
                 node {
                   id
-                  ...AuctionResult_auctionResult
+                  ...AuctionResultListItem_auctionResult
                 }
               }
             }

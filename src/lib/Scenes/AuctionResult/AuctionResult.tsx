@@ -18,6 +18,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { getImageDimensions } from "../Sale/Components/SaleArtworkListItem"
+import { auctionResultHasPrice, auctionResultText } from "./helpers"
 
 const CONTAINER_HEIGHT = 80
 
@@ -126,13 +127,8 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     details.push(makeRow("Description", auctionResult.description, { fullWidth: true }))
   }
 
-  const hasSalePrice = !!auctionResult.priceRealized?.display
-  const now = moment()
-  const isFromPastMonth = auctionResult.saleDate
-    ? moment(auctionResult.saleDate).isAfter(now.subtract(1, "month"))
-    : false
-  const salePriceMessage =
-    auctionResult.boughtIn === true ? "Bought in" : isFromPastMonth ? "Awaiting results" : "Not available"
+  const hasSalePrice = auctionResultHasPrice(auctionResult)
+  const salePriceMessage = auctionResultText(auctionResult)
 
   const renderRealizedPriceModal = () => (
     <>
@@ -235,6 +231,7 @@ export const AuctionResultQueryRenderer: React.FC<{
       query={graphql`
         query AuctionResultQuery($auctionResultInternalID: String!, $artistID: String!) {
           auctionResult(id: $auctionResultInternalID) {
+            ...AuctionResultListItem_auctionResult
             internalID
             artistID
             boughtIn
@@ -265,6 +262,7 @@ export const AuctionResultQueryRenderer: React.FC<{
             performance {
               mid
             }
+            currency
             priceRealized {
               cents
               centsUSD

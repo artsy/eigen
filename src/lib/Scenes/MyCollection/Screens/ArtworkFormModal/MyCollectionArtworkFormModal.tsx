@@ -108,6 +108,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
             artworkId: props.artwork.internalID,
             externalImageUrls,
             pricePaidCents: pricePaidCents ?? null,
+            pricePaidCurrency,
             ...cleanArtworkPayload(others),
             ...explicitlyClearedFields(others, dirtyFormCheckValues),
           })

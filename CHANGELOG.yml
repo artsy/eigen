@@ -1,12 +1,32 @@
 upcoming:
-  version: 6.8.0
+  version: 6.8.1
   date: TBD
   dev:
-    - Improve relay environment setup - david
-  user_facing:
+    - Fix auction results showing zero price - pavlos, steve
+    - Migrate LoadFailureView to typescript - adam, brian, david, mounir, pavlos
+    - Migrate environment configuration to TypeScript - david
+    - Improve bottom tabs dev state management  - david, mounir
+    - Use adjustPan for windowSoftInputMode  - mounir
+    - Make android app full-bleed - david
+    - Make auction screens mountable on android - barry, brian
+    - Support deep links on android - adam, barry, brian, david, mounir, steven
+    - Fix sticky tab page layout problems on android - david
     - Override Android back button in consignment form - adam
+  user_facing:
+    - Adds inquiry checkout offer status CTA - lily
+    - Update consignment photo selection flow for iOS 14 - brian
+    - Allow adding pricePaid info in my collection - barry, brian
+    - Adds inquiry make offer button - lily
+    - Add extra safety to extractNodes - david, mounir
+    - Fix sailthru deeplinks causing crash - brian, barry, steven
+    - Fix fancy modal height on android - mounir
 
 releases:
+  - version: 6.8.0
+    date: Mar 3, 2021
+    user_facing:
+      - Fix a bug causing users to be signed into a test environment - david
+
   - version: 6.7.9
     date: Mar 2, 2021
     dev:

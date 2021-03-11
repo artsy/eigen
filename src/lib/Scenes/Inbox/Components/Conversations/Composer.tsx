@@ -6,7 +6,7 @@ import { Button, color, Flex, themeProps } from "palette"
 import React from "react"
 import { Dimensions, TextInput, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
-import { InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
+import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -35,6 +35,7 @@ interface Props {
   value?: string
   artworkID?: string | null
   isOfferableFromInquiry?: boolean | null
+  conversationID?: string | null | undefined
 }
 
 interface State {
@@ -93,16 +94,17 @@ export default class Composer extends React.Component<Props, State> {
     const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
 
     // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
-    const showInquiryMakeOfferButton =
+    const showOpenInquiryModalButton =
       unsafe_getFeatureFlag("AROptionsInquiryCheckout") && this.props.isOfferableFromInquiry
+
     return (
       <ScreenDimensionsContext.Consumer>
         {({ safeAreaInsets }) => (
           <StyledKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={safeAreaInsets.top}>
             {this.props.children}
             <Flex flexDirection="column">
-              {!!showInquiryMakeOfferButton && this.props.artworkID != null && (
-                <InquiryMakeOfferButton artworkID={this.props.artworkID} />
+              {!!showOpenInquiryModalButton && this.props.artworkID != null && (
+                <OpenInquiryModalButton artworkID={this.props.artworkID} conversationID={this.props.conversationID} />
               )}
               <Container active={this.state.active}>
                 <TextInput

@@ -15,7 +15,7 @@ export type MyCollectionArtworkArtistAuctionResults_artwork = {
                 readonly node: {
                     readonly id: string;
                     readonly internalID: string;
-                    readonly " $fragmentRefs": FragmentRefs<"AuctionResult_auctionResult">;
+                    readonly " $fragmentRefs": FragmentRefs<"AuctionResultListItem_auctionResult">;
                 } | null;
             } | null> | null;
         } | null;
@@ -115,7 +115,7 @@ return {
                     {
                       "args": null,
                       "kind": "FragmentSpread",
-                      "name": "AuctionResult_auctionResult"
+                      "name": "AuctionResultListItem_auctionResult"
                     }
                   ],
                   "storageKey": null
@@ -134,5 +134,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '2ae87f46d1b38f9b26baf45c714f8d46';
+(node as any).hash = '487d9cb542ad080fb046445444d3918b';
 export default node;

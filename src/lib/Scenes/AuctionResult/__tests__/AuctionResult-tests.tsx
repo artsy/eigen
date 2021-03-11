@@ -54,7 +54,8 @@ describe("AuctionResult", () => {
       AuctionResult: () => ({
         boughtIn: true,
         priceRealized: {
-          display: false,
+          display: null,
+          cents: 0,
         },
       }),
     })
