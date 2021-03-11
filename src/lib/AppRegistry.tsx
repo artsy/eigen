@@ -5,7 +5,7 @@ import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { Theme } from "palette"
-import { BidFlowQueryRenderer } from "./Containers/BidFlow"
+import { BidFlow } from "./Containers/BidFlow"
 import { GeneQueryRenderer } from "./Containers/Gene"
 import { InboxWrapper } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
@@ -174,7 +174,7 @@ const Conversation: React.FC<ConversationProps> = screenTrack<ConversationProps>
  */
 type BidderFlowIntent = "bid" | "register"
 interface BidderFlowProps {
-  artworkID?: string
+  artworkID: string
   saleID: string
   intent: BidderFlowIntent
 }
@@ -182,7 +182,7 @@ interface BidderFlowProps {
 const BidderFlow: React.FC<BidderFlowProps> = ({ intent, ...restProps }) => {
   switch (intent) {
     case "bid":
-      return <BidFlowQueryRenderer {...restProps} />
+      return <BidFlow {...restProps} />
     case "register":
       return <RegistrationFlowQueryRenderer {...restProps} />
   }
@@ -331,10 +331,11 @@ export const modules = defineModules({
           alwaysPresentModally: true,
           fullBleed: true,
         })
-      : reactModule(BidFlowQueryRenderer, {
+      : reactModule(BidFlow, {
           alwaysPresentModally: true,
           hasOwnModalCloseButton: true,
         }),
+  // BidFlow is used by ARBidFlowViewController. Once that has been deleted we can delete this too.
   BidFlow: reactModule(BidderFlow),
   BottomTabs: reactModule(BottomTabs, { fullBleed: true }),
   City: reactModule(CityView, { fullBleed: true }),
