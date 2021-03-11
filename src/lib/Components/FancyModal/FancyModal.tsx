@@ -70,7 +70,7 @@ export const FancyModal: React.FC<{
   }, [visible])
 
   return (
-    <Modal transparent animated={false} visible={showingUnderlyingModal}>
+    <Modal transparent animated={false} visible={showingUnderlyingModal} statusBarTranslucent>
       <FancyModalContext.Provider value={context.nextLevel()}>{card.jsx}</FancyModalContext.Provider>
     </Modal>
   )
