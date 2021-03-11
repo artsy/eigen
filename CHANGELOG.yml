@@ -11,6 +11,7 @@ upcoming:
     - Make auction screens mountable on android - barry, brian
     - Support deep links on android - adam, barry, brian, david, mounir, steven
     - Fix sticky tab page layout problems on android - david
+    - Add feature flag for new artwork filters - iskounen
   user_facing:
     - Adds inquiry checkout offer status CTA - lily
     - Update consignment photo selection flow for iOS 14 - brian
