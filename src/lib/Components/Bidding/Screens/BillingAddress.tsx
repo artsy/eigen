@@ -180,8 +180,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
   }
 
   presentSelectCountry() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.navigator.push({
+    this.props.navigator?.push({
       component: SelectCountry,
       title: "",
       passProps: {
@@ -304,7 +303,10 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                   Country
                 </Serif>
 
-                <TouchableWithoutFeedback onPress={() => this.presentSelectCountry()}>
+                <TouchableWithoutFeedback
+                  testID="select-country-press-handler"
+                  onPress={() => this.presentSelectCountry()}
+                >
                   <Flex mb={3} p={3} pb={2} border={1} borderColor={errorForCountry ? "red100" : "black10"}>
                     {this.state.values.country ? (
                       <Serif size="3">{this.state.values.country.longName}</Serif>

@@ -34,7 +34,7 @@ interface SelectMaxBidState {
   context_screen: Schema.PageNames.BidFlowMaxBidPage,
   context_screen_owner_type: null,
 })
-class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBidState> {
+export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBidState> {
   state = {
     selectedBidIndex: 0,
     isRefreshingSaleArtwork: false,
