@@ -513,7 +513,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 onPress={isLoading ? () => null : () => this.props.navigator?.pop()}
               />
 
-              {requiresPaymentInformation || true ? (
+              {requiresPaymentInformation ? (
                 <PaymentInfo
                   navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
                   onCreditCardAdded={this.onCreditCardAdded.bind(this)}
