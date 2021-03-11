@@ -4,6 +4,7 @@ require("dotenv").config()
 
 import { GraphQLClient } from "graphql-request"
 import { values } from "lodash"
+import fetch from "node-fetch"
 import { exit, stdout } from "process"
 import puppeteer from "puppeteer"
 
@@ -25,113 +26,135 @@ const login = async (): Promise<{ userId: string; accessToken: string }> => {
 }
 
 const doIt = async (): Promise<never> => {
-  const { userId, accessToken } = await login()
-  const metaphysics = new GraphQLClient("https://metaphysics-staging.artsy.net/v2", {
-    headers: {
-      "X-Access-Token": accessToken,
-      "X-User-Id": userId,
-    },
-  })
+  // const { userId, accessToken } = await login()
+  // const metaphysics = new GraphQLClient("https://metaphysics-staging.artsy.net/v2", {
+  //   headers: {
+  //     "X-Access-Token": accessToken,
+  //     "X-User-Id": userId,
+  //   },
+  // })
 
-  const allQueries = values(require("../data/complete.queryMap.json")) as string[]
-  const problemQueries = allQueries.filter(
-    (q) =>
-      q.includes("$conversationID") ||
-      q.includes("ArtistRailNewSuggestionQuery") ||
-      q.includes("ArtistSeriesQuery") ||
-      q.includes("ArtworkMediumQuery") ||
-      q.includes("AuctionResultQuery") ||
-      q.includes("AutosuggestResultsQuery") ||
-      q.includes("BidFlowQuery") ||
-      q.includes("BidderPositionQuery") ||
-      q.includes("BottomTabsModelFetchCurrentUnreadConversationCountQuery") ||
-      q.includes("ConfirmBidRefetchQuery") ||
-      q.includes("ConsignmentsArtistQuery") ||
-      q.includes("ConversationQuery") ||
-      q.includes("FairArticlesQuery") ||
-      q.includes("FairExhibitorsQuery") ||
-      q.includes("FeatureQuery") ||
-      q.includes("GeneQuery") ||
-      q.includes("InboxOldQuery") ||
-      q.includes("MapRendererQuery") ||
-      q.includes("PartnerLocationsQuery") ||
-      q.includes("PartnerQuery") ||
-      q.includes("PartnerRefetchQuery") ||
-      q.includes("PriceSummaryQuery") ||
-      q.includes("RegistrationFlowQuery") ||
-      q.includes("SaleAboveTheFoldQuery") ||
-      q.includes("SaleActiveBidsRefetchQuery") ||
-      q.includes("SaleBelowTheFoldQuery") ||
-      q.includes("SaleInfoQueryRendererQuery") ||
-      q.includes("SaleRefetchQuery") ||
-      q.includes("SelectMaxBidRefetchQuery") ||
-      q.includes("ShowMoreInfoQuery") ||
-      q.includes("ShowQuery") ||
-      q.includes("VanityURLEntityQuery")
-  )
-  const allQueriesToCheck = allQueries.filter((q) => !problemQueries.includes(q))
-  const allNonTestQueries = allQueriesToCheck.filter(
-    (q) => !q.includes("Test") && !q.includes("Mock") && !q.includes("Fixtures")
-  )
-  const queries = allNonTestQueries.filter((q) => q.startsWith("query"))
-  const queriesWithoutVars = queries.filter((q) => !q.includes("$"))
-  const queriesWithCursor = queries.filter((q) => q.includes("$cursor"))
-  const queriesWithVars = queries.filter((q) => !queriesWithoutVars.includes(q) && !queriesWithCursor.includes(q))
-  const mutations = allNonTestQueries.filter((q) => q.startsWith("mutation"))
+  // const allQueries = values(require("../data/complete.queryMap.json")) as string[]
+  // const problemQueries = allQueries.filter(
+  //   (q) =>
+  //     q.includes("$conversationID") ||
+  //     q.includes("ArtistRailNewSuggestionQuery") ||
+  //     q.includes("ArtistSeriesQuery") ||
+  //     q.includes("ArtworkMediumQuery") ||
+  //     q.includes("AuctionResultQuery") ||
+  //     q.includes("AutosuggestResultsQuery") ||
+  //     q.includes("BidFlowQuery") ||
+  //     q.includes("BidderPositionQuery") ||
+  //     q.includes("BottomTabsModelFetchCurrentUnreadConversationCountQuery") ||
+  //     q.includes("ConfirmBidRefetchQuery") ||
+  //     q.includes("ConsignmentsArtistQuery") ||
+  //     q.includes("ConversationQuery") ||
+  //     q.includes("FairArticlesQuery") ||
+  //     q.includes("FairExhibitorsQuery") ||
+  //     q.includes("FeatureQuery") ||
+  //     q.includes("GeneQuery") ||
+  //     q.includes("InboxOldQuery") ||
+  //     q.includes("MapRendererQuery") ||
+  //     q.includes("PartnerLocationsQuery") ||
+  //     q.includes("PartnerQuery") ||
+  //     q.includes("PartnerRefetchQuery") ||
+  //     q.includes("PriceSummaryQuery") ||
+  //     q.includes("RegistrationFlowQuery") ||
+  //     q.includes("SaleAboveTheFoldQuery") ||
+  //     q.includes("SaleActiveBidsRefetchQuery") ||
+  //     q.includes("SaleBelowTheFoldQuery") ||
+  //     q.includes("SaleInfoQueryRendererQuery") ||
+  //     q.includes("SaleRefetchQuery") ||
+  //     q.includes("SelectMaxBidRefetchQuery") ||
+  //     q.includes("ShowMoreInfoQuery") ||
+  //     q.includes("ShowQuery") ||
+  //     q.includes("VanityURLEntityQuery")
+  // )
+  // const allQueriesToCheck = allQueries.filter((q) => !problemQueries.includes(q))
+  // const allNonTestQueries = allQueriesToCheck.filter(
+  //   (q) => !q.includes("Test") && !q.includes("Mock") && !q.includes("Fixtures")
+  // )
+  // const queries = allNonTestQueries.filter((q) => q.startsWith("query"))
+  // const queriesWithoutVars = queries.filter((q) => !q.includes("$"))
+  // const queriesWithCursor = queries.filter((q) => q.includes("$cursor"))
+  // const queriesWithVars = queries.filter((q) => !queriesWithoutVars.includes(q) && !queriesWithCursor.includes(q))
+  // const mutations = allNonTestQueries.filter((q) => q.startsWith("mutation"))
 
-  console.warn(`Skipping ${mutations.length} mutations`)
-  console.log(`Skipping ${allQueries.length - allNonTestQueries.length} test queries`)
-  console.warn(`Skipping ${queriesWithCursor.length} queries with cursors`)
+  // console.warn(`Skipping ${mutations.length} mutations`)
+  // console.log(`Skipping ${allQueries.length - allNonTestQueries.length} test queries`)
+  // console.warn(`Skipping ${queriesWithCursor.length} queries with cursors`)
 
   type Error = { request: string; error: string }
   const errors: Error[] = [] as Error[]
-  const executeRequests = async (
-    requests: string[],
-    description: string,
-    options: { verbose?: boolean; vars?: { [Var: string]: any } } = { verbose: false }
-  ) => {
-    const log = (...args: Parameters<typeof console.log>) => {
-      if (options.verbose) {
-        console.log(...args)
-      }
-    }
+  // const executeRequests = async (
+  //   requests: string[],
+  //   description: string,
+  //   options: { verbose?: boolean; vars?: { [Var: string]: any } } = { verbose: false }
+  // ) => {
+  //   const log = (...args: Parameters<typeof console.log>) => {
+  //     if (options.verbose) {
+  //       console.log(...args)
+  //     }
+  //   }
 
-    console.log(`Running ${requests.length} ${description}`)
-    await Promise.all(
-      requests.map(async (req) => {
-        try {
-          log(req)
-          const response = await metaphysics.request(req, options.vars)
-          stdout.write(".")
-          log(JSON.stringify(response))
-        } catch (e) {
-          stdout.write("x")
-          errors.push({ request: req, error: e })
-        }
-      })
-    )
-    console.log("")
+  //   console.log(`Running ${requests.length} ${description}`)
+  //   await Promise.all(
+  //     requests.map(async (req) => {
+  //       try {
+  //         log(req)
+  //         const response = await metaphysics.request(req, options.vars)
+  //         stdout.write(".")
+  //         log(JSON.stringify(response))
+  //       } catch (e) {
+  //         stdout.write("x")
+  //         errors.push({ request: req, error: e })
+  //       }
+  //     })
+  //   )
+  //   console.log("")
+  // }
+
+  // await executeRequests(queriesWithoutVars, "no-var queries")
+
+  // await executeRequests(queriesWithVars, "var queries", {
+  //   vars: {
+  //     artworkID: "felipe-pantone-subtractive-variability-silk-robe-w-slash-j-balvin",
+  //     artworkSlug: "felipe-pantone-subtractive-variability-silk-robe-w-slash-j-balvin",
+  //     fairID: "london-art-fair-edit",
+  //     citySlug: "athens-greece",
+  //     artistInternalID: "4dd1584de0091e000100207c", // banksy
+  //     artistSlug: "banksy",
+  //     artistID: "banksy",
+  //     medium: "prints",
+  //     collectionID: "agnes-martin-lithographs",
+  //     viewingRoomID: "movart-mario-macilau-circle-of-memories",
+  //     isPad: false,
+  //     heroImageVersion: "NARROW",
+  //     count: 4,
+  //   },
+  // })
+
+  try {
+    await fetch("https://volley.artsy.net/report", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        serviceName: "eigen-staging",
+        metrics: [
+          {
+            type: "count",
+            // type: "count",
+            name: "mp-error.test-error3",
+            value: [6],
+          },
+        ],
+      }),
+    })
+  } catch (err) {
+    console.error("volleyClient.ts", "Failed to post metrics to volley", err)
   }
-
-  await executeRequests(queriesWithoutVars, "no-var queries")
-
-  await executeRequests(queriesWithVars, "var queries", {
-    vars: {
-      artworkID: "felipe-pantone-subtractive-variability-silk-robe-w-slash-j-balvin",
-      artworkSlug: "felipe-pantone-subtractive-variability-silk-robe-w-slash-j-balvin",
-      fairID: "london-art-fair-edit",
-      citySlug: "athens-greece",
-      artistInternalID: "4dd1584de0091e000100207c", // banksy
-      artistSlug: "banksy",
-      artistID: "banksy",
-      medium: "prints",
-      collectionID: "agnes-martin-lithographs",
-      viewingRoomID: "movart-mario-macilau-circle-of-memories",
-      isPad: false,
-      heroImageVersion: "NARROW",
-      count: 4,
-    },
-  })
 
   // end game
   if (errors.length !== 0) {
@@ -143,6 +166,8 @@ const doIt = async (): Promise<never> => {
       console.log(error)
     })
     console.error(`Again, ${errors.length} queries failed. Look above for more details.`)
+
+    // send failures to datadog
     exit(-1)
   }
   console.log("Success! Our queries are so so fresh.")
@@ -150,4 +175,3 @@ const doIt = async (): Promise<never> => {
 }
 
 doIt()
-
