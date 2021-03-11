@@ -325,16 +325,11 @@ export const modules = defineModules({
           alwaysPresentModally: true,
           hasOwnModalCloseButton: true,
         }),
-  AuctionBidArtwork:
-    Platform.OS === "ios"
-      ? nativeModule({
-          alwaysPresentModally: true,
-          fullBleed: true,
-        })
-      : reactModule(BidFlow, {
-          alwaysPresentModally: true,
-          hasOwnModalCloseButton: true,
-        }),
+  AuctionBidArtwork: reactModule(BidFlow, {
+    alwaysPresentModally: true,
+    hasOwnModalCloseButton: true,
+    fullBleed: true,
+  }),
   // BidFlow is used by ARBidFlowViewController. Once that has been deleted we can delete this too.
   BidFlow: reactModule(BidderFlow),
   BottomTabs: reactModule(BottomTabs, { fullBleed: true }),
