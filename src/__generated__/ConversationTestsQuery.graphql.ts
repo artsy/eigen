@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 88c722ac24f37caf9d17f892e4a23c2a */
+/* @relayHash b9a9882210cae5545c5647362b44a8d4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -145,6 +145,24 @@ fragment Messages_conversation on Conversation {
   }
   initialMessage
   lastMessageID
+  orderConnection(first: 10, participantType: BUYER) {
+    edges {
+      node {
+        __typename
+        orderHistory {
+          ...OrderUpdate_event
+          __typename
+          ... on CommerceOrderStateChangedEvent {
+            createdAt
+          }
+          ... on CommerceOfferSubmittedEvent {
+            createdAt
+          }
+        }
+        id
+      }
+    }
+  }
   messagesConnection(first: 10, sort: DESC) {
     pageInfo {
       startCursor
@@ -155,6 +173,7 @@ fragment Messages_conversation on Conversation {
     edges {
       cursor
       node {
+        __typename
         id
         internalID
         isFromUser
@@ -172,7 +191,6 @@ fragment Messages_conversation on Conversation {
           ...FileDownload_attachment
         }
         ...Message_message
-        __typename
       }
     }
   }
@@ -191,6 +209,28 @@ fragment Messages_conversation on Conversation {
         __isNode: __typename
         id
       }
+    }
+  }
+}
+
+fragment OrderUpdate_event on CommerceOrderEventUnion {
+  __isCommerceOrderEventUnion: __typename
+  __typename
+  ... on CommerceOrderStateChangedEvent {
+    createdAt
+    stateReason
+    state
+  }
+  ... on CommerceOfferSubmittedEvent {
+    createdAt
+    offer {
+      amount
+      fromParticipant
+      respondsTo {
+        fromParticipant
+        id
+      }
+      id
     }
   }
 }
@@ -339,17 +379,38 @@ v12 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "createdAt",
+  "name": "state",
   "storageKey": null
 },
 v13 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "stateReason",
+  "storageKey": null
+},
+v14 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "createdAt",
+  "storageKey": null
+},
+v15 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "fromParticipant",
+  "storageKey": null
+},
+v16 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "email",
   "storageKey": null
 },
-v14 = [
+v17 = [
   (v11/*: any*/),
   {
     "kind": "Literal",
@@ -357,59 +418,82 @@ v14 = [
     "value": "DESC"
   }
 ],
-v15 = {
-  "enumValues": null,
-  "nullable": true,
-  "plural": false,
-  "type": "ID"
-},
-v16 = {
-  "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "String"
-},
-v17 = {
-  "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "ID"
-},
 v18 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
-  "type": "String"
+  "type": "ID"
 },
 v19 = {
   "enumValues": null,
-  "nullable": true,
+  "nullable": false,
   "plural": false,
-  "type": "Image"
+  "type": "String"
 },
 v20 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
-  "type": "Float"
+  "type": "ID"
 },
 v21 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
-  "type": "Boolean"
+  "type": "String"
 },
 v22 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Image"
+},
+v23 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "Float"
+},
+v24 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Boolean"
+},
+v25 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "Boolean"
 },
-v23 = {
+v26 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "CommerceOffer"
+},
+v27 = {
+  "enumValues": [
+    "BUYER",
+    "SELLER"
+  ],
+  "nullable": true,
+  "plural": false,
+  "type": "CommerceOrderParticipantEnum"
+},
+v28 = {
+  "enumValues": [
+    "ABANDONED",
+    "APPROVED",
+    "CANCELED",
+    "FULFILLED",
+    "PENDING",
+    "REFUNDED",
+    "SUBMITTED"
+  ],
+  "nullable": false,
+  "plural": false,
+  "type": "CommerceOrderStateEnum"
 };
 return {
   "fragment": {
@@ -647,20 +731,8 @@ return {
                             "abstractKey": "__isCommerceOrder"
                           },
                           (v4/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "state",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "stateReason",
-                            "storageKey": null
-                          },
+                          (v12/*: any*/),
+                          (v13/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -669,6 +741,73 @@ return {
                             "storageKey": null
                           },
                           (v7/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": null,
+                            "kind": "LinkedField",
+                            "name": "orderHistory",
+                            "plural": true,
+                            "selections": [
+                              {
+                                "kind": "TypeDiscriminator",
+                                "abstractKey": "__isCommerceOrderEventUnion"
+                              },
+                              (v1/*: any*/),
+                              {
+                                "kind": "InlineFragment",
+                                "selections": [
+                                  (v14/*: any*/),
+                                  (v13/*: any*/),
+                                  (v12/*: any*/)
+                                ],
+                                "type": "CommerceOrderStateChangedEvent",
+                                "abstractKey": null
+                              },
+                              {
+                                "kind": "InlineFragment",
+                                "selections": [
+                                  (v14/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "CommerceOffer",
+                                    "kind": "LinkedField",
+                                    "name": "offer",
+                                    "plural": false,
+                                    "selections": [
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "kind": "ScalarField",
+                                        "name": "amount",
+                                        "storageKey": null
+                                      },
+                                      (v15/*: any*/),
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "CommerceOffer",
+                                        "kind": "LinkedField",
+                                        "name": "respondsTo",
+                                        "plural": false,
+                                        "selections": [
+                                          (v15/*: any*/),
+                                          (v7/*: any*/)
+                                        ],
+                                        "storageKey": null
+                                      },
+                                      (v7/*: any*/)
+                                    ],
+                                    "storageKey": null
+                                  }
+                                ],
+                                "type": "CommerceOfferSubmittedEvent",
+                                "abstractKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          },
                           {
                             "kind": "InlineFragment",
                             "selections": [
@@ -680,14 +819,8 @@ return {
                                 "name": "lastOffer",
                                 "plural": false,
                                 "selections": [
-                                  {
-                                    "alias": null,
-                                    "args": null,
-                                    "kind": "ScalarField",
-                                    "name": "fromParticipant",
-                                    "storageKey": null
-                                  },
-                                  (v12/*: any*/),
+                                  (v15/*: any*/),
+                                  (v14/*: any*/),
                                   (v7/*: any*/)
                                 ],
                                 "storageKey": null
@@ -757,7 +890,7 @@ return {
                 "plural": false,
                 "selections": [
                   (v6/*: any*/),
-                  (v13/*: any*/),
+                  (v16/*: any*/),
                   (v7/*: any*/)
                 ],
                 "storageKey": null
@@ -788,7 +921,7 @@ return {
               },
               {
                 "alias": null,
-                "args": (v14/*: any*/),
+                "args": (v17/*: any*/),
                 "concreteType": "MessageConnection",
                 "kind": "LinkedField",
                 "name": "messagesConnection",
@@ -856,6 +989,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
+                          (v1/*: any*/),
                           (v7/*: any*/),
                           (v4/*: any*/),
                           {
@@ -879,7 +1013,7 @@ return {
                             "name": "body",
                             "storageKey": null
                           },
-                          (v12/*: any*/),
+                          (v14/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -923,11 +1057,10 @@ return {
                             "plural": false,
                             "selections": [
                               (v6/*: any*/),
-                              (v13/*: any*/)
+                              (v16/*: any*/)
                             ],
                             "storageKey": null
-                          },
-                          (v1/*: any*/)
+                          }
                         ],
                         "storageKey": null
                       }
@@ -939,7 +1072,7 @@ return {
               },
               {
                 "alias": null,
-                "args": (v14/*: any*/),
+                "args": (v17/*: any*/),
                 "filters": [],
                 "handle": "connection",
                 "key": "Messages_messagesConnection",
@@ -963,7 +1096,7 @@ return {
     ]
   },
   "params": {
-    "id": "88c722ac24f37caf9d17f892e4a23c2a",
+    "id": "b9a9882210cae5545c5647362b44a8d4",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -978,19 +1111,19 @@ return {
           "plural": false,
           "type": "Conversation"
         },
-        "me.conversation.conversationID": (v15/*: any*/),
+        "me.conversation.conversationID": (v18/*: any*/),
         "me.conversation.from": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "ConversationInitiator"
         },
-        "me.conversation.from.email": (v16/*: any*/),
-        "me.conversation.from.id": (v17/*: any*/),
-        "me.conversation.from.name": (v16/*: any*/),
-        "me.conversation.id": (v17/*: any*/),
-        "me.conversation.initialMessage": (v16/*: any*/),
-        "me.conversation.internalID": (v15/*: any*/),
+        "me.conversation.from.email": (v19/*: any*/),
+        "me.conversation.from.id": (v20/*: any*/),
+        "me.conversation.from.name": (v19/*: any*/),
+        "me.conversation.id": (v20/*: any*/),
+        "me.conversation.initialMessage": (v19/*: any*/),
+        "me.conversation.internalID": (v18/*: any*/),
         "me.conversation.items": {
           "enumValues": null,
           "nullable": true,
@@ -1003,43 +1136,43 @@ return {
           "plural": false,
           "type": "ConversationItemType"
         },
-        "me.conversation.items.item.__isNode": (v16/*: any*/),
-        "me.conversation.items.item.__typename": (v16/*: any*/),
-        "me.conversation.items.item.artistNames": (v18/*: any*/),
-        "me.conversation.items.item.artworkID": (v17/*: any*/),
-        "me.conversation.items.item.coverImage": (v19/*: any*/),
-        "me.conversation.items.item.coverImage.aspectRatio": (v20/*: any*/),
-        "me.conversation.items.item.coverImage.url": (v18/*: any*/),
-        "me.conversation.items.item.date": (v18/*: any*/),
+        "me.conversation.items.item.__isNode": (v19/*: any*/),
+        "me.conversation.items.item.__typename": (v19/*: any*/),
+        "me.conversation.items.item.artistNames": (v21/*: any*/),
+        "me.conversation.items.item.artworkID": (v20/*: any*/),
+        "me.conversation.items.item.coverImage": (v22/*: any*/),
+        "me.conversation.items.item.coverImage.aspectRatio": (v23/*: any*/),
+        "me.conversation.items.item.coverImage.url": (v21/*: any*/),
+        "me.conversation.items.item.date": (v21/*: any*/),
         "me.conversation.items.item.fair": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Fair"
         },
-        "me.conversation.items.item.fair.id": (v17/*: any*/),
-        "me.conversation.items.item.fair.name": (v18/*: any*/),
-        "me.conversation.items.item.href": (v18/*: any*/),
-        "me.conversation.items.item.id": (v17/*: any*/),
-        "me.conversation.items.item.image": (v19/*: any*/),
-        "me.conversation.items.item.image.aspectRatio": (v20/*: any*/),
-        "me.conversation.items.item.image.url": (v18/*: any*/),
-        "me.conversation.items.item.internalID": (v17/*: any*/),
-        "me.conversation.items.item.isOfferableFromInquiry": (v21/*: any*/),
-        "me.conversation.items.item.name": (v18/*: any*/),
+        "me.conversation.items.item.fair.id": (v20/*: any*/),
+        "me.conversation.items.item.fair.name": (v21/*: any*/),
+        "me.conversation.items.item.href": (v21/*: any*/),
+        "me.conversation.items.item.id": (v20/*: any*/),
+        "me.conversation.items.item.image": (v22/*: any*/),
+        "me.conversation.items.item.image.aspectRatio": (v23/*: any*/),
+        "me.conversation.items.item.image.url": (v21/*: any*/),
+        "me.conversation.items.item.internalID": (v20/*: any*/),
+        "me.conversation.items.item.isOfferableFromInquiry": (v24/*: any*/),
+        "me.conversation.items.item.name": (v21/*: any*/),
         "me.conversation.items.item.partner": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "PartnerTypes"
         },
-        "me.conversation.items.item.partner.__isNode": (v16/*: any*/),
-        "me.conversation.items.item.partner.__typename": (v16/*: any*/),
-        "me.conversation.items.item.partner.id": (v17/*: any*/),
-        "me.conversation.items.item.partner.name": (v18/*: any*/),
-        "me.conversation.items.item.slug": (v17/*: any*/),
-        "me.conversation.items.item.title": (v18/*: any*/),
-        "me.conversation.lastMessageID": (v18/*: any*/),
+        "me.conversation.items.item.partner.__isNode": (v19/*: any*/),
+        "me.conversation.items.item.partner.__typename": (v19/*: any*/),
+        "me.conversation.items.item.partner.id": (v20/*: any*/),
+        "me.conversation.items.item.partner.name": (v21/*: any*/),
+        "me.conversation.items.item.slug": (v20/*: any*/),
+        "me.conversation.items.item.title": (v21/*: any*/),
+        "me.conversation.lastMessageID": (v21/*: any*/),
         "me.conversation.messagesConnection": {
           "enumValues": null,
           "nullable": true,
@@ -1052,49 +1185,49 @@ return {
           "plural": true,
           "type": "MessageEdge"
         },
-        "me.conversation.messagesConnection.edges.cursor": (v16/*: any*/),
+        "me.conversation.messagesConnection.edges.cursor": (v19/*: any*/),
         "me.conversation.messagesConnection.edges.node": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Message"
         },
-        "me.conversation.messagesConnection.edges.node.__typename": (v16/*: any*/),
+        "me.conversation.messagesConnection.edges.node.__typename": (v19/*: any*/),
         "me.conversation.messagesConnection.edges.node.attachments": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "Attachment"
         },
-        "me.conversation.messagesConnection.edges.node.attachments.contentType": (v16/*: any*/),
-        "me.conversation.messagesConnection.edges.node.attachments.downloadURL": (v16/*: any*/),
-        "me.conversation.messagesConnection.edges.node.attachments.fileName": (v16/*: any*/),
-        "me.conversation.messagesConnection.edges.node.attachments.id": (v17/*: any*/),
-        "me.conversation.messagesConnection.edges.node.attachments.internalID": (v17/*: any*/),
-        "me.conversation.messagesConnection.edges.node.body": (v18/*: any*/),
-        "me.conversation.messagesConnection.edges.node.createdAt": (v18/*: any*/),
+        "me.conversation.messagesConnection.edges.node.attachments.contentType": (v19/*: any*/),
+        "me.conversation.messagesConnection.edges.node.attachments.downloadURL": (v19/*: any*/),
+        "me.conversation.messagesConnection.edges.node.attachments.fileName": (v19/*: any*/),
+        "me.conversation.messagesConnection.edges.node.attachments.id": (v20/*: any*/),
+        "me.conversation.messagesConnection.edges.node.attachments.internalID": (v20/*: any*/),
+        "me.conversation.messagesConnection.edges.node.body": (v21/*: any*/),
+        "me.conversation.messagesConnection.edges.node.createdAt": (v21/*: any*/),
         "me.conversation.messagesConnection.edges.node.from": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "MessageInitiator"
         },
-        "me.conversation.messagesConnection.edges.node.from.email": (v18/*: any*/),
-        "me.conversation.messagesConnection.edges.node.from.name": (v18/*: any*/),
-        "me.conversation.messagesConnection.edges.node.id": (v17/*: any*/),
-        "me.conversation.messagesConnection.edges.node.internalID": (v17/*: any*/),
-        "me.conversation.messagesConnection.edges.node.isFirstMessage": (v21/*: any*/),
-        "me.conversation.messagesConnection.edges.node.isFromUser": (v21/*: any*/),
+        "me.conversation.messagesConnection.edges.node.from.email": (v21/*: any*/),
+        "me.conversation.messagesConnection.edges.node.from.name": (v21/*: any*/),
+        "me.conversation.messagesConnection.edges.node.id": (v20/*: any*/),
+        "me.conversation.messagesConnection.edges.node.internalID": (v20/*: any*/),
+        "me.conversation.messagesConnection.edges.node.isFirstMessage": (v24/*: any*/),
+        "me.conversation.messagesConnection.edges.node.isFromUser": (v24/*: any*/),
         "me.conversation.messagesConnection.pageInfo": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "PageInfo"
         },
-        "me.conversation.messagesConnection.pageInfo.endCursor": (v18/*: any*/),
-        "me.conversation.messagesConnection.pageInfo.hasNextPage": (v22/*: any*/),
-        "me.conversation.messagesConnection.pageInfo.hasPreviousPage": (v22/*: any*/),
-        "me.conversation.messagesConnection.pageInfo.startCursor": (v18/*: any*/),
+        "me.conversation.messagesConnection.pageInfo.endCursor": (v21/*: any*/),
+        "me.conversation.messagesConnection.pageInfo.hasNextPage": (v25/*: any*/),
+        "me.conversation.messagesConnection.pageInfo.hasPreviousPage": (v25/*: any*/),
+        "me.conversation.messagesConnection.pageInfo.startCursor": (v21/*: any*/),
         "me.conversation.orderConnection": {
           "enumValues": null,
           "nullable": true,
@@ -1113,22 +1246,14 @@ return {
           "plural": false,
           "type": "CommerceOrder"
         },
-        "me.conversation.orderConnection.edges.node.__isCommerceOrder": (v16/*: any*/),
-        "me.conversation.orderConnection.edges.node.__typename": (v16/*: any*/),
-        "me.conversation.orderConnection.edges.node.id": (v17/*: any*/),
-        "me.conversation.orderConnection.edges.node.internalID": (v17/*: any*/),
-        "me.conversation.orderConnection.edges.node.lastOffer": (v23/*: any*/),
-        "me.conversation.orderConnection.edges.node.lastOffer.createdAt": (v16/*: any*/),
-        "me.conversation.orderConnection.edges.node.lastOffer.fromParticipant": {
-          "enumValues": [
-            "BUYER",
-            "SELLER"
-          ],
-          "nullable": true,
-          "plural": false,
-          "type": "CommerceOrderParticipantEnum"
-        },
-        "me.conversation.orderConnection.edges.node.lastOffer.id": (v17/*: any*/),
+        "me.conversation.orderConnection.edges.node.__isCommerceOrder": (v19/*: any*/),
+        "me.conversation.orderConnection.edges.node.__typename": (v19/*: any*/),
+        "me.conversation.orderConnection.edges.node.id": (v20/*: any*/),
+        "me.conversation.orderConnection.edges.node.internalID": (v20/*: any*/),
+        "me.conversation.orderConnection.edges.node.lastOffer": (v26/*: any*/),
+        "me.conversation.orderConnection.edges.node.lastOffer.createdAt": (v19/*: any*/),
+        "me.conversation.orderConnection.edges.node.lastOffer.fromParticipant": (v27/*: any*/),
+        "me.conversation.orderConnection.edges.node.lastOffer.id": (v20/*: any*/),
         "me.conversation.orderConnection.edges.node.offers": {
           "enumValues": null,
           "nullable": true,
@@ -1141,35 +1266,45 @@ return {
           "plural": true,
           "type": "CommerceOfferEdge"
         },
-        "me.conversation.orderConnection.edges.node.offers.edges.node": (v23/*: any*/),
-        "me.conversation.orderConnection.edges.node.offers.edges.node.id": (v17/*: any*/),
-        "me.conversation.orderConnection.edges.node.offers.edges.node.internalID": (v17/*: any*/),
-        "me.conversation.orderConnection.edges.node.state": {
-          "enumValues": [
-            "ABANDONED",
-            "APPROVED",
-            "CANCELED",
-            "FULFILLED",
-            "PENDING",
-            "REFUNDED",
-            "SUBMITTED"
-          ],
+        "me.conversation.orderConnection.edges.node.offers.edges.node": (v26/*: any*/),
+        "me.conversation.orderConnection.edges.node.offers.edges.node.id": (v20/*: any*/),
+        "me.conversation.orderConnection.edges.node.offers.edges.node.internalID": (v20/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": true,
+          "type": "CommerceOrderEventUnion"
+        },
+        "me.conversation.orderConnection.edges.node.orderHistory.__isCommerceOrderEventUnion": (v19/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory.__typename": (v19/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory.createdAt": (v19/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory.offer": {
+          "enumValues": null,
           "nullable": false,
           "plural": false,
-          "type": "CommerceOrderStateEnum"
+          "type": "CommerceOffer"
         },
-        "me.conversation.orderConnection.edges.node.stateExpiresAt": (v18/*: any*/),
-        "me.conversation.orderConnection.edges.node.stateReason": (v18/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory.offer.amount": (v21/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory.offer.fromParticipant": (v27/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory.offer.id": (v20/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory.offer.respondsTo": (v26/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory.offer.respondsTo.fromParticipant": (v27/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory.offer.respondsTo.id": (v20/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory.state": (v28/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory.stateReason": (v21/*: any*/),
+        "me.conversation.orderConnection.edges.node.state": (v28/*: any*/),
+        "me.conversation.orderConnection.edges.node.stateExpiresAt": (v21/*: any*/),
+        "me.conversation.orderConnection.edges.node.stateReason": (v21/*: any*/),
         "me.conversation.to": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "ConversationResponder"
         },
-        "me.conversation.to.id": (v17/*: any*/),
-        "me.conversation.to.name": (v16/*: any*/),
-        "me.conversation.unread": (v21/*: any*/),
-        "me.id": (v17/*: any*/)
+        "me.conversation.to.id": (v20/*: any*/),
+        "me.conversation.to.name": (v19/*: any*/),
+        "me.conversation.unread": (v24/*: any*/),
+        "me.id": (v20/*: any*/)
       }
     },
     "name": "ConversationTestsQuery",

@@ -12,6 +12,8 @@ import { Message } from "./Message"
 import ArtworkPreview from "./Preview/ArtworkPreview"
 import ShowPreview from "./Preview/ShowPreview"
 import { TimeSince } from "./TimeSince"
+import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
+import { OrderUpdate } from "./OrderUpdate"
 
 const SubjectContainer = styled(Flex)`
   flex-direction: row;
@@ -19,21 +21,38 @@ const SubjectContainer = styled(Flex)`
 `
 type Item = NonNullable<NonNullable<Messages_conversation["items"]>[0]>["item"]
 
+type DisplayableMessage = OrderUpdate_event | Message_message
 interface MessageGroupProps {
-  group: Message_message[]
+  group: DisplayableMessage[]
   conversationId: string
   subjectItem: Item
 }
 
 export class MessageGroup extends React.Component<MessageGroupProps> {
-  renderMessage = (message: Message_message, messageIndex: number) => {
+  renderMessage = (message: DisplayableMessage, messageIndex: number) => {
     const { group, subjectItem, conversationId } = this.props
+
+    const orderEvents = ["CommerceOfferSubmittedEvent", "CommerceOrderStateChangedEvent"]
+    // if ("__typename" in message && orderEvents.includes(message.__typename)) {
+    // if (orderEvents.includes(message.__typename)) {
+    // maybe bug-prone to do this check
+    // return (
+    //   <React.Fragment key={`orderupdate-${messageIndex}`}>
+    //     <OrderUpdate event={message} showTimeSince />
+    //     <Spacer mb={2} />
+    //   </React.Fragment>
+    // )
+    // } else {
+    //   return null
+    // }
+    // } else {
+    const isOrderEvent = "__typename" in message && orderEvents.includes(message.__typename)
+
     const nextMessage = group[messageIndex + 1]
-    const senderChanges = !!nextMessage && nextMessage.isFromUser !== message.isFromUser
+    const senderChanges = !!nextMessage && "isFromUser" in nextMessage && nextMessage.isFromUser !== message.isFromUser
     const lastMessageInGroup = messageIndex === group.length - 1
     const spaceAfter = senderChanges || lastMessageInGroup ? 2 : 0.5
-    const today = moment(group[0].createdAt as string).isSame(moment(), "day")
-
+    const today = moment((group[0] as any).createdAt).isSame(moment(), "day")
     return (
       <React.Fragment key={`message-${message.internalID}`}>
         {!!message.isFirstMessage && (
@@ -54,6 +73,7 @@ export class MessageGroup extends React.Component<MessageGroupProps> {
             conversationId={conversationId!}
           />
         )}
+        {!!isOrderEvent && <OrderUpdate event={message as OrderUpdate_event} showTimeSince />}
         <Spacer mb={spaceAfter} />
       </React.Fragment>
     )
