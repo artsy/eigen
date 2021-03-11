@@ -112,6 +112,8 @@ SOFTWARE.
     } packagerURL:packagerURL];
 
     [emission.notificationsManagerModule afterBootstrap:^{
+        [ARRouter setup];
+
         if (launchCount == 1) {
             [ARAnalytics event:ARAnalyticsFreshInstall];
         }
