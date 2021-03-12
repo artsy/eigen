@@ -61,9 +61,19 @@ describe("AdditionalGeneIDsOptions Screen", () => {
 
   it("renders the options", () => {
     const tree = renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialState={state} />)
-    expect(tree.root.findAllByType(OptionListItem)).toHaveLength(4) // initialNumToRender={4}
+    expect(tree.root.findAllByType(OptionListItem)).toHaveLength(9)
     const items = tree.root.findAllByType(OptionListItem)
-    expect(items.map(extractText)).toEqual(["All", "Prints", "Design", "Sculpture"])
+    expect(items.map(extractText)).toEqual([
+      "All",
+      "Prints",
+      "Design",
+      "Sculpture",
+      "Work on Paper",
+      "Painting",
+      "Drawing",
+      "Jewelry",
+      "Photography",
+    ])
   })
 
   it("displays the default text when no filter selected on the filter modal screen", () => {
