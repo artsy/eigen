@@ -23,6 +23,7 @@ upcoming:
     - Fix fancy modal height on android - mounir
     - Fix fancy modal status bar color - mounir
     - Fix fancy modal border radius animating on non shrinking backgrounds - mounir
+    - Allow users to scroll to bottom of multi select filters - iskounen
 
 releases:
   - version: 6.8.0
