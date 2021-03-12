@@ -91,4 +91,9 @@ export const features = defineFeatures({
     description: "Use new artwork filters",
     showInAdminMenu: true,
   },
+  ARUseNewOnboarding: {
+    readyForRelease: false,
+    description: "Use new onboarding",
+    showInAdminMenu: true,
+  },
 })
