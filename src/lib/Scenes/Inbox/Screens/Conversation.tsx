@@ -19,6 +19,7 @@ import { View } from "react-native"
 import Svg, { Path } from "react-native-svg"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import styled from "styled-components/native"
+import { ReviewOfferButton } from "../Components/Conversations/ReviewOfferButton"
 import { ConversationDetailsQueryRenderer } from "./ConversationDetails"
 
 const Container = styled.View`
@@ -180,6 +181,7 @@ export class Conversation extends React.Component<Props, State> {
           this.messages.scrollToLastMessage()
         }}
       >
+        {!!conversationOrder && <ReviewOfferButton order={conversationOrder} />}
         <Container>
           <Header>
             <Flex flexDirection="row" alignSelf="stretch" mx={2}>

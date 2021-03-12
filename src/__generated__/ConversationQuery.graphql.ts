@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1c5cbf5c25a2cafba1f047a0e17da814 */
+/* @relayHash c2758c8a5932b91cf602b8eee6e3f11c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -204,21 +204,24 @@ fragment PDFPreview_attachment on Attachment {
   ...AttachmentPreview_attachment
 }
 
-fragment ReviewOfferButton_order on CommerceOfferOrder {
+fragment ReviewOfferButton_order on CommerceOrder {
+  __isCommerceOrder: __typename
   internalID
   state
   stateReason
   stateExpiresAt
-  lastOffer {
-    fromParticipant
-    createdAt
-    id
-  }
-  offers(first: 5) {
-    edges {
-      node {
-        internalID
-        id
+  ... on CommerceOfferOrder {
+    lastOffer {
+      fromParticipant
+      createdAt
+      id
+    }
+    offers(first: 5) {
+      edges {
+        node {
+          internalID
+          id
+        }
       }
     }
   }
@@ -674,26 +677,30 @@ return {
                         "plural": false,
                         "selections": [
                           (v1/*: any*/),
+                          {
+                            "kind": "TypeDiscriminator",
+                            "abstractKey": "__isCommerceOrder"
+                          },
+                          (v4/*: any*/),
+                          (v12/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "stateReason",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "stateExpiresAt",
+                            "storageKey": null
+                          },
                           (v7/*: any*/),
                           {
                             "kind": "InlineFragment",
                             "selections": [
-                              (v4/*: any*/),
-                              (v12/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "stateReason",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "stateExpiresAt",
-                                "storageKey": null
-                              },
                               {
                                 "alias": null,
                                 "args": null,
@@ -945,7 +952,7 @@ return {
     ]
   },
   "params": {
-    "id": "1c5cbf5c25a2cafba1f047a0e17da814",
+    "id": "c2758c8a5932b91cf602b8eee6e3f11c",
     "metadata": {},
     "name": "ConversationQuery",
     "operationKind": "query",
