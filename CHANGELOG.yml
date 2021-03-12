@@ -18,6 +18,7 @@ upcoming:
     - Allow adding pricePaid info in my collection - barry, brian
     - Adds inquiry make offer button - lily
     - Add extra safety to extractNodes - david, mounir
+    - Display make offer button in conversation only when there is no active order - starsirius
     - Fix sailthru deeplinks causing crash - brian, barry, steven
     - Fix fancy modal height on android - mounir
     - Fix fancy modal status bar color - mounir
