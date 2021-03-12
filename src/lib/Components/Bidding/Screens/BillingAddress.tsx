@@ -209,7 +209,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
         <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={this.verticalOffset} style={{ flex: 1 }}>
           <Theme>
             <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
-              Your billing address
+              Add billing address
             </FancyModalHeader>
           </Theme>
           <ScrollView ref={(scrollView) => (this.scrollView = scrollView as any)}>

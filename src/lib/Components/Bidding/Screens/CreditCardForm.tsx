@@ -105,7 +105,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
           buttonComponent={buttonComponent}
         >
           <Theme>
-            <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>Your credit card</FancyModalHeader>
+            <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>Add credit card</FancyModalHeader>
           </Theme>
           <ScrollView scrollEnabled={false}>
             <Container m={0}>
