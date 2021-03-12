@@ -200,7 +200,7 @@ export const selectedOption = ({
   filterType?: FilterType
   aggregations: Aggregations
 }) => {
-  const useImprovedArtworkFilters = unsafe_getFeatureFlag("ARUseNewArtworkFilters")
+  const useImprovedArtworkFilters = unsafe_getFeatureFlag("ARUseImprovedArtworkFilters")
   const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
 
   if (filterScreen === "additionalGeneIDs") {
