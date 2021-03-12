@@ -21,7 +21,7 @@ export const ScreenDimensionsContext = createContext<ScreenDimensionsWithSafeAre
 )
 
 function getCurrentDimensions(): ScreenDimensions {
-  const { width, height } = Dimensions.get("screen")
+  const { width, height } = Dimensions.get("window")
   return {
     width,
     height,

@@ -1,4 +1,5 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { compact } from "lodash"
 import React, { RefObject, useImperativeHandle, useRef } from "react"
 import { Animated, TouchableWithoutFeedback, View } from "react-native"
 
@@ -120,16 +121,17 @@ export const FancyModalCard = React.forwardRef<
 
         let totalYoffset = -scaleYOffset - (naturalTop - top)
 
-        if (isRootCard && perceivedDistanceFromTopOfStack === 0) {
+        const isNonFullScreenModal = isRootCard && perceivedDistanceFromTopOfStack === 0
+        if (isNonFullScreenModal) {
           totalYoffset = 0
         }
 
-        return [
+        return compact([
           createAnimation(backdropOpacity, 0.2),
-          createAnimation(borderRadius, BORDER_RADIUS),
+          !isNonFullScreenModal ? createAnimation(borderRadius, BORDER_RADIUS) : null,
           createAnimation(scale, levelScale),
           createAnimation(translateY, totalYoffset),
-        ]
+        ])
       },
     }),
     [props.height]
