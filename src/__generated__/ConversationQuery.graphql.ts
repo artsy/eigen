@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c2758c8a5932b91cf602b8eee6e3f11c */
+/* @relayHash 661536d3def304885aa495f9f8b21518 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -46,37 +46,61 @@ fragment AttachmentPreview_attachment on Attachment {
   internalID
 }
 
+fragment Composer_conversation on Conversation {
+  conversationID: internalID
+  items {
+    item {
+      __typename
+      ... on Artwork {
+        artworkID: internalID
+        href
+        slug
+        isOfferableFromInquiry
+      }
+      ... on Show {
+        href
+      }
+      ... on Node {
+        __isNode: __typename
+        id
+      }
+    }
+  }
+  orderConnection(first: 10, participantType: BUYER) {
+    edges {
+      node {
+        __typename
+        ...ReviewOfferButton_order
+        __isCommerceOrder: __typename
+        internalID
+        state
+        stateReason
+        stateExpiresAt
+        ... on CommerceOfferOrder {
+          lastOffer {
+            fromParticipant
+            createdAt
+            id
+          }
+          offers(first: 5) {
+            edges {
+              node {
+                internalID
+                id
+              }
+            }
+          }
+        }
+        id
+      }
+    }
+  }
+}
+
 fragment Conversation_me on Me {
   conversation(id: $conversationID) {
-    items {
-      item {
-        __typename
-        ... on Artwork {
-          href
-          slug
-          isOfferableFromInquiry
-        }
-        ... on Show {
-          href
-        }
-        ... on Node {
-          __isNode: __typename
-          id
-        }
-      }
-    }
-    submittedOrderConnection: orderConnection(participantType: BUYER, state: SUBMITTED) {
-      edges {
-        node {
-          __typename
-          ... on CommerceOfferOrder {
-            internalID
-            state
-          }
-          id
-        }
-      }
-    }
+    ...Composer_conversation
+    ...Messages_conversation
     internalID
     id
     lastMessageID
@@ -89,16 +113,6 @@ fragment Conversation_me on Me {
       email
       id
     }
-    orderConnection(first: 10, participantType: BUYER) {
-      edges {
-        node {
-          __typename
-          ...ReviewOfferButton_order
-          id
-        }
-      }
-    }
-    ...Messages_conversation
   }
 }
 
@@ -336,14 +350,14 @@ v10 = {
 },
 v11 = {
   "kind": "Literal",
-  "name": "participantType",
-  "value": "BUYER"
+  "name": "first",
+  "value": 10
 },
 v12 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "state",
+  "name": "createdAt",
   "storageKey": null
 },
 v13 = {
@@ -353,20 +367,8 @@ v13 = {
   "name": "email",
   "storageKey": null
 },
-v14 = {
-  "kind": "Literal",
-  "name": "first",
-  "value": 10
-},
-v15 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "createdAt",
-  "storageKey": null
-},
-v16 = [
-  (v14/*: any*/),
+v14 = [
+  (v11/*: any*/),
   {
     "kind": "Literal",
     "name": "sort",
@@ -429,6 +431,13 @@ return {
             "plural": false,
             "selections": [
               {
+                "alias": "conversationID",
+                "args": null,
+                "kind": "ScalarField",
+                "name": "internalID",
+                "storageKey": null
+              },
+              {
                 "alias": null,
                 "args": null,
                 "concreteType": "ConversationItem",
@@ -448,6 +457,13 @@ return {
                       {
                         "kind": "InlineFragment",
                         "selections": [
+                          {
+                            "alias": "artworkID",
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "internalID",
+                            "storageKey": null
+                          },
                           (v2/*: any*/),
                           (v3/*: any*/),
                           {
@@ -559,101 +575,14 @@ return {
                 "storageKey": null
               },
               {
-                "alias": "submittedOrderConnection",
+                "alias": null,
                 "args": [
                   (v11/*: any*/),
                   {
                     "kind": "Literal",
-                    "name": "state",
-                    "value": "SUBMITTED"
+                    "name": "participantType",
+                    "value": "BUYER"
                   }
-                ],
-                "concreteType": "CommerceOrderConnectionWithTotalCount",
-                "kind": "LinkedField",
-                "name": "orderConnection",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "CommerceOrderEdge",
-                    "kind": "LinkedField",
-                    "name": "edges",
-                    "plural": true,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": null,
-                        "kind": "LinkedField",
-                        "name": "node",
-                        "plural": false,
-                        "selections": [
-                          (v1/*: any*/),
-                          (v7/*: any*/),
-                          {
-                            "kind": "InlineFragment",
-                            "selections": [
-                              (v4/*: any*/),
-                              (v12/*: any*/)
-                            ],
-                            "type": "CommerceOfferOrder",
-                            "abstractKey": null
-                          }
-                        ],
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": "orderConnection(participantType:\"BUYER\",state:\"SUBMITTED\")"
-              },
-              (v4/*: any*/),
-              (v7/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "lastMessageID",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "unread",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "ConversationResponder",
-                "kind": "LinkedField",
-                "name": "to",
-                "plural": false,
-                "selections": (v8/*: any*/),
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "ConversationInitiator",
-                "kind": "LinkedField",
-                "name": "from",
-                "plural": false,
-                "selections": [
-                  (v13/*: any*/),
-                  (v7/*: any*/),
-                  (v6/*: any*/)
-                ],
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": [
-                  (v14/*: any*/),
-                  (v11/*: any*/)
                 ],
                 "concreteType": "CommerceOrderConnectionWithTotalCount",
                 "kind": "LinkedField",
@@ -682,7 +611,13 @@ return {
                             "abstractKey": "__isCommerceOrder"
                           },
                           (v4/*: any*/),
-                          (v12/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "state",
+                            "storageKey": null
+                          },
                           {
                             "alias": null,
                             "args": null,
@@ -716,7 +651,7 @@ return {
                                     "name": "fromParticipant",
                                     "storageKey": null
                                   },
-                                  (v15/*: any*/),
+                                  (v12/*: any*/),
                                   (v7/*: any*/)
                                 ],
                                 "storageKey": null
@@ -775,6 +710,32 @@ return {
                 ],
                 "storageKey": "orderConnection(first:10,participantType:\"BUYER\")"
               },
+              (v7/*: any*/),
+              (v4/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "ConversationInitiator",
+                "kind": "LinkedField",
+                "name": "from",
+                "plural": false,
+                "selections": [
+                  (v6/*: any*/),
+                  (v13/*: any*/),
+                  (v7/*: any*/)
+                ],
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "ConversationResponder",
+                "kind": "LinkedField",
+                "name": "to",
+                "plural": false,
+                "selections": (v8/*: any*/),
+                "storageKey": null
+              },
               {
                 "alias": null,
                 "args": null,
@@ -784,7 +745,14 @@ return {
               },
               {
                 "alias": null,
-                "args": (v16/*: any*/),
+                "args": null,
+                "kind": "ScalarField",
+                "name": "lastMessageID",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": (v14/*: any*/),
                 "concreteType": "MessageConnection",
                 "kind": "LinkedField",
                 "name": "messagesConnection",
@@ -875,7 +843,7 @@ return {
                             "name": "body",
                             "storageKey": null
                           },
-                          (v15/*: any*/),
+                          (v12/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -935,12 +903,19 @@ return {
               },
               {
                 "alias": null,
-                "args": (v16/*: any*/),
+                "args": (v14/*: any*/),
                 "filters": [],
                 "handle": "connection",
                 "key": "Messages_messagesConnection",
                 "kind": "LinkedHandle",
                 "name": "messagesConnection"
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "unread",
+                "storageKey": null
               }
             ],
             "storageKey": null
@@ -952,7 +927,7 @@ return {
     ]
   },
   "params": {
-    "id": "c2758c8a5932b91cf602b8eee6e3f11c",
+    "id": "661536d3def304885aa495f9f8b21518",
     "metadata": {},
     "name": "ConversationQuery",
     "operationKind": "query",

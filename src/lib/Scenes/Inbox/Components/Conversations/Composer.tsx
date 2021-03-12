@@ -1,13 +1,16 @@
-import { ReviewOfferButton_order } from "__generated__/ReviewOfferButton_order.graphql"
+import { Composer_conversation } from "__generated__/Composer_conversation.graphql"
 import colors from "lib/data/colors"
 import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
+import { extractNodes } from "lib/utils/extractNodes"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
 import { Button, color, Flex, themeProps } from "palette"
 import React from "react"
 import { Dimensions, TextInput, TouchableWithoutFeedback } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
+import { OrderCTAFragmentContainer } from "./OrderCTA"
 import { ReviewOfferButtonFragmentContainer as ReviewOfferButton } from "./ReviewOfferButton"
 
 const isPad = Dimensions.get("window").width > 700
@@ -35,10 +38,7 @@ interface Props {
   disabled?: boolean
   onSubmit?: (text: string) => any
   value?: string
-  artworkID?: string | null
-  isOfferableFromInquiry?: boolean | null
-  conversationID?: string | null | undefined
-  order?: ReviewOfferButton_order
+  conversation: Composer_conversation
 }
 
 interface State {
@@ -81,6 +81,19 @@ export default class Composer extends React.Component<Props, State> {
   }
 
   render() {
+    const { conversation } = this.props
+    const conversationID = conversation.conversationID!
+
+    const firstItem = conversation?.items?.[0]?.item
+    const artwork = firstItem?.__typename === "Artwork" ? firstItem : null
+    const { artworkID, isOfferableFromInquiry } = { ...artwork }
+
+    const hasActiveOrder = Boolean(
+      (conversation?.orderConnection?.edges || []).filter((edge) => edge?.node?.state === "SUBMITTED").length
+    )
+
+    const firstOrder = extractNodes(conversation.orderConnection)[0]
+
     // The TextInput loses its isFocused() callback as a styled component
     const inputStyles = {
       flex: 1,
@@ -96,20 +109,33 @@ export default class Composer extends React.Component<Props, State> {
 
     const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
 
-    // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
-    const showOpenInquiryModalButton =
-      unsafe_getFeatureFlag("AROptionsInquiryCheckout") && this.props.isOfferableFromInquiry
-
+    const inquiryCheckoutEnabled = unsafe_getFeatureFlag("AROptionsInquiryCheckout")
+    let CTA: JSX.Element | null = null
+    console.log({ inquiryCheckoutEnabled, isOfferableFromInquiry, hasActiveOrder })
+    if (inquiryCheckoutEnabled && isOfferableFromInquiry) {
+      if (hasActiveOrder) {
+        CTA = <ReviewOfferButton order={firstOrder} />
+      } else {
+        // artworkID is guaranteed to be present if `isOfferableFromInquiry` was present.
+        CTA = <OpenInquiryModalButton artworkID={artworkID!} conversationID={conversationID!} />
+      }
+    }
+    // // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
+    // const showOpenInquiryModalButton = inquiryCheckoutEnabled && this.props.isOfferableFromInquiry
+    // if (showOpenInquiryModalButton) {
+    //   CTA = <OpenInquiryModalButton artworkID={this.props.artworkID} conversationID={conversationID} />
+    // } else if (!!order) {
+    //   CTA = () => <ReviewOfferButton order={order} />
+    // } else {
+    //   CTA = null
+    // }
     return (
       <ScreenDimensionsContext.Consumer>
         {({ safeAreaInsets }) => (
           <StyledKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={safeAreaInsets.top}>
             {this.props.children}
             <Flex flexDirection="column">
-              {!!showOpenInquiryModalButton && this.props.artworkID != null && !this.props.order && (
-                <OpenInquiryModalButton artworkID={this.props.artworkID} conversationID={this.props.conversationID} />
-              )}
-              {!!showOpenInquiryModalButton && !!this.props.order && <ReviewOfferButton order={this.props.order} />}
+              {CTA}
               <Container active={this.state.active}>
                 <TextInput
                   placeholder={"Type your message"}
@@ -137,3 +163,51 @@ export default class Composer extends React.Component<Props, State> {
     )
   }
 }
+
+export const ComposerFragmentContainer = createFragmentContainer(Composer, {
+  conversation: graphql`
+    fragment Composer_conversation on Conversation {
+      conversationID: internalID
+      items {
+        item {
+          __typename
+          ... on Artwork {
+            artworkID: internalID
+            href
+            slug
+            isOfferableFromInquiry
+          }
+          ... on Show {
+            href
+          }
+        }
+      }
+      orderConnection(first: 10, participantType: BUYER) {
+        edges {
+          node {
+            ...ReviewOfferButton_order
+            ... on CommerceOrder {
+              internalID
+              state
+              stateReason
+              stateExpiresAt
+              ... on CommerceOfferOrder {
+                lastOffer {
+                  fromParticipant
+                  createdAt
+                }
+                offers(first: 5) {
+                  edges {
+                    node {
+                      internalID
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `,
+})
