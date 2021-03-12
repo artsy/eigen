@@ -111,7 +111,7 @@ export default class Composer extends React.Component<Props, State> {
 
     const inquiryCheckoutEnabled = unsafe_getFeatureFlag("AROptionsInquiryCheckout")
     let CTA: JSX.Element | null = null
-    console.log({ inquiryCheckoutEnabled, isOfferableFromInquiry, hasActiveOrder })
+    // console.log({ inquiryCheckoutEnabled, isOfferableFromInquiry, hasActiveOrder })
     if (inquiryCheckoutEnabled && isOfferableFromInquiry) {
       if (hasActiveOrder) {
         CTA = <ReviewOfferButton order={firstOrder} />
