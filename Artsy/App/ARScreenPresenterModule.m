@@ -10,7 +10,6 @@
 #import "ARAuctionWebViewController.h"
 #import "ArtsyEcho.h"
 #import "ARAppDelegate+Echo.h"
-#import <Emission/ARBidFlowViewController.h>
 #import "ARRouter.h"
 #import <Emission/ARMediaPreviewController.h>
 #import <MessageUI/MFMailComposeViewController.h>
@@ -59,7 +58,7 @@ RCT_EXPORT_METHOD(pushView:(nonnull NSString *)currentTabStackID viewDescriptor:
         deepLinkVC = vc;
         return;
     }
-    
+
     if ([vc isKindOfClass:ARComponentViewController.class]) {
         ARComponentViewController *reactVC = (ARComponentViewController *)vc;
         // if we're in a modal, get the modal id from the stack map

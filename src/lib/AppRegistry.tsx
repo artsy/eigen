@@ -168,26 +168,6 @@ const Conversation: React.FC<ConversationProps> = screenTrack<ConversationProps>
   }
 })(ConversationNavigator)
 
-/*
- * Route bid/register requests coming from the Emission pod to either a BidFlow
- * or RegisterFlow component with an appropriate query renderer
- */
-type BidderFlowIntent = "bid" | "register"
-interface BidderFlowProps {
-  artworkID: string
-  saleID: string
-  intent: BidderFlowIntent
-}
-
-const BidderFlow: React.FC<BidderFlowProps> = ({ intent, ...restProps }) => {
-  switch (intent) {
-    case "bid":
-      return <BidFlow {...restProps} />
-    case "register":
-      return <RegistrationFlow {...restProps} />
-  }
-}
-
 interface SearchWithTrackingProps {
   safeAreaInsets: SafeAreaInsets
 }
@@ -325,8 +305,6 @@ export const modules = defineModules({
     hasOwnModalCloseButton: true,
     fullBleed: true,
   }),
-  // BidFlow is used by ARBidFlowViewController. Once that has been deleted we can delete this too.
-  BidFlow: reactModule(BidderFlow),
   BottomTabs: reactModule(BottomTabs, { fullBleed: true }),
   City: reactModule(CityView, { fullBleed: true }),
   CityBMWList: reactModule(CityBMWListQueryRenderer, { fullBleed: true }),
