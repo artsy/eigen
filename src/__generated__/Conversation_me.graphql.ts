@@ -4,32 +4,8 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FULFILLED" | "PENDING" | "REFUNDED" | "SUBMITTED" | "%future added value";
 export type Conversation_me = {
     readonly conversation: {
-        readonly items: ReadonlyArray<{
-            readonly item: ({
-                readonly __typename: "Artwork";
-                readonly href: string | null;
-                readonly slug: string;
-                readonly isOfferableFromInquiry: boolean | null;
-            } | {
-                readonly __typename: "Show";
-                readonly href: string | null;
-            } | {
-                /*This will never be '%other', but we need some
-                value in case none of the concrete values match.*/
-                readonly __typename: "%other";
-            }) | null;
-        } | null> | null;
-        readonly submittedOrderConnection: {
-            readonly edges: ReadonlyArray<{
-                readonly node: {
-                    readonly internalID?: string;
-                    readonly state?: CommerceOrderStateEnum;
-                } | null;
-            } | null> | null;
-        } | null;
         readonly internalID: string | null;
         readonly id: string;
         readonly lastMessageID: string | null;
@@ -40,14 +16,7 @@ export type Conversation_me = {
         readonly from: {
             readonly email: string;
         };
-        readonly orderConnection: {
-            readonly edges: ReadonlyArray<{
-                readonly node: {
-                    readonly " $fragmentRefs": FragmentRefs<"ReviewOfferButton_order">;
-                } | null;
-            } | null> | null;
-        } | null;
-        readonly " $fragmentRefs": FragmentRefs<"Messages_conversation">;
+        readonly " $fragmentRefs": FragmentRefs<"Composer_conversation" | "Messages_conversation">;
     } | null;
     readonly " $refType": "Conversation_me";
 };
@@ -59,27 +28,7 @@ export type Conversation_me$key = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "href",
-  "storageKey": null
-},
-v1 = {
-  "kind": "Literal",
-  "name": "participantType",
-  "value": "BUYER"
-},
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "argumentDefinitions": [
     {
       "kind": "RootArgument",
@@ -107,118 +56,10 @@ return {
         {
           "alias": null,
           "args": null,
-          "concreteType": "ConversationItem",
-          "kind": "LinkedField",
-          "name": "items",
-          "plural": true,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": null,
-              "kind": "LinkedField",
-              "name": "item",
-              "plural": false,
-              "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "__typename",
-                  "storageKey": null
-                },
-                {
-                  "kind": "InlineFragment",
-                  "selections": [
-                    (v0/*: any*/),
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "slug",
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "isOfferableFromInquiry",
-                      "storageKey": null
-                    }
-                  ],
-                  "type": "Artwork",
-                  "abstractKey": null
-                },
-                {
-                  "kind": "InlineFragment",
-                  "selections": [
-                    (v0/*: any*/)
-                  ],
-                  "type": "Show",
-                  "abstractKey": null
-                }
-              ],
-              "storageKey": null
-            }
-          ],
+          "kind": "ScalarField",
+          "name": "internalID",
           "storageKey": null
         },
-        {
-          "alias": "submittedOrderConnection",
-          "args": [
-            (v1/*: any*/),
-            {
-              "kind": "Literal",
-              "name": "state",
-              "value": "SUBMITTED"
-            }
-          ],
-          "concreteType": "CommerceOrderConnectionWithTotalCount",
-          "kind": "LinkedField",
-          "name": "orderConnection",
-          "plural": false,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "CommerceOrderEdge",
-              "kind": "LinkedField",
-              "name": "edges",
-              "plural": true,
-              "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": null,
-                  "kind": "LinkedField",
-                  "name": "node",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "kind": "InlineFragment",
-                      "selections": [
-                        (v2/*: any*/),
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "state",
-                          "storageKey": null
-                        }
-                      ],
-                      "type": "CommerceOfferOrder",
-                      "abstractKey": null
-                    }
-                  ],
-                  "storageKey": null
-                }
-              ],
-              "storageKey": null
-            }
-          ],
-          "storageKey": "orderConnection(participantType:\"BUYER\",state:\"SUBMITTED\")"
-        },
-        (v2/*: any*/),
         {
           "alias": null,
           "args": null,
@@ -277,49 +118,9 @@ return {
           "storageKey": null
         },
         {
-          "alias": null,
-          "args": [
-            {
-              "kind": "Literal",
-              "name": "first",
-              "value": 10
-            },
-            (v1/*: any*/)
-          ],
-          "concreteType": "CommerceOrderConnectionWithTotalCount",
-          "kind": "LinkedField",
-          "name": "orderConnection",
-          "plural": false,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "CommerceOrderEdge",
-              "kind": "LinkedField",
-              "name": "edges",
-              "plural": true,
-              "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": null,
-                  "kind": "LinkedField",
-                  "name": "node",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "args": null,
-                      "kind": "FragmentSpread",
-                      "name": "ReviewOfferButton_order"
-                    }
-                  ],
-                  "storageKey": null
-                }
-              ],
-              "storageKey": null
-            }
-          ],
-          "storageKey": "orderConnection(first:10,participantType:\"BUYER\")"
+          "args": null,
+          "kind": "FragmentSpread",
+          "name": "Composer_conversation"
         },
         {
           "args": null,
@@ -333,6 +134,5 @@ return {
   "type": "Me",
   "abstractKey": null
 };
-})();
-(node as any).hash = 'c636e056a603bddb7a5721e123949577';
+(node as any).hash = '2bfd3ee73217a3dcf4b69d4865420109';
 export default node;

@@ -6,10 +6,12 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CommerceOrderParticipantEnum = "BUYER" | "SELLER" | "%future added value";
 export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FULFILLED" | "PENDING" | "REFUNDED" | "SUBMITTED" | "%future added value";
-export type OrderCTA_conversation = {
+export type Composer_conversation = {
+    readonly conversationID: string | null;
     readonly items: ReadonlyArray<{
         readonly item: ({
             readonly __typename: "Artwork";
+            readonly artworkID: string;
             readonly href: string | null;
             readonly slug: string;
             readonly isOfferableFromInquiry: boolean | null;
@@ -40,15 +42,16 @@ export type OrderCTA_conversation = {
                         } | null;
                     } | null> | null;
                 } | null;
+                readonly " $fragmentRefs": FragmentRefs<"ReviewOfferButton_order">;
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "OrderCTA_conversation";
+    readonly " $refType": "Composer_conversation";
 };
-export type OrderCTA_conversation$data = OrderCTA_conversation;
-export type OrderCTA_conversation$key = {
-    readonly " $data"?: OrderCTA_conversation$data;
-    readonly " $fragmentRefs": FragmentRefs<"OrderCTA_conversation">;
+export type Composer_conversation$data = Composer_conversation;
+export type Composer_conversation$key = {
+    readonly " $data"?: Composer_conversation$data;
+    readonly " $fragmentRefs": FragmentRefs<"Composer_conversation">;
 };
 
 
@@ -72,8 +75,15 @@ return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "OrderCTA_conversation",
+  "name": "Composer_conversation",
   "selections": [
+    {
+      "alias": "conversationID",
+      "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": null,
@@ -100,6 +110,13 @@ return {
             {
               "kind": "InlineFragment",
               "selections": [
+                {
+                  "alias": "artworkID",
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "internalID",
+                  "storageKey": null
+                },
                 (v0/*: any*/),
                 {
                   "alias": null,
@@ -191,6 +208,11 @@ return {
                   "storageKey": null
                 },
                 {
+                  "args": null,
+                  "kind": "FragmentSpread",
+                  "name": "ReviewOfferButton_order"
+                },
+                {
                   "kind": "InlineFragment",
                   "selections": [
                     {
@@ -276,5 +298,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'fad52bce95fc5b0544be93ddd4a4a7b3';
+(node as any).hash = '5ad34758532a9d48101b89659e6c2a5d';
 export default node;
