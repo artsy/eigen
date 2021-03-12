@@ -12,6 +12,7 @@ upcoming:
     - Support deep links on android - adam, barry, brian, david, mounir, steven
     - Fix sticky tab page layout problems on android - david
     - Override Android back button in consignment form - adam
+    - Add feature flag for new artwork filters - iskounen
   user_facing:
     - Adds inquiry checkout offer status CTA - lily
     - Update consignment photo selection flow for iOS 14 - brian
@@ -20,6 +21,8 @@ upcoming:
     - Add extra safety to extractNodes - david, mounir
     - Fix sailthru deeplinks causing crash - brian, barry, steven
     - Fix fancy modal height on android - mounir
+    - Fix fancy modal status bar color - mounir
+    - Fix fancy modal border radius animating on non shrinking backgrounds - mounir
 
 releases:
   - version: 6.8.0
