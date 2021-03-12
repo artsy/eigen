@@ -11,7 +11,7 @@ upcoming:
     - Make auction screens mountable on android - barry, brian
     - Support deep links on android - adam, barry, brian, david, mounir, steven
     - Fix sticky tab page layout problems on android - david
-    - Update bid flow modal header styles - david
+    - Update bid + registration flow modal header styles - david
   user_facing:
     - Adds inquiry checkout offer status CTA - lily
     - Update consignment photo selection flow for iOS 14 - brian
