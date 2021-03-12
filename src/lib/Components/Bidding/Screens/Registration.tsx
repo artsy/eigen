@@ -2,18 +2,21 @@ import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import { RegistrationCreateBidderMutation } from "__generated__/RegistrationCreateBidderMutation.graphql"
 import { RegistrationCreateCreditCardMutation } from "__generated__/RegistrationCreateCreditCardMutation.graphql"
+import { RegistrationQuery } from "__generated__/RegistrationQuery.graphql"
 import { RegistrationUpdateUserMutation } from "__generated__/RegistrationUpdateUserMutation.graphql"
 import { Modal } from "lib/Components/Modal"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { bidderNeedsIdentityVerification } from "lib/utils/auction"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
 import { get, isEmpty } from "lodash"
 import { Box, Button, Sans, Serif } from "palette"
 import React from "react"
 import { ScrollView, View, ViewProperties } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
 import { LinkText } from "../../Text/LinkText"
@@ -404,7 +407,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 }
 
-export const RegistrationScreen = createFragmentContainer(Registration, {
+const RegistrationContainer = createFragmentContainer(Registration, {
   sale: graphql`
     fragment Registration_sale on Sale {
       slug
@@ -423,3 +426,27 @@ export const RegistrationScreen = createFragmentContainer(Registration, {
     }
   `,
 })
+
+export const RegistrationQueryRenderer: React.FC<{ saleID: string }> = ({ saleID }) => {
+  return (
+    <QueryRenderer<RegistrationQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query RegistrationQuery($saleID: String!) {
+          sale(id: $saleID) {
+            name
+            ...Registration_sale
+          }
+          me {
+            ...Registration_me
+          }
+        }
+      `}
+      cacheConfig={{ force: true }} // We want to always fetch latest sale registration status, CC info, etc.
+      variables={{
+        saleID,
+      }}
+      render={renderWithLoadProgress(RegistrationContainer)}
+    />
+  )
+}

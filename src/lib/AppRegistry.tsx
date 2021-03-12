@@ -9,7 +9,6 @@ import { BidFlow } from "./Containers/BidFlow"
 import { GeneQueryRenderer } from "./Containers/Gene"
 import { InboxWrapper } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
-import { RegistrationFlowQueryRenderer } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
 import { About } from "./Scenes/About/About"
 import { ArtistQueryRenderer } from "./Scenes/Artist/Artist"
@@ -71,6 +70,7 @@ import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { ToastProvider } from "./Components/Toast/toastHook"
+import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
@@ -184,7 +184,7 @@ const BidderFlow: React.FC<BidderFlowProps> = ({ intent, ...restProps }) => {
     case "bid":
       return <BidFlow {...restProps} />
     case "register":
-      return <RegistrationFlowQueryRenderer {...restProps} />
+      return <RegistrationFlow {...restProps} />
   }
 }
 
@@ -315,16 +315,11 @@ export const modules = defineModules({
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
   AuctionResult: reactModule(AuctionResultQueryRenderer),
-  AuctionRegistration:
-    Platform.OS === "ios"
-      ? nativeModule({
-          alwaysPresentModally: true,
-          fullBleed: true,
-        })
-      : reactModule(RegistrationFlowQueryRenderer, {
-          alwaysPresentModally: true,
-          hasOwnModalCloseButton: true,
-        }),
+  AuctionRegistration: reactModule(RegistrationFlow, {
+    alwaysPresentModally: true,
+    hasOwnModalCloseButton: true,
+    fullBleed: true,
+  }),
   AuctionBidArtwork: reactModule(BidFlow, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,

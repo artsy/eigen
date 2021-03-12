@@ -269,7 +269,7 @@ extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
     }
 
     func bidButtonRequestedRegisterToBid(_ button: LiveAuctionBidButton) {
-        let viewController = ARScreenPresenterModule.loadAuctionRegistration(withID: self.salesPerson.liveSaleID, skipBidFlow: true)
+        let viewController = ARScreenPresenterModule.loadWebViewAuctionRegistration(withID: self.salesPerson.liveSaleID)
         let serifNav = SerifModalWebNavigationController(rootViewController: viewController)
         self.navigationController?.present(serifNav, animated: true) {}
     }
