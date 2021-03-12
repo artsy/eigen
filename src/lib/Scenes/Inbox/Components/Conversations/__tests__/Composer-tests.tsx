@@ -4,11 +4,10 @@ import { Button } from "palette"
 import React from "react"
 import { TextInput } from "react-native"
 import { TouchableWithoutFeedback } from "react-native"
+import Composer, { ComposerFragmentContainer } from "../Composer"
 
 jest.unmock("react-tracking")
 jest.unmock("react-relay")
-
-import Composer from "../Composer"
 
 it("renders without throwing a error", () => {
   renderWithWrappers(<Composer />)
