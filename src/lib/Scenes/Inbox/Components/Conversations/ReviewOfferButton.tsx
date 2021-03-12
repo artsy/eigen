@@ -93,19 +93,21 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
 
 export const ReviewOfferButtonFragmentContainer = createFragmentContainer(ReviewOfferButton, {
   order: graphql`
-    fragment ReviewOfferButton_order on CommerceOfferOrder {
+    fragment ReviewOfferButton_order on CommerceOrder {
       internalID
       state
       stateReason
       stateExpiresAt
-      lastOffer {
-        fromParticipant
-        createdAt
-      }
-      offers(first: 5) {
-        edges {
-          node {
-            internalID
+      ... on CommerceOfferOrder {
+        lastOffer {
+          fromParticipant
+          createdAt
+        }
+        offers(first: 5) {
+          edges {
+            node {
+              internalID
+            }
           }
         }
       }

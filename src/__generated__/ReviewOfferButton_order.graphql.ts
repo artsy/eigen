@@ -11,11 +11,11 @@ export type ReviewOfferButton_order = {
     readonly state: CommerceOrderStateEnum;
     readonly stateReason: string | null;
     readonly stateExpiresAt: string | null;
-    readonly lastOffer: {
+    readonly lastOffer?: {
         readonly fromParticipant: CommerceOrderParticipantEnum | null;
         readonly createdAt: string;
     } | null;
-    readonly offers: {
+    readonly offers?: {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly internalID: string;
@@ -69,74 +69,81 @@ return {
       "storageKey": null
     },
     {
-      "alias": null,
-      "args": null,
-      "concreteType": "CommerceOffer",
-      "kind": "LinkedField",
-      "name": "lastOffer",
-      "plural": false,
+      "kind": "InlineFragment",
       "selections": [
         {
           "alias": null,
           "args": null,
-          "kind": "ScalarField",
-          "name": "fromParticipant",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "createdAt",
-          "storageKey": null
-        }
-      ],
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "first",
-          "value": 5
-        }
-      ],
-      "concreteType": "CommerceOfferConnection",
-      "kind": "LinkedField",
-      "name": "offers",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "CommerceOfferEdge",
+          "concreteType": "CommerceOffer",
           "kind": "LinkedField",
-          "name": "edges",
-          "plural": true,
+          "name": "lastOffer",
+          "plural": false,
           "selections": [
             {
               "alias": null,
               "args": null,
-              "concreteType": "CommerceOffer",
-              "kind": "LinkedField",
-              "name": "node",
-              "plural": false,
-              "selections": [
-                (v0/*: any*/)
-              ],
+              "kind": "ScalarField",
+              "name": "fromParticipant",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "createdAt",
               "storageKey": null
             }
           ],
           "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "first",
+              "value": 5
+            }
+          ],
+          "concreteType": "CommerceOfferConnection",
+          "kind": "LinkedField",
+          "name": "offers",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "CommerceOfferEdge",
+              "kind": "LinkedField",
+              "name": "edges",
+              "plural": true,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "CommerceOffer",
+                  "kind": "LinkedField",
+                  "name": "node",
+                  "plural": false,
+                  "selections": [
+                    (v0/*: any*/)
+                  ],
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": "offers(first:5)"
         }
       ],
-      "storageKey": "offers(first:5)"
+      "type": "CommerceOfferOrder",
+      "abstractKey": null
     }
   ],
-  "type": "CommerceOfferOrder",
-  "abstractKey": null
+  "type": "CommerceOrder",
+  "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = '3d06ea178ff25f84f9120cbaae133d3d';
+(node as any).hash = '00ab3377d074804382c5f8095a215c13';
 export default node;
