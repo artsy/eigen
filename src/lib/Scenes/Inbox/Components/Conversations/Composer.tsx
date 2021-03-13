@@ -10,7 +10,6 @@ import { Dimensions, TextInput, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
-import { OrderCTAFragmentContainer } from "./OrderCTA"
 import { ReviewOfferButtonFragmentContainer as ReviewOfferButton } from "./ReviewOfferButton"
 
 const isPad = Dimensions.get("window").width > 700
@@ -88,11 +87,31 @@ export default class Composer extends React.Component<Props, State> {
     const artwork = firstItem?.__typename === "Artwork" ? firstItem : null
     const { artworkID, isOfferableFromInquiry } = { ...artwork }
 
-    const hasActiveOrder = Boolean(
-      (conversation?.orderConnection?.edges || []).filter((edge) => edge?.node?.state === "SUBMITTED").length
-    )
+    // TODO: assumption is that there will be only 0/1 active (not pending or abandoned) order
+    // and we will take the first without worrying about sort/order
+    const orders = extractNodes(conversation.orderConnection)
+    const inactiveOrderStates = ["PENDING", "ABANDONED"]
+    const activeOrder = orders.filter((order) => {
+      return !inactiveOrderStates.includes(order.state!)
+    })[0]
+    // console.log(
+    //   orders.map((order) => order.state),
+    //   activeOrder
+    // )
 
-    const firstOrder = extractNodes(conversation.orderConnection)[0]
+    const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
+
+    let CTA: JSX.Element | null = null
+
+    const inquiryCheckoutEnabled = unsafe_getFeatureFlag("AROptionsInquiryCheckout")
+    if (inquiryCheckoutEnabled && isOfferableFromInquiry) {
+      if (activeOrder) {
+        CTA = <ReviewOfferButton order={activeOrder} />
+      } else {
+        // artworkID is guaranteed to be present if `isOfferableFromInquiry` was present.
+        CTA = <OpenInquiryModalButton artworkID={artworkID!} conversationID={conversationID!} />
+      }
+    }
 
     // The TextInput loses its isFocused() callback as a styled component
     const inputStyles = {
@@ -107,28 +126,6 @@ export default class Composer extends React.Component<Props, State> {
       fontFamily: themeProps.fontFamily.sans.regular.normal,
     }
 
-    const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
-
-    const inquiryCheckoutEnabled = unsafe_getFeatureFlag("AROptionsInquiryCheckout")
-    let CTA: JSX.Element | null = null
-    // console.log({ inquiryCheckoutEnabled, isOfferableFromInquiry, hasActiveOrder })
-    if (inquiryCheckoutEnabled && isOfferableFromInquiry) {
-      if (hasActiveOrder) {
-        CTA = <ReviewOfferButton order={firstOrder} />
-      } else {
-        // artworkID is guaranteed to be present if `isOfferableFromInquiry` was present.
-        CTA = <OpenInquiryModalButton artworkID={artworkID!} conversationID={conversationID!} />
-      }
-    }
-    // // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
-    // const showOpenInquiryModalButton = inquiryCheckoutEnabled && this.props.isOfferableFromInquiry
-    // if (showOpenInquiryModalButton) {
-    //   CTA = <OpenInquiryModalButton artworkID={this.props.artworkID} conversationID={conversationID} />
-    // } else if (!!order) {
-    //   CTA = () => <ReviewOfferButton order={order} />
-    // } else {
-    //   CTA = null
-    // }
     return (
       <ScreenDimensionsContext.Consumer>
         {({ safeAreaInsets }) => (
