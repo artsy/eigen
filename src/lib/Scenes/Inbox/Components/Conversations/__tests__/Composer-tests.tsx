@@ -194,7 +194,8 @@ describe("inquiry offer enabled", () => {
                     fromParticipant: "SELLER",
                   },
                   offers: {
-                    edges: [{ node: { internalID: 1 } }, { node: { internalID: 2 } }],
+                    // plural offers = counteroffer
+                    edges: [{}, {}],
                   },
                 },
               },
