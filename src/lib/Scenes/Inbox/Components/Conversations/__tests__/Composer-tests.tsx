@@ -1,18 +1,27 @@
 import { ComposerTestsQuery } from "__generated__/ComposerTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Button } from "palette"
+import { Button, Flex } from "palette"
 import React from "react"
 import { TextInput } from "react-native"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import Composer, { ComposerFragmentContainer } from "../Composer"
+import { ComposerFragmentContainer } from "../Composer"
 import { OpenInquiryModalButton } from "../OpenInquiryModalButton"
+import { ReviewOfferButton } from "../ReviewOfferButton"
 
 jest.unmock("react-tracking")
 jest.unmock("react-relay")
+
+// jest.mock("../ReviewOfferButton", () => {
+//   console.log("im mockin")
+//   return {
+//     ReviewOfferButtonFragmentContainer: () => "<ReviewOfferButtonMock />",
+//   }
+// })
 
 let env: ReturnType<typeof createMockEnvironment>
 
@@ -131,5 +140,73 @@ describe("inquiry offer enabled", () => {
       }),
     })
     expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(0)
+  })
+
+  describe("with associated orders", () => {
+    it("renders an empty CTA if there is an active order with a pending offer from the buyer", () => {
+      const tree = getWrapper({
+        Conversation: () => ({
+          items: [
+            {
+              item: {
+                __typename: "Artwork",
+                isOfferableFromInquiry: true,
+              },
+            },
+          ],
+          orderConnection: {
+            edges: [
+              {
+                node: {
+                  state: "SUBMITTED",
+                  lastOffer: {
+                    fromParticipant: "BUYER",
+                  },
+                },
+              },
+            ],
+          },
+        }),
+      })
+      const cta = tree.root.findAllByType(ReviewOfferButton)[0]
+      expect(cta).toBeDefined()
+      expect(cta.children).toEqual([])
+      expect(extractText(cta)).toEqual("")
+    })
+
+    it("renders a copper offer CTA if there is a pending offer from the seller", () => {
+      const tree = getWrapper({
+        Conversation: () => ({
+          items: [
+            {
+              item: {
+                __typename: "Artwork",
+                isOfferableFromInquiry: true,
+              },
+            },
+          ],
+          orderConnection: {
+            edges: [
+              {
+                node: {
+                  state: "SUBMITTED",
+                  lastOffer: {
+                    fromParticipant: "SELLER",
+                  },
+                  offers: {
+                    edges: [{ node: { internalID: 1 } }, { node: { internalID: 2 } }],
+                  },
+                },
+              },
+            ],
+          },
+        }),
+      })
+      const cta = tree.root.findAllByType(ReviewOfferButton)[0]
+      expect(cta).toBeDefined()
+      expect(cta.children.length).toBe(1)
+      expect(extractText(cta)).toContain("Counteroffer Received")
+      expect(cta.findAllByType(Flex)[0].props).toEqual(expect.objectContaining({ bg: "copper100" }))
+    })
   })
 })
