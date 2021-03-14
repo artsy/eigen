@@ -142,7 +142,7 @@ describe("inquiry offer enabled", () => {
     expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(0)
   })
 
-  describe("with associated orders", () => {
+  describe("with associated orders (OrderCTAs)", () => {
     it("renders an empty CTA if there is an active order with a pending offer from the buyer", () => {
       const tree = getWrapper({
         Conversation: () => ({
@@ -194,7 +194,7 @@ describe("inquiry offer enabled", () => {
                     fromParticipant: "SELLER",
                   },
                   offers: {
-                    // plural offers = counteroffer
+                    // plural offers => counteroffer
                     edges: [{}, {}],
                   },
                 },
@@ -208,6 +208,114 @@ describe("inquiry offer enabled", () => {
       expect(cta.children.length).toBe(1)
       expect(extractText(cta)).toContain("Counteroffer Received")
       expect(cta.findAllByType(Flex)[0].props).toEqual(expect.objectContaining({ bg: "copper100" }))
+    })
+
+    it("renders a green cta if the seller has approved the buyer's offer", () => {
+      const tree = getWrapper({
+        Conversation: () => ({
+          items: [
+            {
+              item: {
+                __typename: "Artwork",
+                isOfferableFromInquiry: true,
+              },
+            },
+          ],
+          orderConnection: {
+            edges: [
+              {
+                node: {
+                  state: "APPROVED",
+                  lastOffer: {
+                    fromParticipant: "BUYER",
+                  },
+                  offers: {
+                    // plural offers => counteroffer
+                    edges: [{}, {}],
+                  },
+                },
+              },
+            ],
+          },
+        }),
+      })
+      const cta = tree.root.findAllByType(ReviewOfferButton)[0]
+      expect(cta).toBeDefined()
+      expect(cta.children.length).toBe(1)
+      expect(extractText(cta)).toContain("Accepted - Please Confirm")
+      expect(cta.findAllByType(Flex)[0].props).toEqual(expect.objectContaining({ bg: "green100" }))
+    })
+
+    it("renders a red cta if the seller has rejected the buyer's offer", () => {
+      const tree = getWrapper({
+        Conversation: () => ({
+          items: [
+            {
+              item: {
+                __typename: "Artwork",
+                isOfferableFromInquiry: true,
+              },
+            },
+          ],
+          orderConnection: {
+            edges: [
+              {
+                node: {
+                  state: "CANCELED",
+                  stateReason: "seller_rejected",
+                  lastOffer: {
+                    fromParticipant: "BUYER",
+                  },
+                  offers: {
+                    edges: [{}],
+                  },
+                },
+              },
+            ],
+          },
+        }),
+      })
+      const cta = tree.root.findAllByType(ReviewOfferButton)[0]
+      expect(cta).toBeDefined()
+      expect(cta.children.length).toBe(1)
+      expect(extractText(cta)).toContain("Offer Declined")
+      expect(cta.findAllByType(Flex)[0].props).toEqual(expect.objectContaining({ bg: "red100" }))
+    })
+
+    it("renders a black cta if the offer lapsed", () => {
+      const tree = getWrapper({
+        Conversation: () => ({
+          items: [
+            {
+              item: {
+                __typename: "Artwork",
+                isOfferableFromInquiry: true,
+              },
+            },
+          ],
+          orderConnection: {
+            edges: [
+              {
+                node: {
+                  state: "CANCELED",
+                  stateReason: "buyer_lapsed",
+                  lastOffer: {
+                    fromParticipant: "SELLER",
+                  },
+                  offers: {
+                    edges: [{}, {}],
+                  },
+                },
+              },
+            ],
+          },
+        }),
+      })
+      const cta = tree.root.findAllByType(ReviewOfferButton)[0]
+      expect(cta).toBeDefined()
+      expect(cta.children.length).toBe(1)
+      expect(extractText(cta)).toContain("Counteroffer Expired")
+      expect(cta.findAllByType(Flex)[0].props).toEqual(expect.objectContaining({ bg: "black60" }))
     })
   })
 })
