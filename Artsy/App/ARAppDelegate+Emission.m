@@ -159,8 +159,8 @@ SOFTWARE.
         }];
     };
 
-    emission.APIModule.userDataClearer = ^() {
-        [ARUserManager logout];
+    emission.APIModule.userDataClearer = ^(RCTPromiseResolveBlock completion) {
+        [ARUserManager logoutWithCompletion:completion];
     };
 
 

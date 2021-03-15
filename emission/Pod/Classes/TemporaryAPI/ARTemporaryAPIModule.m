@@ -44,9 +44,9 @@ RCT_EXPORT_METHOD(setApplicationIconBadgeNumber:(nonnull NSNumber *)count)
     });
 }
 
-RCT_EXPORT_METHOD(clearUserData)
+RCT_EXPORT_METHOD(clearUserData:(RCTPromiseResolveBlock)completion reject:(RCTPromiseRejectBlock) _reject)
 {
-    self.userDataClearer();
+    self.userDataClearer(completion);
 }
 
 - (NSDictionary *)constantsToExport
