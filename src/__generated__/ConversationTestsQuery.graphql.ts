@@ -1,27 +1,27 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7f12ef84d912a07d42a3b6a517eaca04 */
+/* @relayHash 88c722ac24f37caf9d17f892e4a23c2a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ConversationQueryVariables = {
+export type ConversationTestsQueryVariables = {
     conversationID: string;
 };
-export type ConversationQueryResponse = {
+export type ConversationTestsQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"Conversation_me">;
     } | null;
 };
-export type ConversationQuery = {
-    readonly response: ConversationQueryResponse;
-    readonly variables: ConversationQueryVariables;
+export type ConversationTestsQuery = {
+    readonly response: ConversationTestsQueryResponse;
+    readonly variables: ConversationTestsQueryVariables;
 };
 
 
 
 /*
-query ConversationQuery(
+query ConversationTestsQuery(
   $conversationID: String!
 ) {
   me {
@@ -356,13 +356,67 @@ v14 = [
     "name": "sort",
     "value": "DESC"
   }
-];
+],
+v15 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "ID"
+},
+v16 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "String"
+},
+v17 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v18 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
+},
+v19 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Image"
+},
+v20 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "Float"
+},
+v21 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Boolean"
+},
+v22 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "Boolean"
+},
+v23 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "CommerceOffer"
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "ConversationQuery",
+    "name": "ConversationTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -388,7 +442,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "ConversationQuery",
+    "name": "ConversationTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -909,13 +963,220 @@ return {
     ]
   },
   "params": {
-    "id": "7f12ef84d912a07d42a3b6a517eaca04",
-    "metadata": {},
-    "name": "ConversationQuery",
+    "id": "88c722ac24f37caf9d17f892e4a23c2a",
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "me": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Me"
+        },
+        "me.conversation": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Conversation"
+        },
+        "me.conversation.conversationID": (v15/*: any*/),
+        "me.conversation.from": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "ConversationInitiator"
+        },
+        "me.conversation.from.email": (v16/*: any*/),
+        "me.conversation.from.id": (v17/*: any*/),
+        "me.conversation.from.name": (v16/*: any*/),
+        "me.conversation.id": (v17/*: any*/),
+        "me.conversation.initialMessage": (v16/*: any*/),
+        "me.conversation.internalID": (v15/*: any*/),
+        "me.conversation.items": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "ConversationItem"
+        },
+        "me.conversation.items.item": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ConversationItemType"
+        },
+        "me.conversation.items.item.__isNode": (v16/*: any*/),
+        "me.conversation.items.item.__typename": (v16/*: any*/),
+        "me.conversation.items.item.artistNames": (v18/*: any*/),
+        "me.conversation.items.item.artworkID": (v17/*: any*/),
+        "me.conversation.items.item.coverImage": (v19/*: any*/),
+        "me.conversation.items.item.coverImage.aspectRatio": (v20/*: any*/),
+        "me.conversation.items.item.coverImage.url": (v18/*: any*/),
+        "me.conversation.items.item.date": (v18/*: any*/),
+        "me.conversation.items.item.fair": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Fair"
+        },
+        "me.conversation.items.item.fair.id": (v17/*: any*/),
+        "me.conversation.items.item.fair.name": (v18/*: any*/),
+        "me.conversation.items.item.href": (v18/*: any*/),
+        "me.conversation.items.item.id": (v17/*: any*/),
+        "me.conversation.items.item.image": (v19/*: any*/),
+        "me.conversation.items.item.image.aspectRatio": (v20/*: any*/),
+        "me.conversation.items.item.image.url": (v18/*: any*/),
+        "me.conversation.items.item.internalID": (v17/*: any*/),
+        "me.conversation.items.item.isOfferableFromInquiry": (v21/*: any*/),
+        "me.conversation.items.item.name": (v18/*: any*/),
+        "me.conversation.items.item.partner": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "PartnerTypes"
+        },
+        "me.conversation.items.item.partner.__isNode": (v16/*: any*/),
+        "me.conversation.items.item.partner.__typename": (v16/*: any*/),
+        "me.conversation.items.item.partner.id": (v17/*: any*/),
+        "me.conversation.items.item.partner.name": (v18/*: any*/),
+        "me.conversation.items.item.slug": (v17/*: any*/),
+        "me.conversation.items.item.title": (v18/*: any*/),
+        "me.conversation.lastMessageID": (v18/*: any*/),
+        "me.conversation.messagesConnection": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "MessageConnection"
+        },
+        "me.conversation.messagesConnection.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "MessageEdge"
+        },
+        "me.conversation.messagesConnection.edges.cursor": (v16/*: any*/),
+        "me.conversation.messagesConnection.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Message"
+        },
+        "me.conversation.messagesConnection.edges.node.__typename": (v16/*: any*/),
+        "me.conversation.messagesConnection.edges.node.attachments": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "Attachment"
+        },
+        "me.conversation.messagesConnection.edges.node.attachments.contentType": (v16/*: any*/),
+        "me.conversation.messagesConnection.edges.node.attachments.downloadURL": (v16/*: any*/),
+        "me.conversation.messagesConnection.edges.node.attachments.fileName": (v16/*: any*/),
+        "me.conversation.messagesConnection.edges.node.attachments.id": (v17/*: any*/),
+        "me.conversation.messagesConnection.edges.node.attachments.internalID": (v17/*: any*/),
+        "me.conversation.messagesConnection.edges.node.body": (v18/*: any*/),
+        "me.conversation.messagesConnection.edges.node.createdAt": (v18/*: any*/),
+        "me.conversation.messagesConnection.edges.node.from": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "MessageInitiator"
+        },
+        "me.conversation.messagesConnection.edges.node.from.email": (v18/*: any*/),
+        "me.conversation.messagesConnection.edges.node.from.name": (v18/*: any*/),
+        "me.conversation.messagesConnection.edges.node.id": (v17/*: any*/),
+        "me.conversation.messagesConnection.edges.node.internalID": (v17/*: any*/),
+        "me.conversation.messagesConnection.edges.node.isFirstMessage": (v21/*: any*/),
+        "me.conversation.messagesConnection.edges.node.isFromUser": (v21/*: any*/),
+        "me.conversation.messagesConnection.pageInfo": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "PageInfo"
+        },
+        "me.conversation.messagesConnection.pageInfo.endCursor": (v18/*: any*/),
+        "me.conversation.messagesConnection.pageInfo.hasNextPage": (v22/*: any*/),
+        "me.conversation.messagesConnection.pageInfo.hasPreviousPage": (v22/*: any*/),
+        "me.conversation.messagesConnection.pageInfo.startCursor": (v18/*: any*/),
+        "me.conversation.orderConnection": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceOrderConnectionWithTotalCount"
+        },
+        "me.conversation.orderConnection.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "CommerceOrderEdge"
+        },
+        "me.conversation.orderConnection.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceOrder"
+        },
+        "me.conversation.orderConnection.edges.node.__isCommerceOrder": (v16/*: any*/),
+        "me.conversation.orderConnection.edges.node.__typename": (v16/*: any*/),
+        "me.conversation.orderConnection.edges.node.id": (v17/*: any*/),
+        "me.conversation.orderConnection.edges.node.internalID": (v17/*: any*/),
+        "me.conversation.orderConnection.edges.node.lastOffer": (v23/*: any*/),
+        "me.conversation.orderConnection.edges.node.lastOffer.createdAt": (v16/*: any*/),
+        "me.conversation.orderConnection.edges.node.lastOffer.fromParticipant": {
+          "enumValues": [
+            "BUYER",
+            "SELLER"
+          ],
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceOrderParticipantEnum"
+        },
+        "me.conversation.orderConnection.edges.node.lastOffer.id": (v17/*: any*/),
+        "me.conversation.orderConnection.edges.node.offers": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceOfferConnection"
+        },
+        "me.conversation.orderConnection.edges.node.offers.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "CommerceOfferEdge"
+        },
+        "me.conversation.orderConnection.edges.node.offers.edges.node": (v23/*: any*/),
+        "me.conversation.orderConnection.edges.node.offers.edges.node.id": (v17/*: any*/),
+        "me.conversation.orderConnection.edges.node.offers.edges.node.internalID": (v17/*: any*/),
+        "me.conversation.orderConnection.edges.node.state": {
+          "enumValues": [
+            "ABANDONED",
+            "APPROVED",
+            "CANCELED",
+            "FULFILLED",
+            "PENDING",
+            "REFUNDED",
+            "SUBMITTED"
+          ],
+          "nullable": false,
+          "plural": false,
+          "type": "CommerceOrderStateEnum"
+        },
+        "me.conversation.orderConnection.edges.node.stateExpiresAt": (v18/*: any*/),
+        "me.conversation.orderConnection.edges.node.stateReason": (v18/*: any*/),
+        "me.conversation.to": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "ConversationResponder"
+        },
+        "me.conversation.to.id": (v17/*: any*/),
+        "me.conversation.to.name": (v16/*: any*/),
+        "me.conversation.unread": (v21/*: any*/),
+        "me.id": (v17/*: any*/)
+      }
+    },
+    "name": "ConversationTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'd45464a0b4ebc0c7eb45f4c296c8efb6';
+(node as any).hash = '64e0e5fa20a72cb800d56c9645fd6790';
 export default node;

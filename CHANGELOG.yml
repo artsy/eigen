@@ -34,6 +34,7 @@ upcoming:
     - Fix fancy modal border radius animating on non shrinking backgrounds - mounir
     - Allow users to scroll to bottom of multi select filters - iskounen
     - Fix batched loading of artwork category filter options - iskounen
+    - Hooks up offer CTA to conversation order - lily
 
 releases:
   - version: 6.8.0
