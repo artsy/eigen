@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ed94730c2abec561fff47b22046e4269 */
+/* @relayHash 88c722ac24f37caf9d17f892e4a23c2a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -72,25 +72,7 @@ fragment Composer_conversation on Conversation {
         __typename
         ...ReviewOfferButton_order
         __isCommerceOrder: __typename
-        internalID
         state
-        stateReason
-        stateExpiresAt
-        ... on CommerceOfferOrder {
-          lastOffer {
-            fromParticipant
-            createdAt
-            id
-          }
-          offers(first: 5) {
-            edges {
-              node {
-                internalID
-                id
-              }
-            }
-          }
-        }
         id
       }
     }
@@ -981,7 +963,7 @@ return {
     ]
   },
   "params": {
-    "id": "ed94730c2abec561fff47b22046e4269",
+    "id": "88c722ac24f37caf9d17f892e4a23c2a",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {

@@ -16,13 +16,6 @@ import { ReviewOfferButton } from "../ReviewOfferButton"
 jest.unmock("react-tracking")
 jest.unmock("react-relay")
 
-// jest.mock("../ReviewOfferButton", () => {
-//   console.log("im mockin")
-//   return {
-//     ReviewOfferButtonFragmentContainer: () => "<ReviewOfferButtonMock />",
-//   }
-// })
-
 let env: ReturnType<typeof createMockEnvironment>
 
 beforeEach(() => {
@@ -63,7 +56,6 @@ const getWrapper = (mockResolvers = {}, nonRelayProps = {}) => {
 
 it("renders without throwing a error", () => {
   getWrapper()
-  // renderWithWrappers(<ComposerFragmentContainer disabled={false} />)
 })
 
 describe("regarding the send button", () => {

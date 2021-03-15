@@ -180,23 +180,7 @@ export const ComposerFragmentContainer = createFragmentContainer(Composer, {
           node {
             ...ReviewOfferButton_order
             ... on CommerceOrder {
-              internalID
               state
-              stateReason
-              stateExpiresAt
-              ... on CommerceOfferOrder {
-                lastOffer {
-                  fromParticipant
-                  createdAt
-                }
-                offers(first: 5) {
-                  edges {
-                    node {
-                      internalID
-                    }
-                  }
-                }
-              }
             }
           }
         }
