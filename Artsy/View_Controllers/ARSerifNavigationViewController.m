@@ -8,7 +8,7 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 
-#define controllersRequiringHiddenNavBar @[@"ARBidFlowViewController", @"ARSerifTestNavigationController"]
+#define controllersRequiringHiddenNavBar @[@"ARSerifTestNavigationController"]
 
 static CGFloat exitButtonDimension = 40;
 

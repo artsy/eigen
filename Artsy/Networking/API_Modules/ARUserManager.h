@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <React/RCTBridgeModule.h>
 
 extern NSString *const ARUserSessionStartedNotification;
 
@@ -8,7 +9,7 @@ extern NSString *const ARUserSessionStartedNotification;
 
 + (ARUserManager *)sharedManager;
 
-+ (void)logout;
++ (void)logoutWithCompletion:(RCTPromiseResolveBlock)completion;
 + (void)clearUserData;
 
 + (BOOL)didCreateAccountThisSession;

@@ -1,5 +1,5 @@
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
-import { Serif } from "palette"
+import { Serif, Theme } from "palette"
 import { stringify } from "qs"
 import React from "react"
 import { ActivityIndicator, ScrollView, TouchableWithoutFeedback } from "react-native"
@@ -7,12 +7,11 @@ import Config from "react-native-config"
 
 import { Flex } from "../Elements/Flex"
 
-import { BackButton } from "../Components/BackButton"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
 import { Input } from "../Components/Input"
-import { Title } from "../Components/Title"
 
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Country, SearchResult } from "../types"
 
 interface SelectCountryProps {
@@ -91,11 +90,11 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
     return (
       <BiddingThemeProvider>
         <Flex flex={1}>
-          <BackButton navigator={this.props.navigator} />
+          <Theme>
+            <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>Select country</FancyModalHeader>
+          </Theme>
 
           <Container mb={0}>
-            <Title mt={0}>Select country</Title>
-
             <Input
               mb={3}
               autoCorrect={false}

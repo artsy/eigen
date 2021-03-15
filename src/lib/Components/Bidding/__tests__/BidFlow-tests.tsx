@@ -17,7 +17,6 @@ jest.mock("lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () =>
   bidderPositionQuery: jest.fn(),
 }))
 import { bidderPositionQuery } from "lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
-import { Title } from "../Components/Title"
 
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
@@ -28,6 +27,7 @@ jest.mock("tipsi-stripe", () => ({
 import stripe from "tipsi-stripe"
 
 import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
+import { extractText } from "lib/tests/extractText"
 import { waitUntil } from "lib/tests/waitUntil"
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
@@ -39,9 +39,6 @@ let fakeNavigator: FakeNavigator
 let fakeRelay
 
 jest.useFakeTimers()
-
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const getTitleText = (component) => component.root.findByType(Title).props.children
 
 beforeEach(() => {
   fakeNavigator = new FakeNavigator()
@@ -65,7 +62,7 @@ it("allows bidders with a qualified credit card to bid", async () => {
   screen.root.findAllByType(Button)[0].props.onPress()
 
   screen = fakeNavigator.nextStep()
-  expect(getTitleText(screen)).toEqual("Confirm your bid")
+  expect(extractText(screen.root)).toContain("Confirm your bid")
 
   bidderPositionQueryMock.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -81,7 +78,7 @@ it("allows bidders with a qualified credit card to bid", async () => {
   await waitUntil(() => fakeNavigator.stackSize() === 2)
 
   screen = fakeNavigator.nextStep()
-  expect(getTitleText(screen)).toEqual("You’re the highest bidder")
+  expect(extractText(screen.root)).toContain("You’re the highest bidder")
 })
 
 it("allows bidders without a qualified credit card to register a card and bid", async () => {
@@ -100,7 +97,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
 
   screen = fakeNavigator.nextStep()
 
-  expect(getTitleText(screen)).toEqual("Confirm your bid")
+  expect(extractText(screen.root)).toContain("Confirm your bid")
 
   stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
   relay.commitMutation = jest
@@ -138,7 +135,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
 
   screen = fakeNavigator.nextStep()
 
-  expect(getTitleText(screen)).toEqual("You’re the highest bidder")
+  expect(extractText(screen.root)).toContain("You’re the highest bidder")
 })
 
 const stripeToken = {

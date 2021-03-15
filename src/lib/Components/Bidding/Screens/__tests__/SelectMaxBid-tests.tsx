@@ -12,6 +12,7 @@ import Spinner from "../../../../Components/Spinner"
 
 import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"
 import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
+import { ActivityIndicator } from "react-native"
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { SelectMaxBid } from "../SelectMaxBid"
 
@@ -90,7 +91,7 @@ it("shows a spinner while fetching new bid increments", () => {
   const selectBidComponent = component.root.findByType(SelectMaxBid)
   selectBidComponent.instance.setState({ isRefreshingSaleArtwork: true })
 
-  expect(component.root.findByType(Spinner)).toBeDefined()
+  expect(component.root.findByType(ActivityIndicator)).toBeDefined()
 })
 
 it("refetches in next component's refreshSaleArtwork", () => {
@@ -107,7 +108,7 @@ it("refetches in next component's refreshSaleArtwork", () => {
   expect(fakeRelay.refetch).toHaveBeenCalledWith({ saleArtworkNodeID: "sale-artwork-id" }, null, expect.anything(), {
     force: true,
   })
-  expect(component.root.findByType(Spinner)).toBeDefined()
+  expect(component.root.findByType(ActivityIndicator)).toBeDefined()
 })
 
 it("removes the spinner once the refetch is complete", () => {

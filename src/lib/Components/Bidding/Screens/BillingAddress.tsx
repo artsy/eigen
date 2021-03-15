@@ -1,4 +1,4 @@
-import { Button, Sans, Serif } from "palette"
+import { Button, Sans, Serif, Theme } from "palette"
 import React from "react"
 
 import { Schema, screenTrack, track } from "../../../utils/track"
@@ -19,13 +19,12 @@ import { Flex } from "../Elements/Flex"
 
 import { validatePresence } from "../Validators"
 
-import { BackButton } from "../Components/BackButton"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
 import { Input, InputProps } from "../Components/Input"
-import { Title } from "../Components/Title"
 import { Address, Country } from "../types"
 
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { SelectCountry } from "./SelectCountry"
 
 interface StyledInputInterface {
@@ -184,8 +183,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
   }
 
   presentSelectCountry() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.navigator.push({
+    this.props.navigator?.push({
       component: SelectCountry,
       title: "",
       passProps: {
@@ -223,16 +221,13 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
           keyboardVerticalOffset={this.verticalOffset}
           style={{ flex: 1 }}
         >
-          <BackButton
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            navigator={this.props.navigator}
-          />
+          <Theme>
+            <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
+              Add billing address
+            </FancyModalHeader>
+          </Theme>
           <ScrollView ref={(scrollView) => (this.scrollView = scrollView as any)}>
             <Container>
-              <Title mt={0} mb={6}>
-                Your billing address
-              </Title>
-
               <StyledInput
                 {...this.defaultPropsForInput("fullName")}
                 label="Full name"
@@ -317,7 +312,10 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                   Country
                 </Serif>
 
-                <TouchableWithoutFeedback onPress={() => this.presentSelectCountry()}>
+                <TouchableWithoutFeedback
+                  testID="select-country-press-handler"
+                  onPress={() => this.presentSelectCountry()}
+                >
                   <Flex mb={3} p={3} pb={2} border={1} borderColor={errorForCountry ? "red100" : "black10"}>
                     {this.state.values.country ? (
                       <Serif size="3">{this.state.values.country.longName}</Serif>

@@ -55,7 +55,7 @@ export const GlobalStoreModel: GlobalStoreModel = {
     const existingConfig = store.getState().config
     const config = sanitize(existingConfig) as typeof existingConfig
     if (Platform.OS === "ios") {
-      LegacyNativeModules.ARTemporaryAPIModule.clearUserData()
+      await LegacyNativeModules.ARTemporaryAPIModule.clearUserData()
     }
     clearAll()
     actions.reset({ config })

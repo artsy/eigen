@@ -1,50 +1,42 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash be5b942a5a52bc7d8e49bb2dada4ad5f */
+/* @relayHash 37e13791b239143c2214029e30fb2bd9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type RegistrationFlowQueryVariables = {
+export type RegistrationQueryVariables = {
     saleID: string;
 };
-export type RegistrationFlowQueryResponse = {
+export type RegistrationQueryResponse = {
     readonly sale: {
         readonly name: string | null;
-        readonly " $fragmentRefs": FragmentRefs<"RegistrationFlow_sale">;
+        readonly " $fragmentRefs": FragmentRefs<"Registration_sale">;
     } | null;
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"RegistrationFlow_me">;
+        readonly " $fragmentRefs": FragmentRefs<"Registration_me">;
     } | null;
 };
-export type RegistrationFlowQuery = {
-    readonly response: RegistrationFlowQueryResponse;
-    readonly variables: RegistrationFlowQueryVariables;
+export type RegistrationQuery = {
+    readonly response: RegistrationQueryResponse;
+    readonly variables: RegistrationQueryVariables;
 };
 
 
 
 /*
-query RegistrationFlowQuery(
+query RegistrationQuery(
   $saleID: String!
 ) {
   sale(id: $saleID) {
     name
-    ...RegistrationFlow_sale
+    ...Registration_sale
     id
   }
   me {
-    ...RegistrationFlow_me
+    ...Registration_me
     id
   }
-}
-
-fragment RegistrationFlow_me on Me {
-  ...Registration_me
-}
-
-fragment RegistrationFlow_sale on Sale {
-  ...Registration_sale
 }
 
 fragment Registration_me on Me {
@@ -97,7 +89,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "RegistrationFlowQuery",
+    "name": "RegistrationQuery",
     "selections": [
       {
         "alias": null,
@@ -111,7 +103,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "RegistrationFlow_sale"
+            "name": "Registration_sale"
           }
         ],
         "storageKey": null
@@ -127,7 +119,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "RegistrationFlow_me"
+            "name": "Registration_me"
           }
         ],
         "storageKey": null
@@ -140,7 +132,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "RegistrationFlowQuery",
+    "name": "RegistrationQuery",
     "selections": [
       {
         "alias": null,
@@ -226,13 +218,13 @@ return {
     ]
   },
   "params": {
-    "id": "be5b942a5a52bc7d8e49bb2dada4ad5f",
+    "id": "37e13791b239143c2214029e30fb2bd9",
     "metadata": {},
-    "name": "RegistrationFlowQuery",
+    "name": "RegistrationQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'af83c19448e31ceffd514ab56c5e7b95';
+(node as any).hash = '36b321282c8221fc0cc8bc7d41dbb764';
 export default node;

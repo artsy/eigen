@@ -4,7 +4,7 @@ import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack } from "lib/utils/track"
 import { Box, Button, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
-import { View, ViewProperties } from "react-native"
+import { Alert, BackHandler, NativeEventSubscription, View, ViewProperties } from "react-native"
 import styled from "styled-components/native"
 
 interface Props extends ViewProperties {
@@ -38,6 +38,7 @@ const Container = styled.View`
   context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
 })
 export default class Confirmation extends React.Component<Props, State> {
+  backButtonListener?: NativeEventSubscription = undefined
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -45,8 +46,30 @@ export default class Confirmation extends React.Component<Props, State> {
     }
 
     if (this.state.submissionState === SubmissionTypes.Submitting && props.submissionRequestValidationCheck) {
-      setTimeout(this.checkForSubmissionStatus, 1000)
+      setTimeout(this.checkForSubmissionStatus.bind(this), 1000)
     }
+  }
+
+  componentDidMount = () => {
+    this.backButtonListener = BackHandler.addEventListener("hardwareBackPress", this.handleBackButton.bind(this))
+  }
+
+  componentWillUnmount = () => {
+    if (this.backButtonListener) {
+      this.backButtonListener.remove()
+    }
+  }
+
+  handleBackButton = () => {
+    if (this.state.submissionState === SubmissionTypes.Submitting) {
+      Alert.alert("Leave this screen?", "Your consignment submission is still in progress", [
+        { text: "Leave Now", onPress: () => dismissModal() },
+        { text: "Wait", style: "default" },
+      ])
+    } else {
+      dismissModal()
+    }
+    return true
   }
 
   checkForSubmissionStatus = () => {
