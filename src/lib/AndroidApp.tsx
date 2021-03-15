@@ -1,3 +1,4 @@
+import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React, { useEffect, useRef } from "react"
@@ -81,13 +82,15 @@ export const App = () => (
   <RelayEnvironmentProvider environment={defaultEnvironment}>
     <ProvideScreenDimensions>
       <Theme>
-        <_FancyModalPageWrapper>
-          <GlobalStoreProvider>
-            <AdminMenuWrapper>
-              <Main />
-            </AdminMenuWrapper>
-          </GlobalStoreProvider>
-        </_FancyModalPageWrapper>
+        <ActionSheetProvider>
+          <_FancyModalPageWrapper>
+            <GlobalStoreProvider>
+              <AdminMenuWrapper>
+                <Main />
+              </AdminMenuWrapper>
+            </GlobalStoreProvider>
+          </_FancyModalPageWrapper>
+        </ActionSheetProvider>
       </Theme>
     </ProvideScreenDimensions>
   </RelayEnvironmentProvider>

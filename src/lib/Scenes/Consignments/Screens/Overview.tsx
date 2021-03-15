@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-community/async-storage"
 import type NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Dimensions, ScrollView, View } from "react-native"
 
-import { ActionSheetOptions, connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet"
+import { ActionSheetOptions, connectActionSheet } from "@expo/react-native-action-sheet"
 import { AddEditPhotos } from "lib/Components/Photos/AddEditPhotos"
 import { dismissModal } from "lib/navigation/navigate"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
@@ -89,36 +89,10 @@ class Overview extends React.Component<Props, State> {
         passProps: { initialPhotos: this.state.photos, photosUpdated: this.photosUpdated },
       })
     } else {
-      console.log("DEBUGANDROID called gotoPhotos")
-
-      console.log("DEBUGANDROID called showActionSheet prop", this.props.showActionSheetWithOptions)
-
-      this._onOpenActionSheet()
-      // showPhotoActionSheet().then((images) => {
-      //   this.updatePhotos(images)
-      // })
+      showPhotoActionSheet(this.props.showActionSheetWithOptions!).then((images) => {
+        this.updatePhotos(images)
+      })
     }
-  }
-
-  _onOpenActionSheet = () => {
-    // Same interface as https://facebook.github.io/react-native/docs/actionsheetios.html
-    const options = ["Delete", "Save", "Cancel"]
-    const destructiveButtonIndex = 0
-    const cancelButtonIndex = 2
-
-    console.log("DEBUGANDROID on open action sheet")
-
-    this.props.showActionSheetWithOptions(
-      {
-        options,
-        cancelButtonIndex,
-        destructiveButtonIndex,
-        useModal: true,
-      },
-      (buttonIndex) => {
-        // Do something here depending on the button index selected
-      }
-    )
   }
 
   goToMetadataTapped = () =>
@@ -340,5 +314,5 @@ class Overview extends React.Component<Props, State> {
   }
 }
 
-const ConnectedOverview = connectActionSheet(Overview)
+const ConnectedOverview = connectActionSheet<Props & State>(Overview)
 export default ConnectedOverview
