@@ -60,7 +60,7 @@ To test your feature on a physical or virtual device, you will need to override 
 There is a utility method that can be used by tests that need to override a feature flag.
 
 ```ts
-__globalStoreTestUtils__?.injectFeatureFlags({ ARUseNewArtworkFilters: true })
+__globalStoreTestUtils__?.injectFeatureFlags({ ARShowMarketingBanner: true })
 ```
 
 ## Releasing a feature
