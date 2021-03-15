@@ -1184,7 +1184,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",
@@ -1281,7 +1281,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",
@@ -1388,7 +1388,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",
@@ -1506,7 +1506,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",
@@ -1614,7 +1614,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",
@@ -1698,7 +1698,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",
@@ -1795,7 +1795,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",
@@ -1893,7 +1893,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",
@@ -1972,7 +1972,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",

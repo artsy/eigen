@@ -8,6 +8,7 @@ import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graph
 import { mount } from "enzyme"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import {
   Aggregations,
@@ -294,7 +295,11 @@ describe("Filter modal states", () => {
   })
 
   it("displays the filter screen apply button correctly when no filters are selected", () => {
-    const filterScreen = mount(<MockFilterModalNavigator initialState={state} />)
+    const filterScreen = mount(
+      <GlobalStoreProvider>
+        <MockFilterModalNavigator initialState={state} />
+      </GlobalStoreProvider>
+    )
 
     expect(filterScreen.find(ApplyButton).props().disabled).toEqual(true)
   })
@@ -313,13 +318,21 @@ describe("Filter modal states", () => {
       },
     }
 
-    const filterScreen = mount(<MockFilterModalNavigator initialState={state} />)
+    const filterScreen = mount(
+      <GlobalStoreProvider>
+        <MockFilterModalNavigator initialState={state} />
+      </GlobalStoreProvider>
+    )
 
     expect(filterScreen.find(ApplyButton).props().disabled).toEqual(false)
   })
 
   it("displays default filters on the Filter modal", () => {
-    const filterScreen = mount(<MockFilterScreen initialState={state} />)
+    const filterScreen = mount(
+      <GlobalStoreProvider>
+        <MockFilterScreen initialState={state} />
+      </GlobalStoreProvider>
+    )
 
     expect(filterScreen.find(CurrentOption).at(0).text()).toEqual("Default")
 
@@ -423,7 +436,11 @@ describe("Clearing filters", () => {
       },
     }
 
-    const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
+    const filterModal = mount(
+      <GlobalStoreProvider>
+        <MockFilterModalNavigator initialState={state} />
+      </GlobalStoreProvider>
+    )
 
     expect(filterModal.find(CurrentOption).at(0).text()).toEqual("Recently added")
     expect(filterModal.find(ApplyButton).props().disabled).toEqual(true)
@@ -454,7 +471,11 @@ describe("Clearing filters", () => {
       },
     }
 
-    const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
+    const filterModal = mount(
+      <GlobalStoreProvider>
+        <MockFilterModalNavigator initialState={state} />
+      </GlobalStoreProvider>
+    )
     const applyButton = filterModal.find(ApplyButton)
 
     expect(applyButton.text()).toContain("Apply (2)")
@@ -566,7 +587,11 @@ describe("Applying filters on Artworks", () => {
       },
     }
 
-    const filterModal = mount(<MockFilterModalNavigator initialState={state} />)
+    const filterModal = mount(
+      <GlobalStoreProvider>
+        <MockFilterModalNavigator initialState={state} />
+      </GlobalStoreProvider>
+    )
     const applyButton = filterModal.find(ApplyButton)
 
     applyButton.props().onPress()

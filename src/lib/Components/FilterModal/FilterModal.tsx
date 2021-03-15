@@ -1,6 +1,7 @@
 import { ContextModule } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import {
   AggregationName,
   ArtworkFilterContext,
@@ -38,6 +39,7 @@ import { PriceRangeOptionsScreen } from "../ArtworkFilterOptions/PriceRangeOptio
 import { SizeOptionsScreen } from "../ArtworkFilterOptions/SizeOptions"
 import { SizesOptionsScreen } from "../ArtworkFilterOptions/SizesOptions"
 import { SortOptionsScreen } from "../ArtworkFilterOptions/SortOptions"
+import { TimePeriodMultiOptionsScreen } from "../ArtworkFilterOptions/TimePeriodMultiOptions"
 import { TimePeriodOptionsScreen } from "../ArtworkFilterOptions/TimePeriodOptions"
 import { ViewAsOptionsScreen } from "../ArtworkFilterOptions/ViewAsOptions"
 import { WaysToBuyOptionsScreen } from "../ArtworkFilterOptions/WaysToBuyOptions"
@@ -121,6 +123,7 @@ const Stack = createStackNavigator<FilterModalNavigationStack>()
 export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
   const tracking = useTracking()
   const { dispatch, state } = useContext(ArtworkFilterContext)
+  const useImprovedArtworkFilters = useFeatureFlag("ARUseNewArtworkFilters")
   const { exitModal, id, mode, slug, closeModal } = props
 
   const handleClosingModal = () => {
@@ -218,7 +221,10 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
             <Stack.Screen name="SizeOptionsScreen" component={SizeOptionsScreen} />
             <Stack.Screen name="SizesOptionsScreen" component={SizesOptionsScreen} />
             <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
-            <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} />
+            <Stack.Screen
+              name="TimePeriodOptionsScreen"
+              component={useImprovedArtworkFilters ? TimePeriodMultiOptionsScreen : TimePeriodOptionsScreen}
+            />
             <Stack.Screen name="ViewAsOptionsScreen" component={ViewAsOptionsScreen} />
             <Stack.Screen
               name="YearOptionsScreen"
