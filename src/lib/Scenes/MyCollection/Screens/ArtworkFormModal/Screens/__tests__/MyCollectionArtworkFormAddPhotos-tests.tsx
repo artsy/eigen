@@ -2,9 +2,14 @@ import { Route } from "@react-navigation/native"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import React, { ReactElement } from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { MyCollectionAddPhotos, tests } from "../MyCollectionArtworkFormAddPhotos"
+
+jest.mock("lib/utils/requestPhotos", () => ({
+  showPhotoActionSheet: jest.fn(() => Promise.resolve({ photos: [] })),
+}))
 
 jest.mock("formik")
 
@@ -50,16 +55,12 @@ describe("MyCollectionAddPhotos", () => {
   })
 
   it("triggers action on add photo button click", () => {
-    const spy = jest.fn()
-    GlobalStore.actions.myCollection.artwork.takeOrPickPhotos = spy as any
     const wrapper = renderWithWrappers(mockAddPhotos)
     wrapper.root.findByType(tests.AddPhotosButton).findByType(TouchableOpacity).props.onPress()
-    expect(spy).toHaveBeenCalled()
+    expect(showPhotoActionSheet).toHaveBeenCalled()
   })
 
   it("triggers action on add photo button click", () => {
-    const spy = jest.fn()
-    GlobalStore.actions.myCollection.artwork.takeOrPickPhotos = spy as any
     const mockNav = jest.fn()
     const mockRoute: Route<"AddPhotos", undefined> = {
       key: "AddPhotos",
@@ -68,7 +69,7 @@ describe("MyCollectionAddPhotos", () => {
     }
     const wrapper = renderWithWrappers(<MyCollectionAddPhotos navigation={mockNav as any} route={mockRoute} />)
     wrapper.root.findByType(tests.AddPhotosButton).findByType(TouchableOpacity).props.onPress()
-    expect(spy).toHaveBeenCalled()
+    expect(showPhotoActionSheet).toHaveBeenCalled()
   })
 
   it("triggers action on delete photo button click", () => {
