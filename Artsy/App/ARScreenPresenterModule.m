@@ -10,7 +10,6 @@
 #import "ARAuctionWebViewController.h"
 #import "ArtsyEcho.h"
 #import "ARAppDelegate+Echo.h"
-#import <Emission/ARBidFlowViewController.h>
 #import "ARRouter.h"
 #import <Emission/ARMediaPreviewController.h>
 #import <MessageUI/MFMailComposeViewController.h>
@@ -59,7 +58,7 @@ RCT_EXPORT_METHOD(pushView:(nonnull NSString *)currentTabStackID viewDescriptor:
         deepLinkVC = vc;
         return;
     }
-    
+
     if ([vc isKindOfClass:ARComponentViewController.class]) {
         ARComponentViewController *reactVC = (ARComponentViewController *)vc;
         // if we're in a modal, get the modal id from the stack map
@@ -137,10 +136,6 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
         vc = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     } else if ([moduleName isEqualToString:@"Auction"]) {
         vc = [self.class loadAuctionWithID:props[@"id"]];
-    } else if ([moduleName isEqualToString:@"AuctionRegistration"]) {
-        vc = [self.class loadAuctionRegistrationWithID:props[@"saleID"] skipBidFlow:[props[@"skip_bid_flow"] boolValue]];
-    } else if ([moduleName isEqualToString:@"AuctionBidArtwork"]) {
-        vc = [self.class loadBidUIForArtwork:props[@"artworkID"] inSale:props[@"saleID"]];
     } else if ([moduleName isEqualToString:@"LiveAuction"]) {
         if ([AROptions boolForOption:AROptionsDisableNativeLiveAuctions] || [self.class requiresUpdateForWebSocketVersionUpdate]) {
             NSString *slug = props[@"slug"];
@@ -232,28 +227,11 @@ RCT_EXPORT_METHOD(popToRootAndScrollToTop:(nonnull NSString *)stackID
     }
 }
 
-+ (UIViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID skipBidFlow:(BOOL)skipBidFlow
++ (UIViewController *)loadWebViewAuctionRegistrationWithID:(NSString *)auctionID
 {
-    if ([[[ARAppDelegate sharedInstance] echo] isFeatureEnabled:@"ARDisableReactNativeBidFlow"] == NO && skipBidFlow == NO) {
-        ARBidFlowViewController *viewController = [[ARBidFlowViewController alloc] initWithArtworkID:@"" saleID:auctionID intent:ARBidFlowViewControllerIntentRegister];
-        return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
-    } else {
-        NSString *path = [NSString stringWithFormat:@"/auction-registration/%@", auctionID];
-        NSURL *URL = [ARRouter resolveRelativeUrl:path];
-        return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
-    }
-}
-
-+ (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID
-{
-    if ([[[ARAppDelegate sharedInstance] echo] isFeatureEnabled:@"ARDisableReactNativeBidFlow"] == NO) {
-        ARBidFlowViewController *viewController = [[ARBidFlowViewController alloc] initWithArtworkID:artworkID saleID:saleID];
-        return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
-    } else {
-        NSString *path = [NSString stringWithFormat:@"/auction/%@/bid/%@", saleID, artworkID];
-        NSURL *URL = [ARRouter resolveRelativeUrl:path];
-        return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:artworkID];
-    }
+    NSString *path = [NSString stringWithFormat:@"/auction-registration/%@", auctionID];
+    NSURL *URL = [ARRouter resolveRelativeUrl:path];
+    return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
 }
 
 /// To be kept in lock-step with the corresponding echo value, and updated when there is a breaking causality change.

@@ -4,7 +4,6 @@
 #import "ARNotificationView.h"
 #import "ARSerifNavigationViewController.h"
 #import "UIApplicationStateEnum.h"
-#import <Emission/ARBidFlowViewController.h>
 #import <Emission/AREmission.h>
 
 static NSDictionary *

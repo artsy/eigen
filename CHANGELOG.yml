@@ -12,11 +12,13 @@ upcoming:
     - Make auction screens mountable on android - barry, brian
     - Support deep links on android - adam, barry, brian, david, mounir, steven
     - Fix sticky tab page layout problems on android - david
+    - Update bid + registration flow modal header styles - david
     - Override Android back button in consignment form - adam
     - Add feature flag for new artwork filters - iskounen
     - Enable feature flags on android - mounir
     - Enable new onboarding feature flag - mounir
     - Adds improved time period filter behind feature flag - iskounen, damon, devon, roop
+
   user_facing:
     - Adds inquiry checkout offer status CTA - lily
     - Update consignment photo selection flow for iOS 14 - brian

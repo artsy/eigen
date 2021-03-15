@@ -1,16 +1,15 @@
 import { Fonts } from "lib/data/fonts"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
-import { Box, Button, Sans, Serif } from "palette"
+import { Box, Button, Sans, Serif, Theme } from "palette"
 import React, { Component } from "react"
 import { ScrollView, StyleSheet, View } from "react-native"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe, { PaymentCardTextField, StripeToken } from "tipsi-stripe"
 
 import BottomAlignedButtonWrapper from "lib/Components/Buttons/BottomAlignedButtonWrapper"
-import { BackButton } from "../Components/BackButton"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
-import { Title } from "../Components/Title"
 import { theme } from "../Elements/Theme"
 import { PaymentCardTextFieldParams } from "../types"
 
@@ -105,15 +104,12 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
           onPress={this.state.valid ? () => this.tokenizeCardAndSubmit() : null}
           buttonComponent={buttonComponent}
         >
-          <BackButton
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            navigator={this.props.navigator}
-          />
+          <Theme>
+            <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>Add credit card</FancyModalHeader>
+          </Theme>
           <ScrollView scrollEnabled={false}>
             <Container m={0}>
               <View>
-                <Title>Your credit card</Title>
-
                 <Box m={4}>
                   <Serif size="3t" mb={2}>
                     Card Information
