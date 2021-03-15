@@ -50,7 +50,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
       <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
       <Flex flexGrow={1}>
         <FlatList<FilterData>
-          initialNumToRender={4}
+          style={{ flex: 1 }}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
           ItemSeparatorComponent={Separator}

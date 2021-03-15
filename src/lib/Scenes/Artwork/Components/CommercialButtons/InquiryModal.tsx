@@ -11,7 +11,7 @@ import { LocationWithDetails } from "lib/utils/googleMaps"
 import { Schema } from "lib/utils/track"
 import { Box, color, Flex, Separator, space, Text } from "palette"
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
-import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
+import { KeyboardAvoidingView, LayoutAnimation, Platform, ScrollView, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -233,46 +233,49 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           </Text>
         </ErrorMessageFlex>
       )}
-      <ScrollView ref={scrollViewRef}>
-        <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
-        <Box m={2}>
-          <Text variant="mediumText">What information are you looking for?</Text>
-          {
-            // NOTE: For now the inquiryQuestions field values are always present and therefore never null, so it is safe to destructure them
-            questions!.map((inquiryQuestion) => {
-              if (!inquiryQuestion) {
-                return false
-              }
-              const { internalID: id, question } = inquiryQuestion
-              return id === InquiryQuestionIDs.Shipping ? (
-                <InquiryQuestionOption
-                  key={id}
-                  id={id}
-                  question={question}
-                  setShippingModalVisibility={setShippingModalVisibility}
-                />
-              ) : (
-                <InquiryQuestionOption key={id} id={id} question={question} />
-              )
-            })
-          }
-        </Box>
-        <Box
-          mx={2}
-          mb={4}
-          onLayout={({ nativeEvent }) => {
-            setAddMessageYCoordinate(nativeEvent.layout.y)
-          }}
-        >
-          <TextArea
-            placeholder="Add a custom note..."
-            title="Add message"
-            value={state.message ? state.message : ""}
-            onChangeText={setMessage}
-            onFocus={scrollToInput}
-          />
-        </Box>
-      </ScrollView>
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} enabled={Platform.OS === "android"}>
+        <ScrollView ref={scrollViewRef}>
+          <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
+          <Box m={2}>
+            <Text variant="mediumText">What information are you looking for?</Text>
+            {
+              // NOTE: For now the inquiryQuestions field values are always present and therefore never null, so it is safe to destructure them
+              questions!.map((inquiryQuestion) => {
+                if (!inquiryQuestion) {
+                  return false
+                }
+                const { internalID: id, question } = inquiryQuestion
+                return id === InquiryQuestionIDs.Shipping ? (
+                  <InquiryQuestionOption
+                    key={id}
+                    id={id}
+                    question={question}
+                    setShippingModalVisibility={setShippingModalVisibility}
+                  />
+                ) : (
+                  <InquiryQuestionOption key={id} id={id} question={question} />
+                )
+              })
+            }
+          </Box>
+          <Box
+            mx={2}
+            mb={4}
+            onLayout={({ nativeEvent }) => {
+              setAddMessageYCoordinate(nativeEvent.layout.y)
+            }}
+          >
+            <TextArea
+              placeholder="Add a custom note..."
+              title="Add message"
+              value={state.message ? state.message : ""}
+              onChangeText={setMessage}
+              onFocus={scrollToInput}
+              style={{ justifyContent: "flex-start" }}
+            />
+          </Box>
+        </ScrollView>
+      </KeyboardAvoidingView>
       <ShippingModal
         toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
         modalIsVisible={shippingModalVisibility}

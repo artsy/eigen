@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5d748adb621af109ac3562fca471eb8d */
+/* @relayHash 9e7485fbcdba12f2d4f14fe7a5fbeb9a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -61,6 +61,18 @@ fragment Conversation_me on Me {
         }
         ... on Node {
           __isNode: __typename
+          id
+        }
+      }
+    }
+    submittedOrderConnection: orderConnection(participantType: BUYER, state: SUBMITTED) {
+      edges {
+        node {
+          __typename
+          ... on CommerceOfferOrder {
+            internalID
+            state
+          }
           id
         }
       }
@@ -494,6 +506,67 @@ return {
                 ],
                 "storageKey": null
               },
+              {
+                "alias": "submittedOrderConnection",
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "participantType",
+                    "value": "BUYER"
+                  },
+                  {
+                    "kind": "Literal",
+                    "name": "state",
+                    "value": "SUBMITTED"
+                  }
+                ],
+                "concreteType": "CommerceOrderConnectionWithTotalCount",
+                "kind": "LinkedField",
+                "name": "orderConnection",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "CommerceOrderEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": null,
+                        "kind": "LinkedField",
+                        "name": "node",
+                        "plural": false,
+                        "selections": [
+                          (v1/*: any*/),
+                          (v7/*: any*/),
+                          {
+                            "kind": "InlineFragment",
+                            "selections": [
+                              (v4/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "state",
+                                "storageKey": null
+                              }
+                            ],
+                            "type": "CommerceOfferOrder",
+                            "abstractKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": "orderConnection(participantType:\"BUYER\",state:\"SUBMITTED\")"
+              },
               (v4/*: any*/),
               (v7/*: any*/),
               {
@@ -717,7 +790,7 @@ return {
     ]
   },
   "params": {
-    "id": "5d748adb621af109ac3562fca471eb8d",
+    "id": "9e7485fbcdba12f2d4f14fe7a5fbeb9a",
     "metadata": {},
     "name": "ConversationQuery",
     "operationKind": "query",

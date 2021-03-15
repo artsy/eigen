@@ -55,7 +55,7 @@ export class Input extends Component<InputProps, InputState> {
         borderColor={this.state.borderColor}
         fontSize={3}
         p={3}
-        pb={2}
+        textAlignVertical="center"
         {...this.props}
         // These props should not be overridden so they are declared after `{...this.props}`
         ref={this.props.inputRef}

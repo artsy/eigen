@@ -10,6 +10,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   LayoutRectangle,
+  Platform,
   ScrollView,
   TouchableWithoutFeedback,
 } from "react-native"
@@ -42,11 +43,13 @@ const StyledInput: React.FC<StyledInputProps> = ({ label, errorMessage, onLayout
       {label}
     </Serif>
     <Input mb={3} error={Boolean(errorMessage)} {...props} />
-    {!!errorMessage && (
-      <Sans size="2" color="red100">
-        {errorMessage}
-      </Sans>
-    )}
+    <Flex height={15}>
+      {!!errorMessage && (
+        <Sans size="2" color="red100">
+          {errorMessage}
+        </Sans>
+      )}
+    </Flex>
   </Flex>
 )
 
@@ -201,12 +204,23 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     this.keyboardDidShowListener.remove()
   }
 
+  scrollToPosition(layout: LayoutRectangle) {
+    // The scroll is handled by default on android since we are using adjustPan as a windowSoftInputMode
+    if (Platform.OS === "ios") {
+      this.scrollView.scrollTo({ x: 0, y: this.yPosition(layout) })
+    }
+  }
+
   render() {
     const errorForCountry = this.state.errors.country
 
     return (
       <BiddingThemeProvider>
-        <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={this.verticalOffset} style={{ flex: 1 }}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          keyboardVerticalOffset={this.verticalOffset}
+          style={{ flex: 1 }}
+        >
           <Theme>
             <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
               Add billing address
@@ -223,7 +237,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.addressLine1.focus()}
                 onLayout={({ nativeEvent }) => (this.fullNameLayout = nativeEvent.layout)}
-                onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.fullNameLayout) })}
+                onFocus={() => this.scrollToPosition(this.fullNameLayout)}
               />
 
               <StyledInput
@@ -234,7 +248,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.addressLine2.focus()}
                 onLayout={({ nativeEvent }) => (this.addressLine1Layout = nativeEvent.layout)}
-                onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.addressLine1Layout) })}
+                onFocus={() => this.scrollToPosition(this.addressLine1Layout)}
               />
 
               <StyledInput
@@ -245,7 +259,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.city.focus()}
                 onLayout={({ nativeEvent }) => (this.addressLine2Layout = nativeEvent.layout)}
-                onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.addressLine2Layout) })}
+                onFocus={() => this.scrollToPosition(this.addressLine2Layout)}
               />
 
               <StyledInput
@@ -256,7 +270,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.stateProvinceRegion.focus()}
                 onLayout={({ nativeEvent }) => (this.cityLayout = nativeEvent.layout)}
-                onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.cityLayout) })}
+                onFocus={() => this.scrollToPosition(this.cityLayout)}
               />
 
               <StyledInput
@@ -268,12 +282,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 onSubmitEditing={() => this.postalCode.focus()}
                 inputRef={(el) => (this.stateProvinceRegion = el)}
                 onLayout={({ nativeEvent }) => (this.stateProvinceRegionLayout = nativeEvent.layout)}
-                onFocus={() =>
-                  this.scrollView.scrollTo({
-                    x: 0,
-                    y: this.yPosition(this.stateProvinceRegionLayout),
-                  })
-                }
+                onFocus={() => this.scrollToPosition(this.stateProvinceRegionLayout)}
               />
 
               <StyledInput
@@ -284,7 +293,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.phoneNumber.focus()}
                 onLayout={({ nativeEvent }) => (this.postalCodeLayout = nativeEvent.layout)}
-                onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.postalCodeLayout) })}
+                onFocus={() => this.scrollToPosition(this.postalCodeLayout)}
               />
 
               <StyledInput
@@ -295,7 +304,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="telephoneNumber"
                 onSubmitEditing={() => this.presentSelectCountry()}
                 onLayout={({ nativeEvent }) => (this.phoneNumberLayout = nativeEvent.layout)}
-                onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.phoneNumberLayout) })}
+                onFocus={() => this.scrollToPosition(this.phoneNumberLayout)}
               />
 
               <Flex mb={4}>
@@ -350,8 +359,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     }
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private yPosition({ y, height }) {
+  private yPosition({ y, height }: LayoutRectangle) {
     const windowHeight = Dimensions.get("window").height
 
     return Math.max(0, y - windowHeight + height + iOSAccessoryViewHeight + this.keyboardHeight + this.iPhoneXOffset)
