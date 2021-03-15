@@ -2,7 +2,6 @@ import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwo
 import { Action, action, thunk, Thunk } from "easy-peasy"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
 import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
-import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { uniqBy } from "lodash"
 
 import { Metric } from "../Screens/ArtworkFormModal/Components/Dimensions"
@@ -90,8 +89,6 @@ export interface MyCollectionArtworkModel {
     {},
     GlobalStoreModel
   >
-
-  takeOrPickPhotos: Thunk<MyCollectionArtworkModel, void, any, GlobalStoreModel>
 }
 
 export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
@@ -151,12 +148,6 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
 
   setLastUploadedPhoto: action((state, photo) => {
     state.sessionState.lastUploadedPhoto = photo
-  }),
-
-  takeOrPickPhotos: thunk((actions, _payload) => {
-    showPhotoActionSheet().then((photos) => {
-      actions.addPhotos(photos)
-    })
   }),
 
   /**
