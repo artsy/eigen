@@ -45,7 +45,7 @@ const track: Track<Props, State> = _track
   context_screen: Schema.PageNames.ConsignmentsOverView,
   context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
 })
-class Overview extends React.Component<Props, State> {
+export class Overview extends React.Component<Props, State> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
     super(props)
