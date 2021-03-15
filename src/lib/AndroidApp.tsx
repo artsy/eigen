@@ -67,12 +67,12 @@ const Main: React.FC<{}> = track()(({}) => {
     return <View></View>
   }
   if (!isLoggedIn) {
-    return <Onboarding></Onboarding>
+    return <Onboarding />
   }
 
   return (
     <ModalStack>
-      <BottomTabsNavigator></BottomTabsNavigator>
+      <BottomTabsNavigator />
     </ModalStack>
   )
 })
