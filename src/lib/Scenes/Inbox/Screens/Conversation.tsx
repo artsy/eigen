@@ -142,26 +142,14 @@ export class Conversation extends React.Component<Props, State> {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const partnerName = conversation.to.name
 
-    // const firstItem = conversation?.items?.[0]?.item
-    // const artwork = firstItem?.__typename === "Artwork" ? firstItem : null
-    // const { slug: artworkSlug, isOfferableFromInquiry } = { ...artwork }
-
-    // const hasActiveOrder = conversation?.submittedOrderConnection?.edges?.length
-    // const showOfferableInquiryButton = !!(isOfferableFromInquiry && !hasActiveOrder)
-
-    // const conversationOrder = extractNodes(conversation?.orderConnection)[0]
-
     return (
       <ComposerFragmentContainer
-        // order={conversationOrder}
         conversation={conversation!}
         disabled={this.state.sendingMessage || !this.state.isConnected}
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         ref={(composer) => (this.composer = composer)}
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         value={this.state.failedMessageText}
-        // artworkID={artworkSlug}
-        // isOfferableFromInquiry={showOfferableInquiryButton}
         onSubmit={(text) => {
           this.setState({ sendingMessage: true, failedMessageText: null })
           sendConversationMessage(

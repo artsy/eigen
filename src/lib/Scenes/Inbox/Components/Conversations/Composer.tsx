@@ -94,10 +94,6 @@ export default class Composer extends React.Component<Props, State> {
     const activeOrder = orders.filter((order) => {
       return !inactiveOrderStates.includes(order.state!)
     })[0]
-    // console.log(
-    //   orders.map((order) => order.state),
-    //   activeOrder
-    // )
 
     const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
 
