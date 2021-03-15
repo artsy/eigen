@@ -177,6 +177,7 @@ describe("ReviewOfferButton", () => {
     })
 
     wrapper.root.findByType(TouchableWithoutFeedback).props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/orders/<CommerceOfferOrder-mock-id-2>")
+    expect(navigate).toHaveBeenCalledWith("/orders/<CommerceOrder-mock-id-1>", {"modal": true, "passProps": {"orderID": "<CommerceOrder-mock-id-1>"}}
+    )
   })
 })
