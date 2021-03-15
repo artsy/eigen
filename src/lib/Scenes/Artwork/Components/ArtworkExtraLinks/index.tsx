@@ -19,7 +19,7 @@ export interface ArtworkExtraLinksProps {
 @track()
 export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
   handleReadOurFAQTap = () => {
-    navigate(`/buy-now-feature-faq`)
+    navigate(`/buy-now-feature-faq`, { modal: true })
   }
 
   @track({

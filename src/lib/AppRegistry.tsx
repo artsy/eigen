@@ -69,6 +69,7 @@ import { Search } from "./Scenes/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
+import { ArtsyWebView } from "./Components/ArtsyWebView"
 import { ToastProvider } from "./Components/Toast/toastHook"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
@@ -182,11 +183,12 @@ const SearchWithTracking: React.FC<SearchWithTrackingProps> = screenTrack<Search
 
 interface PageWrapperProps {
   fullBleed?: boolean
+  rootView?: boolean
 }
 
-const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) => {
+const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed, rootView }) => {
   const paddingTop = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.top
-  const paddingBottom = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.bottom
+  const paddingBottom = rootView ? 0 : useScreenDimensions().safeAreaInsets.bottom
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   return (
     <View style={{ flex: 1, paddingTop, paddingBottom }}>
@@ -338,6 +340,11 @@ export const modules = defineModules({
   }),
   LocalDiscovery: nativeModule(),
   WebView: nativeModule(),
+  ReactWebView: reactModule(ArtsyWebView, {
+    hasOwnModalCloseButton: true,
+    hidesBackButton: true,
+    fullBleed: true,
+  }),
   MakeOfferModal: reactModule(MakeOfferModalQueryRenderer, {
     hasOwnModalCloseButton: true,
   }),
@@ -404,5 +411,5 @@ const Main: React.FC<{}> = track()(({}) => {
 })
 
 if (Platform.OS === "ios") {
-  register("Main", Main, { fullBleed: true })
+  register("Main", Main, { fullBleed: true, rootView: true })
 }

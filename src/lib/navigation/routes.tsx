@@ -42,6 +42,30 @@ export function matchRoute(
     params: { url },
   }
 }
+function webViewRoute(url: string, title?: string) {
+  return new RouteMatcher(
+    url,
+    unsafe_getFeatureFlag("AROptionsUseReactNativeWebView") ? "ReactWebView" : "WebView",
+    (params) => ({
+      url: replaceParams(url, params),
+      title,
+    })
+  )
+}
+
+function replaceParams(url: string, params: object) {
+  let match = url.match(/:(\w+)/)
+  while (match) {
+    const key = match[1]
+    if (!(key in params)) {
+      console.error("[replaceParams]: something is very wrong", key, params)
+      return url
+    }
+    url = url.replace(":" + key, (params as any)[key])
+    match = url.match(/:(\w+)/)
+  }
+  return url
+}
 
 function getDomainMap(): Record<string, RouteMatcher[] | null> {
   const liveDotArtsyDotNet: RouteMatcher[] = compact([
@@ -61,14 +85,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       : null,
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
     new RouteMatcher("/artwork/:artworkID/medium", "ArtworkMedium"),
-    new RouteMatcher("/artist/:artistID/auction-results", "WebView", ({ artistID }) => ({
-      url: `/artist/${artistID}/auction-results`,
-    })),
+    webViewRoute("/artist/:artistID/auction-results"),
     new RouteMatcher("/artist/:artistID/auction-result/:auctionResultInternalID", "AuctionResult"),
     new RouteMatcher("/artist/:artistID/artist-series", "FullArtistSeriesList"),
-    new RouteMatcher("/artist/:artistID/articles", "WebView", (params) => ({
-      url: "/artist/" + params.artistID + "/articles",
-    })),
+    webViewRoute("/artist/:artistID/articles"),
     new RouteMatcher("/artist/:artistID/*", "Artist"),
     // For artists in a gallery context, like https://artsy.net/spruth-magers/artist/astrid-klein . Until we have a native
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
@@ -78,7 +98,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       ? new RouteMatcher("/auction/:saleID", "Auction2")
       : new RouteMatcher("/auction/:id", "Auction"),
     unsafe_getFeatureFlag("AROptionsNewSalePage") ? new RouteMatcher("/auction/:saleID/info", "AuctionInfo") : null,
-    new RouteMatcher("/auction-faq", "AuctionFAQ"),
+    webViewRoute("/auction-faq"),
     new RouteMatcher("/auction/:saleID/bid/:artworkID", "AuctionBidArtwork"),
     new RouteMatcher("/gene/:geneID", "Gene"),
     new RouteMatcher("/show/:showID", "Show"),
@@ -120,7 +140,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/consign/submission", "ConsignmentsSubmissionForm"),
     new RouteMatcher("/collections/my-collection/marketing-landing", "SalesNotRootTabView"),
 
-    new RouteMatcher("/conditions-of-sale", "WebView", () => ({ url: "/conditions-of-sale" })),
+    webViewRoute("/conditions-of-sale"),
     new RouteMatcher("/artwork-classifications", "ArtworkAttributionClassFAQ"),
 
     new RouteMatcher("/partner-locations/:partnerID", "PartnerLocations"),
@@ -139,17 +159,21 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/city-save/:citySlug", "CitySavedList"),
     new RouteMatcher("/auctions", "Auctions"),
     new RouteMatcher("/works-for-you", "WorksForYou"),
-    new RouteMatcher("/categories", "WebView", () => ({ url: "/categories" })),
-    new RouteMatcher("/privacy", "WebView", () => ({ url: "/privacy" })),
-    new RouteMatcher("/identity-verification-faq", "WebView", () => ({ url: "/identity-verification-faq" })),
-    new RouteMatcher("/terms", "WebView", () => ({ url: "/terms" })),
+    webViewRoute("/categories"),
+    webViewRoute("/privacy"),
+    webViewRoute("/identity-verification-faq"),
+    webViewRoute("/terms"),
 
     new RouteMatcher("/city-bmw-list/:citySlug", "CityBMWList"),
-    new RouteMatcher("/:slug", "VanityURLEntity"),
+    webViewRoute("/buy-now-feature-faq"),
     new RouteMatcher("/make-offer/:artworkID", "MakeOfferModal"),
-    new RouteMatcher("/orders/:orderID", "Checkout"),
-
-    new RouteMatcher("/*", "WebView", (params) => ({ url: "/" + params["*"] })),
+    webViewRoute("/orders/:orderID"),
+    new RouteMatcher("/:slug", "VanityURLEntity"),
+    new RouteMatcher(
+      "/*",
+      unsafe_getFeatureFlag("AROptionsUseReactNativeWebView") ? "ReactWebView" : "WebView",
+      (params) => ({ url: "/" + params["*"] })
+    ),
   ])
 
   const routesForDomain = {
