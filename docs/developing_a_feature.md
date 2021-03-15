@@ -51,6 +51,18 @@ You can access the feature flag in a functional react component using `useFeatur
 
 If you need to use the feature flag outside of a functional react component, use `unsafe_getFeatureFlag("ARShowMarketingBanner")`. This is marked as unsafe because it will not cause react components to re-render, but it safe to use in non-reactive contexts, like an `onPress` handler.
 
+### Overriding a feature flag
+
+To test your feature on a physical or virtual device, you will need to override the feature flag from the admin menu. For iOS this can be done by logging in to the app with an admin account and either shaking your physical device or clicking Device > Shake in the Simulator menu bar.
+
+### Writing test with a feature flag
+
+There is a utility method that can be used by tests that need to override a feature flag.
+
+```ts
+__globalStoreTestUtils__?.injectFeatureFlags({ ARShowMarketingBanner: true })
+```
+
 ## Releasing a feature
 
 When your feature is ready for release, the simplest way to do that is to set `readyForRelease` to `true` in `features.ts`. Consider also removing the entry from the admin menu if developers will no longer need to override the flag.

@@ -4,6 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FULFILLED" | "PENDING" | "REFUNDED" | "SUBMITTED" | "%future added value";
 export type Conversation_me = {
     readonly conversation: {
         readonly items: ReadonlyArray<{
@@ -21,6 +22,14 @@ export type Conversation_me = {
                 readonly __typename: "%other";
             }) | null;
         } | null> | null;
+        readonly submittedOrderConnection: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
+                    readonly internalID?: string;
+                    readonly state?: CommerceOrderStateEnum;
+                } | null;
+            } | null> | null;
+        } | null;
         readonly internalID: string | null;
         readonly id: string;
         readonly lastMessageID: string | null;
@@ -49,6 +58,13 @@ var v0 = {
   "args": null,
   "kind": "ScalarField",
   "name": "href",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 };
 return {
@@ -136,12 +152,65 @@ return {
           "storageKey": null
         },
         {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "internalID",
-          "storageKey": null
+          "alias": "submittedOrderConnection",
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "participantType",
+              "value": "BUYER"
+            },
+            {
+              "kind": "Literal",
+              "name": "state",
+              "value": "SUBMITTED"
+            }
+          ],
+          "concreteType": "CommerceOrderConnectionWithTotalCount",
+          "kind": "LinkedField",
+          "name": "orderConnection",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "CommerceOrderEdge",
+              "kind": "LinkedField",
+              "name": "edges",
+              "plural": true,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": null,
+                  "kind": "LinkedField",
+                  "name": "node",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "InlineFragment",
+                      "selections": [
+                        (v1/*: any*/),
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "state",
+                          "storageKey": null
+                        }
+                      ],
+                      "type": "CommerceOfferOrder",
+                      "abstractKey": null
+                    }
+                  ],
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": "orderConnection(participantType:\"BUYER\",state:\"SUBMITTED\")"
         },
+        (v1/*: any*/),
         {
           "alias": null,
           "args": null,
@@ -212,5 +281,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '14ee975eb276b28d515aa0d357d6e1cb';
+(node as any).hash = '9369e76be9c70a8ed3602af733e49d88';
 export default node;

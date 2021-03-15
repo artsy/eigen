@@ -141,12 +141,12 @@ export class Conversation extends React.Component<Props, State> {
     const conversation = this.props.me.conversation
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const partnerName = conversation.to.name
-    const artworkSlug =
-      conversation?.items?.[0]?.item && conversation?.items?.[0]?.item.__typename === "Artwork"
-        ? conversation?.items?.[0]?.item?.slug
-        : null
-    const showOfferableInquiryButton =
-      conversation?.items?.[0]?.item?.__typename === "Artwork" && conversation?.items?.[0]?.item?.isOfferableFromInquiry
+    const firstItem = conversation?.items?.[0]?.item
+    const artwork = firstItem?.__typename === "Artwork" ? firstItem : null
+    const { slug: artworkSlug, isOfferableFromInquiry } = { ...artwork }
+
+    const hasActiveOrder = conversation?.submittedOrderConnection?.edges?.length
+    const showOfferableInquiryButton = !!(isOfferableFromInquiry && !hasActiveOrder)
 
     return (
       <Composer
@@ -234,6 +234,16 @@ export const ConversationFragmentContainer = createFragmentContainer(Conversatio
             }
           }
         }
+        submittedOrderConnection: orderConnection(participantType: BUYER, state: SUBMITTED) {
+          edges {
+            node {
+              ... on CommerceOfferOrder {
+                internalID
+                state
+              }
+            }
+          }
+        }
         internalID
         id
         lastMessageID
@@ -268,6 +278,7 @@ export const ConversationQueryRenderer: React.FC<{
       variables={{
         conversationID,
       }}
+      cacheConfig={{ force: true }}
       render={renderWithLoadProgress(ConversationFragmentContainer, { navigator })}
     />
   )

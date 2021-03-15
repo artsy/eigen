@@ -105,9 +105,8 @@ describe("Artist options screen", () => {
     const tree = renderWithWrappers(
       <MockArtistScreen initialState={state} aggregations={mockAggregations} navigator={mockNavigator} />
     )
-    // Includes a button for each artist + one for followed artists,
-    // but our FlatList is configured to only show 4 in the initial render pass
-    expect(tree.root.findAllByType(FilterToggleButton)).toHaveLength(4)
+    // Includes a button for each artist + one for followed artists
+    expect(tree.root.findAllByType(FilterToggleButton)).toHaveLength(6)
   })
 
   describe("selecting an artist option", () => {

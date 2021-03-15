@@ -7,6 +7,7 @@ upcoming:
     - Migrate environment configuration to TypeScript - david
     - Improve bottom tabs dev state management  - david, mounir
     - Use adjustPan for windowSoftInputMode  - mounir
+    - Fix iMessage stickers - pavlos
     - Make android app full-bleed - david
     - Make auction screens mountable on android - barry, brian
     - Support deep links on android - adam, barry, brian, david, mounir, steven
@@ -18,10 +19,14 @@ upcoming:
     - Allow adding pricePaid info in my collection - barry, brian
     - Adds inquiry make offer button - lily
     - Add extra safety to extractNodes - david, mounir
+    - Display make offer button in conversation only when there is no active order - starsirius
     - Fix sailthru deeplinks causing crash - brian, barry, steven
     - Fix fancy modal height on android - mounir
     - Fix fancy modal status bar color - mounir
     - Fix fancy modal keyboard issues - mounir
+    - Fix fancy modal border radius animating on non shrinking backgrounds - mounir
+    - Allow users to scroll to bottom of multi select filters - iskounen
+    - Fix batched loading of artwork category filter options - iskounen
 
 releases:
   - version: 6.8.0
