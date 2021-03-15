@@ -58,8 +58,6 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
     })
   }
 
-  console.warn("WOO", order.internalID)
-
   return (
     <TouchableWithoutFeedback onPress={() => onTap(order?.internalID)}>
       <Flex
