@@ -16,6 +16,7 @@ upcoming:
     - Add feature flag for new artwork filters - iskounen
     - Enable feature flags on android - mounir
     - Enable new onboarding feature flag - mounir
+    - Adds improved time period filter behind feature flag - iskounen, damon, devon, roop
 
   user_facing:
     - Adds inquiry checkout offer status CTA - lily

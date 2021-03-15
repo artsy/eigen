@@ -713,6 +713,7 @@ return {
             "INSTITUTION",
             "LOCATION_CITY",
             "MAJOR_PERIOD",
+            "MATERIALS_TERMS",
             "MEDIUM",
             "MERCHANDISABLE_ARTISTS",
             "PARTNER",
