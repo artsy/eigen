@@ -26,7 +26,7 @@ export const checkAuthenticationMiddleware = (): Middleware => {
         }
         if (result.status === 401) {
           expiredTokens.add(authenticationToken)
-          GlobalStore.actions.signOut()
+          await GlobalStore.actions.signOut()
           // There is a race condition that prevents the onboarding slideshow from starting if we call an Alert
           // here synchronously, so we need to wait a few ticks.
           setTimeout(() => {

@@ -20,6 +20,7 @@ upcoming:
     - Adds improved time period filter behind feature flag - iskounen, damon, devon, roop
 
   user_facing:
+    - Fix sign out bug - david, mounir
     - Adds inquiry checkout offer status CTA - lily
     - Update consignment photo selection flow for iOS 14 - brian
     - Allow adding pricePaid info in my collection - barry, brian
