@@ -2,7 +2,7 @@ import { extractText } from "lib/tests/extractText"
 import React from "react"
 import { __globalStoreTestUtils__ } from "../../../store/GlobalStore"
 import { renderWithWrappers } from "../../../tests/renderWithWrappers"
-import { LogIn } from "../OldLogin/LogIn"
+import { LogIn } from "../OldLogIn/LogIn"
 import { Onboarding } from "../Onboarding"
 
 describe("Onboarding", () => {
