@@ -13,6 +13,7 @@ upcoming:
     - Support deep links on android - adam, barry, brian, david, mounir, steven
     - Fix sticky tab page layout problems on android - david
     - Update bid + registration flow modal header styles - david
+    - Override Android back button in consignment form - adam
     - Add feature flag for new artwork filters - iskounen
     - Enable feature flags on android - mounir
     - Enable new onboarding feature flag - mounir
