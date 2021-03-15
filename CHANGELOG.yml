@@ -23,6 +23,7 @@ upcoming:
     - Fix sailthru deeplinks causing crash - brian, barry, steven
     - Fix fancy modal height on android - mounir
     - Fix fancy modal status bar color - mounir
+    - Fix fancy modal keyboard issues - mounir
     - Fix fancy modal border radius animating on non shrinking backgrounds - mounir
     - Allow users to scroll to bottom of multi select filters - iskounen
     - Fix batched loading of artwork category filter options - iskounen
