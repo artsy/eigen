@@ -123,7 +123,7 @@ const Stack = createStackNavigator<FilterModalNavigationStack>()
 export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
   const tracking = useTracking()
   const { dispatch, state } = useContext(ArtworkFilterContext)
-  const useImprovedArtworkFilters = useFeatureFlag("ARUseNewArtworkFilters")
+  const useImprovedArtworkFilters = useFeatureFlag("ARUseImprovedArtworkFilters")
   const { exitModal, id, mode, slug, closeModal } = props
 
   const handleClosingModal = () => {

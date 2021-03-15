@@ -96,7 +96,7 @@ describe("TimePeriodMultiOptions Screen", () => {
     }
 
     it("displays a comma-separated list of the selected filters on the filter modal screen", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARUseNewArtworkFilters: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({ ARUseImprovedArtworkFilters: true })
 
       const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
       const items = tree.root.findAllByType(FilterModalOptionListItem)
@@ -132,7 +132,7 @@ describe("TimePeriodMultiOptions Screen", () => {
     }
 
     it("displays 'All' on the filter modal screen", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARUseNewArtworkFilters: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({ ARUseImprovedArtworkFilters: true })
 
       const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
       const items = tree.root.findAllByType(FilterModalOptionListItem)
