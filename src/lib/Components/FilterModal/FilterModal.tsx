@@ -30,6 +30,7 @@ import { ArtistIDsOptionsScreen } from "../ArtworkFilterOptions/ArtistIDsOptions
 import { AttributionClassOptionsScreen } from "../ArtworkFilterOptions/AttributionClassOptions"
 import { CategoriesOptionsScreen } from "../ArtworkFilterOptions/CategoriesOptions"
 import { ColorOption, ColorOptionsScreen } from "../ArtworkFilterOptions/ColorOptions"
+import { ColorsOptionsScreen } from "../ArtworkFilterOptions/ColorsOptions"
 import { colorHexMap } from "../ArtworkFilterOptions/ColorSwatch"
 import { EstimateRangeOptionsScreen } from "../ArtworkFilterOptions/EstimateRangeOptions"
 import { GalleryOptionsScreen } from "../ArtworkFilterOptions/GalleryOptions"
@@ -213,7 +214,10 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
             <Stack.Screen name="FilterOptionsScreen" component={FilterOptionsScreen} initialParams={props} />
             <Stack.Screen name="ArtistIDsOptionsScreen" component={ArtistIDsOptionsScreen} />
             <Stack.Screen name="AttributionClassOptionsScreen" component={AttributionClassOptionsScreen} />
-            <Stack.Screen name="ColorOptionsScreen" component={ColorOptionsScreen} />
+            <Stack.Screen
+              name="ColorOptionsScreen"
+              component={useImprovedArtworkFilters ? ColorsOptionsScreen : ColorOptionsScreen}
+            />
             <Stack.Screen name="EstimateRangeOptionsScreen" component={EstimateRangeOptionsScreen} />
             <Stack.Screen name="GalleryOptionsScreen" component={GalleryOptionsScreen} />
             <Stack.Screen name="AdditionalGeneIDsOptionsScreen" component={AdditionalGeneIDsOptionsScreen} />
