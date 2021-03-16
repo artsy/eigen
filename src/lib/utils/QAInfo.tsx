@@ -45,7 +45,7 @@ export const QAInfoRow: React.FC<{ i: { [key: string]: string } }> = ({ i }) => 
           toast.show("Copied", "middle")
         }}
       >
-        <Text>{value}</Text>
+        <Text fontWeight="bold">{value}</Text>
       </Touchable>
     </Flex>
   )

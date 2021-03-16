@@ -144,10 +144,10 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
 
   const QAInfo = () => (
     <QAInfoPanel
-      style={{ position: "absolute", top: 10, left: 80 }}
+      style={{ position: "absolute", top: 200, right: 40 }}
       info={[
         ["id", auctionResult.internalID],
-        ["boughtIn", `${auctionResult.boughtIn}`],
+        ["bought in", `${auctionResult.boughtIn}`],
         ["cents", `${auctionResult.priceRealized?.centsUSD}`],
       ]}
     />
