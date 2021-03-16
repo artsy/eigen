@@ -71,7 +71,13 @@ lane :ship_beta_ios do
 
   # important! this much match the release version specified
   # in Eigen in order for sourcemaps to work correctly
-  sentry_release_version = "#{latest_version}+#{bundle_version}"
+  sentry_release_version = "ios-#{latest_version}+#{bundle_version}"
+
+  #update in app.json to tag errors in sentry correctly
+  app_json['sentryReleaseName'] = sentry_release_version
+  File.open(app_json_path, 'w') do |file|
+    file.puts JSON.pretty_generate(app_json)
+  end
 
   # make individual dSYM archives available to the sentry-cli tool.
   dsym_archive = File.join(root, 'Artsy.app.dSYM.zip')
