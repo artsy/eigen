@@ -511,10 +511,11 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     }
 }
 
-+ (void)logout
++ (void)logoutWithCompletion:(RCTResponseSenderBlock)completion
 {
     [ArtsyAPI deleteAPNTokenForCurrentDeviceWithCompletion:^ {
         [[self class] clearUserData];
+        completion(nil);
     }];
 }
 

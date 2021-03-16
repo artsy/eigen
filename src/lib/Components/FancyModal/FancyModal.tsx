@@ -1,6 +1,6 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useContext, useEffect, useRef, useState } from "react"
-import { KeyboardAvoidingView, Modal, Platform } from "react-native"
+import { KeyboardAvoidingView, Modal, Platform, StatusBar } from "react-native"
 import { CARD_STACK_OVERLAY_HEIGHT, CARD_STACK_OVERLAY_Y_OFFSET } from "./FancyModalCard"
 import { FancyModalContext } from "./FancyModalContext"
 
@@ -15,7 +15,9 @@ export const FancyModal: React.FC<{
     safeAreaInsets: { top },
   } = useScreenDimensions()
 
-  const actualMaxHeight = screenHeight - (top + CARD_STACK_OVERLAY_HEIGHT + CARD_STACK_OVERLAY_Y_OFFSET)
+  const actualMaxHeight =
+    screenHeight - (Number(StatusBar.currentHeight) + top + CARD_STACK_OVERLAY_HEIGHT + CARD_STACK_OVERLAY_Y_OFFSET)
+
   const height = maxHeight ? Math.min(maxHeight, actualMaxHeight) : actualMaxHeight
 
   const firstMount = useRef(true)
@@ -68,7 +70,7 @@ export const FancyModal: React.FC<{
   }, [visible])
 
   return (
-    <Modal transparent animated={false} visible={showingUnderlyingModal}>
+    <Modal transparent animated={false} visible={showingUnderlyingModal} statusBarTranslucent>
       <FancyModalContext.Provider value={context.nextLevel()}>{card.jsx}</FancyModalContext.Provider>
     </Modal>
   )

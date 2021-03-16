@@ -107,12 +107,7 @@ export function useSelectedTab() {
 let globalStoreInstance = createGlobalStore()
 
 export function useFeatureFlag(key: FeatureName) {
-  if (Platform.OS === "ios") {
-    return GlobalStore.useAppState((state) => state.config.features.flags[key])
-  }
-
-  // TODO: add feature flags to GlobalStore on android
-  return true
+  return GlobalStore.useAppState((state) => state.config.features.flags[key])
 }
 
 /**

@@ -86,4 +86,14 @@ export const features = defineFeatures({
     description: "Enable custom share sheet",
     showInAdminMenu: true,
   },
+  ARUseImprovedArtworkFilters: {
+    readyForRelease: false,
+    description: "Use improved artwork filters",
+    showInAdminMenu: true,
+  },
+  ARUseNewOnboarding: {
+    readyForRelease: false,
+    description: "Use new onboarding",
+    showInAdminMenu: true,
+  },
 })

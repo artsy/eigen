@@ -13,13 +13,12 @@ import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { Divider } from "lib/Components/Bidding/Components/Divider"
 import { PaymentInfo } from "lib/Components/Bidding/Components/PaymentInfo"
 import { Timer } from "lib/Components/Bidding/Components/Timer"
-import { Title } from "lib/Components/Bidding/Components/Title"
 import { Flex } from "lib/Components/Bidding/Elements/Flex"
 import { BidResultScreen } from "lib/Components/Bidding/Screens/BidResult"
 import { bidderPositionQuery } from "lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
 import { PriceSummary } from "lib/Components/Bidding/Screens/ConfirmBid/PriceSummary"
-import { SelectMaxBidEdit } from "lib/Components/Bidding/Screens/SelectMaxBidEdit"
 import { Address, Bid, PaymentCardTextFieldParams, StripeToken } from "lib/Components/Bidding/types"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Modal } from "lib/Components/Modal"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
@@ -29,7 +28,7 @@ import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { get, isEmpty } from "lodash"
-import { Box, Button, Serif } from "palette"
+import { Box, Button, Serif, Theme } from "palette"
 import React from "react"
 import { Image, ScrollView, ViewProperties } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -388,19 +387,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     this.setState({ billingAddress: values })
   }
 
-  goBackToSelectMaxBid() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.navigator.push({
-      component: SelectMaxBidEdit,
-      title: "",
-      passProps: {
-        increments: this.props.increments,
-        selectedBidIndex: this.state.selectedBidIndex,
-        updateSelectedBid: this.updateSelectedBid.bind(this),
-      },
-    })
-  }
-
   presentErrorResult(error: Error | ReadonlyArray<PayloadError>) {
     console.error(error)
 
@@ -472,9 +458,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     return (
       <BiddingThemeProvider>
         <Flex m={0} flex={1} flexDirection="column">
+          <Theme>
+            <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>Confirm your bid</FancyModalHeader>
+          </Theme>
           <ScrollView scrollEnabled>
-            <Flex alignItems="center">
-              <Title mb={3}>Confirm your bid</Title>
+            <Flex alignItems="center" pt="20px">
               <Timer
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 liveStartsAt={sale.live_start_at}
@@ -522,7 +510,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               <BidInfoRow
                 label="Max bid"
                 value={this.selectedBid().display}
-                onPress={isLoading ? () => null : () => this.goBackToSelectMaxBid()}
+                onPress={isLoading ? () => null : () => this.props.navigator?.pop()}
               />
 
               {requiresPaymentInformation ? (

@@ -262,6 +262,7 @@ const getSortDefaultValueByFilterType = (filterType: FilterType) => {
 
 export const ParamDefaultValues = {
   acquireable: false,
+  additionalGeneIDs: [],
   allowEmptyCreatedDates: true,
   artistIDs: [],
   atAuction: false,
@@ -271,11 +272,10 @@ export const ParamDefaultValues = {
   dimensionRange: "*-*",
   earliestCreatedYear: undefined,
   estimateRange: "",
-  additionalGeneIDs: [],
   includeArtworksByFollowedArtists: false,
   inquireableOnly: false,
   latestCreatedYear: undefined,
-  majorPeriods: undefined,
+  majorPeriods: [],
   medium: "*",
   offerable: false,
   partnerID: undefined,
@@ -356,7 +356,7 @@ export const selectedOptionsUnion = ({
       displayText: "All",
     },
     { paramName: FilterParamName.color, displayText: "All" },
-    { paramName: FilterParamName.timePeriod, paramValue: "*-*", displayText: "All" },
+    { paramName: FilterParamName.timePeriod, paramValue: [], displayText: "All" },
     {
       paramName: FilterParamName.waysToBuyBuy,
       paramValue: false,

@@ -3,7 +3,7 @@ import { Conversation_me } from "__generated__/Conversation_me.graphql"
 import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
 import ConnectivityBanner from "lib/Components/ConnectivityBanner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import Composer from "lib/Scenes/Inbox/Components/Conversations/Composer"
+import { ComposerFragmentContainer } from "lib/Scenes/Inbox/Components/Conversations/Composer"
 import Messages from "lib/Scenes/Inbox/Components/Conversations/Messages"
 import { sendConversationMessage } from "lib/Scenes/Inbox/Components/Conversations/SendConversationMessage"
 import { updateConversation } from "lib/Scenes/Inbox/Components/Conversations/UpdateConversation"
@@ -141,23 +141,15 @@ export class Conversation extends React.Component<Props, State> {
     const conversation = this.props.me.conversation
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const partnerName = conversation.to.name
-    const artworkSlug =
-      conversation?.items?.[0]?.item && conversation?.items?.[0]?.item.__typename === "Artwork"
-        ? conversation?.items?.[0]?.item?.slug
-        : null
-    const showOfferableInquiryButton =
-      conversation?.items?.[0]?.item?.__typename === "Artwork" && conversation?.items?.[0]?.item?.isOfferableFromInquiry
 
     return (
-      <Composer
-        conversationID={conversation?.internalID}
+      <ComposerFragmentContainer
+        conversation={conversation!}
         disabled={this.state.sendingMessage || !this.state.isConnected}
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         ref={(composer) => (this.composer = composer)}
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         value={this.state.failedMessageText}
-        artworkID={artworkSlug}
-        isOfferableFromInquiry={showOfferableInquiryButton}
         onSubmit={(text) => {
           this.setState({ sendingMessage: true, failedMessageText: null })
           sendConversationMessage(
@@ -212,7 +204,7 @@ export class Conversation extends React.Component<Props, State> {
             }}
           />
         </Container>
-      </Composer>
+      </ComposerFragmentContainer>
     )
   }
 }
@@ -221,19 +213,8 @@ export const ConversationFragmentContainer = createFragmentContainer(Conversatio
   me: graphql`
     fragment Conversation_me on Me {
       conversation(id: $conversationID) {
-        items {
-          item {
-            __typename
-            ... on Artwork {
-              href
-              slug
-              isOfferableFromInquiry
-            }
-            ... on Show {
-              href
-            }
-          }
-        }
+        ...Composer_conversation
+        ...Messages_conversation
         internalID
         id
         lastMessageID
@@ -244,7 +225,6 @@ export const ConversationFragmentContainer = createFragmentContainer(Conversatio
         from {
           email
         }
-        ...Messages_conversation
       }
     }
   `,
@@ -268,6 +248,7 @@ export const ConversationQueryRenderer: React.FC<{
       variables={{
         conversationID,
       }}
+      cacheConfig={{ force: true }}
       render={renderWithLoadProgress(ConversationFragmentContainer, { navigator })}
     />
   )

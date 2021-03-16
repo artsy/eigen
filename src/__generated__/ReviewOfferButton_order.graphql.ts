@@ -7,7 +7,6 @@ import { FragmentRefs } from "relay-runtime";
 export type CommerceOrderParticipantEnum = "BUYER" | "SELLER" | "%future added value";
 export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FULFILLED" | "PENDING" | "REFUNDED" | "SUBMITTED" | "%future added value";
 export type ReviewOfferButton_order = {
-    readonly __typename: string;
     readonly internalID: string;
     readonly state: CommerceOrderStateEnum;
     readonly stateReason: string | null;
@@ -47,13 +46,6 @@ return {
   "metadata": null,
   "name": "ReviewOfferButton_order",
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "__typename",
-      "storageKey": null
-    },
     (v0/*: any*/),
     {
       "alias": null,
@@ -71,16 +63,10 @@ return {
     },
     {
       "alias": null,
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "format",
-          "value": "MMM D"
-        }
-      ],
+      "args": null,
       "kind": "ScalarField",
       "name": "stateExpiresAt",
-      "storageKey": "stateExpiresAt(format:\"MMM D\")"
+      "storageKey": null
     },
     {
       "kind": "InlineFragment",
@@ -159,5 +145,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = 'dc4619f8864aa50efde32fd4a92b2eb9';
+(node as any).hash = '00ab3377d074804382c5f8095a215c13';
 export default node;

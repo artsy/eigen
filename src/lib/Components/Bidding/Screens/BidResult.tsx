@@ -5,7 +5,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { dismissModal, navigate } from "lib/navigation/navigate"
 
-import { Button } from "palette"
+import { Button, Theme } from "palette"
 import { Icon20 } from "../Components/Icon"
 import { Flex } from "../Elements/Flex"
 
@@ -17,6 +17,7 @@ import { Title } from "../Components/Title"
 import { BidderPositionResult } from "../types"
 
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { unsafe__getEnvironment } from "lib/store/GlobalStore"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
@@ -79,36 +80,43 @@ export class BidResult extends React.Component<BidResultProps> {
 
     return (
       <BiddingThemeProvider>
-        <Container mt={6}>
-          <View>
-            <Flex alignItems="center">
-              <Icon20
-                source={
-                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                  Icons[status] || require("../../../../../images/circle-x-red.png")
-                }
-              />
-              <Title mt={2} mb={5}>
-                {status === "PENDING" ? messageForPollingTimeout.title : message_header || "You’re the highest bidder"}
-              </Title>
-              {status !== "WINNING" && (
-                <Markdown mb={5}>
-                  {status === "PENDING" ? messageForPollingTimeout.description : message_description_md}
-                </Markdown>
-              )}
-              {!!this.shouldDisplayTimer(status) && <Timer liveStartsAt={liveStartAt} endsAt={endAt} />}
-            </Flex>
-          </View>
-          {this.canBidAgain(status) ? (
-            <Button block width={100} onPress={() => this.onPressBidAgain()}>
-              Bid again
-            </Button>
-          ) : (
-            <Button variant="secondaryOutline" block width={100} onPress={this.exitBidFlow}>
-              Continue
-            </Button>
-          )}
-        </Container>
+        <View style={{ flex: 1 }}>
+          <Theme>
+            <FancyModalHeader useXButton onLeftButtonPress={dismissModal}></FancyModalHeader>
+          </Theme>
+          <Container mt={6}>
+            <View>
+              <Flex alignItems="center">
+                <Icon20
+                  source={
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                    Icons[status] || require("../../../../../images/circle-x-red.png")
+                  }
+                />
+                <Title mt={2} mb={5}>
+                  {status === "PENDING"
+                    ? messageForPollingTimeout.title
+                    : message_header || "You’re the highest bidder"}
+                </Title>
+                {status !== "WINNING" && (
+                  <Markdown mb={5}>
+                    {status === "PENDING" ? messageForPollingTimeout.description : message_description_md}
+                  </Markdown>
+                )}
+                {!!this.shouldDisplayTimer(status) && <Timer liveStartsAt={liveStartAt} endsAt={endAt} />}
+              </Flex>
+            </View>
+            {this.canBidAgain(status) ? (
+              <Button block width={100} onPress={() => this.onPressBidAgain()}>
+                Bid again
+              </Button>
+            ) : (
+              <Button variant="secondaryOutline" block width={100} onPress={this.exitBidFlow}>
+                Continue
+              </Button>
+            )}
+          </Container>
+        </View>
       </BiddingThemeProvider>
     )
   }

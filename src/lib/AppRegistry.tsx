@@ -5,11 +5,10 @@ import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { Theme } from "palette"
-import { BidFlowQueryRenderer } from "./Containers/BidFlow"
+import { BidFlow } from "./Containers/BidFlow"
 import { GeneQueryRenderer } from "./Containers/Gene"
 import { InboxWrapper } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
-import { RegistrationFlowQueryRenderer } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
 import { About } from "./Scenes/About/About"
 import { ArtistQueryRenderer } from "./Scenes/Artist/Artist"
@@ -72,6 +71,7 @@ import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { ToastProvider } from "./Components/Toast/toastHook"
+import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
@@ -168,26 +168,6 @@ const Conversation: React.FC<ConversationProps> = screenTrack<ConversationProps>
     context_screen_owner_type: Schema.OwnerEntityTypes.Conversation,
   }
 })(ConversationNavigator)
-
-/*
- * Route bid/register requests coming from the Emission pod to either a BidFlow
- * or RegisterFlow component with an appropriate query renderer
- */
-type BidderFlowIntent = "bid" | "register"
-interface BidderFlowProps {
-  artworkID?: string
-  saleID: string
-  intent: BidderFlowIntent
-}
-
-const BidderFlow: React.FC<BidderFlowProps> = ({ intent, ...restProps }) => {
-  switch (intent) {
-    case "bid":
-      return <BidFlowQueryRenderer {...restProps} />
-    case "register":
-      return <RegistrationFlowQueryRenderer {...restProps} />
-  }
-}
 
 interface SearchWithTrackingProps {
   safeAreaInsets: SafeAreaInsets
@@ -318,9 +298,16 @@ export const modules = defineModules({
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
   AuctionResult: reactModule(AuctionResultQueryRenderer),
-  AuctionRegistration: nativeModule({ alwaysPresentModally: true }),
-  AuctionBidArtwork: nativeModule({ alwaysPresentModally: true }),
-  BidFlow: reactModule(BidderFlow),
+  AuctionRegistration: reactModule(RegistrationFlow, {
+    alwaysPresentModally: true,
+    hasOwnModalCloseButton: true,
+    fullBleed: true,
+  }),
+  AuctionBidArtwork: reactModule(BidFlow, {
+    alwaysPresentModally: true,
+    hasOwnModalCloseButton: true,
+    fullBleed: true,
+  }),
   BottomTabs: reactModule(BottomTabs, { fullBleed: true }),
   City: reactModule(CityView, { fullBleed: true }),
   CityBMWList: reactModule(CityBMWListQueryRenderer, { fullBleed: true }),

@@ -1,55 +1,47 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ede3d5d49bccebe50e263ec437040d19 */
+/* @relayHash 96b6d9598f5297fb7ac064a7c2d9914c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type BidFlowQueryVariables = {
+export type SelectMaxBidQueryVariables = {
     artworkID: string;
     saleID: string;
 };
-export type BidFlowQueryResponse = {
+export type SelectMaxBidQueryResponse = {
     readonly artwork: {
         readonly sale_artwork: {
-            readonly " $fragmentRefs": FragmentRefs<"BidFlow_sale_artwork">;
+            readonly " $fragmentRefs": FragmentRefs<"SelectMaxBid_sale_artwork">;
         } | null;
     } | null;
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"BidFlow_me">;
+        readonly " $fragmentRefs": FragmentRefs<"SelectMaxBid_me">;
     } | null;
 };
-export type BidFlowQuery = {
-    readonly response: BidFlowQueryResponse;
-    readonly variables: BidFlowQueryVariables;
+export type SelectMaxBidQuery = {
+    readonly response: SelectMaxBidQueryResponse;
+    readonly variables: SelectMaxBidQueryVariables;
 };
 
 
 
 /*
-query BidFlowQuery(
+query SelectMaxBidQuery(
   $artworkID: String!
   $saleID: String!
 ) {
   artwork(id: $artworkID) {
     sale_artwork: saleArtwork(saleID: $saleID) {
-      ...BidFlow_sale_artwork
+      ...SelectMaxBid_sale_artwork
       id
     }
     id
   }
   me {
-    ...BidFlow_me
+    ...SelectMaxBid_me
     id
   }
-}
-
-fragment BidFlow_me on Me {
-  ...SelectMaxBid_me
-}
-
-fragment BidFlow_sale_artwork on SaleArtwork {
-  ...SelectMaxBid_sale_artwork
 }
 
 fragment BidResult_sale_artwork on SaleArtwork {
@@ -156,7 +148,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "BidFlowQuery",
+    "name": "SelectMaxBidQuery",
     "selections": [
       {
         "alias": null,
@@ -177,7 +169,7 @@ return {
               {
                 "args": null,
                 "kind": "FragmentSpread",
-                "name": "BidFlow_sale_artwork"
+                "name": "SelectMaxBid_sale_artwork"
               }
             ],
             "storageKey": null
@@ -196,7 +188,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "BidFlow_me"
+            "name": "SelectMaxBid_me"
           }
         ],
         "storageKey": null
@@ -209,7 +201,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "BidFlowQuery",
+    "name": "SelectMaxBidQuery",
     "selections": [
       {
         "alias": null,
@@ -439,13 +431,13 @@ return {
     ]
   },
   "params": {
-    "id": "ede3d5d49bccebe50e263ec437040d19",
+    "id": "96b6d9598f5297fb7ac064a7c2d9914c",
     "metadata": {},
-    "name": "BidFlowQuery",
+    "name": "SelectMaxBidQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'd0fc36c2f7a45a3e35dead25f2fa9bf3';
+(node as any).hash = '776addfdb79c24fcbcf57e02e3c2351a';
 export default node;

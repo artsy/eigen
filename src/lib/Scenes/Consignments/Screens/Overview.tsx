@@ -1,6 +1,6 @@
 import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import React from "react"
-import { Alert } from "react-native"
+import { Alert, Platform } from "react-native"
 
 import AsyncStorage from "@react-native-community/async-storage"
 import type NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -249,7 +249,8 @@ export class Overview extends React.Component<Props, State> {
       this.state.metadata.height &&
       this.state.metadata.width &&
       this.state.editionScreenViewed &&
-      this.state.photos?.length! /* STRICTNESS_MIGRATION */ > 0
+      // TODO: make photos work on Android
+      (Platform.OS === "android" || this.state.photos?.length! /* STRICTNESS_MIGRATION */ > 0)
     )
 
   render() {

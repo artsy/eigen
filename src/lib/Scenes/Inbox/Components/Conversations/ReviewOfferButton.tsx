@@ -14,6 +14,15 @@ export interface ReviewOfferButtonProps {
 }
 
 export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) => {
+  if (
+    order.state == null ||
+    order.state === "ABANDONED" ||
+    order.state === "PENDING" ||
+    (order.state === "SUBMITTED" && order.lastOffer?.fromParticipant === "BUYER")
+  ) {
+    return null
+  }
+
   const [buttonBackgroundColor, setButtonBackgroundColor] = React.useState("green100")
   const [buttonMessage, setButtonMessage] = React.useState("")
   const [buttonSubMessage, setButtonSubMessage] = React.useState("Tap to view")
@@ -26,12 +35,12 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
   })
 
   useEffect(() => {
-    const nodeCount = extractNodes(order.offers).length
+    const isCounter = extractNodes(order.offers).length > 1
 
     const { backgroundColor, message, subMessage, showMoneyIcon } = returnButtonMessaging({
       state: order.state,
       stateReason: order.stateReason,
-      nodeCount,
+      isCounter,
       lastOfferFromParticipant: order.lastOffer?.fromParticipant,
       hoursTillExpiration: hours,
     })
@@ -42,16 +51,15 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
     setButtonBackgroundColor(backgroundColor)
   })
 
-  const onTap = (orderID: string | null, state: string | null) => {
-    if (state === "PENDING") {
-      // ORDER CONFIRMATION PAGE DOESN'T EXIST YET
-    } else {
-      navigate(`/orders/${orderID}/review`)
-    }
+  const onTap = (orderID: string | null) => {
+    navigate(`/orders/${orderID}`, {
+      modal: true,
+      passProps: { orderID },
+    })
   }
 
   return (
-    <TouchableWithoutFeedback onPress={() => onTap(order?.internalID, order?.state)}>
+    <TouchableWithoutFeedback onPress={() => onTap(order?.internalID)}>
       <Flex
         px={2}
         justifyContent="space-between"
@@ -62,9 +70,9 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
       >
         <Flex flexDirection="row">
           {showMoneyIconInButton ? (
-            <AlertCircleFillIcon mt="3px" fill="white100" />
-          ) : (
             <MoneyFillIcon mt="3px" fill="white100" />
+          ) : (
+            <AlertCircleFillIcon mt="3px" fill="white100" />
           )}
           <Flex flexDirection="column" pl={1}>
             <Text color="white100" variant="mediumText">
@@ -86,11 +94,10 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
 export const ReviewOfferButtonFragmentContainer = createFragmentContainer(ReviewOfferButton, {
   order: graphql`
     fragment ReviewOfferButton_order on CommerceOrder {
-      __typename
       internalID
       state
       stateReason
-      stateExpiresAt(format: "MMM D")
+      stateExpiresAt
       ... on CommerceOfferOrder {
         lastOffer {
           fromParticipant

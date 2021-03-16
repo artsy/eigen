@@ -3,19 +3,23 @@ import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React, { useEffect, useRef } from "react"
 import { useCallback } from "react"
-import { Linking, View } from "react-native"
+import { Linking, UIManager, View } from "react-native"
 import track from "react-tracking"
 import { RelayEnvironmentProvider } from "relay-hooks"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { useSentryConfig } from "./ErrorReporting"
-import { LogIn } from "./LogIn/LogIn"
 import { ModalStack } from "./navigation/ModalStack"
 import { navigate } from "./navigation/navigate"
 import { defaultEnvironment } from "./relay/createEnvironment"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
+import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { AdminMenuWrapper } from "./utils/AdminMenuWrapper"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
+
+if (UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true)
+}
 
 const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
@@ -68,12 +72,12 @@ const Main: React.FC<{}> = track()(({}) => {
     return <View></View>
   }
   if (!isLoggedIn) {
-    return <LogIn></LogIn>
+    return <Onboarding />
   }
 
   return (
     <ModalStack>
-      <BottomTabsNavigator></BottomTabsNavigator>
+      <BottomTabsNavigator />
     </ModalStack>
   )
 })

@@ -26,7 +26,7 @@ interface LegacyNativeModules {
     fetchNotificationPermissions(callback: (error: any, result: PushAuthorizationStatus) => void): void
     markNotificationsRead(callback: (error?: Error) => any): void
     setApplicationIconBadgeNumber(n: number): void
-    clearUserData(): void
+    clearUserData(): Promise<void>
   }
   ARNotificationsManager: {
     nativeState: NativeState
@@ -119,7 +119,7 @@ export const LegacyNativeModules: LegacyNativeModules =
           },
           appVersion: "appVersion",
           buildVersion: "buildVersion",
-          clearUserData: () => null,
+          clearUserData: () => Promise.resolve(),
         },
         ARPHPhotoPickerModule: {
           requestPhotos: noop("requestPhotos"),

@@ -1,38 +1,38 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b75aedfca7e10b59c454feb6d140dfb1 */
+/* @relayHash 9f98a553da7be8c76e12690ebed567b6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type AuctionResultTestsQueryVariables = {};
-export type AuctionResultTestsQueryResponse = {
+export type AuctionResultListItemTestsQueryVariables = {};
+export type AuctionResultListItemTestsQueryResponse = {
     readonly artist: {
         readonly auctionResultsConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
                     readonly id: string;
-                    readonly " $fragmentRefs": FragmentRefs<"AuctionResult_auctionResult">;
+                    readonly " $fragmentRefs": FragmentRefs<"AuctionResultListItem_auctionResult">;
                 } | null;
             } | null> | null;
         } | null;
     } | null;
 };
-export type AuctionResultTestsQuery = {
-    readonly response: AuctionResultTestsQueryResponse;
-    readonly variables: AuctionResultTestsQueryVariables;
+export type AuctionResultListItemTestsQuery = {
+    readonly response: AuctionResultListItemTestsQueryResponse;
+    readonly variables: AuctionResultListItemTestsQueryVariables;
 };
 
 
 
 /*
-query AuctionResultTestsQuery {
+query AuctionResultListItemTestsQuery {
   artist(id: "some-id") {
     auctionResultsConnection(first: 1) {
       edges {
         node {
           id
-          ...AuctionResult_auctionResult
+          ...AuctionResultListItem_auctionResult
         }
       }
     }
@@ -40,7 +40,7 @@ query AuctionResultTestsQuery {
   }
 }
 
-fragment AuctionResult_auctionResult on AuctionResult {
+fragment AuctionResultListItem_auctionResult on AuctionResult {
   currency
   dateText
   id
@@ -122,7 +122,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "AuctionResultTestsQuery",
+    "name": "AuctionResultListItemTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -160,7 +160,7 @@ return {
                       {
                         "args": null,
                         "kind": "FragmentSpread",
-                        "name": "AuctionResult_auctionResult"
+                        "name": "AuctionResultListItem_auctionResult"
                       }
                     ],
                     "storageKey": null
@@ -182,7 +182,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "AuctionResultTestsQuery",
+    "name": "AuctionResultListItemTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -406,7 +406,7 @@ return {
     ]
   },
   "params": {
-    "id": "b75aedfca7e10b59c454feb6d140dfb1",
+    "id": "9f98a553da7be8c76e12690ebed567b6",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
@@ -493,11 +493,11 @@ return {
         "artist.id": (v5/*: any*/)
       }
     },
-    "name": "AuctionResultTestsQuery",
+    "name": "AuctionResultListItemTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '78499a1dd638bf039fb81802433dea9d';
+(node as any).hash = '5abd6b7c3af061821df76ca3aadce521';
 export default node;

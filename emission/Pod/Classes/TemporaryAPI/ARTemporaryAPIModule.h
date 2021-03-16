@@ -5,7 +5,7 @@ typedef void(^ARNotificationReadStatusAssigner)(RCTResponseSenderBlock block);
 
 typedef void(^ARNotificationPermissionsPrompter)();
 
-typedef void(^ARUserDataClearer)();
+typedef void(^ARUserDataClearer)(RCTPromiseResolveBlock completion);
 
 typedef void(^ARAugmentedRealityVIRPresenter)(NSString *imgUrl, CGFloat widthIn, CGFloat heightIn, NSString *artworkSlug, NSString *artworkId);
 

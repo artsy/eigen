@@ -34,6 +34,7 @@ export const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => {
         }}
         style={{ borderColor }}
         multiline={true}
+        textAlignVertical="top"
       />
     </>
   )

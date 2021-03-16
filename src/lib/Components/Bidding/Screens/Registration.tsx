@@ -2,18 +2,22 @@ import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import { RegistrationCreateBidderMutation } from "__generated__/RegistrationCreateBidderMutation.graphql"
 import { RegistrationCreateCreditCardMutation } from "__generated__/RegistrationCreateCreditCardMutation.graphql"
+import { RegistrationQuery } from "__generated__/RegistrationQuery.graphql"
 import { RegistrationUpdateUserMutation } from "__generated__/RegistrationUpdateUserMutation.graphql"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Modal } from "lib/Components/Modal"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { navigate } from "lib/navigation/navigate"
+import { dismissModal, navigate } from "lib/navigation/navigate"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { bidderNeedsIdentityVerification } from "lib/utils/auction"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
 import { get, isEmpty } from "lodash"
 import { Box, Button, Sans, Serif } from "palette"
 import React from "react"
 import { ScrollView, View, ViewProperties } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
 import { LinkText } from "../../Text/LinkText"
@@ -21,7 +25,6 @@ import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Checkbox } from "../Components/Checkbox"
 import { PaymentInfo } from "../Components/PaymentInfo"
 import { Timer } from "../Components/Timer"
-import { Title } from "../Components/Title"
 import { Flex } from "../Elements/Flex"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
@@ -281,8 +284,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   presentRegistrationResult(status: RegistrationStatus) {
     const { sale, me, navigator } = this.props
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    navigator.push({
+    navigator?.push({
       component: RegistrationResult,
       title: "",
       passProps: {
@@ -316,9 +318,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     return (
       <BiddingThemeProvider>
         <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }}>
-          <View>
+          <View style={{ paddingTop: 20 }}>
             <Flex alignItems="center">
-              <Title mb={3}>Register to bid</Title>
               <Timer
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 liveStartsAt={live_start_at}
@@ -402,7 +403,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 }
 
-export const RegistrationScreen = createFragmentContainer(Registration, {
+const RegistrationContainer = createFragmentContainer(Registration, {
   sale: graphql`
     fragment Registration_sale on Sale {
       slug
@@ -421,3 +422,37 @@ export const RegistrationScreen = createFragmentContainer(Registration, {
     }
   `,
 })
+
+export const RegistrationQueryRenderer: React.FC<{ saleID: string; navigator: NavigatorIOS }> = ({
+  saleID,
+  navigator,
+}) => {
+  return (
+    <View style={{ flex: 1 }}>
+      <FancyModalHeader onLeftButtonPress={dismissModal} useXButton>
+        Register to bid
+      </FancyModalHeader>
+      <QueryRenderer<RegistrationQuery>
+        environment={defaultEnvironment}
+        query={graphql`
+          query RegistrationQuery($saleID: String!) {
+            sale(id: $saleID) {
+              name
+              ...Registration_sale
+            }
+            me {
+              ...Registration_me
+            }
+          }
+        `}
+        cacheConfig={{ force: true }} // We want to always fetch latest sale registration status, CC info, etc.
+        variables={{
+          saleID,
+        }}
+        render={renderWithLoadProgress((props) => (
+          <RegistrationContainer {...(props as any)} navigator={navigator} />
+        ))}
+      />
+    </View>
+  )
+}

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 87a6183f6c300a1cd8e15988881faeab */
+/* @relayHash 42372e6c51863d84b99247b74649de8f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,11 +33,10 @@ query ReviewOfferButtonTestsQuery(
 
 fragment ReviewOfferButton_order on CommerceOrder {
   __isCommerceOrder: __typename
-  __typename
   internalID
   state
   stateReason
-  stateExpiresAt(format: "MMM D")
+  stateExpiresAt
   ... on CommerceOfferOrder {
     lastOffer {
       fromParticipant
@@ -178,16 +177,10 @@ return {
           },
           {
             "alias": null,
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "format",
-                "value": "MMM D"
-              }
-            ],
+            "args": null,
             "kind": "ScalarField",
             "name": "stateExpiresAt",
-            "storageKey": "stateExpiresAt(format:\"MMM D\")"
+            "storageKey": null
           },
           (v3/*: any*/),
           {
@@ -270,7 +263,7 @@ return {
     ]
   },
   "params": {
-    "id": "87a6183f6c300a1cd8e15988881faeab",
+    "id": "42372e6c51863d84b99247b74649de8f",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "order": {
