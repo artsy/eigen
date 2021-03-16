@@ -2,7 +2,7 @@ import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React, { useEffect, useRef } from "react"
 import { useCallback } from "react"
-import { Linking, View } from "react-native"
+import { Linking, UIManager, View } from "react-native"
 import track from "react-tracking"
 import { RelayEnvironmentProvider } from "relay-hooks"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
@@ -15,6 +15,10 @@ import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { AdminMenuWrapper } from "./utils/AdminMenuWrapper"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
+
+if (UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true)
+}
 
 const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)

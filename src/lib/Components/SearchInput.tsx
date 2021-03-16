@@ -10,6 +10,7 @@ interface SearchInputProps extends InputProps {
 
 export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(({ enableCancelButton, ...props }, ref) => {
   const [inputFocused, setInputFocused] = useState(false)
+
   return (
     <Flex flexDirection="row">
       <Input
