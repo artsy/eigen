@@ -1,42 +1,48 @@
 upcoming:
-  version: 6.8.1
+  version: 6.8.2
   date: TBD
   dev:
-    - Fix auction results showing zero price - pavlos, steve
-    - Migrate LoadFailureView to typescript - adam, brian, david, mounir, pavlos
-    - Migrate environment configuration to TypeScript - david
-    - Improve bottom tabs dev state management  - david, mounir
-    - Use adjustPan for windowSoftInputMode  - mounir
-    - Fix iMessage stickers - pavlos
-    - Make android app full-bleed - david
-    - Make auction screens mountable on android - barry, brian
-    - Support deep links on android - adam, barry, brian, david, mounir, steven
-    - Fix sticky tab page layout problems on android - david
-    - Update bid + registration flow modal header styles - david
-    - Override Android back button in consignment form - adam
-    - Add feature flag for improved artwork filters - iskounen
-    - Enable feature flags on android - mounir
-    - Enable new onboarding feature flag - mounir
-    - Adds improved time period filter behind feature flag - iskounen, damon, devon, roop
-
+    -
   user_facing:
-    - Fix sign out bug - david, mounir
-    - Adds inquiry checkout offer status CTA - lily
-    - Update consignment photo selection flow for iOS 14 - brian
-    - Allow adding pricePaid info in my collection - barry, brian
-    - Adds inquiry make offer button - lily
-    - Add extra safety to extractNodes - david, mounir
-    - Display make offer button in conversation only when there is no active order - starsirius
-    - Fix sailthru deeplinks causing crash - brian, barry, steven
-    - Fix fancy modal height on android - mounir
-    - Fix fancy modal status bar color - mounir
-    - Fix fancy modal keyboard issues - mounir
-    - Fix fancy modal border radius animating on non shrinking backgrounds - mounir
-    - Allow users to scroll to bottom of multi select filters - iskounen
-    - Fix batched loading of artwork category filter options - iskounen
-    - Hooks up offer CTA to conversation order - lily
+    -
 
 releases:
+  - version: 6.8.1
+    date: Mar 16, 2021
+    dev:
+      - Fix auction results showing zero price - pavlos, steve
+      - Migrate LoadFailureView to typescript - adam, brian, david, mounir, pavlos
+      - Migrate environment configuration to TypeScript - david
+      - Improve bottom tabs dev state management  - david, mounir
+      - Use adjustPan for windowSoftInputMode  - mounir
+      - Fix iMessage stickers - pavlos
+      - Make android app full-bleed - david
+      - Make auction screens mountable on android - barry, brian
+      - Support deep links on android - adam, barry, brian, david, mounir, steven
+      - Fix sticky tab page layout problems on android - david
+      - Update bid + registration flow modal header styles - david
+      - Override Android back button in consignment form - adam
+      - Add feature flag for improved artwork filters - iskounen
+      - Enable feature flags on android - mounir
+      - Enable new onboarding feature flag - mounir
+      - Adds improved time period filter behind feature flag - iskounen, damon, devon, roop
+    user_facing:
+      - Fix sign out bug - david, mounir
+      - Adds inquiry checkout offer status CTA - lily
+      - Update consignment photo selection flow for iOS 14 - brian
+      - Allow adding pricePaid info in my collection - barry, brian
+      - Adds inquiry make offer button - lily
+      - Add extra safety to extractNodes - david, mounir
+      - Display make offer button in conversation only when there is no active order - starsirius
+      - Fix sailthru deeplinks causing crash - brian, barry, steven
+      - Fix fancy modal height on android - mounir
+      - Fix fancy modal status bar color - mounir
+      - Fix fancy modal keyboard issues - mounir
+      - Fix fancy modal border radius animating on non shrinking backgrounds - mounir
+      - Allow users to scroll to bottom of multi select filters - iskounen
+      - Fix batched loading of artwork category filter options - iskounen
+      - Hooks up offer CTA to conversation order - lily
+
   - version: 6.8.0
     date: Mar 3, 2021
     user_facing:
