@@ -96,4 +96,9 @@ export const features = defineFeatures({
     description: "Use new onboarding",
     showInAdminMenu: true,
   },
+  ARShowQuickAccessInfo: {
+    readyForRelease: false, // never. it's just for devs.
+    description: "Show quick access info",
+    showInAdminMenu: true,
+  },
 })
