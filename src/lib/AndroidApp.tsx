@@ -1,5 +1,5 @@
 import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
-import { Flex, Text, Theme } from "palette"
+import { Theme } from "palette"
 import React, { useEffect, useRef } from "react"
 import { useCallback } from "react"
 import { Linking, View } from "react-native"
@@ -11,6 +11,7 @@ import { ModalStack } from "./navigation/ModalStack"
 import { navigate } from "./navigation/navigate"
 import { defaultEnvironment } from "./relay/createEnvironment"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
+import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { AdminMenuWrapper } from "./utils/AdminMenuWrapper"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
@@ -69,11 +70,7 @@ const Main: React.FC<{}> = track()(({}) => {
   }
 
   if (forceUpdateMessage) {
-    return (
-      <Flex flex={1} justifyContent="center" alignItems="center">
-        <Text variant="largeTitle">{forceUpdateMessage}</Text>
-      </Flex>
-    )
+    return <ForceUpdate forceUpdateMessage={forceUpdateMessage} />
   }
 
   if (!isLoggedIn) {
