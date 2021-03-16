@@ -1,4 +1,9 @@
-import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
+import {
+  getCurrentEmissionState,
+  GlobalStore,
+  GlobalStoreProvider,
+  unsafe__getEnvironment,
+} from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React, { useEffect, useRef } from "react"
 import { useCallback } from "react"
@@ -66,6 +71,22 @@ const Main: React.FC<{}> = track()(({}) => {
       launchURL.current = null
     }
   }, [isLoggedIn, launchURL.current])
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const { authenticationToken } = getCurrentEmissionState()
+      const { webURL } = unsafe__getEnvironment()
+      // sign in to force (this gives us force cookies in our web views)
+      fetch(webURL, {
+        method: "HEAD",
+        headers: { "X-Access-Token": authenticationToken },
+      }).then((res) => {
+        if (res.status >= 400) {
+          console.error("couldn't sign in to force", res.status, res.statusText)
+        }
+      })
+    }
+  }, [isLoggedIn])
 
   if (!isHydrated) {
     return <View></View>

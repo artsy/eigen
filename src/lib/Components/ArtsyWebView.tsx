@@ -43,7 +43,6 @@ export const ArtsyWebView: React.FC<{
         </FancyModalHeader>
         <View style={{ flex: 1 }}>
           <WebView
-            sharedCookiesEnabled
             ref={ref}
             source={{ uri }}
             style={{ flex: 1 }}
