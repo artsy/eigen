@@ -6,7 +6,7 @@ import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { isEmpty } from "lodash"
 import { BorderBox, Box, Button, Flex, Join, Sans, Spacer } from "palette"
 import React from "react"
-import { ActionSheetIOS, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { ArrowButton } from "../Components/ArrowButton"
 import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
@@ -102,7 +102,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
               variant="secondaryOutlineWarning"
               block
               onPress={() => {
-                ActionSheetIOS.showActionSheetWithOptions(
+                showActionSheetWithOptions(
                   {
                     title: "Delete artwork?",
                     options: ["Delete", "Cancel"],

@@ -4,7 +4,6 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { ActionSheetIOS } from "react-native"
 import { ArrowButton } from "../../Components/ArrowButton"
 import { ArtistAutosuggest } from "../../Components/ArtistAutosuggest"
 import { Dimensions } from "../../Components/Dimensions"
@@ -32,6 +31,16 @@ jest.mock("../../Components/MediumPicker", () => ({
 
 jest.mock("../../Components/Dimensions", () => ({
   Dimensions: () => null,
+}))
+
+const mockShowActionSheetWithOptions = jest.fn()
+
+jest.mock("@expo/react-native-action-sheet", () => ({
+  useActionSheet: () => ({ showActionSheetWithOptions: mockShowActionSheetWithOptions }),
+}))
+
+jest.mock("lib/utils/requestPhotos", () => ({
+  showPhotoActionSheet: jest.fn(() => Promise.resolve({ photos: [] })),
 }))
 
 describe("AddEditArtwork", () => {
@@ -185,15 +194,12 @@ describe("AddEditArtwork", () => {
       },
     }
 
-    const mockShowActionSheet = jest.fn()
-    ActionSheetIOS.showActionSheetWithOptions = mockShowActionSheet
-
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
     const wrapper = renderWithWrappers(artworkForm)
     const deleteButton = wrapper.root.findByProps({ "data-test-id": "DeleteButton" })
     deleteButton.props.onPress()
-    expect(mockShowActionSheet).toHaveBeenCalled()
-    const callback = mockShowActionSheet.mock.calls[0][1]
+    expect(mockShowActionSheetWithOptions).toHaveBeenCalled()
+    const callback = mockShowActionSheetWithOptions.mock.calls[0][1]
     callback(0) // confirm deletion
     expect(mockDelete).toHaveBeenCalledWith()
   })
