@@ -9,9 +9,9 @@ upcoming:
     - Make android app full-bleed - david
     - Support deep links on android - adam, barry, brian, david, mounir, steven
     - Fix sticky tab page layout problems on android - david
+    - Fix action sheets on android - brian, barry
   user_facing:
     - Adds inquiry checkout offer status CTA - lily
-    - Update consignment photo selection flow for iOS 14 - brian
     - Allow adding pricePaid info in my collection - barry, brian
     - Adds inquiry make offer button - lily
 
