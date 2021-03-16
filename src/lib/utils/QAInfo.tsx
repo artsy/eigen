@@ -4,7 +4,7 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { color, Flex, FlexProps, Text, Touchable } from "palette"
 import React from "react"
 
-export const QAInfoFlex: React.FC<FlexProps> = (props) => {
+export const QAInfoPanel: React.FC<FlexProps> = (props) => {
   const enabled = useFeatureFlag("ARShowQuickAccessInfo")
   if (!enabled) {
     return null

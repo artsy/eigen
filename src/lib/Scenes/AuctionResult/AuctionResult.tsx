@@ -6,6 +6,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
+import { QAInfoPanel, QAInfoRow } from "lib/utils/QAInfo"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { useStickyScrollHeader } from "lib/utils/useStickyScrollHeader"
@@ -141,6 +142,13 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     </>
   )
 
+  const QAInfo = () => (
+    <QAInfoPanel position="absolute" top={10} left={80}>
+      <QAInfoRow i={{ id: auctionResult.internalID }} />
+      <QAInfoRow i={{ title: auctionResult.title }} />
+    </QAInfoPanel>
+  )
+
   return (
     <ProvideScreenTrackingWithCohesionSchema info={tracks.screen(auctionResult.internalID) as any}>
       <Animated.ScrollView {...scrollProps}>
@@ -214,6 +222,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           </Text>
           {details}
         </Box>
+        <QAInfo />
       </Animated.ScrollView>
       {headerElement}
     </ProvideScreenTrackingWithCohesionSchema>

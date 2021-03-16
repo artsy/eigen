@@ -1,7 +1,7 @@
 import { AuctionResultListItem_auctionResult } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { auctionResultHasPrice, auctionResultText } from "lib/Scenes/AuctionResult/helpers"
-import { QAInfoFlex, QAInfoRow } from "lib/utils/QAInfo"
+import { QAInfoPanel, QAInfoRow } from "lib/utils/QAInfo"
 import { capitalize } from "lodash"
 import moment from "moment"
 import { bullet, color, Flex, NoArtworkIcon, Text, Touchable } from "palette"
@@ -16,9 +16,9 @@ interface Props {
 
 const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress }) => {
   const QAInfo: React.FC = () => (
-    <QAInfoFlex position="absolute" top={0} left={95}>
+    <QAInfoPanel position="absolute" top={0} left={95}>
       <QAInfoRow i={{ id: auctionResult.internalID }} />
-    </QAInfoFlex>
+    </QAInfoPanel>
   )
 
   return (
