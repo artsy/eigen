@@ -5,7 +5,7 @@ upcoming:
     -
   user_facing:
     - Set system navigation bar color to white on modals for android - mounir
-    - Fix SearchInput layout animation on android - mounir
+    - Enable experimental layout animation on android - mounir
 
 releases:
   - version: 6.8.1

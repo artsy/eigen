@@ -1,17 +1,11 @@
 import SearchIcon from "lib/Icons/SearchIcon"
 import { Flex, Sans } from "palette"
 import React, { RefObject, useState } from "react"
-import { LayoutAnimation, Platform, TextInput, TouchableOpacity, UIManager } from "react-native"
+import { LayoutAnimation, TextInput, TouchableOpacity } from "react-native"
 import { Input, InputProps } from "./Input/Input"
 
 interface SearchInputProps extends InputProps {
   enableCancelButton?: boolean
-}
-
-if (Platform.OS === "android") {
-  if (UIManager.setLayoutAnimationEnabledExperimental) {
-    UIManager.setLayoutAnimationEnabledExperimental(true)
-  }
 }
 
 export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(({ enableCancelButton, ...props }, ref) => {
