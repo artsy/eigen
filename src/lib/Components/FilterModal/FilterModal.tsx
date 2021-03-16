@@ -53,6 +53,7 @@ export type FilterScreen =
   | "attributionClass"
   | "categories"
   | "color"
+  | "colors"
   | "dimensionRange"
   | "estimateRange"
   | "gallery"
@@ -103,6 +104,7 @@ export type FilterModalNavigationStack = {
   AttributionClassOptionsScreen: undefined
   CategoriesOptionsScreen: undefined
   ColorOptionsScreen: undefined
+  ColorsOptionsScreen: undefined
   EstimateRangeOptionsScreen: undefined
   FilterOptionsScreen: FilterOptionsScreenParams
   GalleryOptionsScreen: undefined

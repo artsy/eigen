@@ -63,6 +63,7 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
         acquireable: { type: "Boolean" }
         attributionClass: { type: "[String]" }
         color: { type: "String" }
+        colors: { type: "[String]" }
         # 10 matches the PAGE_SIZE constant. This is required. See MX-316 for follow-up.
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
@@ -82,6 +83,7 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
           aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
           attributionClass: $attributionClass
           color: $color
+          colors: $colors
           dimensionRange: $dimensionRange
           additionalGeneIDs: $additionalGeneIDs
           first: $count
@@ -126,6 +128,7 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
         $acquireable: Boolean
         $attributionClass: [String]
         $color: String
+        $colors: [String]
         $count: Int!
         $cursor: String
         $dimensionRange: String
@@ -143,6 +146,7 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
               acquireable: $acquireable
               attributionClass: $attributionClass
               color: $color
+              colors: $colors
               count: $count
               cursor: $cursor
               dimensionRange: $dimensionRange
