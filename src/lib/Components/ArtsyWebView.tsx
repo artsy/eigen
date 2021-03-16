@@ -53,20 +53,22 @@ export const ArtsyWebView: React.FC<{
             onLoadProgress={(e) =>
               setLoadProgress(e.nativeEvent.progress === 1 ? null : Math.max(e.nativeEvent.progress, 0.02))
             }
+            onShouldStartLoadWithRequest={(ev) => {
+              const result = matchRoute(ev.url)
+              if (
+                // open safari for external (non-artsy) URLs
+                result.type === "external_url" ||
+                // open native views in the app
+                (result.module !== "ReactWebView" && result.module !== "WebView")
+              ) {
+                navigate(ev.url)
+                return false
+              }
+              // otherwise navigate to other web view urls in the same web view
+              return true
+            }}
             onNavigationStateChange={(ev) => {
               setCanGoBack(ev.canGoBack)
-              if (ev.navigationType === "click") {
-                const result = matchRoute(ev.url)
-                if (
-                  result.type === "match" &&
-                  result.module !== "ReactWebView" &&
-                  result.module !== "WebView" &&
-                  result.module !== "VanityURLEntity"
-                ) {
-                  ref.current?.stopLoading()
-                  navigate(ev.url)
-                }
-              }
             }}
           />
           {loadProgress !== null && (
