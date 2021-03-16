@@ -2,7 +2,7 @@ upcoming:
   version: 6.8.2
   date: TBD
   dev:
-    -
+    - Add QAInfo UI and flag - pavlos
   user_facing:
     -
 
