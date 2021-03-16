@@ -4,7 +4,22 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { color, Flex, FlexProps, Text, Touchable } from "palette"
 import React from "react"
 
-export const QAInfoPanel: React.FC<FlexProps> = (props) => {
+export const QAInfoPanel: React.FC<Omit<FlexProps, "children"> & { info: Array<[string, string]> }> = (props) => {
+  const enabled = useFeatureFlag("ARShowQuickAccessInfo")
+  if (!enabled) {
+    return null
+  }
+
+  return (
+    <QAInfoManualPanel {...props}>
+      {props.info.map(([key, value]) => (
+        <QAInfoRow i={{ [key]: value }} />
+      ))}
+    </QAInfoManualPanel>
+  )
+}
+
+export const QAInfoManualPanel: React.FC<FlexProps> = (props) => {
   const enabled = useFeatureFlag("ARShowQuickAccessInfo")
   if (!enabled) {
     return null

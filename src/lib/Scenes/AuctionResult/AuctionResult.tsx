@@ -6,7 +6,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
-import { QAInfoPanel, QAInfoRow } from "lib/utils/QAInfo"
+import { QAInfoPanel } from "lib/utils/QAInfo"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { useStickyScrollHeader } from "lib/utils/useStickyScrollHeader"
@@ -143,10 +143,14 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   )
 
   const QAInfo = () => (
-    <QAInfoPanel position="absolute" top={10} left={80}>
-      <QAInfoRow i={{ id: auctionResult.internalID }} />
-      <QAInfoRow i={{ title: auctionResult.title }} />
-    </QAInfoPanel>
+    <QAInfoPanel
+      style={{ position: "absolute", top: 10, left: 80 }}
+      info={[
+        ["id", auctionResult.internalID],
+        ["boughtIn", `${auctionResult.boughtIn}`],
+        ["cents", `${auctionResult.priceRealized?.centsUSD}`],
+      ]}
+    />
   )
 
   return (
