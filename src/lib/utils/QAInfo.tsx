@@ -13,7 +13,7 @@ export const QAInfoPanel: React.FC<Omit<FlexProps, "children"> & { info: Array<[
   return (
     <QAInfoManualPanel {...props}>
       {props.info.map(([key, value]) => (
-        <QAInfoRow i={{ [key]: value }} />
+        <QAInfoRow key={key} i={{ [key]: value }} />
       ))}
     </QAInfoManualPanel>
   )

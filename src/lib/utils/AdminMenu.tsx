@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-community/async-storage"
 import { MenuItem } from "lib/Components/MenuItem"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import { environment, EnvironmentKey } from "lib/store/config/EnvironmentModel"
-import { FeatureName, features } from "lib/store/config/features"
+import { FeatureName, features, ToolName, tools } from "lib/store/config/features"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { capitalize, compact, sortBy } from "lodash"
 import { ChevronIcon, CloseIcon, color, Flex, ReloadIcon, Separator, Spacer, Text } from "palette"
@@ -24,6 +24,10 @@ const configurableFeatureFlagKeys = sortBy(
   Object.entries(features).filter(([_, { showInAdminMenu }]) => showInAdminMenu),
   ([k, { description }]) => description ?? k
 ).map(([k]) => k as FeatureName)
+
+const configurableToolKeys = sortBy(Object.entries(tools), ([k, { description }]) => description ?? k).map(
+  ([k]) => k as ToolName
+)
 
 export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModal }) => {
   return (
@@ -77,6 +81,9 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         <Text variant="title" my="1" mx="2">
           Tools
         </Text>
+        {configurableToolKeys.map((toolKey) => {
+          return <FeatureFlagItem key={toolKey} flagKey={toolKey} />
+        })}
         <MenuItem
           title="Clear AsyncStorage"
           chevron={null}

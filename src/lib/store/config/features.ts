@@ -96,9 +96,22 @@ export const features = defineFeatures({
     description: "Use new onboarding",
     showInAdminMenu: true,
   },
-  ARShowQuickAccessInfo: {
-    readyForRelease: false, // never. it's just for devs.
-    description: "Show quick access info",
-    showInAdminMenu: true,
-  },
+})
+
+export interface ToolDescriptor {
+  /**
+   * Provide a short description for the admin menu
+   */
+  readonly description?: string
+}
+
+// Helper function to get good typings and intellisense
+function defineTools<T extends string>(toolMap: { readonly [toolName in T]: ToolDescriptor }) {
+  return toolMap
+}
+
+export type ToolName = keyof typeof features
+
+export const tools = defineTools({
+  ARShowQuickAccessInfo: { description: "Show quick access info" },
 })
