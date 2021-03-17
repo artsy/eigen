@@ -24,6 +24,8 @@ upcoming:
     - Group order updates with messages in an associated conversation - erik, lily
     - Fix modal header on iOS 14 in consignments flow - brian
     - Add Onboarding welcome screen - mounir
+    - Add splash screen to android - mounir
+    - Support change system navigation bar color on android - mounir
 
 releases:
   - version: 6.8.1

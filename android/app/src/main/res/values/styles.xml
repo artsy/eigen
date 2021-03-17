@@ -2,11 +2,10 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="android:textColor">#000000</item>
-        <item name="colorPrimaryDark">#FFFFFF</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar">true</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="android:statusBarColor">@color/white_background</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="Theme.FullScreenDialog" parent="Theme.AppCompat.Light.NoActionBar">
@@ -15,6 +14,13 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="BootTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:background">@drawable/bootsplash</item>
+        <item name="android:navigationBarColor">@color/bootsplash_background</item>
+        <item name="android:statusBarColor">@color/transparent_background</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
 </resources>

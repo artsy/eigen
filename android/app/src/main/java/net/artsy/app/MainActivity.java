@@ -11,6 +11,8 @@ import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
+import com.zoontek.rnbootsplash.RNBootSplash;
+
 
 public class MainActivity extends ReactActivity {
 
@@ -36,19 +38,6 @@ public class MainActivity extends ReactActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      getWindow().setStatusBarColor(Color.TRANSPARENT);
-      getWindow().setNavigationBarColor(Color.WHITE);
-      View decorView = getWindow().getDecorView();
-      decorView.setOnApplyWindowInsetsListener(
-        (v, insets) -> {
-          WindowInsets defaultInsets = v.onApplyWindowInsets(insets);
-          return defaultInsets.replaceSystemWindowInsets(
-                  defaultInsets.getSystemWindowInsetLeft(),
-                  0,
-                  defaultInsets.getSystemWindowInsetRight(),
-                  defaultInsets.getSystemWindowInsetBottom());
-        });
-    }
+    RNBootSplash.init(R.drawable.bootsplash, MainActivity.this);
   }
 }

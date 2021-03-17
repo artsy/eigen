@@ -95,6 +95,7 @@
     "@react-navigation/native": "^5.9.2",
     "@react-navigation/stack": "^5.14.2",
     "@sentry/react-native": "2.2.1",
+    "add": "^2.0.6",
     "easy-peasy": "3.3.0",
     "events": "3.1.0",
     "formik": "2.1.4",
@@ -106,6 +107,7 @@
     "query-string": "4.3.4",
     "react": "16.13.1",
     "react-native": "0.63.3",
+    "react-native-bootsplash": "^3.2.0",
     "react-native-config": "https://github.com/artsy/react-native-config.git",
     "react-native-gesture-handler": "^1.8.0",
     "react-native-haptic-feedback": "1.10.0",
@@ -136,6 +138,7 @@
     "supercluster": "6.0.1",
     "tipsi-stripe": "https://github.com/artsy/tipsi-stripe.git#fix-infinite-loop",
     "url": "^0.11.0",
+    "yarn": "^1.22.10",
     "yup": "0.29.1"
   },
   "devDependencies": {

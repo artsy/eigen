@@ -19,6 +19,9 @@ import { AdminMenuWrapper } from "./utils/AdminMenuWrapper"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
 
+import RNBootSplash from "react-native-bootsplash"
+import { ArtsyNativeModule } from "./NativeModules/ArtsyNativeModule"
+
 if (UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true)
 }
@@ -32,6 +35,13 @@ const Main: React.FC<{}> = track()(({}) => {
   useSentryConfig()
   useStripeConfig()
   useWebViewCookies()
+
+  useEffect(() => {
+    if (isHydrated) {
+      RNBootSplash.hide({ fade: true })
+      ArtsyNativeModule.setAppStyling()
+    }
+  }, [isHydrated])
 
   useEffect(() => {
     Linking.getInitialURL().then((url) => {
