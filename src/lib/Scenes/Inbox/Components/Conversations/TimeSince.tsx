@@ -8,10 +8,13 @@ const exactDate = (time: string) => {
     return null
   }
   const date = moment(time)
+  const isToday = moment().isSame(date, "day")
+  const isYesterday = moment().subtract(1, "days").isSame(date, "day")
   const daysSince = moment().diff(date, "days")
-  if (daysSince === 0) {
+
+  if (isToday) {
     return date.format("[Today] h:mm A")
-  } else if (daysSince === 1) {
+  } else if (isYesterday) {
     return date.format("[Yesterday] h:mm A")
   } else if (daysSince < 7) {
     return date.format("dddd h:mmA")
