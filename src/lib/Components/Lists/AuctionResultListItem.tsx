@@ -17,7 +17,7 @@ interface Props {
 const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress }) => {
   const QAInfo: React.FC = () => (
     <QAInfoManualPanel position="absolute" top={0} left={95}>
-      <QAInfoRow i={{ id: auctionResult.internalID }} />
+      <QAInfoRow name="id" value={auctionResult.internalID} />
     </QAInfoManualPanel>
   )
 

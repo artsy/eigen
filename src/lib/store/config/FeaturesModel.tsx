@@ -1,13 +1,15 @@
 import { Action, action, Computed, computed } from "easy-peasy"
 import { GlobalStoreModel } from "../GlobalStoreModel"
-import { FeatureName, features } from "./features"
+import { FeatureName, features, ToolName, tools } from "./features"
 
 export type FeatureMap = { [k in FeatureName]: boolean }
+export type ToolMap = { [k in ToolName]: boolean }
 
 export interface FeaturesModel {
-  adminOverrides: { [k in FeatureName]?: boolean }
-  setAdminOverride: Action<FeaturesModel, { key: FeatureName; value: boolean | null }>
-  flags: Computed<FeaturesModel, FeatureMap, GlobalStoreModel>
+  adminOverrides: { [k in FeatureName | ToolName]?: boolean }
+  setAdminOverride: Action<FeaturesModel, { key: FeatureName | ToolName; value: boolean | null }>
+  flags: Computed<FeaturesModel, FeatureMap, GlobalStoreModel> // user features
+  tools: Computed<FeaturesModel, ToolMap, GlobalStoreModel> // admin tools
 }
 
 export const FeaturesModel: FeaturesModel = {
@@ -35,6 +37,18 @@ export const FeaturesModel: FeaturesModel = {
         result[key] = echoFlag?.value ?? true
       } else {
         // If the feature is not ready for release, uh, don't show it
+        result[key] = false
+      }
+    }
+    return result
+  }),
+  tools: computed((state) => {
+    const result = {} as any
+    for (const [key] of Object.entries(tools)) {
+      if (state.adminOverrides[key as ToolName] != null) {
+        // If there's an admin override, it takes precedence
+        result[key] = state.adminOverrides[key as ToolName]
+      } else {
         result[key] = false
       }
     }

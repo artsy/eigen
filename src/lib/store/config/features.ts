@@ -102,16 +102,20 @@ export interface ToolDescriptor {
   /**
    * Provide a short description for the admin menu
    */
-  readonly description?: string
+  readonly description: string
 }
 
 // Helper function to get good typings and intellisense
-function defineTools<T extends string>(toolMap: { readonly [toolName in T]: ToolDescriptor }) {
-  return toolMap
-}
+const defineTools = <T extends string>(toolMap: { readonly [toolName in T]: ToolDescriptor }) => toolMap
 
-export type ToolName = keyof typeof features
+export type ToolName = keyof typeof tools
 
 export const tools = defineTools({
-  ARShowQuickAccessInfo: { description: "Show quick access info" },
+  ATShowQuickAccessInfo: {
+    description: "Show quick access info",
+  },
 })
+
+export const isTool = (name: FeatureName | ToolName): name is ToolName => {
+  return Object.keys(tools).includes(name)
+}

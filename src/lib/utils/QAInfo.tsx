@@ -1,26 +1,19 @@
 import Clipboard from "@react-native-community/clipboard"
 import { useToast } from "lib/Components/Toast/toastHook"
-import { useFeatureFlag } from "lib/store/GlobalStore"
+import { useToolFlag } from "lib/store/GlobalStore"
 import { color, Flex, FlexProps, Text, Touchable } from "palette"
 import React from "react"
 
-export const QAInfoPanel: React.FC<Omit<FlexProps, "children"> & { info: Array<[string, string]> }> = (props) => {
-  const enabled = useFeatureFlag("ARShowQuickAccessInfo")
-  if (!enabled) {
-    return null
-  }
-
-  return (
-    <QAInfoManualPanel {...props}>
-      {props.info.map(([key, value]) => (
-        <QAInfoRow key={key} i={{ [key]: value }} />
-      ))}
-    </QAInfoManualPanel>
-  )
-}
+export const QAInfoPanel: React.FC<Omit<FlexProps, "children"> & { info: Array<[string, string]> }> = (props) => (
+  <QAInfoManualPanel {...props}>
+    {props.info.map(([key, value]) => (
+      <QAInfoRow key={key} name={key} value={value} />
+    ))}
+  </QAInfoManualPanel>
+)
 
 export const QAInfoManualPanel: React.FC<FlexProps> = (props) => {
-  const enabled = useFeatureFlag("ARShowQuickAccessInfo")
+  const enabled = useToolFlag("ATShowQuickAccessInfo")
   if (!enabled) {
     return null
   }
@@ -28,12 +21,12 @@ export const QAInfoManualPanel: React.FC<FlexProps> = (props) => {
   return <Flex borderColor="purple100" borderWidth={1} {...props} />
 }
 
-export const QAInfoRow: React.FC<{ key: string; value: string }> = ({ key, value }) => {
+export const QAInfoRow: React.FC<{ name: string; value: string }> = ({ name, value }) => {
   const toast = useToast()
 
   return (
     <Flex flexDirection="row">
-      <Text>{key}: </Text>
+      <Text>{name}: </Text>
       <Touchable
         underlayColor={color("black5")}
         haptic

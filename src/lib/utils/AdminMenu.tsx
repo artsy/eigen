@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-community/async-storage"
 import { MenuItem } from "lib/Components/MenuItem"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import { environment, EnvironmentKey } from "lib/store/config/EnvironmentModel"
-import { FeatureName, features, ToolName, tools } from "lib/store/config/features"
+import { FeatureName, features, isTool, ToolName, tools } from "lib/store/config/features"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { capitalize, compact, sortBy } from "lodash"
 import { ChevronIcon, CloseIcon, color, Flex, ReloadIcon, Separator, Spacer, Text } from "palette"
@@ -136,16 +136,18 @@ const Buttons: React.FC<{ onClose(): void }> = ({ onClose }) => {
   )
 }
 
-const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
+const FeatureFlagItem: React.FC<{ flagKey: FeatureName | ToolName }> = ({ flagKey }) => {
   const config = GlobalStore.useAppState((s) => s.config)
-  const currentValue = config.features.flags[flagKey]
+  const currentValue = isTool(flagKey) ? config.features.tools[flagKey] : config.features.flags[flagKey]
   const isAdminOverrideInEffect = flagKey in config.features.adminOverrides
   const valText = currentValue ? "Yes" : "No"
+  const description = isTool(flagKey) ? tools[flagKey].description : features[flagKey].description ?? flagKey
+
   return (
     <MenuItem
-      title={features[flagKey].description ?? flagKey}
+      title={description}
       onPress={() => {
-        Alert.alert(features[flagKey].description ?? flagKey, undefined, [
+        Alert.alert(description, undefined, [
           {
             text: "Override with 'Yes'",
             onPress() {
