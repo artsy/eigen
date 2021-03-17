@@ -120,3 +120,10 @@ export const devToggles = defineDevToggles({
 export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {
   return Object.keys(devToggles).includes(name)
 }
+
+type Assert<T, U extends T> = U
+// If you mouse-over the name of the type below, you should be able to see the key that needs renaming!
+export type _ThereIsAKeyThatIsCommonInFeaturesAndDevToggles_PleaseRename_MouseOverToSeeTheNaughtyKey = Assert<
+  never,
+  keyof (typeof features | typeof devToggles)
+>
