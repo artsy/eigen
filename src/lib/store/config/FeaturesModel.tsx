@@ -1,15 +1,15 @@
 import { Action, action, Computed, computed } from "easy-peasy"
 import { GlobalStoreModel } from "../GlobalStoreModel"
-import { FeatureName, features, ToolName, tools } from "./features"
+import { DevToggleName, devToggles, FeatureName, features } from "./features"
 
 export type FeatureMap = { [k in FeatureName]: boolean }
-export type ToolMap = { [k in ToolName]: boolean }
+export type DevToggleMap = { [k in DevToggleName]: boolean }
 
 export interface FeaturesModel {
-  adminOverrides: { [k in FeatureName | ToolName]?: boolean }
-  setAdminOverride: Action<FeaturesModel, { key: FeatureName | ToolName; value: boolean | null }>
+  adminOverrides: { [k in FeatureName | DevToggleName]?: boolean }
+  setAdminOverride: Action<FeaturesModel, { key: FeatureName | DevToggleName; value: boolean | null }>
   flags: Computed<FeaturesModel, FeatureMap, GlobalStoreModel> // user features
-  tools: Computed<FeaturesModel, ToolMap, GlobalStoreModel> // admin tools
+  devToggles: Computed<FeaturesModel, DevToggleMap, GlobalStoreModel> // only for devs
 }
 
 export const FeaturesModel: FeaturesModel = {
@@ -21,6 +21,7 @@ export const FeaturesModel: FeaturesModel = {
       state.adminOverrides[key] = value
     }
   }),
+
   flags: computed([(state) => state, (_, store) => store.config.echo], (state, echo) => {
     const result = {} as any
     for (const [key, feature] of Object.entries(features)) {
@@ -42,15 +43,11 @@ export const FeaturesModel: FeaturesModel = {
     }
     return result
   }),
-  tools: computed((state) => {
+
+  devToggles: computed((state) => {
     const result = {} as any
-    for (const [key] of Object.entries(tools)) {
-      if (state.adminOverrides[key as ToolName] != null) {
-        // If there's an admin override, it takes precedence
-        result[key] = state.adminOverrides[key as ToolName]
-      } else {
-        result[key] = false
-      }
+    for (const [key] of Object.entries(devToggles)) {
+      result[key] = state.adminOverrides[key as DevToggleName] ?? false
     }
     return result
   }),

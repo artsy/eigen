@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-community/async-storage"
 import { MenuItem } from "lib/Components/MenuItem"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import { environment, EnvironmentKey } from "lib/store/config/EnvironmentModel"
-import { FeatureName, features, isTool, ToolName, tools } from "lib/store/config/features"
+import { DevToggleName, devToggles, FeatureName, features } from "lib/store/config/features"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { capitalize, compact, sortBy } from "lodash"
 import { ChevronIcon, CloseIcon, color, Flex, ReloadIcon, Separator, Spacer, Text } from "palette"
@@ -25,8 +25,8 @@ const configurableFeatureFlagKeys = sortBy(
   ([k, { description }]) => description ?? k
 ).map(([k]) => k as FeatureName)
 
-const configurableToolKeys = sortBy(Object.entries(tools), ([k, { description }]) => description ?? k).map(
-  ([k]) => k as ToolName
+const configurableDevToggleKeys = sortBy(Object.entries(devToggles), ([k, { description }]) => description ?? k).map(
+  ([k]) => k as DevToggleName
 )
 
 export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModal }) => {
@@ -81,8 +81,8 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         <Text variant="title" my="1" mx="2">
           Tools
         </Text>
-        {configurableToolKeys.map((toolKey) => {
-          return <FeatureFlagItem key={toolKey} flagKey={toolKey} />
+        {configurableDevToggleKeys.map((devToggleKey) => {
+          return <DevToggleItem key={devToggleKey} toggleKey={devToggleKey} />
         })}
         <MenuItem
           title="Clear AsyncStorage"
@@ -136,12 +136,12 @@ const Buttons: React.FC<{ onClose(): void }> = ({ onClose }) => {
   )
 }
 
-const FeatureFlagItem: React.FC<{ flagKey: FeatureName | ToolName }> = ({ flagKey }) => {
+const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
   const config = GlobalStore.useAppState((s) => s.config)
-  const currentValue = isTool(flagKey) ? config.features.tools[flagKey] : config.features.flags[flagKey]
+  const currentValue = config.features.flags[flagKey]
   const isAdminOverrideInEffect = flagKey in config.features.adminOverrides
   const valText = currentValue ? "Yes" : "No"
-  const description = isTool(flagKey) ? tools[flagKey].description : features[flagKey].description ?? flagKey
+  const description = features[flagKey].description ?? flagKey
 
   return (
     <MenuItem
@@ -171,6 +171,46 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName | ToolName }> = ({ flagKe
       }}
       value={
         isAdminOverrideInEffect ? (
+          <Text variant="subtitle" color="black100" fontWeight="bold">
+            {valText}
+          </Text>
+        ) : (
+          <Text variant="subtitle" color="black60">
+            {valText}
+          </Text>
+        )
+      }
+    />
+  )
+}
+
+const DevToggleItem: React.FC<{ toggleKey: DevToggleName }> = ({ toggleKey }) => {
+  const config = GlobalStore.useAppState((s) => s.config)
+  const currentValue = config.features.devToggles[toggleKey]
+  const valText = currentValue ? "Yes" : "No"
+  const description = devToggles[toggleKey].description
+
+  return (
+    <MenuItem
+      title={description}
+      onPress={() => {
+        Alert.alert(description, undefined, [
+          {
+            text: currentValue ? "Keep turned ON" : "Turn ON",
+            onPress() {
+              GlobalStore.actions.config.features.setAdminOverride({ key: toggleKey, value: true })
+            },
+          },
+          {
+            text: currentValue ? "Turn OFF" : "Keep turned OFF",
+            onPress() {
+              GlobalStore.actions.config.features.setAdminOverride({ key: toggleKey, value: false })
+            },
+          },
+        ])
+      }}
+      value={
+        currentValue ? (
           <Text variant="subtitle" color="black100" fontWeight="bold">
             {valText}
           </Text>

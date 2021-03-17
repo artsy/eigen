@@ -1,4 +1,5 @@
 import { SearchInput } from "lib/Components/SearchInput"
+import { useDevToggle } from "lib/store/GlobalStore"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { color, Flex, Spacer } from "palette"
@@ -51,7 +52,7 @@ export const Search: React.FC = () => {
           <Scrollable>
             <RecentSearches />
             <Spacer mb={3} />
-            {!isPad() && Platform.OS === "ios" && <CityGuideCTA />}
+            {!useDevToggle("DTHideCityGuideCTA") && !isPad() && Platform.OS === "ios" ? <CityGuideCTA /> : null}
             <Spacer mb="40px" />
           </Scrollable>
         )}

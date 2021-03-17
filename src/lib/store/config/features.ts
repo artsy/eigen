@@ -98,7 +98,7 @@ export const features = defineFeatures({
   },
 })
 
-export interface ToolDescriptor {
+export interface DevToggleDescriptor {
   /**
    * Provide a short description for the admin menu
    */
@@ -106,16 +106,20 @@ export interface ToolDescriptor {
 }
 
 // Helper function to get good typings and intellisense
-const defineTools = <T extends string>(toolMap: { readonly [toolName in T]: ToolDescriptor }) => toolMap
+const defineDevToggles = <T extends string>(devToggleMap: { readonly [devToggleName in T]: DevToggleDescriptor }) =>
+  devToggleMap
 
-export type ToolName = keyof typeof tools
+export type DevToggleName = keyof typeof devToggles
 
-export const tools = defineTools({
-  ATShowQuickAccessInfo: {
+export const devToggles = defineDevToggles({
+  DTShowQuickAccessInfo: {
     description: "Show quick access info",
+  },
+  DTHideCityGuideCTA: {
+    description: "Hide City Guide CTA",
   },
 })
 
-export const isTool = (name: FeatureName | ToolName): name is ToolName => {
-  return Object.keys(tools).includes(name)
+export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {
+  return Object.keys(devToggles).includes(name)
 }

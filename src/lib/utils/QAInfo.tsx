@@ -1,6 +1,6 @@
 import Clipboard from "@react-native-community/clipboard"
 import { useToast } from "lib/Components/Toast/toastHook"
-import { useToolFlag } from "lib/store/GlobalStore"
+import { useDevToggle } from "lib/store/GlobalStore"
 import { color, Flex, FlexProps, Text, Touchable } from "palette"
 import React from "react"
 
@@ -13,7 +13,7 @@ export const QAInfoPanel: React.FC<Omit<FlexProps, "children"> & { info: Array<[
 )
 
 export const QAInfoManualPanel: React.FC<FlexProps> = (props) => {
-  const enabled = useToolFlag("ATShowQuickAccessInfo")
+  const enabled = useDevToggle("DTShowQuickAccessInfo")
   if (!enabled) {
     return null
   }
