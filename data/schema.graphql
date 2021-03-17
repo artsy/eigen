@@ -4707,7 +4707,8 @@ type Conversation implements Node {
     before: String
     first: Int
     last: Int
-    participantType: CommerceOrderParticipantEnum!
+    participantType: CommerceOrderParticipantEnum
+    sellerId: ID
     state: CommerceOrderStateEnum
   ): CommerceOrderConnectionWithTotalCount
 
