@@ -63,11 +63,6 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableNewPartnerView",
   },
-  AROptionsUseReactNativeWebView: {
-    readyForRelease: false,
-    description: "Use react-native web views",
-    showInAdminMenu: true,
-  },
   AROptionsLotConditionReport: {
     readyForRelease: true,
     echoFlagKey: "AROptionsLotConditionReport",

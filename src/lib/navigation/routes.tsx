@@ -1,19 +1,29 @@
 import { AppModule } from "lib/AppRegistry"
-import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
+import { ArtsyWebViewConfig } from "lib/Components/ArtsyWebView"
+import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { parse } from "url"
 import { RouteMatcher } from "./RouteMatcher"
-
 export function matchRoute(
   url: string
 ): { type: "match"; module: AppModule; params: object } | { type: "external_url"; url: string } {
-  const parsed = parse(decodeURIComponent(url))
+  let parsed = parse(decodeURIComponent(url))
+  // short-circuit google ads links
+  // without this we'd kick the user out in safari only to get kicked back into the app
+  // if the link points to an artsy page (which it seems like they often do)
+  if (parsed.host === "googleads.g.doubleclick.net") {
+    const { adurl } = parseQueryString(parsed.query ?? "")
+    const targetUrl = adurl && parse(decodeURIComponent(adurl))
+    if (targetUrl) {
+      parsed = targetUrl
+    }
+  }
   const pathParts = parsed.pathname?.split(/\/+/).filter(Boolean) ?? []
   const queryParams: object = parsed.query ? parseQueryString(parsed.query) : {}
 
-  const domain = parsed.host || "artsy.net"
-  const routes = getDomainMap()[domain]
+  const domain = (parsed.host || parse(unsafe__getEnvironment().webURL).host) ?? "artsy.net"
+  const routes = getDomainMap()[domain as any]
 
   if (!routes) {
     // Unrecognized domain, let's send the user to Safari or whatever
@@ -42,18 +52,15 @@ export function matchRoute(
     params: { url },
   }
 }
-function webViewRoute(url: string, title?: string) {
-  return new RouteMatcher(
-    url,
-    unsafe_getFeatureFlag("AROptionsUseReactNativeWebView") ? "ReactWebView" : "WebView",
-    (params) => ({
-      url: replaceParams(url, params),
-      title,
-    })
-  )
+function webViewRoute(url: string, config?: ArtsyWebViewConfig) {
+  return new RouteMatcher(url, "WebView", (params) => ({
+    url: replaceParams(url, params),
+    ...config,
+  }))
 }
 
-function replaceParams(url: string, params: object) {
+function replaceParams(url: string, params: any) {
+  url = url.replace(/\*$/, params["*"])
   let match = url.match(/:(\w+)/)
   while (match) {
     const key = match[1]
@@ -61,7 +68,7 @@ function replaceParams(url: string, params: object) {
       console.error("[replaceParams]: something is very wrong", key, params)
       return url
     }
-    url = url.replace(":" + key, (params as any)[key])
+    url = url.replace(":" + key, params[key])
     match = url.match(/:(\w+)/)
   }
   return url
@@ -167,13 +174,9 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/city-bmw-list/:citySlug", "CityBMWList"),
     webViewRoute("/buy-now-feature-faq"),
     new RouteMatcher("/make-offer/:artworkID", "MakeOfferModal"),
-    webViewRoute("/orders/:orderID"),
+    webViewRoute("/orders/:orderID", { mimicBrowserBackButton: false }),
     new RouteMatcher("/:slug", "VanityURLEntity"),
-    new RouteMatcher(
-      "/*",
-      unsafe_getFeatureFlag("AROptionsUseReactNativeWebView") ? "ReactWebView" : "WebView",
-      (params) => ({ url: "/" + params["*"] })
-    ),
+    webViewRoute("/*"),
   ])
 
   const routesForDomain = {
@@ -182,6 +185,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     "staging.artsy.net": artsyDotNet,
     "artsy.net": artsyDotNet,
     "www.artsy.net": artsyDotNet,
+    [parse(unsafe__getEnvironment().webURL).host ?? "artsy.net"]: artsyDotNet,
   }
 
   return routesForDomain

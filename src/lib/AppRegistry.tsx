@@ -45,7 +45,6 @@ import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/MakeOfferModal"
-import { Checkout } from "./Scenes/Inbox/Screens/Checkout"
 import { MapContainer } from "./Scenes/Map"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
@@ -69,7 +68,7 @@ import { Search } from "./Scenes/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
-import { ArtsyWebView } from "./Components/ArtsyWebView"
+import { ArtsyWebView, useWebViewCookies } from "./Components/ArtsyWebView"
 import { ToastProvider } from "./Components/Toast/toastHook"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
@@ -339,8 +338,7 @@ export const modules = defineModules({
     modalPresentationStyle: "fullScreen",
   }),
   LocalDiscovery: nativeModule(),
-  WebView: nativeModule(),
-  ReactWebView: reactModule(ArtsyWebView, {
+  WebView: reactModule(ArtsyWebView, {
     hasOwnModalCloseButton: true,
     hidesBackButton: true,
     fullBleed: true,
@@ -377,9 +375,6 @@ export const modules = defineModules({
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),
   ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
   ViewingRooms: reactModule(ViewingRoomsListQueryRenderer),
-  Checkout: reactModule(Checkout, {
-    hasOwnModalCloseButton: true,
-  }),
   WorksForYou: reactModule(WorksForYouQueryRenderer),
 })
 
@@ -400,6 +395,7 @@ const Main: React.FC<{}> = track()(({}) => {
 
   useSentryConfig()
   useStripeConfig()
+  useWebViewCookies()
 
   if (!isHydrated) {
     return <View />

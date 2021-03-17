@@ -1,15 +1,11 @@
-import {
-  getCurrentEmissionState,
-  GlobalStore,
-  GlobalStoreProvider,
-  unsafe__getEnvironment,
-} from "lib/store/GlobalStore"
+import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React, { useEffect, useRef } from "react"
 import { useCallback } from "react"
 import { Linking, UIManager, View } from "react-native"
 import track from "react-tracking"
 import { RelayEnvironmentProvider } from "relay-hooks"
+import { useWebViewCookies } from "./Components/ArtsyWebView"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { useSentryConfig } from "./ErrorReporting"
 import { ModalStack } from "./navigation/ModalStack"
@@ -32,6 +28,7 @@ const Main: React.FC<{}> = track()(({}) => {
 
   useSentryConfig()
   useStripeConfig()
+  useWebViewCookies()
 
   useEffect(() => {
     Linking.getInitialURL().then((url) => {
@@ -71,22 +68,6 @@ const Main: React.FC<{}> = track()(({}) => {
       launchURL.current = null
     }
   }, [isLoggedIn, launchURL.current])
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      const { authenticationToken } = getCurrentEmissionState()
-      const { webURL } = unsafe__getEnvironment()
-      // sign in to force (this gives us force cookies in our web views)
-      fetch(webURL, {
-        method: "HEAD",
-        headers: { "X-Access-Token": authenticationToken },
-      }).then((res) => {
-        if (res.status >= 400) {
-          console.error("couldn't sign in to force", res.status, res.statusText)
-        }
-      })
-    }
-  }, [isLoggedIn])
 
   if (!isHydrated) {
     return <View></View>
