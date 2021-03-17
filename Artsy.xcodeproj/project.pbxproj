@@ -413,7 +413,7 @@
 		B3ECE83C1819D1FD009F5C5B /* SaleArtworkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B3ECE83B1819D1FD009F5C5B /* SaleArtworkTests.m */; };
 		B3EFC6391815B41C00F23540 /* BidderPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EFC6381815B41C00F23540 /* BidderPosition.m */; };
 		B91C4D8E24F6893F00F5F177 /* ARScreenPresenterModule.m in Sources */ = {isa = PBXBuildFile; fileRef = B91C4D8D24F6893F00F5F177 /* ARScreenPresenterModule.m */; };
-		B9A039462553FE47002E010D /* ARModalWithBottomSafeAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A039452553FE47002E010D /* ARModalWithBottomSafeAreaViewController.m */; };
+		B9A039462553FE47002E010D /* ARModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A039452553FE47002E010D /* ARModalViewController.m */; };
 		B9A0395C25540810002E010D /* UIView+ScrollToTop.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A0395B25540810002E010D /* UIView+ScrollToTop.m */; };
 		B9A29FE023EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
 		B9A29FE123EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
@@ -1130,8 +1130,8 @@
 		B3EFC6381815B41C00F23540 /* BidderPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BidderPosition.m; sourceTree = "<group>"; };
 		B91C4D8C24F6893F00F5F177 /* ARScreenPresenterModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARScreenPresenterModule.h; sourceTree = "<group>"; };
 		B91C4D8D24F6893F00F5F177 /* ARScreenPresenterModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARScreenPresenterModule.m; sourceTree = "<group>"; };
-		B9A039442553FE47002E010D /* ARModalWithBottomSafeAreaViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARModalWithBottomSafeAreaViewController.h; sourceTree = "<group>"; };
-		B9A039452553FE47002E010D /* ARModalWithBottomSafeAreaViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARModalWithBottomSafeAreaViewController.m; sourceTree = "<group>"; };
+		B9A039442553FE47002E010D /* ARModalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARModalViewController.h; sourceTree = "<group>"; };
+		B9A039452553FE47002E010D /* ARModalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARModalViewController.m; sourceTree = "<group>"; };
 		B9A0395A25540810002E010D /* UIView+ScrollToTop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+ScrollToTop.h"; sourceTree = "<group>"; };
 		B9A0395B25540810002E010D /* UIView+ScrollToTop.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+ScrollToTop.m"; sourceTree = "<group>"; };
 		B9A29FDE23EB2680006EE2EC /* ARReactPackagerHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARReactPackagerHost.h; sourceTree = "<group>"; };
@@ -2599,8 +2599,8 @@
 			children = (
 				B91C4D8C24F6893F00F5F177 /* ARScreenPresenterModule.h */,
 				B91C4D8D24F6893F00F5F177 /* ARScreenPresenterModule.m */,
-				B9A039442553FE47002E010D /* ARModalWithBottomSafeAreaViewController.h */,
-				B9A039452553FE47002E010D /* ARModalWithBottomSafeAreaViewController.m */,
+				B9A039442553FE47002E010D /* ARModalViewController.h */,
+				B9A039452553FE47002E010D /* ARModalViewController.m */,
 				5E830A501E969B1800A56C75 /* ArtsyEcho.h */,
 				5E830A511E969B1800A56C75 /* ArtsyEcho.m */,
 				1AC7920F251A42CF00F50228 /* EchoNew.json */,
@@ -3573,7 +3573,7 @@
 				CB6CE8E524F424E700ED2843 /* ARInternalWebViewManager.m in Sources */,
 				5E79FCBA1C768108003D5D65 /* ARNvagiationButton+Swift.swift in Sources */,
 				600EE29E16B3003F002E9F9A /* ARNavigationButton.m in Sources */,
-				B9A039462553FE47002E010D /* ARModalWithBottomSafeAreaViewController.m in Sources */,
+				B9A039462553FE47002E010D /* ARModalViewController.m in Sources */,
 				60F242F21CB3AA7300387AA1 /* LiveAuctionBidButton.swift in Sources */,
 				3CFB078B18EB417F00792024 /* ARSecureTextFieldWithPlaceholder.m in Sources */,
 				CB206F7417C569E800A4FDC4 /* ARPersonalizeViewController.m in Sources */,

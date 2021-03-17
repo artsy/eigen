@@ -211,7 +211,7 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
 - (void)updateBackButtonPositionForViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    CGFloat topInsetMargin = [[[ARAppDelegate sharedInstance] window] safeAreaInsets].top;
+    CGFloat topInsetMargin = self.view.safeAreaInsets.top;
     CGFloat topMargin = topInsetMargin + 12;
 
     [UIView animateIf:animated duration:ARAnimationDuration :^{
