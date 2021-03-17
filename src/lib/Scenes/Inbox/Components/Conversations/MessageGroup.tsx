@@ -7,13 +7,13 @@ import { Messages_conversation } from "__generated__/Messages_conversation.graph
 import moment from "moment"
 import { Flex, Spacer } from "palette"
 
+import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { Message } from "./Message"
+import { OrderUpdateFragmentContainer } from "./OrderUpdate"
 import ArtworkPreview from "./Preview/ArtworkPreview"
 import ShowPreview from "./Preview/ShowPreview"
 import { TimeSince } from "./TimeSince"
-import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
-import { OrderUpdateFragmentContainer } from "./OrderUpdate"
 
 const SubjectContainer = styled(Flex)`
   flex-direction: row;
@@ -33,14 +33,21 @@ export class MessageGroup extends React.Component<MessageGroupProps> {
     // console.warn(
     //   this.props.group.map((item) => ({ createdAt: item.createdAt, type: item.__typename, body: item.body }))
     // )
+    const orderEvents = ["CommerceOfferSubmittedEvent", "CommerceOrderStateChangedEvent"]
+    const firstItem = this.props?.group[0]
+    const isOrderEvent = "__typename" in firstItem && orderEvents.includes(firstItem.__typename)
+    const isMessage = !isOrderEvent
+    if (!firstItem) {
+      return null
+    }
+
     return (
       <View>
-        <TimeSince style={{ alignSelf: "center" }} time={this.props.group[0].createdAt} exact mb={1} />
+        {!!isMessage && <TimeSince style={{ alignSelf: "center" }} time={firstItem.createdAt} exact mb={1} />}
         {[...this.props.group].reverse().map((message: DisplayableMessage, messageIndex: number) => {
           const { group, subjectItem, conversationId } = this.props
           const messageKey = `message-${messageIndex}`
 
-          const orderEvents = ["CommerceOfferSubmittedEvent", "CommerceOrderStateChangedEvent"]
           // if ("__typename" in message && orderEvents.includes(message.__typename)) {
           // if (orderEvents.includes(message.__typename)) {
           // maybe bug-prone to do this check
@@ -54,8 +61,8 @@ export class MessageGroup extends React.Component<MessageGroupProps> {
           //   return null
           // }
           // } else {
-          const isOrderEvent = "__typename" in message && orderEvents.includes(message.__typename)
-          const isMessage = !isOrderEvent
+          // const isOrderEvent = "__typename" in message && orderEvents.includes(message.__typename)
+          // const isMessage = !isOrderEvent
 
           const nextMessage = group[messageIndex + 1]
           const senderChanges =

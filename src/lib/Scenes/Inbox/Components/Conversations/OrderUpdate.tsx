@@ -27,7 +27,7 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event }) => {
       // ignore future added value
       // TODO: this filtering logic is spread all over
       // TODO: handle buyer declined offer?
-      return <Text>Ignored offer event</Text>
+      return null
     }
   } else if (event.__typename === "CommerceOrderStateChangedEvent") {
     Icon = MoneyFillIcon
@@ -51,6 +51,7 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event }) => {
   }
   return (
     <Flex>
+      <TimeSince style={{ alignSelf: "center" }} time={event.createdAt} exact mb={1} />
       <Flex px={2} justifyContent="center" flexDirection="row">
         <Flex flexDirection="row">
           <Icon mt="3px" fill={color} />
@@ -60,9 +61,6 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event }) => {
             </Text>
           </Flex>
         </Flex>
-      </Flex>
-      <Flex flexDirection="row" justifyContent="center">
-        <TimeSince time={event.createdAt} mt={0.5} />
       </Flex>
     </Flex>
   )
