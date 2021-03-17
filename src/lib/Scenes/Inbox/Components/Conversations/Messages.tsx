@@ -33,7 +33,7 @@ type Order = NonNullable<
 >
 type OrderHistoryEventWithOther = Order["orderHistory"][number]
 
-export type OrderHistoryEvent = Exclude<OrderHistoryEventWithOther, { __typename: "%other" }>
+export type OrderHistoryEvent = Exclude<OrderHistoryEventWithOther, { __typename: "%other" }> & { key: string }
 
 export type ConversationMessage = NonNullable<
   NonNullable<NonNullable<NonNullable<Props["conversation"]["messagesConnection"]>["edges"]>[number]>["node"]
@@ -42,7 +42,13 @@ export type ConversationMessage = NonNullable<
 const isRelevantConversationItem = (item: OrderHistoryEventWithOther): item is OrderHistoryEvent => {
   switch (item.__typename) {
     case "CommerceOrderStateChangedEvent":
-      return true // actually more complicated
+      return (
+        item.state === "APPROVED" ||
+        Boolean(
+          item.state === "CANCELED" &&
+            (item.stateReason?.includes("seller_rejected") || item.stateReason?.includes("_lapsed"))
+        )
+      )
     case "CommerceOfferSubmittedEvent":
       return true
     default:
@@ -59,6 +65,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   const [messages, setMessages] = useState<MessageGroupType[]>()
 
   const orders: Order[] = extractNodes(conversation?.orderConnection)
+
   const allOrderEvents: OrderHistoryEvent[] = orders
     .reduce<OrderHistoryEventWithOther[]>((prev, order) => prev.concat(order.orderHistory), [])
     .filter<OrderHistoryEvent>(isRelevantConversationItem)
@@ -75,7 +82,6 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
       .map((node) => {
         return { key: node.id, ...node }
       })
-      .reverse()
 
     const sortedMessages = sortBy([...allOrderEvents, ...allMessages], (message) =>
       DateTime.fromISO(message.createdAt!)
@@ -204,12 +210,13 @@ export default createPaginationContainer(
         orderConnection(first: 10, participantType: BUYER) {
           edges {
             node {
-              ...OrderUpdate_order
               orderHistory {
                 ...OrderUpdate_event
                 __typename
                 ... on CommerceOrderStateChangedEvent {
                   createdAt
+                  state
+                  stateReason
                 }
                 ... on CommerceOfferSubmittedEvent {
                   createdAt

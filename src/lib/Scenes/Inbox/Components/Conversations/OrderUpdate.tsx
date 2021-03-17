@@ -6,15 +6,13 @@ import { TimeSince } from "./TimeSince"
 
 export interface OrderUpdateProps {
   event: OrderUpdate_event
-  showTimeSince: boolean
 }
 
-export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event, showTimeSince }) => {
+export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event }) => {
   let color: Color
   let message: string
   let Icon: React.FC<IconProps>
   if (event.__typename === "CommerceOfferSubmittedEvent") {
-    console.warn(event)
     const { offer } = event
     const isCounter = offer.respondsTo !== null
     if (offer.fromParticipant === "BUYER") {
@@ -27,12 +25,15 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event, showTimeSince }
       message = `You received ${isCounter ? "a counteroffer" : "an offer"} for ${event.offer.amount}`
     } else {
       // ignore future added value
-      return null
+      // TODO: this filtering logic is spread all over
+      // TODO: handle buyer declined offer?
+      return <Text>Ignored offer event</Text>
     }
   } else if (event.__typename === "CommerceOrderStateChangedEvent") {
     Icon = MoneyFillIcon
 
     const { state, stateReason } = event
+    console.warn(event)
     if (state === "APPROVED") {
       color = "green100"
       message = `Offer Accepted`
@@ -46,7 +47,7 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event, showTimeSince }
       return null
     }
   } else {
-    return null
+    return <Text>ignored {event.__typename}</Text>
   }
   return (
     <Flex>
@@ -60,11 +61,9 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event, showTimeSince }
           </Flex>
         </Flex>
       </Flex>
-      {!!showTimeSince && (
-        <Flex flexDirection="row" justifyContent="center">
-          <TimeSince time={event.createdAt} mt={0.5} />
-        </Flex>
-      )}
+      <Flex flexDirection="row" justifyContent="center">
+        <TimeSince time={event.createdAt} mt={0.5} />
+      </Flex>
     </Flex>
   )
 }

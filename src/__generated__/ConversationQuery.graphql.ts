@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2286d11f53b26198b2c81f51cdd8997b */
+/* @relayHash 7b99452b32a36c8369dcbbf88b14d612 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -154,6 +154,8 @@ fragment Messages_conversation on Conversation {
           __typename
           ... on CommerceOrderStateChangedEvent {
             createdAt
+            state
+            stateReason
           }
           ... on CommerceOfferSubmittedEvent {
             createdAt
@@ -1019,7 +1021,7 @@ return {
     ]
   },
   "params": {
-    "id": "2286d11f53b26198b2c81f51cdd8997b",
+    "id": "7b99452b32a36c8369dcbbf88b14d612",
     "metadata": {},
     "name": "ConversationQuery",
     "operationKind": "query",

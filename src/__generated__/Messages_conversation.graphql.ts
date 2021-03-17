@@ -4,6 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FULFILLED" | "PENDING" | "REFUNDED" | "SUBMITTED" | "%future added value";
 export type Messages_conversation = {
     readonly id: string;
     readonly internalID: string | null;
@@ -22,6 +23,8 @@ export type Messages_conversation = {
                 readonly orderHistory: ReadonlyArray<{
                     readonly __typename: string;
                     readonly createdAt?: string;
+                    readonly state?: CommerceOrderStateEnum;
+                    readonly stateReason?: string | null;
                     readonly " $fragmentRefs": FragmentRefs<"OrderUpdate_event">;
                 }>;
             } | null;
@@ -117,10 +120,7 @@ v4 = {
   "name": "createdAt",
   "storageKey": null
 },
-v5 = [
-  (v4/*: any*/)
-],
-v6 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -253,13 +253,31 @@ return {
                     },
                     {
                       "kind": "InlineFragment",
-                      "selections": (v5/*: any*/),
+                      "selections": [
+                        (v4/*: any*/),
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "state",
+                          "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "stateReason",
+                          "storageKey": null
+                        }
+                      ],
                       "type": "CommerceOrderStateChangedEvent",
                       "abstractKey": null
                     },
                     {
                       "kind": "InlineFragment",
-                      "selections": (v5/*: any*/),
+                      "selections": [
+                        (v4/*: any*/)
+                      ],
                       "type": "CommerceOfferSubmittedEvent",
                       "abstractKey": null
                     }
@@ -453,7 +471,7 @@ return {
             {
               "kind": "InlineFragment",
               "selections": [
-                (v6/*: any*/),
+                (v5/*: any*/),
                 {
                   "args": null,
                   "kind": "FragmentSpread",
@@ -466,7 +484,7 @@ return {
             {
               "kind": "InlineFragment",
               "selections": [
-                (v6/*: any*/),
+                (v5/*: any*/),
                 {
                   "args": null,
                   "kind": "FragmentSpread",
@@ -487,5 +505,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'a0aa0855ce3b6a740632e2ad8a813866';
+(node as any).hash = 'a46a279cb2358de8fcd725f9b3868911';
 export default node;

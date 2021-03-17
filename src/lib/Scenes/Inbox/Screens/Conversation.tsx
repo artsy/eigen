@@ -139,7 +139,6 @@ export class Conversation extends React.Component<Props, State> {
 
   render() {
     const conversation = this.props.me.conversation
-    console.warn({ conversation })
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const partnerName = conversation.to.name
 

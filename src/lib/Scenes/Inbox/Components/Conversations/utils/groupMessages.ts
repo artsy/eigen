@@ -32,9 +32,10 @@ export const groupMessages = <T extends ConversationItem>(messages: T[]): T[][] 
 
     const today = currentMessageCreatedAt.isSame(moment(), "day")
 
-    if (currentMessage.__typename !== "Message") {
+    const isMessage = (message: ConversationItem) => message.__typename === "Message"
+    if (!isMessage(currentMessage) || (isMessage(currentMessage) && !isMessage(lastMessage))) {
       groups.push([currentMessage])
-    } else if (sameDay && !today) {
+    } else if (sameDay && !today && lastMessage.__typename === "Message") {
       lastGroup.push(currentMessage)
     } else if (!today) {
       groups.push([currentMessage])
