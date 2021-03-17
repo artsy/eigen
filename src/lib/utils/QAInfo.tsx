@@ -28,11 +28,8 @@ export const QAInfoManualPanel: React.FC<FlexProps> = (props) => {
   return <Flex borderColor="purple100" borderWidth={1} {...props} />
 }
 
-export const QAInfoRow: React.FC<{ i: { [key: string]: string } }> = ({ i }) => {
+export const QAInfoRow: React.FC<{ key: string; value: string }> = ({ key, value }) => {
   const toast = useToast()
-
-  const key = Object.keys(i)[0]
-  const value = i[key]
 
   return (
     <Flex flexDirection="row">
