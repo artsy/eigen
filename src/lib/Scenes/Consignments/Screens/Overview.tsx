@@ -315,5 +315,4 @@ export class Overview extends React.Component<Props, State> {
   }
 }
 
-const ConnectedOverview = connectActionSheet<Props & State>(Overview)
-export default ConnectedOverview
+export const ConnectedOverview = connectActionSheet<Props & State>(Overview)
