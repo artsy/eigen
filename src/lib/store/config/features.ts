@@ -115,9 +115,6 @@ export const devToggles = defineDevToggles({
   DTShowQuickAccessInfo: {
     description: "Show quick access info",
   },
-  DTHideCityGuideCTA: {
-    description: "Hide City Guide CTA",
-  },
 })
 
 export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {
