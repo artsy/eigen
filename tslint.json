@@ -11,7 +11,7 @@
     "jsx-safe-conditionals": true,
     "max-classes-per-file": false,
     "member-access": [false, "check-accessor", "check-constructor"],
-    "no-console": [true, ["error", ["warn", "error"]]],
+    "no-console": [true, "warn", "error"],
     "object-literal-sort-keys": false,
     "ordered-imports": true,
     "relay-operation-generics": [true, { "artifactDirectory": "__generated__", "makeRelative": false }],
