@@ -21,7 +21,7 @@ const SubjectContainer = styled(Flex)`
 `
 type Item = NonNullable<NonNullable<Messages_conversation["items"]>[0]>["item"]
 
-type DisplayableMessage = OrderUpdate_event | Message_message
+export type DisplayableMessage = OrderUpdate_event | Message_message
 interface MessageGroupProps {
   group: DisplayableMessage[]
   conversationId: string

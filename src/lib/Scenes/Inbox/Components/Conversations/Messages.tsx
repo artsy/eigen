@@ -5,16 +5,17 @@ import styled from "styled-components/native"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
-import { MessageGroup } from "./MessageGroup"
+import { DisplayableMessage, MessageGroup } from "./MessageGroup"
 
 import { Messages_conversation } from "__generated__/Messages_conversation.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
 
-import { sortBy } from "lodash"
-import { DateTime } from "luxon"
-import { groupMessages, MessageGroup as MessageGroupType } from "./utils/groupMessages"
 import { Message_message } from "__generated__/Message_message.graphql"
 import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
+import { sortBy } from "lodash"
+import { DateTime } from "luxon"
+import { groupMessages } from "./utils/groupMessages"
+import { Conversation } from "../../Screens/Conversation"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -31,30 +32,11 @@ const LoadingIndicator = styled.ActivityIndicator`
 type Order = NonNullable<
   NonNullable<NonNullable<NonNullable<Props["conversation"]["orderConnection"]>["edges"]>[number]>["node"]
 >
-type OrderHistoryEventWithOther = Order["orderHistory"][number]
-
-export type OrderHistoryEvent = Exclude<OrderHistoryEventWithOther, { __typename: "%other" }> & { key: string }
+type OrderHistoryEvent = Order["orderHistory"][number]
 
 export type ConversationMessage = NonNullable<
   NonNullable<NonNullable<NonNullable<Props["conversation"]["messagesConnection"]>["edges"]>[number]>["node"]
 >
-
-const isRelevantConversationItem = (item: OrderHistoryEventWithOther): item is OrderHistoryEvent => {
-  switch (item.__typename) {
-    case "CommerceOrderStateChangedEvent":
-      return (
-        item.state === "APPROVED" ||
-        Boolean(
-          item.state === "CANCELED" &&
-            (item.stateReason?.includes("seller_rejected") || item.stateReason?.includes("_lapsed"))
-        )
-      )
-    case "CommerceOfferSubmittedEvent":
-      return true
-    default:
-      return false
-  }
-}
 
 export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   const { conversation, relay, onDataFetching } = props
@@ -62,13 +44,12 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   const [fetchingMoreData, setFetchingMoreData] = useState(false)
   const [reloadingData, setReloadingData] = useState(false)
 
-  const [messages, setMessages] = useState<MessageGroupType[]>()
+  const [messages, setMessages] = useState<MessageGroup[]>()
 
   const orders: Order[] = extractNodes(conversation?.orderConnection)
 
   const allOrderEvents: OrderHistoryEvent[] = orders
-    .reduce<OrderHistoryEventWithOther[]>((prev, order) => prev.concat(order.orderHistory), [])
-    .filter<OrderHistoryEvent>(isRelevantConversationItem)
+    .reduce<OrderHistoryEvent[]>((prev, order) => prev.concat(order.orderHistory), [])
     .map((event, index) => ({ ...event, key: `event-${index}` }))
 
   useEffect(() => {
@@ -87,7 +68,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
       DateTime.fromISO(message.createdAt!)
     )
     // TODO: Check ordering and reversing around here
-    const groupedMessages = groupMessages(sortedMessages)
+    const groupedMessages = groupMessages(sortedMessages as any)
 
     setMessages(groupedMessages)
   }, [conversation.messagesConnection])
@@ -153,7 +134,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
     : {}
 
   return (
-    <FlatList<Array<Message_message | OrderUpdate_event>>
+    <FlatList<MessageGroup>
       key={conversation.internalID!}
       data={messages}
       initialNumToRender={messages?.length}
@@ -169,7 +150,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
       }}
       inverted={!shouldStickFirstMessageToTop}
       ref={flatList}
-      // keyExtractor={({ key }) => key} // TODO: unneeded?
+      keyExtractor={({ key }) => key} // TODO: unneeded?
       keyboardShouldPersistTaps="always"
       onEndReached={loadMore}
       onEndReachedThreshold={0.2}

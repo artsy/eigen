@@ -1,9 +1,8 @@
+import { Message_message } from "__generated__/Message_message.graphql"
+import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
 import moment from "moment"
 
-import { Message_message } from "__generated__/Message_message.graphql"
-import { ConversationMessage, OrderHistoryEvent } from "../Messages"
-
-// type MessageGroup = Array<ConversationMessage | OrderHistoryEvent>
+export type MessageGroup = Array<ConversationItem & (Message_message | OrderUpdate_event)>
 interface ConversationItem {
   __typename: string
   createdAt?: string | null
@@ -14,7 +13,7 @@ interface ConversationItem {
  * Combines messages into groups of messages sent by the same party and
  * separated out into different groups if sent across multiple days
  */
-export const groupMessages = <T extends ConversationItem>(messages: T[]): T[][] => {
+export const groupMessages = <T extends MessageGroup>(messages: MessageGroup): MessageGroup[] => {
   if (messages.length === 0) {
     return []
   }

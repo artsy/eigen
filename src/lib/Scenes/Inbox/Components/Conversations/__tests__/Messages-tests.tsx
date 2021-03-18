@@ -114,7 +114,7 @@ describe("messages with order updates", () => {
     expect(extractText(tree.root)).toMatch("You sent an offer for")
   })
 
-  fit("sorts interleaved items by date", () => {
+  it("sorts interleaved items by date", () => {
     const day1Time1 = "2020-03-18T02:58:37.699Z"
     const day1Time2 = "2020-03-18T02:59:37.699Z"
     const day2Time1 = "2020-03-19T01:58:37.699Z"
@@ -126,6 +126,12 @@ describe("messages with order updates", () => {
         { createdAt: day2Time1, body: "Day 2 message", attachments: [] },
       ],
       events: [
+        // this event should be omitted from the output because it is irrelevant
+        {
+          __typename: "CommerceOrderStateChangedEvent",
+          state: "SUBMITTED",
+          createdAt: day1Time2,
+        },
         {
           __typename: "CommerceOfferSubmittedEvent",
           offer: {
@@ -148,12 +154,6 @@ describe("messages with order updates", () => {
       .findAllByType(Text)
       .filter((element) => element.props.color !== "black30")
       .map((element) => extractText(element))
-
-    // console.log("MESSAGES AND UPDATES", messagesAndUpdates.length)
-    // console.log("TEXT 0", extractText(messagesAndUpdates[0]))
-    // console.log("TEXT 1", extractText(messagesAndUpdates[1]))
-    // console.log("TEXT 2", extractText(messagesAndUpdates[2]))
-    // console.log("TEXT 3", extractText(messagesAndUpdates[3]))
 
     // messages print in reverse order because FlatList is inverted
     expect(messagesAndUpdates[3]).toContain("Day 1 message")
