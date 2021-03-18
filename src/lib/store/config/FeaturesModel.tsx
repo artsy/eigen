@@ -8,8 +8,12 @@ export type DevToggleMap = { [k in DevToggleName]: boolean }
 export interface FeaturesModel {
   adminOverrides: { [k in FeatureName | DevToggleName]?: boolean }
   setAdminOverride: Action<FeaturesModel, { key: FeatureName | DevToggleName; value: boolean | null }>
-  flags: Computed<FeaturesModel, FeatureMap, GlobalStoreModel> // user features
-  devToggles: Computed<FeaturesModel, DevToggleMap, GlobalStoreModel> // only for devs
+
+  // user features
+  flags: Computed<FeaturesModel, FeatureMap, GlobalStoreModel>
+
+  // only for devs
+  devToggles: Computed<FeaturesModel, DevToggleMap, GlobalStoreModel>
 }
 
 export const FeaturesModel: FeaturesModel = {
