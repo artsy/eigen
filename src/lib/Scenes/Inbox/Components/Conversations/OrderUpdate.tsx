@@ -1,5 +1,5 @@
 import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
-import { AlertCircleFillIcon, Color, Flex, IconProps, MoneyFillIcon, Text } from "palette"
+import { AlertCircleFillIcon, Color, Flex, IconProps, MoneyFillIcon, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TimeSince } from "./TimeSince"
@@ -11,13 +11,13 @@ export interface OrderUpdateProps {
 export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event }) => {
   let color: Color
   let message: string
-  let Icon: React.FC<IconProps>
+  let Icon: React.FC<IconProps> = MoneyFillIcon
+
   if (event.__typename === "CommerceOfferSubmittedEvent") {
     const { offer } = event
     const isCounter = offer.respondsTo !== null
     if (offer.fromParticipant === "BUYER") {
       color = "black100"
-      Icon = MoneyFillIcon
       message = `You sent ${isCounter ? "a counteroffer" : "an offer"} for ${event.offer.amount}`
     } else if (offer.fromParticipant === "SELLER") {
       color = "copper100"
@@ -25,19 +25,14 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event }) => {
       message = `You received ${isCounter ? "a counteroffer" : "an offer"} for ${event.offer.amount}`
     } else {
       // ignore future added value
-      // TODO: this filtering logic is spread all over
-      // TODO: handle buyer declined offer?
       return null
     }
   } else if (event.__typename === "CommerceOrderStateChangedEvent") {
-    Icon = MoneyFillIcon
-
     const { state, stateReason } = event
-    console.warn(event)
     if (state === "APPROVED") {
       color = "green100"
       message = `Offer Accepted`
-    } else if (state === "CANCELED" && stateReason?.includes("seller_rejected")) {
+    } else if (state === "CANCELED" && stateReason?.includes("_rejected")) {
       color = "red100"
       message = `Offer Declined`
     } else if (state === "CANCELED" && stateReason?.includes("_lapsed")) {
@@ -47,7 +42,7 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event }) => {
       return null
     }
   } else {
-    return <Text>ignored {event.__typename}</Text>
+    return null
   }
   return (
     <Flex>
@@ -62,6 +57,7 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event }) => {
           </Flex>
         </Flex>
       </Flex>
+      <Spacer mb={2} />
     </Flex>
   )
 }

@@ -3,7 +3,7 @@ import React from "react"
 import { OrderUpdateTestsQuery } from "__generated__/OrderUpdateTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Icon } from "palette"
+import { AlertCircleFillIcon, MoneyFillIcon } from "palette"
 import "react-native"
 import { QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -95,19 +95,21 @@ describe("OrderUpdate with order updates", () => {
     const tree = getWrapper({ __typename: "CommerceOrderStateChangedEvent", state: "APPROVED" })
 
     expect(extractText(tree.root)).toMatch("Offer Accepted")
+    tree.root.findByType(MoneyFillIcon)
   })
 
   it("displays the seller declined event", () => {
     const tree = getWrapper({
       __typename: "CommerceOrderStateChangedEvent",
       state: "CANCELED",
-      stateReason: "seller_rejected",
+      stateReason: "seller_rejected_offer_too_low",
     })
 
     expect(extractText(tree.root)).toMatch("Offer Declined")
+    tree.root.findByType(MoneyFillIcon)
   })
 
-  it.skip("displays the buyer declined event", () => {
+  it("displays the buyer declined event", () => {
     const tree = getWrapper({
       __typename: "CommerceOrderStateChangedEvent",
       state: "CANCELED",
@@ -115,6 +117,7 @@ describe("OrderUpdate with order updates", () => {
     })
 
     expect(extractText(tree.root)).toMatch("Offer Declined")
+    tree.root.findByType(MoneyFillIcon)
   })
 
   it("displays the offer expired event", () => {
@@ -125,18 +128,21 @@ describe("OrderUpdate with order updates", () => {
     })
 
     expect(extractText(tree.root)).toMatch("Offer Expired")
+    tree.root.findByType(MoneyFillIcon)
   })
 
   it("shows an offer submitted event", () => {
     const tree = getWrapper({ __typename: "CommerceOfferSubmittedEvent", offer: { respondsTo: null } })
 
     expect(extractText(tree.root)).toMatch("You sent an offer")
+    tree.root.findByType(MoneyFillIcon)
   })
 
   it("shows a counteroffer offer from the user", () => {
     const tree = getWrapper({ __typename: "CommerceOfferSubmittedEvent", offer: { respondsTo: {} } })
 
     expect(extractText(tree.root)).toMatch("You sent a counteroffer")
+    tree.root.findByType(MoneyFillIcon)
   })
 
   it("shows a counteroffer from the partner", () => {
@@ -149,5 +155,6 @@ describe("OrderUpdate with order updates", () => {
     })
 
     expect(extractText(tree.root)).toMatch("You received a counteroffer")
+    tree.root.findByType(AlertCircleFillIcon)
   })
 })

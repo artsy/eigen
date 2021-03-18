@@ -7,15 +7,13 @@ import { Messages_conversation } from "__generated__/Messages_conversation.graph
 import moment from "moment"
 import { Flex, Spacer } from "palette"
 
-import { OrderUpdate_event, OrderUpdate_event$key } from "__generated__/OrderUpdate_event.graphql"
+import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { Message } from "./Message"
 import { OrderUpdateFragmentContainer } from "./OrderUpdate"
 import ArtworkPreview from "./Preview/ArtworkPreview"
 import ShowPreview from "./Preview/ShowPreview"
 import { TimeSince } from "./TimeSince"
-import { ArtworkPreview_artwork } from "__generated__/ArtworkPreview_artwork.graphql"
-import { ShowPreview_show } from "__generated__/ShowPreview_show.graphql"
 
 const SubjectContainer = styled(Flex)`
   flex-direction: row;
@@ -30,8 +28,8 @@ interface MessageGroupProps {
   subjectItem: Item
 }
 
-const isMessage = (item: DisplayableMessage): item is Message_message => {
-  return item.__typename === "Message"
+const isMessageArray = (items: DisplayableMessage[]): items is Message_message[] => {
+  return items[0].__typename === "Message"
 }
 
 const orderEvents = ["CommerceOfferSubmittedEvent", "CommerceOrderStateChangedEvent"]
@@ -44,10 +42,10 @@ const IndividualMessage: React.FC<{
   isLastMessage: boolean
   conversationId: string
   message: Message_message
-  nextMessage?: DisplayableMessage
+  nextMessage?: Message_message
   isSameDay: boolean
 }> = ({ message, nextMessage, subjectItem, conversationId, isLastMessage, isSameDay }) => {
-  const senderChanges = !!(nextMessage && isMessage(nextMessage)) && nextMessage.isFromUser !== message.isFromUser
+  const senderChanges = !!nextMessage && nextMessage.isFromUser !== message.isFromUser
   const spaceAfter = senderChanges || isLastMessage ? 2 : 0.5
   return (
     <React.Fragment>
@@ -74,48 +72,38 @@ const IndividualMessage: React.FC<{
   )
 }
 
-const IndividualEvent: React.FC<{ event: any }> = ({ event }) => {
-  return (
-    <React.Fragment>
-      <OrderUpdateFragmentContainer event={event} />
-      <Spacer mb={2} />
-    </React.Fragment>
-  )
-}
-
 export class MessageGroup extends React.Component<MessageGroupProps> {
   render() {
-    const firstItem = this.props?.group[0]
+    const { group } = this.props
+    const firstItem = group[0]
     if (!firstItem) {
       return null
     }
-
-    return (
-      <View>
-        {!!isMessage(firstItem) && (
+    // Events come as a single item in an array
+    if (isRelevantEvent(firstItem)) {
+      return <OrderUpdateFragmentContainer event={firstItem as any} />
+    }
+    if (isMessageArray(group)) {
+      return (
+        <View>
           <TimeSince style={{ alignSelf: "center" }} time={firstItem.createdAt} exact mb={1} />
-        )}
-        {[...this.props.group].reverse().map((message: DisplayableMessage, messageIndex: number) => {
-          const { group, subjectItem, conversationId } = this.props
-          const messageKey = `message-${messageIndex}`
-          if (isMessage(message)) {
+          {[...group].reverse().map((message: Message_message, messageIndex: number) => {
+            const { subjectItem, conversationId } = this.props
+            const messageKey = `message-${messageIndex}`
             return (
               <IndividualMessage
-                subjectItem={subjectItem as Exclude<typeof subjectItem, { __typename: "%other" }>}
+                subjectItem={subjectItem}
                 conversationId={conversationId}
                 isLastMessage={messageIndex === group.length - 1}
                 key={messageKey}
                 message={message}
                 nextMessage={group[messageIndex + 1]}
-                isSameDay={moment((firstItem as any).createdAt).isSame(moment(), "day")}
+                isSameDay={moment(firstItem.createdAt!).isSame(moment(), "day")}
               />
             )
-          } else if (isRelevantEvent(message)) {
-            return <IndividualEvent key={messageKey} event={message} />
-          }
-          return null
-        })}
-      </View>
-    )
+          })}
+        </View>
+      )
+    }
   }
 }

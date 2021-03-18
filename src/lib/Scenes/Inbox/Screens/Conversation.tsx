@@ -198,7 +198,7 @@ export class Conversation extends React.Component<Props, State> {
           {!this.state.isConnected && <ConnectivityBanner />}
           <Messages
             componentRef={(messages) => (this.messages = messages)}
-            conversation={conversation}
+            conversation={conversation as any}
             onDataFetching={(loading) => {
               this.setState({ fetchingData: loading })
             }}
