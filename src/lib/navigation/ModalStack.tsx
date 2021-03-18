@@ -42,7 +42,7 @@ const ModalNavStack: React.FC<{ route: Route<"", { rootModuleName: AppModule; ro
       id={route.key}
       ref={ref}
       rootModuleName={route.params.rootModuleName}
-      rootModuleProps={route.params.rootModuleProps}
+      rootModuleProps={{ ...route.params.rootModuleProps, isPresentedModally: true }}
     />
   )
 }

@@ -5,7 +5,8 @@ upcoming:
     - Add QAInfo UI and flag - pavlos
     - Fix iOS modal presentation infra code - david
     - Fix first install event analytics - brian, mike
-
+    - Set up basic react webview module - david
+    - Fix iOS modal presentation infra code - david
   user_facing:
     - Set system navigation bar color to white on modals for android - mounir
     - Fix action sheets on android - brian, barry
