@@ -5,7 +5,7 @@ import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNaviga
 import React from "react"
 import { Platform } from "react-native"
 import { Action, Middleware } from "redux"
-import { FeatureName, features } from "./config/features"
+import { DevToggleName, FeatureName, features } from "./config/features"
 import { FeatureMap } from "./config/FeaturesModel"
 import { GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { assignDeep, persistenceMiddleware, unpersist } from "./persistence"
@@ -108,6 +108,10 @@ let globalStoreInstance = createGlobalStore()
 
 export function useFeatureFlag(key: FeatureName) {
   return GlobalStore.useAppState((state) => state.config.features.flags[key])
+}
+
+export function useDevToggle(key: DevToggleName) {
+  return GlobalStore.useAppState((state) => state.config.features.devToggles[key])
 }
 
 /**

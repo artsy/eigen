@@ -2,6 +2,7 @@ upcoming:
   version: 6.8.2
   date: TBD
   dev:
+    - Add QAInfo UI and flag - pavlos
     - Fix iOS modal presentation infra code - david
     - Fix first install event analytics - brian, mike
 
