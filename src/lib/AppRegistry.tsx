@@ -182,11 +182,12 @@ const SearchWithTracking: React.FC<SearchWithTrackingProps> = screenTrack<Search
 
 interface PageWrapperProps {
   fullBleed?: boolean
+  isMainView?: boolean
 }
 
-const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) => {
+const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed, isMainView }) => {
   const paddingTop = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.top
-  const paddingBottom = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.bottom
+  const paddingBottom = isMainView ? 0 : useScreenDimensions().safeAreaInsets.bottom
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   return (
     <View style={{ flex: 1, paddingTop, paddingBottom }}>
@@ -404,5 +405,5 @@ const Main: React.FC<{}> = track()(({}) => {
 })
 
 if (Platform.OS === "ios") {
-  register("Main", Main, { fullBleed: true })
+  register("Main", Main, { fullBleed: true, isMainView: true })
 }
