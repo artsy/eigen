@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash cbfef6875bc750eb5f0f54076ef8f52e */
+/* @relayHash bf10749b5b417134d86219c0ca8d73ff */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -65,7 +65,7 @@ fragment CollectionArtworks_collection on MarketingCollection {
   isDepartment
   slug
   id
-  collectionArtworks: artworksConnection(first: 10, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  collectionArtworks: artworksConnection(first: 10, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, LOCATION_CITY, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -149,6 +149,7 @@ v3 = [
       "DIMENSION_RANGE",
       "GALLERY",
       "INSTITUTION",
+      "LOCATION_CITY",
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE"
@@ -636,7 +637,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "artworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,sort:\"-decayed_merch\")"
+            "storageKey": "artworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,sort:\"-decayed_merch\")"
           },
           {
             "alias": "collectionArtworks",
@@ -649,6 +650,7 @@ return {
               "colors",
               "partnerID",
               "dimensionRange",
+              "locationCities",
               "majorPeriods",
               "acquireable",
               "inquireableOnly",
@@ -668,7 +670,7 @@ return {
     ]
   },
   "params": {
-    "id": "cbfef6875bc750eb5f0f54076ef8f52e",
+    "id": "bf10749b5b417134d86219c0ca8d73ff",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "marketingCollection": {

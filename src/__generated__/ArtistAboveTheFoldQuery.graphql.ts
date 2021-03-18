@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 41348542f61c398d1e1859800a01a202 */
+/* @relayHash 1e86efd89355bc6f74bf1ed98ddb48fd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -59,7 +59,7 @@ fragment ArtistArtworks_artist on Artist {
   id
   slug
   internalID
-  artworks: filterArtworksConnection(first: 10, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  artworks: filterArtworksConnection(first: 10, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, LOCATION_CITY, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -365,6 +365,7 @@ v15 = [
       "DIMENSION_RANGE",
       "GALLERY",
       "INSTITUTION",
+      "LOCATION_CITY",
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE"
@@ -875,7 +876,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,sort:\"-decayed_merch\")"
           },
           {
             "alias": "artworks",
@@ -888,6 +889,7 @@ return {
               "colors",
               "partnerID",
               "dimensionRange",
+              "locationCities",
               "majorPeriods",
               "acquireable",
               "inquireableOnly",
@@ -1188,7 +1190,7 @@ return {
     ]
   },
   "params": {
-    "id": "41348542f61c398d1e1859800a01a202",
+    "id": "1e86efd89355bc6f74bf1ed98ddb48fd",
     "metadata": {},
     "name": "ArtistAboveTheFoldQuery",
     "operationKind": "query",

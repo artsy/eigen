@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 40f205d039ce3c8e64369a5bb25cc0e5 */
+/* @relayHash c5c11cc2c1b209db5917e2ddb4806f06 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -108,7 +108,7 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
 fragment PartnerArtwork_partner on Partner {
   internalID
   slug
-  artworks: filterArtworksConnection(aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], dimensionRange: "*-*", first: 10, sort: "-partner_updated_at") {
+  artworks: filterArtworksConnection(aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], dimensionRange: "*-*", first: 10, sort: "-partner_updated_at") {
     aggregations {
       slice
       counts {
@@ -357,6 +357,7 @@ v7 = [
     "value": [
       "COLOR",
       "DIMENSION_RANGE",
+      "LOCATION_CITY",
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE"
@@ -889,7 +890,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,sort:\"-partner_updated_at\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,sort:\"-partner_updated_at\")"
           },
           {
             "alias": "artworks",
@@ -903,6 +904,7 @@ return {
               "dimensionRange",
               "additionalGeneIDs",
               "inquireableOnly",
+              "locationCities",
               "majorPeriods",
               "offerable",
               "priceRange",
@@ -1286,7 +1288,7 @@ return {
     ]
   },
   "params": {
-    "id": "40f205d039ce3c8e64369a5bb25cc0e5",
+    "id": "c5c11cc2c1b209db5917e2ddb4806f06",
     "metadata": {},
     "name": "PartnerQuery",
     "operationKind": "query",

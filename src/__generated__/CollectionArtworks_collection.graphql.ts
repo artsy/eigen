@@ -101,6 +101,11 @@ return {
     {
       "defaultValue": null,
       "kind": "LocalArgument",
+      "name": "locationCities"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
       "name": "majorPeriods"
     },
     {
@@ -175,6 +180,7 @@ return {
             "DIMENSION_RANGE",
             "GALLERY",
             "INSTITUTION",
+            "LOCATION_CITY",
             "MAJOR_PERIOD",
             "MEDIUM",
             "PRICE_RANGE"
@@ -209,6 +215,11 @@ return {
           "kind": "Variable",
           "name": "inquireableOnly",
           "variableName": "inquireableOnly"
+        },
+        {
+          "kind": "Variable",
+          "name": "locationCities",
+          "variableName": "locationCities"
         },
         {
           "kind": "Variable",
@@ -384,5 +395,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '75c6cc75bc42a448f54145193cb084a7';
+(node as any).hash = '87617d8de6463f0136e3e9263e3ae924';
 export default node;

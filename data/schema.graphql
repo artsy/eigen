@@ -4295,7 +4295,7 @@ type ConsignmentSubmission {
   # Uniq ID for this submission
   id: ID!
   internalID: ID
-  locationCity: String
+  locationCities: String
   locationCountry: String
   locationState: String
   medium: String
@@ -4994,7 +4994,7 @@ input CreateSubmissionMutationInput {
   editionNumber: String
   editionSize: Int
   height: String
-  locationCity: String
+  locationCities: String
   locationCountry: String
   locationState: String
   medium: String
@@ -10936,7 +10936,7 @@ input UpdateSubmissionMutationInput {
   editionSize: Int
   height: String
   id: ID!
-  locationCity: String
+  locationCities: String
   locationCountry: String
   locationState: String
   medium: String

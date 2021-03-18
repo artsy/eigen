@@ -272,6 +272,7 @@ export default createPaginationContainer(
         colors: { type: "[String]" }
         partnerID: { type: "ID" }
         dimensionRange: { type: "String", defaultValue: "*-*" }
+        locationCities: { type: "[String]" }
         majorPeriods: { type: "[String]" }
         acquireable: { type: "Boolean" }
         inquireableOnly: { type: "Boolean" }
@@ -292,12 +293,13 @@ export default createPaginationContainer(
           colors: $colors
           partnerID: $partnerID
           dimensionRange: $dimensionRange
+          locationCities: $locationCities
           majorPeriods: $majorPeriods
           acquireable: $acquireable
           inquireableOnly: $inquireableOnly
           atAuction: $atAuction
           offerable: $offerable
-          aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
+          aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, LOCATION_CITY, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
           attributionClass: $attributionClass
         ) @connection(key: "ArtistArtworksGrid_artworks") {
           aggregations {
@@ -361,6 +363,7 @@ export default createPaginationContainer(
         $colors: [String]
         $partnerID: ID
         $dimensionRange: String
+        $locationCities: [String]
         $majorPeriods: [String]
         $acquireable: Boolean
         $inquireableOnly: Boolean
@@ -381,6 +384,7 @@ export default createPaginationContainer(
                 partnerID: $partnerID
                 priceRange: $priceRange
                 dimensionRange: $dimensionRange
+                locationCities: $locationCities
                 majorPeriods: $majorPeriods
                 acquireable: $acquireable
                 inquireableOnly: $inquireableOnly

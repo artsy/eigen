@@ -120,6 +120,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
         colors: { type: "[String]" }
         partnerID: { type: "ID" }
         dimensionRange: { type: "String", defaultValue: "*-*" }
+        locationCities: { type: "[String]" }
         majorPeriods: { type: "[String]" }
         acquireable: { type: "Boolean" }
         inquireableOnly: { type: "Boolean" }
@@ -141,6 +142,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
           colors: $colors
           partnerID: $partnerID
           dimensionRange: $dimensionRange
+          locationCities: $locationCities
           majorPeriods: $majorPeriods
           acquireable: $acquireable
           inquireableOnly: $inquireableOnly
@@ -215,6 +217,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
         $colors: [String]
         $partnerID: ID
         $dimensionRange: String
+        $locationCities: [String]
         $majorPeriods: [String]
         $acquireable: Boolean
         $inquireableOnly: Boolean
@@ -236,6 +239,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
               partnerID: $partnerID
               priceRange: $priceRange
               dimensionRange: $dimensionRange
+              locationCities: $locationCities
               majorPeriods: $majorPeriods
               acquireable: $acquireable
               inquireableOnly: $inquireableOnly

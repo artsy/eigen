@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0fcb402763f36997809340746cb9bfa5 */
+/* @relayHash 8da21fb461645665e2d08ea340f478a4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,7 +28,7 @@ query ArtistSeriesArtworksTestsQuery {
 fragment ArtistSeriesArtworks_artistSeries on ArtistSeries {
   slug
   internalID
-  artistSeriesArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  artistSeriesArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, LOCATION_CITY, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -147,6 +147,7 @@ v3 = [
       "DIMENSION_RANGE",
       "GALLERY",
       "INSTITUTION",
+      "LOCATION_CITY",
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE"
@@ -622,7 +623,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:20,sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:20,sort:\"-decayed_merch\")"
           },
           {
             "alias": "artistSeriesArtworks",
@@ -635,6 +636,7 @@ return {
               "colors",
               "partnerID",
               "dimensionRange",
+              "locationCities",
               "majorPeriods",
               "acquireable",
               "inquireableOnly",
@@ -654,7 +656,7 @@ return {
     ]
   },
   "params": {
-    "id": "0fcb402763f36997809340746cb9bfa5",
+    "id": "8da21fb461645665e2d08ea340f478a4",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artistSeries": {

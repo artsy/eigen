@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash bba942b2dc2cf6860a4df3c00dc10573 */
+/* @relayHash 7eb88f388d5e198444b64eed7bc93dd3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -97,7 +97,7 @@ fragment ShowArtworksEmptyState_show on Show {
 fragment ShowArtworks_show on Show {
   slug
   internalID
-  showArtworks: filterArtworksConnection(first: 30, sort: "partner_show_position", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  showArtworks: filterArtworksConnection(first: 30, sort: "partner_show_position", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -378,6 +378,7 @@ v14 = [
     "value": [
       "COLOR",
       "DIMENSION_RANGE",
+      "LOCATION_CITY",
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE"
@@ -1232,7 +1233,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:30,sort:\"partner_show_position\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:30,sort:\"partner_show_position\")"
           },
           {
             "alias": "showArtworks",
@@ -1244,6 +1245,7 @@ return {
               "color",
               "colors",
               "dimensionRange",
+              "locationCities",
               "majorPeriods",
               "acquireable",
               "inquireableOnly",
@@ -1290,7 +1292,7 @@ return {
     ]
   },
   "params": {
-    "id": "bba942b2dc2cf6860a4df3c00dc10573",
+    "id": "7eb88f388d5e198444b64eed7bc93dd3",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {

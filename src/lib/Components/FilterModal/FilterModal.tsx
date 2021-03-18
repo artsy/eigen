@@ -35,6 +35,7 @@ import { colorHexMap } from "../ArtworkFilterOptions/ColorSwatch"
 import { EstimateRangeOptionsScreen } from "../ArtworkFilterOptions/EstimateRangeOptions"
 import { GalleryOptionsScreen } from "../ArtworkFilterOptions/GalleryOptions"
 import { InstitutionOptionsScreen } from "../ArtworkFilterOptions/InstitutionOptions"
+import { LocationOptionsScreen } from "../ArtworkFilterOptions/LocationOptions"
 import { MediumOptionsScreen } from "../ArtworkFilterOptions/MediumOptions"
 import { PriceRangeOptionsScreen } from "../ArtworkFilterOptions/PriceRangeOptions"
 import { SizeOptionsScreen } from "../ArtworkFilterOptions/SizeOptions"
@@ -59,6 +60,7 @@ export type FilterScreen =
   | "estimateRange"
   | "gallery"
   | "institution"
+  | "locationCities"
   | "majorPeriods"
   | "medium"
   | "priceRange"
@@ -110,6 +112,7 @@ export type FilterModalNavigationStack = {
   FilterOptionsScreen: FilterOptionsScreenParams
   GalleryOptionsScreen: undefined
   InstitutionOptionsScreen: undefined
+  LocationOptionsScreen: undefined
   MediumOptionsScreen: undefined
   PriceRangeOptionsScreen: undefined
   SizeOptionsScreen: undefined
@@ -241,6 +244,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
               }}
             />
             <Stack.Screen name="WaysToBuyOptionsScreen" component={WaysToBuyOptionsScreen} />
+            <Stack.Screen name="LocationOptionsScreen" component={LocationOptionsScreen} />
             <Stack.Screen name="CategoriesOptionsScreen" component={CategoriesOptionsScreen} />
           </Stack.Navigator>
 
@@ -678,6 +682,7 @@ const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string
   DIMENSION_RANGE: FilterParamName.size,
   GALLERY: "gallery",
   INSTITUTION: "institution",
+  LOCATION_CITY: FilterParamName.locationCities,
   MAJOR_PERIOD: FilterParamName.timePeriod,
   MEDIUM: FilterParamName.additionalGeneIDs,
   PRICE_RANGE: FilterParamName.priceRange,
@@ -733,6 +738,11 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "institution",
     ScreenComponent: "InstitutionOptionsScreen",
   },
+  locationCities: {
+    displayText: FilterDisplayName.locationCities,
+    filterType: "locationCities",
+    ScreenComponent: "LocationOptionsScreen",
+  },
   majorPeriods: {
     displayText: FilterDisplayName.timePeriod,
     filterType: "majorPeriods",
@@ -782,6 +792,7 @@ const CollectionFiltersSorted: FilterScreen[] = [
   "attributionClass",
   "priceRange",
   "waysToBuy",
+  "locationCities",
   "dimensionRange",
   "majorPeriods",
   "color",
@@ -795,6 +806,7 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "attributionClass",
   "priceRange",
   "waysToBuy",
+  "locationCities",
   "gallery",
   "institution",
   "dimensionRange",
@@ -808,6 +820,7 @@ const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "attributionClass",
   "priceRange",
   "waysToBuy",
+  "locationCities",
   "dimensionRange",
   "majorPeriods",
   "color",
@@ -823,6 +836,7 @@ const FairFiltersSorted: FilterScreen[] = [
   "attributionClass",
   "priceRange",
   "waysToBuy",
+  "locationCities",
   "dimensionRange",
   "majorPeriods",
   "color",
