@@ -1,5 +1,12 @@
+import React from "react"
+import { renderWithWrappers } from "../../../tests/renderWithWrappers"
+import { MyAccountFieldEditScreen } from "../Components/MyAccountFieldEditScreen"
 import { MyAccountEditPassword } from "../MyAccountEditPassword"
 
 describe(MyAccountEditPassword, () => {
-  it.todo("No tests yet")
+  it("has the right title", () => {
+    const tree = renderWithWrappers(<MyAccountEditPassword />)
+
+    expect(tree.root.findByType(MyAccountFieldEditScreen).props.title).toEqual("Password")
+  })
 })
