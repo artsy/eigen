@@ -84,6 +84,10 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
     UIModalPresentationStyle modalPresentationStyle = [self getModalPresentationStyle:viewDescriptor[@"modalPresentationStyle"]];
     UIViewController *vc = [self getViewControllerForViewDescriptor:viewDescriptor];
 
+    if ([vc isKindOfClass:ARComponentViewController.class]) {
+        [((ARComponentViewController *)vc) setProperty:@(YES) forKey:@"isPresentedModally"];
+    }
+
     BOOL hasOwnModalCloseButton = viewDescriptor[@"hasOwnModalCloseButton"];
 
 

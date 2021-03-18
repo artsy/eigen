@@ -1,3 +1,5 @@
+import { Platform } from "react-native"
+
 export interface FeatureDescriptor {
   /**
    * Set readyForRelease to `true` when the feature is ready to be exposed outside of dev mode.
@@ -64,7 +66,7 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableNewPartnerView",
   },
   AROptionsUseReactNativeWebView: {
-    readyForRelease: false,
+    readyForRelease: Platform.OS === "android",
     description: "Use react-native web views",
     showInAdminMenu: true,
   },
