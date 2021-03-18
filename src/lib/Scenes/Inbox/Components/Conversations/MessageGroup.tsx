@@ -28,6 +28,9 @@ interface MessageGroupProps {
   subjectItem: Item
 }
 
+const isMessage = (item: DisplayableMessage): item is Message_message => {
+  return item.__typename === "Message"
+}
 export class MessageGroup extends React.Component<MessageGroupProps> {
   render() {
     // console.warn(
@@ -36,14 +39,15 @@ export class MessageGroup extends React.Component<MessageGroupProps> {
     const orderEvents = ["CommerceOfferSubmittedEvent", "CommerceOrderStateChangedEvent"]
     const firstItem = this.props?.group[0]
     const isOrderEvent = "__typename" in firstItem && orderEvents.includes(firstItem.__typename)
-    const isMessage = !isOrderEvent
     if (!firstItem) {
       return null
     }
 
     return (
       <View>
-        {!!isMessage && <TimeSince style={{ alignSelf: "center" }} time={firstItem.createdAt} exact mb={1} />}
+        {!!isMessage(firstItem) && (
+          <TimeSince style={{ alignSelf: "center" }} time={firstItem.createdAt} exact mb={1} />
+        )}
         {[...this.props.group].reverse().map((message: DisplayableMessage, messageIndex: number) => {
           const { group, subjectItem, conversationId } = this.props
           const messageKey = `message-${messageIndex}`

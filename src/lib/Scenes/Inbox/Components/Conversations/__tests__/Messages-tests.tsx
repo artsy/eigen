@@ -122,8 +122,8 @@ describe("messages with order updates", () => {
 
     const tree = withMessages(getWrapper, {
       messages: [
-        { createdAt: day1Time1, body: "Day 1 first message", attachments: [] },
-        { createdAt: day2Time1, body: "Day 2 first message", attachments: [] },
+        { createdAt: day1Time1, body: "Day 1 message", attachments: [] },
+        { createdAt: day2Time1, body: "Day 2 message", attachments: [] },
       ],
       events: [
         {
@@ -143,26 +143,22 @@ describe("messages with order updates", () => {
         },
       ],
     })
-    // get all elements and remove timestamps - messages print in reverse order
+    // get all elements and remove timestamps
     const messagesAndUpdates = tree.root
       .findAllByType(Text)
       .filter((element) => element.props.color !== "black30")
       .map((element) => extractText(element))
-    console.log("MESSAGES AND UPDATES", messagesAndUpdates.length)
 
-    messagesAndUpdates.forEach((element) => {
-      const text = extractText(element)
-    })
+    // console.log("MESSAGES AND UPDATES", messagesAndUpdates.length)
+    // console.log("TEXT 0", extractText(messagesAndUpdates[0]))
+    // console.log("TEXT 1", extractText(messagesAndUpdates[1]))
+    // console.log("TEXT 2", extractText(messagesAndUpdates[2]))
+    // console.log("TEXT 3", extractText(messagesAndUpdates[3]))
 
-    const text0 = extractText(messagesAndUpdates[0])
-    console.log("TEXT 0", text0)
-    console.log("TEXT 1", extractText(messagesAndUpdates[1]))
-    console.log("TEXT 2", extractText(messagesAndUpdates[2]))
-    console.log("TEXT 3", extractText(messagesAndUpdates[3]))
-
-    expect(messagesAndUpdates[0]).toContain("You sent an offer")
-    expect(messagesAndUpdates[0]).toContain("Day 2 first message")
-    expect(messagesAndUpdates[0]).toContain("You recieved a counteroffer")
-    expect(messagesAndUpdates[0]).toContain("Day 1 first message")
+    // messages print in reverse order because FlatList is inverted
+    expect(messagesAndUpdates[3]).toContain("Day 1 message")
+    expect(messagesAndUpdates[2]).toContain("You sent an offer")
+    expect(messagesAndUpdates[1]).toContain("Day 2 message")
+    expect(messagesAndUpdates[0]).toContain("You received a counteroffer")
   })
 })

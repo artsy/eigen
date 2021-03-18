@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 139b43daf04ef3f2939922e6784cbcbf */
+/* @relayHash dc01cdabb6f7e83bbdcd1d2b4c832766 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -63,6 +63,7 @@ fragment ImagePreview_attachment on Attachment {
 }
 
 fragment Message_message on Message {
+  __typename
   body
   createdAt
   internalID
@@ -908,7 +909,7 @@ return {
     ]
   },
   "params": {
-    "id": "139b43daf04ef3f2939922e6784cbcbf",
+    "id": "dc01cdabb6f7e83bbdcd1d2b4c832766",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
