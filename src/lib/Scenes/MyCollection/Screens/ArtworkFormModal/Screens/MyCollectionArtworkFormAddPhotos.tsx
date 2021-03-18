@@ -1,9 +1,11 @@
+import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Stack } from "lib/Components/Stack"
 import { Image as ImageProps } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { isPad } from "lib/utils/hardware"
+import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { chunk } from "lodash"
 import { AddIcon, BorderBox, Box, color, Flex, XCircleIcon } from "palette"
@@ -56,9 +58,16 @@ export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormModalSc
 
 const AddPhotosButton: React.FC<{ imageSize: number }> = ({ imageSize }) => {
   const artworkActions = GlobalStore.actions.myCollection.artwork
+  const { showActionSheetWithOptions } = useActionSheet()
 
   return (
-    <TouchableOpacity onPress={() => artworkActions.takeOrPickPhotos()}>
+    <TouchableOpacity
+      onPress={() => {
+        showPhotoActionSheet(showActionSheetWithOptions).then((images) => {
+          artworkActions.addPhotos(images)
+        })
+      }}
+    >
       <BorderBox p={0} bg={color("white100")} width={imageSize} height={imageSize} key="addMorePhotos">
         <Flex flex={1} flexDirection="row" justifyContent="center" alignItems="center">
           <AddIcon width={30} height={30} />
