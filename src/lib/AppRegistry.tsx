@@ -69,6 +69,7 @@ import { Search } from "./Scenes/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
+import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { ArtsyReactWebView } from "./Components/ArtsyReactWebView"
 import { ToastProvider } from "./Components/Toast/toastHook"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
@@ -207,17 +208,19 @@ class PageWrapper extends React.Component<PageWrapperProps> {
   render() {
     return (
       <ProvideScreenDimensions>
-        <RelayEnvironmentProvider environment={defaultEnvironment}>
-          <GlobalStoreProvider>
-            <Theme>
-              <ToastProvider>
-                <_FancyModalPageWrapper>
-                  <InnerPageWrapper {...this.props} />
-                </_FancyModalPageWrapper>
-              </ToastProvider>
-            </Theme>
-          </GlobalStoreProvider>
-        </RelayEnvironmentProvider>
+        <ActionSheetProvider>
+          <RelayEnvironmentProvider environment={defaultEnvironment}>
+            <GlobalStoreProvider>
+              <Theme>
+                <ToastProvider>
+                  <_FancyModalPageWrapper>
+                    <InnerPageWrapper {...this.props} />
+                  </_FancyModalPageWrapper>
+                </ToastProvider>
+              </Theme>
+            </GlobalStoreProvider>
+          </RelayEnvironmentProvider>
+        </ActionSheetProvider>
       </ProvideScreenDimensions>
     )
   }

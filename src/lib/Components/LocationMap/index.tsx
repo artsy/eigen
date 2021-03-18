@@ -1,3 +1,4 @@
+import { useActionSheet } from "@expo/react-native-action-sheet"
 import Clipboard from "@react-native-community/clipboard"
 import MapboxGL from "@react-native-mapbox-gl/maps"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
@@ -5,7 +6,7 @@ import { Pin } from "lib/Icons/Pin"
 import { ArtsyMapStyleURL } from "lib/Scenes/Map/GlobalMap"
 import { Box, color, Flex, Text } from "palette"
 import React from "react"
-import { ActionSheetIOS, Linking, TouchableOpacity } from "react-native"
+import { Linking, TouchableOpacity } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
@@ -81,8 +82,9 @@ export const tappedOnMap = (
   const suffix = lastLine && !firstLineAddress?.includes(lastLine) ? `, ${lastLine}` : ""
   const addressOrName = address || partnerName
   const title = firstLineAddress ? `${firstLineAddress}${suffix}` : addressOrName ?? ""
+  const { showActionSheetWithOptions } = useActionSheet()
 
-  ActionSheetIOS.showActionSheetWithOptions(
+  showActionSheetWithOptions(
     {
       title,
       options: ["Cancel", "Open in Apple Maps", "Open in City Mapper", "Open in Google Maps", "Copy Address"],

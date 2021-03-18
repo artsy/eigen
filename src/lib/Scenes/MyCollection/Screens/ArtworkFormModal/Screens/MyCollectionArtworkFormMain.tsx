@@ -1,10 +1,12 @@
+import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { GlobalStore } from "lib/store/GlobalStore"
+import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { isEmpty } from "lodash"
 import { BorderBox, Box, Button, Flex, Join, Sans, Spacer } from "palette"
 import React from "react"
-import { ActionSheetIOS, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { ArrowButton } from "../Components/ArrowButton"
 import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
@@ -22,6 +24,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
   const artworkActions = GlobalStore.actions.myCollection.artwork
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
   const { formik } = useArtworkForm()
+  const { showActionSheetWithOptions } = useActionSheet()
   const modalType = route.params.mode
   const addOrEditLabel = modalType === "edit" ? "Edit" : "Add"
 
@@ -65,7 +68,9 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
           data-test-id="PhotosButton"
           onPress={() => {
             if (isEmpty(artworkState.sessionState.formValues.photos)) {
-              artworkActions.takeOrPickPhotos()
+              showPhotoActionSheet(showActionSheetWithOptions).then((photos) => {
+                artworkActions.addPhotos(photos)
+              })
             } else {
               navigation.navigate("AddPhotos")
             }
@@ -97,7 +102,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
               variant="secondaryOutlineWarning"
               block
               onPress={() => {
-                ActionSheetIOS.showActionSheetWithOptions(
+                showActionSheetWithOptions(
                   {
                     title: "Delete artwork?",
                     options: ["Delete", "Cancel"],

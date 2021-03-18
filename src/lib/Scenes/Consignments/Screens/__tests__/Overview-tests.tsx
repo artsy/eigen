@@ -7,7 +7,7 @@ import Artist from "../ConsignmentsArtist"
 import Edition from "../Edition"
 import Location from "../Location"
 import Metadata from "../Metadata"
-import Overview from "../Overview"
+import { Overview } from "../Overview"
 
 import Provenance from "../Provenance"
 
@@ -21,7 +21,7 @@ const route = {} as any
 const anything = expect.anything
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(<Overview navigator={nav} setup={{}} />)
+  renderWithWrappers(<Overview navigator={nav} setup={{}} showActionSheetWithOptions={jest.fn()} />)
 })
 
 describe("Opening the right page", () => {
