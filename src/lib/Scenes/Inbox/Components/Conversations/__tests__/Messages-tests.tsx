@@ -161,4 +161,7 @@ describe("messages with order updates", () => {
     expect(messagesAndUpdates[1]).toContain("Day 2 message")
     expect(messagesAndUpdates[0]).toContain("You received a counteroffer")
   })
+
+  // We fetch all order updates but only paginated messages, so this is to avoid a smooshed list of updates at the top.
+  it.todo("does not show order updates before the currently-available messages")
 })

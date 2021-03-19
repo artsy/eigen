@@ -104,9 +104,6 @@ export class Message extends React.Component<Props> {
         <Flex maxWidth="66.67%" alignItems={alignAttachments} flexDirection="column" style={{ alignSelf }}>
           <AttachmentContainer style={{ backgroundColor }}>
             <Hyperlink onPress={this.onLinkPress.bind(this)} linkStyle={linkStyle}>
-              {/* <Sans size="4" color={textColor}>
-                {body}
-              </Sans> */}
               <Text variant="text" color={textColor}>
                 {body}
               </Text>

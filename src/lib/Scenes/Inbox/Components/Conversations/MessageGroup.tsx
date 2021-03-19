@@ -62,7 +62,6 @@ const IndividualMessage: React.FC<{
       {!!message.body && (
         <Message
           message={message}
-          key={message.internalID}
           showTimeSince={!!(message.createdAt && isSameDay && isLastMessage)}
           conversationId={conversationId!}
         />
