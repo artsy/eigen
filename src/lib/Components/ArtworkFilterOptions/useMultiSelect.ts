@@ -1,5 +1,6 @@
 import {
   ArtworkFilterContext,
+  DEFAULT_FILTERS,
   FilterData,
   useSelectedOptionsDisplay,
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
@@ -8,6 +9,8 @@ import { compact, every, isString } from "lodash"
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
 
 export const useMultiSelect = ({ options, paramName }: { options: FilterData[]; paramName: FilterParamName }) => {
+  const defaultFilter = DEFAULT_FILTERS.find((option) => option.paramName === paramName)
+
   const didMountRef = useRef(false)
 
   const { dispatch } = useContext(ArtworkFilterContext)
@@ -88,7 +91,8 @@ export const useMultiSelect = ({ options, paramName }: { options: FilterData[]; 
         payload: {
           paramName,
           // Label which appears on the filter overview screen
-          displayText: nextOptions.map(({ displayText }) => displayText).join(", "),
+          displayText:
+            nextOptions.map(({ displayText }) => displayText).join(", ") || defaultFilter?.displayText || "All",
           // Array of paramValues
           paramValue: nextParamValues,
         },
