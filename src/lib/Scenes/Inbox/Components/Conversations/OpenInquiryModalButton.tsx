@@ -1,6 +1,8 @@
+import { tappedMakeOffer } from "@artsy/cohesion"
 import { navigate } from "lib/navigation/navigate"
 import { Button, Flex, Separator } from "palette"
 import React from "react"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 export interface OpenInquiryModalButtonProps {
@@ -15,12 +17,15 @@ const ShadowSeparator = styled(Separator)`
 `
 
 export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ artworkID, conversationID }) => {
+  const { trackEvent } = useTracking()
+
   return (
     <>
       <ShadowSeparator />
       <Flex p={1.5}>
         <Button
           onPress={() => {
+            trackEvent(tappedMakeOffer(conversationID as string))
             navigate(`make-offer/${artworkID}`, {
               modal: true,
               passProps: { conversationID },
