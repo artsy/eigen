@@ -7989,6 +7989,9 @@ type PageInfo {
 type Partner implements Node {
   analytics: AnalyticsPartnerStats
 
+  # A connection of articles related to a partner.
+  articlesConnection(after: String, before: String, first: Int, last: Int, sort: ArticleSorts): ArticleConnection
+
   # A connection of artists at a partner.
   artistsConnection(
     after: String
