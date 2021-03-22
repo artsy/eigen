@@ -44,6 +44,9 @@ export const ArtsyReactWebView: React.FC<{
     <View style={{ flex: 1 }}>
       <WebView
         ref={ref}
+        // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction
+        // on android it works without it
+        sharedCookiesEnabled
         source={{ uri }}
         style={{ flex: 1 }}
         userAgent={userAgent}
@@ -87,20 +90,20 @@ export function useWebViewCookies() {
   const authenticationToken = GlobalStore.useAppState((store) =>
     Platform.OS === "ios" ? store.native.sessionState.authenticationToken : store.auth.userAccessToken
   )
-  const webURL = useEnvironment().webURL
+  const { webURL, predictionURL } = useEnvironment()
   const isMounted = useRef(false)
   useEffect(() => {
     isMounted.current = true
     if (authenticationToken) {
       // sign in to force (this gives us force cookies in our web views)
       addBreadcrumb({ message: "Setting up artsy web view cookies" })
-      async function attemptCookieSetup() {
+      async function attemptCookieSetup(url: string) {
         // Tried to do this with clearTimeout when the component unmounts, but it didn't work in jest :thinking_face:
         if (!isMounted.current) {
           return
         }
         try {
-          const res = await fetch(webURL, {
+          const res = await fetch(url, {
             method: "HEAD",
             headers: { "X-Access-Token": authenticationToken! },
           })
@@ -108,13 +111,14 @@ export function useWebViewCookies() {
           if (res.status > 400) {
             throw new Error("couldn't authenticate")
           }
-          addBreadcrumb({ message: "Successfully set up artsy web view cookies" })
+          addBreadcrumb({ message: "Successfully set up artsy web view cookies for ${url}" })
         } catch (e) {
-          addBreadcrumb({ message: "Retrying to set up artsy web view cookies in 20 seconds" })
-          setTimeout(attemptCookieSetup, 20 * 1000)
+          addBreadcrumb({ message: "Retrying to set up artsy web view cookies in 20 seconds ${url}" })
+          setTimeout(() => attemptCookieSetup(url), 20 * 1000)
         }
       }
-      attemptCookieSetup()
+      attemptCookieSetup(webURL)
+      attemptCookieSetup(predictionURL)
     }
     return () => {
       isMounted.current = false

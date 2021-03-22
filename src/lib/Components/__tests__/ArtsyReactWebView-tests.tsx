@@ -70,8 +70,8 @@ describe(useWebViewCookies, () => {
     useWebViewCookies()
     return null
   }
-  it("tries to make an authenticated HEAD request to force to make sure we get the user's coookies", () => {
-    __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "userAccessToken" } })
+  it("tries to make an authenticated HEAD request to force and prediction to make sure we get the user's coookies", () => {
+    __globalStoreTestUtils__?.injectState({ native: { sessionState: { authenticationToken: "userAccessToken" } } })
     act(() => {
       renderWithWrappers(<Wrapper />)
     })
@@ -79,37 +79,41 @@ describe(useWebViewCookies, () => {
       method: "HEAD",
       headers: { "X-Access-Token": "userAccessToken" },
     })
+    expect(mockFetch).toHaveBeenCalledWith("https://live-staging.artsy.net", {
+      method: "HEAD",
+      headers: { "X-Access-Token": "userAccessToken" },
+    })
   })
   it("retries if it fails", async () => {
-    __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "userAccessToken" } })
+    __globalStoreTestUtils__?.injectState({ native: { sessionState: { authenticationToken: "userAccessToken" } } })
     mockFetch.mockReturnValue(Promise.resolve({ ok: false, status: 500 } as any))
     const tree = renderWithWrappers(<Wrapper />)
     await act(() => undefined)
-    expect(mockFetch).toHaveBeenCalledTimes(1)
-
-    jest.runOnlyPendingTimers()
     expect(mockFetch).toHaveBeenCalledTimes(2)
 
-    await act(() => undefined)
-    jest.runOnlyPendingTimers()
-    expect(mockFetch).toHaveBeenCalledTimes(3)
-
-    await act(() => undefined)
     jest.runOnlyPendingTimers()
     expect(mockFetch).toHaveBeenCalledTimes(4)
 
     await act(() => undefined)
     jest.runOnlyPendingTimers()
-    expect(mockFetch).toHaveBeenCalledTimes(5)
+    expect(mockFetch).toHaveBeenCalledTimes(6)
+
+    await act(() => undefined)
+    jest.runOnlyPendingTimers()
+    expect(mockFetch).toHaveBeenCalledTimes(8)
+
+    await act(() => undefined)
+    jest.runOnlyPendingTimers()
+    expect(mockFetch).toHaveBeenCalledTimes(10)
 
     tree.unmount()
 
     await act(() => undefined)
     jest.runOnlyPendingTimers()
-    expect(mockFetch).toHaveBeenCalledTimes(5)
+    expect(mockFetch).toHaveBeenCalledTimes(10)
 
     await act(() => undefined)
     jest.runOnlyPendingTimers()
-    expect(mockFetch).toHaveBeenCalledTimes(5)
+    expect(mockFetch).toHaveBeenCalledTimes(10)
   })
 })
