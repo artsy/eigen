@@ -7,7 +7,7 @@ import { Messages_conversation } from "__generated__/Messages_conversation.graph
 import moment from "moment"
 import { Flex, Spacer } from "palette"
 
-import { OrderUpdate_event, OrderUpdate_event$key } from "__generated__/OrderUpdate_event.graphql"
+import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { Message } from "./Message"
 import { OrderUpdateFragmentContainer } from "./OrderUpdate"
