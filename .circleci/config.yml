@@ -428,16 +428,16 @@ workflows:
     jobs:
       - deploy-nightly-beta
 
-  metaphysics-check:
-    triggers:
-      - schedule:
-          cron: "13 * * * *"
-          filters:
-            branches:
-              only:
-                - master
-    jobs:
-      - check-metaphysics-freshness
+  # metaphysics-check:
+  #   triggers:
+  #     - schedule:
+  #         cron: "13 * * * *"
+  #         filters:
+  #           branches:
+  #             only:
+  #               - master
+  #   jobs:
+  #     - check-metaphysics-freshness
 
   promote:
     jobs:
