@@ -11,6 +11,6 @@ export const ArtsyNativeModule = {
     Platform.OS === "ios"
       ? LegacyNativeModules.ARNotificationsManager.nativeState.launchCount
       : (NativeModules.ArtsyNativeModule.getConstants().launchCount as number),
-  setNavigationBarColor: Platform.OS === "ios" ? null : NativeModules.ArtsyNativeModule.setNavigationBarColor,
   setAppStyling: Platform.OS === "ios" ? null : NativeModules.ArtsyNativeModule.setAppStyling,
+  setNavigationBarColor: Platform.OS === "ios" ? null : NativeModules.ArtsyNativeModule.setNavigationBarColor,
 }
