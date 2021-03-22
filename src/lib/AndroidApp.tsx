@@ -6,6 +6,7 @@ import { useCallback } from "react"
 import { Linking, UIManager, View } from "react-native"
 import track from "react-tracking"
 import { RelayEnvironmentProvider } from "relay-hooks"
+import { useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { useSentryConfig } from "./ErrorReporting"
 import { ModalStack } from "./navigation/ModalStack"
@@ -28,6 +29,7 @@ const Main: React.FC<{}> = track()(({}) => {
 
   useSentryConfig()
   useStripeConfig()
+  useWebViewCookies()
 
   useEffect(() => {
     Linking.getInitialURL().then((url) => {

@@ -1,8 +1,9 @@
 import { color } from "@artsy/palette-tokens"
+import { addBreadcrumb } from "@sentry/react-native"
 import { goBack } from "lib/navigation/navigate"
-import { getCurrentEmissionState, useEnvironment } from "lib/store/GlobalStore"
+import { getCurrentEmissionState, GlobalStore, useEnvironment } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { View } from "react-native"
 import WebView from "react-native-webview"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
@@ -72,3 +73,42 @@ export const __webViewTestUtils__ = __TEST__
       ProgressBar,
     }
   : null
+
+export function useWebViewCookies() {
+  const authenticationToken = GlobalStore.useAppState(
+    (store) => store.auth.userAccessToken ?? store.native.sessionState.authenticationToken
+  )
+  const webURL = useEnvironment().webURL
+  const isMounted = useRef(false)
+  useEffect(() => {
+    isMounted.current = true
+    if (authenticationToken) {
+      // sign in to force (this gives us force cookies in our web views)
+      addBreadcrumb({ message: "Setting up artsy web view cookies" })
+      async function attemptCookieSetup() {
+        // Tried to do this with clearTimeout when the component unmounts, but it didn't work in jest :thinking_face:
+        if (!isMounted.current) {
+          return
+        }
+        try {
+          const res = await fetch(webURL, {
+            method: "HEAD",
+            headers: { "X-Access-Token": authenticationToken },
+          })
+
+          if (res.status > 400) {
+            throw new Error("couldn't authenticate")
+          }
+          addBreadcrumb({ message: "Successfully set up artsy web view cookies" })
+        } catch (e) {
+          addBreadcrumb({ message: "Retrying to set up artsy web view cookies in 20 seconds" })
+          setTimeout(attemptCookieSetup, 20 * 1000)
+        }
+      }
+      attemptCookieSetup()
+    }
+    return () => {
+      isMounted.current = false
+    }
+  }, [authenticationToken, webURL])
+}
