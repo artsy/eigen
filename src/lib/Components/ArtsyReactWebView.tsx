@@ -12,13 +12,27 @@ export interface ArtsyWebViewConfig {
   title?: string
 }
 
-export const ArtsyReactWebView: React.FC<
+export const ArtsyReactWebViewPage: React.FC<
   {
     url: string
     isPresentedModally?: boolean
   } & ArtsyWebViewConfig
 > = ({ url, title, isPresentedModally }) => {
   const paddingTop = useScreenDimensions().safeAreaInsets.top
+
+  return (
+    <View style={{ flex: 1, paddingTop }}>
+      <FancyModalHeader useXButton={isPresentedModally} onLeftButtonPress={goBack}>
+        {title}
+      </FancyModalHeader>
+      <ArtsyReactWebView url={url} />
+    </View>
+  )
+}
+
+export const ArtsyReactWebView: React.FC<{
+  url: string
+}> = ({ url }) => {
   const userAgent = getCurrentEmissionState().userAgent
 
   const ref = useRef<WebView>(null)
@@ -27,22 +41,17 @@ export const ArtsyReactWebView: React.FC<
   const uri = url.startsWith("/") ? webURL + url : url
 
   return (
-    <View style={{ flex: 1, paddingTop }}>
-      <FancyModalHeader useXButton={isPresentedModally} onLeftButtonPress={goBack}>
-        {title}
-      </FancyModalHeader>
-      <View style={{ flex: 1 }}>
-        <WebView
-          ref={ref}
-          source={{ uri }}
-          style={{ flex: 1 }}
-          userAgent={userAgent}
-          onLoadStart={() => setLoadProgress((p) => Math.max(0.02, p ?? 0))}
-          onLoadEnd={() => setLoadProgress(null)}
-          onLoadProgress={(e) => setLoadProgress(e.nativeEvent.progress)}
-        />
-        <ProgressBar loadProgress={loadProgress} />
-      </View>
+    <View style={{ flex: 1 }}>
+      <WebView
+        ref={ref}
+        source={{ uri }}
+        style={{ flex: 1 }}
+        userAgent={userAgent}
+        onLoadStart={() => setLoadProgress((p) => Math.max(0.02, p ?? 0))}
+        onLoadEnd={() => setLoadProgress(null)}
+        onLoadProgress={(e) => setLoadProgress(e.nativeEvent.progress)}
+      />
+      <ProgressBar loadProgress={loadProgress} />
     </View>
   )
 }
