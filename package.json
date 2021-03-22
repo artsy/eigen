@@ -106,7 +106,7 @@
     "query-string": "4.3.4",
     "react": "16.13.1",
     "react-native": "0.63.3",
-    "react-native-bootsplash": "https://github.com/artsy/react-native-bootsplash",
+    "react-native-bootsplash": "^3.2.0",
     "react-native-config": "https://github.com/artsy/react-native-config.git",
     "react-native-gesture-handler": "^1.8.0",
     "react-native-haptic-feedback": "1.10.0",

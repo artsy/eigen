@@ -1290,13 +1290,6 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.7.2":
-  version "7.13.10"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.10.tgz#47d42a57b6095f4468da440388fdbad8bebf0d7d"
-  integrity sha512-4QPkjJq6Ns3V/RgpEahRk+AGfL0eO6RHHtTWoNNr5mO49G6B5+X6d6THgWEAvTrznU5xYpbAlVKRYcsCgh/Akw==
-  dependencies:
-    regenerator-runtime "^0.13.4"
-
 "@babel/runtime@^7.9.2":
   version "7.9.2"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.9.2.tgz#d90df0583a3a252f09aaa619665367bae518db06"
@@ -12040,9 +12033,10 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
 
-"react-native-bootsplash@https://github.com/artsy/react-native-bootsplash":
+react-native-bootsplash@^3.2.0:
   version "3.2.0"
-  resolved "https://github.com/artsy/react-native-bootsplash#6777290291438f48b5120cf37a4e6ec5c59416e6"
+  resolved "https://registry.yarnpkg.com/react-native-bootsplash/-/react-native-bootsplash-3.2.0.tgz#671861fdd75444f91196d3e64d3539ef50c3a30f"
+  integrity sha512-1+xMWLxqIUPbKiiwrbiekw3uKtuyNpm0R1eg5p3/ISRMXs0eZy7DHfiyCqcLq1N1a3Gv0oTZn1E7WEA2NjgdhA==
   dependencies:
     chalk "^4.1.0"
     fs-extra "^9.1.0"
