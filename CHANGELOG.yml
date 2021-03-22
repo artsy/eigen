@@ -33,6 +33,7 @@ releases:
       - Enable feature flags on android - mounir
       - Enable new onboarding feature flag - mounir
       - Adds improved time period filter behind feature flag - iskounen, damon, devon, roop
+      - Adds improved colors filter behind feature flag - damon
     user_facing:
       - Fix sign out bug - david, mounir
       - Adds inquiry checkout offer status CTA - lily

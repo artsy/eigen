@@ -82,6 +82,11 @@ return {
       "name": "color"
     },
     {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "colors"
+    },
+    {
       "defaultValue": 10,
       "kind": "LocalArgument",
       "name": "count"
@@ -197,6 +202,11 @@ return {
           "kind": "Variable",
           "name": "color",
           "variableName": "color"
+        },
+        {
+          "kind": "Variable",
+          "name": "colors",
+          "variableName": "colors"
         },
         {
           "kind": "Variable",
@@ -451,5 +461,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '316610d38cfa740176494dabba63159e';
+(node as any).hash = '6911622104ed9cfb5430261751d29828';
 export default node;

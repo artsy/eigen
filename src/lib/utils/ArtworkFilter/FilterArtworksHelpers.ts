@@ -18,6 +18,7 @@ export enum FilterParamName {
   attributionClass = "attributionClass",
   categories = "categories",
   color = "color",
+  colors = "colors",
   earliestCreatedYear = "earliestCreatedYear",
   estimateRange = "estimateRange",
   gallery = "partnerID",
@@ -49,6 +50,7 @@ export enum FilterDisplayName {
   attributionClass = "Rarity",
   categories = "Medium",
   color = "Color",
+  colors = "Color",
   estimateRange = "Price/estimate range",
   gallery = "Gallery",
   institution = "Institution",
@@ -214,22 +216,6 @@ export const selectedOption = ({
       additionalGeneIDsOption?.paramValue.length > 0
     ) {
       return additionalGeneIDsOption?.paramValue.map(humanizeSlug).join(", ")
-    }
-
-    return "All"
-  }
-
-  if (filterScreen === "attributionClass") {
-    const selectedAttributionClassOption = selectedOptions.find((option) => {
-      return option.paramName === FilterParamName.attributionClass
-    })
-
-    if (
-      selectedAttributionClassOption?.paramValue &&
-      Array.isArray(selectedAttributionClassOption?.paramValue) &&
-      selectedAttributionClassOption?.paramValue.length > 0
-    ) {
-      return selectedAttributionClassOption?.paramValue.map(capitalize).join(", ")
     }
 
     return "All"
