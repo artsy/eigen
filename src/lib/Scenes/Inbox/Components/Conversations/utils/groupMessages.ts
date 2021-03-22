@@ -9,7 +9,7 @@ export interface ConversationItem {
  * Combines messages into groups of messages sent by the same party and
  * separated out into different groups if sent across multiple days
  */
-export const groupMessages = <T extends ConversationItem[]>(messages: T): T[] => {
+export const groupMessages = <T extends ConversationItem>(messages: T[]): T[][] => {
   if (messages.length === 0) {
     return []
   }
