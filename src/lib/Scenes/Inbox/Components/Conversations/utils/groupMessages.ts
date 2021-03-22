@@ -1,17 +1,9 @@
-import { Message_message } from "__generated__/Message_message.graphql"
-import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
 import moment from "moment"
 export interface ConversationItem {
   __typename: string
   createdAt?: string | null
   isFromUser?: boolean | null
 }
-
-// const getMessages = () => {}
-
-// const getOrderUpdates = () => {}
-
-// const combineAndSortConversationItems = (messages, updates) => {}
 
 /**
  * Combines messages into groups of messages sent by the same party and

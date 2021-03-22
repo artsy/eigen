@@ -8,13 +8,10 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { Messages_conversation } from "__generated__/Messages_conversation.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
 
-import { Message_message } from "__generated__/Message_message.graphql"
-import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
 import { dropWhile, sortBy } from "lodash"
 import { DateTime } from "luxon"
-import { ConversationItem, groupMessages } from "./utils/groupMessages"
-import { Conversation } from "../../Screens/Conversation"
 import { MessageGroup } from "./MessageGroup"
+import { ConversationItem, groupMessages } from "./utils/groupMessages"
 
 const isPad = Dimensions.get("window").width > 700
 

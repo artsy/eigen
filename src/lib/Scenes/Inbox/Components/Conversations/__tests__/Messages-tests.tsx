@@ -67,7 +67,17 @@ it("renders without throwing an error", () => {
   getWrapper()
 })
 
-const withMessages = (wrapperGetter: typeof getWrapper, { events, messages }: { events: any; messages: any }) => {
+/**
+ * Helper to mock the messages and conversation.
+ * Currently the conversation must start with a message so that is included in the defaults.
+ */
+const withConversationItems = (
+  wrapperGetter: typeof getWrapper,
+  {
+    events = [],
+    messages = [{ createdAt: new Date("1970-12-25").toISOString(), body: "First message", attachments: [] }],
+  }: { events?: any; messages?: any }
+) => {
   return wrapperGetter({
     CommerceOrderConnectionWithTotalCount() {
       return {
@@ -90,25 +100,16 @@ const withMessages = (wrapperGetter: typeof getWrapper, { events, messages }: { 
 
 describe("messages with order updates", () => {
   it("shows a submitted offer", () => {
-    const tree = getWrapper({
-      CommerceOrderConnectionWithTotalCount: () => {
-        return {
-          edges: [
-            {
-              node: {
-                orderHistory: [
-                  {
-                    __typename: "CommerceOfferSubmittedEvent",
-                    offer: {
-                      respondsTo: null,
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        }
-      },
+    const tree = withConversationItems(getWrapper, {
+      events: [
+        {
+          __typename: "CommerceOfferSubmittedEvent",
+          offer: {
+            respondsTo: null,
+          },
+          createdAt: new Date().toISOString(),
+        },
+      ],
     })
 
     expect(extractText(tree.root)).toMatch("You sent an offer for")
@@ -120,7 +121,7 @@ describe("messages with order updates", () => {
     const day2Time1 = "2020-03-19T01:58:37.699Z"
     const day2Time2 = "2020-03-19T01:59:37.699Z"
 
-    const tree = withMessages(getWrapper, {
+    const tree = withConversationItems(getWrapper, {
       messages: [
         { createdAt: day1Time1, body: "Day 1 message", attachments: [] },
         { createdAt: day2Time1, body: "Day 2 message", attachments: [] },
@@ -163,5 +164,42 @@ describe("messages with order updates", () => {
   })
 
   // We fetch all order updates but only paginated messages, so this is to avoid a smooshed list of updates at the top.
-  it.todo("does not show order updates before the currently-available messages")
+  it("does not show order updates before the currently-available messages", () => {
+    const beforeLastMessageTime = "2020-03-18T02:58:37.699Z"
+    const beforeLastMessageTime2 = "2020-03-18T02:59:37.699Z"
+    const lastMessageTime = "2020-03-19T01:58:37.699Z"
+    const afterLastMessageTime = "2020-03-19T01:59:37.699Z"
+
+    const tree = withConversationItems(getWrapper, {
+      messages: [{ createdAt: lastMessageTime, body: "Last Message", attachments: [] }],
+      events: [
+        {
+          __typename: "CommerceOfferSubmittedEvent",
+          offer: {
+            respondsTo: null,
+          },
+          createdAt: beforeLastMessageTime,
+        },
+        {
+          __typename: "CommerceOfferSubmittedEvent",
+          offer: {
+            respondsTo: {},
+            fromParticipant: "SELLER",
+          },
+          createdAt: beforeLastMessageTime2,
+        },
+        {
+          __typename: "CommerceOfferSubmittedEvent",
+          offer: {
+            respondsTo: {},
+            fromParticipant: "Buyer",
+          },
+          createdAt: afterLastMessageTime,
+        },
+      ],
+    })
+    expect(extractText(tree.root)).toContain("You sent a counteroffer for")
+    expect(extractText(tree.root)).not.toContain("You sent an offer for")
+    expect(extractText(tree.root)).not.toContain("You received a counteroffer for")
+  })
 })
