@@ -20,7 +20,6 @@ import com.facebook.react.bridge.ReactMethod;
 import java.util.Map;
 import java.util.HashMap;
 
-//import com.zoontek.rnbootsplash.RNBootSplashModule;
 
 public class ArtsyNativeModule extends ReactContextBaseJavaModule {
     // this is called on application launch by MainApplication#onCreate
