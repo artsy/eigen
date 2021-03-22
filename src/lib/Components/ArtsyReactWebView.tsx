@@ -4,7 +4,7 @@ import { goBack } from "lib/navigation/navigate"
 import { getCurrentEmissionState, GlobalStore, useEnvironment } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useEffect, useRef, useState } from "react"
-import { View } from "react-native"
+import { Platform, View } from "react-native"
 import WebView from "react-native-webview"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 
@@ -84,8 +84,8 @@ export const __webViewTestUtils__ = __TEST__
   : null
 
 export function useWebViewCookies() {
-  const authenticationToken = GlobalStore.useAppState(
-    (store) => store.auth.userAccessToken ?? store.native.sessionState.authenticationToken
+  const authenticationToken = GlobalStore.useAppState((store) =>
+    Platform.OS === "ios" ? store.native.sessionState.authenticationToken : store.auth.userAccessToken
   )
   const webURL = useEnvironment().webURL
   const isMounted = useRef(false)
@@ -102,7 +102,7 @@ export function useWebViewCookies() {
         try {
           const res = await fetch(webURL, {
             method: "HEAD",
-            headers: { "X-Access-Token": authenticationToken },
+            headers: { "X-Access-Token": authenticationToken! },
           })
 
           if (res.status > 400) {
