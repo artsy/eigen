@@ -127,7 +127,7 @@ describe("ReviewOfferButton", () => {
     })
 
     const text = extractText(wrapper.root)
-    expect(text).toContain("Offer Accepted - Please Confirm")
+    expect(text).toContain("Offer Accepted")
   })
 
   it("shows correct message and icon for received counteroffers", () => {
@@ -177,7 +177,9 @@ describe("ReviewOfferButton", () => {
     })
 
     wrapper.root.findByType(TouchableWithoutFeedback).props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/orders/<CommerceOrder-mock-id-1>", {"modal": true, "passProps": {"orderID": "<CommerceOrder-mock-id-1>"}}
-    )
+    expect(navigate).toHaveBeenCalledWith("/orders/<CommerceOrder-mock-id-1>", {
+      modal: true,
+      passProps: { orderID: "<CommerceOrder-mock-id-1>" },
+    })
   })
 })

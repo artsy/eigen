@@ -7,8 +7,10 @@ import { Messages_conversation } from "__generated__/Messages_conversation.graph
 import moment from "moment"
 import { Flex, Spacer } from "palette"
 
+import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { Message } from "./Message"
+import { OrderUpdateFragmentContainer } from "./OrderUpdate"
 import ArtworkPreview from "./Preview/ArtworkPreview"
 import ShowPreview from "./Preview/ShowPreview"
 import { TimeSince } from "./TimeSince"
@@ -19,51 +21,89 @@ const SubjectContainer = styled(Flex)`
 `
 type Item = NonNullable<NonNullable<Messages_conversation["items"]>[0]>["item"]
 
+export type DisplayableMessage = OrderUpdate_event | Message_message
 interface MessageGroupProps {
-  group: Message_message[]
+  group: DisplayableMessage[]
   conversationId: string
   subjectItem: Item
 }
 
-export class MessageGroup extends React.Component<MessageGroupProps> {
-  renderMessage = (message: Message_message, messageIndex: number) => {
-    const { group, subjectItem, conversationId } = this.props
-    const nextMessage = group[messageIndex + 1]
-    const senderChanges = !!nextMessage && nextMessage.isFromUser !== message.isFromUser
-    const lastMessageInGroup = messageIndex === group.length - 1
-    const spaceAfter = senderChanges || lastMessageInGroup ? 2 : 0.5
-    const today = moment(group[0].createdAt as string).isSame(moment(), "day")
+const isMessageArray = (items: DisplayableMessage[]): items is Message_message[] => {
+  return items[0].__typename === "Message"
+}
 
-    return (
-      <React.Fragment key={`message-${message.internalID}`}>
-        {!!message.isFirstMessage && (
-          <SubjectContainer>
-            {subjectItem?.__typename === "Artwork" && (
-              <ArtworkPreview artwork={subjectItem} onSelected={() => navigate(subjectItem.href!)} />
-            )}
-            {subjectItem?.__typename === "Show" && (
-              <ShowPreview show={subjectItem} onSelected={() => navigate(subjectItem.href!)} />
-            )}
-          </SubjectContainer>
-        )}
-        {!!message.body && (
-          <Message
-            message={message}
-            key={message.internalID}
-            showTimeSince={!!(message.createdAt && today && group.length - 1 === messageIndex)}
-            conversationId={conversationId!}
-          />
-        )}
-        <Spacer mb={spaceAfter} />
-      </React.Fragment>
-    )
-  }
+const relevantEvents = ["CommerceOfferSubmittedEvent", "CommerceOrderStateChangedEvent"]
+const isRelevantEventArray = (items: DisplayableMessage[]): items is OrderUpdate_event[] => {
+  const firstItem = items[0]
+  return firstItem?.__typename !== "Message" && relevantEvents.includes(firstItem.__typename)
+}
+
+const IndividualMessage: React.FC<{
+  subjectItem?: any
+  isLastMessage: boolean
+  conversationId: string
+  message: Message_message
+  nextMessage?: Message_message
+  isSameDay: boolean
+}> = ({ message, nextMessage, subjectItem, conversationId, isLastMessage, isSameDay }) => {
+  const senderChanges = !!nextMessage && nextMessage.isFromUser !== message.isFromUser
+  const spaceAfter = senderChanges || isLastMessage ? 2 : 0.5
+  return (
+    <React.Fragment>
+      {!!message.isFirstMessage && (
+        <SubjectContainer>
+          {subjectItem?.__typename === "Artwork" && (
+            <ArtworkPreview artwork={subjectItem} onSelected={() => navigate(subjectItem.href!)} />
+          )}
+          {subjectItem?.__typename === "Show" && (
+            <ShowPreview show={subjectItem} onSelected={() => navigate(subjectItem.href!)} />
+          )}
+        </SubjectContainer>
+      )}
+      {!!message.body && (
+        <Message
+          message={message}
+          showTimeSince={!!(message.createdAt && isSameDay && isLastMessage)}
+          conversationId={conversationId!}
+        />
+      )}
+      <Spacer mb={spaceAfter} />
+    </React.Fragment>
+  )
+}
+
+export class MessageGroup extends React.Component<MessageGroupProps> {
   render() {
-    return (
-      <View>
-        <TimeSince style={{ alignSelf: "center" }} time={this.props.group[0].createdAt} exact mb={1} />
-        {[...this.props.group].reverse().map(this.renderMessage)}
-      </View>
-    )
+    const { group } = this.props
+
+    // Events come as a single item in an array
+    if (isRelevantEventArray(group)) {
+      const onlyEvent = group[0]
+      return <OrderUpdateFragmentContainer event={onlyEvent as any} />
+    }
+    if (isMessageArray(group)) {
+      const firstItem = group[0]
+      return (
+        <View>
+          <TimeSince style={{ alignSelf: "center" }} time={firstItem.createdAt} exact mb={1} />
+          {[...group].reverse().map((message: Message_message, messageIndex: number) => {
+            const { subjectItem, conversationId } = this.props
+            const messageKey = `message-${messageIndex}`
+            return (
+              <IndividualMessage
+                subjectItem={subjectItem}
+                conversationId={conversationId}
+                isLastMessage={messageIndex === group.length - 1}
+                key={messageKey}
+                message={message}
+                nextMessage={group[messageIndex + 1]}
+                isSameDay={moment(firstItem.createdAt!).isSame(moment(), "day")}
+              />
+            )
+          })}
+        </View>
+      )
+    }
+    return null
   }
 }

@@ -12,6 +12,7 @@ upcoming:
     - Fix action sheets on android - brian, barry
     - Fix change password screen title  - mounir
     - Enable experimental layout animation on android - mounir
+    - Group order updates with messages in an associated conversation - erik, lily
 
 releases:
   - version: 6.8.1
