@@ -87,41 +87,52 @@ export const __webViewTestUtils__ = __TEST__
   : null
 
 export function useWebViewCookies() {
-  const authenticationToken = GlobalStore.useAppState((store) =>
+  const accesstoken = GlobalStore.useAppState((store) =>
     Platform.OS === "ios" ? store.native.sessionState.authenticationToken : store.auth.userAccessToken
   )
   const { webURL, predictionURL } = useEnvironment()
-  const isMounted = useRef(false)
-  useEffect(() => {
-    isMounted.current = true
-    if (authenticationToken) {
-      // sign in to force (this gives us force cookies in our web views)
-      addBreadcrumb({ message: "Setting up artsy web view cookies" })
-      async function attemptCookieSetup(url: string) {
-        // Tried to do this with clearTimeout when the component unmounts, but it didn't work in jest :thinking_face:
-        if (!isMounted.current) {
-          return
-        }
-        try {
-          const res = await fetch(url, {
-            method: "HEAD",
-            headers: { "X-Access-Token": authenticationToken! },
-          })
+  useUrlCookies(webURL, accesstoken)
+  useUrlCookies(predictionURL, accesstoken)
+}
 
-          if (res.status > 400) {
-            throw new Error("couldn't authenticate")
-          }
-          addBreadcrumb({ message: "Successfully set up artsy web view cookies for ${url}" })
-        } catch (e) {
-          addBreadcrumb({ message: "Retrying to set up artsy web view cookies in 20 seconds ${url}" })
-          setTimeout(() => attemptCookieSetup(url), 20 * 1000)
-        }
+function useUrlCookies(url: string, accessToken: string | null) {
+  useEffect(() => {
+    if (accessToken) {
+      const attempt = new CookieRequestAttempt(url, accessToken)
+      attempt.makeAttempt()
+      return () => {
+        attempt.invalidated = true
       }
-      attemptCookieSetup(webURL)
-      attemptCookieSetup(predictionURL)
     }
-    return () => {
-      isMounted.current = false
+  }, [accessToken, url])
+}
+
+class CookieRequestAttempt {
+  invalidated = false
+  constructor(public url: string, public accessToken: string) {}
+  async makeAttempt() {
+    if (this.invalidated) {
+      return
     }
-  }, [authenticationToken, webURL])
+    try {
+      const res = await fetch(this.url, {
+        method: "HEAD",
+        headers: { "X-Access-Token": this.accessToken! },
+      })
+      if (this.invalidated) {
+        return
+      }
+
+      if (res.status > 400) {
+        throw new Error("couldn't authenticate")
+      }
+      addBreadcrumb({ message: `Successfully set up artsy web view cookies for ${this.url}` })
+    } catch (e) {
+      if (this.invalidated) {
+        return
+      }
+      addBreadcrumb({ message: `Retrying to set up artsy web view cookies in 20 seconds ${this.url}` })
+      setTimeout(() => this.makeAttempt(), 1000 * 20)
+    }
+  }
 }
