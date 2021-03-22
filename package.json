@@ -95,7 +95,6 @@
     "@react-navigation/native": "^5.9.2",
     "@react-navigation/stack": "^5.14.2",
     "@sentry/react-native": "2.2.1",
-    "add": "^2.0.6",
     "easy-peasy": "3.3.0",
     "events": "3.1.0",
     "formik": "2.1.4",
@@ -138,7 +137,6 @@
     "supercluster": "6.0.1",
     "tipsi-stripe": "https://github.com/artsy/tipsi-stripe.git#fix-infinite-loop",
     "url": "^0.11.0",
-    "yarn": "^1.22.10",
     "yup": "0.29.1"
   },
   "devDependencies": {
