@@ -1,5 +1,5 @@
 import { DateTime } from "luxon"
-import { groupMessages } from "../utils/groupMessages"
+import { groupConversationItems } from "../utils/groupConversationItems"
 
 const today = DateTime.local()
 
@@ -51,32 +51,32 @@ const userMessageFromDayBeforeYesterday = {
 
 describe("groupMessages() helper", () => {
   it("returns an empty array if there are no messages", () => {
-    const groupedMessages = groupMessages([])
+    const groupedMessages = groupConversationItems([])
     expect(groupedMessages).toEqual([])
   })
 
   it("treats each non-message as its own group", () => {
     const items = [userMessageFromToday, orderUpdateFromToday]
-    const result = groupMessages(items)
+    const result = groupConversationItems(items)
     expect(result).toEqual([[orderUpdateFromToday], [userMessageFromToday]])
   })
 
   it("treats a message following a non-message as the start of a new group", () => {
     const items = [orderUpdateFromToday, userMessageFromToday]
-    const result = groupMessages(items)
+    const result = groupConversationItems(items)
     expect(result).toEqual([[userMessageFromToday], [orderUpdateFromToday]])
   })
 
   describe("from before today", () => {
     it("groups consecutive messages sent by the same party on the same day", () => {
       const items = [firstUserMessageFromYesterday, secondUserMessageFromYesterday, userMessageFromToday]
-      const result = groupMessages(items)
+      const result = groupConversationItems(items)
       expect(result).toEqual([[userMessageFromToday], [secondUserMessageFromYesterday, firstUserMessageFromYesterday]])
     })
 
     it("separates messages sent on different days", () => {
       const items = [userMessageFromDayBeforeYesterday, firstUserMessageFromYesterday, userMessageFromToday]
-      expect(groupMessages(items)).toEqual([
+      expect(groupConversationItems(items)).toEqual([
         [userMessageFromToday],
         [firstUserMessageFromYesterday],
         [userMessageFromDayBeforeYesterday],
@@ -86,7 +86,7 @@ describe("groupMessages() helper", () => {
     it("combines messages sent from different parties on the same day", () => {
       const items = [partnerMessageFromYesterday, firstUserMessageFromYesterday, secondUserMessageFromYesterday]
 
-      expect(groupMessages(items)).toEqual([
+      expect(groupConversationItems(items)).toEqual([
         [secondUserMessageFromYesterday, firstUserMessageFromYesterday, partnerMessageFromYesterday],
       ])
     })
@@ -95,12 +95,12 @@ describe("groupMessages() helper", () => {
     it("separates messages from different users", () => {
       const items = [partnerMessageFromToday, userMessageFromToday]
 
-      expect(groupMessages(items)).toEqual([[userMessageFromToday], [partnerMessageFromToday]])
+      expect(groupConversationItems(items)).toEqual([[userMessageFromToday], [partnerMessageFromToday]])
     })
     it("separates messages created today from previous days", () => {
       const items = [firstUserMessageFromYesterday, secondUserMessageFromYesterday, userMessageFromToday]
 
-      expect(groupMessages(items)).toEqual([
+      expect(groupConversationItems(items)).toEqual([
         [userMessageFromToday],
         [secondUserMessageFromYesterday, firstUserMessageFromYesterday],
       ])
@@ -112,7 +112,7 @@ describe("groupMessages() helper", () => {
         partnerMessageFromToday,
         secondPartnerMessageFromToday,
       ]
-      expect(groupMessages(items)).toEqual([
+      expect(groupConversationItems(items)).toEqual([
         [secondPartnerMessageFromToday, partnerMessageFromToday],
         [secondUserMessageFromYesterday, firstUserMessageFromYesterday],
       ])

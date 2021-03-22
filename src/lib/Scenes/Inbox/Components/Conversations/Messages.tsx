@@ -11,7 +11,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { dropWhile, sortBy } from "lodash"
 import { DateTime } from "luxon"
 import { MessageGroup } from "./MessageGroup"
-import { ConversationItem, groupMessages } from "./utils/groupMessages"
+import { ConversationItem, groupConversationItems } from "./utils/groupConversationItems"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -68,7 +68,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
     // Drop all order events until the first message appears (this assumes the conversation begins with a message)
     const sortedWithCutoff = dropWhile(sortedMessages, (item) => item.__typename !== "Message")
 
-    const groupedMessages = groupMessages(sortedWithCutoff)
+    const groupedMessages = groupConversationItems(sortedWithCutoff)
 
     setMessages(groupedMessages)
   }, [allOrderEvents.length, allMessages.length])

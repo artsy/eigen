@@ -7,7 +7,7 @@ import { Messages_conversation } from "__generated__/Messages_conversation.graph
 import moment from "moment"
 import { Flex, Spacer } from "palette"
 
-import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
+import { OrderUpdate_event, OrderUpdate_event$key } from "__generated__/OrderUpdate_event.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { Message } from "./Message"
 import { OrderUpdateFragmentContainer } from "./OrderUpdate"
@@ -32,9 +32,10 @@ const isMessageArray = (items: DisplayableMessage[]): items is Message_message[]
   return items[0].__typename === "Message"
 }
 
-const orderEvents = ["CommerceOfferSubmittedEvent", "CommerceOrderStateChangedEvent"]
-const isRelevantEvent = (item: DisplayableMessage): item is OrderUpdate_event => {
-  return item.__typename !== "Message" && orderEvents.includes(item.__typename)
+const relevantEvents = ["CommerceOfferSubmittedEvent", "CommerceOrderStateChangedEvent"]
+const isRelevantEventArray = (items: DisplayableMessage[]): items is OrderUpdate_event[] => {
+  const firstItem = items[0]
+  return firstItem?.__typename !== "Message" && relevantEvents.includes(firstItem.__typename)
 }
 
 const IndividualMessage: React.FC<{
@@ -74,15 +75,14 @@ const IndividualMessage: React.FC<{
 export class MessageGroup extends React.Component<MessageGroupProps> {
   render() {
     const { group } = this.props
-    const firstItem = group[0]
-    if (!firstItem) {
-      return null
-    }
+
     // Events come as a single item in an array
-    if (isRelevantEvent(firstItem)) {
-      return <OrderUpdateFragmentContainer event={firstItem as any} />
+    if (isRelevantEventArray(group)) {
+      const onlyEvent = group[0]
+      return <OrderUpdateFragmentContainer event={onlyEvent as any} />
     }
     if (isMessageArray(group)) {
+      const firstItem = group[0]
       return (
         <View>
           <TimeSince style={{ alignSelf: "center" }} time={firstItem.createdAt} exact mb={1} />
@@ -104,5 +104,6 @@ export class MessageGroup extends React.Component<MessageGroupProps> {
         </View>
       )
     }
+    return null
   }
 }
