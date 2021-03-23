@@ -8,7 +8,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { QAInfoPanel } from "lib/utils/QAInfo"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { ProvideScreenTracking } from "lib/utils/track"
 import { useStickyScrollHeader } from "lib/utils/useStickyScrollHeader"
 import { capitalize } from "lodash"
 import moment from "moment"
@@ -154,7 +154,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   )
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema info={tracks.screen(auctionResult.internalID) as any}>
+    <ProvideScreenTracking info={tracks.screen(auctionResult.internalID) as any}>
       <Animated.ScrollView {...scrollProps}>
         <FancyModalHeader hideBottomDivider />
         <Box px={2} pb={4}>
@@ -229,7 +229,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
         <QAInfo />
       </Animated.ScrollView>
       {headerElement}
-    </ProvideScreenTrackingWithCohesionSchema>
+    </ProvideScreenTracking>
   )
 }
 

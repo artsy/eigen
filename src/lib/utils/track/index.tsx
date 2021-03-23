@@ -1,4 +1,4 @@
-import { Screen } from "@artsy/cohesion"
+import { ActionType, Screen } from "@artsy/cohesion"
 import _track, { Track as _Track, TrackingInfo } from "react-tracking"
 
 import { postEvent } from "lib/NativeModules/Events"
@@ -94,24 +94,14 @@ export const track: Track = (trackingInfo, options) => {
   })
 }
 
+export type ScreenTrackEventT = Omit<Screen, "action">
 interface ProvideScreenTrackingProps {
-  info: Schema.PageView
+  info: ScreenTrackEventT
 }
 
 // Uses schema manually defined in Eigen
-@screenTrack<ProvideScreenTrackingProps>((props) => props.info)
+@screenTrack<ProvideScreenTrackingProps>((props) => ({ ...props.info, action: ActionType.screen }))
 export class ProvideScreenTracking extends React.Component<ProvideScreenTrackingProps> {
-  render() {
-    return React.createElement(React.Fragment, null, this.props.children)
-  }
-}
-
-interface ProvideScreenTrackingWithCohesionSchemaProps {
-  info: Screen
-}
-// Uses schema defined in Cohesion
-@screenTrack<ProvideScreenTrackingProps>((props) => props.info)
-export class ProvideScreenTrackingWithCohesionSchema extends React.Component<ProvideScreenTrackingWithCohesionSchemaProps> {
   render() {
     return React.createElement(React.Fragment, null, this.props.children)
   }
@@ -167,7 +157,7 @@ export class ProvideScreenTrackingWithCohesionSchema extends React.Component<Pro
  *        // [...]
  *      }
  */
-export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
+export function screenTrack<P>(trackingInfo: TrackingInfo<Screen, P, null>) {
   return _track(trackingInfo as any, {
     dispatch: (data) => postEvent(data),
     dispatchOnMount: true,
