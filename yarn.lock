@@ -2317,6 +2317,13 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/viewpager/-/viewpager-4.2.2.tgz#e05d618829c589284326896c806200af90ae0986"
   integrity sha512-XBAO/9gV0pb6VAqbaobdJp6slTgmf8TOAnIbERO1pKjIXoj2OrKYcma2VPB/02wzEzu7TE8jcbt3u6BT4fpXxA==
 
+"@react-native-cookies/cookies@^6.0.4":
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/@react-native-cookies/cookies/-/cookies-6.0.4.tgz#4914bfa1110361ec67281c6d7ce9fde6e3b1e7e8"
+  integrity sha512-VOZvNtxUsNmWV/H6/JqO/HPiNJQa5zvmPv3YnuK3uu9CcTEWsvTsq6VmvhJci4DTilI1e1/SF6z6yJwmscS+iw==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-mapbox-gl/maps@8.1.0-rc.9":
   version "8.1.0-rc.9"
   resolved "https://registry.yarnpkg.com/@react-native-mapbox-gl/maps/-/maps-8.1.0-rc.9.tgz#2c9a296e06dba695184adc7b63fe8835e75eff47"
