@@ -170,7 +170,9 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     new RouteMatcher("/city-bmw-list/:citySlug", "CityBMWList"),
     new RouteMatcher("/make-offer/:artworkID", "MakeOfferModal"),
-    new RouteMatcher("/orders/:orderID", "Checkout"),
+    unsafe_getFeatureFlag("AROptionsUseReactNativeWebView")
+      ? webViewRoute("/orders/:orderID", { mimicBrowserBackButton: false })
+      : new RouteMatcher("/orders/:orderID", "Checkout"),
 
     new RouteMatcher("/:slug", "VanityURLEntity"),
     webViewRoute("/*"),

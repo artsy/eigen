@@ -63,7 +63,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
     )
     navigate(`/orders/${orderID}`, {
       modal: true,
-      passProps: { orderID },
+      passProps: { orderID, title: "Make Offer" },
     })
   }
 

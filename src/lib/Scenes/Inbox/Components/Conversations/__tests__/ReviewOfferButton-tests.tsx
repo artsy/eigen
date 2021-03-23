@@ -193,7 +193,7 @@ describe("ReviewOfferButton", () => {
     })
     expect(navigate).toHaveBeenCalledWith("/orders/<CommerceOrder-mock-id-1>", {
       modal: true,
-      passProps: { orderID: "<CommerceOrder-mock-id-1>" },
+      passProps: { orderID: "<CommerceOrder-mock-id-1>", title: "Make Offer" },
     })
   })
 })
