@@ -88,13 +88,19 @@ export function sendConversationMessage(
       sendConversationMessage: {
         messageEdge: {
           node: {
+            __typename: "Message",
+            impulse_id: conversation.id,
             body: text,
             from: {
               email: conversation.from.email,
               name: null,
             },
             is_from_user: true,
-            created_at: null, // Intentionally left blank so Message can recognize this as an optimistic response.
+            createdAt: new Date().toISOString(),
+            isFirstMessage: null,
+            isFromUser: true,
+            internalID: null,
+            id: null,
             attachments: [],
           } as any,
         },

@@ -105,6 +105,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         additionalGeneIDs: { type: "[String]" }
         priceRange: { type: "String" }
         color: { type: "String" }
+        colors: { type: "[String]" }
         partnerID: { type: "ID" }
         dimensionRange: { type: "String", defaultValue: "*-*" }
         majorPeriods: { type: "[String]" }
@@ -124,6 +125,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
           additionalGeneIDs: $additionalGeneIDs
           priceRange: $priceRange
           color: $color
+          colors: $colors
           partnerID: $partnerID
           dimensionRange: $dimensionRange
           majorPeriods: $majorPeriods
@@ -176,6 +178,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         $additionalGeneIDs: [String]
         $priceRange: String
         $color: String
+        $colors: [String]
         $partnerID: ID
         $dimensionRange: String
         $majorPeriods: [String]
@@ -193,6 +196,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
               sort: $sort
               additionalGeneIDs: $additionalGeneIDs
               color: $color
+              colors: $colors
               partnerID: $partnerID
               priceRange: $priceRange
               dimensionRange: $dimensionRange

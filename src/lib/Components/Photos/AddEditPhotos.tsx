@@ -1,3 +1,4 @@
+import { useActionSheet } from "@expo/react-native-action-sheet"
 import { Stack } from "lib/Components/Stack"
 import { Photo } from "lib/Scenes/Consignments"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -90,11 +91,13 @@ const AddPhotosButton: React.FC<{ imageSize: number; addPhotos: (addedImages: RN
   imageSize,
   addPhotos,
 }) => {
+  const { showActionSheetWithOptions } = useActionSheet()
+
   return (
     <TouchableOpacity
       data-test-id="add-photos-button"
       onPress={() => {
-        showPhotoActionSheet().then((addedImages) => {
+        showPhotoActionSheet(showActionSheetWithOptions).then((addedImages) => {
           addPhotos(addedImages)
         })
       }}

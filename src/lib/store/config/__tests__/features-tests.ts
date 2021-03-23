@@ -1,6 +1,7 @@
+import { intersection } from "lodash"
 import { env } from "process"
 import echoLaunchJSON from "../../../../../Artsy/App/EchoNew.json"
-import { features } from "../features"
+import { devToggles, features } from "../features"
 
 Object.entries(features).forEach(([key, val]) => {
   describe(`The ${key} feature`, () => {
@@ -16,5 +17,15 @@ Object.entries(features).forEach(([key, val]) => {
         }
       })
     }
+  })
+})
+
+describe("features and devToggles", () => {
+  it("never have the same keys", () => {
+    const featureKeys = Object.keys(features)
+    const devToggleKeys = Object.keys(devToggles)
+
+    const common = intersection(featureKeys, devToggleKeys)
+    expect(common).toStrictEqual([])
   })
 })

@@ -69,6 +69,8 @@ import { Search } from "./Scenes/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
+import { ActionSheetProvider } from "@expo/react-native-action-sheet"
+import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { ToastProvider } from "./Components/Toast/toastHook"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
@@ -183,11 +185,12 @@ const SearchWithTracking: React.FC<SearchWithTrackingProps> = screenTrack<Search
 
 interface PageWrapperProps {
   fullBleed?: boolean
+  isMainView?: boolean
 }
 
-const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed }) => {
+const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed, isMainView }) => {
   const paddingTop = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.top
-  const paddingBottom = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.bottom
+  const paddingBottom = isMainView ? 0 : useScreenDimensions().safeAreaInsets.bottom
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   return (
     <View style={{ flex: 1, paddingTop, paddingBottom }}>
@@ -206,17 +209,19 @@ class PageWrapper extends React.Component<PageWrapperProps> {
   render() {
     return (
       <ProvideScreenDimensions>
-        <RelayEnvironmentProvider environment={defaultEnvironment}>
-          <GlobalStoreProvider>
-            <Theme>
-              <ToastProvider>
-                <_FancyModalPageWrapper>
-                  <InnerPageWrapper {...this.props} />
-                </_FancyModalPageWrapper>
-              </ToastProvider>
-            </Theme>
-          </GlobalStoreProvider>
-        </RelayEnvironmentProvider>
+        <ActionSheetProvider>
+          <RelayEnvironmentProvider environment={defaultEnvironment}>
+            <GlobalStoreProvider>
+              <Theme>
+                <ToastProvider>
+                  <_FancyModalPageWrapper>
+                    <InnerPageWrapper {...this.props} />
+                  </_FancyModalPageWrapper>
+                </ToastProvider>
+              </Theme>
+            </GlobalStoreProvider>
+          </RelayEnvironmentProvider>
+        </ActionSheetProvider>
       </ProvideScreenDimensions>
     )
   }
@@ -339,6 +344,11 @@ export const modules = defineModules({
   }),
   LocalDiscovery: nativeModule(),
   WebView: nativeModule(),
+  ReactWebView: reactModule(ArtsyReactWebViewPage, {
+    fullBleed: true,
+    hasOwnModalCloseButton: true,
+    hidesBackButton: true,
+  }),
   MakeOfferModal: reactModule(MakeOfferModalQueryRenderer, {
     hasOwnModalCloseButton: true,
   }),
@@ -395,6 +405,7 @@ const Main: React.FC<{}> = track()(({}) => {
 
   useSentryConfig()
   useStripeConfig()
+  useWebViewCookies()
 
   if (!isHydrated) {
     return <View />
@@ -412,5 +423,5 @@ const Main: React.FC<{}> = track()(({}) => {
 })
 
 if (Platform.OS === "ios") {
-  register("Main", Main, { fullBleed: true })
+  register("Main", Main, { fullBleed: true, isMainView: true })
 }

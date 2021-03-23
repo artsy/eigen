@@ -72,7 +72,7 @@ describe("AttributionClassOptions Screen", () => {
     state = {
       selectedFilters: [
         {
-          displayText: "Unique",
+          displayText: "Unique, Unknown edition",
           paramName: FilterParamName.attributionClass,
           paramValue: ["unique", "unknown edition"],
         },
@@ -98,7 +98,7 @@ describe("AttributionClassOptions Screen", () => {
     const initialState: ArtworkFilterContextState = {
       selectedFilters: [
         {
-          displayText: "Unique",
+          displayText: "Unique, Unknown edition",
           paramName: FilterParamName.attributionClass,
           paramValue: ["unique", "unknown edition"],
         },

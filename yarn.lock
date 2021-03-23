@@ -1532,6 +1532,14 @@
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.7.3.tgz#6310a047f12d21a1036fb031317219892440416f"
   integrity sha512-4zAPlpDEh2VwXswwr/t8xGNDGg8RQiPxtxZ3qQEXyQsBV39ptTdESCjuBvGze1nLMVrxmTIKmnO/nAV8Tqjjzg==
 
+"@expo/react-native-action-sheet@^3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@expo/react-native-action-sheet/-/react-native-action-sheet-3.8.0.tgz#0db8b70ea8550ceb2983abda8584efa3a61d7389"
+  integrity sha512-tCfwysuqy0sfaN+aA98IKUrwCLKsbDHSYLcnHrx9wNbawOHNez8rSeFtieAS48/HyrPI75yg/ZGvxe6UsJRS8Q==
+  dependencies:
+    "@types/hoist-non-react-statics" "^3.3.1"
+    hoist-non-react-statics "^3.3.0"
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
@@ -2309,6 +2317,13 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/viewpager/-/viewpager-4.2.2.tgz#e05d618829c589284326896c806200af90ae0986"
   integrity sha512-XBAO/9gV0pb6VAqbaobdJp6slTgmf8TOAnIbERO1pKjIXoj2OrKYcma2VPB/02wzEzu7TE8jcbt3u6BT4fpXxA==
 
+"@react-native-cookies/cookies@^6.0.4":
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/@react-native-cookies/cookies/-/cookies-6.0.4.tgz#4914bfa1110361ec67281c6d7ce9fde6e3b1e7e8"
+  integrity sha512-VOZvNtxUsNmWV/H6/JqO/HPiNJQa5zvmPv3YnuK3uu9CcTEWsvTsq6VmvhJci4DTilI1e1/SF6z6yJwmscS+iw==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-mapbox-gl/maps@8.1.0-rc.9":
   version "8.1.0-rc.9"
   resolved "https://registry.yarnpkg.com/@react-native-mapbox-gl/maps/-/maps-8.1.0-rc.9.tgz#2c9a296e06dba695184adc7b63fe8835e75eff47"
@@ -2783,6 +2798,14 @@
   version "2.0.36"
   resolved "https://registry.yarnpkg.com/@types/hammerjs/-/hammerjs-2.0.36.tgz#17ce0a235e9ffbcdcdf5095646b374c2bf615a4c"
   integrity sha512-7TUK/k2/QGpEAv/BCwSHlYu3NXZhQ9ZwBYpzr9tjlPIL2C5BeGhH3DmVavRx3ZNyELX5TLC91JTz/cen6AAtIQ==
+
+"@types/hoist-non-react-statics@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#1124aafe5118cb591977aeb1ceaaed1070eb039f"
+  integrity sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==
+  dependencies:
+    "@types/react" "*"
+    hoist-non-react-statics "^3.3.0"
 
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.1"
@@ -11621,10 +11644,10 @@ react-native-view-shot@^3.1.2:
   resolved "https://registry.yarnpkg.com/react-native-view-shot/-/react-native-view-shot-3.1.2.tgz#8c8e84c67a4bc8b603e697dbbd59dbc9b4f84825"
   integrity sha512-9u9fPtp6a52UMoZ/UCPrCjKZk8tnkI9To0Eh6yYnLKFEGkRZ7Chm6DqwDJbYJHeZrheCCopaD5oEOnRqhF4L2Q==
 
-react-native-webview@^10.8.3:
-  version "10.8.3"
-  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-10.8.3.tgz#63245fdf39320dbbc67c26e1e305342a51f93d66"
-  integrity sha512-QV3dCGG8xsr/65Rpf2/Khno8fzkyyJKUZpn00y6Wd1hbYRqataZOesCm2ceZS21yXzLLGVHmQlB5/41h3K787Q==
+react-native-webview@^11.3.1:
+  version "11.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-11.3.1.tgz#acc87db56eca568fd561edecbd990e8252b882a5"
+  integrity sha512-qHvD2DVbUVSuRLU33RU4LbfISoJ3q5PWj4fuDcMgEYaEnlvOiOQqR/x5t9z4kdVZ83T+WG8ktp19F2uTCaOKRg==
   dependencies:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"

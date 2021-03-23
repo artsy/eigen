@@ -5,7 +5,7 @@ import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNaviga
 import React from "react"
 import { Platform } from "react-native"
 import { Action, Middleware } from "redux"
-import { FeatureName, features } from "./config/features"
+import { DevToggleName, FeatureName, features } from "./config/features"
 import { FeatureMap } from "./config/FeaturesModel"
 import { GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { assignDeep, persistenceMiddleware, unpersist } from "./persistence"
@@ -110,6 +110,10 @@ export function useFeatureFlag(key: FeatureName) {
   return GlobalStore.useAppState((state) => state.config.features.flags[key])
 }
 
+export function useDevToggle(key: DevToggleName) {
+  return GlobalStore.useAppState((state) => state.config.features.devToggles[key])
+}
+
 /**
  * This is marked as unsafe because it will not cause a re-render
  * if used in a react component. Use `useFeatureFlag` instead.
@@ -137,7 +141,7 @@ export function getCurrentEmissionState() {
     deviceId: "Android", // TODO: get better device info
     launchCount: ArtsyNativeModule.launchCount,
     onboardingState: "none", // not used on android
-    userAgent: "eigen android", // TODO: proper user agent
+    userAgent: "Artsy-Mobile android", // TODO: proper user agent
     userID: state?.auth.userID!,
   }
   return androidData
