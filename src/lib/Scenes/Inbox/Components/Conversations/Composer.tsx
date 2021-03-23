@@ -90,7 +90,7 @@ export default class Composer extends React.Component<Props, State> {
     // TODO: assumption is that there will be only 0/1 active (not pending or abandoned) order
     // and we will take the first without worrying about sort/order
     const orders = extractNodes(conversation.orderConnection)
-    const inactiveOrderStates = ["PENDING", "ABANDONED"]
+    const inactiveOrderStates = ["PENDING", "ABANDONED", "CANCELED"]
     const activeOrder = orders.filter((order) => {
       return !inactiveOrderStates.includes(order.state!)
     })[0]

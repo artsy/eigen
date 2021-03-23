@@ -1,5 +1,4 @@
 import { ReviewOfferButton_order } from "__generated__/ReviewOfferButton_order.graphql"
-import { OrderedColorFilters } from "lib/Components/ArtworkFilterOptions/ColorOptions"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { useEventTiming } from "lib/utils/useEventTiming"
