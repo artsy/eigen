@@ -1,3 +1,4 @@
+import { tappedViewOffer } from "@artsy/cohesion"
 import { ReviewOfferButton_order } from "__generated__/ReviewOfferButton_order.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -7,13 +8,14 @@ import { AlertCircleFillIcon, ArrowRightIcon, Flex, MoneyFillIcon, Text } from "
 import React, { useEffect } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import { returnButtonMessaging } from "./utils/returnButtonMessaging"
-
 export interface ReviewOfferButtonProps {
+  conversationID: string
   order: ReviewOfferButton_order
 }
 
-export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) => {
+export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversationID, order }) => {
   if (
     order.state == null ||
     order.state === "ABANDONED" ||
@@ -27,6 +29,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
   const [buttonMessage, setButtonMessage] = React.useState("")
   const [buttonSubMessage, setButtonSubMessage] = React.useState("Tap to view")
   const [showMoneyIconInButton, setShowMoneyIconInButton] = React.useState(true)
+  const { trackEvent } = useTracking()
 
   const { hours } = useEventTiming({
     currentTime: DateTime.local().toString(),
@@ -52,6 +55,12 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
   })
 
   const onTap = (orderID: string | null) => {
+    trackEvent(
+      tappedViewOffer({
+        impulse_conversation_id: conversationID,
+        cta: buttonMessage,
+      })
+    )
     navigate(`/orders/${orderID}`, {
       modal: true,
       passProps: { orderID },
@@ -59,7 +68,11 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
   }
 
   return (
-    <TouchableWithoutFeedback onPress={() => onTap(order?.internalID)}>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        onTap(order?.internalID)
+      }}
+    >
       <Flex
         px={2}
         justifyContent="space-between"
