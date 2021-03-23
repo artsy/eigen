@@ -117,6 +117,9 @@ export const devToggles = defineDevToggles({
   DTShowQuickAccessInfo: {
     description: "Show quick access info",
   },
+  DTDisableEchoRemoteFetch: {
+    description: "Disable fetching remote echo",
+  },
 })
 
 export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {

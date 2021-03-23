@@ -4,6 +4,7 @@ import { Platform } from "react-native"
 import lessThan from "semver/functions/lt"
 import appJson from "../../../../app.json"
 import echoLaunchJSON from "../../../../Artsy/App/EchoNew.json"
+import { unsafe_getDevToggle } from "../GlobalStore"
 import { GlobalStoreModel } from "../GlobalStoreModel"
 
 type Echo = typeof echoLaunchJSON
@@ -25,7 +26,13 @@ export const EchoModel: EchoModel = {
     state.state = echoJSON
   }),
   fetchRemoteEcho: thunk(async (actions) => {
+    const disableRemoteFetch = unsafe_getDevToggle("DTDisableEchoRemoteFetch")
+    if (disableRemoteFetch) {
+      return
+    }
+
     const result = await fetch("https://echo.artsy.net/Echo.json")
+
     if (result.ok) {
       const json = await result.json()
       actions.setEchoState(json)
@@ -41,6 +48,7 @@ export const EchoModel: EchoModel = {
       if (launchEchoTimestamp.isAfter(persistedEchoTimestamp)) {
         actions.setEchoState(echoLaunchJSON)
       }
+
       actions.fetchRemoteEcho()
     }
   ),
