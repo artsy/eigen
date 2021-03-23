@@ -168,6 +168,7 @@
     "@types/relay-runtime": "8.0.6",
     "@types/relay-test-utils": "6.0.1",
     "@types/remove-markdown": "0.1.1",
+    "@types/semver": "^7.3.4",
     "@types/styled-components": "4.0.2",
     "@types/styled-system": "5.1.9",
     "@types/supercluster": "5.0.0",
