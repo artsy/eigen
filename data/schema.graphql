@@ -2053,6 +2053,12 @@ enum AuctionsSoldStatus {
   Sold
 }
 
+enum AuctionState {
+  CLOSED
+  OPEN
+  UPCOMING
+}
+
 # An Artsy User
 type AuctionsUser implements AuctionsNode {
   # The ID of an object
@@ -7413,6 +7419,7 @@ type Me implements Node {
   recentlyViewedArtworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
   saleRegistrationsConnection(
     after: String
+    auctionState: AuctionState
     before: String
     first: Int
 
@@ -9213,6 +9220,7 @@ type Query {
   # A list of Sales
   salesConnection(
     after: String
+    auctionState: AuctionState
     before: String
     first: Int
 
@@ -11544,6 +11552,7 @@ type Viewer {
   # A list of Sales
   salesConnection(
     after: String
+    auctionState: AuctionState
     before: String
     first: Int
 
