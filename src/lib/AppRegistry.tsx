@@ -75,6 +75,7 @@ import { useSentryConfig } from "./ErrorReporting"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
+import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
@@ -390,6 +391,7 @@ const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.native.sessionState.userID)
   const onboardingState = GlobalStore.useAppState((state) => state.native.sessionState.onboardingState)
+  const forceUpdateMessage = GlobalStore.useAppState((state) => state.config.echo.forceUpdateMessage)
 
   useSentryConfig()
   useStripeConfig()
@@ -397,9 +399,15 @@ const Main: React.FC<{}> = track()(({}) => {
   if (!isHydrated) {
     return <View />
   }
+
+  if (forceUpdateMessage) {
+    return <ForceUpdate forceUpdateMessage={forceUpdateMessage} />
+  }
+
   if (!isLoggedIn || onboardingState === "incomplete") {
     return <NativeViewController viewName="Onboarding" />
   }
+
   return <BottomTabsNavigator />
 })
 
