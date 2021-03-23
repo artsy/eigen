@@ -10,6 +10,7 @@ upcoming:
     - Fix iOS modal presentation infra code - david
   user_facing:
     - Set system navigation bar color to white on modals for android - mounir
+    - Fix UI for Inquiry message count on iPad - pavlos
     - Fix action sheets on android - brian, barry
     - Fix change password screen title  - mounir
     - Enable experimental layout animation on android - mounir

@@ -9,7 +9,7 @@ import { Colors } from "lib/data/colors"
 import styled from "styled-components/native"
 
 import { ConversationSnippet_conversation } from "__generated__/ConversationSnippet_conversation.graphql"
-import { color, Flex, Sans, Touchable } from "palette"
+import { color, Flex, Sans, Spacer, Touchable } from "palette"
 
 const Unread = styled(Flex)`
   height: 14;
@@ -105,23 +105,26 @@ export class ConversationSnippet extends React.Component<Props> {
                 }
               />
             </Flex>
-            <Flex ml={1} style={{ flex: 1 }} justifyContent="flex-start">
+            <Flex ml={1} style={{ flex: 1 }}>
               <Flex flexDirection="row" mb="2px" style={{ flex: 0, alignItems: "center" }}>
-                <Sans
-                  size="3t"
-                  weight="medium"
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
-                  mr="5px"
-                  color={conversation.unread ? "black" : "black60"}
-                  style={{ flex: 3 }}
-                >
-                  {partnerName}
-                </Sans>
-                <Sans size="3t" color="black30" style={{ flex: 1 }} numberOfLines={1}>
-                  {conversation.messagesConnection?.totalCount}
-                </Sans>
-                <Sans textAlign="right" size="3t" color="black30" style={{ flex: 0 }}>
+                <Flex flexDirection="row">
+                  <Sans
+                    size="3t"
+                    weight="medium"
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
+                    mr="5px"
+                    color={conversation.unread ? "black" : "black60"}
+                  >
+                    {partnerName}
+                  </Sans>
+                  <Spacer mr={10} />
+                  <Sans size="3t" color="black30" numberOfLines={1}>
+                    {conversation.messagesConnection?.totalCount}
+                  </Sans>
+                </Flex>
+                <Flex flex={1} />
+                <Sans textAlign="right" size="3t" color="black30">
                   {date}
                 </Sans>
               </Flex>
