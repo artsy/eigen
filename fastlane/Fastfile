@@ -68,87 +68,11 @@ lane :ship_beta_ios do
   bundle_version = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'Artsy/App_Resources/Artsy-Info.plist')}`.strip
   tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
 
-
   # important! this much match the release version specified
   # in Eigen in order for sourcemaps to work correctly
   sentry_release_version = "ios-#{latest_version}+#{bundle_version}"
 
-  #update in app.json to tag errors in sentry correctly
-  app_json['sentryReleaseName'] = sentry_release_version
-  File.open(app_json_path, 'w') do |file|
-    file.puts JSON.pretty_generate(app_json)
-  end
-
-  # make individual dSYM archives available to the sentry-cli tool.
-  dsym_archive = File.join(root, 'Artsy.app.dSYM.zip')
-  dsyms_path = File.join(root, 'dSYMs')
-  sh "unzip -d #{dsyms_path} #{dsym_archive}"
-
-  upload_to_sentry = lambda do |project_slug, postfix|
-    org_slug = 'artsynet'
-
-    # releases on sentry are org-wide so we need to distinguish in staging
-    sentry_release_version = sentry_release_version + postfix
-
-    sentry_create_release auth_token: ENV['SentryUploadAuthKey'],
-                          org_slug: org_slug,
-                          project_slug: project_slug,
-                          version: sentry_release_version,
-                          finalize: false
-    puts "Created a release for #{project_slug}"
-
-    sentry_set_commits auth_token: ENV['SentryUploadAuthKey'],
-                       org_slug: org_slug,
-                       project_slug: project_slug,
-                       version: sentry_release_version,
-                       auto: true
-    puts "Associated commits for Sentry release"
-
-    Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
-      # No need to specify `dist` as the build number is encoded in the dSYM's Info.plist
-      sentry_upload_dsym auth_token: ENV['SentryUploadAuthKey'],
-                         org_slug: org_slug,
-                         project_slug: project_slug,
-                         dsym_path: dsym_path
-      puts "Uploaded dsym for #{project_slug}"
-    end
-
-    begin
-      sentry_upload_file auth_token: ENV['SentryUploadAuthKey'],
-                         org_slug: org_slug,
-                         project_slug: project_slug,
-                         version: sentry_release_version,
-                         dist: bundle_version,
-                         file: 'emission/Pod/Assets/Emission.js',
-                         file_url: '~/Emission.js'
-      puts "Uploaded Emission.js for #{project_slug}"
-
-      sentry_upload_sourcemap auth_token: ENV['SentryUploadAuthKey'],
-                              org_slug: org_slug,
-                              project_slug: project_slug,
-                              version: sentry_release_version,
-                              dist: bundle_version,
-                              sourcemap: 'emission/Pod/Assets/Emission.js.map',
-                              rewrite: true
-      puts "Uploaded Emission.js.map for #{project_slug}"
-    rescue StandardError => e
-      message = 'Uploading the JS bundle and/or sourcemap to Sentry failed. This sometimes happens when shipping many builds to Sentry.'
-      puts message
-      slack(
-        message: message,
-        success: false,
-        payload: {
-          'Circle Build' => ENV['CIRCLE_BUILD_URL'],
-          'Exception' => e.message
-        },
-        default_payloads: [:last_git_commit_hash]
-      )
-      puts e.message
-      puts e.backtrace.join("\n\t")
-    end
-  end
-
-  upload_to_sentry.call('eigen', '')
+  upload_sentry_artifacts(release_version: sentry_release_version, platform: "ios")
 
   # Send to the app store
   beta_app_review_info = {
@@ -235,6 +159,10 @@ lane :ship_beta_android do
   vname, vcode = set_build_version_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
+  sentry_release_version = "android-#{vname}-#{vcode}"
+
+  upload_sentry_artifacts(release_version: sentry_release_version, platform: "android")
+
   gradle(
     task: "bundle",
     build_type: "Release",
@@ -315,6 +243,89 @@ lane :promote_beta_ios do
 
   tag_and_push(tag: "ios-#{beta.train_version}-#{build_version}-submission")
   puts 'All done.'
+end
+
+lane :upload_sentry_artifacts do |options|
+  sentry_release_version = options[:sentry_release_name]
+  platform = options[:platform]
+
+  project_slug = 'eigen'
+  org_slug = 'artsynet'
+
+  if sentry_release_version.nil?
+    UI.user_error!("Sentry release version not specified")
+  end
+
+  # update releaseName in app.json to tag errors in sentry correctly
+  app_json['sentryReleaseName'] = sentry_release_version
+  File.open(app_json_path, 'w') do |file|
+    file.puts JSON.pretty_generate(app_json)
+  end
+
+  sentry_create_release(auth_token: ENV['SentryUploadAuthKey'],
+                        org_slug: org_slug,
+                        project_slug: project_slug,
+                        version: sentry_release_version,
+                        finalize: false)
+  puts "Created a release for #{project_slug}"
+
+  sentry_set_commits(auth_token: ENV['SentryUploadAuthKey'],
+                     org_slug: org_slug,
+                     project_slug: project_slug,
+                     version: sentry_release_version,
+                     auto: true)
+  puts "Associated commits for Sentry release"
+
+  if platform == "ios"
+    # make individual dSYM archives available to the sentry-cli tool.
+    root = File.expand_path('..', __dir__)
+    dsym_archive = File.join(root, 'Artsy.app.dSYM.zip')
+    dsyms_path = File.join(root, 'dSYMs')
+    sh "unzip -d #{dsyms_path} #{dsym_archive}"
+
+    Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
+      # No need to specify `dist` as the build number is encoded in the dSYM's Info.plist
+      sentry_upload_dsym(auth_token: ENV['SentryUploadAuthKey'],
+                         org_slug: org_slug,
+                         project_slug: project_slug,
+                         dsym_path: dsym_path)
+      puts "Uploaded dsym for #{project_slug}"
+    end
+  end
+
+  begin
+    sentry_upload_file(auth_token: ENV['SentryUploadAuthKey'],
+                         org_slug: org_slug,
+                         project_slug: project_slug,
+                         version: sentry_release_version,
+                         dist: bundle_version,
+                         file: 'emission/Pod/Assets/Emission.js',
+                         file_url: '~/Emission.js')
+    puts "Uploaded Emission.js for #{project_slug}"
+
+    sentry_upload_sourcemap(auth_token: ENV['SentryUploadAuthKey'],
+                            org_slug: org_slug,
+                            project_slug: project_slug,
+                            version: sentry_release_version,
+                            dist: bundle_version,
+                            sourcemap: 'emission/Pod/Assets/Emission.js.map',
+                            rewrite: true)
+    puts "Uploaded Emission.js.map for #{project_slug}"
+  rescue StandardError => e
+      message = 'Uploading the JS bundle and/or sourcemap to Sentry failed. This sometimes happens when shipping many builds to Sentry.'
+      puts message
+      slack(
+        message: message,
+        success: false,
+        payload: {
+          'Circle Build' => ENV['CIRCLE_BUILD_URL'],
+          'Exception' => e.message
+        },
+        default_payloads: [:last_git_commit_hash]
+      )
+      puts e.message
+      puts e.backtrace.join("\n\t")
+  end
 end
 
 lane :notify_if_new_license_agreement do
