@@ -6,7 +6,7 @@ import { getCurrentEmissionState, GlobalStore, useEnvironment } from "lib/store/
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { parse as parseQueryString } from "query-string"
 import React, { useEffect, useRef, useState } from "react"
-import { Platform, View } from "react-native"
+import { KeyboardAvoidingView, Platform, View } from "react-native"
 import WebView, { WebViewProps } from "react-native-webview"
 import { parse as parseURL } from "url"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
@@ -38,24 +38,30 @@ export const ArtsyReactWebViewPage: React.FC<
 
   return (
     <View style={{ flex: 1, paddingTop }}>
-      <FancyModalHeader
-        useXButton={isPresentedModally && !canGoBack}
-        onLeftButtonPress={() => {
-          if (!canGoBack) {
-            goBack()
-          } else {
-            ref.current?.goBack()
-          }
-        }}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={useScreenDimensions().safeAreaInsets.top}
+        style={{ flex: 1 }}
       >
-        {title}
-      </FancyModalHeader>
-      <ArtsyReactWebView
-        url={url}
-        ref={ref}
-        allowWebViewInnerNavigation={allowWebViewInnerNavigation}
-        onNavigationStateChange={mimicBrowserBackButton ? (ev) => setCanGoBack(ev.canGoBack) : undefined}
-      />
+        <FancyModalHeader
+          useXButton={isPresentedModally && !canGoBack}
+          onLeftButtonPress={() => {
+            if (!canGoBack) {
+              goBack()
+            } else {
+              ref.current?.goBack()
+            }
+          }}
+        >
+          {title}
+        </FancyModalHeader>
+        <ArtsyReactWebView
+          url={url}
+          ref={ref}
+          allowWebViewInnerNavigation={allowWebViewInnerNavigation}
+          onNavigationStateChange={mimicBrowserBackButton ? (ev) => setCanGoBack(ev.canGoBack) : undefined}
+        />
+      </KeyboardAvoidingView>
     </View>
   )
 }

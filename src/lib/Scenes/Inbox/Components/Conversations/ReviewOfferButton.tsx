@@ -54,7 +54,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
   const onTap = (orderID: string | null) => {
     navigate(`/orders/${orderID}`, {
       modal: true,
-      passProps: { orderID },
+      passProps: { orderID, title: "Make Offer" },
     })
   }
 
