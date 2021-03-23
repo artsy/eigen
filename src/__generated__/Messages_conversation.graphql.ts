@@ -4,6 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FULFILLED" | "PENDING" | "REFUNDED" | "SUBMITTED" | "%future added value";
 export type Messages_conversation = {
     readonly id: string;
     readonly internalID: string | null;
@@ -16,6 +17,19 @@ export type Messages_conversation = {
     };
     readonly initialMessage: string;
     readonly lastMessageID: string | null;
+    readonly orderConnection: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly orderHistory: ReadonlyArray<{
+                    readonly __typename: string;
+                    readonly createdAt?: string;
+                    readonly state?: CommerceOrderStateEnum;
+                    readonly stateReason?: string | null;
+                    readonly " $fragmentRefs": FragmentRefs<"OrderUpdate_event">;
+                }>;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly messagesConnection: {
         readonly pageInfo: {
             readonly startCursor: string | null;
@@ -26,6 +40,7 @@ export type Messages_conversation = {
         readonly edges: ReadonlyArray<{
             readonly cursor: string;
             readonly node: {
+                readonly __typename: string;
                 readonly id: string;
                 readonly internalID: string;
                 readonly isFromUser: boolean | null;
@@ -99,6 +114,13 @@ v3 = {
   "storageKey": null
 },
 v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "createdAt",
+  "storageKey": null
+},
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -181,6 +203,97 @@ return {
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 10
+        },
+        {
+          "kind": "Literal",
+          "name": "participantType",
+          "value": "BUYER"
+        }
+      ],
+      "concreteType": "CommerceOrderConnectionWithTotalCount",
+      "kind": "LinkedField",
+      "name": "orderConnection",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "CommerceOrderEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": null,
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": null,
+                  "kind": "LinkedField",
+                  "name": "orderHistory",
+                  "plural": true,
+                  "selections": [
+                    (v3/*: any*/),
+                    {
+                      "args": null,
+                      "kind": "FragmentSpread",
+                      "name": "OrderUpdate_event"
+                    },
+                    {
+                      "kind": "InlineFragment",
+                      "selections": [
+                        (v4/*: any*/),
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "state",
+                          "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "stateReason",
+                          "storageKey": null
+                        }
+                      ],
+                      "type": "CommerceOrderStateChangedEvent",
+                      "abstractKey": null
+                    },
+                    {
+                      "kind": "InlineFragment",
+                      "selections": [
+                        (v4/*: any*/)
+                      ],
+                      "type": "CommerceOfferSubmittedEvent",
+                      "abstractKey": null
+                    }
+                  ],
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": "orderConnection(first:10,participantType:\"BUYER\")"
+    },
+    {
       "alias": "messagesConnection",
       "args": null,
       "concreteType": "MessageConnection",
@@ -250,6 +363,7 @@ return {
               "name": "node",
               "plural": false,
               "selections": [
+                (v3/*: any*/),
                 (v0/*: any*/),
                 (v1/*: any*/),
                 {
@@ -273,13 +387,7 @@ return {
                   "name": "body",
                   "storageKey": null
                 },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "createdAt",
-                  "storageKey": null
-                },
+                (v4/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -329,7 +437,6 @@ return {
                   ],
                   "storageKey": null
                 },
-                (v3/*: any*/),
                 {
                   "args": null,
                   "kind": "FragmentSpread",
@@ -364,7 +471,7 @@ return {
             {
               "kind": "InlineFragment",
               "selections": [
-                (v4/*: any*/),
+                (v5/*: any*/),
                 {
                   "args": null,
                   "kind": "FragmentSpread",
@@ -377,7 +484,7 @@ return {
             {
               "kind": "InlineFragment",
               "selections": [
-                (v4/*: any*/),
+                (v5/*: any*/),
                 {
                   "args": null,
                   "kind": "FragmentSpread",
@@ -398,5 +505,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '8175de5196eb8355c89e6f428a9a3002';
+(node as any).hash = 'a46a279cb2358de8fcd725f9b3868911';
 export default node;

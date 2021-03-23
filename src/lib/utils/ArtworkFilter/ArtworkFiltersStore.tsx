@@ -269,6 +269,7 @@ export const ParamDefaultValues = {
   attributionClass: undefined,
   categories: undefined,
   color: undefined,
+  colors: undefined,
   dimensionRange: "*-*",
   earliestCreatedYear: undefined,
   estimateRange: "",
@@ -295,6 +296,7 @@ const defaultCommonFilterOptions = {
   attributionClass: ParamDefaultValues.attributionClass,
   categories: ParamDefaultValues.categories,
   color: ParamDefaultValues.color,
+  colors: ParamDefaultValues.colors,
   additionalGeneIDs: ParamDefaultValues.additionalGeneIDs,
   dimensionRange: ParamDefaultValues.dimensionRange,
   earliestCreatedYear: ParamDefaultValues.earliestCreatedYear,
@@ -311,6 +313,26 @@ const defaultCommonFilterOptions = {
   sort: ParamDefaultValues.sortArtworks,
   viewAs: ParamDefaultValues.viewAs,
 }
+
+export const DEFAULT_FILTERS: FilterArray = [
+  { paramName: FilterParamName.estimateRange, paramValue: "", displayText: "All" },
+  { paramName: FilterParamName.medium, paramValue: "*", displayText: "All" },
+  { paramName: FilterParamName.priceRange, paramValue: "*-*", displayText: "All" },
+  { paramName: FilterParamName.size, paramValue: "*-*", displayText: "All" },
+  { paramName: FilterParamName.gallery, displayText: "All" },
+  { paramName: FilterParamName.institution, displayText: "All" },
+  { paramName: FilterParamName.color, displayText: "All" },
+  { paramName: FilterParamName.colors, displayText: "All" },
+  { paramName: FilterParamName.timePeriod, paramValue: [], displayText: "All" },
+  { paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy now" },
+  { paramName: FilterParamName.waysToBuyInquire, paramValue: false, displayText: "Inquire" },
+  { paramName: FilterParamName.waysToBuyMakeOffer, paramValue: false, displayText: "Make offer" },
+  { paramName: FilterParamName.waysToBuyBid, paramValue: false, displayText: "Bid" },
+  { paramName: FilterParamName.artistsIFollow, paramValue: false, displayText: "All artists I follow" },
+  { paramName: FilterParamName.artistIDs, paramValue: [], displayText: "All" },
+  { paramName: FilterParamName.viewAs, paramValue: false, displayText: "Grid" },
+  { paramName: FilterParamName.attributionClass, paramValue: "", displayText: "All" },
+]
 
 export const selectedOptionsUnion = ({
   selectedFilters,
@@ -344,56 +366,7 @@ export const selectedOptionsUnion = ({
     },
   }[filterType]
 
-  const defaultFilters: FilterArray = [
-    defaultSortFilter,
-    { paramName: FilterParamName.estimateRange, paramValue: "", displayText: "All" },
-    { paramName: FilterParamName.medium, paramValue: "*", displayText: "All" },
-    { paramName: FilterParamName.priceRange, paramValue: "*-*", displayText: "All" },
-    { paramName: FilterParamName.size, paramValue: "*-*", displayText: "All" },
-    { paramName: FilterParamName.gallery, displayText: "All" },
-    {
-      paramName: FilterParamName.institution,
-      displayText: "All",
-    },
-    { paramName: FilterParamName.color, displayText: "All" },
-    { paramName: FilterParamName.timePeriod, paramValue: [], displayText: "All" },
-    {
-      paramName: FilterParamName.waysToBuyBuy,
-      paramValue: false,
-      displayText: "Buy now",
-    },
-    {
-      paramName: FilterParamName.waysToBuyInquire,
-      paramValue: false,
-      displayText: "Inquire",
-    },
-    {
-      paramName: FilterParamName.waysToBuyMakeOffer,
-      paramValue: false,
-      displayText: "Make offer",
-    },
-    {
-      paramName: FilterParamName.waysToBuyBid,
-      paramValue: false,
-      displayText: "Bid",
-    },
-    {
-      paramName: FilterParamName.artistsIFollow,
-      paramValue: false,
-      displayText: "All artists I follow",
-    },
-    {
-      paramName: FilterParamName.artistIDs,
-      paramValue: [],
-      displayText: "All",
-    },
-    {
-      paramName: FilterParamName.viewAs,
-      paramValue: false,
-      displayText: "Grid",
-    },
-    { paramName: FilterParamName.attributionClass, paramValue: "", displayText: "All" },
-  ]
+  const defaultFilters: FilterArray = [defaultSortFilter, ...DEFAULT_FILTERS]
 
   // First, naively attempt to union all of the existing filters. Give selectedFilters
   // precedence over previouslyAppliedFilters and defaultFilters.

@@ -6,12 +6,14 @@ upcoming:
     - Fix iOS modal presentation infra code - david
     - Fix first install event analytics - brian, mike
     - Set up basic react webview module - david
+    - Add cookie setup for react web views - david
     - Fix iOS modal presentation infra code - david
   user_facing:
     - Set system navigation bar color to white on modals for android - mounir
     - Fix action sheets on android - brian, barry
     - Fix change password screen title  - mounir
     - Enable experimental layout animation on android - mounir
+    - Group order updates with messages in an associated conversation - erik, lily
 
 releases:
   - version: 6.8.1
@@ -33,6 +35,7 @@ releases:
       - Enable feature flags on android - mounir
       - Enable new onboarding feature flag - mounir
       - Adds improved time period filter behind feature flag - iskounen, damon, devon, roop
+      - Adds improved colors filter behind feature flag - damon
     user_facing:
       - Fix sign out bug - david, mounir
       - Adds inquiry checkout offer status CTA - lily

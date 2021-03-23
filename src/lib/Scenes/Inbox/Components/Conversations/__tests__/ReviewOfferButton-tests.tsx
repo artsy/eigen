@@ -134,7 +134,7 @@ describe("ReviewOfferButton", () => {
     })
 
     const text = extractText(wrapper.root)
-    expect(text).toContain("Offer Accepted - Please Confirm")
+    expect(text).toContain("Offer Accepted")
   })
 
   it("shows correct message and icon for received counteroffers", () => {
@@ -184,6 +184,7 @@ describe("ReviewOfferButton", () => {
     })
 
     wrapper.root.findByType(TouchableWithoutFeedback).props.onPress()
+
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedViewOffer",
       context_owner_type: "conversation",

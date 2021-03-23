@@ -83,8 +83,14 @@ jest.mock("rn-fetch-blob", () => ({
   },
 }))
 
+jest.mock("@react-native-cookies/cookies", () => ({ clearAll: jest.fn() }))
+
+beforeEach(() => {
+  require("@react-native-cookies/cookies").clearAll.mockReset()
+})
+
 // tslint:disable-next-line:no-empty
-jest.mock("@sentry/react-native", () => ({ captureMessage() {}, init() {}, setUser() {} }))
+jest.mock("@sentry/react-native", () => ({ captureMessage() {}, init() {}, setUser() {}, addBreadcrumb() {} }))
 
 // Needing to mock react-native-scrollable-tab-view due to Flow issue
 jest.mock("react-native-scrollable-tab-view", () => jest.fn(() => null))

@@ -5,12 +5,13 @@ import styled from "styled-components/native"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
-import { MessageGroup } from "./MessageGroup"
-
 import { Messages_conversation } from "__generated__/Messages_conversation.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
 
-import { groupMessages, MessageGroup as MessageGroupType } from "./utils/groupMessages"
+import { dropWhile, sortBy } from "lodash"
+import { DateTime } from "luxon"
+import { MessageGroup } from "./MessageGroup"
+import { ConversationItem, groupConversationItems } from "./utils/groupConversationItems"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -24,27 +25,53 @@ const LoadingIndicator = styled.ActivityIndicator`
   margin-top: 40px;
 `
 
+type Order = NonNullable<
+  NonNullable<NonNullable<NonNullable<Props["conversation"]["orderConnection"]>["edges"]>[number]>["node"]
+>
+type OrderEvent = Order["orderHistory"][number]
+type OrderEventWithKey = OrderEvent & { key: string }
+
+export type ConversationMessage = NonNullable<
+  NonNullable<NonNullable<NonNullable<Props["conversation"]["messagesConnection"]>["edges"]>[number]>["node"]
+>
+
 export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   const { conversation, relay, onDataFetching } = props
 
   const [fetchingMoreData, setFetchingMoreData] = useState(false)
   const [reloadingData, setReloadingData] = useState(false)
+  const [messages, setMessages] = useState<ConversationItem[][]>([])
 
-  const [messages, setMessages] = useState<MessageGroupType[]>()
+  // Get all messages and give them a key for use with flatlist
+  const allMessages = extractNodes(conversation.messagesConnection)
+    .filter((node) => {
+      if (node.isFirstMessage) {
+        return true
+      }
+      return node.body?.length || node.attachments?.length
+    })
+    .map((node) => {
+      return { key: node.id, ...node }
+    })
+
+  // flatmap all orders' events and give them a synthetic `key` for use with flatlist
+  const allOrderEvents = extractNodes(conversation?.orderConnection)
+    .reduce<OrderEvent[]>((prev, order) => prev.concat(order.orderHistory), [])
+    .map<OrderEventWithKey>((event, index) => ({ ...event, key: `event-${index}` }))
+
+  // Combine and group events/messages
   useEffect(() => {
-    const nodes = extractNodes(conversation.messagesConnection)
-      .filter((node) => {
-        if (node.isFirstMessage) {
-          return true
-        }
-        return node.body?.length || node.attachments?.length
-      })
-      .map((node) => {
-        return { key: node.id, ...node }
-      })
-      .reverse()
-    setMessages(groupMessages(nodes))
-  }, [conversation.messagesConnection])
+    const sortedMessages = sortBy([...allOrderEvents, ...allMessages], (message) =>
+      DateTime.fromISO(message.createdAt!)
+    )
+
+    // Drop all order events until the first message appears (this assumes the conversation begins with a message)
+    const sortedWithCutoff = dropWhile(sortedMessages, (item) => item.__typename !== "Message")
+
+    const groupedMessages = groupConversationItems(sortedWithCutoff)
+
+    setMessages(groupedMessages)
+  }, [allOrderEvents.length, allMessages.length])
 
   const flatList = useRef<FlatList>(null)
   const [flatListHeight, setFlatListHeight] = useState(0)
@@ -111,19 +138,20 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
       key={conversation.internalID!}
       data={messages}
       initialNumToRender={messages?.length}
-      renderItem={({ item, index }) => {
+      renderItem={({ item }) => {
         return (
           <MessageGroup
             group={item}
             conversationId={conversation.internalID!}
             subjectItem={conversation.items?.[0]?.item!}
-            key={`group-${index}-${item[0]?.key}`}
           />
         )
       }}
       inverted={!shouldStickFirstMessageToTop}
       ref={flatList}
-      keyExtractor={({ id }) => id}
+      keyExtractor={(group) => {
+        return group[0].id
+      }}
       keyboardShouldPersistTaps="always"
       onEndReached={loadMore}
       onEndReachedThreshold={0.2}
@@ -161,6 +189,24 @@ export default createPaginationContainer(
         }
         initialMessage
         lastMessageID
+        orderConnection(first: 10, participantType: BUYER) {
+          edges {
+            node {
+              orderHistory {
+                ...OrderUpdate_event
+                __typename
+                ... on CommerceOrderStateChangedEvent {
+                  createdAt
+                  state
+                  stateReason
+                }
+                ... on CommerceOfferSubmittedEvent {
+                  createdAt
+                }
+              }
+            }
+          }
+        }
         messagesConnection(first: $count, after: $after, sort: DESC)
           @connection(key: "Messages_messagesConnection", filters: []) {
           pageInfo {
@@ -172,6 +218,7 @@ export default createPaginationContainer(
           edges {
             cursor
             node {
+              __typename
               id
               internalID
               isFromUser

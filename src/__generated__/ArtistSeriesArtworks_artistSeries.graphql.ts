@@ -65,6 +65,11 @@ const node: ReaderFragment = {
       "name": "color"
     },
     {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "colors"
+    },
+    {
       "defaultValue": 20,
       "kind": "LocalArgument",
       "name": "count"
@@ -179,6 +184,11 @@ const node: ReaderFragment = {
           "kind": "Variable",
           "name": "color",
           "variableName": "color"
+        },
+        {
+          "kind": "Variable",
+          "name": "colors",
+          "variableName": "colors"
         },
         {
           "kind": "Variable",
@@ -369,5 +379,5 @@ const node: ReaderFragment = {
   "type": "ArtistSeries",
   "abstractKey": null
 };
-(node as any).hash = '86de307244f966207da8c7cb5beda338';
+(node as any).hash = 'ed33458226cd09bcbb888f8ae8356ab5';
 export default node;

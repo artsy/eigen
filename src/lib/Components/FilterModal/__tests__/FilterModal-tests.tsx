@@ -554,6 +554,7 @@ describe("Applying filters on Artworks", () => {
         "atAuction": false,
         "attributionClass": null,
         "color": null,
+        "colors": null,
         "count": 10,
         "cursor": null,
         "dimensionRange": "*-*",

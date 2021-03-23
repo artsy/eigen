@@ -2260,6 +2260,20 @@ type CaptureHoldPayload {
   holdOrError: InventoryHoldOrErrorUnion!
 }
 
+type CausalityLotState {
+  bidCount: Int
+  floorSellingPrice: Money
+  floorSellingPriceCents: Int
+  internalID: String
+  onlineAskingPrice: Money
+  onlineAskingPriceCents: Int
+  reserveStatus: String
+  saleId: String
+  sellingPrice: Money
+  sellingPriceCents: Int
+  soldStatus: String
+}
+
 type City {
   coordinates: LatLng
   fairsConnection(
@@ -7348,6 +7362,7 @@ type Me implements Node {
     # Only the lot standings for a specific auction
     saleID: String
   ): [LotStanding]
+  myBids: MyBids
   myCollectionConnection(
     after: String
     before: String
@@ -7671,6 +7686,17 @@ type Mutation {
   updateViewingRoomSubsections(input: UpdateViewingRoomSubsectionsInput!): UpdateViewingRoomSubsectionsPayload
 }
 
+type MyBid {
+  lots: [CausalityLotState]
+  sale: Sale
+  saleArtworks: [SaleArtwork]
+}
+
+type MyBids {
+  active: [MyBid]
+  closed: [MyBid]
+}
+
 type MyCollectionArtworkMutationDeleteSuccess {
   success: Boolean
 }
@@ -7962,6 +7988,9 @@ type PageInfo {
 
 type Partner implements Node {
   analytics: AnalyticsPartnerStats
+
+  # A connection of articles related to a partner.
+  articlesConnection(after: String, before: String, first: Int, last: Int, sort: ArticleSorts): ArticleConnection
 
   # A connection of artists at a partner.
   artistsConnection(
@@ -9453,6 +9482,7 @@ type Sale implements Node {
     last: Int
   ): ArtworkConnection
   associatedSale: Sale
+  bidder: Bidder
 
   # A bid increment policy that explains minimum bids in ranges.
   bidIncrements: [BidIncrement]
@@ -9594,7 +9624,14 @@ type SaleArtwork implements ArtworkEdgeInterface & Node {
   # Can bids be placed on the artwork?
   isBiddable: Boolean
   isBidOn: Boolean
+
+  # Is the user the highest bidder on the sale artwork. (Currently only being used via me.myBids.)
+  isHighestBidder: Boolean
+
+  # Is this sale artwork being watched by a user. (Currently only used on me.myBids and me.watchedLotsConnection.)
+  isWatching: Boolean
   isWithReserve: Boolean
+  lot: CausalityLotState
   lotLabel: String
   lowEstimate: SaleArtworkLowEstimate
   minimumNextBid: SaleArtworkMinimumNextBid

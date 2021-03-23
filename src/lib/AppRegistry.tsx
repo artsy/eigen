@@ -70,7 +70,7 @@ import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
-import { ArtsyReactWebView } from "./Components/ArtsyReactWebView"
+import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { ToastProvider } from "./Components/Toast/toastHook"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
@@ -343,7 +343,7 @@ export const modules = defineModules({
   }),
   LocalDiscovery: nativeModule(),
   WebView: nativeModule(),
-  ReactWebView: reactModule(ArtsyReactWebView, {
+  ReactWebView: reactModule(ArtsyReactWebViewPage, {
     fullBleed: true,
     hasOwnModalCloseButton: true,
     hidesBackButton: true,
@@ -403,6 +403,7 @@ const Main: React.FC<{}> = track()(({}) => {
 
   useSentryConfig()
   useStripeConfig()
+  useWebViewCookies()
 
   if (!isHydrated) {
     return <View />
