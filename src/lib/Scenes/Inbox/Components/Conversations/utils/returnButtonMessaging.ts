@@ -25,8 +25,7 @@ export const returnButtonMessaging = ({
     subMessage = `Expires in ${hoursTillExpiration}hr`
     showMoneyIcon = false
   } else if (state === "APPROVED" && lastOfferFromParticipant === "BUYER") {
-    message = `${offerType} Accepted - Please Confirm`
-    subMessage = `Expires in ${hoursTillExpiration}hr`
+    message = `${offerType} Accepted`
   } else if (lastTransactionFailed) {
     backgroundColor = "copper100"
     message = `Payment Failed`

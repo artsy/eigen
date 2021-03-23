@@ -1,4 +1,5 @@
 import { ReviewOfferButton_order } from "__generated__/ReviewOfferButton_order.graphql"
+import { OrderedColorFilters } from "lib/Components/ArtworkFilterOptions/ColorOptions"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { useEventTiming } from "lib/utils/useEventTiming"
@@ -18,6 +19,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
     order.state == null ||
     order.state === "ABANDONED" ||
     order.state === "PENDING" ||
+    order.state === "CANCELED" ||
     (order.state === "SUBMITTED" && order.lastOffer?.fromParticipant === "BUYER")
   ) {
     return null
@@ -39,7 +41,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
 
     const { backgroundColor, message, subMessage, showMoneyIcon } = returnButtonMessaging({
       state: order.state,
-      stateReason: order.stateReason,
+      lastTransactionFailed: order.lastTransactionFailed,
       isCounter,
       lastOfferFromParticipant: order.lastOffer?.fromParticipant,
       hoursTillExpiration: hours,
@@ -98,6 +100,7 @@ export const ReviewOfferButtonFragmentContainer = createFragmentContainer(Review
       state
       stateReason
       stateExpiresAt
+      lastTransactionFailed
       ... on CommerceOfferOrder {
         lastOffer {
           fromParticipant
