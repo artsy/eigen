@@ -98,7 +98,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
               } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
                 navigate(`/orders/${orderOrError.order.internalID}`, {
                   modal: true,
-                  passProps: { orderID: orderOrError.order.internalID, title: "Buy Now" },
+                  passProps: { orderID: orderOrError.order.internalID, title: "Make Offer" },
                 })
               }
             })
