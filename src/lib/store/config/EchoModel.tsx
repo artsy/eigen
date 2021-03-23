@@ -1,7 +1,7 @@
 import { action, Action, computed, Computed, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import moment from "moment-timezone"
 import { Platform } from "react-native"
-import lessThan from "semver/functions/lt"
+import { lt as lessThan } from "semver"
 import appJson from "../../../../app.json"
 import echoLaunchJSON from "../../../../Artsy/App/EchoNew.json"
 import { unsafe_getDevToggle } from "../GlobalStore"
