@@ -36,7 +36,11 @@ export const Onboarding = () => {
               ...TransitionPresets.SlideFromRightIOS,
             }}
           >
-            <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
+            <StackNavigator.Screen
+              name="OnboardingWelcome"
+              options={{ headerShown: false }}
+              component={OnboardingWelcome}
+            />
             <StackNavigator.Screen name="OnboardingLogin" component={OnboardingLogin} />
             <StackNavigator.Screen name="OnboardingCreateAccount" component={OnboardingCreateAccount} />
             <StackNavigator.Screen name="OnboardingForgotPassword" component={OnboardingForgotPassword} />

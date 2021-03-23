@@ -20,6 +20,7 @@ upcoming:
     - Enable experimental layout animation on android - mounir
     - Group order updates with messages in an associated conversation - erik, lily
     - Fix modal header on iOS 14 in consignments flow - brian
+    - Add Onboarding welcome screen - mounir
 
 releases:
   - version: 6.8.1
