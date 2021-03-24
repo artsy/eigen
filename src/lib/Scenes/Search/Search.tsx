@@ -51,7 +51,7 @@ export const Search: React.FC = () => {
           <Scrollable>
             <RecentSearches />
             <Spacer mb={3} />
-            {!isPad() && Platform.OS === "ios" && <CityGuideCTA />}
+            {!isPad() && Platform.OS === "ios" ? <CityGuideCTA /> : null}
             <Spacer mb="40px" />
           </Scrollable>
         )}

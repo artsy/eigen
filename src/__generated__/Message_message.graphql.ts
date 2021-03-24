@@ -22,6 +22,7 @@ export type Message_message = {
         readonly fileName: string;
         readonly " $fragmentRefs": FragmentRefs<"PDFPreview_attachment" | "ImagePreview_attachment" | "FileDownload_attachment">;
     } | null> | null;
+    readonly __typename: "Message";
     readonly " $refType": "Message_message";
 };
 export type Message_message$data = Message_message;
@@ -46,6 +47,13 @@ return {
   "metadata": null,
   "name": "Message_message",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "__typename",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": null,
@@ -160,5 +168,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'e057ee50789a28c46009ac43c3d57a63';
+(node as any).hash = '3958db3034e8450a34055b0f6262e05e';
 export default node;

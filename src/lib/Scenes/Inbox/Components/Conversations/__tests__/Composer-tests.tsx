@@ -234,7 +234,7 @@ describe("inquiry offer enabled", () => {
       const cta = tree.root.findAllByType(ReviewOfferButton)[0]
       expect(cta).toBeDefined()
       expect(cta.children.length).toBe(1)
-      expect(extractText(cta)).toContain("Accepted - Please Confirm")
+      expect(extractText(cta)).toContain("Counteroffer Accepted")
       expect(cta.findAllByType(Flex)[0].props).toEqual(expect.objectContaining({ bg: "green100" }))
     })
 

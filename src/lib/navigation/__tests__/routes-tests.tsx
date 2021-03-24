@@ -1,4 +1,4 @@
-import { matchRoute } from "lib/navigation/routes"
+import { matchRoute, replaceParams, webViewRoute } from "lib/navigation/routes"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 
 describe("artsy.net routes", () => {
@@ -1184,6 +1184,45 @@ describe("other domains", () => {
     expect(matchRoute("https://google.com")).toEqual({
       type: "external_url",
       url: "https://google.com",
+    })
+  })
+})
+
+describe(replaceParams, () => {
+  it("replaces the params in a url with params from an object", () => {
+    expect(replaceParams("/artist/:id", { id: "banksy" })).toBe("/artist/banksy")
+    expect(replaceParams("/bid/:saleID/:artworkID", { saleID: "christies", artworkID: "keith-haring-dog" })).toBe(
+      "/bid/christies/keith-haring-dog"
+    )
+    expect(replaceParams("/artist/:artistID/auction-results", { artistID: "josef-albers" })).toBe(
+      "/artist/josef-albers/auction-results"
+    )
+  })
+
+  it("works with wildcards", () => {
+    expect(replaceParams("/artist/:id/*", { id: "banksy", "*": "auction-results/78923" })).toBe(
+      "/artist/banksy/auction-results/78923"
+    )
+  })
+})
+
+describe(webViewRoute, () => {
+  it("returns a route matcher for web views", () => {
+    const matcher = webViewRoute("/conditions-of-sale")
+    expect(matcher.module).toBe("WebView")
+    expect(matcher.match(["conditions-of-sale"])).toEqual({ url: "/conditions-of-sale" })
+  })
+
+  it("returns react web view when the feature flag is on", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsUseReactNativeWebView: true })
+    const matcher = webViewRoute("/conditions-of-sale")
+    expect(matcher.module).toBe("ReactWebView")
+  })
+
+  it("inlines params and wildcards in the original route", () => {
+    const matcher = webViewRoute("/artist/:artistID/*")
+    expect(matcher.match(["artist", "banksy", "auction-results", "8907"])).toEqual({
+      url: "/artist/banksy/auction-results/8907",
     })
   })
 })

@@ -1183,6 +1183,10 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "colors",
+        },
+        {
+          displayText: "All",
           paramName: "majorPeriods",
           paramValue: [],
         },
@@ -1277,6 +1281,10 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "color",
+        },
+        {
+          displayText: "All",
+          paramName: "colors",
         },
         {
           displayText: "All",
@@ -1384,6 +1392,10 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "color",
+        },
+        {
+          displayText: "All",
+          paramName: "colors",
         },
         {
           displayText: "All",
@@ -1505,6 +1517,10 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "colors",
+        },
+        {
+          displayText: "All",
           paramName: "majorPeriods",
           paramValue: [],
         },
@@ -1613,6 +1629,10 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "colors",
+        },
+        {
+          displayText: "All",
           paramName: "majorPeriods",
           paramValue: [],
         },
@@ -1694,6 +1714,10 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "color",
+        },
+        {
+          displayText: "All",
+          paramName: "colors",
         },
         {
           displayText: "All",
@@ -1791,6 +1815,10 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "color",
+        },
+        {
+          displayText: "All",
+          paramName: "colors",
         },
         {
           displayText: "All",
@@ -1892,6 +1920,10 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "colors",
+        },
+        {
+          displayText: "All",
           paramName: "majorPeriods",
           paramValue: [],
         },
@@ -1968,6 +2000,10 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "color",
+        },
+        {
+          displayText: "All",
+          paramName: "colors",
         },
         {
           displayText: "All",

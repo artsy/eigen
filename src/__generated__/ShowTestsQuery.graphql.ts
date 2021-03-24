@@ -1242,6 +1242,7 @@ return {
               "additionalGeneIDs",
               "priceRange",
               "color",
+              "colors",
               "dimensionRange",
               "majorPeriods",
               "acquireable",

@@ -1505,6 +1505,7 @@ return {
               "additionalGeneIDs",
               "priceRange",
               "color",
+              "colors",
               "partnerID",
               "dimensionRange",
               "majorPeriods",

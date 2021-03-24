@@ -1,6 +1,6 @@
 import echoLaunchJSON from "../../../../../Artsy/App/EchoNew.json"
 import { __globalStoreTestUtils__, GlobalStore } from "../../GlobalStore"
-import { FeatureDescriptor, features } from "../features"
+import { DevToggleDescriptor, FeatureDescriptor, features } from "../features"
 
 jest.mock("../../../../../Artsy/App/EchoNew.json", () => {
   const echo: Partial<typeof echoLaunchJSON> = {
@@ -16,6 +16,7 @@ jest.mock("../../../../../Artsy/App/EchoNew.json", () => {
 })
 
 type TestFeatures = "FeatureA" | "FeatureB"
+type TestDevToggles = "DevToggleA"
 
 jest.mock("lib/store/config/features", () => {
   const mockFeatures: { readonly [key: string]: FeatureDescriptor } = {
@@ -28,14 +29,21 @@ jest.mock("lib/store/config/features", () => {
       echoFlagKey: "FeatureBEchoKey",
     },
   }
+  const mockDevToggles: { readonly [key: string]: DevToggleDescriptor } = {
+    DevToggleA: {
+      description: "A useful dev toggle",
+    },
+  }
   return {
     features: mockFeatures,
+    devToggles: mockDevToggles,
   }
 })
 
-const getComputedFeatures = () => {
-  return (__globalStoreTestUtils__?.getCurrentState().config.features.flags as any) as Record<TestFeatures, boolean>
-}
+const getComputedFeatures = () =>
+  (__globalStoreTestUtils__?.getCurrentState().config.features.flags as unknown) as Record<TestFeatures, boolean>
+const getComputedDevToggles = () =>
+  (__globalStoreTestUtils__?.getCurrentState().config.features.devToggles as unknown) as Record<TestDevToggles, boolean>
 
 describe("Feature flags", () => {
   it("are taken from the features definition map and turned into a computed boolean map in the global store", () => {
@@ -58,6 +66,9 @@ describe("Feature flags", () => {
     expect(getComputedFeatures().FeatureB).toBe(true)
     GlobalStore.actions.config.features.setAdminOverride({ key: "FeatureB" as any, value: null })
     expect(getComputedFeatures().FeatureB).toBe(false)
+
+    GlobalStore.actions.config.features.setAdminOverride({ key: "DevToggleA" as any, value: true })
+    expect(getComputedDevToggles().DevToggleA).toBe(true)
   })
   it("use echo if an echo flag is given and the feature is ready for release", () => {
     expect(getComputedFeatures().FeatureA).toBe(true)

@@ -3,7 +3,7 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { compact } from "lodash"
-import { BoxProps, color, Flex, Sans, Spacer } from "palette"
+import { BoxProps, color, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { View } from "react-native"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -104,9 +104,9 @@ export class Message extends React.Component<Props> {
         <Flex maxWidth="66.67%" alignItems={alignAttachments} flexDirection="column" style={{ alignSelf }}>
           <AttachmentContainer style={{ backgroundColor }}>
             <Hyperlink onPress={this.onLinkPress.bind(this)} linkStyle={linkStyle}>
-              <Sans size="4" color={textColor}>
+              <Text variant="text" color={textColor}>
                 {body}
-              </Sans>
+              </Text>
             </Hyperlink>
           </AttachmentContainer>
           {!!message.attachments?.length && <Spacer mb={0.5} />}
@@ -121,6 +121,7 @@ export class Message extends React.Component<Props> {
 export default createFragmentContainer(Message, {
   message: graphql`
     fragment Message_message on Message {
+      __typename
       body
       createdAt
       internalID

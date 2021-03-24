@@ -1,3 +1,5 @@
+import { Platform } from "react-native"
+
 export interface FeatureDescriptor {
   /**
    * Set readyForRelease to `true` when the feature is ready to be exposed outside of dev mode.
@@ -64,9 +66,9 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableNewPartnerView",
   },
   AROptionsUseReactNativeWebView: {
-    readyForRelease: false,
+    readyForRelease: Platform.OS === "android",
     description: "Use react-native web views",
-    showInAdminMenu: true,
+    showInAdminMenu: Platform.OS !== "android",
   },
   AROptionsLotConditionReport: {
     readyForRelease: true,
@@ -97,3 +99,33 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
 })
+
+export interface DevToggleDescriptor {
+  /**
+   * Provide a short description for the admin menu
+   */
+  readonly description: string
+}
+
+// Helper function to get good typings and intellisense
+const defineDevToggles = <T extends string>(devToggleMap: { readonly [devToggleName in T]: DevToggleDescriptor }) =>
+  devToggleMap
+
+export type DevToggleName = keyof typeof devToggles
+
+export const devToggles = defineDevToggles({
+  DTShowQuickAccessInfo: {
+    description: "Show quick access info",
+  },
+})
+
+export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {
+  return Object.keys(devToggles).includes(name)
+}
+
+type Assert<T, U extends T> = U
+// If you mouse-over the name of the type below, you should be able to see the key that needs renaming!
+export type _ThereIsAKeyThatIsCommonInFeaturesAndDevToggles_PleaseRename_MouseOverToSeeTheNaughtyKey = Assert<
+  never,
+  keyof (typeof features | typeof devToggles)
+>

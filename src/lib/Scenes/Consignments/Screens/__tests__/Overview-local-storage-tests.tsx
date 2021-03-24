@@ -4,7 +4,7 @@ AsyncStorage.setItem = jest.fn()
 AsyncStorage.getItem = jest.fn()
 AsyncStorage.removeItem = jest.fn()
 
-import Overview from "../Overview"
+import { Overview } from "../Overview"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
 jest.mock("../../Submission/createConsignmentSubmission", () => ({ createConsignmentSubmission: jest.fn() }))
@@ -31,9 +31,8 @@ it("does not restore setup props are provided", () => {
 it("updates the local state when there an update is triggered", () => {
   const overview = new Overview({ setup: {} })
 
-  overview.setState = (updated, callback) => {
+  overview.setState = (updated: any, callback: () => void) => {
     overview.state = Object.assign({}, overview.state, updated)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     callback()
   }
 

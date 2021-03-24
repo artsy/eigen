@@ -50,7 +50,8 @@ type AnalyticsArtworksPublishedStats {
   totalCount: Int!
 }
 
-# An ISO 8601 datetime
+# An ISO 8601 datetime -- second one is because of moving price insights
+# from Diffusion to Vortex.
 scalar AnalyticsDateTime
 
 # Visitor countries, device, referals and session page
@@ -2052,6 +2053,12 @@ enum AuctionsSoldStatus {
   Sold
 }
 
+enum AuctionState {
+  CLOSED
+  OPEN
+  UPCOMING
+}
+
 # An Artsy User
 type AuctionsUser implements AuctionsNode {
   # The ID of an object
@@ -2258,6 +2265,20 @@ type CaptureHoldPayload {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
   holdOrError: InventoryHoldOrErrorUnion!
+}
+
+type CausalityLotState {
+  bidCount: Int
+  floorSellingPrice: Money
+  floorSellingPriceCents: Int
+  internalID: String
+  onlineAskingPrice: Money
+  onlineAskingPriceCents: Int
+  reserveStatus: String
+  saleId: String
+  sellingPrice: Money
+  sellingPriceCents: Int
+  soldStatus: String
 }
 
 type City {
@@ -4707,7 +4728,8 @@ type Conversation implements Node {
     before: String
     first: Int
     last: Int
-    participantType: CommerceOrderParticipantEnum!
+    participantType: CommerceOrderParticipantEnum
+    sellerId: ID
     state: CommerceOrderStateEnum
   ): CommerceOrderConnectionWithTotalCount
 
@@ -6878,7 +6900,6 @@ enum InvoiceState {
   VOID
 }
 
-# An ISO 8601-encoded datetime
 scalar ISO8601DateTime
 
 # Represents untyped JSON
@@ -7347,6 +7368,7 @@ type Me implements Node {
     # Only the lot standings for a specific auction
     saleID: String
   ): [LotStanding]
+  myBids: MyBids
   myCollectionConnection(
     after: String
     before: String
@@ -7397,6 +7419,7 @@ type Me implements Node {
   recentlyViewedArtworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
   saleRegistrationsConnection(
     after: String
+    auctionState: AuctionState
     before: String
     first: Int
 
@@ -7668,6 +7691,17 @@ type Mutation {
   updateViewingRoom(input: UpdateViewingRoomInput!): UpdateViewingRoomPayload
   updateViewingRoomArtworks(input: UpdateViewingRoomArtworksInput!): UpdateViewingRoomArtworksPayload
   updateViewingRoomSubsections(input: UpdateViewingRoomSubsectionsInput!): UpdateViewingRoomSubsectionsPayload
+}
+
+type MyBid {
+  lots: [CausalityLotState]
+  sale: Sale
+  saleArtworks: [SaleArtwork]
+}
+
+type MyBids {
+  active: [MyBid]
+  closed: [MyBid]
 }
 
 type MyCollectionArtworkMutationDeleteSuccess {
@@ -7961,6 +7995,9 @@ type PageInfo {
 
 type Partner implements Node {
   analytics: AnalyticsPartnerStats
+
+  # A connection of articles related to a partner.
+  articlesConnection(after: String, before: String, first: Int, last: Int, sort: ArticleSorts): ArticleConnection
 
   # A connection of artists at a partner.
   artistsConnection(
@@ -8357,7 +8394,7 @@ type PriceInsightConnection {
   pageCursors: PageCursors
 
   # Information to aid in pagination.
-  pageInfo: PageInfo!
+  pageInfo: AnalyticsPageInfo!
   totalCount: Int
   totalPages: Int
 }
@@ -9183,6 +9220,7 @@ type Query {
   # A list of Sales
   salesConnection(
     after: String
+    auctionState: AuctionState
     before: String
     first: Int
 
@@ -9452,6 +9490,7 @@ type Sale implements Node {
     last: Int
   ): ArtworkConnection
   associatedSale: Sale
+  bidder: Bidder
 
   # A bid increment policy that explains minimum bids in ranges.
   bidIncrements: [BidIncrement]
@@ -9593,7 +9632,14 @@ type SaleArtwork implements ArtworkEdgeInterface & Node {
   # Can bids be placed on the artwork?
   isBiddable: Boolean
   isBidOn: Boolean
+
+  # Is the user the highest bidder on the sale artwork. (Currently only being used via me.myBids.)
+  isHighestBidder: Boolean
+
+  # Is this sale artwork being watched by a user. (Currently only used on me.myBids and me.watchedLotsConnection.)
+  isWatching: Boolean
   isWithReserve: Boolean
+  lot: CausalityLotState
   lotLabel: String
   lowEstimate: SaleArtworkLowEstimate
   minimumNextBid: SaleArtworkMinimumNextBid
@@ -11506,6 +11552,7 @@ type Viewer {
   # A list of Sales
   salesConnection(
     after: String
+    auctionState: AuctionState
     before: String
     first: Int
 

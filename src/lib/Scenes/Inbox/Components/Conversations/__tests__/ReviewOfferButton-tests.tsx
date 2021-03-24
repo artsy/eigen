@@ -8,15 +8,22 @@ import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ReviewOfferButton, ReviewOfferButtonFragmentContainer } from "../ReviewOfferButton"
 jest.unmock("react-relay")
 
 describe("ReviewOfferButton", () => {
   let env: ReturnType<typeof createMockEnvironment>
+  const trackEvent = jest.fn()
 
   beforeEach(() => {
     env = createMockEnvironment()
+    ;(useTracking as jest.Mock).mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
   })
 
   const TestRenderer = () => (
@@ -32,7 +39,7 @@ describe("ReviewOfferButton", () => {
       variables={{ orderID: "test-order" }}
       render={({ error, props }) => {
         if (props?.order) {
-          return <ReviewOfferButtonFragmentContainer order={props.order} />
+          return <ReviewOfferButtonFragmentContainer order={props.order} conversationID="1234" />
         } else if (error) {
           console.error(error)
         }
@@ -127,7 +134,7 @@ describe("ReviewOfferButton", () => {
     })
 
     const text = extractText(wrapper.root)
-    expect(text).toContain("Offer Accepted - Please Confirm")
+    expect(text).toContain("Offer Accepted")
   })
 
   it("shows correct message and icon for received counteroffers", () => {
@@ -163,7 +170,7 @@ describe("ReviewOfferButton", () => {
     expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
   })
 
-  it("tapping it opens the review offer webview", () => {
+  it("tapping it opens the review offer webview and tracks event", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
         state: "SUBMITTED",
@@ -177,7 +184,16 @@ describe("ReviewOfferButton", () => {
     })
 
     wrapper.root.findByType(TouchableWithoutFeedback).props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/orders/<CommerceOrder-mock-id-1>", {"modal": true, "passProps": {"orderID": "<CommerceOrder-mock-id-1>"}}
-    )
+
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedViewOffer",
+      context_owner_type: "conversation",
+      impulse_conversation_id: "1234",
+      subject: "Counteroffer Received",
+    })
+    expect(navigate).toHaveBeenCalledWith("/orders/<CommerceOrder-mock-id-1>", {
+      modal: true,
+      passProps: { orderID: "<CommerceOrder-mock-id-1>", title: "Make Offer" },
+    })
   })
 })

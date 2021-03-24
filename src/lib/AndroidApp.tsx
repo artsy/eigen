@@ -1,3 +1,4 @@
+import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React, { useEffect, useRef } from "react"
@@ -5,6 +6,7 @@ import { useCallback } from "react"
 import { Linking, UIManager, View } from "react-native"
 import track from "react-tracking"
 import { RelayEnvironmentProvider } from "relay-hooks"
+import { useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { useSentryConfig } from "./ErrorReporting"
 import { ModalStack } from "./navigation/ModalStack"
@@ -27,6 +29,7 @@ const Main: React.FC<{}> = track()(({}) => {
 
   useSentryConfig()
   useStripeConfig()
+  useWebViewCookies()
 
   useEffect(() => {
     Linking.getInitialURL().then((url) => {
@@ -85,13 +88,15 @@ export const App = () => (
   <RelayEnvironmentProvider environment={defaultEnvironment}>
     <ProvideScreenDimensions>
       <Theme>
-        <_FancyModalPageWrapper>
-          <GlobalStoreProvider>
-            <AdminMenuWrapper>
-              <Main />
-            </AdminMenuWrapper>
-          </GlobalStoreProvider>
-        </_FancyModalPageWrapper>
+        <ActionSheetProvider>
+          <_FancyModalPageWrapper>
+            <GlobalStoreProvider>
+              <AdminMenuWrapper>
+                <Main />
+              </AdminMenuWrapper>
+            </GlobalStoreProvider>
+          </_FancyModalPageWrapper>
+        </ActionSheetProvider>
       </Theme>
     </ProvideScreenDimensions>
   </RelayEnvironmentProvider>

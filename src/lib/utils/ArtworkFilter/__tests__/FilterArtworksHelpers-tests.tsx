@@ -568,48 +568,6 @@ describe("selectedOption", () => {
           "All artists I follow, 2 more"
         )
       })
-
-      it("returns the correct value for no (all) attribution classes", () => {
-        expect(
-          selectedOption({
-            selectedOptions: [],
-            filterScreen: "attributionClass",
-            aggregations: [],
-          })
-        ).toEqual("All")
-      })
-
-      it("returns the correct value for a single attribution classes", () => {
-        expect(
-          selectedOption({
-            selectedOptions: [
-              {
-                displayText: "",
-                paramName: FilterParamName.attributionClass,
-                paramValue: ["unique"],
-              },
-            ],
-            filterScreen: "attributionClass",
-            aggregations: [],
-          })
-        ).toEqual("Unique")
-      })
-
-      it("returns the correct value for multiple attribution classes", () => {
-        expect(
-          selectedOption({
-            selectedOptions: [
-              {
-                displayText: "",
-                paramName: FilterParamName.attributionClass,
-                paramValue: ["unique", "unknown edition"],
-              },
-            ],
-            filterScreen: "attributionClass",
-            aggregations: [],
-          })
-        ).toEqual("Unique, Unknown edition")
-      })
     })
 
     describe("saleArtworks", () => {

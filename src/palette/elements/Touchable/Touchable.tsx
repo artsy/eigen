@@ -16,20 +16,15 @@ interface ExtraTouchableProps {
   noFeedback?: boolean
 }
 
+export type TouchableProps = TouchableHighlightProps & ExtraTouchableProps
+
 /**
  * `haptic` can be used like:
  * <Touchable haptic />
  * or
  * <Touchable haptic="impactHeavy" />
  */
-export const Touchable: React.FC<TouchableHighlightProps & ExtraTouchableProps> = ({
-  children,
-  flex,
-  haptic,
-  noFeedback,
-  onPress,
-  ...props
-}) => {
+export const Touchable: React.FC<TouchableProps> = ({ children, flex, haptic, noFeedback, onPress, ...props }) => {
   const inner = React.Children.count(children) === 1 ? children : <Flex flex={flex}>{children}</Flex>
 
   const onPressWrapped = (evt: GestureResponderEvent) => {

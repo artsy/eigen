@@ -1,5 +1,6 @@
 import { AppModule } from "lib/AppRegistry"
-import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
+import { ArtsyWebViewConfig } from "lib/Components/ArtsyReactWebView"
+import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { parse } from "url"
@@ -12,8 +13,8 @@ export function matchRoute(
   const pathParts = parsed.pathname?.split(/\/+/).filter(Boolean) ?? []
   const queryParams: object = parsed.query ? parseQueryString(parsed.query) : {}
 
-  const domain = parsed.host || "artsy.net"
-  const routes = getDomainMap()[domain]
+  const domain = (parsed.host || parse(unsafe__getEnvironment().webURL).host) ?? "artsy.net"
+  const routes = getDomainMap()[domain as any]
 
   if (!routes) {
     // Unrecognized domain, let's send the user to Safari or whatever
@@ -38,9 +39,35 @@ export function matchRoute(
   console.error("Unhandled route", url)
   return {
     type: "match",
-    module: "WebView",
+    module: unsafe_getFeatureFlag("AROptionsUseReactNativeWebView") ? "ReactWebView" : "WebView",
     params: { url },
   }
+}
+
+export function webViewRoute(url: string, config?: ArtsyWebViewConfig) {
+  return new RouteMatcher(
+    url,
+    unsafe_getFeatureFlag("AROptionsUseReactNativeWebView") ? "ReactWebView" : "WebView",
+    (params) => ({
+      url: replaceParams(url, params),
+      ...config,
+    })
+  )
+}
+
+export function replaceParams(url: string, params: any) {
+  url = url.replace(/\*$/, params["*"])
+  let match = url.match(/:(\w+)/)
+  while (match) {
+    const key = match[1]
+    if (!(key in params)) {
+      console.error("[replaceParams]: something is very wrong", key, params)
+      return url
+    }
+    url = url.replace(":" + key, params[key])
+    match = url.match(/:(\w+)/)
+  }
+  return url
 }
 
 function getDomainMap(): Record<string, RouteMatcher[] | null> {
@@ -61,14 +88,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       : null,
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
     new RouteMatcher("/artwork/:artworkID/medium", "ArtworkMedium"),
-    new RouteMatcher("/artist/:artistID/auction-results", "WebView", ({ artistID }) => ({
-      url: `/artist/${artistID}/auction-results`,
-    })),
+    webViewRoute("/artist/:artistID/auction-results"),
     new RouteMatcher("/artist/:artistID/auction-result/:auctionResultInternalID", "AuctionResult"),
     new RouteMatcher("/artist/:artistID/artist-series", "FullArtistSeriesList"),
-    new RouteMatcher("/artist/:artistID/articles", "WebView", (params) => ({
-      url: "/artist/" + params.artistID + "/articles",
-    })),
+    webViewRoute("/artist/:artistID/articles"),
     new RouteMatcher("/artist/:artistID/*", "Artist"),
     // For artists in a gallery context, like https://artsy.net/spruth-magers/artist/astrid-klein . Until we have a native
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
@@ -120,7 +143,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/consign/submission", "ConsignmentsSubmissionForm"),
     new RouteMatcher("/collections/my-collection/marketing-landing", "SalesNotRootTabView"),
 
-    new RouteMatcher("/conditions-of-sale", "WebView", () => ({ url: "/conditions-of-sale" })),
+    webViewRoute("/conditions-of-sale"),
     new RouteMatcher("/artwork-classifications", "ArtworkAttributionClassFAQ"),
 
     new RouteMatcher("/partner-locations/:partnerID", "PartnerLocations"),
@@ -139,17 +162,20 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/city-save/:citySlug", "CitySavedList"),
     new RouteMatcher("/auctions", "Auctions"),
     new RouteMatcher("/works-for-you", "WorksForYou"),
-    new RouteMatcher("/categories", "WebView", () => ({ url: "/categories" })),
-    new RouteMatcher("/privacy", "WebView", () => ({ url: "/privacy" })),
-    new RouteMatcher("/identity-verification-faq", "WebView", () => ({ url: "/identity-verification-faq" })),
-    new RouteMatcher("/terms", "WebView", () => ({ url: "/terms" })),
+    webViewRoute("/categories"),
+    webViewRoute("/privacy"),
+    webViewRoute("/identity-verification-faq"),
+    webViewRoute("/terms"),
+    webViewRoute("/buy-now-feature-faq"),
 
     new RouteMatcher("/city-bmw-list/:citySlug", "CityBMWList"),
-    new RouteMatcher("/:slug", "VanityURLEntity"),
     new RouteMatcher("/make-offer/:artworkID", "MakeOfferModal"),
-    new RouteMatcher("/orders/:orderID", "Checkout"),
+    unsafe_getFeatureFlag("AROptionsUseReactNativeWebView")
+      ? webViewRoute("/orders/:orderID", { mimicBrowserBackButton: false })
+      : new RouteMatcher("/orders/:orderID", "Checkout"),
 
-    new RouteMatcher("/*", "WebView", (params) => ({ url: "/" + params["*"] })),
+    new RouteMatcher("/:slug", "VanityURLEntity"),
+    webViewRoute("/*"),
   ])
 
   const routesForDomain = {
@@ -158,6 +184,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     "staging.artsy.net": artsyDotNet,
     "artsy.net": artsyDotNet,
     "www.artsy.net": artsyDotNet,
+    [parse(unsafe__getEnvironment().webURL).host ?? "artsy.net"]: artsyDotNet,
   }
 
   return routesForDomain
