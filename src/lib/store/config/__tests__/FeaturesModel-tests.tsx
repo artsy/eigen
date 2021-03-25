@@ -1,19 +1,19 @@
-import echoLaunchJSON from "../../../../../Artsy/App/EchoNew.json"
+import { echoLaunchJson } from "lib/utils/jsonFiles"
 import { __globalStoreTestUtils__, GlobalStore } from "../../GlobalStore"
 import { DevToggleDescriptor, FeatureDescriptor, features } from "../features"
 
-jest.mock("../../../../../Artsy/App/EchoNew.json", () => {
-  const echo: Partial<typeof echoLaunchJSON> = {
-    ...jest.requireActual("../../../../../Artsy/App/EchoNew.json"),
-    updated_at: "2021-02-04T11:10:33.768Z",
-    features: [
-      { name: "FeatureAEchoKey", value: true },
-      { name: "FeatureBEchoKey", value: false },
-    ],
-  }
+import * as loads from "lib/utils/jsonFiles"
+const echoLaunchJsonSpy = jest.spyOn(loads, "echoLaunchJson")
 
-  return echo
-})
+const echoLaunchJsonActual = loads.echoLaunchJson()
+const mockEcho = {
+  ...echoLaunchJsonActual,
+  features: [
+    { name: "FeatureAEchoKey", value: true },
+    { name: "FeatureBEchoKey", value: false },
+  ],
+}
+echoLaunchJsonSpy.mockReturnValue(mockEcho)
 
 type TestFeatures = "FeatureA" | "FeatureB"
 type TestDevToggles = "DevToggleA"
@@ -74,7 +74,7 @@ describe("Feature flags", () => {
     expect(getComputedFeatures().FeatureA).toBe(true)
     // set A's echo flag to false
     GlobalStore.actions.config.echo.setEchoState({
-      ...echoLaunchJSON,
+      ...echoLaunchJson(),
       features: [
         { name: "FeatureAEchoKey", value: false },
         { name: "FeatureBEchoKey", value: false },
@@ -87,7 +87,7 @@ describe("Feature flags", () => {
     expect(getComputedFeatures().FeatureB).toBe(false)
     // set A's echo flag to false
     GlobalStore.actions.config.echo.setEchoState({
-      ...echoLaunchJSON,
+      ...echoLaunchJson(),
       features: [
         { name: "FeatureAEchoKey", value: false },
         { name: "FeatureBEchoKey", value: true },
