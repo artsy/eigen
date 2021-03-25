@@ -130,6 +130,18 @@ describe("ReviewOfferButton", () => {
     expect(text).toContain("Offer Accepted")
   })
 
+  it("shows correct message for accepted offers where payment fails", () => {
+    const wrapper = getWrapper({
+      CommerceOrder: () => ({
+        state: "SUBMITTED",
+        lastTransactionFailed: true,
+      }),
+    })
+
+    const text = extractText(wrapper.root)
+    expect(text).toContain("Offer Accepted")
+  })
+
   it("shows correct message and icon for received counteroffers", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
