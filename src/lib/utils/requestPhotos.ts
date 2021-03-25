@@ -2,7 +2,7 @@ import { ActionSheetOptions } from "@expo/react-native-action-sheet"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { Platform } from "react-native"
 import ImagePicker, { Image } from "react-native-image-crop-picker"
-import { osMajorVersion } from "./hardware"
+import { osMajorVersion } from "./platformUtil"
 
 export async function requestPhotos(): Promise<Image[]> {
   if (Platform.OS === "ios" && osMajorVersion() >= 14) {
