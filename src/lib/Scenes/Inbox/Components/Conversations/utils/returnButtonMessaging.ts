@@ -19,18 +19,18 @@ export const returnButtonMessaging = ({
   let backgroundColor = "green100"
   let showMoneyIcon = true
 
-  if (state === "SUBMITTED" && lastOfferFromParticipant === "SELLER") {
+  if (lastTransactionFailed) {
+    backgroundColor = "red100"
+    message = `Payment Failed`
+    subMessage = `Please update payment method`
+    showMoneyIcon = false
+  } else if (state === "SUBMITTED" && lastOfferFromParticipant === "SELLER") {
     backgroundColor = "copper100"
     message = `${offerType} Received`
     subMessage = `Expires in ${hoursTillExpiration}hr`
     showMoneyIcon = false
   } else if (state === "APPROVED" && lastOfferFromParticipant === "BUYER") {
     message = `${offerType} Accepted`
-  } else if (lastTransactionFailed) {
-    backgroundColor = "copper100"
-    message = `Payment Failed`
-    subMessage = `Please update payment method`
-    showMoneyIcon = false
   }
 
   return {

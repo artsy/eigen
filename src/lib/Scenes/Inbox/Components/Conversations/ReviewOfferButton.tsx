@@ -19,7 +19,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
     order.state === "ABANDONED" ||
     order.state === "PENDING" ||
     order.state === "CANCELED" ||
-    (order.state === "SUBMITTED" && order.lastOffer?.fromParticipant === "BUYER")
+    (order.state === "SUBMITTED" && order.lastOffer?.fromParticipant === "BUYER" && !order.lastTransactionFailed)
   ) {
     return null
   }
