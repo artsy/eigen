@@ -30,7 +30,7 @@ export const returnButtonMessaging = ({
     subMessage = `Expires in ${hoursTillExpiration}hr`
     showMoneyIcon = false
   } else if (state === "APPROVED" && lastOfferFromParticipant === "BUYER") {
-    message = `${offerType} Accepted`
+    message = `Congratulations! ${offerType} Accepted`
   }
 
   return {
