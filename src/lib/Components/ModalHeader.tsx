@@ -1,10 +1,10 @@
 import { dismissModal } from "lib/navigation/navigate"
-import { useBackButtonTopPadding } from "lib/utils/platformUtil"
+import { osMajorVersion, useBackButtonTopPadding } from "lib/utils/platformUtil"
 import { CloseIcon, color, Touchable } from "palette"
 import React from "react"
 import { Platform, View } from "react-native"
 
-const isIOS13Plus = Platform.OS === "ios" && Number(Platform.Version) >= 13
+const isIOS13Plus = Platform.OS === "ios" && osMajorVersion() >= 13
 
 export const ModalHeader: React.FC = () => {
   return (

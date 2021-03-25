@@ -10,3 +10,11 @@ export const useBackButtonTopPadding = () => {
     return 13 + useSafeAreaInsets().top
   }
 }
+
+export const osMajorVersion = () => {
+  if (typeof (Platform.Version === "string")) {
+    return parseInt(Platform.Version as string, 10)
+  } else {
+    return Platform.Version as number
+  }
+}

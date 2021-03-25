@@ -17,6 +17,7 @@ upcoming:
     - Fix change password screen title  - mounir
     - Enable experimental layout animation on android - mounir
     - Group order updates with messages in an associated conversation - erik, lily
+    - Fix modal header on iOS 14 in consignments flow - brian
 
 releases:
   - version: 6.8.1

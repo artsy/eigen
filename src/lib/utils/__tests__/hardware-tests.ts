@@ -14,7 +14,7 @@ beforeEach(() => {
 })
 
 import { Dimensions, Platform } from "react-native"
-import { isPad, osMajorVersion, truncatedTextLimit } from "../hardware"
+import { isPad, truncatedTextLimit } from "../hardware"
 
 describe(isPad, () => {
   it("returns true if device is an iPad", () => {
@@ -67,19 +67,5 @@ describe(truncatedTextLimit, () => {
   it("returns 140 if device is not an iPad", () => {
     ;(Platform as any).isPad = false
     expect(truncatedTextLimit()).toBe(140)
-  })
-})
-
-describe(osMajorVersion, () => {
-  it("returns the correct version when version is a string", () => {
-    ;(Platform as any).Version = "12"
-    const version = osMajorVersion()
-    expect(version).toEqual(12)
-  })
-
-  it("returns the correct version when version is a number", () => {
-    ;(Platform as any).Version = 15
-    const version = osMajorVersion()
-    expect(version).toEqual(15)
   })
 })
