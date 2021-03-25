@@ -124,6 +124,8 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
   )
 }
 
+const makePercent = (value: number) => parseFloat((value * 100).toFixed(5))
+
 const createPremiumDisplay = (props: { sale: SaleInfo_sale }) => {
   return props.sale.buyersPremium?.map((item, index) => (
     <BuyersPremiumItem sale={props.sale} currentValue={item} index={index} key={index} />
@@ -144,7 +146,7 @@ const BuyersPremiumItem: React.FC<BuyersPremiumItemProps> = (props) => {
 
   const buyersPremium = props.sale.buyersPremium
   const amount = props.currentValue?.amount
-  const percent = (props.currentValue?.percent || 0) * 100 + "%"
+  const percent = makePercent(props.currentValue?.percent || 0) + "%"
   const listLength = props.sale.buyersPremium?.length || 0
 
   const nextValue = !!buyersPremium ? buyersPremium[props.index + 1] : null
@@ -172,7 +174,7 @@ const BuyersPremium: React.FC<{ sale: SaleInfo_sale }> = (props) => {
   }
 
   if (buyersPremium.length === 1) {
-    premiumDisplay = <Text variant="text">{(buyersPremium[0]?.percent || 0) * 100}% on the hammer price</Text>
+    premiumDisplay = <Text variant="text">{makePercent(buyersPremium[0]?.percent || 0)}% on the hammer price</Text>
   } else {
     premiumDisplay = createPremiumDisplay(props)
   }
