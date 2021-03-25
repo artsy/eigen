@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage"
+import * as Sentry from "@sentry/react-native"
 import { MenuItem } from "lib/Components/MenuItem"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import { environment, EnvironmentKey } from "lib/store/config/EnvironmentModel"
@@ -102,6 +103,20 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
               return
             }
             throw Error("Sentry test error")
+          }}
+          chevron={null}
+        />
+        <MenuItem
+          title="Trigger Sentry Native Crash"
+          onPress={() => {
+            if (!Config.SENTRY_DSN) {
+              Alert.alert(
+                "No Sentry DSN available",
+                __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
+              )
+              return
+            }
+            Sentry.nativeCrash()
           }}
           chevron={null}
         />

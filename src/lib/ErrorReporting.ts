@@ -2,16 +2,10 @@ import * as Sentry from "@sentry/react-native"
 import { useEffect } from "react"
 import { Platform } from "react-native"
 import Config from "react-native-config"
-import { LegacyNativeModules } from "./NativeModules/LegacyNativeModules"
+import { sentryReleaseName } from "../../app.json"
 import { GlobalStore } from "./store/GlobalStore"
 
 function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
-  // Important!: this needs to match the releaseVersion specified
-  // in fastfile for sentry releases for sourcemaps to work correctly
-  const appVersion = LegacyNativeModules.ARTemporaryAPIModule.appVersion
-  const buildVersion = LegacyNativeModules.ARTemporaryAPIModule.buildVersion
-  const sentryReleaseName = appVersion + "+" + buildVersion
-
   if (Config.SENTRY_DSN) {
     Sentry.init({
       dsn: Config.SENTRY_DSN,
