@@ -39,6 +39,9 @@ function createGlobalStore() {
     ;(GlobalStoreModel as any).__injectState = action((state, injectedState) => {
       assignDeep(state, injectedState)
     })
+    ;(GlobalStoreModel as any).__manipulateState = action((state, theEdits) => {
+      theEdits(state)
+    })
   }
 
   const store = createStore<GlobalStoreModel>(GlobalStoreModel, {
@@ -63,6 +66,9 @@ export const __globalStoreTestUtils__ = __TEST__
       // takes effect until the next test starts
       injectState(state: DeepPartial<GlobalStoreState>) {
         ;(GlobalStore.actions as any).__injectState(state)
+      },
+      manipulateState(state: DeepPartial<GlobalStoreState>) {
+        ;(GlobalStore.actions as any).__manipulateState(state)
       },
       setProductionMode() {
         this.injectState({ config: { environment: { env: "production" } } })

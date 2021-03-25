@@ -1,6 +1,6 @@
 // easy-peasy ships with a fork of immer so let's use that instead of adding another copy of immer to our bundle.
 import { produce } from "immer-peasy"
-import echoLaunchJSON from "../../../Artsy/App/EchoNew.json"
+import { echoLaunchJson } from "lib/utils/jsonFiles"
 
 /**
  * IMPORTANT
@@ -52,7 +52,7 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddFeatureFlagInfra]: (state) => {
     state.config.adminFeatureFlagOverrides = {}
-    state.config.echoState = echoLaunchJSON
+    state.config.echoState = echoLaunchJson()
   },
   [Versions.RefactorConfigModel]: (state) => {
     const newConfig = {} as any
