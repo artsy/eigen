@@ -10,6 +10,7 @@ import { AddIcon, BorderBox, Box, Button, color, Flex, Spacer, Text, XCircleIcon
 import React, { useState } from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
+import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
 import Separator from "../Separator"
 
 const MARGIN = 20
@@ -60,11 +61,7 @@ export const AddEditPhotos: React.FC<AddEditPhotosProps> = ({ initialPhotos, pho
 
   return (
     <>
-      <Flex alignContent="center" alignItems="center">
-        <Spacer m={1} />
-        <Text variant="title">Photos {!!photos.length && `(${photos.length})`}</Text>
-        <Spacer m={1} />
-      </Flex>
+      <FancyModalHeader onLeftButtonPress={doneTapped}>Photos</FancyModalHeader>
       <Separator key="separator2" />
       <ScrollView>
         <Flex flexDirection="row" flexWrap="wrap" mt={2}>
