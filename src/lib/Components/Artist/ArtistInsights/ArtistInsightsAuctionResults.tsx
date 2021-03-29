@@ -280,7 +280,7 @@ export const tracks = {
 
   tapAuctionResultsInfo: (): TappedInfoBubbleArgs => ({
     contextModule: ContextModule.auctionResults,
-    contextScreenOwnerType: OwnerType.artistInsights,
+    contextScreenOwnerType: OwnerType.artistAuctionResults,
     subject: "auctionResults",
   }),
 }
