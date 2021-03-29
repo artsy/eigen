@@ -4,7 +4,7 @@ import { FairQuery } from "__generated__/FairQuery.graphql"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { hideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
+import { useHideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
@@ -171,6 +171,8 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
     })
     handleFilterArtworksModal()
   }
+
+  const hideBackButtonOnScroll = useHideBackButtonOnScroll()
 
   return (
     <ProvideScreenTracking
