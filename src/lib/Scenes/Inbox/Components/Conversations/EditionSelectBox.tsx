@@ -1,5 +1,5 @@
 import { BorderBox, color, Flex, Text, Touchable } from "palette"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
 
@@ -49,7 +49,11 @@ interface Props {
 }
 
 export const EditionSelectBox: React.FC<Props> = ({ edition, selected, onPress }) => {
-  const available = !!edition.listPrice?.display && !!edition.isOfferableFromInquiry
+  const [available, setAvailable] = useState<boolean>(false)
+
+  useEffect(() => {
+    setAvailable(!!edition.listPrice?.display && !!edition.isOfferableFromInquiry)
+  }, [edition])
 
   return (
     <Touchable
