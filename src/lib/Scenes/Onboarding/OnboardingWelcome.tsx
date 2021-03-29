@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Button, Flex, Spacer, Text } from "palette"
+import { color, Flex, Spacer, Text, Touchable } from "palette"
 import React from "react"
 import { Image, StatusBar } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
@@ -8,6 +8,8 @@ import { ArtsyMarkWhiteIcon } from "../../../palette/svgs/ArtsyMarkWhiteIcon"
 import { OnboardingNavigationStack } from "./Onboarding"
 
 interface OnboardingWelcomeProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingWelcome"> {}
+
+const BUTTON_HEIGHT = 41
 
 export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation }) => {
   const { height: screenHeight } = useScreenDimensions()
@@ -43,16 +45,33 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           Build your personalized profile, get market insights, buy and sell with confidence.
         </Text>
         <Spacer mt={2} />
-        <Button variant="primaryWhite" block onPress={() => navigation.navigate("OnboardingCreateAccount")}>
+        <Touchable
+          onPress={() => navigation.navigate("OnboardingCreateAccount")}
+          underlayColor={color("black5")}
+          haptic="impactMedium"
+          style={{
+            height: BUTTON_HEIGHT,
+            backgroundColor: "white",
+            borderRadius: 3,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Text color="black" variant="mediumText">
             Create account
           </Text>
-        </Button>
-        <Button variant="noOutline" block onPress={() => navigation.navigate("OnboardingLogin")}>
+        </Touchable>
+
+        <Touchable
+          onPress={() => navigation.navigate("OnboardingLogin")}
+          underlayColor="transparent"
+          haptic="impactMedium"
+          style={{ justifyContent: "center", alignItems: "center", height: BUTTON_HEIGHT }}
+        >
           <Text color="white" variant="mediumText">
             Log in
           </Text>
-        </Button>
+        </Touchable>
       </Flex>
     </Flex>
   )
