@@ -1,7 +1,3 @@
-This update includes a number of improvements and bug fixes, including:
-
-• My Collection fixes
-• Sign out bug fix
-• Deep link handling fixes
+This update includes a number of improvements and bug fixes.
 
 Have feedback? Email us at support@artsy.net
