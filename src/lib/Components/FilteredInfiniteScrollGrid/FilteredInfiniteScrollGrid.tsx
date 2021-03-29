@@ -10,7 +10,6 @@ import { FiltersContainer as Filters } from "./Filters"
 interface Props {
   entity: FilteredInfiniteScrollGrid_entity
   relay: RelayPaginationProp
-  hideBackButtonOnScroll?: boolean
 }
 
 interface State {
@@ -85,7 +84,6 @@ export class FilteredInfiniteScrollGrid extends React.Component<Props, State> {
             loadMore={this.props.relay.loadMore}
             hasMore={this.props.relay.hasMore}
             shouldAddPadding={true}
-            hideBackButtonOnScroll={this.props.hideBackButtonOnScroll}
             HeaderComponent={
               <Box px={2}>
                 <Spacer m={2} />

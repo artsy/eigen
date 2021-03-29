@@ -1,5 +1,10 @@
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { hideBackButtonOnScroll } from "../hideBackButtonOnScroll"
+import { unsafe__getSelectedTab } from "lib/store/GlobalStore"
+import { createHideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
+
+const hideBackButtonOnScroll = createHideBackButtonOnScroll((shouldHide) =>
+  LegacyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton(shouldHide, unsafe__getSelectedTab())
+)
 
 function event(
   ev: DeepPartial<Parameters<typeof hideBackButtonOnScroll>[0]>

@@ -1,7 +1,7 @@
 import { NavigationContainer, NavigationContainerRef, Route, useNavigationState } from "@react-navigation/native"
 import { AppModule, modules } from "lib/AppRegistry"
 import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
-import React from "react"
+import React, { useState } from "react"
 import { View } from "react-native"
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { BackButton } from "./BackButton"
@@ -24,17 +24,21 @@ const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) =
     console.warn(route.params.moduleName, { module })
     throw new Error("native modules not yet supported in new nav setup")
   }
+  // tslint:disable-next-line:variable-name
+  const [legacy_shouldHideBackButton, updateShouldHideBackButton] = useState(false)
 
   const isRootScreen = useNavigationState((state) => state.routes[0].key === route.key)
-  const showBackButton = !isRootScreen && !module.options.hidesBackButton
+  const showBackButton = !isRootScreen && !module.options.hidesBackButton && !legacy_shouldHideBackButton
 
   return (
-    <ProvideScreenDimensions>
-      <ScreenPadding fullBleed={!!module.options.fullBleed}>
-        <module.Component {...route.params.props} />
-        {!!showBackButton && <BackButton />}
-      </ScreenPadding>
-    </ProvideScreenDimensions>
+    <LegacyBackButtonContext.Provider value={{ updateShouldHideBackButton }}>
+      <ProvideScreenDimensions>
+        <ScreenPadding fullBleed={!!module.options.fullBleed}>
+          <module.Component {...route.params.props} />
+          <BackButton show={showBackButton} />
+        </ScreenPadding>
+      </ProvideScreenDimensions>
+    </LegacyBackButtonContext.Provider>
   )
 }
 
@@ -63,4 +67,14 @@ export const NavStack = React.forwardRef<
       </Stack.Navigator>
     </NavigationContainer>
   )
+})
+
+export const LegacyBackButtonContext = React.createContext<{
+  updateShouldHideBackButton(shouldHideBackButton: boolean): void
+}>({
+  updateShouldHideBackButton() {
+    if (__DEV__) {
+      console.error("no LegacyBackButtonContext in tree")
+    }
+  },
 })
