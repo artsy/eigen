@@ -64,14 +64,14 @@ export const EchoModel: EchoModel = {
   }),
   forceUpdateMessage: computed((state) => {
     const appVersion = appJson.version
-    const excludedVersions = state.state?.excludedVersions as any
+    const killedVersions = state.state?.killedVersions as any
 
-    const excludedVersion = excludedVersions[Platform.OS][appVersion]
+    const killedVersion = killedVersions[Platform.OS][appVersion]
 
     // Check if the current version of the app is excluded
     // If it is, ask the user to update their app
-    if (excludedVersion) {
-      return excludedVersion.message
+    if (killedVersion) {
+      return killedVersion.message
     }
 
     // Get the minumum required version by platform
