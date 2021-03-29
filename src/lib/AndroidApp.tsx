@@ -38,8 +38,11 @@ const Main: React.FC<{}> = track()(({}) => {
 
   useEffect(() => {
     if (isHydrated) {
-      RNBootSplash.hide({ fade: true })
-      ArtsyNativeModule.setAppStyling()
+      // We wait a bit until the UI finishes drawing behind the splash screen
+      setTimeout(() => {
+        RNBootSplash.hide()
+        ArtsyNativeModule.setAppStyling()
+      }, 500)
     }
   }, [isHydrated])
 
