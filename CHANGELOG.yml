@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - Add QAInfo UI and flag - pavlos
+    - Add echo flag for react native web views - david
     - Fix iOS modal presentation infra code - david
     - Fix first install event analytics - brian, mike
     - Set up basic react webview module - david
