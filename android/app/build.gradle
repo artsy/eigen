@@ -141,6 +141,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 7
         versionName "1.0.0"
+        vectorDrawables.useSupportLibrary = true
 
         multiDexEnabled true
 
