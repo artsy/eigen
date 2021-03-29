@@ -15,8 +15,8 @@ export interface Echo {
   messages: Array<{ name: string; content: string }>
   routes: Array<{ name: string; path: string }>
   killedVersions: {
-    ios: { [version: string]: { message: string } | undefined }
-    android: { [version: string]: { message: string } | undefined }
+    ios: { [version: string]: { message: string } }
+    android: { [version: string]: { message: string } }
   }
 }
 
