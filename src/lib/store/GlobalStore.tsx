@@ -130,6 +130,17 @@ export function unsafe_getFeatureFlag(key: FeatureName) {
   return features[key].readyForRelease
 }
 
+export function unsafe_getDevToggle(key: DevToggleName) {
+  const state = globalStoreInstance?.getState() ?? null
+  if (state) {
+    return state.config.features.devToggles[key]
+  }
+  if (__DEV__) {
+    throw new Error(`Unable to access ${key} before GlobalStore bootstraps`)
+  }
+  return false
+}
+
 export function getCurrentEmissionState() {
   const state = globalStoreInstance?.getState() ?? null
   if (Platform.OS === "ios") {

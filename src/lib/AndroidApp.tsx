@@ -13,6 +13,7 @@ import { ModalStack } from "./navigation/ModalStack"
 import { navigate } from "./navigation/navigate"
 import { defaultEnvironment } from "./relay/createEnvironment"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
+import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { AdminMenuWrapper } from "./utils/AdminMenuWrapper"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
@@ -26,6 +27,7 @@ const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const launchURL = useRef<string | null>(null)
+  const forceUpdateMessage = GlobalStore.useAppState((state) => state.config.echo.forceUpdateMessage)
 
   useSentryConfig()
   useStripeConfig()
@@ -73,6 +75,11 @@ const Main: React.FC<{}> = track()(({}) => {
   if (!isHydrated) {
     return <View></View>
   }
+
+  if (forceUpdateMessage) {
+    return <ForceUpdate forceUpdateMessage={forceUpdateMessage} />
+  }
+
   if (!isLoggedIn) {
     return <Onboarding />
   }

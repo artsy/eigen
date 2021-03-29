@@ -1,6 +1,10 @@
 import { action, Action, computed, Computed, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import moment from "moment-timezone"
+import { Platform } from "react-native"
+import { lt as lessThan } from "semver"
+import appJson from "../../../../app.json"
 import echoLaunchJSON from "../../../../Artsy/App/EchoNew.json"
+import { unsafe_getDevToggle } from "../GlobalStore"
 import { GlobalStoreModel } from "../GlobalStoreModel"
 
 type Echo = typeof echoLaunchJSON
@@ -13,6 +17,7 @@ export interface EchoModel {
   stripePublishableKey: Computed<EchoModel, string, GlobalStoreModel>
   legacyFairSlugs: Computed<EchoModel, string[]>
   legacyFairProfileSlugs: Computed<EchoModel, string[]>
+  forceUpdateMessage: Computed<EchoModel, string | undefined>
 }
 
 export const EchoModel: EchoModel = {
@@ -21,7 +26,13 @@ export const EchoModel: EchoModel = {
     state.state = echoJSON
   }),
   fetchRemoteEcho: thunk(async (actions) => {
+    const disableRemoteFetch = unsafe_getDevToggle("DTDisableEchoRemoteFetch")
+    if (disableRemoteFetch) {
+      return
+    }
+
     const result = await fetch("https://echo.artsy.net/Echo.json")
+
     if (result.ok) {
       const json = await result.json()
       actions.setEchoState(json)
@@ -37,6 +48,7 @@ export const EchoModel: EchoModel = {
       if (launchEchoTimestamp.isAfter(persistedEchoTimestamp)) {
         actions.setEchoState(echoLaunchJSON)
       }
+
       actions.fetchRemoteEcho()
     }
   ),
@@ -49,5 +61,33 @@ export const EchoModel: EchoModel = {
   }),
   legacyFairSlugs: computed((state) => {
     return state.state.messages.find((e) => e.name === "LegacyFairSlugs")?.content.split(",")!
+  }),
+  forceUpdateMessage: computed((state) => {
+    const appVersion = appJson.version
+    const excludedVersions = state.state?.excludedVersions as any
+
+    const excludedVersion = excludedVersions[Platform.OS][appVersion]
+
+    // Check if the current version of the app is excluded
+    // If it is, ask the user to update their app
+    if (excludedVersion) {
+      return excludedVersion.message
+    }
+
+    // Get the minumum required version by platform
+    const minimumRequiredVersion = state.state.messages.find((message) => {
+      if (Platform.OS === "ios") {
+        return message.name === "KillSwitchBuildMinimum"
+      }
+      if (Platform.OS === "android") {
+        return message.name === "KillSwitchBuildMinimumAndroid"
+      }
+    })?.content
+
+    // Check if the current version of the app is less than the minimum required version
+    // If it is, ask the user to update their app
+    if (!!minimumRequiredVersion && lessThan(appVersion, minimumRequiredVersion)) {
+      return "New app version required, Please update your Artsy app to continue."
+    }
   }),
 }

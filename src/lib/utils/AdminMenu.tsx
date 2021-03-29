@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import * as Sentry from "@sentry/react-native"
 import { MenuItem } from "lib/Components/MenuItem"
+import { useToast } from "lib/Components/Toast/toastHook"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import { environment, EnvironmentKey } from "lib/store/config/EnvironmentModel"
 import { DevToggleName, devToggles, FeatureName, features } from "lib/store/config/features"
@@ -204,6 +205,7 @@ const DevToggleItem: React.FC<{ toggleKey: DevToggleName }> = ({ toggleKey }) =>
   const currentValue = config.features.devToggles[toggleKey]
   const valText = currentValue ? "Yes" : "No"
   const description = devToggles[toggleKey].description
+  const toast = useToast()
 
   return (
     <MenuItem
@@ -214,12 +216,18 @@ const DevToggleItem: React.FC<{ toggleKey: DevToggleName }> = ({ toggleKey }) =>
             text: currentValue ? "Keep turned ON" : "Turn ON",
             onPress() {
               GlobalStore.actions.config.features.setAdminOverride({ key: toggleKey, value: true })
+              if (devToggles[toggleKey].onTrue !== undefined) {
+                devToggles[toggleKey].onTrue!({ toast })
+              }
             },
           },
           {
             text: currentValue ? "Turn OFF" : "Keep turned OFF",
             onPress() {
               GlobalStore.actions.config.features.setAdminOverride({ key: toggleKey, value: false })
+              if (devToggles[toggleKey].onFalse !== undefined) {
+                devToggles[toggleKey].onFalse!({ toast })
+              }
             },
           },
         ])

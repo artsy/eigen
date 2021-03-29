@@ -1,4 +1,7 @@
+import { useToast } from "lib/Components/Toast/toastHook"
 import { Platform } from "react-native"
+import echoLaunchJson from "../../../../Artsy/App/EchoNew.json"
+import { GlobalStore } from "../GlobalStore"
 
 export interface FeatureDescriptor {
   /**
@@ -102,9 +105,17 @@ export const features = defineFeatures({
 
 export interface DevToggleDescriptor {
   /**
-   * Provide a short description for the admin menu
+   * Provide a short description for the admin menu.
    */
   readonly description: string
+  /**
+   * Provide some action/thunk to run when the toggle is turned on.
+   */
+  readonly onTrue?: ({ toast }: { toast: ReturnType<typeof useToast> }) => void
+  /**
+   * Provide some action/thunk to run when the toggle is turned on.
+   */
+  readonly onFalse?: ({ toast }: { toast: ReturnType<typeof useToast> }) => void
 }
 
 // Helper function to get good typings and intellisense
@@ -116,6 +127,17 @@ export type DevToggleName = keyof typeof devToggles
 export const devToggles = defineDevToggles({
   DTShowQuickAccessInfo: {
     description: "Show quick access info",
+  },
+  DTDisableEchoRemoteFetch: {
+    description: "Disable fetching remote echo",
+    onTrue: ({ toast }) => {
+      GlobalStore.actions.config.echo.setEchoState(echoLaunchJson)
+      toast.show("Loaded bundled echo config", "middle")
+    },
+    onFalse: ({ toast }) => {
+      GlobalStore.actions.config.echo.fetchRemoteEcho()
+      toast.show("Fetched remote echo config", "middle")
+    },
   },
 })
 
