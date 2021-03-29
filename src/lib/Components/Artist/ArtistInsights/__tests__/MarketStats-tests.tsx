@@ -104,7 +104,7 @@ describe("MarketStats", () => {
   })
 
   describe("tracking", () => {
-    it("tracks the correct event when info bubble is tapped", () => {
+    it.only("tracks the correct event when info bubble is tapped", () => {
       const tree = renderWithWrappers(<TestWrapper />).root
       mockEnvironmentPayload(environment)
 
@@ -114,7 +114,9 @@ describe("MarketStats", () => {
       expect(trackEvent).toHaveBeenCalledWith({
         action: "tappedInfoBubble",
         context_module: "auctionResults",
-        context_screen_owner_type: "artistInsights",
+        context_screen_owner_type: "artistAuctionResults",
+        context_screen_owner_id: undefined,
+        context_screen_owner_slug: undefined,
         subject: "artistMarketStatistics",
       })
     })

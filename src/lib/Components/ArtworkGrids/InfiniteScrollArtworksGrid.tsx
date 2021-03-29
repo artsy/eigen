@@ -19,7 +19,6 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
-import { hideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 import { Box, Button, space, Theme } from "palette"
 import { graphql } from "relay-runtime"
 
@@ -77,9 +76,6 @@ export interface Props {
 
   /** Show Lot Label  */
   showLotLabel?: boolean
-
-  /** Set as true to automatically manage the back button visibility as the user scrolls */
-  hideBackButtonOnScroll?: boolean
 
   /** To avoid layout jank, supply the width of the grid ahead of time. */
   width?: number
@@ -277,9 +273,6 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       <Theme>
         <ScrollView
           onScroll={(ev) => {
-            if (this.props.hideBackButtonOnScroll) {
-              hideBackButtonOnScroll(ev)
-            }
             if (autoFetch) {
               this.handleFetchNextPageOnScroll(ev)
             }

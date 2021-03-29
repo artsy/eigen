@@ -355,7 +355,7 @@ export const tracks = {
 
   tapMarketStatsInfo: (): TappedInfoBubbleArgs => ({
     contextModule: ContextModule.auctionResult,
-    contextScreenOwnerType: OwnerType.artistInsights,
+    contextScreenOwnerType: OwnerType.artistAuctionResults,
     subject: "auctionResultSalePrice",
   }),
 }
