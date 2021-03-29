@@ -77,6 +77,7 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
             variant="primaryBlack"
             buttonText="Confirm"
             artwork={artwork}
+            disabled={!!artwork.isEdition && !selectedEdition}
             editionSetID={selectedEdition ? selectedEdition : null}
             conversationID={conversationID}
           />
