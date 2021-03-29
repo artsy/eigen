@@ -74,7 +74,7 @@ describe("Echo", () => {
           { name: "KillSwitchBuildMinimum", content: "1.5.0" },
           { name: "KillSwitchBuildMinimumAndroid", content: "1.5.0" },
         ],
-        excludedVersions: {
+        killedVersions: {
           ios: {
             "1.9.0": {
               message: "Please update the app",
@@ -100,7 +100,7 @@ describe("Echo", () => {
           { name: "KillSwitchBuildMinimum", content: "2.5.0" },
           { name: "KillSwitchBuildMinimumAndroid", content: "2.5.0" },
         ],
-        excludedVersions: {
+        killedVersions: {
           ios: {
             "1.9.0": {
               message: "Please update the app",
@@ -117,7 +117,7 @@ describe("Echo", () => {
       expect(forceUpdateMessage()).toEqual("New app version required, Please update your Artsy app to continue.")
     })
 
-    it("when the version number is included in the excludedVersions", () => {
+    it("when the version number is included in the killedVersions", () => {
       const validVersionEcho: any = {
         ...echoLaunchJSON,
         updated_at: "2021-02-05T11:10:33.768Z",
@@ -125,7 +125,7 @@ describe("Echo", () => {
           { name: "KillSwitchBuildMinimum", content: "1.5.0" },
           { name: "KillSwitchBuildMinimumAndroid", content: "1.5.0" },
         ],
-        excludedVersions: {
+        killedVersions: {
           ios: {
             "2.0.0": {
               message: "Please update the app",
