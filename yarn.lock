@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/auto-config/-/auto-config-1.0.2.tgz#b79f6fd0d0bda0c5e0764ced55e014cf58174d6f"
   integrity sha512-mJyuKNDMYZcgc2oLIkvmpVIr1RexklV71JmU+to5qs3Y9pv5dsj4WHl8+wf9g74EQNOyhWH2SYMGBm1JoPYh/Q==
 
-"@artsy/cohesion@^1.73.0":
-  version "1.77.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.77.0.tgz#e70ac743cad8b59a52620d4b3972d111c3715a7c"
-  integrity sha512-RNKZ6piJRRdWbRnvgEriyhZxx02HDjBYziG2oVIVlcLEd49e4sqoME2yOeJF+LVwv7SNvAFcaykJgMq1bwSaYg==
+"@artsy/cohesion@^1.80.1":
+  version "1.80.1"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.80.1.tgz#f49e666b33fdaade9f648f16ef43702dcbdb2d93"
+  integrity sha512-Q+1yfPeU6ax0HGo9pqDr0fxTbWO2Awz/o/COsLS7gUGk60Fgthq5z1qMU7YsOfwN22wikAtmzsNKryatLJ3i5g==
 
 "@artsy/palette-tokens@^1.3.1":
   version "1.3.1"
