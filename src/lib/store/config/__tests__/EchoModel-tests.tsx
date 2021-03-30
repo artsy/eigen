@@ -12,6 +12,11 @@ const originalDate = moment("2021-03-20T14:41:42.845Z")
 const earlierDate = originalDate.clone().subtract(2, "days")
 const laterDate = originalDate.clone().add(2, "days")
 
+const appVersion = (version: string) => ({
+  sentryReleaseName: "wut",
+  version,
+})
+
 const _echoLaunchJsonActual = loads.echoLaunchJson()
 const echo = (overrides: Partial<Echo>): Echo => ({
   ..._echoLaunchJsonActual,
@@ -75,7 +80,7 @@ describe("Echo", () => {
 
   describe("computes forceUpdateMessage correctly", () => {
     it("when it is a valid version", () => {
-      appJsonSpy.mockReturnValue({ version: "2.0.0" })
+      appJsonSpy.mockReturnValue(appVersion("2.0.0"))
       const echoConfig = echo({
         messages: [
           { name: "KillSwitchBuildMinimum", content: "1.5.0" },
@@ -90,7 +95,7 @@ describe("Echo", () => {
     })
 
     it("when the version number is less than the minumum required version", () => {
-      appJsonSpy.mockReturnValue({ version: "1.2.0" })
+      appJsonSpy.mockReturnValue(appVersion("1.2.0"))
       const echoConfig = echo({
         messages: [
           { name: "KillSwitchBuildMinimum", content: "1.5.0" },
@@ -105,7 +110,7 @@ describe("Echo", () => {
     })
 
     it("when the version number is exactly the minumum required version", () => {
-      appJsonSpy.mockReturnValue({ version: "1.5.0" })
+      appJsonSpy.mockReturnValue(appVersion("1.5.0"))
       const echoConfig = echo({
         messages: [
           { name: "KillSwitchBuildMinimum", content: "1.5.0" },
@@ -120,7 +125,7 @@ describe("Echo", () => {
     })
 
     it("when the version number is included in the killedVersions", () => {
-      appJsonSpy.mockReturnValue({ version: "1.7.0" })
+      appJsonSpy.mockReturnValue(appVersion("1.7.0"))
       const echoConfig = echo({
         messages: [
           { name: "KillSwitchBuildMinimum", content: "1.5.0" },
@@ -138,7 +143,7 @@ describe("Echo", () => {
     })
 
     it("works with hydration too", () => {
-      appJsonSpy.mockReturnValue({ version: "1.6.0" })
+      appJsonSpy.mockReturnValue(appVersion("1.6.0"))
       const echoConfig1 = echo({
         messages: [
           { name: "KillSwitchBuildMinimum", content: "1.5.0" },
