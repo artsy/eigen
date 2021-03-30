@@ -1,3 +1,4 @@
+import { addBreadcrumb } from "@sentry/react-native"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { NativeModules } from "react-native"
 const { AREventsModule } = NativeModules
@@ -6,6 +7,12 @@ export function postEvent(info: any) {
   if (__DEV__) {
     console.log("[Event tracked]", JSON.stringify(info, null, 2))
   }
+
+  addBreadcrumb({
+    message: `${JSON.stringify(info, null, 2)}`,
+    category: "analytics",
+  })
+
   AREventsModule.postEvent(info)
 }
 
