@@ -8,6 +8,7 @@ upcoming:
     - Fix first install event analytics - brian, mike
     - Make back button hideable on android - david
     - Set up basic react webview module - david
+    - Bring all relay packages to the same version - pavlos
     - Add cookie setup for react web views - david
     - Add link interception for react web views - david
     - Fix iOS modal presentation infra code - david
