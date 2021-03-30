@@ -16,7 +16,7 @@ export interface SearchModel {
   deleteRecentSearch: Action<SearchModel, AutosuggestResult>
 }
 
-export const SearchModel: SearchModel = {
+export const getSearchModel = (): SearchModel => ({
   recentSearches: [],
   addRecentSearch: action((state, payload) => {
     const newSearches = state.recentSearches.filter(
@@ -33,7 +33,7 @@ export const SearchModel: SearchModel = {
       (recentSearch: RecentSearch) => recentSearch.props.href !== payload.href
     )
   }),
-}
+})
 
 export const useRecentSearches = (numSearches: number = MAX_SHOWN_RECENT_SEARCHES) => {
   return GlobalStore.useAppState((state) => {

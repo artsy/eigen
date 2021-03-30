@@ -1,13 +1,13 @@
+import { echoLaunchJson } from "lib/utils/jsonFiles"
 import { intersection } from "lodash"
 import { env } from "process"
-import echoLaunchJSON from "../../../../../Artsy/App/EchoNew.json"
 import { devToggles, features } from "../features"
 
 Object.entries(features).forEach(([key, val]) => {
   describe(`The ${key} feature`, () => {
     if (val.echoFlagKey) {
       it(`uses an echo flag named ${key}`, () => {
-        if (!echoLaunchJSON.features.some((flag) => flag.name === val.echoFlagKey)) {
+        if (!echoLaunchJson().features.some((flag) => flag.name === val.echoFlagKey)) {
           throw new Error(
             `No echo flag found for key ${val.echoFlagKey}. ` +
               (env.CI === "true"
