@@ -7,7 +7,7 @@ import { getMyCollectionModel, MyCollectionModel } from "lib/Scenes/MyCollection
 import { getSearchModel, SearchModel } from "lib/Scenes/Search/SearchModel"
 import { Platform } from "react-native"
 import { AuthModel, getAuthModel } from "./AuthModel"
-import { getConfigModel, ConfigModel } from "./ConfigModel"
+import { ConfigModel, getConfigModel } from "./ConfigModel"
 import { unsafe__getEnvironment } from "./GlobalStore"
 import { CURRENT_APP_VERSION } from "./migration"
 import { getNativeModel, NativeModel } from "./NativeModel"

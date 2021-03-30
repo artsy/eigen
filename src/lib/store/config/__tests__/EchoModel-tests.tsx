@@ -2,10 +2,10 @@ import * as loads from "lib/utils/jsonFiles"
 const appJsonSpy = jest.spyOn(loads, "appJson")
 const echoLaunchJsonSpy = jest.spyOn(loads, "echoLaunchJson")
 
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import fetchMock from "jest-fetch-mock"
-import moment from "moment"
 import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import moment from "moment"
 import { Echo } from "../EchoModel"
 
 const originalDate = moment("2021-03-20T14:41:42.845Z")
