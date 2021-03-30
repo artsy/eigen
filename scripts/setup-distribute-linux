@@ -7,6 +7,7 @@ set -euxo pipefail
 # brew update
 # brew tap getsentry/tools
 # brew install sentry-cli
+curl -sL https://sentry.io/get-cli/ | bash
 bundle exec fastlane update_plugins
 
 if ! which aws;
