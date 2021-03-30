@@ -6,7 +6,7 @@ export const ArtsyMarkWhiteIcon: React.FC<IconProps> = (props) => {
   return (
     <Icon {...props} viewBox="0 0 32 32">
       <G fill="none" fillRule="evenodd">
-        <Path fill="#F8F8F8" d="M0 0h32v32H0z" />
+        <Path fill="none" d="M0 0h32v32H0z" />
         <Path
           d="M0 31.963h31.876V.09H0v31.874zm29.583-2.293h-4.824v-6.283h-2.295v6.283H2.294V2.382h27.289V29.67z"
           fill="#FFF"

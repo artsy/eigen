@@ -104,7 +104,7 @@ describe("MarketStats", () => {
   })
 
   describe("tracking", () => {
-    it.only("tracks the correct event when info bubble is tapped", () => {
+    it("tracks the correct event when info bubble is tapped", () => {
       const tree = renderWithWrappers(<TestWrapper />).root
       mockEnvironmentPayload(environment)
 

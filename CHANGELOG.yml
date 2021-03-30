@@ -3,10 +3,12 @@ upcoming:
   date: TBD
   dev:
     - Add QAInfo UI and flag - pavlos
+    - Add echo flag for react native web views - david
     - Fix iOS modal presentation infra code - david
     - Fix first install event analytics - brian, mike
     - Make back button hideable on android - david
     - Set up basic react webview module - david
+    - Bring all relay packages to the same version - pavlos
     - Add cookie setup for react web views - david
     - Add link interception for react web views - david
     - Fix iOS modal presentation infra code - david
@@ -21,6 +23,7 @@ upcoming:
     - Enable experimental layout animation on android - mounir
     - Group order updates with messages in an associated conversation - erik, lily
     - Fix modal header on iOS 14 in consignments flow - brian
+    - Add Onboarding welcome screen - mounir
 
 releases:
   - version: 6.8.1

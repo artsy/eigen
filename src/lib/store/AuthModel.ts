@@ -31,7 +31,7 @@ export interface AuthModel {
   >
 }
 
-export const AuthModel: AuthModel = {
+export const getAuthModel = (): AuthModel => ({
   userID: null,
   userAccessToken: null,
   userAccessTokenExpiresIn: null,
@@ -125,4 +125,4 @@ export const AuthModel: AuthModel = {
 
     return false
   }),
-}
+})

@@ -21,7 +21,7 @@ export interface BottomTabsModel {
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
 }
 
-export const BottomTabsModel: BottomTabsModel = {
+export const getBottomTabsModel = (): BottomTabsModel => ({
   sessionState: {
     unreadConversationCount: 0,
     tabProps: {},
@@ -66,4 +66,4 @@ export const BottomTabsModel: BottomTabsModel = {
     state.sessionState.selectedTab = tabType
     saveDevNavigationStateSelectedTab(tabType)
   }),
-}
+})
