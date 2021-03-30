@@ -4,8 +4,3 @@ set -euxo pipefail
 
 curl https://echo.artsy.net/Echo.json > Artsy/App/EchoNew.json
 yarn prettier -w Artsy/App/EchoNew.json
-
-
-# Update an echo test file
-updatedAt=$(jq -r '.updated_at' ./Artsy/App/EchoNew.json)
-perl -i -pe "s/(moment\(\").*(\"\) \/\/ Updated by)/\${1}${updatedAt}\${2}/g" ./src/lib/store/config/__tests__/EchoModel-tests.tsx

@@ -2,6 +2,7 @@ import { action, createStore, createTypedHooks, StoreProvider } from "easy-peasy
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNavigationState"
+import { echoLaunchJson } from "lib/utils/jsonFiles"
 import React from "react"
 import { Platform } from "react-native"
 import { Action, Middleware } from "redux"
@@ -126,7 +127,7 @@ export function useDevToggle(key: DevToggleName) {
  * It is safe to use in contexts that don't require reactivity.
  */
 export function unsafe_getFeatureFlag(key: FeatureName) {
-  const state = globalStoreInstance?.getState() ?? null
+  const state = globalStoreInstance()?.getState() ?? null
   if (state) {
     return state.config.features.flags[key]
   }
@@ -137,7 +138,7 @@ export function unsafe_getFeatureFlag(key: FeatureName) {
 }
 
 export function unsafe_getDevToggle(key: DevToggleName) {
-  const state = globalStoreInstance?.getState() ?? null
+  const state = globalStoreInstance()?.getState() ?? null
   if (state) {
     return state.config.features.devToggles[key]
   }
@@ -148,7 +149,7 @@ export function unsafe_getDevToggle(key: DevToggleName) {
 }
 
 export function getCurrentEmissionState() {
-  const state = globalStoreInstance?.getState() ?? null
+  const state = globalStoreInstance()?.getState() ?? null
   if (Platform.OS === "ios") {
     return state?.native.sessionState ?? LegacyNativeModules.ARNotificationsManager.nativeState
   }
@@ -170,7 +171,7 @@ export function getCurrentEmissionState() {
  * react components.
  */
 export function unsafe__getSelectedTab() {
-  return globalStoreInstance?.getState().bottomTabs.sessionState.selectedTab
+  return globalStoreInstance()?.getState().bottomTabs.sessionState.selectedTab
 }
 
 export function useIsStaging() {
@@ -186,7 +187,7 @@ export function unsafe__getEnvironment() {
   const {
     environment: { env, strings },
     echo: { stripePublishableKey },
-  } = globalStoreInstance?.getState().config
+  } = globalStoreInstance()?.getState().config
   return { ...strings, stripePublishableKey, env }
 }
 

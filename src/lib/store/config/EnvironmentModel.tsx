@@ -75,7 +75,7 @@ export interface EnvironmentModel {
   updateNativeState: ThunkOn<EnvironmentModel, {}, GlobalStoreModel>
 }
 
-export const EnvironmentModel: EnvironmentModel = {
+export const getEnvironmentModel = (): EnvironmentModel => ({
   env: __DEV__ ? "staging" : "production",
   adminOverrides: {},
   strings: computed(({ env, adminOverrides }) => {
@@ -109,4 +109,4 @@ export const EnvironmentModel: EnvironmentModel = {
       }
     }
   ),
-}
+})

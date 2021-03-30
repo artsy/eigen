@@ -2,15 +2,15 @@ import CookieManager from "@react-native-cookies/cookies"
 import { Action, action, createStore, State, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import * as RelayCache from "lib/relay/RelayCache"
-import { BottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
-import { MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
-import { SearchModel } from "lib/Scenes/Search/SearchModel"
+import { BottomTabsModel, getBottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
+import { getMyCollectionModel, MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
+import { getSearchModel, SearchModel } from "lib/Scenes/Search/SearchModel"
 import { Platform } from "react-native"
-import { AuthModel } from "./AuthModel"
-import { ConfigModel } from "./ConfigModel"
+import { AuthModel, getAuthModel } from "./AuthModel"
+import { getConfigModel, ConfigModel } from "./ConfigModel"
 import { unsafe__getEnvironment } from "./GlobalStore"
 import { CURRENT_APP_VERSION } from "./migration"
-import { NativeModel } from "./NativeModel"
+import { getNativeModel, NativeModel } from "./NativeModel"
 import { assignDeep, sanitize } from "./persistence"
 
 interface GlobalStoreStateModel {
@@ -35,7 +35,7 @@ export interface GlobalStoreModel extends GlobalStoreStateModel {
   didRehydrate: ThunkOn<GlobalStoreModel>
 }
 
-export const GlobalStoreModel: GlobalStoreModel = {
+export const getGlobalStoreModel = (): GlobalStoreModel => ({
   // META STATE
   version: CURRENT_APP_VERSION,
   rehydrate: action((state, unpersistedState) => {
@@ -79,14 +79,14 @@ export const GlobalStoreModel: GlobalStoreModel = {
   },
 
   // NATIVE MIGRATION STATE
-  native: NativeModel,
+  native: getNativeModel(),
 
   // APP MODULE STATE
-  bottomTabs: BottomTabsModel,
-  search: SearchModel,
-  myCollection: MyCollectionModel,
-  config: ConfigModel,
-  auth: AuthModel,
-}
+  bottomTabs: getBottomTabsModel(),
+  search: getSearchModel(),
+  myCollection: getMyCollectionModel(),
+  config: getConfigModel(),
+  auth: getAuthModel(),
+})
 
 export type GlobalStoreState = State<GlobalStoreModel>

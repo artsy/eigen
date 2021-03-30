@@ -16,7 +16,7 @@ export interface FeaturesModel {
   devToggles: Computed<FeaturesModel, DevToggleMap, GlobalStoreModel>
 }
 
-export const FeaturesModel: FeaturesModel = {
+export const getFeaturesModel = (): FeaturesModel => ({
   adminOverrides: {},
   setAdminOverride: action((state, { key, value }) => {
     if (value === null) {
@@ -55,4 +55,4 @@ export const FeaturesModel: FeaturesModel = {
     }
     return result
   }),
-}
+})

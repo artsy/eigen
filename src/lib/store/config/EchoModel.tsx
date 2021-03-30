@@ -31,7 +31,7 @@ export interface EchoModel {
   forceUpdateMessage: Computed<EchoModel, string | undefined>
 }
 
-export const EchoModel: EchoModel = {
+export const getEchoModel = (): EchoModel => ({
   state: echoLaunchJson(),
   setEchoState: action((state, echoJson) => {
     state.state = echoJson
@@ -103,4 +103,4 @@ export const EchoModel: EchoModel = {
       return "New app version required. Please update your Artsy app to continue."
     }
   }),
-}
+})
