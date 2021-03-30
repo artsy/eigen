@@ -30,7 +30,7 @@ describe("GlobalStoreModel", () => {
   })
 
   it("can be manipulated", () => {
-    GlobalStore.actions.manipulate((store) => {
+    GlobalStore.actions.__manipulate((store) => {
       store.config.echo.state.killedVersions = {
         ios: {},
         android: {},
@@ -75,7 +75,7 @@ describe("GlobalStoreModel", () => {
       android: { "1.2.4": { message: "update the app" } },
     })
 
-    GlobalStore.actions.manipulate((store) => {
+    GlobalStore.actions.__manipulate((store) => {
       store.config.echo.state.killedVersions = {
         ios: {},
         android: {},

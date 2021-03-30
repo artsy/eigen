@@ -1,8 +1,7 @@
-import { action, createStore, createTypedHooks, EasyPeasyConfig, Store, StoreProvider } from "easy-peasy"
+import { createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNavigationState"
-import { echoLaunchJson } from "lib/utils/jsonFiles"
 import React from "react"
 import { Platform } from "react-native"
 import { Action, Middleware } from "redux"
@@ -36,16 +35,7 @@ function createGlobalStore() {
     })
   }
 
-  if (__TEST__) {
-    ;(GlobalStoreModel as any).__injectState = action((state, injectedState) => {
-      assignDeep(state, injectedState)
-    })
-    ;(GlobalStoreModel as any).__manipulateState = action((state, theEdits) => {
-      theEdits(state)
-    })
-  }
-
-  const store = createStore<GlobalStoreModel>(GlobalStoreModel, {
+  const store = createStore(getGlobalStoreModel(), {
     middleware,
   })
 
@@ -66,7 +56,7 @@ export const __globalStoreTestUtils__ = __TEST__
       // e.g. `__globalStoreTestUtils__?.injectState({ nativeState: { selectedTab: "sell" } })`
       // takes effect until the next test starts
       injectState: (state: DeepPartial<GlobalStoreState>) => {
-        GlobalStore.actions.__injectState(state)
+        GlobalStore.actions.__inject(state)
       },
       setProductionMode() {
         this.injectState({ config: { environment: { env: "production" } } })
