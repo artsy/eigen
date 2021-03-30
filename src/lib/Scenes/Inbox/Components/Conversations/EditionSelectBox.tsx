@@ -49,11 +49,7 @@ interface Props {
 }
 
 export const EditionSelectBox: React.FC<Props> = ({ edition, selected, onPress }) => {
-  const [available, setAvailable] = useState<boolean>(false)
-
-  useEffect(() => {
-    setAvailable(!!edition.listPrice?.display && !!edition.isOfferableFromInquiry)
-  }, [edition])
+  const available = !!edition.isOfferableFromInquiry
 
   return (
     <Touchable
