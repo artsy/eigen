@@ -7,9 +7,9 @@ Object.entries(features).forEach(([key, val]) => {
   describe(`The ${key} feature`, () => {
     if (val.echoFlagKey) {
       it(`uses an echo flag named ${key}`, () => {
-        if (!echoLaunchJSON.features.find((flag) => flag.name === key)) {
+        if (!echoLaunchJSON.features.some((flag) => flag.name === val.echoFlagKey)) {
           throw new Error(
-            `No echo flag found for key ${key}. ` +
+            `No echo flag found for key ${val.echoFlagKey}. ` +
               (env.CI === "true"
                 ? "Make sure you added it to the echo repo"
                 : "Make sure you added it to the echo repo and updated your local copy of echo with ./scripts/update-echo")
