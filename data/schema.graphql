@@ -2052,6 +2052,12 @@ enum AuctionsSoldStatus {
   Sold
 }
 
+enum AuctionState {
+  CLOSED
+  OPEN
+  UPCOMING
+}
+
 # An Artsy User
 type AuctionsUser implements AuctionsNode {
   # The ID of an object
@@ -7413,6 +7419,7 @@ type Me implements Node {
   recentlyViewedArtworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
   saleRegistrationsConnection(
     after: String
+    auctionState: AuctionState
     before: String
     first: Int
 
@@ -7687,7 +7694,6 @@ type Mutation {
 }
 
 type MyBid {
-  lots: [CausalityLotState]
   sale: Sale
   saleArtworks: [SaleArtwork]
 }
@@ -9213,6 +9219,7 @@ type Query {
   # A list of Sales
   salesConnection(
     after: String
+    auctionState: AuctionState
     before: String
     first: Int
 
@@ -9631,8 +9638,8 @@ type SaleArtwork implements ArtworkEdgeInterface & Node {
   # Is this sale artwork being watched by a user. (Currently only used on me.myBids and me.watchedLotsConnection.)
   isWatching: Boolean
   isWithReserve: Boolean
-  lot: CausalityLotState
   lotLabel: String
+  lotState: CausalityLotState
   lowEstimate: SaleArtworkLowEstimate
   minimumNextBid: SaleArtworkMinimumNextBid
   node: Artwork
@@ -11544,6 +11551,7 @@ type Viewer {
   # A list of Sales
   salesConnection(
     after: String
+    auctionState: AuctionState
     before: String
     first: Int
 

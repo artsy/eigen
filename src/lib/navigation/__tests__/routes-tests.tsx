@@ -175,7 +175,7 @@ describe("artsy.net routes", () => {
   it("routes Artist auction results to a web view", () => {
     expect(matchRoute("/artist/banksy/auction-results")).toMatchInlineSnapshot(`
       Object {
-        "module": "WebView",
+        "module": "ReactWebView",
         "params": Object {
           "url": "/artist/banksy/auction-results",
         },
@@ -184,7 +184,7 @@ describe("artsy.net routes", () => {
     `)
     expect(matchRoute("/artist/josef-albers/auction-results")).toMatchInlineSnapshot(`
       Object {
-        "module": "WebView",
+        "module": "ReactWebView",
         "params": Object {
           "url": "/artist/josef-albers/auction-results",
         },
@@ -639,7 +639,7 @@ describe("artsy.net routes", () => {
   it("routes to Terms and Conditions", () => {
     expect(matchRoute("/terms")).toMatchInlineSnapshot(`
       Object {
-        "module": "WebView",
+        "module": "ReactWebView",
         "params": Object {
           "url": "/terms",
         },
@@ -651,7 +651,7 @@ describe("artsy.net routes", () => {
   it("routes to Privacy Policy", () => {
     expect(matchRoute("/privacy")).toMatchInlineSnapshot(`
       Object {
-        "module": "WebView",
+        "module": "ReactWebView",
         "params": Object {
           "url": "/privacy",
         },
@@ -845,7 +845,7 @@ describe("artsy.net routes", () => {
   it("routes /conditions-of-sale to web view", () => {
     expect(matchRoute("/conditions-of-sale")).toMatchInlineSnapshot(`
       Object {
-        "module": "WebView",
+        "module": "ReactWebView",
         "params": Object {
           "url": "/conditions-of-sale",
         },
@@ -1071,7 +1071,7 @@ describe("artsy.net routes", () => {
   it("routes /categories to a web view", () => {
     expect(matchRoute("/categories")).toMatchInlineSnapshot(`
       Object {
-        "module": "WebView",
+        "module": "ReactWebView",
         "params": Object {
           "url": "/categories",
         },
@@ -1083,7 +1083,7 @@ describe("artsy.net routes", () => {
   it("routes /privacy to a web view", () => {
     expect(matchRoute("/privacy")).toMatchInlineSnapshot(`
       Object {
-        "module": "WebView",
+        "module": "ReactWebView",
         "params": Object {
           "url": "/privacy",
         },
@@ -1146,7 +1146,7 @@ describe("artsy.net routes", () => {
   it("routes any other paths to a web view", () => {
     expect(matchRoute("/the/mighty/boosh")).toMatchInlineSnapshot(`
       Object {
-        "module": "WebView",
+        "module": "ReactWebView",
         "params": Object {
           "url": "/the/mighty/boosh",
         },
@@ -1155,7 +1155,7 @@ describe("artsy.net routes", () => {
     `)
     expect(matchRoute("/one-hundred/years-of/solitude")).toMatchInlineSnapshot(`
       Object {
-        "module": "WebView",
+        "module": "ReactWebView",
         "params": Object {
           "url": "/one-hundred/years-of/solitude",
         },
@@ -1209,7 +1209,7 @@ describe(replaceParams, () => {
 describe(webViewRoute, () => {
   it("returns a route matcher for web views", () => {
     const matcher = webViewRoute("/conditions-of-sale")
-    expect(matcher.module).toBe("WebView")
+    expect(matcher.module).toBe("ReactWebView")
     expect(matcher.match(["conditions-of-sale"])).toEqual({ url: "/conditions-of-sale" })
   })
 

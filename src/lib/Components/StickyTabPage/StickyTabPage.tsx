@@ -1,5 +1,4 @@
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { unsafe__getSelectedTab } from "lib/store/GlobalStore"
+import { useUpdadeShouldHideBackButton } from "lib/utils/hideBackButtonOnScroll"
 import { Schema } from "lib/utils/track"
 import { useGlobalState } from "lib/utils/useGlobalState"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -52,13 +51,14 @@ export const StickyTabPage: React.FC<{
   const railRef = useRef<SnappyHorizontalRail>(null)
 
   const shouldHideBackButton = Animated.lessOrEq(headerOffsetY, -10)
+  const updateShouldHideBackButton = useUpdadeShouldHideBackButton()
 
   Animated.useCode(
     () =>
       Animated.onChange(
         shouldHideBackButton,
         Animated.call([shouldHideBackButton], ([shouldHide]) => {
-          LegacyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton(!!shouldHide, unsafe__getSelectedTab())
+          updateShouldHideBackButton(!!shouldHide)
         })
       ),
     []

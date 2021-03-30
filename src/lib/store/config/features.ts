@@ -69,7 +69,8 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableNewPartnerView",
   },
   AROptionsUseReactNativeWebView: {
-    readyForRelease: Platform.OS === "android",
+    readyForRelease: true,
+    echoFlagKey: Platform.OS === "ios" ? "AREnableReactNativeWebView" : undefined,
     description: "Use react-native web views",
     showInAdminMenu: Platform.OS !== "android",
   },

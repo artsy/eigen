@@ -81,7 +81,10 @@ describe("Inquiry make offer button", () => {
       }
       return MockPayloadGenerator.generate(operation, mockResolvers)
     })
-    expect(navigate).toHaveBeenCalledWith("/orders/4567", { modal: true, passProps: { orderID: "4567" } })
+    expect(navigate).toHaveBeenCalledWith("/orders/4567", {
+      modal: true,
+      passProps: { orderID: "4567", title: "Make Offer" },
+    })
   })
 
   it("presents an error dialogue if mutation returns an error response", () => {

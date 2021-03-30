@@ -102,7 +102,7 @@ export default class Composer extends React.Component<Props, State> {
     const inquiryCheckoutEnabled = unsafe_getFeatureFlag("AROptionsInquiryCheckout")
     if (inquiryCheckoutEnabled && isOfferableFromInquiry) {
       if (activeOrder) {
-        CTA = <ReviewOfferButton order={activeOrder} />
+        CTA = <ReviewOfferButton conversationID={conversationID} order={activeOrder} />
       } else {
         // artworkID is guaranteed to be present if `isOfferableFromInquiry` was present.
         CTA = <OpenInquiryModalButton artworkID={artworkID!} conversationID={conversationID!} />

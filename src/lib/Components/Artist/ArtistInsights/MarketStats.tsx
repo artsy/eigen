@@ -241,7 +241,7 @@ const LoadingSkeleton = () => {
 export const tracks = {
   tapMarketStatsInfo: (): TappedInfoBubbleArgs => ({
     contextModule: ContextModule.auctionResults,
-    contextScreenOwnerType: OwnerType.artistInsights,
+    contextScreenOwnerType: OwnerType.artistAuctionResults,
     subject: "artistMarketStatistics",
   }),
 }

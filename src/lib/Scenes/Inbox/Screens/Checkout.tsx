@@ -6,7 +6,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { KeyboardAvoidingView, View } from "react-native"
 
-export const Checkout: React.FC<{ orderID: string }> = ({ orderID }) => {
+export const Checkout: React.FC<{ orderID: string; title: string }> = ({ orderID, title }) => {
   const webCheckoutUrl = `${useEnvironment().webURL}/orders/${orderID}`
   return (
     <KeyboardAvoidingView
@@ -23,7 +23,7 @@ export const Checkout: React.FC<{ orderID: string }> = ({ orderID }) => {
           rightButtonDisabled
           rightButtonText=" "
         >
-          Make Offer
+          {title}
         </FancyModalHeader>
         <ArtsyWebView url={webCheckoutUrl} showFullScreen={false} />
       </View>

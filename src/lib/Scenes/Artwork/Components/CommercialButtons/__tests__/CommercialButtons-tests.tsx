@@ -191,7 +191,7 @@ describe("CommercialButtons", () => {
     const BuyNowButton = commercialButtons.find(Button).at(0)
     BuyNowButton.props().onPress()
     await flushPromiseQueue()
-    expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", { modal: true })
+    expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", { modal: true, passProps: { title: "Buy Now" } })
   })
 
   it("commits the Make Offer mutation", async () => {
@@ -223,6 +223,7 @@ describe("CommercialButtons", () => {
       modal: true,
       passProps: {
         orderID: "makeOfferID",
+        title: "Make Offer",
       },
     })
   })
