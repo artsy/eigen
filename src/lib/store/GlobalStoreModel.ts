@@ -93,12 +93,14 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
     ? action((state, injectedState) => {
         assignDeep(state, injectedState)
       })
-    : action(() => {}),
+    : // tslint:disable-next-line:no-empty
+      action(() => {}),
   __manipulate: __TEST__
     ? action((state, theEdits) => {
         theEdits((state as unknown) as GlobalStoreModel)
       })
-    : action(() => {}),
+    : // tslint:disable-next-line:no-empty
+      action(() => {}),
 })
 
 export type GlobalStoreState = State<GlobalStoreModel>
