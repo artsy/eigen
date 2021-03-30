@@ -22,7 +22,6 @@ echoLaunchJsonSpy.mockReturnValue(echo({}))
 
 beforeEach(() => {
   fetchMock.mockReset()
-  GlobalStore.actions.reset({})
 })
 
 const getEchoState = () => {

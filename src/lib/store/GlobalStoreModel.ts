@@ -33,6 +33,10 @@ export interface GlobalStoreModel extends GlobalStoreStateModel {
   reset: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
   signOut: Thunk<GlobalStoreModel>
   didRehydrate: ThunkOn<GlobalStoreModel>
+
+  // for testing only. noop otherwise.
+  __injectState: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
+  __manipulateState: Action<GlobalStoreModel, (store: GlobalStoreModel) => void>
 }
 
 export const getGlobalStoreModel = (): GlobalStoreModel => ({
@@ -50,7 +54,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
     theEdits(state)
   }),
   reset: action((_, state) => {
-    const result = createStore(GlobalStoreModel).getState()
+    const result = createStore(getGlobalStoreModel()).getState()
     result.sessionState.isHydrated = true
     assignDeep(result, state)
     return result
@@ -87,6 +91,18 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   myCollection: getMyCollectionModel(),
   config: getConfigModel(),
   auth: getAuthModel(),
+
+  // for testing only. noop otherwise.
+  __injectState: __TEST__
+    ? action((state, injectedState) => {
+        assignDeep(state, injectedState)
+      })
+    : action(() => {}),
+  __manipulateState: __TEST__
+    ? action((state, theEdits) => {
+        theEdits((state as unknown) as GlobalStoreModel)
+      })
+    : action(() => {}),
 })
 
 export type GlobalStoreState = State<GlobalStoreModel>
