@@ -11,6 +11,20 @@ export const ArtsyNativeModule = {
     Platform.OS === "ios"
       ? LegacyNativeModules.ARNotificationsManager.nativeState.launchCount
       : (NativeModules.ArtsyNativeModule.getConstants().launchCount as number),
-  setAppStyling: Platform.OS === "ios" ? null : NativeModules.ArtsyNativeModule.setAppStyling,
-  setNavigationBarColor: Platform.OS === "ios" ? null : NativeModules.ArtsyNativeModule.setNavigationBarColor,
+  /**
+   * Set android app theme
+   */
+  setAppStyling: Platform.OS === "ios" ? undefined : NativeModules.ArtsyNativeModule.setAppStyling,
+  /**
+   * Set android app system navigation bar color
+   */
+  setNavigationBarColor: Platform.OS === "ios" ? undefined : NativeModules.ArtsyNativeModule.setNavigationBarColor,
+  /**
+   * Set android:windowSoftInputMode to adjustPan
+   */
+  setAdjustPan: Platform.OS === "ios" ? undefined : NativeModules.ArtsyNativeModule.setAdjustPan,
+  /**
+   * Set android:windowSoftInputMode to adjustResize
+   */
+  setAdjustResize: Platform.OS === "ios" ? undefined : NativeModules.ArtsyNativeModule.setAdjustResize,
 }

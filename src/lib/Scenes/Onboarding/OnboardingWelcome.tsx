@@ -2,7 +2,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { color, Flex, Spacer, Text, Touchable } from "palette"
 import React from "react"
-import { Image, StatusBar } from "react-native"
+import { Image } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { ArtsyMarkWhiteIcon } from "../../../palette/svgs/ArtsyMarkWhiteIcon"
 import { OnboardingNavigationStack } from "./Onboarding"
@@ -13,10 +13,9 @@ const BUTTON_HEIGHT = 41
 
 export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation }) => {
   const { height: screenHeight } = useScreenDimensions()
+
   return (
     <Flex flex={1} removeClippedSubviews={false}>
-      <StatusBar translucent />
-
       <Flex alignItems="flex-end" position="absolute">
         <Image source={require("@images/WelcomeImage.png")} resizeMode="cover" style={{ height: screenHeight }}></Image>
       </Flex>
