@@ -62,7 +62,6 @@ export const AddEditPhotos: React.FC<AddEditPhotosProps> = ({ initialPhotos, pho
   return (
     <>
       <FancyModalHeader onLeftButtonPress={doneTapped}>Photos</FancyModalHeader>
-      <Separator key="separator2" />
       <ScrollView>
         <Flex flexDirection="row" flexWrap="wrap" mt={2}>
           {rows.map((row, i) => (
