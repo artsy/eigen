@@ -1,6 +1,6 @@
 import { InquiryMakeOfferButton_artwork } from "__generated__/InquiryMakeOfferButton_artwork.graphql"
 import { InquiryMakeOfferButtonOrderMutation } from "__generated__/InquiryMakeOfferButtonOrderMutation.graphql"
-import { dismissModal, navigate } from "lib/navigation/navigate"
+import { navigate } from "lib/navigation/navigate"
 import { Button, ButtonVariant } from "palette"
 import React from "react"
 import { Alert } from "react-native"
@@ -96,17 +96,14 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
               if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
                 this.onMutationError(orderOrError.error)
               } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
-                dismissModal()
-                setTimeout(() => {
-                  navigate(`/orders/${orderOrError.order.internalID}`, {
-                    modal: true,
-                    passProps: {
-                      inquiryCheckout: true,
-                      orderID: orderOrError.order.internalID,
-                      title: "Make Offer",
-                    },
-                  })
-                }, 1000)
+                navigate(`/orders/${orderOrError.order.internalID}`, {
+                  modal: true,
+                  replace: true,
+                  passProps: {
+                    orderID: orderOrError.order.internalID,
+                    title: "Make Offer",
+                  },
+                })
               }
             })
           },

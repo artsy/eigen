@@ -7,12 +7,14 @@ import { matchRoute } from "./routes"
 export interface ViewDescriptor extends ViewOptions {
   type: "react" | "native"
   moduleName: AppModule
+  // Whether the new view should replace the previous (modal only)
+  replace: boolean
   props: object
 }
 
 let lastInvocation = { url: "", timestamp: 0 }
 
-export async function navigate(url: string, options: { modal?: boolean; passProps?: object } = {}) {
+export async function navigate(url: string, options: { modal?: boolean; passProps?: object; replace?: boolean } = {}) {
   // Debounce double taps
   if (lastInvocation.url === url && Date.now() - lastInvocation.timestamp < 1000) {
     return
@@ -33,6 +35,7 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
   const screenDescriptor: ViewDescriptor = {
     type: module.type,
     moduleName: result.module,
+    replace: options.replace ?? false,
     props: {
       ...result.params,
       ...options.passProps,
@@ -40,7 +43,6 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
     ...module.options,
   }
 
-  console.log({ screenDescriptor })
   if (presentModally) {
     LegacyNativeModules.ARScreenPresenterModule.presentModal(screenDescriptor)
   } else if (module.options.isRootViewForTabName) {

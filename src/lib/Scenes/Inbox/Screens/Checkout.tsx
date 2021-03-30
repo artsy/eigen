@@ -6,12 +6,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { KeyboardAvoidingView, View } from "react-native"
 
-export const Checkout: React.FC<{ orderID: string; title: string; inquiryCheckout?: boolean }> = ({
-  orderID,
-  title,
-  inquiryCheckout = false,
-}) => {
-  console.warn({ inquiryCheckout })
+export const Checkout: React.FC<{ orderID: string; title: string }> = ({ orderID, title }) => {
   const webCheckoutUrl = `${useEnvironment().webURL}/orders/${orderID}`
   return (
     <KeyboardAvoidingView
@@ -24,12 +19,9 @@ export const Checkout: React.FC<{ orderID: string; title: string; inquiryCheckou
           onLeftButtonPress={() => {
             dismissModal()
           }}
-          onRightButtonPress={() => {
-            dismissModal()
-          }}
-          leftButtonText={inquiryCheckout ? " " : "Cancel"}
-          rightButtonDisabled={!inquiryCheckout}
-          rightButtonText={inquiryCheckout ? "Close" : " "}
+          leftButtonText="Cancel"
+          rightButtonDisabled
+          rightButtonText=" "
         >
           {title}
         </FancyModalHeader>
