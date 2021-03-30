@@ -1,6 +1,6 @@
 import { useToast } from "lib/Components/Toast/toastHook"
+import { echoLaunchJson } from "lib/utils/jsonFiles"
 import { Platform } from "react-native"
-import echoLaunchJson from "../../../../Artsy/App/EchoNew.json"
 import { GlobalStore } from "../GlobalStore"
 
 export interface FeatureDescriptor {
@@ -69,7 +69,8 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableNewPartnerView",
   },
   AROptionsUseReactNativeWebView: {
-    readyForRelease: Platform.OS === "android",
+    readyForRelease: true,
+    echoFlagKey: Platform.OS === "ios" ? "AREnableReactNativeWebView" : undefined,
     description: "Use react-native web views",
     showInAdminMenu: Platform.OS !== "android",
   },
@@ -131,7 +132,7 @@ export const devToggles = defineDevToggles({
   DTDisableEchoRemoteFetch: {
     description: "Disable fetching remote echo",
     onTrue: ({ toast }) => {
-      GlobalStore.actions.config.echo.setEchoState(echoLaunchJson)
+      GlobalStore.actions.config.echo.setEchoState(echoLaunchJson())
       toast.show("Loaded bundled echo config", "middle")
     },
     onFalse: ({ toast }) => {

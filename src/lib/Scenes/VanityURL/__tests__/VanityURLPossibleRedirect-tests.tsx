@@ -1,4 +1,4 @@
-import InternalWebView from "lib/Components/InternalWebView"
+import { ArtsyWebView } from "lib/Components/ArtsyWebView"
 import { navigate } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
@@ -104,13 +104,13 @@ describe(VanityURLPossibleRedirect, () => {
     fetchMock.mockResolvedValueOnce({ ok: true, url: "https://artsy.net/no-redirect" })
     const tree = renderWithWrappers(<VanityURLPossibleRedirect slug="no-redirect" />)
     await flushPromiseQueue()
-    expect(tree.root.findAllByType(InternalWebView)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtsyWebView)).toHaveLength(1)
   })
 
   it("shows an internal web view when there is a redirect to a page that is supposed to be shown in a web view", async () => {
     fetchMock.mockResolvedValueOnce({ ok: true, url: "https://artsy.net/categories" })
     const tree = renderWithWrappers(<VanityURLPossibleRedirect slug="genes" />)
     await flushPromiseQueue()
-    expect(tree.root.findAllByType(InternalWebView)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtsyWebView)).toHaveLength(1)
   })
 })

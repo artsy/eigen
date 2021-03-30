@@ -4,6 +4,6 @@ export interface MyCollectionModel {
   artwork: MyCollectionArtworkModel
 }
 
-export const MyCollectionModel: MyCollectionModel = {
+export const getMyCollectionModel = (): MyCollectionModel => ({
   artwork: MyCollectionArtworkModel,
-}
+})
