@@ -23,6 +23,7 @@ upcoming:
     - Group order updates with messages in an associated conversation - erik, lily
     - Fix modal header on iOS 14 in consignments flow - brian
     - Add Onboarding welcome screen - mounir
+    - Add ability for one modal to replace another and use it in inquiry checkout flow - erik, david
 
 releases:
   - version: 6.8.1
