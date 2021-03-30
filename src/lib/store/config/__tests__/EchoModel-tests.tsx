@@ -20,10 +20,6 @@ const echo = (overrides: Partial<Echo>): Echo => ({
 })
 echoLaunchJsonSpy.mockReturnValue(echo({}))
 
-jest.mock("../../../../../app.json", () => ({
-  version: "2.0.0",
-}))
-
 beforeEach(() => {
   fetchMock.mockReset()
 })
@@ -34,10 +30,6 @@ const getEchoState = () => {
 
 const forceUpdateMessage = () => {
   return __globalStoreTestUtils__?.getCurrentState().config.echo.forceUpdateMessage
-}
-
-const forceUpdateMessage = () => {
-  return __globalStoreTestUtils__?.getCurrentState().config.echo.forceUpdateMessage!
 }
 
 describe("Echo", () => {
