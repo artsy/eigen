@@ -216,18 +216,14 @@ const DevToggleItem: React.FC<{ toggleKey: DevToggleName }> = ({ toggleKey }) =>
             text: currentValue ? "Keep turned ON" : "Turn ON",
             onPress() {
               GlobalStore.actions.config.features.setAdminOverride({ key: toggleKey, value: true })
-              if (devToggles[toggleKey].onTrue !== undefined) {
-                devToggles[toggleKey].onTrue!({ toast })
-              }
+              devToggles[toggleKey].onChange?.(true, { toast })
             },
           },
           {
             text: currentValue ? "Turn OFF" : "Keep turned OFF",
             onPress() {
               GlobalStore.actions.config.features.setAdminOverride({ key: toggleKey, value: false })
-              if (devToggles[toggleKey].onFalse !== undefined) {
-                devToggles[toggleKey].onFalse!({ toast })
-              }
+              devToggles[toggleKey].onChange?.(false, { toast })
             },
           },
         ])
