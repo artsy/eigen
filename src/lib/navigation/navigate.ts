@@ -31,11 +31,12 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
 
   const module = modules[result.module]
   const presentModally = options.modal ?? module.options.alwaysPresentModally ?? false
+  const { replace = false } = options
 
   const screenDescriptor: ViewDescriptor = {
     type: module.type,
     moduleName: result.module,
-    replace: options.replace ?? false,
+    replace,
     props: {
       ...result.params,
       ...options.passProps,
