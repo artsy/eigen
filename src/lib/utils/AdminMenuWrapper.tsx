@@ -1,13 +1,20 @@
+import { GlobalStore } from "lib/store/GlobalStore"
+import { Flex } from "palette"
 import React, { useRef, useState } from "react"
-import { View } from "react-native"
 import { AdminMenu } from "./AdminMenu"
 
 export const AdminMenuWrapper: React.FC = ({ children }) => {
+  const userIsDev = GlobalStore.useAppState((store) => store.config.userIsDev)
   const [isShowingAdminMenu, setIsShowingAdminMenu] = useState(false)
   const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
-  // TODO: if public release, just return <>{children}</>
+
+  if (!userIsDev) {
+    return <Flex flex={1}>{children}</Flex>
+  }
+
   return (
-    <View
+    <Flex
+      flex={1}
       onStartShouldSetResponderCapture={() => {
         const now = Date.now()
         const state = gestureState.current
@@ -26,10 +33,9 @@ export const AdminMenuWrapper: React.FC = ({ children }) => {
         }
         return false
       }}
-      style={{ flex: 1 }}
     >
       {children}
       {!!isShowingAdminMenu && <AdminMenu onClose={() => setIsShowingAdminMenu(false)} />}
-    </View>
+    </Flex>
   )
 }
