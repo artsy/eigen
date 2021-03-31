@@ -44,7 +44,10 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
       if (this.props.params) {
         this.paymentInfo.current.setValues({
           cvc: this.props.params.cvc,
-          expiry: this.props.params.expMonth + "/" + this.props.params.expYear,
+          expiry:
+            this.props.params.expMonth.toString().padStart(2, "0") +
+            "/" +
+            this.props.params.expYear.toString().padStart(2, "0"),
           number: this.props.params.number,
         })
       }
