@@ -139,7 +139,7 @@ describe("ReviewOfferButton", () => {
     })
 
     const text = extractText(wrapper.root)
-    expect(text).toContain("Offer Accepted")
+    expect(text).toContain("Payment Failed")
   })
 
   it("shows correct message and icon for received counteroffers", () => {
