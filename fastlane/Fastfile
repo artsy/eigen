@@ -166,7 +166,7 @@ lane :ship_beta_android do
   )
 
   sentry_release_name = "android-#{vname}-#{vcode}"
-  upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: vcode, platform: "android")
+  upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
 
   upload_to_play_store(
     track: "alpha",
