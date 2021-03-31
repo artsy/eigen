@@ -1,17 +1,17 @@
-import { Fonts } from "lib/data/fonts"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Box, Button, Sans, Serif, Theme } from "palette"
 import React, { Component } from "react"
-import { ScrollView, StyleSheet, View } from "react-native"
+import { ScrollView, View } from "react-native"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import stripe, { PaymentCardTextField, StripeToken } from "tipsi-stripe"
+import stripe, { StripeToken } from "tipsi-stripe"
 
 import BottomAlignedButtonWrapper from "lib/Components/Buttons/BottomAlignedButtonWrapper"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
-import { theme } from "../Elements/Theme"
 import { PaymentCardTextFieldParams } from "../types"
+
+import { LiteCreditCardInput } from "react-native-credit-card-input"
 
 interface CreditCardFormProps {
   navigator?: NavigatorIOS
@@ -27,7 +27,7 @@ interface CreditCardFormState {
 }
 
 export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFormState> {
-  private paymentInfo: PaymentCardTextField
+  private paymentInfo: React.RefObject<LiteCreditCardInput>
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   constructor(props) {
@@ -39,15 +39,16 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
   }
 
   componentDidMount() {
-    if (this.paymentInfo.value) {
-      this.paymentInfo.value.setParams(this.state.params)
-      this.paymentInfo.value.focus()
+    if (this.paymentInfo.current) {
+      this.paymentInfo.current.focus()
+      if (this.props.params) {
+        this.paymentInfo.current.setValues({
+          cvc: this.props.params.cvc,
+          expiry: this.props.params.expMonth + "/" + this.props.params.expYear,
+          number: this.props.params.number,
+        })
+      }
     }
-  }
-
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  handleFieldParamsChange = (valid, params: PaymentCardTextFieldParams) => {
-    this.setState({ valid, params })
   }
 
   tokenizeCardAndSubmit = async () => {
@@ -83,18 +84,6 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
       </Box>
     )
 
-    const styles = StyleSheet.create({
-      field: {
-        fontFamily: Fonts.GaramondRegular,
-        height: 40,
-        fontSize: theme.fontSizes[3],
-        width: "100%",
-        borderColor: this.state.isError ? theme.colors.red100 : theme.colors.purple100,
-        borderWidth: 1,
-        borderRadius: 0,
-      },
-    })
-
     const errorText = "There was an error. Please try again."
 
     return (
@@ -114,13 +103,19 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
                   <Serif size="3t" mb={2}>
                     Card Information
                   </Serif>
-                  <PaymentCardTextField
+                  <LiteCreditCardInput
                     ref={this.paymentInfo}
-                    style={styles.field}
-                    onParamsChange={this.handleFieldParamsChange}
-                    numberPlaceholder="Card number"
-                    expirationPlaceholder="MM/YY"
-                    cvcPlaceholde="CVC"
+                    onChange={({ valid, values }) => {
+                      this.setState({
+                        valid,
+                        params: {
+                          cvc: values.cvc,
+                          expMonth: Number(values.expiry.split("/")[0]),
+                          expYear: Number(values.expiry.split("/")[1]),
+                          number: values.number,
+                        },
+                      })
+                    }}
                   />
                   {!!this.state.isError && (
                     <Sans size="2" mt={3} color="red100">
