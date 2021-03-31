@@ -1,4 +1,5 @@
 import { ConsignmentsArtistQuery } from "__generated__/ConsignmentsArtistQuery.graphql"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { defaultEnvironment as environment } from "lib/relay/createEnvironment"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -81,6 +82,7 @@ export default class Artist extends React.Component<Props, State> {
     return (
       <Theme>
         <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
+          <FancyModalHeader onLeftButtonPress={this.doneTapped}>Artist name</FancyModalHeader>
           <View
             style={{
               alignContent: "center",
@@ -88,7 +90,6 @@ export default class Artist extends React.Component<Props, State> {
               flexGrow: 1,
               marginLeft: 20,
               marginRight: 20,
-              marginTop: 20,
             }}
           >
             <SearchResults<ArtistResult>

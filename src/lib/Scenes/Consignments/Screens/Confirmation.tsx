@@ -1,3 +1,4 @@
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import Spinner from "lib/Components/Spinner"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -51,7 +52,7 @@ export default class Confirmation extends React.Component<Props, State> {
   }
 
   componentDidMount = () => {
-    this.backButtonListener = BackHandler.addEventListener("hardwareBackPress", this.handleBackButton.bind(this))
+    this.backButtonListener = BackHandler.addEventListener("hardwareBackPress", this.handleDismiss.bind(this))
   }
 
   componentWillUnmount = () => {
@@ -60,7 +61,7 @@ export default class Confirmation extends React.Component<Props, State> {
     }
   }
 
-  handleBackButton = () => {
+  handleDismiss = () => {
     if (this.state.submissionState === SubmissionTypes.Submitting) {
       Alert.alert("Leave this screen?", "Your consignment submission is still in progress", [
         { text: "Leave Now", onPress: () => dismissModal() },
@@ -161,6 +162,11 @@ export default class Confirmation extends React.Component<Props, State> {
   }
 
   render() {
-    return <Container>{this.confirmationContent()}</Container>
+    return (
+      <>
+        <FancyModalHeader useXButton onLeftButtonPress={this.handleDismiss} />
+        <Container>{this.confirmationContent()}</Container>
+      </>
+    )
   }
 }
