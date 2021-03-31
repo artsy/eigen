@@ -108,6 +108,9 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   const reload = () => {
     const count = extractNodes(conversation.messagesConnection).length
     setReloadingData(true)
+    if (onDataFetching) {
+      onDataFetching(false)
+    }
     relay.refetchConnection(count, (error) => {
       if (error) {
         // FIXME: Handle error

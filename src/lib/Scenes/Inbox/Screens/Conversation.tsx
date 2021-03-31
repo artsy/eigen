@@ -15,14 +15,7 @@ import { color, Flex, Text, Touchable } from "palette"
 import React from "react"
 import { View } from "react-native"
 import Svg, { Path } from "react-native-svg"
-import {
-  createFragmentContainer,
-  createRefetchContainer,
-  graphql,
-  QueryRenderer,
-  RelayProp,
-  RelayRefetchProp,
-} from "react-relay"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 import { ConversationDetailsQueryRenderer } from "./ConversationDetails"
 
@@ -211,8 +204,10 @@ export class Conversation extends React.Component<Props, State> {
               this.props.relay.refetch(
                 { conversationID: conversation?.internalID },
                 null,
-                () => {
-                  console.warn("WOOO")
+                (error) => {
+                  if (error) {
+                    console.error("Conversation.tsx", error.message)
+                  }
                 },
                 { force: true }
               )
