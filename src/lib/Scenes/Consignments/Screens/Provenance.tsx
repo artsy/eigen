@@ -1,3 +1,4 @@
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Theme } from "palette"
 import React from "react"
@@ -37,11 +38,12 @@ export default class Provenance extends React.Component<Props, State> {
     return (
       <Theme>
         <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
+          <FancyModalHeader onLeftButtonPress={this.doneTapped}>Provenance</FancyModalHeader>
           <View
             style={{
               marginLeft: 20,
               marginRight: 20,
-              marginTop: 40,
+              marginTop: 20,
               maxHeight: 600,
               flexDirection: "row-reverse",
             }}

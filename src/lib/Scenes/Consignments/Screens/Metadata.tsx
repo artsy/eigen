@@ -1,6 +1,7 @@
 import React from "react"
 
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Sans } from "palette"
 import {
@@ -140,8 +141,9 @@ export default class Metadata extends React.Component<Props, State> {
     return (
       <View style={{ flex: 1 }}>
         <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
+          <FancyModalHeader onLeftButtonPress={this.doneTapped}>Work details</FancyModalHeader>
           <ScrollView keyboardShouldPersistTaps="handled" centerContent style={{ flex: 1 }}>
-            <View style={{ padding: 10, marginTop: 20 }}>
+            <View style={{ padding: 10 }}>
               <Row>
                 <Text
                   testID="consigments-metatdata-title"

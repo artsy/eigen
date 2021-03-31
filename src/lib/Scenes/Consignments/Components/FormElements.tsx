@@ -5,7 +5,7 @@ import { LargeHeadline } from "../Typography/index"
 /** A re-usable full-screen form with a scrollview */
 export const Form: React.FC<{ title?: string }> = (props) => (
   <ScrollView style={{ flex: 1 }}>
-    <View style={{ paddingTop: 40 }}>
+    <View>
       {!!props.title && <LargeHeadline>{props.title}</LargeHeadline>}
       <View style={{ padding: 10 }}>{(props as any).children}</View>
     </View>

@@ -5,6 +5,7 @@ upcoming:
     - Add camera permissions to android manifest - brian
     - Use artistAuctionResults instead of artistInsights for artist insights - mounir
   user_facing:
+    - Use toolbar style modal headers in consignments flow - brian
     - Add Onboarding welcome screen - mounir
 
 releases:
