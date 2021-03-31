@@ -125,7 +125,7 @@
     "react-relay": "^10.0.1",
     "react-spring": "8.0.23",
     "react-tracking": "7.2.1",
-    "react-use": "^17.1.0",
+    "react-use": "17.2.1",
     "redux-logger": "3.0.6",
     "relay-hooks": "3.5.2",
     "remove-markdown": "0.1.0",
