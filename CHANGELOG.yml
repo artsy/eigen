@@ -1,31 +1,36 @@
 upcoming:
-  version: 6.8.2
+  version: 6.8.3
   date: TBD
   dev:
-    - Add QAInfo UI and flag - pavlos
-    - Add echo flag for react native web views - david
-    - Fix iOS modal presentation infra code - david
-    - Fix first install event analytics - brian, mike
-    - Make back button hideable on android - david
-    - Set up basic react webview module - david
-    - Bring all relay packages to the same version - pavlos
-    - Add cookie setup for react web views - david
-    - Add link interception for react web views - david
-    - Fix iOS modal presentation infra code - david
-    - Enable sentry for android - brian, barry
     - Add camera permissions to android manifest - brian
     - Use artistAuctionResults instead of artistInsights for artist insights - mounir
   user_facing:
-    - Set system navigation bar color to white on modals for android - mounir
-    - Fix UI for Inquiry message count on iPad - pavlos
-    - Fix action sheets on android - brian, barry
-    - Fix change password screen title  - mounir
-    - Enable experimental layout animation on android - mounir
-    - Group order updates with messages in an associated conversation - erik, lily
-    - Fix modal header on iOS 14 in consignments flow - brian
     - Add Onboarding welcome screen - mounir
 
 releases:
+  - version: 6.8.2
+    date: Mar 31, 2021
+    dev:
+      - Add QAInfo UI and flag - pavlos
+      - Add echo flag for react native web views - david
+      - Fix iOS modal presentation infra code - david
+      - Fix first install event analytics - brian, mike
+      - Make back button hideable on android - david
+      - Set up basic react webview module - david
+      - Bring all relay packages to the same version - pavlos
+      - Add cookie setup for react web views - david
+      - Add link interception for react web views - david
+      - Fix iOS modal presentation infra code - david
+      - Enable sentry for android - brian, barry
+    user_facing:
+      - Set system navigation bar color to white on modals for android - mounir
+      - Fix UI for Inquiry message count on iPad - pavlos
+      - Fix action sheets on android - brian, barry
+      - Fix change password screen title  - mounir
+      - Enable experimental layout animation on android - mounir
+      - Group order updates with messages in an associated conversation - erik, lily
+      - Fix modal header on iOS 14 in consignments flow - brian
+
   - version: 6.8.1
     date: Mar 16, 2021
     dev:
