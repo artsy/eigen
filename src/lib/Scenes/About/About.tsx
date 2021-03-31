@@ -1,17 +1,56 @@
 import { MenuItem } from "lib/Components/MenuItem"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
+import { useToast } from "lib/Components/Toast/toastHook"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
-import React from "react"
+import { GlobalStore } from "lib/store/GlobalStore"
+import React, { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
+import useDebounce from "react-use/lib/useDebounce"
 
-export const About: React.FC<{}> = ({}) => {
+export const About: React.FC = () => {
+  const toast = useToast()
+  const [tapCount, updateTapCount] = useState(0)
+  const userIsDev = GlobalStore.useAppState((store) => store.config.userIsDev)
+
+  useEffect(() => {
+    const flip = (userIsDev && tapCount >= 3) || (!userIsDev && tapCount >= 7)
+    if (flip) {
+      updateTapCount((_) => 0)
+      GlobalStore.actions.config.setUserIsDev({
+        nextValue: !userIsDev,
+        callback: (newValue) => {
+          if (newValue) {
+            toast.show('Developer mode enabled.\nTap "Version" three times to disable it.', "bottom")
+          } else {
+            toast.show("Developer mode disabled.", "bottom")
+          }
+        },
+      })
+    }
+  }, [tapCount])
+
+  useDebounce(
+    () => {
+      if (tapCount !== 0) {
+        updateTapCount((_) => 0)
+      }
+    },
+    350,
+    [tapCount]
+  )
+
   return (
     <PageWithSimpleHeader title="About">
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
         <MenuItem title="Terms of Use" onPress={() => navigate("/terms", { modal: true })} />
         <MenuItem title="Privacy Policy" onPress={() => navigate("/privacy", { modal: true })} />
-        <MenuItem title="Version" disabled text={LegacyNativeModules.ARTemporaryAPIModule.appVersion} />
+        <MenuItem
+          title="Version"
+          text={LegacyNativeModules.ARTemporaryAPIModule.appVersion}
+          onPress={() => updateTapCount((tapCount) => tapCount + 1)}
+          chevron={false}
+        />
       </ScrollView>
     </PageWithSimpleHeader>
   )
