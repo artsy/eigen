@@ -234,8 +234,6 @@ export const Button: React.FC<ButtonProps> = React.memo((props) => {
   const { children, loading, disabled, inline, longestText, ...rest } = props
   const s = getSize()
   const variantColors = getColorsForVariant(variant)
-  // const opacity = 1
-  // const opacity = props.disabled ? 0.1 : 1.0
 
   const from = variantColors[previous]
   const to = variantColors[current]

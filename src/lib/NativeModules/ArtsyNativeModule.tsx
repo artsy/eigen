@@ -19,12 +19,4 @@ export const ArtsyNativeModule = {
    * Set android app system navigation bar color
    */
   setNavigationBarColor: Platform.OS === "ios" ? undefined : NativeModules.ArtsyNativeModule.setNavigationBarColor,
-  /**
-   * Set android:windowSoftInputMode to adjustPan
-   */
-  setAdjustPan: Platform.OS === "ios" ? undefined : NativeModules.ArtsyNativeModule.setAdjustPan,
-  /**
-   * Set android:windowSoftInputMode to adjustResize
-   */
-  setAdjustResize: Platform.OS === "ios" ? undefined : NativeModules.ArtsyNativeModule.setAdjustResize,
 }
