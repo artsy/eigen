@@ -2,6 +2,7 @@ import { createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNavigationState"
+import { isFunction } from "lodash"
 import React from "react"
 import { Platform } from "react-native"
 import { Action, Middleware } from "redux"
@@ -127,7 +128,15 @@ export function unsafe_getFeatureFlag(key: FeatureName): boolean {
   if (__DEV__) {
     throw new Error(`Unable to access ${key} before GlobalStore bootstraps`)
   }
-  return features[key].readyForRelease
+
+  const readyForRelease = features[key].readyForRelease
+  if (isFunction(readyForRelease)) {
+    if (__DEV__) {
+      throw new Error(`Unable to access ${key} before GlobalStore bootstraps`)
+    }
+    return false
+  }
+  return readyForRelease
 }
 
 export function unsafe_getDevToggle(key: DevToggleName) {
