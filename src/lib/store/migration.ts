@@ -16,10 +16,9 @@ export const Versions = {
   AddFeatureFlagInfra: 6,
   RefactorConfigModel: 7,
   FixEnvironmentMigrationBug: 8,
-  AddUserIsDev: 9,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddUserIsDev
+export const CURRENT_APP_VERSION = Versions.FixEnvironmentMigrationBug
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -64,9 +63,6 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.FixEnvironmentMigrationBug]: (state) => {
     state.config.environment.env = __TEST__ ? "staging" : "production"
-  },
-  [Versions.AddUserIsDev]: (state) => {
-    state.config.userIsDev = false
   },
 }
 

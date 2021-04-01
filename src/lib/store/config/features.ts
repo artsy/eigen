@@ -1,4 +1,5 @@
 import { useToast } from "lib/Components/Toast/toastHook"
+import { isDevOrArtsyUser } from "lib/utils/general"
 import { echoLaunchJson } from "lib/utils/jsonFiles"
 import { Platform } from "react-native"
 import { GlobalStore } from "../GlobalStore"
@@ -9,7 +10,7 @@ export interface FeatureDescriptor {
    * If an echo flag key is specified, the echo flag's value will be used after this is set to `true`.
    * If this is set to `false`, the feature will never be shown except if overridden in the admin menu.
    */
-  readonly readyForRelease: boolean
+  readonly readyForRelease: boolean | (() => boolean)
   /**
    * Provide an echo feature flag key to allow this feature to be toggled globally via echo.
    * Make sure to add the flag to echo before setting this value. Then run ./scripts/update-echo
@@ -100,6 +101,11 @@ export const features = defineFeatures({
   ARUseNewOnboarding: {
     readyForRelease: false,
     description: "Use new onboarding",
+    showInAdminMenu: true,
+  },
+  ARUserIsDev: {
+    readyForRelease: () => isDevOrArtsyUser(),
+    description: "Is user a developer?",
     showInAdminMenu: true,
   },
 })

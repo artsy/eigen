@@ -8,6 +8,11 @@ export type DevToggleMap = { [k in DevToggleName]: boolean }
 export interface FeaturesModel {
   adminOverrides: { [k in FeatureName | DevToggleName]?: boolean }
   setAdminOverride: Action<FeaturesModel, { key: FeatureName | DevToggleName; value: boolean | null }>
+  onSetAdminOverride: ThunkOn<
+    FeaturesModel,
+    { key: FeatureName | DevToggleName; value: boolean | null },
+    GlobalStoreModel
+  >
 
   // user features
   flags: Computed<FeaturesModel, FeatureMap, GlobalStoreModel>
@@ -29,10 +34,17 @@ export const getFeaturesModel = (): FeaturesModel => ({
   flags: computed([(state) => state, (_, store) => store.config.echo], (state, echo) => {
     const result = {} as any
     for (const [key, feature] of Object.entries(features)) {
+      const readyForRelease: boolean = (() => {
+        if (isFunction(feature.readyForRelease)) {
+          return feature.readyForRelease()
+        }
+        return feature.readyForRelease
+      })()
+
       if (state.adminOverrides[key as FeatureName] != null) {
         // If there's an admin override, it takes precedence
         result[key] = state.adminOverrides[key as FeatureName]
-      } else if (feature.readyForRelease) {
+      } else if (readyForRelease) {
         // If the feature is ready for release, the echo flag takes precedence
         const echoFlag = echo.state.features.find((f) => f.name === feature.echoFlagKey)
 
