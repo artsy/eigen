@@ -43,7 +43,6 @@ interface Props {
 interface State {
   active: boolean
   text: string | null
-  hideCTA: boolean
 }
 
 const track: Track<Props, State, Schema.Entity> = _track as any
@@ -60,7 +59,6 @@ export default class Composer extends React.Component<Props, State> {
     this.state = {
       active: false,
       text: null,
-      hideCTA: false,
     }
   }
 
