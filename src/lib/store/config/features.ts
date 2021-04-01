@@ -1,5 +1,5 @@
 import { useToast } from "lib/Components/Toast/toastHook"
-import { isDevOrArtsyUser } from "lib/utils/general"
+import { userEmail, is__DEV__, isArtsyUser } from "lib/utils/general"
 import { echoLaunchJson } from "lib/utils/jsonFiles"
 import { Platform } from "react-native"
 import { GlobalStore } from "../GlobalStore"
@@ -105,7 +105,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   ARUserIsDev: {
-    readyForRelease: (store) => isDevOrArtsyUser(store),
+    readyForRelease: (store) => {
+      if (is__DEV__()) return true
+      if (isArtsyUser(userEmail(store) ?? "")) return true
+      return false
+    },
     description: "Is user a developer?",
     showInAdminMenu: true,
   },

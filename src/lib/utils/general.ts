@@ -3,21 +3,10 @@ import { Platform } from "react-native"
 
 export const is__DEV__ = () => __DEV__
 
-export const isDevOrArtsyUser = (store: GlobalStoreModel) => {
-  if (is__DEV__()) return true
+export const isArtsyUser = (email: string) => email.endsWith("@artsymail.com") || email.endsWith("@artsy.net")
 
-  const userEmail = (() => {
-    if (Platform.OS === "ios") {
-      return store.native.sessionState.userEmail
-    } else if (Platform.OS === "android") {
-      return store.auth.userID
-    }
-
-    return null
-  })()
-  if (userEmail !== null && (userEmail.endsWith("@artsymail.com") || userEmail.endsWith("@artsy.net"))) {
-    return true
-  }
-
-  return false
+export const userEmail = (store: GlobalStoreModel) => {
+  if (Platform.OS === "ios") return store.native.sessionState.userEmail
+  else if (Platform.OS === "android") return store.auth.userID
+  return null
 }
