@@ -26,6 +26,7 @@ export interface NativeState {
   onboardingState: "none" | "incomplete" | "complete"
   userAgent: string
   deviceId: string
+  userIsDev: boolean
 }
 
 export interface NativeModel {

@@ -53,7 +53,7 @@ If you need to use the feature flag outside of a functional react component, use
 
 ### Overriding a feature flag
 
-To test your feature on a physical or virtual device, you will need to override the feature flag from the admin menu. For iOS this can be done by logging in to the app with an admin account and either shaking your physical device or clicking Device > Shake in the Simulator menu bar.
+To test your feature on a physical or virtual device, you will need to override the feature flag from the admin menu. For iOS this can be done by logging in to the app with an admin account, enabling developer mode in Profile > About and tapping "Version" 7 times quickly, then either shaking your physical device or clicking Device > Shake in the Simulator menu bar.
 
 ### Writing test with a feature flag
 

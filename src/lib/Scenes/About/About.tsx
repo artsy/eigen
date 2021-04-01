@@ -4,6 +4,7 @@ import { useToast } from "lib/Components/Toast/toastHook"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
+import { color } from "palette"
 import React, { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
 import useDebounce from "react-use/lib/useDebounce"
@@ -50,6 +51,7 @@ export const About: React.FC = () => {
           text={LegacyNativeModules.ARTemporaryAPIModule.appVersion}
           onPress={() => updateTapCount((tapCount) => tapCount + 1)}
           chevron={false}
+          style={userIsDev ? { borderRightColor: color("purple100"), borderRightWidth: 1 } : undefined}
         />
       </ScrollView>
     </PageWithSimpleHeader>

@@ -32,6 +32,7 @@ interface LegacyNativeModules {
     nativeState: NativeState
     postNotificationName(type: string, data: object): void
     didFinishBootstrapping(): void
+    stateUpdated(state: NativeState): void
     reactStateUpdated(state: {
       gravityURL: string
       metaphysicsURL: string

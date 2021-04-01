@@ -19,6 +19,7 @@
 
 + (NSString *)env { return @"env"; }
 + (NSString *)deviceId { return @"deviceId"; }
++ (NSString *)userIsDev { return @"userIsDev"; }
 
 @end
 
@@ -107,6 +108,11 @@ RCT_EXPORT_MODULE();
     }
 }
 
+RCT_EXPORT_METHOD(stateUpdated:(nonnull NSDictionary *)state)
+{
+    [self updateState:state];
+}
+
 - (void)notificationReceived
 {
     [self dispatch:notificationReceived data:@{}];
@@ -177,6 +183,5 @@ RCT_EXPORT_METHOD(reactStateUpdated:(nonnull NSDictionary *)reactState)
 {
     return dispatch_get_main_queue();
 }
-
 
 @end

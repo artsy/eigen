@@ -87,10 +87,19 @@ static AREmission *_sharedInstance = nil;
 - (NSString *)stateStringForKey:(NSString *)stateKey
 {
     NSString *result = [self.notificationsManagerModule.state valueForKey:stateKey];
-    if (result && ![result isKindOfClass:NSString.class]) {
+    if (result != nil && ![result isKindOfClass:NSString.class]) {
         [NSException raise:NSInternalInconsistencyException format:@"Value for key '%@' is not a string.", stateKey];
     }
     return result;
+}
+
+- (BOOL)stateBoolForKey:(NSString *)stateKey
+{
+    NSNumber *result = [self.notificationsManagerModule.state valueForKey:stateKey];
+    if (result != nil && ![result isKindOfClass:NSNumber.class]) {
+        [NSException raise:NSInternalInconsistencyException format:@"Value for key '%@' is not a boolean.", stateKey];
+    }
+    return [result boolValue];
 }
 
 - (NSString *)reactStateStringForKey:(NSString *)stateKey

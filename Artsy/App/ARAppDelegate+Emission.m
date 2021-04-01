@@ -108,7 +108,8 @@ SOFTWARE.
                                                                  [ARStateKey launchCount] : @(launchCount),
                                                                  [ARStateKey onboardingState] : onboardingState == AROnboardingStageDefault ? @"none" : onboardingState == AROnboardingStageOnboarded ? @"complete" : @"incomplete",
                                                                  [ARStateKey userAgent] : ARRouter.userAgent,
-                                                                 [ARStateKey deviceId] : self.deviceId
+                                                                 [ARStateKey deviceId] : self.deviceId,
+                                                                 [ARStateKey userIsDev] : @NO,
     } packagerURL:packagerURL];
 
     [emission.notificationsManagerModule afterBootstrap:^{

@@ -336,6 +336,10 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)rageShakeNotificationRecieved
 {
+    if (![[AREmission sharedInstance] stateBoolForKey:[ARStateKey userIsDev]]) {
+        return;
+    }
+    
     if (![UIDevice isPad]) {
         // For some reason the supported orientation isn’t respected when this is pushed on top
         // of a landscape VIR view.

@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Add camera permissions to android manifest - brian
     - Use artistAuctionResults instead of artistInsights for artist insights - mounir
+    - Hide AdminMenu behind 7 taps of "Version" - pavlos
   user_facing:
     - Use toolbar style modal headers in consignments flow - brian
     - Add Onboarding welcome screen - mounir
