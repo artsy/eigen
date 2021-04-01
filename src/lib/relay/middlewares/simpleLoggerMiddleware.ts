@@ -17,7 +17,9 @@ export function simpleLoggerMiddleware(): Middleware {
         req.variables,
         "fetched in",
         duration,
-        ...(response.errors?.length ? ["with errors\n\n", response.errors.map((err) => "    * " + err).join("\n")] : [])
+        ...(response.errors?.length
+          ? ["with errors\n\n" + response.errors.map((err, i) => `    ${i + 1}. ${err.message}`).join("\n"), "\n"]
+          : [])
       )
     }
     addBreadcrumb({
