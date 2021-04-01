@@ -14,14 +14,17 @@ const isErrorStatus = (status: number | undefined) => {
 }
 
 const throwError = (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
-  const formattedError = formatGraphQLErrors(req, res.errors!)
+  // const formattedError = formatGraphQLErrors(req, res.errors!)
   Sentry.withScope((scope) => {
-    scope.setTag("kind", req.operation.operationKind)
-    scope.setTag("query", req.operation.query)
+    scope.setExtra("kind", req.operation.operationKind)
+    scope.setExtra("query-name", req.operation.name)
+    scope.setExtra("query-text", req.operation.text)
+    scope.setExtra("formatted-error", formatGraphQLErrors(req, res.errors!))
     if (req.variables) {
-      scope.setTag("variables", req.variables as any)
+      scope.setExtra("variables", req.variables as any)
     }
-    Sentry.captureMessage(formattedError)
+    console.log(createRequestError(req, res))
+    Sentry.captureException(req.operation.name)
   })
   throw createRequestError(req, res)
 }
