@@ -154,6 +154,7 @@ export function getCurrentEmissionState() {
     onboardingState: "none", // not used on android
     userAgent: "Artsy-Mobile android", // TODO: proper user agent
     userID: state?.auth.userID!,
+    userEmail: "user@example.com", // not used on android
   }
   return androidData
 }
@@ -183,6 +184,21 @@ export function unsafe__getEnvironment() {
     userIsDev,
   } = globalStoreInstance().getState().config
   return { ...strings, stripePublishableKey, env, userIsDev }
+}
+
+/**
+ * This is marked as unsafe because it will not cause a re-render
+ * if used during a react component's render.
+ */
+export function unsafe__getUserEmail(): string | undefined {
+  const store = globalStoreInstance().getState()
+
+  if (Platform.OS === "ios") {
+    return store.native.sessionState.userEmail
+  } else if (Platform.OS === "android") {
+  }
+
+  return undefined
 }
 
 export function useEnvironment() {

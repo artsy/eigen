@@ -8,6 +8,7 @@
 + (NSString *)authenticationToken;
 + (NSString *)launchCount;
 + (NSString *)onboardingState;
++ (NSString *)userEmail;
 + (NSString *)userAgent;
 + (NSString *)deviceId;
 @end

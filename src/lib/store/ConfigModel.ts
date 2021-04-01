@@ -3,7 +3,7 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { EchoModel, getEchoModel } from "./config/EchoModel"
 import { EnvironmentModel, getEnvironmentModel } from "./config/EnvironmentModel"
 import { FeaturesModel, getFeaturesModel } from "./config/FeaturesModel"
-import { unsafe__getEnvironment } from "./GlobalStore"
+import { unsafe__getEnvironment, unsafe__getUserEmail } from "./GlobalStore"
 
 export interface ConfigModel {
   echo: EchoModel
@@ -23,7 +23,7 @@ export const getConfigModel = (): ConfigModel => ({
   features: getFeaturesModel(),
   environment: getEnvironmentModel(),
 
-  userIsDev: false,
+  userIsDev: isDevOrArtsyUser(),
   setUserIsDev: action((state, { nextValue, callback }) => {
     state.userIsDev = nextValue
     callback?.(state.userIsDev)
@@ -35,3 +35,13 @@ export const getConfigModel = (): ConfigModel => ({
     }
   ),
 })
+
+export const isDevOrArtsyUser = () => {
+
+  const userEmail = unsafe__getUserEmail()
+  if (userEmail.endsWith("@artsymail.com") || userEmail.endsWith("@artsy.net")) {
+    return true
+  }
+
+  return false
+}

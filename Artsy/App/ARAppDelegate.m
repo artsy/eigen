@@ -228,6 +228,7 @@ static ARAppDelegate *_sharedInstance = nil;
     // And update emission's auth state
     [[AREmission sharedInstance] updateState:@{
         [ARStateKey userID]: [[[ARUserManager sharedManager] currentUser] userID],
+        [ARStateKey userEmail]: [[[ARUserManager sharedManager] currentUser] email],
         [ARStateKey authenticationToken]: [[ARUserManager sharedManager] userAuthenticationToken],
     }];
 

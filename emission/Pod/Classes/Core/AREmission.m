@@ -70,6 +70,7 @@ static AREmission *_sharedInstance = nil;
     [self updateState:@{
         [ARStateKey authenticationToken]: [NSNull null],
         [ARStateKey userID]: [NSNull null],
+        [ARStateKey userEmail]: [NSNull null],
         [ARStateKey onboardingState]: @"none",
     }];
 }
