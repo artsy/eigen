@@ -154,6 +154,7 @@ export function getCurrentEmissionState() {
     onboardingState: "none", // not used on android
     userAgent: "Artsy-Mobile android", // TODO: proper user agent
     userID: state?.auth.userID!,
+    userIsDev: false, // not used on android
   }
   return androidData
 }
