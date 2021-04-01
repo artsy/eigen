@@ -137,10 +137,7 @@ export default class Composer extends React.Component<Props, State> {
                   placeholderTextColor={colors["gray-semibold"]}
                   keyboardAppearance={"dark"}
                   onEndEditing={() => this.setState({ active: false })}
-                  onFocus={() => {
-                    console.warn("ON FOCUS", this.state.active)
-                    this.setState({ active: this.input.isFocused() })
-                  }}
+                  onFocus={() => this.setState({ active: this.input.isFocused() })}
                   onChangeText={(text) => this.setState({ text })}
                   ref={(input) => (this.input = input)}
                   style={inputStyles}
