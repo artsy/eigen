@@ -245,10 +245,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)setupAdminTools
 {
-    if (!ARAppStatus.isBetaDevOrAdmin) {
-        return;
-    }
-
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rageShakeNotificationRecieved) name:DHCSHakeNotificationName object:nil];
 
     [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORTildeKey:^{
