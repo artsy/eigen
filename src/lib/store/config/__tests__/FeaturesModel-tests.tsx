@@ -1,6 +1,6 @@
+import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
 import { echoLaunchJson } from "lib/utils/jsonFiles"
 import { __globalStoreTestUtils__, GlobalStore } from "../../GlobalStore"
-import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
 import { DevToggleDescriptor, FeatureDescriptor, features } from "../features"
 
 import * as loads from "lib/utils/jsonFiles"
@@ -21,7 +21,9 @@ type TestDevToggles = "DevToggleA"
 
 jest.mock("lib/store/config/features", () => {
   const globalStoreCalcFunc = (store: GlobalStoreModel) => {
-    if ((store.auth.userID ?? "").toLowerCase().includes("false")) return false
+    if ((store.auth.userID ?? "").toLowerCase().includes("false")) {
+      return false
+    }
     return true
   }
   const mockFeatures: { readonly [key: string]: FeatureDescriptor } = {

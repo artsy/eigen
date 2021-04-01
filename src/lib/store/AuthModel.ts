@@ -7,6 +7,7 @@ type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 export interface AuthModel {
   // State
   userID: string | null
+  userEmail: string | null
   userAccessToken: string | null
   userAccessTokenExpiresIn: string | null
   xAppToken: string | null
@@ -33,6 +34,7 @@ export interface AuthModel {
 
 export const getAuthModel = (): AuthModel => ({
   userID: null,
+  userEmail: null,
   userAccessToken: null,
   userAccessTokenExpiresIn: null,
   xAppToken: null,
@@ -118,6 +120,7 @@ export const getAuthModel = (): AuthModel => ({
         userAccessToken: access_token,
         userAccessTokenExpiresIn: expires_in,
         userID: id,
+        userEmail: email,
       })
 
       return true
