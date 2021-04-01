@@ -186,21 +186,6 @@ export function unsafe__getEnvironment() {
   return { ...strings, stripePublishableKey, env, userIsDev: flags["ARUserIsDev"] }
 }
 
-/**
- * This is marked as unsafe because it will not cause a re-render
- * if used during a react component's render.
- */
-export function unsafe__getUserEmail(): string | undefined {
-  const store = globalStoreInstance().getState()
-
-  if (Platform.OS === "ios") {
-    return store.native.sessionState.userEmail
-  } else if (Platform.OS === "android") {
-  }
-
-  return undefined
-}
-
 export function useEnvironment() {
   const {
     environment: { env, strings },

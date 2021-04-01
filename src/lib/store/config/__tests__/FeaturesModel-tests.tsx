@@ -1,5 +1,6 @@
 import { echoLaunchJson } from "lib/utils/jsonFiles"
 import { __globalStoreTestUtils__, GlobalStore } from "../../GlobalStore"
+import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
 import { DevToggleDescriptor, FeatureDescriptor, features } from "../features"
 
 import * as loads from "lib/utils/jsonFiles"
@@ -15,10 +16,14 @@ const mockEcho = {
 }
 echoLaunchJsonSpy.mockReturnValue(mockEcho)
 
-type TestFeatures = "FeatureA" | "FeatureB"
+type TestFeatures = "FeatureA" | "FeatureB" | "FeatureC"
 type TestDevToggles = "DevToggleA"
 
 jest.mock("lib/store/config/features", () => {
+  const globalStoreCalcFunc = (store: GlobalStoreModel) => {
+    if ((store.auth.userID ?? "").toLowerCase().includes("false")) return false
+    return true
+  }
   const mockFeatures: { readonly [key: string]: FeatureDescriptor } = {
     FeatureA: {
       readyForRelease: true,
@@ -27,6 +32,10 @@ jest.mock("lib/store/config/features", () => {
     FeatureB: {
       readyForRelease: false,
       echoFlagKey: "FeatureBEchoKey",
+    },
+    FeatureC: {
+      readyForRelease: (store) => globalStoreCalcFunc(store),
+      echoFlagKey: "FeatureCEchoKey",
     },
   }
   const mockDevToggles: { readonly [key: string]: DevToggleDescriptor } = {
@@ -53,6 +62,12 @@ describe("Feature flags", () => {
   it("are true if the feature is ready for release, and false if not", () => {
     expect(getComputedFeatures().FeatureA).toBe(true)
     expect(getComputedFeatures().FeatureB).toBe(false)
+  })
+  it.only("allows calculated readyForRelease", () => {
+    __globalStoreTestUtils__?.injectState({ auth: { userID: "ThisUserGetsFalse" } })
+    expect(getComputedFeatures().FeatureC).toBe(false)
+    __globalStoreTestUtils__?.injectState({ auth: { userID: "ThisUserGetsTrue" } })
+    expect(getComputedFeatures().FeatureC).toBe(true)
   })
   it("support admin overrides", () => {
     expect(getComputedFeatures().FeatureA).toBe(true)

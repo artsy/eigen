@@ -1,4 +1,7 @@
-import { Action, action, Computed, computed } from "easy-peasy"
+import { Action, action, Computed, computed, ThunkOn, thunkOn } from "easy-peasy"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { isFunction } from "lodash"
+import { unsafe__getEnvironment } from "../GlobalStore"
 import { GlobalStoreModel } from "../GlobalStoreModel"
 import { DevToggleName, devToggles, FeatureName, features } from "./features"
 
@@ -30,13 +33,21 @@ export const getFeaturesModel = (): FeaturesModel => ({
       state.adminOverrides[key] = value
     }
   }),
+  onSetAdminOverride: thunkOn(
+    (actions) => actions.setAdminOverride,
+    (_, { payload: { key } }) => {
+      if (key === "ARUserIsDev") {
+        LegacyNativeModules.ARNotificationsManager.reactStateUpdated(unsafe__getEnvironment())
+      }
+    }
+  ),
 
-  flags: computed([(state) => state, (_, store) => store.config.echo], (state, echo) => {
+  flags: computed([(state) => state, (_, store) => store, (_, store) => store.config.echo], (state, store, echo) => {
     const result = {} as any
     for (const [key, feature] of Object.entries(features)) {
       const readyForRelease: boolean = (() => {
         if (isFunction(feature.readyForRelease)) {
-          return feature.readyForRelease()
+          return feature.readyForRelease((store as unknown) as GlobalStoreModel)
         }
         return feature.readyForRelease
       })()
