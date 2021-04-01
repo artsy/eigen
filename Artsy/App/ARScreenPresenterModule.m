@@ -88,6 +88,7 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
         [((ARComponentViewController *)vc) setProperty:@(YES) forKey:@"isPresentedModally"];
     }
 
+    // TODO: Should this be [viewDescriptor[@"hasOwnModalCloseButton" boolValue] as below?
     BOOL hasOwnModalCloseButton = viewDescriptor[@"hasOwnModalCloseButton"];
 
 
@@ -104,10 +105,23 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
 
     ARModalViewController *modal = [[ARModalViewController alloc] initWithStack:stack];
     modal.modalPresentationStyle = modalPresentationStyle;
-
-    [[self.class currentlyPresentedVC] presentViewController:modal animated:YES completion:^ {
-        resolve(stackID);
-    }];
+    
+    UIViewController *topVC = [self.class currentlyPresentedVC];
+    UIViewController *parentVC = [topVC presentingViewController];
+    
+    BOOL shouldReplaceTopVC = [viewDescriptor[@"replace"] boolValue];
+    
+    if (shouldReplaceTopVC) {
+        [parentVC dismissViewControllerAnimated:NO completion:^{
+            [parentVC presentViewController:modal animated:YES completion:^{
+                resolve(stackID);
+            }];
+        }];
+    } else {
+        [topVC presentViewController:modal animated:YES completion:^ {
+            resolve(stackID);
+        }];
+    }
 }
 
 - (UIModalPresentationStyle)getModalPresentationStyle:(NSString *)string {

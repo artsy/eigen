@@ -4,10 +4,14 @@ upcoming:
   dev:
     - Add camera permissions to android manifest - brian
     - Switch to react-native-credit-card-input (away from tipsi-stripe) - david
+    - Use webfont for StyledWebView - david
     - Use artistAuctionResults instead of artistInsights for artist insights - mounir
   user_facing:
     - Use toolbar style modal headers in consignments flow - brian
     - Add Onboarding welcome screen - mounir
+    - Add splash screen to android - mounir
+    - Support change system navigation bar color on android - mounir
+    - Add ability for one modal to replace another and use it in inquiry checkout flow - erik, david
 
 releases:
   - version: 6.8.2
