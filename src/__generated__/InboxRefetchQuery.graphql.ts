@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 56d6fec93d585293379c057a9ea38f61 */
+/* @relayHash 3680976f2903386290511c64525e4a2c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -122,9 +122,6 @@ fragment ConversationSnippet_conversation on Conversation {
         id
       }
     }
-  }
-  messagesConnection {
-    totalCount
   }
 }
 
@@ -777,24 +774,6 @@ return {
                         ],
                         "storageKey": null
                       },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "MessageConnection",
-                        "kind": "LinkedField",
-                        "name": "messagesConnection",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "totalCount",
-                            "storageKey": null
-                          }
-                        ],
-                        "storageKey": null
-                      },
                       (v3/*: any*/),
                       (v5/*: any*/)
                     ],
@@ -1114,7 +1093,7 @@ return {
     ]
   },
   "params": {
-    "id": "56d6fec93d585293379c057a9ea38f61",
+    "id": "3680976f2903386290511c64525e4a2c",
     "metadata": {},
     "name": "InboxRefetchQuery",
     "operationKind": "query",
