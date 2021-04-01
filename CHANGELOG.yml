@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - Add camera permissions to android manifest - brian
+    - Switch to react-native-credit-card-input (away from tipsi-stripe) - david
     - Use webfont for StyledWebView - david
     - Use artistAuctionResults instead of artistInsights for artist insights - mounir
   user_facing:
