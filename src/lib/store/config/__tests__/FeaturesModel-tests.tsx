@@ -63,7 +63,7 @@ describe("Feature flags", () => {
     expect(getComputedFeatures().FeatureA).toBe(true)
     expect(getComputedFeatures().FeatureB).toBe(false)
   })
-  it.only("allows calculated readyForRelease", () => {
+  it("allows calculated readyForRelease", () => {
     __globalStoreTestUtils__?.injectState({ auth: { userID: "ThisUserGetsFalse" } })
     expect(getComputedFeatures().FeatureC).toBe(false)
     __globalStoreTestUtils__?.injectState({ auth: { userID: "ThisUserGetsTrue" } })
