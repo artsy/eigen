@@ -10,7 +10,6 @@
 + (NSString *)onboardingState;
 + (NSString *)userAgent;
 + (NSString *)deviceId;
-+ (NSString *)userIsDev;
 @end
 
 // these state values are sent to obj-c from react
@@ -21,6 +20,7 @@
 + (NSString *)webURL;
 + (NSString *)causalityURL;
 + (NSString *)env;
++ (NSString *)userIsDev;
 @end
 
 @interface ARNotificationsManager : RCTEventEmitter <RCTBridgeModule>

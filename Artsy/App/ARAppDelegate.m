@@ -332,7 +332,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)rageShakeNotificationRecieved
 {
-    if (![[AREmission sharedInstance] stateBoolForKey:[ARStateKey userIsDev]]) {
+    if (![[AREmission sharedInstance] reactStateBoolForKey:[ARReactStateKey userIsDev]]) {
         return;
     }
     

@@ -19,8 +19,6 @@
 
 + (NSString *)env { return @"env"; }
 + (NSString *)deviceId { return @"deviceId"; }
-+ (NSString *)userIsDev { return @"userIsDev"; }
-
 @end
 
 @implementation ARReactStateKey
@@ -30,6 +28,7 @@
 + (NSString *)webURL { return @"webURL"; };
 + (NSString *)causalityURL { return @"causalityURL"; };
 + (NSString *)env { return @"env"; };
++ (NSString *)userIsDev { return @"userIsDev"; }
 @end
 
 
@@ -106,11 +105,6 @@ RCT_EXPORT_MODULE();
         _state = [[NSDictionary alloc] initWithDictionary:nextState];
         [self dispatch:stateChanged data:_state];
     }
-}
-
-RCT_EXPORT_METHOD(stateUpdated:(nonnull NSDictionary *)state)
-{
-    [self updateState:state];
 }
 
 - (void)notificationReceived

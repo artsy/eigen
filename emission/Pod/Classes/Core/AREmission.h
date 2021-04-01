@@ -31,8 +31,8 @@ extern NSString *const AREnvTest;
 
 - (void)updateState:(NSDictionary *)state;
 - (NSString *)stateStringForKey:(NSString *)stateKey;
-- (BOOL)stateBoolForKey:(NSString *)stateKey;
 - (NSString *)reactStateStringForKey:(NSString *)stateKey;
+- (BOOL)reactStateBoolForKey:(NSString *)stateKey;
 - (void)navigate:(NSString *)route;
 
 - (NSURL *)liveAuctionsURL;

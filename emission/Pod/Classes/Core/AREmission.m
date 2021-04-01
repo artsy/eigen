@@ -93,15 +93,6 @@ static AREmission *_sharedInstance = nil;
     return result;
 }
 
-- (BOOL)stateBoolForKey:(NSString *)stateKey
-{
-    NSNumber *result = [self.notificationsManagerModule.state valueForKey:stateKey];
-    if (result != nil && ![result isKindOfClass:NSNumber.class]) {
-        [NSException raise:NSInternalInconsistencyException format:@"Value for key '%@' is not a boolean.", stateKey];
-    }
-    return [result boolValue];
-}
-
 - (NSString *)reactStateStringForKey:(NSString *)stateKey
 {
     NSString *result = [self.notificationsManagerModule.reactState valueForKey:stateKey];
@@ -109,6 +100,15 @@ static AREmission *_sharedInstance = nil;
         [NSException raise:NSInternalInconsistencyException format:@"Value for key '%@' is not a string.", stateKey];
     }
     return result;
+}
+
+- (BOOL)reactStateBoolForKey:(NSString *)stateKey
+{
+    NSNumber *result = [self.notificationsManagerModule.reactState valueForKey:stateKey];
+    if (result != nil && ![result isKindOfClass:NSNumber.class]) {
+        [NSException raise:NSInternalInconsistencyException format:@"Value for key '%@' is not a boolean.", stateKey];
+    }
+    return [result boolValue];
 }
 
 - (NSURL *)releaseBundleURL;
