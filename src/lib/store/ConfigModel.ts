@@ -3,7 +3,7 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { EchoModel, getEchoModel } from "./config/EchoModel"
 import { EnvironmentModel, getEnvironmentModel } from "./config/EnvironmentModel"
 import { FeaturesModel, getFeaturesModel } from "./config/FeaturesModel"
-import { GlobalStoreModel } from "./GlobalStoreModel"
+import { unsafe__getEnvironment } from "./GlobalStore"
 
 export interface ConfigModel {
   echo: EchoModel
@@ -15,7 +15,7 @@ export interface ConfigModel {
     ConfigModel,
     { nextValue: ConfigModel["userIsDev"]; callback?: (newValue: ConfigModel["userIsDev"]) => void }
   >
-  onSetUserIsDev: ThunkOn<ConfigModel, any, GlobalStoreModel>
+  onSetUserIsDev: ThunkOn<ConfigModel>
 }
 
 export const getConfigModel = (): ConfigModel => ({
@@ -30,9 +30,8 @@ export const getConfigModel = (): ConfigModel => ({
   }),
   onSetUserIsDev: thunkOn(
     (actions) => actions.setUserIsDev,
-    (_, { payload: { nextValue } }, store) => {
-      store.getStoreActions().native.setLocalState({ userIsDev: nextValue })
-      LegacyNativeModules.ARNotificationsManager.stateUpdated(store.getStoreState().native.sessionState)
+    () => {
+      LegacyNativeModules.ARNotificationsManager.reactStateUpdated(unsafe__getEnvironment())
     }
   ),
 })
