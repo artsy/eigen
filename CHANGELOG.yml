@@ -13,6 +13,7 @@ upcoming:
     - Support change system navigation bar color on android - mounir
     - Add ability for one modal to replace another and use it in inquiry checkout flow - erik, david
     - Fix message ordering in Inbox - starsirius
+    - Converts multi-select filters to use checkboxes instead of toggles - damon
 
 releases:
   - version: 6.8.2
