@@ -184,8 +184,6 @@ function getNativeModules(): typeof LegacyNativeModules {
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       clearUserData: jest.fn(),
-      appVersion: "appVersion",
-      buildVersion: "buildVersion",
     },
     ARPHPhotoPickerModule: {
       requestPhotos: jest.fn(),
