@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1d6868801ec331fe7af43eca311048c7 */
+/* @relayHash ef1eadf00e4c958d1e92576699fb23dc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -249,6 +249,7 @@ fragment ReviewOfferButton_order on CommerceOrder {
   state
   stateReason
   stateExpiresAt
+  lastTransactionFailed
   ... on CommerceOfferOrder {
     lastOffer {
       fromParticipant
@@ -743,6 +744,13 @@ return {
                             "name": "stateExpiresAt",
                             "storageKey": null
                           },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "lastTransactionFailed",
+                            "storageKey": null
+                          },
                           (v7/*: any*/),
                           {
                             "alias": null,
@@ -1099,7 +1107,7 @@ return {
     ]
   },
   "params": {
-    "id": "1d6868801ec331fe7af43eca311048c7",
+    "id": "ef1eadf00e4c958d1e92576699fb23dc",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -1257,6 +1265,7 @@ return {
         "me.conversation.orderConnection.edges.node.lastOffer.createdAt": (v19/*: any*/),
         "me.conversation.orderConnection.edges.node.lastOffer.fromParticipant": (v27/*: any*/),
         "me.conversation.orderConnection.edges.node.lastOffer.id": (v20/*: any*/),
+        "me.conversation.orderConnection.edges.node.lastTransactionFailed": (v24/*: any*/),
         "me.conversation.orderConnection.edges.node.offers": {
           "enumValues": null,
           "nullable": true,

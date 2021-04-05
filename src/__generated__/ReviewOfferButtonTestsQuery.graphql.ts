@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 42372e6c51863d84b99247b74649de8f */
+/* @relayHash 1e17508a96fe49bfd5c121283758c780 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,6 +37,7 @@ fragment ReviewOfferButton_order on CommerceOrder {
   state
   stateReason
   stateExpiresAt
+  lastTransactionFailed
   ... on CommerceOfferOrder {
     lastOffer {
       fromParticipant
@@ -182,6 +183,13 @@ return {
             "name": "stateExpiresAt",
             "storageKey": null
           },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "lastTransactionFailed",
+            "storageKey": null
+          },
           (v3/*: any*/),
           {
             "kind": "InlineFragment",
@@ -263,7 +271,7 @@ return {
     ]
   },
   "params": {
-    "id": "42372e6c51863d84b99247b74649de8f",
+    "id": "1e17508a96fe49bfd5c121283758c780",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "order": {
@@ -288,6 +296,12 @@ return {
           "type": "CommerceOrderParticipantEnum"
         },
         "order.lastOffer.id": (v5/*: any*/),
+        "order.lastTransactionFailed": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Boolean"
+        },
         "order.offers": {
           "enumValues": null,
           "nullable": true,
