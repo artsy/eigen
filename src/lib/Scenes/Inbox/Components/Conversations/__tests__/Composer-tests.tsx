@@ -134,6 +134,28 @@ describe("inquiry offer enabled", () => {
     expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(0)
   })
 
+  it("does not render the inquiry make offer button or cta when the keyboard is visible", () => {
+    const tree = getWrapper({
+      Conversation: () => ({
+        items: [
+          {
+            item: {
+              __typename: "Artwork",
+              isOfferableFromInquiry: true,
+            },
+          },
+        ],
+      }),
+    })
+    const input = tree.root.findByType(TextInput)
+
+    input.props.onFocus()
+
+    setTimeout(() => {
+      expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(0)
+    }, 0)
+  })
+
   describe("with associated orders (OrderCTAs)", () => {
     it("renders an empty CTA if there is an active order with a pending offer from the buyer", () => {
       const tree = getWrapper({
