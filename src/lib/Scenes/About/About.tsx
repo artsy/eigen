@@ -3,9 +3,9 @@ import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { useToast } from "lib/Components/Toast/toastHook"
 import { navigate } from "lib/navigation/navigate"
 import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
+import { appJson } from "lib/utils/jsonFiles"
 import { color } from "palette"
 import React, { useEffect, useState } from "react"
-import { appJson } from "lib/utils/jsonFiles"
 import { ScrollView } from "react-native"
 import useDebounce from "react-use/lib/useDebounce"
 
@@ -47,7 +47,7 @@ export const About: React.FC = () => {
         <MenuItem
           title="Version"
           text={appVersion}
-          onPress={() => updateTapCount((tapCount) => tapCount + 1)}
+          onPress={() => updateTapCount((count) => count + 1)}
           chevron={false}
           style={userIsDev ? { borderRightColor: color("purple100"), borderRightWidth: 1 } : undefined}
         />

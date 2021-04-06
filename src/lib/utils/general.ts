@@ -1,6 +1,7 @@
 import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
 import { Platform } from "react-native"
 
+// tslint:disable-next-line:variable-name
 export const is__DEV__ = () => __DEV__
 
 export const isArtsyUser = (email: string) => email.endsWith("@artsymail.com") || email.endsWith("@artsy.net")
