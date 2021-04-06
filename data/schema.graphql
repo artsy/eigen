@@ -8978,6 +8978,7 @@ type Query {
     sellerType: String
     sort: CommerceOrderConnectionSortEnum
     state: CommerceOrderStateEnum
+    states: [CommerceOrderStateEnum!]
   ): CommerceOrderConnectionWithTotalCount
 
   # Sold or bought-in consignments
