@@ -6,15 +6,14 @@ import { InputTitle } from "lib/Components/Input/InputTitle"
 import { Select } from "lib/Components/Select"
 import { Stack } from "lib/Components/Stack"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { color } from "palette"
-import { fontFamily } from "palette/platform/fonts/fontFamily"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef } from "react"
 import { commitMutation, graphql } from "react-relay"
-import useInterval from "react-use/lib/useInterval"
 // @ts-ignore
-import stripe, { PaymentCardTextField } from "tipsi-stripe"
+import stripe from "tipsi-stripe"
 import { MyAccountFieldEditScreen } from "../MyAccount/Components/MyAccountFieldEditScreen"
 import { __triggerRefresh } from "./MyProfilePayment"
+
+import { LiteCreditCardInput } from "react-native-credit-card-input"
 
 interface CreditCardInputParams {
   cvc: string
@@ -86,7 +85,6 @@ const useStore = createComponentStore<Store>({
 
 export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
   const [state, actions] = useStore()
-  const [cardFieldIsFocused, setCardFieldIsFocused] = useState(false)
   const paymentInfoRef = useRef<any>(null)
 
   const addressLine1Ref = useRef<Input>(null)
@@ -100,10 +98,6 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
   useEffect(() => {
     paymentInfoRef.current?.focus()
   }, [])
-
-  useInterval(() => {
-    setCardFieldIsFocused(paymentInfoRef.current?.isFocused() ?? false)
-  }, 100)
 
   const screenRef = useRef<MyAccountFieldEditScreen>(null)
 
@@ -148,32 +142,22 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
       <Stack spacing={2}>
         <>
           <InputTitle>Credit Card</InputTitle>
-          <PaymentCardTextField
+          <LiteCreditCardInput
             ref={paymentInfoRef}
-            style={{
-              fontFamily: fontFamily.sans.regular.normal,
-              height: 40,
-              fontSize: 14,
-              width: "100%",
-              borderColor: cardFieldIsFocused
-                ? state.fields.creditCard.value?.valid === false
-                  ? color("red100")
-                  : color("purple100")
-                : color("black10"),
-              borderWidth: 1,
-              borderRadius: 0,
-            }}
-            onParamsChange={(valid: boolean, params: CreditCardInputParams) =>
+            onChange={(e) => {
               actions.fields.creditCard.setValue({
-                valid,
-                params,
+                valid: e.valid,
+                params: {
+                  cvc: e.values.cvc,
+                  expMonth: Number(e.values.expiry.split("/")[0]),
+                  expYear: Number(e.values.expiry.split("/")[1]),
+                  number: e.values.number,
+                },
               })
-            }
-            numberPlaceholder="Card number"
-            expirationPlaceholder="MM/YY"
-            cvcPlaceholde="CVC"
+            }}
           />
         </>
+
         <Input
           title="Name on card"
           placeholder="Full name"

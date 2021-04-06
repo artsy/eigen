@@ -1,0 +1,175 @@
+diff --git a/node_modules/react-native-credit-card-input/src/CCInput.js b/node_modules/react-native-credit-card-input/src/CCInput.js
+index dde3aec..aec1f45 100644
+--- a/node_modules/react-native-credit-card-input/src/CCInput.js
++++ b/node_modules/react-native-credit-card-input/src/CCInput.js
+@@ -33,6 +33,7 @@ export default class CCInput extends Component {
+     placeholderColor: PropTypes.string,
+ 
+     onFocus: PropTypes.func,
++    onBlur: PropTypes.func,
+     onChange: PropTypes.func,
+     onBecomeEmpty: PropTypes.func,
+     onBecomeValid: PropTypes.func,
+@@ -47,6 +48,7 @@ export default class CCInput extends Component {
+     inputStyle: {},
+     labelStyle: {},
+     onFocus: () => {},
++    onBlur: () => {},
+     onChange: () => {},
+     onBecomeEmpty: () => {},
+     onBecomeValid: () => {},
+@@ -70,6 +72,7 @@ export default class CCInput extends Component {
+     const { label, value, placeholder, status, keyboardType,
+             containerStyle, inputStyle, labelStyle,
+             validColor, invalidColor, placeholderColor,
++            onBlur,
+             additionalInputProps } = this.props;
+     return (
+       <TouchableOpacity onPress={this.focus}
+@@ -81,6 +84,7 @@ export default class CCInput extends Component {
+             keyboardType={keyboardType}
+             autoCapitalise="words"
+             autoCorrect={false}
++            onBlur={onBlur}
+             style={[
+               s.baseInputStyle,
+               inputStyle,
+diff --git a/node_modules/react-native-credit-card-input/src/LiteCreditCardInput.js b/node_modules/react-native-credit-card-input/src/LiteCreditCardInput.js
+index a5f166b..dc5349b 100644
+--- a/node_modules/react-native-credit-card-input/src/LiteCreditCardInput.js
++++ b/node_modules/react-native-credit-card-input/src/LiteCreditCardInput.js
+@@ -20,13 +20,14 @@ const s = StyleSheet.create({
+   container: {
+     paddingLeft: 10,
+     paddingRight: 10,
++    height: 40,
+     flexDirection: "row",
+     alignItems: "center",
+     overflow: "hidden",
+   },
+   icon: {
+-    width: 48,
+-    height: 40,
++    width: 32,
++    height: 26,
+     resizeMode: "contain",
+   },
+   expanded: {
+@@ -50,14 +51,14 @@ const s = StyleSheet.create({
+     width: INFINITE_WIDTH,
+   },
+   expiryInput: {
+-    width: 80,
++    width: 70,
+   },
+   cvcInput: {
+-    width: 80,
++    width: 40,
+   },
+   last4Input: {
+     width: 60,
+-    marginLeft: 20,
++    marginLeft: 5,
+   },
+   input: {
+     height: 40,
+@@ -83,7 +84,7 @@ export default class LiteCreditCardInput extends Component {
+ 
+   static defaultProps = {
+     placeholders: {
+-      number: "1234 5678 1234 5678",
++      number: "Card number",
+       expiry: "MM/YY",
+       cvc: "CVC",
+     },
+@@ -113,6 +114,7 @@ export default class LiteCreditCardInput extends Component {
+       inputStyle, validColor, invalidColor, placeholderColor,
+       placeholders, values, status,
+       onFocus, onChange, onBecomeEmpty, onBecomeValid,
++      onBlur,
+       additionalInputsProps,
+     } = this.props;
+ 
+@@ -126,6 +128,7 @@ export default class LiteCreditCardInput extends Component {
+       status: status[field],
+ 
+       onFocus, onChange, onBecomeEmpty, onBecomeValid,
++      onBlur,
+       additionalInputProps: additionalInputsProps[field],
+     };
+   };
+@@ -139,11 +142,22 @@ export default class LiteCreditCardInput extends Component {
+   }
+ 
+   render() {
+-    const { focused, values: { number }, inputStyle, status: { number: numberStatus } } = this.props;
++    const { focused, isInputFocused, valid, values: { number }, inputStyle, status: { number: numberStatus } } = this.props;
+     const showRightPart = focused && focused !== "number";
+ 
++    const borderColor = "#E5E5E5" // black10
++    const borderColorFocused = "#6E1EFF" // purple100
++    const borderColorError = "#E82F1D" // red100
++
++    const showWarningState = !isInputFocused && !valid && number?.length
++
++    const borderStyle = {
++      borderWidth: 1,
++      borderColor: showWarningState ? borderColorError : isInputFocused ? borderColorFocused : borderColor
++    }
++
+     return (
+-      <View style={s.container}>
++      <View style={[s.container, borderStyle]}>
+         <View style={[
+           s.leftPart,
+           showRightPart ? s.hidden : s.expanded,
+@@ -161,7 +175,11 @@ export default class LiteCreditCardInput extends Component {
+         ]}>
+           <TouchableOpacity onPress={this._focusNumber}
+             style={s.last4}>
+-            <View pointerEvents={"none"}>
++            <View
++              pointerEvents={"none"}
++              style={{flexDirection: 'row', alignItems: 'center', paddingStart: 15}}
++            >
++              <Text>••••</Text>
+               <CCInput field="last4"
+                 keyboardType="numeric"
+                 value={ numberStatus === "valid" ? number.substr(number.length - 4, 4) : "" }
+diff --git a/node_modules/react-native-credit-card-input/src/connectToState.js b/node_modules/react-native-credit-card-input/src/connectToState.js
+index cda7fc6..d12a1de 100644
+--- a/node_modules/react-native-credit-card-input/src/connectToState.js
++++ b/node_modules/react-native-credit-card-input/src/connectToState.js
+@@ -6,6 +6,7 @@ import compact from "lodash.compact";
+ 
+ export const InjectedProps = {
+   focused: PropTypes.string,
++  isInputFocused: PropTypes.bool,
+   values: PropTypes.object.isRequired,
+   status: PropTypes.object.isRequired,
+   onFocus: PropTypes.func.isRequired,
+@@ -47,6 +48,7 @@ export default function connectToState(CreditCardInput) {
+       super();
+       this.state = {
+         focused: "",
++        isInputFocused: false,
+         values: {},
+         status: {},
+       };
+@@ -68,7 +70,7 @@ export default function connectToState(CreditCardInput) {
+     };
+ 
+     focus = (field = "number") => {
+-      this.setState({ focused: field });
++      this.setState({ focused: field, isInputFocused: true });
+     };
+ 
+     _displayedFields = () => {
+@@ -115,6 +117,7 @@ export default function connectToState(CreditCardInput) {
+           {...this.props}
+           {...this.state}
+           onFocus={this._onFocus}
++          onBlur={() => this.setState({isInputFocused: false})}
+           onChange={this._change}
+           onBecomeEmpty={this._focusPreviousField}
+           onBecomeValid={this._focusNextField} />

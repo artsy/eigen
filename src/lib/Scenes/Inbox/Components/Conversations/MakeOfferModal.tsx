@@ -30,15 +30,9 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
       }}
     >
       <View>
-        <FancyModalHeader
-          onLeftButtonPress={() => {
-            dismissModal()
-          }}
-          leftButtonText="Cancel"
-          rightButtonDisabled
-          rightButtonText=" "
-          hideBottomDivider
-        ></FancyModalHeader>
+        <FancyModalHeader rightButtonDisabled hideBottomDivider>
+          Make Offer with Artsy Pay
+        </FancyModalHeader>
         <Flex p={1.5}>
           <Text variant="largeTitle">Confirm Artwork</Text>
           <Text variant="small" color="black60">

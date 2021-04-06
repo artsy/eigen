@@ -110,13 +110,9 @@ export interface DevToggleDescriptor {
    */
   readonly description: string
   /**
-   * Provide some action/thunk to run when the toggle is turned on.
+   * Provide some action/thunk to run when the toggle value is changed.
    */
-  readonly onTrue?: ({ toast }: { toast: ReturnType<typeof useToast> }) => void
-  /**
-   * Provide some action/thunk to run when the toggle is turned on.
-   */
-  readonly onFalse?: ({ toast }: { toast: ReturnType<typeof useToast> }) => void
+  readonly onChange?: (value: boolean, { toast }: { toast: ReturnType<typeof useToast> }) => void
 }
 
 // Helper function to get good typings and intellisense
@@ -131,13 +127,14 @@ export const devToggles = defineDevToggles({
   },
   DTDisableEchoRemoteFetch: {
     description: "Disable fetching remote echo",
-    onTrue: ({ toast }) => {
-      GlobalStore.actions.config.echo.setEchoState(echoLaunchJson())
-      toast.show("Loaded bundled echo config", "middle")
-    },
-    onFalse: ({ toast }) => {
-      GlobalStore.actions.config.echo.fetchRemoteEcho()
-      toast.show("Fetched remote echo config", "middle")
+    onChange: (value, { toast }) => {
+      if (value) {
+        GlobalStore.actions.config.echo.setEchoState(echoLaunchJson())
+        toast.show("Loaded bundled echo config", "middle")
+      } else {
+        GlobalStore.actions.config.echo.fetchRemoteEcho()
+        toast.show("Fetched remote echo config", "middle")
+      }
     },
   },
 })
