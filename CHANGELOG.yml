@@ -16,6 +16,7 @@ upcoming:
     - Fix message ordering in Inbox - starsirius
     - Converts multi-select filters to use checkboxes instead of toggles - damon
     - Add modal replacement api to android app - erik, david
+    - Fix conversation scrolling while supporting dismissing keyboard - starsirius
 
 releases:
   - version: 6.8.2

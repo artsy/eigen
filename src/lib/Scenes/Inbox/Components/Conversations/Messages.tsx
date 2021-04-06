@@ -145,7 +145,6 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
       keyExtractor={(group) => {
         return group[0].id
       }}
-      keyboardShouldPersistTaps="always"
       onEndReached={loadMore}
       onEndReachedThreshold={0.2}
       refreshControl={refreshControl}
