@@ -48,7 +48,11 @@ export const Onboarding = () => {
               options={{ headerShown: false }}
             />
             <StackNavigator.Screen name="OnboardingCreateAccount" component={OnboardingCreateAccount} />
-            <StackNavigator.Screen name="OnboardingForgotPassword" component={OnboardingForgotPassword} />
+            <StackNavigator.Screen
+              name="OnboardingForgotPassword"
+              component={OnboardingForgotPassword}
+              options={{ headerShown: false }}
+            />
           </StackNavigator.Navigator>
         </KeyboardAvoidingView>
       </NavigationContainer>

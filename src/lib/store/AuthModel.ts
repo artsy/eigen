@@ -17,6 +17,7 @@ export interface AuthModel {
   getXAppToken: Thunk<AuthModel, void, {}, GlobalStoreModel, Promise<string>>
   userExists: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel>
   signIn: Thunk<AuthModel, { email: string; password: string }, {}, GlobalStoreModel, Promise<boolean>>
+  forgotPassword: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel, Promise<boolean>>
   gravityUnauthenticatedRequest: Thunk<
     AuthModel,
     {
@@ -88,6 +89,25 @@ export const getAuthModel = (): AuthModel => ({
     } else {
       throw new Error(JSON.stringify(await result.json()))
     }
+  }),
+  forgotPassword: thunk(async (actions, { email }) => {
+    const result = await actions.gravityUnauthenticatedRequest({
+      path: `/api/v1/users/send_reset_password_instructions`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        email,
+      },
+    })
+
+    // For security purposes we don't want to disclose when a user is not found
+    // this is indicated by 400 on gravity side, treat as success
+    if (result.ok || result.status === 400) {
+      return true
+    }
+    return false
   }),
   signIn: thunk(async (actions, { email, password }) => {
     const result = await actions.gravityUnauthenticatedRequest({
