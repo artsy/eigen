@@ -18,6 +18,7 @@ upcoming:
     - Converts multi-select filters to use checkboxes instead of toggles - damon
     - Add modal replacement api to android app - erik, david
     - Fix conversation scrolling while supporting dismissing keyboard - starsirius
+    - Updates filter styling - damon
 
 releases:
   - version: 6.8.2
