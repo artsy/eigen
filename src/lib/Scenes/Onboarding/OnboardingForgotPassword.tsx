@@ -36,7 +36,6 @@ export const OnboardingForgotPasswordForm: React.FC<OnboardingForgotPasswordForm
     isValid,
     dirty,
     isSubmitting,
-    setErrors,
   } = useFormikContext<OnboardingForgotPasswordValuesSchema>()
 
   return (
@@ -85,19 +84,29 @@ export const OnboardingForgotPasswordForm: React.FC<OnboardingForgotPasswordForm
       </ScrollView>
       <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5}>
         {!!requestedPasswordReset ? (
-          <Button
-            variant="secondaryOutlineWarning"
-            onPress={handleSubmit}
-            block
-            haptic="impactMedium"
-            testID="returnToLoginButton"
-          >
-            Return to login
-          </Button>
+          <>
+            <Button
+              variant="secondaryGray"
+              onPress={() => navigation.goBack()}
+              block
+              haptic="impactMedium"
+              testID="returnToLoginButton"
+            >
+              Return to login
+            </Button>
+            <Spacer mb={1} />
+            <Button
+              variant="secondaryOutline"
+              onPress={handleSubmit}
+              loading={isSubmitting}
+              block
+              haptic="impactMedium"
+              testID="returnToLoginButton"
+            >
+              Send again
+            </Button>
+          </>
         ) : (
-          // <View style={{ height: 10, width: 10, backgroundColor: "red"}}>
-
-          // </View>
           <Button
             onPress={handleSubmit}
             block

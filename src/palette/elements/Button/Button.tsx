@@ -179,6 +179,17 @@ export const Button: React.FC<ButtonProps> = (props) => {
     }
   }
 
+  const usingLightVariant = () => {
+    const { white100 } = themeProps.colors
+
+    if (props.variant) {
+      const currentVariantColors = getColorsForVariant(props.variant)
+      return currentVariantColors.default.backgroundColor === white100
+    }
+
+    return false
+  }
+
   const loadingStyles = (() => {
     if (!props.loading) {
       return {}
@@ -192,7 +203,15 @@ export const Button: React.FC<ButtonProps> = (props) => {
       }
     }
 
-    const { black100 } = themeProps.colors
+    const { black100, white100, black10 } = themeProps.colors
+
+    if (usingLightVariant()) {
+      return {
+        backgroundColor: white100,
+        borderColor: black10,
+        color: white100,
+      }
+    }
 
     return {
       backgroundColor: black100,
@@ -204,6 +223,10 @@ export const Button: React.FC<ButtonProps> = (props) => {
   const spinnerColor = (() => {
     if (props.inline) {
       return variant === "primaryWhite" ? "white100" : "black100"
+    }
+
+    if (usingLightVariant()) {
+      return "black100"
     }
 
     return "white100"
