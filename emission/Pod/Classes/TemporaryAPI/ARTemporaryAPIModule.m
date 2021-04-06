@@ -49,14 +49,6 @@ RCT_EXPORT_METHOD(clearUserData:(RCTPromiseResolveBlock)completion reject:(RCTPr
     self.userDataClearer(completion);
 }
 
-- (NSDictionary *)constantsToExport
-{
-    return @{
-        @"appVersion" : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],
-        @"buildVersion" : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"],
-    };
-}
-
 + (BOOL)requiresMainQueueSetup
 {
     return YES;
