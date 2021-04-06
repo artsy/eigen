@@ -1,4 +1,3 @@
-import { color } from "palette"
 import React, { ReactNode, useState } from "react"
 import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
@@ -162,7 +161,7 @@ enum DisplayState {
 }
 
 /** A button with various size and color settings */
-export const Button: React.FC<ButtonProps> = React.memo((props) => {
+export const Button: React.FC<ButtonProps> = (props) => {
   const size = props.size ?? defaultSize
   const variant = props.variant ?? defaultVariant
 
@@ -181,20 +180,24 @@ export const Button: React.FC<ButtonProps> = React.memo((props) => {
   }
 
   const loadingStyles = (() => {
-    const opacity = props.disabled ? "0.1" : "1"
+    if (!props.loading) {
+      return {}
+    }
 
     if (props.inline) {
       return {
-        backgroundColor: `rgba(0, 0, 0, ${opacity})`,
-        color: color("white100"),
+        backgroundColor: "rgba(0, 0, 0, 0)",
+        color: "rgba(0, 0, 0, 0)",
         borderWidth: 0,
       }
     }
 
+    const { black100 } = themeProps.colors
+
     return {
-      backgroundColor: `rgba(0, 0, 0, ${opacity})`,
-      borderColor: `rgba(0, 0, 0, 0)`,
-      color: color("white100"),
+      backgroundColor: black100,
+      borderColor: black100,
+      color: "rgba(0, 0, 0, 0)",
     }
   })()
 
@@ -234,6 +237,7 @@ export const Button: React.FC<ButtonProps> = React.memo((props) => {
   const { children, loading, disabled, inline, longestText, ...rest } = props
   const s = getSize()
   const variantColors = getColorsForVariant(variant)
+  const opacity = props.disabled ? 0.1 : 1.0
 
   const from = variantColors[previous]
   const to = variantColors[current]
@@ -260,21 +264,17 @@ export const Button: React.FC<ButtonProps> = React.memo((props) => {
                 {...rest}
                 loading={loading}
                 disabled={disabled}
-                style={{ ...springProps, ...loadingStyles, height: s.height }}
+                style={{ ...springProps, ...loadingStyles, height: s.height, opacity }}
                 px={s.px}
               >
-                {!loading && (
-                  <>
-                    <VisibleTextContainer>
-                      <Sans weight="medium" color={loadingStyles.color || to.color} size={s.size}>
-                        {children}
-                      </Sans>
-                    </VisibleTextContainer>
-                    <HiddenText role="presentation" weight="medium" size={s.size}>
-                      {longestText ? longestText : children}
-                    </HiddenText>
-                  </>
-                )}
+                <VisibleTextContainer>
+                  <Sans weight="medium" color={loadingStyles.color || to.color} size={s.size}>
+                    {children}
+                  </Sans>
+                </VisibleTextContainer>
+                <HiddenText role="presentation" weight="medium" size={s.size}>
+                  {longestText ? longestText : children}
+                </HiddenText>
 
                 {!!loading && <Spinner size={size} color={spinnerColor} />}
               </AnimatedContainer>
@@ -284,7 +284,7 @@ export const Button: React.FC<ButtonProps> = React.memo((props) => {
       }
     </Spring>
   )
-})
+}
 
 /** Base props that construct button */
 
