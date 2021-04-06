@@ -1,7 +1,8 @@
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { Box, CheckIcon, Flex, Sans, Separator } from "palette"
+import { Box, CheckIcon, Flex, RadioDot, Separator, Text } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
@@ -65,28 +66,37 @@ const ListItem = ({
   onSelect: (any: any) => void
   selectedOption: FilterData
   withExtraPadding: boolean
-}) => (
-  <SingleSelectOptionListItemRow onPress={() => onSelect(item)}>
-    <OptionListItem>
-      <InnerOptionListItem px={withExtraPadding && item.displayText !== "All" ? 3 : 2}>
-        <Sans color="black100" size="3t">
-          {item.displayText}
-          {!!item.count && (
-            <Sans color="black60" size="3t">
-              {" "}
-              ({item.count})
-            </Sans>
+}) => {
+  const useImprovedArtworkFilters = useFeatureFlag("ARUseImprovedArtworkFilters")
+  const selected = item.displayText === selectedOption.displayText
+
+  return (
+    <SingleSelectOptionListItemRow onPress={() => onSelect(item)}>
+      <OptionListItem>
+        <InnerOptionListItem px={withExtraPadding && item.displayText !== "All" ? 3 : 2}>
+          <Text color="black100" variant="caption">
+            {item.displayText}
+            {!!item.count && (
+              <Text color="black60" variant="caption">
+                {" "}
+                ({item.count})
+              </Text>
+            )}
+          </Text>
+          {useImprovedArtworkFilters ? (
+            <RadioDot selected={selected} />
+          ) : (
+            !!selected && (
+              <Box mb={0.1}>
+                <CheckIcon fill="black100" />
+              </Box>
+            )
           )}
-        </Sans>
-        {item.displayText === selectedOption.displayText && (
-          <Box mb={0.1}>
-            <CheckIcon fill="black100" />
-          </Box>
-        )}
-      </InnerOptionListItem>
-    </OptionListItem>
-  </SingleSelectOptionListItemRow>
-)
+        </InnerOptionListItem>
+      </OptionListItem>
+    </SingleSelectOptionListItemRow>
+  )
+}
 
 export const InnerOptionListItem = styled(Flex)`
   flex-direction: row;
