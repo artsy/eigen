@@ -6,6 +6,7 @@ upcoming:
     - Switch to react-native-credit-card-input (away from tipsi-stripe) - david
     - Use webfont for StyledWebView - david
     - Use artistAuctionResults instead of artistInsights for artist insights - mounir
+    - Use radio buttons for single-select filters behind feature flag - iskounen
   user_facing:
     - Use toolbar style modal headers in consignments flow - brian
     - Add Onboarding welcome screen - mounir
