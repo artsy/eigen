@@ -1,6 +1,6 @@
 interface ReturnButtonMessaging {
   state: string
-  stateReason: string | null
+  lastTransactionFailed: boolean | null
   isCounter: boolean
   lastOfferFromParticipant: string | null | undefined
   hoursTillExpiration?: string
@@ -8,7 +8,7 @@ interface ReturnButtonMessaging {
 
 export const returnButtonMessaging = ({
   state,
-  stateReason,
+  lastTransactionFailed,
   isCounter,
   lastOfferFromParticipant,
   hoursTillExpiration,
@@ -19,20 +19,20 @@ export const returnButtonMessaging = ({
   let backgroundColor = "green100"
   let showMoneyIcon = true
 
-  if (state === "CANCELED" && stateReason?.includes("seller_rejected")) {
-    message = `${offerType} Declined`
+  if (lastTransactionFailed) {
     backgroundColor = "red100"
-  } else if (state === "CANCELED" && stateReason?.includes("_lapsed")) {
-    message = `${offerType} Expired`
-    backgroundColor = "black60"
+    message = `Payment Failed`
+    subMessage = `Please update payment method`
+    showMoneyIcon = false
   } else if (state === "SUBMITTED" && lastOfferFromParticipant === "SELLER") {
     backgroundColor = "copper100"
     message = `${offerType} Received`
     subMessage = `Expires in ${hoursTillExpiration}hr`
     showMoneyIcon = false
   } else if (state === "APPROVED" && lastOfferFromParticipant === "BUYER") {
-    message = `${offerType} Accepted`
+    message = `Congratulations! ${offerType} Accepted`
   }
+
   return {
     backgroundColor,
     message,

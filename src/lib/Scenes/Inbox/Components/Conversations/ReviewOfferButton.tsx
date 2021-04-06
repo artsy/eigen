@@ -20,7 +20,8 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
     order.state == null ||
     order.state === "ABANDONED" ||
     order.state === "PENDING" ||
-    (order.state === "SUBMITTED" && order.lastOffer?.fromParticipant === "BUYER")
+    order.state === "CANCELED" ||
+    (order.state === "SUBMITTED" && order.lastOffer?.fromParticipant === "BUYER" && !order.lastTransactionFailed)
   ) {
     return null
   }
@@ -42,7 +43,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
 
     const { backgroundColor, message, subMessage, showMoneyIcon } = returnButtonMessaging({
       state: order.state,
-      stateReason: order.stateReason,
+      lastTransactionFailed: order.lastTransactionFailed,
       isCounter,
       lastOfferFromParticipant: order.lastOffer?.fromParticipant,
       hoursTillExpiration: hours,
@@ -111,6 +112,7 @@ export const ReviewOfferButtonFragmentContainer = createFragmentContainer(Review
       state
       stateReason
       stateExpiresAt
+      lastTransactionFailed
       ... on CommerceOfferOrder {
         lastOffer {
           fromParticipant

@@ -60,7 +60,7 @@ describe("ReviewOfferButton", () => {
     expect(wrapper.root.findAllByType(ReviewOfferButton)).toHaveLength(1)
   })
 
-  it("shows correct message for rejected offers", () => {
+  it("doesn't render for rejected offers", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
         state: "CANCELED",
@@ -69,22 +69,22 @@ describe("ReviewOfferButton", () => {
     })
 
     const text = extractText(wrapper.root)
-    expect(text).toContain("Offer Declined")
-    expect(text).toContain("Tap to view")
-    expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(1)
+    expect(text).not.toContain("Offer")
+    expect(text).not.toContain("Tap to view")
+    expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(0)
   })
 
-  it("shows correct message for expired offers", () => {
+  it("doesn't render for expired offers", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
         state: "CANCELED",
         stateReason: "seller_lapsed",
       }),
     })
-
     const text = extractText(wrapper.root)
-    expect(text).toContain("Offer Expired")
-    expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(1)
+    expect(text).not.toContain("Offer")
+    expect(text).not.toContain("Tap to view")
+    expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(0)
   })
 
   it("doesn't render for pending orders", () => {
@@ -135,6 +135,18 @@ describe("ReviewOfferButton", () => {
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Offer Accepted")
+  })
+
+  it("shows correct message for accepted offers where payment fails", () => {
+    const wrapper = getWrapper({
+      CommerceOrder: () => ({
+        state: "SUBMITTED",
+        lastTransactionFailed: true,
+      }),
+    })
+
+    const text = extractText(wrapper.root)
+    expect(text).toContain("Payment Failed")
   })
 
   it("shows correct message and icon for received counteroffers", () => {

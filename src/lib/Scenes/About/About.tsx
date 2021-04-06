@@ -1,15 +1,16 @@
 import { MenuItem } from "lib/Components/MenuItem"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { useToast } from "lib/Components/Toast/toastHook"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { color } from "palette"
 import React, { useEffect, useState } from "react"
+import { appJson } from "lib/utils/jsonFiles"
 import { ScrollView } from "react-native"
 import useDebounce from "react-use/lib/useDebounce"
 
 export const About: React.FC = () => {
+  const appVersion = appJson().version
   const toast = useToast()
   const [tapCount, updateTapCount] = useState(0)
   const userIsDev = useFeatureFlag("ARUserIsDev")
@@ -45,7 +46,7 @@ export const About: React.FC = () => {
         <MenuItem title="Privacy Policy" onPress={() => navigate("/privacy", { modal: true })} />
         <MenuItem
           title="Version"
-          text={LegacyNativeModules.ARTemporaryAPIModule.appVersion}
+          text={appVersion}
           onPress={() => updateTapCount((tapCount) => tapCount + 1)}
           chevron={false}
           style={userIsDev ? { borderRightColor: color("purple100"), borderRightWidth: 1 } : undefined}
