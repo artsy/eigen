@@ -57,10 +57,18 @@ function getCurrentlyPresentedModalNavStackRef() {
 
 export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterModule"] = {
   presentModal(viewDescriptor: ViewDescriptor) {
-    __unsafe_mainModalStackRef.current?.dispatch(
-      StackActions.push("modal", { rootModuleName: viewDescriptor.moduleName, rootModuleProps: viewDescriptor.props })
-    )
-    // _presentModal(viewDescriptor)
+    if (viewDescriptor.replace) {
+      __unsafe_mainModalStackRef.current?.dispatch(
+        StackActions.replace("modal", {
+          rootModuleName: viewDescriptor.moduleName,
+          rootModuleProps: viewDescriptor.props,
+        })
+      )
+    } else {
+      __unsafe_mainModalStackRef.current?.dispatch(
+        StackActions.push("modal", { rootModuleName: viewDescriptor.moduleName, rootModuleProps: viewDescriptor.props })
+      )
+    }
   },
   async popToRootAndScrollToTop(selectedTab: BottomTabType) {
     __unsafe_tabStackNavRefs[selectedTab].current?.dispatch(StackActions.popToTop())

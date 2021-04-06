@@ -14,6 +14,7 @@ upcoming:
     - Support change system navigation bar color on android - mounir
     - Add ability for one modal to replace another and use it in inquiry checkout flow - erik, david
     - Fix message ordering in Inbox - starsirius
+    - Add modal replacement api to android app - erik, david
 
 releases:
   - version: 6.8.2
