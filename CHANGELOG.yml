@@ -9,6 +9,7 @@ upcoming:
   user_facing:
     - Use toolbar style modal headers in consignments flow - brian
     - Add Onboarding welcome screen - mounir
+    - Use standard Select component in consignments and bid flows - david
     - Add splash screen to android - mounir
     - Support change system navigation bar color on android - mounir
     - Add ability for one modal to replace another and use it in inquiry checkout flow - erik, david

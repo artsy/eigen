@@ -26,7 +26,7 @@ interface SelectProps<ValueType> {
   subTitle?: string
   enableSearch?: boolean
   maxModalHeight?: number
-  onSelectValue(value: ValueType): void
+  onSelectValue(value: ValueType, index: number): void
   renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
   renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
   onModalFinishedClosing?(): void
@@ -150,7 +150,7 @@ const SelectModal: React.FC<{
   visible: boolean
   maxHeight?: number
   onDismiss(): any
-  onSelectValue(value: unknown): any
+  onSelectValue(value: unknown, index: number): any
   renderItemLabel?(value: SelectOption<unknown>): JSX.Element
   onModalFinishedClosing?(): void
 }> = (props) => {
@@ -270,7 +270,7 @@ const SelectModal: React.FC<{
         getItemLayout={(_item, index) => ({ index, length: ROW_HEIGHT, offset: ROW_HEIGHT * index })}
         style={{ flex: 1 }}
         onLayout={(e) => (flatListHeight.current = e.nativeEvent.layout.height)}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <Touchable
             underlayColor={color("black10")}
             onPress={() => {
@@ -278,7 +278,7 @@ const SelectModal: React.FC<{
               // give the pop-in animation a chance to play
               setTimeout(() => {
                 props.onDismiss()
-                props.onSelectValue(item.value)
+                props.onSelectValue(item.value, index)
               }, 400)
             }}
             style={{ flexGrow: 0 }}
