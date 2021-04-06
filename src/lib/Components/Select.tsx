@@ -129,7 +129,9 @@ const SelectButton: React.FC<{
           alignItems="center"
         >
           {value ? (
-            <Sans size="3t">{value}</Sans>
+            <Sans size="3t" color="black100">
+              {value}
+            </Sans>
           ) : (
             <Sans size="3t" color="black60">
               {placeholder ?? "Pick an option"}
