@@ -22,13 +22,14 @@ export const getConfigModel = (): ConfigModel => ({
 
   userIsDevFlipValue: false,
   userIsDev: computed([(_, store) => store], (store) => {
+    let retval = false
     if (is__DEV__()) {
-      return true
+      retval = true
     }
     if (store.auth.userHasArtsyEmail) {
-      return true
+      retval = true
     }
-    return false
+    return store.config.userIsDevFlipValue ? !retval : retval
   }),
   setUserIsDevFlipValue: action((state, nextValue) => {
     state.userIsDevFlipValue = nextValue
