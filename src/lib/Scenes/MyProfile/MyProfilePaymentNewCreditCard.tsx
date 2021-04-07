@@ -1,5 +1,5 @@
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
-import { Action, action, computed, Computed, createComponentStore } from "easy-peasy"
+import { Action, action, computed, Computed, useLocalStore } from "easy-peasy"
 import { CountrySelect } from "lib/Components/CountrySelect"
 import { Input } from "lib/Components/Input/Input"
 import { InputTitle } from "lib/Components/Input/InputTitle"
@@ -64,27 +64,25 @@ interface Store {
   allPresent: Computed<Store, boolean>
 }
 
-const useStore = createComponentStore<Store>({
-  fields: {
-    creditCard: emptyFieldState(),
-    fullName: emptyFieldState(),
-    addressLine1: emptyFieldState(),
-    addressLine2: { ...emptyFieldState(), required: false },
-    city: emptyFieldState(),
-    postCode: emptyFieldState(),
-    state: emptyFieldState(),
-    country: emptyFieldState(),
-  },
-  allPresent: computed((store) => {
-    return Boolean(
-      Object.keys(store.fields).every((k) => store.fields[k as keyof FormFields].isPresent) &&
-        store.fields.creditCard.value?.valid
-    )
-  }),
-})
-
 export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
-  const [state, actions] = useStore()
+  const [state, actions] = useLocalStore<Store>(() => ({
+    fields: {
+      creditCard: emptyFieldState(),
+      fullName: emptyFieldState(),
+      addressLine1: emptyFieldState(),
+      addressLine2: { ...emptyFieldState(), required: false },
+      city: emptyFieldState(),
+      postCode: emptyFieldState(),
+      state: emptyFieldState(),
+      country: emptyFieldState(),
+    },
+    allPresent: computed((store) => {
+      return Boolean(
+        Object.keys(store.fields).every((k) => store.fields[k as keyof FormFields].isPresent) &&
+          store.fields.creditCard.value?.valid
+      )
+    }),
+  }))
   const paymentInfoRef = useRef<any>(null)
 
   const addressLine1Ref = useRef<Input>(null)
