@@ -74,6 +74,24 @@ open Artsy.xcworkspace
 
 From Xcode, run the app by hitting `Product > Run` (or ⌘R). This will start the Artsy app in an iOS simulator, pointed at Artsy's staging environment.
 
+#### Flipper
+
+Once you've built & run the app through Xcode once, you can use [Flipper](https://fbflipper.com/) to run/debug the iOS app locally. This is typically much faster than running through Xcode.
+
+Make sure Flipper is running, then start the iOS simulator directly via your terminal:
+
+```sh
+open /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app
+```
+
+The simulator that opens should include the Artsy app even if you don’t have xcode running, and then you can use Flipper's dev tools for inspecting log output.
+
+Occasionally you'll need to rebuild the app in Xcode for Flipper. The most likely scenario that requires a rebuild is that you’ve pulled latest, run bundle exec pod install, and dependency versions were updated in Podfile.lock.
+
+**Note**: You'll want to confirm that the above command started the same simulator that you last ran in xcode, i.e. iPhone 12 vs iPhone 12 max. If it didn't, you can choose the correct simulator from `File|Open|…`
+
+**Note**: The Artsy app icon is on the _second_ screen of the simulator, not the first, so make sure you swipe over to find it.
+
 ### Run the Android app
 
 ```sh
