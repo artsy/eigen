@@ -1,5 +1,4 @@
-import { Action, action, Computed, computed, ThunkOn, thunkOn } from "easy-peasy"
-import { isFunction } from "lodash"
+import { Action, action, Computed, computed } from "easy-peasy"
 import { GlobalStoreModel } from "../GlobalStoreModel"
 import { DevToggleName, devToggles, FeatureName, features } from "./features"
 
@@ -30,17 +29,10 @@ export const getFeaturesModel = (): FeaturesModel => ({
   flags: computed([(state) => state, (_, store) => store, (_, store) => store.config.echo], (state, store, echo) => {
     const result = {} as any
     for (const [key, feature] of Object.entries(features)) {
-      const readyForRelease: boolean = (() => {
-        if (isFunction(feature.readyForRelease)) {
-          return feature.readyForRelease((store as unknown) as GlobalStoreModel)
-        }
-        return feature.readyForRelease
-      })()
-
       if (state.adminOverrides[key as FeatureName] != null) {
         // If there's an admin override, it takes precedence
         result[key] = state.adminOverrides[key as FeatureName]
-      } else if (readyForRelease) {
+      } else if (feature.readyForRelease) {
         // If the feature is ready for release, the echo flag takes precedence
         const echoFlag = echo.state.features.find((f) => f.name === feature.echoFlagKey)
 
