@@ -37,7 +37,6 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
   } = useFormikContext<OnboardingLoginValuesSchema>()
 
   const passwordInputRef = useRef<Input>(null)
-  const emailInputRef = useRef<Input>(null)
 
   return (
     <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>
@@ -52,7 +51,6 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
           <Spacer mt={50} />
           <Box>
             <Input
-              ref={emailInputRef}
               autoCapitalize="none"
               autoCompleteType="email"
               enableClearButton

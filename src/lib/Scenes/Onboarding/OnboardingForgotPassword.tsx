@@ -5,7 +5,7 @@ import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Button, color, Flex, Spacer, Text } from "palette"
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import { ScrollView, View } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "./Onboarding"
@@ -20,11 +20,13 @@ export interface OnboardingForgotPasswordValuesSchema {
 export interface OnboardingForgotPasswordProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingLogin"> {}
 export interface OnboardingForgotPasswordFormProps extends OnboardingForgotPasswordProps {
   requestedPasswordReset: boolean
+  inputRef?: React.Ref<Input>
 }
 
 export const OnboardingForgotPasswordForm: React.FC<OnboardingForgotPasswordFormProps> = ({
   navigation,
   requestedPasswordReset,
+  inputRef,
 }) => {
   const {
     values,
@@ -53,6 +55,7 @@ export const OnboardingForgotPasswordForm: React.FC<OnboardingForgotPasswordForm
           </Text>
           <Spacer mt={100} />
           <Input
+            ref={inputRef}
             autoCapitalize="none"
             autoCompleteType="email"
             enableClearButton
@@ -72,7 +75,6 @@ export const OnboardingForgotPasswordForm: React.FC<OnboardingForgotPasswordForm
             // We need to to set textContentType to username (instead of emailAddress) here
             // enable autofill of login details from the device keychain.
             textContentType="username"
-            error={submitCount > 0 ? errors.email : undefined}
           />
           <Spacer mt={22} />
           {!!requestedPasswordReset && (
@@ -128,6 +130,8 @@ const initialValues: OnboardingForgotPasswordValuesSchema = { email: "" }
 export const OnboardingForgotPassword: React.FC<OnboardingForgotPasswordProps> = ({ navigation, route }) => {
   const [requestedPasswordReset, setRequestedPasswordReset] = useState(false)
 
+  const inputRef = useRef<Input>(null)
+
   const formik = useFormik<OnboardingForgotPasswordValuesSchema>({
     enableReinitialize: true,
     validateOnChange: true,
@@ -141,9 +145,10 @@ export const OnboardingForgotPassword: React.FC<OnboardingForgotPasswordProps> =
       })
       if (!res) {
         // For security purposes, we are returning a generic error message
-        setErrors({ email: "Something went wrong" })
+        setErrors({ email: "Couldn’t send reset password link. Please try again, or contact support@artsy.net" })
       } else {
         setRequestedPasswordReset(true)
+        inputRef.current?.blur()
       }
     },
     validationSchema: forgotPasswordSchema,
@@ -152,6 +157,7 @@ export const OnboardingForgotPassword: React.FC<OnboardingForgotPasswordProps> =
   return (
     <FormikProvider value={formik}>
       <OnboardingForgotPasswordForm
+        inputRef={inputRef}
         navigation={navigation}
         route={route}
         requestedPasswordReset={requestedPasswordReset}
