@@ -127,7 +127,6 @@ export function unsafe_getFeatureFlag(key: FeatureName): boolean {
   if (__DEV__) {
     throw new Error(`Unable to access ${key} before GlobalStore bootstraps`)
   }
-
   return features[key].readyForRelease
 }
 

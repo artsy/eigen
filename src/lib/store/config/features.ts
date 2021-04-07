@@ -1,5 +1,4 @@
 import { useToast } from "lib/Components/Toast/toastHook"
-import { is__DEV__, isArtsyEmail, userEmail } from "lib/utils/general"
 import { echoLaunchJson } from "lib/utils/jsonFiles"
 import { Platform } from "react-native"
 import { GlobalStore } from "../GlobalStore"
