@@ -1,12 +1,13 @@
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
-import { FilterToggleButton } from "lib/Components/ArtworkFilterOptions/FilterToggleButton"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { Box, Flex, Sans, Separator } from "palette"
+import { Box, Check, Flex, Sans, Separator, Text, Touchable } from "palette"
 import React from "react"
 import { FlatList, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
+import { FilterToggleButton } from "./FilterToggleButton"
 
 interface MultiSelectOptionScreenProps {
   navigation: StackNavigationProp<ParamListBase>
@@ -45,6 +46,8 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
     }
   }
 
+  const shouldUseImprovedArtworkFilters = useFeatureFlag("ARUseImprovedArtworkFilters")
+
   return (
     <Flex flexGrow={1}>
       <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
@@ -57,7 +60,22 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
           renderItem={({ item }) => {
             return (
               <Box ml={0.5}>
-                {
+                {shouldUseImprovedArtworkFilters ? (
+                  <Touchable
+                    onPress={() => {
+                      const currentParamValue = item.paramValue as boolean
+                      onSelect(item, !currentParamValue)
+                    }}
+                  >
+                    <OptionListItem>
+                      <Text variant="caption" color="black100">
+                        {item.displayText}
+                      </Text>
+
+                      <Check selected={itemIsSelected(item)} disabled={itemIsDisabled(item)} />
+                    </OptionListItem>
+                  </Touchable>
+                ) : (
                   <OptionListItem>
                     <Flex mb={0.5}>
                       <Sans color="black100" size="3t">
@@ -75,7 +93,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
                       />
                     </TouchableWithoutFeedback>
                   </OptionListItem>
-                }
+                )}
               </Box>
             )
           }}
