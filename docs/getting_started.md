@@ -100,15 +100,15 @@ yarn android
 
 This will start the Artsy app in an Android emulator, pointed at Artsy's staging environment.
 
-## Running native tests
+## Run native tests
 
 We can only run tests in one specific environment, today that is iPhone 12 Pro with the iOS 14.2 Simulator. This is because we use visual snapshots for UI regressions.
 
-### To run tests in Xcode
+### Run tests in Xcode
 
 Tap `cmd + u` to run all tests, use `ctrl + alt + cmd + g` to run the last set you clicked on via the GUI.
 
-### Command line
+### Run tests via command line
 
 You can run tests via the CLI using:
 
@@ -116,7 +116,7 @@ You can run tests via the CLI using:
 ./scripts/test-ios
 ```
 
-### Updating snapshots
+### Update snapshots
 
 We use [Nimble-Snapshots](https://github.com/ashfurrow/Nimble-Snapshots) to take screenshots while running tests and
 these screenshots are checked in to the source control. When you change e.g. the background color of a particular
@@ -134,10 +134,10 @@ which is on the Artsy team.
 
 We have [cert troubleshooting here](https://github.com/artsy/eigen/blob/master/docs/certs.md)
 
-## Connecting a device
+## Connect a device
 
 Xcode will prompt you to join a team, then to enable the device for development. If you have to choose a team, choose _Art.sY Inc._.
 
-## Reading more
+## Read more
 
 Learn about what things are architecturally [here](https://github.com/artsy/eigen/blob/master/docs/overview.md), then move [to the blog.](http://artsy.github.io/blog/categories/eigen/) for more in-depth discussions on Eigen.
