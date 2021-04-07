@@ -44,7 +44,7 @@ export type FilterParams = {
 
 export enum FilterDisplayName {
   // artist = "Artists",
-  additionalGeneIDs = "Category",
+  additionalGeneIDs = "Medium",
   artistIDs = "Artists",
   artistsIFollow = "Artist",
   attributionClass = "Rarity",
