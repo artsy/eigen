@@ -19,6 +19,7 @@ interface Props {
   conversation: Messages_conversation
   relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
+  onRefresh?: () => void
 }
 
 const LoadingIndicator = styled.ActivityIndicator`
@@ -36,7 +37,7 @@ export type ConversationMessage = NonNullable<
 >
 
 export const Messages: React.FC<Props> = forwardRef((props, ref) => {
-  const { conversation, relay, onDataFetching } = props
+  const { conversation, relay, onDataFetching, onRefresh } = props
 
   const [fetchingMoreData, setFetchingMoreData] = useState(false)
   const [reloadingData, setReloadingData] = useState(false)
@@ -108,8 +109,8 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   const reload = () => {
     const count = extractNodes(conversation.messagesConnection).length
     setReloadingData(true)
-    if (onDataFetching) {
-      onDataFetching(false)
+    if (onRefresh) {
+      onRefresh()
     }
     relay.refetchConnection(count, (error) => {
       if (error) {

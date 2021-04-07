@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1bd372ae4a94a92d2fc56f1068b69b8c */
+/* @relayHash aec87f680703ecf4f43198461c238d3e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -249,6 +249,7 @@ fragment ReviewOfferButton_order on CommerceOrder {
   state
   stateReason
   stateExpiresAt
+  lastTransactionFailed
   ... on CommerceOfferOrder {
     lastOffer {
       fromParticipant
@@ -666,6 +667,13 @@ return {
                             "name": "stateExpiresAt",
                             "storageKey": null
                           },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "lastTransactionFailed",
+                            "storageKey": null
+                          },
                           (v7/*: any*/),
                           {
                             "alias": null,
@@ -1022,7 +1030,7 @@ return {
     ]
   },
   "params": {
-    "id": "1bd372ae4a94a92d2fc56f1068b69b8c",
+    "id": "aec87f680703ecf4f43198461c238d3e",
     "metadata": {},
     "name": "ConversationRefetchQuery",
     "operationKind": "query",

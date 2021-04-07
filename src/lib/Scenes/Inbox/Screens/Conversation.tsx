@@ -201,6 +201,8 @@ export class Conversation extends React.Component<Props, State> {
             conversation={conversation as any}
             onDataFetching={(loading) => {
               this.setState({ fetchingData: loading })
+            }}
+            onRefresh={() => {
               this.props.relay.refetch(
                 { conversationID: conversation?.internalID },
                 null,

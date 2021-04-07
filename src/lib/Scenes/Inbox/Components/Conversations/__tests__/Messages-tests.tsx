@@ -4,6 +4,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Text } from "palette"
 import React from "react"
 import "react-native"
+import { RefreshControl } from "react-native"
 import { QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { graphql } from "relay-runtime"
@@ -32,6 +33,8 @@ beforeEach(() => {
   env = createMockEnvironment()
 })
 
+const onRefresh = jest.fn()
+
 const TestRenderer = () => (
   <QueryRenderer<MessagesTestsQuery>
     environment={env}
@@ -47,7 +50,7 @@ const TestRenderer = () => (
     variables={{ conversationID: "conversation-id" }}
     render={({ props, error }) => {
       if (Boolean(props?.me)) {
-        return <Messages conversation={props!.me!.conversation!} />
+        return <Messages conversation={props!.me!.conversation!} onRefresh={onRefresh} />
       } else if (Boolean(error)) {
         console.log(error)
       }
@@ -65,6 +68,14 @@ const getWrapper = (mockResolvers = {}) => {
 
 it("renders without throwing an error", () => {
   getWrapper()
+})
+
+it("calls onRefresh prop when the messages are refreshed", () => {
+  const wrapper = getWrapper()
+
+  expect(onRefresh).not.toHaveBeenCalled()
+  wrapper.root.findByType(RefreshControl).props.onRefresh()
+  expect(onRefresh).toHaveBeenCalled()
 })
 
 /**
