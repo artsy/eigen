@@ -2,7 +2,7 @@ import { MenuItem } from "lib/Components/MenuItem"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { useToast } from "lib/Components/Toast/toastHook"
 import { navigate } from "lib/navigation/navigate"
-import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { appJson } from "lib/utils/jsonFiles"
 import { color } from "palette"
 import React, { useEffect, useState } from "react"
@@ -13,14 +13,14 @@ export const About: React.FC = () => {
   const appVersion = appJson().version
   const toast = useToast()
   const [tapCount, updateTapCount] = useState(0)
-  const userIsDev = useFeatureFlag("ARUserIsDev")
+  const userIsDev = GlobalStore.useAppState((store) => store.config.userIsDev)
 
   useEffect(() => {
     const flip = (userIsDev && tapCount >= 3) || (!userIsDev && tapCount >= 7)
     if (flip) {
       updateTapCount((_) => 0)
       const nextValue = !userIsDev
-      GlobalStore.actions.config.features.setAdminOverride({ key: "ARUserIsDev", value: nextValue })
+      GlobalStore.actions.config.setUserIsDevOverride(nextValue)
       if (nextValue) {
         toast.show('Developer mode enabled.\nTap "Version" three times to disable it.', "bottom")
       } else {
