@@ -31,65 +31,57 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
   }
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={{
-        action: ActionType.screen,
-        context_screen_owner_type: OwnerType.conversationMakeOfferConfirmArtwork,
-        context_screen_referrer_type: OwnerType.conversation,
-      }}
-    >
-      <View>
-        <FancyModalHeader rightButtonDisabled hideBottomDivider>
-          Make Offer with Artsy Pay
-        </FancyModalHeader>
-        <Flex p={1.5}>
-          <Text variant="largeTitle">Confirm Artwork</Text>
-          <Text variant="small" color="black60">
-            {" "}
-            Make sure the artwork below matches the intended work you're making an offer on.
-          </Text>
-          <BorderBox p={0} my={2}>
-            <CollapsibleArtworkDetails hasSeparator={false} artwork={artwork} />
-          </BorderBox>
-          {!!artwork.isEdition && artwork.editionSets!.length > 1 && (
-            <Flex mb={1}>
-              <Text color="black100" mb={1}>
-                {" "}
-                Which edition are you interested in?
-              </Text>
-              {artwork.editionSets?.map((edition) => (
-                <EditionSelectBox
-                  edition={edition!}
-                  selected={edition!.internalID === selectedEdition}
-                  onPress={selectEdition}
-                  key={`edition-set-${edition?.internalID}`}
-                />
-              ))}
-            </Flex>
-          )}
-          <InquiryMakeOfferButton
-            variant="primaryBlack"
-            buttonText="Confirm"
-            artwork={artwork}
-            disabled={!!artwork.isEdition && !selectedEdition}
-            editionSetID={selectedEdition ? selectedEdition : null}
-            conversationID={conversationID}
-          />
-          <Button
-            mt={1}
-            size="large"
-            variant="secondaryOutline"
-            block
-            width={100}
-            onPress={() => {
-              dismissModal()
-            }}
-          >
-            Cancel
-          </Button>
-        </Flex>
-      </View>
-    </ProvideScreenTrackingWithCohesionSchema>
+    <View>
+      <FancyModalHeader rightButtonDisabled hideBottomDivider>
+        Make Offer with Artsy Pay
+      </FancyModalHeader>
+      <Flex p={1.5}>
+        <Text variant="largeTitle">Confirm Artwork</Text>
+        <Text variant="small" color="black60">
+          {" "}
+          Make sure the artwork below matches the intended work you're making an offer on.
+        </Text>
+        <BorderBox p={0} my={2}>
+          <CollapsibleArtworkDetails hasSeparator={false} artwork={artwork} />
+        </BorderBox>
+        {!!artwork.isEdition && artwork.editionSets!.length > 1 && (
+          <Flex mb={1}>
+            <Text color="black100" mb={1}>
+              {" "}
+              Which edition are you interested in?
+            </Text>
+            {artwork.editionSets?.map((edition) => (
+              <EditionSelectBox
+                edition={edition!}
+                selected={edition!.internalID === selectedEdition}
+                onPress={selectEdition}
+                key={`edition-set-${edition?.internalID}`}
+              />
+            ))}
+          </Flex>
+        )}
+        <InquiryMakeOfferButton
+          variant="primaryBlack"
+          buttonText="Confirm"
+          artwork={artwork}
+          disabled={!!artwork.isEdition && !selectedEdition}
+          editionSetID={selectedEdition ? selectedEdition : null}
+          conversationID={conversationID}
+        />
+        <Button
+          mt={1}
+          size="large"
+          variant="secondaryOutline"
+          block
+          width={100}
+          onPress={() => {
+            dismissModal()
+          }}
+        >
+          Cancel
+        </Button>
+      </Flex>
+    </View>
   )
 }
 
@@ -126,21 +118,29 @@ export const MakeOfferModalQueryRenderer: React.FC<{
   conversationID: string
 }> = ({ artworkID, conversationID }) => {
   return (
-    <QueryRenderer<MakeOfferModalQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query MakeOfferModalQuery($artworkID: String!) {
-          artwork(id: $artworkID) {
-            ...MakeOfferModal_artwork
-          }
-        }
-      `}
-      variables={{
-        artworkID,
+    <ProvideScreenTrackingWithCohesionSchema
+      info={{
+        action: ActionType.screen,
+        context_screen_owner_type: OwnerType.conversationMakeOfferConfirmArtwork,
+        context_screen_referrer_type: OwnerType.conversation,
       }}
-      render={renderWithLoadProgress<MakeOfferModalQueryResponse>(({ artwork }) => (
-        <MakeOfferModalFragmentContainer artwork={artwork!} conversationID={conversationID} />
-      ))}
-    />
+    >
+      <QueryRenderer<MakeOfferModalQuery>
+        environment={defaultEnvironment}
+        query={graphql`
+          query MakeOfferModalQuery($artworkID: String!) {
+            artwork(id: $artworkID) {
+              ...MakeOfferModal_artwork
+            }
+          }
+        `}
+        variables={{
+          artworkID,
+        }}
+        render={renderWithLoadProgress<MakeOfferModalQueryResponse>(({ artwork }) => (
+          <MakeOfferModalFragmentContainer artwork={artwork!} conversationID={conversationID} />
+        ))}
+      />
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
