@@ -202,8 +202,8 @@ describe("App version Versions.RefactorConfigModel", () => {
   })
 })
 
-describe("App version Versions.AddAndroidUserInAuth", () => {
-  const migrationToTest = Versions.AddAndroidUserInAuth
+describe("App version Versions.AddUserIsDev", () => {
+  const migrationToTest = Versions.AddUserIsDev
   it("adds userEmail and userIsDev", () => {
     const previousState = migrate({
       state: { version: 0 },
@@ -216,5 +216,6 @@ describe("App version Versions.AddAndroidUserInAuth", () => {
     }) as any
 
     expect(migratedState.auth.androidUserEmail).toEqual(null)
+    expect(migratedState.config.userIsDevFlipValue).toEqual(false)
   })
 })

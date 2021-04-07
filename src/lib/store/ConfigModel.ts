@@ -10,9 +10,9 @@ export interface ConfigModel {
   features: FeaturesModel
   environment: EnvironmentModel
 
-  userIsDevOverride: boolean | undefined
+  userIsDevFlipValue: boolean
   userIsDev: Computed<this, boolean, GlobalStoreModel>
-  setUserIsDevOverride: Action<this, ConfigModel["userIsDevOverride"]>
+  setUserIsDevFlipValue: Action<this, ConfigModel["userIsDevFlipValue"]>
 }
 
 export const getConfigModel = (): ConfigModel => ({
@@ -20,7 +20,7 @@ export const getConfigModel = (): ConfigModel => ({
   features: getFeaturesModel(),
   environment: getEnvironmentModel(),
 
-  userIsDevOverride: undefined,
+  userIsDevFlipValue: false,
   userIsDev: computed([(_, store) => store], (store) => {
     if (is__DEV__()) {
       return true
@@ -30,7 +30,7 @@ export const getConfigModel = (): ConfigModel => ({
     }
     return false
   }),
-  setUserIsDevOverride: action((state, nextValue) => {
-    state.userIsDevOverride = nextValue
+  setUserIsDevFlipValue: action((state, nextValue) => {
+    state.userIsDevFlipValue = nextValue
   }),
 })

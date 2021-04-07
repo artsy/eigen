@@ -16,10 +16,10 @@ export const Versions = {
   AddFeatureFlagInfra: 6,
   RefactorConfigModel: 7,
   FixEnvironmentMigrationBug: 8,
-  AddAndroidUserInAuth: 9,
+  AddUserIsDev: 9,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddAndroidUserInAuth
+export const CURRENT_APP_VERSION = Versions.AddUserIsDev
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -65,8 +65,9 @@ export const artsyAppMigrations: Migrations = {
   [Versions.FixEnvironmentMigrationBug]: (state) => {
     state.config.environment.env = __TEST__ ? "staging" : "production"
   },
-  [Versions.AddAndroidUserInAuth]: (state) => {
+  [Versions.AddUserIsDev]: (state) => {
     state.auth.androidUserEmail = null
+    state.config.userIsDevFlipValue = false
   },
 }
 
