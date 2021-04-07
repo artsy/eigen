@@ -50,7 +50,8 @@ type AnalyticsArtworksPublishedStats {
   totalCount: Int!
 }
 
-# An ISO 8601 datetime
+# An ISO 8601 datetime -- second one is because of moving price insights
+# from Diffusion to Vortex.
 scalar AnalyticsDateTime
 
 # Visitor countries, device, referals and session page
@@ -6899,7 +6900,6 @@ enum InvoiceState {
   VOID
 }
 
-# An ISO 8601-encoded datetime
 scalar ISO8601DateTime
 
 # Represents untyped JSON
@@ -8394,7 +8394,7 @@ type PriceInsightConnection {
   pageCursors: PageCursors
 
   # Information to aid in pagination.
-  pageInfo: PageInfo!
+  pageInfo: AnalyticsPageInfo!
   totalCount: Int
   totalPages: Int
 }
