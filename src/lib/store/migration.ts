@@ -1,5 +1,5 @@
 // easy-peasy ships with a fork of immer so let's use that instead of adding another copy of immer to our bundle.
-import { produce } from "immer-peasy"
+import { produce } from "immer"
 import { echoLaunchJson } from "lib/utils/jsonFiles"
 
 /**
