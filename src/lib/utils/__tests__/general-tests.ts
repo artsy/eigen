@@ -1,10 +1,10 @@
-import { isArtsyUser } from "../general"
+import { isArtsyEmail } from "../general"
 
-describe(isArtsyUser, () => {
+describe(isArtsyEmail, () => {
   it("detects artsy users correctly", () => {
-    expect(isArtsyUser("pavlos@artsymail.com")).toBe(true)
-    expect(isArtsyUser("pavlos+withextra@artsymail.com")).toBe(true)
-    expect(isArtsyUser("alsopavlos@artsy.net")).toBe(true)
-    expect(isArtsyUser("pavlos@example.com")).toBe(false)
+    expect(isArtsyEmail("pavlos@artsymail.com")).toBe(true)
+    expect(isArtsyEmail("pavlos+withextra@artsymail.com")).toBe(true)
+    expect(isArtsyEmail("alsopavlos@artsy.net")).toBe(true)
+    expect(isArtsyEmail("pavlos@example.com")).toBe(false)
   })
 })

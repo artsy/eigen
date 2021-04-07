@@ -1,9 +1,8 @@
 import { useToast } from "lib/Components/Toast/toastHook"
-import { is__DEV__, isArtsyUser, userEmail } from "lib/utils/general"
+import { is__DEV__, isArtsyEmail, userEmail } from "lib/utils/general"
 import { echoLaunchJson } from "lib/utils/jsonFiles"
 import { Platform } from "react-native"
 import { GlobalStore } from "../GlobalStore"
-import { GlobalStoreModel } from "../GlobalStoreModel"
 
 export interface FeatureDescriptor {
   /**
@@ -11,7 +10,7 @@ export interface FeatureDescriptor {
    * If an echo flag key is specified, the echo flag's value will be used after this is set to `true`.
    * If this is set to `false`, the feature will never be shown except if overridden in the admin menu.
    */
-  readonly readyForRelease: boolean | ((store: GlobalStoreModel) => boolean)
+  readonly readyForRelease: boolean
   /**
    * Provide an echo feature flag key to allow this feature to be toggled globally via echo.
    * Make sure to add the flag to echo before setting this value. Then run ./scripts/update-echo
@@ -109,7 +108,7 @@ export const features = defineFeatures({
       if (is__DEV__()) {
         return true
       }
-      if (isArtsyUser(userEmail(store) ?? "")) {
+      if (isArtsyEmail(userEmail(store) ?? "")) {
         return true
       }
       return false

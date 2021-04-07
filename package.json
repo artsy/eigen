@@ -95,7 +95,7 @@
     "@react-navigation/native": "^5.9.2",
     "@react-navigation/stack": "^5.14.2",
     "@sentry/react-native": "2.2.1",
-    "easy-peasy": "3.3.0",
+    "easy-peasy": "5.0.3",
     "events": "3.1.0",
     "formik": "2.1.4",
     "grapheme-splitter": "1.0.4",
