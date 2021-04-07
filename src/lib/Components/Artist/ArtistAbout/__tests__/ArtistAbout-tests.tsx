@@ -6,6 +6,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
+import { ArtistCollectionsRailFragmentContainer } from "../../ArtistArtworks/ArtistCollectionsRail"
 import Biography from "../../Biography"
 import { ArtistAboutContainer } from "../ArtistAbout"
 import { ArtistAboutShowsFragmentContainer } from "../ArtistAboutShows"
@@ -117,6 +118,22 @@ describe("ArtistAbout", () => {
       mockEnvironmentPayload(mockEnvironment)
 
       expect(tree.root.findAllByType(ArtistAboutShowsFragmentContainer).length).toEqual(0)
+    })
+  })
+
+  describe("the iconic collections rail", () => {
+    fit("is hidden when there are no collections that feature this artist", () => {
+      const tree = renderWithWrappers(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        MarketingCollection: (context) => {
+          if (context.alias === "iconicCollections") {
+            return []
+          }
+        },
+      })
+
+      expect(tree.root.findAllByType(ArtistCollectionsRailFragmentContainer).length).toEqual(0)
     })
   })
 })

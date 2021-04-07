@@ -8,6 +8,9 @@ export type ArtistAbout_artist = {
     readonly hasMetadata: boolean | null;
     readonly isDisplayAuctionLink: boolean | null;
     readonly slug: string;
+    readonly iconicCollections: ReadonlyArray<{
+        readonly " $fragmentRefs": FragmentRefs<"ArtistCollectionsRail_collections">;
+    } | null> | null;
     readonly related: {
         readonly artists: {
             readonly edges: ReadonlyArray<{
@@ -24,7 +27,7 @@ export type ArtistAbout_artist = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"Biography_artist" | "ArtistConsignButton_artist" | "ArtistAboutShows_artist">;
+    readonly " $fragmentRefs": FragmentRefs<"Biography_artist" | "ArtistConsignButton_artist" | "ArtistAboutShows_artist" | "ArtistCollectionsRail_artist">;
     readonly " $refType": "ArtistAbout_artist";
 };
 export type ArtistAbout_artist$data = ArtistAbout_artist;
@@ -61,6 +64,33 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "name": "slug",
       "storageKey": null
+    },
+    {
+      "alias": "iconicCollections",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "isFeaturedArtistContent",
+          "value": true
+        },
+        {
+          "kind": "Literal",
+          "name": "size",
+          "value": 16
+        }
+      ],
+      "concreteType": "MarketingCollection",
+      "kind": "LinkedField",
+      "name": "marketingCollections",
+      "plural": true,
+      "selections": [
+        {
+          "args": null,
+          "kind": "FragmentSpread",
+          "name": "ArtistCollectionsRail_collections"
+        }
+      ],
+      "storageKey": "marketingCollections(isFeaturedArtistContent:true,size:16)"
     },
     {
       "alias": null,
@@ -175,10 +205,15 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "FragmentSpread",
       "name": "ArtistAboutShows_artist"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "ArtistCollectionsRail_artist"
     }
   ],
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = 'c6d9d5446681e9c00f83659592d8ff3d';
+(node as any).hash = 'c9280af8a4694be8f7175608162912f5';
 export default node;

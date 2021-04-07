@@ -12,6 +12,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { CaretButton } from "../../Buttons/CaretButton"
 import { Stack } from "../../Stack"
 import { StickyTabPageScrollView } from "../../StickyTabPage/StickyTabPageScrollView"
+import { ArtistCollectionsRailFragmentContainer } from "../ArtistArtworks/ArtistCollectionsRail"
 import { ArtistConsignButtonFragmentContainer as ArtistConsignButton } from "../ArtistConsignButton"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 
@@ -26,6 +27,9 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
   return (
     <StickyTabPageScrollView>
       <Stack spacing={3} my={2}>
+        {!!artist.iconicCollections?.length && (
+          <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} artist={artist} />
+        )}
         {!!artist.hasMetadata && <Biography artist={artist as any} />}
         {!!artist.isDisplayAuctionLink && (
           <CaretButton text="Auction results" onPress={() => navigate(`/artist/${artist.slug}/auction-results`)} />
@@ -48,6 +52,10 @@ export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
       ...Biography_artist
       ...ArtistConsignButton_artist
       ...ArtistAboutShows_artist
+      ...ArtistCollectionsRail_artist
+      iconicCollections: marketingCollections(isFeaturedArtistContent: true, size: 16) {
+        ...ArtistCollectionsRail_collections
+      }
       related {
         artists: artistsConnection(first: 16) {
           edges {
