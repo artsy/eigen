@@ -8,10 +8,12 @@ import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { BorderBox, Button, Flex, Text } from "palette"
-import React from "react"
+import React, { useState } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { InquiryMakeOfferButtonFragmentContainer as InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
+
+import { EditionSelectBox } from "./EditionSelectBox"
 
 interface MakeOfferModalProps {
   artwork: MakeOfferModal_artwork
@@ -20,6 +22,13 @@ interface MakeOfferModalProps {
 
 export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
   const { artwork, conversationID } = props
+  const [selectedEdition, setSelectedEdition] = useState<string>()
+
+  const selectEdition = (editionSetID: string, isAvailable?: boolean) => {
+    if (isAvailable) {
+      setSelectedEdition(editionSetID)
+    }
+  }
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -42,11 +51,28 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
           <BorderBox p={0} my={2}>
             <CollapsibleArtworkDetails hasSeparator={false} artwork={artwork} />
           </BorderBox>
+          {!!artwork.isEdition && artwork.editionSets!.length > 1 && (
+            <Flex mb={1}>
+              <Text color="black100" mb={1}>
+                {" "}
+                Which edition are you interested in?
+              </Text>
+              {artwork.editionSets?.map((edition) => (
+                <EditionSelectBox
+                  edition={edition!}
+                  selected={edition!.internalID === selectedEdition}
+                  onPress={selectEdition}
+                  key={`edition-set-${edition?.internalID}`}
+                />
+              ))}
+            </Flex>
+          )}
           <InquiryMakeOfferButton
             variant="primaryBlack"
             buttonText="Confirm"
             artwork={artwork}
-            editionSetID={null}
+            disabled={!!artwork.isEdition && !selectedEdition}
+            editionSetID={selectedEdition ? selectedEdition : null}
             conversationID={conversationID}
           />
           <Button
@@ -72,6 +98,25 @@ export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOffer
     fragment MakeOfferModal_artwork on Artwork {
       ...CollapsibleArtworkDetails_artwork
       ...InquiryMakeOfferButton_artwork
+      internalID
+      isEdition
+      editionSets {
+        internalID
+        editionOf
+        isOfferableFromInquiry
+        listPrice {
+          ... on Money {
+            display
+          }
+          ... on PriceRange {
+            display
+          }
+        }
+        dimensions {
+          cm
+          in
+        }
+      }
     }
   `,
 })
