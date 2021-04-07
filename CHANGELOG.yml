@@ -14,6 +14,7 @@ upcoming:
     - Enable sentry for android - brian, barry
     - Add camera permissions to android manifest - brian
     - Use artistAuctionResults instead of artistInsights for artist insights - mounir
+    - Improve sentry error reporting - mounir
   user_facing:
     - Set system navigation bar color to white on modals for android - mounir
     - Fix UI for Inquiry message count on iPad - pavlos
