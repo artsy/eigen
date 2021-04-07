@@ -1,10 +1,10 @@
-import { useFeatureFlag } from "lib/store/GlobalStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { Flex } from "palette"
 import React, { useRef, useState } from "react"
 import { AdminMenu } from "./AdminMenu"
 
 export const AdminMenuWrapper: React.FC = ({ children }) => {
-  const userIsDev = useFeatureFlag("ARUserIsDev")
+  const userIsDev = GlobalStore.useAppState((store) => store.config.userIsDev)
   const [isShowingAdminMenu, setIsShowingAdminMenu] = useState(false)
   const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
 
