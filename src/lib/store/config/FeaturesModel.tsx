@@ -1,7 +1,5 @@
 import { Action, action, Computed, computed, ThunkOn, thunkOn } from "easy-peasy"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { isFunction } from "lodash"
-import { unsafe__getEnvironment } from "../GlobalStore"
 import { GlobalStoreModel } from "../GlobalStoreModel"
 import { DevToggleName, devToggles, FeatureName, features } from "./features"
 
@@ -11,11 +9,6 @@ export type DevToggleMap = { [k in DevToggleName]: boolean }
 export interface FeaturesModel {
   adminOverrides: { [k in FeatureName | DevToggleName]?: boolean }
   setAdminOverride: Action<FeaturesModel, { key: FeatureName | DevToggleName; value: boolean | null }>
-  onSetAdminOverride: ThunkOn<
-    FeaturesModel,
-    { key: FeatureName | DevToggleName; value: boolean | null },
-    GlobalStoreModel
-  >
 
   // user features
   flags: Computed<FeaturesModel, FeatureMap, GlobalStoreModel>
@@ -33,14 +26,6 @@ export const getFeaturesModel = (): FeaturesModel => ({
       state.adminOverrides[key] = value
     }
   }),
-  onSetAdminOverride: thunkOn(
-    (actions) => actions.setAdminOverride,
-    (_, { payload: { key } }) => {
-      if (key === "ARUserIsDev") {
-        LegacyNativeModules.ARNotificationsManager.reactStateUpdated(unsafe__getEnvironment())
-      }
-    }
-  ),
 
   flags: computed([(state) => state, (_, store) => store, (_, store) => store.config.echo], (state, store, echo) => {
     const result = {} as any

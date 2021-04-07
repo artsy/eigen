@@ -103,19 +103,6 @@ export const features = defineFeatures({
     description: "Use new onboarding",
     showInAdminMenu: true,
   },
-  ARUserIsDev: {
-    readyForRelease: (store) => {
-      if (is__DEV__()) {
-        return true
-      }
-      if (isArtsyEmail(userEmail(store) ?? "")) {
-        return true
-      }
-      return false
-    },
-    description: "Is user a developer?",
-    showInAdminMenu: true,
-  },
 })
 
 export interface DevToggleDescriptor {

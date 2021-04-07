@@ -1,7 +1,9 @@
 import { action, Action, computed, Computed } from "easy-peasy"
+import { is__DEV__ } from "lib/utils/general"
 import { EchoModel, getEchoModel } from "./config/EchoModel"
 import { EnvironmentModel, getEnvironmentModel } from "./config/EnvironmentModel"
 import { FeaturesModel, getFeaturesModel } from "./config/FeaturesModel"
+import { GlobalStoreModel } from "./GlobalStoreModel"
 
 export interface ConfigModel {
   echo: EchoModel
@@ -9,7 +11,7 @@ export interface ConfigModel {
   environment: EnvironmentModel
 
   userIsDevOverride: boolean | undefined
-  userIsDev: Computed<this, boolean>
+  userIsDev: Computed<this, boolean, GlobalStoreModel>
   setUserIsDevOverride: Action<this, ConfigModel["userIsDevOverride"]>
 }
 
@@ -20,6 +22,12 @@ export const getConfigModel = (): ConfigModel => ({
 
   userIsDevOverride: undefined,
   userIsDev: computed([(_, store) => store], (store) => {
+    if (is__DEV__()) {
+      return true
+    }
+    if (store.auth.userHasArtsyEmail) {
+      return true
+    }
     return false
   }),
   setUserIsDevOverride: action((state, nextValue) => {
