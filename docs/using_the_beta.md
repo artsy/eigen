@@ -19,3 +19,9 @@ To access it, do the following steps:
 3. Simulate a ‘shake’ event (<kbd>^⌘Z</kbd>), which will bring up the dev menu.
 4. Choose the ‘Debug JS Remotely’ option, which should open Chrome.
 5. In the new Chrome window, open the Developer Tools (<kbd>⌘⌥J</kbd>).
+
+If you are an admin or using an artsy email, you can access the admin menu quickly:
+
+- Just shake your device.
+- Otherwise, go to Safari and type `artsy:///admin2` into the address bar (note the triple-slash).
+
