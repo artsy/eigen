@@ -1,8 +1,10 @@
-import { action, Action, computed, Computed } from "easy-peasy"
+import { action, Action, computed, Computed, thunkOn, ThunkOn } from "easy-peasy"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { is__DEV__ } from "lib/utils/general"
 import { EchoModel, getEchoModel } from "./config/EchoModel"
 import { EnvironmentModel, getEnvironmentModel } from "./config/EnvironmentModel"
 import { FeaturesModel, getFeaturesModel } from "./config/FeaturesModel"
+import { unsafe__getEnvironment } from "./GlobalStore"
 import { GlobalStoreModel } from "./GlobalStoreModel"
 
 export interface ConfigModel {
@@ -13,6 +15,7 @@ export interface ConfigModel {
   userIsDevFlipValue: boolean
   userIsDev: Computed<this, boolean, GlobalStoreModel>
   setUserIsDevFlipValue: Action<this, ConfigModel["userIsDevFlipValue"]>
+  onSetUserIsDevFlipValue: ThunkOn<this>
 }
 
 export const getConfigModel = (): ConfigModel => ({
@@ -34,4 +37,10 @@ export const getConfigModel = (): ConfigModel => ({
   setUserIsDevFlipValue: action((state, nextValue) => {
     state.userIsDevFlipValue = nextValue
   }),
+  onSetUserIsDevFlipValue: thunkOn(
+    (actions) => actions.setUserIsDevFlipValue,
+    () => {
+      LegacyNativeModules.ARNotificationsManager.reactStateUpdated(unsafe__getEnvironment())
+    }
+  ),
 })
