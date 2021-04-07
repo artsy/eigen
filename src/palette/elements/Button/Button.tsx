@@ -162,7 +162,7 @@ enum DisplayState {
 }
 
 /** A button with various size and color settings */
-export const Button: React.FC<ButtonProps> = React.memo((props) => {
+export const Button: React.FC<ButtonProps> = (props) => {
   const size = props.size ?? defaultSize
   const variant = props.variant ?? defaultVariant
 
@@ -284,7 +284,7 @@ export const Button: React.FC<ButtonProps> = React.memo((props) => {
       }
     </Spring>
   )
-})
+}
 
 /** Base props that construct button */
 

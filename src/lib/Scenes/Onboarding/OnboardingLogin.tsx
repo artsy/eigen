@@ -104,7 +104,6 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
               // We need to to set textContentType to password here
               // enable autofill of login details from the device keychain.
               textContentType="password"
-              canHidePassword
               value={values.password}
               error={errors.password}
             />
