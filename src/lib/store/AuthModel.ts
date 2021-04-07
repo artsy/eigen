@@ -9,6 +9,7 @@ type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 export interface AuthModel {
   // State
   userID: string | null
+  androidUserEmail: string | null
   userAccessToken: string | null
   userAccessTokenExpiresIn: string | null
   xAppToken: string | null
@@ -38,6 +39,7 @@ export interface AuthModel {
 
 export const getAuthModel = (): AuthModel => ({
   userID: null,
+  androidUserEmail: null,
   userAccessToken: null,
   userAccessTokenExpiresIn: null,
   xAppToken: null,
@@ -47,7 +49,7 @@ export const getAuthModel = (): AuthModel => ({
     if (Platform.OS === "ios") {
       return store.native.sessionState.userEmail
     } else if (Platform.OS === "android") {
-      return store.auth.userEmail
+      return store.auth.androidUserEmail
     }
     return null
   }),
@@ -134,7 +136,7 @@ export const getAuthModel = (): AuthModel => ({
         userAccessToken: access_token,
         userAccessTokenExpiresIn: expires_in,
         userID: id,
-        userEmail: email,
+        androidUserEmail: email,
       })
 
       return true
