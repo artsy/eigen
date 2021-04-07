@@ -1,0 +1,125 @@
+import { color } from "@artsy/palette-tokens"
+import React from "react"
+import styled, { css } from "styled-components/native"
+import { Box } from "../Box"
+
+const RADIO_DOT_MODES = {
+  default: {
+    resting: css`
+      border: 2px solid;
+      color: ${color("white100")};
+      border-color: ${color("black10")};
+    `,
+    selected: css`
+      border: 2px solid;
+      color: ${color("white100")};
+      border-color: ${color("black100")};
+      background-color: ${color("black100")};
+    `,
+  },
+  disabled: {
+    resting: css`
+      border: 2px solid;
+      color: transparent;
+      border-color: ${color("black10")};
+      background-color: ${color("black10")};
+    `,
+    selected: css`
+      border: 2px solid;
+      color: ${color("white100")};
+      border-color: ${color("black10")};
+      background-color: ${color("black10")};
+    `,
+  },
+  error: {
+    resting: css`
+      border: 2px solid;
+      color: ${color("white100")};
+      border-color: ${color("red100")};
+    `,
+    selected: css`
+      border: 2px solid;
+      color: ${color("white100")};
+      border-color: ${color("black100")};
+      background-color: ${color("black100")};
+    `,
+  },
+  hover: {
+    resting: css`
+      border: 2px solid;
+      color: ${color("white100")};
+      border-color: ${color("black10")};
+      background-color: ${color("black10")};
+    `,
+    selected: css`
+      border: 2px solid;
+      color: ${color("white100")};
+      border-color: ${color("black100")};
+      background-color: ${color("black100")};
+    `,
+  },
+}
+
+interface RadioDotProps {
+  disabled?: boolean
+  error?: boolean
+  hover?: boolean
+  selected?: boolean
+}
+
+export const RadioDot: React.FC<RadioDotProps> = (props) => {
+  return (
+    <Container {...props}>
+      <Dot {...props} />
+    </Container>
+  )
+}
+
+const Container = styled(Box)<RadioDotProps>`
+  width: 20px;
+  height: 20px;
+  border-radius: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  ${(props) => {
+    const mode = (() => {
+      switch (true) {
+        case props.disabled:
+          return RADIO_DOT_MODES.disabled
+        case props.hover:
+          return RADIO_DOT_MODES.hover
+        case props.error:
+          return RADIO_DOT_MODES.error
+        default:
+          return RADIO_DOT_MODES.default
+      }
+    })()
+
+    return props.selected ? mode.selected : mode.resting
+  }};
+`
+
+const Dot = styled(Box)<RadioDotProps>`
+  width: 10px;
+  height: 10px;
+  border-radius: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  ${(props) => {
+    if (props.disabled && !props.selected) {
+      return css`
+        background-color: transparent;
+      `
+    }
+
+    return css`
+      background-color: ${color("white100")};
+    `
+  }};
+`

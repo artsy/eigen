@@ -98,3 +98,13 @@
   - We make sure that files which do not change are not overwritten. This prevents excessive reloading by metro.
 
   We can remove these hacks when they don't matter anymore. Neither are likely to be fixed by facebook.
+
+- react-native-credit-card-input
+
+  These are fairly superficial styling hacks for
+
+  - focused/error border states
+  - shrinking the icon size to work nicely with our inputs
+  - aligning inner inputs nicely
+
+  We can remove these hacks once we switch to Stripe's forthcoming official react-native library.

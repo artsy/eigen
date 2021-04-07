@@ -11,6 +11,7 @@ export type ReviewOfferButton_order = {
     readonly state: CommerceOrderStateEnum;
     readonly stateReason: string | null;
     readonly stateExpiresAt: string | null;
+    readonly lastTransactionFailed: boolean | null;
     readonly lastOffer?: {
         readonly fromParticipant: CommerceOrderParticipantEnum | null;
         readonly createdAt: string;
@@ -66,6 +67,13 @@ return {
       "args": null,
       "kind": "ScalarField",
       "name": "stateExpiresAt",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "lastTransactionFailed",
       "storageKey": null
     },
     {
@@ -145,5 +153,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = '00ab3377d074804382c5f8095a215c13';
+(node as any).hash = 'b9bef8d68539d767fe3ac1892dad8779';
 export default node;

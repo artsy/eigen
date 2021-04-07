@@ -19,6 +19,7 @@ export const BackButton: React.FC<{ show?: boolean; onPress?(): void }> = ({ onP
   }, [show])
   return (
     <Animated.View
+      pointerEvents={show ? undefined : "none"}
       style={{
         position: "absolute",
         top: 13 + useScreenDimensions().safeAreaInsets.top,

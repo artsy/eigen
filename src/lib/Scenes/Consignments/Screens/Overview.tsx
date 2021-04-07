@@ -1,12 +1,13 @@
 import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import React from "react"
-import { Alert, Platform } from "react-native"
+import { Alert } from "react-native"
 
 import AsyncStorage from "@react-native-community/async-storage"
 import type NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Dimensions, ScrollView, View } from "react-native"
 
 import { ActionSheetOptions, connectActionSheet } from "@expo/react-native-action-sheet"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { AddEditPhotos } from "lib/Components/Photos/AddEditPhotos"
 import { dismissModal } from "lib/navigation/navigate"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
@@ -249,8 +250,7 @@ export class Overview extends React.Component<Props, State> {
       this.state.metadata.height &&
       this.state.metadata.width &&
       this.state.editionScreenViewed &&
-      // TODO: make photos work on Android
-      (Platform.OS === "android" || this.state.photos?.length! /* STRICTNESS_MIGRATION */ > 0)
+      this.state.photos?.length! > 0
     )
 
   render() {
@@ -260,57 +260,67 @@ export class Overview extends React.Component<Props, State> {
     const isPad = Dimensions.get("window").width > 700
 
     return (
-      <ScrollView
-        style={{ flex: 1 }}
-        alwaysBounceVertical={false}
-        contentContainerStyle={{ paddingVertical: 40, justifyContent: "center" }}
-      >
-        <View
-          style={{
-            alignSelf: "center",
-            width: "100%",
-            maxWidth: 540,
+      <>
+        <FancyModalHeader
+          useXButton
+          onLeftButtonPress={() => {
+            dismissModal()
           }}
         >
-          <Box px={2}>
-            <Text variant="mediumText" style={{ textAlign: isPad ? "center" : "left" }}>
-              Step 1 of 2
-            </Text>
-            <Spacer mb={1} />
-            <Text variant="largeTitle" style={{ textAlign: isPad ? "center" : "left" }}>
-              Add details for your work
-            </Text>
-            <Spacer mb={1} />
-            <Text
-              variant="text"
-              color="black60"
-              style={{ textAlign: isPad ? "center" : "left", marginBottom: isPad ? 80 : 0 }}
-            >
-              Provide as much detail as possible so that our partners can best assess your work.
-            </Text>
-          </Box>
-          <TODO
-            goToArtist={this.goToArtistTapped}
-            goToPhotos={this.goToPhotosTapped}
-            goToEdition={this.goToEditionTapped}
-            goToMetadata={this.goToMetadataTapped}
-            goToLocation={this.goToLocationTapped}
-            goToProvenance={this.goToProvenanceTapped}
-            {...this.state}
-          />
-          <Spacer mb={isPad ? 80 : 2} />
-        </View>
-        <Flex px="2" width="100%" maxWidth={540}>
-          <Button
-            block
-            onPress={this.state.hasLoaded && canSubmit ? this.submitFinalSubmission : undefined}
-            disabled={!canSubmit}
-            haptic
+          Submit a work
+        </FancyModalHeader>
+        <ScrollView
+          style={{ flex: 1 }}
+          alwaysBounceVertical={false}
+          contentContainerStyle={{ paddingVertical: 20, justifyContent: "center" }}
+        >
+          <View
+            style={{
+              alignSelf: "center",
+              width: "100%",
+              maxWidth: 540,
+            }}
           >
-            Next
-          </Button>
-        </Flex>
-      </ScrollView>
+            <Box px={2}>
+              <Text variant="mediumText" style={{ textAlign: isPad ? "center" : "left" }}>
+                Step 1 of 2
+              </Text>
+              <Spacer mb={1} />
+              <Text variant="largeTitle" style={{ textAlign: isPad ? "center" : "left" }}>
+                Add details for your work
+              </Text>
+              <Spacer mb={1} />
+              <Text
+                variant="text"
+                color="black60"
+                style={{ textAlign: isPad ? "center" : "left", marginBottom: isPad ? 80 : 0 }}
+              >
+                Provide as much detail as possible so that our partners can best assess your work.
+              </Text>
+            </Box>
+            <TODO
+              goToArtist={this.goToArtistTapped}
+              goToPhotos={this.goToPhotosTapped}
+              goToEdition={this.goToEditionTapped}
+              goToMetadata={this.goToMetadataTapped}
+              goToLocation={this.goToLocationTapped}
+              goToProvenance={this.goToProvenanceTapped}
+              {...this.state}
+            />
+            <Spacer mb={isPad ? 80 : 2} />
+          </View>
+          <Flex px="2" width="100%" maxWidth={540}>
+            <Button
+              block
+              onPress={this.state.hasLoaded && canSubmit ? this.submitFinalSubmission : undefined}
+              disabled={!canSubmit}
+              haptic
+            >
+              Next
+            </Button>
+          </Flex>
+        </ScrollView>
+      </>
     )
   }
 }
