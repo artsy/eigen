@@ -1,6 +1,7 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Button, Flex } from "palette"
+import { Touchable } from "palette"
 import React from "react"
+import { Text } from "react-native"
 import { act } from "react-test-renderer"
 import { Toast } from "../Toast"
 import { useToast } from "../toastHook"
@@ -9,21 +10,28 @@ const TestRenderer: React.FC = () => {
   const toast = useToast()
 
   return (
-    <Flex>
-      <Button onPress={() => toast.show("Consider yourself toasted!", "middle")}>Toast me</Button>
-    </Flex>
+    <Touchable onPress={() => toast.show("Consider yourself toasted!", "middle")}>
+      <Text>Some button text</Text>
+    </Touchable>
   )
 }
 
-describe("Toasts", () => {
-  jest.useFakeTimers()
+describe("Toast", () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+    jest.useFakeTimers()
+  })
 
-  it("renders a toast when", async () => {
+  afterEach(() => {
+    jest.useRealTimers()
+  })
+
+  it("renders a toast when show toast is called", async () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
     expect(tree.root.findAllByType(Toast)).toHaveLength(0)
 
-    const buttonInstance = tree.root.findByType(Button)
+    const buttonInstance = tree.root.findByType(Touchable)
     act(() => buttonInstance.props.onPress())
 
     expect(tree.root.findAllByType(Toast)).toHaveLength(1)
