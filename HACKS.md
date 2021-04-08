@@ -39,11 +39,17 @@
 
   We use this type in our code, so we need it exported.
 
-- react-native patch-package (stacktrace-parser part only).
+- react-native patch-package (stacktrace-parser part)
 
   When this is merged: https://github.com/facebook/react-native/pull/30345.
 
   For some reason CircleCI kept giving an error when running tests `TypeError: stacktraceParser.parse is not a function`. Once I moved the require higher up, things started working again.
+
+- react-native patch-package (RCTTouchHandler part)
+
+  When we have migrated to react-navigation.
+
+  We currently have the rather unusual situation of showing multiple nested RCTRootContentView instances at one time. This seems to be fine *except* touch events are duplicated per level of nesting. To avoid this we create only one touch handler, implicitly on the actual root react view (which wraps our entire app) and let that manage all of the touches. Then nested views use the same instace as the root view and we avoid duplicating touch events.
 
 - hardcode mapbox version to at least 6.3.0 using $ReactNativeMapboxGLIOSVersion
 

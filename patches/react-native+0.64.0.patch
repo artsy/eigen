@@ -1,0 +1,21 @@
+diff --git a/node_modules/react-native/React/Base/RCTTouchHandler.m b/node_modules/react-native/React/Base/RCTTouchHandler.m
+index fc32afb..0f1d6f5 100644
+--- a/node_modules/react-native/React/Base/RCTTouchHandler.m
++++ b/node_modules/react-native/React/Base/RCTTouchHandler.m
+@@ -104,6 +104,16 @@ - (void)_recordNewTouches:(NSSet<UITouch *> *)touches
+       continue;
+     }
+ 
++    UIView *touchRootView = touch.view;
++    while (touchRootView && ![touchRootView isKindOfClass:RCTRootContentView.class]) {
++      touchRootView = touchRootView.superview;
++    }
++
++    if ([touchRootView isKindOfClass:RCTRootContentView.class] && touchRootView != self.view) {
++      // handled by a different UITouchHandler
++      continue;
++    }
++
+     // Get new, unique touch identifier for the react touch
+     const NSUInteger RCTMaxTouches = 11; // This is the maximum supported by iDevices
+     NSInteger touchID = ([_reactTouches.lastObject[@"identifier"] integerValue] + 1) % RCTMaxTouches;
