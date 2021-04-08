@@ -22,6 +22,7 @@ upcoming:
     - Fix conversation scrolling while supporting dismissing keyboard - starsirius
     - Updates filter styling - damon
     - Hide push notifications section in settings for Android - ole
+    - Rename the category filter to medium - iskounen
 
 releases:
   - version: 6.8.2
