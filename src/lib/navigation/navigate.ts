@@ -1,3 +1,4 @@
+import { addBreadcrumb } from "@sentry/react-native"
 import { AppModule, modules, ViewOptions } from "lib/AppRegistry"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { GlobalStore, unsafe__getSelectedTab } from "lib/store/GlobalStore"
@@ -28,6 +29,11 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
     Linking.openURL(result.url)
     return
   }
+
+  addBreadcrumb({
+    message: `user navigated to ${url}`,
+    category: "navigation",
+  })
 
   const module = modules[result.module]
   const presentModally = options.modal ?? module.options.alwaysPresentModally ?? false

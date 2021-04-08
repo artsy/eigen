@@ -211,7 +211,7 @@
     "pull-lock": "1.0.0",
     "puppeteer": "^7.1.0",
     "react-dom": "16.8.3",
-    "react-relay-network-modern": "4.7.1",
+    "react-relay-network-modern": "^6.0.0",
     "react-test-renderer": "16.13.1",
     "recursive-readdir-sync": "1.0.6",
     "relay-compiler": "10.1.3",
