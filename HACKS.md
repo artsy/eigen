@@ -39,12 +39,6 @@
 
   We use this type in our code, so we need it exported.
 
-- react-native patch-package (stacktrace-parser part)
-
-  When this is merged: https://github.com/facebook/react-native/pull/30345.
-
-  For some reason CircleCI kept giving an error when running tests `TypeError: stacktraceParser.parse is not a function`. Once I moved the require higher up, things started working again.
-
 - react-native patch-package (RCTTouchHandler part)
 
   When we have migrated to react-navigation.
