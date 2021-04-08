@@ -1,6 +1,5 @@
 import { action, Action, computed, Computed, thunkOn, ThunkOn } from "easy-peasy"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { is__DEV__ } from "lib/utils/general"
 import { EchoModel, getEchoModel } from "./config/EchoModel"
 import { EnvironmentModel, getEnvironmentModel } from "./config/EnvironmentModel"
 import { FeaturesModel, getFeaturesModel } from "./config/FeaturesModel"
@@ -26,7 +25,7 @@ export const getConfigModel = (): ConfigModel => ({
   userIsDevFlipValue: false,
   userIsDev: computed([(_, store) => store], (store) => {
     let retval = false
-    if (is__DEV__()) {
+    if (__DEV__) {
       retval = true
     }
     if (store.auth.userHasArtsyEmail) {
