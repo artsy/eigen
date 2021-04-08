@@ -69,6 +69,7 @@ describe("TimePeriodMultiOptions Screen", () => {
       const item = items.find((i) => extractText(i).startsWith("Time period"))
 
       expect(item).not.toBeUndefined()
+
       if (item) {
         expect(extractText(item)).toContain("All")
       }
@@ -131,7 +132,7 @@ describe("TimePeriodMultiOptions Screen", () => {
       ],
     }
 
-    it("displays 'All' on the filter modal screen", () => {
+    it("does not display 'All' on the filter modal screen", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ ARUseImprovedArtworkFilters: true })
 
       const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
@@ -140,7 +141,7 @@ describe("TimePeriodMultiOptions Screen", () => {
 
       expect(item).not.toBeUndefined()
       if (item) {
-        expect(extractText(item)).toContain("All")
+        expect(extractText(item)).not.toContain("All")
       }
     })
 

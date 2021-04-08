@@ -4,9 +4,10 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Box, CheckIcon, Flex, RadioDot, Separator, Text } from "palette"
 import React from "react"
-import { FlatList, TouchableOpacity } from "react-native"
+import { FlatList } from "react-native"
 import styled from "styled-components/native"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
+import { TouchableRow } from "../TouchableRow"
 
 interface SingleSelectOptionScreenProps {
   navigation: StackNavigationProp<ParamListBase>
@@ -31,6 +32,8 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
     navigation.goBack()
   }
 
+  const shouldUseImprovedArtworkFilters = useFeatureFlag("ARUseImprovedArtworkFilters")
+
   return (
     <Flex flexGrow={1}>
       <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
@@ -41,7 +44,7 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
           ListHeaderComponent={ListHeaderComponent}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
-          ItemSeparatorComponent={() => <Separator />}
+          ItemSeparatorComponent={shouldUseImprovedArtworkFilters ? null : Separator}
           renderItem={({ item }) => (
             <ListItem
               item={item}
@@ -67,11 +70,11 @@ const ListItem = ({
   selectedOption: FilterData
   withExtraPadding: boolean
 }) => {
-  const useImprovedArtworkFilters = useFeatureFlag("ARUseImprovedArtworkFilters")
+  const shouldUseImprovedArtworkFilters = useFeatureFlag("ARUseImprovedArtworkFilters")
   const selected = item.displayText === selectedOption.displayText
 
   return (
-    <SingleSelectOptionListItemRow onPress={() => onSelect(item)}>
+    <TouchableRow onPress={() => onSelect(item)}>
       <OptionListItem>
         <InnerOptionListItem px={withExtraPadding && item.displayText !== "All" ? 3 : 2}>
           <Text color="black100" variant="caption">
@@ -83,7 +86,7 @@ const ListItem = ({
               </Text>
             )}
           </Text>
-          {useImprovedArtworkFilters ? (
+          {shouldUseImprovedArtworkFilters ? (
             <RadioDot selected={selected} />
           ) : (
             !!selected && (
@@ -94,7 +97,7 @@ const ListItem = ({
           )}
         </InnerOptionListItem>
       </OptionListItem>
-    </SingleSelectOptionListItemRow>
+    </TouchableRow>
   )
 }
 
@@ -105,8 +108,6 @@ export const InnerOptionListItem = styled(Flex)`
   align-items: center;
   height: 60px;
 `
-
-export const SingleSelectOptionListItemRow = styled(TouchableOpacity)``
 
 export const OptionListItem = styled(Flex)`
   flex-direction: row;
