@@ -32,10 +32,11 @@ const Header = styled.View`
 // This makes it really easy to style the HeaderTextContainer with space-between
 const PlaceholderView = View
 
-const HeaderTextContainer = styled.View`
+const HeaderTextContainer = styled(Flex)`
   flex-direction: row;
   justify-content: center;
   flex-grow: 1;
+  justify-content: space-between;
 `
 
 interface Props {
@@ -170,22 +171,24 @@ export class Conversation extends React.Component<Props, State> {
           <Header>
             <Flex flexDirection="row" alignSelf="stretch" mx={2}>
               <HeaderTextContainer>
-                <Text variant="mediumText">{partnerName}</Text>
                 <PlaceholderView />
+                <Text ml={1} variant="mediumText">
+                  {partnerName}
+                </Text>
+                <Touchable
+                  onPress={() => {
+                    this.props.navigator.push({
+                      component: ConversationDetailsQueryRenderer,
+                      title: "",
+                      passProps: {
+                        conversationID: this.props.me?.conversation?.internalID,
+                      },
+                    })
+                  }}
+                >
+                  <InfoCircleIcon />
+                </Touchable>
               </HeaderTextContainer>
-              <Touchable
-                onPress={() => {
-                  this.props.navigator.push({
-                    component: ConversationDetailsQueryRenderer,
-                    title: "",
-                    passProps: {
-                      conversationID: this.props.me?.conversation?.internalID,
-                    },
-                  })
-                }}
-              >
-                <InfoCircleIcon />
-              </Touchable>
             </Flex>
           </Header>
           {!this.state.isConnected && <ConnectivityBanner />}
