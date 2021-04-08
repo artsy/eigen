@@ -74,6 +74,7 @@ target 'Artsy' do
   use_react_native!(
     :path => './node_modules/react-native',
     :production => ENV['CIRCLE_BUILD_NUM'],
+    :hermes_enabled => false,
   )
 
   # Networking
@@ -161,10 +162,11 @@ end
 
 # Enables Flipper.
 # Note that if you have use_frameworks! enabled, Flipper will not work and
-# you should disable these next few lines.
-use_flipper!
+# you should disable the next line.
+use_flipper!()
+
 post_install do |installer|
-  flipper_post_install(installer)
+  react_native_post_install(installer)
 
   remove_mapbox_creds
 

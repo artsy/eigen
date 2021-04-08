@@ -1,3 +1,7 @@
 CHANGELOG.yml merge=union
 src/__generated__/*.graphql.ts linguist-generated=true
 src/__generated__/*.queryMap.json linguist-generated=true
+
+# Windows files should use crlf line endings
+# https://help.github.com/articles/dealing-with-line-endings/
+*.bat text eol=crlf
