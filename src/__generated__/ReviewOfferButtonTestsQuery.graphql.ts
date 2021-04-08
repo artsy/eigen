@@ -1,16 +1,16 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1e17508a96fe49bfd5c121283758c780 */
+/* @relayHash 682122965b07d18eef71da69a509f106 */
 
 import { ConcreteRequest } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
+export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FULFILLED" | "PENDING" | "REFUNDED" | "SUBMITTED" | "%future added value";
 export type ReviewOfferButtonTestsQueryVariables = {
     orderID: string;
 };
 export type ReviewOfferButtonTestsQueryResponse = {
     readonly order: {
-        readonly " $fragmentRefs": FragmentRefs<"ReviewOfferButton_order">;
+        readonly state: CommerceOrderStateEnum;
     } | null;
 };
 export type ReviewOfferButtonTestsQuery = {
@@ -26,32 +26,8 @@ query ReviewOfferButtonTestsQuery(
 ) {
   order: commerceOrder(id: $orderID) {
     __typename
-    ...ReviewOfferButton_order
+    state
     id
-  }
-}
-
-fragment ReviewOfferButton_order on CommerceOrder {
-  __isCommerceOrder: __typename
-  internalID
-  state
-  stateReason
-  stateExpiresAt
-  lastTransactionFailed
-  ... on CommerceOfferOrder {
-    lastOffer {
-      fromParticipant
-      createdAt
-      id
-    }
-    offers(first: 5) {
-      edges {
-        node {
-          internalID
-          id
-        }
-      }
-    }
   }
 }
 */
@@ -75,39 +51,8 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "internalID",
+  "name": "state",
   "storageKey": null
-},
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v4 = {
-  "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "String"
-},
-v5 = {
-  "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "ID"
-},
-v6 = {
-  "enumValues": null,
-  "nullable": true,
-  "plural": false,
-  "type": "CommerceOffer"
-},
-v7 = {
-  "enumValues": null,
-  "nullable": true,
-  "plural": false,
-  "type": "String"
 };
 return {
   "fragment": {
@@ -124,11 +69,7 @@ return {
         "name": "commerceOrder",
         "plural": false,
         "selections": [
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "ReviewOfferButton_order"
-          }
+          (v2/*: any*/)
         ],
         "storageKey": null
       }
@@ -157,113 +98,13 @@ return {
             "name": "__typename",
             "storageKey": null
           },
-          {
-            "kind": "TypeDiscriminator",
-            "abstractKey": "__isCommerceOrder"
-          },
           (v2/*: any*/),
           {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "state",
+            "name": "id",
             "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "stateReason",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "stateExpiresAt",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "lastTransactionFailed",
-            "storageKey": null
-          },
-          (v3/*: any*/),
-          {
-            "kind": "InlineFragment",
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "CommerceOffer",
-                "kind": "LinkedField",
-                "name": "lastOffer",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "fromParticipant",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "createdAt",
-                    "storageKey": null
-                  },
-                  (v3/*: any*/)
-                ],
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "first",
-                    "value": 5
-                  }
-                ],
-                "concreteType": "CommerceOfferConnection",
-                "kind": "LinkedField",
-                "name": "offers",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "CommerceOfferEdge",
-                    "kind": "LinkedField",
-                    "name": "edges",
-                    "plural": true,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "CommerceOffer",
-                        "kind": "LinkedField",
-                        "name": "node",
-                        "plural": false,
-                        "selections": [
-                          (v2/*: any*/),
-                          (v3/*: any*/)
-                        ],
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": "offers(first:5)"
-              }
-            ],
-            "type": "CommerceOfferOrder",
-            "abstractKey": null
           }
         ],
         "storageKey": null
@@ -271,7 +112,7 @@ return {
     ]
   },
   "params": {
-    "id": "1e17508a96fe49bfd5c121283758c780",
+    "id": "682122965b07d18eef71da69a509f106",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "order": {
@@ -280,43 +121,18 @@ return {
           "plural": false,
           "type": "CommerceOrder"
         },
-        "order.__isCommerceOrder": (v4/*: any*/),
-        "order.__typename": (v4/*: any*/),
-        "order.id": (v5/*: any*/),
-        "order.internalID": (v5/*: any*/),
-        "order.lastOffer": (v6/*: any*/),
-        "order.lastOffer.createdAt": (v4/*: any*/),
-        "order.lastOffer.fromParticipant": {
-          "enumValues": [
-            "BUYER",
-            "SELLER"
-          ],
-          "nullable": true,
-          "plural": false,
-          "type": "CommerceOrderParticipantEnum"
-        },
-        "order.lastOffer.id": (v5/*: any*/),
-        "order.lastTransactionFailed": {
+        "order.__typename": {
           "enumValues": null,
-          "nullable": true,
+          "nullable": false,
           "plural": false,
-          "type": "Boolean"
+          "type": "String"
         },
-        "order.offers": {
+        "order.id": {
           "enumValues": null,
-          "nullable": true,
+          "nullable": false,
           "plural": false,
-          "type": "CommerceOfferConnection"
+          "type": "ID"
         },
-        "order.offers.edges": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": true,
-          "type": "CommerceOfferEdge"
-        },
-        "order.offers.edges.node": (v6/*: any*/),
-        "order.offers.edges.node.id": (v5/*: any*/),
-        "order.offers.edges.node.internalID": (v5/*: any*/),
         "order.state": {
           "enumValues": [
             "ABANDONED",
@@ -330,9 +146,7 @@ return {
           "nullable": false,
           "plural": false,
           "type": "CommerceOrderStateEnum"
-        },
-        "order.stateExpiresAt": (v7/*: any*/),
-        "order.stateReason": (v7/*: any*/)
+        }
       }
     },
     "name": "ReviewOfferButtonTestsQuery",
@@ -341,5 +155,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'e05e7f152950ace6b33fe6675ee32439';
+(node as any).hash = 'c48a04d8dee3e3aebff5632e39f1d040';
 export default node;

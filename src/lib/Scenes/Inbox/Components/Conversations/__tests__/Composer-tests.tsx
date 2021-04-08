@@ -11,7 +11,7 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ComposerFragmentContainer } from "../Composer"
 import { OpenInquiryModalButton } from "../OpenInquiryModalButton"
-import { ReviewOfferButton } from "../ReviewOfferButton"
+import { OfferCTA } from "../OfferCTA"
 
 jest.unmock("react-tracking")
 jest.unmock("react-relay")
@@ -182,7 +182,7 @@ describe("inquiry offer enabled", () => {
           },
         }),
       })
-      const cta = tree.root.findAllByType(ReviewOfferButton)[0]
+      const cta = tree.root.findAllByType(OfferCTA)[0]
       expect(cta).toBeDefined()
       expect(cta.children).toEqual([])
       expect(extractText(cta)).toEqual("")
@@ -217,7 +217,7 @@ describe("inquiry offer enabled", () => {
           },
         }),
       })
-      const cta = tree.root.findAllByType(ReviewOfferButton)[0]
+      const cta = tree.root.findAllByType(OfferCTA)[0]
       expect(cta).toBeDefined()
       expect(cta.children.length).toBe(1)
       expect(extractText(cta)).toContain("Counteroffer Received")
@@ -253,7 +253,7 @@ describe("inquiry offer enabled", () => {
           },
         }),
       })
-      const cta = tree.root.findAllByType(ReviewOfferButton)[0]
+      const cta = tree.root.findAllByType(OfferCTA)[0]
       expect(cta).toBeDefined()
       expect(cta.children.length).toBe(1)
       expect(extractText(cta)).toContain("Counteroffer Accepted")
@@ -290,7 +290,7 @@ describe("inquiry offer enabled", () => {
         }),
       })
       expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(1)
-      expect(tree.root.findAllByType(ReviewOfferButton).length).toEqual(0)
+      expect(tree.root.findAllByType(OfferCTA).length).toEqual(0)
     })
     it("renders a red cta if the payment fails after an order is accepted", () => {
       const tree = getWrapper({
@@ -321,7 +321,7 @@ describe("inquiry offer enabled", () => {
           },
         }),
       })
-      const cta = tree.root.findAllByType(ReviewOfferButton)[0]
+      const cta = tree.root.findAllByType(OfferCTA)[0]
       expect(cta).toBeDefined()
       expect(cta.children.length).toBe(1)
       expect(extractText(cta)).toContain("Payment Failed")
@@ -358,7 +358,7 @@ describe("inquiry offer enabled", () => {
         }),
       })
       expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(1)
-      expect(tree.root.findAllByType(ReviewOfferButton).length).toEqual(0)
+      expect(tree.root.findAllByType(OfferCTA).length).toEqual(0)
     })
   })
 })

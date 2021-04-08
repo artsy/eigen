@@ -10,7 +10,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ReviewOfferButton, ReviewOfferButtonFragmentContainer } from "../ReviewOfferButton"
+import { OfferCTA, OfferCTAFragmentContainer } from "../ReviewOfferButton"
 jest.unmock("react-relay")
 
 describe("ReviewOfferButton", () => {
@@ -32,14 +32,16 @@ describe("ReviewOfferButton", () => {
       query={graphql`
         query ReviewOfferButtonTestsQuery($orderID: ID!) @relay_test_operation {
           order: commerceOrder(id: $orderID) {
-            ...ReviewOfferButton_order
+            # ...OfferCTA_order
+            state
+            ##fixme
           }
         }
       `}
       variables={{ orderID: "test-order" }}
       render={({ error, props }) => {
         if (props?.order) {
-          return <ReviewOfferButtonFragmentContainer order={props.order} conversationID="1234" />
+          return <OfferCTAFragmentContainer activeOrder={props.order} conversationID="1234" />
         } else if (error) {
           console.error(error)
         }
@@ -57,7 +59,7 @@ describe("ReviewOfferButton", () => {
 
   it("renders without throwing an error", () => {
     const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(ReviewOfferButton)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(OfferCTA)).toHaveLength(1)
   })
 
   it("doesn't render for rejected offers", () => {
