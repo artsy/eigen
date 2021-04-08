@@ -173,6 +173,7 @@ function getNativeModules(): typeof LegacyNativeModules {
         launchCount: 1,
         deviceId: "testDevice",
         userID: "userID",
+        userEmail: "user@example.com",
       },
       postNotificationName: jest.fn(),
       didFinishBootstrapping: jest.fn(),

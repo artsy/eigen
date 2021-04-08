@@ -6,7 +6,6 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 import { Schema, screenTrack } from "../../../utils/track"
 
 import { Button, Flex } from "palette"
-import { MaxBidPicker } from "../Components/MaxBidPicker"
 
 import { ConfirmBidScreen } from "./ConfirmBid"
 
@@ -14,9 +13,12 @@ import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"
 import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
 import { SelectMaxBidQuery } from "__generated__/SelectMaxBidQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { Select } from "lib/Components/Select"
 import { dismissModal } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
+import { compact } from "lodash"
 
 interface SelectMaxBidProps extends ViewProperties {
   sale_artwork: SelectMaxBid_sale_artwork
@@ -66,7 +68,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
   }
 
   render() {
-    const bids = (this.props.sale_artwork && this.props.sale_artwork.increments) || []
+    const bids = compact(this.props.sale_artwork && this.props.sale_artwork.increments) || []
 
     return (
       <Flex flex={1} m="2">
@@ -74,11 +76,18 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
           {this.state.isRefreshingSaleArtwork ? (
             <ActivityIndicator />
           ) : (
-            <MaxBidPicker
-              bids={bids as any}
-              onValueChange={(_, index) => this.setState({ selectedBidIndex: index })}
-              selectedValue={this.state.selectedBidIndex}
-            />
+            <ScreenDimensionsContext.Consumer>
+              {({ height }) => (
+                <Select
+                  title="Your max bid"
+                  showTitleLabel={false}
+                  maxModalHeight={height * 0.75}
+                  value={bids[this.state.selectedBidIndex]?.cents ?? null}
+                  options={bids.map((b) => ({ label: b.display!, value: b.cents }))}
+                  onSelectValue={(_, index) => this.setState({ selectedBidIndex: index })}
+                />
+              )}
+            </ScreenDimensionsContext.Consumer>
           )}
         </View>
 

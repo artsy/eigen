@@ -119,7 +119,7 @@ export function useDevToggle(key: DevToggleName) {
  * if used in a react component. Use `useFeatureFlag` instead.
  * It is safe to use in contexts that don't require reactivity.
  */
-export function unsafe_getFeatureFlag(key: FeatureName) {
+export function unsafe_getFeatureFlag(key: FeatureName): boolean {
   const state = globalStoreInstance().getState() ?? null
   if (state) {
     return state.config.features.flags[key]
@@ -154,6 +154,7 @@ export function getCurrentEmissionState() {
     onboardingState: "none", // not used on android
     userAgent: "Artsy-Mobile android", // TODO: proper user agent
     userID: state?.auth.userID!,
+    userEmail: "user@example.com", // not used on android
   }
   return androidData
 }
@@ -180,8 +181,9 @@ export function unsafe__getEnvironment() {
   const {
     environment: { env, strings },
     echo: { stripePublishableKey },
+    userIsDev: { value },
   } = globalStoreInstance().getState().config
-  return { ...strings, stripePublishableKey, env }
+  return { ...strings, stripePublishableKey, env, userIsDev: value }
 }
 
 export function useEnvironment() {

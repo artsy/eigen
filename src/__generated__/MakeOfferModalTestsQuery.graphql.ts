@@ -1,30 +1,26 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a75746e6a1b8771a202701cf0522a330 */
+/* @relayHash b5eba9e53aa06c9d23d44db5a24b18ce */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MakeOfferModalQueryVariables = {
-    artworkID: string;
-};
-export type MakeOfferModalQueryResponse = {
+export type MakeOfferModalTestsQueryVariables = {};
+export type MakeOfferModalTestsQueryResponse = {
     readonly artwork: {
         readonly " $fragmentRefs": FragmentRefs<"MakeOfferModal_artwork">;
     } | null;
 };
-export type MakeOfferModalQuery = {
-    readonly response: MakeOfferModalQueryResponse;
-    readonly variables: MakeOfferModalQueryVariables;
+export type MakeOfferModalTestsQuery = {
+    readonly response: MakeOfferModalTestsQueryResponse;
+    readonly variables: MakeOfferModalTestsQueryVariables;
 };
 
 
 
 /*
-query MakeOfferModalQuery(
-  $artworkID: String!
-) {
-  artwork(id: $artworkID) {
+query MakeOfferModalTestsQuery {
+  artwork(id: "pumpkins") {
     ...MakeOfferModal_artwork
     id
   }
@@ -101,33 +97,26 @@ fragment MakeOfferModal_artwork on Artwork {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "artworkID"
-  }
-],
-v1 = [
-  {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "id",
-    "variableName": "artworkID"
+    "value": "pumpkins"
   }
 ],
-v2 = {
+v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
   "storageKey": null
 },
-v3 = {
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v4 = [
+v3 = [
   {
     "alias": null,
     "args": null,
@@ -136,21 +125,21 @@ v4 = [
     "storageKey": null
   }
 ],
-v5 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "in",
   "storageKey": null
 },
-v6 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "cm",
   "storageKey": null
 },
-v7 = [
+v6 = [
   {
     "alias": null,
     "args": null,
@@ -158,17 +147,53 @@ v7 = [
     "name": "display",
     "storageKey": null
   }
-];
+],
+v7 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
+},
+v8 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v9 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "ArtworkInfoRow"
+},
+v10 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "dimensions"
+},
+v11 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Boolean"
+},
+v12 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Int"
+};
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "MakeOfferModalQuery",
+    "name": "MakeOfferModalTestsQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v0/*: any*/),
         "concreteType": "Artwork",
         "kind": "LinkedField",
         "name": "artwork",
@@ -180,7 +205,7 @@ return {
             "name": "MakeOfferModal_artwork"
           }
         ],
-        "storageKey": null
+        "storageKey": "artwork(id:\"pumpkins\")"
       }
     ],
     "type": "Query",
@@ -188,13 +213,13 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "MakeOfferModalQuery",
+    "name": "MakeOfferModalTestsQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v0/*: any*/),
         "concreteType": "Artwork",
         "kind": "LinkedField",
         "name": "artwork",
@@ -232,7 +257,7 @@ return {
             ],
             "storageKey": null
           },
-          (v2/*: any*/),
+          (v1/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -269,7 +294,7 @@ return {
                 "name": "name",
                 "storageKey": null
               },
-              (v3/*: any*/)
+              (v2/*: any*/)
             ],
             "storageKey": null
           },
@@ -308,7 +333,7 @@ return {
             "kind": "LinkedField",
             "name": "conditionDescription",
             "plural": false,
-            "selections": (v4/*: any*/),
+            "selections": (v3/*: any*/),
             "storageKey": null
           },
           {
@@ -318,7 +343,7 @@ return {
             "kind": "LinkedField",
             "name": "certificateOfAuthenticity",
             "plural": false,
-            "selections": (v4/*: any*/),
+            "selections": (v3/*: any*/),
             "storageKey": null
           },
           {
@@ -328,7 +353,7 @@ return {
             "kind": "LinkedField",
             "name": "framed",
             "plural": false,
-            "selections": (v4/*: any*/),
+            "selections": (v3/*: any*/),
             "storageKey": null
           },
           {
@@ -339,8 +364,8 @@ return {
             "name": "dimensions",
             "plural": false,
             "selections": [
-              (v5/*: any*/),
-              (v6/*: any*/)
+              (v4/*: any*/),
+              (v5/*: any*/)
             ],
             "storageKey": null
           },
@@ -351,7 +376,7 @@ return {
             "kind": "LinkedField",
             "name": "signatureInfo",
             "plural": false,
-            "selections": (v4/*: any*/),
+            "selections": (v3/*: any*/),
             "storageKey": null
           },
           {
@@ -376,7 +401,7 @@ return {
             "name": "editionSets",
             "plural": true,
             "selections": [
-              (v2/*: any*/),
+              (v1/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -408,13 +433,13 @@ return {
                   },
                   {
                     "kind": "InlineFragment",
-                    "selections": (v7/*: any*/),
+                    "selections": (v6/*: any*/),
                     "type": "Money",
                     "abstractKey": null
                   },
                   {
                     "kind": "InlineFragment",
-                    "selections": (v7/*: any*/),
+                    "selections": (v6/*: any*/),
                     "type": "PriceRange",
                     "abstractKey": null
                   }
@@ -429,29 +454,103 @@ return {
                 "name": "dimensions",
                 "plural": false,
                 "selections": [
-                  (v6/*: any*/),
-                  (v5/*: any*/)
+                  (v5/*: any*/),
+                  (v4/*: any*/)
                 ],
                 "storageKey": null
               },
-              (v3/*: any*/)
+              (v2/*: any*/)
             ],
             "storageKey": null
           },
-          (v3/*: any*/)
+          (v2/*: any*/)
         ],
-        "storageKey": null
+        "storageKey": "artwork(id:\"pumpkins\")"
       }
     ]
   },
   "params": {
-    "id": "a75746e6a1b8771a202701cf0522a330",
-    "metadata": {},
-    "name": "MakeOfferModalQuery",
+    "id": "b5eba9e53aa06c9d23d44db5a24b18ce",
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "artwork": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Artwork"
+        },
+        "artwork.artistNames": (v7/*: any*/),
+        "artwork.attributionClass": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "AttributionClass"
+        },
+        "artwork.attributionClass.id": (v8/*: any*/),
+        "artwork.attributionClass.name": (v7/*: any*/),
+        "artwork.category": (v7/*: any*/),
+        "artwork.certificateOfAuthenticity": (v9/*: any*/),
+        "artwork.certificateOfAuthenticity.details": (v7/*: any*/),
+        "artwork.conditionDescription": (v9/*: any*/),
+        "artwork.conditionDescription.details": (v7/*: any*/),
+        "artwork.date": (v7/*: any*/),
+        "artwork.dimensions": (v10/*: any*/),
+        "artwork.dimensions.cm": (v7/*: any*/),
+        "artwork.dimensions.in": (v7/*: any*/),
+        "artwork.editionSets": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "EditionSet"
+        },
+        "artwork.editionSets.dimensions": (v10/*: any*/),
+        "artwork.editionSets.dimensions.cm": (v7/*: any*/),
+        "artwork.editionSets.dimensions.in": (v7/*: any*/),
+        "artwork.editionSets.editionOf": (v7/*: any*/),
+        "artwork.editionSets.id": (v8/*: any*/),
+        "artwork.editionSets.internalID": (v8/*: any*/),
+        "artwork.editionSets.isOfferableFromInquiry": (v11/*: any*/),
+        "artwork.editionSets.listPrice": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ListPrice"
+        },
+        "artwork.editionSets.listPrice.__typename": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "String"
+        },
+        "artwork.editionSets.listPrice.display": (v7/*: any*/),
+        "artwork.framed": (v9/*: any*/),
+        "artwork.framed.details": (v7/*: any*/),
+        "artwork.id": (v8/*: any*/),
+        "artwork.image": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Image"
+        },
+        "artwork.image.height": (v12/*: any*/),
+        "artwork.image.url": (v7/*: any*/),
+        "artwork.image.width": (v12/*: any*/),
+        "artwork.internalID": (v8/*: any*/),
+        "artwork.isEdition": (v11/*: any*/),
+        "artwork.manufacturer": (v7/*: any*/),
+        "artwork.medium": (v7/*: any*/),
+        "artwork.publisher": (v7/*: any*/),
+        "artwork.saleMessage": (v7/*: any*/),
+        "artwork.signatureInfo": (v9/*: any*/),
+        "artwork.signatureInfo.details": (v7/*: any*/),
+        "artwork.title": (v7/*: any*/)
+      }
+    },
+    "name": "MakeOfferModalTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '14c5533ce7f90b3b2e97580107e71738';
+(node as any).hash = 'efadc2d19d925e83e12e60ad8a4333c9';
 export default node;

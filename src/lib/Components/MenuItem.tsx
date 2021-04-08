@@ -1,5 +1,6 @@
 import { ChevronIcon, color, Flex, Sans, SansProps, Touchable } from "palette"
 import React from "react"
+import { StyleProp, ViewStyle } from "react-native"
 
 export const MenuItem: React.FC<{
   disabled?: boolean
@@ -10,6 +11,7 @@ export const MenuItem: React.FC<{
   onPress?: () => void
   chevron?: React.ReactNode
   ellipsizeMode?: SansProps["ellipsizeMode"]
+  style?: StyleProp<ViewStyle>
 }> = ({
   title,
   text,
@@ -19,10 +21,19 @@ export const MenuItem: React.FC<{
   disabled = false,
   chevron = <ChevronIcon direction="right" fill="black60" />,
   ellipsizeMode,
+  style,
 }) => {
   return (
     <Touchable onPress={onPress} underlayColor={color("black5")} disabled={disabled}>
-      <Flex flexDirection="row" alignItems="center" justifyContent="space-between" py={7.5} px="2" pr="15px">
+      <Flex
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="space-between"
+        py={7.5}
+        px="2"
+        pr="15px"
+        style={style}
+      >
         <Flex flexDirection="row" mr="2">
           <Sans size="4">{title}</Sans>
           {!!isBeta && (

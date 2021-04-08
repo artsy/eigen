@@ -7,10 +7,12 @@ upcoming:
     - Use webfont for StyledWebView - david
     - Use artistAuctionResults instead of artistInsights for artist insights - mounir
     - Improve sentry error reporting - mounir
+    - Hide AdminMenu behind 7 taps of "Version" - pavlos
     - Use radio buttons for single-select filters behind feature flag - iskounen
   user_facing:
     - Use toolbar style modal headers in consignments flow - brian
     - Add Onboarding welcome screen - mounir
+    - Use standard Select component in consignments and bid flows - david
     - Add splash screen to android - mounir
     - Support change system navigation bar color on android - mounir
     - Add ability for one modal to replace another and use it in inquiry checkout flow - erik, david
@@ -18,6 +20,7 @@ upcoming:
     - Converts multi-select filters to use checkboxes instead of toggles - damon
     - Add modal replacement api to android app - erik, david
     - Fix conversation scrolling while supporting dismissing keyboard - starsirius
+    - Updates filter styling - damon
 
 releases:
   - version: 6.8.2

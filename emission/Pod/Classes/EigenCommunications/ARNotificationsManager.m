@@ -14,12 +14,12 @@
 + (NSString *)authenticationToken { return @"authenticationToken"; }
 + (NSString *)launchCount { return @"launchCount"; }
 + (NSString *)onboardingState { return @"onboardingState"; }
++ (NSString *)userEmail { return @"userEmail"; }
 
 + (NSString *)userAgent { return @"userAgent"; }
 
 + (NSString *)env { return @"env"; }
 + (NSString *)deviceId { return @"deviceId"; }
-
 @end
 
 @implementation ARReactStateKey
@@ -29,6 +29,7 @@
 + (NSString *)webURL { return @"webURL"; };
 + (NSString *)causalityURL { return @"causalityURL"; };
 + (NSString *)env { return @"env"; };
++ (NSString *)userIsDev { return @"userIsDev"; }
 @end
 
 
@@ -177,6 +178,5 @@ RCT_EXPORT_METHOD(reactStateUpdated:(nonnull NSDictionary *)reactState)
 {
     return dispatch_get_main_queue();
 }
-
 
 @end
