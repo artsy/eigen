@@ -117,7 +117,7 @@ _Most_ interactions are made through a "SwitchBoard" to open links. Other intera
 
 #### Follow the tracking docs and examples
 
-See our docs on implementing analytics [here](./docs/analytics_and_tracking.md)
+See our docs on implementing analytics [here](./analytics_and_tracking.md)
 
 ### Miscellaneous
 

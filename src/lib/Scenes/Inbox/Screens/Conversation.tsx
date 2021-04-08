@@ -11,11 +11,10 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { color, Flex, Text, Touchable } from "palette"
+import { Flex, InfoCircleIcon, Text, Touchable } from "palette"
 import React from "react"
-import { Keyboard, TouchableWithoutFeedback, View } from "react-native"
-import Svg, { Path } from "react-native-svg"
-import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { View } from "react-native"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 import { ConversationDetailsQueryRenderer } from "./ConversationDetails"
 
@@ -41,7 +40,7 @@ const HeaderTextContainer = styled.View`
 
 interface Props {
   me: Conversation_me
-  relay: RelayProp
+  relay: RelayRefetchProp
   onMessageSent?: (text: string) => void
   navigator: NavigatorIOS
 }
@@ -167,70 +166,84 @@ export class Conversation extends React.Component<Props, State> {
           this.messages.scrollToLastMessage()
         }}
       >
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-          <Container>
-            <Header>
-              <Flex flexDirection="row" alignSelf="stretch" mx={2}>
-                <HeaderTextContainer>
-                  <Text variant="mediumText">{partnerName}</Text>
-                  <PlaceholderView />
-                </HeaderTextContainer>
-                <Touchable
-                  onPress={() => {
-                    this.props.navigator.push({
-                      component: ConversationDetailsQueryRenderer,
-                      title: "",
-                      passProps: {
-                        conversationID: this.props.me?.conversation?.internalID,
-                      },
-                    })
-                  }}
-                >
-                  <Svg width={28} height={28} viewBox="0 0 28 28">
-                    <Path
-                      d="M6.5 21.5V6.5H16L16 21.5H6.5ZM17.5 21.5H21.5V6.5H17.5L17.5 21.5ZM5 5.5C5 5.22386 5.22386 5 5.5 5H22.5C22.7761 5 23 5.22386 23 5.5V22.5C23 22.7761 22.7761 23 22.5 23H5.5C5.22386 23 5 22.7761 5 22.5V5.5Z"
-                      fill={color("black100")}
-                      fillRule="evenodd"
-                    />
-                  </Svg>
-                </Touchable>
-              </Flex>
-            </Header>
-            {!this.state.isConnected && <ConnectivityBanner />}
-            <Messages
-              componentRef={(messages) => (this.messages = messages)}
-              conversation={conversation as any}
-              onDataFetching={(loading) => {
-                this.setState({ fetchingData: loading })
-              }}
-            />
-          </Container>
-        </TouchableWithoutFeedback>
+        <Container>
+          <Header>
+            <Flex flexDirection="row" alignSelf="stretch" mx={2}>
+              <HeaderTextContainer>
+                <Text variant="mediumText">{partnerName}</Text>
+                <PlaceholderView />
+              </HeaderTextContainer>
+              <Touchable
+                onPress={() => {
+                  this.props.navigator.push({
+                    component: ConversationDetailsQueryRenderer,
+                    title: "",
+                    passProps: {
+                      conversationID: this.props.me?.conversation?.internalID,
+                    },
+                  })
+                }}
+              >
+                <InfoCircleIcon />
+              </Touchable>
+            </Flex>
+          </Header>
+          {!this.state.isConnected && <ConnectivityBanner />}
+          <Messages
+            componentRef={(messages) => (this.messages = messages)}
+            conversation={conversation as any}
+            onDataFetching={(loading) => {
+              this.setState({ fetchingData: loading })
+            }}
+            onRefresh={() => {
+              this.props.relay.refetch(
+                { conversationID: conversation?.internalID },
+                null,
+                (error) => {
+                  if (error) {
+                    console.error("Conversation.tsx", error.message)
+                  }
+                },
+                { force: true }
+              )
+            }}
+          />
+        </Container>
       </ComposerFragmentContainer>
     )
   }
 }
 
-export const ConversationFragmentContainer = createFragmentContainer(Conversation, {
-  me: graphql`
-    fragment Conversation_me on Me {
-      conversation(id: $conversationID) {
-        ...Composer_conversation
-        ...Messages_conversation
-        internalID
-        id
-        lastMessageID
-        unread
-        to {
-          name
-        }
-        from {
-          email
+export const ConversationFragmentContainer = createRefetchContainer(
+  Conversation,
+  {
+    me: graphql`
+      fragment Conversation_me on Me {
+        conversation(id: $conversationID) {
+          ...Composer_conversation
+          ...Messages_conversation
+          internalID
+          id
+          lastMessageID
+          unread
+          to {
+            name
+          }
+          from {
+            email
+          }
         }
       }
+    `,
+  },
+  graphql`
+    query ConversationRefetchQuery($conversationID: String!) {
+      me {
+        ...Conversation_me
+      }
     }
-  `,
-})
+  `
+)
 
 export const ConversationQueryRenderer: React.FC<{
   conversationID: string

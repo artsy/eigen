@@ -37,6 +37,7 @@ interface LegacyNativeModules {
       webURL: string
       causalityURL: string
       env: string
+      userIsDev: boolean
     }): void
   }
   ARPHPhotoPickerModule: {

@@ -13,6 +13,7 @@ export interface InquiryMakeOfferButtonProps {
   editionSetID: string | null
   variant?: ButtonVariant
   buttonText?: string
+  disabled?: boolean
   conversationID: string
 }
 
@@ -122,6 +123,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
         onPress={() => this.handleCreateInquiryOfferOrder()}
         loading={isCommittingCreateOfferOrderMutation}
         size="large"
+        disabled={this.props.disabled}
         block
         width={100}
         variant={this.props.variant}

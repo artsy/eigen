@@ -89,8 +89,9 @@ beforeEach(() => {
   require("@react-native-cookies/cookies").clearAll.mockReset()
 })
 
+// prettier-ignore
 // tslint:disable-next-line:no-empty
-jest.mock("@sentry/react-native", () => ({ captureMessage() {}, init() {}, setUser() {}, addBreadcrumb() {} }))
+jest.mock("@sentry/react-native", () => ({ captureMessage() {},  init() {},  setUser() {},  addBreadcrumb() {},  withScope() {} }))
 
 // Needing to mock react-native-scrollable-tab-view due to Flow issue
 jest.mock("react-native-scrollable-tab-view", () => jest.fn(() => null))
@@ -172,6 +173,7 @@ function getNativeModules(): typeof LegacyNativeModules {
         launchCount: 1,
         deviceId: "testDevice",
         userID: "userID",
+        userEmail: "user@example.com",
       },
       postNotificationName: jest.fn(),
       didFinishBootstrapping: jest.fn(),

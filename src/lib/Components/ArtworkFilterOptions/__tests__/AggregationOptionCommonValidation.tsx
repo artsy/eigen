@@ -1,3 +1,4 @@
+import { TouchableRow } from "lib/Components/TouchableRow"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Aggregations, ArtworkFilterContextState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
@@ -6,7 +7,7 @@ import { CheckIcon } from "palette"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
-import { InnerOptionListItem, OptionListItem, SingleSelectOptionListItemRow } from "../SingleSelectOption"
+import { InnerOptionListItem, OptionListItem } from "../SingleSelectOption"
 import { getEssentialProps } from "./helper"
 
 type MockScreen = (props: { initialState: ArtworkFilterContextState }) => ReactElement
@@ -54,7 +55,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
 
     it("adds an all option", () => {
       const tree = renderWithWrappers(<params.Screen initialState={state} {...getEssentialProps()} />)
-      const firstRow = tree.root.findAllByType(SingleSelectOptionListItemRow)[0]
+      const firstRow = tree.root.findAllByType(TouchableRow)[0]
       expect(extractText(firstRow)).toContain("All")
     })
 
@@ -99,9 +100,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
         () => {
           const tree = renderWithWrappers(<params.Screen initialState={state} {...getEssentialProps()} />)
 
-          const [firstOptionInstance, secondOptionInstance, thirdOptionInstance] = tree.root.findAllByType(
-            SingleSelectOptionListItemRow
-          )
+          const [firstOptionInstance, secondOptionInstance, thirdOptionInstance] = tree.root.findAllByType(TouchableRow)
           const selectedOptionIconBeforePress = tree.root.findAllByType(CheckIcon)
 
           expect(selectedOptionIconBeforePress).toHaveLength(1)

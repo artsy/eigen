@@ -37,6 +37,7 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
   } = useFormikContext<OnboardingLoginValuesSchema>()
 
   const passwordInputRef = useRef<Input>(null)
+  const emailInputRef = useRef<Input>(null)
 
   return (
     <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>
@@ -51,6 +52,7 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
           <Spacer mt={50} />
           <Box>
             <Input
+              ref={emailInputRef}
               autoCapitalize="none"
               autoCompleteType="email"
               enableClearButton
@@ -102,7 +104,6 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
               // We need to to set textContentType to password here
               // enable autofill of login details from the device keychain.
               textContentType="password"
-              canHidePassword
               value={values.password}
               error={errors.password}
             />

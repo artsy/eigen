@@ -4,7 +4,6 @@ import Composer from "lib/Scenes/Inbox/Components/Conversations/Composer"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import React from "react"
-import { Keyboard, TouchableWithoutFeedback } from "react-native"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestInstance } from "react-test-renderer"
@@ -94,17 +93,4 @@ it("clicking on detail link opens pushes detail screen into navigator", () => {
     passProps: { conversationID: "123" },
     title: "",
   })
-})
-
-it("tapping anywhere outside of the composer closes the keyboard", () => {
-  const conversation = getWrapper({
-    Conversation: () => ({
-      internalID: "123",
-    }),
-  })
-
-  jest.spyOn(Keyboard, "dismiss")
-
-  conversation.root.findAllByType(TouchableWithoutFeedback)[0].props.onPress()
-  expect(Keyboard.dismiss).toBeCalled()
 })
