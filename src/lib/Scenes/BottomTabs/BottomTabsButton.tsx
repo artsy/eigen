@@ -9,7 +9,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { bottomTabsConfig } from "./bottomTabsConfig"
 import { BottomTabsIcon, ICON_HEIGHT, ICON_WIDTH } from "./BottomTabsIcon"
-import { BottomTabType } from "./BottomTabType"
+import { BottomTabOption, BottomTabType } from "./BottomTabType"
 
 export const BottomTabsButton: React.FC<{
   tab: BottomTabType
@@ -34,13 +34,21 @@ export const BottomTabsButton: React.FC<{
 
   const tracking = useTracking()
 
+  const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
+
   const onPress = () => {
     if (tab === unsafe__getSelectedTab()) {
       LegacyNativeModules.ARScreenPresenterModule.popToRootOrScrollToTop(tab)
     } else {
       GlobalStore.actions.bottomTabs.switchTab(tab)
     }
-    tracking.trackEvent(tappedTabBar({ tab: bottomTabsConfig[tab].analyticsDescription, badge: badgeCount > 0 }))
+    tracking.trackEvent(
+      tappedTabBar({
+        tab: bottomTabsConfig[tab].analyticsDescription,
+        badge: badgeCount > 0,
+        contextScreenOwnerType: BottomTabOption[selectedTab],
+      })
+    )
   }
 
   return (
