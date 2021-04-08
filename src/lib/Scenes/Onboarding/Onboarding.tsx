@@ -7,7 +7,7 @@ import React from "react"
 import { View } from "react-native"
 import { ForgotPassword } from "./ForgotPassword"
 import { LogIn } from "./OldLogIn/LogIn"
-import { OnboardingCreateAccount } from "./OnboardingCreateAccount"
+import { OnboardingCreateAccount } from "./OnboardingCreateAccount/OnboardingCreateAccount"
 import { OnboardingLogin } from "./OnboardingLogin"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
