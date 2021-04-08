@@ -11,7 +11,7 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { Flex, Join, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useRef, useState } from "react"
-import { Alert, FlatList, RefreshControl, ScrollView } from "react-native"
+import { Alert, FlatList, Platform, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 
@@ -20,6 +20,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
 
   const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
   const shouldDisplayMyCollection = me.labFeatures?.includes("My Collection")
+  const shouldDisplayPushNotifications = Platform.OS === "ios"
   const [isRefreshing, setIsRefreshing] = useState(false)
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
@@ -47,7 +48,9 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       <SectionHeading title="Account Settings" />
       <MenuItem title="Account" onPress={() => navigate("my-account")} />
       <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
-      <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />
+      {!!shouldDisplayPushNotifications && (
+        <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />
+      )}
       <MenuItem
         title="Send feedback"
         onPress={() => presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")}

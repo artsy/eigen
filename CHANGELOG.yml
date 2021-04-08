@@ -21,6 +21,7 @@ upcoming:
     - Add modal replacement api to android app - erik, david
     - Fix conversation scrolling while supporting dismissing keyboard - starsirius
     - Updates filter styling - damon
+    - Hide push notifications section in settings for Android - ole
     - Rename the category filter to medium - iskounen
 
 releases:
