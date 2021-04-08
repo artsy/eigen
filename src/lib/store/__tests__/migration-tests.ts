@@ -216,6 +216,6 @@ describe("App version Versions.AddUserIsDev", () => {
     }) as any
 
     expect(migratedState.auth.androidUserEmail).toEqual(null)
-    expect(migratedState.config.userIsDevFlipValue).toEqual(false)
+    expect(migratedState.config.userIsDev.flipValue).toEqual(false)
   })
 })

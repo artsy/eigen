@@ -67,7 +67,7 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddUserIsDev]: (state) => {
     state.auth.androidUserEmail = null
-    state.config.userIsDevFlipValue = false
+    state.config.userIsDev = { flipValue: false }
   },
 }
 

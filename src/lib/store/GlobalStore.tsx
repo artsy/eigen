@@ -181,9 +181,9 @@ export function unsafe__getEnvironment() {
   const {
     environment: { env, strings },
     echo: { stripePublishableKey },
-    userIsDev,
+    userIsDev: { value },
   } = globalStoreInstance().getState().config
-  return { ...strings, stripePublishableKey, env, userIsDev }
+  return { ...strings, stripePublishableKey, env, userIsDev: value }
 }
 
 export function useEnvironment() {
