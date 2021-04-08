@@ -27,3 +27,21 @@ index fc32afb..44d237f 100644
      // Get new, unique touch identifier for the react touch
      const NSUInteger RCTMaxTouches = 11; // This is the maximum supported by iDevices
      NSInteger touchID = ([_reactTouches.lastObject[@"identifier"] integerValue] + 1) % RCTMaxTouches;
+diff --git a/node_modules/react-native/scripts/find-node.sh b/node_modules/react-native/scripts/find-node.sh
+index c111e70..a8f09f1 100755
+--- a/node_modules/react-native/scripts/find-node.sh
++++ b/node_modules/react-native/scripts/find-node.sh
+@@ -6,6 +6,13 @@
+ 
+ set -e
+ 
++# Set up the asdf node version manager if present
++if [[ -x "$HOME/.asdf/asdf.sh" ]]; then
++  . "$HOME/.asdf/asdf.sh"
++elif [[ -x "$(command -v brew)" && -s "$(brew --prefix asdf)/asdf.sh" ]]; then
++  . "$(brew --prefix asdf)/asdf.sh"
++fi
++
+ # Define NVM_DIR and source the nvm.sh setup script
+ [ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
+ 

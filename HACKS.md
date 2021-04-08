@@ -45,6 +45,12 @@
 
   We currently have the rather unusual situation of showing multiple nested RCTRootContentView instances at one time. This seems to be fine *except* touch events are duplicated per level of nesting. To avoid this we create only one touch handler, implicitly on the actual root react view (which wraps our entire app) and let that manage all of the touches. Then nested views use the same instace as the root view and we avoid duplicating touch events.
 
+- react-native patch-package (find-node part)
+
+  When this PR is merged: https://github.com/facebook/react-native/pull/31317/files
+
+  Many of us use asdf for node management (with `.tool-versions`) and unfortunately it's not one of the node version managers RN is looking for. We add it so it can find node and compilation can happen normally.
+
 - hardcode mapbox version to at least 6.3.0 using $ReactNativeMapboxGLIOSVersion
 
   When @react-native-mapbox-gl/maps uses mapbox-ios at least 6.3.0
