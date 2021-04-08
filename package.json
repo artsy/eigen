@@ -106,7 +106,7 @@
     "react": "17.0.1",
     "react-native": "0.64.0",
     "react-native-bootsplash": "^3.2.0",
-    "react-native-config": "https://github.com/artsy/react-native-config.git",
+    "react-native-config": "https://github.com/artsy/react-native-config.git#b53cbb5",
     "react-native-credit-card-input": "^0.4.1",
     "react-native-gesture-handler": "^1.8.0",
     "react-native-haptic-feedback": "1.10.0",
