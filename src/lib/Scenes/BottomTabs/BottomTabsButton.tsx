@@ -15,7 +15,8 @@ export const BottomTabsButton: React.FC<{
   tab: BottomTabType
   badgeCount?: number
 }> = ({ tab, badgeCount = 0 }) => {
-  const isActive = useSelectedTab() === tab
+  const selectedTab = useSelectedTab()
+  const isActive = selectedTab === tab
   const timeout = useRef<ReturnType<typeof setTimeout>>()
   const [isBeingPressed, setIsBeingPressed] = useState(false)
 
@@ -33,8 +34,6 @@ export const BottomTabsButton: React.FC<{
   }, [showActiveState])
 
   const tracking = useTracking()
-
-  const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
 
   const onPress = () => {
     if (tab === unsafe__getSelectedTab()) {
