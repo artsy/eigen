@@ -9,7 +9,7 @@ import {
   TextInput,
   TextInputProperties,
   View,
-  ViewProperties,
+  ViewProps,
 } from "react-native"
 import styled from "styled-components/native"
 
@@ -17,7 +17,7 @@ interface ReffableTextInputProps extends TextInputProperties {
   ref?: (component: any) => any
 }
 
-export interface TextInputProps extends ViewProperties {
+export interface TextInputProps extends ViewProps {
   searching?: boolean
   readonly?: boolean
   text?: ReffableTextInputProps

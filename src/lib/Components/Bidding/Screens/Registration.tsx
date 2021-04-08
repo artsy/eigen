@@ -16,7 +16,7 @@ import { Schema, screenTrack } from "lib/utils/track"
 import { get, isEmpty } from "lodash"
 import { Box, Button, Sans, Serif } from "palette"
 import React from "react"
-import { ScrollView, View, ViewProperties } from "react-native"
+import { ScrollView, View, ViewProps } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
@@ -29,7 +29,7 @@ import { Flex } from "../Elements/Flex"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
-export interface RegistrationProps extends ViewProperties {
+export interface RegistrationProps extends ViewProps {
   sale: Registration_sale
   me: Registration_me
   relay: RelayProp

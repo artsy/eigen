@@ -2,10 +2,10 @@ import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import { color } from "palette"
 import React from "react"
-import { TextInputProperties, View, ViewProperties } from "react-native"
+import { TextInputProperties, View, ViewProps } from "react-native"
 import styled from "styled-components/native"
 
-export interface TextAreaProps extends ViewProperties {
+export interface TextAreaProps extends ViewProps {
   text?: TextInputProperties
 }
 
