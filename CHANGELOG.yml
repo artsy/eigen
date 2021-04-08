@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Add camera permissions to android manifest - brian
     - Switch to react-native-credit-card-input (away from tipsi-stripe) - david
+    - Upgrade to RN 0.64.0 - pavlos
     - Use webfont for StyledWebView - david
     - Reduce relay logging noise - david
     - Use artistAuctionResults instead of artistInsights for artist insights - mounir
