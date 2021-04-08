@@ -8,6 +8,7 @@ import track from "react-tracking"
 import { RelayEnvironmentProvider } from "relay-hooks"
 import { useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
+import { ToastProvider } from "./Components/Toast/toastHook"
 import { useSentryConfig } from "./ErrorReporting"
 import { ModalStack } from "./navigation/ModalStack"
 import { navigate } from "./navigation/navigate"
@@ -109,13 +110,15 @@ export const App = () => (
     <ProvideScreenDimensions>
       <Theme>
         <ActionSheetProvider>
-          <_FancyModalPageWrapper>
-            <GlobalStoreProvider>
-              <AdminMenuWrapper>
-                <Main />
-              </AdminMenuWrapper>
-            </GlobalStoreProvider>
-          </_FancyModalPageWrapper>
+          <ToastProvider>
+            <_FancyModalPageWrapper>
+              <GlobalStoreProvider>
+                <AdminMenuWrapper>
+                  <Main />
+                </AdminMenuWrapper>
+              </GlobalStoreProvider>
+            </_FancyModalPageWrapper>
+          </ToastProvider>
         </ActionSheetProvider>
       </Theme>
     </ProvideScreenDimensions>

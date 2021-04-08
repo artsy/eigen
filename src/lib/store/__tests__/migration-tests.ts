@@ -152,38 +152,41 @@ describe("artsy app store migrations", () => {
 })
 
 describe("App version Versions.RenameConsingmentsToMyCollections", () => {
+  const migrationToTest = Versions.RenameConsignmentsToMyCollection
   it("renames `consignments` to `myCollection`", () => {
-    const previousState = migrate({ state: { version: 0 }, toVersion: Versions.RenameConsignmentsToMyCollection - 1 })
+    const previousState = migrate({ state: { version: 0 }, toVersion: migrationToTest - 1 })
     expect("consignments" in previousState).toBe(true)
     expect("myCollection" in previousState).toBe(false)
 
-    const migratedState = migrate({ state: previousState, toVersion: Versions.RenameConsignmentsToMyCollection })
+    const migratedState = migrate({ state: previousState, toVersion: migrationToTest })
     expect("consignments" in migratedState).toBe(false)
     expect("myCollection" in migratedState).toBe(true)
   })
 })
 
 describe("App version Versions.RemoveMyCollectionNavigationState", () => {
+  const migrationToTest = Versions.RemoveMyCollectionNavigationState
   it("deletes `myCollection.navigation`", () => {
     const previousState = migrate({
       state: { version: 0 },
-      toVersion: Versions.RemoveMyCollectionNavigationState - 1,
+      toVersion: migrationToTest - 1,
     }) as any
     expect("navigation" in previousState.myCollection).toBe(true)
 
     const migratedState = migrate({
       state: previousState,
-      toVersion: Versions.RemoveMyCollectionNavigationState,
+      toVersion: migrationToTest,
     }) as any
     expect("navigation" in migratedState.myCollection).toBe(false)
   })
 })
 
 describe("App version Versions.RefactorConfigModel", () => {
+  const migrationToTest = Versions.RefactorConfigModel
   it("moves the feature flag overrides and echo state to their own models", () => {
     const previousState = migrate({
       state: { version: 0 },
-      toVersion: Versions.RefactorConfigModel - 1,
+      toVersion: migrationToTest - 1,
     }) as any
 
     previousState.config.adminFeatureFlagOverrides = { MySpecialFlag: true }
@@ -191,10 +194,28 @@ describe("App version Versions.RefactorConfigModel", () => {
 
     const migratedState = migrate({
       state: previousState,
-      toVersion: Versions.RefactorConfigModel,
+      toVersion: migrationToTest,
     }) as any
 
     expect(migratedState.config.features.adminOverrides).toEqual({ MySpecialFlag: true })
     expect(migratedState.config.echo.state).toEqual({ created_at: "yesterday" })
+  })
+})
+
+describe("App version Versions.AddUserIsDev", () => {
+  const migrationToTest = Versions.AddUserIsDev
+  it("adds userEmail and userIsDev", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.auth.androidUserEmail).toEqual(null)
+    expect(migratedState.config.userIsDev.flipValue).toEqual(false)
   })
 })

@@ -1,5 +1,7 @@
-import { action, Action, StateMapper, thunk, Thunk } from "easy-peasy"
+import { action, Action, Computed, computed, StateMapper, thunk, Thunk } from "easy-peasy"
+import { isArtsyEmail } from "lib/utils/general"
 import { stringify } from "qs"
+import { Platform } from "react-native"
 import Config from "react-native-config"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
@@ -7,18 +9,22 @@ type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 export interface AuthModel {
   // State
   userID: string | null
+  androidUserEmail: string | null
   userAccessToken: string | null
   userAccessTokenExpiresIn: string | null
   xAppToken: string | null
   xApptokenExpiresIn: string | null
 
+  userEmail: Computed<this, string | null, GlobalStoreModel>
+  userHasArtsyEmail: Computed<this, boolean, GlobalStoreModel>
+
   // Actions
-  setState: Action<AuthModel, Partial<StateMapper<AuthModel, "1">>>
-  getXAppToken: Thunk<AuthModel, void, {}, GlobalStoreModel, Promise<string>>
-  userExists: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel>
-  signIn: Thunk<AuthModel, { email: string; password: string }, {}, GlobalStoreModel, Promise<boolean>>
+  setState: Action<this, Partial<StateMapper<AuthModel, "1">>>
+  getXAppToken: Thunk<this, void, {}, GlobalStoreModel, Promise<string>>
+  userExists: Thunk<this, { email: string }, {}, GlobalStoreModel>
+  signIn: Thunk<this, { email: string; password: string }, {}, GlobalStoreModel, Promise<boolean>>
   gravityUnauthenticatedRequest: Thunk<
-    AuthModel,
+    this,
     {
       path: string
       method?: BasicHttpMethod
@@ -33,10 +39,22 @@ export interface AuthModel {
 
 export const getAuthModel = (): AuthModel => ({
   userID: null,
+  androidUserEmail: null,
   userAccessToken: null,
   userAccessTokenExpiresIn: null,
   xAppToken: null,
   xApptokenExpiresIn: null,
+
+  userEmail: computed([(_, store) => store], (store) => {
+    if (Platform.OS === "ios") {
+      return store.native.sessionState.userEmail
+    } else if (Platform.OS === "android") {
+      return store.auth.androidUserEmail
+    }
+    return null
+  }),
+  userHasArtsyEmail: computed((state) => isArtsyEmail(state.userEmail ?? "")),
+
   setState: action((state, payload) => Object.assign(state, payload)),
   getXAppToken: thunk(async (actions, _payload, context) => {
     const xAppToken = context.getState().xAppToken
@@ -118,6 +136,7 @@ export const getAuthModel = (): AuthModel => ({
         userAccessToken: access_token,
         userAccessTokenExpiresIn: expires_in,
         userID: id,
+        androidUserEmail: email,
       })
 
       return true
