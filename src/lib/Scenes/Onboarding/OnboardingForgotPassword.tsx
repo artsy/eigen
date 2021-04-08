@@ -33,8 +33,6 @@ export const OnboardingForgotPasswordForm: React.FC<OnboardingForgotPasswordForm
     handleSubmit,
     handleChange,
     validateForm,
-    submitCount,
-    errors,
     isValid,
     dirty,
     isSubmitting,
@@ -64,7 +62,9 @@ export const OnboardingForgotPasswordForm: React.FC<OnboardingForgotPasswordForm
               handleChange("email")(text.trim())
             }}
             onSubmitEditing={handleSubmit}
-            onBlur={() => validateForm()}
+            onBlur={() => {
+              validateForm()
+            }}
             blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
             placeholder="Email address"
             placeholderTextColor={color("black30")}
@@ -72,9 +72,7 @@ export const OnboardingForgotPasswordForm: React.FC<OnboardingForgotPasswordForm
             returnKeyType="done"
             spellCheck={false}
             autoCorrect={false}
-            // We need to to set textContentType to username (instead of emailAddress) here
-            // enable autofill of login details from the device keychain.
-            textContentType="username"
+            textContentType="emailAddress"
           />
           <Spacer mt={22} />
           {!!requestedPasswordReset && (
@@ -113,7 +111,7 @@ export const OnboardingForgotPasswordForm: React.FC<OnboardingForgotPasswordForm
             onPress={handleSubmit}
             block
             haptic="impactMedium"
-            disabled={!(isValid && dirty)}
+            disabled={!isValid || !dirty}
             loading={isSubmitting}
             testID="resetButton"
           >
