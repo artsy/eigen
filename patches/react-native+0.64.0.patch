@@ -1,8 +1,16 @@
 diff --git a/node_modules/react-native/React/Base/RCTTouchHandler.m b/node_modules/react-native/React/Base/RCTTouchHandler.m
-index fc32afb..0f1d6f5 100644
+index fc32afb..44d237f 100644
 --- a/node_modules/react-native/React/Base/RCTTouchHandler.m
 +++ b/node_modules/react-native/React/Base/RCTTouchHandler.m
-@@ -104,6 +104,16 @@ - (void)_recordNewTouches:(NSSet<UITouch *> *)touches
+@@ -13,6 +13,7 @@
+ #import "RCTBridge.h"
+ #import "RCTEventDispatcherProtocol.h"
+ #import "RCTLog.h"
++#import "RCTRootContentView.h"
+ #import "RCTSurfaceView.h"
+ #import "RCTTouchEvent.h"
+ #import "RCTUIManager.h"
+@@ -104,6 +105,16 @@ - (void)_recordNewTouches:(NSSet<UITouch *> *)touches
        continue;
      }
  
