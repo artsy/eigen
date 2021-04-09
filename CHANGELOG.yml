@@ -5,6 +5,7 @@ upcoming:
     - Add camera permissions to android manifest - brian
     - Switch to react-native-credit-card-input (away from tipsi-stripe) - david
     - Use webfont for StyledWebView - david
+    - Reduce relay logging noise - david
     - Use artistAuctionResults instead of artistInsights for artist insights - mounir
     - Improve sentry error reporting - mounir
     - Hide AdminMenu behind 7 taps of "Version" - pavlos
