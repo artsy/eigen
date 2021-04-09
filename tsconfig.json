@@ -21,7 +21,6 @@
     "noFallthroughCasesInSwitch": true,
     "strictFunctionTypes": true,
     "target": "es6",
-    "types": ["jest", "react", "react-native"],
     "noEmit": true
   },
   "include": ["typings/*.d.ts", "src/**/*.ts", "src/**/*.tsx"],
