@@ -9,13 +9,14 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { bottomTabsConfig } from "./bottomTabsConfig"
 import { BottomTabsIcon, ICON_HEIGHT, ICON_WIDTH } from "./BottomTabsIcon"
-import { BottomTabType } from "./BottomTabType"
+import { BottomTabOption, BottomTabType } from "./BottomTabType"
 
 export const BottomTabsButton: React.FC<{
   tab: BottomTabType
   badgeCount?: number
 }> = ({ tab, badgeCount = 0 }) => {
-  const isActive = useSelectedTab() === tab
+  const selectedTab = useSelectedTab()
+  const isActive = selectedTab === tab
   const timeout = useRef<ReturnType<typeof setTimeout>>()
   const [isBeingPressed, setIsBeingPressed] = useState(false)
 
@@ -40,7 +41,13 @@ export const BottomTabsButton: React.FC<{
     } else {
       GlobalStore.actions.bottomTabs.switchTab(tab)
     }
-    tracking.trackEvent(tappedTabBar({ tab: bottomTabsConfig[tab].analyticsDescription, badge: badgeCount > 0 }))
+    tracking.trackEvent(
+      tappedTabBar({
+        tab: bottomTabsConfig[tab].analyticsDescription,
+        badge: badgeCount > 0,
+        contextScreenOwnerType: BottomTabOption[selectedTab],
+      })
+    )
   }
 
   return (
