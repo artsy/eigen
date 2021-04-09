@@ -61,13 +61,7 @@ export default class TabBar extends React.Component<TabBarProps> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   renderTab(name, page, isTabActive, onPressHandler) {
     return (
-      <Button
-        key={name}
-        accessible={true}
-        accessibilityLabel={name}
-        accessibilityTraits="button"
-        onPress={() => onPressHandler(page)}
-      >
+      <Button key={name} accessibilityLabel={name} accessibilityRole="button" onPress={() => onPressHandler(page)}>
         <TabButton spaceEvenly={this.props.spaceEvenly} active={isTabActive}>
           <Sans
             numberOfLines={1}

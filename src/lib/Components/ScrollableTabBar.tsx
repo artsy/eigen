@@ -78,9 +78,8 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
     return (
       <Button
         key={name}
-        accessible={true}
         accessibilityLabel={name}
-        accessibilityTraits="button"
+        accessibilityRole="button"
         onLayout={(e) => {
           const layout = e.nativeEvent.layout
           this.els[page] = layout
