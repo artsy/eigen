@@ -1,8 +1,7 @@
-import { ICON_HEIGHT } from "lib/Scenes/BottomTabs/BottomTabsIcon"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { Box, Button, Separator, Spacer } from "palette"
 import React from "react"
-import { KeyboardAvoidingView, View } from "react-native"
+import { View } from "react-native"
 
 export interface BottomAlignedProps extends React.Props<JSX.Element> {
   onPress: () => void
@@ -19,11 +18,7 @@ export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({
   disabled,
   showSeparator = true,
 }) => (
-  <KeyboardAvoidingView
-    behavior="padding"
-    keyboardVerticalOffset={useScreenDimensions().safeAreaInsets.top + ICON_HEIGHT}
-    style={{ flex: 1 }}
-  >
+  <ArtsyKeyboardAvoidingView>
     <View key="space-eater" style={{ flexGrow: 1 }}>
       {children}
     </View>
@@ -35,5 +30,5 @@ export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({
       </Button>
     </Box>
     <Spacer mb={1} />
-  </KeyboardAvoidingView>
+  </ArtsyKeyboardAvoidingView>
 )
