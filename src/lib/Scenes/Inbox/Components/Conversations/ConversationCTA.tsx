@@ -4,8 +4,8 @@ import { extractNodes } from "lib/utils/extractNodes"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CTAPopUp } from "./CTAPopUp"
-import { OfferCTA, OfferCTAKind } from "./OfferCTA"
 import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
+import { ReviewOfferButton, ReviewOfferCTAKind } from "./ReviewOfferButton"
 
 interface Props {
   show: boolean
@@ -21,6 +21,7 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
   let CTA: JSX.Element | null = null
 
   const inquiryCheckoutEnabled = unsafe_getFeatureFlag("AROptionsInquiryCheckout")
+
   if (inquiryCheckoutEnabled && isOfferableFromInquiry) {
     // artworkID is guaranteed to be present if `isOfferableFromInquiry` was present.
     const conversationID = conversation.conversationID!
@@ -28,7 +29,7 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
     if (!activeOrder) {
       CTA = <OpenInquiryModalButton artworkID={artworkID!} conversationID={conversationID} />
     } else {
-      let ctaKind: OfferCTAKind | null = null
+      let ctaKind: ReviewOfferCTAKind | null = null
       const { lastTransactionFailed, state, lastOffer } = activeOrder
 
       if (lastTransactionFailed) {
@@ -39,7 +40,7 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
         ctaKind = "OFFER_ACCEPTED"
       }
       if (ctaKind) {
-        CTA = <OfferCTA kind={ctaKind} activeOrder={activeOrder} conversationID={conversationID} />
+        CTA = <ReviewOfferButton kind={ctaKind} activeOrder={activeOrder} conversationID={conversationID} />
       }
     }
   }

@@ -7,9 +7,9 @@ import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
 
-export interface OfferCTAProps {
+export interface ReviewOfferButtonProps {
   conversationID: string
-  kind: OfferCTAKind
+  kind: ReviewOfferCTAKind
   activeOrder: {
     internalID: string
     stateExpiresAt: string | null
@@ -18,9 +18,9 @@ export interface OfferCTAProps {
   }
 }
 
-export type OfferCTAKind = "PAYMENT_FAILED" | "OFFER_RECEIVED" | "OFFER_ACCEPTED"
+export type ReviewOfferCTAKind = "PAYMENT_FAILED" | "OFFER_RECEIVED" | "OFFER_ACCEPTED"
 
-export const OfferCTA: React.FC<OfferCTAProps> = ({ conversationID, activeOrder, kind }) => {
+export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversationID, activeOrder, kind }) => {
   const { internalID: orderID, offers } = activeOrder
   const { trackEvent } = useTracking()
 
