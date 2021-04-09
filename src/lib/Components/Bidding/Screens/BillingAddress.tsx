@@ -8,7 +8,6 @@ import {
   Dimensions,
   EmitterSubscription,
   Keyboard,
-  KeyboardAvoidingView,
   LayoutRectangle,
   Platform,
   ScrollView,
@@ -24,6 +23,7 @@ import { Container } from "../Components/Containers"
 import { Input, InputProps } from "../Components/Input"
 import { Address, Country } from "../types"
 
+import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { SelectCountry } from "./SelectCountry"
 
@@ -216,11 +216,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
     return (
       <BiddingThemeProvider>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
-          keyboardVerticalOffset={this.verticalOffset}
-          style={{ flex: 1 }}
-        >
+        <ArtsyKeyboardAvoidingView>
           <Theme>
             <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
               Add billing address
@@ -339,7 +335,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
               </Button>
             </Container>
           </ScrollView>
-        </KeyboardAvoidingView>
+        </ArtsyKeyboardAvoidingView>
       </BiddingThemeProvider>
     )
   }
@@ -363,10 +359,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     const windowHeight = Dimensions.get("window").height
 
     return Math.max(0, y - windowHeight + height + iOSAccessoryViewHeight + this.keyboardHeight + this.iPhoneXOffset)
-  }
-
-  private get verticalOffset() {
-    return this.iPhoneXOffset + 15
   }
 
   // TODO: Remove this once React Native has been updated
