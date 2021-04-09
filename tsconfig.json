@@ -20,6 +20,7 @@
     "noImplicitThis": true,
     "noFallthroughCasesInSwitch": true,
     "strictFunctionTypes": true,
+    "skipLibCheck": true,
     "target": "es6",
     "noEmit": true
   },
