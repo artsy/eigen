@@ -374,7 +374,7 @@ jest.mock("react-native-localize", () => ({
 jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
 
 jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
-  ...require.requireActual("react-native/Libraries/LayoutAnimation/LayoutAnimation"),
+  ...jest.requireActual("react-native/Libraries/LayoutAnimation/LayoutAnimation"),
   configureNext: jest.fn((_config, callback) => callback?.()),
   create: jest.fn(),
   easeInEaseOut: jest.fn(),
