@@ -11,6 +11,7 @@ upcoming:
     - Hide AdminMenu behind 7 taps of "Version" - pavlos
     - Use radio buttons for single-select filters behind feature flag - iskounen
     - Specify tracking screen owner in tab bar tracking - ole
+    - Use ArtsyWebView instead of WebView for auction FAQ - ole
   user_facing:
     - Use toolbar style modal headers in consignments flow - brian
     - Add Onboarding welcome screen - mounir
