@@ -1,8 +1,8 @@
 diff --git a/node_modules/react-dom/cjs/react-dom.development.js b/node_modules/react-dom/cjs/react-dom.development.js
-index 13bea1e..8b4105c 100644
+index f0b9ee7..f861872 100644
 --- a/node_modules/react-dom/cjs/react-dom.development.js
 +++ b/node_modules/react-dom/cjs/react-dom.development.js
-@@ -5069,7 +5069,9 @@ function getActiveElement(doc) {
+@@ -1446,7 +1446,9 @@ function getActiveElement(doc) {
    try {
      return doc.activeElement || doc.body;
    } catch (e) {
