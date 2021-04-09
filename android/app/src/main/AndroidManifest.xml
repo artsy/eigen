@@ -21,7 +21,7 @@
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
         android:launchMode="singleTask"
         android:exported="true"
-        android:windowSoftInputMode="adjustPan">
+        android:windowSoftInputMode="adjustResize">
       </activity>
 
       <activity
