@@ -33,7 +33,7 @@ import { BidResultScreen } from "../BidResult"
 import { BillingAddress } from "../BillingAddress"
 import { ConfirmBid, ConfirmBidProps } from "../ConfirmBid"
 import { CreditCardForm } from "../CreditCardForm"
-import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
+import { SelectMaxBid } from "../SelectMaxBid"
 
 jest.mock("lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () => ({
   bidderPositionQuery: jest.fn(),
@@ -361,6 +361,7 @@ describe("editing bid amount", () => {
       ...initialPropsForRegisteredUser,
       navigator: fakeNavigator,
     }
+    fakeNavigator.push({ component: SelectMaxBid, id: "", title: "", passProps: fakeNavigatorProps })
     fakeNavigator.push({ component: ConfirmBid, id: "", title: "", passProps: fakeNavigatorProps })
 
     const component = mountConfirmBidComponent({ ...initialPropsForRegisteredUser, navigator: fakeNavigator })
@@ -371,15 +372,15 @@ describe("editing bid amount", () => {
 
     selectMaxBidRow.instance.props.onPress()
 
-    const editScreen = fakeNavigator.nextStep().root.findByType(SelectMaxBidEdit)
+    const editScreen = fakeNavigator.nextStep().root.findByType(SelectMaxBid)
 
     expect(editScreen.props.selectedBidIndex).toEqual(0)
 
     editScreen.instance.setState({ selectedBidIndex: 1 })
     editScreen.findByType(Button).props.onPress()
 
-    const updatedBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
-    expect(updatedBidRow.findAllByType(Serif)[1].props.children).toEqual("$46,000")
+    const { selectedBidIndex } = fakeNavigator.nextRoute().passProps as any
+    expect(selectedBidIndex).toEqual(1)
   })
 })
 

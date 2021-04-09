@@ -14,7 +14,7 @@ import { cleanArtworkPayload, explicitlyClearedFields } from "lib/Scenes/MyColle
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Box, Flex } from "palette"
 import React, { useRef, useState } from "react"
-import { ActionSheetIOS, ActivityIndicator, Alert } from "react-native"
+import { ActivityIndicator, Alert } from "react-native"
 import { useTracking } from "react-tracking"
 import { myCollectionAddArtwork } from "../../mutations/myCollectionAddArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
@@ -22,6 +22,7 @@ import { myCollectionEditArtwork } from "../../mutations/myCollectionEditArtwork
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
 
+import { useActionSheet } from "@expo/react-native-action-sheet"
 import { isEqual } from "lodash"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { refreshMyCollection } from "../../MyCollection"
@@ -72,6 +73,8 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
 
   const [loading, setLoading] = useState<boolean>(false)
 
+  const { showActionSheetWithOptions } = useActionSheet()
+
   const formik = useFormik<ArtworkFormValues>({
     enableReinitialize: true,
     initialValues: formValues,
@@ -108,6 +111,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
             artworkId: props.artwork.internalID,
             externalImageUrls,
             pricePaidCents: pricePaidCents ?? null,
+            pricePaidCurrency,
             ...cleanArtworkPayload(others),
             ...explicitlyClearedFields(others, dirtyFormCheckValues),
           })
@@ -163,7 +167,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
 
     if (formIsDirty) {
       const discardData = await new Promise((resolve) =>
-        ActionSheetIOS.showActionSheetWithOptions(
+        showActionSheetWithOptions(
           {
             title: "Do you want to discard your changes?",
             options: ["Discard", "Keep editing"],

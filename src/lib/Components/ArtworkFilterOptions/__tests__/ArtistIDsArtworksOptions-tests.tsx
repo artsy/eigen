@@ -1,10 +1,6 @@
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import {
-  ArtworkFiltersState,
-  ArtworkFiltersStoreProvider,
-  ArtworksFiltersStore,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Aggregations, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
@@ -14,8 +10,6 @@ import { OptionListItem } from "../MultiSelectOption"
 import { getEssentialProps } from "./helper"
 
 describe("Artist options screen", () => {
-  let storeInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
-
   const mockAggregations: Aggregations = [
     {
       slice: "ARTIST",
@@ -67,22 +61,15 @@ describe("Artist options screen", () => {
     return selectedOptions
   }
 
-  const ArtworkFiltersStoreConsumer = () => {
-    storeInstance = ArtworksFiltersStore.useStore()
-    return null
-  }
-
-  const MockArtistScreen = () => {
+  const MockArtistScreen = ({ initialData }: { initialData?: ArtworkFiltersState }) => {
     return (
-      <ArtworkFiltersStoreProvider>
+      <ArtworkFiltersStoreProvider initialData={initialData}>
         <ArtistIDsArtworksOptionsScreen {...getEssentialProps()} />
-        <ArtworkFiltersStoreConsumer />
       </ArtworkFiltersStoreProvider>
     )
   }
 
   it("shows the correct number of artist options", () => {
-    const tree = renderWithWrappers(<MockArtistScreen />)
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [],
       appliedFilters: [],
@@ -95,11 +82,11 @@ describe("Artist options screen", () => {
         followedArtists: null,
       },
     }
-    ;(storeInstance as any).getActions().__injectState?.(injectedState)
+    const tree = renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
     // Includes a button for each artist + one for followed artists,
     // but our FlatList is configured to only show 4 in the initial render pass
-    expect(tree.root.findAllByType(FilterToggleButton)).toHaveLength(4)
+    expect(tree.root.findAllByType(FilterToggleButton)).toHaveLength(6)
   })
 
   describe("selecting an artist option", () => {
@@ -123,8 +110,7 @@ describe("Artist options screen", () => {
         },
       }
 
-      const component = renderWithWrappers(<MockArtistScreen />)
-      ;(storeInstance as any).getActions().__injectState?.(injectedState)
+      const component = renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
       const selectedOption = selectedArtistOptions(component)[0]
       expect(extractText(selectedOption)).toEqual("Artist 2")
@@ -144,8 +130,7 @@ describe("Artist options screen", () => {
         },
       }
 
-      const tree = renderWithWrappers(<MockArtistScreen />)
-      ;(storeInstance as any).getActions().__injectState?.(injectedState)
+      const tree = renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
       const firstOptionInstance = tree.root.findAllByType(FilterToggleButton)[0] // Artists I follow
       const secondOptionInstance = tree.root.findAllByType(FilterToggleButton)[1] // Artist 1
@@ -182,8 +167,7 @@ describe("Artist options screen", () => {
         },
       }
 
-      const tree = renderWithWrappers(<MockArtistScreen />)
-      ;(storeInstance as any).getActions().__injectState?.(injectedState)
+      const tree = renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
       const secondOptionInstance = tree.root.findAllByType(FilterToggleButton)[2] // Artists I follow, Artist 1, Artist 2
       const selectedOptionsBeforeTapping = selectedArtistOptions(tree)
@@ -233,8 +217,7 @@ describe("Artist options screen", () => {
         },
       }
 
-      const tree = renderWithWrappers(<MockArtistScreen />)
-      ;(storeInstance as any).getActions().__injectState?.(injectedState)
+      const tree = renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
       expect(tree.root.findAllByType(FilterToggleButton)).toHaveLength(4)
 

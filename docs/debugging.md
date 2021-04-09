@@ -2,7 +2,8 @@
 
 React Native relies on the debugger that’s part of the Chrome Developer Tools. To enable it:
 
-1. Run the app in the simulator.
+1. Run the app in the simulator or a real device.
+   1a. Developer mode should be on in you are developing (`__DEV__` is true, or you are logged in with an artsy email). Make sure it is, by going to Profile > About. If "Version" has a one pixel purple line on the right, then you are good to go. If not, then you need to tap "Version" 7 times quickly, to enable developer mode.
 2. Simulate a ‘shake’ event (<kbd>^⌘Z</kbd>), which will bring up the dev menu.
 3. Choose the ‘Debug JS Remotely’ option, which should open Chrome.
 4. In the new Chrome window, open the Developer Tools (<kbd>⌘⌥J</kbd>).

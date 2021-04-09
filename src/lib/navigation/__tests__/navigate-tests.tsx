@@ -28,6 +28,7 @@ describe(navigate, () => {
             "props": Object {
               "artworkID": "josef-albers-homage-to-the-square",
             },
+            "replace": false,
             "type": "react",
           },
         ]
@@ -44,6 +45,7 @@ describe(navigate, () => {
             "props": Object {
               "artistID": "banksy",
             },
+            "replace": false,
             "type": "react",
           },
         ]
@@ -61,6 +63,7 @@ describe(navigate, () => {
             "props": Object {
               "slug": "artsy-vanguard-2019",
             },
+            "replace": false,
             "type": "react",
           },
         ]
@@ -86,6 +89,7 @@ describe(navigate, () => {
             "props": Object {
               "slug": "blah",
             },
+            "replace": false,
             "type": "native",
           },
         ]
@@ -126,6 +130,7 @@ describe(navigate, () => {
           "props": Object {
             "conversationID": "234",
           },
+          "replace": false,
           "type": "react",
         },
       ]

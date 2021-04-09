@@ -5,7 +5,7 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtworkAggregation = "ARTIST" | "ARTIST_NATIONALITY" | "ATTRIBUTION_CLASS" | "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "LOCATION_CITY" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
+export type ArtworkAggregation = "ARTIST" | "ARTIST_NATIONALITY" | "ATTRIBUTION_CLASS" | "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "LOCATION_CITY" | "MAJOR_PERIOD" | "MATERIALS_TERMS" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 export type FilterModalTestsQueryVariables = {};
 export type FilterModalTestsQueryResponse = {
     readonly marketingCollection: {
@@ -717,6 +717,7 @@ return {
               "additionalGeneIDs",
               "priceRange",
               "color",
+              "colors",
               "partnerID",
               "dimensionRange",
               "majorPeriods",
@@ -786,6 +787,7 @@ return {
             "INSTITUTION",
             "LOCATION_CITY",
             "MAJOR_PERIOD",
+            "MATERIALS_TERMS",
             "MEDIUM",
             "MERCHANDISABLE_ARTISTS",
             "PARTNER",

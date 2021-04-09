@@ -1,8 +1,4 @@
-import {
-  ArtworkFiltersState,
-  ArtworkFiltersStoreProvider,
-  ArtworksFiltersStore,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import React from "react"
 import { Switch } from "react-native"
 import { OptionListItem as FilterModalOptionListItem } from "../../../../lib/Components/FilterModal"
@@ -31,8 +27,6 @@ const MOCK_AGGREGATIONS: Aggregations = [
 ]
 
 describe("AdditionalGeneIDsOptions Screen", () => {
-  let storeInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
-
   const initialState: ArtworkFiltersState = {
     selectedFilters: [],
     appliedFilters: [],
@@ -46,32 +40,39 @@ describe("AdditionalGeneIDsOptions Screen", () => {
     },
   }
 
-  const ArtworkFiltersStoreConsumer = () => {
-    storeInstance = ArtworksFiltersStore.useStore()
-    return null
-  }
-
-  const MockAdditionalGeneIDsOptionsScreen = () => {
+  const MockAdditionalGeneIDsOptionsScreen = ({
+    initialData = initialState,
+  }: {
+    initialData?: ArtworkFiltersState
+  }) => {
     return (
-      <ArtworkFiltersStoreProvider>
+      <ArtworkFiltersStoreProvider initialData={initialData}>
         <AdditionalGeneIDsOptionsScreen {...getEssentialProps()} />
-        <ArtworkFiltersStoreConsumer />
       </ArtworkFiltersStoreProvider>
     )
   }
 
   it("renders the options", () => {
-    const tree = renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen />)
-    ;(storeInstance as any).getActions().__injectState?.(initialState)
+    const tree = renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={initialState} />)
 
-    expect(tree.root.findAllByType(OptionListItem)).toHaveLength(4) // initialNumToRender={4}
+    expect(tree.root.findAllByType(OptionListItem)).toHaveLength(9)
+
     const items = tree.root.findAllByType(OptionListItem)
-    expect(items.map(extractText)).toEqual(["All", "Prints", "Design", "Sculpture"])
+    expect(items.map(extractText)).toEqual([
+      "All",
+      "Prints",
+      "Design",
+      "Sculpture",
+      "Work on Paper",
+      "Painting",
+      "Drawing",
+      "Jewelry",
+      "Photography",
+    ])
   })
 
   it("displays the default text when no filter selected on the filter modal screen", () => {
-    const tree = renderWithWrappers(<MockFilterScreen StoreConsumer={ArtworkFiltersStoreConsumer} />)
-    ;(storeInstance as any).getActions().__injectState?.(initialState)
+    const tree = renderWithWrappers(<MockFilterScreen initialState={initialState} />)
     const items = tree.root.findAllByType(FilterModalOptionListItem)
     expect(extractText(items[items.length - 1])).toContain("All")
   })
@@ -96,8 +97,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
       },
     }
 
-    const tree = renderWithWrappers(<MockFilterScreen StoreConsumer={ArtworkFiltersStoreConsumer} />)
-    ;(storeInstance as any).getActions().__injectState?.(injectedState)
+    const tree = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
     const items = tree.root.findAllByType(FilterModalOptionListItem)
 
     expect(extractText(items[1])).toContain("Prints, Sculpture")
@@ -123,9 +123,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
       },
     }
 
-    // TODO: Fix this test
-    const tree = renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen />)
-    ;(storeInstance as any).getActions().__injectState?.(injectedState)
+    const tree = renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />)
     const switches = tree.root.findAllByType(Switch)
 
     expect(switches[0].props.value).toBe(false)

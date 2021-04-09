@@ -1,5 +1,5 @@
 import moment from "moment"
-import { Box, BoxProps, Sans, SansSize } from "palette"
+import { Box, BoxProps, Text, TextVariant } from "palette"
 import React from "react"
 import { ViewStyle } from "react-native"
 
@@ -8,10 +8,13 @@ const exactDate = (time: string) => {
     return null
   }
   const date = moment(time)
+  const isToday = moment().isSame(date, "day")
+  const isYesterday = moment().subtract(1, "days").isSame(date, "day")
   const daysSince = moment().diff(date, "days")
-  if (daysSince === 0) {
+
+  if (isToday) {
     return date.format("[Today] h:mm A")
-  } else if (daysSince === 1) {
+  } else if (isYesterday) {
     return date.format("[Yesterday] h:mm A")
   } else if (daysSince < 7) {
     return date.format("dddd h:mmA")
@@ -29,20 +32,20 @@ export const relativeDate = (time: string) => {
 }
 
 interface TimeSinceProps extends Omit<BoxProps, "color"> {
-  size?: SansSize
+  variant?: TextVariant
   time: string | null
   exact?: boolean
   style?: ViewStyle
 }
-export const TimeSince: React.FC<TimeSinceProps> = ({ size = "2", time, exact, ...props }) => {
+export const TimeSince: React.FC<TimeSinceProps> = ({ variant = "small", time, exact, ...props }) => {
   if (!time) {
     return null
   }
   return (
     <Box {...props}>
-      <Sans size={size} color="black30">
+      <Text variant={variant} color="black30">
         {exact ? exactDate(time) : relativeDate(time)}
-      </Sans>
+      </Text>
     </Box>
   )
 }

@@ -1,17 +1,12 @@
 import React from "react"
 
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { Select } from "lib/Components/Select"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
+import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
 import { Sans } from "palette"
-import {
-  Keyboard,
-  LayoutAnimation,
-  Picker,
-  ScrollView,
-  TouchableWithoutFeedback,
-  View,
-  ViewProperties,
-} from "react-native"
+import { ScrollView, View, ViewProperties } from "react-native"
 import { ConsignmentMetadata } from "../"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { Row } from "../Components/FormElements"
@@ -103,22 +98,6 @@ export default class Metadata extends React.Component<Props, State> {
   updateDepth = (depth) => this.setState({ depth })
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  animateStateChange = (newState) => {
-    const animate = LayoutAnimation.easeInEaseOut as any
-    animate()
-    this.setState(newState)
-  }
-
-  showCategorySelection = () => {
-    Keyboard.dismiss()
-
-    const category = this.state.category || categoryOptions[0].value
-    const categoryName = this.state.categoryName || categoryOptions[0].name
-    this.animateStateChange({ showPicker: true, categoryName, category })
-  }
-
-  hideCategorySelection = () => this.animateStateChange({ showPicker: false })
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   changeCategoryValue = (_value, index) => {
     this.setState({
       categoryName: categoryOptions[index].name,
@@ -140,14 +119,14 @@ export default class Metadata extends React.Component<Props, State> {
     return (
       <View style={{ flex: 1 }}>
         <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
+          <FancyModalHeader onLeftButtonPress={this.doneTapped}>Work details</FancyModalHeader>
           <ScrollView keyboardShouldPersistTaps="handled" centerContent style={{ flex: 1 }}>
-            <View style={{ padding: 10, marginTop: 20 }}>
+            <View style={{ padding: 10 }}>
               <Row>
                 <Text
                   testID="consigments-metatdata-title"
                   text={{
                     placeholder: "Title",
-                    onFocus: this.hideCategorySelection,
                     onChangeText: this.updateTitle,
                     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     value: this.state.title,
@@ -168,7 +147,6 @@ export default class Metadata extends React.Component<Props, State> {
                     onChangeText: this.updateYear,
                     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     value: this.state.year,
-                    onFocus: this.hideCategorySelection,
                     onSubmitEditing: this.selectNextInput,
                     ref: (component) => (this.yearInput = component),
                     returnKeyType: "next",
@@ -184,7 +162,6 @@ export default class Metadata extends React.Component<Props, State> {
                     onChangeText: this.updateMedium,
                     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     value: this.state.medium,
-                    onFocus: this.hideCategorySelection,
                     onSubmitEditing: this.selectNextInput,
                     ref: (component) => (this.mediumInput = component),
                     returnKeyType: "next",
@@ -201,7 +178,6 @@ export default class Metadata extends React.Component<Props, State> {
                     onChangeText: this.updateWidth,
                     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     value: this.state.width,
-                    onFocus: this.hideCategorySelection,
                     onSubmitEditing: this.selectNextInput,
                     ref: (component) => (this.widthInput = component),
                     returnKeyType: "next",
@@ -215,7 +191,6 @@ export default class Metadata extends React.Component<Props, State> {
                     onChangeText: this.updateHeight,
                     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     value: this.state.height,
-                    onFocus: this.hideCategorySelection,
                     onSubmitEditing: this.selectNextInput,
                     ref: (component) => (this.heightInput = component),
                     returnKeyType: "next",
@@ -230,7 +205,6 @@ export default class Metadata extends React.Component<Props, State> {
                     keyboardType: "numeric",
                     placeholder: "Depth",
                     onChangeText: this.updateDepth,
-                    onFocus: this.hideCategorySelection,
                     onSubmitEditing: this.selectNextInput,
                     value: this.state.depth ? this.state.depth.toString() : "",
                     returnKeyType: "next",
@@ -250,33 +224,25 @@ export default class Metadata extends React.Component<Props, State> {
                   <Toggle selected={this.state.unit === "CM"} left="cm" right="in" onPress={this.updateUnit} />
                 </View>
               </Row>
-              <TouchableWithoutFeedback onPress={this.showCategorySelection}>
-                <Row>
-                  <Text
-                    text={{
-                      placeholder: "Category",
-                      value: this.state.categoryName ?? undefined,
-                    }}
-                    readonly={true}
-                    style={{ margin: 10 }}
-                  />
-                </Row>
-              </TouchableWithoutFeedback>
+              <View style={{ paddingHorizontal: 10 }}>
+                <ScreenDimensionsContext.Consumer>
+                  {({ height }) => (
+                    <Select
+                      title="Category"
+                      maxModalHeight={height * 0.75}
+                      options={categoryOptions.map((o) => ({
+                        label: o.name,
+                        value: o.value,
+                      }))}
+                      onSelectValue={this.changeCategoryValue}
+                      value={this.state.category}
+                    />
+                  )}
+                </ScreenDimensionsContext.Consumer>
+              </View>
             </View>
           </ScrollView>
         </BottomAlignedButton>
-        {this.state.showPicker ? (
-          <Picker
-            style={{ height: 220, backgroundColor: "white" }}
-            key="picker"
-            selectedValue={this.state.category}
-            onValueChange={this.changeCategoryValue}
-          >
-            {categoryOptions.map((opt) => (
-              <Picker.Item color="black" label={opt.name} value={opt.value} key={opt.value} />
-            ))}
-          </Picker>
-        ) : null}
       </View>
     )
   }

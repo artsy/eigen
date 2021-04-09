@@ -1,51 +1,45 @@
-import { loggerMiddleware, RelayNetworkLayer, urlMiddleware } from "react-relay-network-modern/node8"
+import { errorMiddleware, RelayNetworkLayer } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
 
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
 import { cacheMiddleware } from "./middlewares/cacheMiddleware"
 import { checkAuthenticationMiddleware } from "./middlewares/checkAuthenticationMiddleware"
-import { metaphysicsExtensionsLoggerMiddleware } from "./middlewares/metaphysicsMiddleware"
+import {
+  metaphysicsExtensionsLoggerMiddleware,
+  metaphysicsURLMiddleware,
+  persistedQueryMiddleware,
+} from "./middlewares/metaphysicsMiddleware"
 import { principalFieldErrorMiddleware } from "./middlewares/principalFieldErrorMiddleware"
 import { rateLimitMiddleware } from "./middlewares/rateLimitMiddleware"
+import { simpleLoggerMiddleware } from "./middlewares/simpleLoggerMiddleware"
 import { timingMiddleware } from "./middlewares/timingMiddleware"
 
 /// WARNING: Creates a whole new, separate Relay environment. Useful for testing.
 /// Use `defaultEnvironment` for production code.
-export default function createEnvironment() {
-  const network = new RelayNetworkLayer(
+export function createEnvironment(
+  networkConfig: ConstructorParameters<typeof RelayNetworkLayer> = [
     [
-      // The top middlewares run
+      // The top middlewares run first, i.e. they are the furtherst from the fetch
       // @ts-ignore
       cacheMiddleware(),
+      persistedQueryMiddleware(),
+      metaphysicsURLMiddleware(),
       rateLimitMiddleware(),
-      urlMiddleware({
-        url: () => unsafe__getEnvironment().metaphysicsURL,
-        headers: () => {
-          const { userAgent, userID, authenticationToken } = getCurrentEmissionState()
-          return {
-            "Content-Type": "application/json",
-            "User-Agent": userAgent,
-            "X-USER-ID": userID,
-            "X-ACCESS-TOKEN": authenticationToken,
-            "X-TIMEZONE": LegacyNativeModules.ARCocoaConstantsModule.LocalTimeZone,
-          }
-        },
-      }),
       // @ts-ignore
       principalFieldErrorMiddleware(),
       // We need to run the checkAuthenticationMiddleware as early as possible to make sure that the user
       // session is still valid. This is why we need to keep it as low as possible in the middlewares array.
       checkAuthenticationMiddleware(),
-      loggerMiddleware(),
       metaphysicsExtensionsLoggerMiddleware(),
+      simpleLoggerMiddleware(),
+      __DEV__ ? errorMiddleware() : null,
       timingMiddleware(),
     ],
     // `noThrow` is currently marked as "experimental" and may be deprecated in the future.
     // See: https://github.com/relay-tools/react-relay-network-modern#advanced-options-2nd-argument-after-middlewares
-    { noThrow: true }
-  )
-
+    { noThrow: true },
+  ]
+) {
+  const network = new RelayNetworkLayer(...networkConfig)
   const source = new RecordSource()
   const store = new Store(source)
   return new Environment({

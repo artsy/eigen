@@ -105,7 +105,7 @@ export class ConversationSnippet extends React.Component<Props> {
                 }
               />
             </Flex>
-            <Flex ml={1} style={{ flex: 1 }} justifyContent="flex-start">
+            <Flex ml={1} style={{ flex: 1 }}>
               <Flex flexDirection="row" mb="2px" style={{ flex: 0, alignItems: "center" }}>
                 <Sans
                   size="3t"
@@ -114,14 +114,11 @@ export class ConversationSnippet extends React.Component<Props> {
                   numberOfLines={1}
                   mr="5px"
                   color={conversation.unread ? "black" : "black60"}
-                  style={{ flex: 3 }}
                 >
                   {partnerName}
                 </Sans>
-                <Sans size="3t" color="black30" style={{ flex: 1 }} numberOfLines={1}>
-                  {conversation.messagesConnection?.totalCount}
-                </Sans>
-                <Sans textAlign="right" size="3t" color="black30" style={{ flex: 0 }}>
+                <Flex flex={1} />
+                <Sans textAlign="right" size="3t" color="black30">
                   {date}
                 </Sans>
               </Flex>
@@ -175,9 +172,6 @@ export default createFragmentContainer(ConversationSnippet, {
             }
           }
         }
-      }
-      messagesConnection {
-        totalCount
       }
     }
   `,

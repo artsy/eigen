@@ -1,13 +1,25 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { ChevronIcon } from "palette"
-import React from "react"
+import React, { useEffect, useRef } from "react"
 import { Animated } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
+import { useFirstMountState } from "react-use/esm/useFirstMountState"
 import { goBack } from "./navigate"
 
-export const BackButton: React.FC<{ onPress?(): void }> = ({ onPress = goBack }) => {
+export const BackButton: React.FC<{ show?: boolean; onPress?(): void }> = ({ onPress = goBack, show = true }) => {
+  const isFirstRender = useFirstMountState()
+  const opacity = useRef(new Animated.Value(show ? 1 : 0)).current
+  useEffect(() => {
+    if (!isFirstRender) {
+      Animated.spring(opacity, {
+        toValue: show ? 1 : 0,
+        useNativeDriver: true,
+      }).start()
+    }
+  }, [show])
   return (
     <Animated.View
+      pointerEvents={show ? undefined : "none"}
       style={{
         position: "absolute",
         top: 13 + useScreenDimensions().safeAreaInsets.top,
@@ -16,6 +28,7 @@ export const BackButton: React.FC<{ onPress?(): void }> = ({ onPress = goBack })
         width: 40,
         height: 40,
         borderRadius: 20,
+        opacity,
       }}
     >
       <TouchableOpacity

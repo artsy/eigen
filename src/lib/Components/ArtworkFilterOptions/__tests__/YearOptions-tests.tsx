@@ -6,12 +6,12 @@ import {
   ArtworkFiltersStoreProvider,
   ArtworksFiltersStore,
 } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { act } from "react-test-renderer"
 import { ALLOW_EMPTY_CREATED_DATES_FILTER, OptionItem, YearOptionsScreen, YearText } from "../YearOptions"
 import { getEssentialProps } from "./helper"
 
-const dispatchMock = jest.fn()
 describe("Year Options Screen", () => {
   let storeInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
   const initialState: ArtworkFiltersState = {
@@ -53,23 +53,23 @@ describe("Year Options Screen", () => {
     return null
   }
 
-  const MockYearOptionsScreen = () => (
-    <ArtworkFiltersStoreProvider>
+  const MockYearOptionsScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => (
+    <ArtworkFiltersStoreProvider initialData={initialData}>
       <YearOptionsScreen {...getEssentialProps()} />
       <ArtworkFiltersStoreConsumer />
     </ArtworkFiltersStoreProvider>
   )
 
   it("renders propertly", () => {
-    const tree = renderWithWrappers(<MockYearOptionsScreen />)
-    ;(storeInstance as any).getActions().__injectState?.(initialState)
+    const tree = renderWithWrappers(<MockYearOptionsScreen initialData={initialState} />)
 
     expect(extractText(tree.root.findAllByType(YearText)[0])).toEqual("2010 – 2021")
     expect(extractText(tree.root.findAllByType(OptionItem)[0])).toEqual(ALLOW_EMPTY_CREATED_DATES_FILTER.displayText)
   })
 
   it("selects the right year range and option", () => {
-    const tree = renderWithWrappers(<MockYearOptionsScreen />)
+    const tree = renderWithWrappers(<MockYearOptionsScreen initialData={initialState} />)
+
     ;(storeInstance as any).getActions().__injectState?.(initialState)
 
     const multiSlider = tree.root.findAllByType(MultiSlider)[0]
@@ -80,22 +80,15 @@ describe("Year Options Screen", () => {
       optionItem.props.onPress()
     })
 
-    expect(dispatchMock).toBeCalledTimes(3)
-    expect(dispatchMock).toHaveBeenNthCalledWith(1, {
-      payload: { displayText: "2011", paramName: "earliestCreatedYear", paramValue: "2011" },
-      type: "selectFilters",
-    })
-    expect(dispatchMock).toHaveBeenNthCalledWith(2, {
-      payload: { displayText: "2020", paramName: "latestCreatedYear", paramValue: "2020" },
-      type: "selectFilters",
-    })
-    expect(dispatchMock).toHaveBeenNthCalledWith(3, {
-      payload: {
-        displayText: ALLOW_EMPTY_CREATED_DATES_FILTER.displayText,
-        paramName: ALLOW_EMPTY_CREATED_DATES_FILTER.paramName,
-        paramValue: false,
-      },
-      type: "selectFilters",
-    })
+    const selectedFilters = storeInstance.getState().selectedFilters
+    const latestCreatedYear = selectedFilters.find(
+      (selectedFilter) => selectedFilter.paramName === FilterParamName.latestCreatedYear
+    )?.paramValue
+
+    const earliestCreatedYear = selectedFilters.find(
+      (selectedFilter) => selectedFilter.paramName === FilterParamName.earliestCreatedYear
+    )?.paramValue
+    expect(latestCreatedYear).toEqual("2020")
+    expect(earliestCreatedYear).toEqual("2011")
   })
 })

@@ -428,6 +428,17 @@ workflows:
     jobs:
       - deploy-nightly-beta
 
+  # metaphysics-check:
+  #   triggers:
+  #     - schedule:
+  #         cron: "13 * * * *"
+  #         filters:
+  #           branches:
+  #             only:
+  #               - master
+  #   jobs:
+  #     - check-metaphysics-freshness
+
   promote:
     jobs:
       - promote-beta-to-app-store:
@@ -438,7 +449,6 @@ workflows:
 
   test-build-deploy:
     jobs:
-      - check-metaphysics-freshness
       - check-pr:
           filters:
             branches:

@@ -1,8 +1,10 @@
 import AsyncStorage from "@react-native-community/async-storage"
+import * as Sentry from "@sentry/react-native"
 import { MenuItem } from "lib/Components/MenuItem"
+import { useToast } from "lib/Components/Toast/toastHook"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import { environment, EnvironmentKey } from "lib/store/config/EnvironmentModel"
-import { FeatureName, features } from "lib/store/config/features"
+import { DevToggleName, devToggles, FeatureName, features } from "lib/store/config/features"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { capitalize, compact, sortBy } from "lodash"
 import { ChevronIcon, CloseIcon, color, Flex, ReloadIcon, Separator, Spacer, Text } from "palette"
@@ -24,6 +26,10 @@ const configurableFeatureFlagKeys = sortBy(
   Object.entries(features).filter(([_, { showInAdminMenu }]) => showInAdminMenu),
   ([k, { description }]) => description ?? k
 ).map(([k]) => k as FeatureName)
+
+const configurableDevToggleKeys = sortBy(Object.entries(devToggles), ([k, { description }]) => description ?? k).map(
+  ([k]) => k as DevToggleName
+)
 
 export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModal }) => {
   return (
@@ -77,6 +83,9 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         <Text variant="title" my="1" mx="2">
           Tools
         </Text>
+        {configurableDevToggleKeys.map((devToggleKey) => {
+          return <DevToggleItem key={devToggleKey} toggleKey={devToggleKey} />
+        })}
         <MenuItem
           title="Clear AsyncStorage"
           chevron={null}
@@ -95,6 +104,20 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
               return
             }
             throw Error("Sentry test error")
+          }}
+          chevron={null}
+        />
+        <MenuItem
+          title="Trigger Sentry Native Crash"
+          onPress={() => {
+            if (!Config.SENTRY_DSN) {
+              Alert.alert(
+                "No Sentry DSN available",
+                __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
+              )
+              return
+            }
+            Sentry.nativeCrash()
           }}
           chevron={null}
         />
@@ -134,11 +157,13 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
   const currentValue = config.features.flags[flagKey]
   const isAdminOverrideInEffect = flagKey in config.features.adminOverrides
   const valText = currentValue ? "Yes" : "No"
+  const description = features[flagKey].description ?? flagKey
+
   return (
     <MenuItem
-      title={features[flagKey].description ?? flagKey}
+      title={description}
       onPress={() => {
-        Alert.alert(features[flagKey].description ?? flagKey, undefined, [
+        Alert.alert(description, undefined, [
           {
             text: "Override with 'Yes'",
             onPress() {
@@ -162,6 +187,49 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
       }}
       value={
         isAdminOverrideInEffect ? (
+          <Text variant="subtitle" color="black100" fontWeight="bold">
+            {valText}
+          </Text>
+        ) : (
+          <Text variant="subtitle" color="black60">
+            {valText}
+          </Text>
+        )
+      }
+    />
+  )
+}
+
+const DevToggleItem: React.FC<{ toggleKey: DevToggleName }> = ({ toggleKey }) => {
+  const config = GlobalStore.useAppState((s) => s.config)
+  const currentValue = config.features.devToggles[toggleKey]
+  const valText = currentValue ? "Yes" : "No"
+  const description = devToggles[toggleKey].description
+  const toast = useToast()
+
+  return (
+    <MenuItem
+      title={description}
+      onPress={() => {
+        Alert.alert(description, undefined, [
+          {
+            text: currentValue ? "Keep turned ON" : "Turn ON",
+            onPress() {
+              GlobalStore.actions.config.features.setAdminOverride({ key: toggleKey, value: true })
+              devToggles[toggleKey].onChange?.(true, { toast })
+            },
+          },
+          {
+            text: currentValue ? "Turn OFF" : "Keep turned OFF",
+            onPress() {
+              GlobalStore.actions.config.features.setAdminOverride({ key: toggleKey, value: false })
+              devToggles[toggleKey].onChange?.(false, { toast })
+            },
+          },
+        ])
+      }}
+      value={
+        currentValue ? (
           <Text variant="subtitle" color="black100" fontWeight="bold">
             {valText}
           </Text>

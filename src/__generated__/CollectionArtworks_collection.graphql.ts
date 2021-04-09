@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtworkAggregation = "ARTIST" | "ARTIST_NATIONALITY" | "ATTRIBUTION_CLASS" | "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "LOCATION_CITY" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
+export type ArtworkAggregation = "ARTIST" | "ARTIST_NATIONALITY" | "ATTRIBUTION_CLASS" | "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "LOCATION_CITY" | "MAJOR_PERIOD" | "MATERIALS_TERMS" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 export type CollectionArtworks_collection = {
     readonly isDepartment: boolean;
     readonly slug: string;
@@ -72,6 +72,11 @@ return {
       "defaultValue": null,
       "kind": "LocalArgument",
       "name": "color"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "colors"
     },
     {
       "defaultValue": 10,
@@ -189,6 +194,11 @@ return {
           "kind": "Variable",
           "name": "color",
           "variableName": "color"
+        },
+        {
+          "kind": "Variable",
+          "name": "colors",
+          "variableName": "colors"
         },
         {
           "kind": "Variable",
@@ -374,5 +384,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '7c4b5d90ca875995146f13e80ea32ed3';
+(node as any).hash = '75c6cc75bc42a448f54145193cb084a7';
 export default node;

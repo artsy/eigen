@@ -25,7 +25,7 @@ system 'yarn install --ignore-engines' if installing_pods
 require_relative './node_modules/react-native/scripts/react_native_pods'
 require_relative './node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-platform :ios, '12.0'
+platform :ios, '12.1'
 inhibit_all_warnings!
 
 require 'down'

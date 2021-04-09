@@ -1,9 +1,5 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import {
-  ArtworkFiltersState,
-  ArtworkFiltersStoreProvider,
-  ArtworksFiltersStore,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { CheckIcon } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
@@ -13,22 +9,6 @@ import { SIZES_OPTIONS, SizesOptionsScreen } from "../SizesOptions"
 import { getEssentialProps } from "./helper"
 
 describe("Sizes options screen", () => {
-  let storeInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
-
-  const ArtworkFiltersStoreConsumer = () => {
-    storeInstance = ArtworksFiltersStore.useStore()
-    return null
-  }
-
-  const MockSizesScreen = () => {
-    return (
-      <ArtworkFiltersStoreProvider>
-        <SizesOptionsScreen {...getEssentialProps()} />
-        <ArtworkFiltersStoreConsumer />
-      </ArtworkFiltersStoreProvider>
-    )
-  }
-
   const initialState: ArtworkFiltersState = {
     selectedFilters: [],
     appliedFilters: [],
@@ -42,9 +22,16 @@ describe("Sizes options screen", () => {
     },
   }
 
+  const MockSizesScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
+    return (
+      <ArtworkFiltersStoreProvider initialData={initialData}>
+        <SizesOptionsScreen {...getEssentialProps()} />
+      </ArtworkFiltersStoreProvider>
+    )
+  }
+
   it("selects only the option that is selected", () => {
-    const tree = renderWithWrappers(<MockSizesScreen {...getEssentialProps()} />)
-    ;(storeInstance as any).getActions().__injectState?.(initialState)
+    const tree = renderWithWrappers(<MockSizesScreen {...getEssentialProps()} initialData={initialState} />)
 
     const selectedSizeIndex = Math.floor(Math.random() * Math.floor(SIZES_OPTIONS.length)) // selected size index
 
@@ -54,8 +41,7 @@ describe("Sizes options screen", () => {
   })
 
   it("allows multiple sizes to be selected", () => {
-    const tree = renderWithWrappers(<MockSizesScreen {...getEssentialProps()} />)
-    ;(storeInstance as any).getActions().__injectState?.(initialState)
+    const tree = renderWithWrappers(<MockSizesScreen {...getEssentialProps()} initialData={initialState} />)
 
     const firstSizeInstance = tree.root.findAllByType(CheckMarkOptionListItem)[0].findAllByType(TouchableOpacity)[0]
     const thirdSizeInstance = tree.root.findAllByType(CheckMarkOptionListItem)[2].findAllByType(TouchableOpacity)[0]

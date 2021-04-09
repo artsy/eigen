@@ -85,7 +85,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
 
   return (
     <MyAccountFieldEditScreen
-      title={"Full Name"}
+      title={"Password"}
       canSave={Boolean(currentPassword && newPassword && passwordConfirmation)}
       onSave={onSave}
       contentContainerStyle={{ paddingHorizontal: 0 }}

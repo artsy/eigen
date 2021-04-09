@@ -114,7 +114,9 @@ describe("MarketStats", () => {
       expect(trackEvent).toHaveBeenCalledWith({
         action: "tappedInfoBubble",
         context_module: "auctionResults",
-        context_screen_owner_type: "artistInsights",
+        context_screen_owner_type: "artistAuctionResults",
+        context_screen_owner_id: undefined,
+        context_screen_owner_slug: undefined,
         subject: "artistMarketStatistics",
       })
     })

@@ -1,6 +1,7 @@
 #import "ARDefaults+SiteFeatures.h"
 #import "ARDefaults.h"
 #import "AROptions.h"
+#import "ARAnalyticsConstants.h"
 
 NSString *const ARUserIdentifierDefault = @"ARUserIdentifier";
 
@@ -45,8 +46,10 @@ NSString *const ARAugmentedRealityHasSuccessfullyRan = @"ARAugmentedRealityHasSu
 
 + (void)resetDefaults
 {
+    // Need to save launch count for analytics
+    NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
     [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
+    [[NSUserDefaults standardUserDefaults] setInteger:launchCount forKey:ARAnalyticsAppUsageCountProperty];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
-
 @end

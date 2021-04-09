@@ -904,6 +904,7 @@ return {
                   "aggregations",
                   "attributionClass",
                   "color",
+                  "colors",
                   "dimensionRange",
                   "additionalGeneIDs",
                   "inquireableOnly",

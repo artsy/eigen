@@ -1,14 +1,16 @@
 import { FilterScreen } from "lib/Components/FilterModal"
+import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import { capitalize, compact, forOwn, groupBy, lowerCase, sortBy, startCase } from "lodash"
 
 export enum FilterDisplayName {
   // artist = "Artists",
-  additionalGeneIDs = "Category",
+  additionalGeneIDs = "Medium",
   artistIDs = "Artists",
   artistsIFollow = "Artist",
   attributionClass = "Rarity",
   categories = "Medium",
   color = "Color",
+  colors = "Color",
   estimateRange = "Price/estimate range",
   gallery = "Gallery",
   institution = "Institution",
@@ -32,6 +34,7 @@ export enum FilterParamName {
   attributionClass = "attributionClass",
   categories = "categories",
   color = "color",
+  colors = "colors",
   earliestCreatedYear = "earliestCreatedYear",
   estimateRange = "estimateRange",
   gallery = "partnerID",
@@ -71,20 +74,21 @@ export const getSortDefaultValueByFilterType = (filterType: FilterType) => {
 
 export const ParamDefaultValues = {
   acquireable: false,
+  additionalGeneIDs: [],
   allowEmptyCreatedDates: true,
   artistIDs: [],
   atAuction: false,
   attributionClass: undefined,
   categories: undefined,
   color: undefined,
+  colors: undefined,
   dimensionRange: "*-*",
   earliestCreatedYear: undefined,
   estimateRange: "",
-  additionalGeneIDs: [],
   includeArtworksByFollowedArtists: false,
   inquireableOnly: false,
   latestCreatedYear: undefined,
-  majorPeriods: undefined,
+  majorPeriods: [],
   medium: "*",
   offerable: false,
   partnerID: undefined,
@@ -103,6 +107,7 @@ export const defaultCommonFilterOptions = {
   attributionClass: ParamDefaultValues.attributionClass,
   categories: ParamDefaultValues.categories,
   color: ParamDefaultValues.color,
+  colors: ParamDefaultValues.colors,
   additionalGeneIDs: ParamDefaultValues.additionalGeneIDs,
   dimensionRange: ParamDefaultValues.dimensionRange,
   earliestCreatedYear: ParamDefaultValues.earliestCreatedYear,
@@ -292,6 +297,7 @@ export const selectedOption = ({
   filterType?: FilterType
   aggregations: Aggregations
 }) => {
+  const useImprovedArtworkFilters = unsafe_getFeatureFlag("ARUseImprovedArtworkFilters")
   const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
 
   if (filterScreen === "additionalGeneIDs") {
@@ -305,22 +311,6 @@ export const selectedOption = ({
       additionalGeneIDsOption?.paramValue.length > 0
     ) {
       return additionalGeneIDsOption?.paramValue.map(humanizeSlug).join(", ")
-    }
-
-    return "All"
-  }
-
-  if (filterScreen === "attributionClass") {
-    const selectedAttributionClassOption = selectedOptions.find((option) => {
-      return option.paramName === FilterParamName.attributionClass
-    })
-
-    if (
-      selectedAttributionClassOption?.paramValue &&
-      Array.isArray(selectedAttributionClassOption?.paramValue) &&
-      selectedAttributionClassOption?.paramValue.length > 0
-    ) {
-      return selectedAttributionClassOption?.paramValue.map(capitalize).join(", ")
     }
 
     return "All"
@@ -351,6 +341,17 @@ export const selectedOption = ({
       }
       return `${firstSelectedSize}, ${numSelectedSizesToDisplay - 1} more`
     }
+    return "All"
+  }
+
+  if (useImprovedArtworkFilters && filterScreen === "majorPeriods") {
+    let selection = selectedOptions.find((filter) => filter.paramName === FilterParamName.timePeriod)?.paramValue
+
+    if (Array.isArray(selection) && selection.length > 0) {
+      selection = selection.map((s) => getDisplayNameForTimePeriod(s))
+      return selection.join(", ")
+    }
+
     return "All"
   }
 
@@ -482,4 +483,24 @@ export const aggregationsWithFollowedArtists = (
         ]
       : []
   return [...artworkAggregations, ...followedArtistAggregation]
+}
+
+export const getDisplayNameForTimePeriod = (aggregationName: string) => {
+  const DISPLAY_TEXT: Record<string, string> = {
+    "2020": "2020-today",
+    "2010": "2010-2019",
+    "2000": "2000-2009",
+    "1990": "1990-1999",
+    "1980": "1980-1989",
+    "1970": "1970-1979",
+    "1960": "1960-1969",
+    "1950": "1950-1959",
+    "1940": "1940-1949",
+    "1930": "1930-1939",
+    "1920": "1920-1929",
+    "1910": "1910-1919",
+    "1900": "1900-1909",
+  }
+
+  return DISPLAY_TEXT[aggregationName] ?? aggregationName
 }

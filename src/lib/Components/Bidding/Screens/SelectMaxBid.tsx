@@ -1,21 +1,24 @@
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
-import { ViewProperties } from "react-native"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { ActivityIndicator, View, ViewProperties } from "react-native"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
-import Spinner from "../../../Components/Spinner"
 import { Schema, screenTrack } from "../../../utils/track"
 
-import { Box, Button } from "palette"
-import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { Container } from "../Components/Containers"
-import { MaxBidPicker } from "../Components/MaxBidPicker"
-import { Title } from "../Components/Title"
+import { Button, Flex } from "palette"
 
 import { ConfirmBidScreen } from "./ConfirmBid"
 
 import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"
 import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
+import { SelectMaxBidQuery } from "__generated__/SelectMaxBidQuery.graphql"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { Select } from "lib/Components/Select"
+import { dismissModal } from "lib/navigation/navigate"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
+import { compact } from "lodash"
 
 interface SelectMaxBidProps extends ViewProperties {
   sale_artwork: SelectMaxBid_sale_artwork
@@ -65,36 +68,38 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
   }
 
   render() {
-    const bids = (this.props.sale_artwork && this.props.sale_artwork.increments) || []
+    const bids = compact(this.props.sale_artwork && this.props.sale_artwork.increments) || []
 
     return (
-      <BiddingThemeProvider>
-        <Container m={0}>
-          <Title>Your max bid</Title>
-
+      <Flex flex={1} m="2">
+        <View style={{ flexGrow: 1, justifyContent: "center" }}>
           {this.state.isRefreshingSaleArtwork ? (
-            <Spinner />
+            <ActivityIndicator />
           ) : (
-            <MaxBidPicker
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              bids={bids}
-              onValueChange={(_, index) => this.setState({ selectedBidIndex: index })}
-              selectedValue={this.state.selectedBidIndex}
-            />
+            <ScreenDimensionsContext.Consumer>
+              {({ height }) => (
+                <Select
+                  title="Your max bid"
+                  showTitleLabel={false}
+                  maxModalHeight={height * 0.75}
+                  value={bids[this.state.selectedBidIndex]?.cents ?? null}
+                  options={bids.map((b) => ({ label: b.display!, value: b.cents }))}
+                  onSelectValue={(_, index) => this.setState({ selectedBidIndex: index })}
+                />
+              )}
+            </ScreenDimensionsContext.Consumer>
           )}
+        </View>
 
-          <Box m={4}>
-            <Button block width={100} onPress={this.onPressNext}>
-              Next
-            </Button>
-          </Box>
-        </Container>
-      </BiddingThemeProvider>
+        <Button block onPress={this.onPressNext} style={{ flexGrow: 0 }}>
+          Next
+        </Button>
+      </Flex>
     )
   }
 }
 
-export const MaxBidScreen = createRefetchContainer(
+const SelectMaxBidContainer = createRefetchContainer(
   SelectMaxBid,
   {
     sale_artwork: graphql`
@@ -121,3 +126,41 @@ export const MaxBidScreen = createRefetchContainer(
     }
   `
 )
+
+export const SelectMaxBidQueryRenderer: React.FC<{
+  artworkID: string
+  saleID: string
+  navigator: NavigatorIOS
+}> = ({ artworkID, saleID, navigator }) => {
+  // TODO: artworkID can be nil, so omit that part of the query if it is.
+  return (
+    <Flex flex={1}>
+      <FancyModalHeader useXButton onLeftButtonPress={dismissModal}>
+        Place a max bid
+      </FancyModalHeader>
+      <QueryRenderer<SelectMaxBidQuery>
+        environment={defaultEnvironment}
+        query={graphql`
+          query SelectMaxBidQuery($artworkID: String!, $saleID: String!) {
+            artwork(id: $artworkID) {
+              sale_artwork: saleArtwork(saleID: $saleID) {
+                ...SelectMaxBid_sale_artwork
+              }
+            }
+            me {
+              ...SelectMaxBid_me
+            }
+          }
+        `}
+        cacheConfig={{ force: true }} // We want to always fetch latest bid increments.
+        variables={{
+          artworkID,
+          saleID,
+        }}
+        render={renderWithLoadProgress<SelectMaxBidQuery["response"]>((props) => (
+          <SelectMaxBidContainer me={props.me!} sale_artwork={props.artwork!.sale_artwork!} navigator={navigator} />
+        ))}
+      />
+    </Flex>
+  )
+}

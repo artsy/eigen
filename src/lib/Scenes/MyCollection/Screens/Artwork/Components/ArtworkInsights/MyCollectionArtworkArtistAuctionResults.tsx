@@ -2,7 +2,7 @@ import { ActionType, ContextModule, OwnerType, tappedInfoBubble, TappedShowMore 
 import { MyCollectionArtworkArtistAuctionResults_artwork } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
-import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResult"
+import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { navigate } from "lib/navigation/navigate"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -108,7 +108,7 @@ export const MyCollectionArtworkArtistAuctionResultsFragmentContainer = createFr
               node {
                 id
                 internalID
-                ...AuctionResult_auctionResult
+                ...AuctionResultListItem_auctionResult
               }
             }
           }

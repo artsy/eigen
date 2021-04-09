@@ -16,5 +16,6 @@ describe(extractNodes, () => {
     expect(extractNodes(null)).toEqual([])
     expect(extractNodes({ edges: null })).toEqual([])
     expect(extractNodes({ edges: [] })).toEqual([])
+    expect(extractNodes({ edges: [null] })).toEqual([])
   })
 })

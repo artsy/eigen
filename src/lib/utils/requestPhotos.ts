@@ -1,7 +1,8 @@
+import { ActionSheetOptions } from "@expo/react-native-action-sheet"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { ActionSheetIOS, Platform } from "react-native"
+import { Platform } from "react-native"
 import ImagePicker, { Image } from "react-native-image-crop-picker"
-import { osMajorVersion } from "./hardware"
+import { osMajorVersion } from "./platformUtil"
 
 export async function requestPhotos(): Promise<Image[]> {
   if (Platform.OS === "ios" && osMajorVersion() >= 14) {
@@ -14,9 +15,11 @@ export async function requestPhotos(): Promise<Image[]> {
   }
 }
 
-export async function showPhotoActionSheet(): Promise<Image[]> {
+export async function showPhotoActionSheet(
+  showActionSheet: (options: ActionSheetOptions, callback: (i: number) => void) => void
+): Promise<Image[]> {
   return new Promise<Image[]>((resolve, reject) => {
-    ActionSheetIOS.showActionSheetWithOptions(
+    showActionSheet(
       {
         options: ["Photo Library", "Take Photo", "Cancel"],
         cancelButtonIndex: 2,

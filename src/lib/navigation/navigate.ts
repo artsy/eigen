@@ -1,3 +1,4 @@
+import { addBreadcrumb } from "@sentry/react-native"
 import { AppModule, modules, ViewOptions } from "lib/AppRegistry"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { GlobalStore, unsafe__getSelectedTab } from "lib/store/GlobalStore"
@@ -7,12 +8,14 @@ import { matchRoute } from "./routes"
 export interface ViewDescriptor extends ViewOptions {
   type: "react" | "native"
   moduleName: AppModule
+  // Whether the new view should replace the previous (modal only)
+  replace?: boolean
   props: object
 }
 
 let lastInvocation = { url: "", timestamp: 0 }
 
-export async function navigate(url: string, options: { modal?: boolean; passProps?: object } = {}) {
+export async function navigate(url: string, options: { modal?: boolean; passProps?: object; replace?: boolean } = {}) {
   // Debounce double taps
   if (lastInvocation.url === url && Date.now() - lastInvocation.timestamp < 1000) {
     return
@@ -27,13 +30,19 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
     return
   }
 
-  const module = modules[result.module]
+  addBreadcrumb({
+    message: `user navigated to ${url}`,
+    category: "navigation",
+  })
 
+  const module = modules[result.module]
   const presentModally = options.modal ?? module.options.alwaysPresentModally ?? false
+  const { replace = false } = options
 
   const screenDescriptor: ViewDescriptor = {
     type: module.type,
     moduleName: result.module,
+    replace,
     props: {
       ...result.params,
       ...options.passProps,

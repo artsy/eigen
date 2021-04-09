@@ -16,7 +16,7 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
-import { AuctionResultFragmentContainer } from "../../Lists/AuctionResult"
+import { AuctionResultFragmentContainer } from "../../Lists/AuctionResultListItem"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist
@@ -218,7 +218,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
             node {
               id
               internalID
-              ...AuctionResult_auctionResult
+              ...AuctionResultListItem_auctionResult
             }
           }
         }
@@ -279,7 +279,7 @@ export const tracks = {
 
   tapAuctionResultsInfo: (): TappedInfoBubbleArgs => ({
     contextModule: ContextModule.auctionResults,
-    contextScreenOwnerType: OwnerType.artistInsights,
+    contextScreenOwnerType: OwnerType.artistAuctionResults,
     subject: "auctionResults",
   }),
 }

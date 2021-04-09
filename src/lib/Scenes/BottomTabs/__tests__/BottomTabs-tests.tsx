@@ -1,5 +1,5 @@
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { createEnvironment } from "lib/relay/createEnvironment"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -12,11 +12,19 @@ import { BottomTabsButton } from "../BottomTabsButton"
 jest.mock("react-use/lib/useInterval")
 jest.unmock("react-relay")
 jest.mock("lib/relay/createEnvironment", () => {
-  return { defaultEnvironment: require("relay-test-utils").createMockEnvironment() }
+  let env = require("relay-test-utils").createMockEnvironment()
+  const mock = {
+    createEnvironment: () => env,
+    __reset() {
+      env = require("relay-test-utils").createMockEnvironment()
+    },
+  }
+  return mock
 })
-let mockRelayEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+let mockRelayEnvironment = {} as ReturnType<typeof createMockEnvironment>
 beforeEach(() => {
-  mockRelayEnvironment = require("lib/relay/createEnvironment").defaultEnvironment = createMockEnvironment()
+  require("lib/relay/createEnvironment").__reset()
+  mockRelayEnvironment = createEnvironment() as any
 })
 
 function resolveUnreadConversationCountQuery(unreadConversationCount: number) {

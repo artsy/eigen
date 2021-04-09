@@ -6,6 +6,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
+import { QAInfoPanel } from "lib/utils/QAInfo"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { useStickyScrollHeader } from "lib/utils/useStickyScrollHeader"
@@ -18,6 +19,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { getImageDimensions } from "../Sale/Components/SaleArtworkListItem"
+import { auctionResultHasPrice, auctionResultText } from "./helpers"
 
 const CONTAINER_HEIGHT = 80
 
@@ -126,13 +128,8 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     details.push(makeRow("Description", auctionResult.description, { fullWidth: true }))
   }
 
-  const hasSalePrice = !!auctionResult.priceRealized?.display
-  const now = moment()
-  const isFromPastMonth = auctionResult.saleDate
-    ? moment(auctionResult.saleDate).isAfter(now.subtract(1, "month"))
-    : false
-  const salePriceMessage =
-    auctionResult.boughtIn === true ? "Bought in" : isFromPastMonth ? "Awaiting results" : "Not available"
+  const hasSalePrice = auctionResultHasPrice(auctionResult)
+  const salePriceMessage = auctionResultText(auctionResult)
 
   const renderRealizedPriceModal = () => (
     <>
@@ -143,6 +140,17 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
       </Text>
       <Spacer mb={2} />
     </>
+  )
+
+  const QAInfo = () => (
+    <QAInfoPanel
+      style={{ position: "absolute", top: 200, right: 40 }}
+      info={[
+        ["id", auctionResult.internalID],
+        ["bought in", `${auctionResult.boughtIn}`],
+        ["cents", `${auctionResult.priceRealized?.centsUSD}`],
+      ]}
+    />
   )
 
   return (
@@ -218,6 +226,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           </Text>
           {details}
         </Box>
+        <QAInfo />
       </Animated.ScrollView>
       {headerElement}
     </ProvideScreenTrackingWithCohesionSchema>
@@ -235,6 +244,7 @@ export const AuctionResultQueryRenderer: React.FC<{
       query={graphql`
         query AuctionResultQuery($auctionResultInternalID: String!, $artistID: String!) {
           auctionResult(id: $auctionResultInternalID) {
+            ...AuctionResultListItem_auctionResult
             internalID
             artistID
             boughtIn
@@ -265,6 +275,7 @@ export const AuctionResultQueryRenderer: React.FC<{
             performance {
               mid
             }
+            currency
             priceRealized {
               cents
               centsUSD
@@ -344,7 +355,7 @@ export const tracks = {
 
   tapMarketStatsInfo: (): TappedInfoBubbleArgs => ({
     contextModule: ContextModule.auctionResult,
-    contextScreenOwnerType: OwnerType.artistInsights,
+    contextScreenOwnerType: OwnerType.artistAuctionResults,
     subject: "auctionResultSalePrice",
   }),
 }

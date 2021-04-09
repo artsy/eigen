@@ -3,11 +3,7 @@ import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import {
-  ArtworkFiltersState,
-  ArtworkFiltersStoreProvider,
-  ArtworksFiltersStore,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { FilterParamName, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -20,15 +16,21 @@ jest.unmock("react-relay")
 
 describe("SaleLotsListContainer", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  let storeInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
 
-  const ArtworkFiltersStoreConsumer = () => {
-    storeInstance = ArtworksFiltersStore.useStore()
-    return null
+  const initialState: ArtworkFiltersState = {
+    selectedFilters: [],
+    appliedFilters: [],
+    previouslyAppliedFilters: [],
+    applyFilters: false,
+    aggregations: [],
+    filterType: "auctionResult",
+    counts: {
+      total: null,
+      followedArtists: null,
+    },
   }
 
-  // const TestRenderer = ({ viewAs = ViewAsValues.Grid }: { viewAs?: ViewAsValues }) => (
-  const TestRenderer = () => (
+  const TestRenderer = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => (
     <QueryRenderer<SaleLotsListTestsQuery>
       environment={mockEnvironment}
       query={graphql`
@@ -40,7 +42,7 @@ describe("SaleLotsListContainer", () => {
       render={({ props }) => {
         if (props) {
           return (
-            <ArtworkFiltersStoreProvider>
+            <ArtworkFiltersStoreProvider initialData={initialData}>
               <SaleLotsListContainer
                 saleArtworksConnection={props}
                 unfilteredSaleArtworksConnection={null as any}
@@ -48,7 +50,6 @@ describe("SaleLotsListContainer", () => {
                 saleSlug="sale-slug"
                 scrollToTop={jest.fn()}
               />
-              <ArtworkFiltersStoreConsumer />
             </ArtworkFiltersStoreProvider>
           )
         }
@@ -84,8 +85,7 @@ describe("SaleLotsListContainer", () => {
   // Most likely this has something to do with the unfilteredSaleArtworksConnection
   // Follow-up ticket https://artsyproduct.atlassian.net/browse/CX-1108
   it.skip("Renders nothing if not sale artworks are available", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
-    ;(storeInstance as any).getActions().__injectState?.(getState())
+    const tree = renderWithWrappers(<TestRenderer initialData={getState()} />)
     const mockProps = {
       SaleArtworksConnection: () => ({
         aggregations: [],
@@ -102,7 +102,7 @@ describe("SaleLotsListContainer", () => {
   })
 
   it("Renders list of sale artworks as a grid", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer initialData={getState(ViewAsValues.Grid)} />)
 
     const mockProps = {
       SaleArtworksConnection: () => ({
@@ -115,13 +115,12 @@ describe("SaleLotsListContainer", () => {
     }
 
     mockEnvironmentPayload(mockEnvironment, mockProps)
-    ;(storeInstance as any).getActions().__injectState?.(getState(ViewAsValues.Grid))
 
     expect(tree.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(1)
   })
 
   it("Renders list of sale artworks as a list", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer initialData={getState()} />)
     const mockProps = {
       SaleArtworksConnection: () => ({
         aggregations: [],
@@ -133,7 +132,6 @@ describe("SaleLotsListContainer", () => {
     }
 
     mockEnvironmentPayload(mockEnvironment, mockProps)
-    ;(storeInstance as any).getActions().__injectState?.(getState())
 
     expect(tree.root.findAllByType(SaleArtworkListContainer)).toHaveLength(1)
   })
@@ -147,7 +145,6 @@ describe("SaleLotsListContainer", () => {
           totalCount={100}
         />
       )
-      ;(storeInstance as any).getActions().__injectState?.(getState())
 
       expect(extractText(tree.root.findByType(FilterTitle))).toBe("Sorted by least bids")
       expect(extractText(tree.root.findByType(FilterDescription))).toBe("Showing 20 of 100")

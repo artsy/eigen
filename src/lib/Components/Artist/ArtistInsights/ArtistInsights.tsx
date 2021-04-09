@@ -56,7 +56,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
 
   // Show or hide floating filter button depending on the scroll position
   const onScrollEndDrag = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (event.nativeEvent.targetContentOffset.y > FILTER_BUTTON_OFFSET) {
+    if (event.nativeEvent.contentOffset.y > FILTER_BUTTON_OFFSET) {
       setIsFilterButtonVisible(true)
       return
     }

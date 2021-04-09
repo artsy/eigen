@@ -21,6 +21,7 @@ export type NativeEvent =
 
 export interface NativeState {
   userID: string
+  userEmail: string
   authenticationToken: string
   launchCount: number
   onboardingState: "none" | "incomplete" | "complete"
@@ -34,7 +35,7 @@ export interface NativeModel {
   setApplicationIconBadgeNumber: Thunk<NativeModel, number>
 }
 
-export const NativeModel: NativeModel = {
+export const getNativeModel = (): NativeModel => ({
   sessionState: LegacyNativeModules.ARNotificationsManager?.nativeState ?? {},
   setLocalState: action((state, nextNativeState) => {
     Object.assign(state.sessionState, nextNativeState)
@@ -42,7 +43,7 @@ export const NativeModel: NativeModel = {
   setApplicationIconBadgeNumber: thunk((_actions, count) => {
     LegacyNativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber(count)
   }),
-}
+})
 
 export function listenToNativeEvents(cb: (event: NativeEvent) => void) {
   return NotificationsManager.addListener("event", cb)

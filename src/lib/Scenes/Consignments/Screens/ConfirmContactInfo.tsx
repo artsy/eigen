@@ -1,8 +1,11 @@
+import { useFocusEffect } from "@react-navigation/native"
 import { captureException } from "@sentry/react-native"
 import { ConfirmContactInfo_me } from "__generated__/ConfirmContactInfo_me.graphql"
 import { ConfirmContactInfoQuery } from "__generated__/ConfirmContactInfoQuery.graphql"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Input } from "lib/Components/Input/Input"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
+import { dismissModal } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { updateMyUserProfile } from "lib/Scenes/MyAccount/updateMyUserProfile"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -10,14 +13,13 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Spacer, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { ActivityIndicator, Alert, ScrollView, View } from "react-native"
+import { ActivityIndicator, Alert, BackHandler, ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import Confirmation from "./Confirmation"
 
 const ConfirmContactInfo: React.FC<{
   me: ConfirmContactInfo_me | null
-
   submissionRequestValidationCheck: () => boolean
   navigator: NavigatorIOS
 }> = ({ me, submissionRequestValidationCheck, navigator }) => {
@@ -31,6 +33,26 @@ const ConfirmContactInfo: React.FC<{
   useEffect(() => {
     setPhoneNumber(me?.phone)
   }, [me?.phone])
+
+  useFocusEffect(
+    React.useCallback(() => {
+      BackHandler.addEventListener("hardwareBackPress", handleDismiss)
+
+      return () => BackHandler.removeEventListener("hardwareBackPress", handleDismiss)
+    }, [submissionRequestValidationCheck])
+  )
+
+  const handleDismiss = () => {
+    if (!submissionRequestValidationCheck()) {
+      Alert.alert("Leave this screen?", "Your consignment submission is still in progress", [
+        { text: "Leave Now", onPress: () => dismissModal() },
+        { text: "Wait", style: "default" },
+      ])
+    } else {
+      dismissModal()
+    }
+    return true
+  }
 
   const submit = async () => {
     setSubmitting(true)
@@ -59,7 +81,8 @@ const ConfirmContactInfo: React.FC<{
       onPress={submit}
       showSeparator={isInputFocused}
     >
-      <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} contentContainerStyle={{ paddingVertical: 40 }}>
+      <FancyModalHeader useXButton onLeftButtonPress={handleDismiss} />
+      <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} contentContainerStyle={{ paddingVertical: 20 }}>
         <View
           style={{
             alignSelf: "center",

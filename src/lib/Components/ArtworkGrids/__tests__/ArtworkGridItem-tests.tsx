@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkFilterContext, ArtworkFiltersStoreProvider, reducer } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Touchable } from "palette"
 import React from "react"
 import "react-native"
@@ -10,19 +10,6 @@ import { useTracking } from "react-tracking"
 import Artwork from "../ArtworkGridItem"
 
 const ArtworkWithProviders = (props: any) => {
-  const [state, dispatch] = React.useReducer(reducer, {
-    selectedFilters: [],
-    appliedFilters: [],
-    previouslyAppliedFilters: [],
-    applyFilters: true,
-    aggregations: [],
-    filterType: "artwork",
-    counts: {
-      total: null,
-      followedArtists: null,
-    },
-  })
-
   return (
     <ArtworkFiltersStoreProvider>
       <Artwork {...props} />

@@ -2,6 +2,7 @@ import { ContextModule } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
   changedFiltersParams,
@@ -32,6 +33,7 @@ import { AttributionClassOptionsScreen } from "../ArtworkFilterOptions/Attributi
 import { CategoriesOptionsScreen } from "../ArtworkFilterOptions/CategoriesOptions"
 // @ts-ignore
 import { ColorOption, ColorOptionsScreen } from "../ArtworkFilterOptions/ColorOptions"
+import { ColorsOptionsScreen } from "../ArtworkFilterOptions/ColorsOptions"
 import { colorHexMap } from "../ArtworkFilterOptions/ColorSwatch"
 // @ts-ignore
 import { EstimateRangeOptionsScreen } from "../ArtworkFilterOptions/EstimateRangeOptions"
@@ -48,7 +50,7 @@ import { SizeOptionsScreen } from "../ArtworkFilterOptions/SizeOptions"
 // @ts-ignore
 import { SizesOptionsScreen } from "../ArtworkFilterOptions/SizesOptions"
 import { SortOptionsScreen } from "../ArtworkFilterOptions/SortOptions"
-// @ts-ignore
+import { TimePeriodMultiOptionsScreen } from "../ArtworkFilterOptions/TimePeriodMultiOptions"
 import { TimePeriodOptionsScreen } from "../ArtworkFilterOptions/TimePeriodOptions"
 // @ts-ignore
 import { ViewAsOptionsScreen } from "../ArtworkFilterOptions/ViewAsOptions"
@@ -57,6 +59,7 @@ import { WaysToBuyOptionsScreen } from "../ArtworkFilterOptions/WaysToBuyOptions
 // @ts-ignore
 import { YearOptionsScreen } from "../ArtworkFilterOptions/YearOptions"
 import { FancyModal } from "../FancyModal/FancyModal"
+import { TouchableRow } from "../TouchableRow"
 
 export type FilterScreen =
   | "additionalGeneIDs"
@@ -65,6 +68,7 @@ export type FilterScreen =
   | "attributionClass"
   | "categories"
   | "color"
+  | "colors"
   | "dimensionRange"
   | "estimateRange"
   | "gallery"
@@ -115,6 +119,7 @@ export type FilterModalNavigationStack = {
   AttributionClassOptionsScreen: undefined
   CategoriesOptionsScreen: undefined
   ColorOptionsScreen: undefined
+  ColorsOptionsScreen: undefined
   EstimateRangeOptionsScreen: undefined
   FilterOptionsScreen: FilterOptionsScreenParams
   GalleryOptionsScreen: undefined
@@ -134,6 +139,7 @@ const Stack = createStackNavigator<FilterModalNavigationStack>()
 
 export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
   const tracking = useTracking()
+  const shouldUseImprovedArtworkFilters = useFeatureFlag("ARUseImprovedArtworkFilters")
   const { exitModal, id, mode, slug, closeModal } = props
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
@@ -229,7 +235,10 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
             <Stack.Screen name="FilterOptionsScreen" component={FilterOptionsScreen} initialParams={props} />
             <Stack.Screen name="ArtistIDsOptionsScreen" component={ArtistIDsOptionsScreen} />
             <Stack.Screen name="AttributionClassOptionsScreen" component={AttributionClassOptionsScreen} />
-            <Stack.Screen name="ColorOptionsScreen" component={ColorOptionsScreen} />
+            <Stack.Screen
+              name="ColorOptionsScreen"
+              component={shouldUseImprovedArtworkFilters ? ColorsOptionsScreen : ColorOptionsScreen}
+            />
             <Stack.Screen name="EstimateRangeOptionsScreen" component={EstimateRangeOptionsScreen} />
             <Stack.Screen name="GalleryOptionsScreen" component={GalleryOptionsScreen} />
             <Stack.Screen name="AdditionalGeneIDsOptionsScreen" component={AdditionalGeneIDsOptionsScreen} />
@@ -239,7 +248,10 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
             <Stack.Screen name="SizeOptionsScreen" component={SizeOptionsScreen} />
             <Stack.Screen name="SizesOptionsScreen" component={SizesOptionsScreen} />
             <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
-            <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} />
+            <Stack.Screen
+              name="TimePeriodOptionsScreen"
+              component={shouldUseImprovedArtworkFilters ? TimePeriodMultiOptionsScreen : TimePeriodOptionsScreen}
+            />
             <Stack.Screen name="ViewAsOptionsScreen" component={ViewAsOptionsScreen} />
             <Stack.Screen
               name="YearOptionsScreen"
@@ -254,6 +266,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
           </Stack.Navigator>
 
           <Separator my={0} />
+
           <ApplyButtonContainer>
             <ApplyButton
               disabled={!isApplyButtonEnabled}
@@ -327,7 +340,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
               variant="primaryBlack"
               size="large"
             >
-              {getApplyButtonCount()}
+              {shouldUseImprovedArtworkFilters ? "Show results" : getApplyButtonCount()}
             </ApplyButton>
           </ApplyButtonContainer>
         </View>
@@ -402,6 +415,8 @@ export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigatio
     closeModal()
   }
 
+  const shouldUseImprovedArtworkFilters = useFeatureFlag("ARUseImprovedArtworkFilters")
+
   return (
     <Flex style={{ flex: 1 }}>
       <Flex flexGrow={0} flexDirection="row" justifyContent="space-between">
@@ -410,11 +425,13 @@ export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigatio
             {title}
           </Sans>
         </Flex>
+
         <Flex alignItems="flex-end" mt={0.5} mb={2}>
           <CloseIconContainer hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={handleTappingCloseIcon}>
             <CloseIcon fill="black100" />
           </CloseIconContainer>
         </Flex>
+
         <ClearAllButton
           disabled={!isClearAllButtonEnabled}
           onPress={() => {
@@ -441,39 +458,66 @@ export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigatio
           </Sans>
         </ClearAllButton>
       </Flex>
+
       <Separator />
+
       <FlatList<FilterDisplayConfig>
         keyExtractor={(_item, index) => String(index)}
         data={sortedFilterOptions}
         style={{ flexGrow: 1 }}
-        ItemSeparatorComponent={() => <Separator />}
+        ItemSeparatorComponent={() => (shouldUseImprovedArtworkFilters ? null : <Separator />)}
         renderItem={({ item }) => {
+          const selectedCurrentOption = selectedOption({
+            selectedOptions,
+            filterScreen: item.filterType,
+            filterType: filterTypeState,
+            aggregations: aggregationsState,
+          })
+
+          // TODO: When unwinding the `ARUseImprovedArtworkFilters` flag; simply return `null`
+          // instead of `"All"` in the `selectedOption` function
+          const currentOption =
+            shouldUseImprovedArtworkFilters && selectedCurrentOption === "All" ? null : selectedCurrentOption
+
+          //           <Box>
+          // <TouchableOptionListItemRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
+          //   <OptionListItem>
+          //     <Flex p={2} pr="15px" flexDirection="row" justifyContent="space-between" flexGrow={1}>
+          //       <Flex flex={1}>
+          //         <Sans size="3t" color="black100">
+          //           {item.displayText}
+          //         </Sans>
+          //       </Flex>
+          //       <Flex flexDirection="row" alignItems="center" justifyContent="flex-end" flex={1}>
+          //         <OptionDetail
+          //           currentOption={selectedOption({
+          //             selectedOptions,
+          //             filterScreen: item.filterType,
+          //             filterType: filterTypeState,
+          //             aggregations: aggregationsState,
+          //           })}
+          //           filterType={item.filterType}
+          //         />
+          //         <ArrowRightIcon fill="black30" ml="1" />
+          //       </Flex>
+
           return (
-            <Box>
-              <TouchableOptionListItemRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
-                <OptionListItem>
-                  <Flex p={2} pr="15px" flexDirection="row" justifyContent="space-between" flexGrow={1}>
-                    <Flex flex={1}>
-                      <Sans size="3t" color="black100">
-                        {item.displayText}
-                      </Sans>
-                    </Flex>
-                    <Flex flexDirection="row" alignItems="center" justifyContent="flex-end" flex={1}>
-                      <OptionDetail
-                        currentOption={selectedOption({
-                          selectedOptions,
-                          filterScreen: item.filterType,
-                          filterType: filterTypeState,
-                          aggregations: aggregationsState,
-                        })}
-                        filterType={item.filterType}
-                      />
-                      <ArrowRightIcon fill="black30" ml="1" />
-                    </Flex>
+            <TouchableRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
+              <OptionListItem>
+                <Flex p={2} pr="15px" flexDirection="row" justifyContent="space-between" flexGrow={1}>
+                  <Flex flex={1}>
+                    <Sans size="3t" color="black100">
+                      {item.displayText}
+                    </Sans>
                   </Flex>
-                </OptionListItem>
-              </TouchableOptionListItemRow>
-            </Box>
+
+                  <Flex flexDirection="row" alignItems="center" justifyContent="flex-end" flex={1}>
+                    <OptionDetail currentOption={currentOption} filterType={item.filterType} />
+                    <ArrowRightIcon fill="black30" ml="1" />
+                  </Flex>
+                </Flex>
+              </OptionListItem>
+            </TouchableRow>
           )
         }}
       />
@@ -665,8 +709,6 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
     </AnimatedBottomButton>
   )
 }
-
-export const TouchableOptionListItemRow = styled(TouchableOpacity)``
 
 export const CloseIconContainer = styled(TouchableOpacity)`
   margin: 20px 0px 0px 20px;

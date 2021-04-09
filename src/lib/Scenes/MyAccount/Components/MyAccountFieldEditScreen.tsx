@@ -11,6 +11,7 @@ import {
   AlertStatic,
   Keyboard,
   KeyboardAvoidingView,
+  Platform,
   ScrollView,
   TouchableOpacity,
   ViewStyle,
@@ -75,7 +76,11 @@ export const MyAccountFieldEditScreen = React.forwardRef<
   )
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} keyboardVerticalOffset={screen.safeAreaInsets.top}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      style={{ flex: 1 }}
+      keyboardVerticalOffset={screen.safeAreaInsets.top}
+    >
       <PageWithSimpleHeader
         left={
           <TouchableOpacity onPress={goBack}>

@@ -113,6 +113,7 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
         additionalGeneIDs: { type: "[String]" }
         priceRange: { type: "String" }
         color: { type: "String" }
+        colors: { type: "[String]" }
         dimensionRange: { type: "String", defaultValue: "*-*" }
         majorPeriods: { type: "[String]" }
         acquireable: { type: "Boolean" }
@@ -130,6 +131,7 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
           additionalGeneIDs: $additionalGeneIDs
           priceRange: $priceRange
           color: $color
+          colors: $colors
           dimensionRange: $dimensionRange
           majorPeriods: $majorPeriods
           acquireable: $acquireable
@@ -185,6 +187,7 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
         $additionalGeneIDs: [String]
         $priceRange: String
         $color: String
+        $colors: [String]
         $dimensionRange: String
         $majorPeriods: [String]
         $acquireable: Boolean
@@ -201,6 +204,7 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
               sort: $sort
               additionalGeneIDs: $additionalGeneIDs
               color: $color
+              colors: $colors
               priceRange: $priceRange
               dimensionRange: $dimensionRange
               majorPeriods: $majorPeriods

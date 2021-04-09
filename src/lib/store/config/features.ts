@@ -1,3 +1,8 @@
+import { useToast } from "lib/Components/Toast/toastHook"
+import { echoLaunchJson } from "lib/utils/jsonFiles"
+import { Platform } from "react-native"
+import { GlobalStore } from "../GlobalStore"
+
 export interface FeatureDescriptor {
   /**
    * Set readyForRelease to `true` when the feature is ready to be exposed outside of dev mode.
@@ -64,9 +69,10 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableNewPartnerView",
   },
   AROptionsUseReactNativeWebView: {
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: Platform.OS === "ios" ? "AREnableReactNativeWebView" : undefined,
     description: "Use react-native web views",
-    showInAdminMenu: true,
+    showInAdminMenu: Platform.OS !== "android",
   },
   AROptionsLotConditionReport: {
     readyForRelease: true,
@@ -86,4 +92,60 @@ export const features = defineFeatures({
     description: "Enable custom share sheet",
     showInAdminMenu: true,
   },
+  ARUseImprovedArtworkFilters: {
+    readyForRelease: false,
+    description: "Use improved artwork filters",
+    showInAdminMenu: true,
+  },
+  ARUseNewOnboarding: {
+    readyForRelease: false,
+    description: "Use new onboarding",
+    showInAdminMenu: true,
+  },
 })
+
+export interface DevToggleDescriptor {
+  /**
+   * Provide a short description for the admin menu.
+   */
+  readonly description: string
+  /**
+   * Provide some action/thunk to run when the toggle value is changed.
+   */
+  readonly onChange?: (value: boolean, { toast }: { toast: ReturnType<typeof useToast> }) => void
+}
+
+// Helper function to get good typings and intellisense
+const defineDevToggles = <T extends string>(devToggleMap: { readonly [devToggleName in T]: DevToggleDescriptor }) =>
+  devToggleMap
+
+export type DevToggleName = keyof typeof devToggles
+
+export const devToggles = defineDevToggles({
+  DTShowQuickAccessInfo: {
+    description: "Show quick access info",
+  },
+  DTDisableEchoRemoteFetch: {
+    description: "Disable fetching remote echo",
+    onChange: (value, { toast }) => {
+      if (value) {
+        GlobalStore.actions.config.echo.setEchoState(echoLaunchJson())
+        toast.show("Loaded bundled echo config", "middle")
+      } else {
+        GlobalStore.actions.config.echo.fetchRemoteEcho()
+        toast.show("Fetched remote echo config", "middle")
+      }
+    },
+  },
+})
+
+export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {
+  return Object.keys(devToggles).includes(name)
+}
+
+type Assert<T, U extends T> = U
+// If you mouse-over the name of the type below, you should be able to see the key that needs renaming!
+export type _ThereIsAKeyThatIsCommonInFeaturesAndDevToggles_PleaseRename_MouseOverToSeeTheNaughtyKey = Assert<
+  never,
+  keyof (typeof features | typeof devToggles)
+>

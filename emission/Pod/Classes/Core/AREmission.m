@@ -70,6 +70,7 @@ static AREmission *_sharedInstance = nil;
     [self updateState:@{
         [ARStateKey authenticationToken]: [NSNull null],
         [ARStateKey userID]: [NSNull null],
+        [ARStateKey userEmail]: [NSNull null],
         [ARStateKey onboardingState]: @"none",
     }];
 }
@@ -87,7 +88,7 @@ static AREmission *_sharedInstance = nil;
 - (NSString *)stateStringForKey:(NSString *)stateKey
 {
     NSString *result = [self.notificationsManagerModule.state valueForKey:stateKey];
-    if (result && ![result isKindOfClass:NSString.class]) {
+    if (result != nil && ![result isKindOfClass:NSString.class]) {
         [NSException raise:NSInternalInconsistencyException format:@"Value for key '%@' is not a string.", stateKey];
     }
     return result;
@@ -100,6 +101,15 @@ static AREmission *_sharedInstance = nil;
         [NSException raise:NSInternalInconsistencyException format:@"Value for key '%@' is not a string.", stateKey];
     }
     return result;
+}
+
+- (BOOL)reactStateBoolForKey:(NSString *)stateKey
+{
+    NSNumber *result = [self.notificationsManagerModule.reactState valueForKey:stateKey];
+    if (result != nil && ![result isKindOfClass:NSNumber.class]) {
+        [NSException raise:NSInternalInconsistencyException format:@"Value for key '%@' is not a boolean.", stateKey];
+    }
+    return [result boolValue];
 }
 
 - (NSURL *)releaseBundleURL;

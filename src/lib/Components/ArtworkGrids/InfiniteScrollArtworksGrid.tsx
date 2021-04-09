@@ -7,7 +7,7 @@
 // 4. Update height of grid to encompass all items.
 
 import React from "react"
-import { Dimensions, LayoutChangeEvent, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
+import { Dimensions, LayoutChangeEvent, Platform, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, RelayPaginationProp } from "react-relay"
 
 import Artwork from "./ArtworkGridItem"
@@ -19,7 +19,6 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
-import { hideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 import { Box, Button, space, Theme } from "palette"
 import { graphql } from "relay-runtime"
 
@@ -77,9 +76,6 @@ export interface Props {
 
   /** Show Lot Label  */
   showLotLabel?: boolean
-
-  /** Set as true to automatically manage the back button visibility as the user scrolls */
-  hideBackButtonOnScroll?: boolean
 
   /** To avoid layout jank, supply the width of the grid ahead of time. */
   width?: number
@@ -270,16 +266,14 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
-    const { shouldAddPadding, autoFetch, hasMore, stickyHeaderIndices } = this.props
+    const { shouldAddPadding, hasMore, stickyHeaderIndices } = this.props
+    const autoFetch = Platform.OS === "android" ? false : this.props.autoFetch
     const boxPadding = shouldAddPadding ? 2 : 0
 
     return (
       <Theme>
         <ScrollView
           onScroll={(ev) => {
-            if (this.props.hideBackButtonOnScroll) {
-              hideBackButtonOnScroll(ev)
-            }
             if (autoFetch) {
               this.handleFetchNextPageOnScroll(ev)
             }

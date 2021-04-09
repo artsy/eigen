@@ -168,9 +168,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];
-    ar_dispatch_after(1, ^{
-        [self killSwitch];
-    });
 }
 
 /// This is called when the app is almost done launching
@@ -210,38 +207,6 @@ static ARAppDelegate *_sharedInstance = nil;
     return [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
 }
 
-- (void)killSwitch;
-{
-    Message *killSwitchVersion = ARAppDelegate.sharedInstance.echo.messages[@"KillSwitchBuildMinimum"];
-    NSString *echoMinimumBuild = killSwitchVersion.content;
-    if (echoMinimumBuild != nil && [echoMinimumBuild length] > 0) {
-        NSDictionary *infoDictionary = [[[NSBundle mainBundle] infoDictionary] mutableCopy];
-        NSString *buildVersion = infoDictionary[@"CFBundleShortVersionString"];
-
-        if ([buildVersion compare:echoMinimumBuild options:NSNumericSearch] == NSOrderedAscending) {
-            UIAlertController *alert = [UIAlertController
-                                         alertControllerWithTitle:@"New app version required"
-                                         message:@"Please update your Artsy app to continue."
-                                         preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction* linkToAppButton = [UIAlertAction
-                                              actionWithTitle:@"Download"
-                                              style:UIAlertActionStyleDefault
-                                              handler:^(UIAlertAction * action) {
-                                                  NSString *iTunesLink = @"https://apps.apple.com/us/app/artsy-buy-sell-original-art/id703796080";
-                                                  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink] options:@{} completionHandler:nil];
-                                                  // We wait 1 second to make sure the view controller hierarchy has been set up.
-                                                  ar_dispatch_after(1, ^{
-                                                      exit(0);
-                                                  });
-                                              }];
-
-            [alert addAction:linkToAppButton];
-
-            [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
-        }
-    }
-}
-
 - (void)forceCacheCustomFonts
 {
     __unused UIFont *font = [UIFont serifBoldItalicFontWithSize:12];
@@ -263,6 +228,7 @@ static ARAppDelegate *_sharedInstance = nil;
     // And update emission's auth state
     [[AREmission sharedInstance] updateState:@{
         [ARStateKey userID]: [[[ARUserManager sharedManager] currentUser] userID],
+        [ARStateKey userEmail]: [[[ARUserManager sharedManager] currentUser] email],
         [ARStateKey authenticationToken]: [[ARUserManager sharedManager] userAuthenticationToken],
     }];
 
@@ -280,10 +246,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)setupAdminTools
 {
-    if (!ARAppStatus.isBetaDevOrAdmin) {
-        return;
-    }
-
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rageShakeNotificationRecieved) name:DHCSHakeNotificationName object:nil];
 
     [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORTildeKey:^{
@@ -371,6 +333,10 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)rageShakeNotificationRecieved
 {
+    if (![[AREmission sharedInstance] reactStateBoolForKey:[ARReactStateKey userIsDev]]) {
+        return;
+    }
+    
     if (![UIDevice isPad]) {
         // For some reason the supported orientation isn’t respected when this is pushed on top
         // of a landscape VIR view.

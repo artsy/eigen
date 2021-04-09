@@ -8,7 +8,7 @@
 // import "@babel/runtime"
 
 import chalk from "chalk"
-// @ts-ignore
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Enzyme from "enzyme"
 // @ts-ignore
 import Adapter from "enzyme-adapter-react-16"
@@ -83,8 +83,15 @@ jest.mock("rn-fetch-blob", () => ({
   },
 }))
 
+jest.mock("@react-native-cookies/cookies", () => ({ clearAll: jest.fn() }))
+
+beforeEach(() => {
+  require("@react-native-cookies/cookies").clearAll.mockReset()
+})
+
+// prettier-ignore
 // tslint:disable-next-line:no-empty
-jest.mock("@sentry/react-native", () => ({ captureMessage() {}, init() {}, setUser() {} }))
+jest.mock("@sentry/react-native", () => ({ captureMessage() {},  init() {},  setUser() {},  addBreadcrumb() {},  withScope() {} }))
 
 // Needing to mock react-native-scrollable-tab-view due to Flow issue
 jest.mock("react-native-scrollable-tab-view", () => jest.fn(() => null))
@@ -166,6 +173,7 @@ function getNativeModules(): typeof LegacyNativeModules {
         launchCount: 1,
         deviceId: "testDevice",
         userID: "userID",
+        userEmail: "user@example.com",
       },
       postNotificationName: jest.fn(),
       didFinishBootstrapping: jest.fn(),
@@ -178,8 +186,6 @@ function getNativeModules(): typeof LegacyNativeModules {
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       clearUserData: jest.fn(),
-      appVersion: "appVersion",
-      buildVersion: "buildVersion",
     },
     ARPHPhotoPickerModule: {
       requestPhotos: jest.fn(),

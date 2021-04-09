@@ -3,6 +3,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Button } from "palette"
 import React from "react"
 import { Alert } from "react-native"
@@ -32,9 +33,14 @@ beforeEach(() => {
 
 const render = () => {
   return renderWithWrappers(
-    <ConfirmContactInfoQueryRenderer
-      navigator={navigator}
-      submissionRequestValidationCheck={submissionRequestValidationCheck}
+    <NavigatorIOS
+      initialRoute={{
+        component: ConfirmContactInfoQueryRenderer,
+        passProps: {
+          navigator,
+          submissionRequestValidationCheck,
+        },
+      }}
     />
   )
 }

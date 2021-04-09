@@ -5,6 +5,7 @@ import Text from "../Components/TextInput"
 import Toggle from "../Components/Toggle"
 import { ConsignmentSetup } from "../index"
 
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Flex, Sans, Spacer, Theme } from "palette"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { Form, Row } from "../Components/FormElements"
@@ -55,6 +56,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
     return (
       <Theme>
         <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
+          <FancyModalHeader onLeftButtonPress={this.doneTapped}>Edition & Authenticity</FancyModalHeader>
           <Flex style={{ flex: 1 }} p={1}>
             <Form>
               <Flex justifyContent="space-between" alignItems="center" flexDirection="row" flexWrap="nowrap">

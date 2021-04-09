@@ -2,19 +2,28 @@ import { ReviewOfferButtonTestsQuery } from "__generated__/ReviewOfferButtonTest
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { AlertCircleFillIcon } from "palette"
+import { MoneyFillIcon } from "palette/svgs/MoneyFillIcon"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ReviewOfferButton, ReviewOfferButtonFragmentContainer } from "../ReviewOfferButton"
 jest.unmock("react-relay")
 
 describe("ReviewOfferButton", () => {
   let env: ReturnType<typeof createMockEnvironment>
+  const trackEvent = jest.fn()
 
   beforeEach(() => {
     env = createMockEnvironment()
+    ;(useTracking as jest.Mock).mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
   })
 
   const TestRenderer = () => (
@@ -30,7 +39,7 @@ describe("ReviewOfferButton", () => {
       variables={{ orderID: "test-order" }}
       render={({ error, props }) => {
         if (props?.order) {
-          return <ReviewOfferButtonFragmentContainer order={props.order} />
+          return <ReviewOfferButtonFragmentContainer order={props.order} conversationID="1234" />
         } else if (error) {
           console.error(error)
         }
@@ -51,7 +60,7 @@ describe("ReviewOfferButton", () => {
     expect(wrapper.root.findAllByType(ReviewOfferButton)).toHaveLength(1)
   })
 
-  it("shows correct message for rejected offers", () => {
+  it("doesn't render for rejected offers", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
         state: "CANCELED",
@@ -60,21 +69,87 @@ describe("ReviewOfferButton", () => {
     })
 
     const text = extractText(wrapper.root)
-    expect(text).toContain("Offer Declined")
+    expect(text).not.toContain("Offer")
+    expect(text).not.toContain("Tap to view")
+    expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(0)
   })
 
-  it("shows correct message for accepted offers", () => {
+  it("doesn't render for expired offers", () => {
+    const wrapper = getWrapper({
+      CommerceOrder: () => ({
+        state: "CANCELED",
+        stateReason: "seller_lapsed",
+      }),
+    })
+    const text = extractText(wrapper.root)
+    expect(text).not.toContain("Offer")
+    expect(text).not.toContain("Tap to view")
+    expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(0)
+  })
+
+  it("doesn't render for pending orders", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
         state: "PENDING",
       }),
     })
-
     const text = extractText(wrapper.root)
-    expect(text).toContain("Offer Accepted - Please Confirm")
+    expect(text).not.toContain("Offer")
+    expect(text).not.toContain("Tap to view")
+    expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(0)
   })
 
-  it("shows correct message for received counteroffers", () => {
+  it("doesn't render for abandoned orders", () => {
+    const wrapper = getWrapper({
+      CommerceOrder: () => ({
+        state: "ABANDONED",
+      }),
+    })
+    const text = extractText(wrapper.root)
+    expect(text).not.toContain("Offer")
+    expect(text).not.toContain("Tap to view")
+    expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(0)
+  })
+
+  it("doesn't render when the last offer is from a buyer and it has not been accepted or rejected by the seller", () => {
+    const wrapper = getWrapper({
+      CommerceOrder: () => ({
+        state: "SUBMITTED",
+        lastOffer: {
+          fromParticipant: "BUYER",
+        },
+      }),
+    })
+
+    const text = extractText(wrapper.root)
+    expect(text).not.toContain("Offer Received")
+    expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(0)
+  })
+
+  it("shows correct message for accepted offers", () => {
+    const wrapper = getWrapper({
+      CommerceOrder: () => ({
+        state: "APPROVED",
+      }),
+    })
+
+    const text = extractText(wrapper.root)
+    expect(text).toContain("Offer Accepted")
+  })
+
+  it("shows correct message for accepted offers where payment fails", () => {
+    const wrapper = getWrapper({
+      CommerceOrder: () => ({
+        state: "SUBMITTED",
+        lastTransactionFailed: true,
+      }),
+    })
+
+    const text = extractText(wrapper.root)
+    expect(text).toContain("Payment Failed")
+  })
+
+  it("shows correct message and icon for received counteroffers", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
         state: "SUBMITTED",
@@ -86,11 +161,13 @@ describe("ReviewOfferButton", () => {
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Offer Received")
+    expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
   })
 
-  it("shows correct messaging when offer is a counteroffer", () => {
+  it("shows correct messaging and icon when offer is a counteroffer", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
+        state: "SUBMITTED",
         lastOffer: {
           fromParticipant: "SELLER",
         },
@@ -102,11 +179,16 @@ describe("ReviewOfferButton", () => {
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Counteroffer Received")
+    expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
   })
 
-  it("tapping it opens the review offer webview when an order has not yet been approved", () => {
+  it("tapping it opens the review offer webview and tracks event", () => {
     const wrapper = getWrapper({
       CommerceOrder: () => ({
+        state: "SUBMITTED",
+        lastOffer: {
+          fromParticipant: "SELLER",
+        },
         offers: {
           edges: [{ node: { internalID: "1234" } }, { node: { internalID: "4567" } }],
         },
@@ -114,6 +196,16 @@ describe("ReviewOfferButton", () => {
     })
 
     wrapper.root.findByType(TouchableWithoutFeedback).props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/orders/<CommerceOrder-mock-id-1>/review")
+
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedViewOffer",
+      context_owner_type: "conversation",
+      impulse_conversation_id: "1234",
+      subject: "Counteroffer Received",
+    })
+    expect(navigate).toHaveBeenCalledWith("/orders/<CommerceOrder-mock-id-1>", {
+      modal: true,
+      passProps: { orderID: "<CommerceOrder-mock-id-1>", title: "Make Offer" },
+    })
   })
 })

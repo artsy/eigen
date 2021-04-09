@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9ee6bef7b1cff511fc005fce93b875e6 */
+/* @relayHash 9a601b58cfe8124ff0085df2cd44a3d8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -68,6 +68,7 @@ fragment ImagePreview_attachment on Attachment {
 }
 
 fragment Message_message on Message {
+  __typename
   body
   createdAt
   internalID
@@ -236,6 +237,13 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
+                    "name": "__typename",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "createdAt",
                     "storageKey": null
                   },
@@ -325,7 +333,7 @@ return {
     ]
   },
   "params": {
-    "id": "9ee6bef7b1cff511fc005fce93b875e6",
+    "id": "9a601b58cfe8124ff0085df2cd44a3d8",
     "metadata": {},
     "name": "SendConversationMessageMutation",
     "operationKind": "mutation",

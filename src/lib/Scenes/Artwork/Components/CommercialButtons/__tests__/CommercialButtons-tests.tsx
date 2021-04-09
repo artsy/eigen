@@ -69,7 +69,7 @@ const relayComponent = async ({ artwork }) => {
 
 describe("CommercialButtons", () => {
   it("renders button for Contact Gallery button if isInquireable and not newFirstInquiry", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({AROptionsNewFirstInquiry: false})
+    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewFirstInquiry: false })
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: false,
@@ -191,7 +191,7 @@ describe("CommercialButtons", () => {
     const BuyNowButton = commercialButtons.find(Button).at(0)
     BuyNowButton.props().onPress()
     await flushPromiseQueue()
-    expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", { modal: true })
+    expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", { modal: true, passProps: { title: "Buy Now" } })
   })
 
   it("commits the Make Offer mutation", async () => {
@@ -222,7 +222,8 @@ describe("CommercialButtons", () => {
     expect(navigate).toHaveBeenCalledWith("/orders/makeOfferID", {
       modal: true,
       passProps: {
-        artworkID: "makeOfferID",
+        orderID: "makeOfferID",
+        title: "Make Offer",
       },
     })
   })

@@ -1,3 +1,4 @@
+import { tappedViewOffer } from "@artsy/cohesion"
 import { ReviewOfferButton_order } from "__generated__/ReviewOfferButton_order.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -7,17 +8,29 @@ import { AlertCircleFillIcon, ArrowRightIcon, Flex, MoneyFillIcon, Text } from "
 import React, { useEffect } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import { returnButtonMessaging } from "./utils/returnButtonMessaging"
-
 export interface ReviewOfferButtonProps {
+  conversationID: string
   order: ReviewOfferButton_order
 }
 
-export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) => {
+export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversationID, order }) => {
+  if (
+    order.state == null ||
+    order.state === "ABANDONED" ||
+    order.state === "PENDING" ||
+    order.state === "CANCELED" ||
+    (order.state === "SUBMITTED" && order.lastOffer?.fromParticipant === "BUYER" && !order.lastTransactionFailed)
+  ) {
+    return null
+  }
+
   const [buttonBackgroundColor, setButtonBackgroundColor] = React.useState("green100")
   const [buttonMessage, setButtonMessage] = React.useState("")
   const [buttonSubMessage, setButtonSubMessage] = React.useState("Tap to view")
   const [showMoneyIconInButton, setShowMoneyIconInButton] = React.useState(true)
+  const { trackEvent } = useTracking()
 
   const { hours } = useEventTiming({
     currentTime: DateTime.local().toString(),
@@ -26,12 +39,12 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
   })
 
   useEffect(() => {
-    const nodeCount = extractNodes(order.offers).length
+    const isCounter = extractNodes(order.offers).length > 1
 
     const { backgroundColor, message, subMessage, showMoneyIcon } = returnButtonMessaging({
       state: order.state,
-      stateReason: order.stateReason,
-      nodeCount,
+      lastTransactionFailed: order.lastTransactionFailed,
+      isCounter,
       lastOfferFromParticipant: order.lastOffer?.fromParticipant,
       hoursTillExpiration: hours,
     })
@@ -42,16 +55,25 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
     setButtonBackgroundColor(backgroundColor)
   })
 
-  const onTap = (orderID: string | null, state: string | null) => {
-    if (state === "PENDING") {
-      // ORDER CONFIRMATION PAGE DOESN'T EXIST YET
-    } else {
-      navigate(`/orders/${orderID}/review`)
-    }
+  const onTap = (orderID: string | null) => {
+    trackEvent(
+      tappedViewOffer({
+        impulse_conversation_id: conversationID,
+        cta: buttonMessage,
+      })
+    )
+    navigate(`/orders/${orderID}`, {
+      modal: true,
+      passProps: { orderID, title: "Make Offer" },
+    })
   }
 
   return (
-    <TouchableWithoutFeedback onPress={() => onTap(order?.internalID, order?.state)}>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        onTap(order?.internalID)
+      }}
+    >
       <Flex
         px={2}
         justifyContent="space-between"
@@ -62,9 +84,9 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
       >
         <Flex flexDirection="row">
           {showMoneyIconInButton ? (
-            <AlertCircleFillIcon mt="3px" fill="white100" />
-          ) : (
             <MoneyFillIcon mt="3px" fill="white100" />
+          ) : (
+            <AlertCircleFillIcon mt="3px" fill="white100" />
           )}
           <Flex flexDirection="column" pl={1}>
             <Text color="white100" variant="mediumText">
@@ -86,11 +108,11 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ order }) =
 export const ReviewOfferButtonFragmentContainer = createFragmentContainer(ReviewOfferButton, {
   order: graphql`
     fragment ReviewOfferButton_order on CommerceOrder {
-      __typename
       internalID
       state
       stateReason
-      stateExpiresAt(format: "MMM D")
+      stateExpiresAt
+      lastTransactionFailed
       ... on CommerceOfferOrder {
         lastOffer {
           fromParticipant

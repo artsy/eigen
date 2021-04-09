@@ -1,14 +1,14 @@
-import { action, createStore, createTypedHooks, StoreProvider } from "easy-peasy"
+import { createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNavigationState"
 import React from "react"
 import { Platform } from "react-native"
 import { Action, Middleware } from "redux"
-import { FeatureName, features } from "./config/features"
+import { DevToggleName, FeatureName, features } from "./config/features"
 import { FeatureMap } from "./config/FeaturesModel"
-import { GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
-import { assignDeep, persistenceMiddleware, unpersist } from "./persistence"
+import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
+import { persistenceMiddleware, unpersist } from "./persistence"
 
 function createGlobalStore() {
   const middleware: Middleware[] = []
@@ -35,13 +35,7 @@ function createGlobalStore() {
     })
   }
 
-  if (__TEST__) {
-    ;(GlobalStoreModel as any).__injectState = action((state, injectedState) => {
-      assignDeep(state, injectedState)
-    })
-  }
-
-  const store = createStore<GlobalStoreModel>(GlobalStoreModel, {
+  const store = createStore(getGlobalStoreModel(), {
     middleware,
   })
 
@@ -59,10 +53,10 @@ function createGlobalStore() {
 export const __globalStoreTestUtils__ = __TEST__
   ? {
       // this can be used to mock the initial state before mounting a test renderer
-      // e.g. `__globalStoreTestUtils__.injectState({ nativeState: { selectedTab: "sell" } })`
+      // e.g. `__globalStoreTestUtils__?.injectState({ nativeState: { selectedTab: "sell" } })`
       // takes effect until the next test starts
-      injectState(state: DeepPartial<GlobalStoreState>) {
-        ;(GlobalStore.actions as any).__injectState(state)
+      injectState: (state: DeepPartial<GlobalStoreState>) => {
+        GlobalStore.actions.__inject(state)
       },
       setProductionMode() {
         this.injectState({ config: { environment: { env: "production" } } })
@@ -70,16 +64,16 @@ export const __globalStoreTestUtils__ = __TEST__
       injectFeatureFlags(options: Partial<FeatureMap>) {
         this.injectState({ config: { features: { adminOverrides: options } } })
       },
-      getCurrentState: () => globalStoreInstance.getState(),
+      getCurrentState: () => globalStoreInstance().getState(),
       dispatchedActions: [] as Action[],
       getLastAction() {
         return this.dispatchedActions[this.dispatchedActions.length - 1]
       },
       reset: () => {
-        globalStoreInstance = createGlobalStore()
+        _globalStoreInstance = undefined
       },
     }
-  : null
+  : undefined
 
 if (__TEST__) {
   beforeEach(() => {
@@ -92,27 +86,32 @@ const hooks = createTypedHooks<GlobalStoreModel>()
 export const GlobalStore = {
   useAppState: hooks.useStoreState,
   get actions() {
-    return globalStoreInstance.getActions()
+    return globalStoreInstance().getActions()
   },
 }
 
 export const GlobalStoreProvider: React.FC<{}> = ({ children }) => {
-  return <StoreProvider store={globalStoreInstance}>{children}</StoreProvider>
+  return <StoreProvider store={globalStoreInstance()}>{children}</StoreProvider>
 }
 
 export function useSelectedTab() {
   return hooks.useStoreState((state) => state.bottomTabs.sessionState.selectedTab)
 }
 
-let globalStoreInstance = createGlobalStore()
+let _globalStoreInstance: ReturnType<typeof createGlobalStore> | undefined
+const globalStoreInstance = (): ReturnType<typeof createGlobalStore> => {
+  if (_globalStoreInstance === undefined) {
+    _globalStoreInstance = createGlobalStore()
+  }
+  return _globalStoreInstance
+}
 
 export function useFeatureFlag(key: FeatureName) {
-  if (Platform.OS === "ios") {
-    return GlobalStore.useAppState((state) => state.config.features.flags[key])
-  }
+  return GlobalStore.useAppState((state) => state.config.features.flags[key])
+}
 
-  // TODO: add feature flags to GlobalStore on android
-  return true
+export function useDevToggle(key: DevToggleName) {
+  return GlobalStore.useAppState((state) => state.config.features.devToggles[key])
 }
 
 /**
@@ -120,8 +119,8 @@ export function useFeatureFlag(key: FeatureName) {
  * if used in a react component. Use `useFeatureFlag` instead.
  * It is safe to use in contexts that don't require reactivity.
  */
-export function unsafe_getFeatureFlag(key: FeatureName) {
-  const state = globalStoreInstance?.getState() ?? null
+export function unsafe_getFeatureFlag(key: FeatureName): boolean {
+  const state = globalStoreInstance().getState() ?? null
   if (state) {
     return state.config.features.flags[key]
   }
@@ -131,8 +130,19 @@ export function unsafe_getFeatureFlag(key: FeatureName) {
   return features[key].readyForRelease
 }
 
+export function unsafe_getDevToggle(key: DevToggleName) {
+  const state = globalStoreInstance().getState() ?? null
+  if (state) {
+    return state.config.features.devToggles[key]
+  }
+  if (__DEV__) {
+    throw new Error(`Unable to access ${key} before GlobalStore bootstraps`)
+  }
+  return false
+}
+
 export function getCurrentEmissionState() {
-  const state = globalStoreInstance?.getState() ?? null
+  const state = globalStoreInstance().getState() ?? null
   if (Platform.OS === "ios") {
     return state?.native.sessionState ?? LegacyNativeModules.ARNotificationsManager.nativeState
   }
@@ -142,8 +152,9 @@ export function getCurrentEmissionState() {
     deviceId: "Android", // TODO: get better device info
     launchCount: ArtsyNativeModule.launchCount,
     onboardingState: "none", // not used on android
-    userAgent: "eigen android", // TODO: proper user agent
+    userAgent: "Artsy-Mobile android", // TODO: proper user agent
     userID: state?.auth.userID!,
+    userEmail: "user@example.com", // not used on android
   }
   return androidData
 }
@@ -154,7 +165,7 @@ export function getCurrentEmissionState() {
  * react components.
  */
 export function unsafe__getSelectedTab() {
-  return globalStoreInstance?.getState().bottomTabs.sessionState.selectedTab
+  return globalStoreInstance().getState().bottomTabs.sessionState.selectedTab
 }
 
 export function useIsStaging() {
@@ -170,8 +181,9 @@ export function unsafe__getEnvironment() {
   const {
     environment: { env, strings },
     echo: { stripePublishableKey },
-  } = globalStoreInstance?.getState().config
-  return { ...strings, stripePublishableKey, env }
+    userIsDev: { value },
+  } = globalStoreInstance().getState().config
+  return { ...strings, stripePublishableKey, env, userIsDev: value }
 }
 
 export function useEnvironment() {

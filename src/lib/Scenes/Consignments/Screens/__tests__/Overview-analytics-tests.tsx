@@ -7,7 +7,7 @@ jest.mock("@react-native-community/cameraroll", () => jest.fn())
 jest.unmock("react-tracking")
 
 import { postEvent } from "lib/NativeModules/Events"
-import Overview from "../Overview"
+import { Overview } from "../Overview"
 
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 const nav = {} as any
@@ -15,7 +15,9 @@ const nav = {} as any
 beforeEach(jest.resetAllMocks)
 
 it("calls the draft created event", () => {
-  const overviewComponent = shallow(<Overview navigator={nav} setup={{ submissionID: "123" }} />).dive()
+  const overviewComponent = shallow(
+    <Overview navigator={nav} setup={{ submissionID: "123" }} showActionSheetWithOptions={jest.fn()} />
+  ).dive()
   const overview = overviewComponent.dive().instance()
 
   overview.submissionDraftCreated()
@@ -31,7 +33,9 @@ it("calls the draft created event", () => {
 })
 
 it("calls the draft created event", () => {
-  const overviewComponent = shallow(<Overview navigator={nav} setup={{ submissionID: "123" }} />).dive()
+  const overviewComponent = shallow(
+    <Overview navigator={nav} setup={{ submissionID: "123" }} showActionSheetWithOptions={jest.fn()} />
+  ).dive()
   const overview = overviewComponent.dive().instance()
 
   overview.submissionDraftSubmitted()

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createStore } from "easy-peasy"
 import { selectedOptionsUnion } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
@@ -1180,8 +1181,12 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "colors",
+        },
+        {
+          displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",
@@ -1277,8 +1282,12 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "colors",
+        },
+        {
+          displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",
@@ -1384,8 +1393,12 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "colors",
+        },
+        {
+          displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",
@@ -1502,8 +1515,12 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "colors",
+        },
+        {
+          displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",
@@ -1610,8 +1627,12 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "colors",
+        },
+        {
+          displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",
@@ -1694,8 +1715,12 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "colors",
+        },
+        {
+          displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",
@@ -1791,8 +1816,12 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "colors",
+        },
+        {
+          displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",
@@ -1889,8 +1918,12 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "colors",
+        },
+        {
+          displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",
@@ -1968,8 +2001,12 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "colors",
+        },
+        {
+          displayText: "All",
           paramName: "majorPeriods",
-          paramValue: "*-*",
+          paramValue: [],
         },
         {
           displayText: "Buy now",

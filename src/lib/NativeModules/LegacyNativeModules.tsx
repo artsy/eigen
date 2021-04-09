@@ -20,13 +20,11 @@ const noop: any = (name: string) => () => console.warn(`method ${name} doesn't e
 
 interface LegacyNativeModules {
   ARTemporaryAPIModule: {
-    appVersion: string
-    buildVersion: string
     requestNotificationPermissions(): void
     fetchNotificationPermissions(callback: (error: any, result: PushAuthorizationStatus) => void): void
     markNotificationsRead(callback: (error?: Error) => any): void
     setApplicationIconBadgeNumber(n: number): void
-    clearUserData(): void
+    clearUserData(): Promise<void>
   }
   ARNotificationsManager: {
     nativeState: NativeState
@@ -39,6 +37,7 @@ interface LegacyNativeModules {
       webURL: string
       causalityURL: string
       env: string
+      userIsDev: boolean
     }): void
   }
   ARPHPhotoPickerModule: {
@@ -117,9 +116,7 @@ export const LegacyNativeModules: LegacyNativeModules =
           setApplicationIconBadgeNumber: () => {
             console.log("TODO: make app icon badge work on android")
           },
-          appVersion: "appVersion",
-          buildVersion: "buildVersion",
-          clearUserData: () => null,
+          clearUserData: () => Promise.resolve(),
         },
         ARPHPhotoPickerModule: {
           requestPhotos: noop("requestPhotos"),

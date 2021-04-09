@@ -1,17 +1,14 @@
 import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graphql"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
+import { TouchableRow } from "lib/Components/TouchableRow"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import {
-  ArtworkFiltersState,
-  ArtworkFiltersStoreProvider,
-  ArtworksFiltersStore,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import { Aggregations } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { Aggregations, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Sans, Theme } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -29,7 +26,6 @@ import {
   FilterModalMode,
   FilterModalNavigator,
   FilterOptionsScreen,
-  TouchableOptionListItemRow,
 } from "../FilterModal"
 
 const exitModalMock = jest.fn()
@@ -160,30 +156,24 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
-let storeInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
-
-const ArtworkFiltersStoreConsumer = () => {
-  storeInstance = ArtworksFiltersStore.useStore()
-  return null
-}
-
-const MockFilterModalNavigator = () => {
+const MockFilterModalNavigator = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
   return (
-    <Theme>
-      <ArtworkFiltersStoreProvider>
-        <FilterModalNavigator
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          collection={CollectionFixture}
-          exitModal={exitModalMock}
-          closeModal={closeModalMock}
-          mode={FilterModalMode.ArtistArtworks}
-          id="abc123"
-          slug="some-artist"
-          isFilterArtworksModalVisible
-        />
-        <ArtworkFiltersStoreConsumer />
-      </ArtworkFiltersStoreProvider>
-    </Theme>
+    <GlobalStoreProvider>
+      <Theme>
+        <ArtworkFiltersStoreProvider initialData={initialData}>
+          <FilterModalNavigator
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            collection={CollectionFixture}
+            exitModal={exitModalMock}
+            closeModal={closeModalMock}
+            mode={FilterModalMode.ArtistArtworks}
+            id="abc123"
+            slug="some-artist"
+            isFilterArtworksModalVisible
+          />
+        </ArtworkFiltersStoreProvider>
+      </Theme>
+    </GlobalStoreProvider>
   )
 }
 
@@ -200,7 +190,7 @@ describe("Filter modal navigation flow", () => {
     )
 
     // the first row item takes users to the Medium navigation route
-    const instance = filterScreen.root.findAllByType(TouchableOptionListItemRow)[0]
+    const instance = filterScreen.root.findAllByType(TouchableRow)[0]
 
     act(() => instance.props.onPress())
     expect(navigateMock).toBeCalledWith("SortOptionsScreen")
@@ -208,18 +198,16 @@ describe("Filter modal navigation flow", () => {
 
   it("allows users to navigate forward to medium screen from filter screen", () => {
     const filterScreen = renderWithWrappers(
-      <ArtworkFiltersStoreProvider>
+      <ArtworkFiltersStoreProvider initialData={initialState}>
         <FilterOptionsScreen
           {...getEssentialProps({
             mode: FilterModalMode.Collection,
           })}
         />
-        <ArtworkFiltersStoreConsumer />
       </ArtworkFiltersStoreProvider>
     )
-    ;(storeInstance as any).getActions().__injectState?.(initialState)
     // the second row item takes users to the Medium navigation route
-    const instance = filterScreen.root.findAllByType(TouchableOptionListItemRow)[1]
+    const instance = filterScreen.root.findAllByType(TouchableRow)[1]
 
     act(() => instance.props.onPress())
 
@@ -227,7 +215,7 @@ describe("Filter modal navigation flow", () => {
   })
 
   it("allows users to exit filter modal screen when selecting close icon", () => {
-    const filterScreen = mount(<MockFilterScreen StoreConsumer={ArtworkFiltersStoreConsumer} />)
+    const filterScreen = mount(<MockFilterModalNavigator />)
 
     filterScreen.find(CloseIconContainer).props().onPress()
     expect(closeModalMock).toHaveBeenCalled()
@@ -249,8 +237,7 @@ describe("Filter modal states", () => {
       },
     }
 
-    const filterScreen = mount(<MockFilterScreen StoreConsumer={ArtworkFiltersStoreConsumer} />)
-    ;(storeInstance as any).getActions().__injectState?.(injectedState)
+    const filterScreen = mount(<MockFilterScreen initialState={injectedState} />)
     expect(filterScreen.find(CurrentOption).at(0).text()).toEqual("Price (low to high)")
   })
 
@@ -274,8 +261,7 @@ describe("Filter modal states", () => {
       },
     }
 
-    const filterScreen = mount(<MockFilterScreen StoreConsumer={ArtworkFiltersStoreConsumer} />)
-    ;(storeInstance as any).getActions().__injectState?.(injectedState)
+    const filterScreen = mount(<MockFilterScreen initialState={injectedState} />)
 
     expect(filterScreen.find(CurrentOption).at(1).text()).toEqual("Performance Art")
   })
@@ -300,16 +286,13 @@ describe("Filter modal states", () => {
       },
     }
 
-    const filterScreen = renderWithWrappers(<MockFilterModalNavigator />)
-
-    ;(storeInstance as any).getActions().__injectState?.(injectedState)
+    const filterScreen = renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
 
     expect(filterScreen.root.findByType(ApplyButton).props.disabled).toEqual(false)
   })
 
   it("displays default filters on the Filter modal", () => {
-    const filterScreen = mount(<MockFilterScreen StoreConsumer={ArtworkFiltersStoreConsumer} />)
-    ;(storeInstance as any).getActions().__injectState?.(initialState)
+    const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
 
     expect(filterScreen.find(CurrentOption).at(0).text()).toEqual("Default")
 
@@ -342,9 +325,7 @@ describe("Filter modal states", () => {
       },
     }
 
-    const filterScreen = renderWithWrappers(<MockFilterScreen StoreConsumer={ArtworkFiltersStoreConsumer} />)
-
-    ;(storeInstance as any).getActions().__injectState?.(injectedState)
+    const filterScreen = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
     expect(extractText(filterScreen.root.findAllByType(CurrentOption)[0])).toEqual("Price (low to high)")
     expect(extractText(filterScreen.root.findAllByType(CurrentOption)[1])).toEqual("Drawing")
@@ -377,8 +358,7 @@ describe("Clearing filters", () => {
       },
     }
 
-    const filterScreen = renderWithWrappers(<MockFilterScreen StoreConsumer={ArtworkFiltersStoreConsumer} />)
-    ;(storeInstance as any).getActions().__injectState?.(injectedState)
+    const filterScreen = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
     expect(extractText(filterScreen.root.findAllByType(CurrentOption)[0])).toEqual("Price (low to high)")
 
@@ -401,8 +381,7 @@ describe("Clearing filters", () => {
       },
     }
 
-    const filterModal = mount(<MockFilterModalNavigator />)
-    ;(storeInstance as any).getActions().__injectState?.(injectedState)
+    const filterModal = mount(<MockFilterModalNavigator initialData={injectedState} />)
 
     expect(filterModal.find(CurrentOption).at(0).text()).toEqual("Recently added")
     expect(filterModal.find(ApplyButton).props().disabled).toEqual(true)
@@ -433,8 +412,7 @@ describe("Clearing filters", () => {
       },
     }
 
-    const filterModal = mount(<MockFilterModalNavigator />)
-    ;(storeInstance as any).getActions().__injectState?.(injectedState)
+    const filterModal = mount(<MockFilterModalNavigator initialData={injectedState} />)
     const applyButton = filterModal.find(ApplyButton)
 
     expect(applyButton.text()).toContain("Apply (2)")
@@ -454,7 +432,7 @@ describe("Applying filters on Artworks", () => {
     mockEnvironmentPayload(env)
   })
 
-  const TestRenderer = () => (
+  const TestRenderer = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => (
     <QueryRenderer<FilterModalTestsQuery>
       environment={env}
       query={graphql`
@@ -469,9 +447,8 @@ describe("Applying filters on Artworks", () => {
         if (props?.marketingCollection) {
           return (
             <Theme>
-              <ArtworkFiltersStoreProvider>
+              <ArtworkFiltersStoreProvider initialData={initialData}>
                 <CollectionArtworksFragmentContainer collection={props.marketingCollection} scrollToTop={jest.fn()} />
-                <ArtworkFiltersStoreConsumer />
               </ArtworkFiltersStoreProvider>
             </Theme>
           )
@@ -496,14 +473,13 @@ describe("Applying filters on Artworks", () => {
       },
     }
 
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer initialData={injectedState} />)
 
     mockEnvironmentPayload(env, {
       MarketingCollection: () => ({
         slug: "street-art-now",
       }),
     })
-    ;(storeInstance as any).getActions().__injectState?.(injectedState)
 
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toEqual(
       "CollectionArtworksInfiniteScrollGridQuery"
@@ -515,6 +491,7 @@ describe("Applying filters on Artworks", () => {
         "atAuction": false,
         "attributionClass": null,
         "color": null,
+        "colors": null,
         "count": 10,
         "cursor": null,
         "dimensionRange": "*-*",
@@ -549,9 +526,8 @@ describe("Applying filters on Artworks", () => {
       },
     }
 
-    const filterModal = renderWithWrappers(<MockFilterModalNavigator />)
+    const filterModal = renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
     mockEnvironmentPayload(env)
-    ;(storeInstance as any).getActions().__injectState?.(injectedState)
 
     const applyButton = filterModal.root.findByType(ApplyButton)
 

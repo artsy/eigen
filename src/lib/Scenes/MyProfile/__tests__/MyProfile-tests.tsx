@@ -4,6 +4,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 
 import { extractText } from "lib/tests/extractText"
+import { Platform } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -62,5 +63,17 @@ describe(MyProfileQueryRenderer, () => {
   it("doesn't render MyCollections app if feature flag is not on", () => {
     const tree = getWrapper()
     expect(extractText(tree.root)).not.toContain("My Collection")
+  })
+
+  it("renders push notifications on iOS", () => {
+    Platform.OS = "ios"
+    const tree = getWrapper()
+    expect(extractText(tree.root)).toContain("Push notifications")
+  })
+
+  it("doesn't render push notifications on Android", () => {
+    Platform.OS = "android"
+    const tree = getWrapper()
+    expect(extractText(tree.root)).not.toContain("Push notifications")
   })
 })

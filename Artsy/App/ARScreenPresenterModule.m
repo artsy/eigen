@@ -10,7 +10,6 @@
 #import "ARAuctionWebViewController.h"
 #import "ArtsyEcho.h"
 #import "ARAppDelegate+Echo.h"
-#import <Emission/ARBidFlowViewController.h>
 #import "ARRouter.h"
 #import <Emission/ARMediaPreviewController.h>
 #import <MessageUI/MFMailComposeViewController.h>
@@ -23,7 +22,7 @@
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
 #import "ARSerifNavigationViewController.h"
-#import "ARModalWithBottomSafeAreaViewController.h"
+#import "ARModalViewController.h"
 
 #import "UIView+ScrollToTop.h"
 
@@ -46,8 +45,8 @@ RCT_EXPORT_METHOD(pushView:(nonnull NSString *)currentTabStackID viewDescriptor:
 {
     UIViewController *vc = [self getViewControllerForViewDescriptor:viewDescriptor];
     UINavigationController *stack = nil;
-    ARModalWithBottomSafeAreaViewController *currentlyPresentedVC = (id)[self.class currentlyPresentedVC];
-    if ([currentlyPresentedVC isKindOfClass:ARModalWithBottomSafeAreaViewController.class]) {
+    ARModalViewController *currentlyPresentedVC = (id)[self.class currentlyPresentedVC];
+    if ([currentlyPresentedVC isKindOfClass:ARModalViewController.class]) {
         // we're showing a modal with a view stack, push it there instead
         stack = currentlyPresentedVC.stack;
     } else {
@@ -59,12 +58,12 @@ RCT_EXPORT_METHOD(pushView:(nonnull NSString *)currentTabStackID viewDescriptor:
         deepLinkVC = vc;
         return;
     }
-    
+
     if ([vc isKindOfClass:ARComponentViewController.class]) {
         ARComponentViewController *reactVC = (ARComponentViewController *)vc;
         // if we're in a modal, get the modal id from the stack map
         NSString *stackID = currentTabStackID;
-        if ([currentlyPresentedVC isKindOfClass:ARModalWithBottomSafeAreaViewController.class]) {
+        if ([currentlyPresentedVC isKindOfClass:ARModalViewController.class]) {
             for(id key in [self.class cachedNavigationStacks]) {
                 // if the nav stack with id `key` is the same instance as the one we're about to push to, then `key` is the stackID we want to set.
                 if ([self.class cachedNavigationStacks][key] == stack) {
@@ -85,7 +84,13 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
     UIModalPresentationStyle modalPresentationStyle = [self getModalPresentationStyle:viewDescriptor[@"modalPresentationStyle"]];
     UIViewController *vc = [self getViewControllerForViewDescriptor:viewDescriptor];
 
+    if ([vc isKindOfClass:ARComponentViewController.class]) {
+        [((ARComponentViewController *)vc) setProperty:@(YES) forKey:@"isPresentedModally"];
+    }
+
+    // TODO: Should this be [viewDescriptor[@"hasOwnModalCloseButton" boolValue] as below?
     BOOL hasOwnModalCloseButton = viewDescriptor[@"hasOwnModalCloseButton"];
+
 
     NSString *stackID = [[NSUUID UUID] UUIDString];
 
@@ -98,12 +103,25 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
         stack = [self.class createModalNavigationStack:stackID rootViewController:vc withBackButton:!hasOwnModalCloseButton];
     }
 
-    ARModalWithBottomSafeAreaViewController *modal = [[ARModalWithBottomSafeAreaViewController alloc] initWithStack:stack];
+    ARModalViewController *modal = [[ARModalViewController alloc] initWithStack:stack];
     modal.modalPresentationStyle = modalPresentationStyle;
-
-    [[self.class currentlyPresentedVC] presentViewController:modal animated:YES completion:^ {
-        resolve(stackID);
-    }];
+    
+    UIViewController *topVC = [self.class currentlyPresentedVC];
+    UIViewController *parentVC = [topVC presentingViewController];
+    
+    BOOL shouldReplaceTopVC = [viewDescriptor[@"replace"] boolValue];
+    
+    if (shouldReplaceTopVC) {
+        [parentVC dismissViewControllerAnimated:NO completion:^{
+            [parentVC presentViewController:modal animated:YES completion:^{
+                resolve(stackID);
+            }];
+        }];
+    } else {
+        [topVC presentViewController:modal animated:YES completion:^ {
+            resolve(stackID);
+        }];
+    }
 }
 
 - (UIModalPresentationStyle)getModalPresentationStyle:(NSString *)string {
@@ -134,10 +152,6 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
         vc = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     } else if ([moduleName isEqualToString:@"Auction"]) {
         vc = [self.class loadAuctionWithID:props[@"id"]];
-    } else if ([moduleName isEqualToString:@"AuctionRegistration"]) {
-        vc = [self.class loadAuctionRegistrationWithID:props[@"id"] skipBidFlow:[props[@"skip_bid_flow"] boolValue]];
-    } else if ([moduleName isEqualToString:@"AuctionBidArtwork"]) {
-        vc = [self.class loadBidUIForArtwork:props[@"artwork_id"] inSale:props[@"id"]];
     } else if ([moduleName isEqualToString:@"LiveAuction"]) {
         if ([AROptions boolForOption:AROptionsDisableNativeLiveAuctions] || [self.class requiresUpdateForWebSocketVersionUpdate]) {
             NSString *slug = props[@"slug"];
@@ -164,7 +178,7 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
 {
     UIViewController *vc = [[ARAppDelegate sharedInstance] window].rootViewController;
 
-    while ([vc presentedViewController] && [[vc presentedViewController] isKindOfClass:ARModalWithBottomSafeAreaViewController.class]) {
+    while ([vc presentedViewController] && [[vc presentedViewController] isKindOfClass:ARModalViewController.class]) {
         vc = [vc presentedViewController];
     }
 
@@ -179,10 +193,10 @@ RCT_EXPORT_METHOD(dismissModal)
 RCT_EXPORT_METHOD(goBack:(nonnull NSString *)currentTabStackID)
 {
     UINavigationController *vc = (id)[self.class currentlyPresentedVC];
-    if ([vc presentingViewController] && [vc isKindOfClass:ARModalWithBottomSafeAreaViewController.class]) {
+    if ([vc presentingViewController] && [vc isKindOfClass:ARModalViewController.class]) {
         // it's a modal
-        if ([vc isKindOfClass:ARModalWithBottomSafeAreaViewController.class] && ((ARModalWithBottomSafeAreaViewController *)vc).stack.viewControllers.count > 1) {
-            [((ARModalWithBottomSafeAreaViewController *)vc).stack popViewControllerAnimated:YES];
+        if ([vc isKindOfClass:ARModalViewController.class] && ((ARModalViewController *)vc).stack.viewControllers.count > 1) {
+            [((ARModalViewController *)vc).stack popViewControllerAnimated:YES];
         } else {
             [self dismissModal];
         }
@@ -229,28 +243,11 @@ RCT_EXPORT_METHOD(popToRootAndScrollToTop:(nonnull NSString *)stackID
     }
 }
 
-+ (UIViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID skipBidFlow:(BOOL)skipBidFlow
++ (UIViewController *)loadWebViewAuctionRegistrationWithID:(NSString *)auctionID
 {
-    if ([[[ARAppDelegate sharedInstance] echo] isFeatureEnabled:@"ARDisableReactNativeBidFlow"] == NO && skipBidFlow == NO) {
-        ARBidFlowViewController *viewController = [[ARBidFlowViewController alloc] initWithArtworkID:@"" saleID:auctionID intent:ARBidFlowViewControllerIntentRegister];
-        return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
-    } else {
-        NSString *path = [NSString stringWithFormat:@"/auction-registration/%@", auctionID];
-        NSURL *URL = [ARRouter resolveRelativeUrl:path];
-        return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
-    }
-}
-
-+ (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID
-{
-    if ([[[ARAppDelegate sharedInstance] echo] isFeatureEnabled:@"ARDisableReactNativeBidFlow"] == NO) {
-        ARBidFlowViewController *viewController = [[ARBidFlowViewController alloc] initWithArtworkID:artworkID saleID:saleID];
-        return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
-    } else {
-        NSString *path = [NSString stringWithFormat:@"/auction/%@/bid/%@", saleID, artworkID];
-        NSURL *URL = [ARRouter resolveRelativeUrl:path];
-        return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:artworkID];
-    }
+    NSString *path = [NSString stringWithFormat:@"/auction-registration/%@", auctionID];
+    NSURL *URL = [ARRouter resolveRelativeUrl:path];
+    return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
 }
 
 /// To be kept in lock-step with the corresponding echo value, and updated when there is a breaking causality change.
@@ -383,10 +380,10 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
 
 RCT_EXPORT_METHOD(updateShouldHideBackButton:(BOOL)shouldHide currentTabStackID:(NSString *)currentTabStackID)
 {
-    ARModalWithBottomSafeAreaViewController *vc = (id)[self.class currentlyPresentedVC];
+    ARModalViewController *vc = (id)[self.class currentlyPresentedVC];
     ARNavigationController *stack = nil;
 
-    if ([vc isKindOfClass:ARModalWithBottomSafeAreaViewController.class]) {
+    if ([vc isKindOfClass:ARModalViewController.class]) {
         // we're presenting a modal, update its back button
         stack = (id)vc.stack;
     } else {

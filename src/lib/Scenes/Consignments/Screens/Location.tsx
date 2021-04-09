@@ -8,6 +8,7 @@ import { ConsignmentSetup, LocationResult } from "../index"
 
 import { stringify } from "qs"
 
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Theme } from "palette"
 import { Dimensions } from "react-native"
 import Config from "react-native-config"
@@ -106,6 +107,7 @@ export default class Location extends React.Component<Props, State> {
     return (
       <Theme>
         <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
+          <FancyModalHeader onLeftButtonPress={this.doneTapped}>Location</FancyModalHeader>
           <View
             style={{
               alignContent: "center",
@@ -113,7 +115,6 @@ export default class Location extends React.Component<Props, State> {
               flexGrow: 1,
               marginLeft: 20,
               marginRight: 20,
-              marginTop: 20,
             }}
           >
             <SearchResults<LocationResult>

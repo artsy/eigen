@@ -1,6 +1,6 @@
 // easy-peasy ships with a fork of immer so let's use that instead of adding another copy of immer to our bundle.
 import { produce } from "immer-peasy"
-import echoLaunchJSON from "../../../Artsy/App/EchoNew.json"
+import { echoLaunchJson } from "lib/utils/jsonFiles"
 
 /**
  * IMPORTANT
@@ -15,9 +15,11 @@ export const Versions = {
   AddAuthAndConfigState: 5,
   AddFeatureFlagInfra: 6,
   RefactorConfigModel: 7,
+  FixEnvironmentMigrationBug: 8,
+  AddUserIsDev: 9,
 }
 
-export const CURRENT_APP_VERSION = Versions.RefactorConfigModel
+export const CURRENT_APP_VERSION = Versions.AddUserIsDev
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -51,7 +53,7 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddFeatureFlagInfra]: (state) => {
     state.config.adminFeatureFlagOverrides = {}
-    state.config.echoState = echoLaunchJSON
+    state.config.echoState = echoLaunchJson()
   },
   [Versions.RefactorConfigModel]: (state) => {
     const newConfig = {} as any
@@ -59,6 +61,13 @@ export const artsyAppMigrations: Migrations = {
     newConfig.echo = { state: state.config.echoState }
     newConfig.environment = { adminOverrides: {}, env: "staging" }
     state.config = newConfig
+  },
+  [Versions.FixEnvironmentMigrationBug]: (state) => {
+    state.config.environment.env = __TEST__ ? "staging" : "production"
+  },
+  [Versions.AddUserIsDev]: (state) => {
+    state.auth.androidUserEmail = null
+    state.config.userIsDev = { flipValue: false }
   },
 }
 

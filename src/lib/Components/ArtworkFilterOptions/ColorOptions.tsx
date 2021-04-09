@@ -12,10 +12,11 @@ import { isPad } from "lib/utils/hardware"
 import { floor } from "lodash"
 import { Flex } from "palette"
 import React, { useState } from "react"
-import { LayoutChangeEvent, TouchableOpacity, View } from "react-native"
+import { LayoutChangeEvent, View } from "react-native"
 import styled from "styled-components/native"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
 import { FilterModalNavigationStack } from "../FilterModal"
+import { TouchableRow } from "../TouchableRow"
 import { ColorSwatch } from "./ColorSwatch"
 
 // Color types
@@ -158,6 +159,6 @@ export const ColorOptionsScreen: React.FC<ColorOptionsScreenProps> = ({ navigati
   )
 }
 
-export const ColorContainer = styled(TouchableOpacity)`
+export const ColorContainer = styled(TouchableRow)`
   margin: ${INTER_ITEM_SPACE}px ${INTER_ITEM_SPACE / 2}px 0px ${INTER_ITEM_SPACE / 2}px;
 `
