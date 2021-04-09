@@ -4,11 +4,7 @@ import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids
 import { FairArtworksFragmentContainer } from "lib/Scenes/Fair/Components/FairArtworks"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import {
-  ArtworkFilterContext,
-  ArtworkFilterContextState,
-  ArtworkFiltersStoreProvider,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -16,23 +12,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 jest.unmock("react-relay")
 
 describe("FairArtworks", () => {
-  let state: ArtworkFilterContextState
-
-  beforeEach(() => {
-    state = {
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-      aggregations: [],
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    }
-  })
-
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 

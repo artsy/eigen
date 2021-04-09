@@ -479,28 +479,6 @@ export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigatio
           const currentOption =
             shouldUseImprovedArtworkFilters && selectedCurrentOption === "All" ? null : selectedCurrentOption
 
-          //           <Box>
-          // <TouchableOptionListItemRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
-          //   <OptionListItem>
-          //     <Flex p={2} pr="15px" flexDirection="row" justifyContent="space-between" flexGrow={1}>
-          //       <Flex flex={1}>
-          //         <Sans size="3t" color="black100">
-          //           {item.displayText}
-          //         </Sans>
-          //       </Flex>
-          //       <Flex flexDirection="row" alignItems="center" justifyContent="flex-end" flex={1}>
-          //         <OptionDetail
-          //           currentOption={selectedOption({
-          //             selectedOptions,
-          //             filterScreen: item.filterType,
-          //             filterType: filterTypeState,
-          //             aggregations: aggregationsState,
-          //           })}
-          //           filterType={item.filterType}
-          //         />
-          //         <ArrowRightIcon fill="black30" ml="1" />
-          //       </Flex>
-
           return (
             <TouchableRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
               <OptionListItem>

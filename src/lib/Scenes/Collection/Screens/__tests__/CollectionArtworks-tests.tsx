@@ -4,12 +4,8 @@ import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } fro
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import {
-  ArtworkFilterContextState,
-  ArtworkFiltersStoreProvider,
-  FilterArray,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { filterArtworksParams, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { FilterArray, filterArtworksParams, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -18,7 +14,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 jest.unmock("react-relay")
 
 describe("CollectionArtworks", () => {
-  let state: ArtworkFilterContextState
   let env: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
@@ -56,18 +51,6 @@ describe("CollectionArtworks", () => {
 
   beforeEach(() => {
     env = createMockEnvironment()
-    state = {
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-      aggregations: [],
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    }
   })
 
   it("returns zero state component when there are no artworks to display", () => {

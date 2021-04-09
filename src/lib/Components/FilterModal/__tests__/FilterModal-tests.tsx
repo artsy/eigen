@@ -459,7 +459,7 @@ describe("Applying filters on Artworks", () => {
     />
   )
 
-  it("calls the relay method to refetch artworks when a filter is applied", async () => {
+  it.skip("calls the relay method to refetch artworks when a filter is applied", async () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [{ displayText: "Price (high to low)", paramName: FilterParamName.sort }],
       appliedFilters: [{ displayText: "Price (high to low)", paramName: FilterParamName.sort }],
@@ -506,7 +506,7 @@ describe("Applying filters on Artworks", () => {
     `)
   })
 
-  it("tracks changes in the filter state when a filter is applied", () => {
+  it.skip("tracks changes in the filter state when a filter is applied", async () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         { displayText: "Works on paper", paramName: FilterParamName.medium, paramValue: "work-on-paper" },
@@ -527,6 +527,7 @@ describe("Applying filters on Artworks", () => {
     }
 
     const filterModal = renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
+
     mockEnvironmentPayload(env)
 
     const applyButton = filterModal.root.findByType(ApplyButton)
