@@ -1,3 +1,4 @@
+import { color } from "palette"
 import React, { ReactNode, useState } from "react"
 import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
@@ -180,24 +181,20 @@ export const Button: React.FC<ButtonProps> = (props) => {
   }
 
   const loadingStyles = (() => {
-    if (!props.loading) {
-      return {}
-    }
+    const opacity = props.disabled ? "0.1" : "1"
 
     if (props.inline) {
       return {
-        backgroundColor: "rgba(0, 0, 0, 0)",
-        color: "rgba(0, 0, 0, 0)",
+        backgroundColor: `rgba(0, 0, 0, ${opacity})`,
+        color: color("white100"),
         borderWidth: 0,
       }
     }
 
-    const { black100 } = themeProps.colors
-
     return {
-      backgroundColor: black100,
-      borderColor: black100,
-      color: "rgba(0, 0, 0, 0)",
+      backgroundColor: `rgba(0, 0, 0, ${opacity})`,
+      borderColor: `rgba(0, 0, 0, 0)`,
+      color: color("white100"),
     }
   })()
 
@@ -237,7 +234,6 @@ export const Button: React.FC<ButtonProps> = (props) => {
   const { children, loading, disabled, inline, longestText, ...rest } = props
   const s = getSize()
   const variantColors = getColorsForVariant(variant)
-  const opacity = props.disabled ? 0.1 : 1.0
 
   const from = variantColors[previous]
   const to = variantColors[current]
@@ -264,17 +260,21 @@ export const Button: React.FC<ButtonProps> = (props) => {
                 {...rest}
                 loading={loading}
                 disabled={disabled}
-                style={{ ...springProps, ...loadingStyles, height: s.height, opacity }}
+                style={{ ...springProps, ...loadingStyles, height: s.height }}
                 px={s.px}
               >
-                <VisibleTextContainer>
-                  <Sans weight="medium" color={loadingStyles.color || to.color} size={s.size}>
-                    {children}
-                  </Sans>
-                </VisibleTextContainer>
-                <HiddenText role="presentation" weight="medium" size={s.size}>
-                  {longestText ? longestText : children}
-                </HiddenText>
+                {!loading && (
+                  <>
+                    <VisibleTextContainer>
+                      <Sans weight="medium" color={loadingStyles.color || to.color} size={s.size}>
+                        {children}
+                      </Sans>
+                    </VisibleTextContainer>
+                    <HiddenText role="presentation" weight="medium" size={s.size}>
+                      {longestText ? longestText : children}
+                    </HiddenText>
+                  </>
+                )}
 
                 {!!loading && <Spinner size={size} color={spinnerColor} />}
               </AnimatedContainer>

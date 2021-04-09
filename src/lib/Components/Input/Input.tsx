@@ -1,11 +1,20 @@
-import { color, Color, Flex, Sans, XCircleIcon } from "palette"
+import { color, Color, EyeOpenedIcon, Flex, Sans, TEXT_FONTS, XCircleIcon } from "palette"
 import { fontFamily } from "palette/platform/fonts/fontFamily"
 import React, { useImperativeHandle, useRef, useState } from "react"
-import { TextInput, TextInputProps, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native"
+import {
+  LayoutAnimation,
+  Platform,
+  TextInput,
+  TextInputProps,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native"
 import styled from "styled-components/native"
+import { EyeClosedIcon } from "../../../palette/svgs/EyeClosedIcon"
 import { InputTitle } from "./InputTitle"
 
-export const INPUT_HEIGHT = 40
+export const INPUT_HEIGHT = 43
 
 export interface InputProps extends TextInputProps {
   containerStyle?: React.ComponentProps<typeof Flex>["style"]
@@ -16,6 +25,7 @@ export interface InputProps extends TextInputProps {
   required?: boolean
   title?: string
   enableClearButton?: boolean
+  canHidePassword?: boolean
   onClear?(): void
   renderLeftHandSection?(): JSX.Element
 }
@@ -36,14 +46,36 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       enableClearButton,
       title,
       renderLeftHandSection,
+      secureTextEntry = false,
+      textContentType,
+      canHidePassword,
       ...rest
     },
     ref
   ) => {
     const [focused, setFocused] = useState(false)
+    const [showPassword, setShowPassword] = useState(!secureTextEntry)
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
     const input = useRef<TextInput>()
     useImperativeHandle(ref, () => input.current!)
+
+    const renderShowPasswordIcon = () => {
+      if (!secureTextEntry) {
+        return
+      }
+      return (
+        <Flex pr="1" justifyContent="center" flexGrow={0}>
+          <TouchableOpacity
+            onPress={() => {
+              setShowPassword(!showPassword)
+            }}
+            hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
+          >
+            {!showPassword ? <EyeClosedIcon fill="black30" /> : <EyeOpenedIcon fill="black60" />}
+          </TouchableOpacity>
+        </Flex>
+      )
+    }
     return (
       <Flex flexGrow={1} style={containerStyle}>
         <InputTitle required={required}>{title}</InputTitle>
@@ -76,22 +108,31 @@ export const Input = React.forwardRef<TextInput, InputProps>(
               <StyledInput
                 ref={input}
                 placeholderTextColor={color("black60")}
-                style={{ flex: 1 }}
+                style={{ flex: 1, fontFamily: TEXT_FONTS.sans, fontSize: 15 }}
+                secureTextEntry={!showPassword}
+                textAlignVertical="center"
                 {...(rest as any)}
                 onChangeText={(text) => {
                   setValue(text)
                   rest.onChangeText?.(text)
                 }}
                 onFocus={(e) => {
+                  if (Platform.OS === "android") {
+                    LayoutAnimation.configureNext(LayoutAnimation.create(60, "easeInEaseOut", "opacity"))
+                  }
                   setFocused(true)
                   rest.onFocus?.(e)
                 }}
                 onBlur={(e) => {
+                  if (Platform.OS === "android") {
+                    LayoutAnimation.configureNext(LayoutAnimation.create(60, "easeInEaseOut", "opacity"))
+                  }
                   setFocused(false)
                   rest.onBlur?.(e)
                 }}
               />
             </Flex>
+            {renderShowPasswordIcon()}
             {!!(Boolean(value) && enableClearButton) && (
               <Flex pr="1" justifyContent="center" flexGrow={0}>
                 <TouchableOpacity
@@ -138,7 +179,7 @@ export const computeBorderColor = (inputStatus: InputStatus): Color => {
     return "red100"
   }
   if (focused) {
-    return "purple100"
+    return "black100"
   }
   return "black10"
 }
@@ -152,8 +193,8 @@ const StyledInput = styled(TextInput)`
   left: 10;
   right: 10;
   top: 12; /* to center the text nicely */
-  bottom: -20;
-  padding-bottom: 30;
+  bottom: -30;
+  padding-bottom: 40;
 
   /* to center the text */
   font-family: ${fontFamily.sans.regular.normal};

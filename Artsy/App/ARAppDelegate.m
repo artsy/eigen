@@ -228,6 +228,7 @@ static ARAppDelegate *_sharedInstance = nil;
     // And update emission's auth state
     [[AREmission sharedInstance] updateState:@{
         [ARStateKey userID]: [[[ARUserManager sharedManager] currentUser] userID],
+        [ARStateKey userEmail]: [[[ARUserManager sharedManager] currentUser] email],
         [ARStateKey authenticationToken]: [[ARUserManager sharedManager] userAuthenticationToken],
     }];
 
@@ -245,10 +246,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)setupAdminTools
 {
-    if (!ARAppStatus.isBetaDevOrAdmin) {
-        return;
-    }
-
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rageShakeNotificationRecieved) name:DHCSHakeNotificationName object:nil];
 
     [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORTildeKey:^{
@@ -336,6 +333,10 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)rageShakeNotificationRecieved
 {
+    if (![[AREmission sharedInstance] reactStateBoolForKey:[ARReactStateKey userIsDev]]) {
+        return;
+    }
+    
     if (![UIDevice isPad]) {
         // For some reason the supported orientation isn’t respected when this is pushed on top
         // of a landscape VIR view.

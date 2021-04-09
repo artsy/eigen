@@ -15,7 +15,7 @@ import { color, Flex, Text, Touchable } from "palette"
 import React from "react"
 import { View } from "react-native"
 import Svg, { Path } from "react-native-svg"
-import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 import { ConversationDetailsQueryRenderer } from "./ConversationDetails"
 
@@ -41,7 +41,7 @@ const HeaderTextContainer = styled.View`
 
 interface Props {
   me: Conversation_me
-  relay: RelayProp
+  relay: RelayRefetchProp
   onMessageSent?: (text: string) => void
   navigator: NavigatorIOS
 }
@@ -202,6 +202,18 @@ export class Conversation extends React.Component<Props, State> {
             onDataFetching={(loading) => {
               this.setState({ fetchingData: loading })
             }}
+            onRefresh={() => {
+              this.props.relay.refetch(
+                { conversationID: conversation?.internalID },
+                null,
+                (error) => {
+                  if (error) {
+                    console.error("Conversation.tsx", error.message)
+                  }
+                },
+                { force: true }
+              )
+            }}
           />
         </Container>
       </ComposerFragmentContainer>
@@ -209,26 +221,36 @@ export class Conversation extends React.Component<Props, State> {
   }
 }
 
-export const ConversationFragmentContainer = createFragmentContainer(Conversation, {
-  me: graphql`
-    fragment Conversation_me on Me {
-      conversation(id: $conversationID) {
-        ...Composer_conversation
-        ...Messages_conversation
-        internalID
-        id
-        lastMessageID
-        unread
-        to {
-          name
-        }
-        from {
-          email
+export const ConversationFragmentContainer = createRefetchContainer(
+  Conversation,
+  {
+    me: graphql`
+      fragment Conversation_me on Me {
+        conversation(id: $conversationID) {
+          ...Composer_conversation
+          ...Messages_conversation
+          internalID
+          id
+          lastMessageID
+          unread
+          to {
+            name
+          }
+          from {
+            email
+          }
         }
       }
+    `,
+  },
+  graphql`
+    query ConversationRefetchQuery($conversationID: String!) {
+      me {
+        ...Conversation_me
+      }
     }
-  `,
-})
+  `
+)
 
 export const ConversationQueryRenderer: React.FC<{
   conversationID: string

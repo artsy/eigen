@@ -6,6 +6,7 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graphql"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
+import { TouchableRow } from "lib/Components/TouchableRow"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
@@ -29,7 +30,6 @@ import {
   FilterModalMode,
   FilterModalNavigator,
   FilterOptionsScreen,
-  TouchableOptionListItemRow,
 } from "../FilterModal"
 
 let state: ArtworkFilterContextState
@@ -204,7 +204,7 @@ describe("Filter modal navigation flow", () => {
     )
 
     // the first row item takes users to the Medium navigation route
-    const instance = filterScreen.root.findAllByType(TouchableOptionListItemRow)[0]
+    const instance = filterScreen.root.findAllByType(TouchableRow)[0]
 
     act(() => instance.props.onPress())
     expect(navigateMock).toBeCalledWith("SortOptionsScreen")
@@ -235,7 +235,7 @@ describe("Filter modal navigation flow", () => {
     )
 
     // the second row item takes users to the Medium navigation route
-    const instance = filterScreen.root.findAllByType(TouchableOptionListItemRow)[1]
+    const instance = filterScreen.root.findAllByType(TouchableRow)[1]
 
     act(() => instance.props.onPress())
 
@@ -243,7 +243,11 @@ describe("Filter modal navigation flow", () => {
   })
 
   it("allows users to exit filter modal screen when selecting close icon", () => {
-    const filterScreen = mount(<MockFilterScreen initialState={state} />)
+    const filterScreen = mount(
+      <GlobalStoreProvider>
+        <MockFilterScreen initialState={state} />
+      </GlobalStoreProvider>
+    )
 
     filterScreen.find(CloseIconContainer).props().onPress()
     expect(closeModalMock).toHaveBeenCalled()
@@ -265,7 +269,11 @@ describe("Filter modal states", () => {
       },
     }
 
-    const filterScreen = mount(<MockFilterScreen initialState={state} />)
+    const filterScreen = mount(
+      <GlobalStoreProvider>
+        <MockFilterScreen initialState={state} />
+      </GlobalStoreProvider>
+    )
     expect(filterScreen.find(CurrentOption).at(0).text()).toEqual("Price (low to high)")
   })
 
@@ -289,7 +297,11 @@ describe("Filter modal states", () => {
       },
     }
 
-    const filterScreen = mount(<MockFilterScreen initialState={state} />)
+    const filterScreen = mount(
+      <GlobalStoreProvider>
+        <MockFilterScreen initialState={state} />
+      </GlobalStoreProvider>
+    )
 
     expect(filterScreen.find(CurrentOption).at(1).text()).toEqual("Performance Art")
   })
@@ -365,7 +377,11 @@ describe("Filter modal states", () => {
       },
     }
 
-    const filterScreen = mount(<MockFilterScreen initialState={state} />)
+    const filterScreen = mount(
+      <GlobalStoreProvider>
+        <MockFilterScreen initialState={state} />
+      </GlobalStoreProvider>
+    )
 
     expect(filterScreen.find(CurrentOption).at(0).text()).toEqual("Price (low to high)")
 
@@ -409,7 +425,11 @@ describe("Clearing filters", () => {
       },
     }
 
-    const filterScreen = mount(<MockFilterScreen initialState={state} />)
+    const filterScreen = mount(
+      <GlobalStoreProvider>
+        <MockFilterScreen initialState={state} />
+      </GlobalStoreProvider>
+    )
 
     expect(filterScreen.find(CurrentOption).at(0).text()).toEqual("Price (low to high)")
 

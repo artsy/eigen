@@ -1,7 +1,8 @@
-import { Box, CheckIcon, Text, Touchable, TouchableProps } from "palette"
+import { Box, CheckIcon, Text } from "palette"
 import React from "react"
+import { TouchableRow, TouchableRowProps } from "../TouchableRow"
 
-interface ColorsSwatchProps extends TouchableProps {
+type ColorsSwatchProps = TouchableRowProps & {
   width: number
   name: string
   backgroundColor: string
@@ -18,7 +19,7 @@ export const ColorsSwatch: React.FC<ColorsSwatchProps> = ({
   ...rest
 }) => {
   return (
-    <Touchable {...rest}>
+    <TouchableRow {...rest}>
       <Box width={width} py={1}>
         <Box position="relative" mx="auto" width="34px" height="34px" borderRadius="17px" bg={backgroundColor}>
           {!!selected && (
@@ -39,6 +40,6 @@ export const ColorsSwatch: React.FC<ColorsSwatchProps> = ({
           {name}
         </Text>
       </Box>
-    </Touchable>
+    </TouchableRow>
   )
 }

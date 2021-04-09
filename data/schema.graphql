@@ -50,7 +50,8 @@ type AnalyticsArtworksPublishedStats {
   totalCount: Int!
 }
 
-# An ISO 8601 datetime
+# An ISO 8601 datetime -- second one is because of moving price insights
+# from Diffusion to Vortex.
 scalar AnalyticsDateTime
 
 # Visitor countries, device, referals and session page
@@ -6899,7 +6900,6 @@ enum InvoiceState {
   VOID
 }
 
-# An ISO 8601-encoded datetime
 scalar ISO8601DateTime
 
 # Represents untyped JSON
@@ -8042,6 +8042,7 @@ type Partner implements Node {
   collectingInstitution: String
   counts: PartnerCounts
   defaultProfileID: String
+  distinguishRepresentedArtists: Boolean
 
   # Artworks Elastic Search results
   filterArtworksConnection(
@@ -8393,7 +8394,7 @@ type PriceInsightConnection {
   pageCursors: PageCursors
 
   # Information to aid in pagination.
-  pageInfo: PageInfo!
+  pageInfo: AnalyticsPageInfo!
   totalCount: Int
   totalPages: Int
 }
@@ -8575,6 +8576,7 @@ type Profile {
   bio: String
   cached: Int
   counts: ProfileCounts
+  displayArtistsSection: Boolean
   href: String
   icon: Image
 
@@ -8589,6 +8591,7 @@ type Profile {
   isPubliclyVisible: Boolean
   isPublished: Boolean
   name: String
+  profileArtistsLayout: String
 
   # A slug ID.
   slug: ID!
@@ -8975,6 +8978,7 @@ type Query {
     sellerType: String
     sort: CommerceOrderConnectionSortEnum
     state: CommerceOrderStateEnum
+    states: [CommerceOrderStateEnum!]
   ): CommerceOrderConnectionWithTotalCount
 
   # Sold or bought-in consignments

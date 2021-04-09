@@ -19,6 +19,7 @@ interface Props {
   conversation: Messages_conversation
   relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
+  onRefresh?: () => void
 }
 
 const LoadingIndicator = styled.ActivityIndicator`
@@ -36,7 +37,7 @@ export type ConversationMessage = NonNullable<
 >
 
 export const Messages: React.FC<Props> = forwardRef((props, ref) => {
-  const { conversation, relay, onDataFetching } = props
+  const { conversation, relay, onDataFetching, onRefresh } = props
 
   const [fetchingMoreData, setFetchingMoreData] = useState(false)
   const [reloadingData, setReloadingData] = useState(false)
@@ -74,13 +75,6 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   }, [allOrderEvents.length, allMessages.length])
 
   const flatList = useRef<FlatList>(null)
-  const [flatListHeight, setFlatListHeight] = useState(0)
-  const [contentHeight, setContentHeight] = useState(0)
-  const [shouldStickFirstMessageToTop, setShouldStickFirstMessageToTop] = useState(false)
-
-  useEffect(() => {
-    setShouldStickFirstMessageToTop(contentHeight < flatListHeight)
-  }, [contentHeight || flatListHeight])
 
   const loadMore = () => {
     if (!relay.hasMore() || relay.isLoading()) {
@@ -115,6 +109,9 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   const reload = () => {
     const count = extractNodes(conversation.messagesConnection).length
     setReloadingData(true)
+    if (onRefresh) {
+      onRefresh()
+    }
     relay.refetchConnection(count, (error) => {
       if (error) {
         // FIXME: Handle error
@@ -147,26 +144,16 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
           />
         )
       }}
-      inverted={!shouldStickFirstMessageToTop}
+      inverted={true}
       ref={flatList}
       keyExtractor={(group) => {
         return group[0].id
       }}
-      keyboardShouldPersistTaps="always"
       onEndReached={loadMore}
       onEndReachedThreshold={0.2}
-      onLayout={({
-        nativeEvent: {
-          layout: { height },
-        },
-      }) => {
-        setFlatListHeight(height)
-      }}
-      onContentSizeChange={(_width, height) => {
-        setContentHeight(height)
-      }}
       refreshControl={refreshControl}
       style={{ ...messagesStyles, paddingHorizontal: 10, flex: 0 }}
+      contentContainerStyle={{ justifyContent: "flex-end", flexGrow: 1 }}
       ListFooterComponent={<LoadingIndicator animating={fetchingMoreData} hidesWhenStopped />}
     />
   )

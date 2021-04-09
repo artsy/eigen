@@ -1,6 +1,5 @@
-import { color, Sans } from "palette"
+import { color, Text } from "palette"
 import React from "react"
-import { Text } from "react-native"
 
 export const InputTitle: React.FC<{ required?: boolean }> = ({ children: title, required }) => {
   if (!title) {
@@ -8,9 +7,13 @@ export const InputTitle: React.FC<{ required?: boolean }> = ({ children: title, 
   }
 
   return (
-    <Sans mb={0.5} size="3" weight="medium">
+    <Text variant="text" mb={0.5}>
       {title}
-      {!!required && <Text style={{ color: color("purple100") }}>*</Text>}
-    </Sans>
+      {!!required && (
+        <Text variant="mediumText" color={color("purple100")}>
+          *
+        </Text>
+      )}
+    </Text>
   )
 }

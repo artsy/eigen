@@ -1,4 +1,4 @@
-import { RelayNetworkLayer } from "react-relay-network-modern/node8"
+import { errorMiddleware, RelayNetworkLayer } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
 
 import { cacheMiddleware } from "./middlewares/cacheMiddleware"
@@ -31,6 +31,7 @@ export function createEnvironment(
       checkAuthenticationMiddleware(),
       metaphysicsExtensionsLoggerMiddleware(),
       simpleLoggerMiddleware(),
+      __DEV__ ? errorMiddleware() : null,
       timingMiddleware(),
     ],
     // `noThrow` is currently marked as "experimental" and may be deprecated in the future.

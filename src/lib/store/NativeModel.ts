@@ -21,6 +21,7 @@ export type NativeEvent =
 
 export interface NativeState {
   userID: string
+  userEmail: string
   authenticationToken: string
   launchCount: number
   onboardingState: "none" | "incomplete" | "complete"

@@ -7,7 +7,7 @@
 // 4. Update height of grid to encompass all items.
 
 import React from "react"
-import { Dimensions, LayoutChangeEvent, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
+import { Dimensions, LayoutChangeEvent, Platform, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, RelayPaginationProp } from "react-relay"
 
 import Artwork from "./ArtworkGridItem"
@@ -266,7 +266,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
-    const { shouldAddPadding, autoFetch, hasMore, stickyHeaderIndices } = this.props
+    const { shouldAddPadding, hasMore, stickyHeaderIndices } = this.props
+    const autoFetch = Platform.OS === "android" ? false : this.props.autoFetch
     const boxPadding = shouldAddPadding ? 2 : 0
 
     return (

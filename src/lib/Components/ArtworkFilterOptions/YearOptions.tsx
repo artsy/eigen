@@ -4,7 +4,6 @@ import { ArtworkFilterContext, useSelectedOptionsDisplay } from "lib/utils/Artwo
 import { aggregationForFilter, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Box, CheckIcon, color, Flex, Separator, Text } from "palette"
 import React, { useContext, useState } from "react"
-import { TouchableOpacity } from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import styled from "styled-components/native"
 import { FilterData } from "../../utils/ArtworkFilter/ArtworkFiltersStore"
@@ -12,6 +11,7 @@ import { useScreenDimensions } from "../../utils/useScreenDimensions"
 import { CircleWithBorder } from "../CircleWithBorder/CircleWithBorder"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
 import { FilterModalNavigationStack } from "../FilterModal"
+import { TouchableRow } from "../TouchableRow"
 
 interface YearOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "YearOptionsScreen"> {}
 
@@ -154,7 +154,7 @@ interface OptionItemProps {
 }
 
 export const OptionItem = ({ onPress, text, selected }: OptionItemProps) => (
-  <TouchableOpacity onPress={onPress}>
+  <TouchableRow onPress={onPress}>
     <Flex flexGrow={1} justifyContent="space-between" flexDirection="row" height={60}>
       <Flex flexDirection="row" justifyContent="space-between" flexGrow={1} alignItems="center" pl={2} pr={2}>
         <Text variant="text">{text}</Text>
@@ -165,7 +165,7 @@ export const OptionItem = ({ onPress, text, selected }: OptionItemProps) => (
         )}
       </Flex>
     </Flex>
-  </TouchableOpacity>
+  </TouchableRow>
 )
 
 export const YearText = styled(Text)`

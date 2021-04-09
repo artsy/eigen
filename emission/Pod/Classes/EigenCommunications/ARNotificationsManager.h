@@ -8,6 +8,7 @@
 + (NSString *)authenticationToken;
 + (NSString *)launchCount;
 + (NSString *)onboardingState;
++ (NSString *)userEmail;
 + (NSString *)userAgent;
 + (NSString *)deviceId;
 @end
@@ -20,6 +21,7 @@
 + (NSString *)webURL;
 + (NSString *)causalityURL;
 + (NSString *)env;
++ (NSString *)userIsDev;
 @end
 
 @interface ARNotificationsManager : RCTEventEmitter <RCTBridgeModule>

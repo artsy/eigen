@@ -97,6 +97,7 @@ SOFTWARE.
 - (void)setupSharedEmissionWithPackagerURL:(NSURL *)packagerURL;
 {
     NSString *userID = [[[ARUserManager sharedManager] currentUser] userID];
+    NSString *userEmail = [[[ARUserManager sharedManager] currentUser] email];
     NSString *authenticationToken = [[ARUserManager sharedManager] userAuthenticationToken];
 
     NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
@@ -104,11 +105,12 @@ SOFTWARE.
 
     AREmission *emission = [[AREmission alloc] initWithState:@{
                                                                  [ARStateKey userID] : (userID ?: [NSNull null]),
+                                                                 [ARStateKey userEmail] : (userEmail ?: [NSNull null]),
                                                                  [ARStateKey authenticationToken] : (authenticationToken ?: [NSNull null]),
                                                                  [ARStateKey launchCount] : @(launchCount),
                                                                  [ARStateKey onboardingState] : onboardingState == AROnboardingStageDefault ? @"none" : onboardingState == AROnboardingStageOnboarded ? @"complete" : @"incomplete",
                                                                  [ARStateKey userAgent] : ARRouter.userAgent,
-                                                                 [ARStateKey deviceId] : self.deviceId
+                                                                 [ARStateKey deviceId] : self.deviceId,
     } packagerURL:packagerURL];
 
     [emission.notificationsManagerModule afterBootstrap:^{

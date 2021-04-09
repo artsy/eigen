@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 13a81a7a3717ee77293be23c96b3e860 */
+/* @relayHash 7a27ffd9417391ebeba6a3986202d43a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -61,9 +61,6 @@ fragment ConversationSnippet_conversation on Conversation {
         id
       }
     }
-  }
-  messagesConnection {
-    totalCount
   }
 }
 
@@ -181,12 +178,6 @@ v10 = {
   "nullable": true,
   "plural": false,
   "type": "Image"
-},
-v11 = {
-  "enumValues": null,
-  "nullable": true,
-  "plural": false,
-  "type": "Int"
 };
 return {
   "fragment": {
@@ -428,24 +419,6 @@ return {
                         ],
                         "storageKey": null
                       },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "MessageConnection",
-                        "kind": "LinkedField",
-                        "name": "messagesConnection",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "totalCount",
-                            "storageKey": null
-                          }
-                        ],
-                        "storageKey": null
-                      },
                       (v3/*: any*/),
                       (v5/*: any*/)
                     ],
@@ -487,7 +460,7 @@ return {
     ]
   },
   "params": {
-    "id": "13a81a7a3717ee77293be23c96b3e860",
+    "id": "7a27ffd9417391ebeba6a3986202d43a",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -566,13 +539,6 @@ return {
         "me.conversations.edges.node.lastMessage": (v9/*: any*/),
         "me.conversations.edges.node.lastMessageAt": (v9/*: any*/),
         "me.conversations.edges.node.last_message": (v9/*: any*/),
-        "me.conversations.edges.node.messagesConnection": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "MessageConnection"
-        },
-        "me.conversations.edges.node.messagesConnection.totalCount": (v11/*: any*/),
         "me.conversations.edges.node.to": {
           "enumValues": null,
           "nullable": false,
@@ -600,7 +566,12 @@ return {
           "plural": false,
           "type": "Boolean"
         },
-        "me.conversations.totalUnreadCount": (v11/*: any*/),
+        "me.conversations.totalUnreadCount": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Int"
+        },
         "me.id": (v8/*: any*/)
       }
     },
