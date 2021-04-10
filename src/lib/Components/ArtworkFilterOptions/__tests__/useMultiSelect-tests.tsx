@@ -1,12 +1,12 @@
-import { extractText } from "lib/tests/extractText"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
   useSelectedOptionsDisplay,
 } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import { FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { extractText } from "lib/tests/extractText"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Text, TouchableWithoutFeedback, View } from "react-native"
 import { useMultiSelect } from "../useMultiSelect"
