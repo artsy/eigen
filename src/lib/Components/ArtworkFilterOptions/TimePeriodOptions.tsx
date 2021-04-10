@@ -1,15 +1,15 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import {
   aggregationForFilter,
   FilterData,
   FilterDisplayName,
   FilterParamName,
   ParamDefaultValues,
-} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import _ from "lodash"
 import React from "react"
-import { FilterModalNavigationStack } from "../FilterModal"
+import { FilterModalNavigationStack } from "../ArtworkFilter"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface TimePeriodOptionsScreenProps

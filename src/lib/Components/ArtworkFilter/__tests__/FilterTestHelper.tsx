@@ -1,10 +1,10 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { FilterModalMode, FilterModalNavigationStack, FilterOptionsScreen } from "lib/Components/ArtworkFilter"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
-import { ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Theme } from "palette"
 import React from "react"
-import { ArtworkFiltersState } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterModalMode, FilterModalNavigationStack, FilterOptionsScreen } from "../FilterModal"
 
 export const closeModalMock = jest.fn()
 export const navigateMock = jest.fn()

@@ -2,8 +2,7 @@ import { ContextModule } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 
-import { useFeatureFlag } from "lib/store/GlobalStore"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import {
   changedFiltersParams,
   FilterArray,
@@ -12,7 +11,9 @@ import {
   filterKeyFromAggregation,
   FilterParamName,
   FilterParams,
-} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { selectedOption } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
@@ -21,7 +22,6 @@ import React from "react"
 import { FlatList, TouchableOpacity, View, ViewProperties } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { selectedOption } from "../../utils/ArtworkFilter/FilterArtworksHelpers"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
 // @ts-ignore
 import { AdditionalGeneIDsOptionsScreen } from "../ArtworkFilterOptions/AdditionalGeneIDsOptions"

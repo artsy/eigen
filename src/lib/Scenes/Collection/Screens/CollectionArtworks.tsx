@@ -1,5 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_collection.graphql"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { filterArtworksParams } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { get } from "lib/utils/get"
@@ -9,8 +11,6 @@ import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { ArtworksFiltersStore } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
-import { filterArtworksParams } from "../../../utils/ArtworkFilter/FilterArtworksHelpers"
 
 interface CollectionArtworksProps {
   collection: CollectionArtworks_collection

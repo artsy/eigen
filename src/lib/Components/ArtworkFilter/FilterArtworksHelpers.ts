@@ -1,4 +1,4 @@
-import { FilterScreen } from "lib/Components/FilterModal"
+import { FilterScreen } from "lib/Components/ArtworkFilter"
 import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import { capitalize, compact, forOwn, groupBy, lowerCase, sortBy, startCase } from "lodash"
 

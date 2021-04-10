@@ -1,15 +1,15 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import {
   FilterDisplayName,
   FilterParamName,
   getDisplayNameForTimePeriod,
   ParamDefaultValues,
-} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import { FilterData } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import { useArtworkFiltersAggregation } from "lib/utils/ArtworkFilter/useArtworkFilters"
+} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { FilterData } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import React, { useState } from "react"
-import { FilterModalNavigationStack } from "../FilterModal"
+import { FilterModalNavigationStack } from "../ArtworkFilter"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
 interface TimePeriodOptionsScreenProps

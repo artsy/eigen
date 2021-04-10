@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import {
   AggregateOption,
   aggregationForFilter,
@@ -7,15 +7,15 @@ import {
   FilterDisplayName,
   FilterParamName,
   ParamDefaultValues,
-} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { isPad } from "lib/utils/hardware"
 import { floor } from "lodash"
 import { Flex } from "palette"
 import React, { useState } from "react"
 import { LayoutChangeEvent, View } from "react-native"
 import styled from "styled-components/native"
+import { FilterModalNavigationStack } from "../ArtworkFilter"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
-import { FilterModalNavigationStack } from "../FilterModal"
 import { TouchableRow } from "../TouchableRow"
 import { ColorSwatch } from "./ColorSwatch"
 

@@ -1,22 +1,6 @@
 import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graphql"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import { TouchableRow } from "lib/Components/TouchableRow"
-import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
-import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { Aggregations, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import { Sans, Theme } from "palette"
-import React from "react"
-import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
-import { createMockEnvironment } from "relay-test-utils"
-import { extractText } from "../../../tests/extractText"
-import { closeModalMock, getEssentialProps, MockFilterScreen, navigateMock } from "../__tests__/FilterTestHelper"
 import {
   AnimatedArtworkFilterButton,
   ApplyButton,
@@ -26,7 +10,23 @@ import {
   FilterModalMode,
   FilterModalNavigator,
   FilterOptionsScreen,
-} from "../FilterModal"
+} from "lib/Components/ArtworkFilter"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { TouchableRow } from "lib/Components/TouchableRow"
+import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
+import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Sans, Theme } from "palette"
+import React from "react"
+import { graphql, QueryRenderer } from "react-relay"
+import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
+import { createMockEnvironment } from "relay-test-utils"
+import { extractText } from "../../../tests/extractText"
+import { closeModalMock, getEssentialProps, MockFilterScreen, navigateMock } from "../__tests__/FilterTestHelper"
 
 const exitModalMock = jest.fn()
 const trackEvent = jest.fn()

@@ -1,5 +1,5 @@
 import { ShowTestsQuery } from "__generated__/ShowTestsQuery.graphql"
-import { AnimatedArtworkFilterButton } from "lib/Components/FilterModal"
+import { AnimatedArtworkFilterButton } from "lib/Components/ArtworkFilter"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"

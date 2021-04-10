@@ -1,15 +1,15 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { aggregationForFilter, FilterData, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { aggregationForFilter, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { Box, CheckIcon, color, Flex, Separator, Text } from "palette"
 import React, { useState } from "react"
 import Haptic from "react-native-haptic-feedback"
 import styled from "styled-components/native"
 import { useScreenDimensions } from "../../utils/useScreenDimensions"
+import { FilterModalNavigationStack } from "../ArtworkFilter"
 import { CircleWithBorder } from "../CircleWithBorder/CircleWithBorder"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
-import { FilterModalNavigationStack } from "../FilterModal"
 import { TouchableRow } from "../TouchableRow"
 
 interface YearOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "YearOptionsScreen"> {}
