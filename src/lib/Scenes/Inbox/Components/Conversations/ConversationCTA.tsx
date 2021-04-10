@@ -5,7 +5,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CTAPopUp } from "./CTAPopUp"
 import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
-import { ReviewOfferButton, ReviewOfferCTAKind } from "./ReviewOfferButton"
+import { ReviewOfferButton } from "./ReviewOfferButton"
 
 interface Props {
   show: boolean
@@ -29,18 +29,14 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
     if (!activeOrder) {
       CTA = <OpenInquiryModalButton artworkID={artworkID!} conversationID={conversationID} />
     } else {
-      let ctaKind: ReviewOfferCTAKind | null = null
       const { lastTransactionFailed, state, lastOffer } = activeOrder
 
       if (lastTransactionFailed) {
-        ctaKind = "PAYMENT_FAILED"
+        CTA = <ReviewOfferButton kind="PAYMENT_FAILED" activeOrder={activeOrder} conversationID={conversationID} />
       } else if (state === "SUBMITTED" && lastOffer?.fromParticipant === "SELLER") {
-        ctaKind = "OFFER_RECEIVED"
+        CTA = <ReviewOfferButton kind="OFFER_RECEIVED" activeOrder={activeOrder} conversationID={conversationID} />
       } else if (state === "APPROVED" && lastOffer?.fromParticipant === "BUYER") {
-        ctaKind = "OFFER_ACCEPTED"
-      }
-      if (ctaKind) {
-        CTA = <ReviewOfferButton kind={ctaKind} activeOrder={activeOrder} conversationID={conversationID} />
+        CTA = <ReviewOfferButton kind="OFFER_ACCEPTED" activeOrder={activeOrder} conversationID={conversationID} />
       }
     }
   }
