@@ -53,7 +53,6 @@ describe("ConversationCTA", () => {
   }
 
   const getWrapper = (mockResolvers = {}) => {
-    // const ConversationResolver = {Conversation: () => ({})}
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))

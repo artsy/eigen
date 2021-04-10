@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
-  // Determine whether we have aconversation about an artwork
+  // Determine whether we have a conversation about an artwork
   const firstItem = conversation?.items?.[0]?.item
   const artwork = firstItem?.__typename === "Artwork" ? firstItem : null
   const { artworkID, isOfferableFromInquiry } = { ...artwork }

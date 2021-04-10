@@ -10,16 +10,13 @@ export const CTAPopUp = ({ show, children }: { show: boolean; children: JSX.Elem
     if (doShow) {
       setHidden(false)
     } else {
-      setTimeout(() => setHidden(true), 225)
+      setTimeout(() => setHidden(true), 250)
     }
     Animated.timing(animationProgress, {
       toValue: doShow ? 0 : 1,
       useNativeDriver: true,
-      // ease-out to blend nicely with keyboard animation
-      duration: 250,
+      duration: 333,
       easing: Easing.in(Easing.linear),
-      // easing: Easing.out(Easing.linear),
-      // easing: Easing.linear,
     }).start()
   }
   useEffect(() => {
@@ -32,7 +29,6 @@ export const CTAPopUp = ({ show, children }: { show: boolean; children: JSX.Elem
         setCTAHeight(nativeEvent.layout.height)
       }}
       style={{
-        backgroundColor: "cyan",
         transform: [
           {
             translateY: animationProgress.interpolate({
