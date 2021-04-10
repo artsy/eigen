@@ -2,15 +2,15 @@ import { ConversationCTATestsQuery } from "__generated__/ConversationCTATestsQue
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { AlertCircleFillIcon } from "palette"
-import { MoneyFillIcon } from "palette/svgs/MoneyFillIcon"
-import React from "react"
+import { AlertCircleFillIcon, Color, Flex, MoneyFillIcon } from "palette"
+import React, { ElementType } from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
+import { act, ReactTestRenderer } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ConversationCTA, ConversationCTAFragmentContainer } from "../ConversationCTA"
 import { OpenInquiryModalButton } from "../OpenInquiryModalButton"
+import { ReviewOfferButton } from "../ReviewOfferButton"
 jest.unmock("react-relay")
 
 describe("ConversationCTA", () => {
@@ -52,6 +52,27 @@ describe("ConversationCTA", () => {
     expect(extractText(wrapper.root)).toEqual("")
   }
 
+  const expectReviewOfferButton = (
+    wrapper: ReactTestRenderer,
+    { bg, Icon, strings }: { bg?: Color; Icon?: ElementType<any>; strings?: string[] }
+  ) => {
+    const cta = wrapper.root.findAllByType(ReviewOfferButton)[0]
+    expect(cta).toBeDefined()
+    if (bg) {
+      expect(cta.findAllByType(Flex)[0].props).toEqual(expect.objectContaining({ bg }))
+    }
+    if (strings) {
+      const textContent = extractText(cta)
+      strings.forEach((string) => {
+        expect(textContent).toContain(string)
+      })
+    }
+    if (Icon) {
+      expect(wrapper.root.findAllByType(Icon)).toHaveLength(1)
+    }
+    return cta
+  }
+
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
@@ -83,14 +104,6 @@ describe("ConversationCTA", () => {
       })
     }
 
-    it("doesn't render anything for rejected offers", () => {
-      const wrapper = getWrapperWithOrders({
-        state: "CANCELED",
-        stateReason: "seller_rejected",
-      })
-      assertRendersNothing(wrapper)
-    })
-
     it("renders the make offer button if there is no active order", () => {
       const wrapper = getWrapperWithOrders()
 
@@ -100,13 +113,14 @@ describe("ConversationCTA", () => {
     it("renders the payment failed message if the payment failed", () => {
       const wrapper = getWrapperWithOrders({ lastTransactionFailed: true })
 
-      const text = extractText(wrapper.root)
-      expect(text).toContain("Payment Failed")
-      expect(text).toContain("Please update payment method")
-      expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(0)
+      expectReviewOfferButton(wrapper, {
+        bg: "red100",
+        Icon: AlertCircleFillIcon,
+        strings: ["Payment Failed", "Please update payment method"],
+      })
     })
 
-    fit("doesn't render when the last offer is from a buyer and it has not been accepted or rejected by the seller", () => {
+    it("doesn't render when the last offer is from a buyer and it has not been accepted or rejected by the seller", () => {
       const wrapper = getWrapperWithOrders({
         state: "SUBMITTED",
         lastOffer: {
@@ -116,40 +130,23 @@ describe("ConversationCTA", () => {
       assertRendersNothing(wrapper)
     })
 
-    fit("renders the pending counteroffer when the last offer is from the seller", () => {
+    it("renders the pending offer when the last offer is from the seller", () => {
       const wrapper = getWrapperWithOrders({
         state: "SUBMITTED",
         lastOffer: {
           fromParticipant: "SELLER",
         },
       })
-      const text = extractText(wrapper.root)
-      expect(text).toContain("Offer Received")
+      expectReviewOfferButton(wrapper, { bg: "copper100", strings: ["Offer Received"], Icon: AlertCircleFillIcon })
     })
 
-    fit("shows correct message for accepted offers", () => {
+    it("shows correct message for accepted offers", () => {
       const wrapper = getWrapperWithOrders({
         state: "APPROVED",
         lastOffer: { fromParticipant: "BUYER" },
       })
 
-      const text = extractText(wrapper.root)
-      expect(text).toContain("Offer Accepted")
-    })
-
-    it("shows correct message and icon for received counteroffers", () => {
-      const wrapper = getWrapper({
-        CommerceOrder: () => ({
-          state: "SUBMITTED",
-          lastOffer: {
-            fromParticipant: "SELLER",
-          },
-        }),
-      })
-
-      const text = extractText(wrapper.root)
-      expect(text).toContain("Offer Received")
-      expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
+      expectReviewOfferButton(wrapper, { bg: "green100", strings: ["Offer Accepted"], Icon: MoneyFillIcon })
     })
   })
 })
