@@ -202,7 +202,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
       }
     }
 
-    const { black100, white100, black10 } = themeProps.colors
+    const { white100, black10 } = themeProps.colors
 
     if (usingLightVariant()) {
       return {
