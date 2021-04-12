@@ -180,17 +180,6 @@ export const Button: React.FC<ButtonProps> = (props) => {
     }
   }
 
-  const usingLightVariant = () => {
-    const { white100 } = themeProps.colors
-
-    if (props.variant) {
-      const currentVariantColors = getColorsForVariant(props.variant)
-      return currentVariantColors.default.backgroundColor === white100
-    }
-
-    return false
-  }
-
   const loadingStyles = (() => {
     const opacity = props.disabled ? "0.1" : "1"
 
@@ -199,16 +188,6 @@ export const Button: React.FC<ButtonProps> = (props) => {
         backgroundColor: `rgba(0, 0, 0, ${opacity})`,
         color: color("white100"),
         borderWidth: 0,
-      }
-    }
-
-    const { white100, black10 } = themeProps.colors
-
-    if (usingLightVariant()) {
-      return {
-        backgroundColor: white100,
-        borderColor: black10,
-        color: white100,
       }
     }
 
@@ -222,10 +201,6 @@ export const Button: React.FC<ButtonProps> = (props) => {
   const spinnerColor = (() => {
     if (props.inline) {
       return variant === "primaryWhite" ? "white100" : "black100"
-    }
-
-    if (usingLightVariant()) {
-      return "black100"
     }
 
     return "white100"
