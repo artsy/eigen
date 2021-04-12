@@ -111,7 +111,7 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
           <Spacer mt={4} />
           <Touchable
             onPress={() => {
-              navigation.navigate("OnboardingForgotPassword")
+              navigation.navigate("ForgotPassword")
             }}
           >
             <Text variant="text" color="black60" style={{ textDecorationLine: "underline" }}>

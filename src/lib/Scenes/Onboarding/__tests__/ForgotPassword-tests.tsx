@@ -2,7 +2,7 @@ import { Input } from "lib/Components/Input/Input"
 import React from "react"
 import { act } from "react-test-renderer"
 import { renderWithWrappers } from "../../../tests/renderWithWrappers"
-import { ForgotPassword } from "../ForgotPassword"
+import { ForgotPasswordForm } from "../ForgotPassword"
 
 const navigateMock = jest.fn()
 
@@ -11,9 +11,29 @@ const navigationPropsMock = {
   goBack: jest.fn(),
 }
 
+const mockHandleSubmit = jest.fn()
+const mockValidateForm = jest.fn()
+
+jest.mock("formik", () => ({
+  useFormikContext: () => {
+    return {
+      handleSubmit: mockHandleSubmit,
+      values: { email: "" },
+      handleChange: jest.fn(() => jest.fn()),
+      validateForm: mockValidateForm,
+      errors: {},
+      isValid: true,
+      dirty: false,
+      isSubmitting: false,
+    }
+  },
+}))
+
 describe("ForgotPassword", () => {
   const TestProvider = () => {
-    return <ForgotPassword navigation={navigationPropsMock as any} route={null as any} />
+    return (
+      <ForgotPasswordForm requestedPasswordReset={false} navigation={navigationPropsMock as any} route={null as any} />
+    )
   }
 
   it("renders reset button disabled initially", () => {
@@ -22,7 +42,7 @@ describe("ForgotPassword", () => {
     expect(resetButton.props.disabled).toEqual(true)
   })
 
-  it("enables the reset button for a valid email", async () => {
+  it("validates form on blur", () => {
     const tree = renderWithWrappers(<TestProvider />)
 
     const emailInput = tree.root.findByType(Input)
@@ -32,20 +52,6 @@ describe("ForgotPassword", () => {
       emailInput.props.onBlur()
     })
 
-    const resetButton = tree.root.findByProps({ testID: "resetButton" })
-    expect(resetButton.props.disabled).toEqual(false)
-  })
-
-  it("disables the reset button for invalid emails", async () => {
-    const tree = renderWithWrappers(<TestProvider />)
-
-    const emailInput = tree.root.findByType(Input)
-    act(() => {
-      emailInput.props.onChangeText("some")
-      emailInput.props.onBlur()
-    })
-
-    const resetButton = tree.root.findByProps({ testID: "resetButton" })
-    expect(resetButton.props.disabled).toEqual(true)
+    expect(mockValidateForm).toHaveBeenCalled()
   })
 })
