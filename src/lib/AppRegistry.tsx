@@ -70,6 +70,7 @@ import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
+import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { ToastProvider } from "./Components/Toast/toastHook"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
@@ -186,20 +187,33 @@ const SearchWithTracking: React.FC<SearchWithTrackingProps> = screenTrack<Search
 interface PageWrapperProps {
   fullBleed?: boolean
   isMainView?: boolean
+  ViewComponent: React.ComponentType<any>
+  viewProps: any
 }
 
-const InnerPageWrapper: React.FC<PageWrapperProps> = ({ children, fullBleed, isMainView }) => {
-  const paddingTop = fullBleed ? 0 : useScreenDimensions().safeAreaInsets.top
-  const paddingBottom = isMainView ? 0 : useScreenDimensions().safeAreaInsets.bottom
+const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, ViewComponent, viewProps }) => {
+  const safeAreaInsets = useScreenDimensions().safeAreaInsets
+  const paddingTop = fullBleed ? 0 : safeAreaInsets.top
+  const paddingBottom = isMainView ? 0 : safeAreaInsets.bottom
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
+  // if we're in a modal, just pass isVisible through
+  const currentTab = useSelectedTab()
+  let isVisible = viewProps.isVisible
+  if (BottomTabOption[viewProps.navStackID as BottomTabType]) {
+    // otherwise, make sure it respects the current tab
+    isVisible = isVisible && currentTab === viewProps.navStackID
+  }
+  const isPresentedModally = viewProps.isPresentedModally
   return (
-    <View style={{ flex: 1, paddingTop, paddingBottom }}>
-      {isHydrated ? (
-        <FadeIn style={{ flex: 1 }} slide={false}>
-          {children}
-        </FadeIn>
-      ) : null}
-    </View>
+    <ArtsyKeyboardAvoidingViewContext.Provider value={{ isVisible, isPresentedModally }}>
+      <View style={{ flex: 1, paddingTop, paddingBottom }}>
+        {isHydrated ? (
+          <FadeIn style={{ flex: 1 }} slide={false}>
+            <ViewComponent {...{ ...viewProps, isVisible }} />
+          </FadeIn>
+        ) : null}
+      </View>
+    </ArtsyKeyboardAvoidingViewContext.Provider>
   )
 }
 
@@ -227,22 +241,13 @@ class PageWrapper extends React.Component<PageWrapperProps> {
   }
 }
 
-function register(screenName: string, Component: React.ComponentType<any>, options?: PageWrapperProps) {
-  const ComponentWithVisibility = (props: any) => {
-    // if we're in a modal, just pass isVisible through
-    const currentTab = useSelectedTab()
-    let isVisible = props.isVisible
-    if (BottomTabOption[props.navStackID as BottomTabType]) {
-      // otherwise, make sure it respects the current tab
-      isVisible = isVisible && currentTab === props.navStackID
-    }
-    return <Component {...{ ...props, isVisible }} />
-  }
-
+function register(
+  screenName: string,
+  Component: React.ComponentType<any>,
+  options?: Omit<PageWrapperProps, "ViewComponent" | "viewProps">
+) {
   const WrappedComponent = (props: any) => (
-    <PageWrapper {...options}>
-      <ComponentWithVisibility {...props} />
-    </PageWrapper>
+    <PageWrapper {...options} ViewComponent={Component} viewProps={props}></PageWrapper>
   )
   AppRegistry.registerComponent(screenName, () => WrappedComponent)
 }

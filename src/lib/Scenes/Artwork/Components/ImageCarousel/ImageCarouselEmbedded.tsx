@@ -2,7 +2,7 @@ import * as Sentry from "@sentry/react-native"
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useCallback, useContext } from "react"
-import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
+import { FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform } from "react-native"
 import { findClosestIndex, getMeasurements } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor } from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
@@ -46,7 +46,9 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({ ca
   )
 
   const goFullScreen = useCallback(() => {
-    dispatch({ type: "TAPPED_TO_GO_FULL_SCREEN" })
+    if (Platform.OS === "ios") {
+      dispatch({ type: "TAPPED_TO_GO_FULL_SCREEN" })
+    }
   }, [dispatch])
 
   // this exists as a hack to get onPress functionality while the flat list is still coming to a stop after a swipe.

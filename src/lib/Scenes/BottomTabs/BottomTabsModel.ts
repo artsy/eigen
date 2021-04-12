@@ -4,6 +4,7 @@ import { Action, action, Thunk, thunk } from "easy-peasy"
 import { saveDevNavigationStateSelectedTab } from "lib/navigation/useReloadedDevNavigationState"
 import { createEnvironment } from "lib/relay/createEnvironment"
 import { metaphysicsURLMiddleware, persistedQueryMiddleware } from "lib/relay/middlewares/metaphysicsMiddleware"
+import { simpleLoggerMiddleware } from "lib/relay/middlewares/simpleLoggerMiddleware"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
@@ -33,7 +34,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   fetchCurrentUnreadConversationCount: thunk(async () => {
     try {
       const result = await fetchQuery<BottomTabsModelFetchCurrentUnreadConversationCountQuery>(
-        createEnvironment([[persistedQueryMiddleware(), metaphysicsURLMiddleware()]]),
+        createEnvironment([[persistedQueryMiddleware(), metaphysicsURLMiddleware(), simpleLoggerMiddleware()]]),
         graphql`
           query BottomTabsModelFetchCurrentUnreadConversationCountQuery {
             me @principalField {
