@@ -1,65 +1,80 @@
 import { tappedViewOffer } from "@artsy/cohesion"
-import { ReviewOfferButton_order } from "__generated__/ReviewOfferButton_order.graphql"
 import { navigate } from "lib/navigation/navigate"
-import { extractNodes } from "lib/utils/extractNodes"
 import { useEventTiming } from "lib/utils/useEventTiming"
 import { DateTime } from "luxon"
-import { AlertCircleFillIcon, ArrowRightIcon, Flex, MoneyFillIcon, Text } from "palette"
-import React, { useEffect } from "react"
+import { AlertCircleFillIcon, ArrowRightIcon, Color, Flex, IconProps, MoneyFillIcon, Text } from "palette"
+import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { returnButtonMessaging } from "./utils/returnButtonMessaging"
+
 export interface ReviewOfferButtonProps {
   conversationID: string
-  order: ReviewOfferButton_order
+  kind: ReviewOfferCTAKind
+  activeOrder: {
+    internalID: string
+    stateExpiresAt: string | null
+    lastOffer?: { createdAt: string } | null
+    offers?: { edges: { length: number } | null } | null
+  }
 }
 
-export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversationID, order }) => {
-  if (
-    order.state == null ||
-    order.state === "ABANDONED" ||
-    order.state === "PENDING" ||
-    order.state === "CANCELED" ||
-    (order.state === "SUBMITTED" && order.lastOffer?.fromParticipant === "BUYER" && !order.lastTransactionFailed)
-  ) {
-    return null
-  }
+export type ReviewOfferCTAKind = "PAYMENT_FAILED" | "OFFER_RECEIVED" | "OFFER_ACCEPTED"
 
-  const [buttonBackgroundColor, setButtonBackgroundColor] = React.useState("green100")
-  const [buttonMessage, setButtonMessage] = React.useState("")
-  const [buttonSubMessage, setButtonSubMessage] = React.useState("Tap to view")
-  const [showMoneyIconInButton, setShowMoneyIconInButton] = React.useState(true)
+export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversationID, activeOrder, kind }) => {
+  const { internalID: orderID, offers } = activeOrder
   const { trackEvent } = useTracking()
 
   const { hours } = useEventTiming({
     currentTime: DateTime.local().toString(),
-    startAt: order.lastOffer?.createdAt,
-    endAt: order.stateExpiresAt || undefined,
+    startAt: activeOrder.lastOffer?.createdAt,
+    endAt: activeOrder.stateExpiresAt || undefined,
   })
+  const offerType = (offers?.edges?.length || []) > 1 ? "Counteroffer" : "Offer"
 
-  useEffect(() => {
-    const isCounter = extractNodes(order.offers).length > 1
+  let ctaAttributes: { backgroundColor: Color; message: string; subMessage: string; Icon: React.FC<IconProps> }
 
-    const { backgroundColor, message, subMessage, showMoneyIcon } = returnButtonMessaging({
-      state: order.state,
-      lastTransactionFailed: order.lastTransactionFailed,
-      isCounter,
-      lastOfferFromParticipant: order.lastOffer?.fromParticipant,
-      hoursTillExpiration: hours,
-    })
+  switch (kind) {
+    case "PAYMENT_FAILED": {
+      ctaAttributes = {
+        backgroundColor: "red100",
+        message: "Payment Failed",
+        subMessage: "Please update payment method",
+        Icon: AlertCircleFillIcon,
+      }
+      break
+    }
+    case "OFFER_RECEIVED": {
+      ctaAttributes = {
+        backgroundColor: "copper100",
+        message: `${offerType} Received`,
+        // TODO: what about <1 hr?
+        subMessage: `Expires in ${hours}hr`,
+        Icon: AlertCircleFillIcon,
+      }
+      break
+    }
+    case "OFFER_ACCEPTED": {
+      ctaAttributes = {
+        backgroundColor: "green100",
+        message: `Congratulations! ${offerType} Accepted`,
+        subMessage: "Tap to view",
+        Icon: MoneyFillIcon,
+      }
+      break
+    }
+    default: {
+      // this should never happen
+      return null
+    }
+  }
 
-    setButtonMessage(message)
-    setButtonSubMessage(subMessage)
-    setShowMoneyIconInButton(showMoneyIcon)
-    setButtonBackgroundColor(backgroundColor)
-  })
+  const { message, subMessage, backgroundColor, Icon } = ctaAttributes
 
-  const onTap = (orderID: string | null) => {
+  const navigateToConversation = () => {
     trackEvent(
       tappedViewOffer({
         impulse_conversation_id: conversationID,
-        cta: buttonMessage,
+        cta: message,
       })
     )
     navigate(`/orders/${orderID}`, {
@@ -71,29 +86,25 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
   return (
     <TouchableWithoutFeedback
       onPress={() => {
-        onTap(order?.internalID)
+        navigateToConversation()
       }}
     >
       <Flex
         px={2}
         justifyContent="space-between"
         alignItems="center"
-        bg={buttonBackgroundColor}
+        bg={backgroundColor}
         flexDirection="row"
         height={60}
       >
         <Flex flexDirection="row">
-          {showMoneyIconInButton ? (
-            <MoneyFillIcon mt="3px" fill="white100" />
-          ) : (
-            <AlertCircleFillIcon mt="3px" fill="white100" />
-          )}
+          <Icon mt="3px" fill="white100" />
           <Flex flexDirection="column" pl={1}>
             <Text color="white100" variant="mediumText">
-              {buttonMessage}
+              {message}
             </Text>
             <Text color="white100" variant="caption">
-              {buttonSubMessage}
+              {subMessage}
             </Text>
           </Flex>
         </Flex>
@@ -104,28 +115,3 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
     </TouchableWithoutFeedback>
   )
 }
-
-export const ReviewOfferButtonFragmentContainer = createFragmentContainer(ReviewOfferButton, {
-  order: graphql`
-    fragment ReviewOfferButton_order on CommerceOrder {
-      internalID
-      state
-      stateReason
-      stateExpiresAt
-      lastTransactionFailed
-      ... on CommerceOfferOrder {
-        lastOffer {
-          fromParticipant
-          createdAt
-        }
-        offers(first: 5) {
-          edges {
-            node {
-              internalID
-            }
-          }
-        }
-      }
-    }
-  `,
-})
