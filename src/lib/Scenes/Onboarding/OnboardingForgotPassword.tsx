@@ -52,60 +52,48 @@ export const OnboardingForgotPasswordForm: React.FC<OnboardingForgotPasswordForm
             Please enter the email address for your Artsy account and we’ll send you a reset link.
           </Text>
           <Spacer mt={100} />
-          <Input
-            ref={inputRef}
-            autoCapitalize="none"
-            autoCompleteType="email"
-            enableClearButton
-            keyboardType="email-address"
-            onChangeText={(text) => {
-              handleChange("email")(text.trim())
-            }}
-            onSubmitEditing={handleSubmit}
-            onBlur={() => {
-              validateForm()
-            }}
-            blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
-            placeholder="Email address"
-            placeholderTextColor={color("black30")}
-            value={values.email}
-            returnKeyType="done"
-            spellCheck={false}
-            autoCorrect={false}
-            textContentType="emailAddress"
-          />
-          <Spacer mt={22} />
-          {!!requestedPasswordReset && (
+
+          {!!requestedPasswordReset ? (
             <Text variant="caption" color="black60">
               Password reset link sent. Check your email.
             </Text>
+          ) : (
+            <Input
+              ref={inputRef}
+              autoCapitalize="none"
+              autoCompleteType="email"
+              enableClearButton
+              keyboardType="email-address"
+              onChangeText={(text) => {
+                handleChange("email")(text.trim())
+              }}
+              onSubmitEditing={handleSubmit}
+              onBlur={() => {
+                validateForm()
+              }}
+              blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
+              placeholder="Email address"
+              placeholderTextColor={color("black30")}
+              value={values.email}
+              returnKeyType="done"
+              spellCheck={false}
+              autoCorrect={false}
+              textContentType="emailAddress"
+            />
           )}
         </Flex>
       </ScrollView>
       <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5}>
         {!!requestedPasswordReset ? (
-          <>
-            <Button
-              variant="secondaryGray"
-              onPress={() => navigation.goBack()}
-              block
-              haptic="impactMedium"
-              testID="returnToLoginButton"
-            >
-              Return to login
-            </Button>
-            <Spacer mb={1} />
-            <Button
-              variant="secondaryOutline"
-              onPress={handleSubmit}
-              loading={isSubmitting}
-              block
-              haptic="impactMedium"
-              testID="returnToLoginButton"
-            >
-              Send again
-            </Button>
-          </>
+          <Button
+            variant="secondaryGray"
+            onPress={() => navigation.goBack()}
+            block
+            haptic="impactMedium"
+            testID="returnToLoginButton"
+          >
+            Return to login
+          </Button>
         ) : (
           <Button
             onPress={handleSubmit}
