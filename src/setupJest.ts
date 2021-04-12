@@ -7,11 +7,11 @@
 // Object.assign(babelHelpers, { applyDecoratedDescriptor, initializerDefineProperty })
 // import "@babel/runtime"
 
+// @ts-ignore
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17"
 import chalk from "chalk"
 // @ts-ignore
 import Enzyme from "enzyme"
-// @ts-ignore
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17"
 import expect from "expect"
 import { format } from "util"
 
