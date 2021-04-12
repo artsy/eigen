@@ -50,7 +50,6 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
     ...module.options,
   }
 
-  console.log({ screenDescriptor })
   if (presentModally) {
     LegacyNativeModules.ARScreenPresenterModule.presentModal(screenDescriptor)
   } else if (module.options.isRootViewForTabName) {

@@ -6,12 +6,7 @@ import { useEnvironment } from "lib/store/GlobalStore"
 import React from "react"
 import { View } from "react-native"
 
-export const Checkout: React.FC<{ orderID: string; title: string; inquiryCheckout?: boolean }> = ({
-  orderID,
-  title,
-  inquiryCheckout = false,
-}) => {
-  console.warn({ inquiryCheckout })
+export const Checkout: React.FC<{ orderID: string; title: string }> = ({ orderID, title }) => {
   const webCheckoutUrl = `${useEnvironment().webURL}/orders/${orderID}`
   return (
     <ArtsyKeyboardAvoidingView>
@@ -20,11 +15,9 @@ export const Checkout: React.FC<{ orderID: string; title: string; inquiryCheckou
           onLeftButtonPress={() => {
             dismissModal()
           }}
-          leftButtonText={inquiryCheckout ? " " : "Cancel"}
-          // leftButtonDisabled={!inquiryCheckout} // prop doesnt exist so just hide?
-
-          rightButtonDisabled={!inquiryCheckout}
-          rightButtonText={inquiryCheckout ? "Close" : " "}
+          leftButtonText="Cancel"
+          rightButtonDisabled
+          rightButtonText=" "
         >
           {title}
         </FancyModalHeader>
