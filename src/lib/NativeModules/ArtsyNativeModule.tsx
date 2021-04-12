@@ -1,4 +1,4 @@
-import { NativeModules, Platform } from "react-native"
+import { NativeModules, PixelRatio, Platform } from "react-native"
 import { LegacyNativeModules } from "./LegacyNativeModules"
 
 /**
@@ -29,4 +29,9 @@ export const ArtsyNativeModule = {
           console.error("setNavigationBarColor is unsupported on iOS")
         }
       : NativeModules.ArtsyNativeModule.setNavigationBarColor,
+  get navigationBarHeight() {
+    return Platform.OS === "ios"
+      ? 0
+      : NativeModules.ArtsyNativeModule.getConstants().navigationBarHeight / PixelRatio.get()
+  },
 }

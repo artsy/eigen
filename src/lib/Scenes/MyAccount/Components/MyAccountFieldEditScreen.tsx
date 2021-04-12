@@ -1,7 +1,7 @@
+import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import LoadingModal from "lib/Components/Modals/LoadingModal"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { goBack } from "lib/navigation/navigate"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Sans } from "palette"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import {
@@ -10,8 +10,6 @@ import {
   AlertOptions,
   AlertStatic,
   Keyboard,
-  KeyboardAvoidingView,
-  Platform,
   ScrollView,
   TouchableOpacity,
   ViewStyle,
@@ -38,7 +36,6 @@ export const MyAccountFieldEditScreen = React.forwardRef<
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const afterLoadingAlert = useRef<AlertArgs>()
   const scrollViewRef = useRef<ScrollView>(null)
-  const screen = useScreenDimensions()
 
   const doTheAlert: AlertStatic["alert"] = (...args) => {
     afterLoadingAlert.current = args
@@ -76,11 +73,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
   )
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-      style={{ flex: 1 }}
-      keyboardVerticalOffset={screen.safeAreaInsets.top}
-    >
+    <ArtsyKeyboardAvoidingView>
       <PageWithSimpleHeader
         left={
           <TouchableOpacity onPress={goBack}>
@@ -122,7 +115,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
           {children}
         </ScrollView>
       </PageWithSimpleHeader>
-    </KeyboardAvoidingView>
+    </ArtsyKeyboardAvoidingView>
   )
 })
 

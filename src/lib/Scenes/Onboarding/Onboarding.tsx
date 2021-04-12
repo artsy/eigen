@@ -1,9 +1,10 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
-import { KeyboardAvoidingView, View } from "react-native"
+import { View } from "react-native"
 import { LogIn } from "./OldLogIn/LogIn"
 import { OnboardingCreateAccount } from "./OnboardingCreateAccount"
 import { OnboardingForgotPassword } from "./OnboardingForgotPassword"
@@ -30,7 +31,7 @@ export const Onboarding = () => {
   return (
     <View style={{ flex: 1, paddingBottom: useScreenDimensions().safeAreaInsets.bottom }}>
       <NavigationContainer independent>
-        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+        <ArtsyKeyboardAvoidingView>
           <StackNavigator.Navigator
             headerMode="screen"
             screenOptions={{
@@ -50,7 +51,7 @@ export const Onboarding = () => {
             <StackNavigator.Screen name="OnboardingCreateAccount" component={OnboardingCreateAccount} />
             <StackNavigator.Screen name="OnboardingForgotPassword" component={OnboardingForgotPassword} />
           </StackNavigator.Navigator>
-        </KeyboardAvoidingView>
+        </ArtsyKeyboardAvoidingView>
       </NavigationContainer>
     </View>
   )
