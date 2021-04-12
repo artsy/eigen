@@ -29,6 +29,7 @@ upcoming:
     - Hide push notifications section in settings for Android - ole
     - Rename the category filter to medium - iskounen
     - Suppress artwork deep-zoom taps on Android - pepopowitz
+    - Add forgot password screen in new login - brian
 
 releases:
   - version: 6.8.2
