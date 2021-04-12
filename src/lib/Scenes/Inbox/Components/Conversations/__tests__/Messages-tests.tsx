@@ -174,6 +174,70 @@ describe("messages with order updates", () => {
     expect(messagesAndUpdates[0]).toContain("You received a counteroffer")
   })
 
+  it("removes 'Offer accepted' events when payment fails", () => {
+    const day1Time1 = "2020-03-18T02:58:37.699Z"
+    const day1Time2 = "2020-03-18T02:59:37.699Z"
+
+    const tree = withConversationItems(getWrapper, {
+      events: [
+        // this event should be omitted from the output because it is irrelevant
+        {
+          __typename: "CommerceOrderStateChangedEvent",
+          state: "APPROVED",
+          createdAt: day1Time1,
+        },
+        {
+          __typename: "CommerceOrderStateChangedEvent",
+          state: "SUBMITTED",
+          createdAt: day1Time2,
+        },
+      ],
+    })
+    // get all elements and remove timestamps
+    const messagesAndUpdates = tree.root
+      .findAllByType(Text)
+      .filter((element) => element.props.color !== "black30")
+      .map((element) => extractText(element))
+
+    expect(messagesAndUpdates).not.toContain("Offer Accepted")
+  })
+
+  it("does not remove 'Offer accepted' events when payment succeeds", () => {
+    const day1Time1 = "2020-03-18T02:58:37.699Z"
+    const day1Time2 = "2020-03-18T02:59:37.699Z"
+    const day2Time1 = "2020-03-19T02:59:37.699Z"
+
+    const tree = withConversationItems(getWrapper, {
+      events: [
+        {
+          __typename: "CommerceOrderStateChangedEvent",
+          state: "SUBMITTED",
+          createdAt: day1Time1,
+        },
+        {
+          __typename: "CommerceOfferSubmittedEvent",
+          offer: {
+            respondsTo: null,
+          },
+          createdAt: day1Time2,
+        },
+        // this event should be omitted from the output because it is irrelevant
+        {
+          __typename: "CommerceOrderStateChangedEvent",
+          state: "APPROVED",
+          createdAt: day2Time1,
+        },
+      ],
+    })
+    // get all elements and remove timestamps
+    const messagesAndUpdates = tree.root
+      .findAllByType(Text)
+      .filter((element) => element.props.color !== "black30")
+      .map((element) => extractText(element))
+
+    expect(messagesAndUpdates).toContain("Offer Accepted")
+  })
+
   // We fetch all order updates but only paginated messages, so this is to avoid a smooshed list of updates at the top.
   it("does not show order updates before the currently-available messages", () => {
     const beforeLastMessageTime = "2020-03-18T02:58:37.699Z"
