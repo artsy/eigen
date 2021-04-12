@@ -13,17 +13,17 @@ import { OnboardingNavigationStack } from "./Onboarding"
 export const forgotPasswordSchema = Yup.object().shape({
   email: Yup.string().email("Please provide a valid email address"),
 })
-export interface OnboardingForgotPasswordValuesSchema {
+export interface ForgotPasswordValuesSchema {
   email: string
 }
 
-export interface OnboardingForgotPasswordProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingLogin"> {}
-export interface OnboardingForgotPasswordFormProps extends OnboardingForgotPasswordProps {
+export interface ForgotPasswordProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingLogin"> {}
+export interface ForgotPasswordFormProps extends ForgotPasswordProps {
   requestedPasswordReset: boolean
   inputRef?: React.Ref<Input>
 }
 
-export const OnboardingForgotPasswordForm: React.FC<OnboardingForgotPasswordFormProps> = ({
+export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   navigation,
   requestedPasswordReset,
   inputRef,
@@ -36,7 +36,7 @@ export const OnboardingForgotPasswordForm: React.FC<OnboardingForgotPasswordForm
     isValid,
     dirty,
     isSubmitting,
-  } = useFormikContext<OnboardingForgotPasswordValuesSchema>()
+  } = useFormikContext<ForgotPasswordValuesSchema>()
 
   return (
     <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>
@@ -111,14 +111,14 @@ export const OnboardingForgotPasswordForm: React.FC<OnboardingForgotPasswordForm
   )
 }
 
-const initialValues: OnboardingForgotPasswordValuesSchema = { email: "" }
+const initialValues: ForgotPasswordValuesSchema = { email: "" }
 
-export const OnboardingForgotPassword: React.FC<OnboardingForgotPasswordProps> = ({ navigation, route }) => {
+export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ navigation, route }) => {
   const [requestedPasswordReset, setRequestedPasswordReset] = useState(false)
 
   const inputRef = useRef<Input>(null)
 
-  const formik = useFormik<OnboardingForgotPasswordValuesSchema>({
+  const formik = useFormik<ForgotPasswordValuesSchema>({
     enableReinitialize: true,
     validateOnChange: true,
     validateOnBlur: true,
@@ -142,7 +142,7 @@ export const OnboardingForgotPassword: React.FC<OnboardingForgotPasswordProps> =
 
   return (
     <FormikProvider value={formik}>
-      <OnboardingForgotPasswordForm
+      <ForgotPasswordForm
         inputRef={inputRef}
         navigation={navigation}
         route={route}
