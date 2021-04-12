@@ -317,7 +317,10 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
     return (
       <BiddingThemeProvider>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }}>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }}
+          keyboardDismissMode={"on-drag"}
+        >
           <View style={{ paddingTop: 20 }}>
             <Flex alignItems="center">
               <Timer

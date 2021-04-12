@@ -222,7 +222,11 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
               Add billing address
             </FancyModalHeader>
           </Theme>
-          <ScrollView ref={(scrollView) => (this.scrollView = scrollView as any)}>
+          <ScrollView
+            keyboardDismissMode="on-drag"
+            keyboardShouldPersistTaps="handled"
+            ref={(scrollView) => (this.scrollView = scrollView as any)}
+          >
             <Container>
               <StyledInput
                 {...this.defaultPropsForInput("fullName")}
@@ -232,8 +236,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="name"
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.addressLine1.focus()}
-                onLayout={({ nativeEvent }) => (this.fullNameLayout = nativeEvent.layout)}
-                onFocus={() => this.scrollToPosition(this.fullNameLayout)}
               />
 
               <StyledInput
@@ -243,8 +245,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="streetAddressLine1"
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.addressLine2.focus()}
-                onLayout={({ nativeEvent }) => (this.addressLine1Layout = nativeEvent.layout)}
-                onFocus={() => this.scrollToPosition(this.addressLine1Layout)}
               />
 
               <StyledInput
@@ -254,8 +254,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="streetAddressLine2"
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.city.focus()}
-                onLayout={({ nativeEvent }) => (this.addressLine2Layout = nativeEvent.layout)}
-                onFocus={() => this.scrollToPosition(this.addressLine2Layout)}
               />
 
               <StyledInput
@@ -265,8 +263,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="addressCity"
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.stateProvinceRegion.focus()}
-                onLayout={({ nativeEvent }) => (this.cityLayout = nativeEvent.layout)}
-                onFocus={() => this.scrollToPosition(this.cityLayout)}
               />
 
               <StyledInput
@@ -277,8 +273,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.postalCode.focus()}
                 inputRef={(el) => (this.stateProvinceRegion = el)}
-                onLayout={({ nativeEvent }) => (this.stateProvinceRegionLayout = nativeEvent.layout)}
-                onFocus={() => this.scrollToPosition(this.stateProvinceRegionLayout)}
               />
 
               <StyledInput
@@ -288,8 +282,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="postalCode"
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.phoneNumber.focus()}
-                onLayout={({ nativeEvent }) => (this.postalCodeLayout = nativeEvent.layout)}
-                onFocus={() => this.scrollToPosition(this.postalCodeLayout)}
               />
 
               <StyledInput
@@ -299,8 +291,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 keyboardType="phone-pad"
                 textContentType="telephoneNumber"
                 onSubmitEditing={() => this.presentSelectCountry()}
-                onLayout={({ nativeEvent }) => (this.phoneNumberLayout = nativeEvent.layout)}
-                onFocus={() => this.scrollToPosition(this.phoneNumberLayout)}
               />
 
               <Flex mb={4}>
