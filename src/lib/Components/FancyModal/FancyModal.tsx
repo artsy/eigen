@@ -1,6 +1,7 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useContext, useEffect, useRef, useState } from "react"
-import { KeyboardAvoidingView, Modal, Platform } from "react-native"
+import { Modal, Platform } from "react-native"
+import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "../ArtsyKeyboardAvoidingView"
 import { CARD_STACK_OVERLAY_HEIGHT, CARD_STACK_OVERLAY_Y_OFFSET } from "./FancyModalCard"
 import { FancyModalContext } from "./FancyModalContext"
 
@@ -41,13 +42,9 @@ export const FancyModal: React.FC<{
           up to the maximum 'top' value, and then add padding if the keyboard comes up any more.
           I'd imagine it would have an API like <FancyKeyboardAvoding height={sheetHeighht} maxHeight={screenHeight - (top + 10)}>
       */
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={{ flex: 1 }}
-        keyboardVerticalOffset={screenHeight - height}
-      >
-        {children}
-      </KeyboardAvoidingView>
+      <ArtsyKeyboardAvoidingViewContext.Provider value={{ isPresentedModally: true, isVisible: true }}>
+        <ArtsyKeyboardAvoidingView>{children}</ArtsyKeyboardAvoidingView>
+      </ArtsyKeyboardAvoidingViewContext.Provider>
     ) : null,
     onBackgroundPressed,
   })

@@ -4731,6 +4731,7 @@ type Conversation implements Node {
     participantType: CommerceOrderParticipantEnum
     sellerId: ID
     state: CommerceOrderStateEnum
+    states: [CommerceOrderStateEnum!]
   ): CommerceOrderConnectionWithTotalCount
 
   # The participant(s) responding to the conversation

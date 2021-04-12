@@ -8,7 +8,6 @@ import {
   Dimensions,
   EmitterSubscription,
   Keyboard,
-  KeyboardAvoidingView,
   LayoutRectangle,
   Platform,
   ScrollView,
@@ -24,6 +23,7 @@ import { Container } from "../Components/Containers"
 import { Input, InputProps } from "../Components/Input"
 import { Address, Country } from "../types"
 
+import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { SelectCountry } from "./SelectCountry"
 
@@ -216,17 +216,17 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
     return (
       <BiddingThemeProvider>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
-          keyboardVerticalOffset={this.verticalOffset}
-          style={{ flex: 1 }}
-        >
+        <ArtsyKeyboardAvoidingView>
           <Theme>
             <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
               Add billing address
             </FancyModalHeader>
           </Theme>
-          <ScrollView ref={(scrollView) => (this.scrollView = scrollView as any)}>
+          <ScrollView
+            keyboardDismissMode="on-drag"
+            keyboardShouldPersistTaps="handled"
+            ref={(scrollView) => (this.scrollView = scrollView as any)}
+          >
             <Container>
               <StyledInput
                 {...this.defaultPropsForInput("fullName")}
@@ -236,8 +236,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="name"
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.addressLine1.focus()}
-                onLayout={({ nativeEvent }) => (this.fullNameLayout = nativeEvent.layout)}
-                onFocus={() => this.scrollToPosition(this.fullNameLayout)}
               />
 
               <StyledInput
@@ -247,8 +245,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="streetAddressLine1"
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.addressLine2.focus()}
-                onLayout={({ nativeEvent }) => (this.addressLine1Layout = nativeEvent.layout)}
-                onFocus={() => this.scrollToPosition(this.addressLine1Layout)}
               />
 
               <StyledInput
@@ -258,8 +254,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="streetAddressLine2"
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.city.focus()}
-                onLayout={({ nativeEvent }) => (this.addressLine2Layout = nativeEvent.layout)}
-                onFocus={() => this.scrollToPosition(this.addressLine2Layout)}
               />
 
               <StyledInput
@@ -269,8 +263,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="addressCity"
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.stateProvinceRegion.focus()}
-                onLayout={({ nativeEvent }) => (this.cityLayout = nativeEvent.layout)}
-                onFocus={() => this.scrollToPosition(this.cityLayout)}
               />
 
               <StyledInput
@@ -281,8 +273,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.postalCode.focus()}
                 inputRef={(el) => (this.stateProvinceRegion = el)}
-                onLayout={({ nativeEvent }) => (this.stateProvinceRegionLayout = nativeEvent.layout)}
-                onFocus={() => this.scrollToPosition(this.stateProvinceRegionLayout)}
               />
 
               <StyledInput
@@ -292,8 +282,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="postalCode"
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.phoneNumber.focus()}
-                onLayout={({ nativeEvent }) => (this.postalCodeLayout = nativeEvent.layout)}
-                onFocus={() => this.scrollToPosition(this.postalCodeLayout)}
               />
 
               <StyledInput
@@ -303,8 +291,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 keyboardType="phone-pad"
                 textContentType="telephoneNumber"
                 onSubmitEditing={() => this.presentSelectCountry()}
-                onLayout={({ nativeEvent }) => (this.phoneNumberLayout = nativeEvent.layout)}
-                onFocus={() => this.scrollToPosition(this.phoneNumberLayout)}
               />
 
               <Flex mb={4}>
@@ -339,7 +325,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
               </Button>
             </Container>
           </ScrollView>
-        </KeyboardAvoidingView>
+        </ArtsyKeyboardAvoidingView>
       </BiddingThemeProvider>
     )
   }
@@ -363,10 +349,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     const windowHeight = Dimensions.get("window").height
 
     return Math.max(0, y - windowHeight + height + iOSAccessoryViewHeight + this.keyboardHeight + this.iPhoneXOffset)
-  }
-
-  private get verticalOffset() {
-    return this.iPhoneXOffset + 15
   }
 
   // TODO: Remove this once React Native has been updated

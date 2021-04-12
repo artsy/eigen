@@ -16,6 +16,7 @@ export const cacheMiddleware = () => {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const dataFromCache = await cache.get(queryID, variables)
       if (dataFromCache) {
+        console.log("RELAY", operation.name, variables, "satisfied from cache")
         return JSON.parse(dataFromCache)
       }
     }

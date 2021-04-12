@@ -1,8 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { ChevronIcon, Flex, Text } from "palette"
 import React from "react"
-import { KeyboardAvoidingView, Platform } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { LogInEmail } from "./LogInEmail"
 import { LogInEnterPassword } from "./LogInEnterPassword"
@@ -15,7 +15,7 @@ export const LogIn = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <NavigationContainer independent>
         <LogInStore.Provider>
-          <KeyboardAvoidingView behavior={Platform.select({ ios: "padding", default: undefined })} style={{ flex: 1 }}>
+          <ArtsyKeyboardAvoidingView>
             <StackNavigator.Navigator
               headerMode="screen"
               screenOptions={{
@@ -37,7 +37,7 @@ export const LogIn = () => {
                 component={LogInEnterPassword}
               />
             </StackNavigator.Navigator>
-          </KeyboardAvoidingView>
+          </ArtsyKeyboardAvoidingView>
         </LogInStore.Provider>
       </NavigationContainer>
     </SafeAreaView>
