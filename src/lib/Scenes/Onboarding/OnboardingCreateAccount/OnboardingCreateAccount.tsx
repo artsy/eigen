@@ -1,4 +1,4 @@
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { Button, Flex } from "palette"
 import React from "react"
@@ -21,47 +21,58 @@ export type OnboardingCreateAccountNavigationStack = {
 
 const StackNavigator = createStackNavigator<OnboardingCreateAccountNavigationStack>()
 
-export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = ({ navigation }) => {
-  const handleSubmit = () => {
-    // do nothing
-  }
+// tslint:disable-next-line:variable-name
+export const __unsafe__createAccountNavigationRef: React.MutableRefObject<NavigationContainerRef | null> = {
+  current: null,
+}
 
+const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = ({ navigation }) => {
   return (
-    <NavigationContainer independent>
-      <OnboardingCreateAccountStore.Provider>
-        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-          <StackNavigator.Navigator
-            headerMode="screen"
-            screenOptions={{
-              ...TransitionPresets.SlideFromRightIOS,
-              headerShown: false,
-            }}
-          >
-            <StackNavigator.Screen
-              name="OnboardingCreateAccountEmail"
-              component={OnboardingCreateAccountEmail}
-              initialParams={{ navigateToWelcomeScreen: navigation.goBack }}
-            />
-            <StackNavigator.Screen name="OnboardingCreateAccountPassword" component={OnboardingCreateAccountPassword} />
-            <StackNavigator.Screen name="OnboardingCreateAccountName" component={OnboardingCreateAccountName} />
-          </StackNavigator.Navigator>
-        </KeyboardAvoidingView>
-        <OnboardingCreateAccountButton handleSubmit={handleSubmit} />
-      </OnboardingCreateAccountStore.Provider>
+    <NavigationContainer ref={__unsafe__createAccountNavigationRef} independent>
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+        <StackNavigator.Navigator
+          headerMode="screen"
+          screenOptions={{
+            ...TransitionPresets.SlideFromRightIOS,
+            headerShown: false,
+          }}
+        >
+          <StackNavigator.Screen
+            name="OnboardingCreateAccountEmail"
+            component={OnboardingCreateAccountEmail}
+            initialParams={{ navigateToWelcomeScreen: navigation.goBack }}
+          />
+          <StackNavigator.Screen name="OnboardingCreateAccountPassword" component={OnboardingCreateAccountPassword} />
+          <StackNavigator.Screen name="OnboardingCreateAccountName" component={OnboardingCreateAccountName} />
+        </StackNavigator.Navigator>
+      </KeyboardAvoidingView>
+      <OnboardingCreateAccountButton />
     </NavigationContainer>
   )
 }
 
-interface OnboardingCreateAccountButtonProps {
-  handleSubmit: () => void
-}
+const OnboardingCreateAccountButton: React.FC = () => {
+  const { handleSubmit } = OnboardingCreateAccountStore.useStoreActions((actions) => actions)
 
-const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButtonProps> = ({ handleSubmit }) => {
   return (
     <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5} backgroundColor="white">
-      <Button onPress={handleSubmit} block haptic="impactMedium" disabled={false} loading={false}>
+      <Button
+        onPress={() => {
+          handleSubmit()
+        }}
+        block
+        haptic="impactMedium"
+        disabled={false}
+        loading={false}
+      >
         Next
       </Button>
     </Flex>
   )
 }
+
+export const OnboardingCreateAccountWrapper: React.FC<OnboardingCreateAccountProps> = (props) => (
+  <OnboardingCreateAccountStore.Provider>
+    <OnboardingCreateAccount {...props} />
+  </OnboardingCreateAccountStore.Provider>
+)
