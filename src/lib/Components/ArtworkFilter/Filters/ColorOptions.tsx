@@ -7,7 +7,7 @@ import {
   FilterDisplayName,
   FilterParamName,
   ParamDefaultValues,
-} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { isPad } from "lib/utils/hardware"
 import { floor } from "lodash"
 import { Flex } from "palette"

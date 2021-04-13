@@ -9,10 +9,10 @@ import {
   CurrentOption,
   FilterModalMode,
   FilterModalNavigator,
-  FilterOptionsScreen,
+  ArtworkFilterOptionsScreen,
 } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
-import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
@@ -181,7 +181,7 @@ describe("Filter modal navigation flow", () => {
   it("allows users to navigate forward to sort screen from filter screen", () => {
     const filterScreen = renderWithWrappers(
       <ArtworkFiltersStoreProvider>
-        <FilterOptionsScreen
+        <ArtworkFilterOptionsScreen
           {...getEssentialProps({
             mode: FilterModalMode.Collection,
           })}
@@ -199,7 +199,7 @@ describe("Filter modal navigation flow", () => {
   it("allows users to navigate forward to medium screen from filter screen", () => {
     const filterScreen = renderWithWrappers(
       <ArtworkFiltersStoreProvider initialData={initialState}>
-        <FilterOptionsScreen
+        <ArtworkFilterOptionsScreen
           {...getEssentialProps({
             mode: FilterModalMode.Collection,
           })}

@@ -5,7 +5,7 @@ import {
   FilterData,
   FilterDisplayName,
   FilterParamName,
-} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React, { useState } from "react"
 import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"

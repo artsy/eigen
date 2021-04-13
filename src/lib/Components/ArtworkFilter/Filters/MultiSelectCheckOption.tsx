@@ -1,6 +1,6 @@
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
-import { FilterData, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { Box, CheckIcon, Flex, Sans, Separator } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"

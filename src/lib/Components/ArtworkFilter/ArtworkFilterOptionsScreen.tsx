@@ -1,65 +1,25 @@
-import { ActionType, ContextModule } from "@artsy/cohesion"
-import { NavigationContainer } from "@react-navigation/native"
-import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
-
+import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import {
-  changedFiltersParams,
-  FilterArray,
-  filterArtworksParams,
   FilterDisplayName,
   filterKeyFromAggregation,
   FilterParamName,
-  FilterParams,
-} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
-import { selectedOption } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { selectedOption } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
-import { ArrowRightIcon, Box, Button, CloseIcon, color, FilterIcon, Flex, Sans, Separator } from "palette"
+import { ArrowRightIcon, Box, CloseIcon, color, FilterIcon, Flex, Sans, Separator } from "palette"
 import React from "react"
-import { FlatList, TouchableOpacity, View, ViewProperties } from "react-native"
+import { FlatList, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
-// @ts-ignore
-import { AdditionalGeneIDsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/AdditionalGeneIDsOptions"
-// @ts-ignore
-import { ArtistIDsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ArtistIDsOptionsScreen"
-// @ts-ignore
-import { AttributionClassOptionsScreen } from "lib/Components/ArtworkFilter/Filters/AttributionClassOptions"
-// @ts-ignore
-import { CategoriesOptionsScreen } from "lib/Components/ArtworkFilter/Filters/CategoriesOptions"
-// @ts-ignore
-import { ColorOption, ColorOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ColorOptions"
-import { ColorsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ColorsOptions"
 import { colorHexMap } from "lib/Components/ArtworkFilter/Filters/ColorSwatch"
-// @ts-ignore
-import { EstimateRangeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/EstimateRangeOptions"
-// @ts-ignore
-import { GalleryOptionsScreen } from "lib/Components/ArtworkFilter/Filters/GalleryOptions"
-// @ts-ignore
-import { InstitutionOptionsScreen } from "lib/Components/ArtworkFilter/Filters/InstitutionOptions"
-// @ts-ignore
-import { MediumOptionsScreen } from "lib/Components/ArtworkFilter/Filters/MediumOptions"
-// @ts-ignore
-import { PriceRangeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/PriceRangeOptions"
-// @ts-ignore
-import { SizeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/SizeOptions"
-// @ts-ignore
-import { SizesOptionsScreen } from "lib/Components/ArtworkFilter/Filters/SizesOptions"
-import { SortOptionsScreen } from "lib/Components/ArtworkFilter/Filters/SortOptions"
-import { TimePeriodMultiOptionsScreen } from "lib/Components/ArtworkFilter/Filters/TimePeriodMultiOptions"
-import { TimePeriodOptionsScreen } from "lib/Components/ArtworkFilter/Filters/TimePeriodOptions"
-// @ts-ignore
-import { ViewAsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ViewAsOptions"
-// @ts-ignore
-import { WaysToBuyOptionsScreen } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
-// @ts-ignore
-import { YearOptionsScreen } from "lib/Components/ArtworkFilter/Filters/YearOptions"
-import { FancyModal } from "../FancyModal/FancyModal"
 import { TouchableRow } from "lib/Components/TouchableRow"
+import { FilterModalNavigationStack } from "./ArtworkFilter"
+import { ColorOption } from "lib/Components/ArtworkFilter/Filters/ColorOptions"
 
 export type FilterScreen =
   | "additionalGeneIDs"
@@ -99,279 +59,9 @@ export enum FilterModalMode {
   Show = "Show",
 }
 
-interface FilterModalProps extends ViewProperties {
-  closeModal?: () => void
-  exitModal?: () => void
-  id: string
-  initiallyAppliedFilters?: FilterArray
-  isFilterArtworksModalVisible: boolean
-  mode: FilterModalMode
-  slug: string
-  title?: string
-}
-
-// This needs to be a `type` rather than an `interface`
-// see src/lib/Scenes/MyCollection/Screens/ArtworkFormModal/MyCollectionArtworkFormModal.tsx#L35
-// tslint:disable-next-line:interface-over-type-literal
-export type FilterModalNavigationStack = {
-  AdditionalGeneIDsOptionsScreen: undefined
-  ArtistIDsOptionsScreen: undefined
-  AttributionClassOptionsScreen: undefined
-  CategoriesOptionsScreen: undefined
-  ColorOptionsScreen: undefined
-  ColorsOptionsScreen: undefined
-  EstimateRangeOptionsScreen: undefined
-  FilterOptionsScreen: FilterOptionsScreenParams
-  GalleryOptionsScreen: undefined
-  InstitutionOptionsScreen: undefined
-  MediumOptionsScreen: undefined
-  PriceRangeOptionsScreen: undefined
-  SizeOptionsScreen: undefined
-  SizesOptionsScreen: undefined
-  SortOptionsScreen: undefined
-  TimePeriodOptionsScreen: undefined
-  ViewAsOptionsScreen: undefined
-  WaysToBuyOptionsScreen: undefined
-  YearOptionsScreen: undefined
-}
-
-const Stack = createStackNavigator<FilterModalNavigationStack>()
-
-export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
-  const tracking = useTracking()
-  const shouldUseImprovedArtworkFilters = useFeatureFlag("ARUseImprovedArtworkFilters")
-  const { exitModal, id, mode, slug, closeModal } = props
-
-  const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-  const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
-  const previouslyAppliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.previouslyAppliedFilters)
-  const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
-
-  const applyFiltersAction = ArtworksFiltersStore.useStoreActions((action) => action.applyFiltersAction)
-  const resetFiltersAction = ArtworksFiltersStore.useStoreActions((action) => action.resetFiltersAction)
-
-  const handleClosingModal = () => {
-    resetFiltersAction()
-    closeModal?.()
-  }
-
-  const applyFilters = () => {
-    applyFiltersAction()
-    exitModal?.()
-  }
-
-  const trackChangeFilters = ({
-    actionType,
-    changedParams,
-    contextModule,
-    currentParams,
-    ownerEntity,
-    screenName,
-  }: {
-    actionType: ActionType
-    changedParams: any
-    contextModule?: ContextModule
-    currentParams: FilterParams
-    ownerEntity: OwnerEntityTypes
-    screenName: PageNames
-  }) => {
-    tracking.trackEvent({
-      context_module: contextModule,
-      context_screen: screenName,
-      context_screen_owner_type: ownerEntity,
-      context_screen_owner_id: id,
-      context_screen_owner_slug: slug,
-      current: currentParams,
-      changed: changedParams,
-      action_type: actionType,
-    })
-  }
-
-  const getApplyButtonCount = () => {
-    let selectedFiltersSum = selectedFiltersState.length
-
-    // For Auction results, the earliestCreatedYear and latestCreatedYear filters behave like one
-    if (filterTypeState === "auctionResult") {
-      const hasEarliestCreatedYearFilterEnabled = !!selectedFiltersState.find(
-        (filter) => filter.paramName === FilterParamName.earliestCreatedYear
-      )
-      const hasLatestCreatedYearFilterEnabled = !!selectedFiltersState.find(
-        (filter) => filter.paramName === FilterParamName.latestCreatedYear
-      )
-      if (hasEarliestCreatedYearFilterEnabled && hasLatestCreatedYearFilterEnabled) {
-        --selectedFiltersSum
-      }
-    }
-
-    // For Sale Artworks, the artistsIDs and the includeArtworksByFollowedArtists filters behave like one
-    if (filterTypeState === "saleArtwork") {
-      const hasArtistsIFollow = !!selectedFiltersState.find(
-        (filter) => filter.paramName === FilterParamName.artistsIFollow
-      )
-      const hasArtistIDs = !!selectedFiltersState.find((filter) => filter.paramName === FilterParamName.artistIDs)
-
-      if (hasArtistIDs && hasArtistsIFollow) {
-        --selectedFiltersSum
-      }
-    }
-    return selectedFiltersSum > 0 ? `Apply (${selectedFiltersSum})` : "Apply"
-  }
-
-  const isApplyButtonEnabled =
-    selectedFiltersState.length > 0 || (previouslyAppliedFiltersState.length === 0 && appliedFiltersState.length > 0)
-
-  return (
-    <NavigationContainer independent>
-      <FancyModal visible={props.isFilterArtworksModalVisible} onBackgroundPressed={handleClosingModal} maxHeight={550}>
-        <View style={{ flex: 1 }}>
-          <Stack.Navigator
-            // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-            detachInactiveScreens={false}
-            screenOptions={{
-              ...TransitionPresets.SlideFromRightIOS,
-              headerShown: false,
-              safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
-              cardStyle: { backgroundColor: "white" },
-            }}
-          >
-            <Stack.Screen name="FilterOptionsScreen" component={FilterOptionsScreen} initialParams={props} />
-            <Stack.Screen name="ArtistIDsOptionsScreen" component={ArtistIDsOptionsScreen} />
-            <Stack.Screen name="AttributionClassOptionsScreen" component={AttributionClassOptionsScreen} />
-            <Stack.Screen
-              name="ColorOptionsScreen"
-              component={shouldUseImprovedArtworkFilters ? ColorsOptionsScreen : ColorOptionsScreen}
-            />
-            <Stack.Screen name="EstimateRangeOptionsScreen" component={EstimateRangeOptionsScreen} />
-            <Stack.Screen name="GalleryOptionsScreen" component={GalleryOptionsScreen} />
-            <Stack.Screen name="AdditionalGeneIDsOptionsScreen" component={AdditionalGeneIDsOptionsScreen} />
-            <Stack.Screen name="InstitutionOptionsScreen" component={InstitutionOptionsScreen} />
-            <Stack.Screen name="MediumOptionsScreen" component={MediumOptionsScreen} />
-            <Stack.Screen name="PriceRangeOptionsScreen" component={PriceRangeOptionsScreen} />
-            <Stack.Screen name="SizeOptionsScreen" component={SizeOptionsScreen} />
-            <Stack.Screen name="SizesOptionsScreen" component={SizesOptionsScreen} />
-            <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
-            <Stack.Screen
-              name="TimePeriodOptionsScreen"
-              component={shouldUseImprovedArtworkFilters ? TimePeriodMultiOptionsScreen : TimePeriodOptionsScreen}
-            />
-            <Stack.Screen name="ViewAsOptionsScreen" component={ViewAsOptionsScreen} />
-            <Stack.Screen
-              name="YearOptionsScreen"
-              component={YearOptionsScreen}
-              options={{
-                // Avoid PanResponser conflicts between the slider and the slide back gesture
-                gestureEnabled: false,
-              }}
-            />
-            <Stack.Screen name="WaysToBuyOptionsScreen" component={WaysToBuyOptionsScreen} />
-            <Stack.Screen name="CategoriesOptionsScreen" component={CategoriesOptionsScreen} />
-          </Stack.Navigator>
-
-          <Separator my={0} />
-
-          <ApplyButtonContainer>
-            <ApplyButton
-              disabled={!isApplyButtonEnabled}
-              onPress={() => {
-                const appliedFiltersParams = filterArtworksParams(appliedFiltersState, filterTypeState)
-                // TODO: Update to use cohesion
-                switch (mode) {
-                  case FilterModalMode.Collection:
-                    trackChangeFilters({
-                      actionType: ActionType.commercialFilterParamsChanged,
-                      screenName: PageNames.Collection,
-                      ownerEntity: OwnerEntityTypes.Collection,
-                      currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
-                    })
-                    break
-                  case FilterModalMode.ArtistArtworks:
-                    trackChangeFilters({
-                      actionType: ActionType.commercialFilterParamsChanged,
-                      screenName: PageNames.ArtistPage,
-                      ownerEntity: OwnerEntityTypes.Artist,
-                      currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
-                    })
-                    break
-                  case FilterModalMode.Fair:
-                    trackChangeFilters({
-                      actionType: ActionType.commercialFilterParamsChanged,
-                      screenName: PageNames.FairPage,
-                      ownerEntity: OwnerEntityTypes.Fair,
-                      currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
-                    })
-                    break
-                  case FilterModalMode.SaleArtworks:
-                    trackChangeFilters({
-                      actionType: ActionType.commercialFilterParamsChanged,
-                      screenName: PageNames.Auction,
-                      ownerEntity: OwnerEntityTypes.Auction,
-                      currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
-                    })
-                    break
-                  case FilterModalMode.Show:
-                    trackChangeFilters({
-                      actionType: ActionType.commercialFilterParamsChanged,
-                      screenName: PageNames.ShowPage,
-                      ownerEntity: OwnerEntityTypes.Show,
-                      currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
-                    })
-                    break
-                  case FilterModalMode.AuctionResults:
-                    trackChangeFilters({
-                      actionType: ActionType.auctionResultsFilterParamsChanged,
-                      screenName: PageNames.ArtistPage,
-                      ownerEntity: OwnerEntityTypes.Artist,
-                      currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
-                      contextModule: ContextModule.auctionResults,
-                    })
-                    break
-
-                  case FilterModalMode.Partner:
-                    trackChangeFilters({
-                      actionType: ActionType.commercialFilterParamsChanged,
-                      screenName: PageNames.PartnerPage,
-                      ownerEntity: OwnerEntityTypes.Partner,
-                      currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
-                    })
-                    break
-                }
-                applyFilters()
-              }}
-              block
-              width={100}
-              variant="primaryBlack"
-              size="large"
-            >
-              {shouldUseImprovedArtworkFilters ? "Show results" : getApplyButtonCount()}
-            </ApplyButton>
-          </ApplyButtonContainer>
-        </View>
-      </FancyModal>
-    </NavigationContainer>
-  )
-}
-
-interface FilterOptionsScreenParams {
-  closeModal: () => void
-  exitModal: () => void
-  id: string
-  initiallyAppliedFilters?: FilterArray
-  mode: FilterModalMode
-  slug: string
-  title?: string
-}
-
-export const FilterOptionsScreen: React.FC<StackScreenProps<FilterModalNavigationStack, "FilterOptionsScreen">> = ({
-  navigation,
-  route,
-}) => {
+export const ArtworkFilterOptionsScreen: React.FC<
+  StackScreenProps<FilterModalNavigationStack, "FilterOptionsScreen">
+> = ({ navigation, route }) => {
   const tracking = useTracking()
   const { closeModal, id, mode, slug, title = "Filter" } = route.params
 
@@ -711,11 +401,6 @@ export const CurrentOption = styled(Sans)`
   color: ${color("black60")};
 `
 export const ClearAllButton = styled(TouchableOpacity)``
-export const ApplyButton = styled(Button)``
-export const ApplyButtonContainer = styled(Box)`
-  padding: 20px;
-  padding-bottom: 30px;
-`
 
 export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
   additionalGeneIDs: {

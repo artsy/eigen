@@ -6,7 +6,7 @@ import {
   FilterData,
   FilterDisplayName,
   FilterParamName,
-} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React from "react"
 import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"

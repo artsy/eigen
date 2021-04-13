@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { FilterModalMode, FilterModalNavigationStack, FilterOptionsScreen } from "lib/Components/ArtworkFilter"
+import { FilterModalMode, FilterModalNavigationStack, ArtworkFilterOptionsScreen } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import { ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
@@ -34,7 +34,7 @@ export const MockFilterScreen = ({ initialState }: { initialState?: ArtworkFilte
     <GlobalStoreProvider>
       <Theme>
         <ArtworkFiltersStoreProvider initialData={initialState}>
-          <FilterOptionsScreen {...getEssentialProps()} />
+          <ArtworkFilterOptionsScreen {...getEssentialProps()} />
         </ArtworkFiltersStoreProvider>
       </Theme>
     </GlobalStoreProvider>

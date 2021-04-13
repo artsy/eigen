@@ -5,8 +5,8 @@ import {
   FilterParamName,
   getDisplayNameForTimePeriod,
   ParamDefaultValues,
-} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
-import { FilterData } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import React, { useState } from "react"
 import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"

@@ -6,7 +6,7 @@ import {
   FilterData,
   FilterDisplayName,
   FilterParamName,
-} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 
 import { sortBy } from "lodash"
 import React from "react"

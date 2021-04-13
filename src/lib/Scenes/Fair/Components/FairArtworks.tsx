@@ -6,7 +6,7 @@ import {
   aggregationsWithFollowedArtists,
   FilterArray,
   filterArtworksParams,
-} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FAIR2_ARTWORKS_PAGE_SIZE } from "lib/data/constants"

@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
-import { filterArtworksParams } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"

@@ -13,7 +13,7 @@
     "member-access": [false, "check-accessor", "check-constructor"],
     "no-console": [true, ["error", ["warn", "error"]]],
     "object-literal-sort-keys": false,
-    "ordered-imports": true,
+    "ordered-imports": false,
     "relay-operation-generics": [true, { "artifactDirectory": "__generated__", "makeRelative": false }],
     "switch-default": false,
     "use-wrapped-components": true,

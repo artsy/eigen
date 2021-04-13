@@ -10,7 +10,7 @@ import {
   FilterParamName,
   FilterType,
   getSortDefaultValueByFilterType,
-} from "./FilterArtworksHelpers"
+} from "./ArtworkFilterHelpers"
 
 export interface ArtworkFiltersModel {
   appliedFilters: FilterArray

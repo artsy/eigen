@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
-import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { xor } from "lodash"
 import React, { useState } from "react"
 import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"

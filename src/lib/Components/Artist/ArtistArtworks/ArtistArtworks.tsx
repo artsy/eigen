@@ -2,12 +2,8 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
-import { filterArtworksParams } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
-import {
-  AnimatedArtworkFilterButton,
-  FilterModalMode,
-  FilterModalNavigator,
-} from "lib/Components/ArtworkFilter/FilterModal"
+import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/ArtworkFilter"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,

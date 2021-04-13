@@ -7,7 +7,7 @@ import {
   FilterParamName,
   FilterParams,
   ViewAsValues,
-} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ORDERED_SALE_ARTWORK_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"

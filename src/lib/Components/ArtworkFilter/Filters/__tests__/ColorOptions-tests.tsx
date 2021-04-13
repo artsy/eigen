@@ -1,5 +1,5 @@
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
-import { aggregationForFilter, Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { aggregationForFilter, Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"

@@ -1,6 +1,6 @@
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import { ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
-import { FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Box, CheckIcon } from "palette"

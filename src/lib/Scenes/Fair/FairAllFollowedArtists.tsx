@@ -3,7 +3,7 @@ import { FairAllFollowedArtists_fairForFilters } from "__generated__/FairAllFoll
 import { FairAllFollowedArtistsQuery } from "__generated__/FairAllFollowedArtistsQuery.graphql"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
-import { Aggregations, FilterArray, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { Aggregations, FilterArray, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"

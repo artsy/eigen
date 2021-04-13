@@ -1,6 +1,6 @@
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
-import { FilterData } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { FilterToggleButton } from "lib/Components/ArtworkFilter/Filters/FilterToggleButton"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Box, Check, Flex, Sans, Separator, Text } from "palette"

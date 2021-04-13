@@ -1,7 +1,7 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
-import { aggregationForFilter, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { aggregationForFilter, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { Box, CheckIcon, color, Flex, Separator, Text } from "palette"
 import React, { useState } from "react"
 import Haptic from "react-native-haptic-feedback"

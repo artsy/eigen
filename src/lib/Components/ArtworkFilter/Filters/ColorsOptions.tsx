@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { useLayout } from "lib/utils/useLayout"
 import { sortBy } from "lodash"

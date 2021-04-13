@@ -3,7 +3,7 @@ import {
   ArtworkFiltersStoreProvider,
   useSelectedOptionsDisplay,
 } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
-import { FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
