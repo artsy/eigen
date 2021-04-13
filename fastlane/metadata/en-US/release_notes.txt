@@ -1,6 +1,5 @@
 This update includes a number of improvements and bug fixes, including:
 
-- Add ability to submit multiple offers in a single conversation
 - Fix message ordering bug
 - Various updates to artwork filters
 
