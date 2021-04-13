@@ -8019,9 +8019,6 @@ type Partner implements Node {
     exclude: [String]
     first: Int
     forSale: Boolean
-
-    # Return artworks with less than x additional_images.
-    imageCountLessThan: Int
     last: Int
 
     # Return artworks that are missing priority metadata
