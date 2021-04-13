@@ -3,7 +3,6 @@ import { createStackNavigator, StackScreenProps, TransitionPresets } from "@reac
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Button, Flex } from "palette"
 import React from "react"
-import { KeyboardAvoidingView } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
 import { OnboardingCreateAccountEmail, OnboardingCreateAccountEmailParams } from "./OnboardingCreateAccountEmail"
@@ -68,23 +67,21 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
   return (
     <FormikProvider value={formik}>
       <NavigationContainer ref={__unsafe__createAccountNavigationRef} independent>
-        <KeyboardAvoidingView>
-          <StackNavigator.Navigator
-            headerMode="screen"
-            screenOptions={{
-              ...TransitionPresets.SlideFromRightIOS,
-              headerShown: false,
-            }}
-          >
-            <StackNavigator.Screen
-              name="OnboardingCreateAccountEmail"
-              component={OnboardingCreateAccountEmail}
-              initialParams={{ navigateToWelcomeScreen: navigation.goBack }}
-            />
-            <StackNavigator.Screen name="OnboardingCreateAccountPassword" component={OnboardingCreateAccountPassword} />
-            <StackNavigator.Screen name="OnboardingCreateAccountName" component={OnboardingCreateAccountName} />
-          </StackNavigator.Navigator>
-        </KeyboardAvoidingView>
+        <StackNavigator.Navigator
+          headerMode="screen"
+          screenOptions={{
+            ...TransitionPresets.SlideFromRightIOS,
+            headerShown: false,
+          }}
+        >
+          <StackNavigator.Screen
+            name="OnboardingCreateAccountEmail"
+            component={OnboardingCreateAccountEmail}
+            initialParams={{ navigateToWelcomeScreen: navigation.goBack }}
+          />
+          <StackNavigator.Screen name="OnboardingCreateAccountPassword" component={OnboardingCreateAccountPassword} />
+          <StackNavigator.Screen name="OnboardingCreateAccountName" component={OnboardingCreateAccountName} />
+        </StackNavigator.Navigator>
         <OnboardingCreateAccountButton />
       </NavigationContainer>
     </FormikProvider>

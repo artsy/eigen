@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
-import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
+import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
@@ -31,20 +31,26 @@ export const Onboarding = () => {
   return (
     <View style={{ flex: 1, paddingBottom: useScreenDimensions().safeAreaInsets.bottom }}>
       <NavigationContainer independent>
-        <ArtsyKeyboardAvoidingView>
-          <StackNavigator.Navigator
-            headerMode="screen"
-            screenOptions={{
-              ...TransitionPresets.SlideFromRightIOS,
-              headerShown: false,
-            }}
-          >
-            <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
-            <StackNavigator.Screen name="OnboardingLogin" component={OnboardingLogin} />
-            <StackNavigator.Screen name="OnboardingCreateAccount" component={OnboardingCreateAccount} />
-            <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
-          </StackNavigator.Navigator>
-        </ArtsyKeyboardAvoidingView>
+        <ArtsyKeyboardAvoidingViewContext.Provider value={{ isVisible: true, isPresentedModally: false }}>
+          <ArtsyKeyboardAvoidingView>
+            <StackNavigator.Navigator
+              headerMode="screen"
+              screenOptions={{
+                ...TransitionPresets.SlideFromRightIOS,
+                headerShown: false,
+              }}
+            >
+              <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
+              <StackNavigator.Screen name="OnboardingLogin" component={OnboardingLogin} />
+              <StackNavigator.Screen name="OnboardingCreateAccount" component={OnboardingCreateAccount} />
+              <StackNavigator.Screen
+                name="ForgotPassword"
+                component={ForgotPassword}
+                options={{ headerShown: false }}
+              />
+            </StackNavigator.Navigator>
+          </ArtsyKeyboardAvoidingView>
+        </ArtsyKeyboardAvoidingViewContext.Provider>
       </NavigationContainer>
     </View>
   )

@@ -2,6 +2,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
 import { Input } from "lib/Components/Input/Input"
 import { BackButton } from "lib/navigation/BackButton"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { color, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { OnboardingCreateAccountNavigationStack, UserSchema } from "./OnboardingCreateAccount"
@@ -17,11 +18,11 @@ export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmail
   const { values, handleSubmit, handleChange, validateForm, errors } = useFormikContext<UserSchema>()
 
   return (
-    <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="white">
+    <Flex alignItems="center" backgroundColor="white" flexGrow={1} pt={useScreenDimensions().safeAreaInsets.top}>
       <BackButton onPress={route.params.navigateToWelcomeScreen} />
-      <Flex flex={1} px={1.5} paddingTop={60} justifyContent="flex-start" flexGrow={1}>
+      <Flex px={1.5} paddingTop={60} justifyContent="flex-start" width="100%">
         <Text variant="largeTitle">Log in with email</Text>
-        <Spacer mt={50} />
+        <Spacer mt={120} />
         <Input
           autoCapitalize="none"
           autoCompleteType="email"
