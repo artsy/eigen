@@ -31,7 +31,14 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
   })
   const offerType = (offers?.edges?.length || []) > 1 ? "Counteroffer" : "Offer"
 
-  let ctaAttributes: { backgroundColor: Color; message: string; subMessage: string; Icon: React.FC<IconProps> }
+  let ctaAttributes: {
+    backgroundColor: Color
+    message: string
+    subMessage: string
+    Icon: React.FC<IconProps>
+    url: string
+    modalTitle: string
+  }
 
   switch (kind) {
     case "PAYMENT_FAILED": {
@@ -40,6 +47,8 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
         message: "Payment Failed",
         subMessage: "Please update payment method",
         Icon: AlertCircleFillIcon,
+        url: `/orders/${orderID}/payment/new`,
+        modalTitle: "Retry Payment",
       }
       break
     }
@@ -50,6 +59,8 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
         // TODO: what about <1 hr?
         subMessage: `Expires in ${hours}hr`,
         Icon: AlertCircleFillIcon,
+        url: `/orders/${orderID}`,
+        modalTitle: "Make Offer",
       }
       break
     }
@@ -59,6 +70,8 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
         message: `Congratulations! ${offerType} Accepted`,
         subMessage: "Tap to view",
         Icon: MoneyFillIcon,
+        url: `/orders/${orderID}`,
+        modalTitle: "Make Offer",
       }
       break
     }
@@ -68,25 +81,25 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
     }
   }
 
-  const { message, subMessage, backgroundColor, Icon } = ctaAttributes
+  const { message, subMessage, backgroundColor, Icon, url, modalTitle } = ctaAttributes
 
-  const navigateToConversation = () => {
+  const navigateToConversation = (path: string, title: string) => {
     trackEvent(
       tappedViewOffer({
         impulse_conversation_id: conversationID,
         cta: message,
       })
     )
-    navigate(`/orders/${orderID}`, {
+    navigate(path, {
       modal: true,
-      passProps: { orderID, title: "Make Offer" },
+      passProps: { orderID, title },
     })
   }
 
   return (
     <TouchableWithoutFeedback
       onPress={() => {
-        navigateToConversation()
+        navigateToConversation(url, modalTitle)
       }}
     >
       <Flex

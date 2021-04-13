@@ -88,4 +88,15 @@ describe("ReviewOfferButton", () => {
       passProps: { orderID: "order-id", title: "Make Offer" },
     })
   })
+
+  it("tapping it opens the correct webview with the correct title for offers where payment fails", () => {
+    const wrapper = getWrapper("PAYMENT_FAILED", { offers: { edges: [{}, {}] } })
+
+    wrapper.root.findByType(TouchableWithoutFeedback).props.onPress()
+
+    expect(navigate).toHaveBeenCalledWith("/orders/order-id/payment/new", {
+      modal: true,
+      passProps: { orderID: "order-id", title: "Retry Payment" },
+    })
+  })
 })
