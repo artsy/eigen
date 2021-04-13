@@ -409,10 +409,10 @@ PODS:
   - React-jsinspector (0.64.0)
   - react-native-cameraroll (1.3.0):
     - React
-  - react-native-config (1.3.3):
-    - react-native-config/App (= 1.3.3)
-  - react-native-config/App (1.3.3):
-    - React
+  - react-native-config (1.4.2):
+    - react-native-config/App (= 1.4.2)
+  - react-native-config/App (1.4.2):
+    - React-Core
   - react-native-cookies (6.0.4):
     - React-Core
   - react-native-geolocation (2.0.2):
@@ -998,7 +998,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 06a9c77b56902ae7ffcdd7a4905f664adc5d237b
   React-jsinspector: 0ae35a37b20d5e031eb020a69cc5afdbd6406301
   react-native-cameraroll: 463aff54e37cff27ea76eb792e6f1fa43b876320
-  react-native-config: 47fd4132d931f84aca9c31f302c3c867a8560b11
+  react-native-config: 199a9122a7975cda68f7fab9a96b0e80030ceda7
   react-native-cookies: 3b5b182d008b714fefc337df15b787f00385a598
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
   react-native-mapbox-gl: eeed4fa8fffea96f77a9eecbc63f88eddb0d2e58
