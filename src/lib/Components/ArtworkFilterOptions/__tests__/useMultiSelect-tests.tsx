@@ -1,35 +1,30 @@
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+  useSelectedOptionsDisplay,
+} from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import {
-  ArtworkFilterContext,
-  ArtworkFilterContextState,
-  reducer,
-  useSelectedOptionsDisplay,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import React, { useReducer } from "react"
+import React from "react"
 import { Text, TouchableWithoutFeedback, View } from "react-native"
 import { useMultiSelect } from "../useMultiSelect"
 import { getEssentialProps } from "./helper"
 
 describe("useMultiSelect", () => {
-  let state: ArtworkFilterContextState
-
-  beforeEach(() => {
-    state = {
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-      aggregations: [],
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    }
-  })
+  const initialState: ArtworkFiltersState = {
+    selectedFilters: [],
+    appliedFilters: [],
+    previouslyAppliedFilters: [],
+    applyFilters: false,
+    aggregations: [],
+    filterType: "artwork",
+    counts: {
+      total: null,
+      followedArtists: null,
+    },
+  }
 
   const OPTIONS = [
     { paramName: FilterParamName.colors, paramValue: "example-1", displayText: "Example 1" },
@@ -64,18 +59,16 @@ describe("useMultiSelect", () => {
     )
   }
 
-  const MockComponent = ({ initialState }: InitialState) => {
-    const [filterState, dispatch] = useReducer(reducer, initialState)
-
+  const MockComponent = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
     return (
-      <ArtworkFilterContext.Provider value={{ state: filterState, dispatch }}>
+      <ArtworkFiltersStoreProvider initialData={initialData}>
         <MockScreen {...getEssentialProps()} />
-      </ArtworkFilterContext.Provider>
+      </ArtworkFiltersStoreProvider>
     )
   }
 
   it("manages the nextParamValues", () => {
-    const tree = renderWithWrappers(<MockComponent initialState={state} />)
+    const tree = renderWithWrappers(<MockComponent initialData={initialState} />)
 
     expect(extractText(tree.root.findByProps({ testID: "nextParamValues" }))).toEqual("[]")
 
@@ -95,7 +88,7 @@ describe("useMultiSelect", () => {
   })
 
   it("dispatches filter updates", async () => {
-    const tree = renderWithWrappers(<MockComponent initialState={state} />)
+    const tree = renderWithWrappers(<MockComponent initialData={initialState} />)
     const buttons = tree.root.findAllByType(TouchableWithoutFeedback)
 
     buttons[0].props.onPress()

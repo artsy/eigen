@@ -1,22 +1,21 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import {
-  ArtworkFilterContext,
+  aggregationForFilter,
   FilterData,
+  FilterDisplayName,
+  FilterParamName,
   ParamDefaultValues,
-  useSelectedOptionsDisplay,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { aggregationForFilter, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import _ from "lodash"
-import React, { useContext } from "react"
-import { FilterModalNavigationStack } from "../FilterModal"
+import React from "react"
+import { FilterModalNavigationStack } from "../ArtworkFilter"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface TimePeriodOptionsScreenProps
   extends StackScreenProps<FilterModalNavigationStack, "TimePeriodOptionsScreen"> {}
 
 export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-
   // TODO: a lot of redundant types, see if we can clean up
   const displayValue: Record<string, string> = {
     "2020": "2020-today",
@@ -38,7 +37,11 @@ export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = (
   }
 
   const paramName = FilterParamName.timePeriod
-  const aggregation = aggregationForFilter(paramName, state.aggregations)
+  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
+
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+
+  const aggregation = aggregationForFilter(paramName, aggregations)
   const options = aggregation?.counts.map((aggCount) => aggCount.value) ?? []
   const aggFilterOptions: FilterData[] = _.compact(
     options.map((value) => {
@@ -58,7 +61,7 @@ export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = (
   const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
 
   const selectOption = (option: FilterData) => {
-    dispatch({ type: "selectFilters", payload: option })
+    selectFiltersAction(option)
   }
 
   return (

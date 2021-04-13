@@ -1,5 +1,6 @@
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
+import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/ArtworkFilter"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Box, Spacer, Theme } from "palette"
@@ -10,7 +11,6 @@ import { Collection_collection } from "../../../__generated__/Collection_collect
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "../../../lib/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "../../../lib/Scenes/Collection/Screens/CollectionHeader"
 import { Schema, screenTrack } from "../../../lib/utils/track"
-import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { CollectionsHubRailsContainer as CollectionHubsRails } from "./Components/CollectionHubsRails/index"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
 
@@ -104,60 +104,54 @@ export class Collection extends Component<CollectionProps, CollectionState> {
     const sections = ["collectionFeaturedArtists", "collectionHubsRails", "collectionArtworks"]
 
     return (
-      <ArtworkFilterGlobalStateProvider>
-        <ArtworkFilterContext.Consumer>
-          {() => {
-            return (
-              <Theme>
-                <View style={{ flex: 1 }}>
-                  <FlatList
-                    ref={this.flatList}
-                    onViewableItemsChanged={this.onViewableItemsChanged}
-                    viewabilityConfig={this.viewabilityConfig}
-                    keyExtractor={(_item, index) => String(index)}
-                    data={sections}
-                    ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
-                    ItemSeparatorComponent={() => <Spacer mb={2} />}
-                    renderItem={({ item }): null | any => {
-                      switch (item) {
-                        case "collectionFeaturedArtists":
-                          return (
-                            <Box px={2}>
-                              <CollectionFeaturedArtists collection={collection} />
-                            </Box>
-                          )
-                        case "collectionHubsRails":
-                          return isDepartment ? (
-                            <CollectionHubsRails linkedCollections={linkedCollections} {...this.props} />
-                          ) : null
-                        case "collectionArtworks":
-                          return (
-                            <Box px={2}>
-                              <CollectionArtworks collection={collection} scrollToTop={() => this.scrollToTop()} />
-                              <FilterModalNavigator
-                                {...this.props}
-                                isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
-                                id={collection.id}
-                                slug={collection.slug}
-                                mode={FilterModalMode.Collection}
-                                exitModal={this.handleFilterArtworksModal.bind(this)}
-                                closeModal={this.closeFilterArtworksModal.bind(this)}
-                              />
-                            </Box>
-                          )
-                      }
-                    }}
-                  />
-                  <AnimatedArtworkFilterButton
-                    isVisible={isArtworkGridVisible}
-                    onPress={this.openFilterArtworksModal.bind(this)}
-                  />
-                </View>
-              </Theme>
-            )
-          }}
-        </ArtworkFilterContext.Consumer>
-      </ArtworkFilterGlobalStateProvider>
+      <ArtworkFiltersStoreProvider>
+        <Theme>
+          <View style={{ flex: 1 }}>
+            <FlatList
+              ref={this.flatList}
+              onViewableItemsChanged={this.onViewableItemsChanged}
+              viewabilityConfig={this.viewabilityConfig}
+              keyExtractor={(_item, index) => String(index)}
+              data={sections}
+              ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
+              ItemSeparatorComponent={() => <Spacer mb={2} />}
+              renderItem={({ item }): null | any => {
+                switch (item) {
+                  case "collectionFeaturedArtists":
+                    return (
+                      <Box px={2}>
+                        <CollectionFeaturedArtists collection={collection} />
+                      </Box>
+                    )
+                  case "collectionHubsRails":
+                    return isDepartment ? (
+                      <CollectionHubsRails linkedCollections={linkedCollections} {...this.props} />
+                    ) : null
+                  case "collectionArtworks":
+                    return (
+                      <Box px={2}>
+                        <CollectionArtworks collection={collection} scrollToTop={() => this.scrollToTop()} />
+                        <FilterModalNavigator
+                          {...this.props}
+                          isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
+                          id={collection.id}
+                          slug={collection.slug}
+                          mode={FilterModalMode.Collection}
+                          exitModal={this.handleFilterArtworksModal.bind(this)}
+                          closeModal={this.closeFilterArtworksModal.bind(this)}
+                        />
+                      </Box>
+                    )
+                }
+              }}
+            />
+            <AnimatedArtworkFilterButton
+              isVisible={isArtworkGridVisible}
+              onPress={this.openFilterArtworksModal.bind(this)}
+            />
+          </View>
+        </Theme>
+      </ArtworkFiltersStoreProvider>
     )
   }
 }

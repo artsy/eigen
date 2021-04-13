@@ -1,9 +1,14 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { FilterData, ParamDefaultValues } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import { useArtworkFiltersAggregation } from "lib/utils/ArtworkFilter/useArtworkFilters"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import {
+  FilterData,
+  FilterDisplayName,
+  FilterParamName,
+  ParamDefaultValues,
+} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import React, { useState } from "react"
-import { FilterModalNavigationStack } from "../FilterModal"
+import { FilterModalNavigationStack } from "../ArtworkFilter"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
 const DEFAULT_OPTION: FilterData = {
@@ -20,7 +25,9 @@ export const AdditionalGeneIDsOptionsScreen: React.FC<AdditionalGeneIDsOptionsSc
   const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.medium })
 
   // But updates the additionalGeneIDs option
-  const { dispatch, selectedOption } = useArtworkFiltersAggregation({ paramName: FilterParamName.additionalGeneIDs })
+  const { selectedOption } = useArtworkFiltersAggregation({ paramName: FilterParamName.additionalGeneIDs })
+
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
 
   const [nextOptions, setNextOptions] = useState<string[]>((selectedOption?.paramValue as string[]) ?? [])
 
@@ -62,13 +69,10 @@ export const AdditionalGeneIDsOptionsScreen: React.FC<AdditionalGeneIDsOptionsSc
           ]
         }
 
-        dispatch({
-          type: "selectFilters",
-          payload: {
-            displayText: option.displayText,
-            paramValue: next,
-            paramName: option.paramName,
-          },
+        selectFiltersAction({
+          displayText: option.displayText,
+          paramValue: next,
+          paramName: option.paramName,
         })
 
         return next
@@ -89,13 +93,10 @@ export const AdditionalGeneIDsOptionsScreen: React.FC<AdditionalGeneIDsOptionsSc
           next = ParamDefaultValues.additionalGeneIDs
         }
 
-        dispatch({
-          type: "selectFilters",
-          payload: {
-            displayText: option.displayText,
-            paramValue: next,
-            paramName: option.paramName,
-          },
+        selectFiltersAction({
+          displayText: option.displayText,
+          paramValue: next,
+          paramName: option.paramName,
         })
 
         return next

@@ -1,12 +1,8 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import {
-  ArtworkFilterContext,
-  FilterData,
-  useSelectedOptionsDisplay,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import React, { useContext } from "react"
-import { FilterModalNavigationStack } from "../FilterModal"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import React from "react"
+import { FilterModalNavigationStack } from "../ArtworkFilter"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface SortOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "SortOptionsScreen"> {}
@@ -122,8 +118,8 @@ export const ORDERED_AUCTION_RESULTS_SORTS: FilterData[] = [
 ]
 
 export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-  const filterType = state.filterType
+  const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
 
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedOption = selectedOptions.find((option) => option.paramName === FilterParamName.sort)!
@@ -136,13 +132,10 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation
   }[filterType]
 
   const selectOption = (option: FilterData) => {
-    dispatch({
-      type: "selectFilters",
-      payload: {
-        displayText: option.displayText,
-        paramName: FilterParamName.sort,
-        paramValue: option.paramValue,
-      },
+    selectFiltersAction({
+      displayText: option.displayText,
+      paramName: FilterParamName.sort,
+      paramValue: option.paramValue,
     })
   }
 

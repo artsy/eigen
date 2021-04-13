@@ -1,9 +1,9 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworkFilterContext, FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { xor } from "lodash"
-import React, { useContext, useState } from "react"
-import { FilterModalNavigationStack } from "../FilterModal"
+import React, { useState } from "react"
+import { FilterModalNavigationStack } from "../ArtworkFilter"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 
 interface ArtistIDsArtworksOptionsScreenProps
@@ -43,15 +43,16 @@ export const CATEGORIES_OPTIONS: FilterData[] = [
 ]
 
 export const CategoriesOptionsScreen: React.FC<ArtistIDsArtworksOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
 
-  const oldAppliedFilterCategories = state.appliedFilters.find(
-    (filter) => filter.paramName === FilterParamName.categories
-  )?.paramValue as string[] | undefined
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const selectedFilters = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
 
-  const oldSelectedFilterCategories = state.selectedFilters.find(
-    (filter) => filter.paramName === FilterParamName.categories
-  )?.paramValue as string[] | undefined
+  const oldAppliedFilterCategories = appliedFilters.find((filter) => filter.paramName === FilterParamName.categories)
+    ?.paramValue as string[] | undefined
+
+  const oldSelectedFilterCategories = selectedFilters.find((filter) => filter.paramName === FilterParamName.categories)
+    ?.paramValue as string[] | undefined
 
   // Get the Symmetric difference of the previously applied filters and the ones that were selected but not yet applied
   // Read more about Symmetric difference here https://en.wikipedia.org/wiki/Symmetric_difference
@@ -71,13 +72,10 @@ export const CategoriesOptionsScreen: React.FC<ArtistIDsArtworksOptionsScreenPro
 
     setSelectedOptions(updatedParamValue)
 
-    dispatch({
-      type: "selectFilters",
-      payload: {
-        displayText: option.displayText,
-        paramValue: updatedParamValue,
-        paramName: FilterParamName.categories,
-      },
+    selectFiltersAction({
+      displayText: option.displayText,
+      paramValue: updatedParamValue,
+      paramName: FilterParamName.categories,
     })
   }
 

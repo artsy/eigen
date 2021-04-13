@@ -1,26 +1,22 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import {
-  ArtworkFilterContext,
-  FilterData,
-  ParamDefaultValues,
-  useSelectedOptionsDisplay,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import {
   FilterDisplayName,
   FilterParamName,
   getDisplayNameForTimePeriod,
-} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import { useArtworkFiltersAggregation } from "lib/utils/ArtworkFilter/useArtworkFilters"
-import _ from "lodash"
-import React, { useContext, useState } from "react"
-import { FilterModalNavigationStack } from "../FilterModal"
+  ParamDefaultValues,
+} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { FilterData } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
+import React, { useState } from "react"
+import { FilterModalNavigationStack } from "../ArtworkFilter"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
 interface TimePeriodOptionsScreenProps
   extends StackScreenProps<FilterModalNavigationStack, "TimePeriodOptionsScreen"> {}
 
 export const TimePeriodMultiOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch } = useContext(ArtworkFilterContext)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
   const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.timePeriod })
 
   const DEFAULT_OPTION: FilterData = {
@@ -66,13 +62,10 @@ export const TimePeriodMultiOptionsScreen: React.FC<TimePeriodOptionsScreenProps
           ]
         }
 
-        dispatch({
-          type: "selectFilters",
-          payload: {
-            displayText: option.displayText,
-            paramValue: next,
-            paramName: option.paramName,
-          },
+        selectFiltersAction({
+          displayText: option.displayText,
+          paramValue: next,
+          paramName: option.paramName,
         })
 
         return next
@@ -93,13 +86,10 @@ export const TimePeriodMultiOptionsScreen: React.FC<TimePeriodOptionsScreenProps
           next = ParamDefaultValues.majorPeriods
         }
 
-        dispatch({
-          type: "selectFilters",
-          payload: {
-            displayText: option.displayText,
-            paramValue: next,
-            paramName: option.paramName,
-          },
+        selectFiltersAction({
+          displayText: option.displayText,
+          paramValue: next,
+          paramName: option.paramName,
         })
 
         return next

@@ -1,54 +1,37 @@
-import { MockFilterScreen } from "lib/Components/FilterModal/__tests__/FilterTestHelper"
+import { OptionListItem as FilterModalOptionListItem } from "lib/Components/ArtworkFilter"
+import { MockFilterScreen } from "lib/Components/ArtworkFilter/__tests__/FilterTestHelper"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { FilterParamName, InitialState } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { Switch } from "react-native"
-import { OptionListItem as FilterModalOptionListItem } from "../../../../lib/Components/FilterModal"
-import {
-  ArtworkFilterContext,
-  ArtworkFilterContextState,
-  reducer,
-} from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { OptionListItem } from "../MultiSelectOption"
 import { WaysToBuyOptionsScreen } from "../WaysToBuyOptions"
 import { getEssentialProps } from "./helper"
 
 describe("Ways to Buy Options Screen", () => {
-  let state: ArtworkFilterContextState
-
-  beforeEach(() => {
-    state = {
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-      aggregations: [],
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    }
-  })
-
-  const MockWaysToBuyScreen = ({ initialState }: InitialState) => {
-    const [filterState, dispatch] = React.useReducer(reducer, initialState)
-
-    return (
-      <ArtworkFilterContext.Provider
-        value={{
-          state: filterState,
-          dispatch,
-        }}
-      >
-        <WaysToBuyOptionsScreen {...getEssentialProps()} />
-      </ArtworkFilterContext.Provider>
-    )
+  const initialState: ArtworkFiltersState = {
+    selectedFilters: [],
+    appliedFilters: [],
+    previouslyAppliedFilters: [],
+    applyFilters: false,
+    aggregations: [],
+    filterType: "artwork",
+    counts: {
+      total: null,
+      followedArtists: null,
+    },
   }
 
+  const MockWaysToBuyScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => (
+    <ArtworkFiltersStoreProvider initialData={initialData}>
+      <WaysToBuyOptionsScreen {...getEssentialProps()} />
+    </ArtworkFiltersStoreProvider>
+  )
+
   it("renders the correct ways to buy options", () => {
-    const tree = renderWithWrappers(<MockWaysToBuyScreen initialState={state} />)
+    const tree = renderWithWrappers(<MockWaysToBuyScreen initialData={initialState} />)
 
     expect(tree.root.findAllByType(OptionListItem)).toHaveLength(4)
 
@@ -67,7 +50,7 @@ describe("Ways to Buy Options Screen", () => {
   })
 
   it("displays the default text when no filter selected on the filter modal screen", () => {
-    state = {
+    const injectedState: ArtworkFiltersState = {
       selectedFilters: [],
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -80,14 +63,15 @@ describe("Ways to Buy Options Screen", () => {
       },
     }
 
-    const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
+    const tree = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+
     const waysToBuyListItem = tree.root.findAllByType(FilterModalOptionListItem)[1]
 
     expect(extractText(waysToBuyListItem)).toContain("All")
   })
 
   it("displays all the selected filters on the filter modal screen", () => {
-    state = {
+    const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
           displayText: "Buy now",
@@ -116,13 +100,13 @@ describe("Ways to Buy Options Screen", () => {
       },
     }
 
-    const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
+    const tree = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
     expect(extractText(tree.root)).toContain("Buy now, Inquire, Bid")
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
-    const initialState: ArtworkFilterContextState = {
+    const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
           displayText: "Buy now",
@@ -141,7 +125,7 @@ describe("Ways to Buy Options Screen", () => {
       },
     }
 
-    const tree = renderWithWrappers(<MockWaysToBuyScreen initialState={initialState} />)
+    const tree = renderWithWrappers(<MockWaysToBuyScreen initialData={injectedState} />)
     const switches = tree.root.findAllByType(Switch)
 
     expect(switches[0].props.value).toBe(true)
@@ -154,7 +138,7 @@ describe("Ways to Buy Options Screen", () => {
   })
 
   it("it toggles applied filters 'ON' and unapplied filters 'OFF", () => {
-    const initialState: ArtworkFilterContextState = {
+    const injectedState: ArtworkFiltersState = {
       selectedFilters: [],
       appliedFilters: [
         {
@@ -179,7 +163,7 @@ describe("Ways to Buy Options Screen", () => {
       },
     }
 
-    const tree = renderWithWrappers(<MockWaysToBuyScreen initialState={initialState} />)
+    const tree = renderWithWrappers(<MockWaysToBuyScreen initialData={injectedState} />)
     const switches = tree.root.findAllByType(Switch)
 
     expect(switches[0].props.value).toBe(false)

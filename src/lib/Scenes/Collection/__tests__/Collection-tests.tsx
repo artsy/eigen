@@ -1,6 +1,6 @@
 import { CollectionTestsQuery } from "__generated__/CollectionTestsQuery.graphql"
 import { AnimatedBottomButton } from "lib/Components/AnimatedBottomButton"
-import { FilterArtworkButton } from "lib/Components/FilterModal"
+import { FilterArtworkButton } from "lib/Components/ArtworkFilter"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"

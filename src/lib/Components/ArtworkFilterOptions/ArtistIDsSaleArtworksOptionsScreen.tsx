@@ -1,8 +1,13 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworkFilterContext, FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { aggregationForFilter, FilterDisplayName, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import React, { useContext, useState } from "react"
-import { FilterModalNavigationStack } from "../FilterModal"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import {
+  aggregationForFilter,
+  FilterData,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import React, { useState } from "react"
+import { FilterModalNavigationStack } from "../ArtworkFilter"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 
 interface ArtistIDsSaleArtworksOptionsScreenProps
@@ -11,17 +16,23 @@ interface ArtistIDsSaleArtworksOptionsScreenProps
 export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksOptionsScreenProps> = ({
   navigation,
 }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-  const paramName = FilterParamName.artistIDs
-  const aggregation = aggregationForFilter(paramName, state.aggregations)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
 
-  const previouslyAppliedArtistFilters: FilterData | undefined = state.appliedFilters.find(
+  const paramName = FilterParamName.artistIDs
+  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
+  const aggregation = aggregationForFilter(paramName, aggregations)
+
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+
+  const previouslyAppliedArtistFilters: FilterData | undefined = appliedFilters.find(
     (filter) => filter.paramName === paramName
   )
 
-  const previouslyArtistIFollowFilters: FilterData | undefined = state.appliedFilters.find(
+  const previouslyArtistIFollowFilters: FilterData | undefined = appliedFilters.find(
     (filter) => filter.paramName === FilterParamName.artistsIFollow && filter.paramValue
   )
+
+  const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
 
   let previousSelectedOptions = previouslyAppliedArtistFilters?.paramValue
 
@@ -55,7 +66,7 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksO
     displayText: "Artists you follow",
     paramName: FilterParamName.artistsIFollow,
     paramValue: "artistsYouFollow",
-    count: state.counts.followedArtists,
+    count: counts.followedArtists,
   }
 
   const displayOptions = [artistsYouFollowOption, allOption].concat(options ?? [])
@@ -66,22 +77,18 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksO
     // If the user selected the artists I follow option
     if (option.paramName === FilterParamName.artistsIFollow) {
       setSelectedOptions(["artistsYouFollow"])
-      dispatch({
-        type: "selectFilters",
-        payload: {
-          displayText: option.displayText,
-          paramValue: true,
-          paramName: FilterParamName.artistsIFollow,
-        },
+      selectFiltersAction({
+        displayText: option.displayText,
+        paramValue: true,
+        paramName: FilterParamName.artistsIFollow,
       })
-      dispatch({
-        type: "selectFilters",
-        payload: {
-          displayText: "All artists",
-          paramValue: [],
-          paramName,
-        },
+
+      selectFiltersAction({
+        displayText: "All artists",
+        paramValue: [],
+        paramName,
       })
+
       return
     }
     // If the user did not select the all option
@@ -104,22 +111,16 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksO
       setSelectedOptions(["all"])
     }
 
-    dispatch({
-      type: "selectFilters",
-      payload: {
-        displayText: option.displayText,
-        paramValue: false,
-        paramName: FilterParamName.artistsIFollow,
-      },
+    selectFiltersAction({
+      displayText: option.displayText,
+      paramValue: false,
+      paramName: FilterParamName.artistsIFollow,
     })
 
-    dispatch({
-      type: "selectFilters",
-      payload: {
-        displayText: option.displayText,
-        paramValue: updatedParamValue,
-        paramName,
-      },
+    selectFiltersAction({
+      displayText: option.displayText,
+      paramValue: updatedParamValue,
+      paramName,
     })
   }
 

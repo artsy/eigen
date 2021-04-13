@@ -1,18 +1,22 @@
 import { OwnerType } from "@artsy/cohesion"
 import { SaleLotsList_saleArtworksConnection } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
 import { SaleLotsList_unfilteredSaleArtworksConnection } from "__generated__/SaleLotsList_unfilteredSaleArtworksConnection.graphql"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import {
+  filterArtworksParams,
+  FilterParamName,
+  FilterParams,
+  ViewAsValues,
+} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { ORDERED_SALE_ARTWORK_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { filterArtworksParams, FilterParamName, ViewAsValues } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
 import { Box, color, Flex, Sans } from "palette"
-import React, { useCallback, useContext, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { FilterParams } from "../../../utils/ArtworkFilter/FilterArtworksHelpers"
 import { SaleArtworkListContainer } from "./SaleArtworkList"
 
 interface Props {
@@ -61,19 +65,22 @@ export const SaleLotsList: React.FC<Props> = ({
   saleSlug,
   scrollToTop,
 }) => {
-  const { state, dispatch } = useContext(ArtworkFilterContext)
   const [totalCount, setTotalCount] = useState<number | null>(null)
   const tracking = useTracking()
 
-  const filterParams = filterArtworksParams(state.appliedFilters, state.filterType)
-  const viewAsFilter = state.appliedFilters.find((filter) => filter.paramName === FilterParamName.viewAs)
+  const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const applyFiltersState = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+  const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
+  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((action) => action.setAggregationsAction)
+  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((action) => action.setFiltersCountAction)
+  const setFilterTypeAction = ArtworksFiltersStore.useStoreActions((action) => action.setFilterTypeAction)
+
+  const filterParams = filterArtworksParams(appliedFiltersState, filterTypeState)
+  const viewAsFilter = appliedFiltersState.find((filter) => filter.paramName === FilterParamName.viewAs)
   const counts = saleArtworksConnection.saleArtworksConnection?.counts
 
   useEffect(() => {
-    dispatch({
-      type: "setFilterType",
-      payload: "saleArtwork",
-    })
+    setFilterTypeAction("saleArtwork")
   }, [])
 
   useEffect(() => {
@@ -81,13 +88,8 @@ export const SaleLotsList: React.FC<Props> = ({
   }, [])
 
   useEffect(() => {
-    if (state.applyFilters) {
+    if (applyFiltersState) {
       // Add the new medium to geneIDs array
-      const medium: string[] = []
-      if (typeof filterParams.medium === "string") {
-        medium.push(filterParams.medium)
-      }
-
       relay.refetchConnection(
         10,
         (error) => {
@@ -98,27 +100,21 @@ export const SaleLotsList: React.FC<Props> = ({
         {
           ...filterParams,
           saleID: saleSlug,
-          geneIDs: medium,
+          geneIDs: filterParams.additionalGeneIDs || [],
           includeArtworksByFollowedArtists: !!filterParams.includeArtworksByFollowedArtists,
         }
       )
       scrollToTop()
     }
-  }, [state.appliedFilters])
+  }, [appliedFiltersState])
 
   useEffect(() => {
-    dispatch({
-      type: "setAggregations",
-      payload: saleArtworksConnection.saleArtworksConnection?.aggregations,
-    })
+    setAggregationsAction(saleArtworksConnection.saleArtworksConnection?.aggregations)
   }, [])
 
   useEffect(() => {
     if (saleArtworksConnection.saleArtworksConnection?.counts) {
-      dispatch({
-        type: "setFilterCounts",
-        payload: saleArtworksConnection.saleArtworksConnection?.counts,
-      })
+      setFiltersCountAction(saleArtworksConnection.saleArtworksConnection?.counts)
     }
   }, [])
 

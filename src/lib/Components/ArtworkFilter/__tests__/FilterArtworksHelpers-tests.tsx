@@ -1,4 +1,4 @@
-import { Aggregations, FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { Aggregations, FilterArray } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import {
   aggregationsWithFollowedArtists,
   changedFiltersParams,

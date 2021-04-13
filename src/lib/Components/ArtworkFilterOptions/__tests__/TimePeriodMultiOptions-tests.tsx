@@ -1,22 +1,19 @@
+import { OptionListItem as FilterModalOptionListItem } from "lib/Components/ArtworkFilter"
+import { MockFilterScreen } from "lib/Components/ArtworkFilter/__tests__/FilterTestHelper"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import React from "react"
 import { Switch } from "react-native"
-import { OptionListItem as FilterModalOptionListItem } from "../../../../lib/Components/FilterModal"
-import { MockFilterScreen } from "../../../../lib/Components/FilterModal/__tests__/FilterTestHelper"
 import { extractText } from "../../../../lib/tests/extractText"
 import { renderWithWrappers } from "../../../../lib/tests/renderWithWrappers"
-import { FilterParamName, InitialState } from "../../../../lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import {
-  ArtworkFilterContext,
-  ArtworkFilterContextState,
-  reducer,
-} from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { OptionListItem as MultiSelectOptionListItem } from "../MultiSelectOption"
 import { TimePeriodMultiOptionsScreen } from "../TimePeriodMultiOptions"
 import { getEssentialProps } from "./helper"
 
 describe("TimePeriodMultiOptions Screen", () => {
-  const defaultState: ArtworkFilterContextState = {
+  const initialState: ArtworkFiltersState = {
     aggregations: [
       {
         slice: "MAJOR_PERIOD",
@@ -50,21 +47,18 @@ describe("TimePeriodMultiOptions Screen", () => {
     selectedFilters: [],
   }
 
-  const MockTimePeriodOptionsScreen = ({ initialState }: InitialState) => {
-    const [filterState, dispatch] = React.useReducer(reducer, initialState)
-
+  const MockTimePeriodOptionsScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
     return (
-      <ArtworkFilterContext.Provider value={{ state: filterState, dispatch }}>
+      <ArtworkFiltersStoreProvider initialData={initialData}>
         <TimePeriodMultiOptionsScreen {...getEssentialProps()} />
-      </ArtworkFilterContext.Provider>
+      </ArtworkFiltersStoreProvider>
     )
   }
 
   describe("before any filters are selected", () => {
-    const state: ArtworkFilterContextState = defaultState
-
     it("displays 'All' in the filter modal screen", () => {
-      const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
+      const tree = renderWithWrappers(<MockFilterScreen initialState={initialState} />)
+
       const items = tree.root.findAllByType(FilterModalOptionListItem)
       const item = items.find((i) => extractText(i).startsWith("Time period"))
 
@@ -76,7 +70,8 @@ describe("TimePeriodMultiOptions Screen", () => {
     })
 
     it("renders all options present in the aggregation", () => {
-      const tree = renderWithWrappers(<MockTimePeriodOptionsScreen initialState={state} />)
+      const tree = renderWithWrappers(<MockTimePeriodOptionsScreen initialData={initialState} />)
+
       expect(tree.root.findAllByType(MultiSelectOptionListItem)).toHaveLength(4)
 
       const items = tree.root.findAllByType(MultiSelectOptionListItem)
@@ -85,13 +80,13 @@ describe("TimePeriodMultiOptions Screen", () => {
   })
 
   describe("when filters are selected", () => {
-    const state: ArtworkFilterContextState = {
-      ...defaultState,
+    const state: ArtworkFiltersState = {
+      ...initialState,
       selectedFilters: [
         {
           displayText: "Foo",
           paramName: FilterParamName.timePeriod,
-          paramValue: ["2020", "In the year 2000!"],
+          paramValue: ["2020"],
         },
       ],
     }
@@ -100,30 +95,32 @@ describe("TimePeriodMultiOptions Screen", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ ARUseImprovedArtworkFilters: true })
 
       const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
+
       const items = tree.root.findAllByType(FilterModalOptionListItem)
       const item = items.find((i) => extractText(i).startsWith("Time period"))
 
       expect(item).not.toBeUndefined()
       if (item) {
-        expect(extractText(item)).toContain("2020-today, In the year 2000!")
+        expect(extractText(item)).toContain("2020-today")
       }
     })
 
-    it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
-      const tree = renderWithWrappers(<MockTimePeriodOptionsScreen initialState={state} />)
+    it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
+      const tree = renderWithWrappers(<MockTimePeriodOptionsScreen initialData={state} />)
+
       const switches = tree.root.findAllByType(Switch)
 
       expect(switches[0].props.value).toBe(false)
       expect(switches[1].props.value).toBe(true)
       expect(switches[2].props.value).toBe(false)
-      expect(switches[3].props.value).toBe(true)
+      expect(switches[3].props.value).toBe(false)
     })
   })
 
   describe("when the 'All' option is selected", () => {
-    const state: ArtworkFilterContextState = {
-      ...defaultState,
-      selectedFilters: [
+    const state: ArtworkFiltersState = {
+      ...initialState,
+      appliedFilters: [
         {
           displayText: "Foo",
           paramName: FilterParamName.timePeriod,
@@ -135,7 +132,8 @@ describe("TimePeriodMultiOptions Screen", () => {
     it("does not display 'All' on the filter modal screen", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ ARUseImprovedArtworkFilters: true })
 
-      const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
+      const tree = renderWithWrappers(<MockFilterScreen initialState={initialState} />)
+
       const items = tree.root.findAllByType(FilterModalOptionListItem)
       const item = items.find((i) => extractText(i).startsWith("Time period"))
 
@@ -146,7 +144,8 @@ describe("TimePeriodMultiOptions Screen", () => {
     })
 
     it("toggles the 'All' filter 'ON' and the other filters 'OFF", () => {
-      const tree = renderWithWrappers(<MockTimePeriodOptionsScreen initialState={state} />)
+      const tree = renderWithWrappers(<MockTimePeriodOptionsScreen initialData={state} />)
+
       const switches = tree.root.findAllByType(Switch)
 
       expect(switches[0].props.value).toBe(true)

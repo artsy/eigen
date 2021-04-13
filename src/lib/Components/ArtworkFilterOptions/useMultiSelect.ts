@@ -1,19 +1,18 @@
 import {
-  ArtworkFilterContext,
+  ArtworksFiltersStore,
   DEFAULT_FILTERS,
-  FilterData,
   useSelectedOptionsDisplay,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+} from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { FilterData, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { compact, every, isString } from "lodash"
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 export const useMultiSelect = ({ options, paramName }: { options: FilterData[]; paramName: FilterParamName }) => {
   const defaultFilter = DEFAULT_FILTERS.find((option) => option.paramName === paramName)
 
   const didMountRef = useRef(false)
 
-  const { dispatch } = useContext(ArtworkFilterContext)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
 
   const selectedOptions = useSelectedOptionsDisplay()
 
@@ -86,16 +85,13 @@ export const useMultiSelect = ({ options, paramName }: { options: FilterData[]; 
   useEffect(() => {
     // Skips the initial mount
     if (didMountRef.current) {
-      dispatch({
-        type: "selectFilters",
-        payload: {
-          paramName,
-          // Label which appears on the filter overview screen
-          displayText:
-            nextOptions.map(({ displayText }) => displayText).join(", ") || defaultFilter?.displayText || "All",
-          // Array of paramValues
-          paramValue: nextParamValues,
-        },
+      selectFiltersAction({
+        paramName,
+        // Label which appears on the filter overview screen
+        displayText:
+          nextOptions.map(({ displayText }) => displayText).join(", ") || defaultFilter?.displayText || "All",
+        // Array of paramValues
+        paramValue: nextParamValues,
       })
     }
 

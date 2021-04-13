@@ -8,7 +8,7 @@
 // import "@babel/runtime"
 
 import chalk from "chalk"
-// @ts-ignore
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Enzyme from "enzyme"
 // @ts-ignore
 import Adapter from "enzyme-adapter-react-16"

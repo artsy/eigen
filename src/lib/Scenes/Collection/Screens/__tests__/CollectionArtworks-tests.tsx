@@ -1,12 +1,11 @@
 import { CollectionArtworksTestsQuery } from "__generated__/CollectionArtworksTestsQuery.graphql"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { FilterArray, filterArtworksParams, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { filterArtworksParams, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -15,7 +14,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 jest.unmock("react-relay")
 
 describe("CollectionArtworks", () => {
-  let state: ArtworkFilterContextState
   let env: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
@@ -32,9 +30,9 @@ describe("CollectionArtworks", () => {
       render={({ props, error }) => {
         if (props?.marketingCollection) {
           return (
-            <ArtworkFilterContext.Provider value={{ state, dispatch: jest.fn() }}>
+            <ArtworkFiltersStoreProvider>
               <CollectionArtworks collection={props.marketingCollection} scrollToTop={jest.fn()} />
-            </ArtworkFilterContext.Provider>
+            </ArtworkFiltersStoreProvider>
           )
         } else if (error) {
           console.error(error)
@@ -53,18 +51,6 @@ describe("CollectionArtworks", () => {
 
   beforeEach(() => {
     env = createMockEnvironment()
-    state = {
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-      aggregations: [],
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    }
   })
 
   it("returns zero state component when there are no artworks to display", () => {

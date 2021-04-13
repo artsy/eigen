@@ -1,10 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Fair_fair } from "__generated__/Fair_fair.graphql"
 import { FairQuery } from "__generated__/FairQuery.graphql"
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
+import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/ArtworkFilter"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { useHideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
+
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
@@ -183,99 +184,95 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         context_screen_owner_slug: fair.slug,
       }}
     >
-      <ArtworkFilterGlobalStateProvider>
-        <ArtworkFilterContext.Consumer>
-          {() => (
-            <Theme>
-              <>
-                <FlatList
-                  data={sections}
-                  ref={flatListRef}
-                  viewabilityConfig={viewConfigRef.current}
-                  onViewableItemsChanged={viewableItemsChangedRef.current}
-                  ItemSeparatorComponent={() => <Spacer mb={3} />}
-                  ListFooterComponent={<Spacer mb={3} />}
-                  keyExtractor={(_item, index) => String(index)}
-                  stickyHeaderIndices={[tabIndex]}
-                  onScroll={hideBackButtonOnScroll}
-                  scrollEventThrottle={100}
-                  // @ts-ignore
-                  CellRendererComponent={cellItemRenderer}
-                  renderItem={({ item }): null | any => {
-                    switch (item) {
-                      case "fairHeader": {
-                        return (
-                          <>
-                            <FairHeaderFragmentContainer fair={fair} />
-                            <Separator mt={3} />
-                          </>
-                        )
-                      }
-                      case "notActive": {
-                        return <FairEmptyStateFragmentContainer fair={fair} />
-                      }
-                      case "fairFollowedArtistsRail": {
-                        return <FairFollowedArtistsRailFragmentContainer fair={fair} />
-                      }
-                      case "fairEditorial": {
-                        return <FairEditorialFragmentContainer fair={fair} />
-                      }
-                      case "fairCollections": {
-                        return <FairCollectionsFragmentContainer fair={fair} />
-                      }
-                      case "fairTabs": {
-                        return (
-                          <Box paddingTop={safeAreaInsets.top} backgroundColor="white">
-                            <Tabs
-                              setActiveTab={(index) => {
-                                trackTappedNavigationTab(index as number)
-                                setActiveTab(index)
-                              }}
-                              activeTab={activeTab}
-                              tabs={tabs}
-                            />
-                          </Box>
-                        )
-                      }
-                      case "fairTabChildContent": {
-                        const tabToShow = tabs ? tabs[activeTab] : null
+      <ArtworkFiltersStoreProvider>
+        <Theme>
+          <>
+            <FlatList
+              data={sections}
+              ref={flatListRef}
+              viewabilityConfig={viewConfigRef.current}
+              onViewableItemsChanged={viewableItemsChangedRef.current}
+              ItemSeparatorComponent={() => <Spacer mb={3} />}
+              ListFooterComponent={<Spacer mb={3} />}
+              keyExtractor={(_item, index) => String(index)}
+              stickyHeaderIndices={[tabIndex]}
+              onScroll={hideBackButtonOnScroll}
+              scrollEventThrottle={100}
+              // @ts-ignore
+              CellRendererComponent={cellItemRenderer}
+              renderItem={({ item }): null | any => {
+                switch (item) {
+                  case "fairHeader": {
+                    return (
+                      <>
+                        <FairHeaderFragmentContainer fair={fair} />
+                        <Separator mt={3} />
+                      </>
+                    )
+                  }
+                  case "notActive": {
+                    return <FairEmptyStateFragmentContainer fair={fair} />
+                  }
+                  case "fairFollowedArtistsRail": {
+                    return <FairFollowedArtistsRailFragmentContainer fair={fair} />
+                  }
+                  case "fairEditorial": {
+                    return <FairEditorialFragmentContainer fair={fair} />
+                  }
+                  case "fairCollections": {
+                    return <FairCollectionsFragmentContainer fair={fair} />
+                  }
+                  case "fairTabs": {
+                    return (
+                      <Box paddingTop={safeAreaInsets.top} backgroundColor="white">
+                        <Tabs
+                          setActiveTab={(index) => {
+                            trackTappedNavigationTab(index as number)
+                            setActiveTab(index)
+                          }}
+                          activeTab={activeTab}
+                          tabs={tabs}
+                        />
+                      </Box>
+                    )
+                  }
+                  case "fairTabChildContent": {
+                    const tabToShow = tabs ? tabs[activeTab] : null
 
-                        if (!tabToShow) {
-                          return null
-                        }
-
-                        if (tabToShow.label === "Exhibitors") {
-                          return <FairExhibitorsFragmentContainer fair={fair} />
-                        }
-
-                        if (tabToShow.label === "Artworks") {
-                          return (
-                            <Box px={2}>
-                              <FairArtworksFragmentContainer fair={fair} />
-                              <FilterModalNavigator
-                                isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-                                id={fair.internalID}
-                                slug={fair.slug}
-                                mode={FilterModalMode.Fair}
-                                exitModal={handleFilterArtworksModal}
-                                closeModal={closeFilterArtworksModal}
-                              />
-                            </Box>
-                          )
-                        }
-                      }
+                    if (!tabToShow) {
+                      return null
                     }
-                  }}
-                />
-                <AnimatedArtworkFilterButton
-                  isVisible={isArtworksGridVisible && tabs[activeTab] && tabs[activeTab].label === "Artworks"}
-                  onPress={openFilterArtworksModal}
-                />
-              </>
-            </Theme>
-          )}
-        </ArtworkFilterContext.Consumer>
-      </ArtworkFilterGlobalStateProvider>
+
+                    if (tabToShow.label === "Exhibitors") {
+                      return <FairExhibitorsFragmentContainer fair={fair} />
+                    }
+
+                    if (tabToShow.label === "Artworks") {
+                      return (
+                        <Box px={2}>
+                          <FairArtworksFragmentContainer fair={fair} />
+                          <FilterModalNavigator
+                            isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+                            id={fair.internalID}
+                            slug={fair.slug}
+                            mode={FilterModalMode.Fair}
+                            exitModal={handleFilterArtworksModal}
+                            closeModal={closeFilterArtworksModal}
+                          />
+                        </Box>
+                      )
+                    }
+                  }
+                }
+              }}
+            />
+            <AnimatedArtworkFilterButton
+              isVisible={isArtworksGridVisible && tabs[activeTab] && tabs[activeTab].label === "Artworks"}
+              onPress={openFilterArtworksModal}
+            />
+          </>
+        </Theme>
+      </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>
   )
 }

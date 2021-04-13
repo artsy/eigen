@@ -1,12 +1,11 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
 import { SaleArtworkGridItem_saleArtwork } from "__generated__/SaleArtworkGridItem_saleArtwork.graphql"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { filterArtworksParams } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
-import { Box, Flex, Sans, Spacer } from "palette"
-import { Touchable } from "palette"
-import React, { useContext } from "react"
+import { Box, Flex, Sans, Spacer, Touchable } from "palette"
+import React from "react"
 import { StyleSheet, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -39,8 +38,9 @@ export const SaleArtworkGridItem: React.FC<ArtworkProps> = ({
   contextScreenOwnerType,
 }) => {
   const tracking = useTracking()
-  const filterContext = useContext(ArtworkFilterContext)
-  const filterParams = filterArtworksParams(filterContext?.state?.appliedFilters)
+
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const filterParams = filterArtworksParams(appliedFilters)
 
   const artwork = saleArtwork.artwork!
 

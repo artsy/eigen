@@ -1,24 +1,21 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import {
-  ArtworkFilterContext,
-  FilterData,
-  ParamDefaultValues,
-  useSelectedOptionsDisplay,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import {
   AggregateOption,
   aggregationForFilter,
+  FilterData,
   FilterDisplayName,
   FilterParamName,
-} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+  ParamDefaultValues,
+} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { isPad } from "lib/utils/hardware"
 import { floor } from "lodash"
 import { Flex } from "palette"
-import React, { useContext, useState } from "react"
+import React, { useState } from "react"
 import { LayoutChangeEvent, View } from "react-native"
 import styled from "styled-components/native"
+import { FilterModalNavigationStack } from "../ArtworkFilter"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
-import { FilterModalNavigationStack } from "../FilterModal"
 import { TouchableRow } from "../TouchableRow"
 import { ColorSwatch } from "./ColorSwatch"
 
@@ -77,11 +74,13 @@ const SIDE_MARGIN = isPad() ? 32 : 16
 const FLEX_MARGIN = SIDE_MARGIN - INTER_ITEM_SPACE / 2
 
 export const ColorOptionsScreen: React.FC<ColorOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
   const [itemSize, setItemSize] = useState(0)
 
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+
   const paramName = FilterParamName.color
-  const aggregation = aggregationForFilter(paramName, state.aggregations)
+  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
+  const aggregation = aggregationForFilter(paramName, aggregations)
   const options = aggregation?.counts.map((aggCount) => {
     return {
       displayText: aggCount.name,
@@ -104,15 +103,12 @@ export const ColorOptionsScreen: React.FC<ColorOptionsScreenProps> = ({ navigati
 
   const selectOption = (option: AggregateOption) => {
     if (option.displayText === selectedOption.displayText) {
-      dispatch({ type: "selectFilters", payload: allOption })
+      selectFiltersAction(allOption)
     } else {
-      dispatch({
-        type: "selectFilters",
-        payload: {
-          displayText: option.displayText,
-          paramValue: option.paramValue,
-          paramName,
-        },
+      selectFiltersAction({
+        displayText: option.displayText,
+        paramValue: option.paramValue,
+        paramName,
       })
     }
   }

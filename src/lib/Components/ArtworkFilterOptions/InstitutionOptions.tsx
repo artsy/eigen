@@ -1,29 +1,28 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import {
-  ArtworkFilterContext,
-  FilterData,
-  ParamDefaultValues,
-  useSelectedOptionsDisplay,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import {
   AggregateOption,
   aggregationForFilter,
+  FilterData,
   FilterDisplayName,
   FilterParamName,
-} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
-import React, { useContext } from "react"
-import { FilterModalNavigationStack } from "../FilterModal"
+  ParamDefaultValues,
+} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import React from "react"
+import { FilterModalNavigationStack } from "../ArtworkFilter"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface InstitutionOptionsScreenProps
   extends StackScreenProps<FilterModalNavigationStack, "InstitutionOptionsScreen"> {}
 
 export const InstitutionOptionsScreen: React.FC<InstitutionOptionsScreenProps> = ({ navigation }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+
+  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
 
   const paramName = FilterParamName.institution
   const filterKey = "institution"
-  const aggregation = aggregationForFilter(filterKey, state.aggregations)
+  const aggregation = aggregationForFilter(filterKey, aggregations)
   const options = aggregation?.counts.map((aggCount) => {
     return {
       displayText: aggCount.name,
@@ -38,14 +37,11 @@ export const InstitutionOptionsScreen: React.FC<InstitutionOptionsScreenProps> =
   const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
 
   const selectOption = (option: AggregateOption) => {
-    dispatch({
-      type: "selectFilters",
-      payload: {
-        displayText: option.displayText,
-        paramValue: option.paramValue,
-        paramName,
-        filterKey,
-      },
+    selectFiltersAction({
+      displayText: option.displayText,
+      paramValue: option.paramValue,
+      paramName,
+      filterKey,
     })
   }
 

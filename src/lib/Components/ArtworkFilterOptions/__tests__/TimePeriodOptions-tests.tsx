@@ -1,6 +1,5 @@
-import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
-import { Aggregations, ArtworkFilterContext, reducer } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
 import { TimePeriodOptionsScreen } from "../TimePeriodOptions"
 import { sharedAggregateFilterValidation, ValidationParams } from "./AggregationOptionCommonValidation"
 import { getEssentialProps } from "./helper"
@@ -44,20 +43,7 @@ describe("Time Period Options Screen", () => {
     },
   ]
 
-  const MockTimePeriodScreen = ({ initialState }: any) => {
-    const [filterState, dispatch] = React.useReducer(reducer, initialState)
-
-    return (
-      <ArtworkFilterContext.Provider
-        value={{
-          state: filterState,
-          dispatch,
-        }}
-      >
-        <TimePeriodOptionsScreen {...getEssentialProps()} />
-      </ArtworkFilterContext.Provider>
-    )
-  }
+  const MockTimePeriodScreen = () => <TimePeriodOptionsScreen {...getEssentialProps()} />
 
   const aggregateParams: ValidationParams = {
     Screen: MockTimePeriodScreen,

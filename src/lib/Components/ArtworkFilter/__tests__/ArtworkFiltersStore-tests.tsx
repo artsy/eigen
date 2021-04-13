@@ -1,21 +1,19 @@
-import {
-  ArtworkFilterContextState,
-  FilterActions,
-  FilterArray,
-  reducer,
-  selectedOptionsUnion,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+import { createStore } from "easy-peasy"
+import { selectedOptionsUnion } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { FilterArray, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { ArtworkFiltersModel, ArtworkFiltersState } from "../ArtworkFiltersStore"
 
-let filterState: ArtworkFilterContextState
-let filterAction: FilterActions
+let filterState: ArtworkFiltersState
+
+const getFilterArtworksStore = (state: ArtworkFiltersState) =>
+  createStore<ArtworkFiltersModel>({ ...ArtworkFiltersModel, ...state })
 
 describe("Clear All Filters", () => {
   it("clears out the previouslyAppliedFilters if nothing has been applied", () => {
     filterState = {
       appliedFilters: [],
       selectedFilters: [],
-      previouslyAppliedFilters: [],
+      previouslyAppliedFilters: [{ displayText: "Price (low to high)", paramName: FilterParamName.sort }],
       applyFilters: false,
       aggregations: [],
       filterType: "artwork",
@@ -24,12 +22,10 @@ describe("Clear All Filters", () => {
         followedArtists: null,
       },
     }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().clearAllAction()
 
-    const r = reducer(filterState, {
-      type: "clearAll",
-    })
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       appliedFilters: [],
       applyFilters: false,
       selectedFilters: [],
@@ -57,11 +53,10 @@ describe("Clear All Filters", () => {
       },
     }
 
-    const r = reducer(filterState, {
-      type: "clearAll",
-    })
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().clearAllAction()
 
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       appliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
       applyFilters: false,
       selectedFilters: [],
@@ -91,11 +86,10 @@ describe("Reset Filters", () => {
       },
     }
 
-    const r = reducer(filterState, {
-      type: "resetFilters",
-    })
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().resetFiltersAction()
 
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       appliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
       applyFilters: false,
       selectedFilters: [],
@@ -123,11 +117,10 @@ describe("Reset Filters", () => {
       },
     }
 
-    const r = reducer(filterState, {
-      type: "resetFilters",
-    })
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().resetFiltersAction()
 
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       appliedFilters: [{ displayText: "Price (low to high)", paramName: FilterParamName.sort }],
       applyFilters: false,
       selectedFilters: [],
@@ -157,18 +150,14 @@ describe("Select Filters", () => {
       },
     }
 
-    filterAction = {
-      type: "selectFilters",
-      payload: {
-        paramName: FilterParamName.artistIDs,
-        paramValue: "artist-1",
-        displayText: "Artist 1",
-      },
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().selectFiltersAction({
+      paramName: FilterParamName.artistIDs,
+      paramValue: "artist-1",
+      displayText: "Artist 1",
+    })
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: false,
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -208,18 +197,14 @@ describe("Select Filters", () => {
       },
     }
 
-    filterAction = {
-      type: "selectFilters",
-      payload: {
-        paramName: FilterParamName.artistIDs,
-        paramValue: "artist-2",
-        displayText: "Artist 2",
-      },
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().selectFiltersAction({
+      paramName: FilterParamName.artistIDs,
+      paramValue: "artist-2",
+      displayText: "Artist 2",
+    })
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: false,
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -274,18 +259,14 @@ describe("Select Filters", () => {
       },
     }
 
-    filterAction = {
-      type: "selectFilters",
-      payload: {
-        paramName: FilterParamName.artistIDs,
-        paramValue: "artist-2",
-        displayText: "Artist 2",
-      },
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().selectFiltersAction({
+      paramName: FilterParamName.artistIDs,
+      paramValue: "artist-2",
+      displayText: "Artist 2",
+    })
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: false,
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -336,18 +317,14 @@ describe("Select Filters", () => {
       },
     }
 
-    filterAction = {
-      type: "selectFilters",
-      payload: {
-        paramName: FilterParamName.artistIDs,
-        paramValue: "artist-1",
-        displayText: "Artist 1",
-      },
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().selectFiltersAction({
+      paramName: FilterParamName.artistIDs,
+      paramValue: "artist-1",
+      displayText: "Artist 1",
+    })
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: false,
       appliedFilters: [
         {
@@ -399,18 +376,14 @@ describe("Select Filters", () => {
       },
     }
 
-    filterAction = {
-      type: "selectFilters",
-      payload: {
-        paramName: FilterParamName.waysToBuyBid,
-        paramValue: false,
-        displayText: "Bid",
-      },
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().selectFiltersAction({
+      paramName: FilterParamName.waysToBuyBid,
+      paramValue: false,
+      displayText: "Bid",
+    })
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: false,
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -444,18 +417,14 @@ describe("Select Filters", () => {
       },
     }
 
-    filterAction = {
-      type: "selectFilters",
-      payload: {
-        paramName: FilterParamName.waysToBuyBid,
-        paramValue: true,
-        displayText: "Bid",
-      },
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().selectFiltersAction({
+      paramName: FilterParamName.waysToBuyBid,
+      paramValue: true,
+      displayText: "Bid",
+    })
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: false,
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -494,14 +463,12 @@ describe("Select Filters", () => {
       },
     }
 
-    filterAction = {
-      type: "selectFilters",
-      payload: { displayText: "Recently added", paramName: FilterParamName.sort },
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore
+      .getActions()
+      .selectFiltersAction({ displayText: "Recently added", paramName: FilterParamName.sort })
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: false,
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -529,17 +496,13 @@ describe("Select Filters", () => {
       },
     }
 
-    filterAction = {
-      type: "selectFilters",
-      payload: {
-        displayText: "Artwork year (descending)",
-        paramName: FilterParamName.sort,
-      },
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().selectFiltersAction({
+      displayText: "Artwork year (descending)",
+      paramName: FilterParamName.sort,
+    })
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: false,
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -567,17 +530,13 @@ describe("Select Filters", () => {
       },
     }
 
-    filterAction = {
-      type: "selectFilters",
-      payload: {
-        displayText: "Artwork year (descending)",
-        paramName: FilterParamName.sort,
-      },
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().selectFiltersAction({
+      displayText: "Artwork year (descending)",
+      paramName: FilterParamName.sort,
+    })
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: false,
       appliedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
       previouslyAppliedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
@@ -605,18 +564,14 @@ describe("Select Filters", () => {
       },
     }
 
-    filterAction = {
-      type: "selectFilters",
-      payload: {
-        displayText: "Default",
-        paramValue: "-decayed_merch",
-        paramName: FilterParamName.sort,
-      },
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().selectFiltersAction({
+      displayText: "Default",
+      paramValue: "-decayed_merch",
+      paramName: FilterParamName.sort,
+    })
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: false,
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -650,18 +605,14 @@ describe("Select Filters", () => {
       },
     }
 
-    filterAction = {
-      type: "selectFilters",
-      payload: {
-        displayText: "Default",
-        paramValue: "-decayed_merch",
-        paramName: FilterParamName.sort,
-      },
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().selectFiltersAction({
+      displayText: "Default",
+      paramValue: "-decayed_merch",
+      paramName: FilterParamName.sort,
+    })
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: false,
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -703,13 +654,10 @@ describe("Apply Filters", () => {
       },
     }
 
-    filterAction = {
-      type: "applyFilters",
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().applyFiltersAction()
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: true,
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -748,13 +696,10 @@ describe("Apply Filters", () => {
       },
     }
 
-    filterAction = {
-      type: "applyFilters",
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().applyFiltersAction()
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: true,
       previouslyAppliedFilters: [
         {
@@ -804,13 +749,10 @@ describe("Apply Filters", () => {
       },
     }
 
-    filterAction = {
-      type: "applyFilters",
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().applyFiltersAction()
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: true,
       appliedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
       previouslyAppliedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
@@ -838,13 +780,10 @@ describe("Apply Filters", () => {
       },
     }
 
-    filterAction = {
-      type: "applyFilters",
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().applyFiltersAction()
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: true,
       appliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
       previouslyAppliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
@@ -872,13 +811,10 @@ describe("Apply Filters", () => {
       },
     }
 
-    filterAction = {
-      type: "applyFilters",
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().applyFiltersAction()
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: true,
       appliedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
       previouslyAppliedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
@@ -912,11 +848,10 @@ describe("Apply Filters", () => {
       },
     }
 
-    const r = reducer(filterState, {
-      type: "applyFilters",
-    })
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().applyFiltersAction()
 
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: true,
       appliedFilters: [
         {
@@ -967,11 +902,10 @@ describe("Apply Filters", () => {
       },
     }
 
-    const r = reducer(filterState, {
-      type: "applyFilters",
-    })
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().applyFiltersAction()
 
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: true,
       filterType: "artwork",
       counts: {
@@ -1038,11 +972,10 @@ describe("Apply Filters", () => {
       },
     }
 
-    const r = reducer(filterState, {
-      type: "applyFilters",
-    })
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().applyFiltersAction()
 
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: true,
       filterType: "artwork",
       counts: {
@@ -1087,13 +1020,10 @@ describe("clearFiltersZeroState", () => {
       },
     }
 
-    filterAction = {
-      type: "clearFiltersZeroState",
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().clearFiltersZeroStateAction()
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       applyFilters: true,
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -1123,14 +1053,12 @@ describe("SetInitialFilterState", () => {
       },
     }
 
-    filterAction = {
-      type: "setInitialFilterState",
-      payload: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
-    }
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore
+      .getActions()
+      .setInitialFilterStateAction([{ displayText: "Recently updated", paramName: FilterParamName.sort }])
 
-    const r = reducer(filterState, filterAction)
-
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       appliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
       selectedFilters: [],
       previouslyAppliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
@@ -2070,15 +1998,10 @@ describe("SetFilterCounts", () => {
       },
     }
 
-    const r = reducer(filterState, {
-      type: "setFilterCounts",
-      payload: {
-        total: 1000,
-        followedArtists: 100,
-      },
-    })
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().setFiltersCountAction({ total: 1000, followedArtists: 100 })
 
-    expect(r).toEqual({
+    expect(filterArtworksStore.getState()).toEqual({
       appliedFilters: [],
       applyFilters: false,
       selectedFilters: [],

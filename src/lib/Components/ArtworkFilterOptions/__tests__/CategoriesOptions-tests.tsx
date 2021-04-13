@@ -1,5 +1,5 @@
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkFilterContext, ArtworkFilterContextState, reducer } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { CheckIcon } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
@@ -9,39 +9,29 @@ import { CheckMarkOptionListItem } from "../MultiSelectCheckOption"
 import { getEssentialProps } from "./helper"
 
 describe("Categories options screen", () => {
-  let state: ArtworkFilterContextState
-  const MockCategoryScreen = ({ initialState }: any) => {
-    const [filterState, dispatch] = React.useReducer(reducer, initialState)
-
+  const MockCategoryScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
     return (
-      <ArtworkFilterContext.Provider
-        value={{
-          state: filterState,
-          dispatch,
-        }}
-      >
+      <ArtworkFiltersStoreProvider initialData={initialData}>
         <CategoriesOptionsScreen {...getEssentialProps()} />
-      </ArtworkFilterContext.Provider>
+      </ArtworkFiltersStoreProvider>
     )
   }
 
-  beforeEach(() => {
-    state = {
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-      aggregations: [],
-      filterType: "auctionResult",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    }
-  })
+  const initialState: ArtworkFiltersState = {
+    selectedFilters: [],
+    appliedFilters: [],
+    previouslyAppliedFilters: [],
+    applyFilters: false,
+    aggregations: [],
+    filterType: "auctionResult",
+    counts: {
+      total: null,
+      followedArtists: null,
+    },
+  }
 
   it("selects only the option that is selected", () => {
-    const tree = renderWithWrappers(<MockCategoryScreen initialState={state} {...getEssentialProps()} />)
+    const tree = renderWithWrappers(<MockCategoryScreen {...getEssentialProps()} initialData={initialState} />)
 
     const selectedCategoryIndex = Math.floor(Math.random() * Math.floor(CATEGORIES_OPTIONS.length)) // selected category index
 
@@ -51,7 +41,7 @@ describe("Categories options screen", () => {
   })
 
   it("allows multiple categories to be selected", () => {
-    const tree = renderWithWrappers(<MockCategoryScreen initialState={state} {...getEssentialProps()} />)
+    const tree = renderWithWrappers(<MockCategoryScreen {...getEssentialProps()} initialData={initialState} />)
 
     const firstCategoryInstance = tree.root.findAllByType(CheckMarkOptionListItem)[0].findAllByType(TouchableOpacity)[0]
     const secondCategoryInstance = tree.root

@@ -1,14 +1,14 @@
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
+import { FilterData } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { FilterToggleButton } from "lib/Components/ArtworkFilterOptions/FilterToggleButton"
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { FilterData } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Box, Check, Flex, Sans, Separator, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import styled from "styled-components/native"
 import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
 import { TouchableRow } from "../TouchableRow"
-import { FilterToggleButton } from "./FilterToggleButton"
 
 interface MultiSelectOptionScreenProps {
   navigation: StackNavigationProp<ParamListBase>

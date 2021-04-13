@@ -1,9 +1,9 @@
 import { ArtistInsightsAuctionResultsTestsQuery } from "__generated__/ArtistInsightsAuctionResultsTestsQuery.graphql"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { extractText } from "lib/tests/extractText"
 import { mockEdges } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -16,25 +16,25 @@ jest.unmock("react-relay")
 
 describe("ArtistInsightsAuctionResults", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  let getState: () => ArtworkFilterContextState
+
+  const initialState: ArtworkFiltersState = {
+    selectedFilters: [],
+    appliedFilters: [],
+    previouslyAppliedFilters: [],
+    applyFilters: false,
+    aggregations: [],
+    filterType: "auctionResult",
+    counts: {
+      total: null,
+      followedArtists: null,
+    },
+  }
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    getState = () => ({
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-      aggregations: [],
-      filterType: "auctionResult",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    })
   })
 
-  const TestRenderer = () => (
+  const TestRenderer = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => (
     <QueryRenderer<ArtistInsightsAuctionResultsTestsQuery>
       environment={mockEnvironment}
       query={graphql`
@@ -48,14 +48,14 @@ describe("ArtistInsightsAuctionResults", () => {
       render={({ props }) => {
         if (props?.artist) {
           return (
-            <ArtworkFilterContext.Provider value={{ state: getState(), dispatch: jest.fn() }}>
+            <ArtworkFiltersStoreProvider initialData={initialData}>
               <ArtistInsightsAuctionResultsPaginationContainer
                 artist={props.artist}
                 scrollToTop={() => {
                   console.log("do nothing")
                 }}
               />
-            </ArtworkFilterContext.Provider>
+            </ArtworkFiltersStoreProvider>
           )
         }
         return null
@@ -64,7 +64,7 @@ describe("ArtistInsightsAuctionResults", () => {
   )
 
   it("renders list auction results when auction results are available", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer initialData={initialState} />)
     mockEnvironmentPayload(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -79,7 +79,7 @@ describe("ArtistInsightsAuctionResults", () => {
   })
 
   it("renders FilteredArtworkGridZeroState when no auction results are available", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer initialData={initialState} />)
     mockEnvironmentPayload(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -94,7 +94,7 @@ describe("ArtistInsightsAuctionResults", () => {
 
   describe("ListHeaderComponent", () => {
     it("renders the results string when totalCount is equal to 1", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer initialData={initialState} />)
       mockEnvironmentPayload(mockEnvironment, {
         Artist: () => ({
           auctionResultsConnection: {
@@ -108,7 +108,7 @@ describe("ArtistInsightsAuctionResults", () => {
     })
 
     it("renders the results string when totalCount is greater than 1", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappers(<TestRenderer initialData={initialState} />)
       mockEnvironmentPayload(mockEnvironment, {
         Artist: () => ({
           auctionResultsConnection: {
@@ -117,7 +117,6 @@ describe("ArtistInsightsAuctionResults", () => {
           },
         }),
       })
-
       expect(extractText(tree.root.findByType(SortMode))).toBe("10 results • Sorted by most recent sale date")
     })
   })

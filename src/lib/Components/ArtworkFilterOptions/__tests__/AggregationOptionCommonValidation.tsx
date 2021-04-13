@@ -1,16 +1,15 @@
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { aggregationForFilter, Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Aggregations, ArtworkFilterContextState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { aggregationForFilter, FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { CheckIcon } from "palette"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 import { InnerOptionListItem, OptionListItem } from "../SingleSelectOption"
-import { getEssentialProps } from "./helper"
 
-type MockScreen = (props: { initialState: ArtworkFilterContextState }) => ReactElement
+type MockScreen = (props: { initialState?: ArtworkFiltersState }) => ReactElement
 
 export interface ValidationParams {
   Screen: MockScreen
@@ -28,46 +27,50 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
   }
 
   describe(params.name + " filter option", () => {
-    let state: ArtworkFilterContextState
+    let initialState: ArtworkFiltersState
 
-    beforeEach(() => {
-      state = {
-        selectedFilters: [],
-        appliedFilters: [],
-        previouslyAppliedFilters: [],
-        applyFilters: false,
-        aggregations: params.aggregations,
-        filterType: "artwork",
-        counts: {
-          total: null,
-          followedArtists: null,
-        },
-      }
-    })
+    initialState = {
+      selectedFilters: [],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: params.aggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+    }
+
+    const MockScreenWrapper = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => (
+      <ArtworkFiltersStoreProvider initialData={initialData}>
+        <params.Screen />
+      </ArtworkFiltersStoreProvider>
+    )
 
     const aggregation = aggregationForFilter(params.filterKey, params.aggregations!)
 
     it("renders the correct number of " + params.name + " options", () => {
-      const tree = renderWithWrappers(<params.Screen initialState={state} {...getEssentialProps()} />)
+      const tree = renderWithWrappers(<MockScreenWrapper />)
       // Counts returned + all option
       expect(tree.root.findAllByType(OptionListItem)).toHaveLength(aggregation!.counts.length + 1)
     })
 
     it("adds an all option", () => {
-      const tree = renderWithWrappers(<params.Screen initialState={state} {...getEssentialProps()} />)
+      const tree = renderWithWrappers(<MockScreenWrapper />)
       const firstRow = tree.root.findAllByType(TouchableRow)[0]
       expect(extractText(firstRow)).toContain("All")
     })
 
     describe("selecting a " + params.name + " filter", () => {
       it("displays the default " + params.name + " if no selected filters", () => {
-        const component = renderWithWrappers(<params.Screen initialState={state} {...getEssentialProps()} />)
+        const component = renderWithWrappers(<MockScreenWrapper />)
         const selectedOption = selectedFilterOption(component)
         expect(extractText(selectedOption)).toContain("All")
       })
 
       it("displays a " + params.name + " filter option when selected", () => {
-        state = {
+        const injectedState: ArtworkFiltersState = {
           selectedFilters: [
             {
               paramName: params.paramName,
@@ -86,7 +89,8 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           },
         }
 
-        const component = renderWithWrappers(<params.Screen initialState={state} {...getEssentialProps()} />)
+        const component = renderWithWrappers(<MockScreenWrapper initialData={injectedState} />)
+
         const selectedOption = selectedFilterOption(component)
         expect(extractText(selectedOption)).toContain(aggregation!.counts[0].name)
       })
@@ -98,7 +102,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           params.name +
           " options are tapped",
         () => {
-          const tree = renderWithWrappers(<params.Screen initialState={state} {...getEssentialProps()} />)
+          const tree = renderWithWrappers(<MockScreenWrapper />)
 
           const [firstOptionInstance, secondOptionInstance, thirdOptionInstance] = tree.root.findAllByType(TouchableRow)
           const selectedOptionIconBeforePress = tree.root.findAllByType(CheckIcon)
