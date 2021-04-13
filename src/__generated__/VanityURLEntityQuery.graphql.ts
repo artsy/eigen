@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3a1774cbdda70445c7d3746d06fb8e4a */
+/* @relayHash 26b2c81f51cec319bac257086939c26a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -394,7 +394,7 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
 fragment PartnerArtwork_partner on Partner {
   internalID
   slug
-  artworks: filterArtworksConnection(aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], dimensionRange: "*-*", first: 10, sort: "-partner_updated_at") {
+  artworks: filterArtworksConnection(aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], dimensionRange: "*-*", first: 10, sort: "-partner_updated_at") {
     aggregations {
       slice
       counts {
@@ -1110,6 +1110,7 @@ v43 = [
     "value": [
       "COLOR",
       "DIMENSION_RANGE",
+      "LOCATION_CITY",
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE"
@@ -1749,6 +1750,7 @@ return {
                   "colors",
                   "partnerID",
                   "dimensionRange",
+                  "locationCities",
                   "majorPeriods",
                   "acquireable",
                   "inquireableOnly",
@@ -2018,7 +2020,7 @@ return {
                   (v5/*: any*/),
                   (v37/*: any*/)
                 ],
-                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,sort:\"-partner_updated_at\")"
+                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,sort:\"-partner_updated_at\")"
               },
               {
                 "alias": "artworks",
@@ -2032,6 +2034,7 @@ return {
                   "dimensionRange",
                   "additionalGeneIDs",
                   "inquireableOnly",
+                  "locationCities",
                   "majorPeriods",
                   "offerable",
                   "priceRange",
@@ -2404,7 +2407,7 @@ return {
     ]
   },
   "params": {
-    "id": "3a1774cbdda70445c7d3746d06fb8e4a",
+    "id": "26b2c81f51cec319bac257086939c26a",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",

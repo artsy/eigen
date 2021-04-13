@@ -277,6 +277,7 @@ export const ParamDefaultValues = {
   inquireableOnly: false,
   latestCreatedYear: undefined,
   majorPeriods: [],
+  locationCities: [],
   medium: "*",
   offerable: false,
   partnerID: undefined,
@@ -304,6 +305,7 @@ const defaultCommonFilterOptions = {
   includeArtworksByFollowedArtists: ParamDefaultValues.includeArtworksByFollowedArtists,
   inquireableOnly: ParamDefaultValues.inquireableOnly,
   latestCreatedYear: ParamDefaultValues.latestCreatedYear,
+  locationCities: ParamDefaultValues.locationCities,
   majorPeriods: ParamDefaultValues.majorPeriods,
   medium: ParamDefaultValues.medium,
   offerable: ParamDefaultValues.offerable,
@@ -320,6 +322,7 @@ export const DEFAULT_FILTERS: FilterArray = [
   { paramName: FilterParamName.priceRange, paramValue: "*-*", displayText: "All" },
   { paramName: FilterParamName.size, paramValue: "*-*", displayText: "All" },
   { paramName: FilterParamName.gallery, displayText: "All" },
+  { paramName: FilterParamName.locationCities, displayText: "All" },
   { paramName: FilterParamName.institution, displayText: "All" },
   { paramName: FilterParamName.color, displayText: "All" },
   { paramName: FilterParamName.colors, displayText: "All" },
@@ -513,6 +516,7 @@ export type AggregationName =
   | "DIMENSION_RANGE"
   | "GALLERY"
   | "INSTITUTION"
+  | "LOCATION_CITY"
   | "MAJOR_PERIOD"
   | "MEDIUM"
   | "PRICE_RANGE"

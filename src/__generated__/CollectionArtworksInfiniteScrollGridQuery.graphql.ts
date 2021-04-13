@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5eb29e455d95906a166a284e4aa87f3d */
+/* @relayHash 87e9e3ccaa587f02d5083cda32930482 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -16,6 +16,7 @@ export type CollectionArtworksInfiniteScrollGridQueryVariables = {
     colors?: Array<string | null> | null;
     partnerID?: string | null;
     dimensionRange?: string | null;
+    locationCities?: Array<string | null> | null;
     majorPeriods?: Array<string | null> | null;
     acquireable?: boolean | null;
     inquireableOnly?: boolean | null;
@@ -47,6 +48,7 @@ query CollectionArtworksInfiniteScrollGridQuery(
   $colors: [String]
   $partnerID: ID
   $dimensionRange: String
+  $locationCities: [String]
   $majorPeriods: [String]
   $acquireable: Boolean
   $inquireableOnly: Boolean
@@ -55,7 +57,7 @@ query CollectionArtworksInfiniteScrollGridQuery(
   $attributionClass: [String]
 ) {
   marketingCollection(slug: $id) {
-    ...CollectionArtworks_collection_db0Fo
+    ...CollectionArtworks_collection_2uMWCF
     id
   }
 }
@@ -95,11 +97,11 @@ fragment ArtworkGridItem_artwork on Artwork {
   }
 }
 
-fragment CollectionArtworks_collection_db0Fo on MarketingCollection {
+fragment CollectionArtworks_collection_2uMWCF on MarketingCollection {
   isDepartment
   slug
   id
-  collectionArtworks: artworksConnection(first: $count, after: $cursor, sort: $sort, additionalGeneIDs: $additionalGeneIDs, priceRange: $priceRange, color: $color, colors: $colors, partnerID: $partnerID, dimensionRange: $dimensionRange, majorPeriods: $majorPeriods, acquireable: $acquireable, inquireableOnly: $inquireableOnly, atAuction: $atAuction, offerable: $offerable, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], attributionClass: $attributionClass) {
+  collectionArtworks: artworksConnection(first: $count, after: $cursor, sort: $sort, additionalGeneIDs: $additionalGeneIDs, priceRange: $priceRange, color: $color, colors: $colors, partnerID: $partnerID, dimensionRange: $dimensionRange, locationCities: $locationCities, majorPeriods: $majorPeriods, acquireable: $acquireable, inquireableOnly: $inquireableOnly, atAuction: $atAuction, offerable: $offerable, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, LOCATION_CITY, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], attributionClass: $attributionClass) {
     aggregations {
       slice
       counts {
@@ -211,117 +213,127 @@ v10 = {
 v11 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "majorPeriods"
+  "name": "locationCities"
 },
 v12 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "offerable"
+  "name": "majorPeriods"
 },
 v13 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "partnerID"
+  "name": "offerable"
 },
 v14 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "priceRange"
+  "name": "partnerID"
 },
 v15 = {
   "defaultValue": null,
   "kind": "LocalArgument",
+  "name": "priceRange"
+},
+v16 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
   "name": "sort"
 },
-v16 = [
+v17 = [
   {
     "kind": "Variable",
     "name": "slug",
     "variableName": "id"
   }
 ],
-v17 = {
+v18 = {
   "kind": "Variable",
   "name": "acquireable",
   "variableName": "acquireable"
 },
-v18 = {
+v19 = {
   "kind": "Variable",
   "name": "additionalGeneIDs",
   "variableName": "additionalGeneIDs"
 },
-v19 = {
+v20 = {
   "kind": "Variable",
   "name": "atAuction",
   "variableName": "atAuction"
 },
-v20 = {
+v21 = {
   "kind": "Variable",
   "name": "attributionClass",
   "variableName": "attributionClass"
 },
-v21 = {
+v22 = {
   "kind": "Variable",
   "name": "color",
   "variableName": "color"
 },
-v22 = {
+v23 = {
   "kind": "Variable",
   "name": "colors",
   "variableName": "colors"
 },
-v23 = {
+v24 = {
   "kind": "Variable",
   "name": "dimensionRange",
   "variableName": "dimensionRange"
 },
-v24 = {
+v25 = {
   "kind": "Variable",
   "name": "inquireableOnly",
   "variableName": "inquireableOnly"
 },
-v25 = {
+v26 = {
+  "kind": "Variable",
+  "name": "locationCities",
+  "variableName": "locationCities"
+},
+v27 = {
   "kind": "Variable",
   "name": "majorPeriods",
   "variableName": "majorPeriods"
 },
-v26 = {
+v28 = {
   "kind": "Variable",
   "name": "offerable",
   "variableName": "offerable"
 },
-v27 = {
+v29 = {
   "kind": "Variable",
   "name": "partnerID",
   "variableName": "partnerID"
 },
-v28 = {
+v30 = {
   "kind": "Variable",
   "name": "priceRange",
   "variableName": "priceRange"
 },
-v29 = {
+v31 = {
   "kind": "Variable",
   "name": "sort",
   "variableName": "sort"
 },
-v30 = {
+v32 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "slug",
   "storageKey": null
 },
-v31 = {
+v33 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v32 = [
-  (v17/*: any*/),
+v34 = [
   (v18/*: any*/),
+  (v19/*: any*/),
   {
     "kind": "Variable",
     "name": "after",
@@ -335,36 +347,38 @@ v32 = [
       "DIMENSION_RANGE",
       "GALLERY",
       "INSTITUTION",
+      "LOCATION_CITY",
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE"
     ]
   },
-  (v19/*: any*/),
   (v20/*: any*/),
   (v21/*: any*/),
   (v22/*: any*/),
   (v23/*: any*/),
+  (v24/*: any*/),
   {
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
   },
-  (v24/*: any*/),
   (v25/*: any*/),
   (v26/*: any*/),
   (v27/*: any*/),
   (v28/*: any*/),
-  (v29/*: any*/)
+  (v29/*: any*/),
+  (v30/*: any*/),
+  (v31/*: any*/)
 ],
-v33 = {
+v35 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v34 = {
+v36 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -389,7 +403,8 @@ return {
       (v12/*: any*/),
       (v13/*: any*/),
       (v14/*: any*/),
-      (v15/*: any*/)
+      (v15/*: any*/),
+      (v16/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
@@ -397,7 +412,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v16/*: any*/),
+        "args": (v17/*: any*/),
         "concreteType": "MarketingCollection",
         "kind": "LinkedField",
         "name": "marketingCollection",
@@ -405,12 +420,12 @@ return {
         "selections": [
           {
             "args": [
-              (v17/*: any*/),
               (v18/*: any*/),
               (v19/*: any*/),
               (v20/*: any*/),
               (v21/*: any*/),
               (v22/*: any*/),
+              (v23/*: any*/),
               {
                 "kind": "Variable",
                 "name": "count",
@@ -421,13 +436,14 @@ return {
                 "name": "cursor",
                 "variableName": "cursor"
               },
-              (v23/*: any*/),
               (v24/*: any*/),
               (v25/*: any*/),
               (v26/*: any*/),
               (v27/*: any*/),
               (v28/*: any*/),
-              (v29/*: any*/)
+              (v29/*: any*/),
+              (v30/*: any*/),
+              (v31/*: any*/)
             ],
             "kind": "FragmentSpread",
             "name": "CollectionArtworks_collection"
@@ -445,18 +461,19 @@ return {
       (v9/*: any*/),
       (v6/*: any*/),
       (v7/*: any*/),
-      (v15/*: any*/),
+      (v16/*: any*/),
       (v1/*: any*/),
-      (v14/*: any*/),
+      (v15/*: any*/),
       (v4/*: any*/),
       (v5/*: any*/),
-      (v13/*: any*/),
+      (v14/*: any*/),
       (v8/*: any*/),
       (v11/*: any*/),
+      (v12/*: any*/),
       (v0/*: any*/),
       (v10/*: any*/),
       (v2/*: any*/),
-      (v12/*: any*/),
+      (v13/*: any*/),
       (v3/*: any*/)
     ],
     "kind": "Operation",
@@ -464,7 +481,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v16/*: any*/),
+        "args": (v17/*: any*/),
         "concreteType": "MarketingCollection",
         "kind": "LinkedField",
         "name": "marketingCollection",
@@ -477,11 +494,11 @@ return {
             "name": "isDepartment",
             "storageKey": null
           },
-          (v30/*: any*/),
-          (v31/*: any*/),
+          (v32/*: any*/),
+          (v33/*: any*/),
           {
             "alias": "collectionArtworks",
-            "args": (v32/*: any*/),
+            "args": (v34/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "kind": "LinkedField",
             "name": "artworksConnection",
@@ -517,7 +534,7 @@ return {
                         "name": "value",
                         "storageKey": null
                       },
-                      (v33/*: any*/),
+                      (v35/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -565,8 +582,8 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v31/*: any*/),
-                      (v34/*: any*/)
+                      (v33/*: any*/),
+                      (v36/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -605,7 +622,7 @@ return {
                 ],
                 "storageKey": null
               },
-              (v31/*: any*/),
+              (v33/*: any*/),
               {
                 "kind": "InlineFragment",
                 "selections": [
@@ -635,7 +652,7 @@ return {
                     "name": "edges",
                     "plural": true,
                     "selections": [
-                      (v34/*: any*/),
+                      (v36/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -644,7 +661,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v30/*: any*/),
+                          (v32/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -754,7 +771,7 @@ return {
                                 "name": "endAt",
                                 "storageKey": null
                               },
-                              (v31/*: any*/)
+                              (v33/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -809,7 +826,7 @@ return {
                                 "name": "lotLabel",
                                 "storageKey": null
                               },
-                              (v31/*: any*/)
+                              (v33/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -821,8 +838,8 @@ return {
                             "name": "partner",
                             "plural": false,
                             "selections": [
-                              (v33/*: any*/),
-                              (v31/*: any*/)
+                              (v35/*: any*/),
+                              (v33/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -832,7 +849,7 @@ return {
                       {
                         "kind": "InlineFragment",
                         "selections": [
-                          (v31/*: any*/)
+                          (v33/*: any*/)
                         ],
                         "type": "Node",
                         "abstractKey": "__isNode"
@@ -849,7 +866,7 @@ return {
           },
           {
             "alias": "collectionArtworks",
-            "args": (v32/*: any*/),
+            "args": (v34/*: any*/),
             "filters": [
               "sort",
               "additionalGeneIDs",
@@ -858,6 +875,7 @@ return {
               "colors",
               "partnerID",
               "dimensionRange",
+              "locationCities",
               "majorPeriods",
               "acquireable",
               "inquireableOnly",
@@ -877,7 +895,7 @@ return {
     ]
   },
   "params": {
-    "id": "5eb29e455d95906a166a284e4aa87f3d",
+    "id": "87e9e3ccaa587f02d5083cda32930482",
     "metadata": {},
     "name": "CollectionArtworksInfiniteScrollGridQuery",
     "operationKind": "query",
@@ -885,5 +903,5 @@ return {
   }
 };
 })();
-(node as any).hash = '8786d85cdc5b950e03797ec4f59f95a2';
+(node as any).hash = '66a0c85c761090082b3b48fefc00dcea';
 export default node;

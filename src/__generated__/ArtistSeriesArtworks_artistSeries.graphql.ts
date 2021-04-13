@@ -92,6 +92,11 @@ const node: ReaderFragment = {
     {
       "defaultValue": null,
       "kind": "LocalArgument",
+      "name": "locationCities"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
       "name": "majorPeriods"
     },
     {
@@ -165,6 +170,7 @@ const node: ReaderFragment = {
             "DIMENSION_RANGE",
             "GALLERY",
             "INSTITUTION",
+            "LOCATION_CITY",
             "MAJOR_PERIOD",
             "MEDIUM",
             "PRICE_RANGE"
@@ -199,6 +205,11 @@ const node: ReaderFragment = {
           "kind": "Variable",
           "name": "inquireableOnly",
           "variableName": "inquireableOnly"
+        },
+        {
+          "kind": "Variable",
+          "name": "locationCities",
+          "variableName": "locationCities"
         },
         {
           "kind": "Variable",
@@ -379,5 +390,5 @@ const node: ReaderFragment = {
   "type": "ArtistSeries",
   "abstractKey": null
 };
-(node as any).hash = 'ed33458226cd09bcbb888f8ae8356ab5';
+(node as any).hash = '7b2459db164dc94e5b1064c369931506';
 export default node;

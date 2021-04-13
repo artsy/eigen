@@ -111,6 +111,7 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
         color: { type: "String" }
         colors: { type: "[String]" }
         dimensionRange: { type: "String", defaultValue: "*-*" }
+        locationCities: { type: "[String]" }
         majorPeriods: { type: "[String]" }
         acquireable: { type: "Boolean" }
         inquireableOnly: { type: "Boolean" }
@@ -129,12 +130,13 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
           color: $color
           colors: $colors
           dimensionRange: $dimensionRange
+          locationCities: $locationCities
           majorPeriods: $majorPeriods
           acquireable: $acquireable
           inquireableOnly: $inquireableOnly
           atAuction: $atAuction
           offerable: $offerable
-          aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
+          aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
           attributionClass: $attributionClass
         ) @connection(key: "Show_showArtworks") {
           aggregations {
@@ -185,6 +187,7 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
         $color: String
         $colors: [String]
         $dimensionRange: String
+        $locationCities: [String]
         $majorPeriods: [String]
         $acquireable: Boolean
         $inquireableOnly: Boolean
@@ -203,6 +206,7 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
               colors: $colors
               priceRange: $priceRange
               dimensionRange: $dimensionRange
+              locationCities: $locationCities
               majorPeriods: $majorPeriods
               acquireable: $acquireable
               inquireableOnly: $inquireableOnly

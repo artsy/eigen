@@ -70,6 +70,7 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
         dimensionRange: { type: "String", defaultValue: "*-*" }
         additionalGeneIDs: { type: "[String]" }
         inquireableOnly: { type: "Boolean" }
+        locationCities: { type: "[String]" }
         majorPeriods: { type: "[String]" }
         offerable: { type: "Boolean" }
         priceRange: { type: "String" }
@@ -80,7 +81,7 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
         artworks: filterArtworksConnection(
           acquireable: $acquireable
           after: $cursor
-          aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
+          aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
           attributionClass: $attributionClass
           color: $color
           colors: $colors
@@ -88,6 +89,7 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
           additionalGeneIDs: $additionalGeneIDs
           first: $count
           inquireableOnly: $inquireableOnly
+          locationCities: $locationCities
           majorPeriods: $majorPeriods
           offerable: $offerable
           priceRange: $priceRange
@@ -135,6 +137,7 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
         $additionalGeneIDs: [String]
         $id: String!
         $inquireableOnly: Boolean
+        $locationCities: [String]
         $majorPeriods: [String]
         $offerable: Boolean
         $priceRange: String
@@ -152,6 +155,7 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
               dimensionRange: $dimensionRange
               additionalGeneIDs: $additionalGeneIDs
               inquireableOnly: $inquireableOnly
+              locationCities: $locationCities
               majorPeriods: $majorPeriods
               offerable: $offerable
               priceRange: $priceRange

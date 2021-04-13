@@ -20,7 +20,7 @@ export type UpdateSubmissionMutationInput = {
     editionSize?: number | null;
     height?: string | null;
     id: string;
-    locationCity?: string | null;
+    locationCities?: string | null;
     locationCountry?: string | null;
     locationState?: string | null;
     medium?: string | null;

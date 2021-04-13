@@ -92,6 +92,11 @@ const node: ReaderFragment = {
     {
       "defaultValue": null,
       "kind": "LocalArgument",
+      "name": "locationCities"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
       "name": "majorPeriods"
     },
     {
@@ -158,6 +163,7 @@ const node: ReaderFragment = {
           "value": [
             "COLOR",
             "DIMENSION_RANGE",
+            "LOCATION_CITY",
             "MAJOR_PERIOD",
             "MEDIUM",
             "PRICE_RANGE"
@@ -192,6 +198,11 @@ const node: ReaderFragment = {
           "kind": "Variable",
           "name": "inquireableOnly",
           "variableName": "inquireableOnly"
+        },
+        {
+          "kind": "Variable",
+          "name": "locationCities",
+          "variableName": "locationCities"
         },
         {
           "kind": "Variable",
@@ -367,5 +378,5 @@ const node: ReaderFragment = {
   "type": "Show",
   "abstractKey": null
 };
-(node as any).hash = 'a0da59964bcf6b0e086f24d0afca7043';
+(node as any).hash = '115225d18fa79fcf463928e02f2f01d7';
 export default node;
