@@ -14,6 +14,7 @@ upcoming:
     - Fix keyboard avoidance - david
     - Use ArtsyWebView instead of WebView for auction FAQ - ole
     - don't remove node_module assets when bundling - brian
+    - Update filter params change tracking type for auction results - ole
   user_facing:
     - Use toolbar style modal headers in consignments flow - brian
     - Add Onboarding welcome screen - mounir
@@ -30,6 +31,7 @@ upcoming:
     - Rename the category filter to medium - iskounen
     - Suppress artwork deep-zoom taps on Android - pepopowitz
     - Add forgot password screen in new login - brian
+    - Conversation-offer updates to CTA to allow multiple offers - erikdstock
 
 releases:
   - version: 6.8.2

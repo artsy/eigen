@@ -1,53 +1,37 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2eff049b0142bfbe2e65ee7982029698 */
+/* @relayHash 775a5f82928385b823d763d7cd0428d6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ComposerTestsQueryVariables = {};
-export type ComposerTestsQueryResponse = {
+export type ConversationCTATestsQueryVariables = {
+    conversationID: string;
+};
+export type ConversationCTATestsQueryResponse = {
     readonly me: {
         readonly conversation: {
-            readonly " $fragmentRefs": FragmentRefs<"Composer_conversation">;
+            readonly " $fragmentRefs": FragmentRefs<"ConversationCTA_conversation">;
         } | null;
     } | null;
 };
-export type ComposerTestsQuery = {
-    readonly response: ComposerTestsQueryResponse;
-    readonly variables: ComposerTestsQueryVariables;
+export type ConversationCTATestsQuery = {
+    readonly response: ConversationCTATestsQueryResponse;
+    readonly variables: ConversationCTATestsQueryVariables;
 };
 
 
 
 /*
-query ComposerTestsQuery {
+query ConversationCTATestsQuery(
+  $conversationID: String!
+) {
   me {
-    conversation(id: "whatever") {
-      ...Composer_conversation
+    conversation(id: $conversationID) {
+      ...ConversationCTA_conversation
       id
     }
     id
-  }
-}
-
-fragment Composer_conversation on Conversation {
-  ...ConversationCTA_conversation
-  items {
-    item {
-      __typename
-      ... on Artwork {
-        href
-        slug
-      }
-      ... on Show {
-        href
-      }
-      ... on Node {
-        __isNode: __typename
-        id
-      }
-    }
   }
 }
 
@@ -100,23 +84,23 @@ fragment ConversationCTA_conversation on Conversation {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "Literal",
-    "name": "id",
-    "value": "whatever"
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "conversationID"
   }
 ],
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "__typename",
-  "storageKey": null
-},
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "id",
+    "variableName": "conversationID"
+  }
+],
 v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "href",
+  "name": "__typename",
   "storageKey": null
 },
 v3 = {
@@ -165,10 +149,10 @@ v9 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "ComposerTestsQuery",
+    "name": "ConversationCTATestsQuery",
     "selections": [
       {
         "alias": null,
@@ -180,7 +164,7 @@ return {
         "selections": [
           {
             "alias": null,
-            "args": (v0/*: any*/),
+            "args": (v1/*: any*/),
             "concreteType": "Conversation",
             "kind": "LinkedField",
             "name": "conversation",
@@ -189,10 +173,10 @@ return {
               {
                 "args": null,
                 "kind": "FragmentSpread",
-                "name": "Composer_conversation"
+                "name": "ConversationCTA_conversation"
               }
             ],
-            "storageKey": "conversation(id:\"whatever\")"
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -203,9 +187,9 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "ComposerTestsQuery",
+    "name": "ConversationCTATestsQuery",
     "selections": [
       {
         "alias": null,
@@ -217,7 +201,7 @@ return {
         "selections": [
           {
             "alias": null,
-            "args": (v0/*: any*/),
+            "args": (v1/*: any*/),
             "concreteType": "Conversation",
             "kind": "LinkedField",
             "name": "conversation",
@@ -246,7 +230,7 @@ return {
                     "name": "item",
                     "plural": false,
                     "selections": [
-                      (v1/*: any*/),
+                      (v2/*: any*/),
                       {
                         "kind": "InlineFragment",
                         "selections": [
@@ -263,14 +247,6 @@ return {
                             "kind": "ScalarField",
                             "name": "isOfferableFromInquiry",
                             "storageKey": null
-                          },
-                          (v2/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "slug",
-                            "storageKey": null
                           }
                         ],
                         "type": "Artwork",
@@ -283,14 +259,6 @@ return {
                         ],
                         "type": "Node",
                         "abstractKey": "__isNode"
-                      },
-                      {
-                        "kind": "InlineFragment",
-                        "selections": [
-                          (v2/*: any*/)
-                        ],
-                        "type": "Show",
-                        "abstractKey": null
                       }
                     ],
                     "storageKey": null
@@ -338,7 +306,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v1/*: any*/),
+                          (v2/*: any*/),
                           (v4/*: any*/),
                           {
                             "alias": null,
@@ -454,7 +422,7 @@ return {
               },
               (v3/*: any*/)
             ],
-            "storageKey": "conversation(id:\"whatever\")"
+            "storageKey": null
           },
           (v3/*: any*/)
         ],
@@ -463,7 +431,7 @@ return {
     ]
   },
   "params": {
-    "id": "2eff049b0142bfbe2e65ee7982029698",
+    "id": "775a5f82928385b823d763d7cd0428d6",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -565,18 +533,16 @@ return {
         "me.conversation.items.item.__isNode": (v5/*: any*/),
         "me.conversation.items.item.__typename": (v5/*: any*/),
         "me.conversation.items.item.artworkID": (v6/*: any*/),
-        "me.conversation.items.item.href": (v9/*: any*/),
         "me.conversation.items.item.id": (v6/*: any*/),
         "me.conversation.items.item.isOfferableFromInquiry": (v8/*: any*/),
-        "me.conversation.items.item.slug": (v6/*: any*/),
         "me.id": (v6/*: any*/)
       }
     },
-    "name": "ComposerTestsQuery",
+    "name": "ConversationCTATestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'c682d4ec9f919a704054d5bf43fb9b1e';
+(node as any).hash = 'ec8d5cd027e496695a92e70e017abb9e';
 export default node;
