@@ -3,7 +3,7 @@ import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilter
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { Separator, Text } from "palette"
 import React, { useRef, useState } from "react"
-import { FilterModalNavigationStack } from "../ArtworkFilter"
+import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 
 interface SizesOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "SizesOptionsScreen"> {}

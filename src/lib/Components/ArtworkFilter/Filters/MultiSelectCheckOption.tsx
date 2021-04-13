@@ -5,7 +5,7 @@ import { Box, CheckIcon, Flex, Sans, Separator } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
-import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 
 interface MultiSelectOptionScreenProps {
   filterHeaderText: string

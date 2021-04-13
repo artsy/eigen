@@ -10,7 +10,7 @@ import {
 
 import { sortBy } from "lodash"
 import React from "react"
-import { FilterModalNavigationStack } from "../ArtworkFilter"
+import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
 interface ArtistIDsArtworksOptionsScreenProps

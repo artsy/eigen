@@ -24,42 +24,42 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
 // @ts-ignore
-import { AdditionalGeneIDsOptionsScreen } from "../ArtworkFilterOptions/AdditionalGeneIDsOptions"
+import { AdditionalGeneIDsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/AdditionalGeneIDsOptions"
 // @ts-ignore
-import { ArtistIDsOptionsScreen } from "../ArtworkFilterOptions/ArtistIDsOptionsScreen"
+import { ArtistIDsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ArtistIDsOptionsScreen"
 // @ts-ignore
-import { AttributionClassOptionsScreen } from "../ArtworkFilterOptions/AttributionClassOptions"
+import { AttributionClassOptionsScreen } from "lib/Components/ArtworkFilter/Filters/AttributionClassOptions"
 // @ts-ignore
-import { CategoriesOptionsScreen } from "../ArtworkFilterOptions/CategoriesOptions"
+import { CategoriesOptionsScreen } from "lib/Components/ArtworkFilter/Filters/CategoriesOptions"
 // @ts-ignore
-import { ColorOption, ColorOptionsScreen } from "../ArtworkFilterOptions/ColorOptions"
-import { ColorsOptionsScreen } from "../ArtworkFilterOptions/ColorsOptions"
-import { colorHexMap } from "../ArtworkFilterOptions/ColorSwatch"
+import { ColorOption, ColorOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ColorOptions"
+import { ColorsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ColorsOptions"
+import { colorHexMap } from "lib/Components/ArtworkFilter/Filters/ColorSwatch"
 // @ts-ignore
-import { EstimateRangeOptionsScreen } from "../ArtworkFilterOptions/EstimateRangeOptions"
+import { EstimateRangeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/EstimateRangeOptions"
 // @ts-ignore
-import { GalleryOptionsScreen } from "../ArtworkFilterOptions/GalleryOptions"
+import { GalleryOptionsScreen } from "lib/Components/ArtworkFilter/Filters/GalleryOptions"
 // @ts-ignore
-import { InstitutionOptionsScreen } from "../ArtworkFilterOptions/InstitutionOptions"
+import { InstitutionOptionsScreen } from "lib/Components/ArtworkFilter/Filters/InstitutionOptions"
 // @ts-ignore
-import { MediumOptionsScreen } from "../ArtworkFilterOptions/MediumOptions"
+import { MediumOptionsScreen } from "lib/Components/ArtworkFilter/Filters/MediumOptions"
 // @ts-ignore
-import { PriceRangeOptionsScreen } from "../ArtworkFilterOptions/PriceRangeOptions"
+import { PriceRangeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/PriceRangeOptions"
 // @ts-ignore
-import { SizeOptionsScreen } from "../ArtworkFilterOptions/SizeOptions"
+import { SizeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/SizeOptions"
 // @ts-ignore
-import { SizesOptionsScreen } from "../ArtworkFilterOptions/SizesOptions"
-import { SortOptionsScreen } from "../ArtworkFilterOptions/SortOptions"
-import { TimePeriodMultiOptionsScreen } from "../ArtworkFilterOptions/TimePeriodMultiOptions"
-import { TimePeriodOptionsScreen } from "../ArtworkFilterOptions/TimePeriodOptions"
+import { SizesOptionsScreen } from "lib/Components/ArtworkFilter/Filters/SizesOptions"
+import { SortOptionsScreen } from "lib/Components/ArtworkFilter/Filters/SortOptions"
+import { TimePeriodMultiOptionsScreen } from "lib/Components/ArtworkFilter/Filters/TimePeriodMultiOptions"
+import { TimePeriodOptionsScreen } from "lib/Components/ArtworkFilter/Filters/TimePeriodOptions"
 // @ts-ignore
-import { ViewAsOptionsScreen } from "../ArtworkFilterOptions/ViewAsOptions"
+import { ViewAsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ViewAsOptions"
 // @ts-ignore
-import { WaysToBuyOptionsScreen } from "../ArtworkFilterOptions/WaysToBuyOptions"
+import { WaysToBuyOptionsScreen } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 // @ts-ignore
-import { YearOptionsScreen } from "../ArtworkFilterOptions/YearOptions"
+import { YearOptionsScreen } from "lib/Components/ArtworkFilter/Filters/YearOptions"
 import { FancyModal } from "../FancyModal/FancyModal"
-import { TouchableRow } from "../TouchableRow"
+import { TouchableRow } from "lib/Components/TouchableRow"
 
 export type FilterScreen =
   | "additionalGeneIDs"

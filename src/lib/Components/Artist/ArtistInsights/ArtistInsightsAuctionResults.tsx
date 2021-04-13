@@ -2,7 +2,7 @@ import { ActionType, ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbl
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
 import { filterArtworksParams } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
-import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
+import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import Spinner from "lib/Components/Spinner"

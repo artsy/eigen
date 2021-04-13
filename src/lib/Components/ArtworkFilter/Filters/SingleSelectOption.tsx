@@ -6,8 +6,8 @@ import { Box, CheckIcon, Flex, RadioDot, Separator, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import styled from "styled-components/native"
-import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
-import { TouchableRow } from "../TouchableRow"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { TouchableRow } from "lib/Components/TouchableRow"
 
 interface SingleSelectOptionScreenProps {
   navigation: StackNavigationProp<ParamListBase>

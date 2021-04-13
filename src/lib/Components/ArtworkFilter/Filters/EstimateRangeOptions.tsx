@@ -3,7 +3,7 @@ import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/
 import { AggregateOption, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { Sans, Separator } from "palette"
 import React from "react"
-import { FilterModalNavigationStack } from "../ArtworkFilter"
+import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface PriceRangeOptionsScreenProps

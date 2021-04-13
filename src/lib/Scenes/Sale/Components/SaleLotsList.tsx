@@ -8,7 +8,7 @@ import {
   FilterParams,
   ViewAsValues,
 } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
-import { ORDERED_SALE_ARTWORK_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
+import { ORDERED_SALE_ARTWORK_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Schema } from "lib/utils/track"

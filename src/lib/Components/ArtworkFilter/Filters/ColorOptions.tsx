@@ -14,9 +14,9 @@ import { Flex } from "palette"
 import React, { useState } from "react"
 import { LayoutChangeEvent, View } from "react-native"
 import styled from "styled-components/native"
-import { FilterModalNavigationStack } from "../ArtworkFilter"
-import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
-import { TouchableRow } from "../TouchableRow"
+import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { TouchableRow } from "lib/Components/TouchableRow"
 import { ColorSwatch } from "./ColorSwatch"
 
 // Color types

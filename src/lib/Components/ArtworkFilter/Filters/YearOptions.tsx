@@ -6,11 +6,11 @@ import { Box, CheckIcon, color, Flex, Separator, Text } from "palette"
 import React, { useState } from "react"
 import Haptic from "react-native-haptic-feedback"
 import styled from "styled-components/native"
-import { useScreenDimensions } from "../../utils/useScreenDimensions"
-import { FilterModalNavigationStack } from "../ArtworkFilter"
-import { CircleWithBorder } from "../CircleWithBorder/CircleWithBorder"
-import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
-import { TouchableRow } from "../TouchableRow"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
+import { CircleWithBorder } from "lib/Components/CircleWithBorder/CircleWithBorder"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { TouchableRow } from "lib/Components/TouchableRow"
 
 interface YearOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "YearOptionsScreen"> {}
 

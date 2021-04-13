@@ -3,7 +3,7 @@ import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilter
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { xor } from "lodash"
 import React, { useState } from "react"
-import { FilterModalNavigationStack } from "../ArtworkFilter"
+import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 
 interface ArtistIDsArtworksOptionsScreenProps

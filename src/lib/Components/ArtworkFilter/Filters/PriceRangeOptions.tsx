@@ -8,7 +8,7 @@ import {
   FilterParamName,
 } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
-import { FilterModalNavigationStack } from "../ArtworkFilter"
+import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface PriceRangeOptionsScreenProps

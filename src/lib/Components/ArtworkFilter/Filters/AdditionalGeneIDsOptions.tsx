@@ -8,7 +8,7 @@ import {
 } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import React, { useState } from "react"
-import { FilterModalNavigationStack } from "../ArtworkFilter"
+import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
 const DEFAULT_OPTION: FilterData = {

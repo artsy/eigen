@@ -9,7 +9,7 @@ import {
 } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import _ from "lodash"
 import React from "react"
-import { FilterModalNavigationStack } from "../ArtworkFilter"
+import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface TimePeriodOptionsScreenProps

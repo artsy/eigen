@@ -8,7 +8,7 @@ import {
 } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import { FilterData } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
 import React from "react"
-import { FilterModalNavigationStack } from "../ArtworkFilter"
+import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface ViewAsOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "WaysToBuyOptionsScreen"> {}
