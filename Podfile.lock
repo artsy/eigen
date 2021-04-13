@@ -512,8 +512,8 @@ PODS:
     - React-Core
   - RNBootSplash (3.2.0):
     - React-Core
-  - RNCAsyncStorage (1.6.3):
-    - React
+  - RNCAsyncStorage (1.15.2):
+    - React-Core
   - RNCClipboard (1.5.1):
     - React-Core
   - RNCMaskedView (0.1.10):
@@ -678,7 +678,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `./node_modules/react-native/ReactCommon`)
   - rn-fetch-blob (from `node_modules/rn-fetch-blob`)
   - RNBootSplash (from `node_modules/react-native-bootsplash`)
-  - "RNCAsyncStorage (from `node_modules/@react-native-community/async-storage`)"
+  - "RNCAsyncStorage (from `node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `node_modules/@react-native-community/clipboard`)"
   - "RNCMaskedView (from `node_modules/@react-native-community/masked-view`)"
   - RNGestureHandler (from `node_modules/react-native-gesture-handler`)
@@ -871,7 +871,7 @@ EXTERNAL SOURCES:
   RNBootSplash:
     :path: node_modules/react-native-bootsplash
   RNCAsyncStorage:
-    :path: "node_modules/@react-native-community/async-storage"
+    :path: "node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
     :path: "node_modules/@react-native-community/clipboard"
   RNCMaskedView:
@@ -1021,7 +1021,7 @@ SPEC CHECKSUMS:
   ReactCommon: cfe2b7fd20e0dbd2d1185cd7d8f99633fbc5ff05
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNBootSplash: 24175aa28fe203b10c48dc34e78d946fd33c77af
-  RNCAsyncStorage: 3c304d1adfaea02ec732ac218801cb13897aa8c0
+  RNCAsyncStorage: 9b7605e899f9acb2fba33e87952c529731265453
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
