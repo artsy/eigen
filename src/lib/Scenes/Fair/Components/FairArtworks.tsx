@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { FairArtworks_fair } from "__generated__/FairArtworks_fair.graphql"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import {
   aggregationsType,
   aggregationsWithFollowedArtists,

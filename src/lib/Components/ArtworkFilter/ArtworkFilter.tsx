@@ -2,7 +2,7 @@ import { ActionType, ContextModule } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import {
   changedFiltersParams,
   FilterArray,

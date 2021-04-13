@@ -11,7 +11,7 @@ import {
   FilterModalNavigator,
   ArtworkFilterOptionsScreen,
 } from "lib/Components/ArtworkFilter"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"

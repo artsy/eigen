@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { AggregateOption, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { Sans, Separator } from "palette"
 import React from "react"

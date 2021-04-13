@@ -1,5 +1,5 @@
-import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
-import { ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"

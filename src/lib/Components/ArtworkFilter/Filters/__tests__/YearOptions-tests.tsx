@@ -3,7 +3,7 @@ import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
   ArtworksFiltersStore,
-} from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"

@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import React from "react"
 import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
 import { ArtistIDsArtworksOptionsScreen } from "./ArtistIDsArtworksOptions"

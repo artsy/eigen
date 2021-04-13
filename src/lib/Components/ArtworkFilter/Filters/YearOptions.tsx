@@ -1,6 +1,6 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { aggregationForFilter, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { Box, CheckIcon, color, Flex, Separator, Text } from "palette"
 import React, { useState } from "react"

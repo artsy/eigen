@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_collection.graphql"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"

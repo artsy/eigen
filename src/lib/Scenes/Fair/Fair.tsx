@@ -2,7 +2,7 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Fair_fair } from "__generated__/Fair_fair.graphql"
 import { FairQuery } from "__generated__/FairQuery.graphql"
 import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/ArtworkFilter"
-import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useHideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 

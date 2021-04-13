@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { RelayPaginationProp } from "react-relay"
-import { ArtworksFiltersStore, selectedOptionsUnion } from "./ArtworkFiltersStore"
+import { ArtworksFiltersStore, selectedOptionsUnion } from "./ArtworkFilterStore"
 import { aggregationForFilter, filterArtworksParams, FilterParamName } from "./ArtworkFilterHelpers"
 
 export const useArtworkFilters = ({

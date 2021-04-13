@@ -1,6 +1,6 @@
 import { OptionListItem as FilterModalOptionListItem } from "lib/Components/ArtworkFilter"
 import { MockFilterScreen } from "lib/Components/ArtworkFilter/__tests__/FilterTestHelper"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React from "react"
 import { Switch } from "react-native"

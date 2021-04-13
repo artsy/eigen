@@ -2,7 +2,7 @@ import {
   ArtworksFiltersStore,
   DEFAULT_FILTERS,
   useSelectedOptionsDisplay,
-} from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { compact, every, isString } from "lodash"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"

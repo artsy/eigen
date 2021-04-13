@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { SaleLotsList_saleArtworksConnection } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
 import { SaleLotsList_unfilteredSaleArtworksConnection } from "__generated__/SaleLotsList_unfilteredSaleArtworksConnection.graphql"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import {
   filterArtworksParams,
   FilterParamName,

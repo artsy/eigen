@@ -1,6 +1,6 @@
 import { Partner_partner } from "__generated__/Partner_partner.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
-import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"

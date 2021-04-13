@@ -1,5 +1,5 @@
 import { SaleLotsListTestsQuery } from "__generated__/SaleLotsListTestsQuery.graphql"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilterParamName, ViewAsValues } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { FilterParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"

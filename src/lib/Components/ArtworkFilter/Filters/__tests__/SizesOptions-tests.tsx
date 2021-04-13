@@ -1,4 +1,4 @@
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { CheckIcon } from "palette"
 import React from "react"

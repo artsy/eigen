@@ -1,5 +1,5 @@
 import { ShowArtworksTestsQuery } from "__generated__/ShowArtworksTestsQuery.graphql"
-import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ShowArtworksPaginationContainer as ShowArtworks } from "lib/Scenes/Show/Components/ShowArtworks"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"

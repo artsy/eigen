@@ -2,7 +2,7 @@ import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
   useSelectedOptionsDisplay,
-} from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
