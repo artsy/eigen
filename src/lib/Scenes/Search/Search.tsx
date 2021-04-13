@@ -1,9 +1,10 @@
+import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { SearchInput } from "lib/Components/SearchInput"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { color, Flex, Spacer } from "palette"
 import React, { useState } from "react"
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
+import { Platform, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AutosuggestResults } from "./AutosuggestResults"
@@ -18,7 +19,7 @@ export const Search: React.FC = () => {
 
   return (
     <SearchContext.Provider value={searchProviderValues}>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+      <ArtsyKeyboardAvoidingView>
         <Flex p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
           <SearchInput
             ref={searchProviderValues.inputRef}
@@ -55,7 +56,7 @@ export const Search: React.FC = () => {
             <Spacer mb="40px" />
           </Scrollable>
         )}
-      </KeyboardAvoidingView>
+      </ArtsyKeyboardAvoidingView>
     </SearchContext.Provider>
   )
 }

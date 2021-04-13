@@ -1,5 +1,13 @@
-import { NavigationContainer, NavigationContainerRef, Route, useNavigationState } from "@react-navigation/native"
+import {
+  NavigationContainer,
+  NavigationContainerRef,
+  Route,
+  useIsFocused,
+  useNavigationState,
+} from "@react-navigation/native"
 import { AppModule, modules } from "lib/AppRegistry"
+import { ArtsyKeyboardAvoidingViewContext } from "lib/Components/ArtsyKeyboardAvoidingView"
+import { useSelectedTab } from "lib/store/GlobalStore"
 import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useState } from "react"
 import { View } from "react-native"
@@ -12,6 +20,7 @@ const Stack = createNativeStackNavigator()
 interface ScreenProps {
   moduleName: AppModule
   props?: object
+  stackID: string
 }
 
 /**
@@ -30,19 +39,33 @@ const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) =
   const isRootScreen = useNavigationState((state) => state.routes[0].key === route.key)
   const showBackButton = !isRootScreen && !module.options.hidesBackButton && !legacy_shouldHideBackButton
 
+  const isPresentedModally = (route.params.props as any)?.isPresentedModally
+
+  const isMountedInCurrentTab = useSelectedTab() === route.params.stackID
+  const isVisible = useIsFocused() && (isPresentedModally || isMountedInCurrentTab)
+
   return (
     <LegacyBackButtonContext.Provider value={{ updateShouldHideBackButton }}>
       <ProvideScreenDimensions>
-        <ScreenPadding fullBleed={!!module.options.fullBleed}>
-          <module.Component {...route.params.props} />
-          <BackButton show={showBackButton} />
-        </ScreenPadding>
+        <ArtsyKeyboardAvoidingViewContext.Provider value={{ isPresentedModally, isVisible }}>
+          <ScreenPadding
+            isPresentedModally={isPresentedModally}
+            isVisible={isVisible}
+            fullBleed={!!module.options.fullBleed}
+          >
+            <module.Component {...route.params.props} />
+            <BackButton show={showBackButton} />
+          </ScreenPadding>
+        </ArtsyKeyboardAvoidingViewContext.Provider>
       </ProvideScreenDimensions>
     </LegacyBackButtonContext.Provider>
   )
 }
 
-const ScreenPadding: React.FC<{ fullBleed: boolean }> = ({ fullBleed, children }) => {
+const ScreenPadding: React.FC<{ fullBleed: boolean; isPresentedModally: boolean; isVisible: boolean }> = ({
+  fullBleed,
+  children,
+}) => {
   const topInset = useScreenDimensions().safeAreaInsets.top
   return <View style={{ flex: 1, backgroundColor: "white", paddingTop: fullBleed ? 0 : topInset }}>{children}</View>
 }
@@ -53,12 +76,13 @@ const ScreenPadding: React.FC<{ fullBleed: boolean }> = ({ fullBleed, children }
  */
 export const NavStack = React.forwardRef<
   NavigationContainerRef,
-  { id?: string; rootModuleName: AppModule; rootModuleProps?: object }
+  { id: string; rootModuleName: AppModule; rootModuleProps?: object }
 >(({ id, rootModuleName, rootModuleProps }, ref) => {
   const initialState = useReloadedDevNavigationState(id, ref as any)
   const initialParams: ScreenProps = {
     moduleName: rootModuleName,
     props: rootModuleProps,
+    stackID: id,
   }
   return (
     <NavigationContainer ref={ref} independent initialState={initialState}>

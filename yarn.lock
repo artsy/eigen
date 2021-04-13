@@ -7,10 +7,12 @@
   resolved "https://registry.yarnpkg.com/@artsy/auto-config/-/auto-config-1.0.2.tgz#b79f6fd0d0bda0c5e0764ced55e014cf58174d6f"
   integrity sha512-mJyuKNDMYZcgc2oLIkvmpVIr1RexklV71JmU+to5qs3Y9pv5dsj4WHl8+wf9g74EQNOyhWH2SYMGBm1JoPYh/Q==
 
-"@artsy/cohesion@^1.80.1":
-  version "1.80.1"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.80.1.tgz#f49e666b33fdaade9f648f16ef43702dcbdb2d93"
-  integrity sha512-Q+1yfPeU6ax0HGo9pqDr0fxTbWO2Awz/o/COsLS7gUGk60Fgthq5z1qMU7YsOfwN22wikAtmzsNKryatLJ3i5g==
+"@artsy/cohesion@^1.85.0":
+  version "1.85.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-1.85.0.tgz#1108af9044af298c0b471b37f88b9705ac722a28"
+  integrity sha512-8FupGvgissHOIhXgv7HviiRYX1BVuQeCvbDS/1QXS6/K8ODLR0+Toh0p6VU6+xYNsbL9Ki1TEbpBa1+vIOgDYw==
+  dependencies:
+    core-js "3"
 
 "@artsy/palette-tokens@^1.3.1":
   version "1.3.1"
@@ -5068,6 +5070,11 @@ core-js@2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.4.1.tgz#4de911e667b0eae9124e34254b53aea6fc618d3e"
   integrity sha1-TekR5mew6ukSTjQlS1OupvxhjT4=
+
+core-js@3:
+  version "3.10.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.10.1.tgz#e683963978b6806dcc6c0a4a8bd4ab0bdaf3f21a"
+  integrity sha512-pwCxEXnj27XG47mu7SXAwhLP3L5CrlvCB91ANUkIz40P27kUcvNfSdvyZJ9CLHiVoKSp+TTChMQMSKQEH/IQxA==
 
 core-js@^1.0.0:
   version "1.2.7"

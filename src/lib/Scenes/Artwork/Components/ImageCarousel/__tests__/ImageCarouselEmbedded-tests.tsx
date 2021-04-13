@@ -2,6 +2,7 @@
 import { mount } from "enzyme"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
+import { Platform } from "react-native"
 import { ImageCarouselContext, useNewImageCarouselContext } from "../ImageCarouselContext"
 import { ImageCarouselEmbedded } from "../ImageCarouselEmbedded"
 import { ImageWithLoadingState } from "../ImageWithLoadingState"
@@ -62,5 +63,20 @@ describe("ImageCarouselEmbedded", () => {
     expect(context.fullScreenState.current).toBe("none")
     carousel.find(ImageWithLoadingState).at(0).props().onPress()
     expect(context.fullScreenState.current).toBe("none")
+  })
+  describe("deepZoom on Android", () => {
+    beforeAll(() => {
+      Platform.OS = "android"
+    })
+    afterAll(() => {
+      Platform.OS = "ios"
+    })
+
+    it("suppresses fullScreen when you tap an image with deepZoom because it would fail", () => {
+      const carousel = mount(<Mock />)
+      expect(context.fullScreenState.current).toBe("none")
+      carousel.find(ImageWithLoadingState).at(0).props().onPress()
+      expect(context.fullScreenState.current).toBe("none")
+    })
   })
 })

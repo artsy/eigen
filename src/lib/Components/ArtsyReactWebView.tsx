@@ -6,9 +6,10 @@ import { getCurrentEmissionState, GlobalStore, useEnvironment } from "lib/store/
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { parse as parseQueryString } from "query-string"
 import React, { useEffect, useRef, useState } from "react"
-import { KeyboardAvoidingView, Platform, View } from "react-native"
+import { Platform, View } from "react-native"
 import WebView, { WebViewProps } from "react-native-webview"
 import { parse as parseURL } from "url"
+import { ArtsyKeyboardAvoidingView } from "./ArtsyKeyboardAvoidingView"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 
 export interface ArtsyWebViewConfig {
@@ -38,11 +39,7 @@ export const ArtsyReactWebViewPage: React.FC<
 
   return (
     <View style={{ flex: 1, paddingTop }}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        keyboardVerticalOffset={useScreenDimensions().safeAreaInsets.top}
-        style={{ flex: 1 }}
-      >
+      <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
           useXButton={isPresentedModally && !canGoBack}
           onLeftButtonPress={() => {
@@ -61,7 +58,7 @@ export const ArtsyReactWebViewPage: React.FC<
           allowWebViewInnerNavigation={allowWebViewInnerNavigation}
           onNavigationStateChange={mimicBrowserBackButton ? (ev) => setCanGoBack(ev.canGoBack) : undefined}
         />
-      </KeyboardAvoidingView>
+      </ArtsyKeyboardAvoidingView>
     </View>
   )
 }

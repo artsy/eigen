@@ -39,7 +39,7 @@ describe("OnboardingLogin", () => {
       const tree = renderWithWrappers(<TestProvider />)
       const forgotPasswordButton = tree.root.findAllByType(Touchable)[0]
       forgotPasswordButton.props.onPress()
-      expect(navigateMock).toHaveBeenCalledWith("OnboardingForgotPassword")
+      expect(navigateMock).toHaveBeenCalledWith("ForgotPassword")
     })
   })
 

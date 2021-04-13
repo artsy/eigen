@@ -10,6 +10,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ComposerFragmentContainer } from "../Composer"
+import { CTAPopUp } from "../CTAPopUp"
 import { OpenInquiryModalButton } from "../OpenInquiryModalButton"
 import { ReviewOfferButton } from "../ReviewOfferButton"
 
@@ -102,7 +103,7 @@ describe("inquiry offer enabled", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsInquiryCheckout: true })
   })
 
-  it("renders the inquiry make offer button if inquiry item is an offerable artwork", () => {
+  it("renders the inquiry make offer button if inquiry item is an offerable artwork and no active orders", () => {
     const tree = getWrapper({
       Conversation: () => ({
         items: [
@@ -113,6 +114,7 @@ describe("inquiry offer enabled", () => {
             },
           },
         ],
+        activeOrders: { edges: [] },
       }),
     })
     expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(1)
@@ -134,7 +136,7 @@ describe("inquiry offer enabled", () => {
     expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(0)
   })
 
-  it("does not render the inquiry make offer button or cta when the keyboard is visible", () => {
+  it("does not render a CTA when the keyboard is visible", () => {
     const tree = getWrapper({
       Conversation: () => ({
         items: [
@@ -145,6 +147,7 @@ describe("inquiry offer enabled", () => {
             },
           },
         ],
+        activeOrders: { edges: [] },
       }),
     })
     const input = tree.root.findByType(TextInput)
@@ -152,12 +155,12 @@ describe("inquiry offer enabled", () => {
     input.props.onFocus()
 
     setTimeout(() => {
-      expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(0)
+      expect(tree.root.findAllByType(CTAPopUp)[0]).not.toBeDefined()
     }, 0)
   })
 
   describe("with associated orders (OrderCTAs)", () => {
-    it("renders an empty CTA if there is an active order with a pending offer from the buyer", () => {
+    it("renders no CTA if there is an active order with a pending offer from the buyer", () => {
       const tree = getWrapper({
         Conversation: () => ({
           items: [
@@ -168,7 +171,7 @@ describe("inquiry offer enabled", () => {
               },
             },
           ],
-          orderConnection: {
+          activeOrders: {
             edges: [
               {
                 node: {
@@ -182,10 +185,9 @@ describe("inquiry offer enabled", () => {
           },
         }),
       })
-      const cta = tree.root.findAllByType(ReviewOfferButton)[0]
-      expect(cta).toBeDefined()
-      expect(cta.children).toEqual([])
-      expect(extractText(cta)).toEqual("")
+
+      const cta = tree.root.findAllByType(CTAPopUp)[0]
+      expect(cta).not.toBeDefined()
     })
 
     it("renders a copper offer CTA if there is a pending offer from the seller", () => {
@@ -199,7 +201,7 @@ describe("inquiry offer enabled", () => {
               },
             },
           ],
-          orderConnection: {
+          activeOrders: {
             edges: [
               {
                 node: {
@@ -235,7 +237,7 @@ describe("inquiry offer enabled", () => {
               },
             },
           ],
-          orderConnection: {
+          activeOrders: {
             edges: [
               {
                 node: {
@@ -260,7 +262,7 @@ describe("inquiry offer enabled", () => {
       expect(cta.findAllByType(Flex)[0].props).toEqual(expect.objectContaining({ bg: "green100" }))
     })
 
-    it("renders the MO button isntead of the cta if the seller has rejected the buyer's offer", () => {
+    it("renders the MO button instead of the cta if the seller has rejected the buyer's offer", () => {
       const tree = getWrapper({
         Conversation: () => ({
           items: [
@@ -271,6 +273,7 @@ describe("inquiry offer enabled", () => {
               },
             },
           ],
+          activeOrders: { edges: [] },
           orderConnection: {
             edges: [
               {
@@ -292,6 +295,7 @@ describe("inquiry offer enabled", () => {
       expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(1)
       expect(tree.root.findAllByType(ReviewOfferButton).length).toEqual(0)
     })
+
     it("renders a red cta if the payment fails after an order is accepted", () => {
       const tree = getWrapper({
         Conversation: () => ({
@@ -303,7 +307,7 @@ describe("inquiry offer enabled", () => {
               },
             },
           ],
-          orderConnection: {
+          activeOrders: {
             edges: [
               {
                 node: {
@@ -339,6 +343,7 @@ describe("inquiry offer enabled", () => {
               },
             },
           ],
+          activeOrders: { edges: [] },
           orderConnection: {
             edges: [
               {

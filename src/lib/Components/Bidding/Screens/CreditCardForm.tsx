@@ -5,7 +5,7 @@ import { ScrollView, View } from "react-native"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe, { StripeToken } from "tipsi-stripe"
 
-import BottomAlignedButtonWrapper from "lib/Components/Buttons/BottomAlignedButtonWrapper"
+import { BottomAlignedButtonWrapper } from "lib/Components/Buttons/BottomAlignedButtonWrapper"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
@@ -92,8 +92,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
     return (
       <BiddingThemeProvider>
         <BottomAlignedButtonWrapper
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          onPress={this.state.valid ? () => this.tokenizeCardAndSubmit() : null}
+          onPress={this.state.valid ? () => this.tokenizeCardAndSubmit() : undefined}
           buttonComponent={buttonComponent}
         >
           <Theme>

@@ -534,7 +534,7 @@ describe("Applying filters on Artworks", () => {
 
     applyButton.props.onPress()
     expect(trackEvent).toHaveBeenCalledWith({
-      action_type: "commercial_filter_params_changed",
+      action_type: "commercialFilterParamsChanged",
       changed: {
         medium: "work-on-paper",
       },
