@@ -427,3 +427,7 @@ jest.mock("react-native-config", () => ({
   MAPBOX_API_CLIENT_KEY: "mapbox_api_client_key",
   SAILTHRU_KEY: "sailthru_key",
 }))
+
+jest.mock("react-native-haptic-feedback", () => ({
+  trigger: jest.fn(),
+}))
