@@ -74,27 +74,25 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
 
   return (
     <ArtworkFiltersStoreProvider>
-      <>
-        <StickyTabPageScrollView>
-          <ArtistArtworksContainer
-            {...props}
-            viewableItemsRef={onViewRef}
-            viewConfigRef={viewConfigRef}
-            artist={artist}
-            relay={relay}
-          />
-          <FilterModalNavigator
-            {...props}
-            id={artist.id}
-            slug={artist.slug}
-            isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-            exitModal={handleFilterArtworksModal}
-            closeModal={closeFilterArtworksModal}
-            mode={FilterModalMode.ArtistArtworks}
-          />
-        </StickyTabPageScrollView>
-        <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
-      </>
+      <StickyTabPageScrollView>
+        <ArtistArtworksContainer
+          {...props}
+          viewableItemsRef={onViewRef}
+          viewConfigRef={viewConfigRef}
+          artist={artist}
+          relay={relay}
+        />
+        <FilterModalNavigator
+          {...props}
+          id={artist.id}
+          slug={artist.slug}
+          isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+          exitModal={handleFilterArtworksModal}
+          closeModal={closeFilterArtworksModal}
+          mode={FilterModalMode.ArtistArtworks}
+        />
+      </StickyTabPageScrollView>
+      <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
     </ArtworkFiltersStoreProvider>
   )
 }

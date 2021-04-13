@@ -37,7 +37,6 @@ export const useArtworkFilters = ({
   }, [relay, appliedFilters, filterParams])
 
   return {
-    // state, // TODO: Remove this if possible (it shoud be possilbe)
     filterParams,
   }
 }
@@ -59,7 +58,6 @@ export const useArtworkFiltersAggregation = ({ paramName }: { paramName: FilterP
   const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
 
   return {
-    // state, // TODO: Remove this if possible (it shoud be possilbe)
     aggregation,
     selectedOption,
   }
