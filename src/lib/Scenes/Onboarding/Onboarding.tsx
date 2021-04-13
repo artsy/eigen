@@ -5,9 +5,9 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { View } from "react-native"
+import { ForgotPassword } from "./ForgotPassword"
 import { LogIn } from "./OldLogIn/LogIn"
 import { OnboardingCreateAccount } from "./OnboardingCreateAccount"
-import { OnboardingForgotPassword } from "./OnboardingForgotPassword"
 import { OnboardingLogin } from "./OnboardingLogin"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
@@ -16,7 +16,7 @@ export type OnboardingNavigationStack = {
   OnboardingWelcome: undefined
   OnboardingLogin: undefined
   OnboardingCreateAccount: undefined
-  OnboardingForgotPassword: undefined
+  ForgotPassword: undefined
 }
 
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
@@ -49,7 +49,7 @@ export const Onboarding = () => {
               options={{ headerShown: false }}
             />
             <StackNavigator.Screen name="OnboardingCreateAccount" component={OnboardingCreateAccount} />
-            <StackNavigator.Screen name="OnboardingForgotPassword" component={OnboardingForgotPassword} />
+            <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
           </StackNavigator.Navigator>
         </ArtsyKeyboardAvoidingView>
       </NavigationContainer>

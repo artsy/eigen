@@ -46,7 +46,7 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
       >
-        {!__TEST__ && <BackButton onPress={() => navigation.goBack()} />}
+        <BackButton onPress={() => navigation.goBack()} />
         <Flex flex={1} px={1.5} paddingTop={60} justifyContent="flex-start" flexGrow={1}>
           <Text variant="largeTitle">Log in with email</Text>
           <Spacer mt={50} />
@@ -111,7 +111,7 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
           <Spacer mt={4} />
           <Touchable
             onPress={() => {
-              navigation.navigate("OnboardingForgotPassword")
+              navigation.navigate("ForgotPassword")
             }}
           >
             <Text variant="text" color="black60" style={{ textDecorationLine: "underline" }}>
