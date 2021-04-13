@@ -1,13 +1,14 @@
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
+import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Button, Flex } from "palette"
 import React from "react"
 import { KeyboardAvoidingView } from "react-native"
+import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
 import { OnboardingCreateAccountEmail, OnboardingCreateAccountEmailParams } from "./OnboardingCreateAccountEmail"
 import { OnboardingCreateAccountName } from "./OnboardingCreateAccountName"
 import { OnboardingCreateAccountPassword } from "./OnboardingCreateAccountPassword"
-import { OnboardingCreateAccountStore } from "./OnboardingCreateAccountStore"
 
 export interface OnboardingCreateAccountProps
   extends StackScreenProps<OnboardingNavigationStack, "OnboardingCreateAccount"> {}
@@ -26,33 +27,74 @@ export const __unsafe__createAccountNavigationRef: React.MutableRefObject<Naviga
   current: null,
 }
 
-const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = ({ navigation }) => {
+export interface UserSchema {
+  email: string
+  password: string
+  name: string
+}
+
+const userSchema = Yup.object().shape({
+  email: Yup.string().email("Please provide a valid email address"),
+  password: Yup.string().test("password", "Password field is required", (value) => value !== ""),
+  name: Yup.string().test("name", "Full name field is required", (value) => value !== ""),
+})
+
+export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = ({ navigation }) => {
+  const formik = useFormik<UserSchema>({
+    enableReinitialize: true,
+    validateOnChange: false,
+    validateOnBlur: true,
+    initialValues: { email: "", password: "", name: "" },
+    initialErrors: {},
+    onSubmit: async (_, { validateForm }) => {
+      await validateForm()
+      switch (__unsafe__createAccountNavigationRef.current?.getCurrentRoute()?.name) {
+        case "OnboardingCreateAccountEmail":
+          __unsafe__createAccountNavigationRef.current?.navigate("OnboardingCreateAccountPassword")
+          break
+        case "OnboardingCreateAccountPassword":
+          __unsafe__createAccountNavigationRef.current?.navigate("OnboardingCreateAccountName")
+          break
+        case "name":
+          break
+
+        default:
+          break
+      }
+    },
+    validationSchema: userSchema,
+  })
+
   return (
-    <NavigationContainer ref={__unsafe__createAccountNavigationRef} independent>
-      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-        <StackNavigator.Navigator
-          headerMode="screen"
-          screenOptions={{
-            ...TransitionPresets.SlideFromRightIOS,
-            headerShown: false,
-          }}
-        >
-          <StackNavigator.Screen
-            name="OnboardingCreateAccountEmail"
-            component={OnboardingCreateAccountEmail}
-            initialParams={{ navigateToWelcomeScreen: navigation.goBack }}
-          />
-          <StackNavigator.Screen name="OnboardingCreateAccountPassword" component={OnboardingCreateAccountPassword} />
-          <StackNavigator.Screen name="OnboardingCreateAccountName" component={OnboardingCreateAccountName} />
-        </StackNavigator.Navigator>
-      </KeyboardAvoidingView>
-      <OnboardingCreateAccountButton />
-    </NavigationContainer>
+    <FormikProvider value={formik}>
+      <NavigationContainer ref={__unsafe__createAccountNavigationRef} independent>
+        <KeyboardAvoidingView>
+          <StackNavigator.Navigator
+            headerMode="screen"
+            screenOptions={{
+              ...TransitionPresets.SlideFromRightIOS,
+              headerShown: false,
+            }}
+          >
+            <StackNavigator.Screen
+              name="OnboardingCreateAccountEmail"
+              component={OnboardingCreateAccountEmail}
+              initialParams={{ navigateToWelcomeScreen: navigation.goBack }}
+            />
+            <StackNavigator.Screen name="OnboardingCreateAccountPassword" component={OnboardingCreateAccountPassword} />
+            <StackNavigator.Screen name="OnboardingCreateAccountName" component={OnboardingCreateAccountName} />
+          </StackNavigator.Navigator>
+        </KeyboardAvoidingView>
+        <OnboardingCreateAccountButton />
+      </NavigationContainer>
+    </FormikProvider>
   )
 }
 
 const OnboardingCreateAccountButton: React.FC = () => {
-  const { handleSubmit } = OnboardingCreateAccountStore.useStoreActions((actions) => actions)
+  const { handleSubmit, isSubmitting, isValid, dirty } = useFormikContext<UserSchema>()
+
+  const isLastStep = __unsafe__createAccountNavigationRef.current?.getCurrentRoute() === "name"
 
   return (
     <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5} backgroundColor="white">
@@ -62,17 +104,11 @@ const OnboardingCreateAccountButton: React.FC = () => {
         }}
         block
         haptic="impactMedium"
-        disabled={false}
-        loading={false}
+        disabled={isLastStep && !(isValid && dirty)}
+        loading={isLastStep && isSubmitting}
       >
         Next
       </Button>
     </Flex>
   )
 }
-
-export const OnboardingCreateAccountWrapper: React.FC<OnboardingCreateAccountProps> = (props) => (
-  <OnboardingCreateAccountStore.Provider>
-    <OnboardingCreateAccount {...props} />
-  </OnboardingCreateAccountStore.Provider>
-)
