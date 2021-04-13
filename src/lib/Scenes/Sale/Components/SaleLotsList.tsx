@@ -90,11 +90,6 @@ export const SaleLotsList: React.FC<Props> = ({
   useEffect(() => {
     if (applyFiltersState) {
       // Add the new medium to geneIDs array
-      const medium: string[] = []
-      if (typeof filterParams.medium === "string") {
-        medium.push(filterParams.medium)
-      }
-
       relay.refetchConnection(
         10,
         (error) => {
@@ -105,7 +100,7 @@ export const SaleLotsList: React.FC<Props> = ({
         {
           ...filterParams,
           saleID: saleSlug,
-          geneIDs: medium,
+          geneIDs: filterParams.additionalGeneIDs || [],
           includeArtworksByFollowedArtists: !!filterParams.includeArtworksByFollowedArtists,
         }
       )
