@@ -14,6 +14,7 @@ upcoming:
     - Fix keyboard avoidance - david
     - Use ArtsyWebView instead of WebView for auction FAQ - ole
     - don't remove node_module assets when bundling - brian
+    - Update filter params change tracking type for auction results - ole
   user_facing:
     - Use toolbar style modal headers in consignments flow - brian
     - Add Onboarding welcome screen - mounir

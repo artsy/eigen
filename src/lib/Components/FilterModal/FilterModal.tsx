@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ActionType, ContextModule } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { useFeatureFlag } from "lib/store/GlobalStore"
@@ -141,12 +141,14 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
   }
 
   const trackChangeFilters = ({
+    actionType,
     changedParams,
     contextModule,
     currentParams,
     ownerEntity,
     screenName,
   }: {
+    actionType: ActionType
     changedParams: any
     contextModule?: ContextModule
     currentParams: FilterParams
@@ -161,7 +163,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
       context_screen_owner_slug: slug,
       current: currentParams,
       changed: changedParams,
-      action_type: Schema.ActionTypes.ChangeFilterParams,
+      action_type: actionType,
     })
   }
 
@@ -256,6 +258,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                 switch (mode) {
                   case FilterModalMode.Collection:
                     trackChangeFilters({
+                      actionType: ActionType.commercialFilterParamsChanged,
                       screenName: PageNames.Collection,
                       ownerEntity: OwnerEntityTypes.Collection,
                       currentParams: appliedFiltersParams,
@@ -264,6 +267,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                     break
                   case FilterModalMode.ArtistArtworks:
                     trackChangeFilters({
+                      actionType: ActionType.commercialFilterParamsChanged,
                       screenName: PageNames.ArtistPage,
                       ownerEntity: OwnerEntityTypes.Artist,
                       currentParams: appliedFiltersParams,
@@ -272,6 +276,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                     break
                   case FilterModalMode.Fair:
                     trackChangeFilters({
+                      actionType: ActionType.commercialFilterParamsChanged,
                       screenName: PageNames.FairPage,
                       ownerEntity: OwnerEntityTypes.Fair,
                       currentParams: appliedFiltersParams,
@@ -280,6 +285,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                     break
                   case FilterModalMode.SaleArtworks:
                     trackChangeFilters({
+                      actionType: ActionType.commercialFilterParamsChanged,
                       screenName: PageNames.Auction,
                       ownerEntity: OwnerEntityTypes.Auction,
                       currentParams: appliedFiltersParams,
@@ -288,6 +294,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                     break
                   case FilterModalMode.Show:
                     trackChangeFilters({
+                      actionType: ActionType.commercialFilterParamsChanged,
                       screenName: PageNames.ShowPage,
                       ownerEntity: OwnerEntityTypes.Show,
                       currentParams: appliedFiltersParams,
@@ -296,6 +303,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                     break
                   case FilterModalMode.AuctionResults:
                     trackChangeFilters({
+                      actionType: ActionType.auctionResultsFilterParamsChanged,
                       screenName: PageNames.ArtistPage,
                       ownerEntity: OwnerEntityTypes.Artist,
                       currentParams: appliedFiltersParams,
@@ -306,6 +314,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
 
                   case FilterModalMode.Partner:
                     trackChangeFilters({
+                      actionType: ActionType.commercialFilterParamsChanged,
                       screenName: PageNames.PartnerPage,
                       ownerEntity: OwnerEntityTypes.Partner,
                       currentParams: appliedFiltersParams,
