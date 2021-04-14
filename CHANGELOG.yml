@@ -2,12 +2,9 @@ upcoming:
   version: 6.8.4
   date: TBD
   dev:
-    - Migrate LoadFailureView to typescript - adam, brian, david, mounir, pavlos
     - Migrate environment configuration to TypeScript - david
     - Improve bottom tabs dev state management  - david, mounir
     - Refactor Filter Modals - mounir
-    - Use adjustPan for windowSoftInputMode  - mounir
-    - Make android app full-bleed - david
     - Update filter params change tracking type for auction results - ole
   user_facing:
     - Add forgot password screen in new login - brian
@@ -17,6 +14,9 @@ releases:
   - version: 6.8.3
     date: Apr 14, 2021
     dev:
+      - Migrate LoadFailureView to typescript - adam, brian, david, mounir, pavlos
+      - Use adjustPan for windowSoftInputMode  - mounir
+      - Make android app full-bleed - david
       - Add camera permissions to android manifest - brian
       - Switch to react-native-credit-card-input (away from tipsi-stripe) - david
       - Use webfont for StyledWebView - david
