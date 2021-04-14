@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import {
   FilterDisplayName,
   FilterParamName,
@@ -7,9 +7,9 @@ import {
   ParamDefaultValues,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import React, { useState } from "react"
-import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
 interface TimePeriodOptionsScreenProps
