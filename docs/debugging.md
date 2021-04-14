@@ -52,7 +52,7 @@ values by clicking ‘view source’ next to the ‘Request Payload section):
 You can use React Native debugger which is a standalone app to inspect views as well as the standard Chrome Dev Tools.
 It is highly recommended over the normal Chrome Dev Tools.
 
-1. Install [RN debugger](https://github.com/jhen0409/react-native-debugger): `$ brew update && brew cask install react-native-debugger`.
+1. Install [RN debugger](https://github.com/jhen0409/react-native-debugger): `$ brew update && brew install --cask react-native-debugger`.
 2. There is no step 2. Now when you run `$ yarn start` it will automatically use the standalone app.
 
 ![screen shot 2017-01-23 at 1 00 01 pm](https://cloud.githubusercontent.com/assets/296775/22220775/09bb10ec-e17e-11e6-8801-3b0ccbdbaa84.png)
