@@ -1,16 +1,16 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { aggregationForFilter, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { CircleWithBorder } from "lib/Components/CircleWithBorder/CircleWithBorder"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { TouchableRow } from "lib/Components/TouchableRow"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, CheckIcon, color, Flex, Separator, Text } from "palette"
 import React, { useState } from "react"
 import Haptic from "react-native-haptic-feedback"
 import styled from "styled-components/native"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
-import { CircleWithBorder } from "lib/Components/CircleWithBorder/CircleWithBorder"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { TouchableRow } from "lib/Components/TouchableRow"
 
 interface YearOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "YearOptionsScreen"> {}
 

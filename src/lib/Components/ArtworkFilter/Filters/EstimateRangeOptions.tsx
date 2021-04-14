@@ -1,9 +1,9 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { AggregateOption, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { Sans, Separator } from "palette"
 import React from "react"
-import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface PriceRangeOptionsScreenProps

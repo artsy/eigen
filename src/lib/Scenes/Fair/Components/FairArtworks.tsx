@@ -1,12 +1,12 @@
 import { OwnerType } from "@artsy/cohesion"
 import { FairArtworks_fair } from "__generated__/FairArtworks_fair.graphql"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import {
   aggregationsType,
   aggregationsWithFollowedArtists,
   FilterArray,
   filterArtworksParams,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FAIR2_ARTWORKS_PAGE_SIZE } from "lib/data/constants"

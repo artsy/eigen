@@ -1,11 +1,14 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import {
   FilterDisplayName,
   filterKeyFromAggregation,
   FilterParamName,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { selectedOption } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ColorOption } from "lib/Components/ArtworkFilter/Filters/ColorOptions"
+import { colorHexMap } from "lib/Components/ArtworkFilter/Filters/ColorSwatch"
+import { TouchableRow } from "lib/Components/TouchableRow"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
@@ -16,10 +19,7 @@ import { FlatList, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
-import { colorHexMap } from "lib/Components/ArtworkFilter/Filters/ColorSwatch"
-import { TouchableRow } from "lib/Components/TouchableRow"
 import { ArtworkFilterNavigationStack } from "./ArtworkFilter"
-import { ColorOption } from "lib/Components/ArtworkFilter/Filters/ColorOptions"
 
 export type FilterScreen =
   | "additionalGeneIDs"

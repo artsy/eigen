@@ -1,8 +1,8 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import React from "react"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
+import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import React from "react"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface SortOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "SortOptionsScreen"> {}

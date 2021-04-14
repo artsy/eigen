@@ -1,11 +1,11 @@
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Box, CheckIcon, Flex, Sans, Separator } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 
 interface MultiSelectOptionScreenProps {
   filterHeaderText: string

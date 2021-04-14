@@ -1,14 +1,14 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import {
   FilterData,
   FilterDisplayName,
   FilterParamName,
   ParamDefaultValues,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import React, { useState } from "react"
-import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
 const DEFAULT_OPTION: FilterData = {

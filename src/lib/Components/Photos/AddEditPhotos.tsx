@@ -1,4 +1,5 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Stack } from "lib/Components/Stack"
 import { Photo } from "lib/Scenes/Consignments"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -10,7 +11,6 @@ import { AddIcon, BorderBox, Box, Button, color, Flex, Spacer, XCircleIcon } fro
 import React, { useState } from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import Separator from "../Separator"
 
 const MARGIN = 20

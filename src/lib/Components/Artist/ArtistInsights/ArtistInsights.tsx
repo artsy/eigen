@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
-import { AnimatedArtworkFilterButton, FilterModalMode, ArtworkFilterNavigator } from "lib/Components/ArtworkFilter"
+import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "lib/utils/track"

@@ -2,7 +2,6 @@ import { ActionType, ContextModule } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import {
   changedFiltersParams,
   FilterArray,
@@ -10,13 +9,7 @@ import {
   FilterParamName,
   FilterParams,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { useFeatureFlag } from "lib/store/GlobalStore"
-import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
-import _ from "lodash"
-import { Box, Button, Separator } from "palette"
-import React from "react"
-import { View, ViewProperties } from "react-native"
-import { useTracking } from "react-tracking"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { AdditionalGeneIDsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/AdditionalGeneIDsOptions"
 import { ArtistIDsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ArtistIDsOptionsScreen"
 import { AttributionClassOptionsScreen } from "lib/Components/ArtworkFilter/Filters/AttributionClassOptions"
@@ -36,9 +29,16 @@ import { TimePeriodOptionsScreen } from "lib/Components/ArtworkFilter/Filters/Ti
 import { ViewAsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ViewAsOptions"
 import { WaysToBuyOptionsScreen } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { YearOptionsScreen } from "lib/Components/ArtworkFilter/Filters/YearOptions"
-import { FancyModal } from "../FancyModal/FancyModal"
-import { FilterModalMode as ArtworkFilterMode, ArtworkFilterOptionsScreen } from "./ArtworkFilterOptionsScreen"
+import { useFeatureFlag } from "lib/store/GlobalStore"
+import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
+import _ from "lodash"
+import { Box, Button, Separator } from "palette"
+import React from "react"
+import { View, ViewProperties } from "react-native"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
+import { FancyModal } from "../FancyModal/FancyModal"
+import { ArtworkFilterOptionsScreen, FilterModalMode as ArtworkFilterMode } from "./ArtworkFilterOptionsScreen"
 
 interface ArtworkFilterProps extends ViewProperties {
   closeModal?: () => void
