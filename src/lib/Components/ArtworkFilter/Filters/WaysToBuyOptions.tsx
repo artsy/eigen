@@ -1,8 +1,8 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import React from "react"
+import React, { useState } from "react"
+import { ArtworkFilterNavigationStack } from "../ArtworkFilter"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
 interface WaysToBuyOptionsScreenProps
@@ -13,27 +13,26 @@ export const WaysToBuyOptionsScreen: React.FC<WaysToBuyOptionsScreenProps> = ({ 
 
   const selectedOptions = useSelectedOptionsDisplay()
 
-  const waysToBuyFilterNames = [
+  const filterNames = [
     FilterParamName.waysToBuyBuy,
     FilterParamName.waysToBuyMakeOffer,
     FilterParamName.waysToBuyBid,
     FilterParamName.waysToBuyInquire,
   ]
-  const waysToBuyOptions = selectedOptions.filter((value) => waysToBuyFilterNames.includes(value.paramName))
 
-  const waysToBuySort = (left: FilterData, right: FilterData): number => {
-    const leftParam = left.paramName
-    const rightParam = right.paramName
-    if (waysToBuyFilterNames.indexOf(leftParam) < waysToBuyFilterNames.indexOf(rightParam)) {
+  const options = selectedOptions.filter((value) => filterNames.includes(value.paramName))
+
+  const sortedOptions = options.sort(({ paramName: left }: FilterData, { paramName: right }: FilterData): number => {
+    if (filterNames.indexOf(left) < filterNames.indexOf(right)) {
       return -1
     } else {
       return 1
     }
-  }
+  })
 
-  const sortedOptions = waysToBuyOptions.sort(waysToBuySort)
+  const [key, setKey] = useState(0)
 
-  const selectOption = (option: FilterData, updatedValue: boolean) => {
+  const handleSelect = (option: FilterData, updatedValue: boolean) => {
     selectFiltersAction({
       displayText: option.displayText,
       paramValue: updatedValue,
@@ -41,12 +40,25 @@ export const WaysToBuyOptionsScreen: React.FC<WaysToBuyOptionsScreenProps> = ({ 
     })
   }
 
+  const handleClear = () => {
+    options.map((option) => {
+      selectFiltersAction({ ...option, paramValue: false })
+    })
+
+    // Force re-render
+    setKey((n) => n + 1)
+  }
+
+  const selected = options.filter((option) => option.paramValue)
+
   return (
     <MultiSelectOptionScreen
-      onSelect={selectOption}
+      key={key}
+      onSelect={handleSelect}
       filterHeaderText={FilterDisplayName.waysToBuy}
       filterOptions={sortedOptions}
       navigation={navigation}
+      {...(selected.length > 0 ? { rightButtonText: "Clear all", onRightButtonPress: handleClear } : {})}
     />
   )
 }

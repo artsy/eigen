@@ -60,11 +60,19 @@ export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ naviga
     return COLORS.findIndex(({ value }) => value === option.paramValue)
   })
 
-  const { handleSelect, isSelected } = useMultiSelect({ options, paramName: FilterParamName.colors })
+  const { handleSelect, isSelected, handleClear, isActive } = useMultiSelect({
+    options,
+    paramName: FilterParamName.colors,
+  })
 
   return (
     <Flex onLayout={handleLayout} flexGrow={1}>
-      <FancyModalHeader onLeftButtonPress={() => navigation.goBack()}>{FilterDisplayName.colors}</FancyModalHeader>
+      <FancyModalHeader
+        onLeftButtonPress={() => navigation.goBack()}
+        {...(isActive ? { rightButtonText: "Clear all", onRightButtonPress: handleClear } : {})}
+      >
+        {FilterDisplayName.colors}
+      </FancyModalHeader>
 
       <Flex p={1} flexWrap="wrap" flexDirection="row" justifyContent="flex-start">
         {sortedOptions.map((option, i) => {

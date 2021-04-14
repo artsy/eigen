@@ -1,21 +1,10 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
-import {
-  FilterData,
-  FilterDisplayName,
-  FilterParamName,
-  ParamDefaultValues,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
-import React, { useState } from "react"
+import React from "react"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
-
-const DEFAULT_OPTION: FilterData = {
-  displayText: "All",
-  paramValue: ParamDefaultValues.additionalGeneIDs,
-  paramName: FilterParamName.additionalGeneIDs,
-}
+import { useMultiSelect } from "./useMultiSelect"
 
 interface AdditionalGeneIDsOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "AdditionalGeneIDsOptionsScreen"> {}
@@ -24,92 +13,26 @@ export const AdditionalGeneIDsOptionsScreen: React.FC<AdditionalGeneIDsOptionsSc
   // Uses the medium aggregations
   const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.medium })
 
-  // But updates the additionalGeneIDs option
-  const { selectedOption } = useArtworkFiltersAggregation({ paramName: FilterParamName.additionalGeneIDs })
-
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
-
-  const [nextOptions, setNextOptions] = useState<string[]>((selectedOption?.paramValue as string[]) ?? [])
-
-  const filterOptions: FilterData[] = [
-    DEFAULT_OPTION,
-    ...(aggregation?.counts ?? []).map(({ name: displayText, value: paramValue, count }) => {
-      return {
-        paramName: FilterParamName.additionalGeneIDs,
-        displayText,
-        paramValue,
-        count,
-      }
-    }),
-  ]
-
-  const booleanFilterOptions: FilterData[] = filterOptions.map((option) => {
-    if (option.displayText === DEFAULT_OPTION.displayText) {
-      return { ...option, paramValue: nextOptions.length === 0 }
-    }
-
-    return { ...option, paramValue: nextOptions.includes(option.paramValue as string) }
+  // Convert aggregations to filter options
+  const options: FilterData[] = (aggregation?.counts ?? []).map(({ name: displayText, value: paramValue }) => {
+    return { paramName: FilterParamName.additionalGeneIDs, displayText, paramValue }
   })
 
-  const handleSelect = (option: FilterData, updatedValue: boolean) => {
-    if (updatedValue) {
-      setNextOptions((prev) => {
-        let next = []
+  const { isSelected, handleClear, handleSelect, isActive } = useMultiSelect({
+    options,
+    paramName: FilterParamName.additionalGeneIDs,
+  })
 
-        // If the `All` toggle is selected; reset the filters to the default value (`[]`)
-        if (option.displayText === DEFAULT_OPTION.displayText) {
-          next = ParamDefaultValues.additionalGeneIDs
-        } else {
-          // Otherwise append it
-          next = [
-            ...prev,
-            (aggregation?.counts ?? []).find(({ name }) => {
-              return name === option.displayText
-            })?.value as string,
-          ]
-        }
-
-        selectFiltersAction({
-          displayText: option.displayText,
-          paramValue: next,
-          paramName: option.paramName,
-        })
-
-        return next
-      })
-    } else {
-      setNextOptions((prev) => {
-        let next = prev.filter((value) => {
-          return (
-            value !==
-            ((aggregation?.counts ?? []).find(({ name }) => {
-              return name === option.displayText
-            })?.value as string)
-          )
-        })
-
-        // If nothing is selected toggle the default value (`[]`)
-        if (next.length === 0) {
-          next = ParamDefaultValues.additionalGeneIDs
-        }
-
-        selectFiltersAction({
-          displayText: option.displayText,
-          paramValue: next,
-          paramName: option.paramName,
-        })
-
-        return next
-      })
-    }
-  }
+  // Convert options to boolean options for checkboxes
+  const filterOptions = options.map((option) => ({ ...option, paramValue: isSelected(option) }))
 
   return (
     <MultiSelectOptionScreen
       onSelect={handleSelect}
       filterHeaderText={FilterDisplayName.additionalGeneIDs}
-      filterOptions={booleanFilterOptions}
+      filterOptions={filterOptions}
       navigation={navigation}
+      {...(isActive ? { rightButtonText: "Clear all", onRightButtonPress: handleClear } : {})}
     />
   )
 }

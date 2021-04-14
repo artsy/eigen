@@ -2,7 +2,7 @@ import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { FilterToggleButton } from "lib/Components/ArtworkFilter/Filters/FilterToggleButton"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { FancyModalHeader, FancyModalHeaderProps } from "lib/Components/FancyModal/FancyModalHeader"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Box, Check, Flex, Sans, Separator, Text } from "palette"
@@ -10,7 +10,7 @@ import React from "react"
 import { FlatList } from "react-native"
 import styled from "styled-components/native"
 
-interface MultiSelectOptionScreenProps {
+interface MultiSelectOptionScreenProps extends FancyModalHeaderProps {
   navigation: StackNavigationProp<ParamListBase>
   filterHeaderText: string
   onSelect: (filterData: FilterData, updatedValue: boolean) => void
@@ -26,6 +26,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   navigation,
   isSelected,
   isDisabled,
+  ...rest
 }) => {
   const handleBackNavigation = () => {
     navigation.goBack()
@@ -51,7 +52,10 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
 
   return (
     <Flex flexGrow={1}>
-      <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
+      <FancyModalHeader onLeftButtonPress={handleBackNavigation} {...rest}>
+        {filterHeaderText}
+      </FancyModalHeader>
+
       <Flex flexGrow={1}>
         <FlatList<FilterData>
           style={{ flex: 1 }}

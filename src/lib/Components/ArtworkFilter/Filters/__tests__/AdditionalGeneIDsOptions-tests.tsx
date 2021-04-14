@@ -2,6 +2,7 @@ import { OptionListItem as FilterModalOptionListItem } from "lib/Components/Artw
 import { MockFilterScreen } from "lib/Components/ArtworkFilter/__tests__/FilterTestHelper"
 import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { RightButtonContainer } from "lib/Components/FancyModal/FancyModalHeader"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -55,11 +56,10 @@ describe("AdditionalGeneIDsOptions Screen", () => {
   it("renders the options", () => {
     const tree = renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={initialState} />)
 
-    expect(tree.root.findAllByType(OptionListItem)).toHaveLength(9)
+    expect(tree.root.findAllByType(OptionListItem)).toHaveLength(8)
 
     const items = tree.root.findAllByType(OptionListItem)
     expect(items.map(extractText)).toEqual([
-      "All",
       "Prints",
       "Design",
       "Sculpture",
@@ -81,7 +81,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
-          displayText: "Unique",
+          displayText: "Prints, Sculpture",
           paramName: FilterParamName.additionalGeneIDs,
           paramValue: ["prints", "sculpture"],
         },
@@ -107,7 +107,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
-          displayText: "Unique",
+          displayText: "Prints, Sculpture",
           paramName: FilterParamName.additionalGeneIDs,
           paramValue: ["prints", "sculpture"],
         },
@@ -126,9 +126,43 @@ describe("AdditionalGeneIDsOptions Screen", () => {
     const tree = renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />)
     const switches = tree.root.findAllByType(Switch)
 
+    expect(switches[0].props.value).toBe(true)
+    expect(switches[1].props.value).toBe(false)
+    expect(switches[2].props.value).toBe(true)
+  })
+
+  it("clears all when clear button is tapped", () => {
+    const injectedState: ArtworkFiltersState = {
+      selectedFilters: [
+        {
+          displayText: "Prints, Sculpture",
+          paramName: FilterParamName.additionalGeneIDs,
+          paramValue: ["prints", "sculpture"],
+        },
+      ],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: MOCK_AGGREGATIONS,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+    }
+
+    const tree = renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />)
+    const switches = tree.root.findAllByType(Switch)
+    const clear = tree.root.findByType(RightButtonContainer)
+
+    expect(switches[0].props.value).toBe(true)
+    expect(switches[1].props.value).toBe(false)
+    expect(switches[2].props.value).toBe(true)
+
+    clear.props.onPress()
+
     expect(switches[0].props.value).toBe(false)
-    expect(switches[1].props.value).toBe(true)
+    expect(switches[1].props.value).toBe(false)
     expect(switches[2].props.value).toBe(false)
-    expect(switches[3].props.value).toBe(true)
   })
 })
