@@ -2,9 +2,10 @@ import { OwnerType } from "@artsy/cohesion"
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
 import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { StickyTabPageContext } from "lib/Components/StickyTabPage/SitckyTabPageContext"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "lib/utils/track"
-import React, { useCallback, useRef, useState } from "react"
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -31,6 +32,8 @@ interface ViewToken {
 
 const FILTER_BUTTON_OFFSET = 50
 export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
+  const value = useContext(StickyTabPageContext)
+
   const { artist, relay } = props
 
   const tracking = useTracking()
@@ -61,6 +64,16 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
       return
     }
     setIsFilterButtonVisible(false)
+  }, [])
+
+  useEffect(() => {
+    console.log("===============")
+    console.log(value)
+    // if tab is visible
+    // if (activeTabIndex === 2) {
+    //   // trigger screentracking event
+    //   tracking.trackEvent(tracks.screen("artistId", "slug"))
+    // }
   }, [])
 
   return (
@@ -130,6 +143,14 @@ export const tracks = {
       context_screen_owner_id: id,
       context_screen_owner_slug: slug,
       action_type: Schema.ActionTypes.Tap,
+    }
+  },
+  screen: (id: string, slug: string) => {
+    return {
+      context_screen: Schema.PageNames.Auction,
+      context_screen_owner_type: Schema.OwnerEntityTypes.Auction,
+      context_screen_owner_id: id,
+      context_screen_owner_slug: slug,
     }
   },
 }
