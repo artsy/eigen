@@ -8,7 +8,7 @@ import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { Text, TouchableWithoutFeedback, View } from "react-native"
+import { Text, TouchableHighlight, TouchableWithoutFeedback, View } from "react-native"
 import { useMultiSelect } from "../useMultiSelect"
 import { getEssentialProps } from "./helper"
 
@@ -33,7 +33,7 @@ describe("useMultiSelect", () => {
   ]
 
   const MockScreen: React.FC = () => {
-    const { handleSelect, nextParamValues, isSelected } = useMultiSelect({
+    const { handleSelect, nextParamValues, isSelected, handleClear } = useMultiSelect({
       options: OPTIONS,
       paramName: FilterParamName.colors,
     })
@@ -42,6 +42,10 @@ describe("useMultiSelect", () => {
 
     return (
       <View>
+        <TouchableHighlight onPress={handleClear}>
+          <Text>Clear</Text>
+        </TouchableHighlight>
+
         {OPTIONS.map((option) => (
           <TouchableWithoutFeedback
             key={option.paramValue}
@@ -110,6 +114,26 @@ describe("useMultiSelect", () => {
 
     expect(extractText(tree.root.findByProps({ testID: "selectedOptions" }))).toContain(
       '{"paramName":"colors","displayText":"Example 1, Example 3, Example 2","paramValue":["example-1","example-3","example-2"]}'
+    )
+  })
+
+  it("resets the state when cleared", async () => {
+    const tree = renderWithWrappers(<MockComponent initialData={initialState} />)
+    const buttons = tree.root.findAllByType(TouchableWithoutFeedback)
+    const clear = tree.root.findByType(TouchableHighlight)
+
+    buttons[0].props.onPress()
+    await flushPromiseQueue()
+
+    expect(extractText(tree.root.findByProps({ testID: "selectedOptions" }))).toContain(
+      '{"paramName":"colors","displayText":"Example 1","paramValue":["example-1"]}'
+    )
+
+    clear.props.onPress()
+    await flushPromiseQueue()
+
+    expect(extractText(tree.root.findByProps({ testID: "selectedOptions" }))).toContain(
+      '{"paramName":"colors","displayText":"All","paramValue":[]}'
     )
   })
 })
