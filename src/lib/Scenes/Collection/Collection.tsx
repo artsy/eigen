@@ -1,5 +1,5 @@
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/ArtworkFilter"
+import { AnimatedArtworkFilterButton, FilterModalMode, ArtworkFilterNavigator } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -131,7 +131,7 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                     return (
                       <Box px={2}>
                         <CollectionArtworks collection={collection} scrollToTop={() => this.scrollToTop()} />
-                        <FilterModalNavigator
+                        <ArtworkFilterNavigator
                           {...this.props}
                           isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
                           id={collection.id}

@@ -9,11 +9,11 @@ import {
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import _ from "lodash"
 import React from "react"
-import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface TimePeriodOptionsScreenProps
-  extends StackScreenProps<FilterModalNavigationStack, "TimePeriodOptionsScreen"> {}
+  extends StackScreenProps<ArtworkFilterNavigationStack, "TimePeriodOptionsScreen"> {}
 
 export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = ({ navigation }) => {
   // TODO: a lot of redundant types, see if we can clean up

@@ -7,12 +7,12 @@ import React, { useState } from "react"
 import Haptic from "react-native-haptic-feedback"
 import styled from "styled-components/native"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { CircleWithBorder } from "lib/Components/CircleWithBorder/CircleWithBorder"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { TouchableRow } from "lib/Components/TouchableRow"
 
-interface YearOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "YearOptionsScreen"> {}
+interface YearOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "YearOptionsScreen"> {}
 
 export const ALLOW_EMPTY_CREATED_DATES_FILTER: FilterData = {
   displayText: "Include lots without artwork date listed",

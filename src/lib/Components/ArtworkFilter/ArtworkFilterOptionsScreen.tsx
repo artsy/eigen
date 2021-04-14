@@ -18,7 +18,7 @@ import styled from "styled-components/native"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
 import { colorHexMap } from "lib/Components/ArtworkFilter/Filters/ColorSwatch"
 import { TouchableRow } from "lib/Components/TouchableRow"
-import { FilterModalNavigationStack } from "./ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "./ArtworkFilter"
 import { ColorOption } from "lib/Components/ArtworkFilter/Filters/ColorOptions"
 
 export type FilterScreen =
@@ -45,7 +45,7 @@ export type FilterScreen =
 export interface FilterDisplayConfig {
   filterType: FilterScreen
   displayText: string
-  ScreenComponent: keyof FilterModalNavigationStack
+  ScreenComponent: keyof ArtworkFilterNavigationStack
 }
 
 export enum FilterModalMode {
@@ -60,7 +60,7 @@ export enum FilterModalMode {
 }
 
 export const ArtworkFilterOptionsScreen: React.FC<
-  StackScreenProps<FilterModalNavigationStack, "FilterOptionsScreen">
+  StackScreenProps<ArtworkFilterNavigationStack, "FilterOptionsScreen">
 > = ({ navigation, route }) => {
   const tracking = useTracking()
   const { closeModal, id, mode, slug, title = "Filter" } = route.params
@@ -74,7 +74,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
 
   const selectedOptions = useSelectedOptionsDisplay()
 
-  const navigateToNextFilterScreen = (screenName: keyof FilterModalNavigationStack) => {
+  const navigateToNextFilterScreen = (screenName: keyof ArtworkFilterNavigationStack) => {
     navigation.navigate(screenName)
   }
 

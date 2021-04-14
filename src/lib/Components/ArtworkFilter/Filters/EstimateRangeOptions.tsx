@@ -3,11 +3,11 @@ import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/
 import { AggregateOption, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { Sans, Separator } from "palette"
 import React from "react"
-import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface PriceRangeOptionsScreenProps
-  extends StackScreenProps<FilterModalNavigationStack, "EstimateRangeOptionsScreen"> {}
+  extends StackScreenProps<ArtworkFilterNavigationStack, "EstimateRangeOptionsScreen"> {}
 
 const EstimateRanges = [
   { paramValue: "", paramDisplay: "All" },

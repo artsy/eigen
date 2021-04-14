@@ -9,11 +9,11 @@ import {
 import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import React, { useState } from "react"
-import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
 interface TimePeriodOptionsScreenProps
-  extends StackScreenProps<FilterModalNavigationStack, "TimePeriodOptionsScreen"> {}
+  extends StackScreenProps<ArtworkFilterNavigationStack, "TimePeriodOptionsScreen"> {}
 
 export const TimePeriodMultiOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = ({ navigation }) => {
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)

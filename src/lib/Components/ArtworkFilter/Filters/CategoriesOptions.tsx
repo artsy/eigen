@@ -3,11 +3,11 @@ import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilter
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { xor } from "lodash"
 import React, { useState } from "react"
-import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 
 interface ArtistIDsArtworksOptionsScreenProps
-  extends StackScreenProps<FilterModalNavigationStack, "CategoriesOptionsScreen"> {}
+  extends StackScreenProps<ArtworkFilterNavigationStack, "CategoriesOptionsScreen"> {}
 
 export const CATEGORIES_OPTIONS: FilterData[] = [
   {

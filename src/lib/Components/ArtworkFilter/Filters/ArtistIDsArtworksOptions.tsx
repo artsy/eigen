@@ -10,11 +10,11 @@ import {
 
 import { sortBy } from "lodash"
 import React from "react"
-import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
 interface ArtistIDsArtworksOptionsScreenProps
-  extends StackScreenProps<FilterModalNavigationStack, "ArtistIDsOptionsScreen"> {}
+  extends StackScreenProps<ArtworkFilterNavigationStack, "ArtistIDsOptionsScreen"> {}
 
 export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsScreenProps> = ({ navigation }) => {
   const selectedOptions = useSelectedOptionsDisplay()

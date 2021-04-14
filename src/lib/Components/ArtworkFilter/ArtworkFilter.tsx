@@ -37,26 +37,26 @@ import { ViewAsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ViewAs
 import { WaysToBuyOptionsScreen } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { YearOptionsScreen } from "lib/Components/ArtworkFilter/Filters/YearOptions"
 import { FancyModal } from "../FancyModal/FancyModal"
-import { FilterModalMode, ArtworkFilterOptionsScreen } from "./ArtworkFilterOptionsScreen"
+import { FilterModalMode as ArtworkFilterMode, ArtworkFilterOptionsScreen } from "./ArtworkFilterOptionsScreen"
 import styled from "styled-components/native"
 
-interface FilterModalProps extends ViewProperties {
+interface ArtworkFilterProps extends ViewProperties {
   closeModal?: () => void
   exitModal?: () => void
   id: string
   initiallyAppliedFilters?: FilterArray
   isFilterArtworksModalVisible: boolean
-  mode: FilterModalMode
+  mode: ArtworkFilterMode
   slug: string
   title?: string
 }
 
-interface FilterOptionsScreenParams {
+interface ArtworkFilterOptionsScreenParams {
   closeModal: () => void
   exitModal: () => void
   id: string
   initiallyAppliedFilters?: FilterArray
-  mode: FilterModalMode
+  mode: ArtworkFilterMode
   slug: string
   title?: string
 }
@@ -64,7 +64,7 @@ interface FilterOptionsScreenParams {
 // This needs to be a `type` rather than an `interface`
 // see src/lib/Scenes/MyCollection/Screens/ArtworkFormModal/MyCollectionArtworkFormModal.tsx#L35
 // tslint:disable-next-line:interface-over-type-literal
-export type FilterModalNavigationStack = {
+export type ArtworkFilterNavigationStack = {
   AdditionalGeneIDsOptionsScreen: undefined
   ArtistIDsOptionsScreen: undefined
   AttributionClassOptionsScreen: undefined
@@ -72,7 +72,7 @@ export type FilterModalNavigationStack = {
   ColorOptionsScreen: undefined
   ColorsOptionsScreen: undefined
   EstimateRangeOptionsScreen: undefined
-  FilterOptionsScreen: FilterOptionsScreenParams
+  FilterOptionsScreen: ArtworkFilterOptionsScreenParams
   GalleryOptionsScreen: undefined
   InstitutionOptionsScreen: undefined
   MediumOptionsScreen: undefined
@@ -86,9 +86,9 @@ export type FilterModalNavigationStack = {
   YearOptionsScreen: undefined
 }
 
-const Stack = createStackNavigator<FilterModalNavigationStack>()
+const Stack = createStackNavigator<ArtworkFilterNavigationStack>()
 
-export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
+export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const tracking = useTracking()
   const shouldUseImprovedArtworkFilters = useFeatureFlag("ARUseImprovedArtworkFilters")
   const { exitModal, id, mode, slug, closeModal } = props
@@ -227,7 +227,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                 const appliedFiltersParams = filterArtworksParams(appliedFiltersState, filterTypeState)
                 // TODO: Update to use cohesion
                 switch (mode) {
-                  case FilterModalMode.Collection:
+                  case ArtworkFilterMode.Collection:
                     trackChangeFilters({
                       actionType: ActionType.commercialFilterParamsChanged,
                       screenName: PageNames.Collection,
@@ -236,7 +236,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                       changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
                     })
                     break
-                  case FilterModalMode.ArtistArtworks:
+                  case ArtworkFilterMode.ArtistArtworks:
                     trackChangeFilters({
                       actionType: ActionType.commercialFilterParamsChanged,
                       screenName: PageNames.ArtistPage,
@@ -245,7 +245,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                       changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
                     })
                     break
-                  case FilterModalMode.Fair:
+                  case ArtworkFilterMode.Fair:
                     trackChangeFilters({
                       actionType: ActionType.commercialFilterParamsChanged,
                       screenName: PageNames.FairPage,
@@ -254,7 +254,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                       changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
                     })
                     break
-                  case FilterModalMode.SaleArtworks:
+                  case ArtworkFilterMode.SaleArtworks:
                     trackChangeFilters({
                       actionType: ActionType.commercialFilterParamsChanged,
                       screenName: PageNames.Auction,
@@ -263,7 +263,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                       changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
                     })
                     break
-                  case FilterModalMode.Show:
+                  case ArtworkFilterMode.Show:
                     trackChangeFilters({
                       actionType: ActionType.commercialFilterParamsChanged,
                       screenName: PageNames.ShowPage,
@@ -272,7 +272,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                       changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
                     })
                     break
-                  case FilterModalMode.AuctionResults:
+                  case ArtworkFilterMode.AuctionResults:
                     trackChangeFilters({
                       actionType: ActionType.auctionResultsFilterParamsChanged,
                       screenName: PageNames.ArtistPage,
@@ -283,7 +283,7 @@ export const FilterModalNavigator: React.FC<FilterModalProps> = (props) => {
                     })
                     break
 
-                  case FilterModalMode.Partner:
+                  case ArtworkFilterMode.Partner:
                     trackChangeFilters({
                       actionType: ActionType.commercialFilterParamsChanged,
                       screenName: PageNames.PartnerPage,

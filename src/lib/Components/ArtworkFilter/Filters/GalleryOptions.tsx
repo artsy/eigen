@@ -9,10 +9,10 @@ import {
   ParamDefaultValues,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React from "react"
-import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface GalleryOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "GalleryOptionsScreen"> {}
+interface GalleryOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "GalleryOptionsScreen"> {}
 
 export const GalleryOptionsScreen: React.FC<GalleryOptionsScreenProps> = ({ navigation }) => {
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)

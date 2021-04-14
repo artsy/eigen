@@ -8,7 +8,7 @@ import {
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import React, { useState } from "react"
-import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
 const DEFAULT_OPTION: FilterData = {
@@ -18,7 +18,7 @@ const DEFAULT_OPTION: FilterData = {
 }
 
 interface AdditionalGeneIDsOptionsScreenProps
-  extends StackScreenProps<FilterModalNavigationStack, "AdditionalGeneIDsOptionsScreen"> {}
+  extends StackScreenProps<ArtworkFilterNavigationStack, "AdditionalGeneIDsOptionsScreen"> {}
 
 export const AdditionalGeneIDsOptionsScreen: React.FC<AdditionalGeneIDsOptionsScreenProps> = ({ navigation }) => {
   // Uses the medium aggregations

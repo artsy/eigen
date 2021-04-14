@@ -2,10 +2,10 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React from "react"
-import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface SortOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "SortOptionsScreen"> {}
+interface SortOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "SortOptionsScreen"> {}
 
 // Sorting types
 enum ArtworkSorts {

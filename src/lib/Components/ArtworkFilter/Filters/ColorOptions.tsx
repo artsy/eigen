@@ -14,7 +14,7 @@ import { Flex } from "palette"
 import React, { useState } from "react"
 import { LayoutChangeEvent, View } from "react-native"
 import styled from "styled-components/native"
-import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { ColorSwatch } from "./ColorSwatch"
@@ -57,7 +57,7 @@ export const OrderedColorFilters: ColorOption[] = [
   "pink",
 ]
 
-interface ColorOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "ColorOptionsScreen"> {}
+interface ColorOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "ColorOptionsScreen"> {}
 
 const colorSort = (left: FilterData, right: FilterData): number => {
   const leftParam = left.displayText as ColorOption

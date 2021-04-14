@@ -5,7 +5,7 @@ import { useLayout } from "lib/utils/useLayout"
 import { sortBy } from "lodash"
 import { Flex, space } from "palette"
 import React from "react"
-import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ColorsSwatch } from "./ColorsSwatch"
 import { useMultiSelect } from "./useMultiSelect"
@@ -35,7 +35,7 @@ const COLORS_INDEXED_BY_VALUE = COLORS.reduce(
 
 const SWATCHES_PER_ROW = 4
 
-interface ColorsOptionsScreenProps extends StackScreenProps<FilterModalNavigationStack, "ColorsOptionsScreen"> {}
+interface ColorsOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "ColorsOptionsScreen"> {}
 
 export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ navigation }) => {
   const { layout, handleLayout } = useLayout()

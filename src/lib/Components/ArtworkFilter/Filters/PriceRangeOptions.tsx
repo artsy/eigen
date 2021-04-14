@@ -8,11 +8,11 @@ import {
   FilterParamName,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React from "react"
-import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface PriceRangeOptionsScreenProps
-  extends StackScreenProps<FilterModalNavigationStack, "PriceRangeOptionsScreen"> {}
+  extends StackScreenProps<ArtworkFilterNavigationStack, "PriceRangeOptionsScreen"> {}
 
 const priceRangeDisplayText: Map<string, string> = new Map([
   ["*-*", "All"],

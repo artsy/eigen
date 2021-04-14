@@ -9,11 +9,11 @@ import {
   ParamDefaultValues,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React from "react"
-import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface InstitutionOptionsScreenProps
-  extends StackScreenProps<FilterModalNavigationStack, "InstitutionOptionsScreen"> {}
+  extends StackScreenProps<ArtworkFilterNavigationStack, "InstitutionOptionsScreen"> {}
 
 export const InstitutionOptionsScreen: React.FC<InstitutionOptionsScreenProps> = ({ navigation }) => {
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)

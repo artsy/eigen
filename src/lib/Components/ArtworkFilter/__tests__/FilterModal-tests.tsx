@@ -8,7 +8,7 @@ import {
   CloseIconContainer,
   CurrentOption,
   FilterModalMode,
-  FilterModalNavigator,
+  ArtworkFilterNavigator,
   ArtworkFilterOptionsScreen,
 } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
@@ -161,7 +161,7 @@ const MockFilterModalNavigator = ({ initialData = initialState }: { initialData?
     <GlobalStoreProvider>
       <Theme>
         <ArtworkFiltersStoreProvider initialData={initialData}>
-          <FilterModalNavigator
+          <ArtworkFilterNavigator
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             collection={CollectionFixture}
             exitModal={exitModalMock}

@@ -1,12 +1,12 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React from "react"
-import { FilterModalNavigationStack } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
 interface AttributionClassOptionsScreenProps
-  extends StackScreenProps<FilterModalNavigationStack, "AttributionClassOptionsScreen"> {}
+  extends StackScreenProps<ArtworkFilterNavigationStack, "AttributionClassOptionsScreen"> {}
 
 export const ATTRIBUTION_CLASS_OPTIONS: FilterData[] = [
   { displayText: "Unique", paramValue: "unique", paramName: FilterParamName.attributionClass },
