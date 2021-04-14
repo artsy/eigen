@@ -9,6 +9,7 @@ upcoming:
   user_facing:
     - Add forgot password screen in new login - brian
     - Conversation-offer updates to CTA to allow multiple offers - erikdstock
+    - Replace "All" option on multi-select filters with upper right-hand "Clear all"
 
 releases:
   - version: 6.8.3
