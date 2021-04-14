@@ -1,14 +1,14 @@
 import { OwnerType } from "@artsy/cohesion"
 import { SaleLotsList_saleArtworksConnection } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
 import { SaleLotsList_unfilteredSaleArtworksConnection } from "__generated__/SaleLotsList_unfilteredSaleArtworksConnection.graphql"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import {
   filterArtworksParams,
   FilterParamName,
   FilterParams,
   ViewAsValues,
-} from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
-import { ORDERED_SALE_ARTWORK_SORTS } from "lib/Components/ArtworkFilterOptions/SortOptions"
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ORDERED_SALE_ARTWORK_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Schema } from "lib/utils/track"

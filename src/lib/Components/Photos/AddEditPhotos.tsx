@@ -10,7 +10,7 @@ import { AddIcon, BorderBox, Box, Button, color, Flex, Spacer, XCircleIcon } fro
 import React, { useState } from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
-import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import Separator from "../Separator"
 
 const MARGIN = 20

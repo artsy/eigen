@@ -1,9 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Show_show } from "__generated__/Show_show.graphql"
 import { ShowArtworks_show } from "__generated__/ShowArtworks_show.graphql"
-import { FilterModalMode, FilterModalNavigator } from "lib/Components/ArtworkFilter"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
-import { aggregationsType, FilterArray, filterArtworksParams } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { FilterModalMode, ArtworkFilterNavigator } from "lib/Components/ArtworkFilter"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { aggregationsType, FilterArray, filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { SHOW2_ARTWORKS_PAGE_SIZE } from "lib/data/constants"
@@ -28,7 +28,7 @@ export const ShowArtworksWithNavigation = (props: ArtworkProps) => {
   return (
     <Box px={2}>
       <ShowArtworksPaginationContainer show={show} />
-      <FilterModalNavigator
+      <ArtworkFilterNavigator
         isFilterArtworksModalVisible={isFilterArtworksModalVisible}
         id={show.internalID}
         slug={show.slug}

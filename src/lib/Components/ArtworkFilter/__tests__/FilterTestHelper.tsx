@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { FilterModalMode, FilterModalNavigationStack, FilterOptionsScreen } from "lib/Components/ArtworkFilter"
-import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
-import { ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { FilterModalMode, ArtworkFilterNavigationStack, ArtworkFilterOptionsScreen } from "lib/Components/ArtworkFilter"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
@@ -27,14 +27,14 @@ export const getEssentialProps = (params: {} = {}) =>
       },
     },
     // navigation
-  } as unknown) as StackScreenProps<FilterModalNavigationStack, "FilterOptionsScreen">)
+  } as unknown) as StackScreenProps<ArtworkFilterNavigationStack, "FilterOptionsScreen">)
 
 export const MockFilterScreen = ({ initialState }: { initialState?: ArtworkFiltersState }) => {
   return (
     <GlobalStoreProvider>
       <Theme>
         <ArtworkFiltersStoreProvider initialData={initialState}>
-          <FilterOptionsScreen {...getEssentialProps()} />
+          <ArtworkFilterOptionsScreen {...getEssentialProps()} />
         </ArtworkFiltersStoreProvider>
       </Theme>
     </GlobalStoreProvider>

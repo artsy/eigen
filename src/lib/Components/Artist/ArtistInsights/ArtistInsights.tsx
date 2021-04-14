@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/ArtworkFilter"
-import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { AnimatedArtworkFilterButton, FilterModalMode, ArtworkFilterNavigator } from "lib/Components/ArtworkFilter"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "lib/utils/track"
 import React, { useCallback, useRef, useState } from "react"
@@ -83,7 +83,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
           <ArtistInsightsAuctionResultsPaginationContainer artist={artist} scrollToTop={scrollToTop} />
         </View>
       </StickyTabPageScrollView>
-      <FilterModalNavigator
+      <ArtworkFilterNavigator
         isFilterArtworksModalVisible={isFilterModalVisible}
         id={artist.internalID}
         slug={artist.slug}

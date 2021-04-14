@@ -10,8 +10,8 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Box, Separator, Spacer, Theme } from "palette"
 import React, { useRef, useState } from "react"
 
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/ArtworkFilter"
-import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { AnimatedArtworkFilterButton, FilterModalMode, ArtworkFilterNavigator } from "lib/Components/ArtworkFilter"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
@@ -110,7 +110,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
                     return (
                       <Box px={2}>
                         <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
-                        <FilterModalNavigator
+                        <ArtworkFilterNavigator
                           {...props}
                           isFilterArtworksModalVisible={isFilterArtworksModalVisible}
                           id={artistSeries.internalID}

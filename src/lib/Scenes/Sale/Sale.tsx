@@ -4,8 +4,8 @@ import { Sale_me } from "__generated__/Sale_me.graphql"
 import { Sale_sale } from "__generated__/Sale_sale.graphql"
 import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
 import { SaleBelowTheFoldQuery } from "__generated__/SaleBelowTheFoldQuery.graphql"
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/ArtworkFilter"
-import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { AnimatedArtworkFilterButton, FilterModalMode, ArtworkFilterNavigator } from "lib/Components/ArtworkFilter"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import Spinner from "lib/Components/Spinner"
@@ -214,7 +214,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
           scrollEventThrottle={16}
         />
-        <FilterModalNavigator
+        <ArtworkFilterNavigator
           isFilterArtworksModalVisible={isFilterArtworksModalVisible}
           id={sale.internalID}
           slug={sale.slug}

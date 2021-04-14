@@ -7,7 +7,7 @@ import React from "react"
 import WebView, { WebViewProps } from "react-native-webview"
 import { act } from "react-test-renderer"
 import { __webViewTestUtils__, ArtsyReactWebViewPage, useWebViewCookies } from "../ArtsyReactWebView"
-import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 
 describe(ArtsyReactWebViewPage, () => {
   const render = (props: Partial<React.ComponentProps<typeof ArtsyReactWebViewPage>> = {}) =>

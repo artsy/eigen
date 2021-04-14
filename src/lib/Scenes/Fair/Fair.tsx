@@ -1,8 +1,8 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Fair_fair } from "__generated__/Fair_fair.graphql"
 import { FairQuery } from "__generated__/FairQuery.graphql"
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/ArtworkFilter"
-import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFiltersStore"
+import { AnimatedArtworkFilterButton, FilterModalMode, ArtworkFilterNavigator } from "lib/Components/ArtworkFilter"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useHideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 
@@ -251,7 +251,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                       return (
                         <Box px={2}>
                           <FairArtworksFragmentContainer fair={fair} />
-                          <FilterModalNavigator
+                          <ArtworkFilterNavigator
                             isFilterArtworksModalVisible={isFilterArtworksModalVisible}
                             id={fair.internalID}
                             slug={fair.slug}

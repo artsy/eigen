@@ -1,5 +1,5 @@
 import { PartnerArtwork_partner } from "__generated__/PartnerArtwork_partner.graphql"
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/ArtworkFilter"
+import { AnimatedArtworkFilterButton, FilterModalMode, ArtworkFilterNavigator } from "lib/Components/ArtworkFilter"
 import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
@@ -38,7 +38,7 @@ export const PartnerArtwork: React.FC<{
         }}
       />
 
-      <FilterModalNavigator
+      <ArtworkFilterNavigator
         isFilterArtworksModalVisible={isFilterArtworksModalVisible}
         id={partner.internalID}
         slug={partner.slug}

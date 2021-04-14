@@ -1,11 +1,11 @@
-import { Aggregations, FilterArray } from "lib/Components/ArtworkFilter/FilterArtworksHelpers"
+import { Aggregations, FilterArray } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   aggregationsWithFollowedArtists,
   changedFiltersParams,
   filterArtworksParams,
   FilterParamName,
   selectedOption,
-} from "../FilterArtworksHelpers"
+} from "../ArtworkFilterHelpers"
 
 describe("changedFiltersParams helper", () => {
   it("when a medium selection changed and sort selection unchanged", () => {
