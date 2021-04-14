@@ -152,7 +152,7 @@ export function getCurrentEmissionState() {
     deviceId: "Android", // TODO: get better device info
     launchCount: ArtsyNativeModule.launchCount,
     onboardingState: "none", // not used on android
-    userAgent: "Artsy-Mobile android", // TODO: proper user agent
+    userAgent: "Artsy-Mobile Android", // TODO: proper user agent
     userID: state?.auth.userID!,
     userEmail: "user@example.com", // not used on android
   }

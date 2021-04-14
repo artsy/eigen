@@ -15,6 +15,11 @@ import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 export interface ArtsyWebViewConfig {
   title?: string
   /**
+   * baseURL to use for url requests not providing a domain
+   * optional defaults to artsy.net
+   */
+  baseURL?: string
+  /**
    * This makes the back button in the page control the web view's history.
    * Set this to false if you allow inner navigation but do not want the user
    * to be able to go 'back' within some flow, e.g. bnmo.
@@ -31,7 +36,14 @@ export const ArtsyReactWebViewPage: React.FC<
     url: string
     isPresentedModally?: boolean
   } & ArtsyWebViewConfig
-> = ({ url, title, isPresentedModally, allowWebViewInnerNavigation = true, mimicBrowserBackButton = true }) => {
+> = ({
+  url,
+  title,
+  isPresentedModally,
+  allowWebViewInnerNavigation = true,
+  mimicBrowserBackButton = true,
+  baseURL,
+}) => {
   const paddingTop = useScreenDimensions().safeAreaInsets.top
 
   const [canGoBack, setCanGoBack] = useState(false)
@@ -55,6 +67,7 @@ export const ArtsyReactWebViewPage: React.FC<
         <ArtsyReactWebView
           url={url}
           ref={ref}
+          baseURL={baseURL}
           allowWebViewInnerNavigation={allowWebViewInnerNavigation}
           onNavigationStateChange={mimicBrowserBackButton ? (ev) => setCanGoBack(ev.canGoBack) : undefined}
         />
@@ -67,15 +80,22 @@ export const ArtsyReactWebView = React.forwardRef<
   WebView,
   {
     url: string
+    baseURL?: string
     allowWebViewInnerNavigation?: boolean
     onNavigationStateChange?: WebViewProps["onNavigationStateChange"]
   }
->(({ url, allowWebViewInnerNavigation = true, onNavigationStateChange }, ref) => {
+>(({ url, baseURL, allowWebViewInnerNavigation = true, onNavigationStateChange }, ref) => {
   const userAgent = getCurrentEmissionState().userAgent
 
   const [loadProgress, setLoadProgress] = useState<number | null>(null)
-  const webURL = useEnvironment().webURL
-  const uri = url.startsWith("/") ? webURL + url : url
+
+  const { webURL } = useEnvironment()
+
+  if (!baseURL) {
+    baseURL = webURL
+  }
+
+  const uri = url.startsWith("/") ? baseURL + url : url
 
   return (
     <View style={{ flex: 1 }}>

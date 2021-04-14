@@ -3,6 +3,7 @@ import { ArtsyWebViewConfig } from "lib/Components/ArtsyReactWebView"
 import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
+import { Platform } from "react-native"
 import { parse } from "url"
 import { RouteMatcher } from "./RouteMatcher"
 
@@ -70,10 +71,17 @@ export function replaceParams(url: string, params: any) {
   return url
 }
 
+function liveAuctionRouteMatcher(): RouteMatcher {
+  const liveBaseURL = unsafe__getEnvironment().predictionURL
+  if (Platform.OS === "ios") {
+    return new RouteMatcher("/*", "LiveAuction", (params) => ({ slug: params["*"] }))
+  } else {
+    return webViewRoute("/*", { baseURL: liveBaseURL })
+  }
+}
+
 function getDomainMap(): Record<string, RouteMatcher[] | null> {
-  const liveDotArtsyDotNet: RouteMatcher[] = compact([
-    new RouteMatcher("/*", "LiveAuction", (params) => ({ slug: params["*"] })),
-  ])
+  const liveDotArtsyDotNet: RouteMatcher[] = compact([liveAuctionRouteMatcher()])
 
   const artsyDotNet: RouteMatcher[] = compact([
     new RouteMatcher("/", "Home"),
