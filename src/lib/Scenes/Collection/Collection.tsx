@@ -1,5 +1,5 @@
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
-import { AnimatedArtworkFilterButton, FilterModalMode, ArtworkFilterNavigator } from "lib/Components/ArtworkFilter"
+import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"

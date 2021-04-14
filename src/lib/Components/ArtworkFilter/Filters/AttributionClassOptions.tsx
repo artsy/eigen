@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React from "react"
-import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 

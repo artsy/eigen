@@ -1,9 +1,9 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { Separator, Text } from "palette"
 import React, { useRef, useState } from "react"
-import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 
 interface SizesOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "SizesOptionsScreen"> {}

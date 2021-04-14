@@ -1,13 +1,13 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import {
   aggregationForFilter,
   FilterData,
   FilterDisplayName,
   FilterParamName,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import React, { useState } from "react"
-import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 
 interface ArtistIDsSaleArtworksOptionsScreenProps

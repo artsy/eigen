@@ -4,15 +4,15 @@ import { mount } from "enzyme"
 import {
   AnimatedArtworkFilterButton,
   ApplyButton,
+  ArtworkFilterNavigator,
+  ArtworkFilterOptionsScreen,
   ClearAllButton,
   CloseIconContainer,
   CurrentOption,
   FilterModalMode,
-  ArtworkFilterNavigator,
-  ArtworkFilterOptionsScreen,
 } from "lib/Components/ArtworkFilter"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
