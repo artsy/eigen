@@ -1,7 +1,10 @@
 import { tappedMakeOffer } from "@artsy/cohesion"
+import { OpenInquiryModalButtonQuery } from "__generated__/OpenInquiryModalButtonQuery.graphql"
 import { navigate } from "lib/navigation/navigate"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { Button, Flex, Separator } from "palette"
 import React from "react"
+import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
@@ -40,5 +43,37 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ 
         </Button>
       </Flex>
     </>
+  )
+}
+
+export const OpenInquiryModalButtonQueryRenderer: React.FC<{
+  artworkID: string
+  conversationID: string
+}> = ({ artworkID, conversationID }) => {
+  return (
+    <QueryRenderer<OpenInquiryModalButtonQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query OpenInquiryModalButtonQuery($artworkID: String!) {
+          artwork(id: $artworkID) {
+            isOfferableFromInquiry
+          }
+        }
+      `}
+      variables={{
+        artworkID,
+      }}
+      render={({ props, error }): null | JSX.Element => {
+        if (error) {
+          throw new Error(error.message)
+        }
+
+        if (props?.artwork?.isOfferableFromInquiry) {
+          return <OpenInquiryModalButton artworkID={artworkID} conversationID={conversationID} />
+        } else {
+          return null
+        }
+      }}
+    />
   )
 }

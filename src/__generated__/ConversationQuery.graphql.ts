@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1e898f32ddf02873dcf0aeff2e6f9f72 */
+/* @relayHash 8724e275e8c505a1bbf75f147604a0ca */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -73,7 +73,6 @@ fragment ConversationCTA_conversation on Conversation {
       __typename
       ... on Artwork {
         artworkID: internalID
-        isOfferableFromInquiry
       }
       ... on Node {
         __isNode: __typename
@@ -517,13 +516,6 @@ return {
                             "args": null,
                             "kind": "ScalarField",
                             "name": "internalID",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "isOfferableFromInquiry",
                             "storageKey": null
                           },
                           (v2/*: any*/),
@@ -1081,7 +1073,7 @@ return {
     ]
   },
   "params": {
-    "id": "1e898f32ddf02873dcf0aeff2e6f9f72",
+    "id": "8724e275e8c505a1bbf75f147604a0ca",
     "metadata": {},
     "name": "ConversationQuery",
     "operationKind": "query",

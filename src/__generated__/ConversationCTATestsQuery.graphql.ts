@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 775a5f82928385b823d763d7cd0428d6 */
+/* @relayHash de29e4def2833d70a326ee27b3e4e487 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -42,7 +42,6 @@ fragment ConversationCTA_conversation on Conversation {
       __typename
       ... on Artwork {
         artworkID: internalID
-        isOfferableFromInquiry
       }
       ... on Node {
         __isNode: __typename
@@ -136,12 +135,6 @@ v7 = {
   "type": "CommerceOffer"
 },
 v8 = {
-  "enumValues": null,
-  "nullable": true,
-  "plural": false,
-  "type": "Boolean"
-},
-v9 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -239,13 +232,6 @@ return {
                             "args": null,
                             "kind": "ScalarField",
                             "name": "internalID",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "isOfferableFromInquiry",
                             "storageKey": null
                           }
                         ],
@@ -431,7 +417,7 @@ return {
     ]
   },
   "params": {
-    "id": "775a5f82928385b823d763d7cd0428d6",
+    "id": "de29e4def2833d70a326ee27b3e4e487",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -479,7 +465,12 @@ return {
           "type": "CommerceOrderParticipantEnum"
         },
         "me.conversation.activeOrders.edges.node.lastOffer.id": (v6/*: any*/),
-        "me.conversation.activeOrders.edges.node.lastTransactionFailed": (v8/*: any*/),
+        "me.conversation.activeOrders.edges.node.lastTransactionFailed": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Boolean"
+        },
         "me.conversation.activeOrders.edges.node.offers": {
           "enumValues": null,
           "nullable": true,
@@ -509,8 +500,8 @@ return {
           "plural": false,
           "type": "CommerceOrderStateEnum"
         },
-        "me.conversation.activeOrders.edges.node.stateExpiresAt": (v9/*: any*/),
-        "me.conversation.activeOrders.edges.node.stateReason": (v9/*: any*/),
+        "me.conversation.activeOrders.edges.node.stateExpiresAt": (v8/*: any*/),
+        "me.conversation.activeOrders.edges.node.stateReason": (v8/*: any*/),
         "me.conversation.conversationID": {
           "enumValues": null,
           "nullable": true,
@@ -534,7 +525,6 @@ return {
         "me.conversation.items.item.__typename": (v5/*: any*/),
         "me.conversation.items.item.artworkID": (v6/*: any*/),
         "me.conversation.items.item.id": (v6/*: any*/),
-        "me.conversation.items.item.isOfferableFromInquiry": (v8/*: any*/),
         "me.id": (v6/*: any*/)
       }
     },
