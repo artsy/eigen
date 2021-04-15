@@ -2,10 +2,10 @@ import { OwnerType } from "@artsy/cohesion"
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
 import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { useIsFocusedTab } from "lib/Components/StickyTabPage/StickyTabPage"
+import { useOnTabFocusedEffect } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "lib/utils/track"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import React, { useCallback, useRef, useState } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -37,7 +37,6 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
 
   const tracking = useTracking()
   const flatListRef = useRef<{ getNode(): FlatList<any> } | null>(null)
-  const isFocusedTab = useIsFocusedTab(tabIndex)
 
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
@@ -66,12 +65,10 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     setIsFilterButtonVisible(false)
   }, [])
 
-  // Track screen event when artist insights tab becomes visible
-  useEffect(() => {
-    if (isFocusedTab) {
-      tracking.trackEvent(tracks.screen(artist.internalID, artist.slug))
-    }
-  }, [isFocusedTab])
+  // Track screen event when artist insights tab is focused
+  useOnTabFocusedEffect(() => {
+    tracking.trackEvent(tracks.screen(artist.internalID, artist.slug))
+  }, tabIndex)
 
   return (
     <ArtworkFiltersStoreProvider>

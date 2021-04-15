@@ -3,7 +3,7 @@ import { Schema } from "lib/utils/track"
 import { useGlobalState } from "lib/utils/useGlobalState"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { color } from "palette"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { EffectCallback, useEffect, useMemo, useRef, useState } from "react"
 import { View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
@@ -119,21 +119,15 @@ export const StickyTabPage: React.FC<{
   )
 }
 
-export function useIsFocusedTab(tabIndex: number) {
+export function useOnTabFocusedEffect(effect: EffectCallback, tabIndex: number) {
   const { activeTabIndex } = useStickyTabPageContext()
   activeTabIndex.useUpdates()
 
-  const [isFocusedTab, setIsFocusedTab] = useState(false)
-
   useEffect(() => {
     if (activeTabIndex.current === tabIndex) {
-      setIsFocusedTab(true)
-    } else {
-      setIsFocusedTab(false)
+      effect()
     }
   }, [activeTabIndex.current])
-
-  return isFocusedTab
 }
 
 function useAutoCollapsingMeasuredView(content: React.ReactChild) {
