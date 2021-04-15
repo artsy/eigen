@@ -43,6 +43,11 @@ const userSchema = Yup.object().shape({
   name: Yup.string().test("name", "Full name field is required", (value) => value !== ""),
 })
 
+const getCurrentRoute = () =>
+  __unsafe__createAccountNavigationRef.current?.getCurrentRoute()?.name as
+    | keyof OnboardingCreateAccountNavigationStack
+    | undefined
+
 export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = ({ navigation }) => {
   const formik = useFormik<UserSchema>({
     enableReinitialize: true,
@@ -52,14 +57,14 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
     initialErrors: {},
     onSubmit: async (_, { validateForm }) => {
       await validateForm()
-      switch (__unsafe__createAccountNavigationRef.current?.getCurrentRoute()?.name) {
+      switch (getCurrentRoute()) {
         case "OnboardingCreateAccountEmail":
           __unsafe__createAccountNavigationRef.current?.navigate("OnboardingCreateAccountPassword")
           break
         case "OnboardingCreateAccountPassword":
           __unsafe__createAccountNavigationRef.current?.navigate("OnboardingCreateAccountName")
           break
-        case "name":
+        case "OnboardingCreateAccountName":
           break
 
         default:
@@ -96,8 +101,7 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
 const OnboardingCreateAccountButton: React.FC = () => {
   const { handleSubmit, isSubmitting, isValid, dirty } = useFormikContext<UserSchema>()
 
-  const isLastStep =
-    __unsafe__createAccountNavigationRef.current?.getCurrentRoute()?.name === "OnboardingCreateAccountName"
+  const isLastStep = getCurrentRoute() === "OnboardingCreateAccountName"
 
   return (
     <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5} backgroundColor="white">
