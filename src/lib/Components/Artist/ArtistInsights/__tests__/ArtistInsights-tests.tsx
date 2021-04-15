@@ -42,17 +42,17 @@ describe("ArtistInsights", () => {
     expect(tree.findAllByType(ArtistInsightsAuctionResultsPaginationContainer).length).toEqual(1)
   })
 
-  it("tracks an auction page view when artist insights is current tab", async (done) => {
+  it("tracks an auction page view when artist insights is current tab", (done) => {
     renderWithWrappers(<TestRenderer tabIndex={0} />)
 
     mockEnvironmentPayload(mockEnvironment)
 
-    await setImmediate(() => {
+    setImmediate(() => {
       expect(trackEvent).toHaveBeenCalledWith({
-        context_screen: "Auction",
-        context_screen_owner_id: "id-1",
+        context_screen: "artistAuctionResults",
+        context_screen_owner_id: "internalID-1",
         context_screen_owner_slug: "slug-1",
-        context_screen_owner_type: "Auction",
+        context_screen_owner_type: "artistAuctionResults",
       })
 
       done()

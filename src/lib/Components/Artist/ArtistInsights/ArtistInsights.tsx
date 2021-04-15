@@ -2,7 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
 import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { useStickyTabPageContext } from "lib/Components/StickyTabPage/SitckyTabPageContext"
+import { useIsFocusedTab } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "lib/utils/track"
 import React, { useCallback, useEffect, useRef, useState } from "react"
@@ -33,13 +33,11 @@ interface ViewToken {
 
 const FILTER_BUTTON_OFFSET = 50
 export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
-  const { activeTabIndex } = useStickyTabPageContext()
-  activeTabIndex.useUpdates()
-
   const { artist, relay, tabIndex } = props
 
   const tracking = useTracking()
   const flatListRef = useRef<{ getNode(): FlatList<any> } | null>(null)
+  const isFocusedTab = useIsFocusedTab(tabIndex)
 
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
@@ -70,10 +68,10 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
 
   // Track screen event when artist insights tab becomes visible
   useEffect(() => {
-    if (activeTabIndex.current === tabIndex) {
-      tracking.trackEvent(tracks.screen(artist.id, artist.slug))
+    if (isFocusedTab) {
+      tracking.trackEvent(tracks.screen(artist.internalID, artist.slug))
     }
-  }, [activeTabIndex.current])
+  }, [isFocusedTab])
 
   return (
     <ArtworkFiltersStoreProvider>
@@ -146,8 +144,8 @@ export const tracks = {
   },
   screen: (id: string, slug: string) => {
     return {
-      context_screen: Schema.PageNames.Auction,
-      context_screen_owner_type: Schema.OwnerEntityTypes.Auction,
+      context_screen: OwnerType.artistAuctionResults,
+      context_screen_owner_type: OwnerType.artistAuctionResults,
       context_screen_owner_id: id,
       context_screen_owner_slug: slug,
     }

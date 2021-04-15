@@ -3,12 +3,12 @@ import { Schema } from "lib/utils/track"
 import { useGlobalState } from "lib/utils/useGlobalState"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { color } from "palette"
-import React, { useMemo, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
 import { useAnimatedValue } from "./reanimatedHelpers"
-import { StickyTabPageContext } from "./SitckyTabPageContext"
+import { StickyTabPageContext, useStickyTabPageContext } from "./SitckyTabPageContext"
 import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
 import { StickyTabPageFlatListContext } from "./StickyTabPageFlatList"
 import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
@@ -117,6 +117,23 @@ export const StickyTabPage: React.FC<{
       </View>
     </StickyTabPageContext.Provider>
   )
+}
+
+export function useIsFocusedTab(tabIndex: number) {
+  const { activeTabIndex } = useStickyTabPageContext()
+  activeTabIndex.useUpdates()
+
+  const [isFocusedTab, setIsFocusedTab] = useState(false)
+
+  useEffect(() => {
+    if (activeTabIndex.current === tabIndex) {
+      setIsFocusedTab(true)
+    } else {
+      setIsFocusedTab(false)
+    }
+  }, [activeTabIndex.current])
+
+  return isFocusedTab
 }
 
 function useAutoCollapsingMeasuredView(content: React.ReactChild) {
