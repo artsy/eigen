@@ -204,6 +204,10 @@ function getNativeModules(): typeof LegacyNativeModules {
       popToRootOrScrollToTop: jest.fn(),
       presentModal: jest.fn(),
     },
+    AREventsModule: {
+      postEvent: jest.fn(),
+      requestAppStoreRating: jest.fn(),
+    },
   }
 }
 
