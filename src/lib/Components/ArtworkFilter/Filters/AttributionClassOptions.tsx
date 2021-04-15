@@ -16,15 +16,12 @@ export const ATTRIBUTION_CLASS_OPTIONS: FilterData[] = [
 ]
 
 export const AttributionClassOptionsScreen: React.FC<AttributionClassOptionsScreenProps> = ({ navigation }) => {
-  const { handleSelect, isSelected } = useMultiSelect({
+  const { handleSelect, isSelected, handleClear, isActive } = useMultiSelect({
     options: ATTRIBUTION_CLASS_OPTIONS,
     paramName: FilterParamName.attributionClass,
   })
 
-  const filterOptions = ATTRIBUTION_CLASS_OPTIONS.map((option) => ({
-    ...option,
-    paramValue: isSelected(option),
-  }))
+  const filterOptions = ATTRIBUTION_CLASS_OPTIONS.map((option) => ({ ...option, paramValue: isSelected(option) }))
 
   return (
     <MultiSelectOptionScreen
@@ -32,6 +29,7 @@ export const AttributionClassOptionsScreen: React.FC<AttributionClassOptionsScre
       filterHeaderText={FilterDisplayName.attributionClass}
       filterOptions={filterOptions}
       navigation={navigation}
+      {...(isActive ? { rightButtonText: "Clear all", onRightButtonPress: handleClear } : {})}
     />
   )
 }

@@ -3,15 +3,17 @@ import React from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
-export const FancyModalHeader: React.FC<{
+export interface FancyModalHeaderProps {
   hideBottomDivider?: boolean
   leftButtonText?: string
   onLeftButtonPress?: () => void
-  rightButtonText?: string
-  rightButtonDisabled?: boolean
   onRightButtonPress?: () => void
+  rightButtonDisabled?: boolean
+  rightButtonText?: string
   useXButton?: boolean
-}> = ({
+}
+
+export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
   children,
   hideBottomDivider = false,
   leftButtonText,

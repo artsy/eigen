@@ -7,6 +7,9 @@ import {
 import { compact, every, isString } from "lodash"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
+// Default value is always empty array since this is a multi-select
+const DEFAULT_VALUE: string[] = []
+
 export const useMultiSelect = ({ options, paramName }: { options: FilterData[]; paramName: FilterParamName }) => {
   const defaultFilter = DEFAULT_FILTERS.find((option) => option.paramName === paramName)
 
@@ -82,6 +85,10 @@ export const useMultiSelect = ({ options, paramName }: { options: FilterData[]; 
     return nextParamValues.includes(getParamValue(option))
   }
 
+  const handleClear = () => {
+    setNextParamValues(DEFAULT_VALUE)
+  }
+
   useEffect(() => {
     // Skips the initial mount
     if (didMountRef.current) {
@@ -98,11 +105,15 @@ export const useMultiSelect = ({ options, paramName }: { options: FilterData[]; 
     didMountRef.current = true
   }, [nextParamValues])
 
+  const isActive = nextOptions.length > 0
+
   return {
+    getParamValue,
+    handleClear,
+    handleSelect,
+    isActive,
+    isSelected,
     nextOptions,
     nextParamValues,
-    getParamValue,
-    handleSelect,
-    isSelected,
   }
 }

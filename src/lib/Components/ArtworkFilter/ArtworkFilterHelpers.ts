@@ -1,6 +1,5 @@
 import { FilterScreen } from "lib/Components/ArtworkFilter"
-import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
-import { capitalize, compact, forOwn, groupBy, lowerCase, sortBy, startCase } from "lodash"
+import { capitalize, compact, forOwn, groupBy, sortBy } from "lodash"
 
 export enum FilterDisplayName {
   // artist = "Artists",
@@ -271,19 +270,6 @@ export const filterArtworksParams = (appliedFilters: FilterArray, filterType: Fi
 }
 
 /**
- * NOTE: I am not happy this exists — but right now we can only dispatch arrays of paramValues
- */
-const humanizeSlug = (input: string) => {
-  return (
-    startCase(input)
-      // Downcase insignficant words
-      .replace(/(\s\w{2}\s)/g, (match) => lowerCase(match))
-      // Replace humanized symbols
-      .replace(/\sSlash\s/g, "/")
-  )
-}
-
-/**
  * Formats the display for the Filter Modal "home" screen.
  */
 export const selectedOption = ({
@@ -297,25 +283,6 @@ export const selectedOption = ({
   filterType?: FilterType
   aggregations: Aggregations
 }) => {
-  const useImprovedArtworkFilters = unsafe_getFeatureFlag("ARUseImprovedArtworkFilters")
-  const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
-
-  if (filterScreen === "additionalGeneIDs") {
-    const additionalGeneIDsOption = selectedOptions.find((option) => {
-      return option.paramName === FilterParamName.additionalGeneIDs
-    })
-
-    if (
-      additionalGeneIDsOption?.paramValue &&
-      Array.isArray(additionalGeneIDsOption?.paramValue) &&
-      additionalGeneIDsOption?.paramValue.length > 0
-    ) {
-      return additionalGeneIDsOption?.paramValue.map(humanizeSlug).join(", ")
-    }
-
-    return "All"
-  }
-
   if (filterScreen === "categories") {
     const selectedCategoriesValues = selectedOptions.find((filter) => filter.paramName === FilterParamName.categories)
       ?.paramValue as string[] | undefined
@@ -344,17 +311,6 @@ export const selectedOption = ({
     return "All"
   }
 
-  if (useImprovedArtworkFilters && filterScreen === "majorPeriods") {
-    let selection = selectedOptions.find((filter) => filter.paramName === FilterParamName.timePeriod)?.paramValue
-
-    if (Array.isArray(selection) && selection.length > 0) {
-      selection = selection.map((s) => getDisplayNameForTimePeriod(s))
-      return selection.join(", ")
-    }
-
-    return "All"
-  }
-
   if (filterScreen === "year") {
     const selectedEarliestCreatedYear = selectedOptions.find(
       (filter) => filter.paramName === FilterParamName.earliestCreatedYear
@@ -370,12 +326,15 @@ export const selectedOption = ({
   }
 
   if (filterScreen === "waysToBuy") {
+    const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
+
     const waysToBuyFilterNames = [
       FilterParamName.waysToBuyBuy,
       FilterParamName.waysToBuyMakeOffer,
       FilterParamName.waysToBuyBid,
       FilterParamName.waysToBuyInquire,
     ]
+
     const waysToBuyOptions = multiSelectedOptions
       .filter((value) => waysToBuyFilterNames.includes(value.paramName))
       .map((option) => option.displayText)
@@ -383,6 +342,7 @@ export const selectedOption = ({
     if (waysToBuyOptions.length === 0) {
       return "All"
     }
+
     return waysToBuyOptions.join(", ")
   } else if (filterScreen === "gallery" || filterScreen === "institution") {
     const displayText = selectedOptions.find((option) => option.filterKey === filterScreen)?.displayText
@@ -432,7 +392,8 @@ export const selectedOption = ({
       return "All"
     }
   }
-  return selectedOptions.find((option) => option.paramName === filterScreen)?.displayText
+
+  return selectedOptions.find((option) => option.paramName === filterScreen)?.displayText ?? "All"
 }
 
 // For most cases filter key can simply be FilterParamName, exception
@@ -487,19 +448,19 @@ export const aggregationsWithFollowedArtists = (
 
 export const getDisplayNameForTimePeriod = (aggregationName: string) => {
   const DISPLAY_TEXT: Record<string, string> = {
-    "2020": "2020-today",
-    "2010": "2010-2019",
-    "2000": "2000-2009",
-    "1990": "1990-1999",
-    "1980": "1980-1989",
-    "1970": "1970-1979",
-    "1960": "1960-1969",
-    "1950": "1950-1959",
-    "1940": "1940-1949",
-    "1930": "1930-1939",
-    "1920": "1920-1929",
-    "1910": "1910-1919",
-    "1900": "1900-1909",
+    "2020": "2020–today",
+    "2010": "2010–2019",
+    "2000": "2000–2009",
+    "1990": "1990–1999",
+    "1980": "1980–1989",
+    "1970": "1970–1979",
+    "1960": "1960–1969",
+    "1950": "1950–1959",
+    "1940": "1940–1949",
+    "1930": "1930–1939",
+    "1920": "1920–1929",
+    "1910": "1910–1919",
+    "1900": "1900–1909",
   }
 
   return DISPLAY_TEXT[aggregationName] ?? aggregationName

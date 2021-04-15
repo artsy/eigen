@@ -72,10 +72,10 @@ describe("TimePeriodMultiOptions Screen", () => {
     it("renders all options present in the aggregation", () => {
       const tree = renderWithWrappers(<MockTimePeriodOptionsScreen initialData={initialState} />)
 
-      expect(tree.root.findAllByType(MultiSelectOptionListItem)).toHaveLength(4)
+      expect(tree.root.findAllByType(MultiSelectOptionListItem)).toHaveLength(3)
 
       const items = tree.root.findAllByType(MultiSelectOptionListItem)
-      expect(items.map(extractText)).toEqual(["All", "2020-today", "2010-2019", "In the year 2000!"])
+      expect(items.map(extractText)).toEqual(["2020–today", "2010–2019", "In the year 2000!"])
     })
   })
 
@@ -84,7 +84,7 @@ describe("TimePeriodMultiOptions Screen", () => {
       ...initialState,
       selectedFilters: [
         {
-          displayText: "Foo",
+          displayText: "2020–today",
           paramName: FilterParamName.timePeriod,
           paramValue: ["2020"],
         },
@@ -101,7 +101,7 @@ describe("TimePeriodMultiOptions Screen", () => {
 
       expect(item).not.toBeUndefined()
       if (item) {
-        expect(extractText(item)).toContain("2020-today")
+        expect(extractText(item)).toContain("2020–today")
       }
     })
 
@@ -110,25 +110,13 @@ describe("TimePeriodMultiOptions Screen", () => {
 
       const switches = tree.root.findAllByType(Switch)
 
-      expect(switches[0].props.value).toBe(false)
-      expect(switches[1].props.value).toBe(true)
+      expect(switches[0].props.value).toBe(true)
+      expect(switches[1].props.value).toBe(false)
       expect(switches[2].props.value).toBe(false)
-      expect(switches[3].props.value).toBe(false)
     })
   })
 
   describe("when the 'All' option is selected", () => {
-    const state: ArtworkFiltersState = {
-      ...initialState,
-      appliedFilters: [
-        {
-          displayText: "Foo",
-          paramName: FilterParamName.timePeriod,
-          paramValue: [],
-        },
-      ],
-    }
-
     it("does not display 'All' on the filter modal screen", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ ARUseImprovedArtworkFilters: true })
 
@@ -141,17 +129,6 @@ describe("TimePeriodMultiOptions Screen", () => {
       if (item) {
         expect(extractText(item)).not.toContain("All")
       }
-    })
-
-    it("toggles the 'All' filter 'ON' and the other filters 'OFF", () => {
-      const tree = renderWithWrappers(<MockTimePeriodOptionsScreen initialData={state} />)
-
-      const switches = tree.root.findAllByType(Switch)
-
-      expect(switches[0].props.value).toBe(true)
-      expect(switches[1].props.value).toBe(false)
-      expect(switches[2].props.value).toBe(false)
-      expect(switches[3].props.value).toBe(false)
     })
   })
 })
