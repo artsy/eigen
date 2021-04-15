@@ -34,7 +34,12 @@ export interface UserSchema {
 
 const userSchema = Yup.object().shape({
   email: Yup.string().email("Please provide a valid email address"),
-  password: Yup.string().test("password", "Password field is required", (value) => value !== ""),
+  password: Yup.string()
+    .required("No password provided")
+    .min(8, "Your password should be at least 8 characters")
+    .matches(/[A-Z]/, "Your password should contain at least one uppercase letter.")
+    .matches(/[a-z]/, "Your password should contain at least one lowercase letter")
+    .matches(/[0-9]/, "You password should contain at least one digit"),
   name: Yup.string().test("name", "Full name field is required", (value) => value !== ""),
 })
 
