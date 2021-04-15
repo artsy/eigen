@@ -83,6 +83,7 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
               autoCapitalize="none"
               autoCompleteType="password"
               autoCorrect={false}
+              autoFocus
               onChangeText={(text) => {
                 // Hide error when the user starts to type again
                 if (errors.password) {
