@@ -16,7 +16,7 @@ import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
 interface TabProps {
   initial?: boolean
   title: string
-  content: JSX.Element
+  content: JSX.Element | ((tabIndex: number) => JSX.Element)
 }
 
 /**
@@ -96,7 +96,7 @@ export const StickyTabPage: React.FC<{
                       tabIsActive: Animated.eq(index, activeTabIndexNative),
                     }}
                   >
-                    {content}
+                    {typeof content === "function" ? content(index) : content}
                   </StickyTabPageFlatListContext.Provider>
                 </View>
               )

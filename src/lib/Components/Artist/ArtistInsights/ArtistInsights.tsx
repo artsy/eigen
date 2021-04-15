@@ -2,10 +2,10 @@ import { OwnerType } from "@artsy/cohesion"
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
 import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { StickyTabPageContext } from "lib/Components/StickyTabPage/SitckyTabPageContext"
+import { useStickyTabPageContext } from "lib/Components/StickyTabPage/SitckyTabPageContext"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "lib/utils/track"
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -16,6 +16,7 @@ import { MarketStatsQueryRenderer } from "./MarketStats"
 interface ArtistInsightsProps {
   artist: ArtistInsights_artist
   relay: RelayProp
+  tabIndex: number
 }
 
 export interface ViewableItems {
@@ -32,9 +33,10 @@ interface ViewToken {
 
 const FILTER_BUTTON_OFFSET = 50
 export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
-  const value = useContext(StickyTabPageContext)
+  const { activeTabIndex } = useStickyTabPageContext()
+  activeTabIndex.useUpdates()
 
-  const { artist, relay } = props
+  const { artist, relay, tabIndex } = props
 
   const tracking = useTracking()
   const flatListRef = useRef<{ getNode(): FlatList<any> } | null>(null)
@@ -66,15 +68,12 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     setIsFilterButtonVisible(false)
   }, [])
 
+  // Track screen event when artist insights tab becomes visible
   useEffect(() => {
-    console.log("===============")
-    console.log(value)
-    // if tab is visible
-    // if (activeTabIndex === 2) {
-    //   // trigger screentracking event
-    //   tracking.trackEvent(tracks.screen("artistId", "slug"))
-    // }
-  }, [])
+    if (activeTabIndex.current === tabIndex) {
+      tracking.trackEvent(tracks.screen(artist.id, artist.slug))
+    }
+  }, [activeTabIndex.current])
 
   return (
     <ArtworkFiltersStoreProvider>

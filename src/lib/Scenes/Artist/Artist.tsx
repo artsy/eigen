@@ -62,7 +62,11 @@ export const Artist: React.FC<{
   if (isArtistInsightsEnabled && artistAboveTheFold?.auctionResultsConnection?.totalCount) {
     tabs.push({
       title: "Insights",
-      content: artistBelowTheFold ? <ArtistInsightsFragmentContainer artist={artistBelowTheFold} /> : <LoadingPage />,
+      content: artistBelowTheFold ? (
+        (tabIndex: number) => <ArtistInsightsFragmentContainer tabIndex={tabIndex} artist={artistBelowTheFold} />
+      ) : (
+        <LoadingPage />
+      ),
     })
   }
 
