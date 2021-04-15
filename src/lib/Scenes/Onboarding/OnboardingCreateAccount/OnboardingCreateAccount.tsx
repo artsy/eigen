@@ -96,7 +96,8 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
 const OnboardingCreateAccountButton: React.FC = () => {
   const { handleSubmit, isSubmitting, isValid, dirty } = useFormikContext<UserSchema>()
 
-  const isLastStep = __unsafe__createAccountNavigationRef.current?.getCurrentRoute() === "name"
+  const isLastStep =
+    __unsafe__createAccountNavigationRef.current?.getCurrentRoute()?.name === "OnboardingCreateAccountName"
 
   return (
     <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5} backgroundColor="white">
