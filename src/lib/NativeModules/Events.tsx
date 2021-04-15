@@ -1,7 +1,6 @@
 import { addBreadcrumb } from "@sentry/react-native"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
-import { NativeModules } from "react-native"
-const { AREventsModule } = NativeModules
 
 export function postEvent(info: any) {
   if (__DEV__) {
@@ -13,7 +12,7 @@ export function postEvent(info: any) {
     category: "analytics",
   })
 
-  AREventsModule.postEvent(info)
+  LegacyNativeModules.AREventsModule.postEvent(info)
 }
 
 // Whether we have requested during the current session or not.
@@ -32,7 +31,7 @@ export function userHadMeaningfulInteraction() {
   if (launchCount % 20 === 2) {
     if (!hasRequested) {
       hasRequested = true
-      AREventsModule.requestAppStoreRating()
+      LegacyNativeModules.AREventsModule.requestAppStoreRating()
     }
   }
 }
