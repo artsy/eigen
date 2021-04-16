@@ -49,7 +49,7 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event }) => {
       <TimeSince style={{ alignSelf: "center" }} time={event.createdAt} exact mb={1} />
       <Flex px={2} justifyContent="center" flexDirection="row">
         <Flex flexDirection="row">
-          <Icon mt="3px" fill={color} />
+          <Icon mt="1px" fill={color} />
           <Flex flexDirection="column" pl={1}>
             <Text color={color} variant="small">
               {message}
