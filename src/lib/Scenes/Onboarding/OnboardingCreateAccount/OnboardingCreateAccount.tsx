@@ -2,11 +2,10 @@ import { NavigationContainer, NavigationContainerRef } from "@react-navigation/n
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
-import { GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore, useEnvironment } from "lib/store/GlobalStore"
 import { Button, Flex, Text, Touchable } from "palette"
-import React, { useEffect, useState } from "react"
-import { useRef } from "react"
-import { Animated } from "react-native"
+import React, { useEffect, useRef, useState } from "react"
+import { Animated, Linking } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
 import { OnboardingCreateAccountEmail, OnboardingCreateAccountEmailParams } from "./OnboardingCreateAccountEmail"
@@ -122,6 +121,8 @@ const OnboardingCreateAccountButton: React.FC<{ navigateToLogin: () => void }> =
 
   const [hasAcceptedTermsAndConditions, setHasAcceptedTermsAndConditions] = useState(false)
 
+  const webURL = useEnvironment().webURL
+
   useEffect(() => {
     if (errors.email === EMAIL_EXISTS_ERROR_MESSAGE) {
       Animated.timing(yTranslateAnim.current, {
@@ -133,6 +134,7 @@ const OnboardingCreateAccountButton: React.FC<{ navigateToLogin: () => void }> =
       yTranslateAnim.current = new Animated.Value(0)
     }
   }, [errors.email])
+
   return (
     <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5} backgroundColor="white">
       {errors.email === EMAIL_EXISTS_ERROR_MESSAGE && (
@@ -152,7 +154,7 @@ const OnboardingCreateAccountButton: React.FC<{ navigateToLogin: () => void }> =
               I agree to Artsy’s{" "}
               <Text
                 onPress={() => {
-                  // do nothing
+                  Linking.openURL(`${webURL}/terms`)
                 }}
                 style={{ textDecorationLine: "underline" }}
               >
@@ -161,7 +163,7 @@ const OnboardingCreateAccountButton: React.FC<{ navigateToLogin: () => void }> =
               and{" "}
               <Text
                 onPress={() => {
-                  // do nothing
+                  Linking.openURL(`${webURL}/privacy`)
                 }}
                 style={{ textDecorationLine: "underline" }}
               >
