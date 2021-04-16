@@ -75,7 +75,6 @@ describe("ReviewOfferButton", () => {
 
   it("shows correct expiration in minutes when there is less than 1 hour left", () => {
     const expirationTime = DateTime.local().plus({ minutes: 31 })
-    console.warn("EXpiration", expirationTime)
     const wrapper = getWrapper("OFFER_RECEIVED", {
       offers: { edges: [{}, {}] },
       stateExpiresAt: expirationTime.toString(),
@@ -88,7 +87,6 @@ describe("ReviewOfferButton", () => {
 
   it("shows correct expiration in hours when there is more than 1 hour left", () => {
     const expirationTime = DateTime.local().plus({ hours: 11 })
-    console.warn("EXpiration", expirationTime)
     const wrapper = getWrapper("OFFER_RECEIVED", {
       offers: { edges: [{}, {}] },
       stateExpiresAt: expirationTime.toString(),
