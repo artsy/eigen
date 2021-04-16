@@ -16,7 +16,7 @@ interface OnboardingCreateAccountEmailProps
   extends StackScreenProps<OnboardingCreateAccountNavigationStack, "OnboardingCreateAccountEmail"> {}
 
 export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmailProps> = ({ route }) => {
-  const { values, handleSubmit, handleChange, validateForm, errors, setErrors } = useFormikContext<UserSchema>()
+  const { values, handleChange, errors, setErrors, handleSubmit } = useFormikContext<UserSchema>()
 
   return (
     <Flex backgroundColor="white" flexGrow={1}>
@@ -51,12 +51,7 @@ export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmail
             }
             handleChange("email")(text.trim())
           }}
-          onSubmitEditing={() => {
-            handleSubmit()
-          }}
-          onBlur={() => {
-            validateForm()
-          }}
+          onSubmitEditing={handleSubmit}
           blurOnSubmit={false}
           placeholder="Email address"
           placeholderTextColor={color("black30")}
