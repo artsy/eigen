@@ -1,6 +1,7 @@
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { DateTime } from "luxon"
 import { AlertCircleFillIcon } from "palette"
 import { MoneyFillIcon } from "palette/svgs/MoneyFillIcon"
 import React from "react"
@@ -72,7 +73,33 @@ describe("ReviewOfferButton", () => {
     expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
   })
 
-  it("tapping it opens the review offer webview and tracks event", () => {
+  it("shows correct expiration in minutes when there is less than 1 hour left", () => {
+    const expirationTime = DateTime.local().plus({ minutes: 31 })
+    console.warn("EXpiration", expirationTime)
+    const wrapper = getWrapper("OFFER_RECEIVED", {
+      offers: { edges: [{}, {}] },
+      stateExpiresAt: expirationTime.toString(),
+    })
+
+    const text = extractText(wrapper.root)
+    expect(text).toContain("Counteroffer Received")
+    expect(text).toContain("Expires in 30m")
+  })
+
+  it("shows correct expiration in hours when there is more than 1 hour left", () => {
+    const expirationTime = DateTime.local().plus({ hours: 11 })
+    console.warn("EXpiration", expirationTime)
+    const wrapper = getWrapper("OFFER_RECEIVED", {
+      offers: { edges: [{}, {}] },
+      stateExpiresAt: expirationTime.toString(),
+    })
+
+    const text = extractText(wrapper.root)
+    expect(text).toContain("Counteroffer Received")
+    expect(text).toContain("Expires in 10hr")
+  })
+
+  it("tapping it opens the review offer webview with the correct modal title and tracks event", () => {
     const wrapper = getWrapper("OFFER_RECEIVED", { offers: { edges: [{}, {}] } })
 
     wrapper.root.findByType(TouchableWithoutFeedback).props.onPress()
@@ -85,7 +112,7 @@ describe("ReviewOfferButton", () => {
     })
     expect(navigate).toHaveBeenCalledWith("/orders/order-id", {
       modal: true,
-      passProps: { orderID: "order-id", title: "Make Offer" },
+      passProps: { orderID: "order-id", title: "Review Offer" },
     })
   })
 
@@ -96,7 +123,7 @@ describe("ReviewOfferButton", () => {
 
     expect(navigate).toHaveBeenCalledWith("/orders/order-id/payment/new", {
       modal: true,
-      passProps: { orderID: "order-id", title: "Retry Payment" },
+      passProps: { orderID: "order-id", title: "Update Payment Details" },
     })
   })
 })
