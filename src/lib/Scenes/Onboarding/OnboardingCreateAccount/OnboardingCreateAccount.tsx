@@ -1,9 +1,11 @@
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
+import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { GlobalStore } from "lib/store/GlobalStore"
-import { Button, Flex, Text } from "palette"
-import React, { useEffect, useRef } from "react"
+import { Button, Flex, Text, Touchable } from "palette"
+import React, { useEffect, useState } from "react"
+import { useRef } from "react"
 import { Animated } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
@@ -118,6 +120,8 @@ const OnboardingCreateAccountButton: React.FC<{ navigateToLogin: () => void }> =
   const isLastStep = getCurrentRoute() === "OnboardingCreateAccountName"
   const yTranslateAnim = useRef(new Animated.Value(0))
 
+  const [hasAcceptedTermsAndConditions, setHasAcceptedTermsAndConditions] = useState(false)
+
   useEffect(() => {
     if (errors.email === EMAIL_EXISTS_ERROR_MESSAGE) {
       Animated.timing(yTranslateAnim.current, {
@@ -140,12 +144,39 @@ const OnboardingCreateAccountButton: React.FC<{ navigateToLogin: () => void }> =
           </Button>
         </Animated.View>
       )}
-
+      {!!isLastStep && (
+        <Touchable haptic onPress={() => setHasAcceptedTermsAndConditions(!hasAcceptedTermsAndConditions)}>
+          <Flex my={2} flexDirection="row">
+            <Checkbox checked={hasAcceptedTermsAndConditions} />
+            <Text variant="small">
+              I agree to Artsy’s{" "}
+              <Text
+                onPress={() => {
+                  // do nothing
+                }}
+                style={{ textDecorationLine: "underline" }}
+              >
+                Terms of Use
+              </Text>{" "}
+              and{" "}
+              <Text
+                onPress={() => {
+                  // do nothing
+                }}
+                style={{ textDecorationLine: "underline" }}
+              >
+                Privacy Policy
+              </Text>
+              .
+            </Text>
+          </Flex>
+        </Touchable>
+      )}
       <Button
         onPress={handleSubmit}
         block
         haptic="impactMedium"
-        disabled={isLastStep && !(isValid && dirty)}
+        disabled={isLastStep && !hasAcceptedTermsAndConditions && !(isValid && dirty)}
         loading={isSubmitting}
       >
         <Text color="white" variant="mediumText">
