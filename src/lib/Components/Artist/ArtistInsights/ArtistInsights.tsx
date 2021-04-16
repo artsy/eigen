@@ -2,6 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
 import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { useOnTabFocusedEffect } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "lib/utils/track"
 import React, { useCallback, useRef, useState } from "react"
@@ -15,6 +16,7 @@ import { MarketStatsQueryRenderer } from "./MarketStats"
 interface ArtistInsightsProps {
   artist: ArtistInsights_artist
   relay: RelayProp
+  tabIndex: number
 }
 
 export interface ViewableItems {
@@ -31,7 +33,7 @@ interface ViewToken {
 
 const FILTER_BUTTON_OFFSET = 50
 export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
-  const { artist, relay } = props
+  const { artist, relay, tabIndex } = props
 
   const tracking = useTracking()
   const flatListRef = useRef<{ getNode(): FlatList<any> } | null>(null)
@@ -62,6 +64,11 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     }
     setIsFilterButtonVisible(false)
   }, [])
+
+  // Track screen event when artist insights tab is focused
+  useOnTabFocusedEffect(() => {
+    tracking.trackEvent(tracks.screen(artist.internalID, artist.slug))
+  }, tabIndex)
 
   return (
     <ArtworkFiltersStoreProvider>
@@ -130,6 +137,14 @@ export const tracks = {
       context_screen_owner_id: id,
       context_screen_owner_slug: slug,
       action_type: Schema.ActionTypes.Tap,
+    }
+  },
+  screen: (id: string, slug: string) => {
+    return {
+      context_screen: OwnerType.artistAuctionResults,
+      context_screen_owner_type: OwnerType.artistAuctionResults,
+      context_screen_owner_id: id,
+      context_screen_owner_slug: slug,
     }
   },
 }
