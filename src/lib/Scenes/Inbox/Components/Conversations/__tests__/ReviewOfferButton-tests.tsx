@@ -53,7 +53,7 @@ describe("ReviewOfferButton", () => {
     const wrapper = getWrapper("PAYMENT_FAILED")
 
     const text = extractText(wrapper.root)
-    expect(text).toContain("Payment Failed")
+    expect(text).toContain("Unable to process payment for accepted offer. Update payment method.")
     expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
   })
 
