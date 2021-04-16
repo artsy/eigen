@@ -5,7 +5,7 @@ import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Button, color, Flex, Spacer, Text } from "palette"
-import React, { useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { ScrollView, View } from "react-native"
 import * as Yup from "yup"
 import { Touchable } from "../../../palette/elements/Touchable/Touchable"
@@ -38,6 +38,19 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
 
   const passwordInputRef = useRef<Input>(null)
   const emailInputRef = useRef<Input>(null)
+
+  /**
+   * When we land on OnboardingLogin from the OnboardingCreatAccount
+   * withFadeAnimation is set to true therefore if the user presses
+   * on the back button to navigate to the welcome screen, the screen
+   * fades instead of translating horizontally. To avoid that we need
+   * to overwrite withFadeAnimation param once the screen shows up
+   */
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.setParams({ withFadeAnimation: false })
+    }, 1000)
+  }, [])
 
   return (
     <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>

@@ -1,8 +1,10 @@
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { Button, Flex } from "palette"
-import React from "react"
+import { GlobalStore } from "lib/store/GlobalStore"
+import { Button, Flex, Text } from "palette"
+import React, { useEffect, useRef } from "react"
+import { Animated } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
 import { OnboardingCreateAccountEmail, OnboardingCreateAccountEmailParams } from "./OnboardingCreateAccountEmail"
@@ -35,7 +37,6 @@ export interface UserSchema {
 const userSchema = Yup.object().shape({
   email: Yup.string().email("Please provide a valid email address"),
   password: Yup.string()
-    .required("No password provided")
     .min(8, "Your password should be at least 8 characters")
     .matches(/[A-Z]/, "Your password should contain at least one uppercase letter.")
     .matches(/[a-z]/, "Your password should contain at least one lowercase letter")
@@ -48,18 +49,28 @@ const getCurrentRoute = () =>
     | keyof OnboardingCreateAccountNavigationStack
     | undefined
 
+const EMAIL_EXISTS_ERROR_MESSAGE = "We found an account with this email"
+
 export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = ({ navigation }) => {
   const formik = useFormik<UserSchema>({
     enableReinitialize: true,
     validateOnChange: false,
     validateOnBlur: true,
-    initialValues: { email: "", password: "", name: "" },
+    initialValues: { email: "mounir.dhahri@artsymail.co", password: "WrongPassword1", name: "" },
     initialErrors: {},
-    onSubmit: async (_, { validateForm }) => {
-      await validateForm()
+    onSubmit: async ({ email }, { setErrors }) => {
       switch (getCurrentRoute()) {
         case "OnboardingCreateAccountEmail":
-          __unsafe__createAccountNavigationRef.current?.navigate("OnboardingCreateAccountPassword")
+          const userExists = await GlobalStore.actions.auth.userExists({ email })
+          // When the user exists already we want to take them to the login screen
+          if (userExists) {
+            setErrors({
+              email: EMAIL_EXISTS_ERROR_MESSAGE,
+            })
+            // If the email is new continue with the signup
+          } else {
+            __unsafe__createAccountNavigationRef.current?.navigate("OnboardingCreateAccountPassword")
+          }
           break
         case "OnboardingCreateAccountPassword":
           __unsafe__createAccountNavigationRef.current?.navigate("OnboardingCreateAccountName")
@@ -92,29 +103,54 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
           <StackNavigator.Screen name="OnboardingCreateAccountPassword" component={OnboardingCreateAccountPassword} />
           <StackNavigator.Screen name="OnboardingCreateAccountName" component={OnboardingCreateAccountName} />
         </StackNavigator.Navigator>
-        <OnboardingCreateAccountButton />
+        <OnboardingCreateAccountButton
+          navigateToLogin={() => {
+            navigation.replace("OnboardingLogin", { withFadeAnimation: true })
+          }}
+        />
       </NavigationContainer>
     </FormikProvider>
   )
 }
 
-const OnboardingCreateAccountButton: React.FC = () => {
-  const { handleSubmit, isSubmitting, isValid, dirty } = useFormikContext<UserSchema>()
-
+const OnboardingCreateAccountButton: React.FC<{ navigateToLogin: () => void }> = ({ navigateToLogin }) => {
+  const { handleSubmit, isSubmitting, isValid, dirty, errors } = useFormikContext<UserSchema>()
   const isLastStep = getCurrentRoute() === "OnboardingCreateAccountName"
+  const yTranslateAnim = useRef(new Animated.Value(0))
 
+  useEffect(() => {
+    if (errors.email === EMAIL_EXISTS_ERROR_MESSAGE) {
+      Animated.timing(yTranslateAnim.current, {
+        toValue: -50,
+        duration: 500,
+        useNativeDriver: true,
+      }).start()
+    } else {
+      yTranslateAnim.current = new Animated.Value(0)
+    }
+  }, [errors.email])
   return (
     <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5} backgroundColor="white">
+      {errors.email === EMAIL_EXISTS_ERROR_MESSAGE && (
+        <Animated.View style={{ bottom: -50, transform: [{ translateY: yTranslateAnim.current }] }}>
+          <Button onPress={navigateToLogin} block haptic="impactMedium" mb={1} mt={1.5}>
+            <Text color="white" variant="mediumText">
+              Go to Login
+            </Text>
+          </Button>
+        </Animated.View>
+      )}
+
       <Button
-        onPress={() => {
-          handleSubmit()
-        }}
+        onPress={handleSubmit}
         block
         haptic="impactMedium"
         disabled={isLastStep && !(isValid && dirty)}
-        loading={isLastStep && isSubmitting}
+        loading={isSubmitting}
       >
-        Next
+        <Text color="white" variant="mediumText">
+          Next
+        </Text>
       </Button>
     </Flex>
   )

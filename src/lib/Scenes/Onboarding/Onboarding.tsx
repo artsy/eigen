@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native"
-import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import { CardStyleInterpolators, createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -14,7 +14,7 @@ import { OnboardingWelcome } from "./OnboardingWelcome"
 // tslint:disable-next-line:interface-over-type-literal
 export type OnboardingNavigationStack = {
   OnboardingWelcome: undefined
-  OnboardingLogin: undefined
+  OnboardingLogin: { withFadeAnimation: boolean } | undefined
   OnboardingCreateAccount: undefined
   ForgotPassword: undefined
 }
@@ -41,7 +41,15 @@ export const Onboarding = () => {
               }}
             >
               <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
-              <StackNavigator.Screen name="OnboardingLogin" component={OnboardingLogin} />
+              <StackNavigator.Screen
+                name="OnboardingLogin"
+                component={OnboardingLogin}
+                options={({ route: { params } }) => ({
+                  cardStyleInterpolator: params?.withFadeAnimation
+                    ? CardStyleInterpolators.forFadeFromBottomAndroid
+                    : CardStyleInterpolators.forHorizontalIOS,
+                })}
+              />
               <StackNavigator.Screen name="OnboardingCreateAccount" component={OnboardingCreateAccount} />
               <StackNavigator.Screen
                 name="ForgotPassword"
