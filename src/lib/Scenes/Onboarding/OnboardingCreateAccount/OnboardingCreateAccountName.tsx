@@ -46,6 +46,7 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
           }}
           onSubmitEditing={handleSubmit}
           onBlur={() => validateForm()}
+          blurOnSubmit={false}
           placeholder="First and Last Name"
           placeholderTextColor={color("black30")}
           returnKeyType="done"
