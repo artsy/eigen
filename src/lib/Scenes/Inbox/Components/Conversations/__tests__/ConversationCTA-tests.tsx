@@ -116,7 +116,7 @@ describe("ConversationCTA", () => {
       expectReviewOfferButton(wrapper, {
         bg: "red100",
         Icon: AlertCircleFillIcon,
-        strings: ["Payment Failed", "Please update payment method"],
+        strings: ["Payment Failed", "Unable to process payment for accepted offer. Update payment method."],
       })
     })
 
