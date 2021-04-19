@@ -35,7 +35,7 @@ export interface UserSchema {
   name: string
 }
 
-const userSchema = Yup.object().shape({
+export const userSchema = Yup.object().shape({
   email: Yup.string().email("Please provide a valid email address"),
   password: Yup.string()
     .min(8, "Your password should be at least 8 characters")
