@@ -5,7 +5,7 @@ import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { GlobalStore, useEnvironment } from "lib/store/GlobalStore"
 import { Button, Flex, Text, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { Animated, Linking } from "react-native"
+import { Alert, Animated, Linking } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
 import { OnboardingCreateAccountEmail, OnboardingCreateAccountEmailParams } from "./OnboardingCreateAccountEmail"
@@ -53,13 +53,16 @@ const getCurrentRoute = () =>
 const EMAIL_EXISTS_ERROR_MESSAGE = "We found an account with this email"
 
 export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = ({ navigation }) => {
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
+  const [higlightTerms, setHighlightTerms] = useState(false)
+
   const formik = useFormik<UserSchema>({
     enableReinitialize: true,
     validateOnChange: false,
     validateOnBlur: true,
-    initialValues: { email: "mounir.dhahri@artsymail.co", password: "WrongPassword1", name: "" },
+    initialValues: { email: "", password: "", name: "" },
     initialErrors: {},
-    onSubmit: async ({ email }, { setErrors }) => {
+    onSubmit: async ({ email, password, name }, { setErrors }) => {
       switch (getCurrentRoute()) {
         case "OnboardingCreateAccountEmail":
           const userExists = await GlobalStore.actions.auth.userExists({ email })
@@ -77,6 +80,16 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
           __unsafe__createAccountNavigationRef.current?.navigate("OnboardingCreateAccountName")
           break
         case "OnboardingCreateAccountName":
+          if (acceptedTerms) {
+            const res = await GlobalStore.actions.auth.signUp({ email, password, name })
+            if (!res) {
+              Alert.alert("Error", "Please try signing up again")
+            }
+          } else {
+            // Highlight the terms and conditions checkbox
+            setHighlightTerms(true)
+          }
+
           break
 
         default:
@@ -108,18 +121,25 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
           navigateToLogin={() => {
             navigation.replace("OnboardingLogin", { withFadeAnimation: true })
           }}
+          acceptedTerms={acceptedTerms}
+          setAcceptedTerms={setAcceptedTerms}
+          highlightTerms={higlightTerms}
         />
       </NavigationContainer>
     </FormikProvider>
   )
 }
 
-const OnboardingCreateAccountButton: React.FC<{ navigateToLogin: () => void }> = ({ navigateToLogin }) => {
+const OnboardingCreateAccountButton: React.FC<{
+  navigateToLogin: () => void
+  acceptedTerms: boolean
+  setAcceptedTerms: React.Dispatch<React.SetStateAction<boolean>>
+  highlightTerms: boolean
+}> = ({ navigateToLogin, acceptedTerms, setAcceptedTerms, highlightTerms }) => {
   const { handleSubmit, isSubmitting, isValid, dirty, errors } = useFormikContext<UserSchema>()
+
   const isLastStep = getCurrentRoute() === "OnboardingCreateAccountName"
   const yTranslateAnim = useRef(new Animated.Value(0))
-
-  const [hasAcceptedTermsAndConditions, setHasAcceptedTermsAndConditions] = useState(false)
 
   const webURL = useEnvironment().webURL
 
@@ -147,9 +167,9 @@ const OnboardingCreateAccountButton: React.FC<{ navigateToLogin: () => void }> =
         </Animated.View>
       )}
       {!!isLastStep && (
-        <Touchable haptic onPress={() => setHasAcceptedTermsAndConditions(!hasAcceptedTermsAndConditions)}>
+        <Touchable haptic onPress={() => setAcceptedTerms(!acceptedTerms)}>
           <Flex my={2} flexDirection="row">
-            <Checkbox checked={hasAcceptedTermsAndConditions} />
+            <Checkbox error={highlightTerms} checked={acceptedTerms} onPress={() => setAcceptedTerms(!acceptedTerms)} />
             <Text variant="small">
               I agree to Artsy’s{" "}
               <Text
@@ -178,7 +198,7 @@ const OnboardingCreateAccountButton: React.FC<{ navigateToLogin: () => void }> =
         onPress={handleSubmit}
         block
         haptic="impactMedium"
-        disabled={isLastStep && !hasAcceptedTermsAndConditions && !(isValid && dirty)}
+        disabled={isLastStep && !acceptedTerms && !(isValid && dirty)}
         loading={isSubmitting}
       >
         <Text color="white" variant="mediumText">
