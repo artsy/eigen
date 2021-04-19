@@ -34,13 +34,13 @@ import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
 import { Box, Button, Separator } from "palette"
 import React from "react"
-import { View, ViewProperties } from "react-native"
+import { View, ViewProps } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { FancyModal } from "../FancyModal/FancyModal"
 import { ArtworkFilterOptionsScreen, FilterModalMode as ArtworkFilterMode } from "./ArtworkFilterOptionsScreen"
 
-interface ArtworkFilterProps extends ViewProperties {
+interface ArtworkFilterProps extends ViewProps {
   closeModal?: () => void
   exitModal?: () => void
   id: string
