@@ -160,9 +160,7 @@ const OnboardingCreateAccountButton: React.FC<{
       {errors.email === EMAIL_EXISTS_ERROR_MESSAGE && (
         <Animated.View style={{ bottom: -50, transform: [{ translateY: yTranslateAnim.current }] }}>
           <Button onPress={navigateToLogin} block haptic="impactMedium" mb={1} mt={1.5}>
-            <Text color="white" variant="mediumText">
-              Go to Login
-            </Text>
+            <Text variant="mediumText">Go to Login</Text>
           </Button>
         </Animated.View>
       )}

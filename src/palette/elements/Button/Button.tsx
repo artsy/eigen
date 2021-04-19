@@ -183,6 +183,10 @@ export const Button: React.FC<ButtonProps> = (props) => {
   const loadingStyles = (() => {
     const opacity = props.disabled ? "0.1" : "1"
 
+    if (!props.loading) {
+      return {}
+    }
+
     if (props.inline) {
       return {
         backgroundColor: `rgba(0, 0, 0, ${opacity})`,
@@ -263,7 +267,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
                 style={{ ...springProps, ...loadingStyles, height: s.height }}
                 px={s.px}
               >
-                {!loading && (
+                {!loading ? (
                   <>
                     <VisibleTextContainer>
                       <Sans weight="medium" color={loadingStyles.color || to.color} size={s.size}>
@@ -274,9 +278,9 @@ export const Button: React.FC<ButtonProps> = (props) => {
                       {longestText ? longestText : children}
                     </HiddenText>
                   </>
+                ) : (
+                  <Spinner size={size} color={spinnerColor} />
                 )}
-
-                {!!loading && <Spinner size={size} color={spinnerColor} />}
               </AnimatedContainer>
             </Flex>
           </TouchableWithoutFeedback>
