@@ -6282,7 +6282,7 @@ type GeminiEntry {
 type Gene implements Node & Searchable {
   artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
   cached: Int
-  description: String
+  description(format: Format): String
   displayLabel: String
   displayName: String
 
