@@ -50,7 +50,7 @@ describe("ShowHours", () => {
       Show: () => ({ location: null, fair: null }),
     })
 
-    expect(wrapper.toJSON()).toBe(null)
+    expect(extractText(wrapper.root)).toEqual("")
   })
 
   it("renders the custom fair location if there is a fair", () => {
