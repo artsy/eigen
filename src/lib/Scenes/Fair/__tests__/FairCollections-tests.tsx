@@ -111,6 +111,6 @@ describe("FairCollections", () => {
       }),
     })
 
-    expect(wrapper.toJSON()).toBe(null)
+    expect(wrapper.root.findAllByType(Text)).toHaveLength(0)
   })
 })

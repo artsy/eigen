@@ -20,7 +20,7 @@ const { getWrapper } = setupTestWrapper({
 describe("FairEmptyState", () => {
   it("renders null when the fair is active", () => {
     const wrapper = getWrapper({ Fair: () => ({ isActive: true }) })
-    expect(wrapper.toJSON()).toBeNull()
+    expect(extractText(wrapper.root)).toEqual("")
   })
 
   describe("inactive", () => {

@@ -88,7 +88,7 @@ describe("FairEditorial", () => {
       }),
     })
 
-    expect(wrapper.toJSON()).toBe(null)
+    expect(wrapper.root.findAllByType(Text)).toHaveLength(0)
   })
 
   it("tracks article taps", () => {
