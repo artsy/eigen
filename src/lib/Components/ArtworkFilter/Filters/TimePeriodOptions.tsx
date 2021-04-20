@@ -1,76 +1,41 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import {
-  aggregationForFilter,
   FilterData,
   FilterDisplayName,
   FilterParamName,
-  ParamDefaultValues,
+  getDisplayNameForTimePeriod,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import _ from "lodash"
+import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import React from "react"
-import { SingleSelectOptionScreen } from "./SingleSelectOption"
+import { MultiSelectOptionScreen } from "./MultiSelectOption"
+import { useMultiSelect } from "./useMultiSelect"
 
 interface TimePeriodOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "TimePeriodOptionsScreen"> {}
 
 export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = ({ navigation }) => {
-  // TODO: a lot of redundant types, see if we can clean up
-  const displayValue: Record<string, string> = {
-    "2020": "2020-today",
-    "2010": "2010-2019",
-    "2000": "2000-2009",
-    "1990": "1990-1999",
-    "1980": "1980-1989",
-    "1970": "1970-1979",
-    "1960": "1960-1969",
-    "1950": "1950-1959",
-    "1940": "1940-1949",
-    "1930": "1930-1939",
-    "1920": "1920-1929",
-    "1910": "1910-1919",
-    "1900": "1900-1909",
-    "Late 19th Century": "Late 19th Century",
-    "Mid 19th Century": "Mid 19th Century",
-    "Early 19th Century": "Early 19th Century",
-  }
+  const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.timePeriod })
 
-  const paramName = FilterParamName.timePeriod
-  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
+  const options: FilterData[] = (aggregation?.counts ?? []).map(({ value: paramValue, name }) => {
+    return { displayText: getDisplayNameForTimePeriod(name), paramName: FilterParamName.timePeriod, paramValue }
+  })
 
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+  const { handleSelect, handleClear, isSelected, isActive } = useMultiSelect({
+    options,
+    paramName: FilterParamName.timePeriod,
+  })
 
-  const aggregation = aggregationForFilter(paramName, aggregations)
-  const options = aggregation?.counts.map((aggCount) => aggCount.value) ?? []
-  const aggFilterOptions: FilterData[] = _.compact(
-    options.map((value) => {
-      const displayText = displayValue[value]
-      if (Boolean(displayText)) {
-        return { displayText, paramValue: value, paramName }
-      } else {
-        // Default to paramValue if not accounted for
-        return { displayText: value, paramValue: value, paramName }
-      }
-    })
-  )
-  const allOption: FilterData = { displayText: "All", paramName, paramValue: ParamDefaultValues.majorPeriods }
-  const filterOptions = [allOption].concat(aggFilterOptions)
-
-  const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
-
-  const selectOption = (option: FilterData) => {
-    selectFiltersAction(option)
-  }
+  // Convert options to boolean options for checkboxes
+  const filterOptions = options.map((option) => ({ ...option, paramValue: isSelected(option) }))
 
   return (
-    <SingleSelectOptionScreen
-      onSelect={selectOption}
+    <MultiSelectOptionScreen
+      onSelect={handleSelect}
       filterHeaderText={FilterDisplayName.timePeriod}
       filterOptions={filterOptions}
-      selectedOption={selectedOption}
       navigation={navigation}
+      {...(isActive ? { rightButtonText: "Clear all", onRightButtonPress: handleClear } : {})}
     />
   )
 }

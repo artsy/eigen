@@ -24,7 +24,6 @@ import { PriceRangeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/Pr
 import { SizeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/SizeOptions"
 import { SizesOptionsScreen } from "lib/Components/ArtworkFilter/Filters/SizesOptions"
 import { SortOptionsScreen } from "lib/Components/ArtworkFilter/Filters/SortOptions"
-import { TimePeriodMultiOptionsScreen } from "lib/Components/ArtworkFilter/Filters/TimePeriodMultiOptions"
 import { TimePeriodOptionsScreen } from "lib/Components/ArtworkFilter/Filters/TimePeriodOptions"
 import { ViewAsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ViewAsOptions"
 import { WaysToBuyOptionsScreen } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
@@ -201,10 +200,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             <Stack.Screen name="SizeOptionsScreen" component={SizeOptionsScreen} />
             <Stack.Screen name="SizesOptionsScreen" component={SizesOptionsScreen} />
             <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
-            <Stack.Screen
-              name="TimePeriodOptionsScreen"
-              component={shouldUseImprovedArtworkFilters ? TimePeriodMultiOptionsScreen : TimePeriodOptionsScreen}
-            />
+            <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} />
             <Stack.Screen name="ViewAsOptionsScreen" component={ViewAsOptionsScreen} />
             <Stack.Screen
               name="YearOptionsScreen"
