@@ -19,6 +19,7 @@ import { Address } from "../../types"
 import { BillingAddress } from "../BillingAddress"
 import { CreditCardForm } from "../CreditCardForm"
 import { Registration } from "../Registration"
+import { flush2 } from "lib/tests/flushPromiseQueue"
 
 // This lets us import the actual react-relay module, and replace specific functions within it with mocks.
 jest.unmock("react-relay")
@@ -31,14 +32,6 @@ jest.mock("tipsi-stripe", () => ({
   paymentRequestWithCardForm: jest.fn(),
   createTokenWithCard: jest.fn(),
 }))
-
-jest.mock("palette", () => {
-  const { Button: RNButton } = jest.requireActual("react-native")
-  return {
-    ...jest.requireActual("palette"),
-    Button: (props: any) => <RNButton title="a button" onPress={props.onPress} />,
-  }
-})
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 let nextStep
@@ -262,7 +255,7 @@ describe("when pressing register button", () => {
     expect(conditionsOfSaleCheckbox.instance.props.disabled).toBeTruthy()
   })
 
-  it("displays an error message on a stripe failure", () => {
+  it("displays an error message on a stripe failure", async () => {
     relay.commitMutation = jest
       .fn()
       .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
@@ -278,7 +271,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findAllByType(Button)[1].props.onPress()
 
-    jest.runAllTicks()
+    await flush2()
 
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.component).toEqual(RegistrationResult)
