@@ -58,7 +58,7 @@ export const WaysToBuyOptionsScreen: React.FC<WaysToBuyOptionsScreenProps> = ({ 
       filterHeaderText={FilterDisplayName.waysToBuy}
       filterOptions={sortedOptions}
       navigation={navigation}
-      {...(selected.length > 0 ? { rightButtonText: "Clear all", onRightButtonPress: handleClear } : {})}
+      {...(selected.length > 0 ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
     />
   )
 }

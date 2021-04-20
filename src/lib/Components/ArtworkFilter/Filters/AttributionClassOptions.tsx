@@ -29,7 +29,7 @@ export const AttributionClassOptionsScreen: React.FC<AttributionClassOptionsScre
       filterHeaderText={FilterDisplayName.attributionClass}
       filterOptions={filterOptions}
       navigation={navigation}
-      {...(isActive ? { rightButtonText: "Clear all", onRightButtonPress: handleClear } : {})}
+      {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
     />
   )
 }

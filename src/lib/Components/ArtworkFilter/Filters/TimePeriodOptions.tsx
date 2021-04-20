@@ -35,7 +35,7 @@ export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = (
       filterHeaderText={FilterDisplayName.timePeriod}
       filterOptions={filterOptions}
       navigation={navigation}
-      {...(isActive ? { rightButtonText: "Clear all", onRightButtonPress: handleClear } : {})}
+      {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
     />
   )
 }

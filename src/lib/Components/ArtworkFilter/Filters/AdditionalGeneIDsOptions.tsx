@@ -32,7 +32,7 @@ export const AdditionalGeneIDsOptionsScreen: React.FC<AdditionalGeneIDsOptionsSc
       filterHeaderText={FilterDisplayName.additionalGeneIDs}
       filterOptions={filterOptions}
       navigation={navigation}
-      {...(isActive ? { rightButtonText: "Clear all", onRightButtonPress: handleClear } : {})}
+      {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
     />
   )
 }

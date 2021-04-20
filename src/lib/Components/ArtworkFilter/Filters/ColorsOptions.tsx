@@ -69,7 +69,7 @@ export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ naviga
     <Flex onLayout={handleLayout} flexGrow={1}>
       <FancyModalHeader
         onLeftButtonPress={() => navigation.goBack()}
-        {...(isActive ? { rightButtonText: "Clear all", onRightButtonPress: handleClear } : {})}
+        {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
       >
         {FilterDisplayName.colors}
       </FancyModalHeader>
