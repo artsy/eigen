@@ -14,6 +14,7 @@ upcoming:
     - Replace "All" option on multi-select filters with upper right-hand "Clear all"
     - Fix infinite spinner on Android when following within an artist rail - pepopowitz
     - Release multi-select time period filter - iskounen
+    - Refine filter header typography, spacing & copy - damon
 
 releases:
   - version: 6.8.3
