@@ -23,7 +23,7 @@ export const loginSchema = Yup.object().shape({
   password: Yup.string().test("password", "Password field is required", (value) => value !== ""),
 })
 
-export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation }) => {
+export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation, route }) => {
   const {
     values,
     handleSubmit,
@@ -50,6 +50,7 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
     setTimeout(() => {
       navigation.setParams({ withFadeAnimation: false })
     }, 1000)
+    handleChange("email")(route.params?.email || "")
   }, [])
 
   return (

@@ -139,7 +139,10 @@ describe("OnboardingCreateAccount", () => {
       expect(emailInput.props.error).toEqual("We found an account with this email")
       const loginButton = tree.root.findAllByProps({ testID: "loginButton" })[0]
       loginButton.props.onPress()
-      expect(replaceMock).toHaveBeenCalledWith("OnboardingLogin", { withFadeAnimation: true })
+      expect(replaceMock).toHaveBeenCalledWith("OnboardingLogin", {
+        withFadeAnimation: true,
+        email: "used-email@example.com",
+      })
     }, 2000)
   })
 })

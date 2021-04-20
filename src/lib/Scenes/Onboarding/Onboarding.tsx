@@ -14,7 +14,7 @@ import { OnboardingWelcome } from "./OnboardingWelcome"
 // tslint:disable-next-line:interface-over-type-literal
 export type OnboardingNavigationStack = {
   OnboardingWelcome: undefined
-  OnboardingLogin: { withFadeAnimation: boolean } | undefined
+  OnboardingLogin: { withFadeAnimation: boolean; email: string } | undefined
   OnboardingCreateAccount: undefined
   ForgotPassword: undefined
 }
