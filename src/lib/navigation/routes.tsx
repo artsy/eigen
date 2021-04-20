@@ -76,12 +76,14 @@ function liveAuctionRouteMatcher(): RouteMatcher {
   if (Platform.OS === "ios") {
     return new RouteMatcher("/*", "LiveAuction", (params) => ({ slug: params["*"] }))
   } else {
-    return webViewRoute("/*", { baseURL: liveBaseURL })
+    return webViewRoute("/*", { baseURL: liveBaseURL, requiresGravityAuth: true })
   }
 }
 
 function getDomainMap(): Record<string, RouteMatcher[] | null> {
   const liveDotArtsyDotNet: RouteMatcher[] = compact([liveAuctionRouteMatcher()])
+
+  const gravityAuthDotNet: RouteMatcher[] = compact([webViewRoute("/*")])
 
   const artsyDotNet: RouteMatcher[] = compact([
     new RouteMatcher("/", "Home"),
@@ -192,6 +194,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     "staging.artsy.net": artsyDotNet,
     "artsy.net": artsyDotNet,
     "www.artsy.net": artsyDotNet,
+    "stagingapi.artsy.net": gravityAuthDotNet,
+    "api.artsy.net": gravityAuthDotNet,
     [parse(unsafe__getEnvironment().webURL).host ?? "artsy.net"]: artsyDotNet,
   }
 

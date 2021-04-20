@@ -29,6 +29,11 @@ export interface ArtsyWebViewConfig {
    * Set this to false if you want all clicked links to be handled by our `navigate` method.
    */
   allowWebViewInnerNavigation?: boolean
+  /**
+   * Web view requires gravity auth
+   * This is the case for live auctions which use gravity oauth
+   */
+  requiresGravityAuth?: boolean
 }
 
 export const ArtsyReactWebViewPage: React.FC<
@@ -42,6 +47,7 @@ export const ArtsyReactWebViewPage: React.FC<
   isPresentedModally,
   allowWebViewInnerNavigation = true,
   mimicBrowserBackButton = true,
+  requiresGravityAuth = false,
   baseURL,
 }) => {
   const paddingTop = useScreenDimensions().safeAreaInsets.top
@@ -67,6 +73,7 @@ export const ArtsyReactWebViewPage: React.FC<
         <ArtsyReactWebView
           url={url}
           ref={ref}
+          requiresGravityAuth={requiresGravityAuth}
           baseURL={baseURL}
           allowWebViewInnerNavigation={allowWebViewInnerNavigation}
           onNavigationStateChange={mimicBrowserBackButton ? (ev) => setCanGoBack(ev.canGoBack) : undefined}
@@ -82,9 +89,10 @@ export const ArtsyReactWebView = React.forwardRef<
     url: string
     baseURL?: string
     allowWebViewInnerNavigation?: boolean
+    requiresGravityAuth?: boolean
     onNavigationStateChange?: WebViewProps["onNavigationStateChange"]
   }
->(({ url, baseURL, allowWebViewInnerNavigation = true, onNavigationStateChange }, ref) => {
+>(({ url, baseURL, allowWebViewInnerNavigation = true, requiresGravityAuth = false, onNavigationStateChange }, ref) => {
   const userAgent = getCurrentEmissionState().userAgent
 
   const [loadProgress, setLoadProgress] = useState<number | null>(null)
@@ -95,7 +103,13 @@ export const ArtsyReactWebView = React.forwardRef<
     baseURL = webURL
   }
 
-  const uri = url.startsWith("/") ? baseURL + url : url
+  let uri = url.startsWith("/") ? baseURL + url : url
+
+  // redirect to login, with a valid session
+  // this should automatically redirect back to the initial page
+  if (requiresGravityAuth) {
+    uri = uri + `/login`
+  }
 
   return (
     <View style={{ flex: 1 }}>

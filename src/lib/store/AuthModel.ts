@@ -86,6 +86,7 @@ export const getAuthModel = (): AuthModel => ({
   gravityUnauthenticatedRequest: thunk(async (actions, payload, context) => {
     const gravityBaseURL = context.getStoreState().config.environment.strings.gravityURL
     const xAppToken = await actions.getXAppToken()
+
     return await fetch(`${gravityBaseURL}${payload.path}`, {
       method: payload.method || "GET",
       headers: {
@@ -151,6 +152,25 @@ export const getAuthModel = (): AuthModel => ({
           path: `/api/v1/user?${stringify({ email })}`,
         })
       ).json()
+
+      // create a gravity auth session to avoid logging into prediction again
+      const { trust_token } = await (
+        await actions.gravityUnauthenticatedRequest({
+          path: `/api/v1/me/trust_token`,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-ACCESS-TOKEN": access_token,
+          },
+        })
+      ).json()
+
+      await actions.gravityUnauthenticatedRequest({
+        path: `/users/sign_in?${stringify({ trust_token })}`,
+        headers: {
+          Accept: "text/html",
+        },
+      })
 
       actions.setState({
         userAccessToken: access_token,
