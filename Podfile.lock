@@ -420,7 +420,7 @@ PODS:
     - React-Core
   - react-native-netinfo (4.6.1):
     - React
-  - react-native-safe-area-context (3.1.9):
+  - react-native-safe-area-context (3.2.0):
     - React-Core
   - react-native-view-shot (3.1.2):
     - React
@@ -977,7 +977,7 @@ SPEC CHECKSUMS:
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
   react-native-mapbox-gl: eeed4fa8fffea96f77a9eecbc63f88eddb0d2e58
   react-native-netinfo: a59d8426a8484f739fe3a95dd6ad5af1435db05f
-  react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
+  react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-view-shot: 4475fde003fe8a210053d1f98fb9e06c1d834e1c
   react-native-viewpager: ea945e2881ce9a4a8bcdc84de4ec65ff23c90f6e
   react-native-webview: 07fca3f4378bd6ea26254bf63119bfd70f4fabeb
