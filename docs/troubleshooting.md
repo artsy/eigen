@@ -87,3 +87,14 @@ console.log(source) // => { uri: "pods/Assets/.../some-video.mp4" }
 ```
 
 See [Video.tsx](https://github.com/artsy/emission/tree/master/src/lib/Components/Video.tsx) for an example implementation and [here](https://facebook.github.io/react-native/docs/images#static-non-image-resources) for a list of supported file formats.
+
+
+## Type issues
+
+- Duplicate types
+
+Try to run
+```sh
+npx yarn-deduplicate --strategy fewer && yarn
+```
+to make sure that `yarn.lock` only keeps the minimum amount of copies. It happens sometimes that we have `@types/react@^16.13.1` which should not go above 17, and another dep that has `@types/react@>=16`, and yarn will happily put that on 17, so we end up having two versions with two types etc. Using the `fewer` strategy will force yarn to only keep the latest 16 compatible version.
