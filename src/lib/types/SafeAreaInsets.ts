@@ -1,6 +1,4 @@
-export interface SafeAreaInsets {
-  top: number
-  bottom: number
-  left: number
-  right: number
-}
+import { EdgeInsets } from "react-native-safe-area-context"
+
+// tslint:disable-next-line:no-empty-interface
+export interface SafeAreaInsets extends EdgeInsets {}
