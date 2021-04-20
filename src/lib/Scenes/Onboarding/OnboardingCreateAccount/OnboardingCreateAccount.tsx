@@ -5,6 +5,7 @@ import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { GlobalStore, useEnvironment } from "lib/store/GlobalStore"
 import { Button, Flex, Text, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
+import { useCallback } from "react"
 import { Alert, Animated, Linking } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
@@ -35,14 +36,21 @@ export interface UserSchema {
   name: string
 }
 
+/**
+ * User schema validation rules
+ */
+const emailValidation = Yup.string().email("Please provide a valid email address").required()
+const passwordValidation = Yup.string()
+  .min(8, "Your password should be at least 8 characters")
+  .matches(/[A-Z]/, "Your password should contain at least one uppercase letter")
+  .matches(/[a-z]/, "Your password should contain at least one lowercase letter")
+  .matches(/[0-9]/, "You password should contain at least one digit")
+const nameValidation = Yup.string().test("name", "Full name field is required", (value) => value !== "")
+
 export const userSchema = Yup.object().shape({
-  email: Yup.string().email("Please provide a valid email address"),
-  password: Yup.string()
-    .min(8, "Your password should be at least 8 characters")
-    .matches(/[A-Z]/, "Your password should contain at least one uppercase letter")
-    .matches(/[a-z]/, "Your password should contain at least one lowercase letter")
-    .matches(/[0-9]/, "You password should contain at least one digit"),
-  name: Yup.string().test("name", "Full name field is required", (value) => value !== ""),
+  email: emailValidation,
+  password: passwordValidation,
+  name: nameValidation,
 })
 
 const getCurrentRoute = () =>
@@ -130,18 +138,38 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
   )
 }
 
-const OnboardingCreateAccountButton: React.FC<{
+export interface OnboardingCreateAccountButtonProps {
   navigateToLogin: () => void
   acceptedTerms: boolean
   setAcceptedTerms: React.Dispatch<React.SetStateAction<boolean>>
   highlightTerms: boolean
-}> = ({ navigateToLogin, acceptedTerms, setAcceptedTerms, highlightTerms }) => {
-  const { handleSubmit, isSubmitting, isValid, dirty, errors } = useFormikContext<UserSchema>()
+}
+
+export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButtonProps> = ({
+  navigateToLogin,
+  acceptedTerms,
+  setAcceptedTerms,
+  highlightTerms,
+}) => {
+  const { handleSubmit, values, isSubmitting, errors } = useFormikContext<UserSchema>()
 
   const isLastStep = getCurrentRoute() === "OnboardingCreateAccountName"
   const yTranslateAnim = useRef(new Animated.Value(0))
 
   const webURL = useEnvironment().webURL
+
+  const stepIsValid = useCallback(() => {
+    switch (getCurrentRoute()) {
+      case undefined:
+        return false
+      case "OnboardingCreateAccountEmail":
+        return emailValidation.isValidSync(values.email)
+      case "OnboardingCreateAccountPassword":
+        return passwordValidation.isValidSync(values.password)
+      default:
+        return true
+    }
+  }, [getCurrentRoute()])()
 
   useEffect(() => {
     if (errors.email === EMAIL_EXISTS_ERROR_MESSAGE) {
@@ -159,7 +187,7 @@ const OnboardingCreateAccountButton: React.FC<{
     <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5} backgroundColor="white">
       {errors.email === EMAIL_EXISTS_ERROR_MESSAGE && (
         <Animated.View style={{ bottom: -50, transform: [{ translateY: yTranslateAnim.current }] }}>
-          <Button onPress={navigateToLogin} block haptic="impactMedium" mb={1} mt={1.5}>
+          <Button onPress={navigateToLogin} block haptic="impactMedium" mb={1} mt={1.5} variant="secondaryOutline">
             <Text variant="mediumText">Go to Login</Text>
           </Button>
         </Animated.View>
@@ -196,8 +224,9 @@ const OnboardingCreateAccountButton: React.FC<{
         onPress={handleSubmit}
         block
         haptic="impactMedium"
-        disabled={isLastStep && !acceptedTerms && !(isValid && dirty)}
+        disabled={isLastStep && !acceptedTerms}
         loading={isSubmitting}
+        testID="signUpButton"
       >
         <Text color="white" variant="mediumText">
           Next

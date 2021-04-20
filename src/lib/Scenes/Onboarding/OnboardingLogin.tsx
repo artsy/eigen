@@ -141,7 +141,9 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
           loading={isSubmitting}
           testID="loginButton"
         >
-          Log in
+          <Text color="white" variant="mediumText">
+            Log in
+          </Text>
         </Button>
       </Flex>
     </View>
