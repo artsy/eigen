@@ -69,6 +69,9 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
             ref={emailInputRef}
             autoCapitalize="none"
             autoCompleteType="email"
+            // There is no need to autofocus here if we are getting
+            // the email already from the navigation params
+            autoFocus={!route.params?.email}
             enableClearButton
             keyboardType="email-address"
             onChangeText={(text) => {
@@ -97,6 +100,9 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
             autoCapitalize="none"
             autoCompleteType="password"
             autoCorrect={false}
+            // If we have the email already prefilled from the navigation params
+            // we want the autoFocus to be on the password
+            autoFocus={!!route.params?.email}
             onChangeText={(text) => {
               // Hide error when the user starts to type again
               if (errors.password) {

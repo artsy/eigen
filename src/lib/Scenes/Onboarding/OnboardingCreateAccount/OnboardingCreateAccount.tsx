@@ -123,7 +123,7 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
         </StackNavigator.Navigator>
         <OnboardingCreateAccountButton
           navigateToLogin={() => {
-            navigation.replace("OnboardingLogin", { withFadeAnimation: true, email: formik.values.email })
+            navigation.replace("OnboardingLogin", { withFadeAnimation: false, email: formik.values.email })
           }}
           acceptedTerms={acceptedTerms}
           setAcceptedTerms={setAcceptedTerms}
