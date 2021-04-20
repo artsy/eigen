@@ -16,10 +16,9 @@ import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Sans, Theme } from "palette"
+import { renderWithWrappers, TestWrappers } from "lib/tests/renderWithWrappers"
+import { Sans } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -158,22 +157,20 @@ afterEach(() => {
 
 const MockFilterModalNavigator = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
   return (
-    <GlobalStoreProvider>
-      <Theme>
-        <ArtworkFiltersStoreProvider initialData={initialData}>
-          <ArtworkFilterNavigator
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            collection={CollectionFixture}
-            exitModal={exitModalMock}
-            closeModal={closeModalMock}
-            mode={FilterModalMode.ArtistArtworks}
-            id="abc123"
-            slug="some-artist"
-            isFilterArtworksModalVisible
-          />
-        </ArtworkFiltersStoreProvider>
-      </Theme>
-    </GlobalStoreProvider>
+    <TestWrappers>
+      <ArtworkFiltersStoreProvider initialData={initialData}>
+        <ArtworkFilterNavigator
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          collection={CollectionFixture}
+          exitModal={exitModalMock}
+          closeModal={closeModalMock}
+          mode={FilterModalMode.ArtistArtworks}
+          id="abc123"
+          slug="some-artist"
+          isFilterArtworksModalVisible
+        />
+      </ArtworkFiltersStoreProvider>
+    </TestWrappers>
   )
 }
 
@@ -446,11 +443,11 @@ describe("Applying filters on Artworks", () => {
       render={({ props, error }) => {
         if (props?.marketingCollection) {
           return (
-            <Theme>
+            <TestWrappers>
               <ArtworkFiltersStoreProvider initialData={initialData}>
                 <CollectionArtworksFragmentContainer collection={props.marketingCollection} scrollToTop={jest.fn()} />
               </ArtworkFiltersStoreProvider>
-            </Theme>
+            </TestWrappers>
           )
         } else if (error) {
           console.log(error)

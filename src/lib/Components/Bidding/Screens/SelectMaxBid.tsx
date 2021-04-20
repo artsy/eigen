@@ -1,6 +1,6 @@
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
-import { ActivityIndicator, View, ViewProperties } from "react-native"
+import { ActivityIndicator, Dimensions, View, ViewProperties } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { Schema, screenTrack } from "../../../utils/track"
@@ -17,7 +17,6 @@ import { Select } from "lib/Components/Select"
 import { dismissModal } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
 import { compact } from "lodash"
 
 interface SelectMaxBidProps extends ViewProperties {
@@ -68,6 +67,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
   }
 
   render() {
+    const { height } = Dimensions.get("window")
     const bids = compact(this.props.sale_artwork && this.props.sale_artwork.increments) || []
 
     return (
@@ -76,18 +76,14 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
           {this.state.isRefreshingSaleArtwork ? (
             <ActivityIndicator />
           ) : (
-            <ScreenDimensionsContext.Consumer>
-              {({ height }) => (
-                <Select
-                  title="Your max bid"
-                  showTitleLabel={false}
-                  maxModalHeight={height * 0.75}
-                  value={bids[this.state.selectedBidIndex]?.cents ?? null}
-                  options={bids.map((b) => ({ label: b.display!, value: b.cents }))}
-                  onSelectValue={(_, index) => this.setState({ selectedBidIndex: index })}
-                />
-              )}
-            </ScreenDimensionsContext.Consumer>
+            <Select
+              title="Your max bid"
+              showTitleLabel={false}
+              maxModalHeight={height * 0.75}
+              value={bids[this.state.selectedBidIndex]?.cents ?? null}
+              options={bids.map((b) => ({ label: b.display!, value: b.cents }))}
+              onSelectValue={(_, index) => this.setState({ selectedBidIndex: index })}
+            />
           )}
         </View>
 
