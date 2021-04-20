@@ -317,7 +317,7 @@ jest.mock("./lib/utils/useScreenDimensions", () => {
   }
 })
 
-jest.mock("@react-native-community/async-storage", () => {
+jest.mock("@react-native-async-storage/async-storage", () => {
   let state: any = {}
   return {
     __resetState() {
@@ -431,3 +431,7 @@ jest.mock("react-native-config", () => ({
 jest.mock("react-native-haptic-feedback", () => ({
   trigger: jest.fn(),
 }))
+
+jest.mock("react-native/Libraries/Animated/NativeAnimatedHelper")
+
+jest.mock("react-native-credit-card-input", () => ({ wow: 3 }))
