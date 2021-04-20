@@ -5,7 +5,6 @@ import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { GlobalStore, useEnvironment } from "lib/store/GlobalStore"
 import { Button, Flex, Text, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { useCallback } from "react"
 import { Alert, Animated, Linking } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
@@ -39,18 +38,14 @@ export interface UserSchema {
 /**
  * User schema validation rules
  */
-const emailValidation = Yup.string().email("Please provide a valid email address").required()
-const passwordValidation = Yup.string()
-  .min(8, "Your password should be at least 8 characters")
-  .matches(/[A-Z]/, "Your password should contain at least one uppercase letter")
-  .matches(/[a-z]/, "Your password should contain at least one lowercase letter")
-  .matches(/[0-9]/, "You password should contain at least one digit")
-const nameValidation = Yup.string().test("name", "Full name field is required", (value) => value !== "")
-
 export const userSchema = Yup.object().shape({
-  email: emailValidation,
-  password: passwordValidation,
-  name: nameValidation,
+  email: Yup.string().email("Please provide a valid email address").required(),
+  password: Yup.string()
+    .min(8, "Your password should be at least 8 characters")
+    .matches(/[A-Z]/, "Your password should contain at least one uppercase letter")
+    .matches(/[a-z]/, "Your password should contain at least one lowercase letter")
+    .matches(/[0-9]/, "You password should contain at least one digit"),
+  name: Yup.string().test("name", "Full name field is required", (value) => value !== ""),
 })
 
 const getCurrentRoute = () =>
@@ -74,6 +69,7 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
       switch (getCurrentRoute()) {
         case "OnboardingCreateAccountEmail":
           const userExists = await GlobalStore.actions.auth.userExists({ email })
+
           // When the user exists already we want to take them to the login screen
           if (userExists) {
             setErrors({
@@ -151,25 +147,12 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
   setAcceptedTerms,
   highlightTerms,
 }) => {
-  const { handleSubmit, values, isSubmitting, errors } = useFormikContext<UserSchema>()
+  const { handleSubmit, isSubmitting, errors } = useFormikContext<UserSchema>()
 
   const isLastStep = getCurrentRoute() === "OnboardingCreateAccountName"
   const yTranslateAnim = useRef(new Animated.Value(0))
 
   const webURL = useEnvironment().webURL
-
-  const stepIsValid = useCallback(() => {
-    switch (getCurrentRoute()) {
-      case undefined:
-        return false
-      case "OnboardingCreateAccountEmail":
-        return emailValidation.isValidSync(values.email)
-      case "OnboardingCreateAccountPassword":
-        return passwordValidation.isValidSync(values.password)
-      default:
-        return true
-    }
-  }, [getCurrentRoute()])()
 
   useEffect(() => {
     if (errors.email === EMAIL_EXISTS_ERROR_MESSAGE) {
@@ -187,7 +170,15 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
     <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5} backgroundColor="white">
       {errors.email === EMAIL_EXISTS_ERROR_MESSAGE && (
         <Animated.View style={{ bottom: -50, transform: [{ translateY: yTranslateAnim.current }] }}>
-          <Button onPress={navigateToLogin} block haptic="impactMedium" mb={1} mt={1.5} variant="secondaryOutline">
+          <Button
+            onPress={navigateToLogin}
+            block
+            haptic="impactMedium"
+            mb={1}
+            mt={1.5}
+            variant="secondaryOutline"
+            testID="loginButton"
+          >
             <Text variant="mediumText">Go to Login</Text>
           </Button>
         </Animated.View>
