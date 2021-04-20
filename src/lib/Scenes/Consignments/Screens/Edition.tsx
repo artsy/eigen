@@ -1,6 +1,6 @@
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
-import { LayoutAnimation, ViewProperties } from "react-native"
+import { LayoutAnimation, ViewProps } from "react-native"
 import Text from "../Components/TextInput"
 import Toggle from "../Components/Toggle"
 import { ConsignmentSetup } from "../index"
@@ -10,7 +10,7 @@ import { Flex, Sans, Spacer, Theme } from "palette"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { Form, Row } from "../Components/FormElements"
 
-interface Props extends ConsignmentSetup, ViewProperties {
+interface Props extends ConsignmentSetup, ViewProps {
   navigator: NavigatorIOS
   setup: ConsignmentSetup
   updateWithEdition?: (setup: ConsignmentSetup) => void

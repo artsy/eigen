@@ -30,7 +30,7 @@ import { Schema, screenTrack, track } from "lib/utils/track"
 import { get, isEmpty } from "lodash"
 import { Box, Button, Serif, Theme } from "palette"
 import React from "react"
-import { Image, ScrollView, ViewProperties } from "react-native"
+import { Image, ScrollView, ViewProps } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { PayloadError } from "relay-runtime"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -40,7 +40,7 @@ type BidderPositionResult = NonNullable<
   NonNullable<ConfirmBidCreateBidderPositionMutationResponse["createBidderPosition"]>["result"]
 >
 
-export interface ConfirmBidProps extends ViewProperties {
+export interface ConfirmBidProps extends ViewProps {
   sale_artwork: ConfirmBid_sale_artwork
   me: ConfirmBid_me
   relay: RelayRefetchProp

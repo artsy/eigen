@@ -1,5 +1,5 @@
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
-import { Alert, RefreshControl, View, ViewProperties } from "react-native"
+import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
@@ -27,7 +27,7 @@ import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHome
 import { HomeHeroContainer, HomeHeroPlaceholder } from "./Components/HomeHero"
 import { RailScrollRef } from "./Components/types"
 
-interface Props extends ViewProperties {
+interface Props extends ViewProps {
   homePage: Home_homePage
   me: Home_me
   featured: Home_featured

@@ -1,7 +1,7 @@
 import React from "react"
-import { Animated, StyleProp, ViewProperties, ViewStyle } from "react-native"
+import { Animated, StyleProp, ViewProps, ViewStyle } from "react-native"
 
-interface CssTransitionProps extends ViewProperties {
+interface CssTransitionProps extends ViewProps {
   animate: string[]
   duration: number
 }

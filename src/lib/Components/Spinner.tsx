@@ -7,10 +7,10 @@ import {
   requireNativeComponent,
   StyleSheet,
   View,
-  ViewProperties,
+  ViewProps,
 } from "react-native"
 
-interface SpinnerProps extends ViewProperties {
+interface SpinnerProps extends ViewProps {
   spinnerColor?: string
   size?: {
     width: number
