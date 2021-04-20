@@ -134,7 +134,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
    * Because the phone number lives on the user, not as credit card metadata, then we
    * need a separate call to update our User model to store that info
    */
-  async updatePhoneNumber() {
+  updatePhoneNumber() {
     return new Promise<void>((done, reject) => {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const { phoneNumber } = this.state.billingAddress
@@ -165,7 +165,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     })
   }
 
-  async createTokenFromAddress() {
+  createTokenFromAddress() {
     const { billingAddress, creditCardFormParams } = this.state
     return stripe.createTokenWithCard({
       ...creditCardFormParams,
@@ -186,7 +186,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     })
   }
 
-  async createCreditCard(token: any) {
+  createCreditCard(token: any) {
     return new Promise<void>((done) => {
       commitMutation<RegistrationCreateCreditCardMutation>(this.props.relay.environment, {
         onCompleted: (data, errors) => {
