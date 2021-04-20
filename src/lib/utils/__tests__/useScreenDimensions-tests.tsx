@@ -1,9 +1,19 @@
 import { renderHook } from "@testing-library/react-hooks"
-import { useScreenDimensions, ProvideScreenDimensions } from "../useScreenDimensions"
-import React from "react"
+import { useScreenDimensions } from "../useScreenDimensions"
+import React, { ReactNode } from "react"
+import { SafeAreaProvider } from "react-native-safe-area-context"
 
 describe(useScreenDimensions, () => {
-  const wrapper: React.FC = ({ children }) => <ProvideScreenDimensions>{children}</ProvideScreenDimensions>
+  const wrapper = ({ children }: { children: ReactNode }) => (
+    <SafeAreaProvider
+      initialMetrics={{
+        frame: { x: 0, y: 0, width: 380, height: 550 },
+        insets: { top: 20, left: 0, right: 0, bottom: 0 },
+      }}
+    >
+      {children}
+    </SafeAreaProvider>
+  )
 
   it("should give us dimensions", () => {
     const { result } = renderHook(() => useScreenDimensions(), { wrapper })
@@ -18,6 +28,8 @@ describe(useScreenDimensions, () => {
         left: 0,
         right: 0,
       },
+      fullWidth: 380,
+      fullHeight: 570,
     })
   })
 })
