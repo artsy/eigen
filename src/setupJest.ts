@@ -7,6 +7,8 @@
 // Object.assign(babelHelpers, { applyDecoratedDescriptor, initializerDefineProperty })
 // import "@babel/runtime"
 
+import "jest-extended"
+
 import chalk from "chalk"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Enzyme from "enzyme"

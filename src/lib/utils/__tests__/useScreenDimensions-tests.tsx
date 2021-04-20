@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks"
-import { useScreenDimensions } from "../useScreenDimensions"
 import React, { ReactNode } from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"
+import { useScreenDimensions } from "../useScreenDimensions"
 
 describe(useScreenDimensions, () => {
   const wrapper = ({ children }: { children: ReactNode }) => (

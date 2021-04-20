@@ -65,7 +65,7 @@ const artworkFixture: ImageCarouselTestsQueryRawResponse["artwork"] = {
   ],
 }
 
-describe("ImageCarouselFragmentContainer", () => {
+describe.skip("ImageCarouselFragmentContainer", () => {
   const getWrapper = async (artwork = artworkFixture) => {
     return await renderRelayTree({
       Component: ({ artwork: { images } }) => <ImageCarouselFragmentContainer images={images} cardHeight={275} />,

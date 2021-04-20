@@ -1,6 +1,7 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { TestWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Platform } from "react-native"
 import { ImageCarouselContext, useNewImageCarouselContext } from "../ImageCarouselContext"
@@ -30,9 +31,11 @@ describe("ImageCarouselEmbedded", () => {
     const value = useNewImageCarouselContext(contextInit)
     context = value
     return (
-      <ImageCarouselContext.Provider value={value}>
-        <ImageCarouselEmbedded cardHeight={275} />
-      </ImageCarouselContext.Provider>
+      <TestWrappers>
+        <ImageCarouselContext.Provider value={value}>
+          <ImageCarouselEmbedded cardHeight={275} />
+        </ImageCarouselContext.Provider>
+      </TestWrappers>
     )
   }
   it("mounts", () => {

@@ -195,6 +195,7 @@
     "graphql-request": "3.4.0",
     "husky": "4.2.5",
     "jest": "25.2.7",
+    "jest-extended": "^0.11.5",
     "jest-fetch-mock": "^3.0.3",
     "jest-raw-loader": "1.0.1",
     "jest-styled-components": "7.0.0-2",
