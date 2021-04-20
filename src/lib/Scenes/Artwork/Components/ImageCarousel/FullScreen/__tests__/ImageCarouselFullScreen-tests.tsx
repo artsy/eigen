@@ -1,5 +1,6 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
+import { TestWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { ImageCarouselContext, useNewImageCarouselContext } from "../../ImageCarouselContext"
 import { ImageCarouselFullScreen } from "../ImageCarouselFullScreen"
@@ -14,9 +15,11 @@ describe("ImageCarouselFullScreen", () => {
       ],
     })
     return (
-      <ImageCarouselContext.Provider value={value}>
-        <ImageCarouselFullScreen />
-      </ImageCarouselContext.Provider>
+      <TestWrappers>
+        <ImageCarouselContext.Provider value={value}>
+          <ImageCarouselFullScreen />
+        </ImageCarouselContext.Provider>
+      </TestWrappers>
     )
   }
   it("mounts", () => {
