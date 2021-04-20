@@ -8,9 +8,10 @@ import {
 import { AppModule, modules } from "lib/AppRegistry"
 import { ArtsyKeyboardAvoidingViewContext } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { useSelectedTab } from "lib/store/GlobalStore"
-import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useState } from "react"
 import { View } from "react-native"
+import { SafeAreaProvider } from "react-native-safe-area-context"
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { BackButton } from "./BackButton"
 import { useReloadedDevNavigationState } from "./useReloadedDevNavigationState"
@@ -46,7 +47,7 @@ const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) =
 
   return (
     <LegacyBackButtonContext.Provider value={{ updateShouldHideBackButton }}>
-      <ProvideScreenDimensions>
+      <SafeAreaProvider>
         <ArtsyKeyboardAvoidingViewContext.Provider value={{ isPresentedModally, isVisible }}>
           <ScreenPadding
             isPresentedModally={isPresentedModally}
@@ -57,7 +58,7 @@ const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) =
             <BackButton show={showBackButton} />
           </ScreenPadding>
         </ArtsyKeyboardAvoidingViewContext.Provider>
-      </ProvideScreenDimensions>
+      </SafeAreaProvider>
     </LegacyBackButtonContext.Provider>
   )
 }

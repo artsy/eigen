@@ -1,8 +1,8 @@
 import { ToastProvider } from "lib/Components/Toast/toastHook"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
-import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Theme } from "palette"
 import React from "react"
+import { SafeAreaProvider } from "react-native-safe-area-context"
 import ReactTestRenderer from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 
@@ -41,14 +41,19 @@ export const renderWithWrappers = (component: ReactElement) => {
  * Returns given component wrapped with our page wrappers
  * @param component
  */
-export const componentWithWrappers = (component: ReactElement) => {
-  return (
-    <GlobalStoreProvider>
+export const componentWithWrappers = (component: ReactElement) => <TestWrappers>{component}</TestWrappers>
+
+export const TestWrappers: React.FC = (props) => (
+  <GlobalStoreProvider>
+    <SafeAreaProvider
+      initialMetrics={{
+        frame: { x: 0, y: 0, width: 380, height: 550 },
+        insets: { top: 20, left: 0, right: 0, bottom: 0 },
+      }}
+    >
       <Theme>
-        <ToastProvider>
-          <ProvideScreenDimensions>{component}</ProvideScreenDimensions>
-        </ToastProvider>
+        <ToastProvider>{props.children}</ToastProvider>
       </Theme>
-    </GlobalStoreProvider>
-  )
-}
+    </SafeAreaProvider>
+  </GlobalStoreProvider>
+)

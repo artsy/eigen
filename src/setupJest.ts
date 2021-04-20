@@ -296,31 +296,6 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
   })
 }
 
-jest.mock("./lib/utils/useScreenDimensions", () => {
-  const React = require("react")
-  const screenDimensions: ScreenDimensionsWithSafeAreas = {
-    width: 380,
-    height: 550,
-    orientation: "portrait",
-    safeAreaInsets: {
-      top: 20,
-      left: 0,
-      right: 0,
-      bottom: 0,
-    },
-  }
-
-  return {
-    ScreenDimensionsContext: {
-      Consumer: ({ children }: any) => children(screenDimensions),
-    },
-    ProvideScreenDimensions: ({ children }: React.PropsWithChildren<{}>) => {
-      return React.createElement(React.Fragment, null, children)
-    },
-    useScreenDimensions: () => screenDimensions,
-  }
-})
-
 jest.mock("@react-native-community/async-storage", () => {
   let state: any = {}
   return {
