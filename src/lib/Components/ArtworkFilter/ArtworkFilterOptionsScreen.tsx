@@ -13,7 +13,7 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
-import { ArrowRightIcon, Box, CloseIcon, color, FilterIcon, Flex, Sans, Separator } from "palette"
+import { ArrowRightIcon, Box, CloseIcon, color, FilterIcon, Flex, Sans, Separator, space, Text } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
@@ -63,7 +63,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
   StackScreenProps<ArtworkFilterNavigationStack, "FilterOptionsScreen">
 > = ({ navigation, route }) => {
   const tracking = useTracking()
-  const { closeModal, id, mode, slug, title = "Filter" } = route.params
+  const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
@@ -118,44 +118,44 @@ export const ArtworkFilterOptionsScreen: React.FC<
 
   return (
     <Flex style={{ flex: 1 }}>
-      <Flex flexGrow={0} flexDirection="row" justifyContent="space-between">
-        <Flex position="absolute" width="100%" height={67} justifyContent="center" alignItems="center">
-          <Sans size="4" weight="medium">
-            {title}
-          </Sans>
-        </Flex>
-
-        <Flex alignItems="flex-end" mt={0.5} mb={2}>
+      <Flex flexGrow={0} flexDirection="row" justifyContent="space-between" alignItems="center" height={space(6)}>
+        <Flex flex={1} alignItems="flex-start">
           <CloseIconContainer hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={handleTappingCloseIcon}>
             <CloseIcon fill="black100" />
           </CloseIconContainer>
         </Flex>
 
-        <ClearAllButton
-          disabled={!isClearAllButtonEnabled}
-          onPress={() => {
-            switch (mode) {
-              case FilterModalMode.Collection:
-                trackClear(PageNames.Collection, OwnerEntityTypes.Collection)
-                break
-              case FilterModalMode.ArtistArtworks:
-                trackClear(PageNames.ArtistPage, OwnerEntityTypes.Artist)
-                break
-              case FilterModalMode.ArtistSeries:
-                trackClear(PageNames.ArtistSeriesPage, OwnerEntityTypes.ArtistSeries)
-                break
-              case "Fair":
-                trackClear(PageNames.FairPage, OwnerEntityTypes.Fair)
-                break
-            }
+        <Flex flex={1} alignItems="center">
+          <Text variant="mediumText">{title}</Text>
+        </Flex>
 
-            clearAllFilters()
-          }}
-        >
-          <Sans mr={2} mt={2} size="4" color={isClearAllButtonEnabled ? "black100" : "black30"}>
-            Clear all
-          </Sans>
-        </ClearAllButton>
+        <Flex flex={1} alignItems="flex-end">
+          <ClearAllButton
+            disabled={!isClearAllButtonEnabled}
+            onPress={() => {
+              switch (mode) {
+                case FilterModalMode.Collection:
+                  trackClear(PageNames.Collection, OwnerEntityTypes.Collection)
+                  break
+                case FilterModalMode.ArtistArtworks:
+                  trackClear(PageNames.ArtistPage, OwnerEntityTypes.Artist)
+                  break
+                case FilterModalMode.ArtistSeries:
+                  trackClear(PageNames.ArtistSeriesPage, OwnerEntityTypes.ArtistSeries)
+                  break
+                case "Fair":
+                  trackClear(PageNames.FairPage, OwnerEntityTypes.Fair)
+                  break
+              }
+
+              clearAllFilters()
+            }}
+          >
+            <Text variant="text" color={isClearAllButtonEnabled ? "black100" : "black30"}>
+              Clear all
+            </Text>
+          </ClearAllButton>
+        </Flex>
       </Flex>
 
       <Separator />
@@ -305,11 +305,6 @@ const ColorSwatch: React.FC<{ colorOption: ColorOption }> = ({ colorOption }) =>
   )
 }
 
-export const FilterHeader = styled(Sans)`
-  margin-top: 20px;
-  padding-left: 35px;
-`
-
 export const FilterArtworkButton = styled(Flex)`
   background-color: ${color("black100")};
   align-items: center;
@@ -388,7 +383,11 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
 }
 
 export const CloseIconContainer = styled(TouchableOpacity)`
-  margin: 20px 0px 0px 20px;
+  padding: ${space(2)}px;
+`
+
+export const ClearAllButton = styled(TouchableOpacity)`
+  padding: ${space(2)}px;
 `
 
 export const OptionListItem = styled(Flex)`
@@ -400,7 +399,6 @@ export const OptionListItem = styled(Flex)`
 export const CurrentOption = styled(Sans)`
   color: ${color("black60")};
 `
-export const ClearAllButton = styled(TouchableOpacity)``
 
 export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
   additionalGeneIDs: {
