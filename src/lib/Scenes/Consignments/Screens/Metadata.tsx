@@ -4,9 +4,8 @@ import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createCo
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Select } from "lib/Components/Select"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
-import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
 import { Sans } from "palette"
-import { ScrollView, View, ViewProperties } from "react-native"
+import { Dimensions, ScrollView, View, ViewProperties } from "react-native"
 import { ConsignmentMetadata } from "../"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { Row } from "../Components/FormElements"
@@ -116,6 +115,8 @@ export default class Metadata extends React.Component<Props, State> {
   }
 
   render() {
+    const { height } = Dimensions.get("window")
+
     return (
       <View style={{ flex: 1 }}>
         <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
@@ -225,20 +226,16 @@ export default class Metadata extends React.Component<Props, State> {
                 </View>
               </Row>
               <View style={{ paddingHorizontal: 10 }}>
-                <ScreenDimensionsContext.Consumer>
-                  {({ height }) => (
-                    <Select
-                      title="Category"
-                      maxModalHeight={height * 0.75}
-                      options={categoryOptions.map((o) => ({
-                        label: o.name,
-                        value: o.value,
-                      }))}
-                      onSelectValue={this.changeCategoryValue}
-                      value={this.state.category}
-                    />
-                  )}
-                </ScreenDimensionsContext.Consumer>
+                <Select
+                  title="Category"
+                  maxModalHeight={height * 0.75}
+                  options={categoryOptions.map((o) => ({
+                    label: o.name,
+                    value: o.value,
+                  }))}
+                  onSelectValue={this.changeCategoryValue}
+                  value={this.state.category}
+                />
               </View>
             </View>
           </ScrollView>

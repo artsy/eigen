@@ -10,6 +10,7 @@ import { EmailConfirmationBannerTestsQuery } from "__generated__/EmailConfirmati
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { EmailConfirmationBannerFragmentContainer } from "../EmailConfirmationBanner"
+import { extractText } from "lib/tests/extractText"
 
 jest.unmock("react-relay")
 const originalError = console.error
@@ -44,10 +45,6 @@ describe("EmailConfirmationBanner", () => {
     return component
   }
 
-  const extractText = (component: ReactTestRenderer) => {
-    return component.root.findByType(Sans).props.children
-  }
-
   const getSubmitButton = (component: ReactTestRenderer) => {
     return component.root.findAllByType(TouchableWithoutFeedback)[0]
   }
@@ -67,13 +64,13 @@ describe("EmailConfirmationBanner", () => {
   it("does not render a banner when the user's email is already confirmed", () => {
     const component = mount({ me: { canRequestEmailConfirmation: false } })
 
-    expect(component.toJSON()).toBeNull()
+    expect(extractText(component.root)).toEqual("")
   })
 
   it("renders a banner when the user's email is not confirmed", () => {
     const component = mount({ me: { canRequestEmailConfirmation: true } })
 
-    expect(extractText(component)).toEqual("Tap here to verify your email address")
+    expect(extractText(component.root)).toEqual("Tap here to verify your email address")
   })
 
   it("dismisses the banner when the x button is tapped", () => {
@@ -81,7 +78,7 @@ describe("EmailConfirmationBanner", () => {
 
     getCloseButton(component).props.onPress()
 
-    expect(component.toJSON()).toBeNull()
+    expect(extractText(component.root)).toEqual("")
   })
 
   it("shows a message for a loading state after tapping", async () => {
@@ -89,7 +86,7 @@ describe("EmailConfirmationBanner", () => {
 
     getSubmitButton(component).props.onPress()
 
-    expect(extractText(component)).toEqual("Sending a confirmation email...")
+    expect(extractText(component.root)).toEqual("Sending a confirmation email...")
   })
 
   it("shows a successful message when the request is successful", async () => {
@@ -111,7 +108,7 @@ describe("EmailConfirmationBanner", () => {
 
     await flushPromiseQueue()
 
-    expect(extractText(component)).toEqual("Email sent to i.am.unconfirmed@gmail.com")
+    expect(extractText(component.root)).toEqual("Email sent to i.am.unconfirmed@gmail.com")
   })
 
   it("should not be clickable after a successful response", async () => {
@@ -157,7 +154,7 @@ describe("EmailConfirmationBanner", () => {
     })
 
     await flushPromiseQueue()
-    expect(extractText(component)).toEqual("Your email is already confirmed")
+    expect(extractText(component.root)).toEqual("Your email is already confirmed")
     expect(getSubmitButton(component).props.onPress).toBeUndefined()
   })
 
@@ -171,7 +168,7 @@ describe("EmailConfirmationBanner", () => {
     env.mock.rejectMostRecentOperation(new Error("failed to fetch"))
 
     await flushPromiseQueue()
-    expect(extractText(component)).toEqual("Something went wrong. Try again?")
+    expect(extractText(component.root)).toEqual("Something went wrong. Try again?")
     expect(getSubmitButton(component).props.onPress).toBeDefined()
   })
 })
