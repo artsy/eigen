@@ -10,7 +10,7 @@ import { Schema, Track, track as _track } from "lib/utils/track"
 import * as _ from "lodash"
 import { Box, Button, Sans } from "palette"
 import React from "react"
-import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
+import { Dimensions, StyleSheet, View, ViewProps, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "../Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import About from "../Components/Gene/About"
@@ -25,7 +25,7 @@ const TABS = {
   ABOUT: "About",
 }
 
-interface Props extends ViewProperties {
+interface Props extends ViewProps {
   medium: string
   price_range: string
   gene: Gene_gene

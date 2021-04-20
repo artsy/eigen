@@ -3,7 +3,7 @@ import { SearchResults } from "../Components/SearchResults"
 
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { LocationIcon } from "palette"
-import { View, ViewProperties } from "react-native"
+import { View, ViewProps } from "react-native"
 import { ConsignmentSetup, LocationResult } from "../index"
 
 import { stringify } from "qs"
@@ -14,7 +14,7 @@ import { Dimensions } from "react-native"
 import Config from "react-native-config"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 
-interface Props extends ConsignmentSetup, ViewProperties {
+interface Props extends ConsignmentSetup, ViewProps {
   navigator: NavigatorIOS
   updateWithResult?: (city: string, state: string, country: string) => void
 }

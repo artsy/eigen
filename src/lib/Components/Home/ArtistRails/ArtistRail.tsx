@@ -3,7 +3,7 @@
 //       let Relay re-render the cards.
 
 import React, { useImperativeHandle, useRef, useState } from "react"
-import { FlatList, View, ViewProperties } from "react-native"
+import { FlatList, View, ViewProps } from "react-native"
 import { commitMutation, createFragmentContainer, fetchQuery, graphql, RelayProp } from "react-relay"
 
 import HomeAnalytics from "lib/Scenes/Home/homeAnalytics"
@@ -29,7 +29,7 @@ interface SuggestedArtist extends Pick<ArtistCard_artist, Exclude<keyof ArtistCa
   _disappearable: Disappearable | null
 }
 
-interface Props extends ViewProperties {
+interface Props extends ViewProps {
   relay: RelayProp
   rail: ArtistRail_rail
 }

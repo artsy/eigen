@@ -153,7 +153,7 @@ export class ProvideScreenTrackingWithCohesionSchema extends React.Component<Pro
  *      ```ts
  *      import { screenTrack, Schema } from "lib/utils/track"
  *
- *      interface Props extends ViewProperties {
+ *      interface Props extends ViewProps {
  *        // [...]
  *      }
  *

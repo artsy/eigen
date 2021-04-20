@@ -1,8 +1,7 @@
 import React, { Component } from "react"
-import { TextInputProperties } from "react-native"
 import { TextInput, TextInputProps } from "../Elements/TextInput"
 
-export interface InputProps extends TextInputProps, TextInputProperties {
+export interface InputProps extends TextInputProps {
   error?: boolean
   inputRef?: (component: any) => void
 }

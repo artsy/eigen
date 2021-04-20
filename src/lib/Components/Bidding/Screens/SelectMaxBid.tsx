@@ -1,6 +1,6 @@
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
-import { ActivityIndicator, Dimensions, View, ViewProperties } from "react-native"
+import { ActivityIndicator, Dimensions, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { Schema, screenTrack } from "../../../utils/track"
@@ -19,7 +19,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { compact } from "lodash"
 
-interface SelectMaxBidProps extends ViewProperties {
+interface SelectMaxBidProps extends ViewProps {
   sale_artwork: SelectMaxBid_sale_artwork
   me: SelectMaxBid_me
   navigator: NavigatorIOS

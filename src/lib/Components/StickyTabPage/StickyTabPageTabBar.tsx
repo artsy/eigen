@@ -2,7 +2,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { compact } from "lodash"
 import { color, Sans, space } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { Animated, LayoutRectangle, ScrollView, TouchableOpacity, View, ViewProperties } from "react-native"
+import { Animated, LayoutRectangle, ScrollView, TouchableOpacity, View, ViewProps } from "react-native"
 import { useStickyTabPageContext } from "./SitckyTabPageContext"
 
 export const TAB_BAR_HEIGHT = 48
@@ -95,7 +95,7 @@ export const StickyTabPageTabBar: React.FC<{ onTabPress?(tab: { label: string; i
 export const StickyTab: React.FC<{
   label: string
   active: boolean
-  onLayout: ViewProperties["onLayout"]
+  onLayout: ViewProps["onLayout"]
   onPress(): void
 }> = ({ label, active, onPress, onLayout }) => {
   return (

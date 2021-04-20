@@ -2,12 +2,12 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Theme } from "palette"
 import React from "react"
-import { View, ViewProperties } from "react-native"
+import { View, ViewProps } from "react-native"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import TextArea from "../Components/TextArea"
 import { ConsignmentSetup } from "../index"
 
-interface Props extends ConsignmentSetup, ViewProperties {
+interface Props extends ConsignmentSetup, ViewProps {
   navigator: NavigatorIOS
   updateWithProvenance?: (provenance: string) => void
 }

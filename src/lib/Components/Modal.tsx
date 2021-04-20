@@ -2,10 +2,10 @@ import { TextAlignProperty } from "csstype"
 import { theme } from "lib/Components/Bidding/Elements/Theme"
 import { Button, Sans } from "palette"
 import React from "react"
-import { Modal as RNModal, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
+import { Modal as RNModal, TouchableWithoutFeedback, View, ViewProps } from "react-native"
 import styled from "styled-components/native"
 
-interface ModalProps extends ViewProperties {
+interface ModalProps extends ViewProps {
   headerText: string
   detailText: string
   visible?: boolean

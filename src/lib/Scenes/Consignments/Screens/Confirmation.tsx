@@ -5,10 +5,10 @@ import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack } from "lib/utils/track"
 import { Box, Button, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
-import { Alert, BackHandler, NativeEventSubscription, View, ViewProperties } from "react-native"
+import { Alert, BackHandler, NativeEventSubscription, View, ViewProps } from "react-native"
 import styled from "styled-components/native"
 
-interface Props extends ViewProperties {
+interface Props extends ViewProps {
   navigator: NavigatorIOS
   /** Used for testing, it's expected to be undefined in prod */
   initialState?: SubmissionTypes

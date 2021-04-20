@@ -1,10 +1,10 @@
 import React from "react"
-import { StyleSheet, Text, TextProperties, TextStyle } from "react-native"
+import { StyleSheet, Text, TextProps, TextStyle } from "react-native"
 
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 
-const LargeHeadline: React.FC<TextProperties> = (props) => {
+const LargeHeadline: React.FC<TextProps> = (props) => {
   const children: string = (props as any).children
   const style = [styles.largeHeadlineDefault, props.style || {}, styles.largeHeadlineRequired]
   return (
@@ -14,7 +14,7 @@ const LargeHeadline: React.FC<TextProperties> = (props) => {
   )
 }
 
-const SmallHeadline: React.FC<TextProperties> = (props: TextProperties) => {
+const SmallHeadline: React.FC<TextProps> = (props) => {
   const children: string = (props as any).children
   const style = [styles.smallHeadlineDefault, props.style || {}, styles.smallHeadlineRequired]
   return (
@@ -24,7 +24,7 @@ const SmallHeadline: React.FC<TextProperties> = (props: TextProperties) => {
   )
 }
 
-const Subtitle: React.FC<TextProperties> = (props: TextProperties) => {
+const Subtitle: React.FC<TextProps> = (props) => {
   const children: string = (props as any).children
   const style = [styles.subtitleDefault, props.style || {}, styles.subtitleRequired]
   return (
@@ -34,7 +34,7 @@ const Subtitle: React.FC<TextProperties> = (props: TextProperties) => {
   )
 }
 
-const BodyText: React.FC<TextProperties> = (props: TextProperties) => {
+const BodyText: React.FC<TextProps> = (props) => {
   const children: string = (props as any).children
   const style = [styles.bodyDefault, props.style || {}, styles.bodyRequired]
   return (
@@ -44,7 +44,7 @@ const BodyText: React.FC<TextProperties> = (props: TextProperties) => {
   )
 }
 
-const SmallPrint: React.FC<TextProperties> = (props: TextProperties) => {
+const SmallPrint: React.FC<TextProps> = (props) => {
   const children: string = (props as any).children
   const style = [styles.smallPrintDefault, props.style || {}, styles.smallPrintRequired]
   return (
