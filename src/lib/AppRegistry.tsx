@@ -70,6 +70,7 @@ import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
+import { SafeAreaProvider } from "react-native-safe-area-context"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { ToastProvider } from "./Components/Toast/toastHook"
@@ -90,7 +91,7 @@ import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRooms
 import { GlobalStore, GlobalStoreProvider, useSelectedTab } from "./store/GlobalStore"
 import { AdminMenu } from "./utils/AdminMenu"
 import { Schema, screenTrack, track } from "./utils/track"
-import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
+import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
 
 LogBox.ignoreLogs([
@@ -222,7 +223,7 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, V
 class PageWrapper extends React.Component<PageWrapperProps> {
   render() {
     return (
-      <ProvideScreenDimensions>
+      <SafeAreaProvider>
         <ActionSheetProvider>
           <RelayEnvironmentProvider environment={defaultEnvironment}>
             <GlobalStoreProvider>
@@ -236,7 +237,7 @@ class PageWrapper extends React.Component<PageWrapperProps> {
             </GlobalStoreProvider>
           </RelayEnvironmentProvider>
         </ActionSheetProvider>
-      </ProvideScreenDimensions>
+      </SafeAreaProvider>
     )
   }
 }

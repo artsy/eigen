@@ -4,6 +4,7 @@ import { Theme } from "palette"
 import React, { useEffect, useRef } from "react"
 import { useCallback } from "react"
 import { Linking, UIManager, View } from "react-native"
+import { SafeAreaProvider } from "react-native-safe-area-context"
 import track from "react-tracking"
 import { RelayEnvironmentProvider } from "relay-hooks"
 import { useWebViewCookies } from "./Components/ArtsyReactWebView"
@@ -17,7 +18,6 @@ import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { AdminMenuWrapper } from "./utils/AdminMenuWrapper"
-import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
 
 import RNBootSplash from "react-native-bootsplash"
@@ -107,7 +107,7 @@ const Main: React.FC<{}> = track()(({}) => {
 
 export const App = () => (
   <RelayEnvironmentProvider environment={defaultEnvironment}>
-    <ProvideScreenDimensions>
+    <SafeAreaProvider>
       <Theme>
         <ActionSheetProvider>
           <ToastProvider>
@@ -121,6 +121,6 @@ export const App = () => (
           </ToastProvider>
         </ActionSheetProvider>
       </Theme>
-    </ProvideScreenDimensions>
+    </SafeAreaProvider>
   </RelayEnvironmentProvider>
 )
