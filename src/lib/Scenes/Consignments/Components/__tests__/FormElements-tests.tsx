@@ -4,7 +4,7 @@ import "react-native"
 
 import { Row } from "../FormElements"
 
-describe("Row", () => {
+describe(Row, () => {
   it("row passes style props, and other props into the view", () => {
     const tree = renderWithWrappers(
       <Row
@@ -13,12 +13,10 @@ describe("Row", () => {
           scaleX: 23,
         }}
       />
-    ).toJSON()
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(tree.props.renderToHardwareTextureAndroid).toBeTruthy()
+    )
+    expect(tree.root.findByType(Row).props.renderToHardwareTextureAndroid).toBeTruthy()
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const styles = Object.keys(tree.props.style[0])
-    expect(styles).toContain("scaleX")
+    const styles = tree.root.findByType(Row).props.style
+    expect(styles).toContainKey("scaleX")
   })
 })

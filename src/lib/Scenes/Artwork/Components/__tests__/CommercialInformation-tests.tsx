@@ -2,9 +2,9 @@
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Countdown } from "lib/Components/Bidding/Components/Timer"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { TestWrappers } from "lib/tests/renderWithWrappers"
 import "moment-timezone"
-import { color, Sans, Theme } from "palette"
+import { color, Sans } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
@@ -13,14 +13,6 @@ import { BuyNowButton } from "../CommercialButtons/BuyNowButton"
 import { CommercialButtons } from "../CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformation } from "../CommercialEditionSetInformation"
 import { CommercialInformationTimerWrapper, SaleAvailability } from "../CommercialInformation"
-
-const Wrapper: React.FC<{}> = ({ children }) => {
-  return (
-    <Theme>
-      <GlobalStoreProvider>{children}</GlobalStoreProvider>
-    </Theme>
-  )
-}
 
 describe("CommercialInformation", () => {
   it("renders all information when the data is present", () => {
@@ -31,9 +23,9 @@ describe("CommercialInformation", () => {
     }
 
     const component = mount(
-      <Wrapper>
+      <TestWrappers>
         <CommercialInformationTimerWrapper artwork={ForSaleArtwork as any} me={{ identityVerified: false } as any} />
-      </Wrapper>
+      </TestWrappers>
     )
 
     expect(component.text()).toContain("For sale")
@@ -49,9 +41,9 @@ describe("CommercialInformation", () => {
     }
 
     const component = mount(
-      <Wrapper>
+      <TestWrappers>
         <CommercialInformationTimerWrapper artwork={OnHoldArtwork as any} me={{ identityVerified: false } as any} />
-      </Wrapper>
+      </TestWrappers>
     )
 
     expect(component.text()).toContain("On hold")
@@ -66,9 +58,9 @@ describe("CommercialInformation", () => {
     }
 
     const component = mount(
-      <Wrapper>
+      <TestWrappers>
         <CommercialInformationTimerWrapper artwork={SoldArtwork as any} me={{ identityVerified: false } as any} />
-      </Wrapper>
+      </TestWrappers>
     )
 
     expect(component.text()).toContain("Sold")
@@ -83,9 +75,9 @@ describe("CommercialInformation", () => {
     }
 
     const component = mount(
-      <Wrapper>
+      <TestWrappers>
         <CommercialInformationTimerWrapper artwork={ForSaleArtwork as any} me={{ identityVerified: false } as any} />
-      </Wrapper>
+      </TestWrappers>
     )
 
     expect(component.text()).toContain("For sale")
@@ -103,12 +95,12 @@ describe("CommercialInformation", () => {
       },
     }
     const component = mount(
-      <Wrapper>
+      <TestWrappers>
         <CommercialInformationTimerWrapper
           artwork={workInEndedAuction as any}
           me={{ identityVerified: false } as any}
         />
-      </Wrapper>
+      </TestWrappers>
     )
 
     expect(component.text()).toContain("Bidding closed")
@@ -126,12 +118,12 @@ describe("CommercialInformation", () => {
     }
 
     const component = mount(
-      <Wrapper>
+      <TestWrappers>
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationArtworkClosedAuction as any}
           me={{ identityVerified: false } as any}
         />
-      </Wrapper>
+      </TestWrappers>
     )
     expect(component.text()).toContain("Bidding closed")
     expect(component.text()).not.toContain("I'm a Gallery")
@@ -180,12 +172,12 @@ describe("CommercialInformation", () => {
       },
     }
     const component = mount(
-      <Wrapper>
+      <TestWrappers>
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationArtworkNoData as any}
           me={{ identityVerified: false } as any}
         />
-      </Wrapper>
+      </TestWrappers>
     )
     expect(component.text()).not.toContain("For sale")
     expect(component.text()).not.toContain("I'm a Gallery")
@@ -199,24 +191,24 @@ describe("CommercialInformation", () => {
       isForSale: false,
     }
     const component = mount(
-      <Wrapper>
+      <TestWrappers>
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationArtworkNonCommercial as any}
           me={{ identityVerified: false } as any}
         />
-      </Wrapper>
+      </TestWrappers>
     )
     expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(`"At I'm a Gallery"`)
   })
 
   it("renders consign with Artsy text", () => {
     const component = mount(
-      <Wrapper>
+      <TestWrappers>
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationArtwork as any}
           me={{ identityVerified: false } as any}
         />
-      </Wrapper>
+      </TestWrappers>
     )
 
     expect(component.find(Sans).at(2).render().text()).toMatchInlineSnapshot(
@@ -258,12 +250,12 @@ describe("CommercialInformation", () => {
     }
 
     const component = mount(
-      <Wrapper>
+      <TestWrappers>
         <CommercialInformationTimerWrapper
           artwork={artworkWithEditionSets as any}
           me={{ identityVerified: false } as any}
         />
-      </Wrapper>
+      </TestWrappers>
     )
 
     // Expect the component to default to first edition set's internalID
@@ -280,13 +272,13 @@ describe("CommercialInformation", () => {
 describe("CommercialInformation buttons and coundtown timer", () => {
   it("renders CountDownTimer and BidButton when Artwork is in an auction", () => {
     const component = mount(
-      <Wrapper>
+      <TestWrappers>
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationArtworkInAuction as any}
           me={{ identityVerified: false } as any}
           tracking={{ trackEvent: jest.fn() } as any}
         />
-      </Wrapper>
+      </TestWrappers>
     )
     expect(component.find(Countdown).length).toEqual(1)
     expect(component.find(BidButton).length).toEqual(1)
@@ -301,13 +293,13 @@ describe("CommercialInformation buttons and coundtown timer", () => {
     }
 
     const component = mount(
-      <Wrapper>
+      <TestWrappers>
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationSoldArtworkInAuction as any}
           me={{ identityVerified: false } as any}
           tracking={{ trackEvent: jest.fn() } as any}
         />
-      </Wrapper>
+      </TestWrappers>
     )
     expect(component.find(Countdown).length).toEqual(0)
     expect(component.find(BidButton).length).toEqual(0)
@@ -316,12 +308,12 @@ describe("CommercialInformation buttons and coundtown timer", () => {
 
   it("doesn't render CountDownTimer or BidButton when not in auction", () => {
     const component = mount(
-      <Wrapper>
+      <TestWrappers>
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationAcquierableArtwork as any}
           me={{ identityVerified: false } as any}
         />
-      </Wrapper>
+      </TestWrappers>
     )
     expect(component.find(Countdown).length).toEqual(0)
     expect(component.find(BidButton).length).toEqual(0)
@@ -351,12 +343,12 @@ describe("ArtworkExtraLinks", () => {
     }
 
     const component = mount(
-      <Wrapper>
+      <TestWrappers>
         <CommercialInformationTimerWrapper
           artwork={inquireableArtwork as any}
           me={{ identityVerified: false } as any}
         />
-      </Wrapper>
+      </TestWrappers>
     )
     expect(component.find(ArtworkExtraLinks).length).toEqual(0)
   })
@@ -374,12 +366,12 @@ describe("ArtworkExtraLinks", () => {
     }
 
     const component = mount(
-      <Wrapper>
+      <TestWrappers>
         <CommercialInformationTimerWrapper
           artwork={acquireableArtwork as any}
           me={{ identityVerified: false } as any}
         />
-      </Wrapper>
+      </TestWrappers>
     )
     expect(component.find(ArtworkExtraLinks).length).toEqual(1)
   })
@@ -397,9 +389,9 @@ describe("ArtworkExtraLinks", () => {
     }
 
     const component = mount(
-      <Wrapper>
+      <TestWrappers>
         <CommercialInformationTimerWrapper artwork={offerableArtwork as any} me={{ identityVerified: false } as any} />
-      </Wrapper>
+      </TestWrappers>
     )
     expect(component.find(ArtworkExtraLinks).length).toEqual(1)
   })
@@ -411,13 +403,13 @@ describe("ArtworkExtraLinks", () => {
     }
 
     const component = mount(
-      <Wrapper>
+      <TestWrappers>
         <CommercialInformationTimerWrapper
           artwork={nonConsignableBiddableArtwork as any}
           me={{ identityVerified: false } as any}
           tracking={{ trackEvent: jest.fn() } as any}
         />
-      </Wrapper>
+      </TestWrappers>
     )
     expect(component.find(ArtworkExtraLinks).length).toEqual(1)
   })

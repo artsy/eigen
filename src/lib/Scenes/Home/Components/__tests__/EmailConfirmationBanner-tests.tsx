@@ -6,10 +6,10 @@ import { createMockEnvironment } from "relay-test-utils"
 
 import { EmailConfirmationBanner_me } from "__generated__/EmailConfirmationBanner_me.graphql"
 import { EmailConfirmationBannerTestsQuery } from "__generated__/EmailConfirmationBannerTestsQuery.graphql"
+import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { EmailConfirmationBannerFragmentContainer } from "../EmailConfirmationBanner"
-import { extractText } from "lib/tests/extractText"
 
 jest.unmock("react-relay")
 const originalError = console.error

@@ -49,6 +49,6 @@ describe(UserProfileQueryRenderer, () => {
       env.mock.rejectMostRecentOperation(new Error())
     })
 
-    expect(tree).toMatchInlineSnapshot(`null`)
+    expect(extractText(tree.root)).toBe("")
   })
 })
