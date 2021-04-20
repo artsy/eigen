@@ -50,6 +50,7 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
           placeholder="First and Last Name"
           placeholderTextColor={color("black30")}
           returnKeyType="done"
+          maxLength={128}
           value={values.name}
           error={errors.name}
         />
