@@ -50,7 +50,9 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
     setTimeout(() => {
       navigation.setParams({ withFadeAnimation: false })
     }, 1000)
-    handleChange("email")(route.params?.email || "")
+    if (route.params?.email) {
+      handleChange("email")(route.params?.email || "")
+    }
   }, [])
 
   return (
