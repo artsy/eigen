@@ -24,11 +24,13 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
   const { internalID: orderID, offers } = activeOrder
   const { trackEvent } = useTracking()
 
-  const { hours } = useEventTiming({
+  const { hours, minutes } = useEventTiming({
     currentTime: DateTime.local().toString(),
     startAt: activeOrder.lastOffer?.createdAt,
     endAt: activeOrder.stateExpiresAt || undefined,
   })
+
+  const expiresIn = Number(hours) < 1 ? `${minutes}m` : `${hours}hr`
   const offerType = (offers?.edges?.length || []) > 1 ? "Counteroffer" : "Offer"
 
   let ctaAttributes: {
@@ -45,10 +47,10 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
       ctaAttributes = {
         backgroundColor: "red100",
         message: "Payment Failed",
-        subMessage: "Please update payment method",
+        subMessage: "Unable to process payment for accepted offer. Update payment method.",
         Icon: AlertCircleFillIcon,
         url: `/orders/${orderID}/payment/new`,
-        modalTitle: "Retry Payment",
+        modalTitle: "Update Payment Details",
       }
       break
     }
@@ -56,11 +58,10 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
       ctaAttributes = {
         backgroundColor: "copper100",
         message: `${offerType} Received`,
-        // TODO: what about <1 hr?
-        subMessage: `Expires in ${hours}hr`,
+        subMessage: `Expires in ${expiresIn}`,
         Icon: AlertCircleFillIcon,
         url: `/orders/${orderID}`,
-        modalTitle: "Make Offer",
+        modalTitle: "Review Offer",
       }
       break
     }
@@ -71,7 +72,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
         subMessage: "Tap to view",
         Icon: MoneyFillIcon,
         url: `/orders/${orderID}`,
-        modalTitle: "Make Offer",
+        modalTitle: "Offer Accepted",
       }
       break
     }
