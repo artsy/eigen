@@ -36,7 +36,7 @@ describe("OnboardingCreateAccount", () => {
   it("form validation works properly", async () => {
     const tree = renderWithWrappers(<OnboardingCreateAccount navigation={navigationMock as any} route={null as any} />)
 
-    const signUpButton = tree.root.findAllByProps({ testID: "signUpButton" })[0]
+    const signUpButton = tree.root.findByProps({ testID: "signUpButton" })
 
     signUpButton.props.onPress()
 
