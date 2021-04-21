@@ -15,6 +15,7 @@ upcoming:
     - Fix infinite spinner on Android when following within an artist rail - pepopowitz
     - Release multi-select time period filter - iskounen
     - Refine filter header typography, spacing & copy - damon
+    - Fix renderWithLoadProgress on android - brian, mounir, pavlos
 
 releases:
   - version: 6.8.3
