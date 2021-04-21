@@ -1005,6 +1005,7 @@ type ArtistPartnerConnection {
 type ArtistPartnerEdge {
   artist: Artist
   biography: String
+  biographyBlurb(format: Format): PartnerArtistBlurb
   counts: PartnerArtistCounts
 
   # A cursor for use in pagination
@@ -8003,7 +8004,9 @@ type Partner implements Node {
   # A connection of artists at a partner.
   artistsConnection(
     after: String
+    artistIDs: [String]
     before: String
+    displayOnPartnerProfile: Boolean
     first: Int
     last: Int
     representedBy: Boolean
@@ -8159,6 +8162,7 @@ type Partner implements Node {
 type PartnerArtist {
   artist: Artist
   biography: String
+  biographyBlurb(format: Format): PartnerArtistBlurb
   counts: PartnerArtistCounts
 
   # A globally unique ID.
@@ -8171,6 +8175,11 @@ type PartnerArtist {
   partner: Partner
   representedBy: Boolean
   sortableID: String
+}
+
+type PartnerArtistBlurb {
+  credit: String
+  text: String
 }
 
 # A connection to a list of items.
@@ -8199,6 +8208,7 @@ type PartnerArtistCounts {
 type PartnerArtistEdge {
   artist: Artist
   biography: String
+  biographyBlurb(format: Format): PartnerArtistBlurb
   counts: PartnerArtistCounts
 
   # A cursor for use in pagination
