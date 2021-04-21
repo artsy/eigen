@@ -18,7 +18,7 @@ export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPa
     <Flex backgroundColor="white" flexGrow={1}>
       <ScrollView
         contentContainerStyle={{
-          paddingHorizontal: 15,
+          paddingHorizontal: 20,
           paddingTop: useScreenDimensions().safeAreaInsets.top,
           justifyContent: "flex-start",
         }}
@@ -62,6 +62,7 @@ export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPa
           textContentType="password"
           value={values.password}
           error={errors.password}
+          testID="passwordInput"
         />
       </ScrollView>
     </Flex>

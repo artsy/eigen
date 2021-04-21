@@ -86,8 +86,8 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
           color: whiteWithOpacity,
         },
         hover: {
-          backgroundColor: purple100WithOpaicty,
-          borderColor: purple100WithOpaicty,
+          backgroundColor: purple100WithOpacity,
+          borderColor: purple100WithOpacity,
           color: whiteWithOpacity,
         },
       }
@@ -99,8 +99,8 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
           color: black100WithOpacity,
         },
         hover: {
-          backgroundColor: purple100WithOpaicty,
-          borderColor: purple100WithOpaicty,
+          backgroundColor: purple100WithOpacity,
+          borderColor: purple100WithOpacity,
           color: whiteWithOpacity,
         },
       }

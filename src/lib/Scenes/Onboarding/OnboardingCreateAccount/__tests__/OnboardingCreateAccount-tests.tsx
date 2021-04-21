@@ -1,5 +1,4 @@
 import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
-import { Input } from "lib/Components/Input/Input"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { __globalStoreTestUtils__ } from "../../../../store/GlobalStore"
@@ -40,7 +39,7 @@ describe("OnboardingCreateAccount", () => {
 
     signUpButton.props.onPress()
 
-    const emailInput = tree.root.findAllByType(Input)[0]
+    const emailInput = tree.root.findByProps({ testID: "emailInput" })
 
     expect(emailInput.props.placeholder).toEqual("Email address")
 
@@ -67,7 +66,7 @@ describe("OnboardingCreateAccount", () => {
 
     await flushPromiseQueue()
 
-    const passwordInput = tree.root.findAllByType(Input)[1]
+    const passwordInput = tree.root.findByProps({ testID: "passwordInput" })
     expect(passwordInput.props.placeholder).toEqual("Password")
 
     passwordInput.props.onChangeText("invalidEmail")
@@ -80,7 +79,7 @@ describe("OnboardingCreateAccount", () => {
     signUpButton.props.onPress()
     await flushPromiseQueue()
 
-    const nameInput = tree.root.findAllByType(Input)[2]
+    const nameInput = tree.root.findByProps({ testID: "nameInput" })
     nameInput.props.onChangeText("Full Name")
     expect(nameInput.props.placeholder).toEqual("First and Last Name")
 
@@ -121,9 +120,9 @@ describe("OnboardingCreateAccount", () => {
   it("shows go to login button when the email is already used", async () => {
     const tree = renderWithWrappers(<OnboardingCreateAccount navigation={navigationMock as any} route={null as any} />)
 
-    const signUpButton = tree.root.findAllByProps({ testID: "signUpButton" })[0]
+    const signUpButton = tree.root.findByProps({ testID: "signUpButton" })
 
-    const emailInput = tree.root.findAllByType(Input)[0]
+    const emailInput = tree.root.findByProps({ testID: "emailInput" })
 
     emailInput.props.onChangeText("used-email@example.com")
 
@@ -137,7 +136,7 @@ describe("OnboardingCreateAccount", () => {
 
     setTimeout(() => {
       expect(emailInput.props.error).toEqual("We found an account with this email")
-      const loginButton = tree.root.findAllByProps({ testID: "loginButton" })[0]
+      const loginButton = tree.root.findByProps({ testID: "loginButton" })
       loginButton.props.onPress()
       expect(replaceMock).toHaveBeenCalledWith("OnboardingLogin", {
         withFadeAnimation: true,

@@ -18,7 +18,7 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
     <Flex backgroundColor="white" flexGrow={1}>
       <ScrollView
         contentContainerStyle={{
-          paddingHorizontal: 15,
+          paddingHorizontal: 20,
           paddingTop: useScreenDimensions().safeAreaInsets.top,
           justifyContent: "flex-start",
         }}
@@ -53,6 +53,7 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
           maxLength={128}
           value={values.name}
           error={errors.name}
+          testID="nameInput"
         />
       </ScrollView>
     </Flex>

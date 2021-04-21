@@ -22,7 +22,7 @@ export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmail
     <Flex backgroundColor="white" flexGrow={1}>
       <ScrollView
         contentContainerStyle={{
-          paddingHorizontal: 15,
+          paddingHorizontal: 20,
           paddingTop: useScreenDimensions().safeAreaInsets.top,
           justifyContent: "flex-start",
         }}
@@ -61,6 +61,7 @@ export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmail
           autoCorrect={false}
           textContentType="username"
           error={errors.email}
+          testID="emailInput"
         />
       </ScrollView>
     </Flex>

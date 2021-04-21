@@ -51,14 +51,14 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
       navigation.setParams({ withFadeAnimation: false })
     }, 1000)
     if (route.params?.email) {
-      handleChange("email")(route.param.email)
+      handleChange("email")(route.params.email)
     }
   }, [])
 
   return (
     <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>
       <ScrollView
-        contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top, paddingHorizontal: 15 }}
+        contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top, paddingHorizontal: 20 }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
       >

@@ -55,14 +55,14 @@ describe("OnboardingCreateAccountEmail", () => {
 
     it("does not validate email when the user is still typing", () => {
       const tree = renderWithWrappers(<Test />)
-      const input = tree.root.findAllByType(Input)[0]
+      const input = tree.root.findByProps({ testID: "emailInput" })
       input.props.onChangeText("test")
       expect(input.props.error).toEqual(undefined)
     })
 
     it("does validate the email on submit", async () => {
       const tree = renderWithWrappers(<Test />)
-      const input = tree.root.findAllByType(Input)[0]
+      const input = tree.root.findByProps({ testID: "emailInput" })
       input.props.onChangeText("test")
       input.props.onSubmitEditing()
       await flushPromiseQueue()
@@ -71,7 +71,7 @@ describe("OnboardingCreateAccountEmail", () => {
 
     it("hides the error message when the user types", async () => {
       const tree = renderWithWrappers(<Test />)
-      const input = tree.root.findAllByType(Input)[0]
+      const input = tree.root.findByProps({ testID: "emailInput" })
       input.props.onChangeText("test")
       input.props.onSubmitEditing()
       await flushPromiseQueue()

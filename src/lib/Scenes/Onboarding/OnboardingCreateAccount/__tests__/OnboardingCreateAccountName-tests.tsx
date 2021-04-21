@@ -1,5 +1,4 @@
 import { FormikProvider, useFormik } from "formik"
-import { Input } from "lib/Components/Input/Input"
 import { BackButton } from "lib/navigation/BackButton"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -45,7 +44,7 @@ describe("OnboardingCreateAccountName", () => {
   describe("Form", () => {
     it("renders the right name from the formik context", () => {
       const tree = renderWithWrappers(<Test name="Andy warhol" />)
-      const input = tree.root.findAllByType(Input)[0]
+      const input = tree.root.findByProps({ testID: "nameInput" })
       expect(input.props.value).toEqual("Andy warhol")
     })
   })

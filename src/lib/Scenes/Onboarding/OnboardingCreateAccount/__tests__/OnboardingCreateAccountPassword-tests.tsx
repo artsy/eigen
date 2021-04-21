@@ -1,5 +1,4 @@
 import { FormikProvider, useFormik } from "formik"
-import { Input } from "lib/Components/Input/Input"
 import { BackButton } from "lib/navigation/BackButton"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -47,24 +46,24 @@ describe("OnboardingCreateAccountPassword", () => {
   describe("Form", () => {
     it("renders the right password from the formik context", () => {
       const tree1 = renderWithWrappers(<Test />)
-      const input1 = tree1.root.findAllByType(Input)[0]
+      const input1 = tree1.root.findByProps({ testID: "passwordInput" })
       expect(input1.props.value).toEqual("")
 
       const tree2 = renderWithWrappers(<Test password="1ValidPassword" />)
-      const input2 = tree2.root.findAllByType(Input)[0]
+      const input2 = tree2.root.findByProps({ testID: "passwordInput" })
       expect(input2.props.value).toEqual("1ValidPassword")
     })
 
     it("does not validate password when the user is still typing", () => {
       const tree = renderWithWrappers(<Test />)
-      const input = tree.root.findAllByType(Input)[0]
+      const input = tree.root.findByProps({ testID: "passwordInput" })
       input.props.onChangeText("wrongpassword")
       expect(input.props.error).toEqual(undefined)
     })
 
     it("does validate the password properly on submit", async () => {
       const tree = renderWithWrappers(<Test />)
-      const input = tree.root.findAllByType(Input)[0]
+      const input = tree.root.findByProps({ testID: "passwordInput" })
       input.props.onChangeText("short")
       input.props.onSubmitEditing()
       await flushPromiseQueue()
