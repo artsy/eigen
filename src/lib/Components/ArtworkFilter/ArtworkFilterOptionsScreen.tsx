@@ -9,7 +9,6 @@ import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/
 import { ColorOption } from "lib/Components/ArtworkFilter/Filters/ColorOptions"
 import { colorHexMap } from "lib/Components/ArtworkFilter/Filters/ColorSwatch"
 import { TouchableRow } from "lib/Components/TouchableRow"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"

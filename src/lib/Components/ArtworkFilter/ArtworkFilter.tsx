@@ -6,7 +6,6 @@ import {
   changedFiltersParams,
   FilterArray,
   filterArtworksParams,
-  FilterParamName,
   FilterParams,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
