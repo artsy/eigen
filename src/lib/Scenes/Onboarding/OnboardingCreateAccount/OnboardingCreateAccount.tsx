@@ -2,10 +2,12 @@ import { NavigationContainer, NavigationContainerRef } from "@react-navigation/n
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
+import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore, useEnvironment } from "lib/store/GlobalStore"
-import { Button, Flex, Text, Touchable } from "palette"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Box, Button, Flex, Spacer, Text, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { Alert, Animated, Linking } from "react-native"
+import { Alert, Animated, Linking, ScrollView } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
 import { OnboardingCreateAccountEmail, OnboardingCreateAccountEmailParams } from "./OnboardingCreateAccountEmail"
@@ -131,6 +133,38 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
         />
       </NavigationContainer>
     </FormikProvider>
+  )
+}
+
+interface OnboardingCreateAccountScreenWrapperProps {
+  onBackButtonPress: () => void
+}
+
+export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAccountScreenWrapperProps> = ({
+  onBackButtonPress,
+  children,
+}) => {
+  return (
+    <Flex backgroundColor="white" flexGrow={1}>
+      <ScrollView
+        contentContainerStyle={{
+          paddingHorizontal: 20,
+          paddingTop: useScreenDimensions().safeAreaInsets.top,
+          justifyContent: "flex-start",
+        }}
+        showsVerticalScrollIndicator={false}
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="always"
+      >
+        <BackButton onPress={onBackButtonPress} />
+        <Spacer mt={60} />
+        <Box height={130}>
+          <Text variant="largeTitle">Sign up with email</Text>
+        </Box>
+        <Spacer mt={50} />
+        {children}
+      </ScrollView>
+    </Flex>
   )
 }
 
