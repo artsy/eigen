@@ -189,7 +189,9 @@ export const ArtworkFilterOptionsScreen: React.FC<
                   </Flex>
 
                   <Flex flexDirection="row" alignItems="center" justifyContent="flex-end" flex={1}>
-                    <OptionDetail currentOption={currentOption} />
+                    <CurrentOption size="3t" ellipsizeMode="tail" numberOfLines={1}>
+                      {currentOption}
+                    </CurrentOption>
                     <ArrowRightIcon fill="black30" ml="1" />
                   </Flex>
                 </Flex>
@@ -278,13 +280,10 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
   }
 }
 
-const OptionDetail: React.FC<{ currentOption: any }> = ({ currentOption }) => {
-  return (
-    <CurrentOption size="3t" ellipsizeMode="tail" numberOfLines={1}>
-      {currentOption}
-    </CurrentOption>
-  )
-}
+export const FilterHeader = styled(Sans)`
+  margin-top: 20px;
+  padding-left: 35px;
+`
 
 export const FilterArtworkButton = styled(Flex)`
   background-color: ${color("black100")};
