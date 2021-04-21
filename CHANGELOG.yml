@@ -13,6 +13,7 @@ upcoming:
     - Conversation-offer updates to CTA to allow multiple offers - erikdstock
     - Replace "All" option on multi-select filters with upper right-hand "Clear all"
     - Fix infinite spinner on Android when following within an artist rail - pepopowitz
+    - Fix iOS13 modal keyboard avoidance - david
     - Release multi-select time period filter - iskounen
     - Refine filter header typography, spacing & copy - damon
     - Fix renderWithLoadProgress on android - brian, mounir, pavlos
