@@ -1,5 +1,5 @@
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
-import { Alert, RefreshControl, View, ViewProps } from "react-native"
+import { Alert, RefreshControl, Text, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
@@ -16,6 +16,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { compact, drop, flatten, take, times, zip } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "palette"
 
+import { useClient, useManager } from "@splitsoftware/splitio-react"
 import { Home_featured } from "__generated__/Home_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
@@ -119,6 +120,10 @@ const Home = (props: Props) => {
     )
   }
 
+  const aa = useClient()
+  const bb = useManager()
+  console.log({ aa, bb })
+
   return (
     <ProvideScreenTracking
       info={{
@@ -157,6 +162,8 @@ const Home = (props: Props) => {
               <Box mb={1} mt={2}>
                 <Flex alignItems="center">
                   <ArtsyLogoIcon scale={0.75} />
+
+                  <Text>wowow</Text>
                 </Flex>
                 <Spacer mb="15px" />
                 <HomeHeroContainer homePage={homePage} />

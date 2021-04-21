@@ -220,6 +220,8 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, V
 
 const splitConfig = {
   core: {},
+  authorizationKey: "YOUR_BROWSER_API_KEY",
+  key: "CUSTOMER_ID",
 }
 
 // provide the tracking context so pages can use `useTracking` all the time
