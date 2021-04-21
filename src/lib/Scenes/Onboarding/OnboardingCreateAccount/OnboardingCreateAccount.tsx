@@ -5,7 +5,7 @@ import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore, useEnvironment } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Button, Flex, Spacer, Text, Touchable } from "palette"
+import { Box, Button, color, Flex, Spacer, Text, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert, Animated, Linking, ScrollView } from "react-native"
 import * as Yup from "yup"
@@ -138,10 +138,14 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
 
 interface OnboardingCreateAccountScreenWrapperProps {
   onBackButtonPress: () => void
+  title: string
+  caption?: string
 }
 
 export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAccountScreenWrapperProps> = ({
   onBackButtonPress,
+  title,
+  caption,
   children,
 }) => {
   return (
@@ -159,7 +163,15 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
         <BackButton onPress={onBackButtonPress} />
         <Spacer mt={60} />
         <Box height={130}>
-          <Text variant="largeTitle">Sign up with email</Text>
+          <Text variant="largeTitle">{title}</Text>
+          {!!caption && (
+            <>
+              <Spacer mt={1.5} />
+              <Text variant="caption" color={color("black60")}>
+                {caption}
+              </Text>
+            </>
+          )}
         </Box>
         <Spacer mt={50} />
         {children}
