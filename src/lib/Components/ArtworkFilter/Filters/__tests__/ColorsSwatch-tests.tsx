@@ -3,8 +3,8 @@ import { Box, CheckIcon, color } from "palette"
 import React from "react"
 import { ColorsSwatch } from "../ColorsSwatch"
 
-describe("Color swatch", () => {
-  it("adds a border when selected", () => {
+describe("Colors swatch", () => {
+  it("adds a check icon when selected", () => {
     const selectedTree = renderWithWrappers(
       <ColorsSwatch
         width={30}
