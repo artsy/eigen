@@ -73,7 +73,7 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
   const black100WithOpacity = `rgba(0, 0, 0, ${opacity})`
   const black10WithOpacity = `rgba(229, 229, 229, ${opacity})`
   const whiteWithOpacity = `rgba(255, 255, 255, ${opacity})`
-  const purple100WithOpaicty = `rgba(110, 30, 255, ${opacity})`
+  const purple100WithOpacity = `rgba(110, 30, 255, ${opacity})`
   const black30WithOpacity = `rgba(194, 194, 194, ${opacity})`
   const red100WithOpacity = `rgba(232, 46, 29, ${opacity})`
 
