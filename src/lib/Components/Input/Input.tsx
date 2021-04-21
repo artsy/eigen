@@ -192,9 +192,9 @@ const StyledInput = styled(TextInput)`
   position: absolute;
   left: 10;
   right: 10;
-  top: 12; /* to center the text nicely */
-  bottom: -30;
-  padding-bottom: 40;
+  /* background-color: lightblue; */
+  top: 6; /* to center the text nicely */
+  padding-bottom: 30;
 
   /* to center the text */
   font-family: ${fontFamily.sans.regular.normal};
