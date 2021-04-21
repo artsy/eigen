@@ -18,6 +18,7 @@ upcoming:
     - Refine filter header typography, spacing & copy - damon
     - Fix renderWithLoadProgress on android - brian, mounir, pavlos
     - Hides "Default" sort label behind feature flag - damon
+    - Release artwork filter style updates - iskounen
 
 releases:
   - version: 6.8.3

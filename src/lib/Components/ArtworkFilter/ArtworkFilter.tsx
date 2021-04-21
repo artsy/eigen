@@ -137,36 +137,6 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
     })
   }
 
-  const getApplyButtonCount = () => {
-    let selectedFiltersSum = selectedFiltersState.length
-
-    // For Auction results, the earliestCreatedYear and latestCreatedYear filters behave like one
-    if (filterTypeState === "auctionResult") {
-      const hasEarliestCreatedYearFilterEnabled = !!selectedFiltersState.find(
-        (filter) => filter.paramName === FilterParamName.earliestCreatedYear
-      )
-      const hasLatestCreatedYearFilterEnabled = !!selectedFiltersState.find(
-        (filter) => filter.paramName === FilterParamName.latestCreatedYear
-      )
-      if (hasEarliestCreatedYearFilterEnabled && hasLatestCreatedYearFilterEnabled) {
-        --selectedFiltersSum
-      }
-    }
-
-    // For Sale Artworks, the artistsIDs and the includeArtworksByFollowedArtists filters behave like one
-    if (filterTypeState === "saleArtwork") {
-      const hasArtistsIFollow = !!selectedFiltersState.find(
-        (filter) => filter.paramName === FilterParamName.artistsIFollow
-      )
-      const hasArtistIDs = !!selectedFiltersState.find((filter) => filter.paramName === FilterParamName.artistIDs)
-
-      if (hasArtistIDs && hasArtistsIFollow) {
-        --selectedFiltersSum
-      }
-    }
-    return selectedFiltersSum > 0 ? `Apply (${selectedFiltersSum})` : "Apply"
-  }
-
   const isApplyButtonEnabled =
     selectedFiltersState.length > 0 || (previouslyAppliedFiltersState.length === 0 && appliedFiltersState.length > 0)
 
@@ -296,7 +266,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               variant="primaryBlack"
               size="large"
             >
-              {shouldUseImprovedArtworkFilters ? "Show results" : getApplyButtonCount()}
+              Show results
             </ApplyButton>
           </ApplyButtonContainer>
         </View>

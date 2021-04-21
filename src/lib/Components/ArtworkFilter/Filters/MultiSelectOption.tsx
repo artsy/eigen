@@ -48,8 +48,6 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
     }
   }
 
-  const shouldUseImprovedArtworkFilters = useFeatureFlag("ARUseImprovedArtworkFilters")
-
   return (
     <Flex flexGrow={1}>
       <FancyModalHeader onLeftButtonPress={handleBackNavigation} {...rest}>
@@ -61,43 +59,25 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
           style={{ flex: 1 }}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
-          ItemSeparatorComponent={shouldUseImprovedArtworkFilters ? null : Separator}
+          // TODO: do we need this prop anymore?
+          ItemSeparatorComponent={null}
           renderItem={({ item }) => {
             return (
               <Box ml={0.5}>
-                {shouldUseImprovedArtworkFilters ? (
-                  <TouchableRow
-                    onPress={() => {
-                      const currentParamValue = item.paramValue as boolean
-                      onSelect(item, !currentParamValue)
-                    }}
-                  >
-                    <OptionListItem>
-                      <Text variant="caption" color="black100">
-                        {item.displayText}
-                      </Text>
-
-                      <Check selected={itemIsSelected(item)} disabled={itemIsDisabled(item)} />
-                    </OptionListItem>
-                  </TouchableRow>
-                ) : (
+                <TouchableRow
+                  onPress={() => {
+                    const currentParamValue = item.paramValue as boolean
+                    onSelect(item, !currentParamValue)
+                  }}
+                >
                   <OptionListItem>
-                    <Flex mb={0.5}>
-                      <Sans color="black100" size="3t">
-                        {item.displayText}
-                      </Sans>
-                    </Flex>
+                    <Text variant="caption" color="black100">
+                      {item.displayText}
+                    </Text>
 
-                    <FilterToggleButton
-                      onChange={() => {
-                        const currentParamValue = item.paramValue as boolean
-                        onSelect(item, !currentParamValue)
-                      }}
-                      value={itemIsSelected(item)}
-                      disabled={itemIsDisabled(item)}
-                    />
+                    <Check selected={itemIsSelected(item)} disabled={itemIsDisabled(item)} />
                   </OptionListItem>
-                )}
+                </TouchableRow>
               </Box>
             )
           }}
