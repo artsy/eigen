@@ -6925,6 +6925,7 @@ type Location {
   # Alternate Markdown-supporting free text representation of a location's opening hours
   dayScheduleText: String
   display: String
+  displayCountry: String
 
   # A globally unique ID.
   id: ID!
