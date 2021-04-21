@@ -51,7 +51,7 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
       navigation.setParams({ withFadeAnimation: false })
     }, 1000)
     if (route.params?.email) {
-      handleChange("email")(route.params?.email || "")
+      handleChange("email")(route.param.email)
     }
   }, [])
 
