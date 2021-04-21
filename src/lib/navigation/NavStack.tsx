@@ -47,7 +47,7 @@ const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) =
   return (
     <LegacyBackButtonContext.Provider value={{ updateShouldHideBackButton }}>
       <ProvideScreenDimensions>
-        <ArtsyKeyboardAvoidingViewContext.Provider value={{ isPresentedModally, isVisible }}>
+        <ArtsyKeyboardAvoidingViewContext.Provider value={{ isPresentedModally, isVisible, bottomOffset: 0 }}>
           <ScreenPadding
             isPresentedModally={isPresentedModally}
             isVisible={isVisible}

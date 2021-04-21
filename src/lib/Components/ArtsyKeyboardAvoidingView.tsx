@@ -20,15 +20,21 @@ interface State {
 export const ArtsyKeyboardAvoidingViewContext = React.createContext({
   isPresentedModally: false,
   isVisible: true,
+  /**
+   * bottom offset is used when the screen is presented modally to account for
+   * any extra padding at the bottom of the screen (i.e. added for safe area insets)
+   */
+  bottomOffset: 0,
 })
 
 export const ArtsyKeyboardAvoidingView: React.FC<{}> = ({ children }) => {
-  const { isPresentedModally, isVisible } = useContext(ArtsyKeyboardAvoidingViewContext)
+  const { isPresentedModally, isVisible, bottomOffset } = useContext(ArtsyKeyboardAvoidingViewContext)
 
   return (
     <KeyboardAvoidingView
       enabled={isVisible}
       mode={isPresentedModally ? "bottom-based" : "top-based"}
+      bottomOffset={bottomOffset}
       style={{ flex: 1 }}
     >
       {children}
@@ -49,7 +55,7 @@ export const ArtsyKeyboardAvoidingView: React.FC<{}> = ({ children }) => {
  * LICENSE file in the root directory of https://github.com/facebook/react-native
  */
 class KeyboardAvoidingView extends React.Component<
-  { enabled?: boolean; mode: "top-based" | "bottom-based" } & ViewProps,
+  { enabled?: boolean; mode: "top-based" | "bottom-based"; bottomOffset: number } & ViewProps,
   State
 > {
   _frame: LayoutRectangle | null = null
@@ -88,6 +94,8 @@ class KeyboardAvoidingView extends React.Component<
         if (Platform.OS === "android") {
           keyboardHeight -= ArtsyNativeModule.navigationBarHeight
         }
+
+        keyboardHeight -= this.props.bottomOffset
 
         return Math.max(keyboardHeight, 0)
       }
