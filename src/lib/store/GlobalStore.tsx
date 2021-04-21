@@ -4,7 +4,9 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNavigationState"
 import React from "react"
 import { Platform } from "react-native"
+import { getBuildNumber, getModel, getUserAgentSync } from "react-native-device-info"
 import { Action, Middleware } from "redux"
+import { version } from "./../../../app.json"
 import { DevToggleName, FeatureName, features } from "./config/features"
 import { FeatureMap } from "./config/FeaturesModel"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
@@ -147,12 +149,14 @@ export function getCurrentEmissionState() {
     return state?.native.sessionState ?? LegacyNativeModules.ARNotificationsManager.nativeState
   }
 
+  const userAgent = `${getUserAgentSync()} Artsy-Mobile/${version} Eigen/${getBuildNumber()}/${version}`
+
   const androidData: GlobalStoreModel["native"]["sessionState"] = {
     authenticationToken: state?.auth.userAccessToken!,
-    deviceId: "Android", // TODO: get better device info
+    deviceId: `${Platform.OS} ${getModel()}`,
     launchCount: ArtsyNativeModule.launchCount,
     onboardingState: "none", // not used on android
-    userAgent: "Artsy-Mobile android", // TODO: proper user agent
+    userAgent,
     userID: state?.auth.userID!,
     userEmail: "user@example.com", // not used on android
   }
