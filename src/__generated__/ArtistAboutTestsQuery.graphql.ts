@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e7e03baa797b12533f132bdddfbb709e */
+/* @relayHash 43a164aa6fee39b0305122de60697a05 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -78,7 +78,6 @@ fragment ArtistAboutShows_artist on Artist {
 
 fragment ArtistAbout_artist on Artist {
   hasMetadata
-  isDisplayAuctionLink
   slug
   ...Biography_artist
   ...ArtistConsignButton_artist
@@ -496,13 +495,6 @@ return {
             "name": "hasMetadata",
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "isDisplayAuctionLink",
-            "storageKey": null
-          },
           (v2/*: any*/),
           {
             "alias": null,
@@ -805,7 +797,7 @@ return {
     ]
   },
   "params": {
-    "id": "e7e03baa797b12533f132bdddfbb709e",
+    "id": "43a164aa6fee39b0305122de60697a05",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": (v10/*: any*/),
@@ -875,7 +867,6 @@ return {
         },
         "artist.image.cropped.url": (v20/*: any*/),
         "artist.internalID": (v11/*: any*/),
-        "artist.isDisplayAuctionLink": (v17/*: any*/),
         "artist.name": (v12/*: any*/),
         "artist.pastShows": (v14/*: any*/),
         "artist.pastShows.edges": (v15/*: any*/),

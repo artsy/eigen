@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 949afa95c79a90ae72fd6e67ffe39c1f */
+/* @relayHash 2c020d0b40627e18555b46a8a64f1ee0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -82,7 +82,6 @@ fragment ArtistAboutShows_artist on Artist {
 
 fragment ArtistAbout_artist on Artist {
   hasMetadata
-  isDisplayAuctionLink
   slug
   ...Biography_artist
   ...ArtistConsignButton_artist
@@ -595,13 +594,6 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "hasMetadata",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "isDisplayAuctionLink",
             "storageKey": null
           },
           (v2/*: any*/),
@@ -1219,7 +1211,7 @@ return {
     ]
   },
   "params": {
-    "id": "949afa95c79a90ae72fd6e67ffe39c1f",
+    "id": "2c020d0b40627e18555b46a8a64f1ee0",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",
