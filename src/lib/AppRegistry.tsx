@@ -1,3 +1,4 @@
+import { SplitFactory, SplitTreatments } from "@splitsoftware/splitio-react"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
@@ -217,6 +218,10 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, V
   )
 }
 
+const splitConfig = {
+  core: {},
+}
+
 // provide the tracking context so pages can use `useTracking` all the time
 @track()
 class PageWrapper extends React.Component<PageWrapperProps> {
@@ -225,15 +230,17 @@ class PageWrapper extends React.Component<PageWrapperProps> {
       <ProvideScreenDimensions>
         <ActionSheetProvider>
           <RelayEnvironmentProvider environment={defaultEnvironment}>
-            <GlobalStoreProvider>
-              <Theme>
-                <ToastProvider>
-                  <_FancyModalPageWrapper>
-                    <InnerPageWrapper {...this.props} />
-                  </_FancyModalPageWrapper>
-                </ToastProvider>
-              </Theme>
-            </GlobalStoreProvider>
+            <SplitFactory config={splitConfig}>
+              <GlobalStoreProvider>
+                <Theme>
+                  <ToastProvider>
+                    <_FancyModalPageWrapper>
+                      <InnerPageWrapper {...this.props} />
+                    </_FancyModalPageWrapper>
+                  </ToastProvider>
+                </Theme>
+              </GlobalStoreProvider>
+            </SplitFactory>
           </RelayEnvironmentProvider>
         </ActionSheetProvider>
       </ProvideScreenDimensions>
