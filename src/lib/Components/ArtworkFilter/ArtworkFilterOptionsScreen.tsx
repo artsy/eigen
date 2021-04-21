@@ -280,11 +280,6 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
   }
 }
 
-export const FilterHeader = styled(Sans)`
-  margin-top: 20px;
-  padding-left: 35px;
-`
-
 export const FilterArtworkButton = styled(Flex)`
   background-color: ${color("black100")};
   align-items: center;
