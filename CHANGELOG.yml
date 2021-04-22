@@ -10,6 +10,7 @@ upcoming:
     - Fix android hardware back button in fancy modals - david
     - Fix android share - brian, mounir, david, pavlos
     - Move ruby version declaration to root - roop
+    - Add vscode launch config to debug tests in current file - ole
   user_facing:
     - Add forgot password screen in new login - brian
     - Conversation-offer updates to CTA to allow multiple offers - erikdstock
