@@ -1,11 +1,12 @@
 import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { TouchableRow } from "lib/Components/TouchableRow"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Check } from "palette"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { ArtistIDsArtworksOptionsScreen } from "../ArtistIDsArtworksOptions"
-import { FilterToggleButton } from "../FilterToggleButton"
 import { OptionListItem } from "../MultiSelectOption"
 import { getEssentialProps } from "./helper"
 
@@ -56,7 +57,7 @@ describe("Artist options screen", () => {
   const selectedArtistOptions = (componentTree: ReactTestRenderer) => {
     const artistOptions = componentTree.root.findAllByType(OptionListItem)
     const selectedOptions = artistOptions.filter((item) => {
-      return item.findByType(FilterToggleButton).props.value === true
+      return item.findByType(Check).props.selected === true
     })
     return selectedOptions
   }
@@ -86,7 +87,7 @@ describe("Artist options screen", () => {
 
     // Includes a button for each artist + one for followed artists,
     // but our FlatList is configured to only show 4 in the initial render pass
-    expect(tree.root.findAllByType(FilterToggleButton)).toHaveLength(6)
+    expect(tree.root.findAllByType(Check)).toHaveLength(6)
   })
 
   describe("selecting an artist option", () => {
@@ -132,13 +133,13 @@ describe("Artist options screen", () => {
 
       const tree = renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
-      const firstOptionInstance = tree.root.findAllByType(FilterToggleButton)[0] // Artists I follow
-      const secondOptionInstance = tree.root.findAllByType(FilterToggleButton)[1] // Artist 1
-      const thirdOptionInstance = tree.root.findAllByType(FilterToggleButton)[2] // Artist 2
+      const firstOptionInstance = tree.root.findAllByType(TouchableRow)[0] // Artists I follow
+      const secondOptionInstance = tree.root.findAllByType(TouchableRow)[1] // Artist 1
+      const thirdOptionInstance = tree.root.findAllByType(TouchableRow)[2] // Artist 2
 
-      act(() => firstOptionInstance.props.onChange())
-      act(() => secondOptionInstance.props.onChange())
-      act(() => thirdOptionInstance.props.onChange())
+      act(() => firstOptionInstance.props.onPress())
+      act(() => secondOptionInstance.props.onPress())
+      act(() => thirdOptionInstance.props.onPress())
 
       const selectedOptions = selectedArtistOptions(tree)
       expect(selectedOptions).toHaveLength(3)
@@ -169,12 +170,12 @@ describe("Artist options screen", () => {
 
       const tree = renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
-      const secondOptionInstance = tree.root.findAllByType(FilterToggleButton)[2] // Artists I follow, Artist 1, Artist 2
+      const secondOptionInstance = tree.root.findAllByType(TouchableRow)[2] // Artists I follow, Artist 1, Artist 2
       const selectedOptionsBeforeTapping = selectedArtistOptions(tree)
       expect(selectedOptionsBeforeTapping).toHaveLength(1)
       expect(extractText(selectedOptionsBeforeTapping[0])).toEqual("Artist 2")
 
-      act(() => secondOptionInstance.props.onChange())
+      act(() => secondOptionInstance.props.onPress())
 
       const selectedOptions = selectedArtistOptions(tree)
       expect(selectedOptions).toHaveLength(0)
@@ -219,10 +220,10 @@ describe("Artist options screen", () => {
 
       const tree = renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
-      expect(tree.root.findAllByType(FilterToggleButton)).toHaveLength(4)
+      expect(tree.root.findAllByType(Check)).toHaveLength(4)
 
       // Artists I followed option should be disabled
-      const firstOptionInstance = tree.root.findAllByType(FilterToggleButton)[0]
+      const firstOptionInstance = tree.root.findAllByType(Check)[0]
       expect(firstOptionInstance.props.disabled).toEqual(true)
     })
   })

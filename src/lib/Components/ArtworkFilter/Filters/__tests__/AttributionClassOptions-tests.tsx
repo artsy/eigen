@@ -4,8 +4,8 @@ import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpe
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Check } from "palette"
 import React from "react"
-import { Switch } from "react-native"
 import { AttributionClassOptionsScreen } from "../AttributionClassOptions"
 import { OptionListItem } from "../MultiSelectOption"
 import { getEssentialProps } from "./helper"
@@ -93,11 +93,11 @@ describe("AttributionClassOptions Screen", () => {
 
     // TODO: Fix this test
     const tree = renderWithWrappers(<MockAttributionClassOptionsScreen initialData={injectedState} />)
-    const switches = tree.root.findAllByType(Switch)
+    const options = tree.root.findAllByType(Check)
 
-    expect(switches[0].props.value).toBe(true)
-    expect(switches[1].props.value).toBe(false)
-    expect(switches[2].props.value).toBe(false)
-    expect(switches[3].props.value).toBe(true)
+    expect(options[0].props.selected).toBe(true)
+    expect(options[1].props.selected).toBe(false)
+    expect(options[2].props.selected).toBe(false)
+    expect(options[3].props.selected).toBe(true)
   })
 })
