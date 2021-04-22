@@ -4,15 +4,15 @@ import { useSafeAreaFrame, useSafeAreaInsets } from "react-native-safe-area-cont
 export type ScreenOrientation = "landscape" | "portrait"
 
 export interface ScreenDimensions {
-  width: number
-  height: number
+  safeAreaWidth: number
+  safeAreaHeight: number
   orientation: ScreenOrientation
 }
 
 export interface ScreenDimensionsWithSafeAreas extends ScreenDimensions {
   safeAreaInsets: SafeAreaInsets
-  fullWidth: number
-  fullHeight: number
+  width: number
+  height: number
 }
 
 /**
@@ -24,17 +24,17 @@ export const useScreenDimensions = (): ScreenDimensionsWithSafeAreas => {
 
   return {
     safeAreaInsets: insets,
-    width: frame.width,
-    height: frame.height,
+    safeAreaWidth: frame.width,
+    safeAreaHeight: frame.height,
 
-    get fullWidth() {
-      return this.width + this.safeAreaInsets.left + this.safeAreaInsets.right
+    get width() {
+      return this.safeAreaWidth + this.safeAreaInsets.left + this.safeAreaInsets.right
     },
-    get fullHeight() {
-      return this.height + this.safeAreaInsets.top + this.safeAreaInsets.bottom
+    get height() {
+      return this.safeAreaHeight + this.safeAreaInsets.top + this.safeAreaInsets.bottom
     },
     get orientation() {
-      return this.fullWidth > this.fullHeight ? "landscape" : "portrait"
+      return this.width > this.height ? "landscape" : "portrait"
     },
   }
 }

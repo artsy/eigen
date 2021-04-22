@@ -12,12 +12,12 @@ interface OnboardingWelcomeProps extends StackScreenProps<OnboardingNavigationSt
 const BUTTON_HEIGHT = 41
 
 export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation }) => {
-  const { fullHeight } = useScreenDimensions()
+  const { height: screenHeight } = useScreenDimensions()
 
   return (
     <Flex flex={1} removeClippedSubviews={false}>
       <Flex alignItems="flex-end" position="absolute">
-        <Image source={require("@images/WelcomeImage.png")} resizeMode="cover" style={{ height: fullHeight }}></Image>
+        <Image source={require("@images/WelcomeImage.png")} resizeMode="cover" style={{ height: screenHeight }}></Image>
       </Flex>
 
       <LinearGradient
@@ -27,7 +27,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
         style={{
           position: "absolute",
           width: "100%",
-          height: fullHeight,
+          height: screenHeight,
         }}
       />
 
