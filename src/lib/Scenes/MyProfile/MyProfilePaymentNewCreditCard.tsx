@@ -6,13 +6,16 @@ import { InputTitle } from "lib/Components/Input/InputTitle"
 import { Select } from "lib/Components/Select"
 import { Stack } from "lib/Components/Stack"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { commitMutation, graphql } from "react-relay"
 // @ts-ignore
 import stripe from "tipsi-stripe"
 import { MyAccountFieldEditScreen } from "../MyAccount/Components/MyAccountFieldEditScreen"
 import { __triggerRefresh } from "./MyProfilePayment"
 
+import { FancyModal } from "lib/Components/FancyModal/FancyModal"
+import { Button, Text } from "palette"
+import { Modal } from "react-native"
 import { LiteCreditCardInput } from "react-native-credit-card-input"
 
 interface CreditCardInputParams {
@@ -98,6 +101,8 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
   useEffect(() => {
     paymentInfoRef.current?.focus()
   }, [])
+  const [modallVisible, setModallVisible] = useState(false)
+  const [modall2Visible, setModall2Visible] = useState(false)
 
   const screenRef = useRef<MyAccountFieldEditScreen>(null)
 
@@ -165,6 +170,21 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           returnKeyType="next"
           onSubmitEditing={() => addressLine1Ref.current?.focus()}
         />
+        <Button
+          onPress={() => {
+            setModallVisible(true)
+          }}
+        >
+          modal
+        </Button>
+        <Button
+          onPress={() => {
+            setModall2Visible(true)
+          }}
+        >
+          {" "}
+          modal2{" "}
+        </Button>
         <Input
           ref={addressLine1Ref}
           title="Address line 1"
@@ -216,6 +236,21 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           onSelectValue={actions.fields.country.setValue}
           value={state.fields.country.value}
         />
+        <FancyModal visible={modallVisible} onBackgroundPressed={() => setModallVisible(false)}>
+          <Text>wow</Text>
+        </FancyModal>
+        <Modal
+          transparent
+          animated={false}
+          visible={modall2Visible}
+          // statusBarTranslucent
+          onRequestClose={() => setModall2Visible(false)}
+        >
+          <Text>ahahahaha</Text>
+          <Text>ahahahaha</Text>
+          <Text>ahahahaha</Text>
+          <Button onPress={() => setModall2Visible(false)}>close</Button>
+        </Modal>
       </Stack>
     </MyAccountFieldEditScreen>
   )

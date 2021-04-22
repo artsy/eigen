@@ -1,4 +1,5 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Button, Text } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { Modal, Platform } from "react-native"
 import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "../ArtsyKeyboardAvoidingView"
@@ -13,12 +14,14 @@ export const FancyModal: React.FC<{
 }> = ({ visible, children, onBackgroundPressed, maxHeight, onModalFinishedClosing }) => {
   const {
     height: screenHeight,
-    safeAreaInsets: { top },
+    // safeAreaInsets: { top },
   } = useScreenDimensions()
 
-  const actualMaxHeight = screenHeight - (top + CARD_STACK_OVERLAY_HEIGHT + CARD_STACK_OVERLAY_Y_OFFSET)
+  // const actualMaxHeight = screenHeight - (top + CARD_STACK_OVERLAY_HEIGHT + CARD_STACK_OVERLAY_Y_OFFSET)
+  const actualMaxHeight = 2500
 
-  const height = maxHeight ? Math.min(maxHeight, actualMaxHeight) : actualMaxHeight
+  // const height = maxHeight ? Math.min(maxHeight, actualMaxHeight) : actualMaxHeight
+  const height = actualMaxHeight
 
   const firstMount = useRef(true)
 
@@ -75,6 +78,10 @@ export const FancyModal: React.FC<{
       onRequestClose={onBackgroundPressed}
     >
       <FancyModalContext.Provider value={context.nextLevel()}>{card.jsx}</FancyModalContext.Provider>
+      {/* <Text>ahahahaha</Text>
+      <Text>ahahahaha</Text>
+      <Text>ahahahaha</Text>
+      <Button onPress={() => {}}>close</Button> */}
     </Modal>
   )
 }
