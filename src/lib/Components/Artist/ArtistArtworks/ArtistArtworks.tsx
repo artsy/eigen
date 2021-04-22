@@ -262,6 +262,7 @@ export default createPaginationContainer(
         color: { type: "String" }
         colors: { type: "[String]" }
         partnerID: { type: "ID" }
+        partnerIDs: { type: "[String]" }
         dimensionRange: { type: "String", defaultValue: "*-*" }
         majorPeriods: { type: "[String]" }
         acquireable: { type: "Boolean" }
@@ -282,6 +283,7 @@ export default createPaginationContainer(
           color: $color
           colors: $colors
           partnerID: $partnerID
+          partnerIDs: $partnerIDs
           dimensionRange: $dimensionRange
           majorPeriods: $majorPeriods
           acquireable: $acquireable
@@ -351,6 +353,7 @@ export default createPaginationContainer(
         $color: String
         $colors: [String]
         $partnerID: ID
+        $partnerIDs: [String]
         $dimensionRange: String
         $majorPeriods: [String]
         $acquireable: Boolean
@@ -370,6 +373,7 @@ export default createPaginationContainer(
                 color: $color
                 colors: $colors
                 partnerID: $partnerID
+                partnerIDs: $partnerIDs
                 priceRange: $priceRange
                 dimensionRange: $dimensionRange
                 majorPeriods: $majorPeriods

@@ -37,7 +37,7 @@ export enum FilterParamName {
   earliestCreatedYear = "earliestCreatedYear",
   estimateRange = "estimateRange",
   gallery = "partnerID",
-  institution = "partnerID",
+  institution = "partnerIDs",
   latestCreatedYear = "latestCreatedYear",
   medium = "medium",
   priceRange = "priceRange",
@@ -91,6 +91,7 @@ export const ParamDefaultValues = {
   medium: "*",
   offerable: false,
   partnerID: undefined,
+  partnerIDs: [],
   priceRange: "*-*",
   sizes: undefined,
   sortArtworks: "-decayed_merch",
@@ -118,6 +119,7 @@ export const defaultCommonFilterOptions = {
   medium: ParamDefaultValues.medium,
   offerable: ParamDefaultValues.offerable,
   partnerID: ParamDefaultValues.partnerID,
+  partnerIDs: ParamDefaultValues.partnerIDs,
   priceRange: ParamDefaultValues.priceRange,
   sizes: ParamDefaultValues.sizes,
   sort: ParamDefaultValues.sortArtworks,
@@ -344,13 +346,23 @@ export const selectedOption = ({
     }
 
     return waysToBuyOptions.join(", ")
-  } else if (filterScreen === "gallery" || filterScreen === "institution") {
+  } else if (filterScreen === "gallery") {
     const displayText = selectedOptions.find((option) => option.filterKey === filterScreen)?.displayText
     if (displayText) {
       return displayText
     } else {
       return "All"
     }
+  } else if (filterScreen === "institution") {
+    const multiSelectedOptions = selectedOptions.filter((filter) => filter.paramName === FilterParamName.institution)
+
+    const institutionOptions = multiSelectedOptions.map((option) => option.displayText)
+
+    if (institutionOptions.length === 0) {
+      return "All"
+    }
+
+    return institutionOptions.join(", ")
   } else if (filterScreen === "artistIDs") {
     const hasArtistsIFollowChecked = !!selectedOptions.find(({ paramName, paramValue }) => {
       return paramName === FilterParamName.artistsIFollow && paramValue === true
@@ -400,7 +412,7 @@ export const selectedOption = ({
 // is gallery and institution which share a paramName in metaphysics
 export const aggregationNameFromFilter: Record<string, AggregationName | undefined> = {
   gallery: "GALLERY",
-  institution: "INSTITUTION",
+  partnerIDs: "INSTITUTION",
   color: "COLOR",
   dimensionRange: "DIMENSION_RANGE",
   majorPeriods: "MAJOR_PERIOD",

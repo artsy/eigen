@@ -124,6 +124,11 @@ return {
     {
       "defaultValue": null,
       "kind": "LocalArgument",
+      "name": "partnerIDs"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
       "name": "priceRange"
     },
     {
@@ -232,6 +237,11 @@ return {
           "kind": "Variable",
           "name": "partnerID",
           "variableName": "partnerID"
+        },
+        {
+          "kind": "Variable",
+          "name": "partnerIDs",
+          "variableName": "partnerIDs"
         },
         {
           "kind": "Variable",
@@ -461,5 +471,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '6911622104ed9cfb5430261751d29828';
+(node as any).hash = 'abca92bffacd530f37563fd4e962f523';
 export default node;

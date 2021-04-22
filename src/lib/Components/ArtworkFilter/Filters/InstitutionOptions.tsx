@@ -1,57 +1,35 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
-import {
-  AggregateOption,
-  aggregationForFilter,
-  FilterData,
-  FilterDisplayName,
-  FilterParamName,
-  ParamDefaultValues,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React from "react"
-import { SingleSelectOptionScreen } from "./SingleSelectOption"
+import { useArtworkFiltersAggregation } from "../useArtworkFilters"
+import { MultiSelectOptionScreen } from "./MultiSelectOption"
+import { useMultiSelect } from "./useMultiSelect"
 
 interface InstitutionOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "InstitutionOptionsScreen"> {}
 
 export const InstitutionOptionsScreen: React.FC<InstitutionOptionsScreenProps> = ({ navigation }) => {
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+  const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.institution })
 
-  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
-
-  const paramName = FilterParamName.institution
-  const filterKey = "institution"
-  const aggregation = aggregationForFilter(filterKey, aggregations)
-  const options = aggregation?.counts.map((aggCount) => {
-    return {
-      displayText: aggCount.name,
-      paramName,
-      paramValue: aggCount.value,
-      filterKey,
-    }
+  const options: FilterData[] = (aggregation?.counts ?? []).map(({ value: paramValue, name }) => {
+    return { displayText: name, paramName: FilterParamName.institution, paramValue }
   })
-  const allOption: FilterData = { displayText: "All", paramName, filterKey, paramValue: ParamDefaultValues.partnerID }
-  const displayOptions = [allOption].concat(options ?? [])
-  const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
 
-  const selectOption = (option: AggregateOption) => {
-    selectFiltersAction({
-      displayText: option.displayText,
-      paramValue: option.paramValue,
-      paramName,
-      filterKey,
-    })
-  }
+  const { handleSelect, isSelected, handleClear, isActive } = useMultiSelect({
+    options,
+    paramName: FilterParamName.institution,
+  })
+
+  const filterOptions = options.map((option) => ({ ...option, paramValue: isSelected(option) }))
 
   return (
-    <SingleSelectOptionScreen
-      onSelect={selectOption}
+    <MultiSelectOptionScreen
+      onSelect={handleSelect}
       filterHeaderText={FilterDisplayName.institution}
-      filterOptions={displayOptions}
-      selectedOption={selectedOption}
+      filterOptions={filterOptions}
       navigation={navigation}
+      {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
     />
   )
 }
