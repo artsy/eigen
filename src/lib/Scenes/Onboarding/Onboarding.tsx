@@ -31,7 +31,9 @@ export const Onboarding = () => {
   return (
     <View style={{ flex: 1, paddingBottom: useScreenDimensions().safeAreaInsets.bottom }}>
       <NavigationContainer independent>
-        <ArtsyKeyboardAvoidingViewContext.Provider value={{ isVisible: true, isPresentedModally: false }}>
+        <ArtsyKeyboardAvoidingViewContext.Provider
+          value={{ isVisible: true, isPresentedModally: false, bottomOffset: 0 }}
+        >
           <ArtsyKeyboardAvoidingView>
             <StackNavigator.Navigator
               headerMode="screen"
