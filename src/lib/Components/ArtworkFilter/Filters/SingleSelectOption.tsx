@@ -3,8 +3,7 @@ import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { TouchableRow } from "lib/Components/TouchableRow"
-import { useFeatureFlag } from "lib/store/GlobalStore"
-import { Box, CheckIcon, Flex, RadioDot, Text } from "palette"
+import { Flex, RadioDot, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import styled from "styled-components/native"
@@ -68,7 +67,6 @@ const ListItem = ({
   selectedOption: FilterData
   withExtraPadding: boolean
 }) => {
-  const shouldUseImprovedArtworkFilters = useFeatureFlag("ARUseImprovedArtworkFilters")
   const selected = item.displayText === selectedOption.displayText
 
   return (
@@ -84,15 +82,7 @@ const ListItem = ({
               </Text>
             )}
           </Text>
-          {shouldUseImprovedArtworkFilters ? (
-            <RadioDot selected={selected} />
-          ) : (
-            !!selected && (
-              <Box mb={0.1}>
-                <CheckIcon fill="black100" />
-              </Box>
-            )
-          )}
+          <RadioDot selected={selected} />
         </InnerOptionListItem>
       </OptionListItem>
     </TouchableRow>
