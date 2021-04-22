@@ -9,6 +9,7 @@ upcoming:
     - Track a screen event when user lands on artist auction Results - ole
     - Fix android hardware back button in fancy modals - david
     - Fix android share - brian, mounir, david, pavlos
+    - Fix auction faq crash - brian, mounir, david, pavlos, jonathan
     - Move ruby version declaration to root - roop
   user_facing:
     - Add forgot password screen in new login - brian
