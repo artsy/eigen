@@ -6,7 +6,6 @@ import {
   changedFiltersParams,
   FilterArray,
   filterArtworksParams,
-  FilterParamName,
   FilterParams,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
@@ -27,7 +26,6 @@ import { TimePeriodOptionsScreen } from "lib/Components/ArtworkFilter/Filters/Ti
 import { ViewAsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ViewAsOptions"
 import { WaysToBuyOptionsScreen } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { YearOptionsScreen } from "lib/Components/ArtworkFilter/Filters/YearOptions"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
 import { Box, Button, Separator } from "palette"
@@ -88,7 +86,6 @@ const Stack = createStackNavigator<ArtworkFilterNavigationStack>()
 
 export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const tracking = useTracking()
-  const shouldUseImprovedArtworkFilters = useFeatureFlag("ARUseImprovedArtworkFilters")
   const { exitModal, id, mode, slug, closeModal } = props
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
@@ -134,36 +131,6 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
       changed: changedParams,
       action_type: actionType,
     })
-  }
-
-  const getApplyButtonCount = () => {
-    let selectedFiltersSum = selectedFiltersState.length
-
-    // For Auction results, the earliestCreatedYear and latestCreatedYear filters behave like one
-    if (filterTypeState === "auctionResult") {
-      const hasEarliestCreatedYearFilterEnabled = !!selectedFiltersState.find(
-        (filter) => filter.paramName === FilterParamName.earliestCreatedYear
-      )
-      const hasLatestCreatedYearFilterEnabled = !!selectedFiltersState.find(
-        (filter) => filter.paramName === FilterParamName.latestCreatedYear
-      )
-      if (hasEarliestCreatedYearFilterEnabled && hasLatestCreatedYearFilterEnabled) {
-        --selectedFiltersSum
-      }
-    }
-
-    // For Sale Artworks, the artistsIDs and the includeArtworksByFollowedArtists filters behave like one
-    if (filterTypeState === "saleArtwork") {
-      const hasArtistsIFollow = !!selectedFiltersState.find(
-        (filter) => filter.paramName === FilterParamName.artistsIFollow
-      )
-      const hasArtistIDs = !!selectedFiltersState.find((filter) => filter.paramName === FilterParamName.artistIDs)
-
-      if (hasArtistIDs && hasArtistsIFollow) {
-        --selectedFiltersSum
-      }
-    }
-    return selectedFiltersSum > 0 ? `Apply (${selectedFiltersSum})` : "Apply"
   }
 
   const isApplyButtonEnabled =
@@ -292,7 +259,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               variant="primaryBlack"
               size="large"
             >
-              {shouldUseImprovedArtworkFilters ? "Show results" : getApplyButtonCount()}
+              Show results
             </ApplyButton>
           </ApplyButtonContainer>
         </View>

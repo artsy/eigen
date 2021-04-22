@@ -7,7 +7,6 @@ import {
 import { selectedOption } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { TouchableRow } from "lib/Components/TouchableRow"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
@@ -112,8 +111,6 @@ export const ArtworkFilterOptionsScreen: React.FC<
     closeModal()
   }
 
-  const shouldUseImprovedArtworkFilters = useFeatureFlag("ARUseImprovedArtworkFilters")
-
   return (
     <Flex style={{ flex: 1 }}>
       <Flex flexGrow={0} flexDirection="row" justifyContent="space-between" alignItems="center" height={space(6)}>
@@ -162,7 +159,6 @@ export const ArtworkFilterOptionsScreen: React.FC<
         keyExtractor={(_item, index) => String(index)}
         data={sortedFilterOptions}
         style={{ flexGrow: 1 }}
-        ItemSeparatorComponent={() => (shouldUseImprovedArtworkFilters ? null : <Separator />)}
         renderItem={({ item }) => {
           const selectedCurrentOption = selectedOption({
             selectedOptions,
@@ -174,9 +170,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
           // TODO: When unwinding the `ARUseImprovedArtworkFilters` flag; simply return `null`
           // instead of `"All"` in the `selectedOption` function
           const currentOption =
-            shouldUseImprovedArtworkFilters && (selectedCurrentOption === "All" || selectedCurrentOption === "Default")
-              ? null
-              : selectedCurrentOption
+            selectedCurrentOption === "All" || selectedCurrentOption === "Default" ? null : selectedCurrentOption
 
           return (
             <TouchableRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
