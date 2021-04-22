@@ -1,6 +1,6 @@
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
-import { View } from "react-native"
+import { BackHandler, NativeEventSubscription, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { dismissModal, navigate } from "lib/navigation/navigate"
@@ -45,6 +45,18 @@ const Icons = {
 }
 
 export class BidResult extends React.Component<BidResultProps> {
+  backButtonListener?: NativeEventSubscription = undefined
+
+  componentDidMount = () => {
+    this.backButtonListener = BackHandler.addEventListener("hardwareBackPress", this.handleBackButton.bind(this))
+  }
+
+  componentWillUnmount = () => {
+    if (this.backButtonListener) {
+      this.backButtonListener.remove()
+    }
+  }
+
   onPressBidAgain = () => {
     // refetch bidder information so your registration status is up to date
     if (this.props.refreshBidderInfo) {
@@ -69,6 +81,15 @@ export class BidResult extends React.Component<BidResultProps> {
       navigate(url, { modal: true })
     } else {
       dismissModal()
+    }
+  }
+
+  handleBackButton = () => {
+    if (this.canBidAgain(this.props.bidderPositionResult.status)) {
+      return false
+    } else {
+      dismissModal()
+      return true
     }
   }
 
