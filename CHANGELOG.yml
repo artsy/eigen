@@ -9,6 +9,7 @@ upcoming:
     - Track a screen event when user lands on artist auction Results - ole
     - Fix android hardware back button in fancy modals - david
     - Fix android share - brian, mounir, david, pavlos
+    - Track filter change on artist series page - ole
   user_facing:
     - Add forgot password screen in new login - brian
     - Conversation-offer updates to CTA to allow multiple offers - erikdstock
