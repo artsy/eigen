@@ -167,6 +167,8 @@ export const ArtworkFilterOptionsScreen: React.FC<
             aggregations: aggregationsState,
           })
 
+          // TODO: When unwinding the `ARUseImprovedArtworkFilters` flag; simply return `null`
+          // instead of `"All"` in the `selectedOption` function
           const currentOption =
             selectedCurrentOption === "All" || selectedCurrentOption === "Default" ? null : selectedCurrentOption
 
