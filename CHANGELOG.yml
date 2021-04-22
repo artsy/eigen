@@ -11,6 +11,7 @@ upcoming:
     - Fix android share - brian, mounir, david, pavlos
     - Fix auction faq crash - brian, mounir, david, pavlos, jonathan
     - Move ruby version declaration to root - roop
+    - Track notable works rail tap and view all artist series tap on artist page - ole
   user_facing:
     - Add forgot password screen in new login - brian
     - Conversation-offer updates to CTA to allow multiple offers - erikdstock

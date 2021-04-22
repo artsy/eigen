@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4a1ea54bc0f5f737f843598f4c936792 */
+/* @relayHash d8d87f134f026e2877fdd9d2ed76c47b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -17,6 +17,7 @@ export type ArtistSeriesMoreSeriesTestsQueryRawResponse = {
     readonly artistSeries: ({
         readonly artist: ReadonlyArray<({
             readonly internalID: string;
+            readonly slug: string;
             readonly artistSeriesConnection: ({
                 readonly totalCount: number;
                 readonly edges: ReadonlyArray<({
@@ -56,6 +57,7 @@ query ArtistSeriesMoreSeriesTestsQuery {
 
 fragment ArtistSeriesMoreSeries_artist on Artist {
   internalID
+  slug
   artistSeriesConnection(first: 4) {
     totalCount
     edges {
@@ -94,6 +96,13 @@ v2 = {
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
   "storageKey": null
 };
 return {
@@ -157,6 +166,7 @@ return {
             "plural": true,
             "selections": [
               (v2/*: any*/),
+              (v3/*: any*/),
               {
                 "alias": null,
                 "args": [
@@ -194,13 +204,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "slug",
-                            "storageKey": null
-                          },
+                          (v3/*: any*/),
                           (v2/*: any*/),
                           {
                             "alias": null,
@@ -266,7 +270,7 @@ return {
     ]
   },
   "params": {
-    "id": "4a1ea54bc0f5f737f843598f4c936792",
+    "id": "d8d87f134f026e2877fdd9d2ed76c47b",
     "metadata": {},
     "name": "ArtistSeriesMoreSeriesTestsQuery",
     "operationKind": "query",
