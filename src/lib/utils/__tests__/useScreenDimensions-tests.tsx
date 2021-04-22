@@ -19,8 +19,8 @@ describe(useScreenDimensions, () => {
     const { result } = renderHook(() => useScreenDimensions(), { wrapper })
 
     expect(result.current).toStrictEqual({
-      width: 380,
-      height: 550,
+      safeAreaWidth: 380,
+      safeAreaHeight: 550,
       orientation: "portrait",
       safeAreaInsets: {
         top: 20,
@@ -28,8 +28,8 @@ describe(useScreenDimensions, () => {
         left: 0,
         right: 0,
       },
-      fullWidth: 380,
-      fullHeight: 570,
+      width: 380,
+      height: 570,
     })
   })
 })
