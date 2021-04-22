@@ -5,6 +5,8 @@ import { ImageCarouselContext, useNewImageCarouselContext } from "../../ImageCar
 import { ImageCarouselFullScreen } from "../ImageCarouselFullScreen"
 import { ImageZoomView } from "../ImageZoomView"
 
+jest.useFakeTimers()
+
 describe("ImageCarouselFullScreen", () => {
   function Mock() {
     const value = useNewImageCarouselContext({

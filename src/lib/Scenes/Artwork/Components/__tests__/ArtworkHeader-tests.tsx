@@ -8,6 +8,8 @@ import { ImageCarousel } from "../ImageCarousel/ImageCarousel"
 
 jest.mock("react-native-view-shot", () => ({}))
 
+jest.useFakeTimers()
+
 const TestRenderer: React.FC = () => {
   return <ArtworkHeader artwork={ArtworkFixture} />
 }
