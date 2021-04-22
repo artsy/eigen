@@ -241,12 +241,20 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
                       contextModule: ContextModule.auctionResults,
                     })
                     break
-
                   case ArtworkFilterMode.Partner:
                     trackChangeFilters({
                       actionType: ActionType.commercialFilterParamsChanged,
                       screenName: PageNames.PartnerPage,
                       ownerEntity: OwnerEntityTypes.Partner,
+                      currentParams: appliedFiltersParams,
+                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
+                    })
+                    break
+                  case ArtworkFilterMode.ArtistSeries:
+                    trackChangeFilters({
+                      actionType: ActionType.commercialFilterParamsChanged,
+                      screenName: PageNames.ArtistSeriesPage,
+                      ownerEntity: OwnerEntityTypes.ArtistSeries,
                       currentParams: appliedFiltersParams,
                       changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
                     })
