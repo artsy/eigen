@@ -176,7 +176,9 @@ export const ArtworkFilterOptionsScreen: React.FC<
           // TODO: When unwinding the `ARUseImprovedArtworkFilters` flag; simply return `null`
           // instead of `"All"` in the `selectedOption` function
           const currentOption =
-            shouldUseImprovedArtworkFilters && selectedCurrentOption === "All" ? null : selectedCurrentOption
+            shouldUseImprovedArtworkFilters && (selectedCurrentOption === "All" || selectedCurrentOption === "Default")
+              ? null
+              : selectedCurrentOption
 
           return (
             <TouchableRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>

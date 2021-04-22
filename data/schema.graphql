@@ -1005,6 +1005,7 @@ type ArtistPartnerConnection {
 type ArtistPartnerEdge {
   artist: Artist
   biography: String
+  biographyBlurb(format: Format): PartnerArtistBlurb
   counts: PartnerArtistCounts
 
   # A cursor for use in pagination
@@ -1257,6 +1258,9 @@ type Artwork implements Node & Searchable & Sellable {
   dimensions: dimensions
   displayLabel: String
   displayPriceRange: Boolean
+
+  # Domestic shipping fee.
+  domesticShippingFee: Money
   editionNumber: String
   editionOf: String
   editionSet(id: String!): EditionSet
@@ -1301,6 +1305,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+
+  # International shipping fee.
+  internationalShippingFee: Money
 
   # Private text field for partner use
   inventoryId: String
@@ -6925,6 +6932,7 @@ type Location {
   # Alternate Markdown-supporting free text representation of a location's opening hours
   dayScheduleText: String
   display: String
+  displayCountry: String
 
   # A globally unique ID.
   id: ID!
@@ -8002,7 +8010,9 @@ type Partner implements Node {
   # A connection of artists at a partner.
   artistsConnection(
     after: String
+    artistIDs: [String]
     before: String
+    displayOnPartnerProfile: Boolean
     first: Int
     last: Int
     representedBy: Boolean
@@ -8158,6 +8168,7 @@ type Partner implements Node {
 type PartnerArtist {
   artist: Artist
   biography: String
+  biographyBlurb(format: Format): PartnerArtistBlurb
   counts: PartnerArtistCounts
 
   # A globally unique ID.
@@ -8170,6 +8181,11 @@ type PartnerArtist {
   partner: Partner
   representedBy: Boolean
   sortableID: String
+}
+
+type PartnerArtistBlurb {
+  credit: String
+  text: String
 }
 
 # A connection to a list of items.
@@ -8198,6 +8214,7 @@ type PartnerArtistCounts {
 type PartnerArtistEdge {
   artist: Artist
   biography: String
+  biographyBlurb(format: Format): PartnerArtistBlurb
   counts: PartnerArtistCounts
 
   # A cursor for use in pagination

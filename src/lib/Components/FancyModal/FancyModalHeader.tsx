@@ -34,7 +34,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
   return (
     <Flex>
       <Container alignItems="center" justifyContent="center">
-        <Flex flex={1} alignItems="flex-start">
+        <Flex position="absolute" left={0} alignItems="flex-start">
           {!!onLeftButtonPress && (
             <LeftButtonContainer
               hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
@@ -45,13 +45,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
           )}
         </Flex>
 
-        <Flex flex={1} alignItems="center">
-          <Text variant="mediumText" color="black100">
-            {children}
-          </Text>
-        </Flex>
-
-        <Flex flex={1} alignItems="flex-end">
+        <Flex position="absolute" right={0} alignItems="flex-end">
           {!!onRightButtonPress && (
             <RightButtonContainer
               hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
@@ -66,6 +60,12 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
               )}
             </RightButtonContainer>
           )}
+        </Flex>
+
+        <Flex position="absolute" left={0} right={0} alignItems="center" pointerEvents="none">
+          <Text variant="mediumText" color="black100">
+            {children}
+          </Text>
         </Flex>
       </Container>
 
