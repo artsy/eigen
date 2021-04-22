@@ -4,6 +4,7 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNavigationState"
 import React from "react"
 import { Platform } from "react-native"
+// @ts-ignore
 import { getBuildNumber, getModel, getUserAgentSync } from "react-native-device-info"
 import { Action, Middleware } from "redux"
 import { version } from "./../../../app.json"
