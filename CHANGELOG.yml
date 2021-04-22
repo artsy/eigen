@@ -21,6 +21,7 @@ upcoming:
     - Refine filter header typography, spacing & copy - damon
     - Fix renderWithLoadProgress on android - brian, mounir, pavlos
     - Hides "Default" sort label behind feature flag - damon
+    - Fix unable to load artist screen - adam, brian, david, thomas, jonathan, mounir
 
 releases:
   - version: 6.8.3
