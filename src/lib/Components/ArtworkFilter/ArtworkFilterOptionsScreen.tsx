@@ -6,14 +6,12 @@ import {
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { selectedOption } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { ColorOption } from "lib/Components/ArtworkFilter/Filters/ColorOptions"
-import { colorHexMap } from "lib/Components/ArtworkFilter/Filters/ColorSwatch"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
-import { ArrowRightIcon, Box, CloseIcon, color, FilterIcon, Flex, Sans, Separator, space, Text } from "palette"
+import { ArrowRightIcon, CloseIcon, color, FilterIcon, Flex, Sans, Separator, space, Text } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
@@ -191,7 +189,9 @@ export const ArtworkFilterOptionsScreen: React.FC<
                   </Flex>
 
                   <Flex flexDirection="row" alignItems="center" justifyContent="flex-end" flex={1}>
-                    <OptionDetail currentOption={currentOption} filterType={item.filterType} />
+                    <CurrentOption size="3t" ellipsizeMode="tail" numberOfLines={1}>
+                      {currentOption}
+                    </CurrentOption>
                     <ArrowRightIcon fill="black30" ml="1" />
                   </Flex>
                 </Flex>
@@ -278,33 +278,6 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
   } else {
     return 1
   }
-}
-
-const OptionDetail: React.FC<{ currentOption: any; filterType: any }> = ({ currentOption, filterType }) => {
-  if (filterType === FilterParamName.color && currentOption !== "All") {
-    return <ColorSwatch colorOption={currentOption} />
-  } else {
-    return (
-      <CurrentOption size="3t" ellipsizeMode="tail" numberOfLines={1}>
-        {currentOption}
-      </CurrentOption>
-    )
-  }
-}
-
-const ColorSwatch: React.FC<{ colorOption: ColorOption }> = ({ colorOption }) => {
-  return (
-    <Box
-      mr={0.3}
-      style={{
-        alignSelf: "center",
-        width: 10,
-        height: 10,
-        borderRadius: 10 / 2,
-        backgroundColor: colorHexMap[colorOption],
-      }}
-    />
-  )
 }
 
 export const FilterArtworkButton = styled(Flex)`
@@ -420,8 +393,8 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
   },
   color: {
     displayText: FilterDisplayName.color,
-    filterType: "color",
-    ScreenComponent: "ColorOptionsScreen",
+    filterType: "colors",
+    ScreenComponent: "ColorsOptionsScreen",
   },
   categories: {
     displayText: FilterDisplayName.categories,
@@ -499,7 +472,7 @@ const CollectionFiltersSorted: FilterScreen[] = [
   "waysToBuy",
   "dimensionRange",
   "majorPeriods",
-  "color",
+  "colors",
   "gallery",
   "institution",
 ]
@@ -514,7 +487,7 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "institution",
   "dimensionRange",
   "majorPeriods",
-  "color",
+  "colors",
 ]
 const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "sort",
@@ -525,7 +498,7 @@ const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "waysToBuy",
   "dimensionRange",
   "majorPeriods",
-  "color",
+  "colors",
   "gallery",
   "institution",
 ]
@@ -540,7 +513,7 @@ const FairFiltersSorted: FilterScreen[] = [
   "waysToBuy",
   "dimensionRange",
   "majorPeriods",
-  "color",
+  "colors",
   "gallery",
   "institution",
 ]
