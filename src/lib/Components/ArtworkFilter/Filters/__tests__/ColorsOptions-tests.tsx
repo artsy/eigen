@@ -18,12 +18,12 @@ describe("Colors options screen", () => {
           value: "black-and-white",
         },
         {
-          name: "Darkorange",
+          name: "Dark orange",
           count: 513,
           value: "darkorange",
         },
         {
-          name: "Lightblue",
+          name: "Light blue",
           count: 277,
           value: "lightblue",
         },
