@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 41348542f61c398d1e1859800a01a202 */
+/* @relayHash 70aee3e86607cc10c0ca8197cac0ca1c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -138,6 +138,8 @@ fragment ArtistHeader_artist on Artist {
 }
 
 fragment ArtistNotableWorksRail_artist on Artist {
+  internalID
+  slug
   filterArtworksConnection(sort: "-weighted_iconicity", first: 10) {
     edges {
       node {
@@ -172,6 +174,7 @@ fragment ArtistNotableWorksRail_artist on Artist {
 
 fragment ArtistSeriesMoreSeries_artist on Artist {
   internalID
+  slug
   artistSeriesConnection(first: 4) {
     totalCount
     edges {
@@ -1188,7 +1191,7 @@ return {
     ]
   },
   "params": {
-    "id": "41348542f61c398d1e1859800a01a202",
+    "id": "70aee3e86607cc10c0ca8197cac0ca1c",
     "metadata": {},
     "name": "ArtistAboveTheFoldQuery",
     "operationKind": "query",

@@ -52,7 +52,7 @@ export class Input extends Component<InputProps, InputState> {
       <TextInput
         border={1}
         borderColor={this.state.borderColor}
-        fontSize={3}
+        fontSize={2}
         p={3}
         textAlignVertical="center"
         {...this.props}

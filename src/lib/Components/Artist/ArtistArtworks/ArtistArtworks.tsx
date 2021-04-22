@@ -80,7 +80,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
         />
         <ArtworkFilterNavigator
           {...props}
-          id={artist.id}
+          id={artist.internalID}
           slug={artist.slug}
           isFilterArtworksModalVisible={isFilterArtworksModalVisible}
           exitModal={handleFilterArtworksModal}

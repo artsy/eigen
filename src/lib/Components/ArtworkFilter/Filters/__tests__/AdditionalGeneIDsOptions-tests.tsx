@@ -5,8 +5,8 @@ import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components
 import { RightButtonContainer } from "lib/Components/FancyModal/FancyModalHeader"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Check } from "palette"
 import React from "react"
-import { Switch } from "react-native"
 import { AdditionalGeneIDsOptionsScreen } from "../AdditionalGeneIDsOptions"
 import { OptionListItem } from "../MultiSelectOption"
 import { getEssentialProps } from "./helper"
@@ -71,10 +71,10 @@ describe("AdditionalGeneIDsOptions Screen", () => {
     ])
   })
 
-  it("displays the default text when no filter selected on the filter modal screen", () => {
+  it("does not display the default text when no filter selected on the filter modal screen", () => {
     const tree = renderWithWrappers(<MockFilterScreen initialState={initialState} />)
     const items = tree.root.findAllByType(FilterModalOptionListItem)
-    expect(extractText(items[items.length - 1])).toContain("All")
+    expect(extractText(items[items.length - 1])).not.toContain("All")
   })
 
   it("displays all the selected filters on the filter modal screen", () => {
@@ -124,11 +124,11 @@ describe("AdditionalGeneIDsOptions Screen", () => {
     }
 
     const tree = renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />)
-    const switches = tree.root.findAllByType(Switch)
+    const options = tree.root.findAllByType(Check)
 
-    expect(switches[0].props.value).toBe(true)
-    expect(switches[1].props.value).toBe(false)
-    expect(switches[2].props.value).toBe(true)
+    expect(options[0].props.selected).toBe(true)
+    expect(options[1].props.selected).toBe(false)
+    expect(options[2].props.selected).toBe(true)
   })
 
   it("clears all when clear button is tapped", () => {
@@ -152,17 +152,17 @@ describe("AdditionalGeneIDsOptions Screen", () => {
     }
 
     const tree = renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />)
-    const switches = tree.root.findAllByType(Switch)
+    const options = tree.root.findAllByType(Check)
     const clear = tree.root.findByType(RightButtonContainer)
 
-    expect(switches[0].props.value).toBe(true)
-    expect(switches[1].props.value).toBe(false)
-    expect(switches[2].props.value).toBe(true)
+    expect(options[0].props.selected).toBe(true)
+    expect(options[1].props.selected).toBe(false)
+    expect(options[2].props.selected).toBe(true)
 
     clear.props.onPress()
 
-    expect(switches[0].props.value).toBe(false)
-    expect(switches[1].props.value).toBe(false)
-    expect(switches[2].props.value).toBe(false)
+    expect(options[0].props.selected).toBe(false)
+    expect(options[1].props.selected).toBe(false)
+    expect(options[2].props.selected).toBe(false)
   })
 })
