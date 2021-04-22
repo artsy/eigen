@@ -92,8 +92,6 @@ describe("TimePeriodOptions Screen", () => {
     }
 
     it("displays a comma-separated list of the selected filters on the filter modal screen", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARUseImprovedArtworkFilters: true })
-
       const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
 
       const items = tree.root.findAllByType(FilterModalOptionListItem)
@@ -113,22 +111,6 @@ describe("TimePeriodOptions Screen", () => {
       expect(switches[0].props.value).toBe(true)
       expect(switches[1].props.value).toBe(false)
       expect(switches[2].props.value).toBe(false)
-    })
-  })
-
-  describe("when the 'All' option is selected", () => {
-    it("does not display 'All' on the filter modal screen", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARUseImprovedArtworkFilters: true })
-
-      const tree = renderWithWrappers(<MockFilterScreen initialState={initialState} />)
-
-      const items = tree.root.findAllByType(FilterModalOptionListItem)
-      const item = items.find((i) => extractText(i).startsWith("Time period"))
-
-      expect(item).not.toBeUndefined()
-      if (item) {
-        expect(extractText(item)).not.toContain("All")
-      }
     })
   })
 })
