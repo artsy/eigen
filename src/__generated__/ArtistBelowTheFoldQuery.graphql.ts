@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2c020d0b40627e18555b46a8a64f1ee0 */
+/* @relayHash d8b1ed776483ef39f65eda97f4c8d293 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -96,7 +96,7 @@ fragment ArtistAbout_artist on Artist {
       }
     }
   }
-  articles: articlesConnection(first: 10) {
+  articles: articlesConnection(first: 10, inEditorialFeed: true) {
     edges {
       node {
         ...Articles_articles
@@ -820,7 +820,12 @@ return {
           {
             "alias": "articles",
             "args": [
-              (v5/*: any*/)
+              (v5/*: any*/),
+              {
+                "kind": "Literal",
+                "name": "inEditorialFeed",
+                "value": true
+              }
             ],
             "concreteType": "ArticleConnection",
             "kind": "LinkedField",
@@ -879,7 +884,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "articlesConnection(first:10)"
+            "storageKey": "articlesConnection(first:10,inEditorialFeed:true)"
           },
           (v6/*: any*/),
           {
@@ -1211,7 +1216,7 @@ return {
     ]
   },
   "params": {
-    "id": "2c020d0b40627e18555b46a8a64f1ee0",
+    "id": "d8b1ed776483ef39f65eda97f4c8d293",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",
