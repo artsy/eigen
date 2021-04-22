@@ -71,10 +71,10 @@ describe("AdditionalGeneIDsOptions Screen", () => {
     ])
   })
 
-  it("displays the default text when no filter selected on the filter modal screen", () => {
+  it("does not display the default text when no filter selected on the filter modal screen", () => {
     const tree = renderWithWrappers(<MockFilterScreen initialState={initialState} />)
     const items = tree.root.findAllByType(FilterModalOptionListItem)
-    expect(extractText(items[items.length - 1])).toContain("All")
+    expect(extractText(items[items.length - 1])).not.toContain("All")
   })
 
   it("displays all the selected filters on the filter modal screen", () => {

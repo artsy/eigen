@@ -49,7 +49,7 @@ describe("Ways to Buy Options Screen", () => {
     expect(extractText(fourthListItem)).toBe("Inquire")
   })
 
-  it("displays the default text when no filter selected on the filter modal screen", () => {
+  it("does not display the default text when no filter selected on the filter modal screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [],
       appliedFilters: [],
@@ -67,7 +67,7 @@ describe("Ways to Buy Options Screen", () => {
 
     const waysToBuyListItem = tree.root.findAllByType(FilterModalOptionListItem)[1]
 
-    expect(extractText(waysToBuyListItem)).toContain("All")
+    expect(extractText(waysToBuyListItem)).not.toContain("All")
   })
 
   it("displays all the selected filters on the filter modal screen", () => {

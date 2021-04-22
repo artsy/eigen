@@ -56,7 +56,7 @@ describe("TimePeriodOptions Screen", () => {
   }
 
   describe("before any filters are selected", () => {
-    it("displays 'All' in the filter modal screen", () => {
+    it("does not display 'All' in the filter modal screen", () => {
       const tree = renderWithWrappers(<MockFilterScreen initialState={initialState} />)
 
       const items = tree.root.findAllByType(FilterModalOptionListItem)
@@ -65,7 +65,7 @@ describe("TimePeriodOptions Screen", () => {
       expect(item).not.toBeUndefined()
 
       if (item) {
-        expect(extractText(item)).toContain("All")
+        expect(extractText(item)).not.toContain("All")
       }
     })
 
