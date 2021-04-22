@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 43a164aa6fee39b0305122de60697a05 */
+/* @relayHash ec53f45facd78fca1a35d765c7cd7aec */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -92,7 +92,7 @@ fragment ArtistAbout_artist on Artist {
       }
     }
   }
-  articles: articlesConnection(first: 10) {
+  articles: articlesConnection(first: 10, inEditorialFeed: true) {
     edges {
       node {
         ...Articles_articles
@@ -729,7 +729,12 @@ return {
           {
             "alias": "articles",
             "args": [
-              (v4/*: any*/)
+              (v4/*: any*/),
+              {
+                "kind": "Literal",
+                "name": "inEditorialFeed",
+                "value": true
+              }
             ],
             "concreteType": "ArticleConnection",
             "kind": "LinkedField",
@@ -788,7 +793,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "articlesConnection(first:10)"
+            "storageKey": "articlesConnection(first:10,inEditorialFeed:true)"
           },
           (v5/*: any*/)
         ],
@@ -797,7 +802,7 @@ return {
     ]
   },
   "params": {
-    "id": "43a164aa6fee39b0305122de60697a05",
+    "id": "ec53f45facd78fca1a35d765c7cd7aec",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": (v10/*: any*/),

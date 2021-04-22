@@ -9,7 +9,9 @@ upcoming:
     - Track a screen event when user lands on artist auction Results - ole
     - Fix android hardware back button in fancy modals - david
     - Fix android share - brian, mounir, david, pavlos
+    - Fix auction faq crash - brian, mounir, david, pavlos, jonathan
     - Move ruby version declaration to root - roop
+    - Track notable works rail tap and view all artist series tap on artist page - ole
   user_facing:
     - Add forgot password screen in new login - brian
     - Conversation-offer updates to CTA to allow multiple offers - erikdstock
@@ -21,7 +23,8 @@ upcoming:
     - Refine filter header typography, spacing & copy - damon
     - Fix renderWithLoadProgress on android - brian, mounir, pavlos
     - Hides "Default" sort label behind feature flag - damon
-    - Fix and Release new multiselect "Colors" filter
+    - Fix unable to load artist screen - adam, brian, david, thomas, jonathan, mounir
+    - Fix and Release new multiselect "Colors" filter - ole
 
 releases:
   - version: 6.8.3
