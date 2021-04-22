@@ -162,7 +162,6 @@ export const ArtworkFilterOptionsScreen: React.FC<
         keyExtractor={(_item, index) => String(index)}
         data={sortedFilterOptions}
         style={{ flexGrow: 1 }}
-        ItemSeparatorComponent={() => (shouldUseImprovedArtworkFilters ? null : <Separator />)}
         renderItem={({ item }) => {
           const selectedCurrentOption = selectedOption({
             selectedOptions,

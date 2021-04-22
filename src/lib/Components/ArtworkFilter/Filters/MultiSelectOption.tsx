@@ -5,7 +5,7 @@ import { FilterToggleButton } from "lib/Components/ArtworkFilter/Filters/FilterT
 import { FancyModalHeader, FancyModalHeaderProps } from "lib/Components/FancyModal/FancyModalHeader"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { Box, Check, Flex, Sans, Separator, Text } from "palette"
+import { Box, Check, Flex, Sans, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import styled from "styled-components/native"
@@ -61,7 +61,6 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
           style={{ flex: 1 }}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
-          ItemSeparatorComponent={shouldUseImprovedArtworkFilters ? null : Separator}
           renderItem={({ item }) => {
             return (
               <Box ml={0.5}>

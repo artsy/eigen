@@ -4,7 +4,7 @@ import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { Box, CheckIcon, Flex, RadioDot, Separator, Text } from "palette"
+import { Box, CheckIcon, Flex, RadioDot, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import styled from "styled-components/native"
@@ -32,8 +32,6 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
     navigation.goBack()
   }
 
-  const shouldUseImprovedArtworkFilters = useFeatureFlag("ARUseImprovedArtworkFilters")
-
   return (
     <Flex flexGrow={1}>
       <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
@@ -44,7 +42,7 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
           ListHeaderComponent={ListHeaderComponent}
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
-          ItemSeparatorComponent={shouldUseImprovedArtworkFilters ? null : Separator}
+          ItemSeparatorComponent={null}
           renderItem={({ item }) => (
             <ListItem
               item={item}
