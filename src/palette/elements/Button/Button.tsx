@@ -5,7 +5,7 @@ import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
-import { SansSize, themeProps } from "../../Theme"
+import { SansSize } from "../../Theme"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
@@ -68,75 +68,79 @@ export interface ButtonBaseProps extends BoxProps {
  * Returns various colors for each state given a button variant
  * @param variant
  */
-export function getColorsForVariant(variant: ButtonVariant) {
-  const {
-    colors: { black100, black10, black30, white100, purple100, red100 },
-  } = themeProps
+export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = false) {
+  const opacity = disabled ? "0.1" : "1"
+  const black100WithOpacity = `rgba(0, 0, 0, ${opacity})`
+  const black10WithOpacity = `rgba(229, 229, 229, ${opacity})`
+  const whiteWithOpacity = `rgba(255, 255, 255, ${opacity})`
+  const purple100WithOpacity = `rgba(110, 30, 255, ${opacity})`
+  const black30WithOpacity = `rgba(194, 194, 194, ${opacity})`
+  const red100WithOpacity = `rgba(232, 46, 29, ${opacity})`
 
   switch (variant) {
     case "primaryBlack":
       return {
         default: {
-          backgroundColor: black100,
-          borderColor: black100,
-          color: white100,
+          backgroundColor: black100WithOpacity,
+          borderColor: black100WithOpacity,
+          color: whiteWithOpacity,
         },
         hover: {
-          backgroundColor: purple100,
-          borderColor: purple100,
-          color: white100,
+          backgroundColor: purple100WithOpacity,
+          borderColor: purple100WithOpacity,
+          color: whiteWithOpacity,
         },
       }
     case "primaryWhite":
       return {
         default: {
-          backgroundColor: white100,
-          borderColor: white100,
-          color: black100,
+          backgroundColor: whiteWithOpacity,
+          borderColor: whiteWithOpacity,
+          color: black100WithOpacity,
         },
         hover: {
-          backgroundColor: purple100,
-          borderColor: purple100,
-          color: white100,
+          backgroundColor: purple100WithOpacity,
+          borderColor: purple100WithOpacity,
+          color: whiteWithOpacity,
         },
       }
     case "secondaryGray":
       return {
         default: {
-          backgroundColor: black10,
-          borderColor: black10,
-          color: black100,
+          backgroundColor: black10WithOpacity,
+          borderColor: black10WithOpacity,
+          color: black100WithOpacity,
         },
         hover: {
-          backgroundColor: black30,
-          borderColor: black30,
-          color: black100,
+          backgroundColor: black30WithOpacity,
+          borderColor: black30WithOpacity,
+          color: black100WithOpacity,
         },
       }
     case "secondaryOutline":
       return {
         default: {
-          backgroundColor: white100,
-          borderColor: black10,
-          color: black100,
+          backgroundColor: whiteWithOpacity,
+          borderColor: black10WithOpacity,
+          color: black100WithOpacity,
         },
         hover: {
-          backgroundColor: white100,
-          borderColor: black100,
-          color: black100,
+          backgroundColor: whiteWithOpacity,
+          borderColor: black100WithOpacity,
+          color: black100WithOpacity,
         },
       }
     case "secondaryOutlineWarning":
       return {
         default: {
-          backgroundColor: white100,
-          borderColor: black10,
-          color: red100,
+          backgroundColor: whiteWithOpacity,
+          borderColor: black10WithOpacity,
+          color: red100WithOpacity,
         },
         hover: {
-          backgroundColor: white100,
-          borderColor: black100,
-          color: black100,
+          backgroundColor: whiteWithOpacity,
+          borderColor: black100WithOpacity,
+          color: black100WithOpacity,
         },
       }
     case "noOutline":
@@ -144,12 +148,12 @@ export function getColorsForVariant(variant: ButtonVariant) {
         default: {
           backgroundColor: "rgba(0, 0, 0, 0)",
           borderColor: "rgba(0, 0, 0, 0)",
-          color: black100,
+          color: black100WithOpacity,
         },
         hover: {
-          backgroundColor: white100,
-          borderColor: black100,
-          color: black100,
+          backgroundColor: whiteWithOpacity,
+          borderColor: black100WithOpacity,
+          color: black100WithOpacity,
         },
       }
   }
@@ -182,6 +186,10 @@ export const Button: React.FC<ButtonProps> = (props) => {
 
   const loadingStyles = (() => {
     const opacity = props.disabled ? "0.1" : "1"
+
+    if (!props.loading) {
+      return {}
+    }
 
     if (props.inline) {
       return {
@@ -233,7 +241,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
 
   const { children, loading, disabled, inline, longestText, ...rest } = props
   const s = getSize()
-  const variantColors = getColorsForVariant(variant)
+  const variantColors = getColorsForVariant(variant, disabled)
 
   const from = variantColors[previous]
   const to = variantColors[current]
@@ -263,7 +271,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
                 style={{ ...springProps, ...loadingStyles, height: s.height }}
                 px={s.px}
               >
-                {!loading && (
+                {!loading ? (
                   <>
                     <VisibleTextContainer>
                       <Sans weight="medium" color={loadingStyles.color || to.color} size={s.size}>
@@ -274,9 +282,9 @@ export const Button: React.FC<ButtonProps> = (props) => {
                       {longestText ? longestText : children}
                     </HiddenText>
                   </>
+                ) : (
+                  <Spinner size={size} color={spinnerColor} />
                 )}
-
-                {!!loading && <Spinner size={size} color={spinnerColor} />}
               </AnimatedContainer>
             </Flex>
           </TouchableWithoutFeedback>

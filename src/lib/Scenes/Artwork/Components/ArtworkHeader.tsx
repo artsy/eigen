@@ -39,6 +39,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
 
   const currentImage = (artwork.images ?? [])[currentImageIndex]
   const currentImageUrl = (currentImage?.url ?? "").replace(":version", "large")
+  const smallImageURL = (currentImage?.url ?? "").replace(":version", "small")
 
   const shareArtwork = async () => {
     trackEvent({
@@ -52,7 +53,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
 
     const resp = await RNFetchBlob.config({
       fileCache: true,
-    }).fetch("GET", currentImageUrl)
+    }).fetch("GET", smallImageURL)
 
     const base64RawData = await resp.base64()
     const base64Data = `data:image/png;base64,${base64RawData}`
@@ -60,8 +61,8 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
     try {
       const res = await Share.open({
         title: details.title,
-        urls: [base64Data, details.url],
-        message: details.message,
+        url: base64Data,
+        message: details.message + "\n" + details.url,
       })
       trackEvent(share(tracks.iosShare(res.app, artwork.internalID, artwork.slug)))
     } catch (err) {

@@ -9,14 +9,18 @@ upcoming:
     - Track a screen event when user lands on artist auction Results - ole
     - Fix android hardware back button in fancy modals - david
     - Add user agent to android - brian, david, thomas, jonathan, pavlos, mounir
+    - Fix android share - brian, mounir, david, pavlos
+    - Move ruby version declaration to root - roop
   user_facing:
     - Add forgot password screen in new login - brian
     - Conversation-offer updates to CTA to allow multiple offers - erikdstock
     - Replace "All" option on multi-select filters with upper right-hand "Clear all"
     - Fix infinite spinner on Android when following within an artist rail - pepopowitz
+    - Fix iOS13 modal keyboard avoidance - david
     - Release multi-select time period filter - iskounen
     - Refine filter header typography, spacing & copy - damon
     - Fix renderWithLoadProgress on android - brian, mounir, pavlos
+    - Hides "Default" sort label behind feature flag - damon
 
 releases:
   - version: 6.8.3
