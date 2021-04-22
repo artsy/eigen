@@ -3,6 +3,7 @@ import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import { RegistrationResult, RegistrationStatus } from "lib/Components/Bidding/Screens/RegistrationResult"
 import { Modal } from "lib/Components/Modal"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { flushPromiseQueueFakeTimers } from "lib/tests/flushPromiseQueue"
 // FIXME: Uncomment when x'd test is reenabled
 // import { LinkText } from "../../../Text/LinkText"
 import { mockTimezone } from "lib/tests/mockTimezone"
@@ -19,7 +20,6 @@ import { Address } from "../../types"
 import { BillingAddress } from "../BillingAddress"
 import { CreditCardForm } from "../CreditCardForm"
 import { Registration } from "../Registration"
-import { flush2 } from "lib/tests/flushPromiseQueue"
 
 // This lets us import the actual react-relay module, and replace specific functions within it with mocks.
 jest.unmock("react-relay")
@@ -271,7 +271,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findAllByType(Button)[1].props.onPress()
 
-    await flush2()
+    await flushPromiseQueueFakeTimers()
 
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.component).toEqual(RegistrationResult)
