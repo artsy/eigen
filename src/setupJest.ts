@@ -317,7 +317,7 @@ jest.mock("./lib/utils/useScreenDimensions", () => {
   }
 })
 
-jest.mock("@react-native-async-storage/async-storage", () => {
+jest.mock("@react-native-community/async-storage", () => {
   let state: any = {}
   return {
     __resetState() {
