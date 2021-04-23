@@ -2,6 +2,7 @@ import { InquiryButtonsTestsQuery } from "__generated__/InquiryButtonsTestsQuery
 import { navigate } from "lib/navigation/navigate"
 import { InquiryButtonsFragmentContainer } from "lib/Scenes/Artwork/Components/CommercialButtons/InquiryButtons"
 import { InquirySuccessNotification } from "lib/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
+import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
@@ -22,11 +23,12 @@ jest.mock("lib/Scenes/Artwork/Components/CommercialButtons/InquiryModal", () => 
 })
 
 beforeEach(() => {
-  jest.useFakeTimers()
+  fakeTimersBeforeEach()
   env = createMockEnvironment()
 })
 
 afterEach(() => {
+  fakeTimersAfterEach()
   jest.clearAllMocks()
 })
 

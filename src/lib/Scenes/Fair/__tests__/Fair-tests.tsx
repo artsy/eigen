@@ -16,7 +16,6 @@ import { Tab, Tabs } from "../Components/SimpleTabs"
 import { Fair, FairFragmentContainer } from "../Fair"
 
 jest.unmock("react-relay")
-jest.useFakeTimers()
 
 describe("Fair", () => {
   const trackEvent = useTracking().trackEvent
