@@ -27,7 +27,6 @@ import relay from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
 import { LinkText } from "../../../Text/LinkText"
-import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { BidInfoRow } from "../../Components/BidInfoRow"
 import { Checkbox } from "../../Components/Checkbox"
 import { Address } from "../../types"
