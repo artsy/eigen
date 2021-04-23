@@ -12,6 +12,12 @@ import { WatchedLot } from "../Components/WatchedLot"
 import { MyBidsContainer, MyBidsQueryRenderer } from "../MyBids"
 
 jest.unmock("react-relay")
+jest.mock("lib/relay/createEnvironment", () => ({
+  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
+  reset(this: { defaultEnvironment: any }) {
+    this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
+  },
+}))
 
 const closedSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
   const closedSection = root.findByProps({ "data-test-id": "closed-section" })
