@@ -6189,6 +6189,7 @@ type FollowGeneEdge {
 input FollowGeneInput {
   clientMutationId: String
   geneID: String
+  unfollow: Boolean = false
 }
 
 type FollowGenePayload {
