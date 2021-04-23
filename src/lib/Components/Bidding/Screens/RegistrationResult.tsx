@@ -113,9 +113,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
   }
 
   componentWillUnmount = () => {
-    if (this.backButtonListener) {
-      this.backButtonListener.remove()
-    }
+    this.backButtonListener?.remove()
   }
 
   handleBackButton = () => {
