@@ -1,6 +1,7 @@
 import mockFetch from "jest-fetch-mock"
 import { goBack, navigate } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { stringify } from "query-string"
 import React from "react"
@@ -159,15 +160,14 @@ describe(ArtsyReactWebViewPage, () => {
 })
 
 describe(useWebViewCookies, () => {
-  beforeAll(() => {
-    jest.useFakeTimers()
-  })
-  afterAll(() => {
-    jest.useRealTimers()
-  })
   beforeEach(() => {
+    fakeTimersBeforeEach()
     mockFetch.mockClear()
   })
+  afterEach(() => {
+    fakeTimersAfterEach()
+  })
+
   const Wrapper = () => {
     useWebViewCookies()
     return null

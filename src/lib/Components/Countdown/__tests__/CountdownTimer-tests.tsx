@@ -7,6 +7,7 @@ jest.mock("moment", () => {
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { render } from "enzyme"
+import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
 import { Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { LabeledTicker } from ".."
@@ -29,8 +30,11 @@ const CountdownText: React.FC<CountdownProps> = ({ duration, label }) => (
 
 describe("CountdownTimer", () => {
   beforeEach(() => {
-    jest.useFakeTimers()
+    fakeTimersBeforeEach()
     Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
+  })
+  afterEach(() => {
+    fakeTimersAfterEach()
   })
 
   it("renders upcoming properly", () => {

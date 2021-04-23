@@ -9,6 +9,7 @@ import "react-native"
 import { mockTimezone } from "lib/tests/mockTimezone"
 import { Timer } from "../Timer"
 
+import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
 import { BiddingThemeProvider } from "../BiddingThemeProvider"
 
 const SECONDS = 1000
@@ -34,7 +35,7 @@ let pastTime
 let futureTime
 
 beforeEach(() => {
-  jest.useFakeTimers()
+  fakeTimersBeforeEach()
 
   // Thursday, May 10, 2018 8:22:32.000 PM UTC
   Date.now = () => dateNow
@@ -46,6 +47,7 @@ beforeEach(() => {
 const orgDateTimeFormat: any = Intl.DateTimeFormat
 
 afterEach(() => {
+  fakeTimersAfterEach()
   Intl.DateTimeFormat = orgDateTimeFormat
 })
 

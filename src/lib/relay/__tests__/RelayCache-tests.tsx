@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
 import { clear, clearAll, get, requestFingerprint, set } from "../RelayCache"
 
 describe(requestFingerprint, () => {
@@ -36,12 +37,12 @@ describe("the cache", () => {
   const nowMock = jest.fn(() => currentTime)
   const properNow = Date.now
   beforeAll(() => {
+    fakeTimersBeforeEach()
     Date.now = nowMock
-    jest.useFakeTimers()
   })
   afterAll(() => {
+    fakeTimersAfterEach()
     Date.now = properNow
-    jest.useRealTimers()
   })
   beforeEach(() => {
     ;(AsyncStorage as any).__resetState()

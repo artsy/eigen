@@ -1,3 +1,4 @@
+import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import React from "react"
@@ -18,12 +19,11 @@ const TestRenderer: React.FC = () => {
 
 describe("Toast", () => {
   beforeEach(() => {
-    jest.clearAllMocks()
-    jest.useFakeTimers()
+    fakeTimersBeforeEach()
   })
 
   afterEach(() => {
-    jest.useRealTimers()
+    fakeTimersAfterEach()
   })
 
   it("renders a toast when show toast is called", async () => {
