@@ -8,8 +8,12 @@ upcoming:
     - Update filter params change tracking type for auction results - ole
     - Track a screen event when user lands on artist auction Results - ole
     - Fix android hardware back button in fancy modals - david
+    - Add user agent to android - brian, david, thomas, jonathan, pavlos, mounir
     - Fix android share - brian, mounir, david, pavlos
+    - Fix auction faq crash - brian, mounir, david, pavlos, jonathan
     - Move ruby version declaration to root - roop
+    - Track notable works rail tap and view all artist series tap on artist page - ole
+    - Track filter change on artist series page - ole
     - Add vscode launch config to debug tests in current file - ole
   user_facing:
     - Add forgot password screen in new login - brian
@@ -22,6 +26,9 @@ upcoming:
     - Refine filter header typography, spacing & copy - damon
     - Fix renderWithLoadProgress on android - brian, mounir, pavlos
     - Hides "Default" sort label behind feature flag - damon
+    - Fix unable to load artist screen - adam, brian, david, thomas, jonathan, mounir
+    - Fix and Release new multiselect "Colors" filter - ole
+    - Release artwork filter style updates - iskounen
 
 releases:
   - version: 6.8.3

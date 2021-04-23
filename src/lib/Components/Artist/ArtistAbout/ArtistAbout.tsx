@@ -49,7 +49,7 @@ export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
           }
         }
       }
-      articles: articlesConnection(first: 10) {
+      articles: articlesConnection(first: 10, inEditorialFeed: true) {
         edges {
           node {
             ...Articles_articles

@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistNotableWorksRail_artist } from "__generated__/ArtistNotableWorksRail_artist.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
@@ -6,6 +7,7 @@ import { navigate } from "lib/navigation/navigate"
 import { Box, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 interface ArtistNotableWorksRailProps {
@@ -21,10 +23,15 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist 
     return null
   }
 
-  const handleNavigation = (slug: string | undefined) => {
-    if (!slug) {
+  const { trackEvent } = useTracking()
+
+  const handleNavigation = (id: string | undefined, slug: string | undefined, position: number) => {
+    if (!slug || !id) {
       return
     }
+
+    trackEvent(tracks.tapArtwork(artist.internalID, artist.slug, id, slug, position))
+
     return navigate(`/artwork/${slug}`)
   }
   const saleMessage = (artwork: NotableArtwork) => {
@@ -61,7 +68,7 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist 
           data={artworks}
           initialNumToRender={3}
           windowSize={3}
-          renderItem={({ item }) => {
+          renderItem={({ item, index }) => {
             return (
               <ArtworkTileRailCard
                 imageURL={item?.node?.image?.imageURL}
@@ -71,7 +78,7 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist 
                 saleMessage={saleMessage(item)}
                 key={item?.node?.internalID}
                 onPress={() => {
-                  handleNavigation(item?.node?.slug)
+                  handleNavigation(item?.node?.internalID, item?.node?.slug, index)
                 }}
               />
             )
@@ -90,6 +97,8 @@ const ArtistNotableWorksRailWrapper = styled(Box)`
 export const ArtistNotableWorksRailFragmentContainer = createFragmentContainer(ArtistNotableWorksRail, {
   artist: graphql`
     fragment ArtistNotableWorksRail_artist on Artist {
+      internalID
+      slug
       # this should match the notableWorks query in ArtistArtworks
       filterArtworksConnection(sort: "-weighted_iconicity", first: 10) {
         edges {
@@ -121,3 +130,19 @@ export const ArtistNotableWorksRailFragmentContainer = createFragmentContainer(A
     }
   `,
 })
+
+export const tracks = {
+  tapArtwork: (artistId: string, artistSlug: string, artworkId: string, artworkSlug: string, position: number) => ({
+    action: ActionType.tappedArtworkGroup,
+    context_module: ContextModule.topWorksRail,
+    context_screen_owner_type: OwnerType.artist,
+    context_screen_owner_id: artistId,
+    context_screen_owner_slug: artistSlug,
+    destination_screen_owner_type: OwnerType.artwork,
+    destination_screen_owner_id: artworkId,
+    destination_screen_owner_slug: artworkSlug,
+    horizontal_slide_position: position,
+    module_height: "double",
+    type: "thumbnail",
+  }),
+}

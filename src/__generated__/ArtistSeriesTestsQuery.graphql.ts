@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b40e419bf46b2d768b797f99b48b5b0c */
+/* @relayHash a2e7cd0feab352b9a395bf8ff688bbd4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -81,6 +81,7 @@ fragment ArtistSeriesMeta_artistSeries on ArtistSeries {
 
 fragment ArtistSeriesMoreSeries_artist on Artist {
   internalID
+  slug
   artistSeriesConnection(first: 4) {
     totalCount
     edges {
@@ -810,6 +811,7 @@ return {
             "plural": true,
             "selections": [
               (v1/*: any*/),
+              (v2/*: any*/),
               {
                 "alias": null,
                 "args": [
@@ -884,7 +886,7 @@ return {
     ]
   },
   "params": {
-    "id": "b40e419bf46b2d768b797f99b48b5b0c",
+    "id": "a2e7cd0feab352b9a395bf8ff688bbd4",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artistSeries": (v10/*: any*/),
@@ -912,6 +914,7 @@ return {
         "artistSeries.artist.artistSeriesConnection.totalCount": (v17/*: any*/),
         "artistSeries.artist.id": (v15/*: any*/),
         "artistSeries.artist.internalID": (v15/*: any*/),
+        "artistSeries.artist.slug": (v15/*: any*/),
         "artistSeries.artistIDs": {
           "enumValues": null,
           "nullable": false,

@@ -5,6 +5,8 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistNotableWorksRail_artist = {
+    readonly internalID: string;
+    readonly slug: string;
     readonly filterArtworksConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -43,7 +45,21 @@ export type ArtistNotableWorksRail_artist$key = {
 
 
 const node: ReaderFragment = (function(){
-var v0 = [
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v2 = [
   {
     "alias": null,
     "args": null,
@@ -58,6 +74,8 @@ return {
   "metadata": null,
   "name": "ArtistNotableWorksRail_artist",
   "selections": [
+    (v0/*: any*/),
+    (v1/*: any*/),
     {
       "alias": null,
       "args": [
@@ -147,7 +165,7 @@ return {
                       "kind": "LinkedField",
                       "name": "openingBid",
                       "plural": false,
-                      "selections": (v0/*: any*/),
+                      "selections": (v2/*: any*/),
                       "storageKey": null
                     },
                     {
@@ -157,7 +175,7 @@ return {
                       "kind": "LinkedField",
                       "name": "highestBid",
                       "plural": false,
-                      "selections": (v0/*: any*/),
+                      "selections": (v2/*: any*/),
                       "storageKey": null
                     }
                   ],
@@ -195,20 +213,8 @@ return {
                   "name": "title",
                   "storageKey": null
                 },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "internalID",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "slug",
-                  "storageKey": null
-                }
+                (v0/*: any*/),
+                (v1/*: any*/)
               ],
               "storageKey": null
             }
@@ -223,5 +229,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '169c295998c2442d10e5762e5c40b0c6';
+(node as any).hash = 'f020d87d7a75e5be053dfeae8f0c8328';
 export default node;

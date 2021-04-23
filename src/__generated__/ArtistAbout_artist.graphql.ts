@@ -116,6 +116,11 @@ const node: ReaderFragment = {
           "kind": "Literal",
           "name": "first",
           "value": 10
+        },
+        {
+          "kind": "Literal",
+          "name": "inEditorialFeed",
+          "value": true
         }
       ],
       "concreteType": "ArticleConnection",
@@ -151,7 +156,7 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
-      "storageKey": "articlesConnection(first:10)"
+      "storageKey": "articlesConnection(first:10,inEditorialFeed:true)"
     },
     {
       "args": null,
@@ -172,5 +177,5 @@ const node: ReaderFragment = {
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = '28193bbf64d151f460427c1df246f990';
+(node as any).hash = 'd3b7e4e4a3137cf53904b9efcb60c492';
 export default node;

@@ -8134,6 +8134,7 @@ type Partner implements Node {
 
   # A connection of locations from a Partner.
   locationsConnection(after: String, before: String, first: Int, last: Int): LocationConnection
+  meta: PartnerMeta
   name: String
   profile: Profile
   profileArtistsLayout: String
@@ -8381,6 +8382,12 @@ type PartnerEdge {
 
   # The item at the end of the edge
   node: Partner
+}
+
+type PartnerMeta {
+  description: String
+  image: String
+  title: String
 }
 
 enum PartnerShowPartnerType {
