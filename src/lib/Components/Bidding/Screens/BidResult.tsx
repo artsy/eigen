@@ -48,7 +48,7 @@ export class BidResult extends React.Component<BidResultProps> {
   backButtonListener?: NativeEventSubscription = undefined
 
   componentDidMount = () => {
-    this.backButtonListener = BackHandler.addEventListener("hardwareBackPress", this.handleBackButton.bind(this))
+    this.backButtonListener = BackHandler.addEventListener("hardwareBackPress", this.handleBackButton)
   }
 
   componentWillUnmount = () => {
