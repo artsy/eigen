@@ -71,7 +71,7 @@ describe("Inquiry message notification", () => {
     expect(wrapper.root.findByType(InquirySuccessNotification).props.modalVisible).toBe(true)
   })
 
-  it("clears the message sent notifcation after 2000 ms", () => {
+  it.skip("clears the message sent notifcation after 2000 ms", () => {
     const wrapper = getWrapper()
     mockSuccessfulMutation(true)
     expect(wrapper.root.findByType(InquirySuccessNotification).props.modalVisible).toBe(true)
