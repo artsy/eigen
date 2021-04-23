@@ -1,4 +1,5 @@
 import { ImageCarouselTestsQueryRawResponse } from "__generated__/ImageCarouselTestsQuery.graphql"
+import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { Animated, FlatList } from "react-native"
@@ -87,7 +88,7 @@ describe("ImageCarouselFragmentContainer", () => {
   const getDotOpacity = (dot) => dot.find(Animated.View).props().style.opacity._value
   describe("with five images", () => {
     beforeEach(() => {
-      jest.useFakeTimers()
+      fakeTimersBeforeEach()
       ;(useTracking as jest.Mock).mockImplementation(() => {
         return {
           trackEvent,
@@ -96,7 +97,7 @@ describe("ImageCarouselFragmentContainer", () => {
     })
     afterEach(() => {
       jest.clearAllMocks()
-      jest.useRealTimers()
+      fakeTimersAfterEach()
     })
     it("renders a flat list with five entries", async () => {
       const wrapper = await getWrapper()

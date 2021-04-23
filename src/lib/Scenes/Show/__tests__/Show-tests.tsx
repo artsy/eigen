@@ -10,7 +10,6 @@ import { ShowContextCard } from "../Components/ShowContextCard"
 import { Show, ShowFragmentContainer } from "../Show"
 
 jest.unmock("react-relay")
-jest.useFakeTimers()
 
 describe("Show", () => {
   let env: ReturnType<typeof createMockEnvironment>
