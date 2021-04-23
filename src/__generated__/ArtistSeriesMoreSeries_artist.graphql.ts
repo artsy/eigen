@@ -6,6 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistSeriesMoreSeries_artist = {
     readonly internalID: string;
+    readonly slug: string;
     readonly artistSeriesConnection: {
         readonly totalCount: number;
         readonly edges: ReadonlyArray<{
@@ -38,6 +39,13 @@ var v0 = {
   "kind": "ScalarField",
   "name": "internalID",
   "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
 };
 return {
   "argumentDefinitions": [],
@@ -46,6 +54,7 @@ return {
   "name": "ArtistSeriesMoreSeries_artist",
   "selections": [
     (v0/*: any*/),
+    (v1/*: any*/),
     {
       "alias": null,
       "args": [
@@ -83,13 +92,7 @@ return {
               "name": "node",
               "plural": false,
               "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "slug",
-                  "storageKey": null
-                },
+                (v1/*: any*/),
                 (v0/*: any*/),
                 {
                   "alias": null,
@@ -144,5 +147,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '4253ed5587e899e61abc1012e18c51e4';
+(node as any).hash = 'bba51964d6b4d4d8b35940ddeaf45f80';
 export default node;

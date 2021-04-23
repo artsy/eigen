@@ -1,6 +1,6 @@
 import { Button, Sans, Theme } from "palette"
 import React from "react"
-import { View } from "react-native"
+import { BackHandler, NativeEventSubscription, View } from "react-native"
 import { blockRegex } from "simple-markdown"
 
 import { Icon20 } from "../Components/Icon"
@@ -106,6 +106,28 @@ const resultEnumToPageName = (result: RegistrationStatus) => {
     } as any) /* STRICTNESS_MIGRATION */
 )
 export class RegistrationResult extends React.Component<RegistrationResultProps> {
+  backButtonListener?: NativeEventSubscription = undefined
+
+  componentDidMount = () => {
+    this.backButtonListener = BackHandler.addEventListener("hardwareBackPress", this.handleBackButton)
+  }
+
+  componentWillUnmount = () => {
+    this.backButtonListener?.remove()
+  }
+
+  handleBackButton = () => {
+    if (
+      this.props.status === RegistrationStatus.RegistrationStatusComplete ||
+      this.props.status === RegistrationStatus.RegistrationStatusPending
+    ) {
+      dismissModal()
+      return true
+    } else {
+      return false
+    }
+  }
+
   render() {
     const { status, needsIdentityVerification } = this.props
     let title: string

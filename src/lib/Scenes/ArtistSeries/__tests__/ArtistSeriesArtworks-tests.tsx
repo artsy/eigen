@@ -1,10 +1,10 @@
 import { ArtistSeriesArtworksTestsQuery } from "__generated__/ArtistSeriesArtworksTestsQuery.graphql"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ArtistSeriesArtworksFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkFilterContext, ArtworkFilterContextState } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -14,22 +14,9 @@ jest.unmock("react-relay")
 
 describe("Artist Series Artworks", () => {
   let env: ReturnType<typeof createMockEnvironment>
-  let state: ArtworkFilterContextState
 
   beforeEach(() => {
     env = createMockEnvironment()
-    state = {
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-      aggregations: [],
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    }
   })
 
   const TestRenderer = () => (
@@ -46,9 +33,9 @@ describe("Artist Series Artworks", () => {
       render={({ props, error }) => {
         if (props?.artistSeries) {
           return (
-            <ArtworkFilterContext.Provider value={{ state, dispatch: jest.fn() }}>
+            <ArtworkFiltersStoreProvider>
               <ArtistSeriesArtworksFragmentContainer artistSeries={props.artistSeries} />
-            </ArtworkFilterContext.Provider>
+            </ArtworkFiltersStoreProvider>
           )
         } else if (error) {
           console.log(error)

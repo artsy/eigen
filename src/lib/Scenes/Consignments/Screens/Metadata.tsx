@@ -6,14 +6,14 @@ import { Select } from "lib/Components/Select"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
 import { Sans } from "palette"
-import { ScrollView, View, ViewProperties } from "react-native"
+import { ScrollView, View, ViewProps } from "react-native"
 import { ConsignmentMetadata } from "../"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { Row } from "../Components/FormElements"
 import Text from "../Components/TextInput"
 import Toggle from "../Components/Toggle"
 
-interface Props extends ViewProperties {
+interface Props extends ViewProps {
   navigator: NavigatorIOS
   updateWithMetadata?: (result: ConsignmentMetadata) => void
   metadata: ConsignmentMetadata

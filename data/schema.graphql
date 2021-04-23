@@ -1005,6 +1005,7 @@ type ArtistPartnerConnection {
 type ArtistPartnerEdge {
   artist: Artist
   biography: String
+  biographyBlurb(format: Format): PartnerArtistBlurb
   counts: PartnerArtistCounts
 
   # A cursor for use in pagination
@@ -1257,6 +1258,9 @@ type Artwork implements Node & Searchable & Sellable {
   dimensions: dimensions
   displayLabel: String
   displayPriceRange: Boolean
+
+  # Domestic shipping fee.
+  domesticShippingFee: Money
   editionNumber: String
   editionOf: String
   editionSet(id: String!): EditionSet
@@ -1301,6 +1305,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+
+  # International shipping fee.
+  internationalShippingFee: Money
 
   # Private text field for partner use
   inventoryId: String
@@ -6282,7 +6289,7 @@ type GeminiEntry {
 type Gene implements Node & Searchable {
   artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
   cached: Int
-  description: String
+  description(format: Format): String
   displayLabel: String
   displayName: String
 
@@ -6925,6 +6932,7 @@ type Location {
   # Alternate Markdown-supporting free text representation of a location's opening hours
   dayScheduleText: String
   display: String
+  displayCountry: String
 
   # A globally unique ID.
   id: ID!
@@ -8002,7 +8010,9 @@ type Partner implements Node {
   # A connection of artists at a partner.
   artistsConnection(
     after: String
+    artistIDs: [String]
     before: String
+    displayOnPartnerProfile: Boolean
     first: Int
     last: Int
     representedBy: Boolean
@@ -8019,9 +8029,6 @@ type Partner implements Node {
     exclude: [String]
     first: Int
     forSale: Boolean
-
-    # Return artworks with less than x additional_images.
-    imageCountLessThan: Int
     last: Int
 
     # Return artworks that are missing priority metadata
@@ -8043,6 +8050,7 @@ type Partner implements Node {
   collectingInstitution: String
   counts: PartnerCounts
   defaultProfileID: String
+  displayArtistsSection: Boolean
   distinguishRepresentedArtists: Boolean
 
   # Artworks Elastic Search results
@@ -8126,8 +8134,10 @@ type Partner implements Node {
 
   # A connection of locations from a Partner.
   locationsConnection(after: String, before: String, first: Int, last: Int): LocationConnection
+  meta: PartnerMeta
   name: String
   profile: Profile
+  profileArtistsLayout: String
 
   # A connection of shows from a Partner.
   showsConnection(
@@ -8159,6 +8169,7 @@ type Partner implements Node {
 type PartnerArtist {
   artist: Artist
   biography: String
+  biographyBlurb(format: Format): PartnerArtistBlurb
   counts: PartnerArtistCounts
 
   # A globally unique ID.
@@ -8171,6 +8182,11 @@ type PartnerArtist {
   partner: Partner
   representedBy: Boolean
   sortableID: String
+}
+
+type PartnerArtistBlurb {
+  credit: String
+  text: String
 }
 
 # A connection to a list of items.
@@ -8199,6 +8215,7 @@ type PartnerArtistCounts {
 type PartnerArtistEdge {
   artist: Artist
   biography: String
+  biographyBlurb(format: Format): PartnerArtistBlurb
   counts: PartnerArtistCounts
 
   # A cursor for use in pagination
@@ -8365,6 +8382,12 @@ type PartnerEdge {
 
   # The item at the end of the edge
   node: Partner
+}
+
+type PartnerMeta {
+  description: String
+  image: String
+  title: String
 }
 
 enum PartnerShowPartnerType {
@@ -8577,7 +8600,7 @@ type Profile {
   bio: String
   cached: Int
   counts: ProfileCounts
-  displayArtistsSection: Boolean
+  displayArtistsSection: Boolean @deprecated(reason: "Prefer displayArtistsSection in Partner type")
   href: String
   icon: Image
 
@@ -8592,7 +8615,7 @@ type Profile {
   isPubliclyVisible: Boolean
   isPublished: Boolean
   name: String
-  profileArtistsLayout: String
+  profileArtistsLayout: String @deprecated(reason: "Prefer profileArtistsLayout in Partner type")
 
   # A slug ID.
   slug: ID!

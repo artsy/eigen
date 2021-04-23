@@ -30,8 +30,8 @@ jest.mock("formik", () => ({
 }))
 
 describe("OnboardingLogin", () => {
-  const TestProvider = () => {
-    return <OnboardingLoginForm navigation={navigationPropsMock as any} route={null as any} />
+  const TestProvider = ({ email = "" }) => {
+    return <OnboardingLoginForm navigation={navigationPropsMock as any} route={{ params: { email } } as any} />
   }
 
   describe("Forget Button", () => {
@@ -39,7 +39,7 @@ describe("OnboardingLogin", () => {
       const tree = renderWithWrappers(<TestProvider />)
       const forgotPasswordButton = tree.root.findAllByType(Touchable)[0]
       forgotPasswordButton.props.onPress()
-      expect(navigateMock).toHaveBeenCalledWith("OnboardingForgotPassword")
+      expect(navigateMock).toHaveBeenCalledWith("ForgotPassword")
     })
   })
 
@@ -102,6 +102,26 @@ describe("OnboardingLogin", () => {
       passwordInput.props.onChangeText("password 2")
       passwordInput.props.onSubmitEditing()
       expect(mockValidateForm).toHaveBeenCalled()
+    })
+  })
+
+  describe("autoFocus", () => {
+    it("is on the email input by default", () => {
+      const tree = renderWithWrappers(<TestProvider />)
+      const emailInput = tree.root.findAllByType(Input)[0]
+      const passwordInput = tree.root.findAllByType(Input)[1]
+
+      expect(emailInput.props.autoFocus).toBe(true)
+      expect(passwordInput.props.autoFocus).toBe(false)
+    })
+
+    it("is on the password input when the email navigation param is set", () => {
+      const tree = renderWithWrappers(<TestProvider email="test@email.com" />)
+      const emailInput = tree.root.findAllByType(Input)[0]
+      const passwordInput = tree.root.findAllByType(Input)[1]
+
+      expect(emailInput.props.autoFocus).toBe(false)
+      expect(passwordInput.props.autoFocus).toBe(true)
     })
   })
 })

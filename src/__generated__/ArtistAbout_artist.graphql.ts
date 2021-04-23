@@ -6,7 +6,6 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistAbout_artist = {
     readonly hasMetadata: boolean | null;
-    readonly isDisplayAuctionLink: boolean | null;
     readonly slug: string;
     readonly related: {
         readonly artists: {
@@ -46,13 +45,6 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "ScalarField",
       "name": "hasMetadata",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "isDisplayAuctionLink",
       "storageKey": null
     },
     {
@@ -124,6 +116,11 @@ const node: ReaderFragment = {
           "kind": "Literal",
           "name": "first",
           "value": 10
+        },
+        {
+          "kind": "Literal",
+          "name": "inEditorialFeed",
+          "value": true
         }
       ],
       "concreteType": "ArticleConnection",
@@ -159,7 +156,7 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
-      "storageKey": "articlesConnection(first:10)"
+      "storageKey": "articlesConnection(first:10,inEditorialFeed:true)"
     },
     {
       "args": null,
@@ -180,5 +177,5 @@ const node: ReaderFragment = {
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = 'c6d9d5446681e9c00f83659592d8ff3d';
+(node as any).hash = 'd3b7e4e4a3137cf53904b9efcb60c492';
 export default node;

@@ -1,7 +1,7 @@
 import React from "react"
-import { StyleSheet, Text, TextProperties } from "react-native"
+import { StyleSheet, Text, TextProps } from "react-native"
 
-export default class Serif extends React.Component<TextProperties, any> {
+export default class Serif extends React.Component<TextProps, any> {
   render() {
     const { children, style, ...props } = this.props
     return (

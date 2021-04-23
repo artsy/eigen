@@ -1,10 +1,10 @@
 import { Partner_partner } from "__generated__/Partner_partner.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
@@ -40,9 +40,9 @@ class Partner extends React.Component<Props> {
             title: "Artworks",
             initial: true,
             content: (
-              <ArtworkFilterGlobalStateProvider>
+              <ArtworkFiltersStoreProvider>
                 <PartnerArtwork partner={partner} />
-              </ArtworkFilterGlobalStateProvider>
+              </ArtworkFiltersStoreProvider>
             ),
           },
           {

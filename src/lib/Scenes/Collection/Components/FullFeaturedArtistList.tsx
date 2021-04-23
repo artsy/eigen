@@ -6,10 +6,10 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Box } from "palette"
 import React from "react"
-import { Dimensions, FlatList, ViewProperties } from "react-native"
+import { Dimensions, FlatList, ViewProps } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
-interface Props extends ViewProperties {
+interface Props extends ViewProps {
   collection: FullFeaturedArtistList_collection
 }
 

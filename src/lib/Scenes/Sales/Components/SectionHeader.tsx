@@ -1,5 +1,5 @@
 import React from "react"
-import { ViewProperties } from "react-native"
+import { ViewProps } from "react-native"
 import styled from "styled-components/native"
 
 import fonts from "lib/data/fonts"
@@ -18,7 +18,7 @@ const Title = styled.Text`
   text-align: left;
 `
 
-interface Props extends ViewProperties {
+interface Props extends ViewProps {
   title: string
 }
 

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e7e03baa797b12533f132bdddfbb709e */
+/* @relayHash ec53f45facd78fca1a35d765c7cd7aec */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -78,7 +78,6 @@ fragment ArtistAboutShows_artist on Artist {
 
 fragment ArtistAbout_artist on Artist {
   hasMetadata
-  isDisplayAuctionLink
   slug
   ...Biography_artist
   ...ArtistConsignButton_artist
@@ -93,7 +92,7 @@ fragment ArtistAbout_artist on Artist {
       }
     }
   }
-  articles: articlesConnection(first: 10) {
+  articles: articlesConnection(first: 10, inEditorialFeed: true) {
     edges {
       node {
         ...Articles_articles
@@ -496,13 +495,6 @@ return {
             "name": "hasMetadata",
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "isDisplayAuctionLink",
-            "storageKey": null
-          },
           (v2/*: any*/),
           {
             "alias": null,
@@ -737,7 +729,12 @@ return {
           {
             "alias": "articles",
             "args": [
-              (v4/*: any*/)
+              (v4/*: any*/),
+              {
+                "kind": "Literal",
+                "name": "inEditorialFeed",
+                "value": true
+              }
             ],
             "concreteType": "ArticleConnection",
             "kind": "LinkedField",
@@ -796,7 +793,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "articlesConnection(first:10)"
+            "storageKey": "articlesConnection(first:10,inEditorialFeed:true)"
           },
           (v5/*: any*/)
         ],
@@ -805,7 +802,7 @@ return {
     ]
   },
   "params": {
-    "id": "e7e03baa797b12533f132bdddfbb709e",
+    "id": "ec53f45facd78fca1a35d765c7cd7aec",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": (v10/*: any*/),
@@ -875,7 +872,6 @@ return {
         },
         "artist.image.cropped.url": (v20/*: any*/),
         "artist.internalID": (v11/*: any*/),
-        "artist.isDisplayAuctionLink": (v17/*: any*/),
         "artist.name": (v12/*: any*/),
         "artist.pastShows": (v14/*: any*/),
         "artist.pastShows.edges": (v15/*: any*/),

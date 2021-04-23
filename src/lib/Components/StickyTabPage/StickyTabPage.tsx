@@ -3,12 +3,12 @@ import { Schema } from "lib/utils/track"
 import { useGlobalState } from "lib/utils/useGlobalState"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { color } from "palette"
-import React, { useMemo, useRef, useState } from "react"
+import React, { EffectCallback, useEffect, useMemo, useRef, useState } from "react"
 import { View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
 import { useAnimatedValue } from "./reanimatedHelpers"
-import { StickyTabPageContext } from "./SitckyTabPageContext"
+import { StickyTabPageContext, useStickyTabPageContext } from "./SitckyTabPageContext"
 import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
 import { StickyTabPageFlatListContext } from "./StickyTabPageFlatList"
 import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
@@ -16,7 +16,7 @@ import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
 interface TabProps {
   initial?: boolean
   title: string
-  content: JSX.Element
+  content: JSX.Element | ((tabIndex: number) => JSX.Element)
 }
 
 /**
@@ -96,7 +96,7 @@ export const StickyTabPage: React.FC<{
                       tabIsActive: Animated.eq(index, activeTabIndexNative),
                     }}
                   >
-                    {content}
+                    {typeof content === "function" ? content(index) : content}
                   </StickyTabPageFlatListContext.Provider>
                 </View>
               )
@@ -117,6 +117,17 @@ export const StickyTabPage: React.FC<{
       </View>
     </StickyTabPageContext.Provider>
   )
+}
+
+export function useOnTabFocusedEffect(effect: EffectCallback, tabIndex: number) {
+  const { activeTabIndex } = useStickyTabPageContext()
+  activeTabIndex.useUpdates()
+
+  useEffect(() => {
+    if (activeTabIndex.current === tabIndex) {
+      effect()
+    }
+  }, [activeTabIndex.current])
 }
 
 function useAutoCollapsingMeasuredView(content: React.ReactChild) {

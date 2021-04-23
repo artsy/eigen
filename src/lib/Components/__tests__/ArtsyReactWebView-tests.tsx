@@ -1,4 +1,5 @@
 import mockFetch from "jest-fetch-mock"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { goBack, navigate } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
@@ -8,7 +9,6 @@ import React from "react"
 import WebView, { WebViewProps } from "react-native-webview"
 import { act } from "react-test-renderer"
 import { __webViewTestUtils__, ArtsyReactWebViewPage, useWebViewCookies } from "../ArtsyReactWebView"
-import { FancyModalHeader } from "../FancyModal/FancyModalHeader"
 
 describe(ArtsyReactWebViewPage, () => {
   const render = (props: Partial<React.ComponentProps<typeof ArtsyReactWebViewPage>> = {}) =>

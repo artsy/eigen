@@ -4,13 +4,13 @@ import { Show } from "lib/Scenes/Map/types"
 import { isEqual } from "lodash"
 import { Box, Separator, Serif, Spacer, Theme } from "palette"
 import React from "react"
-import { FlatList, ViewProperties } from "react-native"
+import { FlatList, ViewProps } from "react-native"
 import { RelayProp } from "react-relay"
 import { BMWEventSection } from "./BMWEventSection"
 import { FairEventSection } from "./FairEventSection"
 import { SavedEventSection } from "./SavedEventSection"
 
-interface Props extends ViewProperties {
+interface Props extends ViewProps {
   buckets: BucketResults
   cityName: string
   citySlug: string

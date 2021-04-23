@@ -10,7 +10,7 @@
 // @ts-ignore
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17"
 import chalk from "chalk"
-// @ts-ignore
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Enzyme from "enzyme"
 import expect from "expect"
 import { format } from "util"
@@ -74,6 +74,12 @@ jest.mock("./lib/NativeModules/Events.tsx", () => ({
 
 jest.mock("react-native-share", () => ({
   open: jest.fn(),
+}))
+
+jest.mock("react-native-device-info", () => ({
+  getBuildNumber: jest.fn(),
+  getModel: jest.fn(),
+  getUserAgentSync: jest.fn(),
 }))
 
 jest.mock("rn-fetch-blob", () => ({
@@ -204,6 +210,10 @@ function getNativeModules(): typeof LegacyNativeModules {
       popToRootAndScrollToTop: jest.fn(),
       popToRootOrScrollToTop: jest.fn(),
       presentModal: jest.fn(),
+    },
+    AREventsModule: {
+      postEvent: jest.fn(),
+      requestAppStoreRating: jest.fn(),
     },
   }
 }

@@ -2,7 +2,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { ChevronIcon } from "palette"
 import React, { useEffect, useRef } from "react"
 import { Animated } from "react-native"
-import { TouchableOpacity } from "react-native-gesture-handler"
+import { TouchableOpacity } from "react-native"
 import { useFirstMountState } from "react-use/esm/useFirstMountState"
 import { goBack } from "./navigate"
 

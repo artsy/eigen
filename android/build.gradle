@@ -7,6 +7,7 @@ buildscript {
         compileSdkVersion = 29
         targetSdkVersion = 29
         ndkVersion = "20.1.5948944"
+        firebaseIidVersion = "19.0.1" // Needed for react-native-device-info
     }
     repositories {
         google()

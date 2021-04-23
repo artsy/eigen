@@ -78,6 +78,10 @@ interface LegacyNativeModules {
     }
     triggerCameraModal(reactTag: number | null): Promise<void>
   }
+  AREventsModule: {
+    postEvent(info: any): void
+    requestAppStoreRating(): void
+  }
 }
 const LegacyNativeModulesIOS: LegacyNativeModules = AllNativeModules as any
 
@@ -122,4 +126,8 @@ export const LegacyNativeModules: LegacyNativeModules =
           requestPhotos: noop("requestPhotos"),
         },
         ARScreenPresenterModule,
+        AREventsModule: {
+          postEvent: noop("postEvent"),
+          requestAppStoreRating: noop("requestAppStoreRating"),
+        },
       }

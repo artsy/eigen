@@ -6,13 +6,13 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { throttle } from "lodash"
 import { Theme } from "palette"
 import React from "react"
-import { Dimensions, View, ViewProperties } from "react-native"
+import { Dimensions, View, ViewProps } from "react-native"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { SearchResults } from "../Components/SearchResults"
 import { ArtistResult, ConsignmentSetup } from "../index"
 
-interface Props extends ConsignmentSetup, ViewProperties {
+interface Props extends ConsignmentSetup, ViewProps {
   navigator: NavigatorIOS
   updateWithArtist?: (result: ArtistResult) => void
 }
