@@ -109,7 +109,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
   backButtonListener?: NativeEventSubscription = undefined
 
   componentDidMount = () => {
-    this.backButtonListener = BackHandler.addEventListener("hardwareBackPress", this.handleBackButton.bind(this))
+    this.backButtonListener = BackHandler.addEventListener("hardwareBackPress", this.handleBackButton)
   }
 
   componentWillUnmount = () => {
