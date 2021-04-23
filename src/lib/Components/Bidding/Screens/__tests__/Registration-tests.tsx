@@ -3,6 +3,7 @@ import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import { RegistrationResult, RegistrationStatus } from "lib/Components/Bidding/Screens/RegistrationResult"
 import { Modal } from "lib/Components/Modal"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
 import { flushPromiseQueueFakeTimers } from "lib/tests/flushPromiseQueue"
 // FIXME: Uncomment when x'd test is reenabled
 // import { LinkText } from "../../../Text/LinkText"
@@ -37,12 +38,15 @@ jest.mock("tipsi-stripe", () => ({
 let nextStep
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const mockNavigator = { push: (route) => (nextStep = route), pop: () => null }
-jest.useFakeTimers()
 const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager.postNotificationName
 
 beforeEach(() => {
   Date.now = jest.fn(() => 1525983752116)
   mockTimezone("America/New_York")
+  fakeTimersBeforeEach()
+})
+afterEach(() => {
+  fakeTimersAfterEach()
 })
 
 it("renders properly for a user without a credit card", () => {
@@ -364,7 +368,7 @@ describe("when pressing register button", () => {
     })
   })
 
-  it("displays an error message on a creditCardMutation failure", () => {
+  it("displays an error message on a creditCardMutation failure", async () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
@@ -386,8 +390,8 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findAllByType(Button)[1].props.onPress()
+    await flushPromiseQueueFakeTimers()
 
-    jest.runAllTicks()
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
       "Your card's security code is incorrect."
     )
@@ -396,7 +400,7 @@ describe("when pressing register button", () => {
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  it("shows the error screen with the default error message if there are unhandled errors from the createCreditCard mutation", () => {
+  it("shows the error screen with the default error message if there are unhandled errors from the createCreditCard mutation", async () => {
     const errors = [{ message: "malformed error" }]
 
     console.error = jest.fn() // Silences component logging.
@@ -422,8 +426,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findAllByType(Button)[1].props.onPress()
-
-    jest.runAllTicks()
+    await flushPromiseQueueFakeTimers()
 
     expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
       "There was a problem processing your information. Check your payment details and try again."

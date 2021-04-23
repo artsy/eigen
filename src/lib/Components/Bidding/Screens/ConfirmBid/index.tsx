@@ -153,7 +153,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
    * Because the phone number lives on the user, not as creditcard metadata, then we
    * need a separate call to update our User model to store that info
    */
-  async updatePhoneNumber() {
+  updatePhoneNumber() {
     return new Promise<void>((done, reject) => {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const { phoneNumber } = this.state.billingAddress
@@ -205,7 +205,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     })
   }
 
-  async createCreditCard(token: any) {
+  createCreditCard(token: any) {
     return new Promise<void>((done) => {
       commitMutation<ConfirmBidCreateCreditCardMutation>(this.props.relay.environment, {
         onCompleted: (data, errors) => {
