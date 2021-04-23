@@ -1,5 +1,6 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
+import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
 import moment from "moment"
 import React from "react"
 import { StateManager } from "../StateManager"
@@ -7,8 +8,11 @@ import { StateManager } from "../StateManager"
 describe("StateManager", () => {
   const Countdown = () => null
   beforeEach(() => {
-    jest.useFakeTimers()
+    fakeTimersBeforeEach()
     Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
+  })
+  afterEach(() => {
+    fakeTimersAfterEach()
   })
 
   it("Manages a DurationProvider", () => {

@@ -97,7 +97,6 @@ describe("Registration result component", () => {
   })
 
   it("dismisses the controller when the continue button is pressed", () => {
-    jest.useFakeTimers()
     const component = renderWithWrappers(
       <BiddingThemeProvider>
         <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />

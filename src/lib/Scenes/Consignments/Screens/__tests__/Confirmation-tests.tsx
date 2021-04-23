@@ -1,4 +1,5 @@
 import { dismissModal } from "lib/navigation/navigate"
+import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
 import { getTextTree } from "lib/utils/getTestWrapper"
 import React from "react"
 import "react-native"
@@ -9,6 +10,13 @@ jest.mock("@react-native-community/cameraroll", () => jest.fn())
 const emptyProps = { navigator: {} as any }
 
 describe("callbacks", () => {
+  beforeEach(() => {
+    fakeTimersBeforeEach()
+  })
+  afterEach(() => {
+    fakeTimersAfterEach()
+  })
+
   it("calls pop when done is tapped", () => {
     const navigator: any = { popToTop: jest.fn() }
     const confirmation = new Confirmation({ navigator })
@@ -23,8 +31,6 @@ describe("callbacks", () => {
   })
 
   it("requests submission status after 1 second", () => {
-    jest.useFakeTimers()
-
     const submissionRequestValidationCheck = jest.fn()
     const _confirm = new Confirmation({ ...emptyProps, submissionRequestValidationCheck })
     // tslint:disable-next-line:no-unused-expression
@@ -35,8 +41,6 @@ describe("callbacks", () => {
   })
 
   it("getting true back sets status to success", () => {
-    jest.useFakeTimers()
-
     const submissionRequestValidationCheck = () => true
     const confirmation = new Confirmation({ ...emptyProps, submissionRequestValidationCheck })
     confirmation.setState = jest.fn()
@@ -46,8 +50,6 @@ describe("callbacks", () => {
   })
 
   it("getting false back sets status to fail", () => {
-    jest.useFakeTimers()
-
     const submissionRequestValidationCheck = () => false
     const confirmation = new Confirmation({ ...emptyProps, submissionRequestValidationCheck })
     confirmation.setState = jest.fn()
@@ -57,8 +59,6 @@ describe("callbacks", () => {
   })
 
   it("getting undefined back sets will make it run the check a second time", () => {
-    jest.useFakeTimers()
-
     const submissionRequestValidationCheck = jest.fn()
     const confirmation = new Confirmation({ ...emptyProps, submissionRequestValidationCheck })
     confirmation.setState = jest.fn()

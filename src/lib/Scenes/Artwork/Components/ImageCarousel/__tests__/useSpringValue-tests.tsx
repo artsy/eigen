@@ -1,5 +1,6 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
+import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
 import React, { useState } from "react"
 import { View } from "react-native"
 import { useSpringValue } from "../useSpringValue"
@@ -14,7 +15,10 @@ describe(useSpringValue, () => {
     return <View onMagicTap={() => setEpoch((x) => x + 1)} />
   }
   beforeEach(() => {
-    jest.useFakeTimers()
+    fakeTimersBeforeEach()
+  })
+  afterEach(() => {
+    fakeTimersAfterEach()
   })
   it("returns a stable animated value", () => {
     const wrapper = mount(<Mock />)
