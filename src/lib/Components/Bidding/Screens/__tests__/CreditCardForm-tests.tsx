@@ -11,6 +11,9 @@ jest.mock("tipsi-stripe", () => ({
   createTokenWithCard: jest.fn(),
 }))
 
+jest.unmock("react-relay")
+jest.unmock("react-native-credit-card-input")
+
 // @ts-ignore
 import stripe from "tipsi-stripe"
 
@@ -50,7 +53,6 @@ it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is
 
 it("is disabled while the form is invalid", () => {
   stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-  jest.useFakeTimers()
   const wrappedComponent = renderWithWrappers(
     <CreditCardForm
       onSubmit={onSubmitMock}
@@ -69,7 +71,6 @@ it("is disabled while the form is invalid", () => {
 
 it("is enabled while the form is valid", () => {
   stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-  jest.useFakeTimers()
   const wrappedComponent = renderWithWrappers(
     <CreditCardForm
       onSubmit={onSubmitMock}
@@ -93,7 +94,6 @@ it("shows an error when stripe's API returns an error", () => {
   stripe.createTokenWithCard.mockImplementationOnce(() => {
     throw new Error("Error tokenizing card")
   })
-  jest.useFakeTimers()
   const wrappedComponent = renderWithWrappers(
     <CreditCardForm
       onSubmit={onSubmitMock}
