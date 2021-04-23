@@ -28,6 +28,7 @@ import stripe from "tipsi-stripe"
 import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
 import { Select } from "lib/Components/Select"
 import { extractText } from "lib/tests/extractText"
+import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
 import { waitUntil } from "lib/tests/waitUntil"
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
@@ -38,13 +39,15 @@ let fakeNavigator: FakeNavigator
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 let fakeRelay
 
-jest.useFakeTimers()
-
 beforeEach(() => {
+  fakeTimersBeforeEach()
   fakeNavigator = new FakeNavigator()
   fakeRelay = {
     refetch: jest.fn(),
   }
+})
+afterEach(() => {
+  fakeTimersAfterEach()
 })
 
 it("allows bidders with a qualified credit card to bid", async () => {

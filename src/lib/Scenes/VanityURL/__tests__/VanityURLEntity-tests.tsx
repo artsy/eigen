@@ -24,8 +24,6 @@ jest.mock("../VanityURLPossibleRedirect", () => {
   }
 })
 
-jest.useFakeTimers()
-
 const TestRenderer: React.FC<{
   entity: "fair" | "partner" | "unknown"
   slugType?: "profileID" | "fairID"

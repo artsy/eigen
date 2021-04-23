@@ -1,8 +1,14 @@
+import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
 import { DeepZoomPyramid } from "../DeepZoomPyramid"
 import { DeepZoomTileID } from "../DeepZoomTile"
 
 describe(DeepZoomPyramid, () => {
-  jest.useFakeTimers()
+  beforeEach(() => {
+    fakeTimersBeforeEach()
+  })
+  afterEach(() => {
+    fakeTimersAfterEach()
+  })
 
   it("keeps track of tiles", () => {
     const pyramid = new DeepZoomPyramid()

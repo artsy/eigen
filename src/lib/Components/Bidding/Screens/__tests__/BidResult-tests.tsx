@@ -3,6 +3,7 @@ import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.gra
 import { shallow } from "enzyme"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
@@ -53,7 +54,12 @@ const saleArtwork: BidResult_sale_artwork = ({
 
 describe("BidResult component", () => {
   Date.now = jest.fn(() => 1525983752116)
-  jest.useFakeTimers()
+  beforeEach(() => {
+    fakeTimersBeforeEach()
+  })
+  afterEach(() => {
+    fakeTimersAfterEach()
+  })
 
   describe("high bidder", () => {
     // marking this as pending since this component depends on the Timer component that depends on local timezone

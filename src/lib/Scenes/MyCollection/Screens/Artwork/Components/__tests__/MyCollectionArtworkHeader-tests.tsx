@@ -4,6 +4,7 @@ import { MyCollectionArtworkHeaderTestsQuery } from "__generated__/MyCollectionA
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
+import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { ArtworkIcon } from "palette"
@@ -56,16 +57,16 @@ describe("MyCollectionArtworkHeader", () => {
         trackEvent,
       }
     })
-    jest.useFakeTimers()
+    fakeTimersBeforeEach()
   })
 
   afterEach(() => {
     trackEvent.mockClear()
+    fakeTimersAfterEach()
   })
 
   afterAll(() => {
     jest.clearAllMocks()
-    jest.useRealTimers()
   })
 
   const getWrapper = (mockResolvers = {}) => {

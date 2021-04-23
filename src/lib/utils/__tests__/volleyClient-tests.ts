@@ -1,4 +1,5 @@
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
 import { volleyClient } from "../volleyClient"
 
 jest.mock("lodash", () => ({
@@ -16,14 +17,16 @@ jest.mock("@sentry/react-native", () => ({
   captureMessage: jest.fn(),
 }))
 
-jest.useFakeTimers()
-
 describe("volleyClient", () => {
   const fetch = jest.fn((_url, _init) => Promise.resolve({ status: 200 }))
   // @ts-ignore
   global.fetch = fetch
   beforeEach(() => {
+    fakeTimersBeforeEach()
     fetch.mockClear()
+  })
+  afterEach(() => {
+    fakeTimersAfterEach()
   })
 
   it("calls fetch with the correct kind of data", async () => {

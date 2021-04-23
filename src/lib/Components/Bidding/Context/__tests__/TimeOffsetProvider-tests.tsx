@@ -1,5 +1,6 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
+import { fakeTimersAfterEach, fakeTimersBeforeEach } from "lib/tests/fakeTimers"
 import PropTypes from "prop-types"
 import React from "react"
 import { View } from "react-native"
@@ -26,8 +27,14 @@ class TestConsumer extends React.Component {
 
 const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
 
+beforeEach(() => {
+  fakeTimersBeforeEach()
+})
+afterEach(() => {
+  fakeTimersAfterEach()
+})
+
 it("injects timeOffsetInMilliSeconds as a context", async () => {
-  jest.useFakeTimers()
   Date.now = () => dateNow
 
   // Set up a situation where the phone's clock is ahead of Gravity's clock by 10 minutes.

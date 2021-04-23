@@ -24,6 +24,29 @@ index 91949ed..337a056 100644
          config,
          onAnimationDidEnd ?? function() {},
          onAnimationDidFail ??
+diff --git a/node_modules/react-native/Libraries/LogBox/Data/LogBoxData.js b/node_modules/react-native/Libraries/LogBox/Data/LogBoxData.js
+index b989044..19d688d 100644
+--- a/node_modules/react-native/Libraries/LogBox/Data/LogBoxData.js
++++ b/node_modules/react-native/Libraries/LogBox/Data/LogBoxData.js
+@@ -23,6 +23,9 @@ import type {
+ import parseErrorStack from '../../Core/Devtools/parseErrorStack';
+ import type {ExtendedError} from '../../Core/Devtools/parseErrorStack';
+ import NativeLogBox from '../../NativeModules/specs/NativeLogBox';
++
++const ExceptionsManager = require('../../Core/ExceptionsManager');
++
+ export type LogBoxLogs = Set<LogBoxLog>;
+ export type LogData = $ReadOnly<{|
+   level: LogLevel,
+@@ -98,8 +101,6 @@ export function reportLogBoxError(
+   error: ExtendedError,
+   componentStack?: string,
+ ): void {
+-  const ExceptionsManager = require('../../Core/ExceptionsManager');
+-
+   error.forceRedbox = true;
+   error.message = `${LOGBOX_ERROR_MESSAGE}\n\n${error.message}`;
+   if (componentStack != null) {
 diff --git a/node_modules/react-native/React/Base/RCTTouchHandler.m b/node_modules/react-native/React/Base/RCTTouchHandler.m
 index fc32afb..44d237f 100644
 --- a/node_modules/react-native/React/Base/RCTTouchHandler.m
@@ -54,17 +77,21 @@ index fc32afb..44d237f 100644
      const NSUInteger RCTMaxTouches = 11; // This is the maximum supported by iDevices
      NSInteger touchID = ([_reactTouches.lastObject[@"identifier"] integerValue] + 1) % RCTMaxTouches;
 diff --git a/node_modules/react-native/jest/setup.js b/node_modules/react-native/jest/setup.js
-index bc27b00..64ba3d6 100644
+index bc27b00..ef9a172 100644
 --- a/node_modules/react-native/jest/setup.js
 +++ b/node_modules/react-native/jest/setup.js
-@@ -43,6 +43,7 @@ jest
-     __esModule: true,
-     default: {
+@@ -45,6 +45,11 @@ jest
        reportException: jest.fn(),
-+      handleException: jest.fn(),
      },
    }))
++  .mock('../Libraries/Core/ExceptionsManager', () => ({
++    handleException: (...args) => {
++      return;
++    },
++  }))
    .mock('../Libraries/ReactNative/UIManager', () => ({
+     AndroidViewPager: {
+       Commands: {
 diff --git a/node_modules/react-native/scripts/find-node.sh b/node_modules/react-native/scripts/find-node.sh
 index c111e70..771c513 100755
 --- a/node_modules/react-native/scripts/find-node.sh
