@@ -6364,6 +6364,7 @@ type Gene implements Node & Searchable {
   internalID: ID!
   isFollowed: Boolean
   isPublished: Boolean
+  meta: GeneMeta!
   mode: String
   name: String
 
@@ -6433,6 +6434,11 @@ type GeneFamilyEdge {
 
   # The item at the end of the edge
   node: GeneFamily
+}
+
+# Meta tags for Gene pages
+type GeneMeta {
+  description: String!
 }
 
 type GravityMutationError {
