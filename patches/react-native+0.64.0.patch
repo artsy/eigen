@@ -1,29 +1,3 @@
-diff --git a/node_modules/react-native/Libraries/LayoutAnimation/LayoutAnimation.js b/node_modules/react-native/Libraries/LayoutAnimation/LayoutAnimation.js
-index 91949ed..337a056 100644
---- a/node_modules/react-native/Libraries/LayoutAnimation/LayoutAnimation.js
-+++ b/node_modules/react-native/Libraries/LayoutAnimation/LayoutAnimation.js
-@@ -32,7 +32,7 @@ function configureNext(
-   onAnimationDidFail?: OnAnimationDidFailCallback,
- ) {
-   if (!Platform.isTesting) {
--    if (UIManager?.configureNextLayoutAnimation) {
-+    if (UIManager.configureNextLayoutAnimation) {
-       UIManager.configureNextLayoutAnimation(
-         config,
-         onAnimationDidEnd ?? function() {},
-@@ -40,9 +40,9 @@ function configureNext(
-           function() {} /* this should never be called in Non-Fabric */,
-       );
-     }
--    const FabricUIManager: FabricUIManagerSpec = global?.nativeFabricUIManager;
--    if (FabricUIManager?.configureNextLayoutAnimation) {
--      global?.nativeFabricUIManager?.configureNextLayoutAnimation(
-+    const FabricUIManager: FabricUIManagerSpec = global.nativeFabricUIManager;
-+    if (FabricUIManager.configureNextLayoutAnimation) {
-+      global.nativeFabricUIManager.configureNextLayoutAnimation(
-         config,
-         onAnimationDidEnd ?? function() {},
-         onAnimationDidFail ??
 diff --git a/node_modules/react-native/Libraries/LogBox/Data/LogBoxData.js b/node_modules/react-native/Libraries/LogBox/Data/LogBoxData.js
 index b989044..19d688d 100644
 --- a/node_modules/react-native/Libraries/LogBox/Data/LogBoxData.js

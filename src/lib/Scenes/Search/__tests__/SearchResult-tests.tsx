@@ -42,7 +42,7 @@ const TestWrapper: typeof SearchResult = (props) => (
 
 describe(SearchResult, () => {
   beforeEach(() => {
-    require("@react-native-async-storage/async-storage").__resetState()
+    require("@react-native-community/async-storage").__resetState()
     recentSearchesArray = []
     inputBlurMock.mockClear()
   })
