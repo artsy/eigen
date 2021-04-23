@@ -29,6 +29,7 @@ upcoming:
     - Fix unable to load artist screen - adam, brian, david, thomas, jonathan, mounir
     - Fix and Release new multiselect "Colors" filter - ole
     - Release artwork filter style updates - iskounen
+    - Restrict Android phones to portrait mode - adamb
 
 releases:
   - version: 6.8.3
