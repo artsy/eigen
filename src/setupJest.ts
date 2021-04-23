@@ -40,6 +40,7 @@ const trackEvent = jest.fn()
     trackEvent,
   }
 })
+
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
   paymentRequestWithCardForm: jest.fn(),
