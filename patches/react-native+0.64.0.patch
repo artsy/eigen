@@ -53,8 +53,20 @@ index fc32afb..44d237f 100644
      // Get new, unique touch identifier for the react touch
      const NSUInteger RCTMaxTouches = 11; // This is the maximum supported by iDevices
      NSInteger touchID = ([_reactTouches.lastObject[@"identifier"] integerValue] + 1) % RCTMaxTouches;
+diff --git a/node_modules/react-native/jest/setup.js b/node_modules/react-native/jest/setup.js
+index bc27b00..64ba3d6 100644
+--- a/node_modules/react-native/jest/setup.js
++++ b/node_modules/react-native/jest/setup.js
+@@ -43,6 +43,7 @@ jest
+     __esModule: true,
+     default: {
+       reportException: jest.fn(),
++      handleException: jest.fn(),
+     },
+   }))
+   .mock('../Libraries/ReactNative/UIManager', () => ({
 diff --git a/node_modules/react-native/scripts/find-node.sh b/node_modules/react-native/scripts/find-node.sh
-index c111e70..a8f09f1 100755
+index c111e70..771c513 100755
 --- a/node_modules/react-native/scripts/find-node.sh
 +++ b/node_modules/react-native/scripts/find-node.sh
 @@ -6,6 +6,13 @@
