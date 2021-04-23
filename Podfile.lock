@@ -498,6 +498,8 @@ PODS:
     - React-Core
   - RNCMaskedView (0.1.10):
     - React
+  - RNDeviceInfo (8.1.2):
+    - React-Core
   - RNGestureHandler (1.8.0):
     - React
   - RNImageCropPicker (0.35.1):
@@ -659,6 +661,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `node_modules/@react-native-community/async-storage`)"
   - "RNCClipboard (from `node_modules/@react-native-community/clipboard`)"
   - "RNCMaskedView (from `node_modules/@react-native-community/masked-view`)"
+  - RNDeviceInfo (from `node_modules/react-native-device-info`)
   - RNGestureHandler (from `node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `node_modules/react-native-image-crop-picker`)
   - RNLocalize (from `node_modules/react-native-localize`)
@@ -850,6 +853,8 @@ EXTERNAL SOURCES:
     :path: "node_modules/@react-native-community/clipboard"
   RNCMaskedView:
     :path: "node_modules/@react-native-community/masked-view"
+  RNDeviceInfo:
+    :path: node_modules/react-native-device-info
   RNGestureHandler:
     :path: node_modules/react-native-gesture-handler
   RNImageCropPicker:
@@ -915,7 +920,7 @@ SPEC CHECKSUMS:
   CocoaLibEvent: 2fab71b8bd46dd33ddb959f7928ec5909f838e3f
   CocoaLumberjack: aa9dcab71bdf9eaf2a63bbd9ddc87863efe45457
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
-  DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
+  DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
   Emission: bec9c8f604b13b12385835cd98d80a035dc41cc8
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
@@ -937,7 +942,7 @@ SPEC CHECKSUMS:
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
-  glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
+  glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
@@ -996,6 +1001,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 3c304d1adfaea02ec732ac218801cb13897aa8c0
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
+  RNDeviceInfo: 3266783bcb6aa4b0c785d6080a407f8a5fc68326
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNImageCropPicker: 16951bc02411f50c4d197488ed6406a23dc3b5f1
   RNLocalize: 41026b7c14878f1a1b381bc79f668f1fbf841adb

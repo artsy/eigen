@@ -69,7 +69,11 @@ export const getAuthModel = (): AuthModel => ({
       client_id: Config.ARTSY_API_CLIENT_KEY,
       client_secret: Config.ARTSY_API_CLIENT_SECRET,
     })}`
-    const result = await fetch(tokenURL)
+    const result = await fetch(tokenURL, {
+      headers: {
+        "User-Agent": context.getStoreState().native.sessionState.userAgent,
+      },
+    })
     // TODO: check status
     const json = (await result.json()) as {
       xapp_token: string
@@ -87,11 +91,13 @@ export const getAuthModel = (): AuthModel => ({
   gravityUnauthenticatedRequest: thunk(async (actions, payload, context) => {
     const gravityBaseURL = context.getStoreState().config.environment.strings.gravityURL
     const xAppToken = await actions.getXAppToken()
+
     return await fetch(`${gravityBaseURL}${payload.path}`, {
       method: payload.method || "GET",
       headers: {
         "X-Xapp-Token": xAppToken,
         Accept: "application/json",
+        "User-Agent": context.getStoreState().native.sessionState.userAgent,
         ...payload.headers,
       },
       body: payload.body ? JSON.stringify(payload.body) : undefined,

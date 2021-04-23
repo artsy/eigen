@@ -2,7 +2,7 @@ import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/Artw
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Box } from "palette"
+import { RadioDot } from "palette"
 import React from "react"
 import { ReactTestRenderer } from "react-test-renderer"
 import { PriceRangeOptionsScreen } from "../PriceRangeOptions"
@@ -71,7 +71,7 @@ describe("Price Range Options Screen", () => {
 
   const selectedPriceRangeOption = (componentTree: ReactTestRenderer) => {
     const innerOptions = componentTree.root.findAllByType(InnerOptionListItem)
-    const selectedOption = innerOptions.filter((item) => item.findAllByType(Box).length > 0)[0]
+    const selectedOption = innerOptions.filter((item) => item.findByType(RadioDot).props.selected)[0]
     return selectedOption
   }
 

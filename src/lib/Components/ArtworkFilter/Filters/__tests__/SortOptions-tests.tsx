@@ -3,7 +3,7 @@ import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/Artwor
 import { ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Box, CheckIcon } from "palette"
+import { RadioDot } from "palette"
 import React from "react"
 import { ReactTestRenderer } from "react-test-renderer"
 import { InnerOptionListItem, OptionListItem } from "../SingleSelectOption"
@@ -32,7 +32,7 @@ describe("Sort Options Screen", () => {
 
   const selectedSortOption = (componentTree: ReactTestRenderer) => {
     const innerOptions = componentTree.root.findAllByType(InnerOptionListItem)
-    const selectedOption = innerOptions.filter((item) => item.findAllByType(Box).length > 0)[0]
+    const selectedOption = innerOptions.filter((item) => item.findByType(RadioDot).props.selected)[0]
     return selectedOption
   }
 
@@ -182,7 +182,7 @@ describe("Sort Options Screen", () => {
 
     const selectedRow = selectedSortOption(tree)
     expect(extractText(selectedRow)).toEqual("Price (high to low)")
-    expect(selectedRow.findAllByType(CheckIcon)).toHaveLength(1)
+    expect(selectedRow.findByType(RadioDot).props.selected).toEqual(true)
   })
 
   describe("filterType of showArtwork", () => {
@@ -205,7 +205,7 @@ describe("Sort Options Screen", () => {
       const selectedRow = selectedSortOption(tree)
 
       expect(extractText(selectedRow)).toEqual("Gallery Curated")
-      expect(selectedRow.findAllByType(CheckIcon)).toHaveLength(1)
+      expect(selectedRow.findByType(RadioDot).props.selected).toEqual(true)
     })
   })
 
@@ -229,7 +229,7 @@ describe("Sort Options Screen", () => {
       const selectedRow = selectedSortOption(tree)
 
       expect(extractText(selectedRow)).toEqual("Most recent sale date")
-      expect(selectedRow.findAllByType(CheckIcon)).toHaveLength(1)
+      expect(selectedRow.findByType(RadioDot).props.selected).toEqual(true)
     })
   })
 })

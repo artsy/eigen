@@ -1107,10 +1107,6 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "color",
-        },
-        {
-          displayText: "All",
           paramName: "colors",
         },
         {
@@ -1205,10 +1201,6 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "partnerID",
-        },
-        {
-          displayText: "All",
-          paramName: "color",
         },
         {
           displayText: "All",
@@ -1316,10 +1308,6 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "partnerID",
-        },
-        {
-          displayText: "All",
-          paramName: "color",
         },
         {
           displayText: "All",
@@ -1441,10 +1429,6 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "color",
-        },
-        {
-          displayText: "All",
           paramName: "colors",
         },
         {
@@ -1553,10 +1537,6 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "color",
-        },
-        {
-          displayText: "All",
           paramName: "colors",
         },
         {
@@ -1638,10 +1618,6 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "partnerID",
-        },
-        {
-          displayText: "All",
-          paramName: "color",
         },
         {
           displayText: "All",
@@ -1739,10 +1715,6 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "partnerID",
-        },
-        {
-          displayText: "All",
-          paramName: "color",
         },
         {
           displayText: "All",
@@ -1844,10 +1816,6 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "color",
-        },
-        {
-          displayText: "All",
           paramName: "colors",
         },
         {
@@ -1924,10 +1892,6 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "partnerID",
-        },
-        {
-          displayText: "All",
-          paramName: "color",
         },
         {
           displayText: "All",

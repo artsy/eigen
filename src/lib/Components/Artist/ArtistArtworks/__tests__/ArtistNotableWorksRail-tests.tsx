@@ -66,6 +66,8 @@ describe("Notable Works Rail", () => {
 
 const artistMockData: ArtistNotableWorksRailTestsQueryRawResponse["artist"] = {
   id: "an-id",
+  internalID: "an-id",
+  slug: "a-slug",
   filterArtworksConnection: {
     id: "another-id",
     edges: [

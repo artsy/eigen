@@ -1,4 +1,4 @@
-import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { ArtistSeriesMoreSeries_artist } from "__generated__/ArtistSeriesMoreSeries_artist.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
@@ -6,6 +6,7 @@ import { Flex, FlexProps, Sans } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 export type ArtistSeriesConnectionEdge = NonNullable<
   NonNullable<ArtistSeriesMoreSeries_artist["artistSeriesConnection"]>["edges"]
@@ -39,6 +40,8 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
     return null
   }
 
+  const { trackEvent } = useTracking()
+
   return (
     <Flex {...rest}>
       <Flex mb="15px" flexDirection="row" justifyContent="space-between">
@@ -48,6 +51,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
         {totalCount > 4 && (
           <TouchableOpacity
             onPress={() => {
+              trackEvent(tracks.tapViewAllArtistSeries(artist?.internalID, artist?.slug))
               navigate(`/artist/${artist?.internalID!}/artist-series`)
             }}
           >
@@ -80,6 +84,7 @@ export const ArtistSeriesMoreSeriesFragmentContainer = createFragmentContainer(A
   artist: graphql`
     fragment ArtistSeriesMoreSeries_artist on Artist {
       internalID
+      slug
       artistSeriesConnection(first: 4) {
         totalCount
         edges {
@@ -98,3 +103,17 @@ export const ArtistSeriesMoreSeriesFragmentContainer = createFragmentContainer(A
     }
   `,
 })
+
+export const tracks = {
+  tapViewAllArtistSeries: (artistId: string, artistSlug: string) => ({
+    action: ActionType.tappedArtistSeriesGroup,
+    context_module: ContextModule.artistSeriesRail,
+    context_screen_owner_type: OwnerType.artist,
+    context_screen_owner_id: artistId,
+    context_screen_owner_slug: artistSlug,
+    destination_screen_owner_type: OwnerType.allArtistSeries,
+    destination_screen_owner_id: artistId,
+    destination_screen_owner_slug: artistSlug,
+    type: "viewAll",
+  }),
+}
