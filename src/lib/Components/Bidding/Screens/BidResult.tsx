@@ -52,9 +52,7 @@ export class BidResult extends React.Component<BidResultProps> {
   }
 
   componentWillUnmount = () => {
-    if (this.backButtonListener) {
-      this.backButtonListener.remove()
-    }
+    this.backButtonListener?.remove()
   }
 
   onPressBidAgain = () => {
