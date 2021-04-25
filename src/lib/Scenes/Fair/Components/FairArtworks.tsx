@@ -151,17 +151,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
           offerable: $offerable
           includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
           artistIDs: $artistIDs
-          aggregations: [
-            COLOR
-            DIMENSION_RANGE
-            GALLERY
-            INSTITUTION
-            MAJOR_PERIOD
-            MEDIUM
-            PRICE_RANGE
-            FOLLOWED_ARTISTS
-            ARTIST
-          ]
+          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]
           attributionClass: $attributionClass
         ) @connection(key: "Fair_fairArtworks") {
           aggregations {

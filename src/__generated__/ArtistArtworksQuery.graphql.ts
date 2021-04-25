@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 19227e86b85eba7ec13b19de3453aef7 */
+/* @relayHash 763e126746a52dc6378f103965c1a69d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -69,7 +69,7 @@ fragment ArtistArtworks_artist_1qqVY9 on Artist {
   id
   slug
   internalID
-  artworks: filterArtworksConnection(first: $count, after: $cursor, sort: $sort, additionalGeneIDs: $additionalGeneIDs, priceRange: $priceRange, color: $color, colors: $colors, partnerID: $partnerID, partnerIDs: $partnerIDs, dimensionRange: $dimensionRange, majorPeriods: $majorPeriods, acquireable: $acquireable, inquireableOnly: $inquireableOnly, atAuction: $atAuction, offerable: $offerable, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], attributionClass: $attributionClass) {
+  artworks: filterArtworksConnection(first: $count, after: $cursor, sort: $sort, additionalGeneIDs: $additionalGeneIDs, priceRange: $priceRange, color: $color, colors: $colors, partnerID: $partnerID, partnerIDs: $partnerIDs, dimensionRange: $dimensionRange, majorPeriods: $majorPeriods, acquireable: $acquireable, inquireableOnly: $inquireableOnly, atAuction: $atAuction, offerable: $offerable, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], attributionClass: $attributionClass) {
     aggregations {
       slice
       counts {
@@ -453,8 +453,7 @@ v36 = [
     "value": [
       "COLOR",
       "DIMENSION_RANGE",
-      "GALLERY",
-      "INSTITUTION",
+      "PARTNER",
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE"
@@ -1309,7 +1308,7 @@ return {
     ]
   },
   "params": {
-    "id": "19227e86b85eba7ec13b19de3453aef7",
+    "id": "763e126746a52dc6378f103965c1a69d",
     "metadata": {},
     "name": "ArtistArtworksQuery",
     "operationKind": "query",

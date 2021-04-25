@@ -28,8 +28,7 @@ export type FilterScreen =
   | "colors"
   | "dimensionRange"
   | "estimateRange"
-  | "gallery"
-  | "institution"
+  | "partnerIDs"
   | "majorPeriods"
   | "medium"
   | "priceRange"
@@ -405,15 +404,10 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "estimateRange",
     ScreenComponent: "EstimateRangeOptionsScreen",
   },
-  gallery: {
-    displayText: FilterDisplayName.gallery,
-    filterType: "gallery",
-    ScreenComponent: "GalleryOptionsScreen",
-  },
-  institution: {
-    displayText: FilterDisplayName.institution,
-    filterType: "institution",
-    ScreenComponent: "InstitutionOptionsScreen",
+  partnerIDs: {
+    displayText: FilterDisplayName.partnerIDs,
+    filterType: "partnerIDs",
+    ScreenComponent: "GalleriesAndInstitutionsOptionsScreen",
   },
   majorPeriods: {
     displayText: FilterDisplayName.timePeriod,
@@ -467,8 +461,7 @@ const CollectionFiltersSorted: FilterScreen[] = [
   "dimensionRange",
   "majorPeriods",
   "colors",
-  "gallery",
-  "institution",
+  "partnerIDs",
 ]
 const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "sort",
@@ -477,8 +470,7 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "attributionClass",
   "priceRange",
   "waysToBuy",
-  "gallery",
-  "institution",
+  "partnerIDs",
   "dimensionRange",
   "majorPeriods",
   "colors",
@@ -493,8 +485,7 @@ const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "dimensionRange",
   "majorPeriods",
   "colors",
-  "gallery",
-  "institution",
+  "partnerIDs",
 ]
 const FairFiltersSorted: FilterScreen[] = [
   "sort",
@@ -508,8 +499,7 @@ const FairFiltersSorted: FilterScreen[] = [
   "dimensionRange",
   "majorPeriods",
   "colors",
-  "gallery",
-  "institution",
+  "partnerIDs",
 ]
 const SaleArtworksFiltersSorted: FilterScreen[] = [
   "sort",

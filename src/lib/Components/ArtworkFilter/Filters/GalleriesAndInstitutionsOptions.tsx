@@ -6,19 +6,21 @@ import { useArtworkFiltersAggregation } from "../useArtworkFilters"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
-interface InstitutionOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "InstitutionOptionsScreen"> {}
+interface GalleriesAndInstitutionsOptionsScreenProps
+  extends StackScreenProps<ArtworkFilterNavigationStack, "GalleriesAndInstitutionsOptionsScreen"> {}
 
-export const InstitutionOptionsScreen: React.FC<InstitutionOptionsScreenProps> = ({ navigation }) => {
-  const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.institution })
+export const GalleriesAndInstitutionsOptionsScreen: React.FC<GalleriesAndInstitutionsOptionsScreenProps> = ({
+  navigation,
+}) => {
+  const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.partnerIDs })
 
   const options: FilterData[] = (aggregation?.counts ?? []).map(({ value: paramValue, name }) => {
-    return { displayText: name, paramName: FilterParamName.institution, paramValue }
+    return { displayText: name, paramName: FilterParamName.partnerIDs, paramValue }
   })
 
   const { handleSelect, isSelected, handleClear, isActive } = useMultiSelect({
     options,
-    paramName: FilterParamName.institution,
+    paramName: FilterParamName.partnerIDs,
   })
 
   const filterOptions = options.map((option) => ({ ...option, paramValue: isSelected(option) }))
@@ -26,7 +28,7 @@ export const InstitutionOptionsScreen: React.FC<InstitutionOptionsScreenProps> =
   return (
     <MultiSelectOptionScreen
       onSelect={handleSelect}
-      filterHeaderText={FilterDisplayName.institution}
+      filterHeaderText={FilterDisplayName.partnerIDs}
       filterOptions={filterOptions}
       navigation={navigation}
       {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}

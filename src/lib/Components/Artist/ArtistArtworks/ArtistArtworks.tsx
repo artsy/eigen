@@ -290,7 +290,7 @@ export default createPaginationContainer(
           inquireableOnly: $inquireableOnly
           atAuction: $atAuction
           offerable: $offerable
-          aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
+          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
           attributionClass: $attributionClass
         ) @connection(key: "ArtistArtworksGrid_artworks") {
           aggregations {

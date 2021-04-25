@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a74cf139f15c74f36d9c8408bb5de356 */
+/* @relayHash 87f42a68f93efdf333da6b160f4099e2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -101,7 +101,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment FairArtworks_fair_1UUP6H on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, after: $cursor, sort: $sort, additionalGeneIDs: $additionalGeneIDs, priceRange: $priceRange, color: $color, colors: $colors, partnerID: $partnerID, dimensionRange: $dimensionRange, majorPeriods: $majorPeriods, acquireable: $acquireable, inquireableOnly: $inquireableOnly, atAuction: $atAuction, offerable: $offerable, includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists, artistIDs: $artistIDs, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST], attributionClass: $attributionClass) {
+  fairArtworks: filterArtworksConnection(first: 30, after: $cursor, sort: $sort, additionalGeneIDs: $additionalGeneIDs, priceRange: $priceRange, color: $color, colors: $colors, partnerID: $partnerID, dimensionRange: $dimensionRange, majorPeriods: $majorPeriods, acquireable: $acquireable, inquireableOnly: $inquireableOnly, atAuction: $atAuction, offerable: $offerable, includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists, artistIDs: $artistIDs, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST], attributionClass: $attributionClass) {
     aggregations {
       slice
       counts {
@@ -356,8 +356,7 @@ v36 = [
     "value": [
       "COLOR",
       "DIMENSION_RANGE",
-      "GALLERY",
-      "INSTITUTION",
+      "PARTNER",
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE",
@@ -914,7 +913,7 @@ return {
     ]
   },
   "params": {
-    "id": "a74cf139f15c74f36d9c8408bb5de356",
+    "id": "87f42a68f93efdf333da6b160f4099e2",
     "metadata": {},
     "name": "FairArtworksInfiniteScrollGridQuery",
     "operationKind": "query",

@@ -173,8 +173,7 @@ return {
           "value": [
             "COLOR",
             "DIMENSION_RANGE",
-            "GALLERY",
-            "INSTITUTION",
+            "PARTNER",
             "MAJOR_PERIOD",
             "MEDIUM",
             "PRICE_RANGE"
@@ -384,5 +383,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '75c6cc75bc42a448f54145193cb084a7';
+(node as any).hash = '3496d438ce3ac16a2d33a2f067407f1d';
 export default node;

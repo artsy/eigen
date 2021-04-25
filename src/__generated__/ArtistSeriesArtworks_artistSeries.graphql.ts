@@ -163,8 +163,7 @@ const node: ReaderFragment = {
           "value": [
             "COLOR",
             "DIMENSION_RANGE",
-            "GALLERY",
-            "INSTITUTION",
+            "PARTNER",
             "MAJOR_PERIOD",
             "MEDIUM",
             "PRICE_RANGE"
@@ -379,5 +378,5 @@ const node: ReaderFragment = {
   "type": "ArtistSeries",
   "abstractKey": null
 };
-(node as any).hash = 'ed33458226cd09bcbb888f8ae8356ab5';
+(node as any).hash = '1ec4a145917ff839fffaa6116b1d0ce3';
 export default node;

@@ -8,14 +8,14 @@ import { Check } from "palette"
 import React from "react"
 import { MockFilterScreen } from "../../__tests__/FilterTestHelper"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "../../ArtworkFilterStore"
-import { InstitutionOptionsScreen } from "../InstitutionOptions"
+import { GalleriesAndInstitutionsOptionsScreen } from "../GalleriesAndInstitutionsOptions"
 import { getEssentialProps } from "./helper"
 
-describe("Institution Options Screen", () => {
+describe("Galleries and Institutions Options Screen", () => {
   const initialState: ArtworkFiltersState = {
     aggregations: [
       {
-        slice: "INSTITUTION",
+        slice: "PARTNER",
         counts: [
           {
             name: "Musée Picasso Paris",
@@ -23,9 +23,9 @@ describe("Institution Options Screen", () => {
             value: "musee-picasso-paris",
           },
           {
-            name: "Fondation Beyeler",
+            name: "Gagosian",
             count: 33,
-            value: "fondation-beyeler",
+            value: "gagosian",
           },
           {
             name: "Tate",
@@ -46,22 +46,26 @@ describe("Institution Options Screen", () => {
     selectedFilters: [],
   }
 
-  const MockInstitutionScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
+  const MockGalleriesAndInstitutionsScreen = ({
+    initialData = initialState,
+  }: {
+    initialData?: ArtworkFiltersState
+  }) => {
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>
-        <InstitutionOptionsScreen {...getEssentialProps()} />
+        <GalleriesAndInstitutionsOptionsScreen {...getEssentialProps()} />
       </ArtworkFiltersStoreProvider>
     )
   }
 
   describe("before any filters are selected", () => {
     it("renders all options present in the aggregation", () => {
-      const tree = renderWithWrappers(<MockInstitutionScreen initialData={initialState} />)
+      const tree = renderWithWrappers(<MockGalleriesAndInstitutionsScreen initialData={initialState} />)
 
       expect(tree.root.findAllByType(MultiSelectOptionListItem)).toHaveLength(3)
 
       const items = tree.root.findAllByType(MultiSelectOptionListItem)
-      expect(items.map(extractText)).toEqual(["Musée Picasso Paris", "Fondation Beyeler", "Tate"])
+      expect(items.map(extractText)).toEqual(["Musée Picasso Paris", "Gagosian", "Tate"])
     })
   })
 
@@ -71,7 +75,7 @@ describe("Institution Options Screen", () => {
       selectedFilters: [
         {
           displayText: "Musée Picasso Paris",
-          paramName: FilterParamName.institution,
+          paramName: FilterParamName.partnerIDs,
           paramValue: ["musee-picasso-paris"],
         },
       ],
@@ -81,7 +85,7 @@ describe("Institution Options Screen", () => {
       const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
 
       const items = tree.root.findAllByType(FilterModalOptionListItem)
-      const item = items.find((i) => extractText(i).startsWith("Institution"))
+      const item = items.find((i) => extractText(i).startsWith("Galleries and institutions"))
 
       expect(item).not.toBeUndefined()
       if (item) {
@@ -90,7 +94,7 @@ describe("Institution Options Screen", () => {
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      const tree = renderWithWrappers(<MockInstitutionScreen initialData={state} />)
+      const tree = renderWithWrappers(<MockGalleriesAndInstitutionsScreen initialData={state} />)
 
       const options = tree.root.findAllByType(Check)
 
