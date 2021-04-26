@@ -43,6 +43,7 @@ upcoming:
     - Fix and Release new multiselect "Colors" filter - ole
     - Release artwork filter style updates - iskounen
     - Restrict Android phones to portrait mode - adamb
+    - Fix palette button disabled state on iOS - mounir
 
 releases:
   - version: 6.8.3
