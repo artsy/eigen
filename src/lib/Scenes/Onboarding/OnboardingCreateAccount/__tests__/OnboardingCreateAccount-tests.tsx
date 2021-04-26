@@ -27,7 +27,7 @@ function mockFetchJsonOnce(json: object, status: number = 200) {
   })
 }
 
-describe("OnboardingCreateAccount", () => {
+describe.skip("OnboardingCreateAccount", () => {
   beforeEach(() => {
     mockFetch.mockClear()
   })
