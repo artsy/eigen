@@ -2,29 +2,21 @@
 
 ## Prerequisites
 
-You'll need [Node](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/) installed. The Node version should match [the `engine` version here](https://github.com/artsy/eigen/blob/master/package.json).
+You'll need [Node](https://nodejs.org/en/), [Yarn](https://yarnpkg.com/en/) and Watchman installed (`brew install watchman`).
 
-### Xcode
+> The Node version should match [the `engine` version here](https://github.com/artsy/eigen/blob/master/package.json).
+
+### Setting up iOS
 
 Currently we require developers to use Xcode 12, with the latest version (12.2.0) recommended. You can find all versions of Xcode from [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
 
-### Android Studio
+### Setting up Android
 
-Currently we use Android Studio 4.1.1. You can download it from [here](https://developer.android.com/studio#downloads).
+1. Android development environment:
 
-Once that's setup, you'll want to update your `.bashrc` or `.zshrc` (or whatever tool you use to manage your terminal) with the proper `ENV` vars:
+Follow the official docs [here](https://reactnative.dev/docs/environment-setup). Select "React Native CLI Quickstart" tab
 
-```shell
-export ANDROID_HOME=$HOME/Library/Android/sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/tools/bin
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-```
-
-Make sure to refresh/restart your terminal to include the PATH changes.
-
-#### Create a virtual device
+2. Create a virtual device:
 
 [Create a virtual device](https://developer.android.com/studio/run/managing-avds) on which to run the Android app.
 
@@ -136,7 +128,21 @@ We have [cert troubleshooting here](https://github.com/artsy/eigen/blob/master/d
 
 ## Connect a device
 
-Xcode will prompt you to join a team, then to enable the device for development. If you have to choose a team, choose _Art.sY Inc._.
+### iOS
+
+When you connect an iPhone to your machine, Xcode will prompt you to join a team, then to enable the device for development. If you have to choose a team, choose _Art.sY Inc._.
+
+### Android
+
+1. Firstly, Go to the Settings in your real device.
+2. After that go to the “About phone” if Developer Options is not shown in your device
+3. Then Tap 7 times on Build number to create Developer Options.
+4. After that go back and Developer options will be created in your device.
+5. After that go to Developer options and Enable USB debugging in your device as shown in figure below.
+6. Connect your device with your system via data cable and after that allow USB debugging message shown on your device and press OK.
+7. After that Go to the menu bar and Run app as shown in figure below.
+8. If real device is connected to your system then it will show Online. Now click on your Mobile phone device and you App will be run in real device.
+9. After that your Android app run in Real device.
 
 ## Read more
 
