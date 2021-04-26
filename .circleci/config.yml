@@ -53,12 +53,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v6-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+            - v7-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
       - run:
           name: Install node modules
           command: ls node_modules || yarn install
       - save_cache:
-          key: v6-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+          key: v7-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
   update-echo:
@@ -75,10 +75,10 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v6-jest-{{ .Branch }}
+            - v7-jest-{{ .Branch }}
       - restore_cache:
           keys:
-            - v5-js_test_results-{{ checksum ".manifests/js_test_results" }}
+            - v6-js_test_results-{{ checksum ".manifests/js_test_results" }}
       - run:
           name: Run TypeScript check
           command: ls test-results.json || yarn type-check
@@ -89,30 +89,30 @@ commands:
           name: Run jest tests
           command: ls test-results.json || yarn jest --outputFile test-results.json --json --ci --forceExit --runInBand
       - save_cache:
-          key: v5-js_test_results-{{ checksum ".manifests/js_test_results" }}
+          key: v6-js_test_results-{{ checksum ".manifests/js_test_results" }}
           paths:
             - test-results.json
       - save_cache:
-          key: v6-jest-{{ .Branch }}
+          key: v7-jest-{{ .Branch }}
           paths:
             - .jest
   bundle-js:
     steps:
       - restore_cache:
           keys:
-            - v6-js_bundle-{{ checksum ".manifests/js_bundle" }}
+            - v7-js_bundle-{{ checksum ".manifests/js_bundle" }}
       - restore_cache:
           keys:
-            - v6-metro-{{ checksum ".manifests/js_transform" }}
+            - v7-metro-{{ checksum ".manifests/js_transform" }}
       - run:
           name: Bundle emission
           command: ls emission/Pod/Assets/Emission.js || yarn bundle-for-native-ci
       - save_cache:
-          key: v6-metro-{{ checksum ".manifests/js_transform" }}
+          key: v7-metro-{{ checksum ".manifests/js_transform" }}
           paths:
             - .metro
       - save_cache:
-          key: v6-js_bundle-{{ checksum ".manifests/js_bundle" }}
+          key: v7-js_bundle-{{ checksum ".manifests/js_bundle" }}
           paths:
             - emission/Pod/Assets/Emission.js
             - emission/Pod/Assets/Emission.js.map
