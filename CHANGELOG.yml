@@ -32,6 +32,7 @@ upcoming:
     - Restrict Android phones to portrait mode - adamb
     - Fix palette button disabled state on iOS - mounir
     - Fix artwork filter apply button disabled logic - iskounen
+    - Fix Filter Artwork title text breaking - mounir
 
 releases:
   - version: 6.8.3
