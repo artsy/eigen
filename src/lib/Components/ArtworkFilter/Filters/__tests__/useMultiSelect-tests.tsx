@@ -133,7 +133,7 @@ describe("useMultiSelect", () => {
     await flushPromiseQueue()
 
     expect(extractText(tree.root.findByProps({ testID: "selectedOptions" }))).toContain(
-      '{"paramName":"colors","displayText":"All","paramValue":[]}'
+      '{"paramName":"colors","displayText":"All"}'
     )
   })
 })

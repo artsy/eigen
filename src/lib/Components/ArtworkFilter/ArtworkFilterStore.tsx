@@ -1,6 +1,6 @@
 import { Action, action, createContextStore, State } from "easy-peasy"
 import { assignDeep } from "lib/store/persistence"
-import { filter, find, pullAllBy, union, unionBy } from "lodash"
+import { filter, find, isEqual, pullAllBy, union, unionBy } from "lodash"
 import {
   Aggregations,
   defaultCommonFilterOptions,
@@ -104,7 +104,7 @@ export const ArtworkFiltersModel: ArtworkFiltersModel = {
       if (paramName === FilterParamName.sort && state.filterType === "saleArtwork") {
         return true
       }
-      return defaultFilterOptions[paramName] !== paramValue
+      return !isEqual(defaultFilterOptions[paramName], paramValue)
     })
 
     state.applyFilters = true
@@ -166,7 +166,7 @@ export const ArtworkFiltersModel: ArtworkFiltersModel = {
         ) {
           return true
         }
-        return defaultFilterOptions[paramName] !== paramValue
+        return !isEqual(defaultFilterOptions[paramName], paramValue)
       }
 
       if (appliedFilter.paramValue === paramValue) {
