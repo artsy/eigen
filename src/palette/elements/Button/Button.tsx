@@ -5,7 +5,7 @@ import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
-import { SansSize } from "../../Theme"
+import { SansSize, themeProps } from "../../Theme"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
@@ -69,6 +69,10 @@ export interface ButtonBaseProps extends BoxProps {
  * @param variant
  */
 export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = false) {
+  const {
+    colors: { black100, white100, red100 },
+  } = themeProps
+
   const opacity = disabled ? "0.1" : "1"
   const black100WithOpacity = `rgba(0, 0, 0, ${opacity})`
   const black10WithOpacity = `rgba(229, 229, 229, ${opacity})`
@@ -84,11 +88,13 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
           backgroundColor: black100WithOpacity,
           borderColor: black100WithOpacity,
           color: whiteWithOpacity,
+          textColor: white100,
         },
         hover: {
           backgroundColor: purple100WithOpacity,
           borderColor: purple100WithOpacity,
           color: whiteWithOpacity,
+          textColor: white100,
         },
       }
     case "primaryWhite":
@@ -97,11 +103,13 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
           backgroundColor: whiteWithOpacity,
           borderColor: whiteWithOpacity,
           color: black100WithOpacity,
+          textColor: black100,
         },
         hover: {
           backgroundColor: purple100WithOpacity,
           borderColor: purple100WithOpacity,
           color: whiteWithOpacity,
+          textColor: white100,
         },
       }
     case "secondaryGray":
@@ -110,11 +118,13 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
           backgroundColor: black10WithOpacity,
           borderColor: black10WithOpacity,
           color: black100WithOpacity,
+          textColor: black100,
         },
         hover: {
           backgroundColor: black30WithOpacity,
           borderColor: black30WithOpacity,
           color: black100WithOpacity,
+          textColor: black100,
         },
       }
     case "secondaryOutline":
@@ -123,11 +133,13 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
           backgroundColor: whiteWithOpacity,
           borderColor: black10WithOpacity,
           color: black100WithOpacity,
+          textColor: black100,
         },
         hover: {
           backgroundColor: whiteWithOpacity,
           borderColor: black100WithOpacity,
           color: black100WithOpacity,
+          textColor: black100,
         },
       }
     case "secondaryOutlineWarning":
@@ -136,11 +148,13 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
           backgroundColor: whiteWithOpacity,
           borderColor: black10WithOpacity,
           color: red100WithOpacity,
+          textColor: red100,
         },
         hover: {
           backgroundColor: whiteWithOpacity,
           borderColor: black100WithOpacity,
           color: black100WithOpacity,
+          textColor: black100,
         },
       }
     case "noOutline":
@@ -149,11 +163,13 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
           backgroundColor: "rgba(0, 0, 0, 0)",
           borderColor: "rgba(0, 0, 0, 0)",
           color: black100WithOpacity,
+          textColor: black100,
         },
         hover: {
           backgroundColor: whiteWithOpacity,
           borderColor: black100WithOpacity,
           color: black100WithOpacity,
+          textColor: black100,
         },
       }
   }
@@ -274,7 +290,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
                 {!loading ? (
                   <>
                     <VisibleTextContainer>
-                      <Sans weight="medium" color={loadingStyles.color || to.color} size={s.size}>
+                      <Sans weight="medium" color={loadingStyles.color || to.textColor} size={s.size}>
                         {children}
                       </Sans>
                     </VisibleTextContainer>
