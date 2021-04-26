@@ -1,18 +1,14 @@
-import React from "react"
-import { createFragmentContainer, graphql } from "react-relay"
-
-import RelatedArtists from "../../RelatedArtists/RelatedArtists"
-import Articles from "../Articles"
-import Biography from "../Biography"
-
 import { ArtistAbout_artist } from "__generated__/ArtistAbout_artist.graphql"
-import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
-import { CaretButton } from "../../Buttons/CaretButton"
+import React from "react"
+import { createFragmentContainer, graphql } from "react-relay"
+import RelatedArtists from "../../RelatedArtists/RelatedArtists"
 import { Stack } from "../../Stack"
 import { StickyTabPageScrollView } from "../../StickyTabPage/StickyTabPageScrollView"
+import Articles from "../Articles"
 import { ArtistConsignButtonFragmentContainer as ArtistConsignButton } from "../ArtistConsignButton"
+import Biography from "../Biography"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 
 interface Props {
@@ -27,9 +23,6 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
     <StickyTabPageScrollView>
       <Stack spacing={3} my={2}>
         {!!artist.hasMetadata && <Biography artist={artist as any} />}
-        {!!artist.isDisplayAuctionLink && (
-          <CaretButton text="Auction results" onPress={() => navigate(`/artist/${artist.slug}/auction-results`)} />
-        )}
         <ArtistConsignButton artist={artist} />
         {!!useFeatureFlag("AROptionsNewArtistInsightsPage") && <ArtistAboutShowsFragmentContainer artist={artist} />}
         {!!articles.length && <Articles articles={articles} />}
@@ -43,7 +36,6 @@ export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
   artist: graphql`
     fragment ArtistAbout_artist on Artist {
       hasMetadata
-      isDisplayAuctionLink
       slug
       ...Biography_artist
       ...ArtistConsignButton_artist
@@ -57,7 +49,7 @@ export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
           }
         }
       }
-      articles: articlesConnection(first: 10) {
+      articles: articlesConnection(first: 10, inEditorialFeed: true) {
         edges {
           node {
             ...Articles_articles

@@ -75,6 +75,12 @@ jest.mock("react-native-share", () => ({
   open: jest.fn(),
 }))
 
+jest.mock("react-native-device-info", () => ({
+  getBuildNumber: jest.fn(),
+  getModel: jest.fn(),
+  getUserAgentSync: jest.fn(),
+}))
+
 jest.mock("rn-fetch-blob", () => ({
   fs: {
     dirs: {

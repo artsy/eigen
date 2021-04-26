@@ -3,7 +3,7 @@ import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { CheckIcon } from "palette"
+import { RadioDot } from "palette"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
@@ -22,7 +22,7 @@ export interface ValidationParams {
 export const sharedAggregateFilterValidation = (params: ValidationParams) => {
   const selectedFilterOption = (componentTree: ReactTestRenderer) => {
     const innerOptions = componentTree.root.findAllByType(InnerOptionListItem)
-    const selectedOption = innerOptions.filter((item) => item.findAllByType(CheckIcon).length > 0)[0]
+    const selectedOption = innerOptions.filter((item) => item.findByType(RadioDot).props.selected)[0]
     return selectedOption
   }
 
@@ -105,7 +105,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           const tree = renderWithWrappers(<MockScreenWrapper />)
 
           const [firstOptionInstance, secondOptionInstance, thirdOptionInstance] = tree.root.findAllByType(TouchableRow)
-          const selectedOptionIconBeforePress = tree.root.findAllByType(CheckIcon)
+          const selectedOptionIconBeforePress = tree.root.findAllByType(RadioDot).filter((item) => item.props.selected)
 
           expect(selectedOptionIconBeforePress).toHaveLength(1)
 
@@ -113,7 +113,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           act(() => secondOptionInstance.props.onPress())
           act(() => thirdOptionInstance.props.onPress())
 
-          const selectedOptionIconAfterPress = tree.root.findAllByType(CheckIcon)
+          const selectedOptionIconAfterPress = tree.root.findAllByType(RadioDot).filter((item) => item.props.selected)
 
           expect(selectedOptionIconAfterPress).toHaveLength(1)
         }

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 949afa95c79a90ae72fd6e67ffe39c1f */
+/* @relayHash d8b1ed776483ef39f65eda97f4c8d293 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -82,7 +82,6 @@ fragment ArtistAboutShows_artist on Artist {
 
 fragment ArtistAbout_artist on Artist {
   hasMetadata
-  isDisplayAuctionLink
   slug
   ...Biography_artist
   ...ArtistConsignButton_artist
@@ -97,7 +96,7 @@ fragment ArtistAbout_artist on Artist {
       }
     }
   }
-  articles: articlesConnection(first: 10) {
+  articles: articlesConnection(first: 10, inEditorialFeed: true) {
     edges {
       node {
         ...Articles_articles
@@ -597,13 +596,6 @@ return {
             "name": "hasMetadata",
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "isDisplayAuctionLink",
-            "storageKey": null
-          },
           (v2/*: any*/),
           {
             "alias": null,
@@ -828,7 +820,12 @@ return {
           {
             "alias": "articles",
             "args": [
-              (v5/*: any*/)
+              (v5/*: any*/),
+              {
+                "kind": "Literal",
+                "name": "inEditorialFeed",
+                "value": true
+              }
             ],
             "concreteType": "ArticleConnection",
             "kind": "LinkedField",
@@ -887,7 +884,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "articlesConnection(first:10)"
+            "storageKey": "articlesConnection(first:10,inEditorialFeed:true)"
           },
           (v6/*: any*/),
           {
@@ -1219,7 +1216,7 @@ return {
     ]
   },
   "params": {
-    "id": "949afa95c79a90ae72fd6e67ffe39c1f",
+    "id": "d8b1ed776483ef39f65eda97f4c8d293",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",

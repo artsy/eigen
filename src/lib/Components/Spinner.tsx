@@ -1,7 +1,7 @@
+import { color } from "palette"
 import React from "react"
 import {
   ActivityIndicator,
-  ColorPropType,
   Platform,
   processColor,
   requireNativeComponent,
@@ -18,33 +18,27 @@ interface SpinnerProps extends ViewProps {
   }
 }
 
-export default class Spinner extends React.Component<SpinnerProps, any> {
-  static propTypes = {
-    spinnerColor: ColorPropType,
-  }
-
-  static defaultProps = {
-    size: {
-      width: 22,
-      height: 22,
-    },
-  }
-
-  render() {
-    if (Platform.OS === "ios") {
-      return (
-        <View style={[this.props.style, styles.container]} testID={this.props.testID}>
-          <NativeSpinner spinnerColor={processColor(this.props.spinnerColor)} style={{ size: this.props.size }} />
-        </View>
-      )
-    }
-
+const Spinner: React.FC<SpinnerProps> = ({
+  spinnerColor = color("black100"),
+  size = {
+    width: 22,
+    height: 22,
+  },
+  ...props
+}) => {
+  if (Platform.OS === "ios") {
     return (
-      <View style={[this.props.style, styles.container]} testID={this.props.testID}>
-        <ActivityIndicator />
+      <View style={[props.style, styles.container]} testID={props.testID}>
+        <NativeSpinner spinnerColor={processColor(spinnerColor)} style={{ size }} />
       </View>
     )
   }
+
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} testID={props.testID}>
+      <ActivityIndicator size="large" color={spinnerColor} />
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -55,3 +49,5 @@ const styles = StyleSheet.create({
 })
 
 const NativeSpinner: React.ComponentClass<any> = requireNativeComponent("ARSpinner")
+
+export default Spinner

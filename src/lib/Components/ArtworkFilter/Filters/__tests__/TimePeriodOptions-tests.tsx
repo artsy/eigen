@@ -6,8 +6,8 @@ import { ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFilterS
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Check } from "palette"
 import React from "react"
-import { Switch } from "react-native"
 import { OptionListItem as MultiSelectOptionListItem } from "../MultiSelectOption"
 import { TimePeriodOptionsScreen } from "../TimePeriodOptions"
 import { getEssentialProps } from "./helper"
@@ -56,7 +56,7 @@ describe("TimePeriodOptions Screen", () => {
   }
 
   describe("before any filters are selected", () => {
-    it("displays 'All' in the filter modal screen", () => {
+    it("does not display 'All' in the filter modal screen", () => {
       const tree = renderWithWrappers(<MockFilterScreen initialState={initialState} />)
 
       const items = tree.root.findAllByType(FilterModalOptionListItem)
@@ -65,7 +65,7 @@ describe("TimePeriodOptions Screen", () => {
       expect(item).not.toBeUndefined()
 
       if (item) {
-        expect(extractText(item)).toContain("All")
+        expect(extractText(item)).not.toContain("All")
       }
     })
 
@@ -92,8 +92,6 @@ describe("TimePeriodOptions Screen", () => {
     }
 
     it("displays a comma-separated list of the selected filters on the filter modal screen", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARUseImprovedArtworkFilters: true })
-
       const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
 
       const items = tree.root.findAllByType(FilterModalOptionListItem)
@@ -108,27 +106,11 @@ describe("TimePeriodOptions Screen", () => {
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
       const tree = renderWithWrappers(<MockTimePeriodOptionsScreen initialData={state} />)
 
-      const switches = tree.root.findAllByType(Switch)
+      const options = tree.root.findAllByType(Check)
 
-      expect(switches[0].props.value).toBe(true)
-      expect(switches[1].props.value).toBe(false)
-      expect(switches[2].props.value).toBe(false)
-    })
-  })
-
-  describe("when the 'All' option is selected", () => {
-    it("does not display 'All' on the filter modal screen", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARUseImprovedArtworkFilters: true })
-
-      const tree = renderWithWrappers(<MockFilterScreen initialState={initialState} />)
-
-      const items = tree.root.findAllByType(FilterModalOptionListItem)
-      const item = items.find((i) => extractText(i).startsWith("Time period"))
-
-      expect(item).not.toBeUndefined()
-      if (item) {
-        expect(extractText(item)).not.toContain("All")
-      }
+      expect(options[0].props.selected).toBe(true)
+      expect(options[1].props.selected).toBe(false)
+      expect(options[2].props.selected).toBe(false)
     })
   })
 })

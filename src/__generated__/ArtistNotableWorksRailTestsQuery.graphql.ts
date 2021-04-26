@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d538509ee0be92f3cd476a762808e6f3 */
+/* @relayHash bf9c414a0c3ae0f851b68d43dced792f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -13,6 +13,8 @@ export type ArtistNotableWorksRailTestsQueryResponse = {
 };
 export type ArtistNotableWorksRailTestsQueryRawResponse = {
     readonly artist: ({
+        readonly internalID: string;
+        readonly slug: string;
         readonly filterArtworksConnection: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
@@ -63,6 +65,8 @@ query ArtistNotableWorksRailTestsQuery {
 }
 
 fragment ArtistNotableWorksRail_artist on Artist {
+  internalID
+  slug
   filterArtworksConnection(sort: "-weighted_iconicity", first: 10) {
     edges {
       node {
@@ -108,10 +112,24 @@ v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v2 = [
+v4 = [
   {
     "alias": null,
     "args": null,
@@ -161,6 +179,8 @@ return {
         "name": "artist",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "alias": null,
             "args": [
@@ -196,7 +216,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v1/*: any*/),
+                      (v3/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -244,7 +264,7 @@ return {
                             "kind": "LinkedField",
                             "name": "openingBid",
                             "plural": false,
-                            "selections": (v2/*: any*/),
+                            "selections": (v4/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -254,10 +274,10 @@ return {
                             "kind": "LinkedField",
                             "name": "highestBid",
                             "plural": false,
-                            "selections": (v2/*: any*/),
+                            "selections": (v4/*: any*/),
                             "storageKey": null
                           },
-                          (v1/*: any*/)
+                          (v3/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -283,7 +303,7 @@ return {
                             "name": "isAuction",
                             "storageKey": null
                           },
-                          (v1/*: any*/)
+                          (v3/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -294,38 +314,26 @@ return {
                         "name": "title",
                         "storageKey": null
                       },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "internalID",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "slug",
-                        "storageKey": null
-                      }
+                      (v1/*: any*/),
+                      (v2/*: any*/)
                     ],
                     "storageKey": null
                   }
                 ],
                 "storageKey": null
               },
-              (v1/*: any*/)
+              (v3/*: any*/)
             ],
             "storageKey": "filterArtworksConnection(first:10,sort:\"-weighted_iconicity\")"
           },
-          (v1/*: any*/)
+          (v3/*: any*/)
         ],
         "storageKey": "artist(id:\"a-really-talented-artist\")"
       }
     ]
   },
   "params": {
-    "id": "d538509ee0be92f3cd476a762808e6f3",
+    "id": "bf9c414a0c3ae0f851b68d43dced792f",
     "metadata": {},
     "name": "ArtistNotableWorksRailTestsQuery",
     "operationKind": "query",

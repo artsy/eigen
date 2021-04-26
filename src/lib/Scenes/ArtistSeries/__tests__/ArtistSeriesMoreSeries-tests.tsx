@@ -139,6 +139,7 @@ const ArtistSeriesMoreSeriesNoSeriesFixture: ArtistSeriesMoreSeriesTestsQueryRaw
     artist: [
       {
         id: "abc123",
+        slug: "a-slug",
         internalID: "ja292jf92",
         artistSeriesConnection: {
           totalCount: 0,
@@ -155,6 +156,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse
       {
         id: "abc123",
         internalID: "jahfadf981",
+        slug: "yayoi-kusama",
         artistSeriesConnection: {
           totalCount: 5,
           edges: [
@@ -231,6 +233,7 @@ const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeries
       {
         id: "abc123",
         internalID: "jahfadf981",
+        slug: "yayoi-kusama",
         artistSeriesConnection: {
           totalCount: 3,
           edges: [

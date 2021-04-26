@@ -246,7 +246,6 @@ export const DEFAULT_FILTERS: FilterArray = [
   { paramName: FilterParamName.size, paramValue: "*-*", displayText: "All" },
   { paramName: FilterParamName.gallery, displayText: "All" },
   { paramName: FilterParamName.institution, displayText: "All" },
-  { paramName: FilterParamName.color, displayText: "All" },
   { paramName: FilterParamName.colors, displayText: "All" },
   { paramName: FilterParamName.timePeriod, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy now" },
