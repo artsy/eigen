@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f941b6ff37888dabacff2c00a0160bda */
+/* @relayHash fabbb3380acfef438085f28c0c77ee12 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -73,7 +73,6 @@ fragment ConversationCTA_conversation on Conversation {
       __typename
       ... on Artwork {
         artworkID: internalID
-        isOfferableFromInquiry
       }
       ... on Node {
         __isNode: __typename
@@ -612,13 +611,6 @@ return {
                             "args": null,
                             "kind": "ScalarField",
                             "name": "internalID",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "isOfferableFromInquiry",
                             "storageKey": null
                           },
                           (v2/*: any*/),
@@ -1176,7 +1168,7 @@ return {
     ]
   },
   "params": {
-    "id": "f941b6ff37888dabacff2c00a0160bda",
+    "id": "fabbb3380acfef438085f28c0c77ee12",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -1267,7 +1259,6 @@ return {
         "me.conversation.items.item.image.aspectRatio": (v30/*: any*/),
         "me.conversation.items.item.image.url": (v27/*: any*/),
         "me.conversation.items.item.internalID": (v22/*: any*/),
-        "me.conversation.items.item.isOfferableFromInquiry": (v25/*: any*/),
         "me.conversation.items.item.name": (v27/*: any*/),
         "me.conversation.items.item.partner": {
           "enumValues": null,

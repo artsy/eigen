@@ -12,7 +12,6 @@ export type ConversationCTA_conversation = {
         readonly item: ({
             readonly __typename: "Artwork";
             readonly artworkID: string;
-            readonly isOfferableFromInquiry: boolean | null;
         } | {
             /*This will never be '%other', but we need some
             value in case none of the concrete values match.*/
@@ -103,13 +102,6 @@ return {
                   "args": null,
                   "kind": "ScalarField",
                   "name": "internalID",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "isOfferableFromInquiry",
                   "storageKey": null
                 }
               ],
@@ -277,5 +269,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'c10b1a5b72015c1e80163c9aa056d31f';
+(node as any).hash = '444205614b089bf0b711e11c8d5e90b6';
 export default node;
