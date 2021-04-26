@@ -134,15 +134,11 @@ When you connect an iPhone to your machine, Xcode will prompt you to join a team
 
 ### Android
 
-1. Firstly, Go to the Settings in your real device.
-2. After that go to the “About phone” if Developer Options is not shown in your device
-3. Then Tap 7 times on Build number to create Developer Options.
-4. After that go back and Developer options will be created in your device.
-5. After that go to Developer options and Enable USB debugging in your device as shown in figure below.
-6. Connect your device with your system via data cable and after that allow USB debugging message shown on your device and press OK.
-7. After that Go to the menu bar and Run app as shown in figure below.
-8. If real device is connected to your system then it will show Online. Now click on your Mobile phone device and you App will be run in real device.
-9. After that your Android app run in Real device.
+1. On your Android device go to Settings > About Phone
+2. Find the 'Build number' menu item and tap it 7 times to enable developer mode.
+4. Now go to Settings > System > Developer Options, and turn on 'USB Debugging'
+5. Connect your device to your computer via USB cable. After a moment the device should show a prompt for you to allow USB debugging for your computer. Press yes.
+7. After that run `yarn android` from within the eigen directory. This will build the app, install it on your device, and run it.
 
 ## Read more
 
