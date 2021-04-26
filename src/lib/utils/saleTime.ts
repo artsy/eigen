@@ -99,8 +99,11 @@ const maybePluralise = (word: string, unit: number) => word + (unit === 1 ? "" :
 
 const starts = (now: moment.Moment, startDate: moment.Moment): string | null => {
   const hours = startDate.diff(now, "hours")
+  const minutes = startDate.diff(now, "minutes")
   const days = startDate.startOf("day").diff(now.startOf("day"), "days")
-  if (days < 1) {
+  if (minutes < 60) {
+    return `Starts in ${minutes} ${maybePluralise("minute", minutes)}`
+  } else if (days < 1) {
     return `Starts in ${hours} ${maybePluralise("hour", hours)}`
   } else if (days < 7) {
     return `Starts in ${days} ${maybePluralise("day", days)}`

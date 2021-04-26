@@ -20,6 +20,8 @@ const times = {
 
   present: "2020-09-04T19:00:00",
 
+  future01: "2020-09-04T15:01:00",
+  future10: "2020-09-04T15:43:00",
   future20: "2020-09-05T15:00:00",
   future30: "2020-09-09T15:00:00",
   future40: "2020-09-09T21:00:00",
@@ -52,6 +54,20 @@ const liveSaleImminentNY: Sale = {
 
 const liveSaleSoonNY: Sale = {
   startAt: times.future30,
+  liveStartAt: null,
+  endAt: null,
+  timeZone: timezones.ny,
+}
+
+const liveSaleReallySoonNY: Sale = {
+  startAt: times.future10,
+  liveStartAt: null,
+  endAt: null,
+  timeZone: timezones.ny,
+}
+
+const liveSaleInOneMinuteNY: Sale = {
+  startAt: times.future01,
   liveStartAt: null,
   endAt: null,
   timeZone: timezones.ny,
@@ -188,6 +204,7 @@ describe("#saleTime.relative", () => {
   it("shows the relative time for imminent sales", () => {
     expect(saleTime(liveSaleImminentNY).relative).toEqual("Starts in 4 hours")
     expect(saleTime(liveSaleSoonNY).relative).toEqual("Starts in 5 days")
+    expect(saleTime(liveSaleReallySoonNY).relative).toEqual("Starts in 43 minutes")
   })
 
   it("doesn't show the relative time for a non-imminent sale", () => {
@@ -210,6 +227,7 @@ describe("#saleTime.relative", () => {
 
   it("pluralises correctly", () => {
     expect(saleTime(liveSaleTomorrow).relative).toEqual("Starts in 1 day")
+    expect(saleTime(liveSaleInOneMinuteNY).relative).toEqual("Starts in 1 minute")
   })
 
   it("handles complete sales correctly", () => {
