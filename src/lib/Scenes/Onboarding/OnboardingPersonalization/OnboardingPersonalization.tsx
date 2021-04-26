@@ -1,14 +1,14 @@
 import { NavigationContainer, useNavigation } from "@react-navigation/native"
-import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
+import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { OnboardingPersonalization_popularArtists } from "__generated__/OnboardingPersonalization_popularArtists.graphql"
 import { OnboardingPersonalizationListQuery } from "__generated__/OnboardingPersonalizationListQuery.graphql"
+import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { INPUT_HEIGHT } from "lib/Components/Input/Input"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, color, Flex, Spacer, Text } from "palette"
+import { Box, color, Flex, space, Spacer, Text } from "palette"
 import React from "react"
-import { ScrollView } from "react-native"
-import { TouchableWithoutFeedback } from "react-native-gesture-handler"
+import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import { OnboardingPersonalizationModal } from "./OnboardingPersonalizationModal"
@@ -47,19 +47,19 @@ interface OnboardingPersonalizationListProps {
 
 export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationListProps> = ({ ...props }) => {
   const navigation = useNavigation()
+  console.log(props)
 
   return (
     <Flex backgroundColor="white" flexGrow={1}>
       <ScrollView
         contentContainerStyle={{
-          paddingHorizontal: 20,
           paddingTop: useScreenDimensions().safeAreaInsets.top,
           justifyContent: "flex-start",
         }}
         showsVerticalScrollIndicator={false}
       >
         <Spacer mt={60} />
-        <Box>
+        <Box px={2}>
           <Text variant="largeTitle">What artists do you collect?</Text>
           <>
             <Spacer mt={1.5} />
@@ -69,22 +69,38 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
           </>
         </Box>
         <Spacer mt={20} />
-        <TouchableWithoutFeedback
-          onPressIn={() => {
-            navigation.navigate("OnboardingPersonalizationModal")
-          }}
-        >
-          <Flex flexDirection="row" borderWidth={1} borderColor={color("black10")} height={INPUT_HEIGHT}>
-            <Flex pl="1" justifyContent="center" flexGrow={0}>
-              <SearchIcon width={18} height={18} />
+
+        {/* Fake search Input */}
+        <Flex px={2}>
+          <TouchableWithoutFeedback
+            onPressIn={() => {
+              navigation.navigate("OnboardingPersonalizationModal")
+            }}
+          >
+            <Flex flexDirection="row" borderWidth={1} borderColor={color("black10")} height={INPUT_HEIGHT}>
+              <Flex pl="1" justifyContent="center" flexGrow={0}>
+                <SearchIcon width={18} height={18} />
+              </Flex>
+              <Flex flexGrow={1} justifyContent="center" pl={1}>
+                <Text color={color("black60")} fontSize={15}>
+                  Search artists
+                </Text>
+              </Flex>
             </Flex>
-            <Flex flexGrow={1} justifyContent="center" pl={1}>
-              <Text color={color("black60")} fontSize={15}>
-                Search artists
-              </Text>
-            </Flex>
-          </Flex>
-        </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback>
+        </Flex>
+
+        <FlatList
+          data={props.popularArtists}
+          renderItem={({ item }) => (
+            <ArtistListItem
+              artist={item}
+              withFeedback
+              containerStyle={{ paddingHorizontal: 20, paddingVertical: 10 }}
+            />
+          )}
+          contentContainerStyle={{ paddingVertical: space(2) }}
+        />
       </ScrollView>
     </Flex>
   )
@@ -93,15 +109,8 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
 const OnboardingPersonalizationListFragmentContainer = createFragmentContainer(OnboardingPersonalizationList, {
   popularArtists: graphql`
     fragment OnboardingPersonalization_popularArtists on Artist @relay(plural: true) {
-      slug
-      internalID
       id
-      name
-      image {
-        cropped(width: 100, height: 100) {
-          url
-        }
-      }
+      ...ArtistListItem_artist
     }
   `,
 })

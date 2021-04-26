@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9fe0d3e955ba21250b92a3e56dcc92b0 */
+/* @relayHash a699e8ef1adcdb10dcef2d78de2d597c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,16 +30,25 @@ query OnboardingPersonalizationListQuery {
   }
 }
 
-fragment OnboardingPersonalization_popularArtists on Artist {
-  slug
-  internalID
+fragment ArtistListItem_artist on Artist {
   id
+  internalID
+  slug
   name
+  initials
+  href
+  is_followed: isFollowed
+  nationality
+  birthday
+  deathday
   image {
-    cropped(width: 100, height: 100) {
-      url
-    }
+    url
   }
+}
+
+fragment OnboardingPersonalization_popularArtists on Artist {
+  id
+  ...ArtistListItem_artist
 }
 */
 
@@ -115,7 +124,7 @@ return {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
-                "name": "slug",
+                "name": "id",
                 "storageKey": null
               },
               {
@@ -129,7 +138,7 @@ return {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
-                "name": "id",
+                "name": "slug",
                 "storageKey": null
               },
               {
@@ -142,6 +151,48 @@ return {
               {
                 "alias": null,
                 "args": null,
+                "kind": "ScalarField",
+                "name": "initials",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "href",
+                "storageKey": null
+              },
+              {
+                "alias": "is_followed",
+                "args": null,
+                "kind": "ScalarField",
+                "name": "isFollowed",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "nationality",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "birthday",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "deathday",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
                 "concreteType": "Image",
                 "kind": "LinkedField",
                 "name": "image",
@@ -149,32 +200,10 @@ return {
                 "selections": [
                   {
                     "alias": null,
-                    "args": [
-                      {
-                        "kind": "Literal",
-                        "name": "height",
-                        "value": 100
-                      },
-                      {
-                        "kind": "Literal",
-                        "name": "width",
-                        "value": 100
-                      }
-                    ],
-                    "concreteType": "CroppedImageUrl",
-                    "kind": "LinkedField",
-                    "name": "cropped",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "url",
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": "cropped(height:100,width:100)"
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "url",
+                    "storageKey": null
                   }
                 ],
                 "storageKey": null
@@ -188,7 +217,7 @@ return {
     ]
   },
   "params": {
-    "id": "9fe0d3e955ba21250b92a3e56dcc92b0",
+    "id": "a699e8ef1adcdb10dcef2d78de2d597c",
     "metadata": {},
     "name": "OnboardingPersonalizationListQuery",
     "operationKind": "query",
