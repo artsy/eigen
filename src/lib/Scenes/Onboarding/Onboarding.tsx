@@ -22,7 +22,12 @@ export type OnboardingNavigationStack = {
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
 
 export const Onboarding = () => {
-  const onboardingState = GlobalStore.useAppState((state) => state.native.sessionState.onboardingState)
+  const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
+
+  if (onboardingState === "incomplete") {
+    return <OnboardingPersonalization />
+  }
+
   return (
     <View style={{ flex: 1, paddingBottom: useScreenDimensions().safeAreaInsets.bottom }}>
       <NavigationContainer independent>
@@ -30,34 +35,30 @@ export const Onboarding = () => {
           value={{ isVisible: true, isPresentedModally: false, bottomOffset: 0 }}
         >
           <ArtsyKeyboardAvoidingView>
-            {onboardingState === "incomplete" ? (
-              <OnboardingPersonalization />
-            ) : (
-              <StackNavigator.Navigator
-                headerMode="screen"
-                screenOptions={{
-                  ...TransitionPresets.SlideFromRightIOS,
-                  headerShown: false,
-                }}
-              >
-                <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
-                <StackNavigator.Screen
-                  name="OnboardingLogin"
-                  component={OnboardingLogin}
-                  options={({ route: { params } }) => ({
-                    cardStyleInterpolator: params?.withFadeAnimation
-                      ? CardStyleInterpolators.forFadeFromBottomAndroid
-                      : CardStyleInterpolators.forHorizontalIOS,
-                  })}
-                />
-                <StackNavigator.Screen name="OnboardingCreateAccount" component={OnboardingCreateAccount} />
-                <StackNavigator.Screen
-                  name="ForgotPassword"
-                  component={ForgotPassword}
-                  options={{ headerShown: false }}
-                />
-              </StackNavigator.Navigator>
-            )}
+            <StackNavigator.Navigator
+              headerMode="screen"
+              screenOptions={{
+                ...TransitionPresets.SlideFromRightIOS,
+                headerShown: false,
+              }}
+            >
+              <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
+              <StackNavigator.Screen
+                name="OnboardingLogin"
+                component={OnboardingLogin}
+                options={({ route: { params } }) => ({
+                  cardStyleInterpolator: params?.withFadeAnimation
+                    ? CardStyleInterpolators.forFadeFromBottomAndroid
+                    : CardStyleInterpolators.forHorizontalIOS,
+                })}
+              />
+              <StackNavigator.Screen name="OnboardingCreateAccount" component={OnboardingCreateAccount} />
+              <StackNavigator.Screen
+                name="ForgotPassword"
+                component={ForgotPassword}
+                options={{ headerShown: false }}
+              />
+            </StackNavigator.Navigator>
           </ArtsyKeyboardAvoidingView>
         </ArtsyKeyboardAvoidingViewContext.Provider>
       </NavigationContainer>

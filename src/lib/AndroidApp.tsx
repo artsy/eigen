@@ -28,6 +28,7 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
+  const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const forceUpdateMessage = GlobalStore.useAppState((state) => state.config.echo.forceUpdateMessage)
 
   useSentryConfig()
@@ -57,7 +58,7 @@ const Main: React.FC<{}> = track()(({}) => {
     return <ForceUpdate forceUpdateMessage={forceUpdateMessage} />
   }
 
-  if (!isLoggedIn) {
+  if (!isLoggedIn || onboardingState === "incomplete") {
     return <Onboarding />
   }
 
