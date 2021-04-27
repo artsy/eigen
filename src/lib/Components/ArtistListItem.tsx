@@ -154,7 +154,7 @@ export class ArtistListItem extends React.Component<Props, State> {
             </Flex>
             <Flex>
               <Button
-                variant={is_followed ? "secondaryOutline" : "primaryBlack"}
+                variant={is_followed ? "secondaryOutline" : "secondaryGray"}
                 onPress={this.handleFollowArtist.bind(this)}
                 size="small"
                 loading={isFollowedChanging}
