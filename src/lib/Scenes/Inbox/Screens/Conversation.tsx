@@ -93,7 +93,10 @@ export class Conversation extends React.Component<Props, State> {
   }
 
   handleModalDismissed = () => {
-    console.warn("modal dismissed...")
+    this.refetch()
+  }
+
+  refetch = () => {
     this.props.relay.refetch({})
   }
 
