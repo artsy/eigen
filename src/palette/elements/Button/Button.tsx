@@ -212,6 +212,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
         backgroundColor: `rgba(0, 0, 0, ${opacity})`,
         color: color("white100"),
         borderWidth: 0,
+        textColor: "transparent",
       }
     }
 
@@ -219,6 +220,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
       backgroundColor: `rgba(0, 0, 0, ${opacity})`,
       borderColor: `rgba(0, 0, 0, 0)`,
       color: color("white100"),
+      textColor: "transparent",
     }
   })()
 
@@ -287,20 +289,16 @@ export const Button: React.FC<ButtonProps> = (props) => {
                 style={{ ...springProps, ...loadingStyles, height: s.height }}
                 px={s.px}
               >
-                {!loading ? (
-                  <>
-                    <VisibleTextContainer>
-                      <Sans weight="medium" color={loadingStyles.color || to.textColor} size={s.size}>
-                        {children}
-                      </Sans>
-                    </VisibleTextContainer>
-                    <HiddenText role="presentation" weight="medium" size={s.size}>
-                      {longestText ? longestText : children}
-                    </HiddenText>
-                  </>
-                ) : (
-                  <Spinner size={size} color={spinnerColor} />
-                )}
+                <VisibleTextContainer>
+                  <Sans weight="medium" color={loadingStyles.textColor || to.textColor} size={s.size}>
+                    {children}
+                  </Sans>
+                </VisibleTextContainer>
+                <HiddenText role="presentation" weight="medium" size={s.size}>
+                  {longestText ? longestText : children}
+                </HiddenText>
+
+                {!!loading && <Spinner size={size} color={spinnerColor} />}
               </AnimatedContainer>
             </Flex>
           </TouchableWithoutFeedback>

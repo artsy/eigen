@@ -114,17 +114,13 @@ export const ArtworkFilterOptionsScreen: React.FC<
   return (
     <Flex style={{ flex: 1 }}>
       <Flex flexGrow={0} flexDirection="row" justifyContent="space-between" alignItems="center" height={space(6)}>
-        <Flex flex={1} alignItems="flex-start">
+        <Flex position="absolute" alignItems="flex-start">
           <CloseIconContainer hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={handleTappingCloseIcon}>
             <CloseIcon fill="black100" />
           </CloseIconContainer>
         </Flex>
 
-        <Flex flex={1} alignItems="center">
-          <Text variant="mediumText">{title}</Text>
-        </Flex>
-
-        <Flex flex={1} alignItems="flex-end">
+        <Flex position="absolute" right={0} alignItems="flex-end">
           <ClearAllButton
             disabled={!isClearAllButtonEnabled}
             onPress={() => {
@@ -150,6 +146,10 @@ export const ArtworkFilterOptionsScreen: React.FC<
               Clear all
             </Text>
           </ClearAllButton>
+        </Flex>
+
+        <Flex flex={1} alignItems="center">
+          <Text variant="mediumText">{title}</Text>
         </Flex>
       </Flex>
 
