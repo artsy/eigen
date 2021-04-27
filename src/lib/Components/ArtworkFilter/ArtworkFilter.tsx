@@ -15,8 +15,6 @@ import { AttributionClassOptionsScreen } from "lib/Components/ArtworkFilter/Filt
 import { CategoriesOptionsScreen } from "lib/Components/ArtworkFilter/Filters/CategoriesOptions"
 import { ColorsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ColorsOptions"
 import { EstimateRangeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/EstimateRangeOptions"
-import { GalleryOptionsScreen } from "lib/Components/ArtworkFilter/Filters/GalleryOptions"
-import { InstitutionOptionsScreen } from "lib/Components/ArtworkFilter/Filters/InstitutionOptions"
 import { MediumOptionsScreen } from "lib/Components/ArtworkFilter/Filters/MediumOptions"
 import { PriceRangeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/PriceRangeOptions"
 import { SizeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/SizeOptions"
@@ -35,6 +33,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { FancyModal } from "../FancyModal/FancyModal"
 import { ArtworkFilterOptionsScreen, FilterModalMode as ArtworkFilterMode } from "./ArtworkFilterOptionsScreen"
+import { GalleriesAndInstitutionsOptionsScreen } from "./Filters/GalleriesAndInstitutionsOptions"
 
 interface ArtworkFilterProps extends ViewProps {
   closeModal?: () => void
@@ -69,8 +68,7 @@ export type ArtworkFilterNavigationStack = {
   ColorsOptionsScreen: undefined
   EstimateRangeOptionsScreen: undefined
   FilterOptionsScreen: ArtworkFilterOptionsScreenParams
-  GalleryOptionsScreen: undefined
-  InstitutionOptionsScreen: undefined
+  GalleriesAndInstitutionsOptionsScreen: undefined
   MediumOptionsScreen: undefined
   PriceRangeOptionsScreen: undefined
   SizeOptionsScreen: undefined
@@ -155,9 +153,11 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             <Stack.Screen name="AttributionClassOptionsScreen" component={AttributionClassOptionsScreen} />
             <Stack.Screen name="ColorsOptionsScreen" component={ColorsOptionsScreen} />
             <Stack.Screen name="EstimateRangeOptionsScreen" component={EstimateRangeOptionsScreen} />
-            <Stack.Screen name="GalleryOptionsScreen" component={GalleryOptionsScreen} />
+            <Stack.Screen
+              name="GalleriesAndInstitutionsOptionsScreen"
+              component={GalleriesAndInstitutionsOptionsScreen}
+            />
             <Stack.Screen name="AdditionalGeneIDsOptionsScreen" component={AdditionalGeneIDsOptionsScreen} />
-            <Stack.Screen name="InstitutionOptionsScreen" component={InstitutionOptionsScreen} />
             <Stack.Screen name="MediumOptionsScreen" component={MediumOptionsScreen} />
             <Stack.Screen name="PriceRangeOptionsScreen" component={PriceRangeOptionsScreen} />
             <Stack.Screen name="SizeOptionsScreen" component={SizeOptionsScreen} />

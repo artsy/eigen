@@ -122,6 +122,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
         color: { type: "String" }
         colors: { type: "[String]" }
         partnerID: { type: "ID" }
+        partnerIDs: { type: "[String]" }
         dimensionRange: { type: "String", defaultValue: "*-*" }
         majorPeriods: { type: "[String]" }
         acquireable: { type: "Boolean" }
@@ -143,6 +144,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
           color: $color
           colors: $colors
           partnerID: $partnerID
+          partnerIDs: $partnerIDs
           dimensionRange: $dimensionRange
           majorPeriods: $majorPeriods
           acquireable: $acquireable
@@ -151,17 +153,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
           offerable: $offerable
           includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
           artistIDs: $artistIDs
-          aggregations: [
-            COLOR
-            DIMENSION_RANGE
-            GALLERY
-            INSTITUTION
-            MAJOR_PERIOD
-            MEDIUM
-            PRICE_RANGE
-            FOLLOWED_ARTISTS
-            ARTIST
-          ]
+          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]
           attributionClass: $attributionClass
         ) @connection(key: "Fair_fairArtworks") {
           aggregations {
@@ -217,6 +209,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
         $color: String
         $colors: [String]
         $partnerID: ID
+        $partnerIDs: [String]
         $dimensionRange: String
         $majorPeriods: [String]
         $acquireable: Boolean
@@ -237,6 +230,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
               color: $color
               colors: $colors
               partnerID: $partnerID
+              partnerIDs: $partnerIDs
               priceRange: $priceRange
               dimensionRange: $dimensionRange
               majorPeriods: $majorPeriods

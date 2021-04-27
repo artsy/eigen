@@ -86,17 +86,7 @@ export const FairAllFollowedArtistsFragmentContainer = createFragmentContainer(F
     fragment FairAllFollowedArtists_fairForFilters on Fair {
       filterArtworksConnection(
         first: 0
-        aggregations: [
-          COLOR
-          DIMENSION_RANGE
-          GALLERY
-          INSTITUTION
-          MAJOR_PERIOD
-          MEDIUM
-          PRICE_RANGE
-          FOLLOWED_ARTISTS
-          ARTIST
-        ]
+        aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]
       ) {
         aggregations {
           slice

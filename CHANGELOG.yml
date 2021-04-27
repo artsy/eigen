@@ -34,6 +34,7 @@ upcoming:
     - Fix palette button disabled state on iOS - mounir
     - Fix artwork filter apply button disabled logic - iskounen
     - Fix Filter Artwork title text breaking - mounir
+    - Combine gallery and institution artwork filters - mdole
 
 releases:
   - version: 6.8.3
