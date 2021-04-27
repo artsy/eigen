@@ -15,9 +15,8 @@ import moment from "moment"
 import { Box, Flex, NoArtworkIcon, Separator, Spacer, Text, TEXT_FONTS } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated, Image, TextInput, TouchableWithoutFeedback } from "react-native"
-import { graphql, QueryRenderer } from "react-relay"
+import { Environment, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { getImageDimensions } from "../Sale/Components/SaleArtworkListItem"
 import { auctionResultHasPrice, auctionResultText } from "./helpers"
 
@@ -236,7 +235,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
 export const AuctionResultQueryRenderer: React.FC<{
   auctionResultInternalID: string
   artistID: string
-  environment: RelayModernEnvironment
+  environment: Environment
 }> = ({ auctionResultInternalID, artistID, environment }) => {
   return (
     <QueryRenderer<AuctionResultQuery>

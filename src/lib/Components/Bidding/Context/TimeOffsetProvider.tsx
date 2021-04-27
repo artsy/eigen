@@ -21,7 +21,7 @@ const fetchSystemTime = () =>
       }
     `,
     {},
-    { force: true }
+    { networkCacheConfig: { force: true } }
   )
 
 const getGravityTimestampInMilliSeconds = async () => {

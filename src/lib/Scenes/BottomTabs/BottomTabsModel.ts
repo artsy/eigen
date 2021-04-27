@@ -43,7 +43,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
           }
         `,
         {},
-        { force: true }
+        { networkCacheConfig: { force: true } }
       )
       if (result?.me?.unreadConversationCount != null) {
         GlobalStore.actions.bottomTabs.unreadConversationCountChanged(result.me.unreadConversationCount)

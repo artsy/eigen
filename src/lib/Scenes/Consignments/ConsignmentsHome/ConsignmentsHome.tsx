@@ -8,9 +8,8 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Join, Separator } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { createFragmentContainer, Environment, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { ArtistListFragmentContainer as ArtistList } from "./Components/ArtistList"
 import { Footer } from "./Components/Footer"
 import { Header } from "./Components/Header"
@@ -55,7 +54,7 @@ const ConsignmentsHomeContainer = createFragmentContainer(ConsignmentsHome, {
 })
 
 interface ConsignmentsHomeQueryRendererProps {
-  environment?: RelayModernEnvironment
+  environment?: Environment
 }
 
 export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRendererProps> = ({ environment }) => {

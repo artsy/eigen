@@ -22,9 +22,8 @@ import { Box, Separator, space, Spacer } from "palette"
 import React from "react"
 import { ActivityIndicator, FlatList, View } from "react-native"
 import { RefreshControl } from "react-native"
-import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { commitMutation, createRefetchContainer, Environment, graphql, RelayRefetchProp } from "react-relay"
 import { TrackingProp } from "react-tracking"
-import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
@@ -430,7 +429,7 @@ export const ArtworkContainer = createRefetchContainer(
 export const ArtworkQueryRenderer: React.FC<{
   artworkID: string
   isVisible: boolean
-  environment?: RelayModernEnvironment
+  environment?: Environment
   tracking?: TrackingProp
 }> = ({ artworkID, environment, ...others }) => {
   return (

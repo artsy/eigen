@@ -22,8 +22,7 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Flex, Message } from "palette"
 import React from "react"
 import { ActivityIndicator, View } from "react-native"
-import { graphql } from "react-relay"
-import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import { Environment, graphql } from "react-relay"
 
 export const Artist: React.FC<{
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
@@ -104,7 +103,7 @@ export const Artist: React.FC<{
 }
 
 interface ArtistQueryRendererProps extends ArtistAboveTheFoldQueryVariables, ArtistBelowTheFoldQueryVariables {
-  environment?: RelayModernEnvironment
+  environment?: Environment
 }
 
 export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artistID, environment }) => {

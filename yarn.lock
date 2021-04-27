@@ -2600,10 +2600,10 @@
     "@types/react" "*"
     "@types/relay-runtime" "*"
 
-"@types/react-relay@7.0.3":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-7.0.3.tgz#73a7dd35286aabd645bfbe4a00723a7b546054fe"
-  integrity sha512-laZ9nGDqQd9VyljJ2w8tGDcFZz9dm8K6NHsyDR8jig1eLzjYf/3ayQl+N3hnrfOVLUQsmuvy4dsyyJzjCIJAHA==
+"@types/react-relay@7.0.18":
+  version "7.0.18"
+  resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-7.0.18.tgz#c4352cd45ebc317872a90649f35bc7957119581b"
+  integrity sha512-ISTemUxBNEn+fl0QoT7oJwPj9mj2ORZaBcaPlH/RTZ+C6UkaDcJQhESHOnfLaT7gXBbr2IV6VCneKIJsWKUBFw==
   dependencies:
     "@types/react" "*"
     "@types/relay-runtime" "*"
@@ -2643,15 +2643,15 @@
   resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-11.0.0.tgz#7ddbe41152d46b614d1f3f7f0672cfb721eb93f1"
   integrity sha512-D5JNxDhkcPSIMZc2j3N/fh61399O309ph9RVmzbF+Fsyvepsqy7FirFKcJ2CMfYxE/kb8ZD/Xdzs3CYZEiQc4w==
 
-"@types/relay-runtime@8.0.6":
-  version "8.0.6"
-  resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-8.0.6.tgz#931c640f9a37b4c328aaa4e5159e0c85e5ffbbfa"
-  integrity sha512-05MJfbE/1TAz4ttx9a9x9xjaOe0KAYymWo/FcqGh+wRvz5ZvRdRPEssmIwcNsdJZVWTB3R/VBAYx6IvXMHIPNQ==
+"@types/relay-runtime@10.1.10":
+  version "10.1.10"
+  resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-10.1.10.tgz#6d4da929129d7ad39c4932ca36bb5281bf301729"
+  integrity sha512-IyEqvYzMdNcsvhjIVsCvbwQsYT2KMpZrZcw4hQu+2k2MsQNmFSwN0ycWi1Q861qNKMv2rmcMn39O7xtoNhZ8Eg==
 
-"@types/relay-test-utils@6.0.1":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/@types/relay-test-utils/-/relay-test-utils-6.0.1.tgz#3a06fe64c298aa79a01b36572b6385316c020989"
-  integrity sha512-8Wp1t9xk1l0vCQEmx7pHQ4fVL1gsEJU7r8E5n8au2JOhuUxeHkEQXPNSie9OT7RmDmDaKmh5hbzRNzu3aSihKg==
+"@types/relay-test-utils@6.0.3":
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/@types/relay-test-utils/-/relay-test-utils-6.0.3.tgz#aea2fa30e754c94f0d45b4abe78dfb2e35e2b45d"
+  integrity sha512-vVI8RcdnrP9pBaIN6Sg/ngni9Yh509WGbbX4tjPYlpNwsHGXs/O0e2Bjd4GZGQdInFvsrs/OOiGUG0dxoLscDQ==
   dependencies:
     "@types/react" "*"
     "@types/react-relay" "*"
@@ -9552,15 +9552,10 @@ moment-timezone@0.5.25:
   dependencies:
     moment ">= 2.9.0"
 
-moment@2.24.0:
+moment@2.24.0, "moment@>= 2.9.0", moment@>=2.14.0, moment@^2.11.2, moment@^2.15.1, moment@^2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
-
-"moment@>= 2.9.0", moment@>=2.14.0, moment@^2.11.2, moment@^2.15.1, moment@^2.24.0:
-  version "2.29.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
-  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
 
 moo@^0.5.0:
   version "0.5.1"

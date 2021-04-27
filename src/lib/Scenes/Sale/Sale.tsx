@@ -20,11 +20,10 @@ import moment from "moment"
 import { Box, Flex, Join, Spacer } from "palette"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Animated, FlatList, RefreshControl } from "react-native"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createRefetchContainer, Environment, graphql, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import useInterval from "react-use/lib/useInterval"
 import usePrevious from "react-use/lib/usePrevious"
-import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { SaleBelowTheFoldQueryResponse } from "../../../__generated__/SaleBelowTheFoldQuery.graphql"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
@@ -324,10 +323,7 @@ export const SaleContainer = createRefetchContainer(
   `
 )
 
-export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayModernEnvironment }> = ({
-  saleID,
-  environment,
-}) => {
+export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: Environment }> = ({ saleID, environment }) => {
   return (
     <RetryErrorBoundary
       render={({ isRetry }) => {
