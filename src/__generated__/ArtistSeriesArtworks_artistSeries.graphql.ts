@@ -107,6 +107,11 @@ const node: ReaderFragment = {
     {
       "defaultValue": null,
       "kind": "LocalArgument",
+      "name": "partnerIDs"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
       "name": "priceRange"
     },
     {
@@ -213,6 +218,11 @@ const node: ReaderFragment = {
           "kind": "Variable",
           "name": "partnerID",
           "variableName": "partnerID"
+        },
+        {
+          "kind": "Variable",
+          "name": "partnerIDs",
+          "variableName": "partnerIDs"
         },
         {
           "kind": "Variable",
@@ -378,5 +388,5 @@ const node: ReaderFragment = {
   "type": "ArtistSeries",
   "abstractKey": null
 };
-(node as any).hash = '1ec4a145917ff839fffaa6116b1d0ce3';
+(node as any).hash = 'bce047cfceaef8bc35678fe80efd854b';
 export default node;

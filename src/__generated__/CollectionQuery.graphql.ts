@@ -885,6 +885,7 @@ return {
               "color",
               "colors",
               "partnerID",
+              "partnerIDs",
               "dimensionRange",
               "majorPeriods",
               "acquireable",
