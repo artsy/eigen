@@ -31,6 +31,7 @@ export const GalleriesAndInstitutionsOptionsScreen: React.FC<GalleriesAndInstitu
       filterHeaderText={FilterDisplayName.partnerIDs}
       filterOptions={filterOptions}
       navigation={navigation}
+      searchable
       {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
     />
   )

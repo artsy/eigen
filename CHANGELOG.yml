@@ -35,6 +35,7 @@ upcoming:
     - Fix artwork filter apply button disabled logic - iskounen
     - Fix Filter Artwork title text breaking - mounir
     - Combine gallery and institution artwork filters - mdole
+    - Allows multi-select filters to be searchable - damon
 
 releases:
   - version: 6.8.3
