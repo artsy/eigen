@@ -340,16 +340,6 @@ export const selectedOption = ({
     }
 
     return waysToBuyOptions.join(", ")
-  } else if (filterScreen === "partnerIDs") {
-    const multiSelectedOptions = selectedOptions.filter((filter) => filter.paramName === FilterParamName.partnerIDs)
-
-    const institutionOptions = multiSelectedOptions.map((option) => option.displayText)
-
-    if (institutionOptions.length === 0) {
-      return "All"
-    }
-
-    return institutionOptions.join(", ")
   } else if (filterScreen === "artistIDs") {
     const hasArtistsIFollowChecked = !!selectedOptions.find(({ paramName, paramValue }) => {
       return paramName === FilterParamName.artistsIFollow && paramValue === true
