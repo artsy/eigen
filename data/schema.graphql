@@ -1432,6 +1432,9 @@ type Artwork implements Node & Searchable & Sellable {
   # Whether this artwork is unlisted or not
   unlisted: Boolean
 
+  # Based on artwork location verify that VAT info for the partner is complete.
+  vatRequirementComplete: Boolean
+
   # If the category is video, then it returns the href for the (youtube/vimeo) video, otherwise returns the website from CMS
   website: String
 
@@ -8157,6 +8160,9 @@ type Partner implements Node {
     # Only used when status is CLOSING_SOON or UPCOMING. Number of days used to filter upcoming and closing soon shows
     dayThreshold: Int
     first: Int
+
+    # If True returns only displayable items
+    isDisplayable: Boolean
     last: Int
     sort: ShowSorts
 
@@ -10340,6 +10346,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
 
   # Does the show exist as a fair booth?
   isFairBooth: Boolean
+  isFeatured: Boolean
 
   # Is the user following this show
   isFollowed: Boolean
@@ -10508,6 +10515,7 @@ enum ShowSorts {
   END_AT_DESC
   FEATURED_ASC
   FEATURED_DESC
+  FEATURED_DESC_END_AT_DESC
   NAME_ASC
   NAME_DESC
   PARTNER_ASC
