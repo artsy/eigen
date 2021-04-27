@@ -409,8 +409,6 @@ jobs:
     steps:
       - checkout
       - install-gems
-      - await-previous-builds:
-          branch: app_store_submission
       - run:
           name: Promote if app_store_submission
           command: ./scripts/promote-if-appstore-submission-branch
@@ -445,7 +443,7 @@ workflows:
           filters:
             branches:
               only:
-                - app_store_submission
+                - fix/fastlane-promote-beta-lane
 
   test-build-deploy:
     jobs:
@@ -457,11 +455,13 @@ workflows:
                 - beta-ios
                 - beta-android
                 - app_store_submission
+                - fix/fastlane-promote-beta-lane
       - build-test-js:
           filters:
             branches:
               ignore:
                 - app_store_submission
+                - fix/fastlane-promote-beta-lane
       - horizon/block:
           context: horizon
           project_id: 37
