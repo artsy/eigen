@@ -23,11 +23,7 @@ export const bidderPositionQuery = (bidderPositionID: string) => {
         }
       }
     `,
-    {
-      bidderPositionID,
-    },
-    {
-      force: true,
-    }
-  )
+    { bidderPositionID },
+    { networkCacheConfig: { force: true } }
+  ).toPromise()
 }

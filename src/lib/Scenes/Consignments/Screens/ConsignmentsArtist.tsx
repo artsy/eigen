@@ -71,7 +71,7 @@ export default class Artist extends React.Component<Props, State> {
       `,
       { query },
       { networkCacheConfig: { force: true } }
-    )
+    ).toPromise()
     const results = extractNodes(data.searchConnection) as ArtistResult[]
     this.setState({ results, searching: false })
   }, 1000)

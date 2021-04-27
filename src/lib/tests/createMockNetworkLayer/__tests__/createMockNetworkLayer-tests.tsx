@@ -33,7 +33,7 @@ describe("createMockNetworkLayer", () => {
         mockData: {
           artwork: { title: "Untitled", id: "untitled" },
         },
-      })
+      }).toPromise()
       expect(data.artwork.title).toEqual("Untitled")
     })
     it("returns null for nullable fields which are given as null", async () => {
@@ -41,7 +41,7 @@ describe("createMockNetworkLayer", () => {
         mockData: {
           artwork: { title: null, id: "null" },
         },
-      })
+      }).toPromise()
       expect(data.artwork.title).toEqual(null)
     })
 
@@ -50,7 +50,7 @@ describe("createMockNetworkLayer", () => {
         mockData: {
           artwork: { title: undefined, id: "null" },
         },
-      })
+      }).toPromise()
       expect(data.artwork.title).toEqual(null)
     })
   })
@@ -100,7 +100,7 @@ describe("createMockNetworkLayer", () => {
           }
         }
       `
-    )
+    ).toPromise()
     expect(data.artist.forSaleArtworks).toEqual({ edges: [{ node: { id: "for-sale-work" } }] })
     expect(data.artist.notForSaleArtworks).toEqual({ edges: [{ node: { id: "no-for-sale-work" } }] })
   })

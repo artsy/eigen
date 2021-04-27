@@ -44,7 +44,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
         `,
         {},
         { networkCacheConfig: { force: true } }
-      )
+      ).toPromise()
       if (result?.me?.unreadConversationCount != null) {
         GlobalStore.actions.bottomTabs.unreadConversationCountChanged(result.me.unreadConversationCount)
         GlobalStore.actions.native.setApplicationIconBadgeNumber(result.me.unreadConversationCount)

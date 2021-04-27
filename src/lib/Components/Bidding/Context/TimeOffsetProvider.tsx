@@ -22,14 +22,14 @@ const fetchSystemTime = () =>
     `,
     {},
     { networkCacheConfig: { force: true } }
-  )
+  ).toPromise()
 
 const getGravityTimestampInMilliSeconds = async () => {
   const startTime = getLocalTimestampInMilliSeconds()
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   const { system } = await fetchSystemTime()
 
   const possibleNetworkLatencyInMilliSeconds = (getLocalTimestampInMilliSeconds() - startTime) / 2
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   const serverTimestampInMilliSeconds = system.time.unix * 1e3 + possibleNetworkLatencyInMilliSeconds
 
   if (__DEV__) {
