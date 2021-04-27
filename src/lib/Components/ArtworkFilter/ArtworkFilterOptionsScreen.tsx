@@ -174,17 +174,18 @@ export const ArtworkFilterOptionsScreen: React.FC<
           return (
             <TouchableRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
               <OptionListItem>
-                <Flex p={2} pr="15px" flexDirection="row" justifyContent="space-between" flexGrow={1}>
+                <Flex p={2} pr={1.5} flexDirection="row" justifyContent="space-between" flexGrow={1}>
                   <Flex flex={1}>
-                    <Sans size="3t" color="black100">
-                      {item.displayText}
-                    </Sans>
+                    <Text variant="caption">{item.displayText}</Text>
                   </Flex>
 
                   <Flex flexDirection="row" alignItems="center" justifyContent="flex-end" flex={1}>
-                    <CurrentOption size="3t" ellipsizeMode="tail" numberOfLines={1}>
-                      {currentOption}
-                    </CurrentOption>
+                    <Flex flex={1} flexDirection="row" justifyContent="flex-end">
+                      <CurrentOption variant="caption" color="black60" ellipsizeMode="tail" numberOfLines={1}>
+                        {currentOption}
+                      </CurrentOption>
+                    </Flex>
+
                     <ArrowRightIcon fill="black30" ml="1" />
                   </Flex>
                 </Flex>
@@ -364,9 +365,7 @@ export const OptionListItem = styled(Flex)`
   width: 100%;
 `
 
-export const CurrentOption = styled(Sans)`
-  color: ${color("black60")};
-`
+export const CurrentOption = styled(Text)``
 
 export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
   additionalGeneIDs: {
