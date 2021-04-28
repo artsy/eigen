@@ -5,12 +5,21 @@ import { OnboardingPersonalizationListQuery } from "__generated__/OnboardingPers
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { INPUT_HEIGHT } from "lib/Components/Input/Input"
 import SearchIcon from "lib/Icons/SearchIcon"
+import { GlobalStore } from "lib/store/GlobalStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { compact } from "lodash"
-import { Box, color, Flex, space, Spacer, Text } from "palette"
+import { Box, Button, color, Flex, space, Spacer, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { Animated, Easing, FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
+import {
+  Animated,
+  Easing,
+  FlatList,
+  LayoutAnimation,
+  ScrollView,
+  TouchableWithoutFeedback,
+  UIManager,
+} from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import { OnboardingPersonalizationModal } from "./OnboardingPersonalizationModal"
@@ -154,6 +163,17 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
           contentContainerStyle={{ paddingVertical: space(2) }}
         />
       </ScrollView>
+      <Flex p={2} position="absolute" bottom={0} backgroundColor="white">
+        <Button
+          variant="primaryBlack"
+          block
+          onPress={() => {
+            GlobalStore.actions.auth.setState({ onboardingState: "complete" })
+          }}
+        >
+          Done
+        </Button>
+      </Flex>
     </Flex>
   )
 }
