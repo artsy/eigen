@@ -49,6 +49,7 @@ interface OnboardingPersonalizationListProps {
 }
 
 export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationListProps> = ({ ...props }) => {
+  const popularArtists = compact(props.highlights.popularArtists)
   const [excludeArtistIDs, setExcludeArtistIDs] = useState<string[]>([])
   const navigation = useNavigation()
 
@@ -103,7 +104,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
         </Flex>
 
         <FlatList
-          data={compact(props.highlights.popularArtists)}
+          data={popularArtists}
           renderItem={({ item: artist }) => (
             <ArtistListItem
               artist={artist}
@@ -114,6 +115,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
               }}
             />
           )}
+          keyExtractor={(artist) => artist.internalID}
           contentContainerStyle={{ paddingVertical: space(2) }}
         />
       </ScrollView>
