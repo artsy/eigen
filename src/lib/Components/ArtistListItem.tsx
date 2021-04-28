@@ -7,6 +7,7 @@ import { Touchable } from "palette"
 import React from "react"
 import { StyleProp, TouchableWithoutFeedback, ViewStyle } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
 interface Props {
   artist: ArtistListItem_artist
@@ -62,39 +63,15 @@ export class ArtistListItem extends React.Component<Props, State> {
       },
       async () => {
         await onStart?.()
-        console.log("finished")
-        commitMutation<ArtistListItemFollowArtistMutation>(relay.environment, {
+        followArtistMutation({
+          environment: relay.environment,
           onCompleted: () => {
             this.handleShowSuccessfullyUpdated()
             onFinish?.()
           },
-          mutation: graphql`
-            mutation ArtistListItemFollowArtistMutation($input: FollowArtistInput!) {
-              followArtist(input: $input) {
-                artist {
-                  id
-                  is_followed: isFollowed
-                }
-              }
-            }
-          `,
-          variables: {
-            input: {
-              artistID: slug,
-              unfollow: is_followed,
-            },
-          },
-          optimisticResponse: {
-            followArtist: {
-              artist: {
-                id,
-                is_followed: !is_followed,
-              },
-            },
-          },
-          updater: (store) => {
-            store.get(id)?.setValue(!is_followed, "is_followed")
-          },
+          artistID: id,
+          artistSlug: slug,
+          isFollowed: is_followed,
         })
       }
     )
@@ -177,6 +154,50 @@ export class ArtistListItem extends React.Component<Props, State> {
     )
   }
 }
+
+export const followArtistMutation = ({
+  environment,
+  onCompleted,
+  artistSlug,
+  artistID,
+  isFollowed,
+}: {
+  environment: RelayModernEnvironment
+  onCompleted: () => void
+  artistID: string
+  artistSlug: string
+  isFollowed: boolean | null
+}) =>
+  commitMutation<ArtistListItemFollowArtistMutation>(environment, {
+    onCompleted,
+    mutation: graphql`
+      mutation ArtistListItemFollowArtistMutation($input: FollowArtistInput!) {
+        followArtist(input: $input) {
+          artist {
+            id
+            is_followed: isFollowed
+          }
+        }
+      }
+    `,
+    variables: {
+      input: {
+        artistID: artistSlug,
+        unfollow: isFollowed,
+      },
+    },
+    optimisticResponse: {
+      followArtist: {
+        artist: {
+          id: artistID,
+          is_followed: !isFollowed,
+        },
+      },
+    },
+    updater: (store) => {
+      store.get(artistID)?.setValue(!isFollowed, "is_followed")
+    },
+  })
 
 export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
   artist: graphql`
