@@ -1,6 +1,7 @@
 import { addBreadcrumb } from "@sentry/react-native"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { TrackingProvider } from "lib/utils/track"
 
 export function postEvent(info: any) {
   if (__DEV__) {
@@ -34,4 +35,8 @@ export function userHadMeaningfulInteraction() {
       LegacyNativeModules.AREventsModule.requestAppStoreRating()
     }
   }
+}
+
+export const NativeAnalyticsProvider: TrackingProvider = {
+  postEvent,
 }

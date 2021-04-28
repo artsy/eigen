@@ -89,9 +89,10 @@ import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRo
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
 import { GlobalStore, GlobalStoreProvider, useSelectedTab } from "./store/GlobalStore"
 import { AdminMenu } from "./utils/AdminMenu"
-import { Schema, screenTrack, track } from "./utils/track"
+import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
+import { NativeAnalyticsProvider } from "./NativeModules/Events"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -107,6 +108,8 @@ LogBox.ignoreLogs([
   "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
   "Picker has been extracted",
 ])
+
+addTrackingProvider("native ios analytics", NativeAnalyticsProvider)
 
 interface ArtworkProps {
   artworkID: string

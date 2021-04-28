@@ -20,6 +20,10 @@ import { AdminMenuWrapper } from "./utils/AdminMenuWrapper"
 import { useDeepLinks } from "./utils/useDeepLinks"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
+import { addTrackingProvider } from "./utils/track"
+import { SegmentTrackingProvider } from "./utils/track/SegmentTrackingProvider"
+
+addTrackingProvider("segment rn android", SegmentTrackingProvider)
 
 if (UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true)

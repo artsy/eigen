@@ -1,8 +1,6 @@
 import { Screen } from "@artsy/cohesion"
 import _track, { Track as _Track, TrackingInfo } from "react-tracking"
 
-import { postEvent } from "lib/NativeModules/Events"
-
 // The schema definition for analytics tracking lives inside `./schema`, not here.
 import React from "react"
 import * as Schema from "./schema"
@@ -90,7 +88,7 @@ export interface Track<P = any, S = null, T extends Schema.Global = Schema.Entit
 export const track: Track = (trackingInfo, options) => {
   return _track(trackingInfo, {
     ...options,
-    dispatch: (data) => postEvent(data),
+    dispatch: (data) => postEventToProviders(data),
   })
 }
 
@@ -169,7 +167,7 @@ export class ProvideScreenTrackingWithCohesionSchema extends React.Component<Pro
  */
 export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
   return _track(trackingInfo as any, {
-    dispatch: (data) => postEvent(data),
+    dispatch: (data) => postEventToProviders(data),
     dispatchOnMount: true,
   })
 }
@@ -226,3 +224,20 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *      ```
  *
  */
+
+export interface TrackingProvider {
+  postEvent: (info: any) => void
+}
+
+let providers: { [name: string]: TrackingProvider } = {}
+
+export const addTrackingProvider = (name: string, provider: TrackingProvider) => {
+  providers[name] = provider
+}
+
+const postEventToProviders = (info: any) => {
+  console.warn("sending!", Object.keys(providers))
+  Object.values(providers).forEach((provider) => {
+    provider.postEvent(info)
+  })
+}
