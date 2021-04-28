@@ -1,16 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a699e8ef1adcdb10dcef2d78de2d597c */
+/* @relayHash 64d277d5a00b22811508b6b403108359 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type OnboardingPersonalizationListQueryVariables = {};
 export type OnboardingPersonalizationListQueryResponse = {
     readonly highlights: {
-        readonly popularArtists: ReadonlyArray<{
-            readonly " $fragmentRefs": FragmentRefs<"OnboardingPersonalization_popularArtists">;
-        } | null> | null;
+        readonly " $fragmentRefs": FragmentRefs<"OnboardingPersonalization_highlights">;
     } | null;
 };
 export type OnboardingPersonalizationListQuery = {
@@ -23,10 +21,7 @@ export type OnboardingPersonalizationListQuery = {
 /*
 query OnboardingPersonalizationListQuery {
   highlights {
-    popularArtists(excludeFollowedArtists: true) {
-      ...OnboardingPersonalization_popularArtists
-      id
-    }
+    ...OnboardingPersonalization_highlights
   }
 }
 
@@ -46,21 +41,15 @@ fragment ArtistListItem_artist on Artist {
   }
 }
 
-fragment OnboardingPersonalization_popularArtists on Artist {
-  id
-  ...ArtistListItem_artist
+fragment OnboardingPersonalization_highlights on Highlights {
+  popularArtists(excludeFollowedArtists: true) {
+    id
+    ...ArtistListItem_artist
+  }
 }
 */
 
-const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "kind": "Literal",
-    "name": "excludeFollowedArtists",
-    "value": true
-  }
-];
-return {
+const node: ConcreteRequest = {
   "fragment": {
     "argumentDefinitions": [],
     "kind": "Fragment",
@@ -76,20 +65,9 @@ return {
         "plural": false,
         "selections": [
           {
-            "alias": null,
-            "args": (v0/*: any*/),
-            "concreteType": "Artist",
-            "kind": "LinkedField",
-            "name": "popularArtists",
-            "plural": true,
-            "selections": [
-              {
-                "args": null,
-                "kind": "FragmentSpread",
-                "name": "OnboardingPersonalization_popularArtists"
-              }
-            ],
-            "storageKey": "popularArtists(excludeFollowedArtists:true)"
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "OnboardingPersonalization_highlights"
           }
         ],
         "storageKey": null
@@ -114,7 +92,13 @@ return {
         "selections": [
           {
             "alias": null,
-            "args": (v0/*: any*/),
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "excludeFollowedArtists",
+                "value": true
+              }
+            ],
             "concreteType": "Artist",
             "kind": "LinkedField",
             "name": "popularArtists",
@@ -217,13 +201,12 @@ return {
     ]
   },
   "params": {
-    "id": "a699e8ef1adcdb10dcef2d78de2d597c",
+    "id": "64d277d5a00b22811508b6b403108359",
     "metadata": {},
     "name": "OnboardingPersonalizationListQuery",
     "operationKind": "query",
     "text": null
   }
 };
-})();
-(node as any).hash = '89276d07dd60d694f9ab269797e12c43';
+(node as any).hash = '250f305d8a19c3c02b63b677504e785f';
 export default node;

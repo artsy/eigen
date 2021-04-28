@@ -190,11 +190,10 @@ export const getAuthModel = (): AuthModel => ({
 
     // The user account has been successfully created
     if (result.status === 201) {
+      await actions.signIn({ email, password })
       actions.setState({
         onboardingState: "incomplete",
       })
-
-      await actions.signIn({ email, password })
       return true
     }
     return false

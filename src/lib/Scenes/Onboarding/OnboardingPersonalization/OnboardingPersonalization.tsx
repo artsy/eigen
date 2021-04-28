@@ -1,10 +1,12 @@
 import { NavigationContainer, useNavigation } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalization_popularArtists } from "__generated__/OnboardingPersonalization_popularArtists.graphql"
 import { OnboardingPersonalizationListQuery } from "__generated__/OnboardingPersonalizationListQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { INPUT_HEIGHT } from "lib/Components/Input/Input"
 import SearchIcon from "lib/Icons/SearchIcon"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, color, Flex, space, Spacer, Text } from "palette"
 import React from "react"
@@ -42,12 +44,11 @@ export const OnboardingPersonalization = () => {
 }
 
 interface OnboardingPersonalizationListProps {
-  popularArtists: OnboardingPersonalization_popularArtists
+  highlights: OnboardingPersonalization_highlights
 }
 
 export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationListProps> = ({ ...props }) => {
   const navigation = useNavigation()
-  console.log(props)
 
   return (
     <Flex backgroundColor="white" flexGrow={1}>
@@ -91,7 +92,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
         </Flex>
 
         <FlatList
-          data={props.popularArtists}
+          data={props.highlights.popularArtists}
           renderItem={({ item }) => (
             <ArtistListItem
               artist={item}
@@ -107,10 +108,12 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
 }
 
 const OnboardingPersonalizationListFragmentContainer = createFragmentContainer(OnboardingPersonalizationList, {
-  popularArtists: graphql`
-    fragment OnboardingPersonalization_popularArtists on Artist @relay(plural: true) {
-      id
-      ...ArtistListItem_artist
+  highlights: graphql`
+    fragment OnboardingPersonalization_highlights on Highlights {
+      popularArtists(excludeFollowedArtists: true) {
+        id
+        ...ArtistListItem_artist
+      }
     }
   `,
 })
@@ -121,19 +124,18 @@ const OnboardingPersonalizationListQueryRenderer = () => (
     query={graphql`
       query OnboardingPersonalizationListQuery {
         highlights {
-          popularArtists(excludeFollowedArtists: true) {
-            ...OnboardingPersonalization_popularArtists
-          }
+          ...OnboardingPersonalization_highlights
         }
       }
     `}
     variables={{}}
-    render={({ props }) => {
-      if (props?.highlights?.popularArtists) {
-        return <OnboardingPersonalizationListFragmentContainer popularArtists={props.highlights.popularArtists} />
-      } else {
-        return null
-      }
-    }}
+    render={renderWithLoadProgress(OnboardingPersonalizationListFragmentContainer)}
+    // render={({ props }) => {
+    //   if (props?.highlights?.popularArtists) {
+    //     return <OnboardingPersonalizationListFragmentContainer popularArtists={props.highlights.popularArtists} />
+    //   } else {
+    //     return null
+    //   }
+    // }}
   />
 )

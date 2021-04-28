@@ -15,6 +15,7 @@ interface Props {
   contextModule?: string
   withFeedback?: boolean
   containerStyle?: StyleProp<ViewStyle>
+  onPress?: () => void
 }
 
 interface State {
@@ -50,6 +51,7 @@ export class ArtistListItem extends React.Component<Props, State> {
     const {
       relay,
       artist: { slug, id, is_followed },
+      onPress,
     } = this.props
 
     this.setState(
@@ -58,7 +60,10 @@ export class ArtistListItem extends React.Component<Props, State> {
       },
       () => {
         commitMutation<ArtistListItemFollowArtistMutation>(relay.environment, {
-          onCompleted: () => this.handleShowSuccessfullyUpdated(),
+          onCompleted: () => {
+            this.handleShowSuccessfullyUpdated()
+            onPress?.()
+          },
           mutation: graphql`
             mutation ArtistListItemFollowArtistMutation($input: FollowArtistInput!) {
               followArtist(input: $input) {
@@ -132,41 +137,39 @@ export class ArtistListItem extends React.Component<Props, State> {
     }
 
     return (
-      <Theme>
-        <TouchableComponent
-          onPress={() => {
-            if (href) {
-              this.handleTap(href)
-            }
-          }}
-          underlayColor={color("black5")}
-          style={containerStyle}
-        >
-          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-            <Flex flex={1}>
-              <EntityHeader
-                mr={1}
-                name={name}
-                meta={formatTombstoneText(nationality, birthday, deathday) ?? undefined}
-                imageUrl={imageURl ?? undefined}
-                initials={initials ?? undefined}
-              />
-            </Flex>
-            <Flex>
-              <Button
-                variant={is_followed ? "secondaryOutline" : "secondaryGray"}
-                onPress={this.handleFollowArtist.bind(this)}
-                size="small"
-                loading={isFollowedChanging}
-                longestText="Following"
-                haptic
-              >
-                {is_followed ? "Following" : "Follow"}
-              </Button>
-            </Flex>
+      <TouchableComponent
+        onPress={() => {
+          if (href) {
+            this.handleTap(href)
+          }
+        }}
+        underlayColor={color("black5")}
+        style={containerStyle}
+      >
+        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Flex flex={1}>
+            <EntityHeader
+              mr={1}
+              name={name}
+              meta={formatTombstoneText(nationality, birthday, deathday) ?? undefined}
+              imageUrl={imageURl ?? undefined}
+              initials={initials ?? undefined}
+            />
           </Flex>
-        </TouchableComponent>
-      </Theme>
+          <Flex>
+            <Button
+              variant={is_followed ? "secondaryOutline" : "secondaryGray"}
+              onPress={this.handleFollowArtist.bind(this)}
+              size="small"
+              loading={isFollowedChanging}
+              longestText="Following"
+              haptic
+            >
+              {is_followed ? "Following" : "Follow"}
+            </Button>
+          </Flex>
+        </Flex>
+      </TouchableComponent>
     )
   }
 }
