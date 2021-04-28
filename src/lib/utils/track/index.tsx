@@ -233,7 +233,7 @@ interface CohesionAction {
 type InfoType = Schema.PageView | Schema.Entity | CohesionAction
 
 export interface TrackingProvider {
-  identify?: () => void
+  identify?: (userId: string | null, traits?: { [key: string]: any }) => void
   postEvent: (info: InfoType) => void
 }
 

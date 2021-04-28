@@ -2,7 +2,7 @@ import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React, { useEffect } from "react"
-import { UIManager, View } from "react-native"
+import { Appearance, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
 import { RelayEnvironmentProvider } from "relay-hooks"
 import { useWebViewCookies } from "./Components/ArtsyReactWebView"
@@ -37,6 +37,22 @@ const Main: React.FC<{}> = track()(({}) => {
   useStripeConfig()
   useWebViewCookies()
   useDeepLinks()
+
+  useEffect(() => {
+    const scheme = Appearance.getColorScheme()
+    console.log("sceheme", { scheme })
+    SegmentTrackingProvider.identify?.(null, {
+      "user interface style": (() => {
+        switch (scheme) {
+          case "light":
+            return "light"
+          case "dark":
+            return "dark"
+        }
+        return "unspecified"
+      })(),
+    })
+  }, [])
 
   useEffect(() => {
     if (isHydrated) {

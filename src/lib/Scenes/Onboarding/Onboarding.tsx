@@ -2,8 +2,9 @@ import { NavigationContainer } from "@react-navigation/native"
 import { CardStyleInterpolators, createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { useFeatureFlag } from "lib/store/GlobalStore"
+import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import React from "react"
+import React, { useEffect } from "react"
 import { View } from "react-native"
 import { ForgotPassword } from "./ForgotPassword"
 import { LogIn } from "./OldLogIn/LogIn"
@@ -22,6 +23,8 @@ export type OnboardingNavigationStack = {
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
 
 export const Onboarding = () => {
+  useEffect(() => SegmentTrackingProvider.identify?.(null, { is_temporary_user: 1 }), [])
+
   const useNewOnboarding = useFeatureFlag("ARUseNewOnboarding")
 
   if (!useNewOnboarding) {
