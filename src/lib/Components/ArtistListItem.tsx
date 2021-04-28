@@ -15,7 +15,8 @@ interface Props {
   contextModule?: string
   withFeedback?: boolean
   containerStyle?: StyleProp<ViewStyle>
-  onPress?: () => void
+  onStart?: () => void
+  onFinish?: () => void
 }
 
 interface State {
@@ -51,18 +52,21 @@ export class ArtistListItem extends React.Component<Props, State> {
     const {
       relay,
       artist: { slug, id, is_followed },
-      onPress,
+      onStart,
+      onFinish,
     } = this.props
 
     this.setState(
       {
         isFollowedChanging: true,
       },
-      () => {
+      async () => {
+        await onStart?.()
+        console.log("finished")
         commitMutation<ArtistListItemFollowArtistMutation>(relay.environment, {
           onCompleted: () => {
             this.handleShowSuccessfullyUpdated()
-            onPress?.()
+            onFinish?.()
           },
           mutation: graphql`
             mutation ArtistListItemFollowArtistMutation($input: FollowArtistInput!) {

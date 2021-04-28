@@ -9,8 +9,8 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { compact } from "lodash"
 import { Box, color, Flex, space, Spacer, Text } from "palette"
-import React, { useState } from "react"
-import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
+import React, { useEffect, useRef, useState } from "react"
+import { Animated, Easing, FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import { OnboardingPersonalizationModal } from "./OnboardingPersonalizationModal"
@@ -50,6 +50,14 @@ interface OnboardingPersonalizationListProps {
 
 export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationListProps> = ({ ...props }) => {
   const popularArtists = compact(props.highlights.popularArtists)
+  const animatedOpacities: { [key: string]: Animated.Value } = {}
+
+  popularArtists.forEach((artist) => {
+    animatedOpacities[artist.internalID] = new Animated.Value(1)
+  })
+
+  const animatedOpacitiesRef = useRef(animatedOpacities)
+
   const [excludeArtistIDs, setExcludeArtistIDs] = useState<string[]>([])
   const navigation = useNavigation()
 
@@ -57,16 +65,34 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
     if (excludeArtistIDs.includes(artistID)) {
       return
     }
-
     setExcludeArtistIDs(excludeArtistIDs.concat(artistID))
     props.relay.refetch({ excludeArtistIDs })
   }
+
+  const fadeRow = (artistID: string) => {
+    Animated.timing(animatedOpacitiesRef.current[artistID], {
+      toValue: 0,
+      duration: 1000,
+      easing: Easing.linear,
+      useNativeDriver: true,
+    }).start()
+  }
+
+  useEffect(() => {
+    // Add the missing artist ids to the animated opacities object
+    popularArtists.forEach((artist) => {
+      if (!animatedOpacitiesRef.current[artist.internalID]) {
+        animatedOpacitiesRef.current[artist.internalID] = new Animated.Value(1)
+      }
+    })
+  })
 
   return (
     <Flex backgroundColor="white" flexGrow={1}>
       <ScrollView
         contentContainerStyle={{
           paddingTop: useScreenDimensions().safeAreaInsets.top,
+          paddingBottom: 80,
           justifyContent: "flex-start",
         }}
         showsVerticalScrollIndicator={false}
@@ -106,14 +132,23 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
         <FlatList
           data={popularArtists}
           renderItem={({ item: artist }) => (
-            <ArtistListItem
-              artist={artist}
-              withFeedback
-              containerStyle={{ paddingHorizontal: 20, paddingVertical: 10 }}
-              onPress={() => {
-                updateListOfArtists(artist.internalID)
+            <Animated.View
+              style={{
+                opacity: animatedOpacitiesRef.current[artist.internalID] || 0.5,
               }}
-            />
+            >
+              <ArtistListItem
+                artist={artist}
+                withFeedback
+                containerStyle={{ paddingHorizontal: 20, paddingVertical: 10 }}
+                onFinish={() => {
+                  updateListOfArtists(artist.internalID)
+                }}
+                onStart={async () => {
+                  await fadeRow(artist.internalID)
+                }}
+              />
+            </Animated.View>
           )}
           keyExtractor={(artist) => artist.internalID}
           contentContainerStyle={{ paddingVertical: space(2) }}
