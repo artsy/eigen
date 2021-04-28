@@ -1,4 +1,4 @@
-import { Screen } from "@artsy/cohesion"
+import { Screen, TappedEntityGroup } from "@artsy/cohesion"
 import _track, { Track as _Track, TrackingInfo } from "react-tracking"
 
 // The schema definition for analytics tracking lives inside `./schema`, not here.
@@ -225,9 +225,15 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *
  */
 
-type InfoType = Schema.PageView | Schema.Global
+interface CohesionAction {
+  // TODO: This can be removed once cohesion provides a global `Action` type.
+  action: string
+}
+
+type InfoType = Schema.PageView | Schema.Entity | CohesionAction
 
 export interface TrackingProvider {
+  identify?: () => void
   postEvent: (info: InfoType) => void
 }
 
