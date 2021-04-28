@@ -6,7 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type OnboardingPersonalization_highlights = {
     readonly popularArtists: ReadonlyArray<{
-        readonly id: string;
+        readonly internalID: string;
         readonly " $fragmentRefs": FragmentRefs<"ArtistListItem_artist">;
     } | null> | null;
     readonly " $refType": "OnboardingPersonalization_highlights";
@@ -20,7 +20,13 @@ export type OnboardingPersonalization_highlights$key = {
 
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "excludeArtistIDs"
+    }
+  ],
   "kind": "Fragment",
   "metadata": null,
   "name": "OnboardingPersonalization_highlights",
@@ -28,6 +34,11 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": [
+        {
+          "kind": "Variable",
+          "name": "excludeArtistIDs",
+          "variableName": "excludeArtistIDs"
+        },
         {
           "kind": "Literal",
           "name": "excludeFollowedArtists",
@@ -43,7 +54,7 @@ const node: ReaderFragment = {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
-          "name": "id",
+          "name": "internalID",
           "storageKey": null
         },
         {
@@ -52,11 +63,11 @@ const node: ReaderFragment = {
           "name": "ArtistListItem_artist"
         }
       ],
-      "storageKey": "popularArtists(excludeFollowedArtists:true)"
+      "storageKey": null
     }
   ],
   "type": "Highlights",
   "abstractKey": null
 };
-(node as any).hash = '4c625f24ac965158cf1c50c4d249dd9d';
+(node as any).hash = '46ce767c913d098f2571828c6104b40c';
 export default node;

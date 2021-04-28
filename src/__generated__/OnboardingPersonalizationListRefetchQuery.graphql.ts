@@ -1,27 +1,31 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 28a4a013d09646916f446618aee15cd7 */
+/* @relayHash e25eb52fb14d14b369e7812607766fe7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type OnboardingPersonalizationListQueryVariables = {};
-export type OnboardingPersonalizationListQueryResponse = {
+export type OnboardingPersonalizationListRefetchQueryVariables = {
+    excludeArtistIDs?: Array<string | null> | null;
+};
+export type OnboardingPersonalizationListRefetchQueryResponse = {
     readonly highlights: {
         readonly " $fragmentRefs": FragmentRefs<"OnboardingPersonalization_highlights">;
     } | null;
 };
-export type OnboardingPersonalizationListQuery = {
-    readonly response: OnboardingPersonalizationListQueryResponse;
-    readonly variables: OnboardingPersonalizationListQueryVariables;
+export type OnboardingPersonalizationListRefetchQuery = {
+    readonly response: OnboardingPersonalizationListRefetchQueryResponse;
+    readonly variables: OnboardingPersonalizationListRefetchQueryVariables;
 };
 
 
 
 /*
-query OnboardingPersonalizationListQuery {
+query OnboardingPersonalizationListRefetchQuery(
+  $excludeArtistIDs: [String]
+) {
   highlights {
-    ...OnboardingPersonalization_highlights
+    ...OnboardingPersonalization_highlights_1n4w82
   }
 }
 
@@ -41,8 +45,8 @@ fragment ArtistListItem_artist on Artist {
   }
 }
 
-fragment OnboardingPersonalization_highlights on Highlights {
-  popularArtists(excludeFollowedArtists: true) {
+fragment OnboardingPersonalization_highlights_1n4w82 on Highlights {
+  popularArtists(excludeFollowedArtists: true, excludeArtistIDs: $excludeArtistIDs) {
     internalID
     ...ArtistListItem_artist
     id
@@ -50,12 +54,25 @@ fragment OnboardingPersonalization_highlights on Highlights {
 }
 */
 
-const node: ConcreteRequest = {
+const node: ConcreteRequest = (function(){
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "excludeArtistIDs"
+  }
+],
+v1 = {
+  "kind": "Variable",
+  "name": "excludeArtistIDs",
+  "variableName": "excludeArtistIDs"
+};
+return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "OnboardingPersonalizationListQuery",
+    "name": "OnboardingPersonalizationListRefetchQuery",
     "selections": [
       {
         "alias": null,
@@ -66,7 +83,9 @@ const node: ConcreteRequest = {
         "plural": false,
         "selections": [
           {
-            "args": null,
+            "args": [
+              (v1/*: any*/)
+            ],
             "kind": "FragmentSpread",
             "name": "OnboardingPersonalization_highlights"
           }
@@ -79,9 +98,9 @@ const node: ConcreteRequest = {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "OnboardingPersonalizationListQuery",
+    "name": "OnboardingPersonalizationListRefetchQuery",
     "selections": [
       {
         "alias": null,
@@ -94,6 +113,7 @@ const node: ConcreteRequest = {
           {
             "alias": null,
             "args": [
+              (v1/*: any*/),
               {
                 "kind": "Literal",
                 "name": "excludeFollowedArtists",
@@ -194,7 +214,7 @@ const node: ConcreteRequest = {
                 "storageKey": null
               }
             ],
-            "storageKey": "popularArtists(excludeFollowedArtists:true)"
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -202,12 +222,13 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "28a4a013d09646916f446618aee15cd7",
+    "id": "e25eb52fb14d14b369e7812607766fe7",
     "metadata": {},
-    "name": "OnboardingPersonalizationListQuery",
+    "name": "OnboardingPersonalizationListRefetchQuery",
     "operationKind": "query",
     "text": null
   }
 };
-(node as any).hash = '250f305d8a19c3c02b63b677504e785f';
+})();
+(node as any).hash = '381066d87c041ff3e99169c885512c4f';
 export default node;

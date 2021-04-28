@@ -1,17 +1,17 @@
 import { NavigationContainer, useNavigation } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPersonalization_highlights.graphql"
-import { OnboardingPersonalization_popularArtists } from "__generated__/OnboardingPersonalization_popularArtists.graphql"
 import { OnboardingPersonalizationListQuery } from "__generated__/OnboardingPersonalizationListQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { INPUT_HEIGHT } from "lib/Components/Input/Input"
 import SearchIcon from "lib/Icons/SearchIcon"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { compact } from "lodash"
 import { Box, color, Flex, space, Spacer, Text } from "palette"
-import React from "react"
+import React, { useState } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import { OnboardingPersonalizationModal } from "./OnboardingPersonalizationModal"
 
@@ -45,10 +45,21 @@ export const OnboardingPersonalization = () => {
 
 interface OnboardingPersonalizationListProps {
   highlights: OnboardingPersonalization_highlights
+  relay: RelayRefetchProp
 }
 
 export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationListProps> = ({ ...props }) => {
+  const [excludeArtistIDs, setExcludeArtistIDs] = useState<string[]>([])
   const navigation = useNavigation()
+
+  const updateListOfArtists = (artistID: string) => {
+    if (excludeArtistIDs.includes(artistID)) {
+      return
+    }
+
+    setExcludeArtistIDs(excludeArtistIDs.concat(artistID))
+    props.relay.refetch({ excludeArtistIDs })
+  }
 
   return (
     <Flex backgroundColor="white" flexGrow={1}>
@@ -92,12 +103,15 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
         </Flex>
 
         <FlatList
-          data={props.highlights.popularArtists}
-          renderItem={({ item }) => (
+          data={compact(props.highlights.popularArtists)}
+          renderItem={({ item: artist }) => (
             <ArtistListItem
-              artist={item}
+              artist={artist}
               withFeedback
               containerStyle={{ paddingHorizontal: 20, paddingVertical: 10 }}
+              onPress={() => {
+                updateListOfArtists(artist.internalID)
+              }}
             />
           )}
           contentContainerStyle={{ paddingVertical: space(2) }}
@@ -107,16 +121,27 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
   )
 }
 
-const OnboardingPersonalizationListFragmentContainer = createFragmentContainer(OnboardingPersonalizationList, {
-  highlights: graphql`
-    fragment OnboardingPersonalization_highlights on Highlights {
-      popularArtists(excludeFollowedArtists: true) {
-        id
-        ...ArtistListItem_artist
+const OnboardingPersonalizationListRefetchContainer = createRefetchContainer(
+  OnboardingPersonalizationList,
+  {
+    highlights: graphql`
+      fragment OnboardingPersonalization_highlights on Highlights
+      @argumentDefinitions(excludeArtistIDs: { type: "[String]" }) {
+        popularArtists(excludeFollowedArtists: true, excludeArtistIDs: $excludeArtistIDs) {
+          internalID
+          ...ArtistListItem_artist
+        }
+      }
+    `,
+  },
+  graphql`
+    query OnboardingPersonalizationListRefetchQuery($excludeArtistIDs: [String]) {
+      highlights {
+        ...OnboardingPersonalization_highlights @arguments(excludeArtistIDs: $excludeArtistIDs)
       }
     }
-  `,
-})
+  `
+)
 
 const OnboardingPersonalizationListQueryRenderer = () => (
   <QueryRenderer<OnboardingPersonalizationListQuery>
@@ -129,13 +154,6 @@ const OnboardingPersonalizationListQueryRenderer = () => (
       }
     `}
     variables={{}}
-    render={renderWithLoadProgress(OnboardingPersonalizationListFragmentContainer)}
-    // render={({ props }) => {
-    //   if (props?.highlights?.popularArtists) {
-    //     return <OnboardingPersonalizationListFragmentContainer popularArtists={props.highlights.popularArtists} />
-    //   } else {
-    //     return null
-    //   }
-    // }}
+    render={renderWithLoadProgress(OnboardingPersonalizationListRefetchContainer)}
   />
 )
