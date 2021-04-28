@@ -172,7 +172,7 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
   })
 }
 
-/**
+/*
  * ## Writing tests for your tracked code
  *
  * By default we mock `react-tracking`, so it's not possible to test the code easily.
@@ -225,18 +225,19 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *
  */
 
+type InfoType = Schema.PageView | Schema.Global
+
 export interface TrackingProvider {
-  postEvent: (info: any) => void
+  postEvent: (info: InfoType) => void
 }
 
-let providers: { [name: string]: TrackingProvider } = {}
+const providers: { [name: string]: TrackingProvider } = {}
 
 export const addTrackingProvider = (name: string, provider: TrackingProvider) => {
   providers[name] = provider
 }
 
 const postEventToProviders = (info: any) => {
-  console.warn("sending!", Object.keys(providers))
   Object.values(providers).forEach((provider) => {
     provider.postEvent(info)
   })
