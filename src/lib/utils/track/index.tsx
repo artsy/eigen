@@ -1,4 +1,4 @@
-import { Screen, TappedEntityGroup } from "@artsy/cohesion"
+import { Screen } from "@artsy/cohesion"
 import _track, { Track as _Track, TrackingInfo } from "react-tracking"
 
 // The schema definition for analytics tracking lives inside `./schema`, not here.

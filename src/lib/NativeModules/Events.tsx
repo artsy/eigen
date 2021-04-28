@@ -3,7 +3,7 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { TrackingProvider } from "lib/utils/track"
 
-export function postEvent(info: any) {
+function postEvent(info: any) {
   if (__DEV__) {
     console.log("[Event tracked]", JSON.stringify(info, null, 2))
   }

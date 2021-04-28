@@ -75,6 +75,7 @@ import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReac
 import { ToastProvider } from "./Components/Toast/toastHook"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
+import { NativeAnalyticsProvider } from "./NativeModules/Events"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
@@ -92,7 +93,6 @@ import { AdminMenu } from "./utils/AdminMenu"
 import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
 import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
-import { NativeAnalyticsProvider } from "./NativeModules/Events"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
