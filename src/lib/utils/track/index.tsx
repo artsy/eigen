@@ -229,8 +229,12 @@ interface CohesionAction {
   // TODO: This can be removed once cohesion provides a global `Action` type.
   action: string
 }
+interface LegacyNameAction {
+  // TODO: This can be removed once we remove these uses. Currently there is one in `WorksForYou` and one in `ArtistRail`.
+  name: string
+}
 
-type InfoType = Schema.PageView | Schema.Entity | CohesionAction
+type InfoType = Schema.PageView | Schema.Entity | CohesionAction | LegacyNameAction
 
 export interface TrackingProvider {
   identify?: (userId: string | null, traits?: { [key: string]: any }) => void

@@ -14,7 +14,7 @@ import { Box, Flex, Separator } from "palette"
 import React from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { postEvent } from "../NativeModules/Events"
+import { track } from "lib/utils/track"
 
 interface Props {
   relay: RelayPaginationProp
@@ -27,6 +27,7 @@ interface State {
   width: number | null
 }
 
+@track()
 export class WorksForYou extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
@@ -44,7 +45,8 @@ export class WorksForYou extends React.Component<Props, State> {
       if (error) {
         console.warn(error)
       } else {
-        postEvent({
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        this.props.tracking.trackEvent({
           name: "Notifications read",
           source_screen: Analytics.OwnerType.worksForYou,
         })

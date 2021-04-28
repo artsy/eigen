@@ -23,8 +23,12 @@ export const SegmentTrackingProvider: TrackingProvider = {
     } // temporary guard
 
     if ("action" in info) {
-      const { action, ...rest } = info
-      analytics.track(action, { action, ...rest } as any)
+      const { action } = info
+      if (action === ActionType.screen) {
+        const { context_screen } = info
+      } else {
+        analytics.track(action, info as any)
+      }
       return
     }
 
@@ -34,13 +38,19 @@ export const SegmentTrackingProvider: TrackingProvider = {
       return
     }
 
+    if ("name" in info) {
+      const { name, ...rest } = info
+      analytics.track(name, rest as any)
+      return
+    }
+
     if ("context_screen" in info) {
       const { context_screen, ...rest } = info
       analytics.screen(context_screen, rest as any)
       return
     }
 
-    console.error("oh wow, we are not tracking this event!! we should!", { info })
+    console.warn("oh wow, we are not tracking this event!! we should!", { info })
     assertNever(info)
   },
 }
