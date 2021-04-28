@@ -69,15 +69,15 @@ export const App = () => (
     <ProvideScreenDimensions>
       <Theme>
         <ActionSheetProvider>
-          <ToastProvider>
-            <_FancyModalPageWrapper>
-              <GlobalStoreProvider>
+          <GlobalStoreProvider>
+            <ToastProvider>
+              <_FancyModalPageWrapper>
                 <AdminMenuWrapper>
                   <Main />
                 </AdminMenuWrapper>
-              </GlobalStoreProvider>
-            </_FancyModalPageWrapper>
-          </ToastProvider>
+              </_FancyModalPageWrapper>
+            </ToastProvider>
+          </GlobalStoreProvider>
         </ActionSheetProvider>
       </Theme>
     </ProvideScreenDimensions>

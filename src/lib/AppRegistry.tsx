@@ -222,21 +222,21 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, V
 class PageWrapper extends React.Component<PageWrapperProps> {
   render() {
     return (
-      <ProvideScreenDimensions>
-        <ActionSheetProvider>
-          <RelayEnvironmentProvider environment={defaultEnvironment}>
-            <GlobalStoreProvider>
-              <Theme>
+      <RelayEnvironmentProvider environment={defaultEnvironment}>
+        <ProvideScreenDimensions>
+          <Theme>
+            <ActionSheetProvider>
+              <GlobalStoreProvider>
                 <ToastProvider>
                   <_FancyModalPageWrapper>
                     <InnerPageWrapper {...this.props} />
                   </_FancyModalPageWrapper>
                 </ToastProvider>
-              </Theme>
-            </GlobalStoreProvider>
-          </RelayEnvironmentProvider>
-        </ActionSheetProvider>
-      </ProvideScreenDimensions>
+              </GlobalStoreProvider>
+            </ActionSheetProvider>
+          </Theme>
+        </ProvideScreenDimensions>
+      </RelayEnvironmentProvider>
     )
   }
 }
