@@ -118,6 +118,11 @@ const node: ReaderFragment = {
     {
       "defaultValue": null,
       "kind": "LocalArgument",
+      "name": "partnerIDs"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
       "name": "priceRange"
     },
     {
@@ -174,8 +179,7 @@ const node: ReaderFragment = {
           "value": [
             "COLOR",
             "DIMENSION_RANGE",
-            "GALLERY",
-            "INSTITUTION",
+            "PARTNER",
             "MAJOR_PERIOD",
             "MEDIUM",
             "PRICE_RANGE",
@@ -237,6 +241,11 @@ const node: ReaderFragment = {
           "kind": "Variable",
           "name": "partnerID",
           "variableName": "partnerID"
+        },
+        {
+          "kind": "Variable",
+          "name": "partnerIDs",
+          "variableName": "partnerIDs"
         },
         {
           "kind": "Variable",
@@ -409,5 +418,5 @@ const node: ReaderFragment = {
   "type": "Fair",
   "abstractKey": null
 };
-(node as any).hash = '8a83a779ff63416f889f6e9a8387cfb3';
+(node as any).hash = 'bd5afc5f907a3fbe230a2968b9d20dfa';
 export default node;

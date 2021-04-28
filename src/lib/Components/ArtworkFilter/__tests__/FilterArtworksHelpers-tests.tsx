@@ -494,15 +494,17 @@ describe("selectedOption", () => {
 
   describe("gallery", () => {
     it("returns the correct value in the default case", () => {
-      const selectedOptions = [{ paramName: FilterParamName.gallery, displayText: "All" }]
+      const selectedOptions = [{ paramName: FilterParamName.partnerIDs, displayText: "All" }]
 
-      expect(selectedOption({ selectedOptions, filterScreen: "gallery", aggregations: [] })).toEqual("All")
+      expect(selectedOption({ selectedOptions, filterScreen: "partnerIDs", aggregations: [] })).toEqual("All")
     })
 
     it("returns the correct value when an options is selected", () => {
-      const selectedOptions = [{ paramName: FilterParamName.gallery, displayText: "gallery one", filterKey: "gallery" }]
+      const selectedOptions = [
+        { paramName: FilterParamName.partnerIDs, displayText: "gallery one", filterKey: "gallery" },
+      ]
 
-      expect(selectedOption({ selectedOptions, filterScreen: "gallery", aggregations: [] })).toEqual("gallery one")
+      expect(selectedOption({ selectedOptions, filterScreen: "partnerIDs", aggregations: [] })).toEqual("gallery one")
     })
   })
 

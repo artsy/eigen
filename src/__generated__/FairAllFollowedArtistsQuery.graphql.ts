@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0df3fb69e35272f5787c567d0ede52dc */
+/* @relayHash e5e963766c229e7795d8f49f1f3bd3ef */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -79,7 +79,7 @@ fragment FairAllFollowedArtists_fair on Fair {
 }
 
 fragment FairAllFollowedArtists_fairForFilters on Fair {
-  filterArtworksConnection(first: 0, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
+  filterArtworksConnection(first: 0, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
     aggregations {
       slice
       counts {
@@ -98,7 +98,7 @@ fragment FairAllFollowedArtists_fairForFilters on Fair {
 fragment FairArtworks_fair_485l1x on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", dimensionRange: "*-*", includeArtworksByFollowedArtists: true, aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
+  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", dimensionRange: "*-*", includeArtworksByFollowedArtists: true, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
     aggregations {
       slice
       counts {
@@ -187,8 +187,7 @@ v4 = {
   "value": [
     "COLOR",
     "DIMENSION_RANGE",
-    "GALLERY",
-    "INSTITUTION",
+    "PARTNER",
     "MAJOR_PERIOD",
     "MEDIUM",
     "PRICE_RANGE",
@@ -668,7 +667,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,includeArtworksByFollowedArtists:true,sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,includeArtworksByFollowedArtists:true,sort:\"-decayed_merch\")"
           },
           {
             "alias": "fairArtworks",
@@ -680,6 +679,7 @@ return {
               "color",
               "colors",
               "partnerID",
+              "partnerIDs",
               "dimensionRange",
               "majorPeriods",
               "acquireable",
@@ -738,7 +738,7 @@ return {
               },
               (v8/*: any*/)
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],first:0)"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],first:0)"
           },
           (v8/*: any*/)
         ],
@@ -747,7 +747,7 @@ return {
     ]
   },
   "params": {
-    "id": "0df3fb69e35272f5787c567d0ede52dc",
+    "id": "e5e963766c229e7795d8f49f1f3bd3ef",
     "metadata": {},
     "name": "FairAllFollowedArtistsQuery",
     "operationKind": "query",

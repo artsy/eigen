@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f5fd7afde4121593124f033cefb58ec0 */
+/* @relayHash 6b98247e7e4fdaf9e0f6789bc1ee2f91 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -79,7 +79,7 @@ fragment ArtworkTileRailCard_artwork on Artwork {
 fragment FairArtworks_fair on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
+  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
     aggregations {
       slice
       counts {
@@ -509,8 +509,7 @@ v19 = [
     "value": [
       "COLOR",
       "DIMENSION_RANGE",
-      "GALLERY",
-      "INSTITUTION",
+      "PARTNER",
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE",
@@ -1381,7 +1380,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,sort:\"-decayed_merch\")"
           },
           {
             "alias": "fairArtworks",
@@ -1393,6 +1392,7 @@ return {
               "color",
               "colors",
               "partnerID",
+              "partnerIDs",
               "dimensionRange",
               "majorPeriods",
               "acquireable",
@@ -1622,7 +1622,7 @@ return {
     ]
   },
   "params": {
-    "id": "f5fd7afde4121593124f033cefb58ec0",
+    "id": "6b98247e7e4fdaf9e0f6789bc1ee2f91",
     "metadata": {},
     "name": "FairQuery",
     "operationKind": "query",

@@ -6,7 +6,7 @@ const timezones = {
 
 jest.mock("moment-timezone", () => {
   const timezone = "America/New_York"
-  const momentMock = require.requireActual("moment-timezone")
+  const momentMock = jest.requireActual("moment-timezone")
   momentMock.tz.setDefault(timezone)
   momentMock.tz.guess = () => timezone
   return momentMock

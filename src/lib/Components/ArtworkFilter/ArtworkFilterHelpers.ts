@@ -11,9 +11,8 @@ export enum FilterDisplayName {
   color = "Color",
   colors = "Color",
   estimateRange = "Price/estimate range",
-  gallery = "Gallery",
-  institution = "Institution",
   medium = "Medium",
+  partnerIDs = "Galleries and institutions",
   priceRange = "Price",
   size = "Size",
   sizes = "Size",
@@ -36,8 +35,7 @@ export enum FilterParamName {
   colors = "colors",
   earliestCreatedYear = "earliestCreatedYear",
   estimateRange = "estimateRange",
-  gallery = "partnerID",
-  institution = "partnerID",
+  partnerIDs = "partnerIDs",
   latestCreatedYear = "latestCreatedYear",
   medium = "medium",
   priceRange = "priceRange",
@@ -90,7 +88,7 @@ export const ParamDefaultValues = {
   majorPeriods: [],
   medium: "*",
   offerable: false,
-  partnerID: undefined,
+  partnerIDs: [],
   priceRange: "*-*",
   sizes: undefined,
   sortArtworks: "-decayed_merch",
@@ -117,7 +115,7 @@ export const defaultCommonFilterOptions = {
   majorPeriods: ParamDefaultValues.majorPeriods,
   medium: ParamDefaultValues.medium,
   offerable: ParamDefaultValues.offerable,
-  partnerID: ParamDefaultValues.partnerID,
+  partnerIDs: ParamDefaultValues.partnerIDs,
   priceRange: ParamDefaultValues.priceRange,
   sizes: ParamDefaultValues.sizes,
   sort: ParamDefaultValues.sortArtworks,
@@ -135,8 +133,7 @@ export type Aggregations = Array<{
 export type AggregationName =
   | "COLOR"
   | "DIMENSION_RANGE"
-  | "GALLERY"
-  | "INSTITUTION"
+  | "PARTNER"
   | "MAJOR_PERIOD"
   | "MEDIUM"
   | "PRICE_RANGE"
@@ -170,8 +167,7 @@ export interface FilterCounts {
 export const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string | undefined> = {
   COLOR: FilterParamName.color,
   DIMENSION_RANGE: FilterParamName.size,
-  GALLERY: "gallery",
-  INSTITUTION: "institution",
+  PARTNER: FilterParamName.partnerIDs,
   MAJOR_PERIOD: FilterParamName.timePeriod,
   MEDIUM: FilterParamName.additionalGeneIDs,
   PRICE_RANGE: FilterParamName.priceRange,
@@ -344,13 +340,6 @@ export const selectedOption = ({
     }
 
     return waysToBuyOptions.join(", ")
-  } else if (filterScreen === "gallery" || filterScreen === "institution") {
-    const displayText = selectedOptions.find((option) => option.filterKey === filterScreen)?.displayText
-    if (displayText) {
-      return displayText
-    } else {
-      return "All"
-    }
   } else if (filterScreen === "artistIDs") {
     const hasArtistsIFollowChecked = !!selectedOptions.find(({ paramName, paramValue }) => {
       return paramName === FilterParamName.artistsIFollow && paramValue === true
@@ -399,17 +388,16 @@ export const selectedOption = ({
 // For most cases filter key can simply be FilterParamName, exception
 // is gallery and institution which share a paramName in metaphysics
 export const aggregationNameFromFilter: Record<string, AggregationName | undefined> = {
-  gallery: "GALLERY",
-  institution: "INSTITUTION",
+  artistIDs: "ARTIST",
+  artistsIFollow: "FOLLOWED_ARTISTS",
   color: "COLOR",
   dimensionRange: "DIMENSION_RANGE",
-  majorPeriods: "MAJOR_PERIOD",
-  medium: "MEDIUM",
-  priceRange: "PRICE_RANGE",
-  artistsIFollow: "FOLLOWED_ARTISTS",
-  artistIDs: "ARTIST",
   earliestCreatedYear: "earliestCreatedYear",
   latestCreatedYear: "latestCreatedYear",
+  majorPeriods: "MAJOR_PERIOD",
+  medium: "MEDIUM",
+  partnerIDs: "PARTNER",
+  priceRange: "PRICE_RANGE",
 }
 
 export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {

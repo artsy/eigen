@@ -1103,7 +1103,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "partnerID",
+          paramName: "partnerIDs",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1200,7 +1201,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "partnerID",
+          paramName: "partnerIDs",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1307,7 +1309,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "partnerID",
+          paramName: "partnerIDs",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1425,7 +1428,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "partnerID",
+          paramName: "partnerIDs",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1533,7 +1537,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "partnerID",
+          paramName: "partnerIDs",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1617,7 +1622,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "partnerID",
+          paramName: "partnerIDs",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1714,7 +1720,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "partnerID",
+          paramName: "partnerIDs",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1812,7 +1819,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "partnerID",
+          paramName: "partnerIDs",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1891,7 +1899,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "partnerID",
+          paramName: "partnerIDs",
+          paramValue: [],
         },
         {
           displayText: "All",
