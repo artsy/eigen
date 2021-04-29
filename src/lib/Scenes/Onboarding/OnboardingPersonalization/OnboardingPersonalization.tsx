@@ -3,6 +3,7 @@ import { createStackNavigator, TransitionPresets } from "@react-navigation/stack
 import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalizationListQuery } from "__generated__/OnboardingPersonalizationListQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
+import { Disappearable } from "lib/Components/Disappearable"
 import { INPUT_HEIGHT } from "lib/Components/Input/Input"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { GlobalStore } from "lib/store/GlobalStore"
@@ -10,8 +11,8 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { compact } from "lodash"
 import { Box, Button, color, Flex, space, Spacer, Text } from "palette"
-import React, { useEffect, useRef, useState } from "react"
-import { Animated, Easing, FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
+import React, { useRef, useState } from "react"
+import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import { OnboardingPersonalizationModalQueryRenderer } from "./OnboardingPersonalizationModal"
@@ -54,11 +55,7 @@ interface OnboardingPersonalizationListProps {
 
 export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationListProps> = ({ ...props }) => {
   const popularArtists = compact(props.highlights.popularArtists)
-  const animatedOpacities: { [key: string]: Animated.Value } = {}
-  popularArtists.forEach((artist) => {
-    animatedOpacities[artist.internalID] = new Animated.Value(1)
-  })
-  const animatedOpacitiesRef = useRef(animatedOpacities)
+  const animatedOpacitiesRef = useRef<{ [key: string]: Disappearable | null }>({})
 
   const [excludeArtistIDs, setExcludeArtistIDs] = useState<string[]>([])
 
@@ -73,22 +70,8 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
   }
 
   const fadeRow = (artistID: string) => {
-    Animated.timing(animatedOpacitiesRef.current[artistID], {
-      toValue: 0,
-      duration: 1000,
-      easing: Easing.linear,
-      useNativeDriver: true,
-    }).start()
+    animatedOpacitiesRef.current[artistID]?.disappear()
   }
-
-  useEffect(() => {
-    // Add the missing artist ids to the animated opacities object
-    popularArtists.forEach((artist) => {
-      if (!animatedOpacitiesRef.current[artist.internalID]) {
-        animatedOpacitiesRef.current[artist.internalID] = new Animated.Value(1)
-      }
-    })
-  }, [popularArtists])
 
   return (
     <Flex backgroundColor="white" flexGrow={1}>
@@ -135,11 +118,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
         <FlatList
           data={popularArtists}
           renderItem={({ item: artist }) => (
-            <Animated.View
-              style={{
-                opacity: animatedOpacitiesRef.current[artist.internalID] || 0.5,
-              }}
-            >
+            <Disappearable ref={(ref) => (animatedOpacitiesRef.current[artist.internalID] = ref)} animateScale={false}>
               <ArtistListItem
                 artist={artist}
                 withFeedback
@@ -151,7 +130,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
                   await fadeRow(artist.internalID)
                 }}
               />
-            </Animated.View>
+            </Disappearable>
           )}
           keyExtractor={(artist) => artist.internalID}
           contentContainerStyle={{ paddingVertical: space(2) }}
