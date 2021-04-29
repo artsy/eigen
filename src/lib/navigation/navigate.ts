@@ -1,4 +1,5 @@
 import { addBreadcrumb } from "@sentry/react-native"
+import { EventEmitter } from "events"
 import { AppModule, modules, ViewOptions } from "lib/AppRegistry"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { GlobalStore, unsafe__getSelectedTab } from "lib/store/GlobalStore"
@@ -71,12 +72,16 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
   }
 }
 
+export const navigationEvents = new EventEmitter()
+
 export function dismissModal() {
   LegacyNativeModules.ARScreenPresenterModule.dismissModal()
+  navigationEvents.emit("modalDismissed")
 }
 
 export function goBack() {
   LegacyNativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
+  navigationEvents.emit("goBack")
 }
 
 export function popParentViewController() {
