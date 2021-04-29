@@ -11,18 +11,10 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { compact } from "lodash"
 import { Box, Button, color, Flex, space, Spacer, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import {
-  Animated,
-  Easing,
-  FlatList,
-  LayoutAnimation,
-  ScrollView,
-  TouchableWithoutFeedback,
-  UIManager,
-} from "react-native"
+import { Animated, Easing, FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
-import { OnboardingPersonalizationModal } from "./OnboardingPersonalizationModal"
+import { OnboardingPersonalizationModalQueryRenderer } from "./OnboardingPersonalizationModal"
 
 // tslint:disable-next-line:interface-over-type-literal
 export type OnboardingPersonalizationNavigationStack = {
@@ -46,7 +38,10 @@ export const OnboardingPersonalization = () => {
           name="OnboardingPersonalizationList"
           component={OnboardingPersonalizationListQueryRenderer}
         />
-        <StackNavigator.Screen name="OnboardingPersonalizationModal" component={OnboardingPersonalizationModal} />
+        <StackNavigator.Screen
+          name="OnboardingPersonalizationModal"
+          component={OnboardingPersonalizationModalQueryRenderer}
+        />
       </StackNavigator.Navigator>
     </NavigationContainer>
   )
@@ -60,14 +55,13 @@ interface OnboardingPersonalizationListProps {
 export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationListProps> = ({ ...props }) => {
   const popularArtists = compact(props.highlights.popularArtists)
   const animatedOpacities: { [key: string]: Animated.Value } = {}
-
   popularArtists.forEach((artist) => {
     animatedOpacities[artist.internalID] = new Animated.Value(1)
   })
-
   const animatedOpacitiesRef = useRef(animatedOpacities)
 
   const [excludeArtistIDs, setExcludeArtistIDs] = useState<string[]>([])
+
   const navigation = useNavigation()
 
   const updateListOfArtists = (artistID: string) => {
@@ -94,7 +88,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
         animatedOpacitiesRef.current[artist.internalID] = new Animated.Value(1)
       }
     })
-  })
+  }, [popularArtists])
 
   return (
     <Flex backgroundColor="white" flexGrow={1}>

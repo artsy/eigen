@@ -30,11 +30,11 @@ export const Onboarding = () => {
 
   return (
     <View style={{ flex: 1, paddingBottom: useScreenDimensions().safeAreaInsets.bottom }}>
-      <NavigationContainer independent>
-        <ArtsyKeyboardAvoidingViewContext.Provider
-          value={{ isVisible: true, isPresentedModally: false, bottomOffset: 0 }}
-        >
-          <ArtsyKeyboardAvoidingView>
+      <ArtsyKeyboardAvoidingViewContext.Provider
+        value={{ isVisible: true, isPresentedModally: false, bottomOffset: 0 }}
+      >
+        <ArtsyKeyboardAvoidingView>
+          <NavigationContainer independent>
             <StackNavigator.Navigator
               headerMode="screen"
               screenOptions={{
@@ -59,9 +59,9 @@ export const Onboarding = () => {
                 options={{ headerShown: false }}
               />
             </StackNavigator.Navigator>
-          </ArtsyKeyboardAvoidingView>
-        </ArtsyKeyboardAvoidingViewContext.Provider>
-      </NavigationContainer>
+          </NavigationContainer>
+        </ArtsyKeyboardAvoidingView>
+      </ArtsyKeyboardAvoidingViewContext.Provider>
     </View>
   )
 }
