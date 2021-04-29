@@ -8,6 +8,7 @@ import { getSearchModel, SearchModel } from "lib/Scenes/Search/SearchModel"
 import { Platform } from "react-native"
 import { AuthModel, getAuthModel } from "./AuthModel"
 import { ConfigModel, getConfigModel } from "./ConfigModel"
+import { ConsignmentsModel, getConsignmentsModel } from "./ConsignmentModel"
 import { unsafe__getEnvironment } from "./GlobalStore"
 import { CURRENT_APP_VERSION } from "./migration"
 import { getNativeModel, NativeModel } from "./NativeModel"
@@ -20,12 +21,12 @@ interface GlobalStoreStateModel {
   }
 
   native: NativeModel
-
   bottomTabs: BottomTabsModel
   search: SearchModel
   myCollection: MyCollectionModel
   config: ConfigModel
   auth: AuthModel
+  consignmentsModel: ConsignmentsModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
@@ -87,6 +88,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   myCollection: getMyCollectionModel(),
   config: getConfigModel(),
   auth: getAuthModel(),
+  consignmentsModel: getConsignmentsModel(),
 
   // for testing only. noop otherwise.
   __inject: __TEST__
