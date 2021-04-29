@@ -26,7 +26,7 @@ interface GlobalStoreStateModel {
   myCollection: MyCollectionModel
   config: ConfigModel
   auth: AuthModel
-  consignmentsModel: ConsignmentsModel
+  consignments: ConsignmentsModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
@@ -88,7 +88,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   myCollection: getMyCollectionModel(),
   config: getConfigModel(),
   auth: getAuthModel(),
-  consignmentsModel: getConsignmentsModel(),
+  consignments: getConsignmentsModel(),
 
   // for testing only. noop otherwise.
   __inject: __TEST__

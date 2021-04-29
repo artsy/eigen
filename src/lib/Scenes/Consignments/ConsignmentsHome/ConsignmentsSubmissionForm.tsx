@@ -11,7 +11,7 @@ interface ConsignmentsSubmissionFormProps {
 }
 
 export const ConsignmentsSubmissionForm: React.FC<ConsignmentsSubmissionFormProps> = (props) => {
-  const { setCampaign } = GlobalStore.actions.consignmentsModel
+  const { setCampaign } = GlobalStore.actions.consignments
 
   useEffect(() => {
     if (props.utm_campaign && props.utm_medium && props.utm_source) {
