@@ -1,44 +1,50 @@
 upcoming:
-  version: 6.8.4
+  version: 6.9.0
   date: TBD
   dev:
-    - Migrate environment configuration to TypeScript - david
-    - Improve bottom tabs dev state management  - david, mounir
-    - Refactor Filter Modals - mounir
-    - Update filter params change tracking type for auction results - ole
-    - Track a screen event when user lands on artist auction Results - ole
-    - Fix android hardware back button in fancy modals - david
-    - Extract useDeepLinks - mounir
-    - Add user agent to android - brian, david, thomas, jonathan, pavlos, mounir
-    - Fix android share - brian, mounir, david, pavlos
-    - Fix auction faq crash - brian, mounir, david, pavlos, jonathan
-    - Move ruby version declaration to root - roop
-    - Track notable works rail tap and view all artist series tap on artist page - ole
-    - Track filter change on artist series page - ole
-    - Add vscode launch config to debug tests in current file - ole
+    -
   user_facing:
-    - Add forgot password screen in new login - brian
-    - Conversation-offer updates to CTA to allow multiple offers - erikdstock
-    - Replace "All" option on multi-select filters with upper right-hand "Clear all"
-    - Fix input text scrolling and header title spacing - pavlos, david, mounir, brian, thomas
-    - Fix infinite spinner on Android when following within an artist rail - pepopowitz
-    - Fix iOS13 modal keyboard avoidance - david
-    - Release multi-select time period filter - iskounen
-    - Refine filter header typography, spacing & copy - damon
-    - Fix renderWithLoadProgress on android - brian, mounir, pavlos
-    - Hides "Default" sort label behind feature flag - damon
-    - Fix unable to load artist screen - adam, brian, david, thomas, jonathan, mounir
-    - Fix and Release new multiselect "Colors" filter - ole
-    - Release artwork filter style updates - iskounen
-    - Restrict Android phones to portrait mode - adamb
-    - Fix palette button disabled state on iOS - mounir
-    - Fix artwork filter apply button disabled logic - iskounen
-    - Fix Filter Artwork title text breaking - mounir
     - Combine gallery and institution artwork filters - mdole
     - Remove old login from android - adam, barry, david, jonathan, mounir, pavlos
     - Allows multi-select filters to be searchable - damon
 
 releases:
+  - version: 6.8.4
+    date: Apr 29, 2021
+    dev:
+      - Migrate environment configuration to TypeScript - david
+      - Improve bottom tabs dev state management  - david, mounir
+      - Refactor Filter Modals - mounir
+      - Update filter params change tracking type for auction results - ole
+      - Track a screen event when user lands on artist auction Results - ole
+      - Fix android hardware back button in fancy modals - david
+      - Extract useDeepLinks - mounir
+      - Add user agent to android - brian, david, thomas, jonathan, pavlos, mounir
+      - Fix android share - brian, mounir, david, pavlos
+      - Fix auction faq crash - brian, mounir, david, pavlos, jonathan
+      - Move ruby version declaration to root - roop
+      - Track notable works rail tap and view all artist series tap on artist page - ole
+      - Track filter change on artist series page - ole
+      - Add vscode launch config to debug tests in current file - ole
+    user_facing:
+      - Add forgot password screen in new login - brian
+      - Conversation-offer updates to CTA to allow multiple offers - erikdstock
+      - Replace "All" option on multi-select filters with upper right-hand "Clear all"
+      - Fix input text scrolling and header title spacing - pavlos, david, mounir, brian, thomas
+      - Fix infinite spinner on Android when following within an artist rail - pepopowitz
+      - Fix iOS13 modal keyboard avoidance - david
+      - Release multi-select time period filter - iskounen
+      - Refine filter header typography, spacing & copy - damon
+      - Fix renderWithLoadProgress on android - brian, mounir, pavlos
+      - Hides "Default" sort label behind feature flag - damon
+      - Fix unable to load artist screen - adam, brian, david, thomas, jonathan, mounir
+      - Fix and Release new multiselect "Colors" filter - ole
+      - Release artwork filter style updates - iskounen
+      - Restrict Android phones to portrait mode - adamb
+      - Fix palette button disabled state on iOS - mounir
+      - Fix artwork filter apply button disabled logic - iskounen
+      - Fix Filter Artwork title text breaking - mounir
+
   - version: 6.8.3
     date: Apr 14, 2021
     dev:
