@@ -226,7 +226,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
             variant="secondaryOutline"
             testID="loginButton"
           >
-            <Text variant="mediumText">Go to Login</Text>
+            Go to Login
           </Button>
         </Animated.View>
       )}
@@ -267,7 +267,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
         testID="signUpButton"
         variant="primaryBlack"
       >
-        <Text variant="mediumText">Next</Text>
+        Next
       </Button>
     </Flex>
   )
