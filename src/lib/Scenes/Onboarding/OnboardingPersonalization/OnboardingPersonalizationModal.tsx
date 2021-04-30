@@ -105,6 +105,7 @@ const OnboardingPersonalizationModal: React.FC<OnboardingPersonalizationListProp
             </Flex>
           }
           stickyHeaderIndices={[0]}
+          initialNumToRender={12}
           renderItem={({ item: artist }) => (
             <OnboardingPersonalizationArtistListItem
               artist={artist}

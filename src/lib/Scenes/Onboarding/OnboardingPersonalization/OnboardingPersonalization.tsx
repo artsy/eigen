@@ -117,6 +117,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
 
         <FlatList
           data={popularArtists}
+          initialNumToRender={8}
           renderItem={({ item: artist }) => (
             <Disappearable ref={(ref) => (animatedOpacitiesRef.current[artist.internalID] = ref)} animateScale={false}>
               <ArtistListItem
