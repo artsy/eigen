@@ -63,6 +63,7 @@ export const OpenInquiryModalButtonQueryRenderer: React.FC<{
       variables={{
         artworkID,
       }}
+      cacheConfig={{ force: true }}
       render={({ props, error }): null | JSX.Element => {
         if (error) {
           throw new Error(error.message)
