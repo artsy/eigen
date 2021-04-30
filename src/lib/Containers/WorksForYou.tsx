@@ -10,11 +10,11 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { track } from "lib/utils/track"
 import { Box, Flex, Separator } from "palette"
 import React from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { track } from "lib/utils/track"
 
 interface Props {
   relay: RelayPaginationProp

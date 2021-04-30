@@ -2,11 +2,11 @@ import { FeaturedArtistsTestsQueryRawResponse } from "__generated__/FeaturedArti
 import { navigate } from "lib/navigation/navigate"
 import { mockTracking } from "lib/tests/mockTracking"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { postEventToProviders } from "lib/utils/track"
 import { Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
 import { CollectionFeaturedArtistsContainer as FeaturedArtists, ViewAll } from "../FeaturedArtists"
-import { postEventToProviders } from "lib/utils/track"
 jest.unmock("react-relay")
 jest.unmock("react-tracking")
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
