@@ -1,4 +1,4 @@
-import { postEvent } from "lib/NativeModules/Events"
+import { postEventToProviders } from "lib/utils/track"
 import track from "react-tracking"
 
 /**
@@ -13,5 +13,5 @@ import track from "react-tracking"
  *   expect(Events.postEvent).toHaveBeenCalledWith({myTrackingProperty: "whateve"})
  */
 export function mockTracking<Props>(Component: React.ComponentType<Props>): React.ComponentType<Props> {
-  return track({}, { dispatch: (data) => postEvent(data) })(Component)
+  return track({}, { dispatch: (data) => postEventToProviders(data) })(Component)
 }

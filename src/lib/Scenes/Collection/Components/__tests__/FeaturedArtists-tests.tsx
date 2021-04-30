@@ -6,10 +6,10 @@ import { Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
 import { CollectionFeaturedArtistsContainer as FeaturedArtists, ViewAll } from "../FeaturedArtists"
+import { postEventToProviders } from "lib/utils/track"
 jest.unmock("react-relay")
 jest.unmock("react-tracking")
 jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
-import { postEvent } from "lib/NativeModules/Events"
 
 const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQueryRawResponse["marketingCollection"] = {
   id: "some-id",
@@ -192,7 +192,7 @@ describe("FeaturedArtists", () => {
 
       viewAll.simulate("click")
 
-      expect(postEvent).toHaveBeenCalledWith({
+      expect(postEventToProviders).toHaveBeenCalledWith({
         action_type: "tap",
         action_name: "viewMore",
         context_module: "FeaturedArtists",

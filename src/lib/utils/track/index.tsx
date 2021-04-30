@@ -211,7 +211,7 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *        overview.submissionDraftCreated()
  *
  *        // Check that the native event for the analytics call is sent
- *        expect(postEvent).toBeCalledWith({
+ *        expect(postEventToProviders).toBeCalledWith({
  *          action_name: "consignmentDraftCreated",
  *          action_type: "success",
  *          context_screen: "ConsignmentsOverview",
@@ -255,7 +255,7 @@ export const addTrackingProvider = (name: string, provider: TrackingProvider) =>
   providers[name] = provider
 }
 
-const postEventToProviders = (info: any) => {
+export const postEventToProviders = (info: any) => {
   Object.values(providers).forEach((provider) => {
     provider.postEvent(info)
 
