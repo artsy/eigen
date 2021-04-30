@@ -1,4 +1,4 @@
-import { Screen } from "@artsy/cohesion"
+import { ActionType, Screen } from "@artsy/cohesion"
 import _track, { Track as _Track, TrackingInfo } from "react-tracking"
 
 // The schema definition for analytics tracking lives inside `./schema`, not here.
@@ -229,12 +229,20 @@ interface CohesionAction {
   // TODO: This can be removed once cohesion provides a global `Action` type.
   action: string
 }
+interface CohesionScreen {
+  // TODO: This can be removed once cohesion provides a global `Action` type.
+  action: ActionType.screen
+  context_screen: string
+}
+export const isCohesionScreen = (info: CohesionAction | CohesionScreen): info is CohesionScreen =>
+  info.action === ActionType.screen
+
 interface LegacyNameAction {
   // TODO: This can be removed once we remove these uses. Currently there is one in `WorksForYou` and one in `ArtistRail`.
   name: string
 }
 
-type InfoType = Schema.PageView | Schema.Entity | CohesionAction | LegacyNameAction
+type InfoType = Schema.PageView | Schema.Entity | CohesionAction | CohesionScreen | LegacyNameAction
 
 export interface TrackingProvider {
   identify?: (userId: string | null, traits?: { [key: string]: any }) => void

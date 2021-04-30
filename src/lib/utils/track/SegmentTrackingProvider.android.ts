@@ -1,8 +1,7 @@
-import { ActionType } from "@artsy/cohesion"
 import analytics from "@segment/analytics-react-native"
 import { Platform } from "react-native"
 import Config from "react-native-config"
-import { TrackingProvider } from "."
+import { isCohesionScreen, TrackingProvider } from "."
 
 analytics
   .setup(Config.SEGMENT_STAGING_WRITE_KEY_ANDROID, {})
@@ -26,10 +25,9 @@ export const SegmentTrackingProvider: TrackingProvider = {
 
     if ("action" in info) {
       const { action } = info
-      if (action === ActionType.screen) {
+      if (isCohesionScreen(info)) {
         const { context_screen } = info
-        analytics.screen(context_screen, info as any) /// what is ios doing
-        // test this with make offer modal or mybids
+        analytics.screen(context_screen, info as any)
       } else {
         analytics.track(action, info as any)
       }
