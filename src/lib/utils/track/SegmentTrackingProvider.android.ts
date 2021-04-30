@@ -1,3 +1,4 @@
+import { ActionType } from "@artsy/cohesion"
 import analytics from "@segment/analytics-react-native"
 import { Platform } from "react-native"
 import Config from "react-native-config"
@@ -5,6 +6,7 @@ import { TrackingProvider } from "."
 
 analytics
   .setup(Config.SEGMENT_STAGING_WRITE_KEY_ANDROID, {})
+  // trackAppLifecycleEvents: true,
   .then(() => console.log("Analytics is ready"))
   .catch((err) => console.error("Something went wrong", err))
 
@@ -26,6 +28,8 @@ export const SegmentTrackingProvider: TrackingProvider = {
       const { action } = info
       if (action === ActionType.screen) {
         const { context_screen } = info
+        analytics.screen(context_screen, info as any) /// what is ios doing
+        // test this with make offer modal or mybids
       } else {
         analytics.track(action, info as any)
       }
