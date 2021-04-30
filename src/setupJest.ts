@@ -67,8 +67,12 @@ jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
 }))
 
 jest.mock("./lib/NativeModules/Events.tsx", () => ({
-  postEvent: jest.fn(),
   userHadMeaningfulInteraction: jest.fn(),
+}))
+
+jest.mock("lib/utils/track", () => ({
+  ...jest.requireActual("lib/utils/track"),
+  postEventToProviders: jest.fn(),
 }))
 
 jest.mock("react-native-share", () => ({
