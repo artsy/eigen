@@ -6,7 +6,7 @@ import { SearchInput } from "lib/Components/SearchInput"
 import { BackButton } from "lib/navigation/BackButton"
 import { SearchContext, useSearchProviderValues } from "lib/Scenes/Search/SearchContext"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, space, Spinner } from "palette"
+import { Flex, space, Spinner, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -113,6 +113,17 @@ const OnboardingPersonalizationModal: React.FC<OnboardingPersonalizationListProp
               containerStyle={{ paddingVertical: 10, paddingHorizontal: 20 }}
             />
           )}
+          ListEmptyComponent={
+            query.length > 2 && !props.relay.isLoading()
+              ? () => {
+                  return (
+                    <Text px={2} variant="text">
+                      We couldn't find anything for “{query}”
+                    </Text>
+                  )
+                }
+              : null
+          }
           keyExtractor={(artist) => artist.id!}
           contentContainerStyle={{ paddingVertical: space(2) }}
           onEndReached={loadMore}
