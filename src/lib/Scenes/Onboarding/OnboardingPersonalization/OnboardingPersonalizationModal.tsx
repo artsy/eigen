@@ -7,9 +7,10 @@ import { BackButton } from "lib/navigation/BackButton"
 import { SearchContext, useSearchProviderValues } from "lib/Scenes/Search/SearchContext"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, space, Spinner } from "palette"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import usePrevious from "react-use/lib/usePrevious"
 import { LoadFailureView } from "../../../Components/LoadFailureView"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import { extractNodes } from "../../../utils/extractNodes"
@@ -22,6 +23,7 @@ interface OnboardingPersonalizationListProps {
 
 const OnboardingPersonalizationModal: React.FC<OnboardingPersonalizationListProps> = (props) => {
   const [query, setQuery] = useState("")
+  const flatListRef = useRef<FlatList<any>>(null)
   const [fetchingMoreData, setFetchingMoreData] = useState(false)
   const searchProviderValues = useSearchProviderValues(query)
 
@@ -57,6 +59,23 @@ const OnboardingPersonalizationModal: React.FC<OnboardingPersonalizationListProp
     )
   }, [query])
 
+  // When the user has scrolled down some and then starts typing again we want to
+  // take them back to the top of the results list. But if we do that immediately
+  // after the query changed then janky behaviour ensues, so we need to wait for
+  // the relevant results to be fetched and rendered. We know new results come
+  // in when the previous results we encountered were `null` (when the query changed but
+  /// the fetch/cache-lookup has not completed yet) so we can scroll the user back to
+  // the top whenever that happens.
+  const lastArtists = usePrevious(artists)
+  useEffect(() => {
+    if (lastArtists === null && artists !== null) {
+      // results were updated after a new query, scroll user back to top
+      flatListRef.current?.scrollToOffset({ offset: 0, animated: true })
+      // (we need to wait for the results to be updated to avoid janky behaviour that
+      // happens when the results get updated during a scroll)
+    }
+  }, [lastArtists])
+
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <Flex
@@ -70,9 +89,10 @@ const OnboardingPersonalizationModal: React.FC<OnboardingPersonalizationListProp
         <BackButton onPress={() => navigation.goBack()} showCloseIcon />
 
         <FlatList
+          ref={flatListRef}
           data={artists}
           ListHeaderComponent={
-            <Flex px={2} mb={0.5} backgroundColor="white">
+            <Flex px={2} mb={1} backgroundColor="white">
               <SearchInput
                 ref={searchProviderValues.inputRef}
                 placeholder="Search artists"
