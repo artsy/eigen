@@ -60,9 +60,15 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
     .reduce<OrderEvent[]>((prev, order) => prev.concat(order.orderHistory), [])
     .map<OrderEventWithKey>((event, index) => ({ ...event, key: `event-${index}` }))
 
+  const orderEventsWithoutFailedPayment = allOrderEvents.filter((event, index) => {
+    if (!(event.state === "APPROVED" && allOrderEvents[index + 1] && allOrderEvents[index + 1].state === "SUBMITTED")) {
+      return event
+    }
+  })
+
   // Combine and group events/messages
   useEffect(() => {
-    const sortedMessages = sortBy([...allOrderEvents, ...allMessages], (message) =>
+    const sortedMessages = sortBy([...orderEventsWithoutFailedPayment, ...allMessages], (message) =>
       DateTime.fromISO(message.createdAt!)
     )
 

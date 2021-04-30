@@ -223,6 +223,7 @@ jest.mock("lib/navigation/navigate", () => ({
   dismissModal: jest.fn(),
   navigateToEntity: jest.fn(),
   navigateToPartner: jest.fn(),
+  navigationEvents: new (require("events").EventEmitter)(),
   EntityType: { partner: "partner", fair: "fair" },
   SlugType: { partner: "partner", fair: "fair" },
 }))

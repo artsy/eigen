@@ -36,6 +36,7 @@ upcoming:
     - Fix Filter Artwork title text breaking - mounir
     - Combine gallery and institution artwork filters - mdole
     - Remove old login from android - adam, barry, david, jonathan, mounir, pavlos
+    - Allows multi-select filters to be searchable - damon
 
 releases:
   - version: 6.8.3
