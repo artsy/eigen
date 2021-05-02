@@ -1,10 +1,9 @@
-import { useNavigation } from "@react-navigation/native"
+import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { OnboardingPersonalizationModal_artists } from "__generated__/OnboardingPersonalizationModal_artists.graphql"
 import { OnboardingPersonalizationModalQuery } from "__generated__/OnboardingPersonalizationModalQuery.graphql"
 import { SearchInput } from "lib/Components/SearchInput"
 import { BackButton } from "lib/navigation/BackButton"
-import { SearchContext, useSearchProviderValues } from "lib/Scenes/Search/SearchContext"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, space, Spinner, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
@@ -14,9 +13,13 @@ import usePrevious from "react-use/lib/usePrevious"
 import { LoadFailureView } from "../../../Components/LoadFailureView"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import { extractNodes } from "../../../utils/extractNodes"
+import { OnboardingPersonalizationNavigationStack } from "./OnboardingPersonalization"
 import { OnboardingPersonalizationArtistListItem } from "./OnboardingPersonalizationArtistListItem"
 
-interface OnboardingPersonalizationListProps {
+interface OnboardingPersonalizationModalNavigationProps
+  extends StackScreenProps<OnboardingPersonalizationNavigationStack, "OnboardingPersonalizationModal"> {}
+
+interface OnboardingPersonalizationListProps extends OnboardingPersonalizationModalNavigationProps {
   artists: OnboardingPersonalizationModal_artists
   relay: RelayPaginationProp
 }
@@ -25,13 +28,10 @@ const OnboardingPersonalizationModal: React.FC<OnboardingPersonalizationListProp
   const [query, setQuery] = useState("")
   const flatListRef = useRef<FlatList<any>>(null)
   const [fetchingMoreData, setFetchingMoreData] = useState(false)
-  const searchProviderValues = useSearchProviderValues(query)
 
-  const navigation = useNavigation()
   const artists = extractNodes(props.artists?.searchConnection)
 
   const loadMore = () => {
-    console.log("loading more")
     if (!props.relay.hasMore() || props.relay.isLoading()) {
       return
     }
@@ -77,73 +77,71 @@ const OnboardingPersonalizationModal: React.FC<OnboardingPersonalizationListProp
   }, [lastArtists])
 
   return (
-    <SearchContext.Provider value={searchProviderValues}>
-      <Flex
-        style={{
-          flex: 1,
-          backgroundColor: "white",
-          flexGrow: 1,
-          paddingTop: useScreenDimensions().safeAreaInsets.top + 60,
-        }}
-      >
-        <BackButton onPress={() => navigation.goBack()} showCloseIcon />
+    <Flex
+      style={{
+        flex: 1,
+        backgroundColor: "white",
+        flexGrow: 1,
+        paddingTop: useScreenDimensions().safeAreaInsets.top + 60,
+      }}
+    >
+      <BackButton onPress={() => props.navigation.goBack()} showCloseIcon />
 
-        <FlatList
-          ref={flatListRef}
-          data={artists}
-          ListHeaderComponent={
-            <Flex px={2} mb={1} backgroundColor="white">
-              <SearchInput
-                ref={searchProviderValues.inputRef}
-                placeholder="Search artists"
-                value={query}
-                onChangeText={(text) => {
-                  setQuery(text)
-                }}
-                autoFocus
-              />
-            </Flex>
-          }
-          stickyHeaderIndices={[0]}
-          initialNumToRender={12}
-          renderItem={({ item: artist }) => (
-            <OnboardingPersonalizationArtistListItem
-              artist={artist}
-              withFeedback
-              relay={props.relay}
-              containerStyle={{ paddingVertical: 10, paddingHorizontal: 20 }}
+      <FlatList
+        ref={flatListRef}
+        data={artists}
+        ListHeaderComponent={
+          <Flex px={2} mb={1} backgroundColor="white">
+            <SearchInput
+              placeholder="Search artists"
+              value={query}
+              testID="searchInput"
+              onChangeText={(text) => {
+                setQuery(text)
+              }}
+              autoFocus
             />
-          )}
-          ListEmptyComponent={
-            query.length > 2 && !props.relay.isLoading()
-              ? () => {
-                  return (
-                    <Text px={2} variant="text">
-                      We couldn't find anything for “{query}”
-                    </Text>
-                  )
-                }
-              : null
-          }
-          keyExtractor={(artist) => artist.id!}
-          contentContainerStyle={{ paddingVertical: space(2) }}
-          onEndReached={loadMore}
-          keyboardDismissMode="on-drag"
-          keyboardShouldPersistTaps="handled"
-          ListFooterComponent={
-            fetchingMoreData ? (
-              <Flex alignItems="center" justifyContent="center" py={1}>
-                <Spinner />
-              </Flex>
-            ) : null
-          }
-        />
-      </Flex>
-    </SearchContext.Provider>
+          </Flex>
+        }
+        stickyHeaderIndices={[0]}
+        initialNumToRender={12}
+        renderItem={({ item: artist }) => (
+          <OnboardingPersonalizationArtistListItem
+            artist={artist}
+            withFeedback
+            relay={props.relay}
+            containerStyle={{ paddingVertical: 10, paddingHorizontal: 20 }}
+          />
+        )}
+        ListEmptyComponent={
+          query.length > 2 && !props.relay.isLoading()
+            ? () => {
+                return (
+                  <Flex px={2} testID="noResults">
+                    <Text variant="text">We couldn't find anything for “{query}”</Text>
+                  </Flex>
+                )
+              }
+            : null
+        }
+        keyExtractor={(artist) => artist.id!}
+        contentContainerStyle={{ paddingVertical: space(2) }}
+        onEndReached={loadMore}
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+        ListFooterComponent={
+          fetchingMoreData ? (
+            <Flex alignItems="center" justifyContent="center" py={1}>
+              <Spinner />
+            </Flex>
+          ) : null
+        }
+      />
+    </Flex>
   )
 }
 
-const OnboardingPersonalizationModalPaginationContainer = createPaginationContainer(
+export const OnboardingPersonalizationModalPaginationContainer = createPaginationContainer(
   OnboardingPersonalizationModal,
   {
     artists: graphql`
@@ -197,7 +195,9 @@ const OnboardingPersonalizationModalPaginationContainer = createPaginationContai
   }
 )
 
-export const OnboardingPersonalizationModalQueryRenderer = () => (
+export const OnboardingPersonalizationModalQueryRenderer: React.FC<OnboardingPersonalizationModalNavigationProps> = (
+  initialProps
+) => (
   <QueryRenderer<OnboardingPersonalizationModalQuery>
     // render={renderWithLoadProgress(OnboardingPersonalizationModalPaginationContainer)}
     render={({ props, error }) => {
@@ -209,7 +209,7 @@ export const OnboardingPersonalizationModalQueryRenderer = () => (
         }
         return <LoadFailureView />
       }
-      return <OnboardingPersonalizationModalPaginationContainer artists={props!} />
+      return <OnboardingPersonalizationModalPaginationContainer artists={props!} {...initialProps} />
     }}
     cacheConfig={{ force: true }}
     variables={{

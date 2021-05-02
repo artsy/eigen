@@ -21,12 +21,32 @@ export type OnboardingNavigationStack = {
 
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
 
+export const OnboardingWelcomeScreens = () => (
+  <NavigationContainer independent>
+    <StackNavigator.Navigator
+      headerMode="screen"
+      screenOptions={{
+        ...TransitionPresets.SlideFromRightIOS,
+        headerShown: false,
+      }}
+    >
+      <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
+      <StackNavigator.Screen
+        name="OnboardingLogin"
+        component={OnboardingLogin}
+        options={({ route: { params } }) => ({
+          cardStyleInterpolator: params?.withFadeAnimation
+            ? CardStyleInterpolators.forFadeFromBottomAndroid
+            : CardStyleInterpolators.forHorizontalIOS,
+        })}
+      />
+      <StackNavigator.Screen name="OnboardingCreateAccount" component={OnboardingCreateAccount} />
+      <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
+    </StackNavigator.Navigator>
+  </NavigationContainer>
+)
 export const Onboarding = () => {
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
-
-  if (onboardingState === "incomplete") {
-    return <OnboardingPersonalization />
-  }
 
   return (
     <View style={{ flex: 1, paddingBottom: useScreenDimensions().safeAreaInsets.bottom }}>
@@ -34,32 +54,7 @@ export const Onboarding = () => {
         value={{ isVisible: true, isPresentedModally: false, bottomOffset: 0 }}
       >
         <ArtsyKeyboardAvoidingView>
-          <NavigationContainer independent>
-            <StackNavigator.Navigator
-              headerMode="screen"
-              screenOptions={{
-                ...TransitionPresets.SlideFromRightIOS,
-                headerShown: false,
-              }}
-            >
-              <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
-              <StackNavigator.Screen
-                name="OnboardingLogin"
-                component={OnboardingLogin}
-                options={({ route: { params } }) => ({
-                  cardStyleInterpolator: params?.withFadeAnimation
-                    ? CardStyleInterpolators.forFadeFromBottomAndroid
-                    : CardStyleInterpolators.forHorizontalIOS,
-                })}
-              />
-              <StackNavigator.Screen name="OnboardingCreateAccount" component={OnboardingCreateAccount} />
-              <StackNavigator.Screen
-                name="ForgotPassword"
-                component={ForgotPassword}
-                options={{ headerShown: false }}
-              />
-            </StackNavigator.Navigator>
-          </NavigationContainer>
+          {onboardingState === "incomplete" ? <OnboardingPersonalization /> : <OnboardingWelcomeScreens />}
         </ArtsyKeyboardAvoidingView>
       </ArtsyKeyboardAvoidingViewContext.Provider>
     </View>

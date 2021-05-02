@@ -1,5 +1,5 @@
-import { NavigationContainer, useNavigation } from "@react-navigation/native"
-import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import { NavigationContainer } from "@react-navigation/native"
+import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalizationListQuery } from "__generated__/OnboardingPersonalizationListQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
@@ -48,7 +48,10 @@ export const OnboardingPersonalization = () => {
   )
 }
 
-interface OnboardingPersonalizationListProps {
+interface OnboardingPersonalizationListNavigationProps
+  extends StackScreenProps<OnboardingPersonalizationNavigationStack, "OnboardingPersonalizationList"> {}
+
+interface OnboardingPersonalizationListProps extends OnboardingPersonalizationListNavigationProps {
   highlights: OnboardingPersonalization_highlights
   relay: RelayRefetchProp
 }
@@ -59,14 +62,13 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
 
   const [excludeArtistIDs, setExcludeArtistIDs] = useState<string[]>([])
 
-  const navigation = useNavigation()
-
   const updateListOfArtists = (artistID: string) => {
     if (excludeArtistIDs.includes(artistID)) {
       return
     }
-    setExcludeArtistIDs(excludeArtistIDs.concat(artistID))
-    props.relay.refetch({ excludeArtistIDs })
+    const newExcludeArtistIDs = excludeArtistIDs.concat(artistID)
+    setExcludeArtistIDs(newExcludeArtistIDs)
+    props.relay.refetch({ excludeArtistIDs: newExcludeArtistIDs })
   }
 
   const fadeRow = (artistID: string) => {
@@ -98,9 +100,10 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
         {/* Fake search Input */}
         <Flex px={2}>
           <TouchableWithoutFeedback
-            onPressIn={() => {
-              navigation.navigate("OnboardingPersonalizationModal")
+            onPress={() => {
+              props.navigation.navigate("OnboardingPersonalizationModal")
             }}
+            testID="searchArtistButton"
           >
             <Flex flexDirection="row" borderWidth={1} borderColor={color("black10")} height={INPUT_HEIGHT}>
               <Flex pl="1" justifyContent="center" flexGrow={0}>
@@ -127,8 +130,8 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
                 onFinish={() => {
                   updateListOfArtists(artist.internalID)
                 }}
-                onStart={async () => {
-                  await fadeRow(artist.internalID)
+                onStart={() => {
+                  fadeRow(artist.internalID)
                 }}
               />
             </Disappearable>
@@ -141,6 +144,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
         <Button
           variant="primaryBlack"
           block
+          testID="doneButton"
           onPress={() => {
             GlobalStore.actions.auth.setState({ onboardingState: "complete" })
           }}
@@ -152,7 +156,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
   )
 }
 
-const OnboardingPersonalizationListRefetchContainer = createRefetchContainer(
+export const OnboardingPersonalizationListRefetchContainer = createRefetchContainer(
   OnboardingPersonalizationList,
   {
     highlights: graphql`
@@ -174,7 +178,7 @@ const OnboardingPersonalizationListRefetchContainer = createRefetchContainer(
   `
 )
 
-const OnboardingPersonalizationListQueryRenderer = () => (
+const OnboardingPersonalizationListQueryRenderer: React.FC<OnboardingPersonalizationListNavigationProps> = (props) => (
   <QueryRenderer<OnboardingPersonalizationListQuery>
     environment={defaultEnvironment}
     query={graphql`
@@ -185,6 +189,6 @@ const OnboardingPersonalizationListQueryRenderer = () => (
       }
     `}
     variables={{}}
-    render={renderWithLoadProgress(OnboardingPersonalizationListRefetchContainer)}
+    render={renderWithLoadProgress(OnboardingPersonalizationListRefetchContainer, props)}
   />
 )
