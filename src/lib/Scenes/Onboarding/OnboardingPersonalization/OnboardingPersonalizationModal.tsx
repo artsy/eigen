@@ -77,7 +77,7 @@ const OnboardingPersonalizationModal: React.FC<OnboardingPersonalizationListProp
   // Using props.relay.isLoading() causes jest to fail as it is always return true.
   // We had instead to assign it to a boolean to avoid that
   // See: https://github.com/facebook/relay/issues/1973
-  const isLoading = useMemo(() => props.relay.isLoading(), [props.relay])
+  const isLoading = !__TEST__ ? props.relay.isLoading() : useMemo(() => props.relay.isLoading(), [props.relay])
 
   return (
     <Flex
