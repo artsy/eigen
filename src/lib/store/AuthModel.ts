@@ -47,7 +47,7 @@ export const getAuthModel = (): AuthModel => ({
   userAccessTokenExpiresIn: null,
   xAppToken: null,
   xApptokenExpiresIn: null,
-  onboardingState: "none", // TODO: Revert
+  onboardingState: "none",
   userEmail: computed([(_, store) => store], (store) => {
     if (Platform.OS === "ios") {
       return store.native.sessionState.userEmail
