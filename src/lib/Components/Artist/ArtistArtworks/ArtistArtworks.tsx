@@ -1,6 +1,5 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
-import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
 import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
@@ -11,15 +10,12 @@ import {
 } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
-import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
-import { Box, Flex, Separator, Spacer } from "palette"
+import { Box, Flex, Spacer } from "palette"
 import React, { useEffect, useState } from "react"
-import { ActivityIndicator, FlatList } from "react-native"
+import { ActivityIndicator } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ArtistCollectionsRailFragmentContainer } from "./ArtistCollectionsRail"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
@@ -127,9 +123,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
   const filterParams = filterArtworksParams(appliedFilters)
   const artworks = artist.artworks
   const artworksTotal = artworks?.edges?.length
-  const shouldShowCollections = artist.iconicCollections && artist.iconicCollections.length > 1
-  const shouldShowNotables = artist.notableWorks?.edges?.length === 3
-  const shouldShowArtistSeries = useFeatureFlag("AROptionsArtistSeries")
 
   useEffect(() => {
     if (applyFilters) {
@@ -195,57 +188,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
     }
   }
 
-  const sections = [
-    ...(shouldShowArtistSeries ? ["topArtistSeries"] : []),
-    ...(shouldShowNotables ? ["notableWorks"] : []),
-    ...(shouldShowCollections ? ["collections"] : []),
-    ...(shouldShowCollections || shouldShowNotables ? ["separator"] : []),
-    "filteredArtworks",
-  ]
-
-  return artist.artworks ? (
-    <FlatList
-      data={sections}
-      onViewableItemsChanged={viewableItemsRef.current}
-      viewabilityConfig={viewConfigRef.current}
-      keyExtractor={(_item, index) => String(index)}
-      renderItem={({ item }): null | any => {
-        switch (item) {
-          case "topArtistSeries":
-            return (
-              <ArtistSeriesMoreSeriesFragmentContainer
-                contextScreenOwnerId={artist.internalID}
-                contextScreenOwnerSlug={artist.slug}
-                contextScreenOwnerType={OwnerType.artist}
-                contextModule={ContextModule.artistSeriesRail}
-                artist={artist}
-                artistSeriesHeader="Top Artist Series"
-                mt={2}
-              />
-            )
-          case "notableWorks":
-            return <ArtistNotableWorksRailFragmentContainer artist={artist} {...props} />
-          case "collections":
-            return (
-              <ArtistCollectionsRailFragmentContainer
-                collections={artist.iconicCollections}
-                artist={artist}
-                {...props}
-              />
-            )
-          case "separator":
-            return (
-              <Box m={-2} mb={1} mt={1}>
-                <Separator />
-              </Box>
-            )
-
-          case "filteredArtworks":
-            return filteredArtworks()
-        }
-      }}
-    />
-  ) : null
+  return artist.artworks ? filteredArtworks() : null
 }
 
 export default createPaginationContainer(
@@ -307,25 +250,6 @@ export default createPaginationContainer(
             }
           }
           ...InfiniteScrollArtworksGrid_connection
-        }
-
-        ...ArtistCollectionsRail_artist
-
-        iconicCollections: marketingCollections(isFeaturedArtistContent: true, size: 16) {
-          ...ArtistCollectionsRail_collections
-        }
-
-        ...ArtistNotableWorksRail_artist
-
-        ...ArtistSeriesMoreSeries_artist
-
-        # this should match the query in ArtistNotableWorksRail
-        notableWorks: filterArtworksConnection(sort: "-weighted_iconicity", first: 3) {
-          edges {
-            node {
-              id
-            }
-          }
         }
       }
     `,

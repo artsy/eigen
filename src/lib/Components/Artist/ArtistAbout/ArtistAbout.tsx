@@ -1,4 +1,6 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistAbout_artist } from "__generated__/ArtistAbout_artist.graphql"
+import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import React from "react"
@@ -7,6 +9,8 @@ import RelatedArtists from "../../RelatedArtists/RelatedArtists"
 import { Stack } from "../../Stack"
 import { StickyTabPageScrollView } from "../../StickyTabPage/StickyTabPageScrollView"
 import Articles from "../Articles"
+import { ArtistCollectionsRailFragmentContainer } from "../ArtistArtworks/ArtistCollectionsRail"
+import { ArtistNotableWorksRailFragmentContainer } from "../ArtistArtworks/ArtistNotableWorksRail"
 import { ArtistConsignButtonFragmentContainer as ArtistConsignButton } from "../ArtistConsignButton"
 import Biography from "../Biography"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
@@ -23,6 +27,21 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
     <StickyTabPageScrollView>
       <Stack spacing={3} my={2}>
         {!!artist.hasMetadata && <Biography artist={artist as any} />}
+        {!!useFeatureFlag("AROptionsArtistSeries") && (
+          <ArtistSeriesMoreSeriesFragmentContainer
+            contextScreenOwnerId={artist.internalID}
+            contextScreenOwnerSlug={artist.slug}
+            contextScreenOwnerType={OwnerType.artist}
+            contextModule={ContextModule.artistSeriesRail}
+            artist={artist}
+            artistSeriesHeader="Top Artist Series"
+            mt={2}
+          />
+        )}
+        {artist.notableWorks?.edges?.length === 3 && <ArtistNotableWorksRailFragmentContainer artist={artist} />}
+        {!!artist.iconicCollections && artist.iconicCollections.length > 1 && (
+          <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} artist={artist} />
+        )}
         <ArtistConsignButton artist={artist} />
         {!!useFeatureFlag("AROptionsNewArtistInsightsPage") && <ArtistAboutShowsFragmentContainer artist={artist} />}
         {!!articles.length && <Articles articles={articles} />}
@@ -36,8 +55,23 @@ export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
   artist: graphql`
     fragment ArtistAbout_artist on Artist {
       hasMetadata
+      internalID
       slug
       ...Biography_artist
+      ...ArtistSeriesMoreSeries_artist
+      ...ArtistNotableWorksRail_artist
+      # this should match the query in ArtistNotableWorksRail
+      notableWorks: filterArtworksConnection(sort: "-weighted_iconicity", first: 3) {
+        edges {
+          node {
+            id
+          }
+        }
+      }
+      ...ArtistCollectionsRail_artist
+      iconicCollections: marketingCollections(isFeaturedArtistContent: true, size: 16) {
+        ...ArtistCollectionsRail_collections
+      }
       ...ArtistConsignButton_artist
       ...ArtistAboutShows_artist
       related {
