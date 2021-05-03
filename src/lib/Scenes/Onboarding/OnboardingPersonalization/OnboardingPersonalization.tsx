@@ -2,17 +2,17 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalizationListQuery } from "__generated__/OnboardingPersonalizationListQuery.graphql"
-import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
+import { ArtistListItemContainer as ArtistListItem, ArtistListItemPlaceholder } from "lib/Components/ArtistListItem"
 import { Disappearable } from "lib/Components/Disappearable"
 import { INPUT_HEIGHT } from "lib/Components/Input/Input"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { GlobalStore } from "lib/store/GlobalStore"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { compact } from "lodash"
-import { Box, Button, color, Flex, space, Spacer, Text } from "palette"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { compact, times } from "lodash"
+import { Box, Button, color, Flex, Join, space, Spacer, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import { OnboardingPersonalizationModalQueryRenderer } from "./OnboardingPersonalizationModal"
@@ -56,6 +56,37 @@ interface OnboardingPersonalizationListProps extends OnboardingPersonalizationLi
   relay: RelayRefetchProp
 }
 
+const OnboardingPersonalizationListHeader = ({ navigateToModal }: { navigateToModal: () => void }) => (
+  <>
+    <Box px={2}>
+      <Text variant="largeTitle">What artists do you collect?</Text>
+      <>
+        <Spacer mt={1.5} />
+        <Text variant="caption" color={color("black60")}>
+          Follow at least three artists you’re looking to collect or track so we can personalize your experience.
+        </Text>
+      </>
+    </Box>
+    <Spacer mt={20} />
+
+    {/* Fake search Input */}
+    <Flex px={2}>
+      <TouchableWithoutFeedback onPress={navigateToModal} testID="searchArtistButton">
+        <Flex flexDirection="row" borderWidth={1} borderColor={color("black10")} height={INPUT_HEIGHT}>
+          <Flex pl="1" justifyContent="center" flexGrow={0}>
+            <SearchIcon width={18} height={18} />
+          </Flex>
+          <Flex flexGrow={1} justifyContent="center" pl={1}>
+            <Text color={color("black60")} fontSize={15}>
+              Search artists
+            </Text>
+          </Flex>
+        </Flex>
+      </TouchableWithoutFeedback>
+    </Flex>
+  </>
+)
+
 export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationListProps> = ({ ...props }) => {
   const popularArtists = compact(props.highlights.popularArtists)
   const animatedOpacitiesRef = useRef<{ [key: string]: Disappearable | null }>({})
@@ -78,47 +109,20 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
   }
 
   return (
-    <Flex backgroundColor="white" flexGrow={1}>
+    <SafeAreaView style={{ backgroundColor: "white", flexGrow: 1 }}>
       <ScrollView
         contentContainerStyle={{
-          paddingTop: useScreenDimensions().safeAreaInsets.top,
+          paddingTop: 60,
           paddingBottom: 80,
           justifyContent: "flex-start",
         }}
         showsVerticalScrollIndicator={false}
       >
-        <Spacer mt={60} />
-        <Box px={2}>
-          <Text variant="largeTitle">What artists do you collect?</Text>
-          <>
-            <Spacer mt={1.5} />
-            <Text variant="caption" color={color("black60")}>
-              Follow at least three artists you’re looking to collect or track so we can personalize your experience.
-            </Text>
-          </>
-        </Box>
-        <Spacer mt={20} />
-
-        {/* Fake search Input */}
-        <Flex px={2}>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              props.navigation.navigate("OnboardingPersonalizationModal")
-            }}
-            testID="searchArtistButton"
-          >
-            <Flex flexDirection="row" borderWidth={1} borderColor={color("black10")} height={INPUT_HEIGHT}>
-              <Flex pl="1" justifyContent="center" flexGrow={0}>
-                <SearchIcon width={18} height={18} />
-              </Flex>
-              <Flex flexGrow={1} justifyContent="center" pl={1}>
-                <Text color={color("black60")} fontSize={15}>
-                  Search artists
-                </Text>
-              </Flex>
-            </Flex>
-          </TouchableWithoutFeedback>
-        </Flex>
+        <OnboardingPersonalizationListHeader
+          navigateToModal={() => {
+            props.navigation.navigate("OnboardingPersonalizationModal")
+          }}
+        />
 
         <FlatList
           data={popularArtists}
@@ -154,7 +158,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
           Done
         </Button>
       </Flex>
-    </Flex>
+    </SafeAreaView>
   )
 }
 
@@ -191,6 +195,39 @@ const OnboardingPersonalizationListQueryRenderer: React.FC<OnboardingPersonaliza
       }
     `}
     variables={{}}
-    render={renderWithLoadProgress(OnboardingPersonalizationListRefetchContainer, props)}
+    render={renderWithPlaceholder({
+      Container: OnboardingPersonalizationListRefetchContainer,
+      renderPlaceholder: OnboardingPersonalizationListPlaceholder,
+      initialProps: props,
+    })}
   />
+)
+
+const OnboardingPersonalizationListPlaceholder = ({
+  navigation,
+}: {
+  navigation: OnboardingPersonalizationListNavigationProps["navigation"]
+}) => (
+  <SafeAreaView
+    style={{
+      backgroundColor: "white",
+      flexGrow: 1,
+    }}
+  >
+    <Spacer height={60} />
+    <OnboardingPersonalizationListHeader
+      navigateToModal={() => {
+        navigation.navigate("OnboardingPersonalizationModal")
+      }}
+    />
+    <Flex px={2} mt={2}>
+      <Join separator={<Spacer height={20} />}>
+        {times(10).map((index: number) => (
+          <Flex key={index}>
+            <ArtistListItemPlaceholder />
+          </Flex>
+        ))}
+      </Join>
+    </Flex>
+  </SafeAreaView>
 )
