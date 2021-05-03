@@ -2,7 +2,7 @@ upcoming:
   version: 6.9.0
   date: TBD
   dev:
-    -
+    - Refactor filter event payloads to send JSON - roop
   user_facing:
     - Combine gallery and institution artwork filters - mdole
     - Allows multi-select filters to be searchable - damon
