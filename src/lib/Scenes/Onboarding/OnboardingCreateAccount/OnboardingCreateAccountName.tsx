@@ -19,7 +19,7 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
     <OnboardingCreateAccountScreenWrapper
       onBackButtonPress={navigation.goBack}
       title="What’s your full name?"
-      caption="Galleries and auction houses you contact will identity you by your full name."
+      caption="This is used to build your profile and collection on Artsy."
     >
       <Input
         autoCapitalize="words"

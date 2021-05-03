@@ -37,11 +37,12 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
 
       <Flex flex={1} p={2} justifyContent="flex-end">
         <Text color="white" fontSize="48px" lineHeight={48}>
-          Where{"\n"}Collectors{"\n"}Belong
+          Collect Art{"\n"}by the World’s{"\n"}
+          Leading Artists
         </Text>
         <Spacer mt={1} />
         <Text variant="text" color="white">
-          Build your personalized profile, get market insights, buy and sell with confidence.
+          Build your personalized profile, get market insights, and buy and sell art with confidence.
         </Text>
         <Spacer mt={2} />
         <Touchable
