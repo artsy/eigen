@@ -1,6 +1,7 @@
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { navigate } from "lib/navigation/navigate"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { Schema, track } from "lib/utils/track"
 import { Button, color, EntityHeader, Flex, Touchable } from "palette"
 import React from "react"
@@ -217,3 +218,16 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
     }
   `,
 })
+
+export const ArtistListItemPlaceholder = () => (
+  <Flex flexDirection="row">
+    <PlaceholderBox height={45} width={45} borderRadius={22.5} />
+    <Flex pl={1} pt={0.5} height={45}>
+      <PlaceholderText height={14} width={100 + Math.random() * 50} />
+      <PlaceholderText height={13} width={100 + Math.random() * 100} />
+    </Flex>
+    <Flex height={45} position="absolute" right={0} justifyContent="center">
+      <PlaceholderBox height={25} width={70} borderRadius={2} />
+    </Flex>
+  </Flex>
+)
