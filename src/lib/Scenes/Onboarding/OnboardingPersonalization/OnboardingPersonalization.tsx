@@ -91,7 +91,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
           <>
             <Spacer mt={1.5} />
             <Text variant="caption" color={color("black60")}>
-              Follow at least three artists you’re looking to collect so we can start to understand your taste.
+              Follow at least three artists you’re looking to collect or track so we can personalize your experience.
             </Text>
           </>
         </Box>
