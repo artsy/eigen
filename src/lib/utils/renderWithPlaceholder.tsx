@@ -14,12 +14,14 @@ export function renderWithPlaceholder<Props>({
   renderPlaceholder,
   renderFallback,
   initialProps = {},
+  placeholderProps = {},
 }: {
   Container?: React.ComponentType<Props>
   render?: (props: Props) => React.ReactChild
-  renderPlaceholder: () => React.ReactChild
+  renderPlaceholder: (props?: any) => React.ReactChild
   renderFallback?: FallbackRenderer
   initialProps?: object
+  placeholderProps?: object
 }): (readyState: ReadyState) => React.ReactElement | null {
   if (!Container && !render) {
     throw new Error("Please supply one of `render` or `Component` to renderWithPlaceholder")
@@ -73,7 +75,7 @@ export function renderWithPlaceholder<Props>({
         return <Container {...initialProps} {...(props as any)} />
       }
     } else {
-      return <ProvidePlaceholderContext>{renderPlaceholder()}</ProvidePlaceholderContext>
+      return <ProvidePlaceholderContext>{renderPlaceholder({ ...placeholderProps })}</ProvidePlaceholderContext>
     }
   }
 }
