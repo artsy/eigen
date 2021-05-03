@@ -1,37 +1,52 @@
-import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { ArtistListItemTestsQuery } from "__generated__/ArtistListItemTestsQuery.graphql"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { graphql } from "react-relay"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
 import { Touchable } from "../../../palette/elements/Touchable"
-import { ArtistFixture } from "../../__fixtures__/ArtistFixture"
-import { ArtistListItemContainer as ArtistListItem, formatTombstoneText } from "../ArtistListItem"
+import { mockEnvironmentPayload } from "../../tests/mockEnvironmentPayload"
+import { renderWithWrappers } from "../../tests/renderWithWrappers"
+import { ArtistListItemContainer, formatTombstoneText } from "../ArtistListItem"
 
 jest.unmock("react-relay")
 
 describe("ArtistListItem", () => {
-  const render = ({ withFeedback = false }) =>
-    renderRelayTree({
-      Component: ({ artist }) => <ArtistListItem artist={artist} withFeedback={withFeedback} />,
-      query: graphql`
-        query ArtistListItemTestsQuery @raw_response_type {
-          artist(id: "pablo-picasso") {
-            ...ArtistListItem_artist
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+  const TestRenderer = ({ withFeedback = false }: { withFeedback?: boolean }) => (
+    <QueryRenderer<ArtistListItemTestsQuery>
+      environment={mockEnvironment}
+      query={graphql`
+        query ArtistListItemTestsQuery($artistID: ID!) @relay_test_operation {
+          artist {
+            ...ArtistListItem_artist @arguments(artistID: $artistID)
           }
         }
-      `,
-      mockData: {
-        artist: ArtistFixture,
-      }, // Enable/fix this when making large change to these components/fixtures: as ArtistListItemTestsQueryRawResponse,
-    })
+      `}
+      variables={{ artistID: "artist-id" }}
+      render={({ props }) => {
+        if (props?.artist) {
+          return <ArtistListItemContainer artist={props.artist} withFeedback={withFeedback} />
+        }
+        return null
+      }}
+    />
+  )
 
-  it("renders without feedback without throwing an error", async () => {
-    const wrapper = await render({})
-    expect(wrapper.find(TouchableWithoutFeedback)).toHaveLength(2)
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
   })
 
-  it("renders with feedback without throwing an error", async () => {
-    const wrapper = await render({ withFeedback: true })
-    expect(wrapper.find(Touchable)).toHaveLength(1)
+  it("renders without feedback without throwing an error", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+    mockEnvironmentPayload(mockEnvironment)
+    expect(tree.root.findAllByType(TouchableWithoutFeedback)).toHaveLength(2)
+  })
+
+  it("renders with feedback without throwing an error", () => {
+    const tree = renderWithWrappers(<TestRenderer withFeedback />)
+    mockEnvironmentPayload(mockEnvironment)
+    expect(tree.root.findAllByType(Touchable)).toHaveLength(1)
   })
 })
 
