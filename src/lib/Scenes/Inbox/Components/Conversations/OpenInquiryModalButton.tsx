@@ -2,7 +2,7 @@ import { tappedMakeOffer } from "@artsy/cohesion"
 import { OpenInquiryModalButtonQuery } from "__generated__/OpenInquiryModalButtonQuery.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { Button, Flex, Separator } from "palette"
+import { Button, CheckCircleIcon, Flex, Separator, Text } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -26,6 +26,23 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ 
     <>
       <ShadowSeparator />
       <Flex p={1.5}>
+        <Flex flexDirection="row">
+          <CheckCircleIcon mr={1} mt="3px" />
+          <Text color="black60" variant="small" mb={1}>
+            Only purchases completed with our secure checkout are protected by{" "}
+            <Text
+              style={{ textDecorationLine: "underline" }}
+              color="black100"
+              variant="small"
+              onPress={() => {
+                navigate(`buyer-guarantee`)
+              }}
+            >
+              The Artsy Guarantee
+            </Text>
+            .
+          </Text>
+        </Flex>
         <Button
           onPress={() => {
             trackEvent(tappedMakeOffer(conversationID as string))
