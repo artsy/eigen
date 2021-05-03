@@ -34,7 +34,30 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
       if (lastTransactionFailed) {
         CTA = <ReviewOfferButton kind="PAYMENT_FAILED" activeOrder={activeOrder} conversationID={conversationID} />
       } else if (state === "SUBMITTED" && lastOffer?.fromParticipant === "SELLER") {
-        CTA = <ReviewOfferButton kind="OFFER_RECEIVED" activeOrder={activeOrder} conversationID={conversationID} />
+        if (lastOffer.updatedOfferAmount) {
+          if (lastOffer.updatedFees) {
+            // Brown CTA: 'Counteroffer received - confirm total'
+            CTA = (
+              <ReviewOfferButton
+                kind="OFFER_RECEIVED_UPDATED_FEES"
+                activeOrder={activeOrder}
+                conversationID={conversationID}
+              />
+            )
+          } else {
+            // Brown CTA: 'Counteroffer received'
+            CTA = <ReviewOfferButton kind="OFFER_RECEIVED" activeOrder={activeOrder} conversationID={conversationID} />
+          }
+        } else if (lastOffer.feesChanged) {
+          // Brown CTA: 'Offer accepted - confirm total'
+          CTA = (
+            <ReviewOfferButton
+              kind="OFFER_ACCEPTED_UPDATED_FEES"
+              activeOrder={activeOrder}
+              conversationID={conversationID}
+            />
+          )
+        }
       } else if (state === "APPROVED" && lastOffer?.fromParticipant === "BUYER") {
         CTA = <ReviewOfferButton kind="OFFER_ACCEPTED" activeOrder={activeOrder} conversationID={conversationID} />
       }
