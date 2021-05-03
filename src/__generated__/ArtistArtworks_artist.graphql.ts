@@ -23,6 +23,9 @@ export type ArtistArtworks_artist = {
                 readonly id: string;
             } | null;
         } | null> | null;
+        readonly counts: {
+            readonly total: number | null;
+        } | null;
         readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
     } | null;
     readonly " $refType": "ArtistArtworks_artist";
@@ -337,6 +340,24 @@ return {
         {
           "alias": null,
           "args": null,
+          "concreteType": "FilterArtworksCounts",
+          "kind": "LinkedField",
+          "name": "counts",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "total",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
           "concreteType": "PageInfo",
           "kind": "LinkedField",
           "name": "pageInfo",
@@ -372,5 +393,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'fb68935c4b08f9db352db34e64d5ba35';
+(node as any).hash = '3d80f342e7522ee5ff08a1b8ae2f9431';
 export default node;

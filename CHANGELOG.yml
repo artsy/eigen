@@ -14,6 +14,7 @@ upcoming:
     - Show loading spinner in all infinite scroll artowrk grids - ole
     - Fix missing bottom space on the Partner Artworks screen - ole
     - Animate welcome screen - mounir
+    - Move sort & filter button to artist artworks grid header - iskounen
 
 releases:
   - version: 6.8.4
