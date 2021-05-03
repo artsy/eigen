@@ -17,13 +17,13 @@ describe("ArtistListItem", () => {
     <QueryRenderer<ArtistListItemTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query ArtistListItemTestsQuery($artistID: ID!) @relay_test_operation {
-          artist {
-            ...ArtistListItem_artist @arguments(artistID: $artistID)
+        query ArtistListItemTestsQuery @relay_test_operation {
+          artist(id: "artist-id") {
+            ...ArtistListItem_artist
           }
         }
       `}
-      variables={{ artistID: "artist-id" }}
+      variables={{}}
       render={({ props }) => {
         if (props?.artist) {
           return <ArtistListItemContainer artist={props.artist} withFeedback={withFeedback} />
