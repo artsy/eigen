@@ -5,6 +5,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
+import { extractText } from "../../../../tests/extractText"
 import { OnboardingPersonalizationModalPaginationContainer } from "../OnboardingPersonalizationModal"
 
 jest.unmock("react-relay")
@@ -42,7 +43,7 @@ describe("OnboardingPersonalizationModal", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("looks for results with the right artist id", async () => {
+  it("looks for results with the right query", async () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
     const mockProps = {
@@ -64,5 +65,29 @@ describe("OnboardingPersonalizationModal", () => {
     const mostRecentOperation = mockEnvironment.mock.getMostRecentOperation()
 
     expect(mostRecentOperation.request.variables.query).toEqual("artist")
+  })
+
+  it("renders no results are available when no results are available", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+
+    const mockProps = {
+      SearchableConnection: () => ({
+        edges: [],
+      }),
+    }
+
+    mockEnvironmentPayload(mockEnvironment, mockProps)
+
+    const searchInput = tree.root.findByProps({ testID: "searchInput" })
+
+    act(() => {
+      searchInput.props.onChangeText("artist with no results")
+    })
+
+    mockEnvironmentPayload(mockEnvironment, mockProps)
+
+    const noResults = tree.root.findByProps({ testID: "noResults" })
+
+    expect(extractText(noResults)).toContain("We couldn't find anything for “artist with no results”")
   })
 })

@@ -6,7 +6,7 @@ import { SearchInput } from "lib/Components/SearchInput"
 import { BackButton } from "lib/navigation/BackButton"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, space, Spinner, Text } from "palette"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
@@ -76,6 +76,8 @@ const OnboardingPersonalizationModal: React.FC<OnboardingPersonalizationListProp
     }
   }, [lastArtists])
 
+  const isLoading = useMemo(() => props.relay.isLoading(), [props.relay])
+
   return (
     <Flex
       style={{
@@ -114,7 +116,7 @@ const OnboardingPersonalizationModal: React.FC<OnboardingPersonalizationListProp
           />
         )}
         ListEmptyComponent={
-          query.length > 2 && !props.relay.isLoading()
+          query.length > 2 && !isLoading
             ? () => {
                 return (
                   <Flex px={2} testID="noResults">
