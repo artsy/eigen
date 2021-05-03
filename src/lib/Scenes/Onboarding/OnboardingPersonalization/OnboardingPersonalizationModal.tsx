@@ -5,6 +5,7 @@ import { OnboardingPersonalizationModalQuery } from "__generated__/OnboardingPer
 import { SearchInput } from "lib/Components/SearchInput"
 import { BackButton } from "lib/navigation/BackButton"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { isEqual } from "lodash"
 import { Flex, space, Spinner, Text } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList } from "react-native"
@@ -63,19 +64,19 @@ const OnboardingPersonalizationModal: React.FC<OnboardingPersonalizationListProp
   // take them back to the top of the results list. But if we do that immediately
   // after the query changed then janky behaviour ensues, so we need to wait for
   // the relevant results to be fetched and rendered. We know new results come
-  // in when the previous results we encountered were `null` (when the query changed but
-  /// the fetch/cache-lookup has not completed yet) so we can scroll the user back to
+  // in when the previous results we encountered were `[]` (when the query changed but
+  // the fetch/cache-lookup has not completed yet) so we can scroll the user back to
   // the top whenever that happens.
   const lastArtists = usePrevious(artists)
   useEffect(() => {
-    if (lastArtists === null && artists !== null) {
-      // results were updated after a new query, scroll user back to top
+    if (isEqual(lastArtists, []) && !isEqual(artists, [])) {
       flatListRef.current?.scrollToOffset({ offset: 0, animated: true })
-      // (we need to wait for the results to be updated to avoid janky behaviour that
-      // happens when the results get updated during a scroll)
     }
   }, [lastArtists])
 
+  // Using props.relay.isLoading() causes jest to fail as it is always return true.
+  // We had instead to assign it to a boolean to avoid that
+  // See: https://github.com/facebook/relay/issues/1973
   const isLoading = useMemo(() => props.relay.isLoading(), [props.relay])
 
   return (
@@ -201,7 +202,6 @@ export const OnboardingPersonalizationModalQueryRenderer: React.FC<OnboardingPer
   initialProps
 ) => (
   <QueryRenderer<OnboardingPersonalizationModalQuery>
-    // render={renderWithLoadProgress(OnboardingPersonalizationModalPaginationContainer)}
     render={({ props, error }) => {
       if (error) {
         if (__DEV__) {
