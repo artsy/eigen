@@ -65,12 +65,15 @@ describe("OnboardingPersonalizationList", () => {
   })
 
   describe("List of artist", () => {
-    it("refetches connection with excludeArtistIDs after following an artist", () => {
+    it("refetches connection with excludeArtistIDs after following an artist", async () => {
       const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironmentPayload(mockEnvironment)
 
       const firstArtistRow = tree.root.findAllByType(ArtistListItem)[0]
       firstArtistRow.props.onFinish()
+
+      await flushPromiseQueue()
+
       expect(refetchMock).toHaveBeenLastCalledWith({ excludeArtistIDs: ["internalID-1"] })
     })
   })

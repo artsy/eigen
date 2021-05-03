@@ -11,7 +11,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { compact } from "lodash"
 import { Box, Button, color, Flex, space, Spacer, Text } from "palette"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
@@ -66,10 +66,12 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
     if (excludeArtistIDs.includes(artistID)) {
       return
     }
-    const newExcludeArtistIDs = excludeArtistIDs.concat(artistID)
-    setExcludeArtistIDs(newExcludeArtistIDs)
-    props.relay.refetch({ excludeArtistIDs: newExcludeArtistIDs })
+    setExcludeArtistIDs(excludeArtistIDs.concat(artistID))
   }
+
+  useEffect(() => {
+    props.relay.refetch({ excludeArtistIDs })
+  }, [excludeArtistIDs])
 
   const fadeRow = (artistID: string) => {
     animatedOpacitiesRef.current[artistID]?.disappear()

@@ -63,8 +63,6 @@ describe("OnboardingPersonalizationModal", () => {
 
     const mostRecentOperation = mockEnvironment.mock.getMostRecentOperation()
 
-    console.log(mostRecentOperation)
-
     expect(mostRecentOperation.request.variables.query).toEqual("artist")
   })
 })
