@@ -8,6 +8,7 @@ upcoming:
     - Allows multi-select filters to be searchable - damon
     - Rename artist about tab to artist overview tab - iskounen
     - Move rails on artist artwork tab to artist overview tab - iskounen
+    - Update onboarding screens copy - mounir
 
 releases:
   - version: 6.8.4
