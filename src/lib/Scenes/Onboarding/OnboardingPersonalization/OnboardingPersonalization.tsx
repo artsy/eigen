@@ -133,10 +133,8 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
                 artist={artist}
                 withFeedback
                 containerStyle={{ paddingHorizontal: 20, paddingVertical: 10 }}
-                onFinish={() => {
+                onFollowFinish={() => {
                   updateListOfArtists(artist.internalID)
-                }}
-                onStart={() => {
                   fadeRow(artist.internalID)
                 }}
               />
