@@ -99,7 +99,7 @@ export const ArtistNotableWorksRailFragmentContainer = createFragmentContainer(A
     fragment ArtistNotableWorksRail_artist on Artist {
       internalID
       slug
-      # this should match the notableWorks query in ArtistArtworks
+      # this should match the notableWorks query in ArtistAbout
       filterArtworksConnection(sort: "-weighted_iconicity", first: 10) {
         edges {
           node {

@@ -37,7 +37,7 @@ export const Artist: React.FC<{
 
   if (displayAboutSection) {
     tabs.push({
-      title: "About",
+      title: "Overview",
       content: artistBelowTheFold ? <ArtistAboutContainer artist={artistBelowTheFold} /> : <LoadingPage />,
     })
   }
