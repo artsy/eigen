@@ -3,16 +3,12 @@ package net.artsy.app;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
+import android.util.Log;
 import android.view.Display;
-import android.view.KeyCharacterMap;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -88,10 +84,7 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
                         WindowManager.LayoutParams winParams = window.getAttributes();
                         winParams.flags &= ~WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
                         window.setAttributes(winParams);
-                        setStatusBarColor("#00FFFFFF"); // Color.TRANSPARENT
-                        setNavigationBarColor("#FFFFFF"); // Color.WHITE
-                        View decorView = window.getDecorView();
-                        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN );
+                        setStatusBarColor("#00FFFFFF");
                     }
                 });
             }
@@ -100,6 +93,34 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
             promise.reject("Failed to set app style", e);
         }
 
+    }
+
+    @ReactMethod
+    public void setAppTheme(final Boolean isLight, Promise promise) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                final Activity activity = getCurrentActivity();
+                if(activity == null)
+                    return;
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final Window window = activity.getWindow();
+                        // clear any existing flags
+                        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+                        if(isLight) {
+                            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN );
+                        } else {
+                            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR );
+                        }
+                    }
+                });
+            }
+            promise.resolve("success");
+        } catch (Exception e) {
+            promise.reject("Failed to set the app theme", e);
+        }
     }
 
     @ReactMethod

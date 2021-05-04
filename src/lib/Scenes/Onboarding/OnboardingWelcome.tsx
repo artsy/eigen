@@ -1,7 +1,8 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { color, Flex, Spacer, Text, Touchable } from "palette"
-import React from "react"
+import React, { useEffect } from "react"
 import { Image } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { ArtsyMarkWhiteIcon } from "../../../palette/svgs/ArtsyMarkWhiteIcon"
@@ -14,8 +15,28 @@ const BUTTON_HEIGHT = 41
 export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation }) => {
   const { height: screenHeight } = useScreenDimensions()
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("blur", () => {
+      requestAnimationFrame(() => {
+        ArtsyNativeModule.setNavigationBarColor("#FFFFFF")
+        ArtsyNativeModule.setAppTheme(false)
+      })
+    })
+    return unsubscribe
+  }, [navigation])
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      requestAnimationFrame(() => {
+        ArtsyNativeModule.setNavigationBarColor("#000000")
+        ArtsyNativeModule.setAppTheme(true)
+      })
+    })
+    return unsubscribe
+  }, [navigation])
+
   return (
-    <Flex flex={1} removeClippedSubviews={false}>
+    <Flex flex={1} backgroundColor="black">
       <Flex alignItems="flex-end" position="absolute">
         <Image source={require("@images/WelcomeImage.png")} resizeMode="cover" style={{ height: screenHeight }}></Image>
       </Flex>

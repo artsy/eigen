@@ -9,6 +9,7 @@ upcoming:
     - Rename artist about tab to artist overview tab - iskounen
     - Move rails on artist artwork tab to artist overview tab - iskounen
     - Update onboarding screens copy - mounir
+    - Support dark and light themes on android - mounir
 
 releases:
   - version: 6.8.4

@@ -11,24 +11,24 @@ export const ArtsyNativeModule = {
     Platform.OS === "ios"
       ? LegacyNativeModules.ARNotificationsManager.nativeState.launchCount
       : (NativeModules.ArtsyNativeModule.getConstants().launchCount as number),
-  /**
-   * Set android app theme
-   */
   setAppStyling:
     Platform.OS === "ios"
       ? () => {
           console.error("setAppStyling is unsupported on iOS")
         }
       : NativeModules.ArtsyNativeModule.setAppStyling,
-  /**
-   * Set android app system navigation bar color
-   */
   setNavigationBarColor:
     Platform.OS === "ios"
       ? () => {
           console.error("setNavigationBarColor is unsupported on iOS")
         }
       : NativeModules.ArtsyNativeModule.setNavigationBarColor,
+  setAppTheme:
+    Platform.OS === "ios"
+      ? () => {
+          console.error("setAppTheme is unsupported on iOS")
+        }
+      : NativeModules.ArtsyNativeModule.setAppTheme,
   get navigationBarHeight() {
     return Platform.OS === "ios"
       ? 0
