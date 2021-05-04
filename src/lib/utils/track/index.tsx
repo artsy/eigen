@@ -183,12 +183,6 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
 /*
  * ## Writing tests for your tracked code
  *
- * By default we mock `react-tracking`, so it's not possible to test the code easily.
- *
- * A good pattern for testing analytics code is to have a completely separate file
- * for the tests. For example: `__tests__/Overview-analytics-tests.tsx`. Jest has each
- * test file run in a unique environment, so in that file we can unmock react-tracking.
- *
  * Here's a full example:
  *
  * @example
@@ -197,15 +191,9 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *      import { shallow } from "enzyme"
  *      import Event from "lib/NativeModules/Events"
  *      import React from "react"
+ *      import { postEventToProviders } from "lib/utils/track/providers"
  *
- *      // Unmock react-tracking so that it will wrap our code
- *      jest.unmock("react-tracking")
  *      import Overview from "../Overview"
- *
- *      // Create a stub for checking the events sent to the native code
- *      // and make it reset between tests
- *      jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
- *      beforeEach(jest.resetAllMocks)
  *
  *      it("calls the draft created event", () => {
  *
