@@ -70,7 +70,7 @@ describe("OnboardingPersonalizationList", () => {
       mockEnvironmentPayload(mockEnvironment)
 
       const firstArtistRow = tree.root.findAllByType(ArtistListItem)[0]
-      firstArtistRow.props.onFinish()
+      firstArtistRow.props.onFollowFinish()
 
       await flushPromiseQueue()
 
