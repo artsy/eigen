@@ -5,9 +5,8 @@ import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } fro
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { TabEmptyState } from "lib/Components/TabEmptyState"
 import { get } from "lib/utils/get"
-import { Flex, Spacer } from "palette"
+import { Spacer } from "palette"
 import React, { useState } from "react"
-import { ActivityIndicator } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 export const PartnerArtwork: React.FC<{
@@ -26,18 +25,7 @@ export const PartnerArtwork: React.FC<{
         <Spacer mb={2} />
 
         {artworks ? (
-          <>
-            <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} hasMore={relay.hasMore} />
-            <Flex
-              alignItems="center"
-              justifyContent="center"
-              p="3"
-              pb="9"
-              style={{ opacity: relay.isLoading() && relay.hasMore() ? 1 : 0 }}
-            >
-              <ActivityIndicator />
-            </Flex>
-          </>
+          <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} hasMore={relay.hasMore} />
         ) : (
           <TabEmptyState text="There is no artwork from this gallery yet" />
         )}
