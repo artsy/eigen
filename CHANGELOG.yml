@@ -28,6 +28,7 @@ releases:
       - Track notable works rail tap and view all artist series tap on artist page - ole
       - Track filter change on artist series page - ole
       - Add vscode launch config to debug tests in current file - ole
+      - Fix billing country field text color and style - ole
     user_facing:
       - Add forgot password screen in new login - brian
       - Conversation-offer updates to CTA to allow multiple offers - erikdstock
