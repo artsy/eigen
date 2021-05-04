@@ -1,5 +1,4 @@
 import analytics from "@segment/analytics-react-native"
-import { Platform } from "react-native"
 import Config from "react-native-config"
 import { isCohesionScreen, TrackingProvider } from "."
 
@@ -11,18 +10,10 @@ analytics
 
 export const SegmentTrackingProvider: TrackingProvider = {
   identify: (userId, traits) => {
-    if (Platform.OS !== "android") {
-      return
-    } // temporary guard
-
     analytics.identify(userId, traits)
   },
 
   postEvent: (info) => {
-    if (Platform.OS !== "android") {
-      return
-    } // temporary guard
-
     if ("action" in info) {
       const { action } = info
       if (isCohesionScreen(info)) {
