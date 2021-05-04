@@ -149,10 +149,9 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
           disabled={!(isValid && dirty)}
           loading={isSubmitting}
           testID="loginButton"
+          variant="primaryBlack"
         >
-          <Text color="white" variant="mediumText">
-            Log in
-          </Text>
+          <Text variant="mediumText">Log in</Text>
         </Button>
       </Flex>
     </View>
