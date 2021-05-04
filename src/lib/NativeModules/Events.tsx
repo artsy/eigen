@@ -1,7 +1,7 @@
 import { addBreadcrumb } from "@sentry/react-native"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
-import { TrackingProvider } from "lib/utils/track"
+import { TrackingProvider } from "lib/utils/track/providers"
 
 function postEvent(info: any) {
   addBreadcrumb({

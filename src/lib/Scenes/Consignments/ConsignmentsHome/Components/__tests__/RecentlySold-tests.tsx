@@ -18,10 +18,6 @@ describe("RecentlySold", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  afterEach(() => {
-    trackEvent.mockClear()
-  })
-
   const TestRenderer = () => (
     <QueryRenderer<RecentlySoldTestsQuery>
       environment={mockEnvironment}

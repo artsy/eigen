@@ -11,7 +11,6 @@ import { CollectionsRailTestsQuery } from "__generated__/CollectionsRailTestsQue
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { postEventToProviders } from "lib/utils/track/providers"
-import { useTracking } from "react-tracking"
 import HomeAnalytics from "../../homeAnalytics"
 import { CollectionsRailFragmentContainer } from "../CollectionsRail"
 

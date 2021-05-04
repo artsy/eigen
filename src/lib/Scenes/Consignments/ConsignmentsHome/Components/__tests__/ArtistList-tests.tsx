@@ -18,10 +18,6 @@ describe("ArtistList", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  afterEach(() => {
-    trackEvent.mockClear()
-  })
-
   const TestRenderer = () => (
     <QueryRenderer<ArtistListTestsQuery>
       environment={mockEnvironment}

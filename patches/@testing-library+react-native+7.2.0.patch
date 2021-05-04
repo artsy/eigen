@@ -1,0 +1,13 @@
+diff --git a/node_modules/@testing-library/react-native/typings/index.d.ts b/node_modules/@testing-library/react-native/typings/index.d.ts
+index 43c5361..d6b4457 100644
+--- a/node_modules/@testing-library/react-native/typings/index.d.ts
++++ b/node_modules/@testing-library/react-native/typings/index.d.ts
+@@ -299,7 +299,7 @@ export interface RenderOptions {
+ }
+ 
+ type Debug = {
+-  (message?: string);
++  message?: string;
+   shallow: (message?: string) => void;
+ };
+ 

@@ -2,7 +2,6 @@
 import { mount } from "enzyme"
 import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
-import { useTracking } from "react-tracking"
 import { ImageCarouselContext, useNewImageCarouselContext } from "../ImageCarouselContext"
 
 const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {

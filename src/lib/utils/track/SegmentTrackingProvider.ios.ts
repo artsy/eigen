@@ -1,4 +1,4 @@
-import { TrackingProvider } from "."
+import { TrackingProvider } from "./providers"
 
 export const SegmentTrackingProvider: TrackingProvider = {
   // tslint:disable-next-line:no-empty

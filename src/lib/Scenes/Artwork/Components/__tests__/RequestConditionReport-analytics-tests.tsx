@@ -1,6 +1,6 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { RequestConditionReport_artwork } from "__generated__/RequestConditionReport_artwork.graphql"
 import { RequestConditionReport_me } from "__generated__/RequestConditionReport_me.graphql"
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { postEventToProviders } from "lib/utils/track/providers"

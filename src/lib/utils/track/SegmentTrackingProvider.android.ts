@@ -1,6 +1,6 @@
 import analytics from "@segment/analytics-react-native"
 import Config from "react-native-config"
-import { isCohesionScreen, TrackingProvider } from "."
+import { isCohesionScreen, TrackingProvider } from "./providers"
 
 analytics
   .setup(Config.SEGMENT_STAGING_WRITE_KEY_ANDROID, {})
