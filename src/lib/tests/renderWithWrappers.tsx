@@ -1,7 +1,8 @@
+import { render } from "@testing-library/react-native"
 import { ToastProvider } from "lib/Components/Toast/toastHook"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
-import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import { track } from "lib/utils/track"
+import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Theme } from "palette"
 import React from "react"
 import ReactTestRenderer from "react-test-renderer"
@@ -38,22 +39,37 @@ export const renderWithWrappers = (component: ReactElement) => {
   }
 }
 
-const TrackProvider = track()(({ children }: { children: React.ReactElement<any> }) => {
-  return children
+export const renderWithWrappersTL = (component: ReactElement) => {
+  const root = render(component, { wrapper: Wrappers })
+  return {
+    ...root,
+    getByType: root.UNSAFE_getByType,
+    getAllByType: root.UNSAFE_getAllByType,
+  }
+}
+
+const TrackProvider = track()(({ children }: { children: React.ReactNode }) => {
+  return <>{children}</>
 })
 
 /**
  * Returns given component wrapped with our page wrappers
  * @param component
  */
-export const componentWithWrappers = (component: ReactElement) => {
+export const Wrappers = ({ children }: { children: React.ReactNode }) => {
   return (
-    <GlobalStoreProvider>
-      <Theme>
-        <ToastProvider>
-          <ProvideScreenDimensions>{component}</ProvideScreenDimensions>
-        </ToastProvider>
-      </Theme>
-    </GlobalStoreProvider>
+    <TrackProvider>
+      <GlobalStoreProvider>
+        <Theme>
+          <ToastProvider>
+            <ProvideScreenDimensions>{children}</ProvideScreenDimensions>
+          </ToastProvider>
+        </Theme>
+      </GlobalStoreProvider>
+    </TrackProvider>
   )
+}
+
+export const componentWithWrappers = (component: ReactElement) => {
+  return <Wrappers>{component}</Wrappers>
 }

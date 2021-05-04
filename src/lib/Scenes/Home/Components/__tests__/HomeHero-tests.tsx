@@ -2,10 +2,10 @@ import { HomeHeroTestsQuery } from "__generated__/HomeHeroTestsQuery.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { HomeHeroContainer } from "../HomeHero"
 
@@ -14,17 +14,9 @@ jest.mock("react-tracking")
 jest.unmock("react-relay")
 describe("HomeHero", () => {
   let environment = createMockEnvironment()
-  const trackEvent = jest.fn()
 
   beforeEach(() => {
     environment = createMockEnvironment()
-    ;(useTracking as jest.Mock).mockReturnValue({
-      trackEvent,
-    })
-  })
-
-  afterEach(() => {
-    trackEvent.mockClear()
   })
 
   const TestRenderer = () => (
@@ -97,7 +89,7 @@ describe("HomeHero", () => {
     expect(navigate).not.toHaveBeenCalled()
     tree.root.findByType(TouchableOpacity).props.onPress()
     expect(navigate).toHaveBeenCalledWith("/my-special-href")
-    expect(trackEvent).toHaveBeenCalledWith(
+    expect(postEventToProviders).toHaveBeenCalledWith(
       expect.objectContaining({
         subject: "My Special Title",
         destination_path: "/my-special-href",

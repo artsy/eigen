@@ -1,20 +1,15 @@
+import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
+import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
+import { navigate } from "lib/navigation/navigate"
+import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { Sans, Theme } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import { ArtworkExtraLinks } from "../index"
-
-jest.unmock("react-tracking")
-
-jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
-
-import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
-import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
-import { navigate } from "lib/navigation/navigate"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
-import { postEventToProviders } from "lib/utils/track"
 
 function getWrapper({
   artwork,

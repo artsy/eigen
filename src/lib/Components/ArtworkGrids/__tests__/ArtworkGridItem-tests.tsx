@@ -2,11 +2,11 @@ import { OwnerType } from "@artsy/cohesion"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { Touchable } from "palette"
 import React from "react"
 import "react-native"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import Artwork from "../ArtworkGridItem"
 
 const ArtworkWithProviders = (props: any) => {
@@ -18,16 +18,6 @@ const ArtworkWithProviders = (props: any) => {
 }
 
 describe("tracking", () => {
-  const trackEvent = jest.fn()
-
-  beforeEach(() => {
-    ;(useTracking as any).mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
-  })
-
   afterEach(() => {
     jest.clearAllMocks()
   })
@@ -53,7 +43,7 @@ describe("tracking", () => {
     )
     const touchableArtwork = rendered.root.findByType(Touchable)
     act(() => touchableArtwork.props.onPress())
-    expect(trackEvent).toBeCalledWith({
+    expect(postEventToProviders).toBeCalledWith({
       action: "tappedMainArtworkGrid",
       context_module: "artworkGrid",
       context_screen_owner_id: "abc124",

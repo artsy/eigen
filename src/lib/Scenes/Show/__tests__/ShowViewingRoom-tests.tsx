@@ -1,11 +1,11 @@
 import { ShowViewingRoomTestsQuery } from "__generated__/ShowViewingRoomTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ShowViewingRoomFragmentContainer } from "../Components/ShowViewingRoom"
 
@@ -13,15 +13,9 @@ jest.unmock("react-relay")
 
 describe("ShowViewingRoom", () => {
   let env: ReturnType<typeof createMockEnvironment>
-  const trackEvent = jest.fn()
 
   beforeEach(() => {
     env = createMockEnvironment()
-    ;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent }))
-  })
-
-  afterEach(() => {
-    trackEvent.mockClear()
   })
 
   const TestRenderer = () => (
@@ -75,7 +69,7 @@ describe("ShowViewingRoom", () => {
       wrapper.root.findAllByType(TouchableOpacity)[0].props.onPress()
     })
 
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(postEventToProviders).toHaveBeenCalledWith({
       action: "tappedViewingRoomCard",
       context_module: "associatedViewingRoom",
       context_screen_owner_id: "example-show-id",

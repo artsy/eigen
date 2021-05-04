@@ -5,7 +5,8 @@ import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
 import { StickyTab } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import _ from "lodash"
 import React from "react"
 import "react-native"
@@ -15,20 +16,13 @@ import { ArtistAboutContainer } from "../../../Components/Artist/ArtistAbout/Art
 import { ArtistQueryRenderer } from "../Artist"
 
 jest.unmock("react-relay")
-jest.unmock("react-tracking")
-
-jest.mock("lib/NativeModules/Events", () => ({
-  postEvent: jest.fn(),
-}))
 
 type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery"
 
 describe("availableTabs", () => {
   let environment = createMockEnvironment()
-  const postEvent = require("lib/NativeModules/Events").postEvent as jest.Mock
   beforeEach(() => {
     environment = createMockEnvironment()
-    postEvent.mockClear()
   })
 
   function mockMostRecentOperation(name: ArtistQueries, mockResolvers: MockResolvers = {}) {
@@ -187,14 +181,13 @@ describe("availableTabs", () => {
   it("tracks a page view", () => {
     renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery")
-    expect(postEvent).toHaveBeenCalledTimes(1)
-    expect(postEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
-      Object {
-        "context_screen": "Artist",
-        "context_screen_owner_id": "<mock-value-for-field-\\"internalID\\">",
-        "context_screen_owner_slug": "<mock-value-for-field-\\"slug\\">",
-        "context_screen_owner_type": "Artist",
-      }
-    `)
+
+    expect(postEventToProviders).toHaveBeenCalledTimes(1)
+    expect(postEventToProviders).toHaveBeenNthCalledWith(1, {
+      context_screen: "Artist",
+      context_screen_owner_id: '<mock-value-for-field-"internalID">',
+      context_screen_owner_slug: '<mock-value-for-field-"slug">',
+      context_screen_owner_type: "Artist",
+    })
   })
 })

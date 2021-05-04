@@ -6,11 +6,11 @@ import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { ArtworkIcon } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkHeader, MyCollectionArtworkHeaderRefetchContainer } from "../MyCollectionArtworkHeader"
 
@@ -43,24 +43,12 @@ describe("MyCollectionArtworkHeader", () => {
     />
   )
 
-  const trackEvent = jest.fn()
-
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
     fakeRelay = {
       refetch: jest.fn(),
     } as any
-    const mockTracking = useTracking as jest.Mock
-    mockTracking.mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
     jest.useFakeTimers()
-  })
-
-  afterEach(() => {
-    trackEvent.mockClear()
   })
 
   afterAll(() => {
@@ -110,8 +98,8 @@ describe("MyCollectionArtworkHeader", () => {
       }),
     })
     wrapper.root.findAllByType(TouchableOpacity)[0].props.onPress()
-    expect(trackEvent).toHaveBeenCalledTimes(1)
-    expect(trackEvent).toHaveBeenCalledWith(
+    expect(postEventToProviders).toHaveBeenCalledTimes(1)
+    expect(postEventToProviders).toHaveBeenCalledWith(
       tappedCollectedArtworkImages({ contextOwnerId: "someInternalId", contextOwnerSlug: "someSlug" })
     )
   })

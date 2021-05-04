@@ -10,11 +10,10 @@ import { FairsRailFragmentContainer } from "../FairsRail"
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { Text } from "palette"
-import { useTracking } from "react-tracking"
 import HomeAnalytics from "../../homeAnalytics"
 
-const trackEvent = jest.fn()
 const mockScrollRef = jest.fn()
 const artworkNode = {
   node: {
@@ -137,14 +136,6 @@ describe("navigation", () => {
 })
 
 describe("analytics", () => {
-  beforeEach(() => {
-    ;(useTracking as jest.Mock).mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
-  })
-
   it("tracks fair thumbnail taps", () => {
     const fairsCopy = cloneDeep(fairsModule)
     const tree = renderWithWrappers(
@@ -152,6 +143,8 @@ describe("analytics", () => {
     )
     const cards = tree.root.findAllByType(CardRailCard)
     cards[0].props.onPress()
-    expect(trackEvent).toHaveBeenCalledWith(HomeAnalytics.fairThumbnailTapEvent("the-fair-internal-id", "the-fair", 0))
+    expect(postEventToProviders).toHaveBeenCalledWith(
+      HomeAnalytics.fairThumbnailTapEvent("the-fair-internal-id", "the-fair", 0)
+    )
   })
 })

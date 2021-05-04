@@ -5,29 +5,21 @@ import {
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail/ArtworkTileRailCard"
 import { navigate } from "lib/navigation/navigate"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworksInSeriesRail, ArtworksInSeriesRailFragmentContainer } from "../ArtworksInSeriesRail"
 
 jest.unmock("react-relay")
-jest.mock("react-tracking")
 
 describe("ArtworksInSeriesRail", () => {
   let env: ReturnType<typeof createMockEnvironment>
-  const trackEvent = jest.fn()
 
   beforeEach(() => {
     env = createMockEnvironment()
-    const mockTracking = useTracking as jest.Mock
-    mockTracking.mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
   })
 
   afterEach(() => {
@@ -89,7 +81,7 @@ describe("ArtworksInSeriesRail", () => {
     const wrapper = getWrapper()
     const header = wrapper.root.findAllByType(TouchableOpacity)[0]
     header.props.onPress()
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(postEventToProviders).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "moreFromThisSeries",
       context_screen_owner_id: "artwork124",
@@ -106,7 +98,7 @@ describe("ArtworksInSeriesRail", () => {
     const wrapper = getWrapper()
     const firstArtwork = wrapper.root.findAllByType(ArtworkTileRailCard)[0]
     firstArtwork.props.onPress()
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(postEventToProviders).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "moreFromThisSeries",
       context_screen_owner_id: "artwork124",

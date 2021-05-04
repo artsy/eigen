@@ -6,7 +6,6 @@ import { AlertCircleFillIcon, Color, Flex, MoneyFillIcon } from "palette"
 import React, { ElementType } from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ConversationCTA, ConversationCTAFragmentContainer } from "../ConversationCTA"
 import { OpenInquiryModalButtonQueryRenderer } from "../OpenInquiryModalButton"
@@ -15,15 +14,9 @@ jest.unmock("react-relay")
 
 describe("ConversationCTA", () => {
   let env: ReturnType<typeof createMockEnvironment>
-  const trackEvent = jest.fn()
 
   beforeEach(() => {
     env = createMockEnvironment()
-    ;(useTracking as jest.Mock).mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
   })
 
   const TestRenderer = ({ showCTA = true }: { showCTA?: boolean }) => (

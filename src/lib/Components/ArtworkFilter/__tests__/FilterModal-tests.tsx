@@ -19,27 +19,18 @@ import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Scree
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { Sans, Theme } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { extractText } from "../../../tests/extractText"
 import { closeModalMock, getEssentialProps, MockFilterScreen, navigateMock } from "../__tests__/FilterTestHelper"
 
 const exitModalMock = jest.fn()
-const trackEvent = jest.fn()
 
 jest.unmock("react-relay")
-
-beforeEach(() => {
-  ;(useTracking as jest.Mock).mockImplementation(() => {
-    return {
-      trackEvent,
-    }
-  })
-})
 
 const mockAggregations: Aggregations = [
   {
@@ -505,7 +496,7 @@ describe("Applying filters on Artworks", () => {
     const applyButton = filterModal.root.findByType(ApplyButton)
 
     applyButton.props.onPress()
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(postEventToProviders).toHaveBeenCalledWith({
       action_type: "commercialFilterParamsChanged",
       changed: {
         medium: "work-on-paper",

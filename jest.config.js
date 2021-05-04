@@ -11,7 +11,10 @@ module.exports = {
   testMatch: ["<rootDir>/src/**/__tests__/*tests.(ts|tsx|js)"],
   testEnvironment: "jsdom",
   testURL: "http://localhost/",
-  setupFilesAfterEnv: ["./src/setupJest.ts"],
+  setupFilesAfterEnv: [
+    "@testing-library/jest-native/extend-expect",
+    "./src/setupJest.ts"
+  ],
   cacheDirectory: ".jest/cache",
   transform: {
     "^[./a-zA-Z0-9$_-]+\\.(bmp|gif|jpg|jpeg|mp4|png|psd|svg|webp)$":

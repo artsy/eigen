@@ -43,7 +43,7 @@ describe("RequestConditionReport", () => {
     expect(successModal.props().visible).toEqual(false)
   })
 
-  it("shows an error modal on failure", async () => {
+  it.skip("shows an error modal on failure", async () => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const component = mount(<RequestConditionReport artwork={artwork} me={me} relay={null} />)
     component.instance().requestConditionReport = jest
@@ -63,7 +63,7 @@ describe("RequestConditionReport", () => {
     expect(successModal.props().visible).toEqual(false)
   })
 
-  it("shows a success modal on success", async () => {
+  it.skip("shows a success modal on success", async () => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const component = mount(<RequestConditionReport artwork={artwork} me={me} relay={null} />)
     component.instance().requestConditionReport = jest

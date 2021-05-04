@@ -4,14 +4,13 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkFullDetailsContainer } from "../MyCollectionArtworkFullDetails"
 
 jest.unmock("react-relay")
-jest.mock("react-tracking")
 
 describe("MyCollectionArtworkFullDetails", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -35,8 +34,6 @@ describe("MyCollectionArtworkFullDetails", () => {
     />
   )
 
-  const trackEvent = jest.fn()
-
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironmentPayload(mockEnvironment, mockResolvers)
@@ -45,12 +42,6 @@ describe("MyCollectionArtworkFullDetails", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    const mockTracking = useTracking as jest.Mock
-    mockTracking.mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
   })
 
   afterEach(() => {
@@ -69,8 +60,8 @@ describe("MyCollectionArtworkFullDetails", () => {
 
       wrapper.root.findByType(FancyModalHeader).props.onRightButtonPress()
 
-      expect(trackEvent).toHaveBeenCalledTimes(1)
-      expect(trackEvent).toHaveBeenCalledWith(
+      expect(postEventToProviders).toHaveBeenCalledTimes(1)
+      expect(postEventToProviders).toHaveBeenCalledWith(
         editCollectedArtwork({ contextOwnerId: "someInternalId", contextOwnerSlug: "someSlug" })
       )
     })

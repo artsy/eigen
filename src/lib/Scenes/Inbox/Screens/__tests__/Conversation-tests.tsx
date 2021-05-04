@@ -11,7 +11,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { Conversation, ConversationFragmentContainer } from "../Conversation"
 import { ConversationDetailsQueryRenderer } from "../ConversationDetails"
 
-jest.unmock("react-tracking")
 jest.unmock("react-relay")
 const mockNavigator = { push: jest.fn() }
 

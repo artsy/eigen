@@ -4,21 +4,19 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { MyCollectionArtworkListItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionContainer } from "../MyCollection"
 import { MyCollectionArtworkFormModal } from "../Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
 
 jest.unmock("react-relay")
-jest.mock("react-tracking")
 
 describe("MyCollection", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const trackEvent = jest.fn()
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionTestsQuery>
       environment={mockEnvironment}
@@ -41,12 +39,6 @@ describe("MyCollection", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    const mockTracking = useTracking as jest.Mock
-    mockTracking.mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
   })
 
   afterEach(() => {
@@ -98,8 +90,8 @@ describe("MyCollection", () => {
       const addArtworkButton = tree.root.findByProps({ "data-test-id": "add-artwork-button-zero-state" })
       addArtworkButton.props.onPress()
 
-      expect(trackEvent).toHaveBeenCalledTimes(1)
-      expect(trackEvent).toHaveBeenCalledWith(addCollectedArtwork())
+      expect(postEventToProviders).toHaveBeenCalledTimes(1)
+      expect(postEventToProviders).toHaveBeenCalledWith(addCollectedArtwork())
     })
   })
 
@@ -125,8 +117,8 @@ describe("MyCollection", () => {
     it("tracks analytics event when Add Artwork is pressed", () => {
       tree.root.findByType(FancyModalHeader).props.onRightButtonPress()
 
-      expect(trackEvent).toHaveBeenCalledTimes(1)
-      expect(trackEvent).toHaveBeenCalledWith(addCollectedArtwork())
+      expect(postEventToProviders).toHaveBeenCalledTimes(1)
+      expect(postEventToProviders).toHaveBeenCalledWith(addCollectedArtwork())
     })
   })
 })

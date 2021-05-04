@@ -6,28 +6,20 @@ import { ArtistSeriesFullArtistSeriesListFragmentContainer } from "lib/Scenes/Ar
 import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 
-jest.mock("react-tracking")
 jest.unmock("react-relay")
 
 describe("Full Artist Series List", () => {
   let env: ReturnType<typeof createMockEnvironment>
-  const trackEvent = jest.fn()
 
   beforeEach(() => {
     env = createMockEnvironment()
-    const mockTracking = useTracking as jest.Mock
-    mockTracking.mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
   })
 
   const TestRenderer = () => (
@@ -78,7 +70,7 @@ describe("Full Artist Series List", () => {
     const wrapper = getWrapper()
     const seriesButton = wrapper.root.findAllByType(ArtistSeriesListItem)[0].findByType(TouchableOpacity)
     seriesButton.props.onPress()
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(postEventToProviders).toHaveBeenCalledWith({
       action: "tappedArtistSeriesGroup",
       context_module: "artistSeriesRail",
       context_screen_owner_type: "allArtistSeries",

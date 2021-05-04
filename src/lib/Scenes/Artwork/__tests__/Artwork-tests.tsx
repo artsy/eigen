@@ -12,12 +12,12 @@ import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { merge } from "lodash"
 import _ from "lodash"
 import React, { Suspense } from "react"
 import { ActivityIndicator, TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { Artwork, ArtworkQueryRenderer } from "../Artwork"
@@ -35,8 +35,6 @@ type ArtworkQueries =
   | "ArtworkBelowTheFoldQuery"
   | "ArtworkMarkAsRecentlyViewedQuery"
   | "ArtworkRefetchQuery"
-
-const trackEvent = jest.fn()
 
 jest.unmock("react-relay")
 
@@ -100,11 +98,6 @@ describe("Artwork", () => {
   beforeEach(() => {
     require("lib/relay/createEnvironment").reset()
     environment = require("lib/relay/createEnvironment").defaultEnvironment
-    ;(useTracking as jest.Mock).mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
   })
 
   afterEach(() => {
@@ -242,7 +235,7 @@ describe("Artwork", () => {
       const artistSeriesButton = tree.root.findByType(ArtistSeriesListItem).findByType(TouchableOpacity)
       act(() => artistSeriesButton.props.onPress())
 
-      expect(trackEvent).toHaveBeenCalledWith({
+      expect(postEventToProviders).toHaveBeenCalledWith({
         action: "tappedArtistSeriesGroup",
         context_module: "moreSeriesByThisArtist",
         context_screen_owner_id: "artwork123",

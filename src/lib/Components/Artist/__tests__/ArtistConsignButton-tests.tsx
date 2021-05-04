@@ -3,12 +3,12 @@ import { navigate } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { cloneDeep } from "lodash"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtistConsignButtonFragmentContainer, tests } from "../ArtistConsignButton"
 
@@ -16,7 +16,6 @@ jest.unmock("react-relay")
 
 describe("ArtistConsignButton", () => {
   let env: ReturnType<typeof createMockEnvironment>
-  const trackEvent = jest.fn()
 
   const TestRenderer = () => (
     <QueryRenderer<ArtistConsignButtonTestsQuery>
@@ -45,15 +44,6 @@ describe("ArtistConsignButton", () => {
 
   beforeEach(() => {
     env = createMockEnvironment()
-    ;(useTracking as jest.Mock).mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
-  })
-
-  afterEach(() => {
-    trackEvent.mockClear()
   })
 
   describe("Top 20 Artist ('Microfunnel') or Target Supply button", () => {
@@ -130,7 +120,7 @@ describe("ArtistConsignButton", () => {
         })
       })
       tree.root.findByType(TouchableOpacity).props.onPress()
-      expect(trackEvent).toHaveBeenCalledWith({
+      expect(postEventToProviders).toHaveBeenCalledWith({
         context_page: "Artist",
         context_page_owner_id: response.artist.internalID,
         context_page_owner_slug: response.artist.slug,
@@ -179,7 +169,7 @@ describe("ArtistConsignButton", () => {
         })
       })
       tree.root.findByType(TouchableOpacity).props.onPress()
-      expect(trackEvent).toHaveBeenCalledWith({
+      expect(postEventToProviders).toHaveBeenCalledWith({
         context_page: "Artist",
         context_page_owner_id: response.artist.internalID,
         context_page_owner_slug: response.artist.slug,

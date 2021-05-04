@@ -11,11 +11,10 @@ import { CardRailCard } from "lib/Components/Home/CardRailCard"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
-import { useTracking } from "react-tracking"
+import { postEventToProviders } from "lib/utils/track/providers"
 import HomeAnalytics from "../../homeAnalytics"
 import { SalesRailFragmentContainer } from "../SalesRail"
 
-const trackEvent = jest.fn()
 const mockScrollRef = jest.fn()
 
 const artworkNode = {
@@ -147,20 +146,12 @@ it("routes to live URL if present, otherwise href", () => {
 })
 
 describe("analytics", () => {
-  beforeEach(() => {
-    ;(useTracking as jest.Mock).mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
-  })
-
   it("tracks auction header taps", () => {
     const tree = renderWithWrappers(
       <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
     )
     tree.root.findByType(SectionTitle as any).props.onPress()
-    expect(trackEvent).toHaveBeenCalledWith(HomeAnalytics.auctionHeaderTapEvent())
+    expect(postEventToProviders).toHaveBeenCalledWith(HomeAnalytics.auctionHeaderTapEvent())
   })
 
   it("tracks auction thumbnail taps", () => {
@@ -169,7 +160,7 @@ describe("analytics", () => {
     )
     const cards = tree.root.findAllByType(CardRailCard)
     cards[0].props.onPress()
-    expect(trackEvent).toHaveBeenCalledWith(
+    expect(postEventToProviders).toHaveBeenCalledWith(
       HomeAnalytics.auctionThumbnailTapEvent("the-sale-internal-id", "the-sales-slug", 0)
     )
   })

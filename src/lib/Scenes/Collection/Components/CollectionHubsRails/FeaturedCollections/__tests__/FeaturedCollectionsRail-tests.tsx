@@ -9,28 +9,20 @@ import {
   ImageWrapper,
 } from "lib/Scenes/Collection/Components/CollectionHubsRails/FeaturedCollections/FeaturedCollectionsRail"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.unmock("react-relay")
-jest.mock("react-tracking")
 
 describe("Featured Collections Rail", () => {
-  const trackEvent = jest.fn()
   let env: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
     env = createMockEnvironment()
-    const mockTracking = useTracking as jest.Mock
-    mockTracking.mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
   })
 
   afterEach(() => {
@@ -89,7 +81,7 @@ describe("Featured Collections Rail", () => {
     const wrapper = getWrapper()
     wrapper.root.findAllByType(TouchableHighlight)[0].props.onPress()
 
-    expect(trackEvent).toBeCalledWith({
+    expect(postEventToProviders).toBeCalledWith({
       action_type: "tappedCollectionGroup",
       context_module: "curatedHighlightsRail",
       context_screen_owner_id: "hub-collection",

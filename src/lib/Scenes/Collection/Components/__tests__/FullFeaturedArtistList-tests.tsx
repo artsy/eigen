@@ -1,5 +1,4 @@
 import { FullFeaturedArtistListTestsQueryRawResponse } from "__generated__/FullFeaturedArtistListTestsQuery.graphql"
-import { mockTracking } from "lib/tests/mockTracking"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { Theme } from "palette"
 import React from "react"
@@ -11,11 +10,11 @@ jest.unmock("react-relay")
 describe("FullFeaturedArtistList", () => {
   const render = (collection: FullFeaturedArtistListTestsQueryRawResponse["marketingCollection"]) =>
     renderRelayTree({
-      Component: mockTracking(({ marketingCollection }) => (
+      Component: ({ marketingCollection }) => (
         <Theme>
           <CollectionFeaturedArtists collection={marketingCollection} />
         </Theme>
-      )),
+      ),
       query: graphql`
         query FullFeaturedArtistListTestsQuery @raw_response_type {
           marketingCollection(slug: "emerging-photographers") {

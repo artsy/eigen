@@ -5,29 +5,21 @@ import {
 import { navigate } from "lib/navigation/navigate"
 import { ArtistSeriesMeta, ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { EntityHeader } from "palette"
 import React from "react"
 import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 
-jest.mock("react-tracking")
 jest.unmock("react-relay")
 
 describe("Artist Series Meta", () => {
   let env: ReturnType<typeof createMockEnvironment>
-  const trackEvent = jest.fn()
 
   beforeEach(() => {
     env = createMockEnvironment()
-    const mockTracking = useTracking as jest.Mock
-    mockTracking.mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
   })
 
   afterEach(() => {
@@ -101,7 +93,7 @@ describe("Artist Series Meta", () => {
     const wrapper = getWrapper()
     const followButton = wrapper.root.findAllByType(EntityHeader)[0].findAllByType(TouchableWithoutFeedback)[0]
     followButton.props.onPress()
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(postEventToProviders).toHaveBeenCalledWith({
       action: "unfollowedArtist",
       context_module: "featuredArtists",
       context_owner_id: "as1234",

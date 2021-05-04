@@ -14,7 +14,6 @@ import { CTAPopUp } from "../CTAPopUp"
 import { OpenInquiryModalButtonQueryRenderer } from "../OpenInquiryModalButton"
 import { ReviewOfferButton } from "../ReviewOfferButton"
 
-jest.unmock("react-tracking")
 jest.unmock("react-relay")
 
 let env: ReturnType<typeof createMockEnvironment>

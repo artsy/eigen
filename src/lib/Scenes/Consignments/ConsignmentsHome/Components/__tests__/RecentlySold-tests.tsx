@@ -1,27 +1,21 @@
-import React from "react"
-import "react-native"
-import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-
 import { RecentlySoldTestsQuery } from "__generated__/RecentlySoldTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { postEventToProviders } from "lib/utils/track/providers"
+import React from "react"
+import "react-native"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { RecentlySoldFragmentContainer } from "../RecentlySold"
 
 jest.unmock("react-relay")
-jest.mock("react-tracking")
 
 describe("RecentlySold", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const trackEvent = jest.fn()
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    ;(useTracking as jest.Mock).mockReturnValue({
-      trackEvent,
-    })
   })
 
   afterEach(() => {
@@ -131,8 +125,8 @@ describe("RecentlySold", () => {
     })
 
     tree.root.findByProps({ "data-test-id": "recently-sold-item" }).props.onPress()
-    expect(trackEvent).toHaveBeenCalledTimes(1)
-    expect(trackEvent).toHaveBeenLastCalledWith(
+    expect(postEventToProviders).toHaveBeenCalledTimes(1)
+    expect(postEventToProviders).toHaveBeenLastCalledWith(
       expect.objectContaining({
         context_module: "artworkRecentlySoldGrid",
         context_screen_owner_type: "sell",

@@ -31,15 +31,6 @@ jest.mock("react-native-screens/native-stack", () => {
 // tslint:disable-next-line:no-var-requires
 require("jest-fetch-mock").enableMocks()
 
-jest.mock("react-tracking")
-import track, { useTracking } from "react-tracking"
-const trackEvent = jest.fn()
-;(track as jest.Mock).mockImplementation(() => (x: any) => x)
-;(useTracking as jest.Mock).mockImplementation(() => {
-  return {
-    trackEvent,
-  }
-})
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
   paymentRequestWithCardForm: jest.fn(),
@@ -153,6 +144,7 @@ mockedModule("./lib/Components/Gene/Header.tsx", "Header")
 
 // Native modules
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
 
@@ -288,7 +280,7 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
   }
 
   beforeEach((done) => {
-    trackEvent.mockClear()
+    ;(postEventToProviders as jest.Mock).mockClear()
     const types: Array<"error" | "warn"> = ["error", "warn"]
     types.forEach((type) => {
       // Don't spy on loggers that have been modified by the current test.
@@ -443,3 +435,5 @@ jest.mock("react-native-config", () => ({
   MAPBOX_API_CLIENT_KEY: "mapbox_api_client_key",
   SAILTHRU_KEY: "sailthru_key",
 }))
+
+jest.mock("react-native-view-shot", () => ({}))
