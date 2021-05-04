@@ -39,6 +39,10 @@ export const renderWithWrappers = (component: ReactElement) => {
   }
 }
 
+/**
+ * Renders a React Component with our page wrappers
+ * @param component
+ */
 export const renderWithWrappersTL = (component: ReactElement) => {
   const root = render(component, { wrapper: Wrappers })
   return {
@@ -52,10 +56,6 @@ const TrackProvider = track()(({ children }: { children: React.ReactNode }) => {
   return <>{children}</>
 })
 
-/**
- * Returns given component wrapped with our page wrappers
- * @param component
- */
 export const Wrappers = ({ children }: { children: React.ReactNode }) => {
   return (
     <TrackProvider>
@@ -70,6 +70,10 @@ export const Wrappers = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
+/**
+ * Returns given component wrapped with our page wrappers
+ * @param component
+ */
 export const componentWithWrappers = (component: ReactElement) => {
   return <Wrappers>{component}</Wrappers>
 }
