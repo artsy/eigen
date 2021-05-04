@@ -11,9 +11,8 @@ import {
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
 import { Schema } from "lib/utils/track"
-import { Box, Flex, Spacer } from "palette"
+import { Box, Spacer } from "palette"
 import React, { useEffect, useState } from "react"
-import { ActivityIndicator } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -174,15 +173,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
             contextScreenOwnerId={artist.internalID}
             contextScreenOwnerSlug={artist.slug}
           />
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            p="3"
-            pb="9"
-            style={{ opacity: relay.isLoading() && relay.hasMore() ? 1 : 0 }}
-          >
-            <ActivityIndicator />
-          </Flex>
         </>
       )
     }
