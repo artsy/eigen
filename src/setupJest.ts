@@ -70,8 +70,8 @@ jest.mock("./lib/NativeModules/Events.tsx", () => ({
   userHadMeaningfulInteraction: jest.fn(),
 }))
 
-jest.mock("lib/utils/track", () => ({
-  ...jest.requireActual("lib/utils/track"),
+jest.mock("lib/utils/track/providers", () => ({
+  ...jest.requireActual("lib/utils/track/providers"),
   postEventToProviders: jest.fn(),
 }))
 
