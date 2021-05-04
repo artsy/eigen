@@ -46,6 +46,7 @@ releases:
       - Fix palette button disabled state on iOS - mounir
       - Fix artwork filter apply button disabled logic - iskounen
       - Fix Filter Artwork title text breaking - mounir
+      - Add loading spinner (iOS) and bottom padding (Android) to artwork grid on partner page - ole
 
   - version: 6.8.3
     date: Apr 14, 2021
