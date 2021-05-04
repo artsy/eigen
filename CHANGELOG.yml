@@ -9,6 +9,7 @@ upcoming:
     - Rename artist about tab to artist overview tab - iskounen
     - Move rails on artist artwork tab to artist overview tab - iskounen
     - Update onboarding screens copy - mounir
+    - Fix billing country field text color and style - ole
 
 releases:
   - version: 6.8.4
@@ -28,7 +29,6 @@ releases:
       - Track notable works rail tap and view all artist series tap on artist page - ole
       - Track filter change on artist series page - ole
       - Add vscode launch config to debug tests in current file - ole
-      - Fix billing country field text color and style - ole
     user_facing:
       - Add forgot password screen in new login - brian
       - Conversation-offer updates to CTA to allow multiple offers - erikdstock
