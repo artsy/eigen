@@ -25,10 +25,13 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   useEffect(() => {
     // We want to animate the background only when the device width is smaller than the image width
     if (screenWidth < imgProps.width) {
+      const imgScale = screenHeight / imgProps.height
+      const imgWidth = imgProps.width * imgScale
+
       Animated.timing(translateX, {
         duration: 20000,
-        toValue: -(imgProps.width - screenWidth),
-        easing: Easing.linear,
+        toValue: -(imgWidth - screenWidth),
+        easing: Easing.inOut(Easing.ease),
       }).start()
     }
 
@@ -58,14 +61,14 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           ],
         }}
       >
-        <Animated.Image
+        <Image
           source={require("@images/WelcomeImage.png")}
           resizeMode="cover"
           style={{
             height: screenHeight,
             overflow: "hidden",
           }}
-        ></Animated.Image>
+        ></Image>
       </Animated.View>
 
       <LinearGradient
