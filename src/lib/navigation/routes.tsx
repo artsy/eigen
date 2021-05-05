@@ -71,19 +71,14 @@ export function replaceParams(url: string, params: any) {
   return url
 }
 
-function liveAuctionRouteMatcher(): RouteMatcher {
-  const liveBaseURL = unsafe__getEnvironment().predictionURL
-  if (Platform.OS === "ios") {
-    return new RouteMatcher("/*", "LiveAuction", (params) => ({ slug: params["*"] }))
-  } else {
-    return webViewRoute("/*", { baseURL: liveBaseURL, requiresGravityAuth: true })
-  }
-}
-
 function getDomainMap(): Record<string, RouteMatcher[] | null> {
-  const liveDotArtsyDotNet: RouteMatcher[] = compact([liveAuctionRouteMatcher()])
-
-  const gravityAuthDotNet: RouteMatcher[] = compact([webViewRoute("/*")])
+  const liveDotArtsyDotNet: RouteMatcher[] = compact([
+    Platform.OS === "ios"
+      ? new RouteMatcher("/*", "LiveAuction", (params) => ({ slug: params["*"] }))
+      : new RouteMatcher("/*", "ReactWebView", (params) => ({
+          url: unsafe__getEnvironment().predictionURL + "/" + params["*"],
+        })),
+  ])
 
   const artsyDotNet: RouteMatcher[] = compact([
     new RouteMatcher("/", "Home"),
@@ -194,8 +189,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     "staging.artsy.net": artsyDotNet,
     "artsy.net": artsyDotNet,
     "www.artsy.net": artsyDotNet,
-    "stagingapi.artsy.net": gravityAuthDotNet,
-    "api.artsy.net": gravityAuthDotNet,
     [parse(unsafe__getEnvironment().webURL).host ?? "artsy.net"]: artsyDotNet,
   }
 

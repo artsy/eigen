@@ -153,25 +153,6 @@ export const getAuthModel = (): AuthModel => ({
         })
       ).json()
 
-      // create a gravity auth session to avoid logging into prediction again
-      const { trust_token } = await (
-        await actions.gravityUnauthenticatedRequest({
-          path: `/api/v1/me/trust_token`,
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-ACCESS-TOKEN": access_token,
-          },
-        })
-      ).json()
-
-      await actions.gravityUnauthenticatedRequest({
-        path: `/users/sign_in?${stringify({ trust_token })}`,
-        headers: {
-          Accept: "text/html",
-        },
-      })
-
       actions.setState({
         userAccessToken: access_token,
         userAccessTokenExpiresIn: expires_in,

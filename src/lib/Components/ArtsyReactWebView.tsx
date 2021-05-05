@@ -15,11 +15,6 @@ import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 export interface ArtsyWebViewConfig {
   title?: string
   /**
-   * baseURL to use for url requests not providing a domain
-   * optional defaults to artsy.net
-   */
-  baseURL?: string
-  /**
    * This makes the back button in the page control the web view's history.
    * Set this to false if you allow inner navigation but do not want the user
    * to be able to go 'back' within some flow, e.g. bnmo.
@@ -29,11 +24,6 @@ export interface ArtsyWebViewConfig {
    * Set this to false if you want all clicked links to be handled by our `navigate` method.
    */
   allowWebViewInnerNavigation?: boolean
-  /**
-   * Web view requires gravity auth
-   * This is the case for live auctions which use gravity oauth
-   */
-  requiresGravityAuth?: boolean
 }
 
 export const ArtsyReactWebViewPage: React.FC<
@@ -41,15 +31,7 @@ export const ArtsyReactWebViewPage: React.FC<
     url: string
     isPresentedModally?: boolean
   } & ArtsyWebViewConfig
-> = ({
-  url,
-  title,
-  isPresentedModally,
-  allowWebViewInnerNavigation = true,
-  mimicBrowserBackButton = true,
-  requiresGravityAuth = false,
-  baseURL,
-}) => {
+> = ({ url, title, isPresentedModally, allowWebViewInnerNavigation = true, mimicBrowserBackButton = true }) => {
   const paddingTop = useScreenDimensions().safeAreaInsets.top
 
   const [canGoBack, setCanGoBack] = useState(false)
@@ -73,8 +55,6 @@ export const ArtsyReactWebViewPage: React.FC<
         <ArtsyReactWebView
           url={url}
           ref={ref}
-          requiresGravityAuth={requiresGravityAuth}
-          baseURL={baseURL}
           allowWebViewInnerNavigation={allowWebViewInnerNavigation}
           onNavigationStateChange={mimicBrowserBackButton ? (ev) => setCanGoBack(ev.canGoBack) : undefined}
         />
@@ -87,29 +67,16 @@ export const ArtsyReactWebView = React.forwardRef<
   WebView,
   {
     url: string
-    baseURL?: string
     allowWebViewInnerNavigation?: boolean
-    requiresGravityAuth?: boolean
     onNavigationStateChange?: WebViewProps["onNavigationStateChange"]
   }
->(({ url, baseURL, allowWebViewInnerNavigation = true, requiresGravityAuth = false, onNavigationStateChange }, ref) => {
+>(({ url, allowWebViewInnerNavigation = true, onNavigationStateChange }, ref) => {
   const userAgent = getCurrentEmissionState().userAgent
 
   const [loadProgress, setLoadProgress] = useState<number | null>(null)
 
-  const { webURL } = useEnvironment()
-
-  if (!baseURL) {
-    baseURL = webURL
-  }
-
-  let uri = url.startsWith("/") ? baseURL + url : url
-
-  // redirect to login, with a valid session
-  // this should automatically redirect back to the initial page
-  if (requiresGravityAuth) {
-    uri = uri + `/login`
-  }
+  const webURL = useEnvironment().webURL
+  const uri = url.startsWith("/") ? webURL + url : url
 
   return (
     <View style={{ flex: 1 }}>
@@ -188,7 +155,7 @@ export function useWebViewCookies() {
   )
   const { webURL, predictionURL } = useEnvironment()
   useUrlCookies(webURL, accesstoken)
-  useUrlCookies(predictionURL, accesstoken)
+  useUrlCookies(predictionURL + "/login", accesstoken)
 }
 
 function useUrlCookies(url: string, accessToken: string | null) {
