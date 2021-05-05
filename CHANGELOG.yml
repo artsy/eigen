@@ -4,22 +4,6 @@ upcoming:
   dev:
     -
   user_facing:
-    - Use toolbar style modal headers in consignments flow - brian
-    - Add Onboarding welcome screen - mounir
-    - Use standard Select component in consignments and bid flows - david
-    - Add splash screen to android - mounir
-    - Support change system navigation bar color on android - mounir
-    - Add ability for one modal to replace another and use it in inquiry checkout flow - erik, david
-    - Fix message ordering in Inbox - starsirius
-    - Converts multi-select filters to use checkboxes instead of toggles - damon
-    - Add modal replacement api to android app - erik, david
-    - Fix conversation scrolling while supporting dismissing keyboard - starsirius
-    - Updates filter styling - damon
-    - Hide push notifications section in settings for Android - ole
-    - Rename the category filter to medium - iskounen
-    - Suppress artwork deep-zoom taps on Android - pepopowitz
-    - Add forgot password screen in new login - brian
-    - Conversation-offer updates to CTA to allow multiple offers - erikdstock
     - Combine gallery and institution artwork filters - mdole
     - Remove old login from android - adam, barry, david, jonathan, mounir, pavlos
     - Allows multi-select filters to be searchable - damon
