@@ -1092,3 +1092,7 @@
 //     bidders: [{ qualified_for_bidding: true }],
 //   },
 // } as any
+
+it("does nothing", () => {
+  expect(true).toBeTruthy()
+})

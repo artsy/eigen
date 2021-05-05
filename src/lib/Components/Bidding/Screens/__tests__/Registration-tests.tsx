@@ -814,3 +814,7 @@
 // } as any
 
 // const initialPropsForUserWithoutCreditCard = { ...initialProps, me } as any
+
+it("does nothing", () => {
+  expect(true).toBeTruthy()
+})
