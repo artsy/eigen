@@ -97,11 +97,6 @@ export const features = defineFeatures({
     description: "Use improved artwork filters",
     showInAdminMenu: true,
   },
-  ARUseNewOnboarding: {
-    readyForRelease: false,
-    description: "Use new onboarding",
-    showInAdminMenu: true,
-  },
 })
 
 export interface DevToggleDescriptor {
