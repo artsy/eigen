@@ -41,6 +41,10 @@ const Main: React.FC<{}> = track()(({}) => {
       setTimeout(() => {
         RNBootSplash.hide()
         ArtsyNativeModule.setAppStyling()
+        if (isLoggedIn) {
+          ArtsyNativeModule.setNavigationBarColor("#FFFFFF")
+          ArtsyNativeModule.setAppLightContrast(false)
+        }
       }, 500)
     }
   }, [isHydrated])

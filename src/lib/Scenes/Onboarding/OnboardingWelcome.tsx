@@ -1,5 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { useAnimatedValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
+import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { color, Flex, space, Spacer, Text, Touchable } from "palette"
 import React, { useEffect } from "react"
@@ -46,6 +47,26 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
       }).start()
     }, 1000)
   }, [])
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("blur", () => {
+      requestAnimationFrame(() => {
+        ArtsyNativeModule.setNavigationBarColor("#FFFFFF")
+        ArtsyNativeModule.setAppLightContrast(false)
+      })
+    })
+    return unsubscribe
+  }, [navigation])
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      requestAnimationFrame(() => {
+        ArtsyNativeModule.setNavigationBarColor("#000000")
+        ArtsyNativeModule.setAppLightContrast(true)
+      })
+    })
+    return unsubscribe
+  }, [navigation])
 
   return (
     <Flex flex={1} removeClippedSubviews={false}>

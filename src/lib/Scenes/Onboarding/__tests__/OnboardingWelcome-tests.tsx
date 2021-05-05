@@ -7,6 +7,7 @@ const navigateMock = jest.fn()
 
 const navigationPropsMock = {
   navigate: navigateMock,
+  addListener: jest.fn(),
 }
 
 describe("OnboardingWelcome", () => {
