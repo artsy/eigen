@@ -7,8 +7,8 @@ import { defaultRules, renderMarkdown } from "../renderMarkdown"
 
 import { readFileSync } from "fs"
 import { navigate } from "lib/navigation/navigate"
-import { join } from "path"
 import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
+import { join } from "path"
 
 describe("renderMarkdown", () => {
   it("returns markdown for a simple string", () => {

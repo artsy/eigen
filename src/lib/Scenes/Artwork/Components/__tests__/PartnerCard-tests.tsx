@@ -2,12 +2,12 @@ import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardTestsQueryRawResponse } from "__generated__/PartnerCardTestsQuery.graphql"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button, Sans } from "palette"
 import React from "react"
 import { Image } from "react-native"
 import { graphql, RelayProp } from "react-relay"
 import { PartnerCard, PartnerCardFragmentContainer } from "../PartnerCard"
-import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 
 jest.unmock("react-relay")
 

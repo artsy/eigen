@@ -6,8 +6,8 @@ import { Header } from "../OtherWorks/Header"
 import { OtherWorksFragmentContainer as OtherWorks } from "../OtherWorks/OtherWorks"
 
 import { navigate } from "lib/navigation/navigate"
-import { TouchableWithoutFeedback } from "react-native"
 import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
+import { TouchableWithoutFeedback } from "react-native"
 
 describe("OtherWorks", () => {
   it("renders no grids if there are none provided", () => {

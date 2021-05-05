@@ -1,6 +1,6 @@
 import { Screen } from "@artsy/cohesion"
-import _track, { Track as _Track, TrackingInfo, useTracking } from "react-tracking"
 import React, { useEffect } from "react"
+import _track, { Track as _Track, TrackingInfo, useTracking } from "react-tracking"
 import { _addTrackingProvider, postEventToProviders, TrackingProvider } from "./providers"
 // The schema definition for analytics tracking lives inside `./schema`, not here.
 import * as Schema from "./schema"

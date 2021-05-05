@@ -63,6 +63,7 @@ export const componentWithWrappers = (component: ReactElement) => {
  * @param component
  * @deprecated Prefer `renderWithWrappersTL`.
  */
+// tslint:disable-next-line:variable-name
 export const __deprecated_mountWithWrappers = (component: ReactElement) => {
   return mount(componentWithWrappers(component))
 }

@@ -1,4 +1,4 @@
-import { renderWithWrappers, __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
+import { __deprecated_mountWithWrappers, renderWithWrappers } from "lib/tests/renderWithWrappers"
 import moment from "moment"
 import { Sans } from "palette"
 import React from "react"

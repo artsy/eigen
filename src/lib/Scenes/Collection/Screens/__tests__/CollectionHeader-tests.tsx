@@ -2,12 +2,12 @@ import { CollectionHeaderTestsQueryRawResponse } from "__generated__/CollectionH
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "lib/Components/ReadMore"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import { Sans } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
 import { CollectionFixture } from "../../Components/__fixtures__/CollectionFixture"
 import { CollectionHeader, CollectionHeaderContainer } from "../CollectionHeader"
-import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 
 jest.unmock("react-relay")
 

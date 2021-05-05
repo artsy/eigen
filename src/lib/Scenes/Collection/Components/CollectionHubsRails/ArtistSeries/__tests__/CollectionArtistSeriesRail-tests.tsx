@@ -19,7 +19,7 @@ import {
   CollectionArtistSeriesRail,
   CollectionArtistSeriesRailContainer,
 } from "lib/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
-import { renderWithWrappers, __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
+import { __deprecated_mountWithWrappers, renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { postEventToProviders } from "lib/utils/track/providers"
 import { Sans } from "palette"
 

@@ -2,11 +2,11 @@ import { FollowArtistButtonTestsErrorQueryRawResponse } from "__generated__/Foll
 import { FollowArtistButtonTestsQueryRawResponse } from "__generated__/FollowArtistButtonTestsQuery.graphql"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, RelayProp } from "react-relay"
 import { FollowArtistButton, FollowArtistButtonFragmentContainer } from "../FollowArtistButton"
-import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 
 jest.unmock("react-relay")
 

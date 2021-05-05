@@ -2,10 +2,10 @@ import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { ArtworkTombstone } from "../ArtworkTombstone"
-import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 
 describe("ArtworkTombstone", () => {
   it("renders fields correctly", () => {

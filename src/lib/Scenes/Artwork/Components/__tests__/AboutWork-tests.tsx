@@ -10,8 +10,8 @@ jest.mock("lib/utils/hardware", () => ({
   truncatedTextLimit: jest.fn(),
 }))
 
-import { truncatedTextLimit } from "lib/utils/hardware"
 import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
+import { truncatedTextLimit } from "lib/utils/hardware"
 
 describe("AboutWork", () => {
   beforeEach(() => {

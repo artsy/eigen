@@ -1,6 +1,6 @@
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Countdown } from "lib/Components/Bidding/Components/Timer"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import "moment-timezone"
 import { color, Sans } from "palette"
 import React from "react"
@@ -11,7 +11,6 @@ import { BuyNowButton } from "../CommercialButtons/BuyNowButton"
 import { CommercialButtons } from "../CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformation } from "../CommercialEditionSetInformation"
 import { CommercialInformationTimerWrapper, SaleAvailability } from "../CommercialInformation"
-import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 
 describe("CommercialInformation", () => {
   it("renders all information when the data is present", () => {
