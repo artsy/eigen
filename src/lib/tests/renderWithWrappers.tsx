@@ -54,9 +54,7 @@ export const renderWithWrappers = (component: ReactElement) => {
     }
   }
 }
-export const componentWithWrappers = (component: ReactElement) => {
-  return <Wrappers>{component}</Wrappers>
-}
+export const componentWithWrappers = (component: ReactElement) => <Wrappers>{component}</Wrappers>
 
 /**
  * Mounts a React Component with our wrappers.
