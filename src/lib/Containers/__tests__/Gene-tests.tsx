@@ -15,7 +15,7 @@ const exampleProps = {
   gene: { filtered_artworks: { aggregations: [] } },
 }
 
-describe("state", () => {
+describe.skip("state", () => {
   it("sets up the initial state", () => {
     const gene = new Gene({
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -84,7 +84,7 @@ describe("state", () => {
   })
 })
 
-describe("handling price ranges", () => {
+describe.skip("handling price ranges", () => {
   let gene: Gene
 
   beforeEach(() => {

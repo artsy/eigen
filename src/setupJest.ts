@@ -37,9 +37,6 @@ jest.mock("tipsi-stripe", () => ({
   createTokenWithCard: jest.fn(),
 }))
 
-// Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
-jest.mock("react-tracking/build/dispatchTrackingEvent")
-
 jest.mock("@react-native-community/netinfo", () => {
   return {
     fetch: jest.fn(() =>

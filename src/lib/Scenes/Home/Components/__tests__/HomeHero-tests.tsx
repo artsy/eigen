@@ -9,8 +9,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { HomeHeroContainer } from "../HomeHero"
 
-jest.mock("react-tracking")
-
 jest.unmock("react-relay")
 describe("HomeHero", () => {
   let environment = createMockEnvironment()
