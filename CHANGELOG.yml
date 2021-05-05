@@ -14,6 +14,7 @@ upcoming:
     - Show loading spinner in all infinite scroll artowrk grids - ole
     - Fix missing bottom space on the Partner Artworks screen - ole
     - Animate welcome screen - mounir
+    - Add fading screen transition when transitioning from sign up to login
 
 releases:
   - version: 6.8.4
