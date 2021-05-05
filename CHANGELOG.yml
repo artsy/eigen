@@ -32,6 +32,7 @@ upcoming:
     - Suppress artwork deep-zoom taps on Android - pepopowitz
     - Add forgot password screen in new login - brian
     - Conversation-offer updates to CTA to allow multiple offers - erikdstock
+    - Show live auctions in webview on Android - brian
 
 releases:
   - version: 6.8.2
