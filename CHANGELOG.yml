@@ -16,6 +16,7 @@ upcoming:
     - Fix missing bottom space on the Partner Artworks screen - ole
     - Animate welcome screen - mounir
     - Add fading screen transition when transitioning from sign up to login
+    - Add onboarding personalization screen - mounir
 
 releases:
   - version: 6.8.4
