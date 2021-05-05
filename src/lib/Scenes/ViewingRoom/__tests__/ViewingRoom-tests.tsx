@@ -3,11 +3,11 @@ import { AnimatedBottomButton } from "lib/Components/AnimatedBottomButton"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ViewingRoomArtworkRailContainer } from "../Components/ViewingRoomArtworkRail"
 import { ViewingRoomSubsections } from "../Components/ViewingRoomSubsections"
@@ -108,7 +108,7 @@ describe("ViewingRoom", () => {
       })
 
       expect(tree.root.findAllByType(AnimatedBottomButton)[0].props.isVisible).toBe(true)
-      expect(useTracking().trackEvent).toHaveBeenCalledWith(
+      expect(postEventToProviders).toHaveBeenCalledWith(
         tracks.bodyImpression("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name")
       )
     })

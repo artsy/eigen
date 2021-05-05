@@ -5,9 +5,9 @@ import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { tracks, ViewingRoomArtworkRailContainer } from "../ViewingRoomArtworkRail"
 
@@ -55,7 +55,7 @@ describe("ViewingRoomArtworkRail", () => {
     tree.root.findByType(SectionTitle).props.onPress()
 
     expect(navigate).toHaveBeenCalledWith("/viewing-room/gallery-name-viewing-room-name/artworks")
-    expect(useTracking().trackEvent).toHaveBeenCalledWith(
+    expect(postEventToProviders).toHaveBeenCalledWith(
       tracks.tappedArtworkGroupHeader("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name")
     )
   })

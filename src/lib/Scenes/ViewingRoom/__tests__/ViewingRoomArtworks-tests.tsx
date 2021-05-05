@@ -4,11 +4,11 @@ import { extractText } from "lib/tests/extractText"
 import { mockEdges, mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { Touchable } from "palette"
 import React from "react"
 import { FlatList, TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { tracks, ViewingRoomArtworksContainer } from "../ViewingRoomArtworks"
 
@@ -69,7 +69,7 @@ describe("ViewingRoom", () => {
 
     expect(navigate).toHaveBeenCalledWith("/viewing-room/slug-1/artworksConnection.slug-1")
 
-    expect(useTracking().trackEvent).toHaveBeenCalledWith({
+    expect(postEventToProviders).toHaveBeenCalledWith({
       ...tracks.context("internalID-1", "slug-1"),
       ...tracks.tappedArtworkGroup(
         "internalID-1",

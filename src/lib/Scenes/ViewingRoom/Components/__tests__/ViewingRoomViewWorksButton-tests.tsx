@@ -2,10 +2,10 @@ import { ViewingRoomViewWorksButtonTestsQuery } from "__generated__/ViewingRoomV
 import { navigate } from "lib/navigation/navigate"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { tracks, ViewingRoomViewWorksButtonContainer } from "../ViewingRoomViewWorksButton"
 
@@ -48,7 +48,7 @@ describe("ViewingRoomViewWorksButton", () => {
 
     expect(navigate).toHaveBeenCalledWith("/viewing-room/gallery-name-viewing-room-name/artworks")
 
-    expect(useTracking().trackEvent).toHaveBeenCalledWith(
+    expect(postEventToProviders).toHaveBeenCalledWith(
       tracks.tappedViewWorksButton("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name")
     )
   })

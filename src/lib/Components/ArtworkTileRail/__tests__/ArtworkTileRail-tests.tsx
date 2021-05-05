@@ -2,9 +2,9 @@ import { ArtworkTileRailTestsQuery } from "__generated__/ArtworkTileRailTestsQue
 import { navigate } from "lib/navigation/navigate"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Schema } from "lib/utils/track"
+import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ArtworkTileRail, tappedArtworkGroupThumbnail } from "../ArtworkTileRail"
 import { ArtworkTileRailCard } from "../ArtworkTileRailCard"
@@ -68,7 +68,7 @@ describe("ArtworkTileRail", () => {
     tree.root.findByType(ArtworkTileRailCard).props.onPress()
 
     expect(navigate).toHaveBeenCalledWith("/artwork/nicolas-party-rocks-ii")
-    expect(useTracking().trackEvent).toHaveBeenCalledWith(
+    expect(postEventToProviders).toHaveBeenCalledWith(
       tappedArtworkGroupThumbnail(
         Schema.ContextModules.ViewingRoomArtworkRail,
         "5deff4b96fz7e7000f36ce37",
