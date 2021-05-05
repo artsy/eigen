@@ -24,7 +24,7 @@ import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
-import { HomeHeroContainer, HomeHeroPlaceholder } from "./Components/HomeHero"
+import { HomeHeroContainer } from "./Components/HomeHero"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProps {
@@ -245,7 +245,6 @@ const HomePlaceholder: React.FC<{}> = () => {
             <ArtsyLogoIcon scale={0.75} />
           </Flex>
         </Box>
-        <HomeHeroPlaceholder />
 
         {
           // Small tiles to mimic the artwork rails
