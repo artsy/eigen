@@ -1,16 +1,16 @@
 import { OwnerType } from "@artsy/cohesion"
 import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_collection.graphql"
+import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { get } from "lib/utils/get"
 import { Schema } from "lib/utils/track"
 import { Box, Separator } from "palette"
-import React, { useContext, useEffect } from "react"
+import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { ArtworkFilterContext } from "../../../utils/ArtworkFilter/ArtworkFiltersStore"
-import { filterArtworksParams } from "../../../utils/ArtworkFilter/FilterArtworksHelpers"
 
 interface CollectionArtworksProps {
   collection: CollectionArtworks_collection
@@ -25,11 +25,15 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
   const { isDepartment } = collection
   const artworks = get(collection, (p) => p.collectionArtworks)
   const artworksTotal = artworks?.counts?.total
-  const { state, dispatch } = useContext(ArtworkFilterContext)
-  const filterParams = filterArtworksParams(state.appliedFilters)
+
+  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+
+  const filterParams = filterArtworksParams(appliedFilters)
 
   useEffect(() => {
-    if (state.applyFilters) {
+    if (applyFilters) {
       scrollToTop()
 
       relay.refetchConnection(
@@ -42,13 +46,10 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
         filterParams
       )
     }
-  }, [state.appliedFilters])
+  }, [appliedFilters])
 
   useEffect(() => {
-    dispatch({
-      type: "setAggregations",
-      payload: collection.collectionArtworks!.aggregations,
-    })
+    setAggregationsAction(collection.collectionArtworks!.aggregations)
   }, [])
 
   const trackClear = (id: string, slug: string) => {
@@ -107,6 +108,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         color: { type: "String" }
         colors: { type: "[String]" }
         partnerID: { type: "ID" }
+        partnerIDs: { type: "[String]" }
         dimensionRange: { type: "String", defaultValue: "*-*" }
         majorPeriods: { type: "[String]" }
         acquireable: { type: "Boolean" }
@@ -127,13 +129,14 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
           color: $color
           colors: $colors
           partnerID: $partnerID
+          partnerIDs: $partnerIDs
           dimensionRange: $dimensionRange
           majorPeriods: $majorPeriods
           acquireable: $acquireable
           inquireableOnly: $inquireableOnly
           atAuction: $atAuction
           offerable: $offerable
-          aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
+          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
           attributionClass: $attributionClass
         ) @connection(key: "Collection_collectionArtworks") {
           aggregations {
@@ -180,6 +183,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         $color: String
         $colors: [String]
         $partnerID: ID
+        $partnerIDs: [String]
         $dimensionRange: String
         $majorPeriods: [String]
         $acquireable: Boolean
@@ -198,6 +202,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
               color: $color
               colors: $colors
               partnerID: $partnerID
+              partnerIDs: $partnerIDs
               priceRange: $priceRange
               dimensionRange: $dimensionRange
               majorPeriods: $majorPeriods

@@ -1,15 +1,15 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistSeriesArtworks_artistSeries } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
+import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ARTIST_SERIES_PAGE_SIZE } from "lib/data/constants"
-import { ArtworkFilterContext } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
 import { Box, Separator, Spacer } from "palette"
-import React, { useContext, useEffect } from "react"
+import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { filterArtworksParams } from "../../utils/ArtworkFilter/FilterArtworksHelpers"
 
 interface ArtistSeriesArtworksProps {
   artistSeries: ArtistSeriesArtworks_artistSeries
@@ -19,9 +19,12 @@ interface ArtistSeriesArtworksProps {
 const PAGE_SIZE = 20
 
 export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ artistSeries, relay }) => {
-  const { dispatch, state } = useContext(ArtworkFilterContext)
+  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+
   const tracking = useTracking()
-  const filterParams = filterArtworksParams(state.appliedFilters)
+  const filterParams = filterArtworksParams(appliedFilters)
 
   const artworks = artistSeries?.artistSeriesArtworks!
 
@@ -37,7 +40,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
   }
 
   useEffect(() => {
-    if (state.applyFilters) {
+    if (applyFilters) {
       relay.refetchConnection(
         PAGE_SIZE,
         (error) => {
@@ -48,13 +51,10 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
         filterParams
       )
     }
-  }, [state.appliedFilters])
+  }, [appliedFilters])
 
   useEffect(() => {
-    dispatch({
-      type: "setAggregations",
-      payload: artworks?.aggregations,
-    })
+    setAggregationsAction(artworks?.aggregations)
   }, [])
 
   if ((artworks?.counts?.total ?? 0) === 0) {
@@ -98,6 +98,7 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
         color: { type: "String" }
         colors: { type: "[String]" }
         partnerID: { type: "ID" }
+        partnerIDs: { type: "[String]" }
         dimensionRange: { type: "String", defaultValue: "*-*" }
         majorPeriods: { type: "[String]" }
         acquireable: { type: "Boolean" }
@@ -117,13 +118,14 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
           color: $color
           colors: $colors
           partnerID: $partnerID
+          partnerIDs: $partnerIDs
           dimensionRange: $dimensionRange
           majorPeriods: $majorPeriods
           acquireable: $acquireable
           inquireableOnly: $inquireableOnly
           atAuction: $atAuction
           offerable: $offerable
-          aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
+          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
           attributionClass: $attributionClass
         ) @connection(key: "ArtistSeries_artistSeriesArtworks") {
           aggregations {
@@ -178,6 +180,7 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
         $color: String
         $colors: [String]
         $partnerID: ID
+        $partnerIDs: [String]
         $dimensionRange: String
         $majorPeriods: [String]
         $acquireable: Boolean
@@ -196,6 +199,7 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
               color: $color
               colors: $colors
               partnerID: $partnerID
+              partnerIDs: $partnerIDs
               priceRange: $priceRange
               dimensionRange: $dimensionRange
               majorPeriods: $majorPeriods

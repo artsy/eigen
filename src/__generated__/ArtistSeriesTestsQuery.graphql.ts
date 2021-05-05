@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b40e419bf46b2d768b797f99b48b5b0c */
+/* @relayHash b5f53fead7d6ec8dd64b09aab64084e6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,7 +28,7 @@ query ArtistSeriesTestsQuery {
 fragment ArtistSeriesArtworks_artistSeries on ArtistSeries {
   slug
   internalID
-  artistSeriesArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  artistSeriesArtworks: filterArtworksConnection(first: 20, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -81,6 +81,7 @@ fragment ArtistSeriesMeta_artistSeries on ArtistSeries {
 
 fragment ArtistSeriesMoreSeries_artist on Artist {
   internalID
+  slug
   artistSeriesConnection(first: 4) {
     totalCount
     edges {
@@ -249,8 +250,7 @@ v8 = [
     "value": [
       "COLOR",
       "DIMENSION_RANGE",
-      "GALLERY",
-      "INSTITUTION",
+      "PARTNER",
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE"
@@ -775,7 +775,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"GALLERY\",\"INSTITUTION\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:20,sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:20,sort:\"-decayed_merch\")"
           },
           {
             "alias": "artistSeriesArtworks",
@@ -787,6 +787,7 @@ return {
               "color",
               "colors",
               "partnerID",
+              "partnerIDs",
               "dimensionRange",
               "majorPeriods",
               "acquireable",
@@ -810,6 +811,7 @@ return {
             "plural": true,
             "selections": [
               (v1/*: any*/),
+              (v2/*: any*/),
               {
                 "alias": null,
                 "args": [
@@ -884,7 +886,7 @@ return {
     ]
   },
   "params": {
-    "id": "b40e419bf46b2d768b797f99b48b5b0c",
+    "id": "b5f53fead7d6ec8dd64b09aab64084e6",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artistSeries": (v10/*: any*/),
@@ -912,6 +914,7 @@ return {
         "artistSeries.artist.artistSeriesConnection.totalCount": (v17/*: any*/),
         "artistSeries.artist.id": (v15/*: any*/),
         "artistSeries.artist.internalID": (v15/*: any*/),
+        "artistSeries.artist.slug": (v15/*: any*/),
         "artistSeries.artistIDs": {
           "enumValues": null,
           "nullable": false,

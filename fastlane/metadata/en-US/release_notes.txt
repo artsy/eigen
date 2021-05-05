@@ -1,6 +1,6 @@
 This update includes a number of improvements and bug fixes, including:
 
-- Fix message ordering bug
-- Various updates to artwork filters
+- Artwork filters improvements
+- Fix bug that caused some artist screens to not load
 
 Have feedback? Email us at support@artsy.net

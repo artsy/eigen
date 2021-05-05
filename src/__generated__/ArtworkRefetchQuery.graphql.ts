@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 74a699fb4ad3276cb33d747e4f6c0cef */
+/* @relayHash 65cb8d56901bce81322fbd0c21618f26 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -65,6 +65,7 @@ fragment ArtistListItem_artist on Artist {
 
 fragment ArtistSeriesMoreSeries_artist on Artist {
   internalID
+  slug
   artistSeriesConnection(first: 4) {
     totalCount
     edges {
@@ -1791,7 +1792,8 @@ return {
                 ],
                 "storageKey": "artistSeriesConnection(first:4)"
               },
-              (v3/*: any*/)
+              (v3/*: any*/),
+              (v4/*: any*/)
             ],
             "storageKey": null
           },
@@ -2361,7 +2363,7 @@ return {
     ]
   },
   "params": {
-    "id": "74a699fb4ad3276cb33d747e4f6c0cef",
+    "id": "65cb8d56901bce81322fbd0c21618f26",
     "metadata": {},
     "name": "ArtworkRefetchQuery",
     "operationKind": "query",

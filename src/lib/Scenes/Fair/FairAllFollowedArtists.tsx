@@ -1,15 +1,10 @@
 import { FairAllFollowedArtists_fair } from "__generated__/FairAllFollowedArtists_fair.graphql"
 import { FairAllFollowedArtists_fairForFilters } from "__generated__/FairAllFollowedArtists_fairForFilters.graphql"
 import { FairAllFollowedArtistsQuery } from "__generated__/FairAllFollowedArtistsQuery.graphql"
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
+import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
+import { Aggregations, FilterArray, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import {
-  Aggregations,
-  ArtworkFilterContext,
-  ArtworkFilterGlobalStateProvider,
-  FilterArray,
-} from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { FilterParamName } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Box, Flex, Separator, Spacer, Text, Theme } from "palette"
@@ -38,42 +33,36 @@ export const FairAllFollowedArtists: React.FC<FairAllFollowedArtistsProps> = ({ 
   ]
 
   return (
-    <ArtworkFilterGlobalStateProvider>
-      <ArtworkFilterContext.Consumer>
-        {() => {
-          return (
-            <Theme>
-              <>
-                <ScrollView>
-                  <Text mt={2} mb={1} textAlign="center" variant="mediumText">
-                    Artworks
-                  </Text>
-                  <Separator />
-                  <Spacer mb={2} />
-                  <Box px="15px">
-                    <FairArtworksFragmentContainer
-                      fair={fair}
-                      initiallyAppliedFilter={initialFilter}
-                      aggregations={fairForFilters.filterArtworksConnection?.aggregations as Aggregations}
-                      followedArtistCount={fairForFilters.filterArtworksConnection?.counts?.followedArtists}
-                    />
-                    <FilterModalNavigator
-                      isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-                      id={fair.internalID}
-                      slug={fair.slug}
-                      mode={FilterModalMode.Fair}
-                      exitModal={handleFilterArtworksModal}
-                      closeModal={handleFilterArtworksModal}
-                    />
-                  </Box>
-                </ScrollView>
-                <AnimatedArtworkFilterButton isVisible onPress={handleFilterArtworksModal} />
-              </>
-            </Theme>
-          )
-        }}
-      </ArtworkFilterContext.Consumer>
-    </ArtworkFilterGlobalStateProvider>
+    <ArtworkFiltersStoreProvider>
+      <Theme>
+        <>
+          <ScrollView>
+            <Text mt={2} mb={1} textAlign="center" variant="mediumText">
+              Artworks
+            </Text>
+            <Separator />
+            <Spacer mb={2} />
+            <Box px="15px">
+              <FairArtworksFragmentContainer
+                fair={fair}
+                initiallyAppliedFilter={initialFilter}
+                aggregations={fairForFilters.filterArtworksConnection?.aggregations as Aggregations}
+                followedArtistCount={fairForFilters.filterArtworksConnection?.counts?.followedArtists}
+              />
+              <ArtworkFilterNavigator
+                isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+                id={fair.internalID}
+                slug={fair.slug}
+                mode={FilterModalMode.Fair}
+                exitModal={handleFilterArtworksModal}
+                closeModal={handleFilterArtworksModal}
+              />
+            </Box>
+          </ScrollView>
+          <AnimatedArtworkFilterButton isVisible onPress={handleFilterArtworksModal} />
+        </>
+      </Theme>
+    </ArtworkFiltersStoreProvider>
   )
 }
 
@@ -97,17 +86,7 @@ export const FairAllFollowedArtistsFragmentContainer = createFragmentContainer(F
     fragment FairAllFollowedArtists_fairForFilters on Fair {
       filterArtworksConnection(
         first: 0
-        aggregations: [
-          COLOR
-          DIMENSION_RANGE
-          GALLERY
-          INSTITUTION
-          MAJOR_PERIOD
-          MEDIUM
-          PRICE_RANGE
-          FOLLOWED_ARTISTS
-          ARTIST
-        ]
+        aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]
       ) {
         aggregations {
           slice

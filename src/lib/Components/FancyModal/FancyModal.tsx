@@ -42,7 +42,7 @@ export const FancyModal: React.FC<{
           up to the maximum 'top' value, and then add padding if the keyboard comes up any more.
           I'd imagine it would have an API like <FancyKeyboardAvoding height={sheetHeighht} maxHeight={screenHeight - (top + 10)}>
       */
-      <ArtsyKeyboardAvoidingViewContext.Provider value={{ isPresentedModally: true, isVisible: true }}>
+      <ArtsyKeyboardAvoidingViewContext.Provider value={{ isPresentedModally: true, isVisible: true, bottomOffset: 0 }}>
         <ArtsyKeyboardAvoidingView>{children}</ArtsyKeyboardAvoidingView>
       </ArtsyKeyboardAvoidingViewContext.Provider>
     ) : null,
@@ -67,7 +67,13 @@ export const FancyModal: React.FC<{
   }, [visible])
 
   return (
-    <Modal transparent animated={false} visible={showingUnderlyingModal} statusBarTranslucent>
+    <Modal
+      transparent
+      animated={false}
+      visible={showingUnderlyingModal}
+      statusBarTranslucent
+      onRequestClose={onBackgroundPressed}
+    >
       <FancyModalContext.Provider value={context.nextLevel()}>{card.jsx}</FancyModalContext.Provider>
     </Modal>
   )

@@ -23,6 +23,7 @@ export interface AuthModel {
   getXAppToken: Thunk<AuthModel, void, {}, GlobalStoreModel, Promise<string>>
   userExists: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel>
   signIn: Thunk<AuthModel, { email: string; password: string }, {}, GlobalStoreModel, Promise<boolean>>
+  signUp: Thunk<AuthModel, { email: string; password: string; name: string }, {}, GlobalStoreModel, Promise<boolean>>
   forgotPassword: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel, Promise<boolean>>
   gravityUnauthenticatedRequest: Thunk<
     this,
@@ -68,7 +69,11 @@ export const getAuthModel = (): AuthModel => ({
       client_id: Config.ARTSY_API_CLIENT_KEY,
       client_secret: Config.ARTSY_API_CLIENT_SECRET,
     })}`
-    const result = await fetch(tokenURL)
+    const result = await fetch(tokenURL, {
+      headers: {
+        "User-Agent": context.getStoreState().native.sessionState.userAgent,
+      },
+    })
     // TODO: check status
     const json = (await result.json()) as {
       xapp_token: string
@@ -92,6 +97,7 @@ export const getAuthModel = (): AuthModel => ({
       headers: {
         "X-Xapp-Token": xAppToken,
         Accept: "application/json",
+        "User-Agent": context.getStoreState().native.sessionState.userAgent,
         ...payload.headers,
       },
       body: payload.body ? JSON.stringify(payload.body) : undefined,
@@ -163,6 +169,29 @@ export const getAuthModel = (): AuthModel => ({
       return true
     }
 
+    return false
+  }),
+  signUp: thunk(async (actions, { email, password, name }) => {
+    const result = await actions.gravityUnauthenticatedRequest({
+      path: `/api/v1/user`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        email,
+        password,
+        name,
+        agreed_to_receive_emails: true,
+        accepted_terms_of_service: true,
+      },
+    })
+
+    // The user account has been successfully created
+    if (result.status === 201) {
+      await actions.signIn({ email, password })
+      return true
+    }
     return false
   }),
 })

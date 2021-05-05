@@ -23,19 +23,11 @@ export type ArtistArtworks_artist = {
                 readonly id: string;
             } | null;
         } | null> | null;
+        readonly counts: {
+            readonly total: number | null;
+        } | null;
         readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
     } | null;
-    readonly iconicCollections: ReadonlyArray<{
-        readonly " $fragmentRefs": FragmentRefs<"ArtistCollectionsRail_collections">;
-    } | null> | null;
-    readonly notableWorks: {
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly id: string;
-            } | null;
-        } | null> | null;
-    } | null;
-    readonly " $fragmentRefs": FragmentRefs<"ArtistCollectionsRail_artist" | "ArtistNotableWorksRail_artist" | "ArtistSeriesMoreSeries_artist">;
     readonly " $refType": "ArtistArtworks_artist";
 };
 export type ArtistArtworks_artist$data = ArtistArtworks_artist;
@@ -124,6 +116,11 @@ return {
     {
       "defaultValue": null,
       "kind": "LocalArgument",
+      "name": "partnerIDs"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
       "name": "priceRange"
     },
     {
@@ -181,8 +178,7 @@ return {
           "value": [
             "COLOR",
             "DIMENSION_RANGE",
-            "GALLERY",
-            "INSTITUTION",
+            "PARTNER",
             "MAJOR_PERIOD",
             "MEDIUM",
             "PRICE_RANGE"
@@ -232,6 +228,11 @@ return {
           "kind": "Variable",
           "name": "partnerID",
           "variableName": "partnerID"
+        },
+        {
+          "kind": "Variable",
+          "name": "partnerIDs",
+          "variableName": "partnerIDs"
         },
         {
           "kind": "Variable",
@@ -339,6 +340,24 @@ return {
         {
           "alias": null,
           "args": null,
+          "concreteType": "FilterArtworksCounts",
+          "kind": "LinkedField",
+          "name": "counts",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "total",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
           "concreteType": "PageInfo",
           "kind": "LinkedField",
           "name": "pageInfo",
@@ -368,98 +387,11 @@ return {
         }
       ],
       "storageKey": null
-    },
-    {
-      "alias": "iconicCollections",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "isFeaturedArtistContent",
-          "value": true
-        },
-        {
-          "kind": "Literal",
-          "name": "size",
-          "value": 16
-        }
-      ],
-      "concreteType": "MarketingCollection",
-      "kind": "LinkedField",
-      "name": "marketingCollections",
-      "plural": true,
-      "selections": [
-        {
-          "args": null,
-          "kind": "FragmentSpread",
-          "name": "ArtistCollectionsRail_collections"
-        }
-      ],
-      "storageKey": "marketingCollections(isFeaturedArtistContent:true,size:16)"
-    },
-    {
-      "alias": "notableWorks",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "first",
-          "value": 3
-        },
-        {
-          "kind": "Literal",
-          "name": "sort",
-          "value": "-weighted_iconicity"
-        }
-      ],
-      "concreteType": "FilterArtworksConnection",
-      "kind": "LinkedField",
-      "name": "filterArtworksConnection",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "FilterArtworksEdge",
-          "kind": "LinkedField",
-          "name": "edges",
-          "plural": true,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "Artwork",
-              "kind": "LinkedField",
-              "name": "node",
-              "plural": false,
-              "selections": [
-                (v0/*: any*/)
-              ],
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        }
-      ],
-      "storageKey": "filterArtworksConnection(first:3,sort:\"-weighted_iconicity\")"
-    },
-    {
-      "args": null,
-      "kind": "FragmentSpread",
-      "name": "ArtistCollectionsRail_artist"
-    },
-    {
-      "args": null,
-      "kind": "FragmentSpread",
-      "name": "ArtistNotableWorksRail_artist"
-    },
-    {
-      "args": null,
-      "kind": "FragmentSpread",
-      "name": "ArtistSeriesMoreSeries_artist"
     }
   ],
   "type": "Artist",
   "abstractKey": null
 };
 })();
-(node as any).hash = '6911622104ed9cfb5430261751d29828';
+(node as any).hash = '3d80f342e7522ee5ff08a1b8ae2f9431';
 export default node;

@@ -1,8 +1,7 @@
 import React, { Component } from "react"
-import { TextInputProperties } from "react-native"
 import { TextInput, TextInputProps } from "../Elements/TextInput"
 
-export interface InputProps extends TextInputProps, TextInputProperties {
+export interface InputProps extends TextInputProps {
   error?: boolean
   inputRef?: (component: any) => void
 }
@@ -53,7 +52,7 @@ export class Input extends Component<InputProps, InputState> {
       <TextInput
         border={1}
         borderColor={this.state.borderColor}
-        fontSize={3}
+        fontSize={2}
         p={3}
         textAlignVertical="center"
         {...this.props}

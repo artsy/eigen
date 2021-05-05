@@ -1,8 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
-import { AnimatedArtworkFilterButton, FilterModalMode, FilterModalNavigator } from "lib/Components/FilterModal"
+import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { useOnTabFocusedEffect } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
-import { ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import { Schema } from "lib/utils/track"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
@@ -15,6 +16,7 @@ import { MarketStatsQueryRenderer } from "./MarketStats"
 interface ArtistInsightsProps {
   artist: ArtistInsights_artist
   relay: RelayProp
+  tabIndex: number
 }
 
 export interface ViewableItems {
@@ -31,7 +33,7 @@ interface ViewToken {
 
 const FILTER_BUTTON_OFFSET = 50
 export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
-  const { artist, relay } = props
+  const { artist, relay, tabIndex } = props
 
   const tracking = useTracking()
   const flatListRef = useRef<{ getNode(): FlatList<any> } | null>(null)
@@ -63,8 +65,13 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     setIsFilterButtonVisible(false)
   }, [])
 
+  // Track screen event when artist insights tab is focused
+  useOnTabFocusedEffect(() => {
+    tracking.trackEvent(tracks.screen(artist.internalID, artist.slug))
+  }, tabIndex)
+
   return (
-    <ArtworkFilterGlobalStateProvider>
+    <ArtworkFiltersStoreProvider>
       <StickyTabPageScrollView
         contentContainerStyle={{ paddingTop: 20, paddingBottom: 60 }}
         onScrollEndDrag={onScrollEndDrag}
@@ -83,7 +90,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
           <ArtistInsightsAuctionResultsPaginationContainer artist={artist} scrollToTop={scrollToTop} />
         </View>
       </StickyTabPageScrollView>
-      <FilterModalNavigator
+      <ArtworkFilterNavigator
         isFilterArtworksModalVisible={isFilterModalVisible}
         id={artist.internalID}
         slug={artist.slug}
@@ -97,7 +104,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         onPress={openFilterModal}
         text="Filter auction results"
       />
-    </ArtworkFilterGlobalStateProvider>
+    </ArtworkFiltersStoreProvider>
   )
 }
 
@@ -130,6 +137,14 @@ export const tracks = {
       context_screen_owner_id: id,
       context_screen_owner_slug: slug,
       action_type: Schema.ActionTypes.Tap,
+    }
+  },
+  screen: (id: string, slug: string) => {
+    return {
+      context_screen: OwnerType.artistAuctionResults,
+      context_screen_owner_type: OwnerType.artistAuctionResults,
+      context_screen_owner_id: id,
+      context_screen_owner_slug: slug,
     }
   },
 }

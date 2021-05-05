@@ -1005,6 +1005,7 @@ type ArtistPartnerConnection {
 type ArtistPartnerEdge {
   artist: Artist
   biography: String
+  biographyBlurb(format: Format): PartnerArtistBlurb
   counts: PartnerArtistCounts
 
   # A cursor for use in pagination
@@ -1257,6 +1258,9 @@ type Artwork implements Node & Searchable & Sellable {
   dimensions: dimensions
   displayLabel: String
   displayPriceRange: Boolean
+
+  # Domestic shipping fee.
+  domesticShippingFee: Money
   editionNumber: String
   editionOf: String
   editionSet(id: String!): EditionSet
@@ -1301,6 +1305,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+
+  # International shipping fee.
+  internationalShippingFee: Money
 
   # Private text field for partner use
   inventoryId: String
@@ -1424,6 +1431,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Whether this artwork is unlisted or not
   unlisted: Boolean
+
+  # Based on artwork location verify that VAT info for the partner is complete.
+  vatRequirementComplete: Boolean
 
   # If the category is video, then it returns the href for the (youtube/vimeo) video, otherwise returns the website from CMS
   website: String
@@ -3002,6 +3012,7 @@ type CommerceOffer {
   from: CommerceOrderPartyUnion!
   fromDetails: OrderParty
   fromParticipant: CommerceOrderParticipantEnum
+  hasDefiniteTotal: Boolean!
   id: ID!
   internalID: ID!
   note: String
@@ -5533,6 +5544,9 @@ type Errors {
 }
 
 enum EventStatus {
+  # Load all shows
+  ALL
+
   # End date is in the past
   CLOSED
 
@@ -6182,6 +6196,7 @@ type FollowGeneEdge {
 input FollowGeneInput {
   clientMutationId: String
   geneID: String
+  unfollow: Boolean = false
 }
 
 type FollowGenePayload {
@@ -6282,7 +6297,7 @@ type GeminiEntry {
 type Gene implements Node & Searchable {
   artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
   cached: Int
-  description: String
+  description(format: Format): String
   displayLabel: String
   displayName: String
 
@@ -6356,6 +6371,7 @@ type Gene implements Node & Searchable {
   internalID: ID!
   isFollowed: Boolean
   isPublished: Boolean
+  meta: GeneMeta!
   mode: String
   name: String
 
@@ -6425,6 +6441,11 @@ type GeneFamilyEdge {
 
   # The item at the end of the edge
   node: GeneFamily
+}
+
+# Meta tags for Gene pages
+type GeneMeta {
+  description: String!
 }
 
 type GravityMutationError {
@@ -6925,6 +6946,7 @@ type Location {
   # Alternate Markdown-supporting free text representation of a location's opening hours
   dayScheduleText: String
   display: String
+  displayCountry: String
 
   # A globally unique ID.
   id: ID!
@@ -7994,15 +8016,31 @@ type PageInfo {
 }
 
 type Partner implements Node {
+  # A connection of all artists from a Partner.
+  allArtistsConnection(
+    displayOnPartnerProfile: Boolean
+    hasNotRepresentedArtistWithPublishedArtworks: Boolean
+    hasPublishedArtworks: Boolean
+    representedBy: Boolean
+  ): ArtistPartnerConnection
   analytics: AnalyticsPartnerStats
 
   # A connection of articles related to a partner.
-  articlesConnection(after: String, before: String, first: Int, last: Int, sort: ArticleSorts): ArticleConnection
+  articlesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    sort: ArticleSorts
+  ): ArticleConnection
 
   # A connection of artists at a partner.
   artistsConnection(
     after: String
+    artistIDs: [String]
     before: String
+    displayOnPartnerProfile: Boolean
     first: Int
     last: Int
     representedBy: Boolean
@@ -8019,9 +8057,6 @@ type Partner implements Node {
     exclude: [String]
     first: Int
     forSale: Boolean
-
-    # Return artworks with less than x additional_images.
-    imageCountLessThan: Int
     last: Int
 
     # Return artworks that are missing priority metadata
@@ -8043,6 +8078,7 @@ type Partner implements Node {
   collectingInstitution: String
   counts: PartnerCounts
   defaultProfileID: String
+  displayArtistsSection: Boolean
   distinguishRepresentedArtists: Boolean
 
   # Artworks Elastic Search results
@@ -8126,8 +8162,11 @@ type Partner implements Node {
 
   # A connection of locations from a Partner.
   locationsConnection(after: String, before: String, first: Int, last: Int): LocationConnection
+  meta: PartnerMeta
   name: String
   profile: Profile
+  profileArtistsLayout: String
+  profileBannerDisplay: String
 
   # A connection of shows from a Partner.
   showsConnection(
@@ -8140,7 +8179,11 @@ type Partner implements Node {
     # Only used when status is CLOSING_SOON or UPCOMING. Number of days used to filter upcoming and closing soon shows
     dayThreshold: Int
     first: Int
+
+    # If True returns only displayable items
+    isDisplayable: Boolean
     last: Int
+    page: Int
     sort: ShowSorts
 
     # Filter shows by chronological event status
@@ -8159,6 +8202,7 @@ type Partner implements Node {
 type PartnerArtist {
   artist: Artist
   biography: String
+  biographyBlurb(format: Format): PartnerArtistBlurb
   counts: PartnerArtistCounts
 
   # A globally unique ID.
@@ -8171,6 +8215,11 @@ type PartnerArtist {
   partner: Partner
   representedBy: Boolean
   sortableID: String
+}
+
+type PartnerArtistBlurb {
+  credit: String
+  text: String
 }
 
 # A connection to a list of items.
@@ -8199,6 +8248,7 @@ type PartnerArtistCounts {
 type PartnerArtistEdge {
   artist: Artist
   biography: String
+  biographyBlurb(format: Format): PartnerArtistBlurb
   counts: PartnerArtistCounts
 
   # A cursor for use in pagination
@@ -8365,6 +8415,12 @@ type PartnerEdge {
 
   # The item at the end of the edge
   node: Partner
+}
+
+type PartnerMeta {
+  description: String
+  image: String
+  title: String
 }
 
 enum PartnerShowPartnerType {
@@ -8577,7 +8633,7 @@ type Profile {
   bio: String
   cached: Int
   counts: ProfileCounts
-  displayArtistsSection: Boolean
+  displayArtistsSection: Boolean @deprecated(reason: "Prefer displayArtistsSection in Partner type")
   href: String
   icon: Image
 
@@ -8592,7 +8648,7 @@ type Profile {
   isPubliclyVisible: Boolean
   isPublished: Boolean
   name: String
-  profileArtistsLayout: String
+  profileArtistsLayout: String @deprecated(reason: "Prefer profileArtistsLayout in Partner type")
 
   # A slug ID.
   slug: ID!
@@ -10310,6 +10366,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
 
   # Does the show exist as a fair booth?
   isFairBooth: Boolean
+  isFeatured: Boolean
 
   # Is the user following this show
   isFollowed: Boolean
@@ -10478,6 +10535,7 @@ enum ShowSorts {
   END_AT_DESC
   FEATURED_ASC
   FEATURED_DESC
+  FEATURED_DESC_END_AT_DESC
   NAME_ASC
   NAME_DESC
   PARTNER_ASC

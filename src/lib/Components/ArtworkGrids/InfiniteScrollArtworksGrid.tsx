@@ -7,7 +7,16 @@
 // 4. Update height of grid to encompass all items.
 
 import React from "react"
-import { Dimensions, LayoutChangeEvent, Platform, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
+import {
+  ActivityIndicator,
+  Dimensions,
+  LayoutChangeEvent,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from "react-native"
 import { createFragmentContainer, RelayPaginationProp } from "react-relay"
 
 import Artwork from "./ArtworkGridItem"
@@ -19,7 +28,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, Button, space, Theme } from "palette"
+import { Box, Button, Flex, space, Theme } from "palette"
 import { graphql } from "relay-runtime"
 
 /**
@@ -272,39 +281,50 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
     return (
       <Theme>
-        <ScrollView
-          onScroll={(ev) => {
-            if (autoFetch) {
-              this.handleFetchNextPageOnScroll(ev)
-            }
-          }}
-          scrollEventThrottle={50}
-          onLayout={this.onLayout}
-          scrollsToTop={false}
-          accessibilityLabel="Artworks ScrollView"
-          stickyHeaderIndices={stickyHeaderIndices}
-        >
-          {this.renderHeader()}
-          <Box px={boxPadding}>
-            <View style={styles.container} accessibilityLabel="Artworks Content View">
-              {artworks}
-            </View>
-          </Box>
+        <>
+          <ScrollView
+            onScroll={(ev) => {
+              if (autoFetch) {
+                this.handleFetchNextPageOnScroll(ev)
+              }
+            }}
+            scrollEventThrottle={50}
+            onLayout={this.onLayout}
+            scrollsToTop={false}
+            accessibilityLabel="Artworks ScrollView"
+            stickyHeaderIndices={stickyHeaderIndices}
+          >
+            {this.renderHeader()}
+            <Box px={boxPadding}>
+              <View style={styles.container} accessibilityLabel="Artworks Content View">
+                {artworks}
+              </View>
+            </Box>
 
-          {!autoFetch && !!hasMore() && (
-            <Button
-              mt={5}
-              mb={3}
-              variant="secondaryGray"
-              size="large"
-              block
-              onPress={this.fetchNextPage}
-              loading={this.state.isLoading}
-            >
-              Show more
-            </Button>
-          )}
-        </ScrollView>
+            {!autoFetch && !!hasMore() && (
+              <Button
+                mt={5}
+                mb={3}
+                variant="secondaryGray"
+                size="large"
+                block
+                onPress={this.fetchNextPage}
+                loading={this.state.isLoading}
+              >
+                Show more
+              </Button>
+            )}
+          </ScrollView>
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            p="3"
+            pb="9"
+            style={{ opacity: this.state.isLoading && hasMore() ? 1 : 0 }}
+          >
+            <ActivityIndicator />
+          </Flex>
+        </>
       </Theme>
     )
   }

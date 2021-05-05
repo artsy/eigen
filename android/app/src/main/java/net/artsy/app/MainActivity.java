@@ -3,6 +3,8 @@ package net.artsy.app;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowManager;
@@ -35,9 +37,19 @@ public class MainActivity extends ReactActivity {
     };
   }
 
+  private boolean isTablet() {
+    return (this.getResources().getConfiguration().screenLayout
+      & Configuration.SCREENLAYOUT_SIZE_MASK)
+      >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+  }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    if (!isTablet()) {
+      // prevent screen rotation on phones
+      setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
     RNBootSplash.init(R.drawable.bootsplash, MainActivity.this);
   }
 }

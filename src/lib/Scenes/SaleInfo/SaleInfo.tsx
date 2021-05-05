@@ -8,11 +8,13 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import moment from "moment"
 import { Flex, Join, Sans, Separator, Text } from "palette"
 import React, { useEffect, useRef } from "react"
-import { PanResponder, ScrollView, View } from "react-native"
+import { PanResponder, Platform, ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { Markdown } from "lib/Components/Markdown"
 import { StyledWebView } from "lib/Components/StyledWebView"
+import { defaultRules } from "lib/utils/renderMarkdown"
 import { sendEmail } from "lib/utils/sendEmail"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { navigate } from "../../navigation/navigate"
@@ -59,6 +61,8 @@ const AuctionIsLive = () => (
     </Text>
   </Flex>
 )
+
+const markdownRules = defaultRules({ useNewTextStyles: true })
 
 export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
   const panResponder = useRef<any>(null)
@@ -109,9 +113,13 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
                 />
               </Flex>
             )}
-            <View {...(panResponder.current?.panHandlers || {})}>
-              <StyledWebView body={sale.description || ""} />
-            </View>
+            {Platform.OS === "ios" ? (
+              <View {...(panResponder.current?.panHandlers || {})}>
+                <StyledWebView body={sale.description || ""} />
+              </View>
+            ) : (
+              <Markdown rules={markdownRules}>{sale.description || ""}</Markdown>
+            )}
             {renderLiveBiddingOpening()}
           </Flex>
 

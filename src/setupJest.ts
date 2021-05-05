@@ -8,7 +8,7 @@
 // import "@babel/runtime"
 
 import chalk from "chalk"
-// @ts-ignore
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Enzyme from "enzyme"
 // @ts-ignore
 import Adapter from "enzyme-adapter-react-16"
@@ -73,6 +73,12 @@ jest.mock("./lib/NativeModules/Events.tsx", () => ({
 
 jest.mock("react-native-share", () => ({
   open: jest.fn(),
+}))
+
+jest.mock("react-native-device-info", () => ({
+  getBuildNumber: jest.fn(),
+  getModel: jest.fn(),
+  getUserAgentSync: jest.fn(),
 }))
 
 jest.mock("rn-fetch-blob", () => ({
@@ -204,6 +210,10 @@ function getNativeModules(): typeof LegacyNativeModules {
       popToRootOrScrollToTop: jest.fn(),
       presentModal: jest.fn(),
     },
+    AREventsModule: {
+      postEvent: jest.fn(),
+      requestAppStoreRating: jest.fn(),
+    },
   }
 }
 
@@ -213,6 +223,7 @@ jest.mock("lib/navigation/navigate", () => ({
   dismissModal: jest.fn(),
   navigateToEntity: jest.fn(),
   navigateToPartner: jest.fn(),
+  navigationEvents: new (require("events").EventEmitter)(),
   EntityType: { partner: "partner", fair: "fair" },
   SlugType: { partner: "partner", fair: "fair" },
 }))
@@ -374,7 +385,7 @@ jest.mock("react-native-localize", () => ({
 jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
 
 jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
-  ...require.requireActual("react-native/Libraries/LayoutAnimation/LayoutAnimation"),
+  ...jest.requireActual("react-native/Libraries/LayoutAnimation/LayoutAnimation"),
   configureNext: jest.fn((_config, callback) => callback?.()),
   create: jest.fn(),
   easeInEaseOut: jest.fn(),

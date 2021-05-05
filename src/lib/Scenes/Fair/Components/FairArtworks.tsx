@@ -1,18 +1,19 @@
 import { OwnerType } from "@artsy/cohesion"
 import { FairArtworks_fair } from "__generated__/FairArtworks_fair.graphql"
-import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { FAIR2_ARTWORKS_PAGE_SIZE } from "lib/data/constants"
-import { ArtworkFilterContext, FilterArray } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
 import {
   aggregationsType,
   aggregationsWithFollowedArtists,
+  FilterArray,
   filterArtworksParams,
-} from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
+import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { FAIR2_ARTWORKS_PAGE_SIZE } from "lib/data/constants"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box } from "palette"
-import React, { useContext, useEffect } from "react"
+import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -32,9 +33,14 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
   followedArtistCount,
 }) => {
   const artworks = fair.fairArtworks!
-  const { dispatch, state } = useContext(ArtworkFilterContext)
   const tracking = useTracking()
-  const filterParams = filterArtworksParams(state.appliedFilters)
+
+  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
+  const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+
+  const filterParams = filterArtworksParams(appliedFilters)
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
@@ -49,12 +55,12 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
 
   useEffect(() => {
     if (initiallyAppliedFilter) {
-      dispatch({ type: "setInitialFilterState", payload: initiallyAppliedFilter })
+      setInitialFilterStateAction(initiallyAppliedFilter)
     }
   }, [])
 
   useEffect(() => {
-    if (state.applyFilters) {
+    if (applyFilters) {
       relay.refetchConnection(
         FAIR2_ARTWORKS_PAGE_SIZE,
         (error) => {
@@ -65,17 +71,14 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
         filterParams
       )
     }
-  }, [state.appliedFilters])
+  }, [appliedFilters])
 
   const dispatchFollowedArtistCount = (followedArtistCount || artworks?.counts?.followedArtists) ?? 0
   const artworkAggregations = ((aggregations || artworks?.aggregations) ?? []) as aggregationsType
   const dispatchAggregations = aggregationsWithFollowedArtists(dispatchFollowedArtistCount, artworkAggregations)
 
   useEffect(() => {
-    dispatch({
-      type: "setAggregations",
-      payload: dispatchAggregations,
-    })
+    setAggregationsAction(dispatchAggregations)
   }, [])
 
   const screenWidth = useScreenDimensions().width
@@ -89,7 +92,7 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
   }
 
   return (
-    <Box mb={3}>
+    <Box>
       <InfiniteScrollArtworksGridContainer
         connection={artworks}
         loadMore={relay.loadMore}
@@ -119,6 +122,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
         color: { type: "String" }
         colors: { type: "[String]" }
         partnerID: { type: "ID" }
+        partnerIDs: { type: "[String]" }
         dimensionRange: { type: "String", defaultValue: "*-*" }
         majorPeriods: { type: "[String]" }
         acquireable: { type: "Boolean" }
@@ -140,6 +144,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
           color: $color
           colors: $colors
           partnerID: $partnerID
+          partnerIDs: $partnerIDs
           dimensionRange: $dimensionRange
           majorPeriods: $majorPeriods
           acquireable: $acquireable
@@ -148,17 +153,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
           offerable: $offerable
           includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
           artistIDs: $artistIDs
-          aggregations: [
-            COLOR
-            DIMENSION_RANGE
-            GALLERY
-            INSTITUTION
-            MAJOR_PERIOD
-            MEDIUM
-            PRICE_RANGE
-            FOLLOWED_ARTISTS
-            ARTIST
-          ]
+          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]
           attributionClass: $attributionClass
         ) @connection(key: "Fair_fairArtworks") {
           aggregations {
@@ -214,6 +209,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
         $color: String
         $colors: [String]
         $partnerID: ID
+        $partnerIDs: [String]
         $dimensionRange: String
         $majorPeriods: [String]
         $acquireable: Boolean
@@ -234,6 +230,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
               color: $color
               colors: $colors
               partnerID: $partnerID
+              partnerIDs: $partnerIDs
               priceRange: $priceRange
               dimensionRange: $dimensionRange
               majorPeriods: $majorPeriods

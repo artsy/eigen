@@ -205,7 +205,7 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, V
   }
   const isPresentedModally = viewProps.isPresentedModally
   return (
-    <ArtsyKeyboardAvoidingViewContext.Provider value={{ isVisible, isPresentedModally }}>
+    <ArtsyKeyboardAvoidingViewContext.Provider value={{ isVisible, isPresentedModally, bottomOffset: paddingBottom }}>
       <View style={{ flex: 1, paddingTop, paddingBottom }}>
         {isHydrated ? (
           <FadeIn style={{ flex: 1 }} slide={false}>

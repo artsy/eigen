@@ -7,17 +7,17 @@ import {
   ImageURISource,
   Text,
   TextInput,
-  TextInputProperties,
+  TextInputProps as RNTextInputProps,
   View,
-  ViewProperties,
+  ViewProps,
 } from "react-native"
 import styled from "styled-components/native"
 
-interface ReffableTextInputProps extends TextInputProperties {
+interface ReffableTextInputProps extends RNTextInputProps {
   ref?: (component: any) => any
 }
 
-export interface TextInputProps extends ViewProperties {
+export interface TextInputProps extends ViewProps {
   searching?: boolean
   readonly?: boolean
   text?: ReffableTextInputProps

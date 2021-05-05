@@ -1,7 +1,7 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { StyleSheet, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
+import { StyleSheet, TouchableWithoutFeedback, View, ViewProps } from "react-native"
 
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import fonts from "lib/data/fonts"
@@ -10,7 +10,7 @@ import { navigate } from "lib/navigation/navigate"
 import { Article_article } from "__generated__/Article_article.graphql"
 import { Sans, Spacer } from "palette"
 
-interface Props extends ViewProperties {
+interface Props extends ViewProps {
   article: Article_article
 }
 

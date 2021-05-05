@@ -1,29 +1,20 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
-import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
+import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
+import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
 } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import {
-  AnimatedArtworkFilterButton,
-  FilterModalMode,
-  FilterModalNavigator,
-} from "lib/Components/FilterModal/FilterModal"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
-import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { useFeatureFlag } from "lib/store/GlobalStore"
-import { ArtworkFilterContext, ArtworkFilterGlobalStateProvider } from "lib/utils/ArtworkFilter/ArtworkFiltersStore"
-import { filterArtworksParams } from "lib/utils/ArtworkFilter/FilterArtworksHelpers"
 import { Schema } from "lib/utils/track"
-import { Box, Flex, Separator, Spacer } from "palette"
-import React, { useContext, useEffect, useState } from "react"
-import { ActivityIndicator, FlatList } from "react-native"
+import { Box, FilterIcon, Flex, Spacer, Text, Touchable } from "palette"
+import React, { useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ArtistCollectionsRailFragmentContainer } from "./ArtistCollectionsRail"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
@@ -33,7 +24,6 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
   const tracking = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-  const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
 
   const handleFilterArtworksModal = () => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
@@ -63,82 +53,46 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
     handleFilterArtworksModal()
   }
 
-  const onViewRef = React.useRef(({ viewableItems }: ViewableItems) => {
-    const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
-      return viewableItem?.item === "filteredArtworks"
-    })
-    setArtworksGridVisible(artworksItem?.isViewable ?? false)
-  })
-
-  const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 25 })
-
   return (
-    <ArtworkFilterGlobalStateProvider>
-      <ArtworkFilterContext.Consumer>
-        {() => (
-          <>
-            <StickyTabPageScrollView>
-              <ArtistArtworksContainer
-                {...props}
-                viewableItemsRef={onViewRef}
-                viewConfigRef={viewConfigRef}
-                artist={artist}
-                relay={relay}
-              />
-              <FilterModalNavigator
-                {...props}
-                id={artist.id}
-                slug={artist.slug}
-                isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-                exitModal={handleFilterArtworksModal}
-                closeModal={closeFilterArtworksModal}
-                mode={FilterModalMode.ArtistArtworks}
-              />
-            </StickyTabPageScrollView>
-            <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
-          </>
-        )}
-      </ArtworkFilterContext.Consumer>
-    </ArtworkFilterGlobalStateProvider>
+    <ArtworkFiltersStoreProvider>
+      <StickyTabPageScrollView>
+        <ArtistArtworksContainer {...props} artist={artist} relay={relay} openFilterModal={openFilterArtworksModal} />
+        <ArtworkFilterNavigator
+          {...props}
+          id={artist.internalID}
+          slug={artist.slug}
+          isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+          exitModal={handleFilterArtworksModal}
+          closeModal={closeFilterArtworksModal}
+          mode={FilterModalMode.ArtistArtworks}
+        />
+      </StickyTabPageScrollView>
+    </ArtworkFiltersStoreProvider>
   )
 }
-
-// Types related to showing filter button on scroll
-interface ViewableItems {
-  viewableItems?: ViewToken[]
+interface ArtistArtworksContainerProps {
+  openFilterModal: () => void
 }
 
-interface ViewToken {
-  item?: any
-  key?: string
-  index?: number | null
-  isViewable?: boolean
-  section?: any
-}
-
-interface ViewableItemRefs {
-  viewableItemsRef: React.MutableRefObject<(viewableItems: ViewableItems) => void>
-  viewConfigRef: React.MutableRefObject<{ viewAreaCoveragePercentThreshold: number }>
-}
-
-const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = ({
+const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContainerProps> = ({
   artist,
-  viewableItemsRef,
-  viewConfigRef,
   relay,
+  openFilterModal,
   ...props
 }) => {
   const tracking = useTracking()
-  const { dispatch, state } = useContext(ArtworkFilterContext)
-  const filterParams = filterArtworksParams(state.appliedFilters)
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+
+  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
+
+  const filterParams = filterArtworksParams(appliedFilters)
   const artworks = artist.artworks
-  const artworksTotal = artworks?.edges?.length
-  const shouldShowCollections = artist.iconicCollections && artist.iconicCollections.length > 1
-  const shouldShowNotables = artist.notableWorks?.edges?.length === 3
-  const shouldShowArtistSeries = useFeatureFlag("AROptionsArtistSeries")
+  const artworksCount = artworks?.edges?.length
+  const artworksTotal = artworks?.counts?.total
 
   useEffect(() => {
-    if (state.applyFilters) {
+    if (applyFilters) {
       relay.refetchConnection(
         PAGE_SIZE,
         (error) => {
@@ -149,13 +103,10 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
         filterParams
       )
     }
-  }, [state.appliedFilters])
+  }, [appliedFilters])
 
   useEffect(() => {
-    dispatch({
-      type: "setAggregations",
-      payload: artworks?.aggregations,
-    })
+    setAggregationsAction(artworks?.aggregations)
   }, [])
 
   // TODO: Convert to use cohesion
@@ -171,7 +122,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
   }
 
   const filteredArtworks = () => {
-    if (artworksTotal === 0) {
+    if (artworksCount === 0) {
       return (
         <Box mb="80px" pt={1}>
           <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} trackClear={trackClear} />
@@ -180,7 +131,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
     } else {
       return (
         <>
-          <Spacer mb={2} />
+          <Spacer mb={1} />
           <InfiniteScrollArtworksGrid
             connection={artist.artworks!}
             loadMore={relay.loadMore}
@@ -189,72 +140,32 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
             contextScreenOwnerType={OwnerType.artist}
             contextScreenOwnerId={artist.internalID}
             contextScreenOwnerSlug={artist.slug}
+            HeaderComponent={() => (
+              <Box backgroundColor="white" py={1}>
+                <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+                  <Text variant="subtitle" color="black60">
+                    Showing {artworksTotal} works
+                  </Text>
+                  <Touchable haptic onPress={openFilterModal}>
+                    <Flex flexDirection="row">
+                      <FilterIcon fill="black100" width="20px" height="20px" />
+                      <Text variant="subtitle" color="black100">
+                        Sort & Filter
+                      </Text>
+                    </Flex>
+                  </Touchable>
+                </Flex>
+                <Spacer mb={1} />
+              </Box>
+            )}
+            stickyHeaderIndices={[0]}
           />
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            p="3"
-            pb="9"
-            style={{ opacity: relay.isLoading() && relay.hasMore() ? 1 : 0 }}
-          >
-            <ActivityIndicator />
-          </Flex>
         </>
       )
     }
   }
 
-  const sections = [
-    ...(shouldShowArtistSeries ? ["topArtistSeries"] : []),
-    ...(shouldShowNotables ? ["notableWorks"] : []),
-    ...(shouldShowCollections ? ["collections"] : []),
-    ...(shouldShowCollections || shouldShowNotables ? ["separator"] : []),
-    "filteredArtworks",
-  ]
-
-  return artist.artworks ? (
-    <FlatList
-      data={sections}
-      onViewableItemsChanged={viewableItemsRef.current}
-      viewabilityConfig={viewConfigRef.current}
-      keyExtractor={(_item, index) => String(index)}
-      renderItem={({ item }): null | any => {
-        switch (item) {
-          case "topArtistSeries":
-            return (
-              <ArtistSeriesMoreSeriesFragmentContainer
-                contextScreenOwnerId={artist.internalID}
-                contextScreenOwnerSlug={artist.slug}
-                contextScreenOwnerType={OwnerType.artist}
-                contextModule={ContextModule.artistSeriesRail}
-                artist={artist}
-                artistSeriesHeader="Top Artist Series"
-                mt={2}
-              />
-            )
-          case "notableWorks":
-            return <ArtistNotableWorksRailFragmentContainer artist={artist} {...props} />
-          case "collections":
-            return (
-              <ArtistCollectionsRailFragmentContainer
-                collections={artist.iconicCollections}
-                artist={artist}
-                {...props}
-              />
-            )
-          case "separator":
-            return (
-              <Box m={-2} mb={1} mt={1}>
-                <Separator />
-              </Box>
-            )
-
-          case "filteredArtworks":
-            return filteredArtworks()
-        }
-      }}
-    />
-  ) : null
+  return artist.artworks ? filteredArtworks() : null
 }
 
 export default createPaginationContainer(
@@ -271,6 +182,7 @@ export default createPaginationContainer(
         color: { type: "String" }
         colors: { type: "[String]" }
         partnerID: { type: "ID" }
+        partnerIDs: { type: "[String]" }
         dimensionRange: { type: "String", defaultValue: "*-*" }
         majorPeriods: { type: "[String]" }
         acquireable: { type: "Boolean" }
@@ -291,13 +203,14 @@ export default createPaginationContainer(
           color: $color
           colors: $colors
           partnerID: $partnerID
+          partnerIDs: $partnerIDs
           dimensionRange: $dimensionRange
           majorPeriods: $majorPeriods
           acquireable: $acquireable
           inquireableOnly: $inquireableOnly
           atAuction: $atAuction
           offerable: $offerable
-          aggregations: [COLOR, DIMENSION_RANGE, GALLERY, INSTITUTION, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
+          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
           attributionClass: $attributionClass
         ) @connection(key: "ArtistArtworksGrid_artworks") {
           aggregations {
@@ -313,26 +226,10 @@ export default createPaginationContainer(
               id
             }
           }
-          ...InfiniteScrollArtworksGrid_connection
-        }
-
-        ...ArtistCollectionsRail_artist
-
-        iconicCollections: marketingCollections(isFeaturedArtistContent: true, size: 16) {
-          ...ArtistCollectionsRail_collections
-        }
-
-        ...ArtistNotableWorksRail_artist
-
-        ...ArtistSeriesMoreSeries_artist
-
-        # this should match the query in ArtistNotableWorksRail
-        notableWorks: filterArtworksConnection(sort: "-weighted_iconicity", first: 3) {
-          edges {
-            node {
-              id
-            }
+          counts {
+            total
           }
+          ...InfiniteScrollArtworksGrid_connection
         }
       }
     `,
@@ -360,6 +257,7 @@ export default createPaginationContainer(
         $color: String
         $colors: [String]
         $partnerID: ID
+        $partnerIDs: [String]
         $dimensionRange: String
         $majorPeriods: [String]
         $acquireable: Boolean
@@ -379,6 +277,7 @@ export default createPaginationContainer(
                 color: $color
                 colors: $colors
                 partnerID: $partnerID
+                partnerIDs: $partnerIDs
                 priceRange: $priceRange
                 dimensionRange: $dimensionRange
                 majorPeriods: $majorPeriods

@@ -9,7 +9,7 @@ import { act, ReactTestRenderer } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ConversationCTA, ConversationCTAFragmentContainer } from "../ConversationCTA"
-import { OpenInquiryModalButton } from "../OpenInquiryModalButton"
+import { OpenInquiryModalButtonQueryRenderer } from "../OpenInquiryModalButton"
 import { ReviewOfferButton } from "../ReviewOfferButton"
 jest.unmock("react-relay")
 
@@ -107,7 +107,7 @@ describe("ConversationCTA", () => {
     it("renders the make offer button if there is no active order", () => {
       const wrapper = getWrapperWithOrders()
 
-      expect(wrapper.root.findAllByType(OpenInquiryModalButton)).toHaveLength(1)
+      expect(wrapper.root.findAllByType(OpenInquiryModalButtonQueryRenderer)).toHaveLength(1)
     })
 
     it("renders the payment failed message if the payment failed", () => {
@@ -116,7 +116,7 @@ describe("ConversationCTA", () => {
       expectReviewOfferButton(wrapper, {
         bg: "red100",
         Icon: AlertCircleFillIcon,
-        strings: ["Payment Failed", "Please update payment method"],
+        strings: ["Payment Failed", "Unable to process payment for accepted offer. Update payment method."],
       })
     })
 

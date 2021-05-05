@@ -6,8 +6,18 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistAbout_artist = {
     readonly hasMetadata: boolean | null;
-    readonly isDisplayAuctionLink: boolean | null;
+    readonly internalID: string;
     readonly slug: string;
+    readonly notableWorks: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly id: string;
+            } | null;
+        } | null> | null;
+    } | null;
+    readonly iconicCollections: ReadonlyArray<{
+        readonly " $fragmentRefs": FragmentRefs<"ArtistCollectionsRail_collections">;
+    } | null> | null;
     readonly related: {
         readonly artists: {
             readonly edges: ReadonlyArray<{
@@ -24,7 +34,7 @@ export type ArtistAbout_artist = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"Biography_artist" | "ArtistConsignButton_artist" | "ArtistAboutShows_artist">;
+    readonly " $fragmentRefs": FragmentRefs<"Biography_artist" | "ArtistSeriesMoreSeries_artist" | "ArtistNotableWorksRail_artist" | "ArtistCollectionsRail_artist" | "ArtistConsignButton_artist" | "ArtistAboutShows_artist">;
     readonly " $refType": "ArtistAbout_artist";
 };
 export type ArtistAbout_artist$data = ArtistAbout_artist;
@@ -52,7 +62,7 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "isDisplayAuctionLink",
+      "name": "internalID",
       "storageKey": null
     },
     {
@@ -61,6 +71,84 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "name": "slug",
       "storageKey": null
+    },
+    {
+      "alias": "notableWorks",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 3
+        },
+        {
+          "kind": "Literal",
+          "name": "sort",
+          "value": "-weighted_iconicity"
+        }
+      ],
+      "concreteType": "FilterArtworksConnection",
+      "kind": "LinkedField",
+      "name": "filterArtworksConnection",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "FilterArtworksEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "Artwork",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "id",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": "filterArtworksConnection(first:3,sort:\"-weighted_iconicity\")"
+    },
+    {
+      "alias": "iconicCollections",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "isFeaturedArtistContent",
+          "value": true
+        },
+        {
+          "kind": "Literal",
+          "name": "size",
+          "value": 16
+        }
+      ],
+      "concreteType": "MarketingCollection",
+      "kind": "LinkedField",
+      "name": "marketingCollections",
+      "plural": true,
+      "selections": [
+        {
+          "args": null,
+          "kind": "FragmentSpread",
+          "name": "ArtistCollectionsRail_collections"
+        }
+      ],
+      "storageKey": "marketingCollections(isFeaturedArtistContent:true,size:16)"
     },
     {
       "alias": null,
@@ -124,6 +212,11 @@ const node: ReaderFragment = {
           "kind": "Literal",
           "name": "first",
           "value": 10
+        },
+        {
+          "kind": "Literal",
+          "name": "inEditorialFeed",
+          "value": true
         }
       ],
       "concreteType": "ArticleConnection",
@@ -159,12 +252,27 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
-      "storageKey": "articlesConnection(first:10)"
+      "storageKey": "articlesConnection(first:10,inEditorialFeed:true)"
     },
     {
       "args": null,
       "kind": "FragmentSpread",
       "name": "Biography_artist"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "ArtistSeriesMoreSeries_artist"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "ArtistNotableWorksRail_artist"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "ArtistCollectionsRail_artist"
     },
     {
       "args": null,
@@ -180,5 +288,5 @@ const node: ReaderFragment = {
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = 'c6d9d5446681e9c00f83659592d8ff3d';
+(node as any).hash = 'b90ade61430985fc3d4e157ac87167c8';
 export default node;

@@ -24,22 +24,33 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
   const { internalID: orderID, offers } = activeOrder
   const { trackEvent } = useTracking()
 
-  const { hours } = useEventTiming({
+  const { hours, minutes } = useEventTiming({
     currentTime: DateTime.local().toString(),
     startAt: activeOrder.lastOffer?.createdAt,
     endAt: activeOrder.stateExpiresAt || undefined,
   })
+
+  const expiresIn = Number(hours) < 1 ? `${minutes}m` : `${hours}hr`
   const offerType = (offers?.edges?.length || []) > 1 ? "Counteroffer" : "Offer"
 
-  let ctaAttributes: { backgroundColor: Color; message: string; subMessage: string; Icon: React.FC<IconProps> }
+  let ctaAttributes: {
+    backgroundColor: Color
+    message: string
+    subMessage: string
+    Icon: React.FC<IconProps>
+    url: string
+    modalTitle: string
+  }
 
   switch (kind) {
     case "PAYMENT_FAILED": {
       ctaAttributes = {
         backgroundColor: "red100",
         message: "Payment Failed",
-        subMessage: "Please update payment method",
+        subMessage: "Unable to process payment for accepted offer. Update payment method.",
         Icon: AlertCircleFillIcon,
+        url: `/orders/${orderID}/payment/new`,
+        modalTitle: "Update Payment Details",
       }
       break
     }
@@ -47,9 +58,10 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
       ctaAttributes = {
         backgroundColor: "copper100",
         message: `${offerType} Received`,
-        // TODO: what about <1 hr?
-        subMessage: `Expires in ${hours}hr`,
+        subMessage: `Expires in ${expiresIn}`,
         Icon: AlertCircleFillIcon,
+        url: `/orders/${orderID}`,
+        modalTitle: "Review Offer",
       }
       break
     }
@@ -59,6 +71,8 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
         message: `Congratulations! ${offerType} Accepted`,
         subMessage: "Tap to view",
         Icon: MoneyFillIcon,
+        url: `/orders/${orderID}`,
+        modalTitle: "Offer Accepted",
       }
       break
     }
@@ -68,25 +82,25 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
     }
   }
 
-  const { message, subMessage, backgroundColor, Icon } = ctaAttributes
+  const { message, subMessage, backgroundColor, Icon, url, modalTitle } = ctaAttributes
 
-  const navigateToConversation = () => {
+  const navigateToConversation = (path: string, title: string) => {
     trackEvent(
       tappedViewOffer({
         impulse_conversation_id: conversationID,
         cta: message,
       })
     )
-    navigate(`/orders/${orderID}`, {
+    navigate(path, {
       modal: true,
-      passProps: { orderID, title: "Make Offer" },
+      passProps: { orderID, title },
     })
   }
 
   return (
     <TouchableWithoutFeedback
       onPress={() => {
-        navigateToConversation()
+        navigateToConversation(url, modalTitle)
       }}
     >
       <Flex
