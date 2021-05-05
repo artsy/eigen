@@ -23,12 +23,12 @@ export const ArtsyNativeModule = {
           console.error("setNavigationBarColor is unsupported on iOS")
         }
       : NativeModules.ArtsyNativeModule.setNavigationBarColor,
-  setAppTheme:
+  setAppLightContrast:
     Platform.OS === "ios"
       ? () => {
-          console.error("setAppTheme is unsupported on iOS")
+          console.error("setAppLightContrast is unsupported on iOS")
         }
-      : NativeModules.ArtsyNativeModule.setAppTheme,
+      : NativeModules.ArtsyNativeModule.setAppLightContrast,
   get navigationBarHeight() {
     return Platform.OS === "ios"
       ? 0

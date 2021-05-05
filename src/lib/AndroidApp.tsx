@@ -43,7 +43,7 @@ const Main: React.FC<{}> = track()(({}) => {
         ArtsyNativeModule.setAppStyling()
         if (isLoggedIn) {
           ArtsyNativeModule.setNavigationBarColor("#FFFFFF")
-          ArtsyNativeModule.setAppTheme(false)
+          ArtsyNativeModule.setAppLightContrast(false)
         }
       }, 500)
     }

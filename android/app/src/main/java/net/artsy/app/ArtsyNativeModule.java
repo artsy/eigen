@@ -96,7 +96,7 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setAppTheme(final Boolean isLight, Promise promise) {
+    public void setAppLightContrast(final Boolean isLight, Promise promise) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 final Activity activity = getCurrentActivity();

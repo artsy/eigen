@@ -19,7 +19,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
     const unsubscribe = navigation.addListener("blur", () => {
       requestAnimationFrame(() => {
         ArtsyNativeModule.setNavigationBarColor("#FFFFFF")
-        ArtsyNativeModule.setAppTheme(false)
+        ArtsyNativeModule.setAppLightContrast(false)
       })
     })
     return unsubscribe
@@ -29,7 +29,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
     const unsubscribe = navigation.addListener("focus", () => {
       requestAnimationFrame(() => {
         ArtsyNativeModule.setNavigationBarColor("#000000")
-        ArtsyNativeModule.setAppTheme(true)
+        ArtsyNativeModule.setAppLightContrast(true)
       })
     })
     return unsubscribe
