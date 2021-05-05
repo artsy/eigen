@@ -8026,7 +8026,14 @@ type Partner implements Node {
   analytics: AnalyticsPartnerStats
 
   # A connection of articles related to a partner.
-  articlesConnection(after: String, before: String, first: Int, last: Int, sort: ArticleSorts): ArticleConnection
+  articlesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    sort: ArticleSorts
+  ): ArticleConnection
 
   # A connection of artists at a partner.
   artistsConnection(
@@ -8176,6 +8183,7 @@ type Partner implements Node {
     # If True returns only displayable items
     isDisplayable: Boolean
     last: Int
+    page: Int
     sort: ShowSorts
 
     # Filter shows by chronological event status
