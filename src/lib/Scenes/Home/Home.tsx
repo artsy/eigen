@@ -60,7 +60,8 @@ const Home = (props: Props) => {
   )
 
   /*
-  Ordering is defined in https://artsyproduct.atlassian.net/browse/MX-193 but here's a rough mapping:
+  Ordering is defined in https://www.notion.so/artsy/App-Home-Screen-4841255ded3f47c9bcdb73185ee3f335
+  but here's a rough mapping:
   - New works for you               -> artworksModule
   - Recently viewed                 -> artworksModule
   - Auctions                        -> salesModule
