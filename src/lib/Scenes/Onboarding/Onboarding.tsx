@@ -1,12 +1,10 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { CardStyleInterpolators, createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "lib/Components/ArtsyKeyboardAvoidingView"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
 import { View } from "react-native"
 import { ForgotPassword } from "./ForgotPassword"
-import { LogIn } from "./OldLogIn/LogIn"
 import { OnboardingCreateAccount } from "./OnboardingCreateAccount/OnboardingCreateAccount"
 import { OnboardingLogin } from "./OnboardingLogin"
 import { OnboardingWelcome } from "./OnboardingWelcome"
@@ -22,12 +20,6 @@ export type OnboardingNavigationStack = {
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
 
 export const Onboarding = () => {
-  const useNewOnboarding = useFeatureFlag("ARUseNewOnboarding")
-
-  if (!useNewOnboarding) {
-    return <LogIn />
-  }
-
   return (
     <View style={{ flex: 1, paddingBottom: useScreenDimensions().safeAreaInsets.bottom }}>
       <NavigationContainer independent>
