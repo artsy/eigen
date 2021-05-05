@@ -1,6 +1,4 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { Theme } from "palette"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { ArtworkHistory } from "../ArtworkHistory"
 
@@ -17,15 +15,13 @@ describe("Artwork History", () => {
       },
     }
 
-    const component = mount(
-      <Theme>
-        <div>
-          <ArtworkHistory
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            artwork={artworkHistoryInfo.artwork}
-          />
-        </div>
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <div>
+        <ArtworkHistory
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          artwork={artworkHistoryInfo.artwork}
+        />
+      </div>
     )
 
     expect(component.text()).toContain("Provenance")
@@ -43,15 +39,13 @@ describe("Artwork History", () => {
       },
     }
 
-    const component = mount(
-      <Theme>
-        <div>
-          <ArtworkHistory
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            artwork={artworkHistoryInfo.artwork}
-          />
-        </div>
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <div>
+        <ArtworkHistory
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          artwork={artworkHistoryInfo.artwork}
+        />
+      </div>
     )
     expect(component.text()).toContain("Provenance")
     expect(component.text()).not.toContain("Exhibition History")
@@ -68,15 +62,13 @@ describe("Artwork History", () => {
       },
     }
 
-    const component = mount(
-      <Theme>
-        <div>
-          <ArtworkHistory
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            artwork={artworkHistoryInfo.artwork}
-          />
-        </div>
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <div>
+        <ArtworkHistory
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          artwork={artworkHistoryInfo.artwork}
+        />
+      </div>
     )
     expect(component.text()).not.toContain("Provenance")
     expect(component.text()).not.toContain("Exhibition History")

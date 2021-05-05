@@ -1,5 +1,4 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import React, { useState } from "react"
 import { View } from "react-native"
 import { useSpringValue } from "../useSpringValue"
@@ -17,7 +16,7 @@ describe(useSpringValue, () => {
     jest.useFakeTimers()
   })
   it("returns a stable animated value", () => {
-    const wrapper = mount(<Mock />)
+    const wrapper = __deprecated_mountWithWrappers(<Mock />)
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const prevVal = val
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

@@ -1,5 +1,4 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { ImageCarouselContext, useNewImageCarouselContext } from "../../ImageCarouselContext"
 import { ImageCarouselFullScreen } from "../ImageCarouselFullScreen"
@@ -20,7 +19,7 @@ describe("ImageCarouselFullScreen", () => {
     )
   }
   it("mounts", () => {
-    const carousel = mount(<Mock />)
+    const carousel = __deprecated_mountWithWrappers(<Mock />)
     expect(carousel.find(ImageZoomView)).toHaveLength(2)
   })
 })

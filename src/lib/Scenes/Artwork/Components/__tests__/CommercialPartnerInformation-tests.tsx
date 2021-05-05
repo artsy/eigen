@@ -1,18 +1,15 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { Sans, Theme } from "palette"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
+import { Sans } from "palette"
 import React from "react"
 import { CommercialPartnerInformation } from "../CommercialPartnerInformation"
 
 describe("CommercialPartnerInformation", () => {
   it("renders all seller information when work is for sale and is not in a closed auction", () => {
-    const component = mount(
-      <Theme>
-        <CommercialPartnerInformation
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          artwork={CommercialPartnerInformationArtwork}
-        />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialPartnerInformation
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        artwork={CommercialPartnerInformationArtwork}
+      />
     )
     expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"From Bob's Gallery"`)
     expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(`"Ships from Brooklyn"`)
@@ -28,13 +25,11 @@ describe("CommercialPartnerInformation", () => {
       isOfferable: false,
       isAcquireable: false,
     }
-    const component = mount(
-      <Theme>
-        <CommercialPartnerInformation
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          artwork={CommercialPartnerInformationArtworkClosedAuction}
-        />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialPartnerInformation
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        artwork={CommercialPartnerInformationArtworkClosedAuction}
+      />
     )
     expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"At Bob's Gallery"`)
     expect(component.find(Sans).length).toEqual(1)
@@ -48,13 +43,11 @@ describe("CommercialPartnerInformation", () => {
       isOfferable: false,
       isAcquireable: false,
     }
-    const component = mount(
-      <Theme>
-        <CommercialPartnerInformation
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          artwork={CommercialPartnerInformationArtworkClosedAuction}
-        />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialPartnerInformation
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        artwork={CommercialPartnerInformationArtworkClosedAuction}
+      />
     )
     expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"From Bob's Gallery"`)
     expect(component.find(Sans).length).toEqual(1)
@@ -67,13 +60,11 @@ describe("CommercialPartnerInformation", () => {
       isOfferable: false,
     }
 
-    const component = mount(
-      <Theme>
-        <CommercialPartnerInformation
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          artwork={CommercialPartnerInformationNoEcommerce}
-        />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialPartnerInformation
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        artwork={CommercialPartnerInformationNoEcommerce}
+      />
     )
 
     expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"From Bob's Gallery"`)
@@ -88,13 +79,11 @@ describe("CommercialPartnerInformation", () => {
       isOfferable: false,
       isAcquireable: false,
     }
-    const component = mount(
-      <Theme>
-        <CommercialPartnerInformation
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          artwork={CommercialPartnerInformationArtworkClosedAuction}
-        />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialPartnerInformation
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        artwork={CommercialPartnerInformationArtworkClosedAuction}
+      />
     )
     expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"At Bob's Gallery"`)
     expect(component.find(Sans).length).toEqual(1)

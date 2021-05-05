@@ -1,7 +1,5 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
 import { Fair } from "lib/Scenes/Map/types"
-import { Theme } from "palette"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TabFairItemRow } from "../index"
 
@@ -25,11 +23,7 @@ const fairData = ({
 
 describe("TabFairItemRow", () => {
   it("renders Fair properly", () => {
-    const comp = mount(
-      <Theme>
-        <TabFairItemRow item={fairData} />
-      </Theme>
-    )
+    const comp = __deprecated_mountWithWrappers(<TabFairItemRow item={fairData} />)
 
     expect(comp.text()).toContain("TEFAF New York Spring 2019")
   })

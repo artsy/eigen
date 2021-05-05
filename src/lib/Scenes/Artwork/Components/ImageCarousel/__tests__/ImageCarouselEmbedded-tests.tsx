@@ -1,6 +1,5 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Platform } from "react-native"
 import { ImageCarouselContext, useNewImageCarouselContext } from "../ImageCarouselContext"
@@ -36,17 +35,17 @@ describe("ImageCarouselEmbedded", () => {
     )
   }
   it("mounts", () => {
-    const carousel = mount(<Mock />)
+    const carousel = __deprecated_mountWithWrappers(<Mock />)
     expect(carousel.find(OpaqueImageView)).toHaveLength(2)
   })
   it("does something when you tap an image with deepZoom", () => {
-    const carousel = mount(<Mock />)
+    const carousel = __deprecated_mountWithWrappers(<Mock />)
     expect(context.fullScreenState.current).toBe("none")
     carousel.find(ImageWithLoadingState).at(0).props().onPress()
     expect(context.fullScreenState.current).not.toBe("none")
   })
   it("does nothing when you tap an image without deepZoom", () => {
-    const carousel = mount(
+    const carousel = __deprecated_mountWithWrappers(
       <Mock
         contextInit={{
           images: [
@@ -73,7 +72,7 @@ describe("ImageCarouselEmbedded", () => {
     })
 
     it("suppresses fullScreen when you tap an image with deepZoom because it would fail", () => {
-      const carousel = mount(<Mock />)
+      const carousel = __deprecated_mountWithWrappers(<Mock />)
       expect(context.fullScreenState.current).toBe("none")
       carousel.find(ImageWithLoadingState).at(0).props().onPress()
       expect(context.fullScreenState.current).toBe("none")

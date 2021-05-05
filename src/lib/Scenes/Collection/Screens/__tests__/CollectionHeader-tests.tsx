@@ -1,24 +1,19 @@
 import { CollectionHeaderTestsQueryRawResponse } from "__generated__/CollectionHeaderTestsQuery.graphql"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "lib/Components/ReadMore"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
-import { Sans, Theme } from "palette"
+import { Sans } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
 import { CollectionFixture } from "../../Components/__fixtures__/CollectionFixture"
 import { CollectionHeader, CollectionHeaderContainer } from "../CollectionHeader"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 
 jest.unmock("react-relay")
 
 it("renders without throwing an error", async () => {
   await renderRelayTree({
-    Component: (props: any) => (
-      <Theme>
-        <CollectionHeaderContainer collection={props.marketingCollection} {...props} />
-      </Theme>
-    ),
+    Component: (props: any) => <CollectionHeaderContainer collection={props.marketingCollection} {...props} />,
     query: graphql`
       query CollectionHeaderTestsQuery @raw_response_type {
         marketingCollection(slug: "street-art-now") {
@@ -39,50 +34,30 @@ describe("collection header", () => {
   })
 
   it("passes the collection header image url to collection header", () => {
-    const wrapper = mount(
-      <Theme>
-        <CollectionHeader {...props} />
-      </Theme>
-    )
+    const wrapper = __deprecated_mountWithWrappers(<CollectionHeader {...props} />)
     expect(wrapper.find(OpaqueImageView).html()).toContain("http://imageuploadedbymarketingteam.jpg")
   })
 
   it("passes the collection header title to collection header", () => {
-    const wrapper = mount(
-      <Theme>
-        <CollectionHeader {...props} />
-      </Theme>
-    )
+    const wrapper = __deprecated_mountWithWrappers(<CollectionHeader {...props} />)
 
     expect(wrapper.find(Sans).at(0).html()).toContain("Street Art Now")
   })
 
   it("passes the url of the most marketable artwork in the collection to the collection header when there is no headerImage value present", () => {
     props.collection.headerImage = null
-    const wrapper = mount(
-      <Theme>
-        <CollectionHeader {...props} />
-      </Theme>
-    )
+    const wrapper = __deprecated_mountWithWrappers(<CollectionHeader {...props} />)
     expect(wrapper.find(OpaqueImageView).html()).toContain("https://defaultmostmarketableartworkincollectionimage.jpg")
   })
 
   it("does not render the Read More component when there is no description", () => {
     props.collection.descriptionMarkdown = null
-    const wrapper = mount(
-      <Theme>
-        <CollectionHeader {...props} />
-      </Theme>
-    )
+    const wrapper = __deprecated_mountWithWrappers(<CollectionHeader {...props} />)
     expect(wrapper.find(ReadMore).exists()).toBe(false)
   })
 
   it("passes the collection header description to collection header", () => {
-    const wrapper = mount(
-      <Theme>
-        <CollectionHeader {...props} />
-      </Theme>
-    )
+    const wrapper = __deprecated_mountWithWrappers(<CollectionHeader {...props} />)
 
     expect(wrapper.find(ReadMore).exists()).toBe(true)
     expect(wrapper.find(ReadMore).find(Sans).text()).toContain(

@@ -1,6 +1,4 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { Theme } from "palette"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { FairEventSection } from "../index"
 
@@ -20,11 +18,7 @@ const data = [
 
 describe("FairEventSection", () => {
   it("renders properly", () => {
-    const comp = mount(
-      <Theme>
-        <FairEventSection data={data} citySlug="tefaf-new-york-fall-2019" />
-      </Theme>
-    )
+    const comp = __deprecated_mountWithWrappers(<FairEventSection data={data} citySlug="tefaf-new-york-fall-2019" />)
 
     expect(comp.text()).toContain("TEFAF New York Fall 2019")
   })

@@ -1,6 +1,5 @@
-// @ts-ignore
-import { mount } from "enzyme"
-import { Box, Button, EntityHeader, Sans, Theme } from "palette"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
+import { Box, Button, EntityHeader, Sans } from "palette"
 import React from "react"
 import { Image } from "react-native"
 import { RelayProp } from "react-relay"
@@ -11,10 +10,8 @@ jest.unmock("react-relay")
 describe("ContextCard", () => {
   describe("Fair context", () => {
     it("renders fair name correctly", () => {
-      const component = mount(
-        <Theme>
-          <ContextCard relay={{ environment: {} } as RelayProp} artwork={fairContextArtwork as any} />
-        </Theme>
+      const component = __deprecated_mountWithWrappers(
+        <ContextCard relay={{ environment: {} } as RelayProp} artwork={fairContextArtwork as any} />
       )
       expect(component.find(EntityHeader).length).toEqual(1)
 
@@ -22,10 +19,8 @@ describe("ContextCard", () => {
     })
 
     it("renders fair image", () => {
-      const component = mount(
-        <Theme>
-          <ContextCard relay={{ environment: {} } as RelayProp} artwork={fairContextArtwork as any} />
-        </Theme>
+      const component = __deprecated_mountWithWrappers(
+        <ContextCard relay={{ environment: {} } as RelayProp} artwork={fairContextArtwork as any} />
       )
 
       expect(component.find(Image)).toHaveLength(1)
@@ -34,10 +29,8 @@ describe("ContextCard", () => {
 
   describe("Show context", () => {
     it("renders show name correctly", () => {
-      const component = mount(
-        <Theme>
-          <ContextCard relay={{ environment: {} } as RelayProp} artwork={showContextArtwork as any} />
-        </Theme>
+      const component = __deprecated_mountWithWrappers(
+        <ContextCard relay={{ environment: {} } as RelayProp} artwork={showContextArtwork as any} />
       )
       expect(component.find(EntityHeader).length).toEqual(1)
 
@@ -45,20 +38,16 @@ describe("ContextCard", () => {
     })
 
     it("renders show image", () => {
-      const component = mount(
-        <Theme>
-          <ContextCard relay={{ environment: {} } as RelayProp} artwork={showContextArtwork as any} />
-        </Theme>
+      const component = __deprecated_mountWithWrappers(
+        <ContextCard relay={{ environment: {} } as RelayProp} artwork={showContextArtwork as any} />
       )
 
       expect(component.find(Image)).toHaveLength(1)
     })
 
     it("renders show button text correctly", () => {
-      const component = mount(
-        <Theme>
-          <ContextCard relay={{ environment: {} } as RelayProp} artwork={showContextArtwork as any} />
-        </Theme>
+      const component = __deprecated_mountWithWrappers(
+        <ContextCard relay={{ environment: {} } as RelayProp} artwork={showContextArtwork as any} />
       )
       expect(component.find(Button)).toHaveLength(1)
 
@@ -68,10 +57,8 @@ describe("ContextCard", () => {
 
   describe("Sale context", () => {
     it("renders sale name correctly", () => {
-      const component = mount(
-        <Theme>
-          <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
-        </Theme>
+      const component = __deprecated_mountWithWrappers(
+        <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
       )
       expect(component.find(EntityHeader).length).toEqual(1)
 
@@ -79,10 +66,8 @@ describe("ContextCard", () => {
     })
 
     it("renders formatted sale start/end date correctly", () => {
-      const component = mount(
-        <Theme>
-          <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
-        </Theme>
+      const component = __deprecated_mountWithWrappers(
+        <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
       )
       expect(component.find(EntityHeader).length).toEqual(1)
 
@@ -97,10 +82,8 @@ describe("ContextCard", () => {
           formattedStartDateTime: "In progress",
         },
       }
-      const component = mount(
-        <Theme>
-          <ContextCard relay={{ environment: {} } as RelayProp} artwork={saleContextArtwork as any} />
-        </Theme>
+      const component = __deprecated_mountWithWrappers(
+        <ContextCard relay={{ environment: {} } as RelayProp} artwork={saleContextArtwork as any} />
       )
       expect(component.find(EntityHeader).length).toEqual(1)
 
@@ -108,20 +91,16 @@ describe("ContextCard", () => {
     })
 
     it("renders sale image", () => {
-      const component = mount(
-        <Theme>
-          <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
-        </Theme>
+      const component = __deprecated_mountWithWrappers(
+        <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
       )
 
       expect(component.find(Image)).toHaveLength(1)
     })
 
     it("renders 'In Auction' if the sale is an auction", () => {
-      const component = mount(
-        <Theme>
-          <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
-        </Theme>
+      const component = __deprecated_mountWithWrappers(
+        <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
       )
 
       expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"In auction"`)
@@ -135,7 +114,7 @@ describe("ContextCard", () => {
           isAuction: false,
         },
       }
-      const component = mount(
+      const component = __deprecated_mountWithWrappers(
         <ContextCard relay={{ environment: {} } as RelayProp} artwork={saleContextArtwork as any} />
       )
 

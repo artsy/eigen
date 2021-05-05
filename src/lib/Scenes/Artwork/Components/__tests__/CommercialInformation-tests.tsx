@@ -1,10 +1,8 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Countdown } from "lib/Components/Bidding/Components/Timer"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import "moment-timezone"
-import { color, Sans, Theme } from "palette"
+import { color, Sans } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
@@ -13,14 +11,7 @@ import { BuyNowButton } from "../CommercialButtons/BuyNowButton"
 import { CommercialButtons } from "../CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformation } from "../CommercialEditionSetInformation"
 import { CommercialInformationTimerWrapper, SaleAvailability } from "../CommercialInformation"
-
-const Wrapper: React.FC<{}> = ({ children }) => {
-  return (
-    <Theme>
-      <GlobalStoreProvider>{children}</GlobalStoreProvider>
-    </Theme>
-  )
-}
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 
 describe("CommercialInformation", () => {
   it("renders all information when the data is present", () => {
@@ -30,10 +21,8 @@ describe("CommercialInformation", () => {
       availability: "for sale",
     }
 
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper artwork={ForSaleArtwork as any} me={{ identityVerified: false } as any} />
-      </Wrapper>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialInformationTimerWrapper artwork={ForSaleArtwork as any} me={{ identityVerified: false } as any} />
     )
 
     expect(component.text()).toContain("For sale")
@@ -48,10 +37,8 @@ describe("CommercialInformation", () => {
       saleMessage: null,
     }
 
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper artwork={OnHoldArtwork as any} me={{ identityVerified: false } as any} />
-      </Wrapper>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialInformationTimerWrapper artwork={OnHoldArtwork as any} me={{ identityVerified: false } as any} />
     )
 
     expect(component.text()).toContain("On hold")
@@ -65,10 +52,8 @@ describe("CommercialInformation", () => {
       saleMessage: "Sold",
     }
 
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper artwork={SoldArtwork as any} me={{ identityVerified: false } as any} />
-      </Wrapper>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialInformationTimerWrapper artwork={SoldArtwork as any} me={{ identityVerified: false } as any} />
     )
 
     expect(component.text()).toContain("Sold")
@@ -82,10 +67,8 @@ describe("CommercialInformation", () => {
       saleMessage: "Contact for Price",
     }
 
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper artwork={ForSaleArtwork as any} me={{ identityVerified: false } as any} />
-      </Wrapper>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialInformationTimerWrapper artwork={ForSaleArtwork as any} me={{ identityVerified: false } as any} />
     )
 
     expect(component.text()).toContain("For sale")
@@ -102,13 +85,8 @@ describe("CommercialInformation", () => {
         isClosed: true,
       },
     }
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper
-          artwork={workInEndedAuction as any}
-          me={{ identityVerified: false } as any}
-        />
-      </Wrapper>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialInformationTimerWrapper artwork={workInEndedAuction as any} me={{ identityVerified: false } as any} />
     )
 
     expect(component.text()).toContain("Bidding closed")
@@ -125,13 +103,11 @@ describe("CommercialInformation", () => {
       },
     }
 
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper
-          artwork={CommercialInformationArtworkClosedAuction as any}
-          me={{ identityVerified: false } as any}
-        />
-      </Wrapper>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialInformationTimerWrapper
+        artwork={CommercialInformationArtworkClosedAuction as any}
+        me={{ identityVerified: false } as any}
+      />
     )
     expect(component.text()).toContain("Bidding closed")
     expect(component.text()).not.toContain("I'm a Gallery")
@@ -179,13 +155,11 @@ describe("CommercialInformation", () => {
         " $refType": null,
       },
     }
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper
-          artwork={CommercialInformationArtworkNoData as any}
-          me={{ identityVerified: false } as any}
-        />
-      </Wrapper>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialInformationTimerWrapper
+        artwork={CommercialInformationArtworkNoData as any}
+        me={{ identityVerified: false } as any}
+      />
     )
     expect(component.text()).not.toContain("For sale")
     expect(component.text()).not.toContain("I'm a Gallery")
@@ -198,25 +172,21 @@ describe("CommercialInformation", () => {
       availability: null,
       isForSale: false,
     }
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper
-          artwork={CommercialInformationArtworkNonCommercial as any}
-          me={{ identityVerified: false } as any}
-        />
-      </Wrapper>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialInformationTimerWrapper
+        artwork={CommercialInformationArtworkNonCommercial as any}
+        me={{ identityVerified: false } as any}
+      />
     )
     expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(`"At I'm a Gallery"`)
   })
 
   it("renders consign with Artsy text", () => {
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper
-          artwork={CommercialInformationArtwork as any}
-          me={{ identityVerified: false } as any}
-        />
-      </Wrapper>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialInformationTimerWrapper
+        artwork={CommercialInformationArtwork as any}
+        me={{ identityVerified: false } as any}
+      />
     )
 
     expect(component.find(Sans).at(2).render().text()).toMatchInlineSnapshot(
@@ -257,13 +227,11 @@ describe("CommercialInformation", () => {
       ],
     }
 
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper
-          artwork={artworkWithEditionSets as any}
-          me={{ identityVerified: false } as any}
-        />
-      </Wrapper>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialInformationTimerWrapper
+        artwork={artworkWithEditionSets as any}
+        me={{ identityVerified: false } as any}
+      />
     )
 
     // Expect the component to default to first edition set's internalID
@@ -279,14 +247,12 @@ describe("CommercialInformation", () => {
 
 describe("CommercialInformation buttons and coundtown timer", () => {
   it("renders CountDownTimer and BidButton when Artwork is in an auction", () => {
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper
-          artwork={CommercialInformationArtworkInAuction as any}
-          me={{ identityVerified: false } as any}
-          tracking={{ trackEvent: jest.fn() } as any}
-        />
-      </Wrapper>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialInformationTimerWrapper
+        artwork={CommercialInformationArtworkInAuction as any}
+        me={{ identityVerified: false } as any}
+        tracking={{ trackEvent: jest.fn() } as any}
+      />
     )
     expect(component.find(Countdown).length).toEqual(1)
     expect(component.find(BidButton).length).toEqual(1)
@@ -300,14 +266,12 @@ describe("CommercialInformation buttons and coundtown timer", () => {
       isForSale: false,
     }
 
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper
-          artwork={CommercialInformationSoldArtworkInAuction as any}
-          me={{ identityVerified: false } as any}
-          tracking={{ trackEvent: jest.fn() } as any}
-        />
-      </Wrapper>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialInformationTimerWrapper
+        artwork={CommercialInformationSoldArtworkInAuction as any}
+        me={{ identityVerified: false } as any}
+        tracking={{ trackEvent: jest.fn() } as any}
+      />
     )
     expect(component.find(Countdown).length).toEqual(0)
     expect(component.find(BidButton).length).toEqual(0)
@@ -315,13 +279,11 @@ describe("CommercialInformation buttons and coundtown timer", () => {
   })
 
   it("doesn't render CountDownTimer or BidButton when not in auction", () => {
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper
-          artwork={CommercialInformationAcquierableArtwork as any}
-          me={{ identityVerified: false } as any}
-        />
-      </Wrapper>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialInformationTimerWrapper
+        artwork={CommercialInformationAcquierableArtwork as any}
+        me={{ identityVerified: false } as any}
+      />
     )
     expect(component.find(Countdown).length).toEqual(0)
     expect(component.find(BidButton).length).toEqual(0)
@@ -350,13 +312,8 @@ describe("ArtworkExtraLinks", () => {
       },
     }
 
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper
-          artwork={inquireableArtwork as any}
-          me={{ identityVerified: false } as any}
-        />
-      </Wrapper>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialInformationTimerWrapper artwork={inquireableArtwork as any} me={{ identityVerified: false } as any} />
     )
     expect(component.find(ArtworkExtraLinks).length).toEqual(0)
   })
@@ -373,13 +330,8 @@ describe("ArtworkExtraLinks", () => {
       sale: null,
     }
 
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper
-          artwork={acquireableArtwork as any}
-          me={{ identityVerified: false } as any}
-        />
-      </Wrapper>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialInformationTimerWrapper artwork={acquireableArtwork as any} me={{ identityVerified: false } as any} />
     )
     expect(component.find(ArtworkExtraLinks).length).toEqual(1)
   })
@@ -396,10 +348,8 @@ describe("ArtworkExtraLinks", () => {
       sale: null,
     }
 
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper artwork={offerableArtwork as any} me={{ identityVerified: false } as any} />
-      </Wrapper>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialInformationTimerWrapper artwork={offerableArtwork as any} me={{ identityVerified: false } as any} />
     )
     expect(component.find(ArtworkExtraLinks).length).toEqual(1)
   })
@@ -410,14 +360,12 @@ describe("ArtworkExtraLinks", () => {
       artists: [{ isConsignable: false, name: "Santa Claus", " $fragmentRefs": null }],
     }
 
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper
-          artwork={nonConsignableBiddableArtwork as any}
-          me={{ identityVerified: false } as any}
-          tracking={{ trackEvent: jest.fn() } as any}
-        />
-      </Wrapper>
+    const component = __deprecated_mountWithWrappers(
+      <CommercialInformationTimerWrapper
+        artwork={nonConsignableBiddableArtwork as any}
+        me={{ identityVerified: false } as any}
+        tracking={{ trackEvent: jest.fn() } as any}
+      />
     )
     expect(component.find(ArtworkExtraLinks).length).toEqual(1)
   })

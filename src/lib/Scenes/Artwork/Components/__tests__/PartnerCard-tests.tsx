@@ -1,23 +1,20 @@
 import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardTestsQueryRawResponse } from "__generated__/PartnerCardTestsQuery.graphql"
-// @ts-ignore
-import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
-import { Button, Sans, Theme } from "palette"
+import { Button, Sans } from "palette"
 import React from "react"
 import { Image } from "react-native"
 import { graphql, RelayProp } from "react-relay"
 import { PartnerCard, PartnerCardFragmentContainer } from "../PartnerCard"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 
 jest.unmock("react-relay")
 
 describe("PartnerCard", () => {
   it("renders partner name correctly", () => {
-    const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
     )
     expect(component.find(Button).length).toEqual(1)
 
@@ -25,20 +22,16 @@ describe("PartnerCard", () => {
   })
 
   it("renders partner image", () => {
-    const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
     )
 
     expect(component.find(Image)).toHaveLength(1)
   })
 
   it("renders partner type", () => {
-    const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
     )
 
     expect(component.find(Sans).at(0).text()).toMatchInlineSnapshot(`"At gallery"`)
@@ -52,10 +45,8 @@ describe("PartnerCard", () => {
         type: "Institutional Seller",
       },
     }
-    const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkInstitutionalSeller} />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkInstitutionalSeller} />
     )
 
     expect(component.find(Sans).at(0).text()).toMatchInlineSnapshot(`"At institution"`)
@@ -69,10 +60,8 @@ describe("PartnerCard", () => {
         type: "Some Other Partner Type",
       },
     }
-    const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkOtherType} />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkOtherType} />
     )
 
     expect(component.find(Sans).at(0).text()).not.toEqual("At institution")
@@ -87,20 +76,16 @@ describe("PartnerCard", () => {
         profile: null,
       },
     }
-    const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkWithoutImage} />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkWithoutImage} />
     )
 
     expect(component.find(Image)).toHaveLength(0)
     expect(component.text()).toContain(`TG`)
   })
   it("truncates partner locations correctly", () => {
-    const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
     )
     expect(component.find(Button).length).toEqual(1)
 
@@ -108,10 +93,8 @@ describe("PartnerCard", () => {
   })
 
   it("renders button text correctly", () => {
-    const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
     )
     expect(component.find(Button)).toHaveLength(1)
 
@@ -126,10 +109,8 @@ describe("PartnerCard", () => {
         type: "Auction House",
       },
     }
-    const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkAuctionHouse} />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkAuctionHouse} />
     )
     expect(component.html()).toBe(null)
   })
@@ -142,10 +123,8 @@ describe("PartnerCard", () => {
         isGalleryAuction: true,
       },
     }
-    const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkAuction} />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkAuction} />
     )
     expect(component.html()).toBe(null)
   })
@@ -158,10 +137,8 @@ describe("PartnerCard", () => {
         profile: null,
       },
     }
-    const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkNoProfile} />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkNoProfile} />
     )
     expect(component.find(Button)).toHaveLength(0)
   })
@@ -169,11 +146,7 @@ describe("PartnerCard", () => {
   describe("Following a partner", () => {
     const getWrapper = async ({ mockArtworkData, mockFollowResults }: any) => {
       return await renderRelayTree({
-        Component: (props: any) => (
-          <Theme>
-            <PartnerCardFragmentContainer {...props} />
-          </Theme>
-        ),
+        Component: (props: any) => <PartnerCardFragmentContainer {...props} />,
         query: graphql`
           query PartnerCardTestsQuery @raw_response_type {
             artwork(id: "artworkID") {

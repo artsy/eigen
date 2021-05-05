@@ -1,7 +1,5 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
 import { Show } from "lib/Scenes/Map/types"
-import { Theme } from "palette"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { RelayProp } from "react-relay"
 import { Event } from "../index"
@@ -25,11 +23,7 @@ const eventData = ({
 
 describe("CityEvent", () => {
   it("renders properly", () => {
-    const comp = mount(
-      <Theme>
-        <Event event={eventData} relay={{ environment: {} } as RelayProp} />
-      </Theme>
-    )
+    const comp = __deprecated_mountWithWrappers(<Event event={eventData} relay={{ environment: {} } as RelayProp} />)
 
     expect(comp.text()).toContain("Pacita Abad Art Estate")
   })

@@ -1,7 +1,7 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount, shallow } from "enzyme"
+import { shallow } from "enzyme"
 import { ReadMore } from "lib/Components/ReadMore"
-import { Sans, Theme } from "palette"
+import { Sans } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import { AboutWork } from "../AboutWork"
@@ -11,6 +11,7 @@ jest.mock("lib/utils/hardware", () => ({
 }))
 
 import { truncatedTextLimit } from "lib/utils/hardware"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 
 describe("AboutWork", () => {
   beforeEach(() => {
@@ -68,13 +69,11 @@ describe("AboutWork", () => {
 
   it("truncates the reaad more component properly for phones", () => {
     ;(truncatedTextLimit as jest.Mock).mockReturnValueOnce(140)
-    const component = mount(
-      <Theme>
-        <AboutWork
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          artwork={aboutWorkArtwork}
-        />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <AboutWork
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        artwork={aboutWorkArtwork}
+      />
     )
 
     // The ellipses and "Read more" text adds an additional 13 characters to the limit of 140
@@ -83,13 +82,11 @@ describe("AboutWork", () => {
 
   it("truncates the reaad more component properly for tablets", () => {
     ;(truncatedTextLimit as jest.Mock).mockReturnValueOnce(320)
-    const component = mount(
-      <Theme>
-        <AboutWork
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          artwork={aboutWorkArtwork}
-        />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <AboutWork
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        artwork={aboutWorkArtwork}
+      />
     )
 
     // The ellipses and "Read more" text adds an additional 13 characters to the limit of 320

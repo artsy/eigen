@@ -152,7 +152,7 @@ describe("Artist Series Rail", () => {
     })
 
     it("renders the collection hub rail title", () => {
-      const wrapper = mount(<CollectionArtistSeriesRail {...props} />)
+      const wrapper = __deprecated_mountWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       expect(wrapper.find(Sans).text()).toBe("Trending Artist Series")
     })

@@ -1,27 +1,23 @@
 import { FollowArtistButtonTestsErrorQueryRawResponse } from "__generated__/FollowArtistButtonTestsErrorQuery.graphql"
 import { FollowArtistButtonTestsQueryRawResponse } from "__generated__/FollowArtistButtonTestsQuery.graphql"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
-import { Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, RelayProp } from "react-relay"
 import { FollowArtistButton, FollowArtistButtonFragmentContainer } from "../FollowArtistButton"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 
 jest.unmock("react-relay")
 
 describe("FollowArtistButton", () => {
   it("renders button text correctly", () => {
-    const component = mount(
-      <Theme>
-        <FollowArtistButton
-          relay={{ environment: {} } as RelayProp}
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          artist={followArtistButtonArtist}
-        />
-      </Theme>
+    const component = __deprecated_mountWithWrappers(
+      <FollowArtistButton
+        relay={{ environment: {} } as RelayProp}
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        artist={followArtistButtonArtist}
+      />
     )
     expect(component.find(TouchableWithoutFeedback).length).toEqual(1)
 
@@ -32,11 +28,7 @@ describe("FollowArtistButton", () => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const getWrapper = async ({ mockArtistData, mockFollowResults }) => {
       return await renderRelayTree({
-        Component: (props: any) => (
-          <Theme>
-            <FollowArtistButtonFragmentContainer {...props} />
-          </Theme>
-        ),
+        Component: (props: any) => <FollowArtistButtonFragmentContainer {...props} />,
         query: graphql`
           query FollowArtistButtonTestsQuery @raw_response_type {
             artist(id: "artistID") {
