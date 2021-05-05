@@ -63,7 +63,6 @@ const Home = (props: Props) => {
   Ordering is defined in https://artsyproduct.atlassian.net/browse/MX-193 but here's a rough mapping:
   - New works for you               -> artworksModule
   - Recently viewed                 -> artworksModule
-  - Recently saved                  -> artworksModule
   - Auctions                        -> salesModule
   - Collections                     -> marketingCollectionsModule
   - Fairs                           -> fairsModule
@@ -78,13 +77,13 @@ const Home = (props: Props) => {
   const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
 
   const rowData = compact([
-    !!viewingRoomsEchoFlag && ({ type: "viewing-rooms" } as const),
-    ...take(artworkRails, 3),
+    ...take(artworkRails, 2),
     salesModule &&
       ({
         type: "sales",
         data: salesModule,
       } as const),
+    !!viewingRoomsEchoFlag && ({ type: "viewing-rooms" } as const),
     fairsModule &&
       ({
         type: "fairs",
@@ -95,7 +94,7 @@ const Home = (props: Props) => {
         type: "collections",
         data: collectionsModule,
       } as const),
-    ...flatten(zip(drop(artworkRails, 3), artistRails)),
+    ...flatten(zip(drop(artworkRails, 2), artistRails)),
   ])
 
   const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(rowData.map((_) => createRef()))
@@ -183,16 +182,9 @@ export const HomeFragmentContainer = createRefetchContainer(
         artworkModules(
           maxRails: -1
           maxFollowedGeneRails: -1
-          order: [
-            ACTIVE_BIDS
-            FOLLOWED_ARTISTS
-            RECENTLY_VIEWED_WORKS
-            SAVED_WORKS
-            RECOMMENDED_WORKS
-            FOLLOWED_GALLERIES
-          ]
+          order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES]
           # LIVE_AUCTIONS and CURRENT_FAIRS both have their own modules, below.
-          exclude: [GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]
+          exclude: [SAVED_WORKS, GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]
         ) {
           id
           ...ArtworkRail_rail
@@ -254,20 +246,10 @@ const HomePlaceholder: React.FC<{}> = () => {
           </Flex>
         </Box>
         <HomeHeroPlaceholder />
-        {!!viewingRoomsEchoFlag && (
-          <Flex ml="2" mt="3">
-            <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
-            <Flex flexDirection="row">
-              {times(4).map((i) => (
-                <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
-              ))}
-            </Flex>
-          </Flex>
-        )}
 
         {
           // Small tiles to mimic the artwork rails
-          times(3).map((r) => (
+          times(2).map((r) => (
             <Box key={r} ml={2} mr={2}>
               <Spacer mb={3} />
               <PlaceholderText width={100 + Math.random() * 100} />
@@ -287,9 +269,10 @@ const HomePlaceholder: React.FC<{}> = () => {
             </Box>
           ))
         }
+
         {
           // Larger tiles to mimic the fairs, sales, and collections rails
-          times(3).map((r) => (
+          times(1).map((r) => (
             <Box key={r} ml={2} mr={2}>
               <Spacer mb={3} />
               <PlaceholderText width={100 + Math.random() * 100} />
@@ -304,6 +287,17 @@ const HomePlaceholder: React.FC<{}> = () => {
             </Box>
           ))
         }
+
+        {!!viewingRoomsEchoFlag && (
+          <Flex ml="2" mt="3">
+            <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
+            <Flex flexDirection="row">
+              {times(4).map((i) => (
+                <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
+              ))}
+            </Flex>
+          </Flex>
+        )}
       </Flex>
     </Theme>
   )
