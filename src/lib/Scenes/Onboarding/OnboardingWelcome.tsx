@@ -6,7 +6,6 @@ import React, { useEffect } from "react"
 import { Image } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import Animated, { Easing } from "react-native-reanimated"
-// const img = require("@images/WelcomeImage.png")
 import backgoundImage from "../../../../images/WelcomeImage.png"
 import { ArtsyMarkWhiteIcon } from "../../../palette/svgs/ArtsyMarkWhiteIcon"
 import { OnboardingNavigationStack } from "./Onboarding"
