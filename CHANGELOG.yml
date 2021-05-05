@@ -10,6 +10,7 @@ upcoming:
     - Rename artist about tab to artist overview tab - iskounen
     - Move rails on artist artwork tab to artist overview tab - iskounen
     - Update onboarding screens copy - mounir
+    - Fix billing country field text color and style - ole
     - Show loading spinner in all infinite scroll artowrk grids - ole
     - Fix missing bottom space on the Partner Artworks screen - ole
 
