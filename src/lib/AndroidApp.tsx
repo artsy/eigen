@@ -1,23 +1,18 @@
-import { ActionSheetProvider } from "@expo/react-native-action-sheet"
-import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { AdminMenuWrapper } from "lib/utils/AdminMenuWrapper"
 import { addTrackingProvider, track } from "lib/utils/track"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { useDeepLinks } from "lib/utils/useDeepLinks"
-import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import { useStripeConfig } from "lib/utils/useStripeConfig"
-import { Theme } from "palette"
 import React, { useEffect } from "react"
 import { Appearance, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
-import { RelayEnvironmentProvider } from "relay-hooks"
+import { AppProviders } from "./AppProviders"
 import { useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
-import { ToastProvider } from "./Components/Toast/toastHook"
 import { useSentryConfig } from "./ErrorReporting"
 import { ArtsyNativeModule } from "./NativeModules/ArtsyNativeModule"
 import { ModalStack } from "./navigation/ModalStack"
-import { defaultEnvironment } from "./relay/createEnvironment"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
@@ -84,21 +79,9 @@ const Main: React.FC<{}> = track()(({}) => {
 })
 
 export const App = () => (
-  <RelayEnvironmentProvider environment={defaultEnvironment}>
-    <ProvideScreenDimensions>
-      <Theme>
-        <ActionSheetProvider>
-          <GlobalStoreProvider>
-            <ToastProvider>
-              <_FancyModalPageWrapper>
-                <AdminMenuWrapper>
-                  <Main />
-                </AdminMenuWrapper>
-              </_FancyModalPageWrapper>
-            </ToastProvider>
-          </GlobalStoreProvider>
-        </ActionSheetProvider>
-      </Theme>
-    </ProvideScreenDimensions>
-  </RelayEnvironmentProvider>
+  <AppProviders>
+    <AdminMenuWrapper>
+      <Main />
+    </AdminMenuWrapper>
+  </AppProviders>
 )
