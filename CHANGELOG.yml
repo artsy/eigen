@@ -11,6 +11,7 @@ upcoming:
     - Update onboarding screens copy - mounir
     - Show loading spinner in all infinite scroll artowrk grids - ole
     - Fix missing bottom space on the Partner Artworks screen - ole
+    - Animate welcome screen - mounir
 
 releases:
   - version: 6.8.4

@@ -1,9 +1,13 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { useAnimatedValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { color, Flex, Spacer, Text, Touchable } from "palette"
-import React from "react"
+import { color, Flex, space, Spacer, Text, Touchable } from "palette"
+import React, { useEffect } from "react"
 import { Image } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
+import Animated, { Easing } from "react-native-reanimated"
+// const img = require("@images/WelcomeImage.png")
+import backgoundImage from "../../../../images/WelcomeImage.png"
 import { ArtsyMarkWhiteIcon } from "../../../palette/svgs/ArtsyMarkWhiteIcon"
 import { OnboardingNavigationStack } from "./Onboarding"
 
@@ -11,14 +15,59 @@ interface OnboardingWelcomeProps extends StackScreenProps<OnboardingNavigationSt
 
 const BUTTON_HEIGHT = 41
 
+const imgProps = Image.resolveAssetSource(backgoundImage)
+
 export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation }) => {
-  const { height: screenHeight } = useScreenDimensions()
+  const { height: screenHeight, width: screenWidth } = useScreenDimensions()
+
+  const opacity = useAnimatedValue(0)
+  const translateX = useAnimatedValue(0)
+
+  useEffect(() => {
+    // We want to animate the background only when the device width is smaller than the image width
+    if (screenWidth < imgProps.width) {
+      Animated.timing(translateX, {
+        duration: 20000,
+        toValue: -(imgProps.width - screenWidth),
+        easing: Easing.linear,
+      }).start()
+    }
+
+    setTimeout(() => {
+      Animated.spring(opacity, {
+        ...Animated.SpringUtils.makeDefaultConfig(),
+        stiffness: 800,
+        damping: 320,
+        restSpeedThreshold: 0.5,
+        mass: 3,
+        toValue: 1,
+      }).start()
+    }, 1000)
+  }, [])
 
   return (
     <Flex flex={1} removeClippedSubviews={false}>
-      <Flex alignItems="flex-end" position="absolute">
-        <Image source={require("@images/WelcomeImage.png")} resizeMode="cover" style={{ height: screenHeight }}></Image>
-      </Flex>
+      <Animated.View
+        style={{
+          alignItems: "flex-end",
+          position: "absolute",
+          overflow: "hidden",
+          transform: [
+            {
+              translateX,
+            },
+          ],
+        }}
+      >
+        <Animated.Image
+          source={require("@images/WelcomeImage.png")}
+          resizeMode="cover"
+          style={{
+            height: screenHeight,
+            overflow: "hidden",
+          }}
+        ></Animated.Image>
+      </Animated.View>
 
       <LinearGradient
         colors={["rgba(0, 0, 0, 0.14)", `rgba(0, 0, 0, 0.94)`]}
@@ -31,11 +80,12 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
         }}
       />
 
-      <Flex ml={2} mt={6}>
+      <Animated.View style={{ marginLeft: space(2), marginTop: space(6), opacity }}>
         <ArtsyMarkWhiteIcon height={40} width={40} />
-      </Flex>
+      </Animated.View>
 
-      <Flex flex={1} p={2} justifyContent="flex-end">
+      <Animated.View style={{ flex: 1, padding: space(2), justifyContent: "flex-end", opacity }}>
+        {/* <Flex flex={1} p={2} justifyContent="flex-end"> */}
         <Text color="white" fontSize="48px" lineHeight={48}>
           Collect Art{"\n"}by the World’s{"\n"}
           Leading Artists
@@ -72,7 +122,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
             Log in
           </Text>
         </Touchable>
-      </Flex>
+      </Animated.View>
     </Flex>
   )
 }

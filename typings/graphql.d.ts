@@ -1,4 +1,1 @@
-declare module "*.graphql" {
-  const data: string
-  export = data
-}
+declare module "*.png"
