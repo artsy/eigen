@@ -1,11 +1,11 @@
 import { FairExhibitorsTestsQuery } from "__generated__/FairExhibitorsTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { Button } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FairExhibitorRailFragmentContainer } from "../Components/FairExhibitorRail"
 import { FairExhibitorsFragmentContainer } from "../Components/FairExhibitors"
@@ -13,7 +13,6 @@ import { FairExhibitorsFragmentContainer } from "../Components/FairExhibitors"
 jest.unmock("react-relay")
 
 describe("FairExhibitors", () => {
-  const trackEvent = useTracking().trackEvent
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
@@ -96,7 +95,7 @@ describe("FairExhibitors", () => {
     })
     const button = wrapper.root.findAllByType(Button)[0]
     act(() => button.props.onPress())
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(postEventToProviders).toHaveBeenCalledWith({
       action: "tappedShowMore",
       context_module: "exhibitorsTab",
       context_screen_owner_type: "fair",

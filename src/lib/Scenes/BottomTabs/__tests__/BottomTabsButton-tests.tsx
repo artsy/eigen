@@ -2,12 +2,10 @@ import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalS
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { useTracking } from "react-tracking"
 import { BottomTabsButton } from "../BottomTabsButton"
-
-const trackEvent = useTracking().trackEvent
 
 const TestWrapper: React.FC<React.ComponentProps<typeof BottomTabsButton>> = (props) => {
   return (
@@ -28,11 +26,11 @@ describe(BottomTabsButton, () => {
 
   it(`dispatches an analytics action on press`, async () => {
     const tree = renderWithWrappers(<TestWrapper tab="sell" />)
-    expect(trackEvent).not.toHaveBeenCalled()
+    expect(postEventToProviders).not.toHaveBeenCalled()
     tree.root.findByType(TouchableWithoutFeedback).props.onPress()
     await flushPromiseQueue()
     expect(__globalStoreTestUtils__?.getCurrentState().bottomTabs.sessionState.selectedTab).toBe("sell")
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(postEventToProviders).toHaveBeenCalledWith({
       action: "tappedTabBar",
       badge: false,
       context_module: "tabBar",

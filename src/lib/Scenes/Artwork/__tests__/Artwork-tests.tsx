@@ -235,7 +235,7 @@ describe("Artwork", () => {
       const artistSeriesButton = tree.root.findByType(ArtistSeriesListItem).findByType(TouchableOpacity)
       act(() => artistSeriesButton.props.onPress())
 
-      expect(postEventToProviders).toHaveBeenCalledWith({
+      expect(postEventToProviders).toHaveBeenLastCalledWith({
         action: "tappedArtistSeriesGroup",
         context_module: "moreSeriesByThisArtist",
         context_screen_owner_id: "artwork123",
@@ -247,6 +247,12 @@ describe("Artwork", () => {
         horizontal_slide_position: 0,
         curation_boost: false,
         type: "thumbnail",
+        inquireable: '<mock-value-for-field-"is_inquireable">',
+        offerable: '<mock-value-for-field-"is_offerable">',
+        availability: '<mock-value-for-field-"availability">',
+        biddable: '<mock-value-for-field-"is_biddable">',
+        context_screen: "Artwork",
+        acquireable: '<mock-value-for-field-"is_acquireable">',
       })
     })
   })

@@ -1,14 +1,12 @@
 import { ArtistInsightsTestsQuery } from "__generated__/ArtistInsightsTestsQuery.graphql"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { mockEnvironmentPayload } from "../../../../tests/mockEnvironmentPayload"
 import { ArtistInsightsFragmentContainer } from "../ArtistInsights"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "../ArtistInsightsAuctionResults"
-
-const trackEvent = useTracking().trackEvent
 
 jest.unmock("react-relay")
 
@@ -48,7 +46,7 @@ describe("ArtistInsights", () => {
     mockEnvironmentPayload(mockEnvironment)
 
     setImmediate(() => {
-      expect(trackEvent).toHaveBeenCalledWith({
+      expect(postEventToProviders).toHaveBeenCalledWith({
         context_screen: "artistAuctionResults",
         context_screen_owner_id: "internalID-1",
         context_screen_owner_slug: "slug-1",

@@ -1,17 +1,16 @@
 import { FairCollectionsTestsQuery } from "__generated__/FairCollectionsTestsQuery.graphql"
 import { FairCollectionsFragmentContainer } from "lib/Scenes/Fair/Components/FairCollections"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { Text, TouchableWithScale } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 jest.unmock("react-relay")
 
 describe("FairCollections", () => {
-  const trackEvent = useTracking().trackEvent
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
@@ -91,7 +90,7 @@ describe("FairCollections", () => {
     const collection = wrapper.root.findAllByType(TouchableWithScale)[0]
     act(() => collection.props.onPress())
 
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(postEventToProviders).toHaveBeenCalledWith({
       action: "tappedCollectionGroup",
       context_module: "curatedHighlightsRail",
       context_screen_owner_type: "fair",

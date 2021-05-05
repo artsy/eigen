@@ -1,10 +1,10 @@
 import { FairTestsQuery } from "__generated__/FairTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FairArtworksFragmentContainer } from "../Components/FairArtworks"
 import { FairCollectionsFragmentContainer } from "../Components/FairCollections"
@@ -18,7 +18,6 @@ import { Fair, FairFragmentContainer } from "../Fair"
 jest.unmock("react-relay")
 
 describe("Fair", () => {
-  const trackEvent = useTracking().trackEvent
   let env: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
@@ -212,7 +211,7 @@ describe("Fair", () => {
     const artworksTab = tabs[1]
 
     act(() => artworksTab.props.onPress())
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(postEventToProviders).toHaveBeenCalledWith({
       action: "tappedNavigationTab",
       context_module: "exhibitorsTab",
       context_screen_owner_type: "fair",
@@ -222,7 +221,7 @@ describe("Fair", () => {
     })
 
     act(() => exhibitorsTab.props.onPress())
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(postEventToProviders).toHaveBeenCalledWith({
       action: "tappedNavigationTab",
       context_module: "artworksTab",
       context_screen_owner_type: "fair",

@@ -3,16 +3,14 @@ import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { DecreaseIcon, IncreaseIcon } from "palette"
 import React from "react"
 import { ReactTestInstance } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { MarketStatsFragmentContainer, MarketStatsQueryRenderer } from "../MarketStats"
 
 jest.unmock("react-relay")
-
-const trackEvent = useTracking().trackEvent
 
 describe("MarketStats", () => {
   let environment: ReturnType<typeof createMockEnvironment>
@@ -111,7 +109,7 @@ describe("MarketStats", () => {
       const infoBubble = tree.findByType(InfoButton)
       infoBubble.props.trackEvent()
 
-      expect(trackEvent).toHaveBeenCalledWith({
+      expect(postEventToProviders).toHaveBeenCalledWith({
         action: "tappedInfoBubble",
         context_module: "auctionResults",
         context_screen_owner_type: "artistAuctionResults",

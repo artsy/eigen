@@ -1,18 +1,17 @@
 import { FairFollowedArtistsRailTestsQuery } from "__generated__/FairFollowedArtistsRailTestsQuery.graphql"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FairFollowedArtistsRailFragmentContainer } from "../Components/FairFollowedArtistsRail"
 
 jest.unmock("react-relay")
 
 describe("FairFollowedArtistsRail", () => {
-  const trackEvent = useTracking().trackEvent
   let env: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
@@ -72,7 +71,7 @@ describe("FairFollowedArtistsRail", () => {
     })
     const artwork = wrapper.root.findAllByType(ArtworkTileRailCard)[0]
     act(() => artwork.props.onPress())
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(postEventToProviders).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "worksByArtistsYouFollowRail",
       context_screen_owner_id: "xyz123",
@@ -193,7 +192,7 @@ describe("FairFollowedArtistsRail", () => {
     })
     const viewAllButton = wrapper.root.findAllByType(TouchableOpacity)[0]
     act(() => viewAllButton.props.onPress())
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(postEventToProviders).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "worksByArtistsYouFollowRail",
       context_screen_owner_id: "xyz123",

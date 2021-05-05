@@ -3,17 +3,16 @@ import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FairExhibitorRailFragmentContainer } from "../Components/FairExhibitorRail"
 
 jest.unmock("react-relay")
 
 describe("FairExhibitors", () => {
-  const trackEvent = useTracking().trackEvent
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
@@ -80,7 +79,7 @@ describe("FairExhibitors", () => {
     })
     const artwork = wrapper.root.findAllByType(ArtworkTileRailCard)[0]
     act(() => artwork.props.onPress())
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(postEventToProviders).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "galleryBoothRail",
       context_screen_owner_id: "abc123",
@@ -107,7 +106,7 @@ describe("FairExhibitors", () => {
     })
     const show = wrapper.root.findAllByType(SectionTitle)[0]
     act(() => show.props.onPress())
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(postEventToProviders).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "galleryBoothRail",
       context_screen_owner_id: "abc123",

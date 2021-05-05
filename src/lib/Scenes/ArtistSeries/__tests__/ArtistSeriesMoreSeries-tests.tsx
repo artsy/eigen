@@ -9,16 +9,14 @@ import {
   ArtistSeriesMoreSeriesFragmentContainer,
 } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.unmock("react-relay")
-
-const trackEvent = useTracking().trackEvent
 
 describe("ArtistSeriesMoreSeries", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -96,7 +94,7 @@ describe("ArtistSeriesMoreSeries", () => {
 
       act(() => artistSeriesButton.props.onPress())
 
-      expect(trackEvent).toHaveBeenCalledWith({
+      expect(postEventToProviders).toHaveBeenCalledWith({
         action: "tappedArtistSeriesGroup",
         context_module: "artistSeriesRail",
         context_screen_owner_id: "artist-series-id",

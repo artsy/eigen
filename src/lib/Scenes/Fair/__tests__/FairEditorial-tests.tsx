@@ -1,17 +1,16 @@
 import { FairEditorialTestsQuery } from "__generated__/FairEditorialTestsQuery.graphql"
 import { FairEditorialFragmentContainer } from "lib/Scenes/Fair/Components/FairEditorial"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { Text, Touchable } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 jest.unmock("react-relay")
 
 describe("FairEditorial", () => {
-  const trackEvent = useTracking().trackEvent
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
@@ -112,7 +111,7 @@ describe("FairEditorial", () => {
     const article = wrapper.root.findAllByType(Touchable)[0]
     act(() => article.props.onPress())
 
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(postEventToProviders).toHaveBeenCalledWith({
       action: "tappedArticleGroup",
       context_module: "relatedArticles",
       context_screen_owner_type: "fair",
