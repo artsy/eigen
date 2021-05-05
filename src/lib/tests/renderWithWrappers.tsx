@@ -1,4 +1,6 @@
 import { render } from "@testing-library/react-native"
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+import { mount } from "enzyme"
 import { ToastProvider } from "lib/Components/Toast/toastHook"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { track } from "lib/utils/track"
@@ -9,8 +11,22 @@ import ReactTestRenderer from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 
 /**
- * Renders a React Component with our page wrappers
+ * Renders a React Component with our wrappers.
  * @param component
+ */
+export const renderWithWrappersTL = (component: ReactElement) => {
+  const root = render(component, { wrapper: Wrappers })
+  return {
+    ...root,
+    getByType: root.UNSAFE_getByType,
+    getAllByType: root.UNSAFE_getAllByType,
+  }
+}
+
+/**
+ * Renders a React Component with our wrappers.
+ * @param component
+ * @deprecated Prefer `renderWithWrappersTL`.
  */
 export const renderWithWrappers = (component: ReactElement) => {
   const wrappedComponent = componentWithWrappers(component)
@@ -38,42 +54,31 @@ export const renderWithWrappers = (component: ReactElement) => {
     }
   }
 }
-
-/**
- * Renders a React Component with our page wrappers
- * @param component
- */
-export const renderWithWrappersTL = (component: ReactElement) => {
-  const root = render(component, { wrapper: Wrappers })
-  return {
-    ...root,
-    getByType: root.UNSAFE_getByType,
-    getAllByType: root.UNSAFE_getAllByType,
-  }
-}
-
-const TrackProvider = track()(({ children }: { children: React.ReactNode }) => {
-  return <>{children}</>
-})
-
-export const Wrappers = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <TrackProvider>
-      <GlobalStoreProvider>
-        <Theme>
-          <ToastProvider>
-            <ProvideScreenDimensions>{children}</ProvideScreenDimensions>
-          </ToastProvider>
-        </Theme>
-      </GlobalStoreProvider>
-    </TrackProvider>
-  )
-}
-
-/**
- * Returns given component wrapped with our page wrappers
- * @param component
- */
 export const componentWithWrappers = (component: ReactElement) => {
   return <Wrappers>{component}</Wrappers>
 }
+
+/**
+ * Mounts a React Component with our wrappers.
+ * @param component
+ * @deprecated Prefer `renderWithWrappersTL`.
+ */
+export const __deprecated_mountWithWrappers = (component: ReactElement) => {
+  return mount(componentWithWrappers(component))
+}
+
+export const TrackProvider = track()(({ children }: { children?: React.ReactNode }) => {
+  return <>{children}</>
+})
+
+export const Wrappers = ({ children }: { children: React.ReactNode }) => (
+  <TrackProvider>
+    <ProvideScreenDimensions>
+      <Theme>
+        <GlobalStoreProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </GlobalStoreProvider>
+      </Theme>
+    </ProvideScreenDimensions>
+  </TrackProvider>
+)

@@ -7,8 +7,6 @@ import {
   CollectionArtistSeriesRailTestsQuery,
   CollectionArtistSeriesRailTestsQueryRawResponse,
 } from "__generated__/CollectionArtistSeriesRailTestsQuery.graphql"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
 import {
   GenericArtistSeriesMeta,
   GenericArtistSeriesRail,
@@ -21,9 +19,9 @@ import {
   CollectionArtistSeriesRail,
   CollectionArtistSeriesRailContainer,
 } from "lib/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers, __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import { postEventToProviders } from "lib/utils/track/providers"
-import { Sans, Theme } from "palette"
+import { Sans } from "palette"
 
 jest.unmock("react-relay")
 
@@ -114,31 +112,19 @@ describe("Artist Series Rail", () => {
     })
 
     it("renders the Trending Artists Series rail component", () => {
-      const wrapper = mount(
-        <Theme>
-          <CollectionArtistSeriesRail {...props} />
-        </Theme>
-      )
+      const wrapper = __deprecated_mountWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       expect(wrapper.find(GenericArtistSeriesRail)).toHaveLength(1)
     })
 
     it("renders three artist series in the Trending Artists Series", () => {
-      const wrapper = mount(
-        <Theme>
-          <CollectionArtistSeriesRail {...props} />
-        </Theme>
-      )
+      const wrapper = __deprecated_mountWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       expect(wrapper.find(ArtworkImageContainer)).toHaveLength(3)
     })
 
     it("renders three images of the correct size in an artist series", () => {
-      const wrapper = mount(
-        <Theme>
-          <CollectionArtistSeriesRail {...props} />
-        </Theme>
-      )
+      const wrapper = __deprecated_mountWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       expect(wrapper.find(ImageView).at(0).props().imageURL).toBe(
         "https://cindy-sherman-untitled-film-stills/medium.jpg"
@@ -166,21 +152,13 @@ describe("Artist Series Rail", () => {
     })
 
     it("renders the collection hub rail title", () => {
-      const wrapper = mount(
-        <Theme>
-          <CollectionArtistSeriesRail {...props} />
-        </Theme>
-      )
+      const wrapper = mount(<CollectionArtistSeriesRail {...props} />)
 
       expect(wrapper.find(Sans).text()).toBe("Trending Artist Series")
     })
 
     it("renders each artist series' title", () => {
-      const wrapper = mount(
-        <Theme>
-          <CollectionArtistSeriesRail {...props} />
-        </Theme>
-      )
+      const wrapper = __deprecated_mountWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       expect(wrapper.find(GenericArtistSeriesTitle).at(0).text()).toBe("Cindy Sherman: Untitled Film Stills")
 
@@ -190,11 +168,7 @@ describe("Artist Series Rail", () => {
     })
 
     it("renders each artist series' metadata", () => {
-      const wrapper = mount(
-        <Theme>
-          <CollectionArtistSeriesRail {...props} />
-        </Theme>
-      )
+      const wrapper = __deprecated_mountWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       expect(wrapper.find(GenericArtistSeriesMeta).at(0).text()).toBe("From $20,000")
 
@@ -204,11 +178,7 @@ describe("Artist Series Rail", () => {
     })
 
     it("navigates to a new collection when a series is tapped", () => {
-      const wrapper = mount(
-        <Theme>
-          <CollectionArtistSeriesRail {...props} />
-        </Theme>
-      )
+      const wrapper = __deprecated_mountWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       wrapper.find(CardRailCard).at(0).props().onPress()
 
