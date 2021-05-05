@@ -1,6 +1,4 @@
 import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graphql"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
 import {
   AnimatedArtworkFilterButton,
   ApplyButton,
@@ -16,11 +14,10 @@ import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers, __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import { postEventToProviders } from "lib/utils/track/providers"
-import { Sans, Theme } from "palette"
+import { Sans } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -149,22 +146,18 @@ afterEach(() => {
 
 const MockFilterModalNavigator = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
   return (
-    <GlobalStoreProvider>
-      <Theme>
-        <ArtworkFiltersStoreProvider initialData={initialData}>
-          <ArtworkFilterNavigator
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            collection={CollectionFixture}
-            exitModal={exitModalMock}
-            closeModal={closeModalMock}
-            mode={FilterModalMode.ArtistArtworks}
-            id="abc123"
-            slug="some-artist"
-            isFilterArtworksModalVisible
-          />
-        </ArtworkFiltersStoreProvider>
-      </Theme>
-    </GlobalStoreProvider>
+    <ArtworkFiltersStoreProvider initialData={initialData}>
+      <ArtworkFilterNavigator
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        collection={CollectionFixture}
+        exitModal={exitModalMock}
+        closeModal={closeModalMock}
+        mode={FilterModalMode.ArtistArtworks}
+        id="abc123"
+        slug="some-artist"
+        isFilterArtworksModalVisible
+      />
+    </ArtworkFiltersStoreProvider>
   )
 }
 
@@ -206,7 +199,7 @@ describe("Filter modal navigation flow", () => {
   })
 
   it("allows users to exit filter modal screen when selecting close icon", () => {
-    const filterScreen = mount(<MockFilterModalNavigator />)
+    const filterScreen = __deprecated_mountWithWrappers(<MockFilterModalNavigator />)
 
     filterScreen.find(CloseIconContainer).props().onPress()
     expect(closeModalMock).toHaveBeenCalled()
@@ -228,7 +221,7 @@ describe("Filter modal states", () => {
       },
     }
 
-    const filterScreen = mount(<MockFilterScreen initialState={injectedState} />)
+    const filterScreen = __deprecated_mountWithWrappers(<MockFilterScreen initialState={injectedState} />)
     expect(filterScreen.find(CurrentOption).at(0).text()).toEqual("Price (low to high)")
   })
 
@@ -252,13 +245,13 @@ describe("Filter modal states", () => {
       },
     }
 
-    const filterScreen = mount(<MockFilterScreen initialState={injectedState} />)
+    const filterScreen = __deprecated_mountWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
     expect(filterScreen.find(CurrentOption).at(1).text()).toEqual("Performance Art")
   })
 
   it("displays the filter screen apply button correctly when no filters are selected", () => {
-    const filterScreen = mount(<MockFilterModalNavigator />)
+    const filterScreen = __deprecated_mountWithWrappers(<MockFilterModalNavigator />)
 
     expect(filterScreen.find(ApplyButton).props().disabled).toEqual(true)
   })
@@ -283,7 +276,7 @@ describe("Filter modal states", () => {
   })
 
   it("does not display default filters on the Filter modal", () => {
-    const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
+    const filterScreen = __deprecated_mountWithWrappers(<MockFilterScreen initialState={initialState} />)
 
     expect(filterScreen.find(CurrentOption).at(0).text()).not.toEqual("Default")
 
@@ -372,7 +365,7 @@ describe("Clearing filters", () => {
       },
     }
 
-    const filterModal = mount(<MockFilterModalNavigator initialData={injectedState} />)
+    const filterModal = __deprecated_mountWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
 
     expect(filterModal.find(CurrentOption).at(0).text()).toEqual("Recently added")
     expect(filterModal.find(ApplyButton).props().disabled).toEqual(true)
@@ -409,11 +402,9 @@ describe("Applying filters on Artworks", () => {
       render={({ props, error }) => {
         if (props?.marketingCollection) {
           return (
-            <Theme>
-              <ArtworkFiltersStoreProvider initialData={initialData}>
-                <CollectionArtworksFragmentContainer collection={props.marketingCollection} scrollToTop={jest.fn()} />
-              </ArtworkFiltersStoreProvider>
-            </Theme>
+            <ArtworkFiltersStoreProvider initialData={initialData}>
+              <CollectionArtworksFragmentContainer collection={props.marketingCollection} scrollToTop={jest.fn()} />
+            </ArtworkFiltersStoreProvider>
           )
         } else if (error) {
           console.log(error)

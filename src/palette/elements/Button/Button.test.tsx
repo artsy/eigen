@@ -1,4 +1,3 @@
-import { mount } from "enzyme"
 import React from "react"
 import styled from "styled-components"
 import { Theme } from "../../Theme"
@@ -42,7 +41,7 @@ describe("Button", () => {
   })
 
   it("shows spinner if loading is true", () => {
-    const wrapper = mount(
+    const wrapper = __deprecated_mountWithWrappers(
       <Theme>
         <Button loading>Hi</Button>
       </Theme>
@@ -54,7 +53,7 @@ describe("Button", () => {
   it("does not invoke the onClick callback if loading is true", () => {
     const onClickMock = jest.fn()
 
-    const wrapper = mount(
+    const wrapper = __deprecated_mountWithWrappers(
       <Theme>
         <Button onClick={onClickMock} loading>
           Hi
@@ -68,7 +67,7 @@ describe("Button", () => {
   })
 
   it("passes the `disabled` prop down to the DOM element", () => {
-    const wrapper = mount(
+    const wrapper = __deprecated_mountWithWrappers(
       <Theme>
         <>
           <Button>Good</Button>
@@ -85,7 +84,7 @@ describe("Button", () => {
       border: 1px solid red;
     `
 
-    const wrapper = mount(<StyledButton>styled</StyledButton>)
+    const wrapper = __deprecated_mountWithWrappers(<StyledButton>styled</StyledButton>)
 
     expect(wrapper.html()).toContain("Buttontest__StyledButton")
   })

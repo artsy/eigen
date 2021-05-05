@@ -1,6 +1,4 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { Theme } from "palette"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { ArtworkTileRailCard, ArtworkTileRailCardProps } from "../ArtworkTileRailCard"
 
@@ -20,11 +18,7 @@ describe("ArtworkTileRailCard", () => {
   it("renders an image with an imageURL and maintains the aspect ratio", () => {
     const props = defaultProps
 
-    const result = mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
-    )
+    const result = __deprecated_mountWithWrappers(<ArtworkTileRailCard {...props} />)
 
     const image = result.find("AROpaqueImageView")
     expect(image.length).toBe(1)
@@ -35,11 +29,7 @@ describe("ArtworkTileRailCard", () => {
   it("renders the title and date together when both are given", () => {
     const props = defaultProps
 
-    const result = mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
-    )
+    const result = __deprecated_mountWithWrappers(<ArtworkTileRailCard {...props} />)
 
     const sans = result.find("Sans")
     expect(sans.at(1).prop("children")).toMatch("CoronaCats, 2020")
@@ -51,11 +41,7 @@ describe("ArtworkTileRailCard", () => {
       date: undefined,
     }
 
-    const result = mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
-    )
+    const result = __deprecated_mountWithWrappers(<ArtworkTileRailCard {...props} />)
 
     const sans = result.find("Sans")
     expect(sans.at(1).prop("children")).toMatch("CoronaCats")
@@ -67,11 +53,7 @@ describe("ArtworkTileRailCard", () => {
       imageURL: "",
     }
 
-    const result = mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
-    )
+    const result = __deprecated_mountWithWrappers(<ArtworkTileRailCard {...props} />)
 
     expect(result.find("AROpaqueImageView").length).toBe(0)
   })
@@ -82,11 +64,7 @@ describe("ArtworkTileRailCard", () => {
       artistNames: undefined,
     }
 
-    mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
-    )
+    __deprecated_mountWithWrappers(<ArtworkTileRailCard {...props} />)
   })
 
   it("renders without saleMessage", () => {
@@ -95,11 +73,7 @@ describe("ArtworkTileRailCard", () => {
       saleMessage: undefined,
     }
 
-    mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
-    )
+    __deprecated_mountWithWrappers(<ArtworkTileRailCard {...props} />)
   })
 
   it("renders without an artwork date", () => {
@@ -108,11 +82,7 @@ describe("ArtworkTileRailCard", () => {
       date: undefined,
     }
 
-    mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
-    )
+    __deprecated_mountWithWrappers(<ArtworkTileRailCard {...props} />)
   })
 
   it("renders without a partner", () => {
@@ -121,11 +91,7 @@ describe("ArtworkTileRailCard", () => {
       partner: undefined,
     }
 
-    mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
-    )
+    __deprecated_mountWithWrappers(<ArtworkTileRailCard {...props} />)
   })
 
   it("renders without a title", () => {
@@ -134,11 +100,7 @@ describe("ArtworkTileRailCard", () => {
       title: undefined,
     }
 
-    mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
-    )
+    __deprecated_mountWithWrappers(<ArtworkTileRailCard {...props} />)
   })
 
   it("throws an error when trying to render a non-square image without an aspect ratio", () => {
@@ -148,13 +110,7 @@ describe("ArtworkTileRailCard", () => {
     }
     const error = new Error("imageAspectRatio is required for non-square images")
 
-    expect(() =>
-      mount(
-        <Theme>
-          <ArtworkTileRailCard {...props} />
-        </Theme>
-      )
-    ).toThrowError(error)
+    expect(() => __deprecated_mountWithWrappers(<ArtworkTileRailCard {...props} />)).toThrowError(error)
   })
 
   it("renders a square image when useSquareAspectRatio is true", () => {
@@ -163,11 +119,7 @@ describe("ArtworkTileRailCard", () => {
       useSquareAspectRatio: true,
     }
 
-    const result = mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
-    )
+    const result = __deprecated_mountWithWrappers(<ArtworkTileRailCard {...props} />)
 
     const image = result.find("AROpaqueImageView")
     expect(image.prop("height")).toBe(240)

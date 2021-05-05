@@ -1,4 +1,3 @@
-import { mount } from "enzyme"
 import React from "react"
 import { act } from "react-test-renderer"
 import { Avatar } from "../Avatar"
@@ -6,19 +5,19 @@ import { Avatar } from "../Avatar"
 describe("Avatar", () => {
   describe("on web", () => {
     it("renders an LazyImage if image url provided", () => {
-      const wrapper = mount(<Avatar src="some/path.img" />)
+      const wrapper = __deprecated_mountWithWrappers(<Avatar src="some/path.img" />)
       expect(wrapper.find("LazyImage").length).toBe(1)
       expect(wrapper.find("InitialsHolder").length).toBe(0)
     })
 
     it("renders an InnerLazyImage if image url provided and lazy loaded", () => {
-      const wrapper = mount(<Avatar lazyLoad src="some/path.img" />)
+      const wrapper = __deprecated_mountWithWrappers(<Avatar lazyLoad src="some/path.img" />)
       expect(wrapper.find("InnerLazyImage").length).toBe(1)
     })
   })
 
   it("renders initials if no image url and initials provided", () => {
-    const wrapper = mount(<Avatar initials="AB" />)
+    const wrapper = __deprecated_mountWithWrappers(<Avatar initials="AB" />)
     expect(wrapper.find("AvatarImage").length).toBe(0)
     const holderWrapper = wrapper.find("InitialsHolder")
     expect(holderWrapper.length).toBe(1)
@@ -26,7 +25,7 @@ describe("Avatar", () => {
   })
 
   it("returns null if no image url or initials", () => {
-    const wrapper = mount(<Avatar />)
+    const wrapper = __deprecated_mountWithWrappers(<Avatar />)
     expect(wrapper.instance()).toBe(null)
   })
 
@@ -40,7 +39,7 @@ describe("Avatar", () => {
   it("renders a fallback if the image fails to load", () => {
     const Fallback = () => <div id="fallback" />
     const err = jest.fn()
-    const wrapper = mount(
+    const wrapper = __deprecated_mountWithWrappers(
       <Avatar src="https://www.artsy.net/does-not-exist" size="md" onError={err} renderFallback={() => <Fallback />} />
     )
     act(() => {

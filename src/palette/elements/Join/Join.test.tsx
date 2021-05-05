@@ -1,10 +1,9 @@
-import { mount } from "enzyme"
 import React from "react"
 import { Join } from "../Join"
 
 describe("Join", () => {
   it("renders a separator", () => {
-    const wrapper = mount(
+    const wrapper = __deprecated_mountWithWrappers(
       <div>
         <Join separator={<div className="foundSeparator">,</div>}>
           <div>hi</div>
@@ -20,7 +19,7 @@ describe("Join", () => {
   })
 
   it("renders blank component with separator unfortunately", () => {
-    const wrapper = mount(
+    const wrapper = __deprecated_mountWithWrappers(
       <div>
         <Join separator={<div className="foundSeparator">,</div>}>
           <div>hi</div>
@@ -34,7 +33,7 @@ describe("Join", () => {
   })
 
   it("does not render separator with only one component in children", () => {
-    const wrapper = mount(
+    const wrapper = __deprecated_mountWithWrappers(
       <div>
         <Join separator={<div className="foundSeparator">,</div>}>
           <div>hi</div>

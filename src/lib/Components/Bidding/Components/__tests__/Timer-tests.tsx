@@ -1,6 +1,4 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers, __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import moment from "moment"
 import { Sans } from "palette"
 import React from "react"
@@ -210,7 +208,7 @@ it("omits the minutes when the sale ends on the hour", () => {
 describe("timer transitions", () => {
   it("transitions state from preview --> closing when the timer ends", () => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const timer = mount(<Timer isPreview={true} startsAt={futureTime} endsAt={futureTime} />)
+    const timer = __deprecated_mountWithWrappers(<Timer isPreview={true} startsAt={futureTime} endsAt={futureTime} />)
 
     expect(getMountedTimerLabel(timer)).toContain("Starts")
     expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")
@@ -222,8 +220,10 @@ describe("timer transitions", () => {
   })
 
   it("transitions state from preview --> live upcoming when the timer ends", () => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const timer = mount(<Timer isPreview={true} startsAt={futureTime} liveStartsAt={futureTime} />)
+    const timer = __deprecated_mountWithWrappers(
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+      <Timer isPreview={true} startsAt={futureTime} liveStartsAt={futureTime} />
+    )
 
     expect(getMountedTimerLabel(timer)).toContain("Starts")
     expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")
@@ -235,8 +235,10 @@ describe("timer transitions", () => {
   })
 
   it("transitions state from live upcoming --> live ongoing when the timer ends", () => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const timer = mount(<Timer isPreview={false} startsAt={pastTime} liveStartsAt={futureTime} />)
+    const timer = __deprecated_mountWithWrappers(
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+      <Timer isPreview={false} startsAt={pastTime} liveStartsAt={futureTime} />
+    )
 
     expect(getMountedTimerLabel(timer)).toContain("Live")
     expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")
@@ -249,7 +251,7 @@ describe("timer transitions", () => {
 
   it("transitions state from closing --> closed when the timer ends", () => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const timer = mount(<Timer isPreview={false} startsAt={pastTime} endsAt={futureTime} />)
+    const timer = __deprecated_mountWithWrappers(<Timer isPreview={false} startsAt={pastTime} endsAt={futureTime} />)
 
     expect(getMountedTimerLabel(timer)).toContain("Ends")
     expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")

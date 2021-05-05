@@ -1,13 +1,14 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount, shallow } from "enzyme"
+import { shallow } from "enzyme"
 import { LinkText } from "lib/Components/Text/LinkText"
-import { Flex, Sans, Serif, Text, Theme } from "palette"
+import { Flex, Sans, Serif, Text } from "palette"
 import React from "react"
 import { defaultRules, renderMarkdown } from "../renderMarkdown"
 
 import { readFileSync } from "fs"
 import { navigate } from "lib/navigation/navigate"
 import { join } from "path"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 
 describe("renderMarkdown", () => {
   it("returns markdown for a simple string", () => {
@@ -109,11 +110,7 @@ describe("renderMarkdown", () => {
       customRules
     ) as any
 
-    const renderedComponent = mount(
-      <Theme>
-        <Flex>{componentList}</Flex>
-      </Theme>
-    )
+    const renderedComponent = __deprecated_mountWithWrappers(<Flex>{componentList}</Flex>)
     expect(renderedComponent.find(LinkText).length).toEqual(2)
 
     renderedComponent.find(LinkText).at(0).props().onPress()
@@ -142,11 +139,7 @@ describe("renderMarkdown", () => {
       customRules
     ) as any
 
-    const renderedComponent = mount(
-      <Theme>
-        <Flex>{componentList}</Flex>
-      </Theme>
-    )
+    const renderedComponent = __deprecated_mountWithWrappers(<Flex>{componentList}</Flex>)
     expect(renderedComponent.find(LinkText).length).toEqual(2)
 
     renderedComponent.find(LinkText).at(0).props().onPress()

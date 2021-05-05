@@ -1,5 +1,4 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { useGlobalState } from "../useGlobalState"
 
@@ -22,7 +21,7 @@ describe(useGlobalState, () => {
   }
 
   it("returns a tuple of [stateContainer, stateSetter]", () => {
-    mount(<TestComponent />)
+    __deprecated_mountWithWrappers(<TestComponent />)
 
     expect(n.current).toBe(0)
 
@@ -36,7 +35,7 @@ describe(useGlobalState, () => {
   })
 
   it("does not cause the wrapper to be updated by default", () => {
-    const wrapper = mount(<TestComponent />)
+    const wrapper = __deprecated_mountWithWrappers(<TestComponent />)
 
     expect(wrapper.text()).toBe("Hello 0")
 
@@ -50,7 +49,7 @@ describe(useGlobalState, () => {
   })
 
   it("does cause the wrapper to be updated when listening", () => {
-    const wrapper = mount(<TestComponent listen />)
+    const wrapper = __deprecated_mountWithWrappers(<TestComponent listen />)
 
     expect(wrapper.text()).toBe("Hello 0")
 

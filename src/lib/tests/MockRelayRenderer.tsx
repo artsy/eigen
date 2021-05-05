@@ -96,7 +96,7 @@ export interface MockRelayRendererState {
  * )
  *
  * it("renders a Relay tree", done => {
- *   const wrapper = mount(
+ *   const wrapper = __deprecated_mountWithWrappers(
  *     <MockRelayRenderer
  *       Component={Artwork}
  *       query={graphql\`

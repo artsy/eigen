@@ -1,9 +1,8 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
 import * as React from "react"
 import { Image, Text, View } from "react-native"
 import { MockRelayRenderer } from "../MockRelayRenderer"
 import { renderUntil } from "../renderUntil"
+import { __deprecated_mountWithWrappers } from "../renderWithWrappers"
 import { Artwork, badQuery, query, renderToString } from "./MockRelayRendererFixtures"
 
 jest.unmock("react-relay")
@@ -39,7 +38,7 @@ describe("MockRelayRenderer", () => {
 
   it("renders an error when child components throw", () => {
     console.log = () => null // MockRelayRenderer prints out error info to the console, let's silence it.
-    const tree = mount(
+    const tree = __deprecated_mountWithWrappers(
       <MockRelayRenderer
         Component={Artwork}
         query={badQuery}

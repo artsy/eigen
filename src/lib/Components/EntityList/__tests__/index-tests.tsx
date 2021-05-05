@@ -1,11 +1,10 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { EntityList } from "../index"
 
 describe("EntityList", () => {
   it("correctly renders one item", () => {
-    const wrapper = mount(
+    const wrapper = __deprecated_mountWithWrappers(
       <EntityList
         prefix="Works by"
         list={[{ internalID: "12345", slug: "foxy-production", name: "Foxy Production", href: "/foxy-production" }]}
@@ -18,7 +17,7 @@ describe("EntityList", () => {
   })
 
   it("correctly renders multiple items", () => {
-    const wrapper = mount(
+    const wrapper = __deprecated_mountWithWrappers(
       <EntityList
         prefix="Works by"
         list={[

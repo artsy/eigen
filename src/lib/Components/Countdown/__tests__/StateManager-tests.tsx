@@ -1,5 +1,4 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
+import { __deprecated_mountWithWrappers } from "lib/tests/renderWithWrappers"
 import moment from "moment"
 import React from "react"
 import { StateManager } from "../StateManager"
@@ -12,7 +11,7 @@ describe("StateManager", () => {
   })
 
   it("Manages a DurationProvider", () => {
-    const comp = mount(
+    const comp = __deprecated_mountWithWrappers(
       <StateManager
         CountdownComponent={Countdown}
         onCurrentTickerState={() => ({
@@ -30,7 +29,7 @@ describe("StateManager", () => {
 
   it("Transitions state when duration expires", () => {
     const onNextTickerState = jest.fn(() => ({ label: "bar", date: null, state: "foo" }))
-    mount(
+    __deprecated_mountWithWrappers(
       <StateManager
         CountdownComponent={Countdown}
         onCurrentTickerState={() => ({
