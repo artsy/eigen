@@ -86,7 +86,7 @@ const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) 
   }
 
   return (
-    <Box mb={3}>
+    <Box>
       <InfiniteScrollArtworksGridContainer
         connection={artworks}
         loadMore={relay.loadMore}

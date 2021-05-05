@@ -8159,6 +8159,7 @@ type Partner implements Node {
   name: String
   profile: Profile
   profileArtistsLayout: String
+  profileBannerDisplay: String
 
   # A connection of shows from a Partner.
   showsConnection(
