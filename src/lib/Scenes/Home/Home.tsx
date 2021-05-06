@@ -59,24 +59,12 @@ const Home = (props: Props) => {
       } as const)
   )
 
-  /*
-  Ordering is defined in https://www.notion.so/artsy/App-Home-Screen-4841255ded3f47c9bcdb73185ee3f335
-  but here's a rough mapping:
-  - New works for you               -> artworksModule
-  - Recently viewed                 -> artworksModule
-  - Auctions                        -> salesModule
-  - Collections                     -> marketingCollectionsModule
-  - Fairs                           -> fairsModule
-  - Recommended works for you       -> artworksModule
-  - Recommended artists to follow   -> artistModules
-  - Similar to works you’ve saved   -> artworksModule
-  - Similar to works you’ve viewed  -> okay so it gets complicated from here on out
-  - Works from galleries you follow -> so let's just zip() and hope for the best.
-  - Trending artists to follow
-  */
-
   const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
 
+  /*
+  Ordering is defined in https://www.notion.so/artsy/App-Home-Screen-4841255ded3f47c9bcdb73185ee3f335.
+  Please make sure to keep this page in sync with the home screen.
+  */
   const rowData = compact([
     ...take(artworkRails, 2),
     salesModule &&
