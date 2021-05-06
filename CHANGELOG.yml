@@ -2,15 +2,21 @@ upcoming:
   version: 6.9.0
   date: TBD
   dev:
-    -
+    - Add native modalDismissed event - lily & christina
   user_facing:
     - Combine gallery and institution artwork filters - mdole
+    - Remove old login from android - adam, barry, david, jonathan, mounir, pavlos
     - Allows multi-select filters to be searchable - damon
     - Rename artist about tab to artist overview tab - iskounen
     - Move rails on artist artwork tab to artist overview tab - iskounen
     - Update onboarding screens copy - mounir
+    - Support dark and light themes on android - mounir
+    - Fix billing country field text color and style - ole
     - Show loading spinner in all infinite scroll artowrk grids - ole
     - Fix missing bottom space on the Partner Artworks screen - ole
+    - Animate welcome screen - mounir
+    - Add fading screen transition when transitioning from sign up to login
+    - Move sort & filter button to artist artworks grid header - iskounen
     - Update home screen modules (change order, remove recently saved) - ole
 
 releases:

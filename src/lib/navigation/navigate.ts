@@ -76,12 +76,10 @@ export const navigationEvents = new EventEmitter()
 
 export function dismissModal() {
   LegacyNativeModules.ARScreenPresenterModule.dismissModal()
-  navigationEvents.emit("modalDismissed")
 }
 
 export function goBack() {
   LegacyNativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
-  navigationEvents.emit("goBack")
 }
 
 export function popParentViewController() {
