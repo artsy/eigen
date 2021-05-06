@@ -1,7 +1,7 @@
 import { Action, action, Thunk, thunk } from "easy-peasy"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { NotificationsManager } from "lib/NativeModules/NotificationsManager"
-import { navigate } from "lib/navigation/navigate"
+import { navigate, navigationEvents } from "lib/navigation/navigate"
 import { GlobalStore } from "./GlobalStore"
 
 // These should match the values in emission/Pod/Classes/EigenCommunications/ARNotificationsManager.m
@@ -17,6 +17,9 @@ export type NativeEvent =
   | {
       type: "REQUEST_NAVIGATION"
       payload: { route: string }
+    }
+  | {
+      type: "MODAL_DISMISSED"
     }
 
 export interface NativeState {
@@ -59,6 +62,9 @@ listenToNativeEvents((event: NativeEvent) => {
       return
     case "REQUEST_NAVIGATION":
       navigate(event.payload.route)
+      return
+    case "MODAL_DISMISSED":
+      navigationEvents.emit("modalDismissed")
       return
     default:
       assertNever(event)
