@@ -1,18 +1,15 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+import { RequestConditionReport_artwork } from "__generated__/RequestConditionReport_artwork.graphql"
+import { RequestConditionReport_me } from "__generated__/RequestConditionReport_me.graphql"
 import { mount } from "enzyme"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockTracking } from "lib/tests/mockTracking"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { Button } from "palette"
 import React from "react"
-
-jest.unmock("react-tracking")
-
-import { RequestConditionReport_artwork } from "__generated__/RequestConditionReport_artwork.graphql"
-import { RequestConditionReport_me } from "__generated__/RequestConditionReport_me.graphql"
-import { postEvent } from "lib/NativeModules/Events"
 import { RequestConditionReport } from "../RequestConditionReport"
 
-jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
+jest.unmock("react-tracking")
 
 const artwork: RequestConditionReport_artwork = {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -41,7 +38,7 @@ it("tracks request condition report tapped", () => {
 
   const requestReportButton = requestConditionReportComponent.find(Button).at(0)
   requestReportButton.props().onPress()
-  expect(postEvent).toBeCalledWith({
+  expect(postEventToProviders).toBeCalledWith({
     action_name: "requestConditionReport",
     action_type: "tap",
     context_module: "ArtworkDetails",
@@ -65,7 +62,7 @@ it("tracks request condition report success", async () => {
 
   await flushPromiseQueue()
 
-  expect(postEvent).toBeCalledWith({
+  expect(postEventToProviders).toBeCalledWith({
     action_name: "requestConditionReport",
     action_type: "success",
     context_module: "ArtworkDetails",
@@ -87,7 +84,7 @@ it("tracks request condition report failure", async () => {
 
   await flushPromiseQueue()
 
-  expect(postEvent).toBeCalledWith({
+  expect(postEventToProviders).toBeCalledWith({
     action_name: "requestConditionReport",
     action_type: "fail",
     context_module: "ArtworkDetails",
