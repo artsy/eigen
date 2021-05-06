@@ -74,6 +74,7 @@ export const ArtsyReactWebView = React.forwardRef<
   const userAgent = getCurrentEmissionState().userAgent
 
   const [loadProgress, setLoadProgress] = useState<number | null>(null)
+
   const webURL = useEnvironment().webURL
   const uri = url.startsWith("/") ? webURL + url : url
 
@@ -154,7 +155,7 @@ export function useWebViewCookies() {
   )
   const { webURL, predictionURL } = useEnvironment()
   useUrlCookies(webURL, accesstoken)
-  useUrlCookies(predictionURL, accesstoken)
+  useUrlCookies(predictionURL + "/login", accesstoken)
 }
 
 function useUrlCookies(url: string, accessToken: string | null) {

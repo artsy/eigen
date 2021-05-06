@@ -3,6 +3,7 @@ import { ArtsyWebViewConfig } from "lib/Components/ArtsyReactWebView"
 import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
+import { Platform } from "react-native"
 import { parse } from "url"
 import { RouteMatcher } from "./RouteMatcher"
 
@@ -72,7 +73,11 @@ export function replaceParams(url: string, params: any) {
 
 function getDomainMap(): Record<string, RouteMatcher[] | null> {
   const liveDotArtsyDotNet: RouteMatcher[] = compact([
-    new RouteMatcher("/*", "LiveAuction", (params) => ({ slug: params["*"] })),
+    Platform.OS === "ios"
+      ? new RouteMatcher("/*", "LiveAuction", (params) => ({ slug: params["*"] }))
+      : new RouteMatcher("/*", "ReactWebView", (params) => ({
+          url: unsafe__getEnvironment().predictionURL + "/" + params["*"],
+        })),
   ])
 
   const artsyDotNet: RouteMatcher[] = compact([
