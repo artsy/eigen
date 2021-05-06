@@ -302,11 +302,20 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                   testID="select-country-press-handler"
                   onPress={() => this.presentSelectCountry()}
                 >
-                  <Flex mb={3} p={3} pb={2} border={1} borderColor={errorForCountry ? "red100" : "black10"}>
+                  <Flex
+                    mb={3}
+                    px={3}
+                    justifyContent="center"
+                    height={40}
+                    border={1}
+                    borderColor={errorForCountry ? "red100" : "black10"}
+                  >
                     {this.state.values.country ? (
-                      <Serif size="3">{this.state.values.country.longName}</Serif>
+                      <Serif size="2" color="black100">
+                        {this.state.values.country.longName}
+                      </Serif>
                     ) : (
-                      <Serif size="3" color="black30">
+                      <Serif size="2" color="black30">
                         Select your country
                       </Serif>
                     )}

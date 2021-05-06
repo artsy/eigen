@@ -181,7 +181,7 @@ describe(useWebViewCookies, () => {
       method: "HEAD",
       headers: { "X-Access-Token": "userAccessToken" },
     })
-    expect(mockFetch).toHaveBeenCalledWith("https://live-staging.artsy.net", {
+    expect(mockFetch).toHaveBeenCalledWith("https://live-staging.artsy.net/login", {
       method: "HEAD",
       headers: { "X-Access-Token": "userAccessToken" },
     })

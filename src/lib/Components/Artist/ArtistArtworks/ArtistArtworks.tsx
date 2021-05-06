@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
-import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -11,9 +11,8 @@ import {
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
 import { Schema } from "lib/utils/track"
-import { Box, Flex, Spacer } from "palette"
+import { Box, FilterIcon, Flex, Spacer, Text, Touchable } from "palette"
 import React, { useEffect, useState } from "react"
-import { ActivityIndicator } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -25,7 +24,6 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
   const tracking = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-  const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
 
   const handleFilterArtworksModal = () => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
@@ -55,25 +53,10 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
     handleFilterArtworksModal()
   }
 
-  const onViewRef = React.useRef(({ viewableItems }: ViewableItems) => {
-    const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
-      return viewableItem?.item === "filteredArtworks"
-    })
-    setArtworksGridVisible(artworksItem?.isViewable ?? false)
-  })
-
-  const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 25 })
-
   return (
     <ArtworkFiltersStoreProvider>
       <StickyTabPageScrollView>
-        <ArtistArtworksContainer
-          {...props}
-          viewableItemsRef={onViewRef}
-          viewConfigRef={viewConfigRef}
-          artist={artist}
-          relay={relay}
-        />
+        <ArtistArtworksContainer {...props} artist={artist} relay={relay} openFilterModal={openFilterArtworksModal} />
         <ArtworkFilterNavigator
           {...props}
           id={artist.internalID}
@@ -84,34 +67,17 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
           mode={FilterModalMode.ArtistArtworks}
         />
       </StickyTabPageScrollView>
-      <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
     </ArtworkFiltersStoreProvider>
   )
 }
-
-// Types related to showing filter button on scroll
-interface ViewableItems {
-  viewableItems?: ViewToken[]
+interface ArtistArtworksContainerProps {
+  openFilterModal: () => void
 }
 
-interface ViewToken {
-  item?: any
-  key?: string
-  index?: number | null
-  isViewable?: boolean
-  section?: any
-}
-
-interface ViewableItemRefs {
-  viewableItemsRef: React.MutableRefObject<(viewableItems: ViewableItems) => void>
-  viewConfigRef: React.MutableRefObject<{ viewAreaCoveragePercentThreshold: number }>
-}
-
-const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = ({
+const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContainerProps> = ({
   artist,
-  viewableItemsRef,
-  viewConfigRef,
   relay,
+  openFilterModal,
   ...props
 }) => {
   const tracking = useTracking()
@@ -122,7 +88,8 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
 
   const filterParams = filterArtworksParams(appliedFilters)
   const artworks = artist.artworks
-  const artworksTotal = artworks?.edges?.length
+  const artworksCount = artworks?.edges?.length
+  const artworksTotal = artworks?.counts?.total
 
   useEffect(() => {
     if (applyFilters) {
@@ -155,7 +122,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
   }
 
   const filteredArtworks = () => {
-    if (artworksTotal === 0) {
+    if (artworksCount === 0) {
       return (
         <Box mb="80px" pt={1}>
           <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} trackClear={trackClear} />
@@ -164,7 +131,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
     } else {
       return (
         <>
-          <Spacer mb={2} />
+          <Spacer mb={1} />
           <InfiniteScrollArtworksGrid
             connection={artist.artworks!}
             loadMore={relay.loadMore}
@@ -173,16 +140,26 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ViewableItemRefs> = 
             contextScreenOwnerType={OwnerType.artist}
             contextScreenOwnerId={artist.internalID}
             contextScreenOwnerSlug={artist.slug}
+            HeaderComponent={() => (
+              <Box backgroundColor="white" py={1}>
+                <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+                  <Text variant="subtitle" color="black60">
+                    Showing {artworksTotal} works
+                  </Text>
+                  <Touchable haptic onPress={openFilterModal}>
+                    <Flex flexDirection="row">
+                      <FilterIcon fill="black100" width="20px" height="20px" />
+                      <Text variant="subtitle" color="black100">
+                        Sort & Filter
+                      </Text>
+                    </Flex>
+                  </Touchable>
+                </Flex>
+                <Spacer mb={1} />
+              </Box>
+            )}
+            stickyHeaderIndices={[0]}
           />
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            p="3"
-            pb="9"
-            style={{ opacity: relay.isLoading() && relay.hasMore() ? 1 : 0 }}
-          >
-            <ActivityIndicator />
-          </Flex>
         </>
       )
     }
@@ -248,6 +225,9 @@ export default createPaginationContainer(
             node {
               id
             }
+          }
+          counts {
+            total
           }
           ...InfiniteScrollArtworksGrid_connection
         }

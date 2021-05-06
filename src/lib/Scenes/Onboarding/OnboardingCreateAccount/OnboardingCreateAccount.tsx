@@ -125,7 +125,7 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
         </StackNavigator.Navigator>
         <OnboardingCreateAccountButton
           navigateToLogin={() => {
-            navigation.replace("OnboardingLogin", { withFadeAnimation: false, email: formik.values.email })
+            navigation.replace("OnboardingLogin", { withFadeAnimation: true, email: formik.values.email })
           }}
           acceptedTerms={acceptedTerms}
           setAcceptedTerms={setAcceptedTerms}
@@ -264,10 +264,9 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
         disabled={isLastStep && !acceptedTerms}
         loading={isSubmitting}
         testID="signUpButton"
+        variant="primaryBlack"
       >
-        <Text color="white" variant="mediumText">
-          Next
-        </Text>
+        <Text variant="mediumText">Next</Text>
       </Button>
     </Flex>
   )

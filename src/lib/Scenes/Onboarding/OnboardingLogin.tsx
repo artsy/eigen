@@ -47,12 +47,17 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
    * to overwrite withFadeAnimation param once the screen shows up
    */
   useEffect(() => {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       navigation.setParams({ withFadeAnimation: false })
     }, 1000)
     if (route.params?.email) {
       handleChange("email")(route.params.email)
     }
+
+    // When the user presses back on the back button immediately
+    // after opening the screen, we need to clear the timeout to avoid
+    // setting params on an unmounted screen
+    return clearTimeout(timeout)
   }, [])
 
   return (
@@ -149,10 +154,9 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
           disabled={!(isValid && dirty)}
           loading={isSubmitting}
           testID="loginButton"
+          variant="primaryBlack"
         >
-          <Text color="white" variant="mediumText">
-            Log in
-          </Text>
+          <Text variant="mediumText">Log in</Text>
         </Button>
       </Flex>
     </View>
