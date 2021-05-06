@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Add native modalDismissed event - lily & christina
     - Refactor filter event payloads to send JSON - roop
+    - Convert artist series filter to static button - mdole
   user_facing:
     - Combine gallery and institution artwork filters - mdole
     - Remove old login from android - adam, barry, david, jonathan, mounir, pavlos
