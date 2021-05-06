@@ -6,7 +6,7 @@ import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ARTIST_SERIES_PAGE_SIZE } from "lib/data/constants"
 import { Schema } from "lib/utils/track"
-import { Box, Separator, Spacer } from "palette"
+import { Box, FilterIcon, Flex, Spacer, Text, Touchable } from "palette"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -14,11 +14,12 @@ import { useTracking } from "react-tracking"
 interface ArtistSeriesArtworksProps {
   artistSeries: ArtistSeriesArtworks_artistSeries
   relay: RelayPaginationProp
+  openFilterModal: () => void
 }
 
 const PAGE_SIZE = 20
 
-export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ artistSeries, relay }) => {
+export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ artistSeries, relay, openFilterModal }) => {
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
@@ -57,18 +58,18 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
     setAggregationsAction(artworks?.aggregations)
   }, [])
 
-  if ((artworks?.counts?.total ?? 0) === 0) {
+  const artworksTotal = artworks?.counts?.total
+
+  if ((artworksTotal ?? 0) === 0) {
     return (
       <Box>
-        <Separator mb={2} />
         <FilteredArtworkGridZeroState id={artistSeries.internalID} slug={artistSeries.slug} trackClear={trackClear} />
-        <Spacer mb={1} />
+        <Spacer mb={2} />
       </Box>
     )
   } else {
     return (
       <Box>
-        <Separator mb={2} />
         <InfiniteScrollArtworksGridContainer
           connection={artworks}
           loadMore={relay.loadMore}
@@ -78,6 +79,25 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
           contextScreenOwnerType={OwnerType.artistSeries}
           contextScreenOwnerId={artistSeries.internalID}
           contextScreenOwnerSlug={artistSeries.slug}
+          stickyHeaderIndices={[0]}
+          HeaderComponent={() => (
+            <Box backgroundColor="white100" py={1}>
+              <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+                <Text variant="subtitle" color="black60">
+                  Showing {artworksTotal} works
+                </Text>
+                <Touchable haptic onPress={openFilterModal}>
+                  <Flex flexDirection="row">
+                    <FilterIcon fill="black100" width="20px" height="20px" />
+                    <Text variant="subtitle" color="black100">
+                      Sort & Filter
+                    </Text>
+                  </Flex>
+                </Touchable>
+              </Flex>
+              <Spacer mb={1} />
+            </Box>
+          )}
         />
       </Box>
     )

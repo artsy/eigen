@@ -34,7 +34,12 @@ describe("Artist Series Artworks", () => {
         if (props?.artistSeries) {
           return (
             <ArtworkFiltersStoreProvider>
-              <ArtistSeriesArtworksFragmentContainer artistSeries={props.artistSeries} />
+              <ArtistSeriesArtworksFragmentContainer
+                artistSeries={props.artistSeries}
+                openFilterModal={() => {
+                  console.log("hi")
+                }}
+              />
             </ArtworkFiltersStoreProvider>
           )
         } else if (error) {
