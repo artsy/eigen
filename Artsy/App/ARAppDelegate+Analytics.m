@@ -22,6 +22,8 @@
 #import "ARAnalyticsVisualizer.h"
 #import "ARSailthruIntegration.h"
 #import "ARAppNotificationsDelegate.h"
+#import "SEGAppboyIntegrationFactory.h"
+#import "Appboy.h"
 
 // View Controllers
 #import "ARInternalMobileWebViewController.h"
@@ -85,7 +87,7 @@
 
     [ARAnalytics setupProvider:[ARSailthruIntegration new]];
 
-    [ARAnalytics setupProvider:[[ARSegmentProvider alloc] initWithIdentifier:segmentWriteKey integrations:nil]];
+    [ARAnalytics setupProvider:[[ARSegmentProvider alloc] initWithIdentifier:segmentWriteKey integrations:@[[SEGAppboyIntegrationFactory instance]]]];
 
     [ARUserManager identifyAnalyticsUser];
     [ARAnalytics incrementUserProperty:ARAnalyticsAppUsageCountProperty byInt:1];
