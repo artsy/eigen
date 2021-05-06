@@ -702,9 +702,7 @@ SPEC REPOS:
     - DHCShakeNotifier
     - EDColor
     - "Expecta+Snapshots"
-    - FBSDKCoreKit
     - FBSDKLoginKit
-    - FBSnapshotTestCase
     - Flipper-PeerTalk
     - FlipperKit
     - Forgeries
@@ -728,7 +726,6 @@ SPEC REPOS:
     - ORKeyboardReactingApplication
     - Quick
     - SailthruMobile
-    - SDWebImage
     - Sentry
     - Starscream
     - Stripe
@@ -1042,4 +1039,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: b88be39452c32fcdf3dfe00f0ac66b96bbb1f629
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.9.3
