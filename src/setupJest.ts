@@ -431,10 +431,14 @@ jest.mock("react-native-config", () => ({
   ARTSY_API_CLIENT_SECRET: "artsy_api_client_secret",
   ARTSY_API_CLIENT_KEY: "artsy_api_client_key",
   ARTSY_FACEBOOK_APP_ID: "artsy_facebook_app_id",
-  SEGMENT_PRODUCTION_WRITE_KEY: "segment_production_write_key",
-  SEGMENT_STAGING_WRITE_KEY: "segment_staging_write_key",
+  SEGMENT_PRODUCTION_WRITE_KEY_IOS: "segment_production_write_key_ios",
+  SEGMENT_PRODUCTION_WRITE_KEY_ANDROID: "segment_production_write_key_android",
+  SEGMENT_STAGING_WRITE_KEY_IOS: "segment_staging_write_key_ios",
+  SEGMENT_STAGING_WRITE_KEY_ANDROID: "segment_staging_write_key_android",
   SENTRY_DSN: "sentry_dsn",
   GOOGLE_MAPS_API_KEY: "google_maps_api_key",
   MAPBOX_API_CLIENT_KEY: "mapbox_api_client_key",
   SAILTHRU_KEY: "sailthru_key",
 }))
+
+jest.mock("react-native-view-shot", () => ({}))
