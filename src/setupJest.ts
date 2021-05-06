@@ -40,6 +40,12 @@ const trackEvent = jest.fn()
     trackEvent,
   }
 })
+
+jest.mock("lib/utils/track/providers", () => ({
+  ...jest.requireActual("lib/utils/track/providers"),
+  postEventToProviders: jest.fn(),
+}))
+
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
   paymentRequestWithCardForm: jest.fn(),
@@ -151,6 +157,7 @@ mockedModule("./lib/Components/Gene/Header.tsx", "Header")
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
+import { postEventToProviders } from "lib/utils/track/providers"
 
 function getNativeModules(): typeof LegacyNativeModules {
   return {
@@ -286,6 +293,7 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
 
   beforeEach((done) => {
     trackEvent.mockClear()
+    ;(postEventToProviders as jest.Mock).mockClear()
     const types: Array<"error" | "warn"> = ["error", "warn"]
     types.forEach((type) => {
       // Don't spy on loggers that have been modified by the current test.
