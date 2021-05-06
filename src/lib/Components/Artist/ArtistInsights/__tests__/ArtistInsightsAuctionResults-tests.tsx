@@ -10,7 +10,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { mockEnvironmentPayload } from "../../../../tests/mockEnvironmentPayload"
 import { AuctionResultFragmentContainer } from "../../../Lists/AuctionResultListItem"
-import { ArtistInsightsAuctionResultsPaginationContainer, SortMode } from "../ArtistInsightsAuctionResults"
+import { ArtistInsightsAuctionResultsPaginationContainer, WorksCount } from "../ArtistInsightsAuctionResults"
 
 jest.unmock("react-relay")
 
@@ -52,6 +52,9 @@ describe("ArtistInsightsAuctionResults", () => {
               <ArtistInsightsAuctionResultsPaginationContainer
                 artist={props.artist}
                 scrollToTop={() => {
+                  console.log("do nothing")
+                }}
+                openFilterModal={() => {
                   console.log("do nothing")
                 }}
               />
@@ -104,7 +107,7 @@ describe("ArtistInsightsAuctionResults", () => {
         }),
       })
 
-      expect(extractText(tree.root.findByType(SortMode))).toBe("1 result • Sorted by most recent sale date")
+      expect(extractText(tree.root.findByType(WorksCount))).toBe("1 result")
     })
 
     it("renders the results string when totalCount is greater than 1", () => {
@@ -117,7 +120,7 @@ describe("ArtistInsightsAuctionResults", () => {
           },
         }),
       })
-      expect(extractText(tree.root.findByType(SortMode))).toBe("10 results • Sorted by most recent sale date")
+      expect(extractText(tree.root.findByType(WorksCount))).toBe("10 results")
     })
   })
 })

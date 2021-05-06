@@ -1,12 +1,12 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
-import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { useOnTabFocusedEffect } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "lib/utils/track"
 import React, { useCallback, useRef, useState } from "react"
-import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
+import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ReactElement } from "simple-markdown"
@@ -31,14 +31,12 @@ interface ViewToken {
   section?: any
 }
 
-const FILTER_BUTTON_OFFSET = 50
 export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
   const { artist, relay, tabIndex } = props
 
   const tracking = useTracking()
   const flatListRef = useRef<{ getNode(): FlatList<any> } | null>(null)
 
-  const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
   const auctionResultsYCoordinate = useRef<number>(0)
 
@@ -56,15 +54,6 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     flatListRef.current?.getNode().scrollToOffset({ animated: true, offset: auctionResultsYCoordinate.current })
   }, [auctionResultsYCoordinate])
 
-  // Show or hide floating filter button depending on the scroll position
-  const onScrollEndDrag = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (event.nativeEvent.contentOffset.y > FILTER_BUTTON_OFFSET) {
-      setIsFilterButtonVisible(true)
-      return
-    }
-    setIsFilterButtonVisible(false)
-  }, [])
-
   // Track screen event when artist insights tab is focused
   useOnTabFocusedEffect(() => {
     tracking.trackEvent(tracks.screen(artist.internalID, artist.slug))
@@ -72,11 +61,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
 
   return (
     <ArtworkFiltersStoreProvider>
-      <StickyTabPageScrollView
-        contentContainerStyle={{ paddingTop: 20, paddingBottom: 60 }}
-        onScrollEndDrag={onScrollEndDrag}
-        innerRef={flatListRef}
-      >
+      <StickyTabPageScrollView contentContainerStyle={{ paddingTop: 20, paddingBottom: 60 }} innerRef={flatListRef}>
         <MarketStatsQueryRenderer artistInternalID={artist.internalID} environment={relay.environment} />
         <View
           onLayout={({
@@ -87,7 +72,11 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
             auctionResultsYCoordinate.current = y
           }}
         >
-          <ArtistInsightsAuctionResultsPaginationContainer artist={artist} scrollToTop={scrollToTop} />
+          <ArtistInsightsAuctionResultsPaginationContainer
+            artist={artist}
+            scrollToTop={scrollToTop}
+            openFilterModal={openFilterModal}
+          />
         </View>
       </StickyTabPageScrollView>
       <ArtworkFilterNavigator
@@ -98,11 +87,6 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         exitModal={closeFilterModal}
         closeModal={closeFilterModal}
         title="Filter auction results"
-      />
-      <AnimatedArtworkFilterButton
-        isVisible={isFilterButtonVisible}
-        onPress={openFilterModal}
-        text="Filter auction results"
       />
     </ArtworkFiltersStoreProvider>
   )
