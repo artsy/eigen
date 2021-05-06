@@ -3,7 +3,6 @@ import { SaleArtworkTileRailCardContainer } from "lib/Components/SaleArtworkTile
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Flex } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -20,7 +19,7 @@ describe("SaleArtworksHomeRail", () => {
       query={graphql`
         query SaleArtworksHomeRailTestsQuery @relay_test_operation {
           me {
-            ...SaleArtworksHomeRail_me @arguments
+            ...SaleArtworksHomeRail_me
           }
         }
       `}
@@ -59,7 +58,8 @@ describe("SaleArtworksHomeRail", () => {
     }
     mockEnvironmentPayload(mockEnvironment, noArtworksProps)
     // React-test-renderer has no isEmptyComponent or isNullComponent therefore I am testing for the container
-    expect(tree.root.findAllByType(Flex)).toHaveLength(0)
+    // expect(tree.root.findAllByType(Flex)).toHaveLength(0)
+    expect(tree.toJSON()).toBeNull()
   })
 })
 

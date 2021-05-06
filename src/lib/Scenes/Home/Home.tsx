@@ -68,7 +68,7 @@ const Home = (props: Props) => {
   */
   const rowData = compact([
     artworkRails[0],
-    { type: "lots" } as const,
+    { type: "lotsByFollowedArtists" } as const,
     artworkRails[1],
     salesModule &&
       ({
@@ -142,7 +142,7 @@ const Home = (props: Props) => {
                   )
                 case "viewing-rooms":
                   return <ViewingRoomsHomeRail featured={featured} />
-                case "lots":
+                case "lotsByFollowedArtists":
                   return <SaleArtworksHomeRailContainer me={me} />
               }
             }}

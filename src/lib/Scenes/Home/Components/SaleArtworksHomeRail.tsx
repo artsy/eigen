@@ -1,12 +1,12 @@
 import { OwnerType } from "@artsy/cohesion"
 import { SaleArtworksHomeRail_me } from "__generated__/SaleArtworksHomeRail_me.graphql"
-import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
+import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { SaleArtworkTileRailCardContainer } from "lib/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToEdge } from "lib/utils/isCloseToEdge"
-import { Flex, Spacer } from "palette"
+import { Flex } from "palette"
 import React, { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
@@ -48,12 +48,7 @@ export const SaleArtworksHomeRail: React.FC<Props> = ({ me, relay }) => {
       <Flex mx={2}>
         <SectionTitle title="Lots by artists you follow" />
       </Flex>
-      <AboveTheFoldFlatList
-        horizontal
-        ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
-        ListFooterComponent={() => <Spacer mr={2}></Spacer>}
-        ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
-        showsHorizontalScrollIndicator={false}
+      <CardRailFlatList
         data={artworks}
         initialNumToRender={PAGE_SIZE}
         windowSize={3}
