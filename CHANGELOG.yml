@@ -18,6 +18,7 @@ upcoming:
     - Add fading screen transition when transitioning from sign up to login
     - Move sort & filter button to artist artworks grid header - iskounen
     - Update home screen modules (change order, remove recently saved) - ole
+    - Add "Lots by artists I follow" rails to the home screen - ole
 
 releases:
   - version: 6.8.4
