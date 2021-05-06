@@ -1,4 +1,4 @@
-import { GlobalStore } from "lib/store/GlobalStore"
+import { getCurrentEmissionState, GlobalStore } from "lib/store/GlobalStore"
 import { AdminMenuWrapper } from "lib/utils/AdminMenuWrapper"
 import { addTrackingProvider, track } from "lib/utils/track"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
@@ -16,6 +16,7 @@ import { ModalStack } from "./navigation/ModalStack"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
+import { AnalyticsConstants } from "./utils/track/constants"
 
 addTrackingProvider("segment rn android", SegmentTrackingProvider)
 
@@ -35,18 +36,23 @@ const Main: React.FC<{}> = track()(({}) => {
 
   useEffect(() => {
     const scheme = Appearance.getColorScheme()
-    console.log("sceheme", { scheme })
     SegmentTrackingProvider.identify?.(null, {
-      "user interface style": (() => {
+      [AnalyticsConstants.UserInterfaceStyle.key]: (() => {
         switch (scheme) {
           case "light":
-            return "light"
+            return AnalyticsConstants.UserInterfaceStyle.value.Light
           case "dark":
-            return "dark"
+            return AnalyticsConstants.UserInterfaceStyle.value.Dark
         }
-        return "unspecified"
+        return AnalyticsConstants.UserInterfaceStyle.value.Unspecified
       })(),
     })
+  }, [])
+
+  useEffect(() => {
+    const launchCount = getCurrentEmissionState().launchCount
+    if (launchCount >= 1) { return }
+    SegmentTrackingProvider.postEvent({ name: AnalyticsConstants.FreshInstall })
   }, [])
 
   useEffect(() => {
