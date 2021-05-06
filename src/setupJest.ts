@@ -155,9 +155,9 @@ mockedModule("./lib/Components/Gene/Header.tsx", "Header")
 
 // Native modules
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
-import { postEventToProviders } from "lib/utils/track/providers"
 
 function getNativeModules(): typeof LegacyNativeModules {
   return {
