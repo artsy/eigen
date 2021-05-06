@@ -693,35 +693,19 @@ DEPENDENCIES:
   - Yoga (from `./node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/artsy/Specs.git:
-    - Aerodramus
-    - "Artsy+UIColors"
-    - "Artsy+UIFonts"
-    - "Artsy+UILabels"
-    - Artsy-UIButtons
-    - Extraction
-  trunk:
+  https://cdn.cocoapods.org/:
     - "@react-native-mapbox-gl-mapbox-static"
     - AFNetworkActivityLogger
-    - AFNetworking
-    - Analytics
     - ARAnalytics
-    - boost-for-react-native
     - CocoaAsyncSocket
     - CocoaLumberjack
     - DHCShakeNotifier
     - EDColor
-    - Expecta
     - "Expecta+Snapshots"
     - FBSDKCoreKit
     - FBSDKLoginKit
     - FBSnapshotTestCase
-    - Flipper
-    - Flipper-DoubleConversion
-    - Flipper-Folly
-    - Flipper-Glog
     - Flipper-PeerTalk
-    - Flipper-RSocket
     - FlipperKit
     - Forgeries
     - FXBlurView
@@ -735,7 +719,6 @@ SPEC REPOS:
     - MARKRangeSlider
     - MMMarkdown
     - MultiDelegate
-    - Nimble
     - Nimble-Snapshots
     - NPKeyboardLayoutGuide
     - ObjectiveSugar
@@ -743,12 +726,10 @@ SPEC REPOS:
     - OHHTTPStubs
     - OpenSSL-Universal
     - ORKeyboardReactingApplication
-    - ORStackView
     - Quick
     - SailthruMobile
     - SDWebImage
     - Sentry
-    - Specta
     - Starscream
     - Stripe
     - SwiftyJSON
@@ -758,6 +739,29 @@ SPEC REPOS:
     - "UIView+BooleanAnimations"
     - "XCTest+OHHTTPStubSuiteCleanUp"
     - YogaKit
+  https://github.com/artsy/Specs.git:
+    - Aerodramus
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts"
+    - "Artsy+UILabels"
+    - Artsy-UIButtons
+    - Extraction
+  https://github.com/CocoaPods/Specs.git:
+    - AFNetworking
+    - Analytics
+    - boost-for-react-native
+    - Expecta
+    - FBSDKCoreKit
+    - FBSnapshotTestCase
+    - Flipper
+    - Flipper-DoubleConversion
+    - Flipper-Folly
+    - Flipper-Glog
+    - Flipper-RSocket
+    - Nimble
+    - ORStackView
+    - SDWebImage
+    - Specta
 
 EXTERNAL SOURCES:
   AFOAuth1Client:
