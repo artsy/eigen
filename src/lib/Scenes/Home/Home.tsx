@@ -258,23 +258,19 @@ const HomePlaceholder: React.FC<{}> = () => {
           ))
         }
 
-        {
-          // Larger tiles to mimic the fairs, sales, and collections rails
-          times(1).map((r) => (
-            <Box key={r} ml={2} mr={2}>
-              <Spacer mb={3} />
-              <PlaceholderText width={100 + Math.random() * 100} />
-              <Flex flexDirection="row" mt={1}>
-                <Join separator={<Spacer width={15} />}>
-                  {times(10).map((index) => (
-                    <PlaceholderBox key={index} height={270} width={270} />
-                  ))}
-                </Join>
-                <Spacer mb={2} />
-              </Flex>
-            </Box>
-          ))
-        }
+        {/* Larger tiles to mimic the fairs, sales, and collections rails */}
+        <Box ml={2} mr={2}>
+          <Spacer mb={3} />
+          <PlaceholderText width={100 + Math.random() * 100} />
+          <Flex flexDirection="row" mt={1}>
+            <Join separator={<Spacer width={15} />}>
+              {times(10).map((index) => (
+                <PlaceholderBox key={index} height={270} width={270} />
+              ))}
+            </Join>
+            <Spacer mb={2} />
+          </Flex>
+        </Box>
 
         {!!viewingRoomsEchoFlag && (
           <Flex ml="2" mt="3">
