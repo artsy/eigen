@@ -17,6 +17,7 @@ upcoming:
     - Animate welcome screen - mounir
     - Add fading screen transition when transitioning from sign up to login
     - Move sort & filter button to artist artworks grid header - iskounen
+    - Update home screen modules (change order, remove recently saved) - ole
 
 releases:
   - version: 6.8.4
