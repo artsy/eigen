@@ -1,10 +1,8 @@
 import { Screen } from "@artsy/cohesion"
-import _track, { Track as _Track, TrackingInfo } from "react-tracking"
-
-import { postEvent } from "lib/NativeModules/Events"
-
-// The schema definition for analytics tracking lives inside `./schema`, not here.
 import React from "react"
+import _track, { Track as _Track, TrackingInfo } from "react-tracking"
+import { _addTrackingProvider, postEventToProviders, TrackingProvider } from "./providers"
+// The schema definition for analytics tracking lives inside `./schema`, not here.
 import * as Schema from "./schema"
 export { Schema }
 
@@ -90,7 +88,7 @@ export interface Track<P = any, S = null, T extends Schema.Global = Schema.Entit
 export const track: Track = (trackingInfo, options) => {
   return _track(trackingInfo, {
     ...options,
-    dispatch: (data) => postEvent(data),
+    dispatch: (data) => postEventToProviders(data),
   })
 }
 
@@ -169,12 +167,12 @@ export class ProvideScreenTrackingWithCohesionSchema extends React.Component<Pro
  */
 export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
   return _track(trackingInfo as any, {
-    dispatch: (data) => postEvent(data),
+    dispatch: (data) => postEventToProviders(data),
     dispatchOnMount: true,
   })
 }
 
-/**
+/*
  * ## Writing tests for your tracked code
  *
  * By default we mock `react-tracking`, so it's not possible to test the code easily.
@@ -226,3 +224,7 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *      ```
  *
  */
+
+export const addTrackingProvider = (name: string, provider: TrackingProvider) => {
+  _addTrackingProvider(name, provider)
+}

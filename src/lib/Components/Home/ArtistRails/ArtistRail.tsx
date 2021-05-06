@@ -15,7 +15,6 @@ import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation
 import { ArtistRailNewSuggestionQuery } from "__generated__/ArtistRailNewSuggestionQuery.graphql"
 import { Disappearable } from "lib/Components/Disappearable"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import { postEvent } from "lib/NativeModules/Events"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import { Schema } from "lib/utils/track"
@@ -118,7 +117,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
           if (errors && errors.length > 0) {
             reject(new Error(JSON.stringify(errors)))
           } else {
-            postEvent({
+            trackEvent({
               name: "Follow artist",
               artist_id: followArtist.internalID,
               artist_slug: followArtist.slug,

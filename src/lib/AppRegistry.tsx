@@ -105,6 +105,8 @@ LogBox.ignoreLogs([
   "Picker has been extracted",
 ])
 
+addTrackingProvider("native ios analytics", NativeAnalyticsProvider)
+
 interface ArtworkProps {
   artworkID: string
   isVisible: boolean

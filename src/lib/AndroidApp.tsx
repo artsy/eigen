@@ -17,6 +17,8 @@ import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 
+addTrackingProvider("segment rn android", SegmentTrackingProvider)
+
 if (UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true)
 }
@@ -30,6 +32,22 @@ const Main: React.FC<{}> = track()(({}) => {
   useStripeConfig()
   useWebViewCookies()
   useDeepLinks()
+
+  useEffect(() => {
+    const scheme = Appearance.getColorScheme()
+    console.log("sceheme", { scheme })
+    SegmentTrackingProvider.identify?.(null, {
+      "user interface style": (() => {
+        switch (scheme) {
+          case "light":
+            return "light"
+          case "dark":
+            return "dark"
+        }
+        return "unspecified"
+      })(),
+    })
+  }, [])
 
   useEffect(() => {
     if (isHydrated) {
