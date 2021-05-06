@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - Add native modalDismissed event - lily & christina
+    - Fix beta promotion and packaging issues - brian
   user_facing:
     - Combine gallery and institution artwork filters - mdole
     - Remove old login from android - adam, barry, david, jonathan, mounir, pavlos
