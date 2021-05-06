@@ -45,7 +45,7 @@ export class WorksForYou extends React.Component<Props, State> {
       if (error) {
         console.warn(error)
       } else {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        // @ts-ignore
         this.props.tracking.trackEvent({
           name: "Notifications read",
           source_screen: Analytics.OwnerType.worksForYou,
