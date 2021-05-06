@@ -78,13 +78,11 @@ export class Conversation extends React.Component<Props, State> {
     NetInfo.isConnected.addEventListener("connectionChange", this.handleConnectivityChange)
     this.maybeMarkLastMessageAsRead()
     navigationEvents.addListener("modalDismissed", this.handleModalDismissed)
-    navigationEvents.addListener("goBack", this.handleModalDismissed)
   }
 
   componentWillUnmount() {
     NetInfo.isConnected.removeEventListener("connectionChange", this.handleConnectivityChange)
     navigationEvents.removeListener("modalDismissed", this.handleModalDismissed)
-    navigationEvents.removeListener("goBack", this.handleModalDismissed)
   }
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -97,7 +95,16 @@ export class Conversation extends React.Component<Props, State> {
   }
 
   refetch = () => {
-    this.props.relay.refetch({})
+    this.props.relay.refetch(
+      { conversationID: this.props.me.conversation?.internalID },
+      null,
+      (error) => {
+        if (error) {
+          console.error("Conversation.tsx", error.message)
+        }
+      },
+      { force: true }
+    )
   }
 
   maybeMarkLastMessageAsRead() {
