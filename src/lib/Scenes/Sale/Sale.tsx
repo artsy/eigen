@@ -166,7 +166,11 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     },
     {
       key: SALE_ARTWORKS_RAIL,
-      content: <SaleArtworksRailContainer me={me} />,
+      content: (
+        <Box mt={3}>
+          <SaleArtworksRailContainer me={me} />
+        </Box>
+      ),
     },
     {
       key: SALE_LOTS_LIST,

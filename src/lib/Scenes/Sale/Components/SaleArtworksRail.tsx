@@ -18,6 +18,8 @@ export const INITIAL_NUMBER_TO_RENDER = 4
 export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
   const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
 
+  console.log("LOTS:", artworks)
+
   if (!artworks?.length) {
     return null
   }
