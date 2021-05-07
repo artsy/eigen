@@ -137,7 +137,7 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
 }
 
 interface OnboardingCreateAccountScreenWrapperProps {
-  onBackButtonPress: () => void
+  onBackButtonPress?: () => void
   title: string
   caption?: string
 }
@@ -160,7 +160,8 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="always"
       >
-        <BackButton onPress={onBackButtonPress} />
+        {!!onBackButtonPress && <BackButton onPress={onBackButtonPress} />}
+
         <Spacer mt={60} />
         <Box height={130}>
           <Text variant="largeTitle">{title}</Text>
@@ -225,7 +226,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
             variant="secondaryOutline"
             testID="loginButton"
           >
-            <Text variant="mediumText">Go to Login</Text>
+            Go to Login
           </Button>
         </Animated.View>
       )}
@@ -266,7 +267,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
         testID="signUpButton"
         variant="primaryBlack"
       >
-        <Text variant="mediumText">Next</Text>
+        Next
       </Button>
     </Flex>
   )

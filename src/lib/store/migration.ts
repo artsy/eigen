@@ -17,9 +17,10 @@ export const Versions = {
   RefactorConfigModel: 7,
   FixEnvironmentMigrationBug: 8,
   AddUserIsDev: 9,
+  AddAuthOnboardingState: 10,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddUserIsDev
+export const CURRENT_APP_VERSION = Versions.AddAuthOnboardingState
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -68,6 +69,9 @@ export const artsyAppMigrations: Migrations = {
   [Versions.AddUserIsDev]: (state) => {
     state.auth.androidUserEmail = null
     state.config.userIsDev = { flipValue: false }
+  },
+  [Versions.AddAuthOnboardingState]: (state) => {
+    state.auth.onboardingState = "none"
   },
 }
 

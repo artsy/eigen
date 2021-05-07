@@ -1,12 +1,16 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { ChevronIcon } from "palette"
+import { ChevronIcon, CloseIcon } from "palette"
 import React, { useEffect, useRef } from "react"
 import { Animated } from "react-native"
 import { TouchableOpacity } from "react-native"
 import { useFirstMountState } from "react-use/esm/useFirstMountState"
 import { goBack } from "./navigate"
 
-export const BackButton: React.FC<{ show?: boolean; onPress?(): void }> = ({ onPress = goBack, show = true }) => {
+export const BackButton: React.FC<{ show?: boolean; showCloseIcon?: boolean; onPress?(): void }> = ({
+  onPress = goBack,
+  show = true,
+  showCloseIcon = false,
+}) => {
   const isFirstRender = useFirstMountState()
   const opacity = useRef(new Animated.Value(show ? 1 : 0)).current
   useEffect(() => {
@@ -35,7 +39,7 @@ export const BackButton: React.FC<{ show?: boolean; onPress?(): void }> = ({ onP
         onPress={onPress}
         style={{ width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}
       >
-        <ChevronIcon direction="left" />
+        {showCloseIcon ? <CloseIcon fill="black100" width={26} height={26} /> : <ChevronIcon direction="left" />}
       </TouchableOpacity>
     </Animated.View>
   )

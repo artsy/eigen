@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1fd08eb4c6fe06451485859f8af8e314 */
+/* @relayHash d39a0f07e6e5842ee93b06120e642bba */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -11,34 +11,16 @@ export type ArtistListItemTestsQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"ArtistListItem_artist">;
     } | null;
 };
-export type ArtistListItemTestsQueryRawResponse = {
-    readonly artist: ({
-        readonly id: string;
-        readonly internalID: string;
-        readonly slug: string;
-        readonly name: string | null;
-        readonly initials: string | null;
-        readonly href: string | null;
-        readonly is_followed: boolean | null;
-        readonly nationality: string | null;
-        readonly birthday: string | null;
-        readonly deathday: string | null;
-        readonly image: ({
-            readonly url: string | null;
-        }) | null;
-    }) | null;
-};
 export type ArtistListItemTestsQuery = {
     readonly response: ArtistListItemTestsQueryResponse;
     readonly variables: ArtistListItemTestsQueryVariables;
-    readonly rawResponse: ArtistListItemTestsQueryRawResponse;
 };
 
 
 
 /*
 query ArtistListItemTestsQuery {
-  artist(id: "pablo-picasso") {
+  artist(id: "artist-id") {
     ...ArtistListItem_artist
     id
   }
@@ -66,9 +48,21 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "pablo-picasso"
+    "value": "artist-id"
   }
-];
+],
+v1 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
+},
+v2 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+};
 return {
   "fragment": {
     "argumentDefinitions": [],
@@ -90,7 +84,7 @@ return {
             "name": "ArtistListItem_artist"
           }
         ],
-        "storageKey": "artist(id:\"pablo-picasso\")"
+        "storageKey": "artist(id:\"artist-id\")"
       }
     ],
     "type": "Query",
@@ -199,18 +193,49 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "artist(id:\"pablo-picasso\")"
+        "storageKey": "artist(id:\"artist-id\")"
       }
     ]
   },
   "params": {
-    "id": "1fd08eb4c6fe06451485859f8af8e314",
-    "metadata": {},
+    "id": "d39a0f07e6e5842ee93b06120e642bba",
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "artist": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Artist"
+        },
+        "artist.birthday": (v1/*: any*/),
+        "artist.deathday": (v1/*: any*/),
+        "artist.href": (v1/*: any*/),
+        "artist.id": (v2/*: any*/),
+        "artist.image": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Image"
+        },
+        "artist.image.url": (v1/*: any*/),
+        "artist.initials": (v1/*: any*/),
+        "artist.internalID": (v2/*: any*/),
+        "artist.is_followed": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Boolean"
+        },
+        "artist.name": (v1/*: any*/),
+        "artist.nationality": (v1/*: any*/),
+        "artist.slug": (v2/*: any*/)
+      }
+    },
     "name": "ArtistListItemTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '25bd3e587ca4a03f391f96cc7293eb35';
+(node as any).hash = '594675fee8563f83ccc9225649b2cbbf';
 export default node;

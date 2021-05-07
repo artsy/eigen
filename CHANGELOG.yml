@@ -20,6 +20,7 @@ upcoming:
     - Fix missing bottom space on the Partner Artworks screen - ole
     - Animate welcome screen - mounir
     - Add fading screen transition when transitioning from sign up to login
+    - Add onboarding personalization screen - mounir
     - Move sort & filter button to artist artworks grid header - iskounen
     - Show live auctions in webview on Android - brian
     - Update home screen modules (change order, remove recently saved) - ole

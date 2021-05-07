@@ -1,22 +1,29 @@
-import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
-import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
+/**
+ * This file is an exact copy of /Users/mounirdhahri/work/eigen/src/lib/Components/ArtistListItem.tsx
+ * We needed it because relay still do not support named fragment spreads for search
+ */
+import { OnboardingPersonalizationModal_artists } from "__generated__/OnboardingPersonalizationModal_artists.graphql"
+import { followArtistMutation } from "lib/Components/ArtistListItem"
 import { navigate } from "lib/navigation/navigate"
-import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { Schema, track } from "lib/utils/track"
 import { Button, color, EntityHeader, Flex, Touchable } from "palette"
 import React from "react"
 import { StyleProp, TouchableWithoutFeedback, ViewStyle } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
-import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import { RelayPaginationProp } from "react-relay"
 
 interface Props {
-  artist: ArtistListItem_artist
-  relay: RelayProp
+  artist: NonNullable<
+    NonNullable<
+      NonNullable<NonNullable<NonNullable<OnboardingPersonalizationModal_artists["searchConnection"]>["edges"]>[0]>
+    >["node"]
+  >
+  relay: RelayPaginationProp
   Component?: any
   contextModule?: string
   withFeedback?: boolean
   containerStyle?: StyleProp<ViewStyle>
-  onFollowFinish?: () => void
+  onStart?: () => void
+  onFinish?: () => void
 }
 
 interface State {
@@ -40,7 +47,7 @@ export const formatTombstoneText = (nationality: string | null, birthday: string
 }
 
 @track()
-export class ArtistListItem extends React.Component<Props, State> {
+export class OnboardingPersonalizationArtistListItem extends React.Component<Props, State> {
   static defaultProps = {
     withFeedback: false,
     containerStyle: {},
@@ -52,7 +59,8 @@ export class ArtistListItem extends React.Component<Props, State> {
     const {
       relay,
       artist: { slug, id, is_followed },
-      onFollowFinish,
+      onStart,
+      onFinish,
     } = this.props
 
     this.setState(
@@ -60,15 +68,16 @@ export class ArtistListItem extends React.Component<Props, State> {
         isFollowedChanging: true,
       },
       async () => {
+        await onStart?.()
         followArtistMutation({
           environment: relay.environment,
           onCompleted: () => {
             this.handleShowSuccessfullyUpdated()
-            onFollowFinish?.()
+            onFinish?.()
           },
-          artistID: id,
-          artistSlug: slug,
-          isFollowed: is_followed,
+          artistID: id!,
+          artistSlug: slug!,
+          isFollowed: is_followed!,
         })
       }
     )
@@ -129,7 +138,7 @@ export class ArtistListItem extends React.Component<Props, State> {
             <EntityHeader
               mr={1}
               name={name}
-              meta={formatTombstoneText(nationality, birthday, deathday) ?? undefined}
+              meta={formatTombstoneText(nationality!, birthday!, deathday!) ?? undefined}
               imageUrl={imageURl ?? undefined}
               initials={initials ?? undefined}
             />
@@ -151,80 +160,3 @@ export class ArtistListItem extends React.Component<Props, State> {
     )
   }
 }
-
-export const followArtistMutation = ({
-  environment,
-  onCompleted,
-  artistSlug,
-  artistID,
-  isFollowed,
-}: {
-  environment: RelayModernEnvironment
-  onCompleted: () => void
-  artistID: string
-  artistSlug: string
-  isFollowed: boolean | null
-}) =>
-  commitMutation<ArtistListItemFollowArtistMutation>(environment, {
-    onCompleted,
-    mutation: graphql`
-      mutation ArtistListItemFollowArtistMutation($input: FollowArtistInput!) {
-        followArtist(input: $input) {
-          artist {
-            id
-            is_followed: isFollowed
-          }
-        }
-      }
-    `,
-    variables: {
-      input: {
-        artistID: artistSlug,
-        unfollow: isFollowed,
-      },
-    },
-    optimisticResponse: {
-      followArtist: {
-        artist: {
-          id: artistID,
-          is_followed: !isFollowed,
-        },
-      },
-    },
-    updater: (store) => {
-      store.get(artistID)?.setValue(!isFollowed, "is_followed")
-    },
-  })
-
-export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
-  artist: graphql`
-    fragment ArtistListItem_artist on Artist {
-      id
-      internalID
-      slug
-      name
-      initials
-      href
-      is_followed: isFollowed
-      nationality
-      birthday
-      deathday
-      image {
-        url
-      }
-    }
-  `,
-})
-
-export const ArtistListItemPlaceholder = () => (
-  <Flex flexDirection="row">
-    <PlaceholderBox height={45} width={45} borderRadius={22.5} />
-    <Flex pl={1} pt={0.5} height={45}>
-      <PlaceholderText height={14} width={100 + Math.random() * 50} />
-      <PlaceholderText height={13} width={100 + Math.random() * 100} />
-    </Flex>
-    <Flex height={45} position="absolute" right={0} justifyContent="center">
-      <PlaceholderBox height={25} width={70} borderRadius={2} />
-    </Flex>
-  </Flex>
-)

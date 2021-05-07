@@ -15,6 +15,7 @@ export interface AuthModel {
   userAccessTokenExpiresIn: string | null
   xAppToken: string | null
   xApptokenExpiresIn: string | null
+  onboardingState: "none" | "incomplete" | "complete"
 
   userEmail: Computed<this, string | null, GlobalStoreModel>
   userHasArtsyEmail: Computed<this, boolean, GlobalStoreModel>
@@ -50,7 +51,7 @@ export const getAuthModel = (): AuthModel => ({
   userAccessTokenExpiresIn: null,
   xAppToken: null,
   xApptokenExpiresIn: null,
-
+  onboardingState: "none",
   userEmail: computed([(_, store) => store], (store) => {
     if (Platform.OS === "ios") {
       return store.native.sessionState.userEmail
@@ -195,6 +196,9 @@ export const getAuthModel = (): AuthModel => ({
     // The user account has been successfully created
     if (result.status === 201) {
       await actions.signIn({ email, password })
+      actions.setState({
+        onboardingState: "incomplete",
+      })
       return true
     }
     return false

@@ -180,4 +180,50 @@ describe("AuthModel", () => {
       expect(result).toBe(false)
     })
   })
+
+  describe("signUp", () => {
+    beforeEach(async () => {
+      mockFetchJsonOnce({
+        xapp_token: "my-special-token",
+        expires_in: "never",
+      })
+      await GlobalStore.actions.auth.getXAppToken()
+      mockFetch.mockClear()
+    })
+
+    it("creates the user account, fetches the user ID, then saves the onboardingState, token and expiry date in the store", async () => {
+      mockFetchResponseOnce({ status: 201 })
+      mockFetchJsonOnce(
+        {
+          access_token: "my-access-token",
+          expires_in: "a billion years",
+        },
+        201
+      )
+      mockFetchJsonOnce({
+        id: "my-user-id",
+      })
+      const result = await GlobalStore.actions.auth.signUp({
+        email: "user@example.com",
+        password: "validpassword",
+        name: "full name",
+      })
+
+      expect(result).toBe(true)
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.onboardingState).toBe("incomplete")
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe("my-access-token")
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessTokenExpiresIn).toBe("a billion years")
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.userID).toBe("my-user-id")
+    })
+
+    it("returns false if the creating an account fails", async () => {
+      mockFetchJsonOnce({ error: "bad times" }, 500)
+      const result = await GlobalStore.actions.auth.signUp({
+        email: "user@example.com",
+        password: "validpassword",
+        name: "full name",
+      })
+      expect(result).toBe(false)
+    })
+  })
 })

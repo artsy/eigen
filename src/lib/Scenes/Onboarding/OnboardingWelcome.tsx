@@ -4,7 +4,7 @@ import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { color, Flex, space, Spacer, Text, Touchable } from "palette"
 import React, { useEffect } from "react"
-import { Image } from "react-native"
+import { Dimensions, Image } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import Animated, { Easing } from "react-native-reanimated"
 import backgoundImage from "../../../../images/WelcomeImage.png"
@@ -18,17 +18,20 @@ const BUTTON_HEIGHT = 41
 const imgProps = Image.resolveAssetSource(backgoundImage)
 
 export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation }) => {
-  const { height: screenHeight, width: screenWidth } = useScreenDimensions()
+  const { width: screenWidth } = useScreenDimensions()
+  // useScreenDimensions() returns the window height instead of the screen
+  // We need the entire screen height here because the background image should fill
+  // the entire screen including drawing below the navigation bar
+  const { height: screenHeight } = Dimensions.get("screen")
 
   const opacity = useAnimatedValue(0)
   const translateX = useAnimatedValue(0)
 
   useEffect(() => {
-    // We want to animate the background only when the device width is smaller than the image width
-    if (screenWidth < imgProps.width) {
-      const imgScale = screenHeight / imgProps.height
-      const imgWidth = imgProps.width * imgScale
-
+    // We want to animate the background only when the device width is smaller than the scaled image width
+    const imgScale = imgProps.height / screenHeight
+    const imgWidth = imgProps.width * imgScale
+    if (screenWidth < imgWidth) {
       Animated.timing(translateX, {
         duration: 20000,
         toValue: -(imgWidth - screenWidth),
@@ -69,12 +72,11 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   }, [navigation])
 
   return (
-    <Flex flex={1} removeClippedSubviews={false}>
+    <Flex flex={1}>
       <Animated.View
         style={{
           alignItems: "flex-end",
           position: "absolute",
-          overflow: "hidden",
           transform: [
             {
               translateX,
@@ -87,7 +89,6 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           resizeMode="cover"
           style={{
             height: screenHeight,
-            overflow: "hidden",
           }}
         ></Image>
       </Animated.View>

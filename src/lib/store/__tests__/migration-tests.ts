@@ -147,7 +147,7 @@ describe("artsy app store migrations", () => {
 
   it("Versions start from `1` and go increase by `1`", () => {
     expect(_.min(Object.values(Versions))).toBe(1)
-    expect(Object.values(Versions).sort()).toStrictEqual(_.range(1, Object.values(Versions).length + 1))
+    expect(Object.values(Versions).sort((a, b) => a - b)).toStrictEqual(_.range(1, Object.values(Versions).length + 1))
   })
 })
 
@@ -217,5 +217,22 @@ describe("App version Versions.AddUserIsDev", () => {
 
     expect(migratedState.auth.androidUserEmail).toEqual(null)
     expect(migratedState.config.userIsDev.flipValue).toEqual(false)
+  })
+})
+
+describe("App version Versions.AddAuthOnboardingState", () => {
+  const migrationToTest = Versions.AddAuthOnboardingState
+  it("adds onboardingState to auth model", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.auth.onboardingState).toEqual("none")
   })
 })
