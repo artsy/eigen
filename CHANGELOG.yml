@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     - Add native modalDismissed event - lily & christina
+    - Fix beta promotion and packaging issues - brian
     - Add analytics on android - pavlos
     - Add staging support for deep links on android - mounir, ole
     - Refactor filter event payloads to send JSON - roop

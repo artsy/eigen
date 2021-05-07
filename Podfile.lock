@@ -1,5 +1,4 @@
 PODS:
-  - "@react-native-mapbox-gl-mapbox-static (6.3.0)"
   - Aerodramus (2.0.0):
     - ISO8601DateFormatter
   - AFNetworkActivityLogger (2.0.4):
@@ -64,7 +63,7 @@ PODS:
     - React-cxxreact (= 0.63.3)
     - react-native-cameraroll (= 1.3.0)
     - react-native-geolocation (= 2.0.2)
-    - react-native-mapbox-gl (= 8.1.0-rc.9)
+    - react-native-mapbox-gl (= 8.2.0-beta2)
     - react-native-netinfo (= 4.6.1)
     - React-RCTActionSheet (= 0.63.3)
     - React-RCTAnimation (= 0.63.3)
@@ -410,20 +409,17 @@ PODS:
     - React-Core
   - react-native-geolocation (2.0.2):
     - React
-  - react-native-mapbox-gl (8.1.0-rc.9):
-    - "@react-native-mapbox-gl-mapbox-static (~> 6.3)"
+  - react-native-mapbox-gl (8.2.0-beta2):
     - Mapbox-iOS-SDK (~> 6.3)
     - React
     - React-Core
-    - react-native-mapbox-gl/DynamicLibrary (= 8.1.0-rc.9)
-    - react-native-mapbox-gl/StaticLibraryFixer (= 8.1.0-rc.9)
-  - react-native-mapbox-gl/DynamicLibrary (8.1.0-rc.9):
-    - "@react-native-mapbox-gl-mapbox-static (~> 6.3)"
+    - react-native-mapbox-gl/DynamicLibrary (= 8.2.0-beta2)
+    - react-native-mapbox-gl/StaticLibraryFixer (= 8.2.0-beta2)
+  - react-native-mapbox-gl/DynamicLibrary (8.2.0-beta2):
     - Mapbox-iOS-SDK (~> 6.3)
     - React
     - React-Core
-  - react-native-mapbox-gl/StaticLibraryFixer (8.1.0-rc.9):
-    - "@react-native-mapbox-gl-mapbox-static (~> 6.3)"
+  - react-native-mapbox-gl/StaticLibraryFixer (8.2.0-beta2):
     - Mapbox-iOS-SDK (~> 6.3)
     - React
     - React-Core
@@ -694,7 +690,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://cdn.cocoapods.org/:
-    - "@react-native-mapbox-gl-mapbox-static"
     - AFNetworkActivityLogger
     - AFNetworking
     - Analytics
@@ -911,7 +906,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/artsy/Pulley.git
 
 SPEC CHECKSUMS:
-  "@react-native-mapbox-gl-mapbox-static": 7ab93cffee38c24fa367e5d3ea3f0334d35d3d06
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 8dd5f9b9691e09186393069a12cc3b5ed7c8b511
@@ -930,7 +924,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: bec9c8f604b13b12385835cd98d80a035dc41cc8
+  Emission: 9ede96bbbc777ebfc06e0e633599c4d09f72978d
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": dcff217eef506dabd6dfdc7864ea2da321fafbb8
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
@@ -989,7 +983,7 @@ SPEC CHECKSUMS:
   react-native-config: 47fd4132d931f84aca9c31f302c3c867a8560b11
   react-native-cookies: 3b5b182d008b714fefc337df15b787f00385a598
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
-  react-native-mapbox-gl: eeed4fa8fffea96f77a9eecbc63f88eddb0d2e58
+  react-native-mapbox-gl: 28350f5f43df85fdb6b85398821a96db1fab0c76
   react-native-netinfo: a59d8426a8484f739fe3a95dd6ad5af1435db05f
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-view-shot: 4475fde003fe8a210053d1f98fb9e06c1d834e1c
@@ -1036,6 +1030,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: b88be39452c32fcdf3dfe00f0ac66b96bbb1f629
+PODFILE CHECKSUM: 0df3da8bc30a38a68c7fcbcda67442604e35b807
 
 COCOAPODS: 1.10.1

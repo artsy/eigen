@@ -108,3 +108,12 @@
   - aligning inner inputs nicely
 
   We can remove these hacks once we switch to Stripe's forthcoming official react-native library.
+
+- react-native-mapbox-gl/maps - 8.2.0-beta2 postinstall script
+
+  We had issues with our archive becoming invalid and failing to export when we updated mapbox and cocoapods
+
+  - mapbox released a beta version that fixed the issue for our setup
+  - this also required a patch to fix types
+  - See issues here: https://github.com/CocoaPods/CocoaPods/issues/10385, https://github.com/react-native-mapbox-gl/maps/issues/1097
+  - we should update to a non-beta version ASAP
