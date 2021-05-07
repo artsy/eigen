@@ -50,21 +50,19 @@ lane :ship_beta_ios do
   # Builds the app
   sync_code_signing(app_identifier: ['net.artsy.artsy', 'net.artsy.artsy.Artsy-Stickers'], type: 'appstore')
 
-  update_code_signing_settings(
+  disable_automatic_code_signing(
     path: 'Artsy.xcodeproj',
-    profile_name: 'match AppStore net.artsy.artsy'
-    targets: ['Artsy'],
     team_id: '23KMWZ572J',
-    use_automatic_signing: false,
+    targets: ['Artsy'],
+    profile_name: 'match AppStore net.artsy.artsy'
+  )
+  disable_automatic_code_signing(
+    path: 'Artsy.xcodeproj',
+    team_id: '23KMWZ572J',
+    targets: ['Artsy Stickers'],
+    profile_name: 'match AppStore net.artsy.artsy.Artsy-Stickers'
   )
 
-  update_code_signing_settings(
-    path: 'Artsy.xcodeproj',
-    profile_name: 'match AppStore net.artsy.artsy.Artsy-Stickers'
-    targets: ['Artsy Stickers'],
-    team_id: '23KMWZ572J',
-    use_automatic_signing: false,
-  )
 
 
   build_ios_app(configuration: 'Store', silent: true)
