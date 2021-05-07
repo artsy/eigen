@@ -223,7 +223,7 @@ GEM
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     jmespath (1.4.0)
-    json (1.8.6)
+    json (2.5.1)
     jwt (2.2.2)
     kramdown (2.3.0)
       rexml
