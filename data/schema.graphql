@@ -8125,6 +8125,7 @@ type Partner implements Node {
     before: String
     displayOnPartnerProfile: Boolean
     first: Int
+    hasPublishedArtworks: Boolean
     last: Int
     representedBy: Boolean
     sort: ArtistSorts
