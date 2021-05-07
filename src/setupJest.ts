@@ -450,3 +450,4 @@ jest.mock("react-native-config", () => ({
 }))
 
 jest.mock("react-native-view-shot", () => ({}))
+jest.mock("@segment/analytics-react-native", () => ({}))
