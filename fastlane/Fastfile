@@ -409,7 +409,10 @@ lane :tag_and_push do |options|
 end
 
 error do |lane, exception|
+  silence_beta_failures = ENV['FASTLANE_SILENCE_BETA_FAILURES']
   if lane == :ship_beta or lane == :ship_beta_ios or lane == :ship_beta_android
-    notify_beta_failed(exception: exception)
+    if silence_beta_failures.to_s.downcase != "true"
+      notify_beta_failed(exception: exception)
+    end
   end
 end
