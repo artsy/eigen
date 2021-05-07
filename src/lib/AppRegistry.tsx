@@ -1,10 +1,7 @@
-import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
-import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
-import { Theme } from "palette"
 import { BidFlow } from "./Containers/BidFlow"
 import { GeneQueryRenderer } from "./Containers/Gene"
 import { InboxWrapper } from "./Containers/Inbox"
@@ -69,12 +66,12 @@ import { Search } from "./Scenes/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
-import { ActionSheetProvider } from "@expo/react-native-action-sheet"
+import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
-import { ToastProvider } from "./Components/Toast/toastHook"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
+import { NativeAnalyticsProvider } from "./NativeModules/Events"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
@@ -88,10 +85,10 @@ import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, GlobalStoreProvider, useSelectedTab } from "./store/GlobalStore"
+import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
 import { AdminMenu } from "./utils/AdminMenu"
-import { Schema, screenTrack, track } from "./utils/track"
-import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
+import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
+import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
 
 LogBox.ignoreLogs([
@@ -108,6 +105,8 @@ LogBox.ignoreLogs([
   "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
   "Picker has been extracted",
 ])
+
+addTrackingProvider("native ios analytics", NativeAnalyticsProvider)
 
 interface ArtworkProps {
   artworkID: string
@@ -223,21 +222,9 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, V
 class PageWrapper extends React.Component<PageWrapperProps> {
   render() {
     return (
-      <ProvideScreenDimensions>
-        <ActionSheetProvider>
-          <RelayEnvironmentProvider environment={defaultEnvironment}>
-            <GlobalStoreProvider>
-              <Theme>
-                <ToastProvider>
-                  <_FancyModalPageWrapper>
-                    <InnerPageWrapper {...this.props} />
-                  </_FancyModalPageWrapper>
-                </ToastProvider>
-              </Theme>
-            </GlobalStoreProvider>
-          </RelayEnvironmentProvider>
-        </ActionSheetProvider>
-      </ProvideScreenDimensions>
+      <AppProviders>
+        <InnerPageWrapper {...this.props} />
+      </AppProviders>
     )
   }
 }

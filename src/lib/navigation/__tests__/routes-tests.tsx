@@ -172,21 +172,23 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes Artist auction results to a web view", () => {
+  it("routes Artist auction results to artist insights", () => {
     expect(matchRoute("/artist/banksy/auction-results")).toMatchInlineSnapshot(`
       Object {
-        "module": "ReactWebView",
+        "module": "Artist",
         "params": Object {
-          "url": "/artist/banksy/auction-results",
+          "artistID": "banksy",
+          "initialTab": "Insights",
         },
         "type": "match",
       }
     `)
     expect(matchRoute("/artist/josef-albers/auction-results")).toMatchInlineSnapshot(`
       Object {
-        "module": "ReactWebView",
+        "module": "Artist",
         "params": Object {
-          "url": "/artist/josef-albers/auction-results",
+          "artistID": "josef-albers",
+          "initialTab": "Insights",
         },
         "type": "match",
       }

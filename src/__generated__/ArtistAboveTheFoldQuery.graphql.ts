@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ed9718c23f63d321712f8b4f1cf449b1 */
+/* @relayHash 39f313d86bb521fd3fe142652866ee3a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -74,6 +74,9 @@ fragment ArtistArtworks_artist on Artist {
         __typename
       }
       cursor
+    }
+    counts {
+      total
     }
     ...InfiniteScrollArtworksGrid_connection
     pageInfo {
@@ -489,6 +492,24 @@ return {
               {
                 "alias": null,
                 "args": null,
+                "concreteType": "FilterArtworksCounts",
+                "kind": "LinkedField",
+                "name": "counts",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "total",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
                 "concreteType": "PageInfo",
                 "kind": "LinkedField",
                 "name": "pageInfo",
@@ -779,7 +800,7 @@ return {
     ]
   },
   "params": {
-    "id": "ed9718c23f63d321712f8b4f1cf449b1",
+    "id": "39f313d86bb521fd3fe142652866ee3a",
     "metadata": {},
     "name": "ArtistAboveTheFoldQuery",
     "operationKind": "query",
