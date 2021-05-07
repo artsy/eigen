@@ -7,13 +7,14 @@ import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/Artwork
 import { CollectionsRailFragmentContainer } from "lib/Scenes/Home/Components/CollectionsRail"
 import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
+import { SaleArtworksHomeRailContainer } from "lib/Scenes/Home/Components/SaleArtworksHomeRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
 import { Home_me } from "__generated__/Home_me.graphql"
 import { HomeQuery } from "__generated__/HomeQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { compact, drop, flatten, take, times, zip } from "lodash"
+import { compact, drop, flatten, times, zip } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "palette"
 
 import { Home_featured } from "__generated__/Home_featured.graphql"
@@ -66,7 +67,9 @@ const Home = (props: Props) => {
   Please make sure to keep this page in sync with the home screen.
   */
   const rowData = compact([
-    ...take(artworkRails, 2),
+    artworkRails[0],
+    { type: "lotsByFollowedArtists" } as const,
+    artworkRails[1],
     salesModule &&
       ({
         type: "sales",
@@ -139,6 +142,8 @@ const Home = (props: Props) => {
                   )
                 case "viewing-rooms":
                   return <ViewingRoomsHomeRail featured={featured} />
+                case "lotsByFollowedArtists":
+                  return <SaleArtworksHomeRailContainer me={me} />
               }
             }}
             ListHeaderComponent={
@@ -197,6 +202,7 @@ export const HomeFragmentContainer = createRefetchContainer(
     me: graphql`
       fragment Home_me on Me {
         ...EmailConfirmationBanner_me
+        ...SaleArtworksHomeRail_me
       }
     `,
     featured: graphql`
