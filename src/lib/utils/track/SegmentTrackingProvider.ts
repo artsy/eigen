@@ -14,14 +14,18 @@ export const SegmentTrackingProvider: TrackingProvider = {
 
   identify: (userId, traits) => {
     // temporary guard
-    if (Platform.OS !== "android") return
+    if (Platform.OS !== "android") {
+      return
+    }
 
     analytics.identify(userId, traits)
   },
 
   postEvent: (info) => {
     // temporary guard
-    if (Platform.OS !== "android") return
+    if (Platform.OS !== "android") {
+      return
+    }
 
     if ("action" in info) {
       const { action } = info

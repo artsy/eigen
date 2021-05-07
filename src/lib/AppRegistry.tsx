@@ -89,6 +89,7 @@ import { AdminMenu } from "./utils/AdminMenu"
 import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
 import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
+import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -106,6 +107,7 @@ LogBox.ignoreLogs([
 ])
 
 addTrackingProvider("native ios analytics", NativeAnalyticsProvider)
+addTrackingProvider("console", ConsoleTrackingProvider)
 
 interface ArtworkProps {
   artworkID: string
