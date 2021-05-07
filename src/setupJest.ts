@@ -75,6 +75,9 @@ jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
 jest.mock("./lib/NativeModules/Events.tsx", () => ({
   postEvent: jest.fn(),
   userHadMeaningfulInteraction: jest.fn(),
+  NativeAnalyticsProvider: {
+    postEvent: jest.fn(),
+  },
 }))
 
 jest.mock("react-native-share", () => ({
@@ -450,3 +453,4 @@ jest.mock("react-native-config", () => ({
 }))
 
 jest.mock("react-native-view-shot", () => ({}))
+jest.mock("@segment/analytics-react-native", () => ({}))

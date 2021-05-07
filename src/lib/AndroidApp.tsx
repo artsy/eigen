@@ -16,9 +16,11 @@ import { ModalStack } from "./navigation/ModalStack"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
+import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { AnalyticsConstants } from "./utils/track/constants"
 
 addTrackingProvider("segment rn android", SegmentTrackingProvider)
+addTrackingProvider("console", ConsoleTrackingProvider)
 
 if (UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true)
@@ -36,6 +38,7 @@ const Main: React.FC<{}> = track()(({}) => {
 
   useEffect(() => {
     const scheme = Appearance.getColorScheme()
+    // null id means keep whatever id was there before. we only update the user interface info here.
     SegmentTrackingProvider.identify?.(null, {
       [AnalyticsConstants.UserInterfaceStyle.key]: (() => {
         switch (scheme) {
@@ -51,7 +54,9 @@ const Main: React.FC<{}> = track()(({}) => {
 
   useEffect(() => {
     const launchCount = getCurrentEmissionState().launchCount
-    if (launchCount >= 1) { return }
+    if (launchCount >= 1) {
+      return
+    }
     SegmentTrackingProvider.postEvent({ name: AnalyticsConstants.FreshInstall })
   }, [])
 
