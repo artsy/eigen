@@ -20,6 +20,7 @@ upcoming:
     - Move sort & filter button to artist artworks grid header - iskounen
     - Show live auctions in webview on Android - brian
     - Update home screen modules (change order, remove recently saved) - ole
+    - Route artist auction results to artist insights - ole
 
 releases:
   - version: 6.8.4

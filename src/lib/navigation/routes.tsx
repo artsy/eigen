@@ -93,7 +93,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       : null,
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
     new RouteMatcher("/artwork/:artworkID/medium", "ArtworkMedium"),
-    webViewRoute("/artist/:artistID/auction-results"),
+    new RouteMatcher("/artist/:artistID/auction-results", "Artist", (params) => ({
+      ...params,
+      initialTab: "Insights",
+    })),
     new RouteMatcher("/artist/:artistID/auction-result/:auctionResultInternalID", "AuctionResult"),
     new RouteMatcher("/artist/:artistID/artist-series", "FullArtistSeriesList"),
     webViewRoute("/artist/:artistID/articles"),

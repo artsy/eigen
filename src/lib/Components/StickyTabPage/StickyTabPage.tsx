@@ -13,7 +13,7 @@ import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
 import { StickyTabPageFlatListContext } from "./StickyTabPageFlatList"
 import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
 
-interface TabProps {
+export interface TabProps {
   initial?: boolean
   title: string
   content: JSX.Element | ((tabIndex: number) => JSX.Element)
