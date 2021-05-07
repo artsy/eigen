@@ -18,7 +18,6 @@ group :test do
   gem 'danger' # Stop saying 'you forgot to...', used only on Circle CI
   gem 'xcode-install' # To ensure we have the right SDK installed for running tests
   gem 'nokogiri', '1.11.1' # For CVE-2019-5477
-  gem 'second_curtain' # to upload snapshot fails
   gem 'xcpretty' # Makes CI readable
 end
 
