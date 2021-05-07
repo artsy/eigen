@@ -507,14 +507,14 @@ describe("Applying filters on Artworks", () => {
     applyButton.props.onPress()
     expect(trackEvent).toHaveBeenCalledWith({
       action_type: "commercialFilterParamsChanged",
-      changed: {
+      changed: JSON.stringify({
         medium: "work-on-paper",
-      },
+      }),
       context_screen: "Artist",
       context_screen_owner_id: "abc123",
       context_screen_owner_slug: "some-artist",
       context_screen_owner_type: "Artist",
-      current: {
+      current: JSON.stringify({
         acquireable: false,
         atAuction: false,
         dimensionRange: "*-*",
@@ -525,7 +525,7 @@ describe("Applying filters on Artworks", () => {
         offerable: false,
         priceRange: "*-*",
         sort: "-decayed_merch",
-      },
+      }),
     })
   })
 })

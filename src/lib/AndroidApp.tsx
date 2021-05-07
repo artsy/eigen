@@ -1,25 +1,26 @@
-import { ActionSheetProvider } from "@expo/react-native-action-sheet"
-import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
-import { Theme } from "palette"
+import { getCurrentEmissionState, GlobalStore } from "lib/store/GlobalStore"
+import { AdminMenuWrapper } from "lib/utils/AdminMenuWrapper"
+import { addTrackingProvider, track } from "lib/utils/track"
+import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
+import { useDeepLinks } from "lib/utils/useDeepLinks"
+import { useStripeConfig } from "lib/utils/useStripeConfig"
 import React, { useEffect } from "react"
-import { UIManager, View } from "react-native"
+import { Appearance, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
-import track from "react-tracking"
-import { RelayEnvironmentProvider } from "relay-hooks"
+import { AppProviders } from "./AppProviders"
 import { useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
-import { ToastProvider } from "./Components/Toast/toastHook"
 import { useSentryConfig } from "./ErrorReporting"
 import { ArtsyNativeModule } from "./NativeModules/ArtsyNativeModule"
 import { ModalStack } from "./navigation/ModalStack"
-import { defaultEnvironment } from "./relay/createEnvironment"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
-import { AdminMenuWrapper } from "./utils/AdminMenuWrapper"
-import { useDeepLinks } from "./utils/useDeepLinks"
-import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
-import { useStripeConfig } from "./utils/useStripeConfig"
+import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
+import { AnalyticsConstants } from "./utils/track/constants"
+
+addTrackingProvider("segment rn android", SegmentTrackingProvider)
+addTrackingProvider("console", ConsoleTrackingProvider)
 
 if (UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true)
@@ -34,6 +35,30 @@ const Main: React.FC<{}> = track()(({}) => {
   useStripeConfig()
   useWebViewCookies()
   useDeepLinks()
+
+  useEffect(() => {
+    const scheme = Appearance.getColorScheme()
+    // null id means keep whatever id was there before. we only update the user interface info here.
+    SegmentTrackingProvider.identify?.(null, {
+      [AnalyticsConstants.UserInterfaceStyle.key]: (() => {
+        switch (scheme) {
+          case "light":
+            return AnalyticsConstants.UserInterfaceStyle.value.Light
+          case "dark":
+            return AnalyticsConstants.UserInterfaceStyle.value.Dark
+        }
+        return AnalyticsConstants.UserInterfaceStyle.value.Unspecified
+      })(),
+    })
+  }, [])
+
+  useEffect(() => {
+    const launchCount = getCurrentEmissionState().launchCount
+    if (launchCount >= 1) {
+      return
+    }
+    SegmentTrackingProvider.postEvent({ name: AnalyticsConstants.FreshInstall })
+  }, [])
 
   useEffect(() => {
     if (isHydrated) {
@@ -69,21 +94,9 @@ const Main: React.FC<{}> = track()(({}) => {
 })
 
 export const App = () => (
-  <RelayEnvironmentProvider environment={defaultEnvironment}>
-    <ProvideScreenDimensions>
-      <Theme>
-        <ActionSheetProvider>
-          <ToastProvider>
-            <_FancyModalPageWrapper>
-              <GlobalStoreProvider>
-                <AdminMenuWrapper>
-                  <Main />
-                </AdminMenuWrapper>
-              </GlobalStoreProvider>
-            </_FancyModalPageWrapper>
-          </ToastProvider>
-        </ActionSheetProvider>
-      </Theme>
-    </ProvideScreenDimensions>
-  </RelayEnvironmentProvider>
+  <AppProviders>
+    <AdminMenuWrapper>
+      <Main />
+    </AdminMenuWrapper>
+  </AppProviders>
 )
