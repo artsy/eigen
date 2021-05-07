@@ -87,9 +87,9 @@ import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRooms
 import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
 import { AdminMenu } from "./utils/AdminMenu"
 import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
+import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
-import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
