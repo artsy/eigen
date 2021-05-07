@@ -3,6 +3,7 @@ import { ArtsyWebViewConfig } from "lib/Components/ArtsyReactWebView"
 import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
+import { Platform } from "react-native"
 import { parse } from "url"
 import { RouteMatcher } from "./RouteMatcher"
 
@@ -72,7 +73,11 @@ export function replaceParams(url: string, params: any) {
 
 function getDomainMap(): Record<string, RouteMatcher[] | null> {
   const liveDotArtsyDotNet: RouteMatcher[] = compact([
-    new RouteMatcher("/*", "LiveAuction", (params) => ({ slug: params["*"] })),
+    Platform.OS === "ios"
+      ? new RouteMatcher("/*", "LiveAuction", (params) => ({ slug: params["*"] }))
+      : new RouteMatcher("/*", "ReactWebView", (params) => ({
+          url: unsafe__getEnvironment().predictionURL + "/" + params["*"],
+        })),
   ])
 
   const artsyDotNet: RouteMatcher[] = compact([
@@ -88,7 +93,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       : null,
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
     new RouteMatcher("/artwork/:artworkID/medium", "ArtworkMedium"),
-    webViewRoute("/artist/:artistID/auction-results"),
+    new RouteMatcher("/artist/:artistID/auction-results", "Artist", (params) => ({
+      ...params,
+      initialTab: "Insights",
+    })),
     new RouteMatcher("/artist/:artistID/auction-result/:auctionResultInternalID", "AuctionResult"),
     new RouteMatcher("/artist/:artistID/artist-series", "FullArtistSeriesList"),
     webViewRoute("/artist/:artistID/articles"),
