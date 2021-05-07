@@ -49,6 +49,7 @@ password #{ENV['MAPBOX_DOWNLOAD_TOKEN']}
 """)
   }
 end
+
 def remove_mapbox_creds
   if $user_already_had_netrc_file
     contents = File.read($netrc_path)
@@ -64,8 +65,9 @@ def remove_mapbox_creds
   end
 end
 
+add_mapbox_creds
+     
 pre_install do |installer|
-   add_mapbox_creds
    $RNMBGL.pre_install(installer)
 end
 
