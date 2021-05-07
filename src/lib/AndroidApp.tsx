@@ -51,7 +51,9 @@ const Main: React.FC<{}> = track()(({}) => {
 
   useEffect(() => {
     const launchCount = getCurrentEmissionState().launchCount
-    if (launchCount >= 1) { return }
+    if (launchCount >= 1) {
+      return
+    }
     SegmentTrackingProvider.postEvent({ name: AnalyticsConstants.FreshInstall })
   }, [])
 
