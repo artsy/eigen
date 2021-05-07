@@ -17,9 +17,6 @@
     "resolveJsonModule": true,
     "strict": true,
     "strictBindCallApply": true,
-    "paths": {
-      "*": ["*", "*.ios", "*.android"]
-    },
     "noImplicitThis": true,
     "noFallthroughCasesInSwitch": true,
     "strictFunctionTypes": true,

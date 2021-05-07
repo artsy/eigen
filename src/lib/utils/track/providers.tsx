@@ -22,6 +22,7 @@ interface LegacyNameAction {
 type InfoType = Schema.PageView | Schema.Entity | CohesionAction | CohesionScreen | LegacyNameAction
 
 export interface TrackingProvider {
+  setup?: () => void
   identify?: (userId: string | null, traits?: { [key: string]: any }) => void
   postEvent: (info: InfoType) => void
 }
@@ -29,6 +30,7 @@ export interface TrackingProvider {
 const providers: { [name: string]: TrackingProvider } = {}
 
 export const _addTrackingProvider = (name: string, provider: TrackingProvider) => {
+  provider.setup?.()
   providers[name] = provider
 }
 

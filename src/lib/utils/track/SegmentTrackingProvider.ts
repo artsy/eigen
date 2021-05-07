@@ -1,19 +1,28 @@
 import analytics from "@segment/analytics-react-native"
+import { Platform } from "react-native"
 import Config from "react-native-config"
 import { isCohesionScreen, TrackingProvider } from "./providers"
 
-analytics
-  .setup(Config.SEGMENT_STAGING_WRITE_KEY_ANDROID, {})
-  // trackAppLifecycleEvents: true,
-  .then(() => console.log("Analytics is ready"))
-  .catch((err) => console.error("Something went wrong", err))
-
 export const SegmentTrackingProvider: TrackingProvider = {
+  setup: () => {
+    analytics
+      .setup(Config.SEGMENT_STAGING_WRITE_KEY_ANDROID, {})
+      // trackAppLifecycleEvents: true,
+      .then(() => console.log("Analytics is ready"))
+      .catch((err) => console.error("Something went wrong", err))
+  },
+
   identify: (userId, traits) => {
+    // temporary guard
+    if (Platform.OS !== "android") return
+
     analytics.identify(userId, traits)
   },
 
   postEvent: (info) => {
+    // temporary guard
+    if (Platform.OS !== "android") return
+
     if ("action" in info) {
       const { action } = info
       if (isCohesionScreen(info)) {
