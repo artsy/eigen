@@ -4,6 +4,8 @@ upcoming:
   dev:
     - Add native modalDismissed event - lily & christina
     - Fix beta promotion and packaging issues - brian
+    - Add staging support for deep links on android - mounir, ole
+    - Refactor filter event payloads to send JSON - roop
   user_facing:
     - Combine gallery and institution artwork filters - mdole
     - Remove old login from android - adam, barry, david, jonathan, mounir, pavlos
@@ -18,7 +20,9 @@ upcoming:
     - Animate welcome screen - mounir
     - Add fading screen transition when transitioning from sign up to login
     - Move sort & filter button to artist artworks grid header - iskounen
+    - Show live auctions in webview on Android - brian
     - Update home screen modules (change order, remove recently saved) - ole
+    - Route artist auction results to artist insights - ole
 
 releases:
   - version: 6.8.4

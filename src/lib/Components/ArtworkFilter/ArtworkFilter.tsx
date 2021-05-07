@@ -125,8 +125,8 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
       context_screen_owner_type: ownerEntity,
       context_screen_owner_id: id,
       context_screen_owner_slug: slug,
-      current: currentParams,
-      changed: changedParams,
+      current: JSON.stringify(currentParams),
+      changed: JSON.stringify(changedParams),
       action_type: actionType,
     })
   }

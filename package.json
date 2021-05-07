@@ -89,7 +89,7 @@
     "@react-native-community/netinfo": "4.6.1",
     "@react-native-community/viewpager": "^4.2.2",
     "@react-native-cookies/cookies": "^6.0.4",
-    "@react-native-mapbox-gl/maps": "8.1.0-rc.9",
+    "@react-native-mapbox-gl/maps": "8.1.0",
     "@react-navigation/bottom-tabs": "^5.11.7",
     "@react-navigation/native": "^5.9.2",
     "@react-navigation/stack": "^5.14.2",

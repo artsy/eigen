@@ -12,7 +12,7 @@ import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeade
 import { ArtistInsightsFragmentContainer } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
 import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
-import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
+import { StickyTabPage, TabProps } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
@@ -25,11 +25,14 @@ import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
+const INITIAL_TAB = "Artworks"
+
 export const Artist: React.FC<{
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
   artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
-}> = ({ artistAboveTheFold, artistBelowTheFold }) => {
-  const tabs = []
+  initialTab?: string
+}> = ({ artistAboveTheFold, artistBelowTheFold, initialTab = INITIAL_TAB }) => {
+  const tabs: TabProps[] = []
   const displayAboutSection =
     artistAboveTheFold.has_metadata ||
     (artistAboveTheFold.counts?.articles ?? 0) > 0 ||
@@ -45,7 +48,6 @@ export const Artist: React.FC<{
   if ((artistAboveTheFold.counts?.artworks ?? 0) > 0) {
     tabs.push({
       title: "Artworks",
-      initial: true,
       content: <ArtistArtworks artist={artistAboveTheFold} />,
     })
   }
@@ -84,6 +86,11 @@ export const Artist: React.FC<{
     })
   }
 
+  // Set initial tab
+  tabs.forEach((tab) => {
+    tab.initial = tab.title === initialTab
+  })
+
   return (
     <ProvideScreenTracking
       info={{
@@ -105,9 +112,10 @@ export const Artist: React.FC<{
 
 interface ArtistQueryRendererProps extends ArtistAboveTheFoldQueryVariables, ArtistBelowTheFoldQueryVariables {
   environment?: RelayModernEnvironment
+  initialTab?: string
 }
 
-export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artistID, environment }) => {
+export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artistID, environment, initialTab }) => {
   return (
     <AboveTheFoldQueryRenderer<ArtistAboveTheFoldQuery, ArtistBelowTheFoldQuery>
       environment={environment || defaultEnvironment}
@@ -152,7 +160,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artist
           if (!above.artist) {
             throw new Error("no artist data")
           }
-          return <Artist artistAboveTheFold={above.artist} artistBelowTheFold={below?.artist} />
+          return <Artist artistAboveTheFold={above.artist} artistBelowTheFold={below?.artist} initialTab={initialTab} />
         },
       }}
     />
