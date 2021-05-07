@@ -158,12 +158,55 @@ target 'Artsy' do
   end
 end
 
+def adjust_copy_dsyms_phase(installer)
+    [
+        installer.development_pod_targets.map { |t| t.copy_dsyms_script_input_files_path },
+        installer.development_pod_targets.map { |t| t.copy_dsyms_script_output_files_path },
+        installer.development_pod_targets.map { |t| t.copy_dsyms_script_path }
+    ].each { |files|
+        already_included_bcsymbolmap_files = []
+        files.each { |file|
+            next if not File.exist?(file) 
+            already_included_bcsymbolmap_files += remove_duplicated_bcsymbolmap_lines(file, already_included_bcsymbolmap_files)
+        }
+    }
+end
+
+def remove_duplicated_bcsymbolmap_lines(path, already_included_bcsymbolmap_files)
+    lines = []
+    bcsymbolmap_ids = []
+
+    for line in File.readlines(path).map { |line| line.strip }
+        if line.include? ".bcsymbolmap"
+            # Workaround for https://github.com/CocoaPods/CocoaPods/issues/10373 
+            next if lines.include? line
+
+            # Workaround for https://github.com/CocoaPods/CocoaPods/issues/10385
+            bcsymbolmap_id = File.basename(line.tr('"', ''), ".bcsymbolmap")
+            if not already_included_bcsymbolmap_files.include? bcsymbolmap_id
+                lines.append(line)
+                bcsymbolmap_ids.append(bcsymbolmap_id)
+            end
+        else
+            lines.append(line)
+        end
+    end
+  
+    File.open(path, "w+") do |f|
+        f.puts(lines)
+    end
+
+    return bcsymbolmap_ids
+end
+
 
 # Enables Flipper.
 # Note that if you have use_frameworks! enabled, Flipper will not work and
 # you should disable these next few lines.
 use_flipper!({ 'Flipper-Folly' => '2.5.3', 'Flipper' => '0.87.0', 'Flipper-RSocket' => '1.3.1' })
 post_install do |installer|
+  adjust_copy_dsyms_phase(installer)
+
   flipper_post_install(installer)
 
   remove_mapbox_creds
