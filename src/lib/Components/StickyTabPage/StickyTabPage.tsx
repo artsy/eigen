@@ -44,8 +44,15 @@ export const StickyTabPage: React.FC<{
   )
   const activeTabIndexNative = useAnimatedValue(initialTabIndex)
   const [activeTabIndex, setActiveTabIndex] = useGlobalState(initialTabIndex)
+  const [tabSpecificStickyHeaderContent, setTabSpecificStickyHeaderContent] = useState<JSX.Element[]>([])
   const { jsx: staticHeader, nativeHeight: staticHeaderHeight } = useAutoCollapsingMeasuredView(staticHeaderContent)
-  const { jsx: stickyHeader, nativeHeight: stickyHeaderHeight } = useAutoCollapsingMeasuredView(stickyHeaderContent)
+  activeTabIndex.useUpdates()
+  const { jsx: stickyHeader, nativeHeight: stickyHeaderHeight } = useAutoCollapsingMeasuredView(
+    <>
+      {stickyHeaderContent}
+      {tabSpecificStickyHeaderContent[activeTabIndex.current]}
+    </>
+  )
   const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
   const railRef = useRef<SnappyHorizontalRail>(null)
@@ -94,6 +101,12 @@ export const StickyTabPage: React.FC<{
                   <StickyTabPageFlatListContext.Provider
                     value={{
                       tabIsActive: Animated.eq(index, activeTabIndexNative),
+                      setJSX: (jsx) =>
+                        setTabSpecificStickyHeaderContent((prev) => {
+                          const newArray = prev.slice(0)
+                          newArray[index] = jsx
+                          return newArray
+                        }),
                     }}
                   >
                     {typeof content === "function" ? content(index) : content}

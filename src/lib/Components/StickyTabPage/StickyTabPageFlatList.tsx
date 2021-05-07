@@ -7,10 +7,12 @@ import { useStickyTabPageContext } from "./SitckyTabPageContext"
 
 interface FlatListRequiredContext {
   tabIsActive: Animated.Node<number>
+  setJSX(jsx: JSX.Element): void
 }
 
 const MOCK_CONTEXT: () => FlatListRequiredContext = () => ({
   tabIsActive: new Animated.Value(1),
+  setJSX: null as any,
 })
 
 export const StickyTabPageFlatListContext = React.createContext<FlatListRequiredContext>(
