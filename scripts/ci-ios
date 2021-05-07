@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euxo pipefail
 
 
 source ./scripts/source-for-bash-env
@@ -8,5 +9,3 @@ if [ "${LOCAL_BRANCH}" != "beta-ios" ] && [ "${LOCAL_BRANCH}" != "app_store_subm
 else
 	echo "Skipping test build on beta deploy."
 fi
-
-cat /Users/distiller/project/node_modules/react-native-config/ios/ReactNativeConfig/GeneratedDotEnv.m
