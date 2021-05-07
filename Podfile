@@ -64,10 +64,10 @@ def remove_mapbox_creds
   end
 end
 
-
-# pre_install
-add_mapbox_creds
-
+pre_install do |installer|
+   add_mapbox_creds
+   $RNMBGL.pre_install(installer)
+end
 
 target 'Artsy' do
   config = use_native_modules!
@@ -165,6 +165,8 @@ end
 use_flipper!({ 'Flipper-Folly' => '2.5.3', 'Flipper' => '0.87.0', 'Flipper-RSocket' => '1.3.1' })
 post_install do |installer|
   flipper_post_install(installer)
+
+  $RNMBGL.post_install(installer)
 
   remove_mapbox_creds
 
