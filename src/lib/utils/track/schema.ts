@@ -1,3 +1,4 @@
+// TODO: This file and the types here can be removed once everything is moved to cohesion.
 import { OwnerType } from "@artsy/cohesion"
 /**
  * Useful notes:

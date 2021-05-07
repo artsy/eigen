@@ -127,7 +127,8 @@ export const LegacyNativeModules: LegacyNativeModules =
         },
         ARScreenPresenterModule,
         AREventsModule: {
-          postEvent: noop("postEvent"),
+          // tslint:disable-next-line:no-empty
+          postEvent: () => {}, // this is not needed, we use segment RN. We will migrate ios to that too.
           requestAppStoreRating: noop("requestAppStoreRating"),
         },
       }

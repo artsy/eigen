@@ -17,6 +17,9 @@
     "resolveJsonModule": true,
     "strict": true,
     "strictBindCallApply": true,
+    "paths": {
+      "*": ["*", "*.ios", "*.android"]
+    },
     "noImplicitThis": true,
     "noFallthroughCasesInSwitch": true,
     "strictFunctionTypes": true,
@@ -32,6 +35,7 @@
     "externals",
     "build",
     "index.ios.js",
+    "index.android.js",
     "**/__mocks__",
     "src/palette/**/*.test.*" // TODO: Fix palette tests and remove this exclude rule
   ]
