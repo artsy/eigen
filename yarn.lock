@@ -2611,10 +2611,10 @@
   dependencies:
     invariant "^2.2.4"
 
-"@react-native-mapbox-gl/maps@8.1.0-rc.9":
-  version "8.1.0-rc.9"
-  resolved "https://registry.yarnpkg.com/@react-native-mapbox-gl/maps/-/maps-8.1.0-rc.9.tgz#2c9a296e06dba695184adc7b63fe8835e75eff47"
-  integrity sha512-Vp0c0rbBKlAG2x6SQHqWUQDRfhfqdOAPY+scIQVOiakCV2cLhPHOEhSB6hJHla/p5j8hR/WVaxTX4NBAbX9jbQ==
+"@react-native-mapbox-gl/maps@8.1.0":
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-mapbox-gl/maps/-/maps-8.1.0.tgz#671bc3cebcde763948ac9681a920d393f500ef0e"
+  integrity sha512-0UqiAbs7Ex4k1JodSR7nuXSmzjHUabX0xtskJz+PbsfW/JRMd5VV3yP7G8oNlRMVqknf/cp4NW2OHZ7d9E8htg==
   dependencies:
     "@mapbox/geo-viewport" ">= 0.4.0"
     "@turf/along" ">= 4.0.0 <7.0.0"
