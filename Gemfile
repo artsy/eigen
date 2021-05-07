@@ -4,7 +4,7 @@ gem 'fastlane'
 
 # use cocoapods v 1.9.3 as work-around for mapbox issues when archiving
 # https://github.com/react-native-mapbox-gl/maps/issues/1097
-gem 'cocoapods', '~> 1.9.3'
+gem 'cocoapods'
 
 # So we know if we need to run `pod install`
 gem 'cocoapods-check'
