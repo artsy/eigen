@@ -457,11 +457,13 @@ workflows:
                 - beta-ios
                 - beta-android
                 - app_store_submission
+                - fix/build-failure-circle-ci
       - build-test-js:
           filters:
             branches:
               ignore:
                 - app_store_submission
+                - fix/build-failure-circle-ci
       - horizon/block:
           context: horizon
           project_id: 37
@@ -477,7 +479,7 @@ workflows:
                 - app_store_submission
                 - beta-android
           requires:
-            - build-test-js
+            # - build-test-js
             - horizon/block
       - build-test-app-android:
           filters:
