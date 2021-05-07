@@ -1,5 +1,6 @@
 import { ToastProvider } from "lib/Components/Toast/toastHook"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { track } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Theme } from "palette"
 import React from "react"
@@ -37,18 +38,24 @@ export const renderWithWrappers = (component: ReactElement) => {
   }
 }
 
+export const TrackProvider = track()(({ children }: { children?: React.ReactNode }) => {
+  return <>{children}</>
+})
+
 /**
  * Returns given component wrapped with our page wrappers
  * @param component
  */
 export const componentWithWrappers = (component: ReactElement) => {
   return (
-    <GlobalStoreProvider>
-      <Theme>
-        <ToastProvider>
-          <ProvideScreenDimensions>{component}</ProvideScreenDimensions>
-        </ToastProvider>
-      </Theme>
-    </GlobalStoreProvider>
+    <TrackProvider>
+      <GlobalStoreProvider>
+        <Theme>
+          <ToastProvider>
+            <ProvideScreenDimensions>{component}</ProvideScreenDimensions>
+          </ToastProvider>
+        </Theme>
+      </GlobalStoreProvider>
+    </TrackProvider>
   )
 }
