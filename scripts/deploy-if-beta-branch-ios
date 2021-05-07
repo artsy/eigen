@@ -5,5 +5,5 @@ set -euxo pipefail
 source ./scripts/source-for-bash-env
 
 # if [ "${LOCAL_BRANCH}" == "beta-ios" ]; then
-	./scripts/distribute-ios
+./scripts/distribute-ios
 # fi

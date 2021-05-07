@@ -457,7 +457,6 @@ workflows:
                 - beta-ios
                 - beta-android
                 - app_store_submission
-                - fix/build-failure-circle-ci
       - build-test-js:
           filters:
             branches:
@@ -472,6 +471,7 @@ workflows:
               only:
                 - beta-ios
                 - beta-android
+                - fix/build-failure-circle-ci
       - build-test-app-ios:
           filters:
             branches:
@@ -487,6 +487,8 @@ workflows:
               ignore:
                 - app_store_submission
                 - beta-ios
+                - fix/build-failure-circle-ci
+
           requires:
             - build-test-js
             - horizon/block
