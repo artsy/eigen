@@ -21,6 +21,7 @@ export const useEventTiming = ({
 }: UseEventTiming) => {
   const durationTilEnd = Duration.fromISO(DateTime.fromISO(endAt).diff(DateTime.fromISO(currentTime)).toString())
   const daysTilEnd = durationTilEnd.as("days")
+  const hoursTillEnd = durationTilEnd.as("hours")
   const secondsTilEnd = durationTilEnd.as("seconds")
 
   const hasStarted =
@@ -58,6 +59,7 @@ export const useEventTiming = ({
     formattedTime,
     durationTilEnd,
     daysTilEnd,
+    hoursTillEnd,
     secondsTilEnd,
     hasStarted,
     hasEnded,
