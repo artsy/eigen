@@ -1,11 +1,11 @@
 import { OwnerType } from "@artsy/cohesion"
 import { SaleArtworksRail_me } from "__generated__/SaleArtworksRail_me.graphql"
-import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
+import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { SaleArtworkTileRailCardContainer } from "lib/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Flex, Spacer } from "palette"
+import { Flex } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -27,12 +27,7 @@ export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
       <Flex mx={2} my={1}>
         <SectionTitle title="Lots by artists you follow" />
       </Flex>
-      <AboveTheFoldFlatList
-        horizontal
-        ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
-        ListFooterComponent={() => <Spacer mr={2}></Spacer>}
-        ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
-        showsHorizontalScrollIndicator={false}
+      <CardRailFlatList
         data={artworks}
         initialNumToRender={INITIAL_NUMBER_TO_RENDER}
         windowSize={3}
