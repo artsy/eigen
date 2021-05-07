@@ -36,6 +36,7 @@ const Main: React.FC<{}> = track()(({}) => {
 
   useEffect(() => {
     const scheme = Appearance.getColorScheme()
+    // null id means keep whatever id was there before. we only update the user interface info here.
     SegmentTrackingProvider.identify?.(null, {
       [AnalyticsConstants.UserInterfaceStyle.key]: (() => {
         switch (scheme) {
