@@ -1,5 +1,6 @@
-import { action, Action, Computed, computed, StateMapper, thunk, Thunk } from "easy-peasy"
+import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { isArtsyEmail } from "lib/utils/general"
+import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { stringify } from "qs"
 import { Platform } from "react-native"
 import Config from "react-native-config"
@@ -37,6 +38,9 @@ export interface AuthModel {
     GlobalStoreModel,
     ReturnType<typeof fetch>
   >
+
+  notifyTracking: Thunk<this, { userId: string | null }>
+  didRehydrate: ThunkOn<this, {}, GlobalStoreModel>
 }
 
 export const getAuthModel = (): AuthModel => ({
@@ -165,6 +169,7 @@ export const getAuthModel = (): AuthModel => ({
         userID: id,
         androidUserEmail: email,
       })
+      actions.notifyTracking({ userId: id })
 
       return true
     }
@@ -194,4 +199,13 @@ export const getAuthModel = (): AuthModel => ({
     }
     return false
   }),
+  notifyTracking: thunk((_, { userId }) => {
+    SegmentTrackingProvider.identify?.(userId, { is_temporary_user: userId === null ? 1 : 0 })
+  }),
+  didRehydrate: thunkOn(
+    (_, storeActions) => storeActions.rehydrate,
+    (actions, __, store) => {
+      actions.notifyTracking({ userId: store.getState().userID })
+    }
+  ),
 })

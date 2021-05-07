@@ -1,0 +1,32 @@
+diff --git a/node_modules/@segment/analytics-react-native/RNAnalytics.podspec b/node_modules/@segment/analytics-react-native/RNAnalytics.podspec
+deleted file mode 100644
+index 22dd268..0000000
+--- a/node_modules/@segment/analytics-react-native/RNAnalytics.podspec
++++ /dev/null
+@@ -1,26 +0,0 @@
+-require 'json'
+-package = JSON.parse(File.read('./package.json'))
+-
+-Pod::Spec.new do |s|
+-  s.name                = 'RNAnalytics'
+-  s.version             = package['version']
+-  s.summary             = package['description']
+-  s.description         = <<-DESC
+-    Analytics for iOS provides a single API that lets you
+-    integrate with over 100s of tools.
+-                          DESC
+-
+-  s.homepage            = 'http://segment.com/'
+-  s.social_media_url    = 'https://twitter.com/segment'
+-  s.license             = { :type => 'MIT' }
+-  s.author              = { 'Segment' => 'friends@segment.com' }
+-  s.source              = { :git => 'https://github.com/segmentio/analytics-react-native.git', :tag => s.version.to_s }
+-
+-  s.platform            = :ios, '10.0'
+-  s.source_files        = 'ios/**/*.{m,h}'
+-  s.static_framework    = true
+-
+-  s.dependency          'Analytics'
+-  s.dependency          'React-Core'
+-end
+-
