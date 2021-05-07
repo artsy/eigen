@@ -1,6 +1,8 @@
 import { OpenInquiryModalButtonTestsQuery } from "__generated__/OpenInquiryModalButtonTestsQuery.graphql"
+import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Text } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -77,6 +79,22 @@ describe("OpenInquiryModalButtonQueryRenderer", () => {
 
       expect(tree.root.findAllByType(OpenInquiryModalButton)).toHaveLength(0)
       expect(extractText(tree.root)).not.toContain("Make Offer")
+    })
+  })
+
+  describe("Artsy guarantee message ad link", () => {
+    it("display the correct message", () => {
+      const tree = getWrapper()
+
+      expect(extractText(tree.root)).toContain("Only purchases completed with our secure checkout are protected")
+      expect(tree.root.findAllByType(OpenInquiryModalButton)).toHaveLength(1)
+    })
+
+    it("navigates to the buyer guarantee page when tapped", () => {
+      const tree = getWrapper()
+      tree.root.findAllByType(Text)[1].props.onPress()
+
+      expect(navigate).toHaveBeenCalledWith("buyer-guarantee")
     })
   })
 })

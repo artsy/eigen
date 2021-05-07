@@ -105,11 +105,12 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
     >
       <Flex
         px={2}
+        py={1}
         justifyContent="space-between"
         alignItems="center"
         bg={backgroundColor}
         flexDirection="row"
-        height={60}
+        minHeight={60}
       >
         <Flex flexDirection="row">
           <Icon mt="3px" fill="white100" />
