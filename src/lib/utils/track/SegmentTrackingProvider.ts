@@ -6,7 +6,7 @@ import { isCohesionScreen, TrackingProvider } from "./providers"
 let analytics: Analytics.Client
 export const SegmentTrackingProvider: TrackingProvider = {
   setup: () => {
-    analytics = require("@segment/analytics-react-native")
+    analytics = require("@segment/analytics-react-native").default
 
     analytics
       .setup(Config.SEGMENT_STAGING_WRITE_KEY_ANDROID, {})
