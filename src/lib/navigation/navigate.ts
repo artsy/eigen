@@ -1,9 +1,11 @@
 import { addBreadcrumb } from "@sentry/react-native"
 import { EventEmitter } from "events"
 import { AppModule, modules, ViewOptions } from "lib/AppRegistry"
+import { __unsafe_switchTab } from "lib/NativeModules/ARScreenPresenterModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import { GlobalStore, unsafe__getSelectedTab } from "lib/store/GlobalStore"
-import { Linking } from "react-native"
+import { Linking, Platform } from "react-native"
 import { matchRoute } from "./routes"
 
 export interface ViewDescriptor extends ViewOptions {
@@ -57,8 +59,7 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
     // this view is one of our root tab views, e.g. home, search, etc.
     // switch to the tab, pop the stack, and scroll to the top.
     await LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(module.options.isRootViewForTabName)
-    GlobalStore.actions.bottomTabs.setTabProps({ tab: module.options.isRootViewForTabName, props: result.params })
-    GlobalStore.actions.bottomTabs.switchTab(module.options.isRootViewForTabName)
+    switchTab(module.options.isRootViewForTabName, result.params)
   } else {
     const selectedTab = unsafe__getSelectedTab()
     if (module.options.onlyShowInTabName) {
@@ -73,6 +74,17 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
 }
 
 export const navigationEvents = new EventEmitter()
+
+export function switchTab(tab: BottomTabType, props?: object) {
+  if (props) {
+    GlobalStore.actions.bottomTabs.setTabProps({ tab, props })
+  }
+  if (Platform.OS === "ios") {
+    GlobalStore.actions.bottomTabs.switchTab(tab)
+  } else {
+    __unsafe_switchTab(tab)
+  }
+}
 
 export function dismissModal() {
   LegacyNativeModules.ARScreenPresenterModule.dismissModal()

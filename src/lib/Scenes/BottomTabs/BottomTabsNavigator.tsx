@@ -1,6 +1,6 @@
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { AppModule } from "lib/AppRegistry"
 import { NativeViewController } from "lib/Components/NativeViewController"
-import { __unsafe_tabStackNavRefs } from "lib/NativeModules/ARScreenPresenterModule"
 import { NavStack } from "lib/navigation/NavStack"
 import { useSelectedTab } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -10,39 +10,53 @@ import usePrevious from "react-use/lib/usePrevious"
 import { BottomTabs } from "./BottomTabs"
 import { BottomTabType } from "./BottomTabType"
 
-const TabContent = ({ tabName, rootModuleName }: { tabName: BottomTabType; rootModuleName: AppModule }) => {
+const Tab = createBottomTabNavigator()
+
+const TabContent = ({ route }: { route: { params: { tabName: BottomTabType; rootModuleName: AppModule } } }) => {
   if (Platform.OS === "ios") {
-    return (
-      <NativeViewController
-        viewName="TabNavigationStack"
-        viewProps={{
-          tabName,
-          rootModuleName,
-        }}
-      />
-    )
+    return <NativeViewController viewName="TabNavigationStack" viewProps={route.params} />
   }
 
-  return <NavStack id={tabName} ref={__unsafe_tabStackNavRefs[tabName]} rootModuleName={rootModuleName}></NavStack>
+  return <NavStack id={route.params.tabName} rootModuleName={route.params.rootModuleName}></NavStack>
 }
 
 export const BottomTabsNavigator = () => {
   const selectedTab = useSelectedTab()
   const { bottom } = useScreenDimensions().safeAreaInsets
+  if (Platform.OS === "ios") {
+    return (
+      <View style={{ flex: 1, paddingBottom: bottom }}>
+        <FadeBetween
+          views={[
+            <TabContent route={{ params: { tabName: "home", rootModuleName: "Home" } }} />,
+            <TabContent route={{ params: { tabName: "search", rootModuleName: "Search" } }} />,
+            <TabContent route={{ params: { tabName: "inbox", rootModuleName: "Inbox" } }} />,
+            <TabContent route={{ params: { tabName: "sell", rootModuleName: "Sales" } }} />,
+            <TabContent route={{ params: { tabName: "profile", rootModuleName: "MyProfile" } }} />,
+          ]}
+          activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(selectedTab)}
+        />
+        <BottomTabs />
+      </View>
+    )
+  }
+
   return (
-    <View style={{ flex: 1, paddingBottom: bottom }}>
-      <FadeBetween
-        views={[
-          <TabContent tabName="home" rootModuleName="Home" />,
-          <TabContent tabName="search" rootModuleName="Search" />,
-          <TabContent tabName="inbox" rootModuleName="Inbox" />,
-          <TabContent tabName="sell" rootModuleName="Sales" />,
-          <TabContent tabName="profile" rootModuleName="MyProfile" />,
-        ]}
-        activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(selectedTab)}
+    <Tab.Navigator tabBar={() => <BottomTabs />}>
+      <Tab.Screen name="home" component={TabContent} initialParams={{ tabName: "home", rootModuleName: "Home" }} />
+      <Tab.Screen
+        name="search"
+        component={TabContent}
+        initialParams={{ tabName: "search", rootModuleName: "Search" }}
       />
-      <BottomTabs />
-    </View>
+      <Tab.Screen name="inbox" component={TabContent} initialParams={{ tabName: "inbox", rootModuleName: "Inbox" }} />
+      <Tab.Screen name="sell" component={TabContent} initialParams={{ tabName: "sell", rootModuleName: "Sales" }} />
+      <Tab.Screen
+        name="profile"
+        component={TabContent}
+        initialParams={{ tabName: "profile", rootModuleName: "MyProfile" }}
+      />
+    </Tab.Navigator>
   )
 }
 

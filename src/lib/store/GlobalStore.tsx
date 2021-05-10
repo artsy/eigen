@@ -1,7 +1,10 @@
+import { useNavigationState } from "@react-navigation/native"
 import { createStore, createTypedHooks, StoreProvider } from "easy-peasy"
+import { __unsafe_mainModalStackRef } from "lib/NativeModules/ARScreenPresenterModule"
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNavigationState"
+import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import React from "react"
 import { Platform } from "react-native"
 // @ts-ignore
@@ -97,8 +100,18 @@ export const GlobalStoreProvider: React.FC<{}> = ({ children }) => {
   return <StoreProvider store={globalStoreInstance()}>{children}</StoreProvider>
 }
 
-export function useSelectedTab() {
-  return hooks.useStoreState((state) => state.bottomTabs.sessionState.selectedTab)
+export function useSelectedTab(): BottomTabType {
+  if (Platform.OS === "ios") {
+    return hooks.useStoreState((state) => state.bottomTabs.sessionState.selectedTab)
+  }
+
+  const blah = useNavigationState((state) => state.routes.find((r) => r.state?.type === "tab")?.state)
+  if (!blah) {
+    return "home"
+  } else {
+    const { index, routes } = blah
+    return routes[index!].name as BottomTabType
+  }
 }
 
 let _globalStoreInstance: ReturnType<typeof createGlobalStore> | undefined
@@ -170,7 +183,16 @@ export function getCurrentEmissionState() {
  * react components.
  */
 export function unsafe__getSelectedTab() {
-  return globalStoreInstance().getState().bottomTabs.sessionState.selectedTab
+  if (Platform.OS === "ios") {
+    return globalStoreInstance().getState().bottomTabs.sessionState.selectedTab
+  }
+  const blah = __unsafe_mainModalStackRef.current?.getRootState().routes.find((r) => r.state?.type === "tab")?.state
+  if (!blah) {
+    return "home"
+  } else {
+    const { index, routes } = blah
+    return routes[index!].name
+  }
 }
 
 export function useIsStaging() {
