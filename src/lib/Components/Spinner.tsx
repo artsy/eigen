@@ -27,7 +27,6 @@ const Spinner: React.FC<SpinnerProps> = ({
   ...props
 }) => {
   if (Platform.OS === "ios") {
-    const NativeSpinner: React.ComponentClass<any> = requireNativeComponent("ARSpinner")
     return (
       <View style={[props.style, styles.container]} testID={props.testID}>
         <NativeSpinner spinnerColor={processColor(spinnerColor)} style={{ size }} />
@@ -48,5 +47,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 })
+
+const NativeSpinner: React.ComponentClass<any> =
+  Platform.OS === "ios" ? requireNativeComponent("ARSpinner") : ActivityIndicator
 
 export default Spinner
