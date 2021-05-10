@@ -109,19 +109,17 @@ export const Avatar: FunctionComponent<AvatarProps> = ({ ...props }) => {
     <BaseAvatar
       size={props.size}
       renderAvatar={() => (
-        <Flex height={diameter} width={diameter} borderRadius={diameter / 2} overflow="hidden">
-          <Image
-            resizeMode="stretch"
-            style={{
-              width: diameter,
-              height: diameter,
-              borderRadius: diameter / 2,
-            }}
-            source={{
-              uri: props.src,
-            }}
-          />
-        </Flex>
+        <Image
+          resizeMode="cover"
+          style={{
+            width: diameter,
+            height: diameter,
+            borderRadius: diameter / 2,
+          }}
+          source={{
+            uri: props.src,
+          }}
+        />
       )}
       {...props}
     />
