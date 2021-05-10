@@ -27,7 +27,7 @@ export interface InputProps extends TextInputProps {
   title?: string
   enableClearButton?: boolean
   canHidePassword?: boolean
-  inputTextStyle: TextStyle
+  inputTextStyle?: TextStyle
   onClear?(): void
   renderLeftHandSection?(): JSX.Element
 }
