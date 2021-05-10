@@ -42,7 +42,7 @@ export const BottomTabsNavigator = () => {
   }
 
   return (
-    <Tab.Navigator tabBar={() => <BottomTabs />}>
+    <Tab.Navigator tabBar={() => <BottomTabs />} backBehavior="firstRoute">
       <Tab.Screen name="home" component={TabContent} initialParams={{ tabName: "home", rootModuleName: "Home" }} />
       <Tab.Screen
         name="search"
