@@ -1,3 +1,4 @@
+import { switchTab } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
@@ -23,7 +24,7 @@ describe(BottomTabsButton, () => {
     expect(__globalStoreTestUtils__?.getCurrentState().bottomTabs.sessionState.selectedTab).toBe("home")
     tree.root.findByType(TouchableWithoutFeedback).props.onPress()
     await flushPromiseQueue()
-    expect(__globalStoreTestUtils__?.getCurrentState().bottomTabs.sessionState.selectedTab).toBe("search")
+    expect(switchTab).toHaveBeenCalledWith("search")
   })
 
   it(`dispatches an analytics action on press`, async () => {
@@ -31,7 +32,7 @@ describe(BottomTabsButton, () => {
     expect(trackEvent).not.toHaveBeenCalled()
     tree.root.findByType(TouchableWithoutFeedback).props.onPress()
     await flushPromiseQueue()
-    expect(__globalStoreTestUtils__?.getCurrentState().bottomTabs.sessionState.selectedTab).toBe("sell")
+    expect(switchTab).toHaveBeenCalledWith("sell")
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedTabBar",
       badge: false,
