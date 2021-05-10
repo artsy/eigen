@@ -10,7 +10,7 @@ import { countries, countryIndex } from "./countries"
 import { formatPhoneNumber } from "./formatPhoneNumber"
 
 /** Underline bar height for text input on android when focused */
-const UNDERLINE_TEXTINPUT_HEIGHT_ANDROID = 2
+const UNDERLINE_TEXTINPUT_HEIGHT_ANDROID = 1.5
 
 export const PhoneInput = React.forwardRef<
   Input,
