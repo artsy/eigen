@@ -105,11 +105,11 @@ export function useSelectedTab(): BottomTabType {
     return hooks.useStoreState((state) => state.bottomTabs.sessionState.selectedTab)
   }
 
-  const blah = useNavigationState((state) => state.routes.find((r) => r.state?.type === "tab")?.state)
-  if (!blah) {
+  const tabState = useNavigationState((state) => state.routes.find((r) => r.state?.type === "tab")?.state)
+  if (!tabState) {
     return "home"
   } else {
-    const { index, routes } = blah
+    const { index, routes } = tabState
     return routes[index!].name as BottomTabType
   }
 }
@@ -182,16 +182,16 @@ export function getCurrentEmissionState() {
  * Use `useSelectedTab` in react components, and use this in rare cases where you need to know the current tab outside of
  * react components.
  */
-export function unsafe__getSelectedTab() {
+export function unsafe__getSelectedTab(): BottomTabType {
   if (Platform.OS === "ios") {
     return globalStoreInstance().getState().bottomTabs.sessionState.selectedTab
   }
-  const blah = __unsafe_mainModalStackRef.current?.getRootState().routes.find((r) => r.state?.type === "tab")?.state
-  if (!blah) {
+  const tabState = __unsafe_mainModalStackRef.current?.getRootState().routes.find((r) => r.state?.type === "tab")?.state
+  if (!tabState) {
     return "home"
   } else {
-    const { index, routes } = blah
-    return routes[index!].name
+    const { index, routes } = tabState
+    return routes[index!].name as BottomTabType
   }
 }
 
