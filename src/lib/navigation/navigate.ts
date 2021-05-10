@@ -3,7 +3,7 @@ import { EventEmitter } from "events"
 import { AppModule, modules, ViewOptions } from "lib/AppRegistry"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { GlobalStore, unsafe__getSelectedTab } from "lib/store/GlobalStore"
-import { Linking } from "react-native"
+import { Linking, Platform } from "react-native"
 import { matchRoute } from "./routes"
 
 export interface ViewDescriptor extends ViewOptions {
@@ -76,10 +76,16 @@ export const navigationEvents = new EventEmitter()
 
 export function dismissModal() {
   LegacyNativeModules.ARScreenPresenterModule.dismissModal()
+  if (Platform.OS === "android") {
+    navigationEvents.emit("modalDismissed")
+  }
 }
 
 export function goBack() {
   LegacyNativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
+  if (Platform.OS === "android") {
+    navigationEvents.emit("goBack")
+  }
 }
 
 export function popParentViewController() {
