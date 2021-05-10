@@ -14,7 +14,7 @@ import { bidderNeedsIdentityVerification } from "lib/utils/auction"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
 import { get, isEmpty } from "lodash"
-import { Box, Button, Sans, Serif } from "palette"
+import { Box, Button, Sans, Text } from "palette"
 import React from "react"
 import { ScrollView, View, ViewProps } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
@@ -333,9 +333,9 @@ export class Registration extends React.Component<RegistrationProps, Registratio
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 startsAt={start_at}
               />
-              <Serif size="4t" weight="semibold" my={5} mx={6} textAlign="center">
+              <Text fontSize="4" my={5} mx={6} textAlign="center">
                 {sale.name}
-              </Serif>
+              </Text>
             </Flex>
             {!!requiresPaymentInformation && (
               <>
@@ -381,10 +381,10 @@ export class Registration extends React.Component<RegistrationProps, Registratio
               onPress={() => this.conditionsOfSalePressed()}
               disabled={isLoading}
             >
-              <Serif size="2" mt={2} color="black60">
+              <Text mt={2}>
                 Agree to{" "}
                 <LinkText onPress={isLoading ? undefined : this.onPressConditionsOfSale}>Conditions of Sale</LinkText>
-              </Serif>
+              </Text>
             </Checkbox>
 
             <Box m={4}>
