@@ -135,6 +135,7 @@ describe("ConversationCTA", () => {
         state: "SUBMITTED",
         lastOffer: {
           fromParticipant: "SELLER",
+          offerAmountChanged: true,
         },
       })
       expectReviewOfferButton(wrapper, { bg: "copper100", strings: ["Offer Received"], Icon: AlertCircleFillIcon })
@@ -147,6 +148,45 @@ describe("ConversationCTA", () => {
       })
 
       expectReviewOfferButton(wrapper, { bg: "green100", strings: ["Offer Accepted"], Icon: MoneyFillIcon })
+    })
+
+    it("shows counter received - confirm total when offer defines total and amount changes", () => {
+      const wrapper = getWrapperWithOrders({
+        state: "SUBMITTED",
+        lastOffer: { fromParticipant: "SELLER", offerAmountChanged: true, definesTotal: true },
+      })
+
+      expectReviewOfferButton(wrapper, {
+        bg: "copper100",
+        strings: ["Counteroffer Received", "Confirm Total"],
+        Icon: AlertCircleFillIcon,
+      })
+    })
+
+    it("shows accepted  - confirm total when offer defines total and amount stays the same", () => {
+      const wrapper = getWrapperWithOrders({
+        state: "SUBMITTED",
+        lastOffer: { fromParticipant: "SELLER", offerAmountChanged: false, definesTotal: true },
+      })
+
+      expectReviewOfferButton(wrapper, {
+        bg: "copper100",
+        strings: ["Offer Accepted", "Confirm total"],
+        Icon: AlertCircleFillIcon,
+      })
+    })
+
+    it("shows offer accepted when buyer also approves the provisional offer", () => {
+      const wrapper = getWrapperWithOrders({
+        state: "APPROVED",
+        lastOffer: { fromParticipant: "SELLER", definesTotal: true },
+      })
+
+      expectReviewOfferButton(wrapper, {
+        bg: "green100",
+        strings: ["Offer Accepted"],
+        Icon: MoneyFillIcon,
+      })
     })
   })
 })

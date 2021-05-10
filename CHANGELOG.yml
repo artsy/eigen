@@ -10,6 +10,7 @@ upcoming:
     - Fix issue with ARSpinner being registered more than once - mounir, kizito
     - Simplify react-navigation infra - david
   user_facing:
+    - CTA for inquiry checkout phase 2 - sepans
     - Combine gallery and institution artwork filters - mdole
     - Remove old login from android - adam, barry, david, jonathan, mounir, pavlos
     - Allows multi-select filters to be searchable - damon
