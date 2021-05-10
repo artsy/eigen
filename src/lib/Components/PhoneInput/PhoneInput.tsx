@@ -55,12 +55,12 @@ export const PhoneInput = React.forwardRef<
         innerRef.current = ref
       }}
       value={phoneNumber}
-      placeholder={countryIndex[countryCode]?.mask?.replace(/9/g, "0")}
-      placeholderTextColor={color("black30")}
       inputTextStyle={Platform.select({
         android: { paddingTop: UNDERLINE_TEXTINPUT_HEIGHT_ANDROID },
         default: {},
       })}
+      placeholder={countryIndex[countryCode]?.mask?.replace(/9/g, "0")}
+      placeholderTextColor={color("black30")}
       onChangeText={(newPhoneNumber) =>
         setPhoneNumber(formatPhoneNumber({ current: newPhoneNumber, previous: phoneNumber, countryCode }))
       }
