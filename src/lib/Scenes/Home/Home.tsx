@@ -7,7 +7,6 @@ import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/Artwork
 import { CollectionsRailFragmentContainer } from "lib/Scenes/Home/Components/CollectionsRail"
 import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
-import { SaleArtworksHomeRailContainer } from "lib/Scenes/Home/Components/SaleArtworksHomeRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
@@ -68,7 +67,6 @@ const Home = (props: Props) => {
   */
   const rowData = compact([
     artworkRails[0],
-    { type: "lotsByFollowedArtists" } as const,
     artworkRails[1],
     salesModule &&
       ({
@@ -123,7 +121,7 @@ const Home = (props: Props) => {
             data={rowData}
             initialNumToRender={5}
             refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-            renderItem={({ item, index, separators }) => {
+            renderItem={({ item, index }) => {
               switch (item.type) {
                 case "artwork":
                   return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
@@ -142,14 +140,6 @@ const Home = (props: Props) => {
                   )
                 case "viewing-rooms":
                   return <ViewingRoomsHomeRail featured={featured} />
-                case "lotsByFollowedArtists":
-                  return (
-                    <SaleArtworksHomeRailContainer
-                      me={me}
-                      onShow={() => separators.updateProps("leading", { hideSeparator: false })}
-                      onHide={() => separators.updateProps("leading", { hideSeparator: true })}
-                    />
-                  )
               }
             }}
             ListHeaderComponent={
