@@ -1,7 +1,8 @@
 import { tappedTabBar } from "@artsy/cohesion"
 import { PopIn } from "lib/Components/PopIn"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { GlobalStore, unsafe__getSelectedTab, useSelectedTab } from "lib/store/GlobalStore"
+import { switchTab } from "lib/navigation/navigate"
+import { unsafe__getSelectedTab, useSelectedTab } from "lib/store/GlobalStore"
 import { color, Sans } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Easing, TouchableWithoutFeedback, View } from "react-native"
@@ -39,7 +40,7 @@ export const BottomTabsButton: React.FC<{
     if (tab === unsafe__getSelectedTab()) {
       LegacyNativeModules.ARScreenPresenterModule.popToRootOrScrollToTop(tab)
     } else {
-      GlobalStore.actions.bottomTabs.switchTab(tab)
+      switchTab(tab)
     }
     tracking.trackEvent(
       tappedTabBar({
