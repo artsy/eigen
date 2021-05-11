@@ -12,7 +12,7 @@ describe(formatLargeNumberOfItems, () => {
       expect(formatLargeNumberOfItems(151000, "artwork")).toMatchInlineSnapshot(`"151.0k artworks"`)
     })
     it("formats more than a million", () => {
-      expect(formatLargeNumberOfItems(2200000, "artwork")).toMatchInlineSnapshot(`"2.2m artworks"`)
+      expect(formatLargeNumberOfItems(2200000, "artwork")).toMatchInlineSnapshot(`"2.2M artworks"`)
     })
   })
 
@@ -32,7 +32,7 @@ describe(formatLargeNumberOfItems, () => {
     })
     it("formats more than a million", () => {
       expect(formatLargeNumberOfItems(2200000, "work for sale", "works for sale")).toMatchInlineSnapshot(
-        `"2.2m works for sale"`
+        `"2.2M works for sale"`
       )
     })
   })
