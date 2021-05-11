@@ -26,6 +26,8 @@ import { Address, Country } from "../types"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { SelectCountry } from "./SelectCountry"
+import { CountrySelect, COUNTRY_SELECT_OPTIONS } from "lib/Components/CountrySelect"
+import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
 
 interface StyledInputInterface {
   /** The object which styled components wraps */
@@ -293,6 +295,23 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 onSubmitEditing={() => this.presentSelectCountry()}
               />
 
+              <Theme override={serifOnly}>
+                <ScreenDimensionsContext.Consumer>
+                  {({ height }) => (
+                    <CountrySelect
+                      maxModalHeight={height * 0.95}
+                      onSelectValue={(value) => {
+                        this.onCountrySelected({
+                          shortName: value,
+                          longName: COUNTRY_SELECT_OPTIONS.find((opt) => opt.value === value)!.label,
+                        } as Country)
+                      }}
+                      value={this.state.values.country?.shortName}
+                    />
+                  )}
+                </ScreenDimensionsContext.Consumer>
+              </Theme>
+
               <Flex mb={4}>
                 <Serif size="3" mb={2}>
                   Country
@@ -366,4 +385,41 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
     return isPhoneX ? 15 : 0
   }
+}
+
+const serifOnly = {
+  fontFamily: {
+    sans: {
+      regular: {
+        normal: "ReactNativeAGaramondPro-Regular",
+        italic: "ReactNativeAGaramondPro-Italic",
+      },
+      medium: {
+        normal: "ReactNativeAGaramondPro-Regular",
+        italic: "ReactNativeAGaramondPro-Italic",
+      },
+      semibold: {
+        normal: "ReactNativeAGaramondPro-Regular",
+        italic: "ReactNativeAGaramondPro-Regular",
+      },
+    },
+    serif: {
+      regular: {
+        normal: "ReactNativeAGaramondPro-Regular",
+        italic: "ReactNativeAGaramondPro-Italic",
+      },
+      medium: {
+        normal: null,
+        italic: null,
+      },
+      semibold: {
+        normal: "ReactNativeAGaramondPro-Semibold",
+        italic: null,
+      },
+    },
+  },
+  fonts: {
+    sans: "ReactNativeAGaramondPro-Regular",
+    serif: "ReactNativeAGaramondPro-Regular",
+  },
 }

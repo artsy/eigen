@@ -4,7 +4,7 @@ import { Select, SelectOption } from "./Select"
 // This data was copied over from force & the populations (searchImportance) was extracted mostly from this
 // wikipedia article https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population
 
-const COUNTRY_SELECT_OPTIONS: Array<SelectOption<string>> = [
+export const COUNTRY_SELECT_OPTIONS: Array<SelectOption<string>> = [
   { label: "Afghanistan", value: "AF", searchImportance: 32225560, searchTerms: ["Afghanistan", "AF"] },
   { label: "Åland Islands", value: "AX", searchImportance: 29981, searchTerms: ["Åland Islands", "AX"] },
   { label: "Albania", value: "AL", searchImportance: 2845955, searchTerms: ["Albania", "AL"] },
