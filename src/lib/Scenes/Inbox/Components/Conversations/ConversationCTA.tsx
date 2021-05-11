@@ -46,7 +46,7 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
             kind = "OFFER_ACCEPTED_CONFIRM_NEEDED"
           }
         } else {
-          // regular counter offer. either a P1 artwork with all metadata, or metadata was provided in previous back and forth
+          // regular counter offer. either a definite offer on artwork with all metadata, or a provisional offer but metadata was provided in previous back and forth
           if (lastOffer.offerAmountChanged) {
             // Brown CTA: 'Counteroffer received'
             kind = "OFFER_RECEIVED"
@@ -55,7 +55,7 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
       } else if (state === "APPROVED" && lastOffer?.fromParticipant === "BUYER") {
         kind = "OFFER_ACCEPTED"
       } else if (state === "APPROVED" && lastOffer?.fromParticipant === "SELLER" && lastOffer?.definesTotal) {
-        // green CTA. Offer accepted
+        // green CTA. Offer accepted. This appears when collector confirms totals on an accepted provisional offer
         kind = "PROVISIONAL_OFFER_ACCEPTED"
       }
 
