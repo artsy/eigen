@@ -151,10 +151,24 @@ describe("OrderUpdate with order updates", () => {
       offer: {
         respondsTo: {},
         fromParticipant: "SELLER",
+        offerAmountChanged: true,
       },
     })
 
     expect(extractText(tree.root)).toMatch("You received a counteroffer")
+    tree.root.findByType(AlertCircleFillIcon)
+  })
+  it("shows an accepted offer from the partner with pending action", () => {
+    const tree = getWrapper({
+      __typename: "CommerceOfferSubmittedEvent",
+      offer: {
+        respondsTo: {},
+        fromParticipant: "SELLER",
+        offerAmountChanged: false,
+      },
+    })
+
+    expect(extractText(tree.root)).toMatch("Offer Accepted - Pending Action")
     tree.root.findByType(AlertCircleFillIcon)
   })
 })

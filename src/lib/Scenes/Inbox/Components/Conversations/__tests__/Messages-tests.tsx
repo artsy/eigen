@@ -156,6 +156,7 @@ describe("messages with order updates", () => {
           offer: {
             respondsTo: {},
             fromParticipant: "SELLER",
+            offerAmountChanged: true,
           },
           createdAt: day2Time2,
         },

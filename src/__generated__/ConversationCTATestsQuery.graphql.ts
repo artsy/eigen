@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash de29e4def2833d70a326ee27b3e4e487 */
+/* @relayHash 91c6032c7224242432e0599b4a9cf0dc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -62,6 +62,8 @@ fragment ConversationCTA_conversation on Conversation {
           lastOffer {
             fromParticipant
             createdAt
+            definesTotal
+            offerAmountChanged
             id
           }
           offers(first: 5) {
@@ -135,6 +137,12 @@ v7 = {
   "type": "CommerceOffer"
 },
 v8 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "Boolean"
+},
+v9 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -348,6 +356,20 @@ return {
                                     "name": "createdAt",
                                     "storageKey": null
                                   },
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "definesTotal",
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "offerAmountChanged",
+                                    "storageKey": null
+                                  },
                                   (v3/*: any*/)
                                 ],
                                 "storageKey": null
@@ -417,7 +439,7 @@ return {
     ]
   },
   "params": {
-    "id": "de29e4def2833d70a326ee27b3e4e487",
+    "id": "91c6032c7224242432e0599b4a9cf0dc",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -455,6 +477,7 @@ return {
         "me.conversation.activeOrders.edges.node.internalID": (v6/*: any*/),
         "me.conversation.activeOrders.edges.node.lastOffer": (v7/*: any*/),
         "me.conversation.activeOrders.edges.node.lastOffer.createdAt": (v5/*: any*/),
+        "me.conversation.activeOrders.edges.node.lastOffer.definesTotal": (v8/*: any*/),
         "me.conversation.activeOrders.edges.node.lastOffer.fromParticipant": {
           "enumValues": [
             "BUYER",
@@ -465,6 +488,7 @@ return {
           "type": "CommerceOrderParticipantEnum"
         },
         "me.conversation.activeOrders.edges.node.lastOffer.id": (v6/*: any*/),
+        "me.conversation.activeOrders.edges.node.lastOffer.offerAmountChanged": (v8/*: any*/),
         "me.conversation.activeOrders.edges.node.lastTransactionFailed": {
           "enumValues": null,
           "nullable": true,
@@ -500,8 +524,8 @@ return {
           "plural": false,
           "type": "CommerceOrderStateEnum"
         },
-        "me.conversation.activeOrders.edges.node.stateExpiresAt": (v8/*: any*/),
-        "me.conversation.activeOrders.edges.node.stateReason": (v8/*: any*/),
+        "me.conversation.activeOrders.edges.node.stateExpiresAt": (v9/*: any*/),
+        "me.conversation.activeOrders.edges.node.stateReason": (v9/*: any*/),
         "me.conversation.conversationID": {
           "enumValues": null,
           "nullable": true,

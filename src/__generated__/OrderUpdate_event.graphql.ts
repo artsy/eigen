@@ -18,6 +18,8 @@ export type OrderUpdate_event = {
     readonly offer: {
         readonly amount: string | null;
         readonly fromParticipant: CommerceOrderParticipantEnum | null;
+        readonly definesTotal: boolean;
+        readonly offerAmountChanged: boolean;
         readonly respondsTo: {
             readonly fromParticipant: CommerceOrderParticipantEnum | null;
         } | null;
@@ -110,6 +112,20 @@ return {
             {
               "alias": null,
               "args": null,
+              "kind": "ScalarField",
+              "name": "definesTotal",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "offerAmountChanged",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
               "concreteType": "CommerceOffer",
               "kind": "LinkedField",
               "name": "respondsTo",
@@ -131,5 +147,5 @@ return {
   "abstractKey": "__isCommerceOrderEventUnion"
 };
 })();
-(node as any).hash = '250f0d3f8e1f233d839dbbc7fac42f7c';
+(node as any).hash = 'e185cc700c70cfb7fb91f597d00c6cb5';
 export default node;

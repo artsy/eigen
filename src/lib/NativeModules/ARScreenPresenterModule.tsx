@@ -1,4 +1,5 @@
-import { NavigationContainerRef, StackActions } from "@react-navigation/native"
+import { NavigationContainerRef, NavigationState, StackActions, TabActions } from "@react-navigation/native"
+import immer from "immer-peasy"
 import { ViewDescriptor } from "lib/navigation/navigate"
 import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import { last } from "lodash"
@@ -16,24 +17,39 @@ import { NativeModules } from "react-native"
  */
 
 // tslint:disable-next-line:variable-name
-export const __unsafe_tabStackNavRefs: Record<BottomTabType, React.MutableRefObject<NavigationContainerRef | null>> = {
-  home: { current: null },
-  search: { current: null },
-  inbox: { current: null },
-  sell: { current: null },
-  profile: { current: null },
-}
-
-// tslint:disable-next-line:variable-name
 export const __unsafe_mainModalStackRef = { current: null as NavigationContainerRef | null }
 
-// tslint:disable-next-line:variable-name
-export const __unsafe_modalNavStackRefs: {
-  [routeKey: string]: React.RefObject<NavigationContainerRef>
-} = {}
+type Mutable<T> = T extends object
+  ? {
+      -readonly [P in keyof T]: Mutable<T[P]>
+    }
+  : T extends Array<infer E>
+  ? Array<Mutable<E>>
+  : T extends ReadonlyArray<infer E2>
+  ? Array<Mutable<E2>>
+  : T
+
+function updateNavigationState(updater: (draft: Mutable<NavigationState>) => void) {
+  const currentState = __unsafe_mainModalStackRef.current?.getRootState()
+  const nextState = immer(currentState, updater)
+  __unsafe_mainModalStackRef.current?.resetRoot(nextState)
+}
+function updateTabStackState(tab: BottomTabType, updater: (draft: Mutable<NavigationState>) => void) {
+  updateNavigationState((state) => {
+    const tabs = state.routes[0].state?.routes
+    const tabState = (tabs as Array<{ name: BottomTabType; state: Mutable<NavigationState> }>)?.find(
+      (x) => x.name === tab
+    )?.state
+    if (!tabState) {
+      console.error("unable to find tab state for tab", tab, state)
+      return
+    }
+    updater(tabState)
+  })
+}
 
 // If the user is looking at a modal, return the nav stack ref for that modal, otherwise return null.
-function getCurrentlyPresentedModalNavStackRef() {
+function getCurrentlyPresentedModalNavStackKey() {
   const mainModalStackRoutes = __unsafe_mainModalStackRef.current?.getRootState().routes
 
   if (!mainModalStackRoutes || mainModalStackRoutes.length <= 1) {
@@ -46,13 +62,16 @@ function getCurrentlyPresentedModalNavStackRef() {
     throw new Error("Couldn't get modal key")
   }
 
-  // and call dispatch on the ref that we should have already
-  const ref = __unsafe_modalNavStackRefs[key]
-  if (!ref) {
-    throw new Error("Couldn't get modal ref")
-  }
+  return key
+}
 
-  return ref
+/**
+ * This is marked as unsafe because, at the time of writing, it does not work on iOS.
+ * You might want the switchTab function in navigate.ts
+ * @param tab
+ */
+export function __unsafe_switchTab(tab: BottomTabType) {
+  __unsafe_mainModalStackRef.current?.dispatch(TabActions.jumpTo(tab))
 }
 
 export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterModule"] = {
@@ -71,57 +90,54 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
     }
   },
   async popToRootAndScrollToTop(selectedTab: BottomTabType) {
-    __unsafe_tabStackNavRefs[selectedTab].current?.dispatch(StackActions.popToTop())
-    // TODO: scroll to top
+    updateTabStackState(selectedTab, (state) => {
+      state.routes = [state.routes[0]]
+      state.index = 0
+    })
+    if (__DEV__) {
+      // TODO: scroll to top
+      console.warn("TODO: scroll to top")
+    }
   },
   popToRootOrScrollToTop(selectedTab: BottomTabType) {
-    const state = __unsafe_tabStackNavRefs[selectedTab].current?.getRootState()!
-    if (state.routes.length > 1) {
-      __unsafe_tabStackNavRefs[selectedTab].current?.dispatch(StackActions.popToTop())
-    } else {
-      // TODO: scroll to top
-    }
+    updateTabStackState(selectedTab, (state) => {
+      if (state.routes.length > 1) {
+        state.routes = [state.routes[0]]
+        state.index = 0
+      } else {
+        if (__DEV__) {
+          // TODO: scroll to top
+          console.warn("TODO: scroll to top")
+        }
+      }
+    })
   },
   pushView(selectedTab: BottomTabType, viewDescriptor: ViewDescriptor) {
-    // is the user looking at a modal right now?
-    // if so, push onto that modal's nav stack
-    const modalNavStackRef = getCurrentlyPresentedModalNavStackRef()
-    if (modalNavStackRef) {
-      modalNavStackRef.current?.dispatch(
-        StackActions.push("screen", { moduleName: viewDescriptor.moduleName, props: viewDescriptor.props })
-      )
-      return
-    }
-    // otherwise push onto the current tab's nav stack
-    __unsafe_tabStackNavRefs[selectedTab].current?.dispatch(
-      StackActions.push("screen", { moduleName: viewDescriptor.moduleName, props: viewDescriptor.props })
+    const stackKey = getCurrentlyPresentedModalNavStackKey() ?? selectedTab
+    __unsafe_mainModalStackRef.current?.dispatch(
+      StackActions.push("screen:" + stackKey, {
+        moduleName: viewDescriptor.moduleName,
+        props: viewDescriptor.props,
+      })
     )
-    // TODO: check whether this function works when called immediately after switching tab
-    // e.g. when opening a deep link to a conversation.
-    // It probably won't work in cases where the tab's navigator hasn't been mounted yet.
   },
   popStack(selectedTab: BottomTabType) {
-    // if user is not looking at modal, pop the current tab's nav stack
-    __unsafe_tabStackNavRefs[selectedTab].current?.dispatch(StackActions.pop())
+    updateTabStackState(selectedTab, (state) => {
+      state.routes.pop()
+      state.index -= 1
+    })
   },
-  goBack(selectedTab: BottomTabType) {
-    const modalNavStackRef = getCurrentlyPresentedModalNavStackRef()
-    // if the user is looking at a modal
-    if (modalNavStackRef) {
-      // if the modal has more than one screen in its nav stack, pop the stack
-      if ((modalNavStackRef.current?.getRootState().routes.length ?? 0) > 1) {
-        modalNavStackRef.current?.dispatch(StackActions.pop())
-        return
-      }
-      // otherwise dismiss the modal
-      __unsafe_mainModalStackRef.current?.dispatch(StackActions.pop())
-      return
-    }
-    // if the user is not looking at a modal, pop the current tab's nav stack
-    __unsafe_tabStackNavRefs[selectedTab].current?.dispatch(StackActions.pop())
+  goBack(_selectedTab: BottomTabType) {
+    __unsafe_mainModalStackRef.current?.goBack()
   },
   dismissModal(..._args: any[]) {
-    __unsafe_mainModalStackRef.current?.dispatch(StackActions.pop())
+    updateNavigationState((state) => {
+      if (state.routes.length === 1) {
+        return
+      }
+      state.routes.pop()
+      state.index -= 1
+    })
   },
   presentAugmentedRealityVIR: () => {
     console.warn("presentAugmentedRealityVIR not yet supported")
