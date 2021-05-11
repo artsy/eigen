@@ -16,9 +16,13 @@ export const themeProps = {
   fonts: TEXT_FONTS,
 }
 
+type ThemeProps = {
+  override?: { [key: string]: any }
+}
+
 /**
  * A wrapper component for passing down the Artsy theme context
  */
-export const Theme: React.FC<{}> = (props) => {
-  return <ThemeProvider theme={themeProps}>{props.children}</ThemeProvider>
+export const Theme: React.FC<ThemeProps> = (props) => {
+  return <ThemeProvider theme={{ ...themeProps, ...(props.override ?? {}) }}>{props.children}</ThemeProvider>
 }
