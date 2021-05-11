@@ -1,9 +1,10 @@
 import { Route, useIsFocused, useNavigationState } from "@react-navigation/native"
 import { AppModule, modules } from "lib/AppRegistry"
 import { ArtsyKeyboardAvoidingViewContext } from "lib/Components/ArtsyKeyboardAvoidingView"
-import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useState } from "react"
 import { View } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { BackButton } from "./BackButton"
 
@@ -32,13 +33,17 @@ const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) =
   const showBackButton = !isRootScreen && !module.options.hidesBackButton && !legacy_shouldHideBackButton
 
   const isPresentedModally = (route.params.props as any)?.isPresentedModally
+  const bottomSafeArea = useSafeAreaInsets().bottom
+  const keyboardBottomOffset = isPresentedModally ? bottomSafeArea : 0
 
   const isVisible = useIsFocused()
 
   return (
     <LegacyBackButtonContext.Provider value={{ updateShouldHideBackButton }}>
       <ProvideScreenDimensions>
-        <ArtsyKeyboardAvoidingViewContext.Provider value={{ isPresentedModally, isVisible, bottomOffset: 0 }}>
+        <ArtsyKeyboardAvoidingViewContext.Provider
+          value={{ isPresentedModally, isVisible, bottomOffset: keyboardBottomOffset }}
+        >
           <ScreenPadding
             isPresentedModally={isPresentedModally}
             isVisible={isVisible}
@@ -56,9 +61,21 @@ const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) =
 const ScreenPadding: React.FC<{ fullBleed: boolean; isPresentedModally: boolean; isVisible: boolean }> = ({
   fullBleed,
   children,
+  isPresentedModally,
 }) => {
-  const topInset = useScreenDimensions().safeAreaInsets.top
-  return <View style={{ flex: 1, backgroundColor: "white", paddingTop: fullBleed ? 0 : topInset }}>{children}</View>
+  const { top, bottom } = useSafeAreaInsets()
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "white",
+        paddingTop: fullBleed ? 0 : top,
+        paddingBottom: isPresentedModally ? bottom : 0,
+      }}
+    >
+      {children}
+    </View>
+  )
 }
 
 /**

@@ -101,10 +101,6 @@ export const GlobalStoreProvider: React.FC<{}> = ({ children }) => {
 }
 
 export function useSelectedTab(): BottomTabType {
-  if (Platform.OS === "ios") {
-    return hooks.useStoreState((state) => state.bottomTabs.sessionState.selectedTab)
-  }
-
   const tabState = useNavigationState((state) => state.routes.find((r) => r.state?.type === "tab")?.state)
   if (!tabState) {
     return "home"
@@ -186,9 +182,6 @@ export function getCurrentEmissionState() {
  * react components.
  */
 export function unsafe__getSelectedTab(): BottomTabType {
-  if (Platform.OS === "ios") {
-    return globalStoreInstance().getState().bottomTabs.sessionState.selectedTab
-  }
   const tabState = __unsafe_mainModalStackRef.current?.getRootState().routes.find((r) => r.state?.type === "tab")?.state
   if (!tabState) {
     return "home"

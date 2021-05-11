@@ -29,7 +29,6 @@ import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 import { Consignments } from "./Scenes/Consignments"
 import { ConsignmentsSubmissionForm } from "./Scenes/Consignments/ConsignmentsHome/ConsignmentsSubmissionForm"
 
-import { FadeIn } from "./Components/FadeIn"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { NativeViewController } from "./Components/NativeViewController"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
@@ -68,14 +67,14 @@ import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { AppProviders } from "./AppProviders"
-import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
 import { NativeAnalyticsProvider } from "./NativeModules/Events"
+import { ModalStack } from "./navigation/ModalStack"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
-import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
+import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
@@ -85,11 +84,10 @@ import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
+import { GlobalStore } from "./store/GlobalStore"
 import { AdminMenu } from "./utils/AdminMenu"
 import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
-import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
 
 LogBox.ignoreLogs([
@@ -181,62 +179,6 @@ const SearchWithTracking: React.FC<SearchWithTrackingProps> = screenTrack<Search
 })((props) => {
   return <Search {...props} />
 })
-
-interface PageWrapperProps {
-  fullBleed?: boolean
-  isMainView?: boolean
-  ViewComponent: React.ComponentType<any>
-  viewProps: any
-}
-
-const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, ViewComponent, viewProps }) => {
-  const safeAreaInsets = useScreenDimensions().safeAreaInsets
-  const paddingTop = fullBleed ? 0 : safeAreaInsets.top
-  const paddingBottom = isMainView ? 0 : safeAreaInsets.bottom
-  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
-  // if we're in a modal, just pass isVisible through
-  const currentTab = useSelectedTab()
-  let isVisible = viewProps.isVisible
-  if (BottomTabOption[viewProps.navStackID as BottomTabType]) {
-    // otherwise, make sure it respects the current tab
-    isVisible = isVisible && currentTab === viewProps.navStackID
-  }
-  const isPresentedModally = viewProps.isPresentedModally
-  return (
-    <ArtsyKeyboardAvoidingViewContext.Provider value={{ isVisible, isPresentedModally, bottomOffset: paddingBottom }}>
-      <View style={{ flex: 1, paddingTop, paddingBottom }}>
-        {isHydrated ? (
-          <FadeIn style={{ flex: 1 }} slide={false}>
-            <ViewComponent {...{ ...viewProps, isVisible }} />
-          </FadeIn>
-        ) : null}
-      </View>
-    </ArtsyKeyboardAvoidingViewContext.Provider>
-  )
-}
-
-// provide the tracking context so pages can use `useTracking` all the time
-@track()
-class PageWrapper extends React.Component<PageWrapperProps> {
-  render() {
-    return (
-      <AppProviders>
-        <InnerPageWrapper {...this.props} />
-      </AppProviders>
-    )
-  }
-}
-
-function register(
-  screenName: string,
-  Component: React.ComponentType<any>,
-  options?: Omit<PageWrapperProps, "ViewComponent" | "viewProps">
-) {
-  const WrappedComponent = (props: any) => (
-    <PageWrapper {...options} ViewComponent={Component} viewProps={props}></PageWrapper>
-  )
-  AppRegistry.registerComponent(screenName, () => WrappedComponent)
-}
 
 export interface ViewOptions {
   modalPresentationStyle?: "fullScreen" | "pageSheet" | "formSheet"
@@ -379,16 +321,6 @@ export const modules = defineModules({
   WorksForYou: reactModule(WorksForYouQueryRenderer),
 })
 
-// Register react modules with the app registry
-for (const moduleName of Object.keys(modules)) {
-  const descriptor = modules[moduleName as AppModule]
-  if ("Component" in descriptor) {
-    if (Platform.OS === "ios") {
-      register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed })
-    }
-  }
-}
-
 const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.native.sessionState.userID)
@@ -411,9 +343,17 @@ const Main: React.FC<{}> = track()(({}) => {
     return <NativeViewController viewName="Onboarding" />
   }
 
-  return <BottomTabsNavigator />
+  return (
+    <ModalStack>
+      <BottomTabsNavigator />
+    </ModalStack>
+  )
 })
 
 if (Platform.OS === "ios") {
-  register("Main", Main, { fullBleed: true, isMainView: true })
+  AppRegistry.registerComponent("Main", () => () => (
+    <AppProviders>
+      <Main />
+    </AppProviders>
+  ))
 }

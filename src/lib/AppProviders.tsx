@@ -6,9 +6,10 @@ import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContex
 import { ToastProvider } from "./Components/Toast/toastHook"
 import { defaultEnvironment } from "./relay/createEnvironment"
 import { GlobalStoreProvider } from "./store/GlobalStore"
+import { track } from "./utils/track"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
 
-export const AppProviders = ({ children }: { children: ReactNode }) => (
+export const AppProviders = track()(({ children }: { children: ReactNode }) => (
   <RelayEnvironmentProvider environment={defaultEnvironment}>
     <ProvideScreenDimensions>
       <Theme>
@@ -22,4 +23,4 @@ export const AppProviders = ({ children }: { children: ReactNode }) => (
       </Theme>
     </ProvideScreenDimensions>
   </RelayEnvironmentProvider>
-)
+))

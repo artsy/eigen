@@ -1,8 +1,8 @@
 import { ConversationTestsQuery } from "__generated__/ConversationTestsQuery.graphql"
 import ConnectivityBanner from "lib/Components/ConnectivityBanner"
-import { navigationEvents } from "lib/navigation/navigate"
 import Composer from "lib/Scenes/Inbox/Components/Conversations/Composer"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { OnDidRegainFocus } from "lib/utils/useDidRegainFocus"
 import { Touchable } from "palette"
 import React from "react"
 import "react-native"
@@ -96,22 +96,12 @@ it("clicking on detail link opens pushes detail screen into navigator", () => {
   })
 })
 
-it("handles a dismissed modal with modalDismiss event", () => {
+it("refetches when the view regains focus", () => {
   const conversation = getWrapper()
   const componentInstance = (conversation.root.findByType(Conversation).children[0] as ReactTestInstance).instance
 
   jest.spyOn(componentInstance, "refetch")
-  navigationEvents.emit("modalDismissed")
-
-  expect(componentInstance.refetch).toHaveBeenCalled()
-})
-
-it("handles a dismissed modal with goBack event", () => {
-  const conversation = getWrapper()
-  const componentInstance = (conversation.root.findByType(Conversation).children[0] as ReactTestInstance).instance
-
-  jest.spyOn(componentInstance, "refetch")
-  navigationEvents.emit("goBack")
+  conversation.root.findByType(OnDidRegainFocus).props.onRegainFocus()
 
   expect(componentInstance.refetch).toHaveBeenCalled()
 })

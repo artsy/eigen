@@ -76,16 +76,20 @@ export function __unsafe_switchTab(tab: BottomTabType) {
 
 export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterModule"] = {
   presentModal(viewDescriptor: ViewDescriptor) {
+    const screenName = viewDescriptor.modalPresentationStyle === "fullScreen" ? "fullScreenModal" : "modal"
     if (viewDescriptor.replace) {
       __unsafe_mainModalStackRef.current?.dispatch(
-        StackActions.replace("modal", {
+        StackActions.replace(screenName, {
           rootModuleName: viewDescriptor.moduleName,
           rootModuleProps: viewDescriptor.props,
         })
       )
     } else {
       __unsafe_mainModalStackRef.current?.dispatch(
-        StackActions.push("modal", { rootModuleName: viewDescriptor.moduleName, rootModuleProps: viewDescriptor.props })
+        StackActions.push(screenName, {
+          rootModuleName: viewDescriptor.moduleName,
+          rootModuleProps: viewDescriptor.props,
+        })
       )
     }
   },

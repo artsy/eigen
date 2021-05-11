@@ -2,7 +2,6 @@ import NetInfo from "@react-native-community/netinfo"
 import { Conversation_me } from "__generated__/Conversation_me.graphql"
 import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
 import ConnectivityBanner from "lib/Components/ConnectivityBanner"
-import { navigationEvents } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ComposerFragmentContainer } from "lib/Scenes/Inbox/Components/Conversations/Composer"
 import Messages from "lib/Scenes/Inbox/Components/Conversations/Messages"
@@ -12,6 +11,7 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "lib/utils/track"
+import { OnDidRegainFocus } from "lib/utils/useDidRegainFocus"
 import { Flex, InfoCircleIcon, Text, Touchable } from "palette"
 import React from "react"
 import { View } from "react-native"
@@ -78,14 +78,10 @@ export class Conversation extends React.Component<Props, State> {
   componentDidMount() {
     NetInfo.isConnected.addEventListener("connectionChange", this.handleConnectivityChange)
     this.maybeMarkLastMessageAsRead()
-    navigationEvents.addListener("modalDismissed", this.handleModalDismissed)
-    navigationEvents.addListener("goBack", this.handleModalDismissed)
   }
 
   componentWillUnmount() {
     NetInfo.isConnected.removeEventListener("connectionChange", this.handleConnectivityChange)
-    navigationEvents.removeListener("modalDismissed", this.handleModalDismissed)
-    navigationEvents.removeListener("goBack", this.handleModalDismissed)
   }
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -236,6 +232,7 @@ export class Conversation extends React.Component<Props, State> {
               )
             }}
           />
+          <OnDidRegainFocus onRegainFocus={this.handleModalDismissed} />
         </Container>
       </ComposerFragmentContainer>
     )
