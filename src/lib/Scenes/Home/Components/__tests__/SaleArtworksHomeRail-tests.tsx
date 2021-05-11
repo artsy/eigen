@@ -42,7 +42,7 @@ describe("SaleArtworksHomeRail", () => {
 
     mockEnvironmentPayload(mockEnvironment, mockProps)
 
-    expect(tree.root.findAllByType(SectionTitle)[0].props.title).toEqual("Lots by artists you follow")
+    expect(tree.root.findAllByType(SectionTitle)[0].props.title).toEqual("Auction lots for you ending soon")
     expect(tree.root.findAllByType(SaleArtworkTileRailCardContainer)).toHaveLength(PAGE_SIZE)
   })
 

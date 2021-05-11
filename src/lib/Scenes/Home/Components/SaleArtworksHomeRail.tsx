@@ -46,7 +46,7 @@ export const SaleArtworksHomeRail: React.FC<Props> = ({ me, relay }) => {
   return (
     <Flex>
       <Flex mx={2}>
-        <SectionTitle title="Lots by artists you follow" />
+        <SectionTitle title="Auction lots for you ending soon" />
       </Flex>
       <CardRailFlatList
         data={artworks}
