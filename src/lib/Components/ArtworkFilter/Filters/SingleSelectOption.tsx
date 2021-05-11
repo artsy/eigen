@@ -13,9 +13,13 @@ interface SingleSelectOptionScreenProps {
   filterHeaderText: string
   onSelect: (any: any) => void
   selectedOption: FilterData
-  filterOptions: FilterData[]
+  filterOptions: Array<FilterData | JSX.Element>
   ListHeaderComponent?: JSX.Element
   withExtraPadding?: boolean
+}
+
+const isFilterData = (item: any): item is FilterData => {
+  return "paramValue" in item
 }
 
 export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> = ({
@@ -34,6 +38,7 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
   return (
     <Flex flexGrow={1}>
       <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
+
       <Flex flexGrow={1}>
         <FlatList
           style={{ flex: 1 }}
@@ -42,14 +47,21 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
           ItemSeparatorComponent={null}
-          renderItem={({ item }) => (
-            <ListItem
-              item={item}
-              selectedOption={selectedOption}
-              onSelect={onSelect}
-              withExtraPadding={withExtraPadding}
-            />
-          )}
+          renderItem={({ item }) => {
+            if (isFilterData(item)) {
+              return (
+                <ListItem
+                  item={item}
+                  selectedOption={selectedOption}
+                  onSelect={onSelect}
+                  withExtraPadding={withExtraPadding}
+                />
+              )
+            }
+
+            // Otherwise just return JSX.Element
+            return item
+          }}
         />
       </Flex>
     </Flex>
