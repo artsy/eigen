@@ -123,7 +123,7 @@ const Home = (props: Props) => {
             data={rowData}
             initialNumToRender={5}
             refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-            renderItem={({ item, index }) => {
+            renderItem={({ item, index, separators }) => {
               switch (item.type) {
                 case "artwork":
                   return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
@@ -143,7 +143,13 @@ const Home = (props: Props) => {
                 case "viewing-rooms":
                   return <ViewingRoomsHomeRail featured={featured} />
                 case "lotsByFollowedArtists":
-                  return <SaleArtworksHomeRailContainer me={me} />
+                  return (
+                    <SaleArtworksHomeRailContainer
+                      me={me}
+                      onShow={() => separators.updateProps("leading", { hideSeparator: false })}
+                      onHide={() => separators.updateProps("leading", { hideSeparator: true })}
+                    />
+                  )
               }
             }}
             ListHeaderComponent={
@@ -156,7 +162,7 @@ const Home = (props: Props) => {
                 <Spacer mb="2" />
               </Box>
             }
-            ItemSeparatorComponent={() => <Spacer mb={3} />}
+            ItemSeparatorComponent={({ hideSeparator }) => (!hideSeparator ? <Spacer mb={3} /> : null)}
             ListFooterComponent={() => <Spacer mb={3} />}
             keyExtractor={(_item, index) => String(index)}
           />

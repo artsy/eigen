@@ -28,6 +28,7 @@ upcoming:
     - Route artist auction results to artist insights - ole
     - Add "Lots by artists I follow" rails to the home screen - ole
     - Add buyer guarantee message and link to inquiry make offer button - lily
+    - Fix extra padding on home module rails - mounir, ole
 
 releases:
   - version: 6.8.4
