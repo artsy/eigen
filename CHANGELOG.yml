@@ -32,6 +32,7 @@ upcoming:
     - Add buyer guarantee message and link to inquiry make offer button - lily
     - Fix extra padding on home module rails - mounir, ole
     - Implements custom price filter option (behind feature flag) - damon
+    - Remove lots by followed artists rail for now - brian
 
 releases:
   - version: 6.8.4
