@@ -16,8 +16,8 @@ import { Input, InputProps } from "../Components/Input"
 import { Address, Country } from "../types"
 
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
+import { COUNTRY_SELECT_OPTIONS, CountrySelect } from "lib/Components/CountrySelect"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { CountrySelect, COUNTRY_SELECT_OPTIONS } from "lib/Components/CountrySelect"
 import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
 
 interface StyledInputInterface {
@@ -272,7 +272,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 placeholder="Add your phone number"
                 keyboardType="phone-pad"
                 textContentType="telephoneNumber"
-                onSubmitEditing={() => this.presentSelectCountry()}
               />
 
               <Theme override={serifOnly}>
