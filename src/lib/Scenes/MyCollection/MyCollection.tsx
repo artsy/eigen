@@ -12,6 +12,7 @@ import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import { Box, Button, Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { FlatList, RefreshControl, ScrollView, View } from "react-native"
@@ -19,7 +20,6 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkFormModal } from "./Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
 import { MyCollectionArtworkListItemFragmentContainer } from "./Screens/ArtworkList/MyCollectionArtworkListItem"
-import { screen } from "lib/utils/track/helpers"
 
 const RefreshEvents = new EventEmitter()
 const REFRESH_KEY = "refresh"

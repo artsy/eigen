@@ -13,6 +13,7 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import { Button, Flex, Join, Spacer } from "palette"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
@@ -22,7 +23,6 @@ import { MyCollectionArtworkFormModal } from "../ArtworkFormModal/MyCollectionAr
 import { MyCollectionArtworkHeaderRefetchContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
 import { WhySell } from "./Components/WhySell"
-import { screen } from "lib/utils/track/helpers"
 
 export interface MyCollectionArtworkProps {
   artwork: NonNullable<MyCollectionArtworkQueryResponse["artwork"]>
