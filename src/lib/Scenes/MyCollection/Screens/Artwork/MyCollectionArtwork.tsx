@@ -22,6 +22,7 @@ import { MyCollectionArtworkFormModal } from "../ArtworkFormModal/MyCollectionAr
 import { MyCollectionArtworkHeaderRefetchContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
 import { WhySell } from "./Components/WhySell"
+import { screen } from "lib/utils/track/helpers"
 
 export interface MyCollectionArtworkProps {
   artwork: NonNullable<MyCollectionArtworkQueryResponse["artwork"]>
@@ -34,12 +35,11 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={{
-        action: ActionType.screen,
+      info={screen({
         context_screen_owner_type: OwnerType.myCollectionArtwork,
         context_screen_owner_id: artwork.internalID,
         context_screen_owner_slug: artwork.slug,
-      }}
+      })}
     >
       <ScrollView>
         <MyCollectionArtworkFormModal

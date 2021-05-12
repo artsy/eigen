@@ -19,6 +19,7 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkFormModal } from "./Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
 import { MyCollectionArtworkListItemFragmentContainer } from "./Screens/ArtworkList/MyCollectionArtworkListItem"
+import { screen } from "lib/utils/track/helpers"
 
 const RefreshEvents = new EventEmitter()
 const REFRESH_KEY = "refresh"
@@ -68,10 +69,9 @@ const MyCollection: React.FC<{
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={{
-        action: ActionType.screen,
+      info={screen({
         context_screen_owner_type: OwnerType.myCollection,
-      }}
+      })}
     >
       <View style={{ flex: 1 }}>
         <MyCollectionArtworkFormModal

@@ -176,7 +176,7 @@ SOFTWARE.
         } else if (info[@"action"]) {
             if ([info[@"action"] isEqualToString:@"screen"]) {
                 // Screen event from cohesion
-                [ARAnalytics pageView:info[@"context_screen"] withProperties:[properties copy]];
+                [ARAnalytics pageView:info[@"context_screen_owner_type"] withProperties:[properties copy]];
             } else {
                 // Track event
                 [ARAnalytics event:info[@"action"] withProperties:[properties copy]];
