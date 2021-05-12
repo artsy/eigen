@@ -4,15 +4,7 @@ import React from "react"
 import { Schema, screenTrack, track } from "../../../utils/track"
 
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
-import {
-  Dimensions,
-  EmitterSubscription,
-  Keyboard,
-  LayoutRectangle,
-  Platform,
-  ScrollView,
-  TouchableWithoutFeedback,
-} from "react-native"
+import { Dimensions, EmitterSubscription, Keyboard, LayoutRectangle, Platform, ScrollView } from "react-native"
 
 import { Flex } from "../Elements/Flex"
 
