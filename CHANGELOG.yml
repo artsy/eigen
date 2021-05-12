@@ -8,7 +8,6 @@ upcoming:
     - Add staging support for deep links on android - mounir, ole
     - Refactor filter event payloads to send JSON - roop
     - Fix issue with ARSpinner being registered more than once - mounir, kizito
-    - Fix cancel button doesnt clear terms and results - yauheni
     - Simplify react-navigation infra - david
   user_facing:
     - CTA for inquiry checkout phase 2 - sepans
