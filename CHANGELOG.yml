@@ -30,6 +30,7 @@ upcoming:
     - Route artist auction results to artist insights - ole
     - Add "Lots by artists I follow" rails to the home screen - ole
     - Add buyer guarantee message and link to inquiry make offer button - lily
+    - Fix push notification pre request prompt showing up everytime - kizito
     - Fix extra padding on home module rails - mounir, ole
     - Implements custom price filter option (behind feature flag) - damon
     - Remove lots by followed artists rail for now - brian

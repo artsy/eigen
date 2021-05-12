@@ -48,8 +48,19 @@ NSString *const ARAugmentedRealityHasSuccessfullyRan = @"ARAugmentedRealityHasSu
 {
     // Need to save launch count for analytics
     NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
+    
+    // Preserve notification related settings
+    BOOL hasSeenNotificationPrompt = [[NSUserDefaults standardUserDefaults] boolForKey:ARPushNotificationsSettingsPromptSeen];
+    BOOL hasSeenNotificationDialogue = [[NSUserDefaults standardUserDefaults] boolForKey:ARPushNotificationsAppleDialogueSeen];
+    BOOL userPushNotificationDecision = [[NSUserDefaults standardUserDefaults] boolForKey:ARPushNotificationsAppleDialogueRejected];
+    
     [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
+    
     [[NSUserDefaults standardUserDefaults] setInteger:launchCount forKey:ARAnalyticsAppUsageCountProperty];
+    [[NSUserDefaults standardUserDefaults] setBool:hasSeenNotificationPrompt forKey:ARPushNotificationsSettingsPromptSeen];
+    [[NSUserDefaults standardUserDefaults] setBool:hasSeenNotificationDialogue forKey:ARPushNotificationsAppleDialogueSeen];
+    [[NSUserDefaults standardUserDefaults] setBool:userPushNotificationDecision forKey:ARPushNotificationsAppleDialogueRejected];
+    
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 @end
