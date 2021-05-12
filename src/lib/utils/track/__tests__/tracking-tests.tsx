@@ -1,19 +1,28 @@
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Button, View } from "react-native"
 import { useTracking } from "react-tracking"
-import { ProvideScreenTracking, screenTrack, track } from ".."
+import { ProvideScreenTracking, ProvideScreenTrackingWithCohesionSchema, Schema, screenTrack, track } from ".."
 import { postEventToProviders } from "../providers"
+import { useScreenTracking } from "../screenTracking"
 
 describe("Tracking", () => {
-  beforeEach(() => {
-    ;(postEventToProviders as jest.Mock).mockClear()
-  })
+  const screenInfoLegacy: Schema.PageView = {
+    context_screen: Schema.PageNames.AboutTheFairPage,
+    context_screen_owner_type: null,
+  }
+  const screenInfo: Screen = {
+    action: ActionType.screen,
+    context_screen_owner_type: OwnerType.artistAuctionResults,
+  }
 
-  const TestComponentHooks = () => {
-    const { trackEvent } = useTracking()
-    return (
-      <ProvideScreenTracking info={{ aScreen: "a test screen" } as any}>
+  describe("in functional components", () => {
+    const TestComponentHooksLegacy = () => {
+      useScreenTracking(screenInfoLegacy)
+      const { trackEvent } = useTracking()
+
+      return (
         <View>
           <Button
             title="track me"
@@ -22,51 +31,145 @@ describe("Tracking", () => {
             }}
           />
         </View>
-      </ProvideScreenTracking>
-    )
-  }
-
-  it.skip("works for tracking events with hooks", () => {
-    expect(postEventToProviders).toHaveBeenCalledTimes(0)
-
-    const component = renderWithWrappers(<TestComponentHooks />).root
-
-    expect(postEventToProviders).toHaveBeenCalledTimes(1)
-    expect(postEventToProviders).toHaveBeenNthCalledWith(1, { aScreen: "a test screen" })
-
-    const button = component.findByType(Button)
-    button.props.onPress()
-    expect(postEventToProviders).toHaveBeenCalledTimes(2)
-    expect(postEventToProviders).toHaveBeenNthCalledWith(2, { aScreen: "a test screen", wow: "yes!" })
-  })
-
-  @screenTrack({ aScreen: "a class screen" } as any)
-  class TestComponentDecorators extends React.Component {
-    @track({ wow: "indeed!" } as any)
-    handlePress() {
-      // doing some work
+      )
     }
 
-    render() {
+    const TestComponentHooks = () => {
+      useScreenTracking(screenInfo)
+      const { trackEvent } = useTracking()
+
       return (
         <View>
-          <Button title="track me" onPress={() => this.handlePress()} />
+          <Button
+            title="track me"
+            onPress={() => {
+              trackEvent({ wow: "yes!" })
+            }}
+          />
         </View>
       )
     }
-  }
 
-  it.skip("works for tracking events with decorators", () => {
-    expect(postEventToProviders).toHaveBeenCalledTimes(0)
+    it("works for tracking events with hooks (legacy info)", () => {
+      expect(postEventToProviders).toHaveBeenCalledTimes(0)
 
-    const component = renderWithWrappers(<TestComponentDecorators />).root
+      const component = renderWithWrappersTL(<TestComponentHooksLegacy />)
 
-    expect(postEventToProviders).toHaveBeenCalledTimes(1)
-    expect(postEventToProviders).toHaveBeenNthCalledWith(1, { aScreen: "a class screen" })
+      expect(postEventToProviders).toHaveBeenCalledTimes(1)
+      expect(postEventToProviders).toHaveBeenNthCalledWith(1, screenInfoLegacy)
 
-    const button = component.findByType(Button)
-    button.props.onPress()
-    expect(postEventToProviders).toHaveBeenCalledTimes(2)
-    expect(postEventToProviders).toHaveBeenNthCalledWith(2, { aScreen: "a class screen", wow: "indeed!" })
+      const button = component.getByType(Button)
+      button.props.onPress()
+      expect(postEventToProviders).toHaveBeenCalledTimes(2)
+      // expect(postEventToProviders).toHaveBeenNthCalledWith(2, { aScreen: "a test screen", wow: "yes!" })
+    })
+
+    it("works for tracking events with hooks", () => {
+      expect(postEventToProviders).toHaveBeenCalledTimes(0)
+
+      const component = renderWithWrappersTL(<TestComponentHooks />)
+
+      expect(postEventToProviders).toHaveBeenCalledTimes(1)
+      expect(postEventToProviders).toHaveBeenNthCalledWith(1, screenInfo)
+
+      const button = component.getByType(Button)
+      button.props.onPress()
+      expect(postEventToProviders).toHaveBeenCalledTimes(2)
+      // expect(postEventToProviders).toHaveBeenNthCalledWith(2, { aScreen: "a test screen", wow: "yes!" })
+    })
+
+    const TestComponentHooksAndProviderLegacy = () => {
+      const { trackEvent } = useTracking()
+
+      return (
+        <ProvideScreenTracking info={screenInfoLegacy}>
+          <View>
+            <Button
+              title="track me"
+              onPress={() => {
+                trackEvent({ wow: "yes!" })
+              }}
+            />
+          </View>
+        </ProvideScreenTracking>
+      )
+    }
+
+    const TestComponentHooksAndProvider = () => {
+      const { trackEvent } = useTracking()
+
+      return (
+        <ProvideScreenTrackingWithCohesionSchema info={screenInfo}>
+          <View>
+            <Button
+              title="track me"
+              onPress={() => {
+                trackEvent({ wow: "yes!" })
+              }}
+            />
+          </View>
+        </ProvideScreenTrackingWithCohesionSchema>
+      )
+    }
+
+    it("works for tracking events with hooks and provider (legacy info)", () => {
+      expect(postEventToProviders).toHaveBeenCalledTimes(0)
+
+      const component = renderWithWrappersTL(<TestComponentHooksAndProviderLegacy />)
+
+      expect(postEventToProviders).toHaveBeenCalledTimes(1)
+      expect(postEventToProviders).toHaveBeenNthCalledWith(1, screenInfoLegacy)
+
+      const button = component.getByType(Button)
+      button.props.onPress()
+      expect(postEventToProviders).toHaveBeenCalledTimes(2)
+      // expect(postEventToProviders).toHaveBeenNthCalledWith(2, { aScreen: "a test screen", wow: "yes!" })
+    })
+
+    it("works for tracking events with hooks and provider", () => {
+      expect(postEventToProviders).toHaveBeenCalledTimes(0)
+
+      const component = renderWithWrappersTL(<TestComponentHooksAndProvider />)
+
+      expect(postEventToProviders).toHaveBeenCalledTimes(1)
+      expect(postEventToProviders).toHaveBeenNthCalledWith(1, screenInfo)
+
+      const button = component.getByType(Button)
+      button.props.onPress()
+      expect(postEventToProviders).toHaveBeenCalledTimes(2)
+      // expect(postEventToProviders).toHaveBeenNthCalledWith(2, { aScreen: "a test screen", wow: "yes!" })
+    })
+  })
+
+  describe("in class components", () => {
+    @screenTrack({ aScreen: "a class screen" } as any)
+    class TestComponentDecorators extends React.Component {
+      @track({ wow: "indeed!" } as any)
+      handlePress() {
+        // doing some work
+      }
+
+      render() {
+        return (
+          <View>
+            <Button title="track me" onPress={() => this.handlePress()} />
+          </View>
+        )
+      }
+    }
+
+    it.skip("works for tracking events with decorators", () => {
+      expect(postEventToProviders).toHaveBeenCalledTimes(0)
+
+      const component = renderWithWrappers(<TestComponentDecorators />).root
+
+      expect(postEventToProviders).toHaveBeenCalledTimes(1)
+      expect(postEventToProviders).toHaveBeenNthCalledWith(1, { aScreen: "a class screen" })
+
+      const button = component.findByType(Button)
+      button.props.onPress()
+      expect(postEventToProviders).toHaveBeenCalledTimes(2)
+      expect(postEventToProviders).toHaveBeenNthCalledWith(2, { aScreen: "a class screen", wow: "indeed!" })
+    })
   })
 })

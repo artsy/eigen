@@ -31,16 +31,6 @@ jest.mock("react-native-screens/native-stack", () => {
 // tslint:disable-next-line:no-var-requires
 require("jest-fetch-mock").enableMocks()
 
-jest.mock("react-tracking")
-import track, { useTracking } from "react-tracking"
-const trackEvent = jest.fn()
-;(track as jest.Mock).mockImplementation(() => (x: any) => x)
-;(useTracking as jest.Mock).mockImplementation(() => {
-  return {
-    trackEvent,
-  }
-})
-
 jest.mock("lib/utils/track/providers", () => ({
   ...jest.requireActual("lib/utils/track/providers"),
   postEventToProviders: jest.fn(),
@@ -51,9 +41,6 @@ jest.mock("tipsi-stripe", () => ({
   paymentRequestWithCardForm: jest.fn(),
   createTokenWithCard: jest.fn(),
 }))
-
-// Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
-jest.mock("react-tracking/build/dispatchTrackingEvent")
 
 jest.mock("@react-native-community/netinfo", () => {
   return {
@@ -296,7 +283,6 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
   }
 
   beforeEach((done) => {
-    trackEvent.mockClear()
     ;(postEventToProviders as jest.Mock).mockClear()
     const types: Array<"error" | "warn"> = ["error", "warn"]
     types.forEach((type) => {

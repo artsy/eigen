@@ -1,4 +1,5 @@
 import { ToastProvider } from "lib/Components/Toast/toastHook"
+import { render } from "@testing-library/react-native"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { track } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -6,6 +7,21 @@ import { Theme } from "palette"
 import React from "react"
 import ReactTestRenderer from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
+
+/**
+ * Renders a React Component with our page wrappers
+ * @param component
+ */
+export const renderWithWrappersTL = (component: ReactElement) => {
+  const retval = render(component, { wrapper: Wrappers })
+  return {
+    ...retval,
+    getByType: retval.UNSAFE_getByType,
+    getAllByType: retval.UNSAFE_getAllByType,
+    queryByType: retval.UNSAFE_queryByType,
+    queryAllByType: retval.UNSAFE_queryAllByType,
+  }
+}
 
 /**
  * Renders a React Component with our page wrappers
@@ -59,3 +75,15 @@ export const componentWithWrappers = (component: ReactElement) => {
     </TrackProvider>
   )
 }
+
+const Wrappers = ({ children }: { children: React.ReactNode }) => (
+  <TrackProvider>
+    <GlobalStoreProvider>
+      <Theme>
+        <ToastProvider>
+          <ProvideScreenDimensions>{children}</ProvideScreenDimensions>
+        </ToastProvider>
+      </Theme>
+    </GlobalStoreProvider>
+  </TrackProvider>
+)
