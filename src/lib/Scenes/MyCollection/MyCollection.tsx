@@ -1,4 +1,4 @@
-import { ActionType, addCollectedArtwork, OwnerType } from "@artsy/cohesion"
+import { addCollectedArtwork, OwnerType } from "@artsy/cohesion"
 import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { EventEmitter } from "events"
