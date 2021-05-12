@@ -16,7 +16,7 @@ export const themeProps = {
   fonts: TEXT_FONTS,
 }
 
-type ThemeProps = {
+interface ThemeProps {
   override?: { [key: string]: any }
 }
 

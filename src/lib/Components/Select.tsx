@@ -26,11 +26,11 @@ interface SelectProps<ValueType> {
   subTitle?: string
   enableSearch?: boolean
   maxModalHeight?: number
+  hasError?: boolean
   onSelectValue(value: ValueType, index: number): void
   renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
   renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
   onModalFinishedClosing?(): void
-  hasError?: boolean
 }
 interface State {
   showingModal: boolean
@@ -108,8 +108,8 @@ const SelectButton: React.FC<{
   showTitleLabel?: boolean
   subTitle?: string
   placeholder?: string
-  onPress(): void
   hasError?: boolean
+  onPress(): void
 }> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle, hasError }) => {
   return (
     <Flex>
