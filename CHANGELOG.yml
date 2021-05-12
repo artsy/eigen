@@ -9,6 +9,7 @@ upcoming:
     - Refactor filter event payloads to send JSON - roop
     - Fix issue with ARSpinner being registered more than once - mounir, kizito
     - Simplify react-navigation infra - david
+    - lock screen orientation to portrait on android phones - mounir
   user_facing:
     - CTA for inquiry checkout phase 2 - sepans
     - Combine gallery and institution artwork filters - mdole
