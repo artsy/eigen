@@ -12,12 +12,11 @@ import { MyCollectionArtworkInsightsFragmentContainer } from "lib/Scenes/MyColle
 import { GlobalStore } from "lib/store/GlobalStore"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { useScreenTracking, useTracking } from "lib/utils/track"
 import { Button, Flex, Join, Spacer } from "palette"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { MyCollectionArtworkFormModal } from "../ArtworkFormModal/MyCollectionArtworkFormModal"
 import { MyCollectionArtworkHeaderRefetchContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
@@ -29,79 +28,76 @@ export interface MyCollectionArtworkProps {
 }
 
 export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwork, marketPriceInsights }) => {
+  useScreenTracking({
+    action: ActionType.screen,
+    context_screen_owner_type: OwnerType.myCollectionArtwork,
+    context_screen_owner_id: artwork.internalID,
+    context_screen_owner_slug: artwork.slug,
+  })
   const { trackEvent } = useTracking()
   const [showModal, setShowModal] = useState(false)
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={{
-        action: ActionType.screen,
-        context_screen_owner_type: OwnerType.myCollectionArtwork,
-        context_screen_owner_id: artwork.internalID,
-        context_screen_owner_slug: artwork.slug,
-      }}
-    >
-      <ScrollView>
-        <MyCollectionArtworkFormModal
-          mode="edit"
-          visible={showModal}
-          onDismiss={() => setShowModal(false)}
-          onSuccess={() => setShowModal(false)}
-          onDelete={() => {
-            setShowModal(false)
-            setTimeout(popParentViewController, 50)
-          }}
-          artwork={artwork}
-        />
-        <FancyModalHeader
-          rightButtonText="Edit"
-          onRightButtonPress={() => {
-            trackEvent(tracks.editCollectedArtwork(artwork.internalID, artwork.slug))
-            GlobalStore.actions.myCollection.artwork.startEditingArtwork(artwork as any)
-            setShowModal(true)
-          }}
-          hideBottomDivider
-        />
-        <Join separator={<Spacer my={1} />}>
-          <MyCollectionArtworkHeaderRefetchContainer artwork={artwork} />
-          <MyCollectionArtworkMetaFragmentContainer artwork={artwork} />
-          <MyCollectionArtworkInsightsFragmentContainer artwork={artwork} marketPriceInsights={marketPriceInsights} />
-          <WhySell />
+    <ScrollView>
+      <MyCollectionArtworkFormModal
+        mode="edit"
+        visible={showModal}
+        onDismiss={() => setShowModal(false)}
+        onSuccess={() => setShowModal(false)}
+        onDelete={() => {
+          setShowModal(false)
+          setTimeout(popParentViewController, 50)
+        }}
+        artwork={artwork}
+      />
+      <FancyModalHeader
+        rightButtonText="Edit"
+        onRightButtonPress={() => {
+          trackEvent(tracks.editCollectedArtwork(artwork.internalID, artwork.slug))
+          GlobalStore.actions.myCollection.artwork.startEditingArtwork(artwork as any)
+          setShowModal(true)
+        }}
+        hideBottomDivider
+      />
+      <Join separator={<Spacer my={1} />}>
+        <MyCollectionArtworkHeaderRefetchContainer artwork={artwork} />
+        <MyCollectionArtworkMetaFragmentContainer artwork={artwork} />
+        <MyCollectionArtworkInsightsFragmentContainer artwork={artwork} marketPriceInsights={marketPriceInsights} />
+        <WhySell />
 
-          <ScreenMargin>
-            <Button
-              size="large"
-              block
-              onPress={() => {
-                trackEvent(tracks.tappedSellArtwork(artwork.internalID, artwork.slug, "Submit this work"))
-                navigate("/consign/submission")
-              }}
-              data-test-id="SubmitButton"
-              haptic
-            >
-              Submit this work
-            </Button>
+        <ScreenMargin>
+          <Button
+            size="large"
+            block
+            onPress={() => {
+              trackEvent(tracks.tappedSellArtwork(artwork.internalID, artwork.slug, "Submit this work"))
+              navigate("/consign/submission")
+            }}
+            data-test-id="SubmitButton"
+            haptic
+          >
+            Submit this work
+          </Button>
 
-            <Spacer my={0.5} />
+          <Spacer my={0.5} />
 
-            <Button
-              size="large"
-              variant="secondaryGray"
-              block
-              onPress={() => {
-                trackEvent(tracks.tappedShowMore(artwork.internalID, artwork.slug, "Learn More"))
-                navigate("/sales")
-              }}
-              data-test-id="LearnMoreButton"
-            >
-              Learn more
-            </Button>
-          </ScreenMargin>
+          <Button
+            size="large"
+            variant="secondaryGray"
+            block
+            onPress={() => {
+              trackEvent(tracks.tappedShowMore(artwork.internalID, artwork.slug, "Learn More"))
+              navigate("/sales")
+            }}
+            data-test-id="LearnMoreButton"
+          >
+            Learn more
+          </Button>
+        </ScreenMargin>
 
-          <Spacer my={2} />
-        </Join>
-      </ScrollView>
-    </ProvideScreenTrackingWithCohesionSchema>
+        <Spacer my={2} />
+      </Join>
+    </ScrollView>
   )
 }
 

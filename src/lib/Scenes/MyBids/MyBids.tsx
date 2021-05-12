@@ -1,6 +1,6 @@
 import { groupBy, mapValues, partition, sortBy } from "lodash"
 import { Flex, Join, Separator, Spacer, Text } from "palette"
-import React from "react"
+import React, { useEffect } from "react"
 import { RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
@@ -12,7 +12,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { useScreenTracking } from "lib/utils/track"
 import moment from "moment-timezone"
 import { MyBidsPlaceholder, SaleCardFragmentContainer } from "./Components"
 import { LotStatusListItemContainer } from "./Components/LotStatusListItem"
@@ -26,6 +26,12 @@ export interface MyBidsProps {
 }
 
 const MyBids: React.FC<MyBidsProps> = (props) => {
+  useScreenTracking({
+    action: ActionType.screen,
+    context_screen_owner_type: OwnerType.inboxBids,
+    // TODO: How to correctly pass the screen that was in view before the Inbox tab was tapped?
+    // context_screen_referrer_type: ,
+  })
   const [isFetching, setIsFetching] = React.useState<boolean>(false)
   const { relay, isActiveTab, me } = props
 
@@ -42,7 +48,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
     })
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isActiveTab) {
       refreshMyBids()
     }
@@ -64,85 +70,76 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
   const somethingToShow = hasClosedBids || hasActiveSales
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={{
-        action: ActionType.screen,
-        context_screen_owner_type: OwnerType.inboxBids,
-        // TODO: How to correctly pass the screen that was in view before the Inbox tab was tapped?
-        // context_screen_referrer_type: ,
-      }}
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1, justifyContent: !somethingToShow ? "center" : "flex-start" }}
+      stickyHeaderIndices={[0, 2]}
+      refreshControl={
+        <RefreshControl
+          refreshing={isFetching}
+          onRefresh={() => {
+            refreshMyBids(true)
+          }}
+        />
+      }
     >
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1, justifyContent: !somethingToShow ? "center" : "flex-start" }}
-        stickyHeaderIndices={[0, 2]}
-        refreshControl={
-          <RefreshControl
-            refreshing={isFetching}
-            onRefresh={() => {
-              refreshMyBids(true)
-            }}
-          />
-        }
-      >
-        {!somethingToShow && <NoBids headerText="Discover works for you at auction." />}
-        {!!hasActiveSales && <BidTitle>Active Bids</BidTitle>}
-        {!!hasActiveSales && (
-          <Flex data-test-id="active-section">
-            <Join separator={<Spacer my={1} />}>
-              {sales.map((sale) => {
-                const sortedActiveLotStandings = ActiveLotStandingsBySaleId[sale.internalID] || []
-                const showNoBids = !sortedActiveLotStandings.length && !!sale.registrationStatus?.qualifiedForBidding
+      {!somethingToShow && <NoBids headerText="Discover works for you at auction." />}
+      {!!hasActiveSales && <BidTitle>Active Bids</BidTitle>}
+      {!!hasActiveSales && (
+        <Flex data-test-id="active-section">
+          <Join separator={<Spacer my={1} />}>
+            {sales.map((sale) => {
+              const sortedActiveLotStandings = ActiveLotStandingsBySaleId[sale.internalID] || []
+              const showNoBids = !sortedActiveLotStandings.length && !!sale.registrationStatus?.qualifiedForBidding
+              return (
+                <SaleCardFragmentContainer
+                  key={sale.internalID}
+                  sale={sale}
+                  me={me}
+                  smallScreen={isSmallScreen}
+                  hideChildren={!showNoBids && !sortedActiveLotStandings.length}
+                >
+                  <Join separator={<Separator my={1} />}>
+                    {!!showNoBids && (
+                      <Text color="black60" py={1} textAlign="center">
+                        You haven't placed any bids on this sale
+                      </Text>
+                    )}
+                    {sortedActiveLotStandings.map((lot) => {
+                      // this check performs type narrowing (from Lot | LotStanding)
+                      if ("isHighestBidder" in lot) {
+                        return <LotStatusListItemContainer key={lot.lot?.internalID} lotStanding={lot} lot={null} />
+                      } else {
+                        return <LotStatusListItemContainer key={lot.lot?.internalID} lot={lot} lotStanding={null} />
+                      }
+                    })}
+                  </Join>
+                </SaleCardFragmentContainer>
+              )
+            })}
+          </Join>
+        </Flex>
+      )}
+      {!!hasClosedBids && <BidTitle>Closed Bids</BidTitle>}
+      {!!hasClosedBids && (
+        <Flex data-test-id="closed-section">
+          <Flex mt={2} px={1.5}>
+            <Join separator={<Separator my={2} />}>
+              {closedStandings?.map((lotStanding) => {
                 return (
-                  <SaleCardFragmentContainer
-                    key={sale.internalID}
-                    sale={sale}
-                    me={me}
-                    smallScreen={isSmallScreen}
-                    hideChildren={!showNoBids && !sortedActiveLotStandings.length}
-                  >
-                    <Join separator={<Separator my={1} />}>
-                      {!!showNoBids && (
-                        <Text color="black60" py={1} textAlign="center">
-                          You haven't placed any bids on this sale
-                        </Text>
-                      )}
-                      {sortedActiveLotStandings.map((lot) => {
-                        // this check performs type narrowing (from Lot | LotStanding)
-                        if ("isHighestBidder" in lot) {
-                          return <LotStatusListItemContainer key={lot.lot?.internalID} lotStanding={lot} lot={null} />
-                        } else {
-                          return <LotStatusListItemContainer key={lot.lot?.internalID} lot={lot} lotStanding={null} />
-                        }
-                      })}
-                    </Join>
-                  </SaleCardFragmentContainer>
+                  <LotStatusListItemContainer
+                    saleIsClosed
+                    lotStanding={lotStanding}
+                    lot={null}
+                    key={lotStanding?.lot?.internalID}
+                  />
                 )
               })}
             </Join>
           </Flex>
-        )}
-        {!!hasClosedBids && <BidTitle>Closed Bids</BidTitle>}
-        {!!hasClosedBids && (
-          <Flex data-test-id="closed-section">
-            <Flex mt={2} px={1.5}>
-              <Join separator={<Separator my={2} />}>
-                {closedStandings?.map((lotStanding) => {
-                  return (
-                    <LotStatusListItemContainer
-                      saleIsClosed
-                      lotStanding={lotStanding}
-                      lot={null}
-                      key={lotStanding?.lot?.internalID}
-                    />
-                  )
-                })}
-              </Join>
-            </Flex>
-          </Flex>
-        )}
-        <Spacer my={2} />
-      </ScrollView>
-    </ProvideScreenTrackingWithCohesionSchema>
+        </Flex>
+      )}
+      <Spacer my={2} />
+    </ScrollView>
   )
 }
 

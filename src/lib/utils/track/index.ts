@@ -1,20 +1,50 @@
-import _track, { Track as _Track } from "react-tracking"
+// @ts-ignore
+import { Screen } from "@artsy/cohesion"
+import { useEffect } from "react"
+import _track, { Track as _Track, useTracking as _useTracking } from "react-tracking"
 import { _addTrackingProvider, postEventToProviders, TrackingProvider } from "./providers"
 // The schema definition for analytics tracking lives inside `./schema`, not here.
 import * as Schema from "./schema"
 
 export { Schema }
-export {
-  useScreenTracking,
-  screenTrack,
-  ProvideScreenTracking,
-  ProvideScreenTrackingWithCohesionSchema,
-} from "./screenTracking"
+export { screenTrack, ProvideScreenTracking } from "./screenTracking"
 
 /**
  * Useful notes:
  *  * At the bottom of this file there is an example of how to test track'd code.
  */
+
+export const useTracking = (info: Schema.PageView | Screen | undefined) => {
+  const t = _useTracking(info)
+
+  useEffect(() => {
+    if (info !== undefined) {
+      return
+    }
+    t.trackEvent(info)
+  }, [])
+
+  return t
+}
+
+/**
+ * Use this hook with functional components to track screen attributes.
+ * Just an alias to our `useTracking`. It just reads better if we only do screen tracking on a component.
+ *
+ * @example
+ *
+ * export const SomeScreen = () => {
+ *   useScreenTracking({
+ *     context_screen: Schema.PageNames.SomeScreen
+ *   })
+ *
+ *   return (
+ *     // [...]
+ *   )
+ * }
+ */
+
+export const useScreenTracking = useTracking
 
 /**
  * Use this interface to augment the `track` function with props, state, or custom tracking-info schema.
@@ -97,6 +127,10 @@ export const track: Track = (trackingInfo, options) => {
   })
 }
 
+export const addTrackingProvider = (name: string, provider: TrackingProvider) => {
+  _addTrackingProvider(name, provider)
+}
+
 /*
  * ## Writing tests for your tracked code
  *
@@ -149,7 +183,3 @@ export const track: Track = (trackingInfo, options) => {
  *      ```
  *
  */
-
-export const addTrackingProvider = (name: string, provider: TrackingProvider) => {
-  _addTrackingProvider(name, provider)
-}

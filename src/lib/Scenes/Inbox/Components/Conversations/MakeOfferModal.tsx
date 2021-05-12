@@ -6,7 +6,7 @@ import { dismissModal } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails } from "lib/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { useScreenTracking } from "lib/utils/track"
 import { BorderBox, Button, Flex, Text } from "palette"
 import React, { useState } from "react"
 import { View } from "react-native"
@@ -117,30 +117,28 @@ export const MakeOfferModalQueryRenderer: React.FC<{
   artworkID: string
   conversationID: string
 }> = ({ artworkID, conversationID }) => {
+  useScreenTracking({
+    action: ActionType.screen,
+    context_screen_owner_type: OwnerType.conversationMakeOfferConfirmArtwork,
+    context_screen_referrer_type: OwnerType.conversation,
+  })
+
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={{
-        action: ActionType.screen,
-        context_screen_owner_type: OwnerType.conversationMakeOfferConfirmArtwork,
-        context_screen_referrer_type: OwnerType.conversation,
-      }}
-    >
-      <QueryRenderer<MakeOfferModalQuery>
-        environment={defaultEnvironment}
-        query={graphql`
-          query MakeOfferModalQuery($artworkID: String!) {
-            artwork(id: $artworkID) {
-              ...MakeOfferModal_artwork
-            }
+    <QueryRenderer<MakeOfferModalQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query MakeOfferModalQuery($artworkID: String!) {
+          artwork(id: $artworkID) {
+            ...MakeOfferModal_artwork
           }
-        `}
-        variables={{
-          artworkID,
-        }}
-        render={renderWithLoadProgress<MakeOfferModalQueryResponse>(({ artwork }) => (
-          <MakeOfferModalFragmentContainer artwork={artwork!} conversationID={conversationID} />
-        ))}
-      />
-    </ProvideScreenTrackingWithCohesionSchema>
+        }
+      `}
+      variables={{
+        artworkID,
+      }}
+      render={renderWithLoadProgress<MakeOfferModalQueryResponse>(({ artwork }) => (
+        <MakeOfferModalFragmentContainer artwork={artwork!} conversationID={conversationID} />
+      ))}
+    />
   )
 }

@@ -34,18 +34,16 @@ This will minimize the tracking code sprinkled over the component code to just o
 
 ```typescript
 export const MyFuncComp: React.FC<Props> = (props) => {
+  useScreenTracking({
+    action: ActionType.screen,
+    context_screen_owner_type: OwnerType.myCollectionArtwork,
+    context_screen_owner_id: artwork.internalID,
+    context_screen_owner_slug: artwork.slug,
+  })
   const id = 42
+
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={{
-        action: ActionType.screen,
-        context_screen_owner_type: OwnerType.myCollectionArtwork,
-        context_screen_owner_id: artwork.internalID,
-        context_screen_owner_slug: artwork.slug,
-      }}
-    >
-      <View />
-    </ProvideScreenTrackingWithCohesionSchema>
+    <View />
   )
 }
 ```
