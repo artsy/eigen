@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
@@ -8,6 +9,8 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import { times } from "lodash"
 import { Flex, Join, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useRef, useState } from "react"
@@ -31,35 +34,37 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
   }, [])
 
   return (
-    <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
-      <Sans size="8" mx="2" mt="3">
-        {me.name}
-      </Sans>
-      <Separator my={2} />
-      <SectionHeading title="Favorites" />
-      {!!shouldDisplayMyCollection && (
-        <MenuItem isBeta={true} title="My Collection" onPress={() => navigate("my-collection")} />
-      )}
-      <MenuItem title="Saves and follows" onPress={() => navigate("favorites")} />
-      {!!recentlySavedArtworks.length && (
-        <SmallTileRailContainer artworks={recentlySavedArtworks} listRef={listRef} contextModule={null as any} />
-      )}
-      <Separator mt={3} mb={2} />
-      <SectionHeading title="Account Settings" />
-      <MenuItem title="Account" onPress={() => navigate("my-account")} />
-      <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
-      {!!shouldDisplayPushNotifications && (
-        <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />
-      )}
-      <MenuItem
-        title="Send feedback"
-        onPress={() => presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")}
-      />
-      <MenuItem title="Personal data request" onPress={() => navigate("privacy-request")} />
-      <MenuItem title="About" onPress={() => navigate("about")} />
-      <MenuItem title="Log out" onPress={confirmLogout} chevron={null} />
-      <Spacer mb={1} />
-    </ScrollView>
+    <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.profile })}>
+      <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
+        <Sans size="8" mx="2" mt="3">
+          {me.name}
+        </Sans>
+        <Separator my={2} />
+        <SectionHeading title="Favorites" />
+        {!!shouldDisplayMyCollection && (
+          <MenuItem isBeta={true} title="My Collection" onPress={() => navigate("my-collection")} />
+        )}
+        <MenuItem title="Saves and follows" onPress={() => navigate("favorites")} />
+        {!!recentlySavedArtworks.length && (
+          <SmallTileRailContainer artworks={recentlySavedArtworks} listRef={listRef} contextModule={null as any} />
+        )}
+        <Separator mt={3} mb={2} />
+        <SectionHeading title="Account Settings" />
+        <MenuItem title="Account" onPress={() => navigate("my-account")} />
+        <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
+        {!!shouldDisplayPushNotifications && (
+          <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />
+        )}
+        <MenuItem
+          title="Send feedback"
+          onPress={() => presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")}
+        />
+        <MenuItem title="Personal data request" onPress={() => navigate("privacy-request")} />
+        <MenuItem title="About" onPress={() => navigate("about")} />
+        <MenuItem title="Log out" onPress={confirmLogout} chevron={null} />
+        <Spacer mb={1} />
+      </ScrollView>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
