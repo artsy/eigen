@@ -111,7 +111,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
               <StyledInput
                 ref={input}
                 placeholderTextColor={color("black60")}
-                style={[{ flex: 1, fontFamily: TEXT_FONTS.sans, fontSize: 15 }, inputTextStyle && inputTextStyle]}
+                style={{ flex: 1, fontFamily: TEXT_FONTS.sans, fontSize: 15, ...inputTextStyle }}
                 secureTextEntry={!showPassword}
                 textAlignVertical="center"
                 {...(rest as any)}
