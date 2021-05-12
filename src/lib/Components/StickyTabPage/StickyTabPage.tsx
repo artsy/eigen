@@ -2,7 +2,7 @@ import { useUpdadeShouldHideBackButton } from "lib/utils/hideBackButtonOnScroll"
 import { Schema } from "lib/utils/track"
 import { useGlobalState } from "lib/utils/useGlobalState"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { color } from "palette"
+import { Box, color } from "palette"
 import React, { EffectCallback, useEffect, useMemo, useRef, useState } from "react"
 import { View } from "react-native"
 import Animated from "react-native-reanimated"
@@ -47,10 +47,22 @@ export const StickyTabPage: React.FC<{
   const [tabSpecificStickyHeaderContent, setTabSpecificStickyHeaderContent] = useState<JSX.Element[]>([])
   const { jsx: staticHeader, nativeHeight: staticHeaderHeight } = useAutoCollapsingMeasuredView(staticHeaderContent)
   activeTabIndex.useUpdates()
+
+  const stickyRailRef = useRef<SnappyHorizontalRail>(null)
+
   const { jsx: stickyHeader, nativeHeight: stickyHeaderHeight } = useAutoCollapsingMeasuredView(
     <>
       {stickyHeaderContent}
-      {tabSpecificStickyHeaderContent[activeTabIndex.current]}
+      <SnappyHorizontalRail
+        width={width * tabs.length}
+        ref={stickyRailRef}
+        initialOffset={initialTabIndex * width}
+        style={{ flex: undefined }}
+      >
+        {tabs.map((_, i) => {
+          return <Box width={width}>{tabSpecificStickyHeaderContent[i]}</Box>
+        })}
+      </SnappyHorizontalRail>
     </>
   )
   const tracking = useTracking()
@@ -83,6 +95,7 @@ export const StickyTabPage: React.FC<{
           setActiveTabIndex(index)
           activeTabIndexNative.setValue(index)
           railRef.current?.setOffset(index * width)
+          stickyRailRef.current?.setOffset(index * width)
           tracking.trackEvent({
             action_name: tabs[index].title,
             action_type: Schema.ActionTypes.Tap,
