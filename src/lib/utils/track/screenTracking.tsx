@@ -1,8 +1,8 @@
 import * as Schema from "./schema"
 import { Screen } from "@artsy/cohesion"
 import React, { useEffect } from "react"
-import _track, { Track as _Track, TrackingInfo, useTracking } from "react-tracking"
-import { _addTrackingProvider, postEventToProviders } from "./providers"
+import _track, { TrackingInfo, useTracking } from "react-tracking"
+import { postEventToProviders } from "./providers"
 
 /**
  * Use this hook with functional components to track screen attributes.
@@ -12,19 +12,6 @@ import { _addTrackingProvider, postEventToProviders } from "./providers"
  * export const SomeScreen = () => {
  *   useScreenTracking({
  *     context_screen: Schema.PageNames.SomeScreen
- *   })
- *
- *   return (
- *     // [...]
- *   )
- * }
- *
- * @example
- *
- * export const SomeScreen = () => {
- *   useScreenTracking(props => ({
- *     context_screen: Schema.PageNames.SomeScreen,
- *     context_screen_owner_slug: props.submissionID,
  *   })
  *
  *   return (
@@ -101,7 +88,7 @@ export class ProvideScreenTrackingWithCohesionSchema extends React.Component<Pro
  *        // [...]
  *      }
  */
-export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
+export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView | Screen, P, null>) {
   return _track(trackingInfo as any, {
     dispatch: (data) => postEventToProviders(data),
     dispatchOnMount: true,

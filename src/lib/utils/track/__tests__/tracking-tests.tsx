@@ -1,4 +1,5 @@
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
+import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Button, View } from "react-native"
@@ -22,39 +23,24 @@ describe("Tracking", () => {
     action: ActionType.screen,
     context_screen_owner_type: OwnerType.artistAuctionResults,
   }
+  const buttonInfo = { wow: "yes!" }
 
-  describe("in functional components", () => {
-    const TestComponentHooksLegacy = () => {
-      useScreenTracking(screenInfoLegacy)
-      const { trackEvent } = useTracking()
+  describe.skip("in functional components", () => {
+    const createTestComponentHooks = (info: Parameters<typeof useScreenTracking>[0]) => {
+      const TestComponent = () => {
+        useScreenTracking(info)
+        const { trackEvent } = useTracking()
 
-      return (
-        <View>
-          <Button
-            title="track me"
-            onPress={() => {
-              trackEvent({ wow: "yes!" })
-            }}
-          />
-        </View>
-      )
+        return (
+          <View>
+            <Button title="track me" onPress={() => trackEvent(buttonInfo)} />
+          </View>
+        )
+      }
+      return TestComponent
     }
-
-    const TestComponentHooks = () => {
-      useScreenTracking(screenInfo)
-      const { trackEvent } = useTracking()
-
-      return (
-        <View>
-          <Button
-            title="track me"
-            onPress={() => {
-              trackEvent({ wow: "yes!" })
-            }}
-          />
-        </View>
-      )
-    }
+    const TestComponentHooksLegacy = createTestComponentHooks(screenInfoLegacy)
+    const TestComponentHooks = createTestComponentHooks(screenInfo)
 
     it("works for tracking events with hooks (legacy info)", () => {
       expect(postEventToProviders).toHaveBeenCalledTimes(0)
@@ -65,9 +51,9 @@ describe("Tracking", () => {
       expect(postEventToProviders).toHaveBeenNthCalledWith(1, screenInfoLegacy)
 
       const button = component.getByType(Button)
-      button.props.onPress()
+      fireEvent.press(button)
       expect(postEventToProviders).toHaveBeenCalledTimes(2)
-      // expect(postEventToProviders).toHaveBeenNthCalledWith(2, { aScreen: "a test screen", wow: "yes!" })
+      // expect(postEventToProviders).toHaveBeenNthCalledWith(2, { ...screenInfoLegacy, ...buttonInfo })
     })
 
     it("works for tracking events with hooks", () => {
@@ -79,9 +65,9 @@ describe("Tracking", () => {
       expect(postEventToProviders).toHaveBeenNthCalledWith(1, screenInfo)
 
       const button = component.getByType(Button)
-      button.props.onPress()
+      fireEvent.press(button)
       expect(postEventToProviders).toHaveBeenCalledTimes(2)
-      // expect(postEventToProviders).toHaveBeenNthCalledWith(2, { aScreen: "a test screen", wow: "yes!" })
+      // expect(postEventToProviders).toHaveBeenNthCalledWith(2, { ...screenInfo, ...buttonInfo })
     })
 
     const TestComponentHooksAndProviderLegacy = () => {
@@ -127,7 +113,7 @@ describe("Tracking", () => {
       expect(postEventToProviders).toHaveBeenNthCalledWith(1, screenInfoLegacy)
 
       const button = component.getByType(Button)
-      button.props.onPress()
+      fireEvent.press(button)
       expect(postEventToProviders).toHaveBeenCalledTimes(2)
       // expect(postEventToProviders).toHaveBeenNthCalledWith(2, { aScreen: "a test screen", wow: "yes!" })
     })
@@ -141,16 +127,16 @@ describe("Tracking", () => {
       expect(postEventToProviders).toHaveBeenNthCalledWith(1, screenInfo)
 
       const button = component.getByType(Button)
-      button.props.onPress()
+      fireEvent.press(button)
       expect(postEventToProviders).toHaveBeenCalledTimes(2)
       // expect(postEventToProviders).toHaveBeenNthCalledWith(2, { aScreen: "a test screen", wow: "yes!" })
     })
   })
 
   describe("in class components", () => {
-    @screenTrack({ aScreen: "a class screen" } as any)
-    class TestComponentDecorators extends React.Component {
-      @track({ wow: "indeed!" } as any)
+    @screenTrack(screenInfoLegacy)
+    class TestComponentDecoratorsLegacy extends React.Component {
+      @track(buttonInfo as any)
       handlePress() {
         // doing some work
       }
@@ -164,18 +150,48 @@ describe("Tracking", () => {
       }
     }
 
-    it.skip("works for tracking events with decorators", () => {
+    @screenTrack(screenInfo)
+    class TestComponentDecorators extends React.Component {
+      @track(buttonInfo as any)
+      handlePress() {
+        // doing some work
+      }
+
+      render() {
+        return (
+          <View>
+            <Button title="track me" onPress={() => this.handlePress()} />
+          </View>
+        )
+      }
+    }
+
+    it("works for tracking events with decorators (legacy info)", () => {
       expect(postEventToProviders).toHaveBeenCalledTimes(0)
 
-      const component = renderWithWrappers(<TestComponentDecorators />).root
+      const component = renderWithWrappersTL(<TestComponentDecoratorsLegacy />)
 
       expect(postEventToProviders).toHaveBeenCalledTimes(1)
-      expect(postEventToProviders).toHaveBeenNthCalledWith(1, { aScreen: "a class screen" })
+      expect(postEventToProviders).toHaveBeenNthCalledWith(1, screenInfoLegacy)
 
-      const button = component.findByType(Button)
-      button.props.onPress()
+      const button = component.getByType(Button)
+      fireEvent.press(button)
       expect(postEventToProviders).toHaveBeenCalledTimes(2)
-      expect(postEventToProviders).toHaveBeenNthCalledWith(2, { aScreen: "a class screen", wow: "indeed!" })
+      expect(postEventToProviders).toHaveBeenNthCalledWith(2, { ...screenInfoLegacy, ...buttonInfo })
+    })
+
+    it("works for tracking events with decorators", () => {
+      expect(postEventToProviders).toHaveBeenCalledTimes(0)
+
+      const component = renderWithWrappersTL(<TestComponentDecorators />)
+
+      expect(postEventToProviders).toHaveBeenCalledTimes(1)
+      expect(postEventToProviders).toHaveBeenNthCalledWith(1, screenInfo)
+
+      const button = component.getByType(Button)
+      fireEvent.press(button)
+      expect(postEventToProviders).toHaveBeenCalledTimes(2)
+      expect(postEventToProviders).toHaveBeenNthCalledWith(2, { ...screenInfo, ...buttonInfo })
     })
   })
 })
