@@ -2,11 +2,15 @@ import { TriangleDown } from "lib/Icons/TriangleDown"
 import { color, Flex, Sans, Spacer, Touchable } from "palette"
 import { useEffect, useRef, useState } from "react"
 import React from "react"
+import { Platform } from "react-native"
 import { Input, InputProps } from "../Input/Input"
 import { Select, SelectOption } from "../Select"
 import { cleanUserPhoneNumber } from "./cleanUserPhoneNumber"
 import { countries, countryIndex } from "./countries"
 import { formatPhoneNumber } from "./formatPhoneNumber"
+
+/** Underline bar height for text input on android when focused */
+const UNDERLINE_TEXTINPUT_HEIGHT_ANDROID = 1.5
 
 export const PhoneInput = React.forwardRef<
   Input,
@@ -51,6 +55,10 @@ export const PhoneInput = React.forwardRef<
         innerRef.current = ref
       }}
       value={phoneNumber}
+      inputTextStyle={Platform.select({
+        android: { paddingTop: UNDERLINE_TEXTINPUT_HEIGHT_ANDROID },
+        default: {},
+      })}
       placeholder={countryIndex[countryCode]?.mask?.replace(/9/g, "0")}
       placeholderTextColor={color("black30")}
       onChangeText={(newPhoneNumber) =>
