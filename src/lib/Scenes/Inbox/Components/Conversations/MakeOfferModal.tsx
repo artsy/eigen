@@ -80,6 +80,11 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
         >
           Cancel
         </Button>
+        <Flex bg="black5" p={1} mt={1}>
+          <Text variant="small">
+            Making an offer doesn’t guarantee you the work, as the seller might be receiving competing offers.
+          </Text>
+        </Flex>
       </Flex>
     </View>
   )

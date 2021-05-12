@@ -37,6 +37,7 @@ upcoming:
     - Fix extra padding on home module rails - mounir, ole
     - Implements custom price filter option (behind feature flag) - damon
     - Remove lots by followed artists rail for now - brian
+    - inquiry checkout copy additions from legal - lily
 
 releases:
   - version: 6.8.4
