@@ -6,6 +6,7 @@ import {
   Platform,
   TextInput,
   TextInputProps,
+  TextStyle,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -26,6 +27,7 @@ export interface InputProps extends TextInputProps {
   title?: string
   enableClearButton?: boolean
   canHidePassword?: boolean
+  inputTextStyle?: TextStyle
   onClear?(): void
   renderLeftHandSection?(): JSX.Element
 }
@@ -49,6 +51,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       secureTextEntry = false,
       textContentType,
       canHidePassword,
+      inputTextStyle,
       ...rest
     },
     ref
@@ -108,7 +111,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
               <StyledInput
                 ref={input}
                 placeholderTextColor={color("black60")}
-                style={{ flex: 1, fontFamily: TEXT_FONTS.sans, fontSize: 15 }}
+                style={{ flex: 1, fontFamily: TEXT_FONTS.sans, fontSize: 15, ...inputTextStyle }}
                 secureTextEntry={!showPassword}
                 textAlignVertical="center"
                 {...(rest as any)}

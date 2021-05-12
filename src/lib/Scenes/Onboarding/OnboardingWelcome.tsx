@@ -33,7 +33,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
     const imgWidth = imgProps.width * imgScale
     if (screenWidth < imgWidth) {
       Animated.timing(translateX, {
-        duration: 20000,
+        duration: 40000,
         toValue: -(imgWidth - screenWidth),
         easing: Easing.inOut(Easing.ease),
       }).start()

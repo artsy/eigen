@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash dc01cdabb6f7e83bbdcd1d2b4c832766 */
+/* @relayHash 1e43b53d4068779d9f5c15d690cc8baa */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -182,6 +182,8 @@ fragment OrderUpdate_event on CommerceOrderEventUnion {
     offer {
       amount
       fromParticipant
+      definesTotal
+      offerAmountChanged
       respondsTo {
         fromParticipant
         id
@@ -585,6 +587,20 @@ return {
                                       {
                                         "alias": null,
                                         "args": null,
+                                        "kind": "ScalarField",
+                                        "name": "definesTotal",
+                                        "storageKey": null
+                                      },
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "kind": "ScalarField",
+                                        "name": "offerAmountChanged",
+                                        "storageKey": null
+                                      },
+                                      {
+                                        "alias": null,
+                                        "args": null,
                                         "concreteType": "CommerceOffer",
                                         "kind": "LinkedField",
                                         "name": "respondsTo",
@@ -909,7 +925,7 @@ return {
     ]
   },
   "params": {
-    "id": "dc01cdabb6f7e83bbdcd1d2b4c832766",
+    "id": "1e43b53d4068779d9f5c15d690cc8baa",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -1079,8 +1095,10 @@ return {
           "type": "CommerceOffer"
         },
         "me.conversation.orderConnection.edges.node.orderHistory.offer.amount": (v19/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory.offer.definesTotal": (v23/*: any*/),
         "me.conversation.orderConnection.edges.node.orderHistory.offer.fromParticipant": (v24/*: any*/),
         "me.conversation.orderConnection.edges.node.orderHistory.offer.id": (v18/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory.offer.offerAmountChanged": (v23/*: any*/),
         "me.conversation.orderConnection.edges.node.orderHistory.offer.respondsTo": {
           "enumValues": null,
           "nullable": true,

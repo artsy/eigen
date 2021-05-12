@@ -233,7 +233,7 @@ lane :promote_beta_ios do
 
   # Apple's API returns truncated version/build numbers (eg: 2020.03.19.18 becomes 2020.3.19.18)
   # So we need to add back leading zeroes
-  build_version_components = beta.build_version.split('.')
+  build_version_components = build_number.split('.')
   detruncated_components = build_version_components.map do |comp|
     if comp.length == 1
       '0' + comp
@@ -243,7 +243,7 @@ lane :promote_beta_ios do
   end
   build_version = detruncated_components.join('.')
 
-  tag_and_push(tag: "ios-#{beta.train_version}-#{build_version}-submission")
+  tag_and_push(tag: "ios-#{next_app_store_version}-#{build_version}-submission")
   puts 'All done.'
 end
 

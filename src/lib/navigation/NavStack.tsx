@@ -1,19 +1,11 @@
-import {
-  NavigationContainer,
-  NavigationContainerRef,
-  Route,
-  useIsFocused,
-  useNavigationState,
-} from "@react-navigation/native"
+import { Route, useIsFocused, useNavigationState } from "@react-navigation/native"
 import { AppModule, modules } from "lib/AppRegistry"
 import { ArtsyKeyboardAvoidingViewContext } from "lib/Components/ArtsyKeyboardAvoidingView"
-import { useSelectedTab } from "lib/store/GlobalStore"
 import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useState } from "react"
 import { View } from "react-native"
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { BackButton } from "./BackButton"
-import { useReloadedDevNavigationState } from "./useReloadedDevNavigationState"
 
 const Stack = createNativeStackNavigator()
 
@@ -41,8 +33,7 @@ const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) =
 
   const isPresentedModally = (route.params.props as any)?.isPresentedModally
 
-  const isMountedInCurrentTab = useSelectedTab() === route.params.stackID
-  const isVisible = useIsFocused() && (isPresentedModally || isMountedInCurrentTab)
+  const isVisible = useIsFocused()
 
   return (
     <LegacyBackButtonContext.Provider value={{ updateShouldHideBackButton }}>
@@ -53,7 +44,7 @@ const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) =
             isVisible={isVisible}
             fullBleed={!!module.options.fullBleed}
           >
-            <module.Component {...route.params.props} />
+            <module.Component {...route.params.props} isVisible={isVisible} />
             <BackButton show={showBackButton} />
           </ScreenPadding>
         </ArtsyKeyboardAvoidingViewContext.Provider>
@@ -74,24 +65,28 @@ const ScreenPadding: React.FC<{ fullBleed: boolean; isPresentedModally: boolean;
  * NavStack is a native navigation stack. Each tab in the main view has its own NavStack. Each modal that
  * is presented (excluding FancyModal) also has its own NavStack.
  */
-export const NavStack = React.forwardRef<
-  NavigationContainerRef,
-  { id: string; rootModuleName: AppModule; rootModuleProps?: object }
->(({ id, rootModuleName, rootModuleProps }, ref) => {
-  const initialState = useReloadedDevNavigationState(id, ref as any)
+export const NavStack: React.FC<{ id: string; rootModuleName: AppModule; rootModuleProps?: any }> = ({
+  id,
+  rootModuleName,
+  rootModuleProps,
+}) => {
   const initialParams: ScreenProps = {
     moduleName: rootModuleName,
     props: rootModuleProps,
     stackID: id,
   }
   return (
-    <NavigationContainer ref={ref} independent initialState={initialState}>
-      <Stack.Navigator screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "white" } }}>
-        <Stack.Screen name="screen" component={ScreenWrapper} initialParams={initialParams} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        stackAnimation: rootModuleProps?.isPresentedModally ? "slide_from_right" : undefined,
+        contentStyle: { backgroundColor: "white" },
+      }}
+    >
+      <Stack.Screen name={"screen:" + id} component={ScreenWrapper} initialParams={initialParams} />
+    </Stack.Navigator>
   )
-})
+}
 
 export const LegacyBackButtonContext = React.createContext<{
   updateShouldHideBackButton(shouldHideBackButton: boolean): void

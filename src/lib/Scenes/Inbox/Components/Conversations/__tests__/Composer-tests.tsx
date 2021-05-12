@@ -187,9 +187,9 @@ describe("inquiry offer enabled", () => {
                   state: "SUBMITTED",
                   lastOffer: {
                     fromParticipant: "SELLER",
+                    offerAmountChanged: true,
                   },
                   offers: {
-                    // plural offers => counteroffer
                     edges: [{}, {}],
                   },
                 },

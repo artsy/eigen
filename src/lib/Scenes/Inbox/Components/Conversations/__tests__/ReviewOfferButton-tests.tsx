@@ -49,6 +49,30 @@ describe("ReviewOfferButton", () => {
     expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(1)
   })
 
+  it("shows correct message for accepted offers", () => {
+    const wrapper = getWrapper("OFFER_ACCEPTED_CONFIRM_NEEDED", { offers: { edges: [{}] } })
+
+    const text = extractText(wrapper.root)
+    expect(text).toContain("Offer Accepted - Confirm total")
+    expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
+  })
+
+  it("shows correct message for accepted offers", () => {
+    const wrapper = getWrapper("OFFER_RECEIVED_CONFIRM_NEEDED", { offers: { edges: [{}] } })
+
+    const text = extractText(wrapper.root)
+    expect(text).toContain("Counteroffer Received - Confirm Total")
+    expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
+  })
+
+  it("shows correct message for accepted offers", () => {
+    const wrapper = getWrapper("PROVISIONAL_OFFER_ACCEPTED", { offers: { edges: [{}] } })
+
+    const text = extractText(wrapper.root)
+    expect(text).toContain("Offer Accepted")
+    expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(1)
+  })
+
   it("shows correct message for accepted offers where payment fails", () => {
     const wrapper = getWrapper("PAYMENT_FAILED")
 
@@ -82,7 +106,7 @@ describe("ReviewOfferButton", () => {
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Counteroffer Received")
-    expect(text).toContain("Expires in 30m")
+    expect(text).toContain("The offer expires in 30m")
   })
 
   it("shows correct expiration in hours when there is more than 1 hour left", () => {
@@ -94,7 +118,7 @@ describe("ReviewOfferButton", () => {
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Counteroffer Received")
-    expect(text).toContain("Expires in 10hr")
+    expect(text).toContain("The offer expires in 10hr")
   })
 
   it("tapping it opens the review offer webview with the correct modal title and tracks event", () => {

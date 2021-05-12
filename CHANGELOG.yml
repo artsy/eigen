@@ -9,7 +9,9 @@ upcoming:
     - Refactor filter event payloads to send JSON - roop
     - Fix issue with ARSpinner being registered more than once - mounir, kizito
     - Fix cancel button doesnt clear terms and results - yauheni
+    - Simplify react-navigation infra - david
   user_facing:
+    - CTA for inquiry checkout phase 2 - sepans
     - Combine gallery and institution artwork filters - mdole
     - Remove old login from android - adam, barry, david, jonathan, mounir, pavlos
     - Allows multi-select filters to be searchable - damon
@@ -30,6 +32,11 @@ upcoming:
     - Add "Lots by artists I follow" rails to the home screen - ole
     - Add buyer guarantee message and link to inquiry make offer button - lily
     - Fix cancel button next to search bar doesn't clear terms/results - yauheni
+    - Fix phone input misalignment on android - kizito
+    - Fix push notification pre request prompt showing up everytime - kizito
+    - Fix extra padding on home module rails - mounir, ole
+    - Implements custom price filter option (behind feature flag) - damon
+    - Remove lots by followed artists rail for now - brian
 
 releases:
   - version: 6.8.4

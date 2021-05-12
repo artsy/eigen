@@ -22,7 +22,11 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event }) => {
     } else if (offer.fromParticipant === "SELLER") {
       color = "copper100"
       Icon = AlertCircleFillIcon
-      message = `You received ${isCounter ? "a counteroffer" : "an offer"} for ${event.offer.amount}`
+      if (offer.offerAmountChanged) {
+        message = `You received ${isCounter ? "a counteroffer" : "an offer"} for ${event.offer.amount}`
+      } else {
+        message = "Offer Accepted - Pending Action"
+      }
     } else {
       // ignore future added value
       return null
@@ -76,6 +80,8 @@ export const OrderUpdateFragmentContainer = createFragmentContainer(OrderUpdate,
         offer {
           amount
           fromParticipant
+          definesTotal
+          offerAmountChanged
           respondsTo {
             fromParticipant
           }
