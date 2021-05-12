@@ -8280,6 +8280,7 @@ type Partner implements Node {
   # A slug ID.
   slug: ID!
   type: String
+  vatNumber: String
   viewingRoomsConnection(after: String, first: Int, statuses: [ViewingRoomStatusEnum!]): ViewingRoomsConnection
 
   # The gallery partner's web address
@@ -8721,6 +8722,7 @@ type Profile {
   cached: Int
   counts: ProfileCounts
   displayArtistsSection: Boolean @deprecated(reason: "Prefer displayArtistsSection in Partner type")
+  fullBio: String
   href: String
   icon: Image
 
