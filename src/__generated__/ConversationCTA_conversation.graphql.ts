@@ -29,6 +29,8 @@ export type ConversationCTA_conversation = {
                 readonly lastOffer?: {
                     readonly fromParticipant: CommerceOrderParticipantEnum | null;
                     readonly createdAt: string;
+                    readonly definesTotal: boolean;
+                    readonly offerAmountChanged: boolean;
                 } | null;
                 readonly offers?: {
                     readonly edges: ReadonlyArray<{
@@ -207,6 +209,20 @@ return {
                           "kind": "ScalarField",
                           "name": "createdAt",
                           "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "definesTotal",
+                          "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "offerAmountChanged",
+                          "storageKey": null
                         }
                       ],
                       "storageKey": null
@@ -269,5 +285,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '444205614b089bf0b711e11c8d5e90b6';
+(node as any).hash = '74760fbf7b7484a06b992e6657611499';
 export default node;

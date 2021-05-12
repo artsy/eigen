@@ -7,7 +7,6 @@ import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/Artwork
 import { CollectionsRailFragmentContainer } from "lib/Scenes/Home/Components/CollectionsRail"
 import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
-import { SaleArtworksHomeRailContainer } from "lib/Scenes/Home/Components/SaleArtworksHomeRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
@@ -68,7 +67,6 @@ const Home = (props: Props) => {
   */
   const rowData = compact([
     artworkRails[0],
-    { type: "lotsByFollowedArtists" } as const,
     artworkRails[1],
     salesModule &&
       ({
@@ -142,8 +140,6 @@ const Home = (props: Props) => {
                   )
                 case "viewing-rooms":
                   return <ViewingRoomsHomeRail featured={featured} />
-                case "lotsByFollowedArtists":
-                  return <SaleArtworksHomeRailContainer me={me} />
               }
             }}
             ListHeaderComponent={
@@ -156,7 +152,7 @@ const Home = (props: Props) => {
                 <Spacer mb="2" />
               </Box>
             }
-            ItemSeparatorComponent={() => <Spacer mb={3} />}
+            ItemSeparatorComponent={({ hideSeparator }) => (!hideSeparator ? <Spacer mb={3} /> : null)}
             ListFooterComponent={() => <Spacer mb={3} />}
             keyExtractor={(_item, index) => String(index)}
           />

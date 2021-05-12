@@ -8159,6 +8159,7 @@ type Partner implements Node {
 
   # A list of the partners unique city locations
   cities(size: Int = 25): [String]
+  claimed: Boolean
   collectingInstitution: String
   counts: PartnerCounts
   defaultProfileID: String
@@ -8235,6 +8236,7 @@ type Partner implements Node {
   internalID: ID!
   isDefaultProfilePublic: Boolean
   isLinkable: Boolean
+  isNonSubscriber: Boolean
   isPreQualify: Boolean
 
   # Indicates the partner is a trusted seller on Artsy
@@ -8251,6 +8253,7 @@ type Partner implements Node {
   profile: Profile
   profileArtistsLayout: String
   profileBannerDisplay: String
+  showPromoted: Boolean
 
   # A connection of shows from a Partner.
   showsConnection(

@@ -47,7 +47,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       >
         <BackButton onPress={() => navigation.goBack()} />
         <Flex flex={1} px={1.5} paddingTop={60} justifyContent="flex-start">
-          <Text variant="largeTitle">Forgot password</Text>
+          <Text variant="largeTitle">Reset password</Text>
           <Text pt={1.5} variant="caption" color="black60">
             Please enter the email address associated with your Artsy account to receive a reset link.
           </Text>

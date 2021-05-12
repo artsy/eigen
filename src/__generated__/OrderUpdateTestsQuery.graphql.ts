@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f6f76a62d7b340dd9f24fdefaac96801 */
+/* @relayHash 08159b43eb6f6e3574d24335509d4e08 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -68,6 +68,8 @@ fragment OrderUpdate_event on CommerceOrderEventUnion {
     offer {
       amount
       fromParticipant
+      definesTotal
+      offerAmountChanged
       respondsTo {
         fromParticipant
         id
@@ -152,6 +154,12 @@ v9 = {
   "type": "String"
 },
 v10 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "Boolean"
+},
+v11 = {
   "enumValues": [
     "BUYER",
     "SELLER"
@@ -348,6 +356,20 @@ return {
                                       {
                                         "alias": null,
                                         "args": null,
+                                        "kind": "ScalarField",
+                                        "name": "definesTotal",
+                                        "storageKey": null
+                                      },
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "kind": "ScalarField",
+                                        "name": "offerAmountChanged",
+                                        "storageKey": null
+                                      },
+                                      {
+                                        "alias": null,
+                                        "args": null,
                                         "concreteType": "CommerceOffer",
                                         "kind": "LinkedField",
                                         "name": "respondsTo",
@@ -390,7 +412,7 @@ return {
     ]
   },
   "params": {
-    "id": "f6f76a62d7b340dd9f24fdefaac96801",
+    "id": "08159b43eb6f6e3574d24335509d4e08",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -442,15 +464,17 @@ return {
           "type": "CommerceOffer"
         },
         "me.conversation.orderConnection.edges.node.orderHistory.offer.amount": (v9/*: any*/),
-        "me.conversation.orderConnection.edges.node.orderHistory.offer.fromParticipant": (v10/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory.offer.definesTotal": (v10/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory.offer.fromParticipant": (v11/*: any*/),
         "me.conversation.orderConnection.edges.node.orderHistory.offer.id": (v7/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory.offer.offerAmountChanged": (v10/*: any*/),
         "me.conversation.orderConnection.edges.node.orderHistory.offer.respondsTo": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "CommerceOffer"
         },
-        "me.conversation.orderConnection.edges.node.orderHistory.offer.respondsTo.fromParticipant": (v10/*: any*/),
+        "me.conversation.orderConnection.edges.node.orderHistory.offer.respondsTo.fromParticipant": (v11/*: any*/),
         "me.conversation.orderConnection.edges.node.orderHistory.offer.respondsTo.id": (v7/*: any*/),
         "me.conversation.orderConnection.edges.node.orderHistory.state": {
           "enumValues": [

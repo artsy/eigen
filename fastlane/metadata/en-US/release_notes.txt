@@ -1,6 +1,6 @@
 This update includes a number of improvements and bug fixes, including:
 
 - Artwork filters improvements
-- Fix bug that caused some artist screens to not load
+- Home screen improvements
 
 Have feedback? Email us at support@artsy.net

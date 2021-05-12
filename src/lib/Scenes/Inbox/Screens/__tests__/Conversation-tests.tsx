@@ -105,3 +105,13 @@ it("handles a dismissed modal with modalDismiss event", () => {
 
   expect(componentInstance.refetch).toHaveBeenCalled()
 })
+
+it("handles a dismissed modal with goBack event", () => {
+  const conversation = getWrapper()
+  const componentInstance = (conversation.root.findByType(Conversation).children[0] as ReactTestInstance).instance
+
+  jest.spyOn(componentInstance, "refetch")
+  navigationEvents.emit("goBack")
+
+  expect(componentInstance.refetch).toHaveBeenCalled()
+})

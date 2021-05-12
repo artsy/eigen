@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f4b413bd44ba9d48bb739da38a538da2 */
+/* @relayHash e3b8e28873a2d94e27c9cf5c253f50f0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -186,6 +186,8 @@ fragment OrderUpdate_event on CommerceOrderEventUnion {
     offer {
       amount
       fromParticipant
+      definesTotal
+      offerAmountChanged
       respondsTo {
         fromParticipant
         id
@@ -570,6 +572,20 @@ return {
                                       {
                                         "alias": null,
                                         "args": null,
+                                        "kind": "ScalarField",
+                                        "name": "definesTotal",
+                                        "storageKey": null
+                                      },
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "kind": "ScalarField",
+                                        "name": "offerAmountChanged",
+                                        "storageKey": null
+                                      },
+                                      {
+                                        "alias": null,
+                                        "args": null,
                                         "concreteType": "CommerceOffer",
                                         "kind": "LinkedField",
                                         "name": "respondsTo",
@@ -894,7 +910,7 @@ return {
     ]
   },
   "params": {
-    "id": "f4b413bd44ba9d48bb739da38a538da2",
+    "id": "e3b8e28873a2d94e27c9cf5c253f50f0",
     "metadata": {},
     "name": "MessagesQuery",
     "operationKind": "query",
