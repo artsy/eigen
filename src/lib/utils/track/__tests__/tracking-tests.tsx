@@ -66,7 +66,9 @@ describe("Tracking", () => {
     @screenTrack(screenInfoLegacy)
     class TestComponentDecoratorsLegacy extends React.Component {
       @track(buttonInfo as any)
-      handlePress() {}
+      handlePress() {
+        // do some work
+      }
 
       render() {
         return (
@@ -80,7 +82,9 @@ describe("Tracking", () => {
     @screenTrack(screenInfo)
     class TestComponentDecorators extends React.Component {
       @track(buttonInfo as any)
-      handlePress() {}
+      handlePress() {
+        // do some work
+      }
 
       render() {
         return (
