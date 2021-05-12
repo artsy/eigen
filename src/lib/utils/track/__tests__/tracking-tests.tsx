@@ -3,9 +3,15 @@ import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Button, View } from "react-native"
 import { useTracking } from "react-tracking"
-import { ProvideScreenTracking, ProvideScreenTrackingWithCohesionSchema, Schema, screenTrack, track } from ".."
+import {
+  useScreenTracking,
+  ProvideScreenTracking,
+  ProvideScreenTrackingWithCohesionSchema,
+  Schema,
+  screenTrack,
+  track,
+} from ".."
 import { postEventToProviders } from "../providers"
-import { useScreenTracking } from "../screenTracking"
 
 describe("Tracking", () => {
   const screenInfoLegacy: Schema.PageView = {

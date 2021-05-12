@@ -1,10 +1,15 @@
-import { Screen } from "@artsy/cohesion"
-import React from "react"
-import _track, { Track as _Track, TrackingInfo } from "react-tracking"
+import _track, { Track as _Track } from "react-tracking"
 import { _addTrackingProvider, postEventToProviders, TrackingProvider } from "./providers"
 // The schema definition for analytics tracking lives inside `./schema`, not here.
 import * as Schema from "./schema"
+
 export { Schema }
+export {
+  useScreenTracking,
+  screenTrack,
+  ProvideScreenTracking,
+  ProvideScreenTrackingWithCohesionSchema,
+} from "./screenTracking"
 
 /**
  * Useful notes:
@@ -89,86 +94,6 @@ export const track: Track = (trackingInfo, options) => {
   return _track(trackingInfo, {
     ...options,
     dispatch: (data) => postEventToProviders(data),
-  })
-}
-
-interface ProvideScreenTrackingProps {
-  info: Schema.PageView
-}
-
-// Uses schema manually defined in Eigen
-@screenTrack<ProvideScreenTrackingProps>((props) => props.info)
-export class ProvideScreenTracking extends React.Component<ProvideScreenTrackingProps> {
-  render() {
-    return React.createElement(React.Fragment, null, this.props.children)
-  }
-}
-
-interface ProvideScreenTrackingWithCohesionSchemaProps {
-  info: Screen
-}
-// Uses schema defined in Cohesion
-@screenTrack<ProvideScreenTrackingProps>((props) => props.info)
-export class ProvideScreenTrackingWithCohesionSchema extends React.Component<ProvideScreenTrackingWithCohesionSchemaProps> {
-  render() {
-    return React.createElement(React.Fragment, null, this.props.children)
-  }
-}
-
-/**
- * A typed page view decorator for the top level component for your screen. This is the
- * function you must use at the root of your component tree, otherwise your track calls
- * will do nothing.
- *
- * For the majority of Emission code, this should only be used inside the AppRegistry,
- * however if you have other components which are going to be presented using a navigation
- * controller then you'll need to use this.
- *
- * The main implementation difference between this and `track` is that this hooks the callbacks
- * to our native `Events.postEvent` function.
- *
- * As an object:
- *
- * @example
- *
- *      ```ts
- *      import { screenTrack, Schema } from "lib/utils/track"
- *
- *       @screenTrack({
- *        context_screen: Schema.PageNames.ConsignmentsWelcome,
- *        context_screen_owner_slug: null,
- *        context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
- *       })
- *
- *       export default class Welcome extends React.Component<Props, null> {
- *         // [...]
- *       }
- *
- * * As an function taking account of incoming props:
- *
- * @example
- *
- *      ```ts
- *      import { screenTrack, Schema } from "lib/utils/track"
- *
- *      interface Props extends ViewProps {
- *        // [...]
- *      }
- *
- *      @screenTrack<Props>(props => ({
- *        context_screen: Schema.PageNames.ConsignmentsSubmission,
- *        context_screen_owner_slug: props.submissionID,
- *        context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
- *      }))
- *
- *      export default class Welcome extends React.Component<Props, null> {
- *        // [...]
- *      }
- */
-export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
-  return _track(trackingInfo as any, {
-    dispatch: (data) => postEventToProviders(data),
-    dispatchOnMount: true,
   })
 }
 
