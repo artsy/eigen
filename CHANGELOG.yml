@@ -8,6 +8,7 @@ upcoming:
     - Add staging support for deep links on android - mounir, ole
     - Refactor filter event payloads to send JSON - roop
     - Fix issue with ARSpinner being registered more than once - mounir, kizito
+    - Fix cancel button doesnt clear terms and results - yauheni
   user_facing:
     - Combine gallery and institution artwork filters - mdole
     - Remove old login from android - adam, barry, david, jonathan, mounir, pavlos
@@ -28,6 +29,7 @@ upcoming:
     - Route artist auction results to artist insights - ole
     - Add "Lots by artists I follow" rails to the home screen - ole
     - Add buyer guarantee message and link to inquiry make offer button - lily
+    - Fix cancel button next to search bar doesn't clear terms/results - yauheni
 
 releases:
   - version: 6.8.4
