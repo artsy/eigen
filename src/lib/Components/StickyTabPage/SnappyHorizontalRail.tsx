@@ -37,6 +37,7 @@ export const SnappyHorizontalRail = React.forwardRef<
 
   return (
     <Animated.View
+      pointerEvents="box-none"
       style={[
         {
           flex: 1,

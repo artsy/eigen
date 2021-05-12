@@ -2,7 +2,7 @@ import { useUpdadeShouldHideBackButton } from "lib/utils/hideBackButtonOnScroll"
 import { Schema } from "lib/utils/track"
 import { useGlobalState } from "lib/utils/useGlobalState"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, color } from "palette"
+import { Box } from "palette"
 import React, { EffectCallback, useEffect, useMemo, useRef, useState } from "react"
 import { View } from "react-native"
 import Animated from "react-native-reanimated"
@@ -46,25 +46,14 @@ export const StickyTabPage: React.FC<{
   const [activeTabIndex, setActiveTabIndex] = useGlobalState(initialTabIndex)
   const [tabSpecificStickyHeaderContent, setTabSpecificStickyHeaderContent] = useState<JSX.Element[]>([])
   const { jsx: staticHeader, nativeHeight: staticHeaderHeight } = useAutoCollapsingMeasuredView(staticHeaderContent)
-  activeTabIndex.useUpdates()
 
   const stickyRailRef = useRef<SnappyHorizontalRail>(null)
 
-  const { jsx: stickyHeader, nativeHeight: stickyHeaderHeight } = useAutoCollapsingMeasuredView(
-    <>
-      {stickyHeaderContent}
-      <SnappyHorizontalRail
-        width={width * tabs.length}
-        ref={stickyRailRef}
-        initialOffset={initialTabIndex * width}
-        style={{ flex: undefined }}
-      >
-        {tabs.map((_, i) => {
-          return <Box width={width}>{tabSpecificStickyHeaderContent[i]}</Box>
-        })}
-      </SnappyHorizontalRail>
-    </>
-  )
+  const tabSpecificStickyHeaderContentArray = tabs.map((_, i) => {
+    return useAutoCollapsingMeasuredView(tabSpecificStickyHeaderContent[i])
+  })
+
+  const { jsx: stickyHeader, nativeHeight: stickyHeaderHeight } = useAutoCollapsingMeasuredView(stickyHeaderContent)
   const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
   const railRef = useRef<SnappyHorizontalRail>(null)
@@ -114,6 +103,7 @@ export const StickyTabPage: React.FC<{
                   <StickyTabPageFlatListContext.Provider
                     value={{
                       tabIsActive: Animated.eq(index, activeTabIndexNative),
+                      tabSpecificContentHeight: tabSpecificStickyHeaderContentArray[index].nativeHeight!,
                       setJSX: (jsx) =>
                         setTabSpecificStickyHeaderContent((prev) => {
                           const newArray = prev.slice(0)
@@ -133,12 +123,26 @@ export const StickyTabPage: React.FC<{
           style={{
             width,
             position: "absolute",
-            backgroundColor: color("white100"),
             transform: [{ translateY: headerOffsetY as any }],
           }}
+          pointerEvents="box-none"
         >
-          {staticHeader}
-          {stickyHeader}
+          <Box backgroundColor="white">
+            {staticHeader}
+            {stickyHeader}
+          </Box>
+          <SnappyHorizontalRail
+            width={width * tabs.length}
+            ref={stickyRailRef}
+            initialOffset={initialTabIndex * width}
+            style={{ flex: undefined, alignItems: "flex-start" }}
+          >
+            {tabSpecificStickyHeaderContentArray.map((t, i) => (
+              <Box key={i} width={width} backgroundColor="white">
+                {t.jsx}
+              </Box>
+            ))}
+          </SnappyHorizontalRail>
         </Animated.View>
       </View>
     </StickyTabPageContext.Provider>
@@ -167,6 +171,19 @@ function useAutoCollapsingMeasuredView(content: React.ReactChild) {
     jsx: (
       <Animated.View style={{ height: nativeHeight!, overflow: "hidden" }}>
         <View
+          // on initial render this elem should dictate the parent's height
+          // afterwards the parent's height should be controlled by the nativeHeight value
+          // and this component should be able to grow and shrink freely, hence the absolute positioning.
+          style={
+            nativeHeight
+              ? {
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                }
+              : undefined
+          }
           onLayout={(e) => {
             if (nativeHeight) {
               if (animation.current) {
