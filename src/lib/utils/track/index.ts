@@ -18,7 +18,7 @@ export const useTracking = (info: Schema.PageView | Screen | undefined) => {
   const t = _useTracking(info)
 
   useEffect(() => {
-    if (info !== undefined) {
+    if (info === undefined) {
       return
     }
     t.trackEvent(info)
