@@ -85,7 +85,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
 
   const successfulFollowChange = () => {
     trackEvent({
-      action_name: artist.isFollowed ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
+      action_name: artist.isFollowed ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
       action_type: Schema.ActionTypes.Success,
       owner_id: artist.internalID,
       owner_slug: artist.slug,
