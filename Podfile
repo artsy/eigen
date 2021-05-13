@@ -66,7 +66,7 @@ def remove_mapbox_creds
 end
 
 add_mapbox_creds
-     
+
 pre_install do |installer|
    $RNMBGL.pre_install(installer)
 end
