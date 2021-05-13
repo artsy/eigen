@@ -7,10 +7,13 @@ let analytics: Analytics.Client
 export const SegmentTrackingProvider: TrackingProvider = {
   setup: () => {
     analytics = require("@segment/analytics-react-native").default
+    const Braze = require("@segment/analytics-react-native-appboy").default
 
     analytics
-      .setup(Config.SEGMENT_STAGING_WRITE_KEY_ANDROID, {})
-      // trackAppLifecycleEvents: true,
+      .setup(Config.SEGMENT_STAGING_WRITE_KEY_ANDROID, {
+        using: [Braze],
+        // trackAppLifecycleEvents: true,
+      })
       .then(() => console.log("Analytics is ready"))
       .catch((err) => console.error("Something went wrong", err))
   },
