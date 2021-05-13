@@ -5,6 +5,7 @@ import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/Artwor
 import { useOnTabFocusedEffect } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -12,7 +13,6 @@ import { useTracking } from "react-tracking"
 import { ReactElement } from "simple-markdown"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 import { MarketStatsQueryRenderer } from "./MarketStats"
-import { screen } from "lib/utils/track/helpers"
 
 interface ArtistInsightsProps {
   artist: ArtistInsights_artist
