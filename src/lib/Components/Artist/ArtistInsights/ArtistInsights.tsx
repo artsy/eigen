@@ -12,6 +12,7 @@ import { useTracking } from "react-tracking"
 import { ReactElement } from "simple-markdown"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 import { MarketStatsQueryRenderer } from "./MarketStats"
+import { screen } from "lib/utils/track/helpers"
 
 interface ArtistInsightsProps {
   artist: ArtistInsights_artist
@@ -139,12 +140,10 @@ export const tracks = {
       action_type: Schema.ActionTypes.Tap,
     }
   },
-  screen: (id: string, slug: string) => {
-    return {
-      context_screen: OwnerType.artistAuctionResults,
+  screen: (id: string, slug: string) =>
+    screen({
       context_screen_owner_type: OwnerType.artistAuctionResults,
       context_screen_owner_id: id,
       context_screen_owner_slug: slug,
-    }
-  },
+    }),
 }
