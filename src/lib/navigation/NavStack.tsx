@@ -1,9 +1,10 @@
 import { Route, useIsFocused, useNavigationState } from "@react-navigation/native"
 import { AppModule, modules } from "lib/AppRegistry"
 import { ArtsyKeyboardAvoidingViewContext } from "lib/Components/ArtsyKeyboardAvoidingView"
+import { NativeViewController } from "lib/Components/NativeViewController"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useState } from "react"
-import { View } from "react-native"
+import { Platform, View } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { BackButton } from "./BackButton"
@@ -22,9 +23,9 @@ interface ScreenProps {
  */
 const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) => {
   const module = modules[route.params.moduleName]
-  if (module.type !== "react") {
+  if (Platform.OS === "android" && module.type !== "react") {
     console.warn(route.params.moduleName, { module })
-    throw new Error("native modules not yet supported in new nav setup")
+    throw new Error("native modules not yet supported on android")
   }
   // tslint:disable-next-line:variable-name
   const [legacy_shouldHideBackButton, updateShouldHideBackButton] = useState(false)
@@ -47,9 +48,16 @@ const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) =
           <ScreenPadding
             isPresentedModally={isPresentedModally}
             isVisible={isVisible}
-            fullBleed={!!module.options.fullBleed}
+            fullBleed={module.type === "native" || !!module.options.fullBleed}
           >
-            <module.Component {...route.params.props} isVisible={isVisible} />
+            {module.type === "react" ? (
+              <module.Component {...route.params.props} isVisible={isVisible} />
+            ) : (
+              <NativeViewController
+                viewName={route.params.moduleName as any}
+                viewProps={route.params.props}
+              ></NativeViewController>
+            )}
             <BackButton show={showBackButton} />
           </ScreenPadding>
         </ArtsyKeyboardAvoidingViewContext.Provider>

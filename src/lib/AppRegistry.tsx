@@ -192,31 +192,36 @@ export interface ViewOptions {
   onlyShowInTabName?: BottomTabType
 }
 
-type ModuleDescriptor =
-  | {
-      type: "react"
-      Component: React.ComponentType<any>
-      options: ViewOptions
-    }
-  | {
-      type: "native"
-      options: ViewOptions
-    }
+interface ReactModuleDescriptor {
+  type: "react"
+  Component: React.ComponentType<any>
+  options: ViewOptions
+}
+interface NativeModuleDescriptor {
+  type: "native"
+  options: ViewOptions
+}
 
-function reactModule(Component: React.ComponentType<any>, options: ViewOptions = {}): ModuleDescriptor {
+function reactModule(Component: React.ComponentType<any>, options: ViewOptions = {}): ReactModuleDescriptor {
   return { type: "react", options, Component }
 }
 
-function nativeModule(options: ViewOptions = {}): ModuleDescriptor {
+function nativeModule(options: ViewOptions = {}): NativeModuleDescriptor {
   return { type: "native", options }
 }
 
 // little helper function to make sure we get both intellisense and good type information on the result
-function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
+function defineModules<T extends object>(obj: T) {
   return obj
 }
 
-export type AppModule = keyof typeof modules
+export type AppModule = Extract<keyof typeof modules, string>
+type ExtractNativeAppModule<M = AppModule> = M extends AppModule
+  ? typeof modules[M] extends NativeModuleDescriptor
+    ? M
+    : never
+  : never
+export type NativeAppModule = ExtractNativeAppModule
 
 export const modules = defineModules({
   Admin: nativeModule({ alwaysPresentModally: true }),
@@ -339,13 +344,14 @@ const Main: React.FC<{}> = track()(({}) => {
     return <ForceUpdate forceUpdateMessage={forceUpdateMessage} />
   }
 
-  if (!isLoggedIn || onboardingState === "incomplete") {
-    return <NativeViewController viewName="Onboarding" />
-  }
-
   return (
     <ModalStack>
-      <BottomTabsNavigator />
+      {!isLoggedIn || onboardingState === "incomplete" ? (
+        // This needs to be within the modal stack so we can access the admin menu before loggin in.
+        <NativeViewController viewName="Onboarding" />
+      ) : (
+        <BottomTabsNavigator />
+      )}
     </ModalStack>
   )
 })
@@ -356,4 +362,20 @@ if (Platform.OS === "ios") {
       <Main />
     </AppProviders>
   ))
+  for (const module of [
+    "Map",
+    "City",
+    "CityBMWList",
+    "CityFairList",
+    "CityPicker",
+    "CitySavedList",
+    "CitySectionList",
+  ] as const) {
+    const Component = modules[module].Component
+    AppRegistry.registerComponent(module, () => (props) => (
+      <AppProviders>
+        <Component {...props} />
+      </AppProviders>
+    ))
+  }
 }
