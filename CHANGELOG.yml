@@ -45,6 +45,7 @@ releases:
       - Fix extra padding on home module rails - mounir, ole
       - Implements custom price filter option (behind feature flag) - damon
       - Remove lots by followed artists rail for now - brian
+      - Removes max-height on artwork filter modal - damon
 
   - version: 6.8.4
     date: Apr 29, 2021
