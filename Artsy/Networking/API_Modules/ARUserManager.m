@@ -543,7 +543,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     manager.currentUser = nil;
 
     [[[AREmission sharedInstance] graphQLQueryCacheModule] clearAll];
-    [ARScreenPresenterModule clearCachedNavigationStacks];
 
     RNCAsyncStorage *asyncStorage = [[[AREmission sharedInstance] bridge] moduleForName:@"RNCAsyncStorage"];
     [asyncStorage clearAllData];
