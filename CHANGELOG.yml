@@ -3,12 +3,12 @@ upcoming:
   date: TBD
   dev:
     - lock screen orientation to portrait on android phones - mounir
-    - 
+    - Fix artist follow is incorrectly firing action_name - dzmitry
   user_facing:
     - Fix cancel button next to search bar doesn't clear terms/results - yauheni
     - Fix phone input misalignment on android - kizito
     - Fix push notification pre request prompt showing up everytime - kizito
-    - inquiry checkout copy additions from legal - lily
+    - Inquiry checkout copy additions from legal - lily
 
 releases:
   - version: 6.9.0
