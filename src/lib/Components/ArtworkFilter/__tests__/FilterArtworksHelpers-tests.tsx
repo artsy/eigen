@@ -4,6 +4,8 @@ import {
   changedFiltersParams,
   filterArtworksParams,
   FilterParamName,
+  FilterParams,
+  prepareFilterArtworksParamsForInput,
   selectedOption,
 } from "../ArtworkFilterHelpers"
 
@@ -706,5 +708,67 @@ describe("aggregationsWithFollowedArtists", () => {
         ],
       },
     ])
+  })
+})
+
+describe("prepareFilterArtworksParamsForInput", () => {
+  it("returns only allowed params when default params are passed", () => {
+    const filters = {
+      acquireable: false,
+      atAuction: false,
+      dimensionRange: "*-*",
+      includeArtworksByFollowedArtists: false,
+      inquireableOnly: false,
+      medium: "*",
+      offerable: false,
+      priceRange: "*-*",
+      sort: "-decayed_merch",
+    } as FilterParams;
+
+    expect(prepareFilterArtworksParamsForInput(filters)).toEqual({
+      acquireable: false,
+      atAuction: false,
+      dimensionRange: "*-*",
+      includeArtworksByFollowedArtists: false,
+      inquireableOnly: false,
+      medium: "*",
+      offerable: false,
+      priceRange: "*-*",
+      sort: "-decayed_merch",
+    })
+  })
+
+  it("returns only allowed params when no params are passed", () => {
+    const filters = {} as FilterParams;
+
+    expect(prepareFilterArtworksParamsForInput(filters)).toEqual({})
+  })
+
+  it("returns only allowed params when extra params are passed", () => {
+    const filters = {
+      acquireable: false,
+      atAuction: false,
+      categories: undefined, // TO check
+      dimensionRange: "*-*",
+      estimateRange: "",
+      inquireableOnly: false,
+      medium: "*",
+      offerable: false,
+      priceRange: "*-*",
+      sort: "-decayed_merch",
+      includeArtworksByFollowedArtists: false,
+    } as FilterParams;
+
+    expect(prepareFilterArtworksParamsForInput(filters)).toEqual({
+      acquireable: false,
+      atAuction: false,
+      dimensionRange: "*-*",
+      includeArtworksByFollowedArtists: false,
+      inquireableOnly: false,
+      medium: "*",
+      offerable: false,
+      priceRange: "*-*",
+      sort: "-decayed_merch",
+    })
   })
 })
