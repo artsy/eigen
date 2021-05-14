@@ -87,7 +87,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
 
   const filterParams = filterArtworksParams(appliedFilters)
-  const preparedFilterParams = prepareFilterArtworksParamsForInput(filterParams);
+  const preparedFilterParams = prepareFilterArtworksParamsForInput(filterParams)
   const artworks = artist.artworks
   const artworksCount = artworks?.edges?.length
   const artworksTotal = artworks?.counts?.total
