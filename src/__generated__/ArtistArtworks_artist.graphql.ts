@@ -49,36 +49,6 @@ var v0 = {
 return {
   "argumentDefinitions": [
     {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "acquireable"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "additionalGeneIDs"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "atAuction"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "attributionClass"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "color"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "colors"
-    },
-    {
       "defaultValue": 10,
       "kind": "LocalArgument",
       "name": "count"
@@ -89,44 +59,9 @@ return {
       "name": "cursor"
     },
     {
-      "defaultValue": "*-*",
-      "kind": "LocalArgument",
-      "name": "dimensionRange"
-    },
-    {
       "defaultValue": null,
       "kind": "LocalArgument",
-      "name": "inquireableOnly"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "majorPeriods"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "offerable"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "partnerID"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "partnerIDs"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "priceRange"
-    },
-    {
-      "defaultValue": "-decayed_merch",
-      "kind": "LocalArgument",
-      "name": "sort"
+      "name": "input"
     }
   ],
   "kind": "Fragment",
@@ -163,16 +98,6 @@ return {
       "alias": "artworks",
       "args": [
         {
-          "kind": "Variable",
-          "name": "acquireable",
-          "variableName": "acquireable"
-        },
-        {
-          "kind": "Variable",
-          "name": "additionalGeneIDs",
-          "variableName": "additionalGeneIDs"
-        },
-        {
           "kind": "Literal",
           "name": "aggregations",
           "value": [
@@ -186,63 +111,8 @@ return {
         },
         {
           "kind": "Variable",
-          "name": "atAuction",
-          "variableName": "atAuction"
-        },
-        {
-          "kind": "Variable",
-          "name": "attributionClass",
-          "variableName": "attributionClass"
-        },
-        {
-          "kind": "Variable",
-          "name": "color",
-          "variableName": "color"
-        },
-        {
-          "kind": "Variable",
-          "name": "colors",
-          "variableName": "colors"
-        },
-        {
-          "kind": "Variable",
-          "name": "dimensionRange",
-          "variableName": "dimensionRange"
-        },
-        {
-          "kind": "Variable",
-          "name": "inquireableOnly",
-          "variableName": "inquireableOnly"
-        },
-        {
-          "kind": "Variable",
-          "name": "majorPeriods",
-          "variableName": "majorPeriods"
-        },
-        {
-          "kind": "Variable",
-          "name": "offerable",
-          "variableName": "offerable"
-        },
-        {
-          "kind": "Variable",
-          "name": "partnerID",
-          "variableName": "partnerID"
-        },
-        {
-          "kind": "Variable",
-          "name": "partnerIDs",
-          "variableName": "partnerIDs"
-        },
-        {
-          "kind": "Variable",
-          "name": "priceRange",
-          "variableName": "priceRange"
-        },
-        {
-          "kind": "Variable",
-          "name": "sort",
-          "variableName": "sort"
+          "name": "input",
+          "variableName": "input"
         }
       ],
       "concreteType": "FilterArtworksConnection",
@@ -393,5 +263,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '3d80f342e7522ee5ff08a1b8ae2f9431';
+(node as any).hash = '8052b338d0a74f7d8857e05740092e5d';
 export default node;

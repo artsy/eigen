@@ -121,7 +121,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artist
       environment={environment || defaultEnvironment}
       above={{
         query: graphql`
-          query ArtistAboveTheFoldQuery($artistID: String!) {
+          query ArtistAboveTheFoldQuery($artistID: String!, $input: FilterArtworksInput) {
             artist(id: $artistID) {
               internalID
               slug
@@ -133,14 +133,20 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artist
                 articles
               }
               ...ArtistHeader_artist
-              ...ArtistArtworks_artist
+              ...ArtistArtworks_artist @arguments(input: $input)
               auctionResultsConnection {
                 totalCount
               }
             }
           }
         `,
-        variables: { artistID },
+        variables: {
+          artistID,
+          input: {
+            dimensionRange: "*-*",
+            sort: "-decayed_merch",
+          }
+        },
       }}
       below={{
         query: graphql`
