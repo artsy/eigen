@@ -261,7 +261,6 @@ export const changedFiltersParams = (currentFilterParams: FilterParams, selected
 }
 
 export const filterArtworksParams = (appliedFilters: FilterArray, filterType: FilterType = "artwork") => {
-  // console.log("[variables] filterArtworksParams", appliedFilters, filterType)
   const defaultFilterParams = getDefaultParamsByType(filterType)
   return paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams }, filterType)
 }
