@@ -16,6 +16,7 @@ import {
   PlaceholderText,
   ProvidePlaceholderContext,
 } from "lib/utils/placeholders"
+import { QAInfoPanel } from "lib/utils/QAInfo"
 import { Schema, screenTrack } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Separator, space, Spacer } from "palette"
@@ -289,19 +290,29 @@ export class Artwork extends React.Component<Props, State> {
   }
 
   render() {
-    return (
-      <FlatList<ArtworkPageSection>
-        keyboardShouldPersistTaps="handled"
-        data={this.sections()}
-        ItemSeparatorComponent={() => (
-          <Box mx={2} my={3}>
-            <Separator />
-          </Box>
-        )}
-        refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
-        contentContainerStyle={{ paddingBottom: 40 }}
-        renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
+    const QAInfo = () => (
+      <QAInfoPanel
+        style={{ position: "absolute", top: 200, left: 10, backgroundColor: "grey" }}
+        info={[["id", this.props.artworkAboveTheFold.internalID]]}
       />
+    )
+
+    return (
+      <>
+        <FlatList<ArtworkPageSection>
+          keyboardShouldPersistTaps="handled"
+          data={this.sections()}
+          ItemSeparatorComponent={() => (
+            <Box mx={2} my={3}>
+              <Separator />
+            </Box>
+          )}
+          refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
+          contentContainerStyle={{ paddingBottom: 40 }}
+          renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
+        />
+        <QAInfo />
+      </>
     )
   }
 }

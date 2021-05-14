@@ -55,7 +55,7 @@ const Main: React.FC<{}> = track()(({}) => {
 
   useEffect(() => {
     const launchCount = getCurrentEmissionState().launchCount
-    if (launchCount >= 1) {
+    if (launchCount > 1) {
       return
     }
     SegmentTrackingProvider.postEvent({ name: AnalyticsConstants.FreshInstall })
@@ -67,6 +67,9 @@ const Main: React.FC<{}> = track()(({}) => {
       setTimeout(() => {
         RNBootSplash.hide()
         ArtsyNativeModule.setAppStyling()
+        requestAnimationFrame(() => {
+          ArtsyNativeModule.lockActivityScreenOrientation()
+        })
         if (isLoggedIn) {
           ArtsyNativeModule.setNavigationBarColor("#FFFFFF")
           ArtsyNativeModule.setAppLightContrast(false)

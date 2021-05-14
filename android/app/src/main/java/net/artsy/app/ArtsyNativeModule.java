@@ -3,6 +3,8 @@ package net.artsy.app;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
@@ -182,4 +184,19 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
 
         return size;
     }
+
+    private boolean isTablet() {
+        return (getCurrentActivity().getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
+    @ReactMethod
+    public void lockActivityScreenOrientation() {
+        // We only want to lock screen orientation on phones
+        if (!isTablet()) {
+            getCurrentActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+    }
+
 }

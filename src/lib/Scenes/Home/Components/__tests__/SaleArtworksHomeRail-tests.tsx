@@ -6,9 +6,13 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
+import { flushPromiseQueue } from "../../../../tests/flushPromiseQueue"
 import { PAGE_SIZE, SaleArtworksHomeRailContainer } from "..//SaleArtworksHomeRail"
 
 jest.unmock("react-relay")
+
+const onShowMock = jest.fn()
+const onHideMock = jest.fn()
 
 describe("SaleArtworksHomeRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -26,7 +30,7 @@ describe("SaleArtworksHomeRail", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.me) {
-          return <SaleArtworksHomeRailContainer me={props.me} />
+          return <SaleArtworksHomeRailContainer me={props.me} onShow={onShowMock} onHide={onHideMock} />
         }
         return null
       }}
@@ -37,16 +41,18 @@ describe("SaleArtworksHomeRail", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("Renders list of sale artworks without throwing an error", () => {
+  it("Renders list of sale artworks without throwing an error", async () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
     mockEnvironmentPayload(mockEnvironment, mockProps)
+    await flushPromiseQueue()
+    expect(onShowMock).toHaveBeenCalled()
 
-    expect(tree.root.findAllByType(SectionTitle)[0].props.title).toEqual("Lots by artists you follow")
+    expect(tree.root.findAllByType(SectionTitle)[0].props.title).toEqual("Auction lots for you ending soon")
     expect(tree.root.findAllByType(SaleArtworkTileRailCardContainer)).toHaveLength(PAGE_SIZE)
   })
 
-  it("returns null if there are no artworks", () => {
+  it("returns null if there are no artworks", async () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
     const noArtworksProps = {
@@ -57,9 +63,11 @@ describe("SaleArtworksHomeRail", () => {
       }),
     }
     mockEnvironmentPayload(mockEnvironment, noArtworksProps)
+    await flushPromiseQueue()
     // React-test-renderer has no isEmptyComponent or isNullComponent therefore I am testing for the container
     // expect(tree.root.findAllByType(Flex)).toHaveLength(0)
     expect(tree.toJSON()).toBeNull()
+    expect(onHideMock).toHaveBeenCalled()
   })
 })
 

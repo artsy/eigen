@@ -1,35 +1,24 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Sans, Serif } from "palette"
+import { Sans } from "palette"
 import React from "react"
 import { TextInput } from "react-native"
 
+import { CountrySelect } from "lib/Components/CountrySelect"
 import { Button } from "palette"
 import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
-import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { BillingAddress } from "../BillingAddress"
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const selectCountry = (component, navigator, country) => {
-  // The second `<TouchableWithoutFeedback>` is a button that pushes a new `<SelectCountry>` instance.
-  component.root.findByProps({ testID: "select-country-press-handler" }).instance.props.onPress()
-
-  navigator.nextStep().root.findByProps({ nextScreen: true }).instance.props.onCountrySelected(country)
+  component.root.findByType(CountrySelect).props.onSelectValue(country.shortName, 5)
 }
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(
-    <BiddingThemeProvider>
-      <BillingAddress />
-    </BiddingThemeProvider>
-  )
+  renderWithWrappers(<BillingAddress />)
 })
 
 it("shows an error message for each field", () => {
-  const component = renderWithWrappers(
-    <BiddingThemeProvider>
-      <BillingAddress />
-    </BiddingThemeProvider>
-  )
+  const component = renderWithWrappers(<BillingAddress />)
 
   component.root.findByType(Button).props.onPress()
 
@@ -44,11 +33,7 @@ it("calls the onSubmit() callback with billing address when ADD BILLING ADDRESS 
   const fakeNavigator = new FakeNavigator()
   const onSubmitMock = jest.fn()
 
-  const component = renderWithWrappers(
-    <BiddingThemeProvider>
-      <BillingAddress onSubmit={onSubmitMock} navigator={fakeNavigator as any} />
-    </BiddingThemeProvider>
-  )
+  const component = renderWithWrappers(<BillingAddress onSubmit={onSubmitMock} navigator={fakeNavigator as any} />)
 
   textInputComponent(component, "Full name").props.onChangeText("Yuki Stockmeier")
   textInputComponent(component, "Address line 1").props.onChangeText("401 Broadway")
@@ -67,11 +52,7 @@ it("calls the onSubmit() callback with billing address when ADD BILLING ADDRESS 
 it("updates the validation for country when coming back from the select country screen", () => {
   const fakeNavigator = new FakeNavigator()
 
-  const component = renderWithWrappers(
-    <BiddingThemeProvider>
-      <BillingAddress onSubmit={() => null} navigator={fakeNavigator as any} />
-    </BiddingThemeProvider>
-  )
+  const component = renderWithWrappers(<BillingAddress onSubmit={() => null} navigator={fakeNavigator as any} />)
 
   textInputComponent(component, "Full name").props.onChangeText("Yuki Stockmeier")
   textInputComponent(component, "Address line 1").props.onChangeText("401 Broadway")
@@ -83,20 +64,16 @@ it("updates the validation for country when coming back from the select country 
 
   component.root.findByType(Button).props.onPress()
 
-  expect(component.root.findAllByType(Sans)[0].props.children).toEqual("This field is required")
+  expect(component.root.findAllByType(Sans)[1].props.children).toEqual("This field is required")
 
   selectCountry(component, fakeNavigator, billingAddress.country)
 
   // The <Sans12> instances in the BillingAddress screen display error messages
-  expect(component.root.findAllByType(Sans).length).toEqual(1)
+  expect(component.root.findAllByType(Sans).length).toEqual(2)
 })
 
 it("pre-fills the fields if initial billing address is provided", () => {
-  const component = renderWithWrappers(
-    <BiddingThemeProvider>
-      <BillingAddress billingAddress={billingAddress} />
-    </BiddingThemeProvider>
-  )
+  const component = renderWithWrappers(<BillingAddress billingAddress={billingAddress} />)
 
   expect(textInputComponent(component, "Full name").props.value).toEqual("Yuki Stockmeier")
   expect(textInputComponent(component, "Address line 1").props.value).toEqual("401 Broadway")
@@ -105,7 +82,7 @@ it("pre-fills the fields if initial billing address is provided", () => {
   expect(textInputComponent(component, "State, Province, or Region").props.value).toEqual("NY")
   expect(textInputComponent(component, "Postal code").props.value).toEqual("10013")
 
-  const countryField = component.root.findAllByType(Serif)[8]
+  const countryField = component.root.findAllByType(Sans)[0]
   expect(countryField.props.children).toEqual("United States")
 })
 

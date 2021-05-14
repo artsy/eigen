@@ -18,7 +18,13 @@ export interface ReviewOfferButtonProps {
   }
 }
 
-export type ReviewOfferCTAKind = "PAYMENT_FAILED" | "OFFER_RECEIVED" | "OFFER_ACCEPTED"
+export type ReviewOfferCTAKind =
+  | "PAYMENT_FAILED"
+  | "OFFER_RECEIVED"
+  | "OFFER_ACCEPTED"
+  | "OFFER_ACCEPTED_CONFIRM_NEEDED"
+  | "OFFER_RECEIVED_CONFIRM_NEEDED"
+  | "PROVISIONAL_OFFER_ACCEPTED"
 
 export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversationID, activeOrder, kind }) => {
   const { internalID: orderID, offers } = activeOrder
@@ -58,7 +64,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
       ctaAttributes = {
         backgroundColor: "copper100",
         message: `${offerType} Received`,
-        subMessage: `Expires in ${expiresIn}`,
+        subMessage: `The offer expires in ${expiresIn}`,
         Icon: AlertCircleFillIcon,
         url: `/orders/${orderID}`,
         modalTitle: "Review Offer",
@@ -69,6 +75,39 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
       ctaAttributes = {
         backgroundColor: "green100",
         message: `Congratulations! ${offerType} Accepted`,
+        subMessage: "Tap to view",
+        Icon: MoneyFillIcon,
+        url: `/orders/${orderID}`,
+        modalTitle: "Offer Accepted",
+      }
+      break
+    }
+    case "OFFER_ACCEPTED_CONFIRM_NEEDED": {
+      ctaAttributes = {
+        backgroundColor: "copper100",
+        message: `Offer Accepted - Confirm total`,
+        subMessage: `The offer expires in ${expiresIn}`,
+        Icon: AlertCircleFillIcon,
+        url: `/orders/${orderID}`,
+        modalTitle: "Review Offer",
+      }
+      break
+    }
+    case "OFFER_RECEIVED_CONFIRM_NEEDED": {
+      ctaAttributes = {
+        backgroundColor: "copper100",
+        message: `Counteroffer Received - Confirm Total`,
+        subMessage: `The offer expires in ${expiresIn}`,
+        Icon: AlertCircleFillIcon,
+        url: `/orders/${orderID}`,
+        modalTitle: "Review Offer",
+      }
+      break
+    }
+    case "PROVISIONAL_OFFER_ACCEPTED": {
+      ctaAttributes = {
+        backgroundColor: "green100",
+        message: `Offer Accepted`,
         subMessage: "Tap to view",
         Icon: MoneyFillIcon,
         url: `/orders/${orderID}`,

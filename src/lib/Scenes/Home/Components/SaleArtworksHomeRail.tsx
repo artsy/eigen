@@ -7,7 +7,7 @@ import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToEdge } from "lib/utils/isCloseToEdge"
 import { Flex } from "palette"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 export const PAGE_SIZE = 6
@@ -15,10 +15,16 @@ export const PAGE_SIZE = 6
 interface Props {
   me: SaleArtworksHomeRail_me
   relay: RelayPaginationProp
+  onHide?: () => void
+  onShow?: () => void
 }
 
-export const SaleArtworksHomeRail: React.FC<Props> = ({ me, relay }) => {
+export const SaleArtworksHomeRail: React.FC<Props> = ({ me, relay, onShow, onHide }) => {
   const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
+
+  useEffect(() => {
+    artworks.length ? onShow?.() : onHide?.()
+  }, [artworks.length])
 
   if (!artworks?.length) {
     return null
@@ -46,7 +52,7 @@ export const SaleArtworksHomeRail: React.FC<Props> = ({ me, relay }) => {
   return (
     <Flex>
       <Flex mx={2}>
-        <SectionTitle title="Lots by artists you follow" />
+        <SectionTitle title="Auction lots for you ending soon" />
       </Flex>
       <CardRailFlatList
         data={artworks}

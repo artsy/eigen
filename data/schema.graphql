@@ -8225,6 +8225,7 @@ type Partner implements Node {
     tagID: String
     width: String
   ): FilterArtworksConnection
+  fullProfileEligible: Boolean
   hasFairPartnership: Boolean
   href: String
 
@@ -8236,7 +8237,6 @@ type Partner implements Node {
   internalID: ID!
   isDefaultProfilePublic: Boolean
   isLinkable: Boolean
-  isNonSubscriber: Boolean
   isPreQualify: Boolean
 
   # Indicates the partner is a trusted seller on Artsy
@@ -8280,6 +8280,7 @@ type Partner implements Node {
   # A slug ID.
   slug: ID!
   type: String
+  vatNumber: String
   viewingRoomsConnection(after: String, first: Int, statuses: [ViewingRoomStatusEnum!]): ViewingRoomsConnection
 
   # The gallery partner's web address
@@ -8721,6 +8722,7 @@ type Profile {
   cached: Int
   counts: ProfileCounts
   displayArtistsSection: Boolean @deprecated(reason: "Prefer displayArtistsSection in Partner type")
+  fullBio: String
   href: String
   icon: Image
 

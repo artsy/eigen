@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ebae1224e8879464df272f14ce93cea0 */
+/* @relayHash 01648b2a15902c36df258215f22e8f09 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -93,6 +93,8 @@ fragment ConversationCTA_conversation on Conversation {
           lastOffer {
             fromParticipant
             createdAt
+            definesTotal
+            offerAmountChanged
             id
           }
           offers(first: 5) {
@@ -260,6 +262,8 @@ fragment OrderUpdate_event on CommerceOrderEventUnion {
     offer {
       amount
       fromParticipant
+      definesTotal
+      offerAmountChanged
       respondsTo {
         fromParticipant
         id
@@ -418,10 +422,24 @@ v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "definesTotal",
+  "storageKey": null
+},
+v17 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "offerAmountChanged",
+  "storageKey": null
+},
+v18 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "email",
   "storageKey": null
 },
-v17 = [
+v19 = [
   (v11/*: any*/),
   {
     "kind": "Literal",
@@ -689,6 +707,8 @@ return {
                                 "selections": [
                                   (v14/*: any*/),
                                   (v15/*: any*/),
+                                  (v16/*: any*/),
+                                  (v17/*: any*/),
                                   (v6/*: any*/)
                                 ],
                                 "storageKey": null
@@ -758,7 +778,7 @@ return {
                 "plural": false,
                 "selections": [
                   (v9/*: any*/),
-                  (v16/*: any*/),
+                  (v18/*: any*/),
                   (v6/*: any*/)
                 ],
                 "storageKey": null
@@ -862,6 +882,8 @@ return {
                                         "storageKey": null
                                       },
                                       (v14/*: any*/),
+                                      (v16/*: any*/),
+                                      (v17/*: any*/),
                                       {
                                         "alias": null,
                                         "args": null,
@@ -898,7 +920,7 @@ return {
               },
               {
                 "alias": null,
-                "args": (v17/*: any*/),
+                "args": (v19/*: any*/),
                 "concreteType": "MessageConnection",
                 "kind": "LinkedField",
                 "name": "messagesConnection",
@@ -1034,7 +1056,7 @@ return {
                             "plural": false,
                             "selections": [
                               (v9/*: any*/),
-                              (v16/*: any*/)
+                              (v18/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -1049,7 +1071,7 @@ return {
               },
               {
                 "alias": null,
-                "args": (v17/*: any*/),
+                "args": (v19/*: any*/),
                 "filters": [],
                 "handle": "connection",
                 "key": "Messages_messagesConnection",
@@ -1073,7 +1095,7 @@ return {
     ]
   },
   "params": {
-    "id": "ebae1224e8879464df272f14ce93cea0",
+    "id": "01648b2a15902c36df258215f22e8f09",
     "metadata": {},
     "name": "ConversationRefetchQuery",
     "operationKind": "query",
