@@ -2,6 +2,7 @@ import { Action, action, Thunk, thunk } from "easy-peasy"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { NotificationsManager } from "lib/NativeModules/NotificationsManager"
 import { navigate } from "lib/navigation/navigate"
+import { afterBottomTabsBootstrap } from "lib/Scenes/BottomTabs/BottomTabsNavigator"
 import { GlobalStore } from "./GlobalStore"
 
 // These should match the values in emission/Pod/Classes/EigenCommunications/ARNotificationsManager.m
@@ -58,7 +59,7 @@ listenToNativeEvents((event: NativeEvent) => {
       GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
       return
     case "REQUEST_NAVIGATION":
-      navigate(event.payload.route)
+      afterBottomTabsBootstrap(() => navigate(event.payload.route))
       return
     default:
       assertNever(event)
