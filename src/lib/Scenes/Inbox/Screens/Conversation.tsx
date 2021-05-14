@@ -17,6 +17,7 @@ import React from "react"
 import { View } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
+import { ShadowSeparator } from "../Components/ShadowSeparator"
 import { ConversationDetailsQueryRenderer } from "./ConversationDetails"
 
 const Container = styled.View`
@@ -213,6 +214,7 @@ export class Conversation extends React.Component<Props, State> {
               </HeaderTextContainer>
             </Flex>
           </Header>
+          <ShadowSeparator />
           {!this.state.isConnected && <ConnectivityBanner />}
           <Messages
             componentRef={(messages) => (this.messages = messages)}
