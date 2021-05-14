@@ -47,7 +47,13 @@ var v0 = [
   }
 ];
 return {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "input"
+    }
+  ],
   "kind": "Fragment",
   "metadata": null,
   "name": "Fair_fair",
@@ -199,7 +205,13 @@ return {
       "name": "FairCollections_fair"
     },
     {
-      "args": null,
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "input",
+          "variableName": "input"
+        }
+      ],
       "kind": "FragmentSpread",
       "name": "FairArtworks_fair"
     },
@@ -218,5 +230,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '4d0ff22e98f681e8dd4f517a7d2d77be';
+(node as any).hash = '7fd0fae7b549a5ae23f97b180420c5f4';
 export default node;

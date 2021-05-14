@@ -279,7 +279,8 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
 export const FairFragmentContainer = createFragmentContainer(Fair, {
   fair: graphql`
-    fragment Fair_fair on Fair {
+    fragment Fair_fair on Fair
+    @argumentDefinitions(input: { type: "FilterArtworksInput" }) {
       internalID
       slug
       isActive
@@ -304,7 +305,7 @@ export const FairFragmentContainer = createFragmentContainer(Fair, {
       ...FairEmptyState_fair
       ...FairEditorial_fair
       ...FairCollections_fair
-      ...FairArtworks_fair
+      ...FairArtworks_fair @arguments(input: $input)
       ...FairExhibitors_fair
       ...FairFollowedArtistsRail_fair
     }
@@ -316,13 +317,19 @@ export const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) 
     <QueryRenderer<FairQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query FairQuery($fairID: String!) {
+        query FairQuery($fairID: String!, $input: FilterArtworksInput) {
           fair(id: $fairID) @principalField {
-            ...Fair_fair
+            ...Fair_fair @arguments(input: $input)
           }
         }
       `}
-      variables={{ fairID }}
+      variables={{
+        fairID,
+        input: {
+          sort: "-decayed_merch",
+          dimensionRange: "*-*",
+        }
+      }}
       render={renderWithPlaceholder({
         Container: FairFragmentContainer,
         renderPlaceholder: () => <FairPlaceholder />,

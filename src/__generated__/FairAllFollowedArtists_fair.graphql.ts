@@ -42,8 +42,10 @@ const node: ReaderFragment = {
       "args": [
         {
           "kind": "Literal",
-          "name": "includeArtworksByFollowedArtists",
-          "value": true
+          "name": "input",
+          "value": {
+            "includeArtworksByFollowedArtists": true
+          }
         }
       ],
       "kind": "FragmentSpread",
@@ -53,5 +55,5 @@ const node: ReaderFragment = {
   "type": "Fair",
   "abstractKey": null
 };
-(node as any).hash = '6f43d2010c52c6fcb960769e30119d4e';
+(node as any).hash = '686f5afb388e6a071e4326e10bf3d4c9';
 export default node;
