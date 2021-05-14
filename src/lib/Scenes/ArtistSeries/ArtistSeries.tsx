@@ -160,7 +160,10 @@ export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSerie
 
       ...ArtistSeriesHeader_artistSeries
       ...ArtistSeriesMeta_artistSeries
-      ...ArtistSeriesArtworks_artistSeries
+      ...ArtistSeriesArtworks_artistSeries @arguments(input: {
+        sort: "-decayed_merch",
+        dimensionRange: "*-*"
+      })
 
       artist: artists(size: 1) {
         ...ArtistSeriesMoreSeries_artist
