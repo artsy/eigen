@@ -1,8 +1,12 @@
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Button, View } from "react-native"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
+import { trackingTestsQuery } from "__generated__/trackingTestsQuery.graphql"
 import { Schema, screenTrack, track, useTracking } from ".."
 import { postEventToProviders } from "../providers"
 
@@ -121,6 +125,40 @@ describe("Tracking", () => {
       fireEvent.press(button)
       expect(postEventToProviders).toHaveBeenCalledTimes(2)
       expect(postEventToProviders).toHaveBeenNthCalledWith(2, { ...screenInfo, ...buttonInfo })
+    })
+  })
+
+  describe("in QueryRenderers", () => {
+    const TestComponent = () => {
+      const { trackEvent } = useTracking(screenInfo)
+
+      return (
+        <View>
+          <Button title="track me" onPress={() => trackEvent(buttonInfo)} />
+        </View>
+      )
+    }
+
+    const mockEnvironment = createMockEnvironment()
+
+    const TestComponentQueryRenderer = () => (
+      <QueryRenderer<trackingTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query trackingTestsQuery @relay_test_operation {
+            me {
+              name
+            }
+          }
+        `}
+        variables={{}}
+        render={() => <TestComponent />}
+      />
+    )
+
+    it("works", () => {
+      const component = renderWithWrappersTL(<TestComponentQueryRenderer />)
+      mockEnvironmentPayload(mockEnvironment)
     })
   })
 })
