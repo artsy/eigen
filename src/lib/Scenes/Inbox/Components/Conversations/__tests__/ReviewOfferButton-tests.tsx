@@ -110,7 +110,7 @@ describe("ReviewOfferButton", () => {
   })
 
   it("shows correct expiration in hours when there is more than 1 hour left", () => {
-    const expirationTime = DateTime.local().plus({ hours: 11 })
+    const expirationTime = DateTime.local().plus({ hours: 10 })
     const wrapper = getWrapper("OFFER_RECEIVED", {
       offers: { edges: [{}, {}] },
       stateExpiresAt: expirationTime.toString(),
@@ -119,6 +119,18 @@ describe("ReviewOfferButton", () => {
     const text = extractText(wrapper.root)
     expect(text).toContain("Counteroffer Received")
     expect(text).toContain("The offer expires in 10hr")
+  })
+
+  it("shows correct expiration in hours when there is more than 24 hours left", () => {
+    const expirationTime = DateTime.local().plus({ hours: 72 })
+    const wrapper = getWrapper("OFFER_RECEIVED", {
+      offers: { edges: [{}, {}] },
+      stateExpiresAt: expirationTime.toString(),
+    })
+
+    const text = extractText(wrapper.root)
+    expect(text).toContain("Counteroffer Received")
+    expect(text).toContain("The offer expires in 72hr")
   })
 
   it("tapping it opens the review offer webview with the correct modal title and tracks event", () => {

@@ -30,13 +30,13 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
   const { internalID: orderID, offers } = activeOrder
   const { trackEvent } = useTracking()
 
-  const { hours, minutes } = useEventTiming({
+  const { hoursTillEnd, minutes } = useEventTiming({
     currentTime: DateTime.local().toString(),
     startAt: activeOrder.lastOffer?.createdAt,
     endAt: activeOrder.stateExpiresAt || undefined,
   })
 
-  const expiresIn = Number(hours) < 1 ? `${minutes}m` : `${hours}hr`
+  const expiresIn = Number(hoursTillEnd) < 1 ? `${minutes}m` : `${Math.round(hoursTillEnd)}hr`
   const offerType = (offers?.edges?.length || []) > 1 ? "Counteroffer" : "Offer"
 
   let ctaAttributes: {
