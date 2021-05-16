@@ -30,7 +30,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ 
                 color="black100"
                 variant="small"
                 onPress={() => {
-                  navigate(`buyer-guarantee`)
+                  navigate(`/buyer-guarantee`)
                 }}
               >
                 The Artsy Guarantee
