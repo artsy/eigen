@@ -1,4 +1,5 @@
 import { tappedMakeOffer } from "@artsy/cohesion"
+import { captureMessage } from "@sentry/react-native"
 import { OpenInquiryModalButtonQuery } from "__generated__/OpenInquiryModalButtonQuery.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -79,7 +80,11 @@ export const OpenInquiryModalButtonQueryRenderer: React.FC<{
       cacheConfig={{ force: true }}
       render={({ props, error }): null | JSX.Element => {
         if (error) {
-          throw new Error(error.message)
+          // A typical scenario an error happens would be 404 (artwork deleted, unpublished, etc.). This captures the
+          // error in Sentry and simply doesn't render to button for now. We can be more specific about particular
+          // errors and also improve the UX through some messaging.
+          captureMessage(error.stack!)
+          return null
         }
 
         if (props?.artwork?.isOfferableFromInquiry) {
