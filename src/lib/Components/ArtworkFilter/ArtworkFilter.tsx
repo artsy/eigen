@@ -136,7 +136,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
 
   return (
     <NavigationContainer independent>
-      <FancyModal visible={props.isFilterArtworksModalVisible} onBackgroundPressed={handleClosingModal} maxHeight={550}>
+      <FancyModal visible={props.isFilterArtworksModalVisible} onBackgroundPressed={handleClosingModal}>
         <View style={{ flex: 1 }}>
           <Stack.Navigator
             // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
