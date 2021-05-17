@@ -52,18 +52,4 @@
     }
 }
 
-- (NSArray *)legacyFairSlugs
-{
-    Message *legacyFairMessage = self.messages[@"LegacyFairSlugs"];
-    NSArray *fairSlugs = [legacyFairMessage.content componentsSeparatedByString:@","];
-    return fairSlugs ? fairSlugs : @[];
-}
-
-- (NSArray *)legacyFairProfileSlugs
-{
-    Message *legacyFairProfileSlugsMessage = self.messages[@"LegacyFairProfileSlugs"];
-    NSArray *fairProfileSlugs = [legacyFairProfileSlugsMessage.content componentsSeparatedByString:@","];
-    return fairProfileSlugs ? fairProfileSlugs : @[];
-}
-
 @end

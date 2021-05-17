@@ -26,8 +26,6 @@ export interface EchoModel {
   fetchRemoteEcho: Thunk<EchoModel>
   didRehydrate: ThunkOn<EchoModel, {}, GlobalStoreModel>
   stripePublishableKey: Computed<EchoModel, string, GlobalStoreModel>
-  legacyFairSlugs: Computed<EchoModel, string[]>
-  legacyFairProfileSlugs: Computed<EchoModel, string[]>
   forceUpdateMessage: Computed<EchoModel, string | undefined>
 }
 
@@ -66,12 +64,6 @@ export const getEchoModel = (): EchoModel => ({
   stripePublishableKey: computed([(_, store) => store.config.environment.env, (state) => state], (env, state) => {
     const key = env === "production" ? "StripeProductionPublishableKey" : "StripeStagingPublishableKey"
     return state.state.messages.find((e) => e.name === key)?.content!
-  }),
-  legacyFairProfileSlugs: computed((state) => {
-    return state.state.messages.find((e) => e.name === "LegacyFairProfileSlugs")?.content.split(",")!
-  }),
-  legacyFairSlugs: computed((state) => {
-    return state.state.messages.find((e) => e.name === "LegacyFairSlugs")?.content.split(",")!
   }),
   forceUpdateMessage: computed((state) => {
     const appVersion = appJson().version
