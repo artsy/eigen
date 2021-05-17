@@ -12,6 +12,8 @@ import { Sans } from "palette"
 interface Props {
   sale: SaleListItem_sale
   containerWidth: number
+  index: number
+  columnCount: number
 }
 
 export class SaleListItem extends React.Component<Props> {
@@ -24,14 +26,21 @@ export class SaleListItem extends React.Component<Props> {
   }
 
   render() {
-    const sale = this.props.sale
+    const { sale, containerWidth, index, columnCount } = this.props
     const image = sale.coverImage
     const timestamp = formatDisplayTimelyAt(sale.displayTimelyAt)
-    const containerWidth = this.props.containerWidth
+    const isFirstItemInRow = index === 0 || index % columnCount === 0
+    const marginLeft = isFirstItemInRow ? 0 : 20
 
     return (
       <TouchableOpacity onPress={this.handleTap}>
-        <View style={{ width: containerWidth, marginBottom: 20 }}>
+        <View
+          style={{
+            width: containerWidth,
+            marginBottom: 20,
+            marginLeft,
+          }}
+        >
           <OpaqueImageView
             style={{
               width: containerWidth,

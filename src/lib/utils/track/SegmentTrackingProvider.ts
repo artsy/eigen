@@ -33,8 +33,8 @@ export const SegmentTrackingProvider: TrackingProvider = {
     if ("action" in info) {
       const { action } = info
       if (isCohesionScreen(info)) {
-        const { context_screen } = info
-        analytics.screen(context_screen, info as any)
+        const { context_screen_owner_type } = info
+        analytics.screen(context_screen_owner_type, info as any)
       } else {
         analytics.track(action, info as any)
       }

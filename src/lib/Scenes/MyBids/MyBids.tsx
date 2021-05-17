@@ -7,12 +7,13 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 import { MyBids_me } from "__generated__/MyBids_me.graphql"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 
-import { ActionType, OwnerType } from "@artsy/cohesion"
+import { OwnerType } from "@artsy/cohesion"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import moment from "moment-timezone"
 import { MyBidsPlaceholder, SaleCardFragmentContainer } from "./Components"
 import { LotStatusListItemContainer } from "./Components/LotStatusListItem"
@@ -65,12 +66,11 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={{
-        action: ActionType.screen,
+      info={screen({
         context_screen_owner_type: OwnerType.inboxBids,
         // TODO: How to correctly pass the screen that was in view before the Inbox tab was tapped?
         // context_screen_referrer_type: ,
-      }}
+      })}
     >
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: !somethingToShow ? "center" : "flex-start" }}

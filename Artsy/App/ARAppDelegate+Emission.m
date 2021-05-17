@@ -169,13 +169,18 @@ SOFTWARE.
 #pragma mark - Native Module: Events/Analytics
     emission.eventsModule.eventOccurred = ^(NSDictionary *_Nonnull info) {
         NSMutableDictionary *properties = [info mutableCopy];
-        if (info[@"action_type"] ) {
+        if (info[@"action_type"]) {
             // Track event
             [properties removeObjectForKey:@"action_type"];
             [ARAnalytics event:info[@"action_type"] withProperties:[properties copy]];
         } else if (info[@"action"]) {
-            // Track event
-            [ARAnalytics event:info[@"action"] withProperties:[properties copy]];
+            if ([info[@"action"] isEqualToString:@"screen"]) {
+                // Screen event from cohesion
+                [ARAnalytics pageView:info[@"context_screen_owner_type"] withProperties:[properties copy]];
+            } else {
+                // Track event
+                [ARAnalytics event:info[@"action"] withProperties:[properties copy]];
+            }
         } else {
             // Screen event
             [properties removeObjectForKey:@"context_screen"];

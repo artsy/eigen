@@ -16,5 +16,5 @@
 - [Play Store Deployment](deploy_to_play_store.md)
 - [Beta Deployment](deploy_to_beta.md)
 - [Certificates & Code Signing](certs.md)
-- [Notifications](notifications.md)
+- [Notifications](push_notifications.md)
 - [Updating Emission](updating_emission.md)
