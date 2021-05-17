@@ -11,11 +11,11 @@ describe(formatLargeNumber, () => {
     })
 
     it("returns the number of millions when less than 1b", () => {
-      expect(formatLargeNumber(987654321)).toEqual("988m")
+      expect(formatLargeNumber(987654321)).toEqual("988M")
     })
 
     it("returns the number of billions when less than 1t which is totally going to happen soon", () => {
-      expect(formatLargeNumber(543235234432)).toEqual("543t")
+      expect(formatLargeNumber(543235234432)).toEqual("543B")
     })
   })
 
