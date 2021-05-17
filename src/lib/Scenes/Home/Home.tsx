@@ -316,6 +316,9 @@ export const HomeQueryRenderer: React.FC = () => {
   const { flash_message } = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.tabProps.home ?? {}) as {
     flash_message?: string
   }
+
+  const userAccessToken = GlobalStore.useAppState((state) => state.native.sessionState.authenticationToken)
+
   useEffect(() => {
     if (flash_message) {
       const message = messages[flash_message as keyof typeof messages]
@@ -331,7 +334,9 @@ export const HomeQueryRenderer: React.FC = () => {
       GlobalStore.actions.bottomTabs.setTabProps({ tab: "home", props: {} })
     }
   }, [flash_message])
-  return (
+
+  // Avoid rendering when user is logged out, it will fail anyway
+  return userAccessToken ? (
     <QueryRenderer<HomeQuery>
       environment={defaultEnvironment}
       query={graphql`
@@ -351,5 +356,5 @@ export const HomeQueryRenderer: React.FC = () => {
       render={renderWithPlaceholder({ Container: HomeFragmentContainer, renderPlaceholder: () => <HomePlaceholder /> })}
       cacheConfig={{ force: true }}
     />
-  )
+  ) : null
 }
