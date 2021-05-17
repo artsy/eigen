@@ -86,8 +86,10 @@ return {
         },
         {
           "kind": "Literal",
-          "name": "sort",
-          "value": "-weighted_iconicity"
+          "name": "input",
+          "value": {
+            "sort": "-weighted_iconicity"
+          }
         }
       ],
       "concreteType": "FilterArtworksConnection",
@@ -222,12 +224,12 @@ return {
           "storageKey": null
         }
       ],
-      "storageKey": "filterArtworksConnection(first:10,sort:\"-weighted_iconicity\")"
+      "storageKey": "filterArtworksConnection(first:10,input:{\"sort\":\"-weighted_iconicity\"})"
     }
   ],
   "type": "Artist",
   "abstractKey": null
 };
 })();
-(node as any).hash = 'f020d87d7a75e5be053dfeae8f0c8328';
+(node as any).hash = '094672f09cb518d6450aabab85ec4296';
 export default node;

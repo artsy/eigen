@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5e8d852a3526af22fc87bce04145e7aa */
+/* @relayHash 38dd015b757ce010e6dd0c2fe8554c9d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -87,7 +87,7 @@ fragment ArtistAbout_artist on Artist {
   ...Biography_artist
   ...ArtistSeriesMoreSeries_artist
   ...ArtistNotableWorksRail_artist
-  notableWorks: filterArtworksConnection(sort: "-weighted_iconicity", first: 3) {
+  notableWorks: filterArtworksConnection(first: 3, input: {sort: "-weighted_iconicity"}) {
     edges {
       node {
         id
@@ -199,7 +199,7 @@ fragment ArtistInsights_artist on Artist {
 fragment ArtistNotableWorksRail_artist on Artist {
   internalID
   slug
-  filterArtworksConnection(sort: "-weighted_iconicity", first: 10) {
+  filterArtworksConnection(first: 10, input: {sort: "-weighted_iconicity"}) {
     edges {
       node {
         id
@@ -459,8 +459,10 @@ v8 = {
 },
 v9 = {
   "kind": "Literal",
-  "name": "sort",
-  "value": "-weighted_iconicity"
+  "name": "input",
+  "value": {
+    "sort": "-weighted_iconicity"
+  }
 },
 v10 = {
   "alias": null,
@@ -949,7 +951,7 @@ return {
               },
               (v10/*: any*/)
             ],
-            "storageKey": "filterArtworksConnection(first:10,sort:\"-weighted_iconicity\")"
+            "storageKey": "filterArtworksConnection(first:10,input:{\"sort\":\"-weighted_iconicity\"})"
           },
           {
             "alias": "notableWorks",
@@ -985,7 +987,7 @@ return {
               },
               (v10/*: any*/)
             ],
-            "storageKey": "filterArtworksConnection(first:3,sort:\"-weighted_iconicity\")"
+            "storageKey": "filterArtworksConnection(first:3,input:{\"sort\":\"-weighted_iconicity\"})"
           },
           {
             "alias": "iconicCollections",
@@ -1638,7 +1640,7 @@ return {
     ]
   },
   "params": {
-    "id": "5e8d852a3526af22fc87bce04145e7aa",
+    "id": "38dd015b757ce010e6dd0c2fe8554c9d",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",

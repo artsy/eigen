@@ -61,7 +61,7 @@ export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
       ...ArtistSeriesMoreSeries_artist
       ...ArtistNotableWorksRail_artist
       # this should match the query in ArtistNotableWorksRail
-      notableWorks: filterArtworksConnection(sort: "-weighted_iconicity", first: 3) {
+      notableWorks: filterArtworksConnection(first: 3, input: { sort: "-weighted_iconicity" }) {
         edges {
           node {
             id
