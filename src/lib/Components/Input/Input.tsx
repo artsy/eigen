@@ -63,6 +63,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     useImperativeHandle(ref, () => input.current!)
 
     useEffect(() => {
+      /*To make the font work for secure text inputs, see https://github.com/facebook/react-native/issues/30123#issuecomment-711076098*/
       input.current?.setNativeProps({
         style: { fontFamily: TEXT_FONTS.sans },
       })
