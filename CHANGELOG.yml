@@ -10,6 +10,7 @@ upcoming:
     - Fix push notification pre request prompt showing up everytime - kizito
     - Fix spaces between items in SaleList - yauheni
     - Inquiry checkout copy additions from legal - lily
+    - Fix artwork unavailable issue on the conversation screen - starsirius
 
 releases:
   - version: 6.9.0
