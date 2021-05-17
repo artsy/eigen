@@ -94,7 +94,7 @@ describe("OpenInquiryModalButtonQueryRenderer", () => {
       const tree = getWrapper()
       tree.root.findAllByType(Text)[1].props.onPress()
 
-      expect(navigate).toHaveBeenCalledWith("buyer-guarantee")
+      expect(navigate).toHaveBeenCalledWith("/buyer-guarantee")
     })
   })
 })
