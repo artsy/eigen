@@ -24,9 +24,15 @@ export const SaleList: React.FC<{ sales: Array<FragmentRef<SaleListItem_sale>>; 
   return (
     <View style={{ paddingHorizontal: 20 }}>
       <SectionTitle title={title} />
-      <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", marginBottom: -20 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          marginBottom: -20,
+        }}
+      >
         {sales.map((sale, index) => (
-          <SaleListItem key={index} sale={sale} containerWidth={columnWidth} />
+          <SaleListItem key={index} sale={sale} containerWidth={columnWidth} index={index} columnCount={columnCount} />
         ))}
       </View>
     </View>

@@ -8,6 +8,7 @@ upcoming:
     - Fix cancel button next to search bar doesn't clear terms/results - yauheni
     - Fix phone input misalignment on android - kizito
     - Fix push notification pre request prompt showing up everytime - kizito
+    - Fix spaces between items in SaleList - yauheni
     - Inquiry checkout copy additions from legal - lily
 
 releases:
