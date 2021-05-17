@@ -14,6 +14,7 @@ upcoming:
     - Fix artwork unavailable issue on the conversation screen - starsirius
     - Removes max-height on artwork filter modal - damon
     - Fix push notification registration - brian
+    - Enable Inquiry Checkout - starsirius
 
 releases:
   - version: 6.9.0
