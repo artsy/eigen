@@ -33,15 +33,6 @@
     }
 }
 
-- (NSDictionary *)featuresMap
-{
-    NSMutableDictionary *mutableOptions = [NSMutableDictionary dictionary];
-    for (NSString *key in self.features) {
-        [mutableOptions setObject:@(self.features[key].state) forKey:key];
-    }
-    return [mutableOptions copy];
-}
-
 - (BOOL)isFeatureEnabled:(NSString *)featureFlag
 {
     Feature *currentFeature = self.features[featureFlag];
