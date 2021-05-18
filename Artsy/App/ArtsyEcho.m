@@ -33,15 +33,6 @@
     }
 }
 
-- (NSDictionary *)featuresMap
-{
-    NSMutableDictionary *mutableOptions = [NSMutableDictionary dictionary];
-    for (NSString *key in self.features) {
-        [mutableOptions setObject:@(self.features[key].state) forKey:key];
-    }
-    return [mutableOptions copy];
-}
-
 - (BOOL)isFeatureEnabled:(NSString *)featureFlag
 {
     Feature *currentFeature = self.features[featureFlag];
@@ -50,20 +41,6 @@
     } else {
         return NO;
     }
-}
-
-- (NSArray *)legacyFairSlugs
-{
-    Message *legacyFairMessage = self.messages[@"LegacyFairSlugs"];
-    NSArray *fairSlugs = [legacyFairMessage.content componentsSeparatedByString:@","];
-    return fairSlugs ? fairSlugs : @[];
-}
-
-- (NSArray *)legacyFairProfileSlugs
-{
-    Message *legacyFairProfileSlugsMessage = self.messages[@"LegacyFairProfileSlugs"];
-    NSArray *fairProfileSlugs = [legacyFairProfileSlugsMessage.content componentsSeparatedByString:@","];
-    return fairProfileSlugs ? fairProfileSlugs : @[];
 }
 
 @end

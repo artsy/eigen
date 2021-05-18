@@ -50,7 +50,8 @@ export const features = defineFeatures({
     echoFlagKey: "AROptionsNewArtistInsightsPage",
   },
   AROptionsInquiryCheckout: {
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "AROptionsInquiryCheckout",
     description: "Enable inquiry checkout",
     showInAdminMenu: true,
   },
@@ -95,6 +96,11 @@ export const features = defineFeatures({
   ARUseImprovedArtworkFilters: {
     readyForRelease: false,
     description: "Use improved artwork filters",
+    showInAdminMenu: true,
+  },
+  AREnableOrderHistoryOption: {
+    readyForRelease: false,
+    description: "Enable Order History in settings",
     showInAdminMenu: true,
   },
 })
