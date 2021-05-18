@@ -55,34 +55,33 @@ const MyProfileOrderHistory: React.FC<{ me: MyProfileOrderHistory_me; relay: Rel
   }, [isLoadingMore, relay])
 
   const orders = extractNodes(me.orders)
-  console.log(orders, "creditCards")
 
   return (
     <PageWithSimpleHeader title="Order History">
-      {orders.length === 0 ? (
-        <Flex flex={1} flexDirection="column" justifyContent="center" alignItems="center" px={2}>
-          <Sans size="5t" color={colors["gray-semibold"]}>
-            No orders
-          </Sans>
-        </Flex>
-      ) : (
-        <FlatList
-          style={{ flex: 1 }}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-          data={orders}
-          keyExtractor={(item) => item.internalID}
-          contentContainerStyle={{ paddingTop: orders.length === 0 ? 10 : 20 }}
-          renderItem={({ item }) => (
-            <Flex flexDirection="row" justifyContent="space-between" px={2}>
-              <Sans size="4t" color="red100">
-                {item.internalID}
-              </Sans>
-            </Flex>
-          )}
-          onEndReached={onLoadMore}
-          ItemSeparatorComponent={() => <Spacer mb={10} />}
-        />
-      )}
+      <FlatList
+        style={{ flex: 1 }}
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+        data={orders}
+        keyExtractor={(item) => item.internalID}
+        contentContainerStyle={{ flexGrow: 1, paddingTop: orders.length === 0 ? 10 : 20 }}
+        renderItem={({ item }) => (
+          <Flex flexDirection="row" justifyContent="space-between" px={2}>
+            <Sans size="4t" color="red100">
+              {item.internalID}
+            </Sans>
+          </Flex>
+        )}
+        ListEmptyComponent={
+          <Flex flex={1} flexDirection="column" justifyContent="center" alignItems="center" px={2}>
+            <Sans size="5t" color={colors["gray-semibold"]}>
+              No orders
+            </Sans>
+          </Flex>
+        }
+        onEndReachedThreshold={0.25}
+        onEndReached={onLoadMore}
+        ItemSeparatorComponent={() => <Spacer mb={10} />}
+      />
     </PageWithSimpleHeader>
   )
 }
