@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 619ca8565658a9cfd7dd411f10c95038 */
+/* @relayHash b4012d2dfba16e62157f2bd5dbbb4a4c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -83,7 +83,7 @@ fragment ArtistAbout_artist on Artist {
   ...Biography_artist
   ...ArtistSeriesMoreSeries_artist
   ...ArtistNotableWorksRail_artist
-  notableWorks: filterArtworksConnection(sort: "-weighted_iconicity", first: 3) {
+  notableWorks: filterArtworksConnection(first: 3, input: {sort: "-weighted_iconicity"}) {
     edges {
       node {
         id
@@ -160,7 +160,7 @@ fragment ArtistConsignButton_artist on Artist {
 fragment ArtistNotableWorksRail_artist on Artist {
   internalID
   slug
-  filterArtworksConnection(sort: "-weighted_iconicity", first: 10) {
+  filterArtworksConnection(first: 10, input: {sort: "-weighted_iconicity"}) {
     edges {
       node {
         id
@@ -333,8 +333,10 @@ v7 = {
 },
 v8 = {
   "kind": "Literal",
-  "name": "sort",
-  "value": "-weighted_iconicity"
+  "name": "input",
+  "value": {
+    "sort": "-weighted_iconicity"
+  }
 },
 v9 = {
   "alias": null,
@@ -870,7 +872,7 @@ return {
               },
               (v9/*: any*/)
             ],
-            "storageKey": "filterArtworksConnection(first:10,sort:\"-weighted_iconicity\")"
+            "storageKey": "filterArtworksConnection(first:10,input:{\"sort\":\"-weighted_iconicity\"})"
           },
           {
             "alias": "notableWorks",
@@ -906,7 +908,7 @@ return {
               },
               (v9/*: any*/)
             ],
-            "storageKey": "filterArtworksConnection(first:3,sort:\"-weighted_iconicity\")"
+            "storageKey": "filterArtworksConnection(first:3,input:{\"sort\":\"-weighted_iconicity\"})"
           },
           {
             "alias": "iconicCollections",
@@ -1264,7 +1266,7 @@ return {
     ]
   },
   "params": {
-    "id": "619ca8565658a9cfd7dd411f10c95038",
+    "id": "b4012d2dfba16e62157f2bd5dbbb4a4c",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": (v18/*: any*/),

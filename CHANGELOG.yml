@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   dev:
     -
+    - Convert filter queries to use a single structured input for filterArtworksConnection requests - dzmitry tratsiak
   user_facing:
     - Fix wrong input font on android - dzmitry
     - 

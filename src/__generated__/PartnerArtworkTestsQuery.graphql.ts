@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 06f66dea309ba0701eb846eb8c41e413 */
+/* @relayHash 818d5b4652b9746d067102a6c86a2628 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -156,7 +156,7 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
 fragment PartnerArtwork_partner on Partner {
   internalID
   slug
-  artworks: filterArtworksConnection(aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], dimensionRange: "*-*", first: 10, sort: "-partner_updated_at") {
+  artworks: filterArtworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -218,18 +218,8 @@ v3 = [
   },
   {
     "kind": "Literal",
-    "name": "dimensionRange",
-    "value": "*-*"
-  },
-  {
-    "kind": "Literal",
     "name": "first",
     "value": 10
-  },
-  {
-    "kind": "Literal",
-    "name": "sort",
-    "value": "-partner_updated_at"
   }
 ],
 v4 = {
@@ -638,24 +628,14 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,sort:\"-partner_updated_at\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],first:10)"
           },
           {
             "alias": "artworks",
             "args": (v3/*: any*/),
             "filters": [
-              "acquireable",
               "aggregations",
-              "attributionClass",
-              "color",
-              "colors",
-              "dimensionRange",
-              "additionalGeneIDs",
-              "inquireableOnly",
-              "majorPeriods",
-              "offerable",
-              "priceRange",
-              "sort"
+              "input"
             ],
             "handle": "connection",
             "key": "Partner_artworks",
@@ -669,7 +649,7 @@ return {
     ]
   },
   "params": {
-    "id": "06f66dea309ba0701eb846eb8c41e413",
+    "id": "818d5b4652b9746d067102a6c86a2628",
     "metadata": {},
     "name": "PartnerArtworkTestsQuery",
     "operationKind": "query",

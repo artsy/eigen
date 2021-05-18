@@ -144,7 +144,10 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
       ...ShowInfo_show
       ...ShowViewingRoom_show
       ...ShowContextCard_show
-      ...ShowArtworks_show
+      ...ShowArtworks_show @arguments(input: {
+        sort: "partner_show_position",
+        dimensionRange: "*-*"
+      })
       ...ShowArtworksEmptyState_show
       viewingRoomIDs
       images(default: false) {

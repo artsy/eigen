@@ -134,6 +134,12 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artist
               }
               ...ArtistHeader_artist
               ...ArtistArtworks_artist
+              @arguments(
+                input: {
+                  dimensionRange: "*-*",
+                  sort: "-decayed_merch",
+                }
+              )
               auctionResultsConnection {
                 totalCount
               }

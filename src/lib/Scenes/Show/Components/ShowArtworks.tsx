@@ -2,7 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { Show_show } from "__generated__/Show_show.graphql"
 import { ShowArtworks_show } from "__generated__/ShowArtworks_show.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
-import { aggregationsType, FilterArray, filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { aggregationsType, FilterArray, filterArtworksParams, prepareFilterArtworksParamsForInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -70,7 +70,7 @@ const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) 
             throw new Error("Show/ShowArtworks filter error: " + error.message)
           }
         },
-        filterParams
+        { input: prepareFilterArtworksParamsForInput(filterParams) }
       )
     }
   }, [appliedFilters])
@@ -109,37 +109,15 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
       @argumentDefinitions(
         count: { type: "Int", defaultValue: 30 }
         cursor: { type: "String" }
-        sort: { type: "String", defaultValue: "partner_show_position" }
-        additionalGeneIDs: { type: "[String]" }
-        priceRange: { type: "String" }
-        color: { type: "String" }
-        colors: { type: "[String]" }
-        dimensionRange: { type: "String", defaultValue: "*-*" }
-        majorPeriods: { type: "[String]" }
-        acquireable: { type: "Boolean" }
-        inquireableOnly: { type: "Boolean" }
-        atAuction: { type: "Boolean" }
-        offerable: { type: "Boolean" }
-        attributionClass: { type: "[String]" }
+        input: { type: "FilterArtworksInput" }
       ) {
         slug
         internalID
         showArtworks: filterArtworksConnection(
           first: 30
           after: $cursor
-          sort: $sort
-          additionalGeneIDs: $additionalGeneIDs
-          priceRange: $priceRange
-          color: $color
-          colors: $colors
-          dimensionRange: $dimensionRange
-          majorPeriods: $majorPeriods
-          acquireable: $acquireable
-          inquireableOnly: $inquireableOnly
-          atAuction: $atAuction
-          offerable: $offerable
           aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
-          attributionClass: $attributionClass
+          input: $input
         ) @connection(key: "Show_showArtworks") {
           aggregations {
             slice
@@ -171,7 +149,7 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
     },
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
-        ...fragmentVariables,
+        input: fragmentVariables.input,
         props,
         count,
         cursor,
@@ -183,36 +161,14 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
         $id: String!
         $count: Int!
         $cursor: String
-        $sort: String
-        $additionalGeneIDs: [String]
-        $priceRange: String
-        $color: String
-        $colors: [String]
-        $dimensionRange: String
-        $majorPeriods: [String]
-        $acquireable: Boolean
-        $inquireableOnly: Boolean
-        $atAuction: Boolean
-        $offerable: Boolean
-        $attributionClass: [String]
+        $input: FilterArtworksInput
       ) {
         show(id: $id) {
           ...ShowArtworks_show
             @arguments(
               count: $count
               cursor: $cursor
-              sort: $sort
-              additionalGeneIDs: $additionalGeneIDs
-              color: $color
-              colors: $colors
-              priceRange: $priceRange
-              dimensionRange: $dimensionRange
-              majorPeriods: $majorPeriods
-              acquireable: $acquireable
-              inquireableOnly: $inquireableOnly
-              atAuction: $atAuction
-              offerable: $offerable
-              attributionClass: $attributionClass
+              input: $input
             )
         }
       }

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash bba942b2dc2cf6860a4df3c00dc10573 */
+/* @relayHash dfaaeb4310bf893d19130b6235ec55d7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -94,10 +94,10 @@ fragment ShowArtworksEmptyState_show on Show {
   status
 }
 
-fragment ShowArtworks_show on Show {
+fragment ShowArtworks_show_1lt5O6 on Show {
   slug
   internalID
-  showArtworks: filterArtworksConnection(first: 30, sort: "partner_show_position", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  showArtworks: filterArtworksConnection(first: 30, aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], input: {sort: "partner_show_position", dimensionRange: "*-*"}) {
     aggregations {
       slice
       counts {
@@ -262,7 +262,7 @@ fragment Show_show on Show {
   ...ShowInfo_show
   ...ShowViewingRoom_show
   ...ShowContextCard_show
-  ...ShowArtworks_show
+  ...ShowArtworks_show_1lt5O6
   ...ShowArtworksEmptyState_show
   viewingRoomIDs
   images(default: false) {
@@ -385,18 +385,16 @@ v14 = [
   },
   {
     "kind": "Literal",
-    "name": "dimensionRange",
-    "value": "*-*"
-  },
-  {
-    "kind": "Literal",
     "name": "first",
     "value": 30
   },
   {
     "kind": "Literal",
-    "name": "sort",
-    "value": "partner_show_position"
+    "name": "input",
+    "value": {
+      "dimensionRange": "*-*",
+      "sort": "partner_show_position"
+    }
   }
 ],
 v15 = {
@@ -1232,25 +1230,14 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:30,sort:\"partner_show_position\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],first:30,input:{\"dimensionRange\":\"*-*\",\"sort\":\"partner_show_position\"})"
           },
           {
             "alias": "showArtworks",
             "args": (v14/*: any*/),
             "filters": [
-              "sort",
-              "additionalGeneIDs",
-              "priceRange",
-              "color",
-              "colors",
-              "dimensionRange",
-              "majorPeriods",
-              "acquireable",
-              "inquireableOnly",
-              "atAuction",
-              "offerable",
               "aggregations",
-              "attributionClass"
+              "input"
             ],
             "handle": "connection",
             "key": "Show_showArtworks",
@@ -1290,7 +1277,7 @@ return {
     ]
   },
   "params": {
-    "id": "bba942b2dc2cf6860a4df3c00dc10573",
+    "id": "dfaaeb4310bf893d19130b6235ec55d7",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {
