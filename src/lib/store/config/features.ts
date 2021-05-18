@@ -97,6 +97,11 @@ export const features = defineFeatures({
     description: "Use improved artwork filters",
     showInAdminMenu: true,
   },
+  AREnableOrderHistoryOption: {
+    readyForRelease: false,
+    description: "Enable Order History in settings",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
