@@ -44,6 +44,7 @@ const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress }) => {
             backgroundColor="black"
             alignItems="center"
             justifyContent="center"
+            overflow="hidden"
           >
             <OpaqueImageView width={60} height={60} imageURL={auctionResult.images.thumbnail.url} />
           </Flex>

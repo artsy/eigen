@@ -1,4 +1,4 @@
-import { ActionType, addCollectedArtwork, OwnerType } from "@artsy/cohesion"
+import { addCollectedArtwork, OwnerType } from "@artsy/cohesion"
 import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { EventEmitter } from "events"
@@ -12,6 +12,7 @@ import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import { Box, Button, Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { FlatList, RefreshControl, ScrollView, View } from "react-native"
@@ -68,10 +69,9 @@ const MyCollection: React.FC<{
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={{
-        action: ActionType.screen,
+      info={screen({
         context_screen_owner_type: OwnerType.myCollection,
-      }}
+      })}
     >
       <View style={{ flex: 1 }}>
         <MyCollectionArtworkFormModal

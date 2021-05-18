@@ -5,6 +5,7 @@ import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/Artwor
 import { useOnTabFocusedEffect } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -139,12 +140,10 @@ export const tracks = {
       action_type: Schema.ActionTypes.Tap,
     }
   },
-  screen: (id: string, slug: string) => {
-    return {
-      context_screen: OwnerType.artistAuctionResults,
+  screen: (id: string, slug: string) =>
+    screen({
       context_screen_owner_type: OwnerType.artistAuctionResults,
       context_screen_owner_id: id,
       context_screen_owner_slug: slug,
-    }
-  },
+    }),
 }

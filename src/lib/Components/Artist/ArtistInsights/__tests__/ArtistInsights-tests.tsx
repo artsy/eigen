@@ -49,7 +49,7 @@ describe("ArtistInsights", () => {
 
     setImmediate(() => {
       expect(trackEvent).toHaveBeenCalledWith({
-        context_screen: "artistAuctionResults",
+        action: "screen",
         context_screen_owner_id: "internalID-1",
         context_screen_owner_slug: "slug-1",
         context_screen_owner_type: "artistAuctionResults",

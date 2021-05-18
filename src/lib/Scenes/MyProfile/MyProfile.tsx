@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
@@ -8,6 +9,8 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import { times } from "lodash"
 import { Flex, Join, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useRef, useState } from "react"
@@ -126,8 +129,8 @@ export const MyProfileContainer = createRefetchContainer(
   `
 )
 
-export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
-  return (
+export const MyProfileQueryRenderer: React.FC<{}> = ({}) => (
+  <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.profile })}>
     <QueryRenderer<MyProfileQuery>
       environment={defaultEnvironment}
       query={graphql`
@@ -143,8 +146,8 @@ export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
       })}
       variables={{}}
     />
-  )
-}
+  </ProvideScreenTrackingWithCohesionSchema>
+)
 
 export function confirmLogout() {
   Alert.alert("Log out?", "Are you sure you want to log out?", [
