@@ -1,64 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 279b65abd41298edaf2ab0023549ca60 */
+/* @relayHash e8c589d40442a5d7773f6877a07c42b7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtworkAggregation = "ARTIST" | "ARTIST_NATIONALITY" | "ATTRIBUTION_CLASS" | "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "LOCATION_CITY" | "MAJOR_PERIOD" | "MATERIALS_TERMS" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
-export type ArtworkSizes = "LARGE" | "MEDIUM" | "SMALL" | "%future added value";
-export type FilterArtworksInput = {
-    acquireable?: boolean | null;
-    additionalGeneIDs?: Array<string | null> | null;
-    after?: string | null;
-    aggregationPartnerCities?: Array<string | null> | null;
-    aggregations?: Array<ArtworkAggregation | null> | null;
-    artistID?: string | null;
-    artistIDs?: Array<string | null> | null;
-    artistNationalities?: Array<string | null> | null;
-    artistSeriesID?: string | null;
-    atAuction?: boolean | null;
-    attributionClass?: Array<string | null> | null;
-    before?: string | null;
-    color?: string | null;
-    colors?: Array<string | null> | null;
-    dimensionRange?: string | null;
-    excludeArtworkIDs?: Array<string | null> | null;
-    extraAggregationGeneIDs?: Array<string | null> | null;
-    first?: number | null;
-    forSale?: boolean | null;
-    geneID?: string | null;
-    geneIDs?: Array<string | null> | null;
-    height?: string | null;
-    includeArtworksByFollowedArtists?: boolean | null;
-    includeMediumFilterInAggregation?: boolean | null;
-    inquireableOnly?: boolean | null;
-    keyword?: string | null;
-    keywordMatchExact?: boolean | null;
-    last?: number | null;
-    locationCities?: Array<string | null> | null;
-    majorPeriods?: Array<string | null> | null;
-    marketable?: boolean | null;
-    materialsTerms?: Array<string | null> | null;
-    medium?: string | null;
-    offerable?: boolean | null;
-    page?: number | null;
-    partnerCities?: Array<string | null> | null;
-    partnerID?: string | null;
-    partnerIDs?: Array<string | null> | null;
-    period?: string | null;
-    periods?: Array<string | null> | null;
-    priceRange?: string | null;
-    saleID?: string | null;
-    size?: number | null;
-    sizes?: Array<ArtworkSizes | null> | null;
-    sort?: string | null;
-    tagID?: string | null;
-    width?: string | null;
-};
 export type ArtistAboveTheFoldQueryVariables = {
     artistID: string;
-    input?: FilterArtworksInput | null;
 };
 export type ArtistAboveTheFoldQueryResponse = {
     readonly artist: {
@@ -87,7 +35,6 @@ export type ArtistAboveTheFoldQuery = {
 /*
 query ArtistAboveTheFoldQuery(
   $artistID: String!
-  $input: FilterArtworksInput
 ) {
   artist(id: $artistID) {
     internalID
@@ -100,7 +47,7 @@ query ArtistAboveTheFoldQuery(
       articles
     }
     ...ArtistHeader_artist
-    ...ArtistArtworks_artist_2VV6jB
+    ...ArtistArtworks_artist_44NygF
     auctionResultsConnection {
       totalCount
     }
@@ -108,11 +55,11 @@ query ArtistAboveTheFoldQuery(
   }
 }
 
-fragment ArtistArtworks_artist_2VV6jB on Artist {
+fragment ArtistArtworks_artist_44NygF on Artist {
   id
   slug
   internalID
-  artworks: filterArtworksConnection(first: 10, input: $input, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  artworks: filterArtworksConnection(first: 10, input: {dimensionRange: "*-*", sort: "-decayed_merch"}, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -220,11 +167,6 @@ var v0 = [
     "defaultValue": null,
     "kind": "LocalArgument",
     "name": "artistID"
-  },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "input"
   }
 ],
 v1 = [
@@ -302,9 +244,12 @@ v9 = {
   "storageKey": null
 },
 v10 = {
-  "kind": "Variable",
+  "kind": "Literal",
   "name": "input",
-  "variableName": "input"
+  "value": {
+    "dimensionRange": "*-*",
+    "sort": "-decayed_merch"
+  }
 },
 v11 = {
   "alias": null,
@@ -822,7 +767,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": null
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-decayed_merch\"})"
           },
           {
             "alias": "artworks",
@@ -843,7 +788,7 @@ return {
     ]
   },
   "params": {
-    "id": "279b65abd41298edaf2ab0023549ca60",
+    "id": "e8c589d40442a5d7773f6877a07c42b7",
     "metadata": {},
     "name": "ArtistAboveTheFoldQuery",
     "operationKind": "query",
@@ -851,5 +796,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'c77a30c411c594acc62fcfa05072964f';
+(node as any).hash = '98b710cba3d88ac681900f6f01c51c65';
 export default node;

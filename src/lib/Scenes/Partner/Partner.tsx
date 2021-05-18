@@ -59,8 +59,7 @@ export const PartnerContainer = createRefetchContainer(
   Partner,
   {
     partner: graphql`
-      fragment Partner_partner on Partner
-      @argumentDefinitions(input: { type: "FilterArtworksInput" }){
+      fragment Partner_partner on Partner {
         id
         internalID
         slug
@@ -70,7 +69,10 @@ export const PartnerContainer = createRefetchContainer(
           internalID
         }
 
-        ...PartnerArtwork_partner @arguments(input: $input)
+        ...PartnerArtwork_partner @arguments(input: {
+          sort: "-partner_updated_at",
+          dimensionRange: "*-*"
+        })
         ...PartnerOverview_partner
         ...PartnerShows_partner
         ...PartnerHeader_partner
@@ -97,19 +99,13 @@ export const PartnerQueryRenderer: React.FC<{
           <QueryRenderer<PartnerQuery>
             environment={defaultEnvironment}
             query={graphql`
-              query PartnerQuery($partnerID: String!, $input: FilterArtworksInput) {
+              query PartnerQuery($partnerID: String!) {
                 partner(id: $partnerID) {
-                  ...Partner_partner @arguments(input: $input)
+                  ...Partner_partner
                 }
               }
             `}
-            variables={{
-              partnerID,
-              input: {
-                sort: "-partner_updated_at",
-                dimensionRange: "*-*"
-              }
-            }}
+            variables={{ partnerID }}
             cacheConfig={{
               // Bypass Relay cache on retries.
               ...(isRetry && { force: true }),

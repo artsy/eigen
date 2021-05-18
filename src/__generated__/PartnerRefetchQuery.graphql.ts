@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f57afe897641d2d39005561eddf25baa */
+/* @relayHash 37d71a95a4f73153c3be8ce52162f9f8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -106,10 +106,10 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
   }
 }
 
-fragment PartnerArtwork_partner_4g78v5 on Partner {
+fragment PartnerArtwork_partner_BRGa6 on Partner {
   internalID
   slug
-  artworks: filterArtworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  artworks: filterArtworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], input: {sort: "-partner_updated_at", dimensionRange: "*-*"}) {
     aggregations {
       slice
       counts {
@@ -296,7 +296,7 @@ fragment Partner_partner on Partner {
     isFollowed
     internalID
   }
-  ...PartnerArtwork_partner_4g78v5
+  ...PartnerArtwork_partner_BRGa6
   ...PartnerOverview_partner
   ...PartnerShows_partner
   ...PartnerHeader_partner
@@ -370,7 +370,15 @@ v8 = [
       "PRICE_RANGE"
     ]
   },
-  (v7/*: any*/)
+  (v7/*: any*/),
+  {
+    "kind": "Literal",
+    "name": "input",
+    "value": {
+      "dimensionRange": "*-*",
+      "sort": "-partner_updated_at"
+    }
+  }
 ],
 v9 = {
   "alias": null,
@@ -884,7 +892,7 @@ return {
                     "abstractKey": "__isArtworkConnectionInterface"
                   }
                 ],
-                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],first:10)"
+                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-partner_updated_at\"})"
               },
               {
                 "alias": "artworks",
@@ -1275,7 +1283,7 @@ return {
     ]
   },
   "params": {
-    "id": "f57afe897641d2d39005561eddf25baa",
+    "id": "37d71a95a4f73153c3be8ce52162f9f8",
     "metadata": {},
     "name": "PartnerRefetchQuery",
     "operationKind": "query",

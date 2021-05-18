@@ -40,13 +40,7 @@ v1 = {
   "storageKey": null
 };
 return {
-  "argumentDefinitions": [
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "input"
-    }
-  ],
+  "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
   "name": "Partner_partner",
@@ -83,9 +77,12 @@ return {
     {
       "args": [
         {
-          "kind": "Variable",
+          "kind": "Literal",
           "name": "input",
-          "variableName": "input"
+          "value": {
+            "dimensionRange": "*-*",
+            "sort": "-partner_updated_at"
+          }
         }
       ],
       "kind": "FragmentSpread",
@@ -111,5 +108,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '3c7378c0461ee1ed1043f07776fb0d69';
+(node as any).hash = '7fa0395369fdf04450d4be9d31ceb520';
 export default node;

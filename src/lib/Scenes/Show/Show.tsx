@@ -136,9 +136,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
 
 export const ShowFragmentContainer = createFragmentContainer(Show, {
   show: graphql`
-    fragment Show_show on Show @argumentDefinitions(
-      input: { type: "FilterArtworksInput" }
-    ) {
+    fragment Show_show on Show {
       internalID
       slug
       ...ShowHeader_show
@@ -146,7 +144,10 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
       ...ShowInfo_show
       ...ShowViewingRoom_show
       ...ShowContextCard_show
-      ...ShowArtworks_show @arguments(input: $input)
+      ...ShowArtworks_show @arguments(input: {
+        sort: "partner_show_position",
+        dimensionRange: "*-*"
+      })
       ...ShowArtworksEmptyState_show
       viewingRoomIDs
       images(default: false) {
@@ -164,19 +165,13 @@ export const ShowQueryRenderer: React.FC<ShowQueryRendererProps> = ({ showID }) 
     <QueryRenderer<ShowQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query ShowQuery($showID: String!, $input: FilterArtworksInput) {
+        query ShowQuery($showID: String!) {
           show(id: $showID) @principalField {
-            ...Show_show @arguments(input: $input)
+            ...Show_show
           }
         }
       `}
-      variables={{
-        showID,
-        input: {
-          sort: "partner_show_position",
-          dimensionRange: "*-*"
-        }
-      }}
+      variables={{ showID }}
       render={renderWithPlaceholder({
         Container: ShowFragmentContainer,
         renderPlaceholder: () => <ShowPlaceholder />,

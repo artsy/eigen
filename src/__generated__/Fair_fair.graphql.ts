@@ -47,13 +47,7 @@ var v0 = [
   }
 ];
 return {
-  "argumentDefinitions": [
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "input"
-    }
-  ],
+  "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
   "name": "Fair_fair",
@@ -209,9 +203,12 @@ return {
     {
       "args": [
         {
-          "kind": "Variable",
+          "kind": "Literal",
           "name": "input",
-          "variableName": "input"
+          "value": {
+            "dimensionRange": "*-*",
+            "sort": "-decayed_merch"
+          }
         }
       ],
       "kind": "FragmentSpread",
@@ -232,5 +229,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '55853697d6f3ae8331c03b3b82a6a1a3';
+(node as any).hash = '6c991142cc4d3ed85f992de42519c078';
 export default node;
