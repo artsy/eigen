@@ -5,12 +5,19 @@ upcoming:
     - lock screen orientation to portrait on android phones - mounir
     - Fix artist follow is incorrectly firing action_name - dzmitry
   user_facing:
+    - Correct formatted large numbers' display - kizito
     - Fix cancel button next to search bar doesn't clear terms/results - yauheni
     - Fix phone input misalignment on android - kizito
     - Fix push notification pre request prompt showing up everytime - kizito
     - Fix spaces between items in SaleList - yauheni
     - Inquiry checkout copy additions from legal - lily
+    - Fix wrong input font on android - dzmitry
+    - Fix artwork unavailable issue on the conversation screen - starsirius
+    - Removes max-height on artwork filter modal - damon
+    - Fix push notification registration - brian
+    - Enable Inquiry Checkout - starsirius
     - Fix home screen load failure on logout - brian
+
 
 releases:
   - version: 6.9.0
@@ -47,6 +54,7 @@ releases:
       - Fix extra padding on home module rails - mounir, ole
       - Implements custom price filter option (behind feature flag) - damon
       - Remove lots by followed artists rail for now - brian
+      - Removes max-height on artwork filter modal - damon
 
   - version: 6.8.4
     date: Apr 29, 2021

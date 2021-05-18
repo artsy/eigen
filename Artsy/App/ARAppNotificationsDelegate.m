@@ -36,8 +36,12 @@
         // lets show you a prompt to go to settings
         [self displayPushNotificationSettingsPrompt];
     } else if (![AROptions boolForOption:ARPushNotificationsAppleDialogueSeen] && [self shouldPresentPushNotificationAgain]) {
-        // As long as you've not seen Apple's dialogue already, we will show you our pre-prompt.
+        // As long as you've not seen Apple's dialogue already we will show you our pre-prompt.
         [self displayPushNotificationLocalRequestPrompt];
+    } else {
+        // Otherwise fallback to requesting directly with apple to make sure we have
+        // up to date push tokens
+        [self registerForDeviceNotificationsWithApple];
     }
 }
 
