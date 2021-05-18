@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1391fb0125762b45db3240b04cbe9ef9 */
+/* @relayHash ca9811522b84bb7e617322d9c6eba0bc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -313,7 +313,7 @@ fragment FairExhibitors_fair on Fair {
 fragment FairFollowedArtistsRail_fair on Fair {
   internalID
   slug
-  followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
+  followedArtistArtworks: filterArtworksConnection(first: 20, input: {includeArtworksByFollowedArtists: true}) {
     edges {
       artwork: node {
         id
@@ -385,7 +385,7 @@ fragment Fair_fair_2VV6jB on Fair {
     artworks
     partnerShows
   }
-  followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
+  followedArtistArtworks: filterArtworksConnection(first: 20, input: {includeArtworksByFollowedArtists: true}) {
     edges {
       __typename
     }
@@ -944,8 +944,10 @@ return {
               (v10/*: any*/),
               {
                 "kind": "Literal",
-                "name": "includeArtworksByFollowedArtists",
-                "value": true
+                "name": "input",
+                "value": {
+                  "includeArtworksByFollowedArtists": true
+                }
               }
             ],
             "concreteType": "FilterArtworksConnection",
@@ -996,7 +998,7 @@ return {
               },
               (v6/*: any*/)
             ],
-            "storageKey": "filterArtworksConnection(first:20,includeArtworksByFollowedArtists:true)"
+            "storageKey": "filterArtworksConnection(first:20,input:{\"includeArtworksByFollowedArtists\":true})"
           },
           {
             "alias": null,
@@ -1663,7 +1665,7 @@ return {
     ]
   },
   "params": {
-    "id": "1391fb0125762b45db3240b04cbe9ef9",
+    "id": "ca9811522b84bb7e617322d9c6eba0bc",
     "metadata": {},
     "name": "FairQuery",
     "operationKind": "query",

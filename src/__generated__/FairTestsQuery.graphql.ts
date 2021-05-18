@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9ad60638dcecf34f3b95ed14604a60ad */
+/* @relayHash 0a0f7792f979123c5690a8f701023131 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -260,7 +260,7 @@ fragment FairExhibitors_fair on Fair {
 fragment FairFollowedArtistsRail_fair on Fair {
   internalID
   slug
-  followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
+  followedArtistArtworks: filterArtworksConnection(first: 20, input: {includeArtworksByFollowedArtists: true}) {
     edges {
       artwork: node {
         id
@@ -332,7 +332,7 @@ fragment Fair_fair on Fair {
     artworks
     partnerShows
   }
-  followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
+  followedArtistArtworks: filterArtworksConnection(first: 20, input: {includeArtworksByFollowedArtists: true}) {
     edges {
       __typename
     }
@@ -992,8 +992,10 @@ return {
               (v9/*: any*/),
               {
                 "kind": "Literal",
-                "name": "includeArtworksByFollowedArtists",
-                "value": true
+                "name": "input",
+                "value": {
+                  "includeArtworksByFollowedArtists": true
+                }
               }
             ],
             "concreteType": "FilterArtworksConnection",
@@ -1044,7 +1046,7 @@ return {
               },
               (v5/*: any*/)
             ],
-            "storageKey": "filterArtworksConnection(first:20,includeArtworksByFollowedArtists:true)"
+            "storageKey": "filterArtworksConnection(first:20,input:{\"includeArtworksByFollowedArtists\":true})"
           },
           {
             "alias": null,
@@ -1711,7 +1713,7 @@ return {
     ]
   },
   "params": {
-    "id": "9ad60638dcecf34f3b95ed14604a60ad",
+    "id": "0a0f7792f979123c5690a8f701023131",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": (v30/*: any*/),

@@ -296,7 +296,7 @@ export const FairFragmentContainer = createFragmentContainer(Fair, {
         artworks
         partnerShows
       }
-      followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
+      followedArtistArtworks: filterArtworksConnection(first: 20, input: { includeArtworksByFollowedArtists: true }) {
         edges {
           __typename
         }
