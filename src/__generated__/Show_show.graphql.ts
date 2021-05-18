@@ -26,7 +26,13 @@ export type Show_show$key = {
 
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "input"
+    }
+  ],
   "kind": "Fragment",
   "metadata": null,
   "name": "Show_show",
@@ -120,7 +126,13 @@ const node: ReaderFragment = {
       "name": "ShowContextCard_show"
     },
     {
-      "args": null,
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "input",
+          "variableName": "input"
+        }
+      ],
       "kind": "FragmentSpread",
       "name": "ShowArtworks_show"
     },
@@ -133,5 +145,5 @@ const node: ReaderFragment = {
   "type": "Show",
   "abstractKey": null
 };
-(node as any).hash = 'f181f393f2512c84f307c68b11f5a547';
+(node as any).hash = '93c46afb77d259263205cc3c864936f7';
 export default node;
