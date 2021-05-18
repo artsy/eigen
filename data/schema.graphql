@@ -9366,7 +9366,21 @@ type Query {
     @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # A list of Partners
-  partnersConnection(after: String, before: String, first: Int, ids: [String], last: Int): PartnerConnection
+  partnersConnection(
+    after: String
+    before: String
+    defaultProfilePublic: Boolean
+
+    # Indicates an active subscription
+    eligibleForListing: Boolean
+    first: Int
+    ids: [String]
+    last: Int
+
+    # Coordinates to find partners closest to
+    near: String
+    sort: PartnersSortType
+  ): PartnerConnection
 
   # Get all price insights for an artist.
   priceInsights(
@@ -11733,7 +11747,21 @@ type Viewer {
     @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
 
   # A list of Partners
-  partnersConnection(after: String, before: String, first: Int, ids: [String], last: Int): PartnerConnection
+  partnersConnection(
+    after: String
+    before: String
+    defaultProfilePublic: Boolean
+
+    # Indicates an active subscription
+    eligibleForListing: Boolean
+    first: Int
+    ids: [String]
+    last: Int
+
+    # Coordinates to find partners closest to
+    near: String
+    sort: PartnersSortType
+  ): PartnerConnection
 
   # A Sale
   sale(
