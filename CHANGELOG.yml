@@ -1,24 +1,31 @@
 upcoming:
-  version: 6.9.1
+  version: 6.9.2
   date: TBD
   dev:
-    - lock screen orientation to portrait on android phones - mounir
-    - Fix artist follow is incorrectly firing action_name - dzmitry
+    -
   user_facing:
-    - Correct formatted large numbers' display - kizito
-    - Fix cancel button next to search bar doesn't clear terms/results - yauheni
-    - Fix phone input misalignment on android - kizito
-    - Fix push notification pre request prompt showing up everytime - kizito
-    - Fix spaces between items in SaleList - yauheni
-    - Inquiry checkout copy additions from legal - lily
     - Fix wrong input font on android - dzmitry
-    - Fix artwork unavailable issue on the conversation screen - starsirius
-    - Removes max-height on artwork filter modal - damon
-    - Fix push notification registration - brian
-    - Enable Inquiry Checkout - starsirius
-
+    - 
+ 
 
 releases:
+  - version: 6.9.1
+    date: May 18, 2021
+    dev:
+     - lock screen orientation to portrait on android phones - mounir
+     - Fix artist follow is incorrectly firing action_name - dzmitry
+    user_facing:
+      - Correct formatted large numbers' display - kizito
+      - Fix cancel button next to search bar doesn't clear terms/results - yauheni
+      - Fix phone input misalignment on android - kizito
+      - Fix push notification pre request prompt showing up everytime - kizito
+      - Fix spaces between items in SaleList - yauheni
+      - Inquiry checkout copy additions from legal - lily
+      - Fix artwork unavailable issue on the conversation screen - starsirius
+      - Removes max-height on artwork filter modal - damon
+      - Fix push notification registration - brian
+      - Enable Inquiry Checkout - starsirius
+
   - version: 6.9.0
     date: May 12, 2021
     dev:
