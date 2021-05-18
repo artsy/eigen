@@ -3,6 +3,9 @@ upcoming:
   date: TBD
   dev:
     -
+    - lock screen orientation to portrait on android phones - mounir
+    - Fix artist follow is incorrectly firing action_name - dzmitry
+    - Convert filter queries to use a single structured input for filterArtworksConnection requests - dzmitry tratsiak
   user_facing:
     - Fix wrong input font on android - dzmitry
     - 
