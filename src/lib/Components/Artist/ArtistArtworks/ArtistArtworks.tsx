@@ -87,7 +87,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
 
   const filterParams = filterArtworksParams(appliedFilters)
-  const preparedFilterParams = prepareFilterArtworksParamsForInput(filterParams)
   const artworks = artist.artworks
   const artworksCount = artworks?.edges?.length
   const artworksTotal = artworks?.counts?.total
@@ -101,7 +100,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
             throw new Error("ArtistArtworks/ArtistArtworks filter error: " + error.message)
           }
         },
-        { input: preparedFilterParams },
+        { input: prepareFilterArtworksParamsForInput(filterParams) },
       )
     }
   }, [appliedFilters])

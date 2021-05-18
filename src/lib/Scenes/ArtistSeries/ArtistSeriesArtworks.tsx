@@ -25,7 +25,6 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
 
   const tracking = useTracking()
   const filterParams = filterArtworksParams(appliedFilters)
-  const preparedFilterParams = prepareFilterArtworksParamsForInput(filterParams)
 
   const artworks = artistSeries?.artistSeriesArtworks!
 
@@ -49,7 +48,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
             throw new Error("ArtistSeries/ArtistSeriesArtworks filter error: " + error.message)
           }
         },
-        { input: preparedFilterParams }
+        { input: prepareFilterArtworksParamsForInput(filterParams) }
       )
     }
   }, [appliedFilters])

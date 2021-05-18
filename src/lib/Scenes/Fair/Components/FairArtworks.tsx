@@ -42,7 +42,6 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
 
   const filterParams = filterArtworksParams(appliedFilters)
-  const preparedFilterParams = prepareFilterArtworksParamsForInput(filterParams)
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
@@ -70,7 +69,7 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
             throw new Error("Fair/FairArtworks filter error: " + error.message)
           }
         },
-        { input: preparedFilterParams }
+        { input: prepareFilterArtworksParamsForInput(filterParams) }
       )
     }
   }, [appliedFilters])
