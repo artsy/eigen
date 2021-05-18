@@ -1,5 +1,5 @@
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
-import { Alert, RefreshControl, View, ViewProps } from "react-native"
+import { Alert, Platform, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
@@ -317,7 +317,9 @@ export const HomeQueryRenderer: React.FC = () => {
     flash_message?: string
   }
 
-  const userAccessToken = GlobalStore.useAppState((state) => state.native.sessionState.authenticationToken)
+  const userAccessToken = GlobalStore.useAppState((store) =>
+    Platform.OS === "ios" ? store.native.sessionState.authenticationToken : store.auth.userAccessToken
+  )
 
   useEffect(() => {
     if (flash_message) {
