@@ -43,7 +43,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
           <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} artist={artist} />
         )}
         <ArtistConsignButton artist={artist} />
-        {!!useFeatureFlag("AROptionsNewArtistInsightsPage") && <ArtistAboutShowsFragmentContainer artist={artist} />}
+        <ArtistAboutShowsFragmentContainer artist={artist} />
         {!!articles.length && <Articles articles={articles} />}
         {!!relatedArtists.length && <RelatedArtists artists={relatedArtists} />}
       </Stack>

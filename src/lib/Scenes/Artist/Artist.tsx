@@ -10,14 +10,11 @@ import { ArtistAboutContainer } from "lib/Components/Artist/ArtistAbout/ArtistAb
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
 import { ArtistInsightsFragmentContainer } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
-import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
 import { StickyTabPage, TabProps } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
-import { isPad } from "lib/utils/hardware"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Flex, Message } from "palette"
 import React from "react"
@@ -52,16 +49,7 @@ export const Artist: React.FC<{
     })
   }
 
-  const isArtistInsightsEnabled = useFeatureFlag("AROptionsNewArtistInsightsPage")
-
-  if ((artistAboveTheFold.counts?.partner_shows ?? 0) > 0 && !isArtistInsightsEnabled) {
-    tabs.push({
-      title: "Shows",
-      content: artistBelowTheFold ? <ArtistShows artist={artistBelowTheFold} /> : <LoadingPage />,
-    })
-  }
-
-  if (isArtistInsightsEnabled && artistAboveTheFold?.auctionResultsConnection?.totalCount) {
+  if (artistAboveTheFold?.auctionResultsConnection?.totalCount) {
     tabs.push({
       title: "Insights",
       content: artistBelowTheFold ? (
@@ -150,15 +138,14 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artist
       }}
       below={{
         query: graphql`
-          query ArtistBelowTheFoldQuery($artistID: String!, $isPad: Boolean!) {
+          query ArtistBelowTheFoldQuery($artistID: String!) {
             artist(id: $artistID) {
               ...ArtistAbout_artist
-              ...ArtistShows_artist
               ...ArtistInsights_artist
             }
           }
         `,
-        variables: { artistID, isPad: isPad() },
+        variables: { artistID },
       }}
       render={{
         renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
