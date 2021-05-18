@@ -1,0 +1,40 @@
+{
+  "version": "0.1.0",
+  "command": "sh",
+  "args": ["-c"],
+  "isShellCommand": true,
+  "showOutput": "silent",
+  "suppressTaskName": true,
+  "tasks": [
+    {
+      "taskName": "Start Typescript Compiler",
+      "isBuildCommand": true,
+      "args": ["node_modules/.bin/tsc --noEmit"],
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "taskName": "Start Typescript Compiler (in watch mode)",
+      "isBuildCommand": true,
+      "args": ["node_modules/.bin/tsc --watch --noEmit"],
+      "isBackground": true,
+      "problemMatcher": ["$tsc-watch"]
+    },
+    {
+      "taskName": "TSLint: Lint all files",
+      "command": "yarn",
+      "args": ["lint"],
+      "problemMatcher": {
+        "owner": "tslint",
+        "fileLocation": ["relative", "${workspaceRoot}"],
+        "severity": "warning",
+        "pattern": {
+          "regexp": "^(\\S.*)\\[(\\d+), (\\d+)\\]:\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "message": 4
+        }
+      }
+    }
+  ]
+}
