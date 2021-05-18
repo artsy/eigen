@@ -28,7 +28,13 @@ export type VanityURLEntity_fairOrPartner$key = {
 
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "input"
+    }
+  ],
   "kind": "Fragment",
   "metadata": null,
   "name": "VanityURLEntity_fairOrPartner",
@@ -63,7 +69,13 @@ const node: ReaderFragment = {
       "kind": "InlineFragment",
       "selections": [
         {
-          "args": null,
+          "args": [
+            {
+              "kind": "Variable",
+              "name": "input",
+              "variableName": "input"
+            }
+          ],
           "kind": "FragmentSpread",
           "name": "Partner_partner"
         }
@@ -75,5 +87,5 @@ const node: ReaderFragment = {
   "type": "VanityURLEntityType",
   "abstractKey": "__isVanityURLEntityType"
 };
-(node as any).hash = '390ae282c3c418c11c6295a43866b292';
+(node as any).hash = '766e22899053d15c876c2546a8aba00c';
 export default node;

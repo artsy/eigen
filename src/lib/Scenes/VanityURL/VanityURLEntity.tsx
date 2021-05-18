@@ -34,14 +34,15 @@ const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug })
 
 const VanityURLEntityFragmentContainer = createFragmentContainer(VanityURLEntity, {
   fairOrPartner: graphql`
-    fragment VanityURLEntity_fairOrPartner on VanityURLEntityType {
+    fragment VanityURLEntity_fairOrPartner on VanityURLEntityType
+    @argumentDefinitions(input: { type: "FilterArtworksInput" }) {
       __typename
       ... on Fair {
         slug
         ...Fair_fair
       }
       ... on Partner {
-        ...Partner_partner
+        ...Partner_partner @arguments(input: $input)
       }
     }
   `,
@@ -62,13 +63,19 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
       <QueryRenderer<VanityURLEntityQuery>
         environment={defaultEnvironment}
         query={graphql`
-          query VanityURLEntityQuery($id: String!) {
+          query VanityURLEntityQuery($id: String!, $input: FilterArtworksInput) {
             vanityURLEntity(id: $id) {
-              ...VanityURLEntity_fairOrPartner
+              ...VanityURLEntity_fairOrPartner @arguments(input: $input)
             }
           }
         `}
-        variables={{ id: slug }}
+        variables={{
+          id: slug,
+          input: {
+            sort: "-partner_updated_at",
+            dimensionRange: "*-*"
+          }
+        }}
         render={renderWithPlaceholder({
           renderFallback: () => <VanityURLPossibleRedirect slug={slug} />,
           renderPlaceholder: () => {

@@ -40,7 +40,13 @@ v1 = {
   "storageKey": null
 };
 return {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "input"
+    }
+  ],
   "kind": "Fragment",
   "metadata": null,
   "name": "Partner_partner",
@@ -75,7 +81,13 @@ return {
       "storageKey": null
     },
     {
-      "args": null,
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "input",
+          "variableName": "input"
+        }
+      ],
       "kind": "FragmentSpread",
       "name": "PartnerArtwork_partner"
     },
@@ -99,5 +111,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '1c1790711f9aa1867fea2a077435e852';
+(node as any).hash = '3c7378c0461ee1ed1043f07776fb0d69';
 export default node;
