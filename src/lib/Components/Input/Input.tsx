@@ -1,6 +1,6 @@
 import { color, Color, EyeOpenedIcon, Flex, Sans, TEXT_FONTS, XCircleIcon } from "palette"
 import { fontFamily } from "palette/platform/fonts/fontFamily"
-import React, { useImperativeHandle, useRef, useState } from "react"
+import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
   Platform,
@@ -62,6 +62,14 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     const input = useRef<TextInput>()
     useImperativeHandle(ref, () => input.current!)
 
+    useEffect(() => {
+      /* to make the font work for secure text inputs,
+      see https://github.com/facebook/react-native/issues/30123#issuecomment-711076098 */
+      input.current?.setNativeProps({
+        style: { fontFamily: TEXT_FONTS.sans },
+      })
+    }, [])
+
     const renderShowPasswordIcon = () => {
       if (!secureTextEntry) {
         return
@@ -111,7 +119,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
               <StyledInput
                 ref={input}
                 placeholderTextColor={color("black60")}
-                style={{ flex: 1, fontFamily: TEXT_FONTS.sans, fontSize: 15, ...inputTextStyle }}
+                style={{ flex: 1, fontSize: 15, ...inputTextStyle }}
                 secureTextEntry={!showPassword}
                 textAlignVertical="center"
                 {...(rest as any)}
