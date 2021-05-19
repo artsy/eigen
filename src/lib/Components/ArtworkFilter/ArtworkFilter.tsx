@@ -15,6 +15,7 @@ import { AttributionClassOptionsScreen } from "lib/Components/ArtworkFilter/Filt
 import { CategoriesOptionsScreen } from "lib/Components/ArtworkFilter/Filters/CategoriesOptions"
 import { ColorsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ColorsOptions"
 import { EstimateRangeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/EstimateRangeOptions"
+import { MaterialsTermsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/MaterialsTermsOptions"
 import { MediumOptionsScreen } from "lib/Components/ArtworkFilter/Filters/MediumOptions"
 import { PriceRangeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/PriceRangeOptions"
 import { SizeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/SizeOptions"
@@ -176,6 +177,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             />
             <Stack.Screen name="WaysToBuyOptionsScreen" component={WaysToBuyOptionsScreen} />
             <Stack.Screen name="CategoriesOptionsScreen" component={CategoriesOptionsScreen} />
+            <Stack.Screen name="MaterialsTermsOptionsScreen" component={MaterialsTermsOptionsScreen} />
           </Stack.Navigator>
 
           <Separator my={0} />
