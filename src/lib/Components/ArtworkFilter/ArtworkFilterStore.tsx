@@ -255,6 +255,7 @@ export const DEFAULT_FILTERS: FilterArray = [
   { paramName: FilterParamName.artistIDs, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.viewAs, paramValue: false, displayText: "Grid" },
   { paramName: FilterParamName.attributionClass, paramValue: "", displayText: "All" },
+  { paramName: FilterParamName.materialsTerms, paramValue: [], displayText: "All" },
 ]
 
 export const selectedOptionsUnion = ({

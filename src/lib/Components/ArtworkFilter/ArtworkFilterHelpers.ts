@@ -49,6 +49,7 @@ export enum FilterParamName {
   waysToBuyBuy = "acquireable",
   waysToBuyInquire = "inquireableOnly",
   waysToBuyMakeOffer = "offerable",
+  materialsTerms = "materialsTerms",
 }
 
 // Types for the parameters passed to Relay
@@ -95,6 +96,7 @@ export const ParamDefaultValues = {
   sortArtworks: "-decayed_merch",
   sortSaleArtworks: "position",
   viewAs: ViewAsValues.Grid,
+  materialsTerms: [],
 }
 
 export const defaultCommonFilterOptions = {
@@ -121,6 +123,7 @@ export const defaultCommonFilterOptions = {
   sizes: ParamDefaultValues.sizes,
   sort: ParamDefaultValues.sortArtworks,
   viewAs: ParamDefaultValues.viewAs,
+  materialsTerms: ParamDefaultValues.materialsTerms,
 }
 
 export type Aggregations = Array<{
@@ -142,6 +145,7 @@ export type AggregationName =
   | "ARTIST"
   | "earliestCreatedYear"
   | "latestCreatedYear"
+  | "MATERIALS_TERMS"
 
 export interface Aggregation {
   count: number
@@ -399,6 +403,7 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   medium: "MEDIUM",
   partnerIDs: "PARTNER",
   priceRange: "PRICE_RANGE",
+  materialsTerms: "MATERIALS_TERMS",
 }
 
 export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {
