@@ -73,7 +73,7 @@ export const tappedOnMap = (
   partnerName: string | null,
   city: string | null,
   postalCode: string | null
-) => {
+): Parameters<ReturnType<typeof useActionSheet>["showActionSheetWithOptions"]> => {
   // Fairs only have a "summary", so we need to
   // be quite conservative about what parts of the address we
   // send to the different services
@@ -82,15 +82,16 @@ export const tappedOnMap = (
   const suffix = lastLine && !firstLineAddress?.includes(lastLine) ? `, ${lastLine}` : ""
   const addressOrName = address || partnerName
   const title = firstLineAddress ? `${firstLineAddress}${suffix}` : addressOrName ?? ""
-  const { showActionSheetWithOptions } = useActionSheet()
 
-  showActionSheetWithOptions(
+  return [
     {
       title,
-      options: ["Cancel", "Open in Apple Maps", "Open in City Mapper", "Open in Google Maps", "Copy Address"],
-      cancelButtonIndex: 0,
+      options: ["Open in Apple Maps", "Open in City Mapper", "Open in Google Maps", "Copy Address", "Cancel"],
+      get cancelButtonIndex() {
+        return this.options.length - 1
+      },
     },
-    (buttonIndex) => {
+    (buttonIndex: number) => {
       if (buttonIndex === 1) {
         const mapLink = mapLinkForService(
           MapServiceURLType.Apple,
@@ -147,8 +148,8 @@ export const tappedOnMap = (
         // Copy to pasteboard
         Clipboard.setString(title)
       }
-    }
-  )
+    },
+  ]
 }
 
 export class LocationMap extends React.Component<Props> {
@@ -211,8 +212,14 @@ export class LocationMap extends React.Component<Props> {
       }
     }
 
+    const { showActionSheetWithOptions } = useActionSheet()
+
     return (
-      <TouchableOpacity onPress={() => tappedOnMap(lat, lng, address, summary, partnerName, city, postalCode)}>
+      <TouchableOpacity
+        onPress={() =>
+          showActionSheetWithOptions(...tappedOnMap(lat, lng, address, summary, partnerName, city, postalCode))
+        }
+      >
         <MapWrapper>
           <MapboxGL.MapView
             style={{ height: 120 }}
