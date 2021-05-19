@@ -113,6 +113,7 @@ export class ConversationSnippet extends React.Component<Props> {
                   ellipsizeMode="tail"
                   numberOfLines={1}
                   mr="5px"
+                  maxWidth="50%"
                   color={conversation.unread ? "black" : "black60"}
                 >
                   {partnerName}
