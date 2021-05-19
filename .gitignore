@@ -72,6 +72,7 @@ npm-debug.log
 .vscode/launchReactNative.js
 .vscode/.react/
 .vscode/typings
+.vscode/tasks.json.old
 .apphub
 coverage
 package-lock.json
