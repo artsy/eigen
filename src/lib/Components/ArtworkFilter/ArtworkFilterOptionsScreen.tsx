@@ -30,6 +30,7 @@ export type FilterScreen =
   | "colors"
   | "dimensionRange"
   | "estimateRange"
+  | "locationCities"
   | "majorPeriods"
   | "materialsTerms"
   | "medium"
@@ -425,6 +426,11 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "partnerIDs",
     ScreenComponent: "GalleriesAndInstitutionsOptionsScreen",
   },
+  locationCities: {
+    displayText: FilterDisplayName.locationCities,
+    filterType: "locationCities",
+    ScreenComponent: "LocationCitiesOptionsScreen",
+  },
   majorPeriods: {
     displayText: FilterDisplayName.timePeriod,
     filterType: "majorPeriods",
@@ -480,6 +486,7 @@ const CollectionFiltersSorted: FilterScreen[] = [
   "attributionClass",
   "priceRange",
   "waysToBuy",
+  "locationCities",
   "dimensionRange",
   "majorPeriods",
   "colors",
@@ -493,6 +500,7 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "attributionClass",
   "priceRange",
   "waysToBuy",
+  "locationCities",
   "partnerIDs",
   "dimensionRange",
   "majorPeriods",
@@ -506,6 +514,7 @@ const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "attributionClass",
   "priceRange",
   "waysToBuy",
+  "locationCities",
   "dimensionRange",
   "majorPeriods",
   "colors",
@@ -521,6 +530,7 @@ const FairFiltersSorted: FilterScreen[] = [
   "attributionClass",
   "priceRange",
   "waysToBuy",
+  "locationCities",
   "dimensionRange",
   "majorPeriods",
   "colors",
