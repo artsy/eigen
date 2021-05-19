@@ -180,6 +180,7 @@ export const filterKeyFromAggregation: Record<AggregationName, FilterParamName |
   ARTIST: "artistIDs",
   earliestCreatedYear: "earliestCreatedYear",
   latestCreatedYear: "earliestCreatedYear",
+  MATERIALS_TERMS: FilterParamName.materialsTerms,
 }
 
 const DEFAULT_ARTWORKS_PARAMS = {
