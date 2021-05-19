@@ -68,7 +68,7 @@ describe(SearchResult, () => {
     tree.root.findByType(TouchableOpacity).props.onPress()
     await new Promise((r) => setTimeout(r, 50))
     expect(inputBlurMock).toHaveBeenCalled()
-    expect(navigate).toHaveBeenCalledWith(result.href)
+    expect(navigate).toHaveBeenCalledWith(result.href, { passProps: { initialTab: "Artworks" } })
   })
 
   it(`highlights a part of the string if possible`, async () => {
