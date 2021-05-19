@@ -8196,6 +8196,7 @@ type Partner implements Node {
   counts: PartnerCounts
   defaultProfileID: String
   displayArtistsSection: Boolean
+  displayWorksSection: Boolean
   distinguishRepresentedArtists: Boolean
 
   # Artworks Elastic Search results
