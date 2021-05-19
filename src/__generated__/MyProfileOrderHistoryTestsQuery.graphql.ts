@@ -1,39 +1,37 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2967025039c69e1d4c948392d2b0f66b */
+/* @relayHash 7bf5f82add8bc45b53a8140af0861bc6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyProfileOrderHistoryPaginationQueryVariables = {
+export type MyProfileOrderHistoryTestsQueryVariables = {
     count: number;
-    cursor?: string | null;
 };
-export type MyProfileOrderHistoryPaginationQueryResponse = {
+export type MyProfileOrderHistoryTestsQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"MyProfileOrderHistory_me">;
     } | null;
 };
-export type MyProfileOrderHistoryPaginationQuery = {
-    readonly response: MyProfileOrderHistoryPaginationQueryResponse;
-    readonly variables: MyProfileOrderHistoryPaginationQueryVariables;
+export type MyProfileOrderHistoryTestsQuery = {
+    readonly response: MyProfileOrderHistoryTestsQueryResponse;
+    readonly variables: MyProfileOrderHistoryTestsQueryVariables;
 };
 
 
 
 /*
-query MyProfileOrderHistoryPaginationQuery(
+query MyProfileOrderHistoryTestsQuery(
   $count: Int!
-  $cursor: String
 ) {
   me {
-    ...MyProfileOrderHistory_me_1G22uz
+    ...MyProfileOrderHistory_me_yu5n1
     id
   }
 }
 
-fragment MyProfileOrderHistory_me_1G22uz on Me {
-  orders(first: $count, after: $cursor) {
+fragment MyProfileOrderHistory_me_yu5n1 on Me {
+  orders(first: $count) {
     edges {
       node {
         __typename
@@ -56,19 +54,9 @@ var v0 = [
     "defaultValue": null,
     "kind": "LocalArgument",
     "name": "count"
-  },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "cursor"
   }
 ],
 v1 = [
-  {
-    "kind": "Variable",
-    "name": "after",
-    "variableName": "cursor"
-  },
   {
     "kind": "Variable",
     "name": "first",
@@ -81,13 +69,25 @@ v2 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
+},
+v3 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v4 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "String"
 };
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyProfileOrderHistoryPaginationQuery",
+    "name": "MyProfileOrderHistoryTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -103,11 +103,6 @@ return {
                 "kind": "Variable",
                 "name": "count",
                 "variableName": "count"
-              },
-              {
-                "kind": "Variable",
-                "name": "cursor",
-                "variableName": "cursor"
               }
             ],
             "kind": "FragmentSpread",
@@ -124,7 +119,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "MyProfileOrderHistoryPaginationQuery",
+    "name": "MyProfileOrderHistoryTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -230,13 +225,63 @@ return {
     ]
   },
   "params": {
-    "id": "2967025039c69e1d4c948392d2b0f66b",
-    "metadata": {},
-    "name": "MyProfileOrderHistoryPaginationQuery",
+    "id": "7bf5f82add8bc45b53a8140af0861bc6",
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "me": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Me"
+        },
+        "me.id": (v3/*: any*/),
+        "me.orders": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceOrderConnectionWithTotalCount"
+        },
+        "me.orders.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "CommerceOrderEdge"
+        },
+        "me.orders.edges.cursor": (v4/*: any*/),
+        "me.orders.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceOrder"
+        },
+        "me.orders.edges.node.__typename": (v4/*: any*/),
+        "me.orders.edges.node.id": (v3/*: any*/),
+        "me.orders.edges.node.internalID": (v3/*: any*/),
+        "me.orders.pageInfo": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "CommercePageInfo"
+        },
+        "me.orders.pageInfo.endCursor": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "String"
+        },
+        "me.orders.pageInfo.hasNextPage": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "Boolean"
+        }
+      }
+    },
+    "name": "MyProfileOrderHistoryTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '7c6df1ee0527a27729199fa51299f2eb';
+(node as any).hash = '530e3f929a8763e8ac04b9e6d3f8f59a';
 export default node;

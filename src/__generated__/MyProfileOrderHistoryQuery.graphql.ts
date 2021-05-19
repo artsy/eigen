@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4c7ba48e0551669dace65dc32b89ca58 */
+/* @relayHash 18b0ddaa63a5b98afce23395fdf78c0d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,7 +31,6 @@ query MyProfileOrderHistoryQuery(
 }
 
 fragment MyProfileOrderHistory_me_yu5n1 on Me {
-  name
   orders(first: $count) {
     edges {
       node {
@@ -118,13 +117,6 @@ return {
         "name": "me",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "name",
-            "storageKey": null
-          },
           {
             "alias": null,
             "args": (v1/*: any*/),
@@ -221,7 +213,7 @@ return {
     ]
   },
   "params": {
-    "id": "4c7ba48e0551669dace65dc32b89ca58",
+    "id": "18b0ddaa63a5b98afce23395fdf78c0d",
     "metadata": {},
     "name": "MyProfileOrderHistoryQuery",
     "operationKind": "query",

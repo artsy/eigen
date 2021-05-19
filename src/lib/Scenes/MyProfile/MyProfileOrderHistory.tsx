@@ -8,35 +8,18 @@ import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { Flex, Sans, Spacer } from "palette"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 const NUM_ORDERS_TO_FETCH = 10
 
-// tslint:disable-next-line:variable-name
-export let __triggerRefresh: null | (() => Promise<void>) = null
-
-const MyProfileOrderHistory: React.FC<{ me: MyProfileOrderHistory_me; relay: RelayPaginationProp }> = ({
+export const MyProfileOrderHistory: React.FC<{ me: MyProfileOrderHistory_me; relay: RelayPaginationProp }> = ({
   relay,
   me,
 }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
-  // set up the global refresh hook. this one doesn't need to update the loading state
-  useEffect(() => {
-    const triggerRefresh = async () => {
-      await new Promise((resolve) => {
-        relay.refetchConnection(NUM_ORDERS_TO_FETCH, resolve)
-      })
-    }
-    __triggerRefresh = triggerRefresh
-    return () => {
-      if (__triggerRefresh === triggerRefresh) {
-        __triggerRefresh = null
-      }
-    }
-  }, [])
 
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
@@ -98,13 +81,12 @@ export const MyProfileOrderHistoryPlaceholder: React.FC<{}> = () => (
   </PageWithSimpleHeader>
 )
 
-const MyProfileOrderHistoryContainer = createPaginationContainer(
+export const MyProfileOrderHistoryContainer = createPaginationContainer(
   MyProfileOrderHistory,
   {
     me: graphql`
       fragment MyProfileOrderHistory_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        name
         orders(first: $count, after: $cursor) @connection(key: "MyProfileOrderHistory_orders") {
           edges {
             node {
@@ -121,8 +103,6 @@ const MyProfileOrderHistoryContainer = createPaginationContainer(
     },
     getVariables(_props, { count, cursor }, fragmentVariables) {
       return {
-        // in most cases, for variables other than connection filters like
-        // `first`, `after`, etc. you may want to use the previous values.
         ...fragmentVariables,
         count,
         cursor,

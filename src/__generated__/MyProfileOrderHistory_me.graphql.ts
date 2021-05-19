@@ -5,7 +5,6 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyProfileOrderHistory_me = {
-    readonly name: string | null;
     readonly orders: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -51,13 +50,6 @@ const node: ReaderFragment = {
   },
   "name": "MyProfileOrderHistory_me",
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "name",
-      "storageKey": null
-    },
     {
       "alias": "orders",
       "args": null,
@@ -141,5 +133,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '3da7b1330ad78d4118a21eb62471fe77';
+(node as any).hash = '4e578ccb9f85e57cdeda4e6b120c01f6';
 export default node;
