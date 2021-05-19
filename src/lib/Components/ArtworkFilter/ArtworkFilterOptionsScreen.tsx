@@ -221,6 +221,7 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.waysToBuy,
         filterOptionToDisplayConfigMap.attributionClass,
+        filterOptionToDisplayConfigMap.materialsTerms,
       ]
   }
 }
@@ -472,6 +473,7 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "sort",
   "medium",
   "additionalGeneIDs",
+  "materialsTerms",
   "attributionClass",
   "priceRange",
   "waysToBuy",
