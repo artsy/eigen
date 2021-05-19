@@ -10,6 +10,7 @@ import styled from "styled-components/native"
 
 import { ConversationSnippet_conversation } from "__generated__/ConversationSnippet_conversation.graphql"
 import { color, Flex, Sans, Touchable } from "palette"
+import { flexShrink } from "styled-system"
 
 const Unread = styled(Flex)`
   height: 14;
@@ -107,21 +108,24 @@ export class ConversationSnippet extends React.Component<Props> {
             </Flex>
             <Flex ml={1} style={{ flex: 1 }}>
               <Flex flexDirection="row" mb="2px" style={{ flex: 0, alignItems: "center" }}>
-                <Sans
-                  size="3t"
-                  weight="medium"
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
-                  mr="5px"
-                  maxWidth="50%"
-                  color={conversation.unread ? "black" : "black60"}
-                >
-                  {partnerName}
-                </Sans>
+                <Flex style={{ flexShrink: 1 }}>
+                  <Sans
+                    size="3t"
+                    weight="medium"
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
+                    mr="5px"
+                    color={conversation.unread ? "black" : "black60"}
+                  >
+                    {partnerName}
+                  </Sans>
+                </Flex>
                 <Flex flex={1} />
-                <Sans textAlign="right" size="3t" color="black30">
-                  {date}
-                </Sans>
+                <Flex>
+                  <Sans textAlign="right" size="3t" color="black30">
+                    {date}
+                  </Sans>
+                </Flex>
               </Flex>
               {!!conversationText && (
                 <Sans
