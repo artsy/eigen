@@ -78,6 +78,7 @@ export type ArtworkFilterNavigationStack = {
   ViewAsOptionsScreen: undefined
   WaysToBuyOptionsScreen: undefined
   YearOptionsScreen: undefined
+  MaterialsTermsOptionsScreen: undefined
 }
 
 const Stack = createStackNavigator<ArtworkFilterNavigationStack>()

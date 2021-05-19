@@ -21,6 +21,7 @@ export enum FilterDisplayName {
   viewAs = "View as",
   waysToBuy = "Ways to buy",
   year = "Artwork date",
+  materialsTerms = "Material",
 }
 
 // General filter types and objects

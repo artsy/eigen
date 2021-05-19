@@ -37,6 +37,7 @@ export type FilterScreen =
   | "viewAs"
   | "waysToBuy"
   | "year"
+  | "materialsTerms"
 
 export interface FilterDisplayConfig {
   filterType: FilterScreen
@@ -447,6 +448,11 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     displayText: FilterDisplayName.waysToBuy,
     filterType: "waysToBuy",
     ScreenComponent: "WaysToBuyOptionsScreen",
+  },
+  materialsTerms: {
+    displayText: FilterDisplayName.materialsTerms,
+    filterType: "materialsTerms",
+    ScreenComponent: "MaterialsTermsOptionsScreen",
   },
 }
 
