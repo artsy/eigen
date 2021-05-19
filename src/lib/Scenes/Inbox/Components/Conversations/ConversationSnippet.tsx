@@ -10,7 +10,6 @@ import styled from "styled-components/native"
 
 import { ConversationSnippet_conversation } from "__generated__/ConversationSnippet_conversation.graphql"
 import { color, Flex, Sans, Touchable } from "palette"
-import { flexShrink } from "styled-system"
 
 const Unread = styled(Flex)`
   height: 14;
