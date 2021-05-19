@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f62381dc1c01833a3d507999160a0a5a */
+/* @relayHash 9c402342e1a6adb8001b6203b46ba714 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -75,7 +75,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment FairAllFollowedArtists_fair on Fair {
   internalID
   slug
-  ...FairArtworks_fair_485l1x
+  ...FairArtworks_fair_6zGp3
 }
 
 fragment FairAllFollowedArtists_fairForFilters on Fair {
@@ -95,10 +95,10 @@ fragment FairAllFollowedArtists_fairForFilters on Fair {
   }
 }
 
-fragment FairArtworks_fair_485l1x on Fair {
+fragment FairArtworks_fair_6zGp3 on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", dimensionRange: "*-*", includeArtworksByFollowedArtists: true, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
+  fairArtworks: filterArtworksConnection(first: 30, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST], input: {includeArtworksByFollowedArtists: true, sort: "-decayed_merch", dimensionRange: "*-*"}) {
     aggregations {
       slice
       counts {
@@ -199,23 +199,17 @@ v5 = [
   (v4/*: any*/),
   {
     "kind": "Literal",
-    "name": "dimensionRange",
-    "value": "*-*"
-  },
-  {
-    "kind": "Literal",
     "name": "first",
     "value": 30
   },
   {
     "kind": "Literal",
-    "name": "includeArtworksByFollowedArtists",
-    "value": true
-  },
-  {
-    "kind": "Literal",
-    "name": "sort",
-    "value": "-decayed_merch"
+    "name": "input",
+    "value": {
+      "dimensionRange": "*-*",
+      "includeArtworksByFollowedArtists": true,
+      "sort": "-decayed_merch"
+    }
   }
 ],
 v6 = {
@@ -758,29 +752,14 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,includeArtworksByFollowedArtists:true,sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],first:30,input:{\"dimensionRange\":\"*-*\",\"includeArtworksByFollowedArtists\":true,\"sort\":\"-decayed_merch\"})"
           },
           {
             "alias": "fairArtworks",
             "args": (v5/*: any*/),
             "filters": [
-              "sort",
-              "additionalGeneIDs",
-              "priceRange",
-              "color",
-              "colors",
-              "partnerID",
-              "partnerIDs",
-              "dimensionRange",
-              "majorPeriods",
-              "acquireable",
-              "inquireableOnly",
-              "atAuction",
-              "offerable",
-              "includeArtworksByFollowedArtists",
-              "artistIDs",
               "aggregations",
-              "attributionClass"
+              "input"
             ],
             "handle": "connection",
             "key": "Fair_fairArtworks",
@@ -838,7 +817,7 @@ return {
     ]
   },
   "params": {
-    "id": "f62381dc1c01833a3d507999160a0a5a",
+    "id": "9c402342e1a6adb8001b6203b46ba714",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": (v11/*: any*/),

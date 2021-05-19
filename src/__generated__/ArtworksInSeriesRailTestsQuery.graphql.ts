@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 37cacf6f5f1bdcabbf9da2ed7a75e9ad */
+/* @relayHash 27d9d3ec937f864f4de098b386bef847 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -88,7 +88,7 @@ fragment ArtworksInSeriesRail_artwork on Artwork {
       node {
         slug
         internalID
-        filterArtworksConnection(sort: "-decayed_merch", first: 20) {
+        filterArtworksConnection(first: 20, input: {sort: "-decayed_merch"}) {
           edges {
             node {
               slug
@@ -246,8 +246,10 @@ return {
                           },
                           {
                             "kind": "Literal",
-                            "name": "sort",
-                            "value": "-decayed_merch"
+                            "name": "input",
+                            "value": {
+                              "sort": "-decayed_merch"
+                            }
                           }
                         ],
                         "concreteType": "FilterArtworksConnection",
@@ -442,7 +444,7 @@ return {
                           },
                           (v3/*: any*/)
                         ],
-                        "storageKey": "filterArtworksConnection(first:20,sort:\"-decayed_merch\")"
+                        "storageKey": "filterArtworksConnection(first:20,input:{\"sort\":\"-decayed_merch\"})"
                       }
                     ],
                     "storageKey": null
@@ -460,7 +462,7 @@ return {
     ]
   },
   "params": {
-    "id": "37cacf6f5f1bdcabbf9da2ed7a75e9ad",
+    "id": "27d9d3ec937f864f4de098b386bef847",
     "metadata": {},
     "name": "ArtworksInSeriesRailTestsQuery",
     "operationKind": "query",

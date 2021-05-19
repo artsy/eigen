@@ -109,7 +109,16 @@ const node: ReaderFragment = {
       "name": "ArtistSeriesMeta_artistSeries"
     },
     {
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "input",
+          "value": {
+            "dimensionRange": "*-*",
+            "sort": "-decayed_merch"
+          }
+        }
+      ],
       "kind": "FragmentSpread",
       "name": "ArtistSeriesArtworks_artistSeries"
     }
@@ -117,5 +126,5 @@ const node: ReaderFragment = {
   "type": "ArtistSeries",
   "abstractKey": null
 };
-(node as any).hash = 'a4b3a5706086f1d6fd73bbe788d2e0e9';
+(node as any).hash = 'd7cdaecd1174f42cc89c096d346c2311';
 export default node;

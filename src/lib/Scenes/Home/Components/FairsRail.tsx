@@ -126,7 +126,7 @@ export const FairsRailFragmentContainer = createFragmentContainer(FairsRail, {
           city
           country
         }
-        followedArtistArtworks: filterArtworksConnection(first: 2, includeArtworksByFollowedArtists: true) {
+        followedArtistArtworks: filterArtworksConnection(first: 2, input: { includeArtworksByFollowedArtists: true }) {
           edges {
             node {
               image {

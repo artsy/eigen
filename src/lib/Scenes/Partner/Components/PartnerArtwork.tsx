@@ -60,38 +60,18 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
     partner: graphql`
       fragment PartnerArtwork_partner on Partner
       @argumentDefinitions(
-        acquireable: { type: "Boolean" }
-        attributionClass: { type: "[String]" }
-        color: { type: "String" }
-        colors: { type: "[String]" }
         # 10 matches the PAGE_SIZE constant. This is required. See MX-316 for follow-up.
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
-        dimensionRange: { type: "String", defaultValue: "*-*" }
-        additionalGeneIDs: { type: "[String]" }
-        inquireableOnly: { type: "Boolean" }
-        majorPeriods: { type: "[String]" }
-        offerable: { type: "Boolean" }
-        priceRange: { type: "String" }
-        sort: { type: "String", defaultValue: "-partner_updated_at" }
+        input: { type: "FilterArtworksInput" }
       ) {
         internalID
         slug
         artworks: filterArtworksConnection(
-          acquireable: $acquireable
+          first: $count
           after: $cursor
           aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
-          attributionClass: $attributionClass
-          color: $color
-          colors: $colors
-          dimensionRange: $dimensionRange
-          additionalGeneIDs: $additionalGeneIDs
-          first: $count
-          inquireableOnly: $inquireableOnly
-          majorPeriods: $majorPeriods
-          offerable: $offerable
-          priceRange: $priceRange
-          sort: $sort
+          input: $input
         ) @connection(key: "Partner_artworks") {
           aggregations {
             slice
@@ -117,7 +97,7 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
     },
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
-        ...fragmentVariables,
+        input: fragmentVariables.input,
         id: props.partner.internalID,
         count,
         cursor,
@@ -125,37 +105,17 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
     },
     query: graphql`
       query PartnerArtworkInfiniteScrollGridQuery(
-        $acquireable: Boolean
-        $attributionClass: [String]
-        $color: String
-        $colors: [String]
+        $id: String!
         $count: Int!
         $cursor: String
-        $dimensionRange: String
-        $additionalGeneIDs: [String]
-        $id: String!
-        $inquireableOnly: Boolean
-        $majorPeriods: [String]
-        $offerable: Boolean
-        $priceRange: String
-        $sort: String
+        $input: FilterArtworksInput
       ) {
         partner(id: $id) {
           ...PartnerArtwork_partner
             @arguments(
-              acquireable: $acquireable
-              attributionClass: $attributionClass
-              color: $color
-              colors: $colors
               count: $count
               cursor: $cursor
-              dimensionRange: $dimensionRange
-              additionalGeneIDs: $additionalGeneIDs
-              inquireableOnly: $inquireableOnly
-              majorPeriods: $majorPeriods
-              offerable: $offerable
-              priceRange: $priceRange
-              sort: $sort
+              input: $input
             )
         }
       }

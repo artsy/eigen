@@ -5,6 +5,7 @@ import {
   aggregationsWithFollowedArtists,
   FilterArray,
   filterArtworksParams,
+  prepareFilterArtworksParamsForInput,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -68,7 +69,7 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
             throw new Error("Fair/FairArtworks filter error: " + error.message)
           }
         },
-        filterParams
+        { input: prepareFilterArtworksParamsForInput(filterParams) }
       )
     }
   }, [appliedFilters])
@@ -116,45 +117,15 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
       @argumentDefinitions(
         count: { type: "Int", defaultValue: 30 }
         cursor: { type: "String" }
-        sort: { type: "String", defaultValue: "-decayed_merch" }
-        additionalGeneIDs: { type: "[String]" }
-        priceRange: { type: "String" }
-        color: { type: "String" }
-        colors: { type: "[String]" }
-        partnerID: { type: "ID" }
-        partnerIDs: { type: "[String]" }
-        dimensionRange: { type: "String", defaultValue: "*-*" }
-        majorPeriods: { type: "[String]" }
-        acquireable: { type: "Boolean" }
-        inquireableOnly: { type: "Boolean" }
-        atAuction: { type: "Boolean" }
-        offerable: { type: "Boolean" }
-        includeArtworksByFollowedArtists: { type: "Boolean" }
-        artistIDs: { type: "[String]" }
-        attributionClass: { type: "[String]" }
+        input: { type: "FilterArtworksInput" }
       ) {
         slug
         internalID
         fairArtworks: filterArtworksConnection(
-          first: 30
+          first: $count
           after: $cursor
-          sort: $sort
-          additionalGeneIDs: $additionalGeneIDs
-          priceRange: $priceRange
-          color: $color
-          colors: $colors
-          partnerID: $partnerID
-          partnerIDs: $partnerIDs
-          dimensionRange: $dimensionRange
-          majorPeriods: $majorPeriods
-          acquireable: $acquireable
-          inquireableOnly: $inquireableOnly
-          atAuction: $atAuction
-          offerable: $offerable
-          includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
-          artistIDs: $artistIDs
-          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]
-          attributionClass: $attributionClass
+          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST],
+          input: $input
         ) @connection(key: "Fair_fairArtworks") {
           aggregations {
             slice
@@ -191,7 +162,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
     },
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
-        ...fragmentVariables,
+        input: fragmentVariables.input,
         props,
         count,
         cursor,
@@ -203,44 +174,14 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
         $id: String!
         $count: Int!
         $cursor: String
-        $sort: String
-        $additionalGeneIDs: [String]
-        $priceRange: String
-        $color: String
-        $colors: [String]
-        $partnerID: ID
-        $partnerIDs: [String]
-        $dimensionRange: String
-        $majorPeriods: [String]
-        $acquireable: Boolean
-        $inquireableOnly: Boolean
-        $atAuction: Boolean
-        $offerable: Boolean
-        $includeArtworksByFollowedArtists: Boolean
-        $artistIDs: [String]
-        $attributionClass: [String]
+        $input: FilterArtworksInput
       ) {
         fair(id: $id) {
           ...FairArtworks_fair
             @arguments(
               count: $count
               cursor: $cursor
-              sort: $sort
-              additionalGeneIDs: $additionalGeneIDs
-              color: $color
-              colors: $colors
-              partnerID: $partnerID
-              partnerIDs: $partnerIDs
-              priceRange: $priceRange
-              dimensionRange: $dimensionRange
-              majorPeriods: $majorPeriods
-              acquireable: $acquireable
-              inquireableOnly: $inquireableOnly
-              atAuction: $atAuction
-              offerable: $offerable
-              includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
-              artistIDs: $artistIDs
-              attributionClass: $attributionClass
+              input: $input
             )
         }
       }

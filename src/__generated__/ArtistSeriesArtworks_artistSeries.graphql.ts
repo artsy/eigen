@@ -40,36 +40,6 @@ export type ArtistSeriesArtworks_artistSeries$key = {
 const node: ReaderFragment = {
   "argumentDefinitions": [
     {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "acquireable"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "additionalGeneIDs"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "atAuction"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "attributionClass"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "color"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "colors"
-    },
-    {
       "defaultValue": 20,
       "kind": "LocalArgument",
       "name": "count"
@@ -80,44 +50,9 @@ const node: ReaderFragment = {
       "name": "cursor"
     },
     {
-      "defaultValue": "*-*",
-      "kind": "LocalArgument",
-      "name": "dimensionRange"
-    },
-    {
       "defaultValue": null,
       "kind": "LocalArgument",
-      "name": "inquireableOnly"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "majorPeriods"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "offerable"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "partnerID"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "partnerIDs"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "priceRange"
-    },
-    {
-      "defaultValue": "-decayed_merch",
-      "kind": "LocalArgument",
-      "name": "sort"
+      "name": "input"
     }
   ],
   "kind": "Fragment",
@@ -153,16 +88,6 @@ const node: ReaderFragment = {
       "alias": "artistSeriesArtworks",
       "args": [
         {
-          "kind": "Variable",
-          "name": "acquireable",
-          "variableName": "acquireable"
-        },
-        {
-          "kind": "Variable",
-          "name": "additionalGeneIDs",
-          "variableName": "additionalGeneIDs"
-        },
-        {
           "kind": "Literal",
           "name": "aggregations",
           "value": [
@@ -176,63 +101,8 @@ const node: ReaderFragment = {
         },
         {
           "kind": "Variable",
-          "name": "atAuction",
-          "variableName": "atAuction"
-        },
-        {
-          "kind": "Variable",
-          "name": "attributionClass",
-          "variableName": "attributionClass"
-        },
-        {
-          "kind": "Variable",
-          "name": "color",
-          "variableName": "color"
-        },
-        {
-          "kind": "Variable",
-          "name": "colors",
-          "variableName": "colors"
-        },
-        {
-          "kind": "Variable",
-          "name": "dimensionRange",
-          "variableName": "dimensionRange"
-        },
-        {
-          "kind": "Variable",
-          "name": "inquireableOnly",
-          "variableName": "inquireableOnly"
-        },
-        {
-          "kind": "Variable",
-          "name": "majorPeriods",
-          "variableName": "majorPeriods"
-        },
-        {
-          "kind": "Variable",
-          "name": "offerable",
-          "variableName": "offerable"
-        },
-        {
-          "kind": "Variable",
-          "name": "partnerID",
-          "variableName": "partnerID"
-        },
-        {
-          "kind": "Variable",
-          "name": "partnerIDs",
-          "variableName": "partnerIDs"
-        },
-        {
-          "kind": "Variable",
-          "name": "priceRange",
-          "variableName": "priceRange"
-        },
-        {
-          "kind": "Variable",
-          "name": "sort",
-          "variableName": "sort"
+          "name": "input",
+          "variableName": "input"
         }
       ],
       "concreteType": "FilterArtworksConnection",
@@ -388,5 +258,5 @@ const node: ReaderFragment = {
   "type": "ArtistSeries",
   "abstractKey": null
 };
-(node as any).hash = 'bce047cfceaef8bc35678fe80efd854b';
+(node as any).hash = '6fbfe98a700a1d3b80237a9c2748ac25';
 export default node;

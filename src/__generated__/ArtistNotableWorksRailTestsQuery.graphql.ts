@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash bf9c414a0c3ae0f851b68d43dced792f */
+/* @relayHash 4f6f495bb997db55c17a11184c2eee55 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -67,7 +67,7 @@ query ArtistNotableWorksRailTestsQuery {
 fragment ArtistNotableWorksRail_artist on Artist {
   internalID
   slug
-  filterArtworksConnection(sort: "-weighted_iconicity", first: 10) {
+  filterArtworksConnection(first: 10, input: {sort: "-weighted_iconicity"}) {
     edges {
       node {
         id
@@ -191,8 +191,10 @@ return {
               },
               {
                 "kind": "Literal",
-                "name": "sort",
-                "value": "-weighted_iconicity"
+                "name": "input",
+                "value": {
+                  "sort": "-weighted_iconicity"
+                }
               }
             ],
             "concreteType": "FilterArtworksConnection",
@@ -324,7 +326,7 @@ return {
               },
               (v3/*: any*/)
             ],
-            "storageKey": "filterArtworksConnection(first:10,sort:\"-weighted_iconicity\")"
+            "storageKey": "filterArtworksConnection(first:10,input:{\"sort\":\"-weighted_iconicity\"})"
           },
           (v3/*: any*/)
         ],
@@ -333,7 +335,7 @@ return {
     ]
   },
   "params": {
-    "id": "bf9c414a0c3ae0f851b68d43dced792f",
+    "id": "4f6f495bb997db55c17a11184c2eee55",
     "metadata": {},
     "name": "ArtistNotableWorksRailTestsQuery",
     "operationKind": "query",

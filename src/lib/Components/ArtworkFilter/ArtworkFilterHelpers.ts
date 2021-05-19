@@ -1,5 +1,5 @@
 import { FilterScreen } from "lib/Components/ArtworkFilter"
-import { capitalize, compact, forOwn, groupBy, sortBy } from "lodash"
+import { capitalize, compact, forOwn, groupBy, pick, sortBy } from "lodash"
 
 export enum FilterDisplayName {
   // artist = "Artists",
@@ -452,4 +452,56 @@ export const getDisplayNameForTimePeriod = (aggregationName: string) => {
   }
 
   return DISPLAY_TEXT[aggregationName] ?? aggregationName
+}
+
+export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
+  return pick(filters, [
+    "acquireable",
+    "additionalGeneIDs",
+    "after",
+    "aggregationPartnerCities",
+    "aggregations",
+    "artistID",
+    "artistIDs",
+    "artistNationalities",
+    "artistSeriesID",
+    "atAuction",
+    "attributionClass",
+    "before",
+    "color",
+    "colors",
+    "dimensionRange",
+    "excludeArtworkIDs",
+    "extraAggregationGeneIDs",
+    "first",
+    "forSale",
+    "geneID",
+    "geneIDs",
+    "height",
+    "includeArtworksByFollowedArtists",
+    "includeMediumFilterInAggregation",
+    "inquireableOnly",
+    "keyword",
+    "keywordMatchExact",
+    "last",
+    "locationCities",
+    "majorPeriods",
+    "marketable",
+    "materialsTerms",
+    "medium",
+    "offerable",
+    "page",
+    "partnerCities",
+    "partnerID",
+    "partnerIDs",
+    "period",
+    "periods",
+    "priceRange",
+    "saleID",
+    "size",
+    "sizes",
+    "sort",
+    "tagID",
+    "width",
+  ])
 }

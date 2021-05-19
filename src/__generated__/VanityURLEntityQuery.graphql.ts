@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 68153618dde7fdfa0ad8fcc055cbb124 */
+/* @relayHash c60501172b216c0fa313574a5d5fe019 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -96,10 +96,10 @@ fragment ArtworkTileRailCard_artwork on Artwork {
   saleMessage
 }
 
-fragment FairArtworks_fair on Fair {
+fragment FairArtworks_fair_2T6kBV on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
+  fairArtworks: filterArtworksConnection(first: 30, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST], input: {sort: "-decayed_merch", dimensionRange: "*-*"}) {
     aggregations {
       slice
       counts {
@@ -280,7 +280,7 @@ fragment FairExhibitors_fair on Fair {
 fragment FairFollowedArtistsRail_fair on Fair {
   internalID
   slug
-  followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
+  followedArtistArtworks: filterArtworksConnection(first: 20, input: {includeArtworksByFollowedArtists: true}) {
     edges {
       artwork: node {
         id
@@ -352,7 +352,7 @@ fragment Fair_fair on Fair {
     artworks
     partnerShows
   }
-  followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
+  followedArtistArtworks: filterArtworksConnection(first: 20, input: {includeArtworksByFollowedArtists: true}) {
     edges {
       __typename
     }
@@ -362,7 +362,7 @@ fragment Fair_fair on Fair {
   ...FairEmptyState_fair
   ...FairEditorial_fair
   ...FairCollections_fair
-  ...FairArtworks_fair
+  ...FairArtworks_fair_2T6kBV
   ...FairExhibitors_fair
   ...FairFollowedArtistsRail_fair
 }
@@ -391,10 +391,10 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
   }
 }
 
-fragment PartnerArtwork_partner on Partner {
+fragment PartnerArtwork_partner_BRGa6 on Partner {
   internalID
   slug
-  artworks: filterArtworksConnection(aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], dimensionRange: "*-*", first: 10, sort: "-partner_updated_at") {
+  artworks: filterArtworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], input: {sort: "-partner_updated_at", dimensionRange: "*-*"}) {
     aggregations {
       slice
       counts {
@@ -581,7 +581,7 @@ fragment Partner_partner on Partner {
     isFollowed
     internalID
   }
-  ...PartnerArtwork_partner
+  ...PartnerArtwork_partner_BRGa6
   ...PartnerOverview_partner
   ...PartnerShows_partner
   ...PartnerHeader_partner
@@ -741,15 +741,10 @@ v19 = {
 },
 v20 = {
   "kind": "Literal",
-  "name": "dimensionRange",
-  "value": "*-*"
-},
-v21 = {
-  "kind": "Literal",
   "name": "first",
   "value": 30
 },
-v22 = [
+v21 = [
   {
     "kind": "Literal",
     "name": "aggregations",
@@ -765,14 +760,16 @@ v22 = [
     ]
   },
   (v20/*: any*/),
-  (v21/*: any*/),
   {
     "kind": "Literal",
-    "name": "sort",
-    "value": "-decayed_merch"
+    "name": "input",
+    "value": {
+      "dimensionRange": "*-*",
+      "sort": "-decayed_merch"
+    }
   }
 ],
-v23 = {
+v22 = {
   "alias": null,
   "args": null,
   "concreteType": "ArtworksAggregationResults",
@@ -816,14 +813,14 @@ v23 = {
   ],
   "storageKey": null
 },
-v24 = {
+v23 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "cursor",
   "storageKey": null
 },
-v25 = {
+v24 = {
   "alias": null,
   "args": null,
   "concreteType": "FilterArtworksEdge",
@@ -844,25 +841,25 @@ v25 = {
       ],
       "storageKey": null
     },
-    (v24/*: any*/)
+    (v23/*: any*/)
   ],
   "storageKey": null
 },
-v26 = {
+v25 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "endCursor",
   "storageKey": null
 },
-v27 = {
+v26 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "hasNextPage",
   "storageKey": null
 },
-v28 = {
+v27 = {
   "alias": null,
   "args": null,
   "concreteType": "PageInfo",
@@ -870,33 +867,33 @@ v28 = {
   "name": "pageInfo",
   "plural": false,
   "selections": [
-    (v26/*: any*/),
-    (v27/*: any*/)
+    (v25/*: any*/),
+    (v26/*: any*/)
   ],
   "storageKey": null
 },
-v29 = {
+v28 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "startCursor",
   "storageKey": null
 },
-v30 = {
+v29 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "isAuction",
   "storageKey": null
 },
-v31 = {
+v30 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "isClosed",
   "storageKey": null
 },
-v32 = {
+v31 = {
   "alias": null,
   "args": null,
   "concreteType": "SaleArtworkCounts",
@@ -914,7 +911,7 @@ v32 = {
   ],
   "storageKey": null
 },
-v33 = [
+v32 = [
   {
     "alias": null,
     "args": null,
@@ -923,26 +920,26 @@ v33 = [
     "storageKey": null
   }
 ],
-v34 = {
+v33 = {
   "alias": null,
   "args": null,
   "concreteType": "SaleArtworkCurrentBid",
   "kind": "LinkedField",
   "name": "currentBid",
   "plural": false,
-  "selections": (v33/*: any*/),
+  "selections": (v32/*: any*/),
   "storageKey": null
 },
-v35 = [
+v34 = [
   (v5/*: any*/)
 ],
-v36 = {
+v35 = {
   "kind": "InlineFragment",
-  "selections": (v35/*: any*/),
+  "selections": (v34/*: any*/),
   "type": "Node",
   "abstractKey": "__isNode"
 },
-v37 = {
+v36 = {
   "kind": "InlineFragment",
   "selections": [
     {
@@ -953,7 +950,7 @@ v37 = {
       "name": "pageInfo",
       "plural": false,
       "selections": [
-        (v29/*: any*/)
+        (v28/*: any*/)
       ],
       "storageKey": null
     },
@@ -1020,8 +1017,8 @@ v37 = {
               "name": "sale",
               "plural": false,
               "selections": [
+                (v29/*: any*/),
                 (v30/*: any*/),
-                (v31/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -1042,8 +1039,8 @@ v37 = {
               "name": "saleArtwork",
               "plural": false,
               "selections": [
-                (v32/*: any*/),
-                (v34/*: any*/),
+                (v31/*: any*/),
+                (v33/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -1071,7 +1068,7 @@ v37 = {
           ],
           "storageKey": null
         },
-        (v36/*: any*/)
+        (v35/*: any*/)
       ],
       "storageKey": null
     }
@@ -1079,8 +1076,12 @@ v37 = {
   "type": "ArtworkConnectionInterface",
   "abstractKey": "__isArtworkConnectionInterface"
 },
+v37 = [
+  "aggregations",
+  "input"
+],
 v38 = [
-  (v21/*: any*/),
+  (v20/*: any*/),
   {
     "kind": "Literal",
     "name": "sort",
@@ -1114,12 +1115,14 @@ v43 = [
       "PRICE_RANGE"
     ]
   },
-  (v20/*: any*/),
   (v42/*: any*/),
   {
     "kind": "Literal",
-    "name": "sort",
-    "value": "-partner_updated_at"
+    "name": "input",
+    "value": {
+      "dimensionRange": "*-*",
+      "sort": "-partner_updated_at"
+    }
   }
 ],
 v44 = [
@@ -1138,9 +1141,9 @@ v45 = {
   "name": "pageInfo",
   "plural": false,
   "selections": [
-    (v27/*: any*/),
-    (v29/*: any*/),
-    (v26/*: any*/)
+    (v26/*: any*/),
+    (v28/*: any*/),
+    (v25/*: any*/)
   ],
   "storageKey": null
 },
@@ -1458,8 +1461,10 @@ return {
                   (v10/*: any*/),
                   {
                     "kind": "Literal",
-                    "name": "includeArtworksByFollowedArtists",
-                    "value": true
+                    "name": "input",
+                    "value": {
+                      "includeArtworksByFollowedArtists": true
+                    }
                   }
                 ],
                 "concreteType": "FilterArtworksConnection",
@@ -1510,7 +1515,7 @@ return {
                   },
                   (v5/*: any*/)
                 ],
-                "storageKey": "filterArtworksConnection(first:20,includeArtworksByFollowedArtists:true)"
+                "storageKey": "filterArtworksConnection(first:20,input:{\"includeArtworksByFollowedArtists\":true})"
               },
               {
                 "alias": null,
@@ -1698,14 +1703,14 @@ return {
               (v19/*: any*/),
               {
                 "alias": "fairArtworks",
-                "args": (v22/*: any*/),
+                "args": (v21/*: any*/),
                 "concreteType": "FilterArtworksConnection",
                 "kind": "LinkedField",
                 "name": "filterArtworksConnection",
                 "plural": false,
                 "selections": [
-                  (v23/*: any*/),
-                  (v25/*: any*/),
+                  (v22/*: any*/),
+                  (v24/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -1731,34 +1736,16 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v28/*: any*/),
+                  (v27/*: any*/),
                   (v5/*: any*/),
-                  (v37/*: any*/)
+                  (v36/*: any*/)
                 ],
-                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,sort:\"-decayed_merch\")"
+                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],first:30,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-decayed_merch\"})"
               },
               {
                 "alias": "fairArtworks",
-                "args": (v22/*: any*/),
-                "filters": [
-                  "sort",
-                  "additionalGeneIDs",
-                  "priceRange",
-                  "color",
-                  "colors",
-                  "partnerID",
-                  "partnerIDs",
-                  "dimensionRange",
-                  "majorPeriods",
-                  "acquireable",
-                  "inquireableOnly",
-                  "atAuction",
-                  "offerable",
-                  "includeArtworksByFollowedArtists",
-                  "artistIDs",
-                  "aggregations",
-                  "attributionClass"
-                ],
+                "args": (v21/*: any*/),
+                "filters": (v37/*: any*/),
                 "handle": "connection",
                 "key": "Fair_fairArtworks",
                 "kind": "LinkedHandle",
@@ -1820,7 +1807,7 @@ return {
                                 "type": "ExternalPartner",
                                 "abstractKey": null
                               },
-                              (v36/*: any*/)
+                              (v35/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -1899,7 +1886,7 @@ return {
                                             "kind": "LinkedField",
                                             "name": "openingBid",
                                             "plural": false,
-                                            "selections": (v33/*: any*/),
+                                            "selections": (v32/*: any*/),
                                             "storageKey": null
                                           },
                                           {
@@ -1909,11 +1896,11 @@ return {
                                             "kind": "LinkedField",
                                             "name": "highestBid",
                                             "plural": false,
-                                            "selections": (v33/*: any*/),
+                                            "selections": (v32/*: any*/),
                                             "storageKey": null
                                           },
-                                          (v34/*: any*/),
-                                          (v32/*: any*/),
+                                          (v33/*: any*/),
+                                          (v31/*: any*/),
                                           (v5/*: any*/)
                                         ],
                                         "storageKey": null
@@ -1926,8 +1913,8 @@ return {
                                         "name": "sale",
                                         "plural": false,
                                         "selections": [
-                                          (v31/*: any*/),
                                           (v30/*: any*/),
+                                          (v29/*: any*/),
                                           (v19/*: any*/),
                                           (v5/*: any*/)
                                         ],
@@ -1949,11 +1936,11 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v24/*: any*/)
+                      (v23/*: any*/)
                     ],
                     "storageKey": null
                   },
-                  (v28/*: any*/)
+                  (v27/*: any*/)
                 ],
                 "storageKey": "showsConnection(first:30,sort:\"FEATURED_ASC\")"
               },
@@ -2012,31 +1999,18 @@ return {
                 "name": "filterArtworksConnection",
                 "plural": false,
                 "selections": [
-                  (v23/*: any*/),
-                  (v25/*: any*/),
-                  (v28/*: any*/),
+                  (v22/*: any*/),
+                  (v24/*: any*/),
+                  (v27/*: any*/),
                   (v5/*: any*/),
-                  (v37/*: any*/)
+                  (v36/*: any*/)
                 ],
-                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,sort:\"-partner_updated_at\")"
+                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-partner_updated_at\"})"
               },
               {
                 "alias": "artworks",
                 "args": (v43/*: any*/),
-                "filters": [
-                  "acquireable",
-                  "aggregations",
-                  "attributionClass",
-                  "color",
-                  "colors",
-                  "dimensionRange",
-                  "additionalGeneIDs",
-                  "inquireableOnly",
-                  "majorPeriods",
-                  "offerable",
-                  "priceRange",
-                  "sort"
-                ],
+                "filters": (v37/*: any*/),
                 "handle": "connection",
                 "key": "Partner_artworks",
                 "kind": "LinkedHandle",
@@ -2139,7 +2113,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v24/*: any*/),
+                      (v23/*: any*/),
                       (v5/*: any*/)
                     ],
                     "storageKey": null
@@ -2260,7 +2234,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v24/*: any*/)
+                      (v23/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -2335,10 +2309,10 @@ return {
                                 "type": "Partner",
                                 "abstractKey": null
                               },
-                              (v36/*: any*/),
+                              (v35/*: any*/),
                               {
                                 "kind": "InlineFragment",
-                                "selections": (v35/*: any*/),
+                                "selections": (v34/*: any*/),
                                 "type": "ExternalPartner",
                                 "abstractKey": null
                               }
@@ -2359,7 +2333,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v24/*: any*/)
+                      (v23/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -2397,14 +2371,14 @@ return {
             "type": "Partner",
             "abstractKey": null
           },
-          (v36/*: any*/)
+          (v35/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "68153618dde7fdfa0ad8fcc055cbb124",
+    "id": "c60501172b216c0fa313574a5d5fe019",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",

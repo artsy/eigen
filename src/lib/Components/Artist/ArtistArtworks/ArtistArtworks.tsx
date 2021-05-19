@@ -1,18 +1,20 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
-import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { filterArtworksParams, prepareFilterArtworksParamsForInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
 } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
 import { Schema } from "lib/utils/track"
-import { Box, FilterIcon, Flex, Spacer, Text, Touchable } from "palette"
-import React, { useEffect, useState } from "react"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Box, FilterIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import React, { useContext, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -100,7 +102,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
             throw new Error("ArtistArtworks/ArtistArtworks filter error: " + error.message)
           }
         },
-        filterParams
+        { input: prepareFilterArtworksParamsForInput(filterParams) },
       )
     }
   }, [appliedFilters])
@@ -121,6 +123,32 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     })
   }
 
+  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
+  const screenWidth = useScreenDimensions().width
+
+  useEffect(
+    () =>
+      setJSX(
+        <Box backgroundColor="white" mt={2} px={2}>
+          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+            <Text variant="subtitle" color="black60">
+              Showing {artworksTotal} works
+            </Text>
+            <Touchable haptic onPress={openFilterModal}>
+              <Flex flexDirection="row">
+                <FilterIcon fill="black100" width="20px" height="20px" />
+                <Text variant="subtitle" color="black100">
+                  Sort & Filter
+                </Text>
+              </Flex>
+            </Touchable>
+          </Flex>
+          <Separator mt={2} ml={-2} width={screenWidth} />
+        </Box>
+      ),
+    [artworksTotal]
+  )
+
   const filteredArtworks = () => {
     if (artworksCount === 0) {
       return (
@@ -140,25 +168,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
             contextScreenOwnerType={OwnerType.artist}
             contextScreenOwnerId={artist.internalID}
             contextScreenOwnerSlug={artist.slug}
-            HeaderComponent={() => (
-              <Box backgroundColor="white" py={1}>
-                <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                  <Text variant="subtitle" color="black60">
-                    Showing {artworksTotal} works
-                  </Text>
-                  <Touchable haptic onPress={openFilterModal}>
-                    <Flex flexDirection="row">
-                      <FilterIcon fill="black100" width="20px" height="20px" />
-                      <Text variant="subtitle" color="black100">
-                        Sort & Filter
-                      </Text>
-                    </Flex>
-                  </Touchable>
-                </Flex>
-                <Spacer mb={1} />
-              </Box>
-            )}
-            stickyHeaderIndices={[0]}
           />
         </>
       )
@@ -176,20 +185,7 @@ export default createPaginationContainer(
       @argumentDefinitions(
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
-        sort: { type: "String", defaultValue: "-decayed_merch" }
-        additionalGeneIDs: { type: "[String]" }
-        priceRange: { type: "String" }
-        color: { type: "String" }
-        colors: { type: "[String]" }
-        partnerID: { type: "ID" }
-        partnerIDs: { type: "[String]" }
-        dimensionRange: { type: "String", defaultValue: "*-*" }
-        majorPeriods: { type: "[String]" }
-        acquireable: { type: "Boolean" }
-        inquireableOnly: { type: "Boolean" }
-        atAuction: { type: "Boolean" }
-        offerable: { type: "Boolean" }
-        attributionClass: { type: "[String]" }
+        input: { type: "FilterArtworksInput" }
       ) {
         id
         slug
@@ -197,21 +193,8 @@ export default createPaginationContainer(
         artworks: filterArtworksConnection(
           first: $count
           after: $cursor
-          sort: $sort
-          additionalGeneIDs: $additionalGeneIDs
-          priceRange: $priceRange
-          color: $color
-          colors: $colors
-          partnerID: $partnerID
-          partnerIDs: $partnerIDs
-          dimensionRange: $dimensionRange
-          majorPeriods: $majorPeriods
-          acquireable: $acquireable
-          inquireableOnly: $inquireableOnly
-          atAuction: $atAuction
-          offerable: $offerable
+          input: $input
           aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
-          attributionClass: $attributionClass
         ) @connection(key: "ArtistArtworksGrid_artworks") {
           aggregations {
             slice
@@ -240,8 +223,8 @@ export default createPaginationContainer(
     },
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
-        ...fragmentVariables,
         id: props.artist.id,
+        input: fragmentVariables.input,
         count,
         cursor,
       }
@@ -251,20 +234,7 @@ export default createPaginationContainer(
         $id: ID!
         $count: Int!
         $cursor: String
-        $sort: String
-        $additionalGeneIDs: [String]
-        $priceRange: String
-        $color: String
-        $colors: [String]
-        $partnerID: ID
-        $partnerIDs: [String]
-        $dimensionRange: String
-        $majorPeriods: [String]
-        $acquireable: Boolean
-        $inquireableOnly: Boolean
-        $atAuction: Boolean
-        $offerable: Boolean
-        $attributionClass: [String]
+        $input: FilterArtworksInput
       ) {
         node(id: $id) {
           ... on Artist {
@@ -272,20 +242,7 @@ export default createPaginationContainer(
               @arguments(
                 count: $count
                 cursor: $cursor
-                sort: $sort
-                additionalGeneIDs: $additionalGeneIDs
-                color: $color
-                colors: $colors
-                partnerID: $partnerID
-                partnerIDs: $partnerIDs
-                priceRange: $priceRange
-                dimensionRange: $dimensionRange
-                majorPeriods: $majorPeriods
-                acquireable: $acquireable
-                inquireableOnly: $inquireableOnly
-                atAuction: $atAuction
-                offerable: $offerable
-                attributionClass: $attributionClass
+                input: $input
               )
           }
         }
