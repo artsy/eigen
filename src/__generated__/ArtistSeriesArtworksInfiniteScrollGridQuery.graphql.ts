@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d19f3f249830131fc24f85c021c7b402 */
+/* @relayHash 255db346d14e7101b63ef5387a9c4ac1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -88,7 +88,7 @@ query ArtistSeriesArtworksInfiniteScrollGridQuery(
 fragment ArtistSeriesArtworks_artistSeries_YCAiB on ArtistSeries {
   slug
   internalID
-  artistSeriesArtworks: filterArtworksConnection(first: 20, after: $cursor, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], input: $input) {
+  artistSeriesArtworks: filterArtworksConnection(first: 20, after: $cursor, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS], input: $input) {
     aggregations {
       slice
       counts {
@@ -238,7 +238,8 @@ v8 = [
       "PARTNER",
       "MAJOR_PERIOD",
       "MEDIUM",
-      "PRICE_RANGE"
+      "PRICE_RANGE",
+      "MATERIALS_TERMS"
     ]
   },
   {
@@ -714,7 +715,7 @@ return {
     ]
   },
   "params": {
-    "id": "d19f3f249830131fc24f85c021c7b402",
+    "id": "255db346d14e7101b63ef5387a9c4ac1",
     "metadata": {},
     "name": "ArtistSeriesArtworksInfiniteScrollGridQuery",
     "operationKind": "query",
