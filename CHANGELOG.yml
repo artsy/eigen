@@ -7,6 +7,7 @@ upcoming:
     - lock screen orientation to portrait on android phones - mounir
     - Fix artist follow is incorrectly firing action_name - dzmitry
     - Allow sticky tabs to add additional sticky content - mdole
+    - Update android play store metadata - brian
   user_facing:
     - Fix wrong input font on android - dzmitry
     - 
