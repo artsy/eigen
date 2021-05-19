@@ -1,21 +1,47 @@
 import { tappedMakeOffer } from "@artsy/cohesion"
 import { captureMessage } from "@sentry/react-native"
 import { OpenInquiryModalButtonQuery } from "__generated__/OpenInquiryModalButtonQuery.graphql"
-import { navigate } from "lib/navigation/navigate"
+import { navigate, navigationEvents } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { Button, CheckCircleIcon, Flex, Text } from "palette"
-import React from "react"
-import { graphql, QueryRenderer } from "react-relay"
+import React, { useEffect } from "react"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ShadowSeparator } from "../ShadowSeparator"
 
 export interface OpenInquiryModalButtonProps {
   artworkID: string
   conversationID: string | null | undefined
+  relay: RelayRefetchProp
 }
 
-export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ artworkID, conversationID }) => {
+export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ artworkID, conversationID, relay }) => {
   const { trackEvent } = useTracking()
+
+  useEffect(() => {
+    navigationEvents.addListener("refetchConversation", handleConversationRefresh)
+    return () => {
+      navigationEvents.removeListener("refetchConversation", handleConversationRefresh)
+    }
+  }, [])
+
+  const handleConversationRefresh = () => {
+    refetch()
+  }
+
+  const refetch = () => {
+    // console.warn("refetch got called")
+    relay.refetch(
+      { artworkID },
+      null,
+      (error) => {
+        if (error) {
+          console.error("OpenInquiryMoodalButton.tsx", error.message)
+        }
+      },
+      { force: true }
+    )
+  }
 
   return (
     <>
@@ -60,6 +86,24 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ 
   )
 }
 
+export const OpenInquiryModalButtonContainer = createRefetchContainer(
+  OpenInquiryModalButton,
+  {
+    artwork: graphql`
+      fragment OpenInquiryModalButton_artwork on Artwork {
+        isOfferableFromInquiry
+      }
+    `,
+  },
+  graphql`
+    query OpenInquiryModalButtonRefetchQuery($artworkID: String!) {
+      artwork(id: $artworkID) {
+        isOfferableFromInquiry
+      }
+    }
+  `
+)
+
 export const OpenInquiryModalButtonQueryRenderer: React.FC<{
   artworkID: string
   conversationID: string
@@ -88,7 +132,7 @@ export const OpenInquiryModalButtonQueryRenderer: React.FC<{
         }
 
         if (props?.artwork?.isOfferableFromInquiry) {
-          return <OpenInquiryModalButton artworkID={artworkID} conversationID={conversationID} />
+          return <OpenInquiryModalButtonContainer artworkID={artworkID} conversationID={conversationID} />
         } else {
           return null
         }
