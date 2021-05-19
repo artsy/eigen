@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7af5b7bb8cdc7e9ddd9f0b04d19aba1a */
+/* @relayHash b9f58eb6b37c53fe8087f97659fe55f7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -104,11 +104,11 @@ fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup 
   }
 }
 
-fragment CollectionArtworks_collection on MarketingCollection {
+fragment CollectionArtworks_collection_2T6kBV on MarketingCollection {
   isDepartment
   slug
   id
-  collectionArtworks: artworksConnection(first: 10, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  collectionArtworks: artworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], input: {sort: "-decayed_merch", dimensionRange: "*-*"}) {
     aggregations {
       slice
       counts {
@@ -170,7 +170,7 @@ fragment Collection_collection on MarketingCollection {
   slug
   isDepartment
   ...CollectionHeader_collection
-  ...CollectionArtworks_collection
+  ...CollectionArtworks_collection_2T6kBV
   ...FeaturedArtists_collection
   ...CollectionHubsRails_collection
   linkedCollections {
@@ -318,15 +318,17 @@ v7 = [
   },
   {
     "kind": "Literal",
-    "name": "dimensionRange",
-    "value": "*-*"
-  },
-  {
-    "kind": "Literal",
     "name": "first",
     "value": 10
   },
-  (v6/*: any*/)
+  {
+    "kind": "Literal",
+    "name": "input",
+    "value": {
+      "dimensionRange": "*-*",
+      "sort": "-decayed_merch"
+    }
+  }
 ],
 v8 = {
   "alias": null,
@@ -916,27 +918,14 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "artworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,sort:\"-decayed_merch\")"
+            "storageKey": "artworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-decayed_merch\"})"
           },
           {
             "alias": "collectionArtworks",
             "args": (v7/*: any*/),
             "filters": [
-              "sort",
-              "additionalGeneIDs",
-              "priceRange",
-              "color",
-              "colors",
-              "partnerID",
-              "partnerIDs",
-              "dimensionRange",
-              "majorPeriods",
-              "acquireable",
-              "inquireableOnly",
-              "atAuction",
-              "offerable",
               "aggregations",
-              "attributionClass"
+              "input"
             ],
             "handle": "connection",
             "key": "Collection_collectionArtworks",
@@ -1185,7 +1174,7 @@ return {
     ]
   },
   "params": {
-    "id": "7af5b7bb8cdc7e9ddd9f0b04d19aba1a",
+    "id": "b9f58eb6b37c53fe8087f97659fe55f7",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "marketingCollection": {
