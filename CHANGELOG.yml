@@ -8,17 +8,17 @@ upcoming:
     - Fix artist follow is incorrectly firing action_name - dzmitry
     - Allow sticky tabs to add additional sticky content - mdole
     - Update android play store metadata - brian
+    - Fix sign up validation - dzmitry
   user_facing:
     - Fix wrong input font on android - dzmitry
-    - 
- 
+    -
 
 releases:
   - version: 6.9.1
     date: May 18, 2021
     dev:
-     - lock screen orientation to portrait on android phones - mounir
-     - Fix artist follow is incorrectly firing action_name - dzmitry
+      - lock screen orientation to portrait on android phones - mounir
+      - Fix artist follow is incorrectly firing action_name - dzmitry
     user_facing:
       - Correct formatted large numbers' display - kizito
       - Fix cancel button next to search bar doesn't clear terms/results - yauheni
