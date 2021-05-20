@@ -4,7 +4,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Box, Sans, Serif, Spacer, Theme } from "palette"
+import { Box, Sans, Serif, Spacer } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -35,21 +35,19 @@ const PartnerLocations: React.FC<{
   const locations = extractNodes(partner?.locations)
 
   return (
-    <Theme>
-      <FlatList
-        data={locations}
-        onScroll={isCloseToBottom(fetchNextPage)}
-        keyExtractor={(item) => item.id}
-        ListHeaderComponent={() => (
-          <Box pt={60} px={2}>
-            <Sans size="3t">{locations.length > 1 ? "Locations" : "Location"}</Sans>
-            <Serif size="5">{partner.name}</Serif>
-          </Box>
-        )}
-        ListFooterComponent={() => <Spacer mb={2} />}
-        renderItem={({ item }) => <PartnerMap location={item} />}
-      />
-    </Theme>
+    <FlatList
+      data={locations}
+      onScroll={isCloseToBottom(fetchNextPage)}
+      keyExtractor={(item) => item.id}
+      ListHeaderComponent={() => (
+        <Box pt={60} px={2}>
+          <Sans size="3t">{locations.length > 1 ? "Locations" : "Location"}</Sans>
+          <Serif size="5">{partner.name}</Serif>
+        </Box>
+      )}
+      ListFooterComponent={() => <Spacer mb={2} />}
+      renderItem={({ item }) => <PartnerMap location={item} />}
+    />
   )
 }
 

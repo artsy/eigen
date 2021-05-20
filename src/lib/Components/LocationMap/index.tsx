@@ -73,7 +73,7 @@ export const tappedOnMap = (
   partnerName: string | null,
   city: string | null,
   postalCode: string | null
-) => {
+): Parameters<ReturnType<typeof useActionSheet>["showActionSheetWithOptions"]> => {
   // Fairs only have a "summary", so we need to
   // be quite conservative about what parts of the address we
   // send to the different services
@@ -82,15 +82,16 @@ export const tappedOnMap = (
   const suffix = lastLine && !firstLineAddress?.includes(lastLine) ? `, ${lastLine}` : ""
   const addressOrName = address || partnerName
   const title = firstLineAddress ? `${firstLineAddress}${suffix}` : addressOrName ?? ""
-  const { showActionSheetWithOptions } = useActionSheet()
 
-  showActionSheetWithOptions(
+  return [
     {
       title,
-      options: ["Cancel", "Open in Apple Maps", "Open in City Mapper", "Open in Google Maps", "Copy Address"],
-      cancelButtonIndex: 0,
+      options: ["Open in Apple Maps", "Open in City Mapper", "Open in Google Maps", "Copy Address", "Cancel"],
+      get cancelButtonIndex() {
+        return this.options.length - 1
+      },
     },
-    (buttonIndex) => {
+    (buttonIndex: number) => {
       if (buttonIndex === 1) {
         const mapLink = mapLinkForService(
           MapServiceURLType.Apple,
@@ -147,91 +148,94 @@ export const tappedOnMap = (
         // Copy to pasteboard
         Clipboard.setString(title)
       }
-    }
-  )
+    },
+  ]
 }
 
-export class LocationMap extends React.Component<Props> {
-  render() {
-    const { location, partnerName } = this.props
-    const { lat, lng } = location.coordinates || { lat: null, lng: null }
-    const { address2, address, internalID, postalCode, city, summary } = location
+export const LocationMap: React.FC<Props> = (props) => {
+  const { showActionSheetWithOptions } = useActionSheet()
+  const { location, partnerName } = props
+  const { lat, lng } = location.coordinates || { lat: null, lng: null }
+  const { address2, address, internalID, postalCode, city, summary } = location
 
-    if (!lat || !lng) {
-      return null
-    }
+  if (!lat || !lng) {
+    return null
+  }
 
-    const renderSummaryAddress = () => {
-      return (
-        <Box m={2}>
-          {!!partnerName && (
-            <Text variant="mediumText" color="black100" textAlign="center">
-              {partnerName}
-            </Text>
-          )}
-          <Text variant="text" color="black60" textAlign="center">
-            {summary}
-          </Text>
-        </Box>
-      )
-    }
-
-    const renderSegmentedAddress = () => {
-      return (
-        <Box m={2}>
-          {!!partnerName && (
-            <Text variant="mediumText" color="black100" textAlign="center">
-              {partnerName}
-            </Text>
-          )}
-          {!!address && (
-            <Text variant="text" color="black60" textAlign="center">
-              {address}
-            </Text>
-          )}
-          {!!address2 && (
-            <Text variant="text" color="black60" textAlign="center">
-              {address2}
-            </Text>
-          )}
-          {(!!city || !!postalCode) && (
-            <Text variant="text" color="black60" textAlign="center">
-              {cityAndPostalCode(city, postalCode)}
-            </Text>
-          )}
-        </Box>
-      )
-    }
-
-    const renderAddress = () => {
-      if (summary) {
-        return renderSummaryAddress()
-      } else {
-        return renderSegmentedAddress()
-      }
-    }
-
+  const renderSummaryAddress = () => {
     return (
-      <TouchableOpacity onPress={() => tappedOnMap(lat, lng, address, summary, partnerName, city, postalCode)}>
-        <MapWrapper>
-          <MapboxGL.MapView
-            style={{ height: 120 }}
-            key={lng}
-            styleURL={ArtsyMapStyleURL}
-            logoEnabled={false}
-            scrollEnabled={false}
-            attributionEnabled={false}
-          >
-            <MapboxGL.Camera centerCoordinate={[lng, lat]} zoomLevel={14} />
-            <MapboxGL.PointAnnotation id={internalID} coordinate={[lng, lat]}>
-              <Pin />
-            </MapboxGL.PointAnnotation>
-          </MapboxGL.MapView>
-          {renderAddress()}
-        </MapWrapper>
-      </TouchableOpacity>
+      <Box m={2}>
+        {!!partnerName && (
+          <Text variant="mediumText" color="black100" textAlign="center">
+            {partnerName}
+          </Text>
+        )}
+        <Text variant="text" color="black60" textAlign="center">
+          {summary}
+        </Text>
+      </Box>
     )
   }
+
+  const renderSegmentedAddress = () => {
+    return (
+      <Box m={2}>
+        {!!partnerName && (
+          <Text variant="mediumText" color="black100" textAlign="center">
+            {partnerName}
+          </Text>
+        )}
+        {!!address && (
+          <Text variant="text" color="black60" textAlign="center">
+            {address}
+          </Text>
+        )}
+        {!!address2 && (
+          <Text variant="text" color="black60" textAlign="center">
+            {address2}
+          </Text>
+        )}
+        {(!!city || !!postalCode) && (
+          <Text variant="text" color="black60" textAlign="center">
+            {cityAndPostalCode(city, postalCode)}
+          </Text>
+        )}
+      </Box>
+    )
+  }
+
+  const renderAddress = () => {
+    if (summary) {
+      return renderSummaryAddress()
+    } else {
+      return renderSegmentedAddress()
+    }
+  }
+
+  return (
+    <TouchableOpacity
+      onPress={() =>
+        showActionSheetWithOptions(...tappedOnMap(lat, lng, address, summary, partnerName, city, postalCode))
+      }
+    >
+      <MapWrapper>
+        <MapboxGL.MapView
+          style={{ height: 120 }}
+          key={lng}
+          styleURL={ArtsyMapStyleURL}
+          logoEnabled={false}
+          scrollEnabled={false}
+          attributionEnabled={false}
+        >
+          <MapboxGL.Camera centerCoordinate={[lng, lat]} zoomLevel={14} />
+          <MapboxGL.PointAnnotation id={internalID} coordinate={[lng, lat]}>
+            <Pin />
+          </MapboxGL.PointAnnotation>
+        </MapboxGL.MapView>
+        {renderAddress()}
+      </MapWrapper>
+    </TouchableOpacity>
+  )
 }
 
 export const LocationMapContainer = createFragmentContainer(LocationMap, {

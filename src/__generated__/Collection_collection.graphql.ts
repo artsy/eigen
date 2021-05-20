@@ -77,7 +77,16 @@ const node: ReaderFragment = {
       "name": "CollectionHeader_collection"
     },
     {
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "input",
+          "value": {
+            "dimensionRange": "*-*",
+            "sort": "-decayed_merch"
+          }
+        }
+      ],
       "kind": "FragmentSpread",
       "name": "CollectionArtworks_collection"
     },
@@ -95,5 +104,5 @@ const node: ReaderFragment = {
   "type": "MarketingCollection",
   "abstractKey": null
 };
-(node as any).hash = '772fca1c6419295f14c6a3689e3e626c';
+(node as any).hash = 'dd38951baf8bd1b498788daef62013cd';
 export default node;
