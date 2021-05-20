@@ -110,7 +110,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         collectionArtworks: artworksConnection(
           first: $count
           after: $cursor
-          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
+          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS]
           input: $input
         ) @connection(key: "Collection_collectionArtworks") {
           aggregations {

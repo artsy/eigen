@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b9f58eb6b37c53fe8087f97659fe55f7 */
+/* @relayHash 37f0425841de21e226659b61165fd40e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -108,7 +108,7 @@ fragment CollectionArtworks_collection_2T6kBV on MarketingCollection {
   isDepartment
   slug
   id
-  collectionArtworks: artworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], input: {sort: "-decayed_merch", dimensionRange: "*-*"}) {
+  collectionArtworks: artworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS], input: {sort: "-decayed_merch", dimensionRange: "*-*"}) {
     aggregations {
       slice
       counts {
@@ -313,7 +313,8 @@ v7 = [
       "PARTNER",
       "MAJOR_PERIOD",
       "MEDIUM",
-      "PRICE_RANGE"
+      "PRICE_RANGE",
+      "MATERIALS_TERMS"
     ]
   },
   {
@@ -918,7 +919,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "artworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-decayed_merch\"})"
+            "storageKey": "artworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"MATERIALS_TERMS\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-decayed_merch\"})"
           },
           {
             "alias": "collectionArtworks",
@@ -1174,7 +1175,7 @@ return {
     ]
   },
   "params": {
-    "id": "b9f58eb6b37c53fe8087f97659fe55f7",
+    "id": "37f0425841de21e226659b61165fd40e",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "marketingCollection": {
