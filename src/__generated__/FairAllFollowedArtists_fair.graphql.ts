@@ -42,8 +42,12 @@ const node: ReaderFragment = {
       "args": [
         {
           "kind": "Literal",
-          "name": "includeArtworksByFollowedArtists",
-          "value": true
+          "name": "input",
+          "value": {
+            "dimensionRange": "*-*",
+            "includeArtworksByFollowedArtists": true,
+            "sort": "-decayed_merch"
+          }
         }
       ],
       "kind": "FragmentSpread",
@@ -53,5 +57,5 @@ const node: ReaderFragment = {
   "type": "Fair",
   "abstractKey": null
 };
-(node as any).hash = '6f43d2010c52c6fcb960769e30119d4e';
+(node as any).hash = '3252c171b7486ee49bc96af845f77107';
 export default node;

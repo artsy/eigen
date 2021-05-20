@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistSeriesArtworks_artistSeries } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
-import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { filterArtworksParams, prepareFilterArtworksParamsForInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -48,7 +48,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
             throw new Error("ArtistSeries/ArtistSeriesArtworks filter error: " + error.message)
           }
         },
-        filterParams
+        { input: prepareFilterArtworksParamsForInput(filterParams) }
       )
     }
   }, [appliedFilters])
@@ -92,41 +92,15 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
       @argumentDefinitions(
         count: { type: "Int", defaultValue: 20 }
         cursor: { type: "String" }
-        sort: { type: "String", defaultValue: "-decayed_merch" }
-        additionalGeneIDs: { type: "[String]" }
-        priceRange: { type: "String" }
-        color: { type: "String" }
-        colors: { type: "[String]" }
-        partnerID: { type: "ID" }
-        partnerIDs: { type: "[String]" }
-        dimensionRange: { type: "String", defaultValue: "*-*" }
-        majorPeriods: { type: "[String]" }
-        acquireable: { type: "Boolean" }
-        inquireableOnly: { type: "Boolean" }
-        atAuction: { type: "Boolean" }
-        offerable: { type: "Boolean" }
-        attributionClass: { type: "[String]" }
+        input: { type: "FilterArtworksInput" }
       ) {
         slug
         internalID
         artistSeriesArtworks: filterArtworksConnection(
           first: 20
           after: $cursor
-          sort: $sort
-          additionalGeneIDs: $additionalGeneIDs
-          priceRange: $priceRange
-          color: $color
-          colors: $colors
-          partnerID: $partnerID
-          partnerIDs: $partnerIDs
-          dimensionRange: $dimensionRange
-          majorPeriods: $majorPeriods
-          acquireable: $acquireable
-          inquireableOnly: $inquireableOnly
-          atAuction: $atAuction
-          offerable: $offerable
-          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
-          attributionClass: $attributionClass
+          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS]
+          input: $input
         ) @connection(key: "ArtistSeries_artistSeriesArtworks") {
           aggregations {
             slice
@@ -162,11 +136,11 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
     },
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
-        ...fragmentVariables,
         props,
         count,
         cursor,
         id: props.artistSeries.slug,
+        input: fragmentVariables.input,
       }
     },
     query: graphql`
@@ -174,40 +148,14 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
         $id: ID!
         $count: Int!
         $cursor: String
-        $sort: String
-        $additionalGeneIDs: [String]
-        $priceRange: String
-        $color: String
-        $colors: [String]
-        $partnerID: ID
-        $partnerIDs: [String]
-        $dimensionRange: String
-        $majorPeriods: [String]
-        $acquireable: Boolean
-        $inquireableOnly: Boolean
-        $atAuction: Boolean
-        $offerable: Boolean
-        $attributionClass: [String]
+        $input: FilterArtworksInput
       ) {
         artistSeries(id: $id) {
           ...ArtistSeriesArtworks_artistSeries
             @arguments(
               count: $count
               cursor: $cursor
-              sort: $sort
-              additionalGeneIDs: $additionalGeneIDs
-              color: $color
-              colors: $colors
-              partnerID: $partnerID
-              partnerIDs: $partnerIDs
-              priceRange: $priceRange
-              dimensionRange: $dimensionRange
-              majorPeriods: $majorPeriods
-              acquireable: $acquireable
-              inquireableOnly: $inquireableOnly
-              atAuction: $atAuction
-              offerable: $offerable
-              attributionClass: $attributionClass
+              input: $input
             )
         }
       }

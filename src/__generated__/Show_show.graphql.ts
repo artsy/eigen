@@ -120,7 +120,16 @@ const node: ReaderFragment = {
       "name": "ShowContextCard_show"
     },
     {
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "input",
+          "value": {
+            "dimensionRange": "*-*",
+            "sort": "partner_show_position"
+          }
+        }
+      ],
       "kind": "FragmentSpread",
       "name": "ShowArtworks_show"
     },
@@ -133,5 +142,5 @@ const node: ReaderFragment = {
   "type": "Show",
   "abstractKey": null
 };
-(node as any).hash = 'f181f393f2512c84f307c68b11f5a547';
+(node as any).hash = '447380f516cb2f55083c2ad2c9153b61';
 export default node;

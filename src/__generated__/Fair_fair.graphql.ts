@@ -156,8 +156,10 @@ return {
         },
         {
           "kind": "Literal",
-          "name": "includeArtworksByFollowedArtists",
-          "value": true
+          "name": "input",
+          "value": {
+            "includeArtworksByFollowedArtists": true
+          }
         }
       ],
       "concreteType": "FilterArtworksConnection",
@@ -176,7 +178,7 @@ return {
           "storageKey": null
         }
       ],
-      "storageKey": "filterArtworksConnection(first:20,includeArtworksByFollowedArtists:true)"
+      "storageKey": "filterArtworksConnection(first:20,input:{\"includeArtworksByFollowedArtists\":true})"
     },
     {
       "args": null,
@@ -199,7 +201,16 @@ return {
       "name": "FairCollections_fair"
     },
     {
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "input",
+          "value": {
+            "dimensionRange": "*-*",
+            "sort": "-decayed_merch"
+          }
+        }
+      ],
       "kind": "FragmentSpread",
       "name": "FairArtworks_fair"
     },
@@ -218,5 +229,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '4d0ff22e98f681e8dd4f517a7d2d77be';
+(node as any).hash = '6c991142cc4d3ed85f992de42519c078';
 export default node;

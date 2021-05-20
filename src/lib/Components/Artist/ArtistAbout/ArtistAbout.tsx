@@ -43,7 +43,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
           <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} artist={artist} />
         )}
         <ArtistConsignButton artist={artist} />
-        {!!useFeatureFlag("AROptionsNewArtistInsightsPage") && <ArtistAboutShowsFragmentContainer artist={artist} />}
+        <ArtistAboutShowsFragmentContainer artist={artist} />
         {!!articles.length && <Articles articles={articles} />}
         {!!relatedArtists.length && <RelatedArtists artists={relatedArtists} />}
       </Stack>
@@ -61,7 +61,7 @@ export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
       ...ArtistSeriesMoreSeries_artist
       ...ArtistNotableWorksRail_artist
       # this should match the query in ArtistNotableWorksRail
-      notableWorks: filterArtworksConnection(sort: "-weighted_iconicity", first: 3) {
+      notableWorks: filterArtworksConnection(first: 3, input: { sort: "-weighted_iconicity" }) {
         edges {
           node {
             id

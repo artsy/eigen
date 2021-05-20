@@ -8196,6 +8196,7 @@ type Partner implements Node {
   counts: PartnerCounts
   defaultProfileID: String
   displayArtistsSection: Boolean
+  displayWorksSection: Boolean
   distinguishRepresentedArtists: Boolean
 
   # Artworks Elastic Search results
@@ -9401,6 +9402,9 @@ type Query {
     sort: PriceInsightSort
   ): PriceInsightConnection
 
+  # A requested location
+  requestLocation(ip: String!): RequestLocation
+
   # A Sale
   sale(
     # The slug or ID of the Sale
@@ -9657,6 +9661,11 @@ input RequestCredentialsForAssetUploadInput {
 type RequestCredentialsForAssetUploadPayload {
   asset: Credentials
   clientMutationId: String
+}
+
+type RequestLocation {
+  country: String
+  countryCode: String
 }
 
 type ResizedImageUrl {
@@ -11762,6 +11771,9 @@ type Viewer {
     near: String
     sort: PartnersSortType
   ): PartnerConnection
+
+  # A requested location
+  requestLocation(ip: String!): RequestLocation
 
   # A Sale
   sale(

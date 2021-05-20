@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e2acbff08b79c88f251b4de702b5f44a */
+/* @relayHash 855f8c3cf694559ade21bb2529e1ddbe */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -109,11 +109,11 @@ fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup 
   }
 }
 
-fragment CollectionArtworks_collection on MarketingCollection {
+fragment CollectionArtworks_collection_2T6kBV on MarketingCollection {
   isDepartment
   slug
   id
-  collectionArtworks: artworksConnection(first: 10, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  collectionArtworks: artworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS], input: {sort: "-decayed_merch", dimensionRange: "*-*"}) {
     aggregations {
       slice
       counts {
@@ -175,7 +175,7 @@ fragment Collection_collection_2qE49v on MarketingCollection {
   slug
   isDepartment
   ...CollectionHeader_collection
-  ...CollectionArtworks_collection
+  ...CollectionArtworks_collection_2T6kBV
   ...FeaturedArtists_collection
   ...CollectionHubsRails_collection
   linkedCollections {
@@ -330,20 +330,23 @@ v8 = [
       "PARTNER",
       "MAJOR_PERIOD",
       "MEDIUM",
-      "PRICE_RANGE"
+      "PRICE_RANGE",
+      "MATERIALS_TERMS"
     ]
-  },
-  {
-    "kind": "Literal",
-    "name": "dimensionRange",
-    "value": "*-*"
   },
   {
     "kind": "Literal",
     "name": "first",
     "value": 10
   },
-  (v7/*: any*/)
+  {
+    "kind": "Literal",
+    "name": "input",
+    "value": {
+      "dimensionRange": "*-*",
+      "sort": "-decayed_merch"
+    }
+  }
 ],
 v9 = {
   "alias": null,
@@ -873,27 +876,14 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "artworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,sort:\"-decayed_merch\")"
+            "storageKey": "artworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"MATERIALS_TERMS\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-decayed_merch\"})"
           },
           {
             "alias": "collectionArtworks",
             "args": (v8/*: any*/),
             "filters": [
-              "sort",
-              "additionalGeneIDs",
-              "priceRange",
-              "color",
-              "colors",
-              "partnerID",
-              "partnerIDs",
-              "dimensionRange",
-              "majorPeriods",
-              "acquireable",
-              "inquireableOnly",
-              "atAuction",
-              "offerable",
               "aggregations",
-              "attributionClass"
+              "input"
             ],
             "handle": "connection",
             "key": "Collection_collectionArtworks",
@@ -1142,7 +1132,7 @@ return {
     ]
   },
   "params": {
-    "id": "e2acbff08b79c88f251b4de702b5f44a",
+    "id": "855f8c3cf694559ade21bb2529e1ddbe",
     "metadata": {},
     "name": "CollectionQuery",
     "operationKind": "query",

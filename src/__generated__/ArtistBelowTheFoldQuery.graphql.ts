@@ -1,17 +1,16 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5e8d852a3526af22fc87bce04145e7aa */
+/* @relayHash f4849acfd7fd7bcb48aadb67980feada */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistBelowTheFoldQueryVariables = {
     artistID: string;
-    isPad: boolean;
 };
 export type ArtistBelowTheFoldQueryResponse = {
     readonly artist: {
-        readonly " $fragmentRefs": FragmentRefs<"ArtistAbout_artist" | "ArtistShows_artist" | "ArtistInsights_artist">;
+        readonly " $fragmentRefs": FragmentRefs<"ArtistAbout_artist" | "ArtistInsights_artist">;
     } | null;
 };
 export type ArtistBelowTheFoldQuery = {
@@ -24,11 +23,9 @@ export type ArtistBelowTheFoldQuery = {
 /*
 query ArtistBelowTheFoldQuery(
   $artistID: String!
-  $isPad: Boolean!
 ) {
   artist(id: $artistID) {
     ...ArtistAbout_artist
-    ...ArtistShows_artist
     ...ArtistInsights_artist
     id
   }
@@ -87,7 +84,7 @@ fragment ArtistAbout_artist on Artist {
   ...Biography_artist
   ...ArtistSeriesMoreSeries_artist
   ...ArtistNotableWorksRail_artist
-  notableWorks: filterArtworksConnection(sort: "-weighted_iconicity", first: 3) {
+  notableWorks: filterArtworksConnection(first: 3, input: {sort: "-weighted_iconicity"}) {
     edges {
       node {
         id
@@ -199,7 +196,7 @@ fragment ArtistInsights_artist on Artist {
 fragment ArtistNotableWorksRail_artist on Artist {
   internalID
   slug
-  filterArtworksConnection(sort: "-weighted_iconicity", first: 10) {
+  filterArtworksConnection(first: 10, input: {sort: "-weighted_iconicity"}) {
     edges {
       node {
         id
@@ -259,41 +256,6 @@ fragment ArtistShow_show on Show {
     url(version: "large")
   }
   ...Metadata_show
-}
-
-fragment ArtistShows_artist on Artist {
-  currentShows: showsConnection(status: "running", first: 10) {
-    edges {
-      node {
-        ...VariableSizeShowsList_shows
-        id
-      }
-    }
-  }
-  upcomingShows: showsConnection(status: "upcoming", first: 10) {
-    edges {
-      node {
-        ...VariableSizeShowsList_shows
-        id
-      }
-    }
-  }
-  pastSmallShows: showsConnection(status: "closed", first: 20) @skip(if: $isPad) {
-    edges {
-      node {
-        ...SmallList_shows
-        id
-      }
-    }
-  }
-  pastLargeShows: showsConnection(status: "closed", first: 20) @include(if: $isPad) {
-    edges {
-      node {
-        ...VariableSizeShowsList_shows
-        id
-      }
-    }
-  }
 }
 
 fragment AuctionResultListItem_auctionResult on AuctionResult {
@@ -373,16 +335,6 @@ fragment RelatedArtists_artists on Artist {
   id
   ...RelatedArtist_artist
 }
-
-fragment SmallList_shows on Show {
-  id
-  ...ArtistShow_show
-}
-
-fragment VariableSizeShowsList_shows on Show {
-  id
-  ...ArtistShow_show
-}
 */
 
 const node: ConcreteRequest = (function(){
@@ -391,11 +343,6 @@ var v0 = [
     "defaultValue": null,
     "kind": "LocalArgument",
     "name": "artistID"
-  },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "isPad"
   }
 ],
 v1 = [
@@ -459,8 +406,10 @@ v8 = {
 },
 v9 = {
   "kind": "Literal",
-  "name": "sort",
-  "value": "-weighted_iconicity"
+  "name": "input",
+  "value": {
+    "sort": "-weighted_iconicity"
+  }
 },
 v10 = {
   "alias": null,
@@ -658,12 +607,7 @@ v21 = [
     "storageKey": null
   }
 ],
-v22 = {
-  "kind": "Literal",
-  "name": "status",
-  "value": "closed"
-},
-v23 = [
+v22 = [
   {
     "kind": "Literal",
     "name": "allowEmptyCreatedDates",
@@ -685,14 +629,6 @@ v23 = [
     "name": "sort",
     "value": "DATE_DESC"
   }
-],
-v24 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 20
-  },
-  (v22/*: any*/)
 ];
 return {
   "fragment": {
@@ -713,11 +649,6 @@ return {
             "args": null,
             "kind": "FragmentSpread",
             "name": "ArtistAbout_artist"
-          },
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "ArtistShows_artist"
           },
           {
             "args": null,
@@ -949,7 +880,7 @@ return {
               },
               (v10/*: any*/)
             ],
-            "storageKey": "filterArtworksConnection(first:10,sort:\"-weighted_iconicity\")"
+            "storageKey": "filterArtworksConnection(first:10,input:{\"sort\":\"-weighted_iconicity\"})"
           },
           {
             "alias": "notableWorks",
@@ -985,7 +916,7 @@ return {
               },
               (v10/*: any*/)
             ],
-            "storageKey": "filterArtworksConnection(first:3,sort:\"-weighted_iconicity\")"
+            "storageKey": "filterArtworksConnection(first:3,input:{\"sort\":\"-weighted_iconicity\"})"
           },
           {
             "alias": "iconicCollections",
@@ -1166,7 +1097,11 @@ return {
             "alias": "pastShows",
             "args": [
               (v14/*: any*/),
-              (v22/*: any*/)
+              {
+                "kind": "Literal",
+                "name": "status",
+                "value": "closed"
+              }
             ],
             "concreteType": "ShowConnection",
             "kind": "LinkedField",
@@ -1342,7 +1277,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v23/*: any*/),
+            "args": (v22/*: any*/),
             "concreteType": "AuctionResultConnection",
             "kind": "LinkedField",
             "name": "auctionResultsConnection",
@@ -1584,7 +1519,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v23/*: any*/),
+            "args": (v22/*: any*/),
             "filters": [
               "allowEmptyCreatedDates",
               "categories",
@@ -1597,40 +1532,6 @@ return {
             "key": "artist_auctionResultsConnection",
             "kind": "LinkedHandle",
             "name": "auctionResultsConnection"
-          },
-          {
-            "condition": "isPad",
-            "kind": "Condition",
-            "passingValue": false,
-            "selections": [
-              {
-                "alias": "pastSmallShows",
-                "args": (v24/*: any*/),
-                "concreteType": "ShowConnection",
-                "kind": "LinkedField",
-                "name": "showsConnection",
-                "plural": false,
-                "selections": (v21/*: any*/),
-                "storageKey": "showsConnection(first:20,status:\"closed\")"
-              }
-            ]
-          },
-          {
-            "condition": "isPad",
-            "kind": "Condition",
-            "passingValue": true,
-            "selections": [
-              {
-                "alias": "pastLargeShows",
-                "args": (v24/*: any*/),
-                "concreteType": "ShowConnection",
-                "kind": "LinkedField",
-                "name": "showsConnection",
-                "plural": false,
-                "selections": (v21/*: any*/),
-                "storageKey": "showsConnection(first:20,status:\"closed\")"
-              }
-            ]
           }
         ],
         "storageKey": null
@@ -1638,7 +1539,7 @@ return {
     ]
   },
   "params": {
-    "id": "5e8d852a3526af22fc87bce04145e7aa",
+    "id": "f4849acfd7fd7bcb48aadb67980feada",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",
@@ -1646,5 +1547,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'e0e19647062ef1b54ac09dde940cdf4c';
+(node as any).hash = '3a1d5f3099da3ca2e023cd811e4f3591';
 export default node;

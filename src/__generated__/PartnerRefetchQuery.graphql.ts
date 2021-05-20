@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ee5938bb907da6c82d5118f9a537ad6e */
+/* @relayHash d3018808da7d23a90db639637cbf3d48 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -106,10 +106,10 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
   }
 }
 
-fragment PartnerArtwork_partner on Partner {
+fragment PartnerArtwork_partner_BRGa6 on Partner {
   internalID
   slug
-  artworks: filterArtworksConnection(aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE], dimensionRange: "*-*", first: 10, sort: "-partner_updated_at") {
+  artworks: filterArtworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS], input: {sort: "-partner_updated_at", dimensionRange: "*-*"}) {
     aggregations {
       slice
       counts {
@@ -296,7 +296,7 @@ fragment Partner_partner on Partner {
     isFollowed
     internalID
   }
-  ...PartnerArtwork_partner
+  ...PartnerArtwork_partner_BRGa6
   ...PartnerOverview_partner
   ...PartnerShows_partner
   ...PartnerHeader_partner
@@ -367,19 +367,18 @@ v8 = [
       "DIMENSION_RANGE",
       "MAJOR_PERIOD",
       "MEDIUM",
-      "PRICE_RANGE"
+      "PRICE_RANGE",
+      "MATERIALS_TERMS"
     ]
-  },
-  {
-    "kind": "Literal",
-    "name": "dimensionRange",
-    "value": "*-*"
   },
   (v7/*: any*/),
   {
     "kind": "Literal",
-    "name": "sort",
-    "value": "-partner_updated_at"
+    "name": "input",
+    "value": {
+      "dimensionRange": "*-*",
+      "sort": "-partner_updated_at"
+    }
   }
 ],
 v9 = {
@@ -894,24 +893,14 @@ return {
                     "abstractKey": "__isArtworkConnectionInterface"
                   }
                 ],
-                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],dimensionRange:\"*-*\",first:10,sort:\"-partner_updated_at\")"
+                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"MATERIALS_TERMS\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-partner_updated_at\"})"
               },
               {
                 "alias": "artworks",
                 "args": (v8/*: any*/),
                 "filters": [
-                  "acquireable",
                   "aggregations",
-                  "attributionClass",
-                  "color",
-                  "colors",
-                  "dimensionRange",
-                  "additionalGeneIDs",
-                  "inquireableOnly",
-                  "majorPeriods",
-                  "offerable",
-                  "priceRange",
-                  "sort"
+                  "input"
                 ],
                 "handle": "connection",
                 "key": "Partner_artworks",
@@ -1295,7 +1284,7 @@ return {
     ]
   },
   "params": {
-    "id": "ee5938bb907da6c82d5118f9a537ad6e",
+    "id": "d3018808da7d23a90db639637cbf3d48",
     "metadata": {},
     "name": "PartnerRefetchQuery",
     "operationKind": "query",

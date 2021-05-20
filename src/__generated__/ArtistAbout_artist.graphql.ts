@@ -82,8 +82,10 @@ const node: ReaderFragment = {
         },
         {
           "kind": "Literal",
-          "name": "sort",
-          "value": "-weighted_iconicity"
+          "name": "input",
+          "value": {
+            "sort": "-weighted_iconicity"
+          }
         }
       ],
       "concreteType": "FilterArtworksConnection",
@@ -121,7 +123,7 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
-      "storageKey": "filterArtworksConnection(first:3,sort:\"-weighted_iconicity\")"
+      "storageKey": "filterArtworksConnection(first:3,input:{\"sort\":\"-weighted_iconicity\"})"
     },
     {
       "alias": "iconicCollections",
@@ -288,5 +290,5 @@ const node: ReaderFragment = {
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = 'b90ade61430985fc3d4e157ac87167c8';
+(node as any).hash = '6d256142c41f599abfa9db68190c75ad';
 export default node;

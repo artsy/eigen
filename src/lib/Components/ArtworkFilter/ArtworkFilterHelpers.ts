@@ -1,5 +1,5 @@
 import { FilterScreen } from "lib/Components/ArtworkFilter"
-import { capitalize, compact, forOwn, groupBy, sortBy } from "lodash"
+import { capitalize, compact, forOwn, groupBy, pick, sortBy } from "lodash"
 
 export enum FilterDisplayName {
   // artist = "Artists",
@@ -21,6 +21,7 @@ export enum FilterDisplayName {
   viewAs = "View as",
   waysToBuy = "Ways to buy",
   year = "Artwork date",
+  materialsTerms = "Material",
 }
 
 // General filter types and objects
@@ -48,6 +49,7 @@ export enum FilterParamName {
   waysToBuyBuy = "acquireable",
   waysToBuyInquire = "inquireableOnly",
   waysToBuyMakeOffer = "offerable",
+  materialsTerms = "materialsTerms",
 }
 
 // Types for the parameters passed to Relay
@@ -94,6 +96,7 @@ export const ParamDefaultValues = {
   sortArtworks: "-decayed_merch",
   sortSaleArtworks: "position",
   viewAs: ViewAsValues.Grid,
+  materialsTerms: [],
 }
 
 export const defaultCommonFilterOptions = {
@@ -120,6 +123,7 @@ export const defaultCommonFilterOptions = {
   sizes: ParamDefaultValues.sizes,
   sort: ParamDefaultValues.sortArtworks,
   viewAs: ParamDefaultValues.viewAs,
+  materialsTerms: ParamDefaultValues.materialsTerms,
 }
 
 export type Aggregations = Array<{
@@ -141,6 +145,7 @@ export type AggregationName =
   | "ARTIST"
   | "earliestCreatedYear"
   | "latestCreatedYear"
+  | "MATERIALS_TERMS"
 
 export interface Aggregation {
   count: number
@@ -175,6 +180,7 @@ export const filterKeyFromAggregation: Record<AggregationName, FilterParamName |
   ARTIST: "artistIDs",
   earliestCreatedYear: "earliestCreatedYear",
   latestCreatedYear: "earliestCreatedYear",
+  MATERIALS_TERMS: FilterParamName.materialsTerms,
 }
 
 const DEFAULT_ARTWORKS_PARAMS = {
@@ -398,6 +404,7 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   medium: "MEDIUM",
   partnerIDs: "PARTNER",
   priceRange: "PRICE_RANGE",
+  materialsTerms: "MATERIALS_TERMS",
 }
 
 export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {
@@ -452,4 +459,56 @@ export const getDisplayNameForTimePeriod = (aggregationName: string) => {
   }
 
   return DISPLAY_TEXT[aggregationName] ?? aggregationName
+}
+
+export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
+  return pick(filters, [
+    "acquireable",
+    "additionalGeneIDs",
+    "after",
+    "aggregationPartnerCities",
+    "aggregations",
+    "artistID",
+    "artistIDs",
+    "artistNationalities",
+    "artistSeriesID",
+    "atAuction",
+    "attributionClass",
+    "before",
+    "color",
+    "colors",
+    "dimensionRange",
+    "excludeArtworkIDs",
+    "extraAggregationGeneIDs",
+    "first",
+    "forSale",
+    "geneID",
+    "geneIDs",
+    "height",
+    "includeArtworksByFollowedArtists",
+    "includeMediumFilterInAggregation",
+    "inquireableOnly",
+    "keyword",
+    "keywordMatchExact",
+    "last",
+    "locationCities",
+    "majorPeriods",
+    "marketable",
+    "materialsTerms",
+    "medium",
+    "offerable",
+    "page",
+    "partnerCities",
+    "partnerID",
+    "partnerIDs",
+    "period",
+    "periods",
+    "priceRange",
+    "saleID",
+    "size",
+    "sizes",
+    "sort",
+    "tagID",
+    "width",
+  ])
 }

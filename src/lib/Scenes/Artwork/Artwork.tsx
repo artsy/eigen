@@ -402,7 +402,7 @@ export const ArtworkContainer = createRefetchContainer(
         artistSeriesConnection(first: 1) {
           edges {
             node {
-              filterArtworksConnection(sort: "-decayed_merch", first: 20) {
+              filterArtworksConnection(first: 20, input: { sort: "-decayed_merch" }) {
                 edges {
                   node {
                     id

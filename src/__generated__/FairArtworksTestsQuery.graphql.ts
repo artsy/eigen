@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 53d8bb5789d751e294f666a8c4d7ee05 */
+/* @relayHash ce852b8d3393b11abb2f609fc5eba379 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -68,7 +68,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment FairArtworks_fair on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
+  fairArtworks: filterArtworksConnection(first: 30, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST, MATERIALS_TERMS]) {
     aggregations {
       slice
       counts {
@@ -163,23 +163,14 @@ v4 = [
       "MEDIUM",
       "PRICE_RANGE",
       "FOLLOWED_ARTISTS",
-      "ARTIST"
+      "ARTIST",
+      "MATERIALS_TERMS"
     ]
-  },
-  {
-    "kind": "Literal",
-    "name": "dimensionRange",
-    "value": "*-*"
   },
   {
     "kind": "Literal",
     "name": "first",
     "value": 30
-  },
-  {
-    "kind": "Literal",
-    "name": "sort",
-    "value": "-decayed_merch"
   }
 ],
 v5 = {
@@ -643,29 +634,14 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\",\"MATERIALS_TERMS\"],first:30)"
           },
           {
             "alias": "fairArtworks",
             "args": (v4/*: any*/),
             "filters": [
-              "sort",
-              "additionalGeneIDs",
-              "priceRange",
-              "color",
-              "colors",
-              "partnerID",
-              "partnerIDs",
-              "dimensionRange",
-              "majorPeriods",
-              "acquireable",
-              "inquireableOnly",
-              "atAuction",
-              "offerable",
-              "includeArtworksByFollowedArtists",
-              "artistIDs",
               "aggregations",
-              "attributionClass"
+              "input"
             ],
             "handle": "connection",
             "key": "Fair_fairArtworks",
@@ -679,7 +655,7 @@ return {
     ]
   },
   "params": {
-    "id": "53d8bb5789d751e294f666a8c4d7ee05",
+    "id": "ce852b8d3393b11abb2f609fc5eba379",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": {

@@ -1093,6 +1093,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "priceRange",
           paramValue: "*-*",
         },
@@ -1188,6 +1193,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "All",
           paramName: "medium",
           paramValue: "*",
+        },
+        {
+          displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1296,6 +1306,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "All",
           paramName: "medium",
           paramValue: "*",
+        },
+        {
+          displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1418,6 +1433,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "priceRange",
           paramValue: "*-*",
         },
@@ -1527,6 +1547,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "priceRange",
           paramValue: "*-*",
         },
@@ -1609,6 +1634,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "All",
           paramName: "medium",
           paramValue: "*",
+        },
+        {
+          displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1707,6 +1737,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "All",
           paramName: "medium",
           paramValue: "*",
+        },
+        {
+          displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1809,6 +1844,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "priceRange",
           paramValue: "*-*",
         },
@@ -1886,6 +1926,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "All",
           paramName: "medium",
           paramValue: "*",
+        },
+        {
+          displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
         },
         {
           displayText: "All",
