@@ -1,10 +1,10 @@
 // @ts-check
 
 const changelogTemplateSections = {
-  crossPlatformUserFacingChanges: "Cross-platform user-facing changes",
-  iOSUserFacingChanges: "iOS user-facing changes",
   androidUserFacingChanges: "Android user-facing changes",
+  crossPlatformUserFacingChanges: "Cross-platform user-facing changes",
   devChanges: "Dev changes",
+  iOSUserFacingChanges: "iOS user-facing changes",
 }
 
 module.exports.changelogTemplateSections = changelogTemplateSections
@@ -37,6 +37,7 @@ module.exports.updateChangelogSectionTemplate = (filePath) => {
 
   const regex = /### Changelog updates[\S\s]+end_changelog_updates.*/g
   if (!fileContents.match(regex)) {
+    // tslint:disable-next-line
     console.error("Can't find 'Changelog updates' section in pull request template", filePath)
     process.exit(1)
   }

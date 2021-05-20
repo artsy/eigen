@@ -18,11 +18,11 @@ module.exports.parsePRDescription = (description) => {
    * @type {import('./changelog-types').ParseResult}
    */
   const result = {
-    type: "changes",
     androidUserFacingChanges: [],
     crossPlatformUserFacingChanges: [],
     devChanges: [],
     iOSUserFacingChanges: [],
+    type: "changes",
   }
 
   for (const [sectionKey, sectionTitle] of Object.entries(changelogTemplateSections)) {
