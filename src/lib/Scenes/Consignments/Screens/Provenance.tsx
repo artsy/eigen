@@ -1,7 +1,7 @@
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
-import { View, ViewProps } from "react-native"
+import { KeyboardAvoidingView, View, ViewProps } from "react-native"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { TextArea } from "../Components/TextArea"
 import { ConsignmentSetup } from "../index"
@@ -37,25 +37,27 @@ export default class Provenance extends React.Component<Props, State> {
     return (
       <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
         <FancyModalHeader onLeftButtonPress={this.doneTapped}>Provenance</FancyModalHeader>
-        <View
-          style={{
-            marginLeft: 20,
-            marginRight: 20,
-            marginTop: 20,
-            maxHeight: 600,
-            flexDirection: "row-reverse",
-          }}
-        >
-          <TextArea
-            text={{
-              onChangeText: this.textChanged,
-              value: this.state.provenance,
-              placeholder:
-                "Add notes about how you acquired the work. If you’re not sure add any details about how long you’ve owned the work.",
-              autoFocus: typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
+        <KeyboardAvoidingView style={{ flex: 1 }}>
+          <View
+            style={{
+              marginLeft: 20,
+              marginRight: 20,
+              marginTop: 20,
+              maxHeight: 600,
+              flexDirection: "row-reverse",
             }}
-          />
-        </View>
+          >
+            <TextArea
+              text={{
+                onChangeText: this.textChanged,
+                value: this.state.provenance,
+                placeholder:
+                  "Add notes about how you acquired the work. If you’re not sure add any details about how long you’ve owned the work.",
+                autoFocus: typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
+              }}
+            />
+          </View>
+        </KeyboardAvoidingView>
       </BottomAlignedButton>
     )
   }
