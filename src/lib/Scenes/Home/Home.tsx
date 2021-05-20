@@ -30,7 +30,7 @@ import { RailScrollRef } from "./Components/types"
 
 const mockResults = {
   __fragments: {
-    CollectionsRail_collectionsModule: {},
+    AuctionResultsRail_collectionsModule: {},
   },
   __id: "client:root:homePage:marketingCollectionsModule",
   __fragmentOwner: {

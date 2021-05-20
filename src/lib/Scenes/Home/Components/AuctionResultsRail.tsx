@@ -114,7 +114,7 @@ const AuctionResultsRail: React.FC<Props & RailScrollProps> = (props) => {
 
 export const ActionResultsRailFragmentContainer = createFragmentContainer(AuctionResultsRail, {
   collectionsModule: graphql`
-    fragment CollectionsRail_collectionsModule on HomePageMarketingCollectionsModule {
+    fragment AuctionResultsRail_collectionsModule on HomePageMarketingCollectionsModule {
       results {
         title
         slug
