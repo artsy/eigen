@@ -1,14 +1,8 @@
-import { danger, fail, message, warn } from "danger"
-
+import { danger, fail, warn } from "danger"
 // TypeScript thinks we're in React Native,
 // so the node API gives us errors:
 import * as fs from "fs"
-import * as path from "path"
 import * as yaml from "yaml"
-
-// Setup
-const pr = danger.github.pr
-const bodyAndTitle = (pr.body + pr.title).toLowerCase()
 
 const typescriptOnly = (file: string) => file.includes(".ts")
 const filesOnly = (file: string) => fs.existsSync(file) && fs.lstatSync(file).isFile()
@@ -16,15 +10,8 @@ const filesOnly = (file: string) => fs.existsSync(file) && fs.lstatSync(file).is
 // Modified or Created can be treated the same a lot of the time
 const createdFiles = danger.git.created_files.filter(filesOnly)
 
-const appOnlyFilter = (filename: string) =>
-  filename.includes("src/lib/") &&
-  !filename.includes("__tests__") &&
-  !filename.includes("__mocks__") &&
-  typescriptOnly(filename)
-
 const testOnlyFilter = (filename: string) => filename.includes("-tests") && typescriptOnly(filename)
 
-const createdAppOnlyFiles = createdFiles.filter(appOnlyFilter)
 const createdTestOnlyFiles = createdFiles.filter(testOnlyFilter)
 
 const newEnzymeImports = createdTestOnlyFiles.filter((filename) => {
@@ -52,13 +39,6 @@ ${newRenderRelayTreeImports.map((filename) => `- \`${filename}\``).join("\n")}
 See [\`LoggedInUserInfo-tests.tsx\`](https://github.com/artsy/eigen/blob/f33577ebb09800224731365734be411b66ad8126/src/lib/Scenes/MyProfile/__tests__/LoggedInUserInfo-tests.tsx) as an example, or [the docs](https://relay.dev/docs/en/testing-relay-components).
   `)
 }
-
-// Check that every file created has a corresponding test file
-const correspondingTestsForAppFiles = createdAppOnlyFiles.map((f) => {
-  const newPath = path.dirname(f)
-  const name = path.basename(f).replace(".ts", "-tests.ts")
-  return `${newPath}/__tests__/${name}`
-})
 
 const modified = danger.git.modified_files
 const editedFiles = modified.concat(danger.git.created_files)
