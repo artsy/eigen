@@ -12,17 +12,17 @@ module.exports.parsePRDescription = (description) => {
     return { type: "no_changes" }
   }
 
-  const lines = description.split("\n")
+  const lines = description.split("\n").map(line => line.trim())
 
   /**
    * @type {import('./changelog-types').ParseResult}
    */
   const result = {
-    type: "changes",
     androidUserFacingChanges: [],
     crossPlatformUserFacingChanges: [],
     devChanges: [],
     iOSUserFacingChanges: [],
+    type: "changes",
   }
 
   for (const [sectionKey, sectionTitle] of Object.entries(changelogTemplateSections)) {
