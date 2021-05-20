@@ -47,7 +47,7 @@ export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmail
         returnKeyType="next"
         spellCheck={false}
         autoCorrect={false}
-        textContentType="username"
+        textContentType="emailAddress"
         error={errors.email}
         testID="emailInput"
       />
