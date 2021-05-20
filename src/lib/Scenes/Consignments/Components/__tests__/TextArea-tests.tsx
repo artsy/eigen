@@ -1,6 +1,6 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import TextArea from "../TextArea"
+import { TextArea } from "../TextArea"
 
 import { extractText } from "lib/tests/extractText"
 
