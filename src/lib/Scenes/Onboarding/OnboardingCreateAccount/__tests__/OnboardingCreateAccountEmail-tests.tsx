@@ -4,7 +4,7 @@ import { BackButton } from "lib/navigation/BackButton"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { flushPromiseQueue } from "../../../../tests/flushPromiseQueue"
-import { UserSchema, userSchema } from "../OnboardingCreateAccount"
+import { emailSchema, UserSchema } from "../OnboardingCreateAccount"
 import { OnboardingCreateAccountEmail } from "../OnboardingCreateAccountEmail"
 
 const navigateToWelcomeScreenMock = jest.fn()
@@ -19,7 +19,7 @@ describe("OnboardingCreateAccountEmail", () => {
       initialValues: { email, password: "", name: "" },
       initialErrors: {},
       onSubmit: onSubmitMock,
-      validationSchema: userSchema,
+      validationSchema: emailSchema,
     })
 
     return (
