@@ -23,17 +23,15 @@ export const TextArea: React.FC<TextAreaProps> = (props) => {
 
   return (
     <View style={[props.style, { flex: 1 }]}>
-      <View style={{ flexDirection: "column" }}>
-        <Input
-          style={Platform.OS === "android" ? { textAlignVertical: "top" } : null}
-          autoCapitalize={"sentences"}
-          keyboardAppearance="dark"
-          selectionColor={colors["gray-medium"]}
-          multiline
-          {...props.text}
-          onChangeText={onChangeText}
-        />
-      </View>
+      <Input
+        style={Platform.OS === "android" ? { textAlignVertical: "top" } : null}
+        autoCapitalize={"sentences"}
+        keyboardAppearance="dark"
+        selectionColor={colors["gray-medium"]}
+        multiline
+        {...props.text}
+        onChangeText={onChangeText}
+      />
     </View>
   )
 }
