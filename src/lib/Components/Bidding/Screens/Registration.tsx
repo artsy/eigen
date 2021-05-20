@@ -47,7 +47,7 @@ interface RegistrationState {
 }
 
 const Hint: React.FC = ({ children }) => (
-  <Text variant="small" fontSize="2" mb="2">
+  <Text variant="small" fontSize="2" mb="4">
     {children}
   </Text>
 )
@@ -348,7 +348,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
                   />
                 </Flex>
               )}
-              <Flex p={20} flex="1">
+              <Flex px={20} flex="1">
                 {!!requiresPaymentInformation && <Hint>A valid credit card is required.</Hint>}
                 {
                   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
