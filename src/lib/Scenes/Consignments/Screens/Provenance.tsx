@@ -35,30 +35,28 @@ export default class Provenance extends React.Component<Props, State> {
 
   render() {
     return (
-      <Theme>
-        <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
-          <FancyModalHeader onLeftButtonPress={this.doneTapped}>Provenance</FancyModalHeader>
-          <View
-            style={{
-              marginLeft: 20,
-              marginRight: 20,
-              marginTop: 20,
-              maxHeight: 600,
-              flexDirection: "row-reverse",
+      <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
+        <FancyModalHeader onLeftButtonPress={this.doneTapped}>Provenance</FancyModalHeader>
+        <View
+          style={{
+            marginLeft: 20,
+            marginRight: 20,
+            marginTop: 20,
+            maxHeight: 600,
+            flexDirection: "row-reverse",
+          }}
+        >
+          <TextArea
+            text={{
+              onChangeText: this.textChanged,
+              value: this.state.provenance,
+              placeholder:
+                "Add notes about how you acquired the work. If you’re not sure add any details about how long you’ve owned the work.",
+              autoFocus: typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
             }}
-          >
-            <TextArea
-              text={{
-                onChangeText: this.textChanged,
-                value: this.state.provenance,
-                placeholder:
-                  "Add notes about how you acquired the work. If you’re not sure add any details about how long you’ve owned the work.",
-                autoFocus: typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
-              }}
-            />
-          </View>
-        </BottomAlignedButton>
-      </Theme>
+          />
+        </View>
+      </BottomAlignedButton>
     )
   }
 }
