@@ -10,15 +10,14 @@ upcoming:
     - Update android play store metadata - brian
   user_facing:
     - Fix wrong input font on android - dzmitry
-    - 
- 
+    - Fix android native getNavigationHeight method - kizito
 
 releases:
   - version: 6.9.1
     date: May 18, 2021
     dev:
-     - lock screen orientation to portrait on android phones - mounir
-     - Fix artist follow is incorrectly firing action_name - dzmitry
+      - lock screen orientation to portrait on android phones - mounir
+      - Fix artist follow is incorrectly firing action_name - dzmitry
     user_facing:
       - Correct formatted large numbers' display - kizito
       - Fix cancel button next to search bar doesn't clear terms/results - yauheni
