@@ -92,7 +92,8 @@ const node: ReaderFragment = {
             "DIMENSION_RANGE",
             "MAJOR_PERIOD",
             "MEDIUM",
-            "PRICE_RANGE"
+            "PRICE_RANGE",
+            "MATERIALS_TERMS"
           ]
         },
         {
@@ -236,5 +237,5 @@ const node: ReaderFragment = {
   "type": "Partner",
   "abstractKey": null
 };
-(node as any).hash = '4dccca55accab018cafb3e1ca3910f26';
+(node as any).hash = 'bb3bc1d92fc1d4b793beef4feb8886e1';
 export default node;

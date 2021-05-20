@@ -116,7 +116,7 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
         showArtworks: filterArtworksConnection(
           first: 30
           after: $cursor
-          aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
+          aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS]
           input: $input
         ) @connection(key: "Show_showArtworks") {
           aggregations {

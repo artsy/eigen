@@ -11,6 +11,7 @@ upcoming:
   user_facing:
     - Fix wrong input font on android - dzmitry
     - Fix android native getNavigationHeight method - kizito
+    - Add artwork Material filter - dzmitry tratsiak
 
 releases:
   - version: 6.9.1

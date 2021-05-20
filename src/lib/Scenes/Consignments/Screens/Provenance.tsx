@@ -1,10 +1,9 @@
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
-import { Theme } from "palette"
 import React from "react"
-import { View, ViewProps } from "react-native"
+import { KeyboardAvoidingView, View, ViewProps } from "react-native"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
-import TextArea from "../Components/TextArea"
+import { TextArea } from "../Components/TextArea"
 import { ConsignmentSetup } from "../index"
 
 interface Props extends ConsignmentSetup, ViewProps {
@@ -36,9 +35,9 @@ export default class Provenance extends React.Component<Props, State> {
 
   render() {
     return (
-      <Theme>
-        <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
-          <FancyModalHeader onLeftButtonPress={this.doneTapped}>Provenance</FancyModalHeader>
+      <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
+        <FancyModalHeader onLeftButtonPress={this.doneTapped}>Provenance</FancyModalHeader>
+        <KeyboardAvoidingView style={{ flex: 1 }}>
           <View
             style={{
               marginLeft: 20,
@@ -58,8 +57,8 @@ export default class Provenance extends React.Component<Props, State> {
               }}
             />
           </View>
-        </BottomAlignedButton>
-      </Theme>
+        </KeyboardAvoidingView>
+      </BottomAlignedButton>
     )
   }
 }
