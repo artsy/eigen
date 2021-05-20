@@ -47,7 +47,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       <Separator mt={3} mb={2} />
       <SectionHeading title="Account Settings" />
       <MenuItem title="Account" onPress={() => navigate("my-account")} />
-      <MenuItem title="Order History" onPress={() => navigate("my-profile/order-history")} />
+      <MenuItem title="Order History" onPress={() => navigate("/orders")} />
       <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
       {!!shouldDisplayPushNotifications && (
         <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />

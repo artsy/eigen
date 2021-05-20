@@ -136,11 +136,12 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-account/edit-email", "MyAccountEditEmail"),
     new RouteMatcher("/my-account/edit-phone", "MyAccountEditPhone"),
     new RouteMatcher("/my-profile/payment", "MyProfilePayment"),
-    new RouteMatcher("/my-profile/order-history", "MyProfileOrderHistory"),
     new RouteMatcher("/my-profile/payment/new-card", "MyProfilePaymentNewCreditCard"),
     new RouteMatcher("/my-profile/push-notifications", "MyProfilePushNotifications"),
     new RouteMatcher("/local-discovery", "LocalDiscovery"),
     new RouteMatcher("/privacy-request", "PrivacyRequest"),
+
+    new RouteMatcher("/orders", "MyProfileOrderHistory"),
 
     new RouteMatcher("/my-account", "MyAccount"),
 
