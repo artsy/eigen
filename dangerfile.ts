@@ -1,8 +1,11 @@
-import { danger, fail, warn } from "danger"
+import { danger, fail, markdown, warn } from "danger"
 // TypeScript thinks we're in React Native,
 // so the node API gives us errors:
 import * as fs from "fs"
 import * as yaml from "yaml"
+import { ParseResult } from "./scripts/changelog/changelog-types"
+import { changelogTemplateSections } from "./scripts/changelog/generateChangelogSectionTemplate"
+import { parsePRDescription } from "./scripts/changelog/parsePRDescription"
 
 /**
  * Helpers
@@ -11,21 +14,21 @@ const typescriptOnly = (file: string) => file.includes(".ts")
 const filesOnly = (file: string) => fs.existsSync(file) && fs.lstatSync(file).isFile()
 
 // Modified or Created can be treated the same a lot of the time
-const createdFiles = danger.git.created_files.filter(filesOnly)
+const getCreatedFiles = (createdFiles: string[]) => createdFiles.filter(filesOnly)
 
 const testOnlyFilter = (filename: string) => filename.includes("-tests") && typescriptOnly(filename)
-
-const createdTestOnlyFiles = createdFiles.filter(testOnlyFilter)
 
 /**
  * Danger Rules
  */
 // We are trying to migrate away from Enzyme towards react-test-renderer
 const preventUsingEnzyme = () => {
-  const newEnzymeImports = createdTestOnlyFiles.filter((filename) => {
-    const content = fs.readFileSync(filename).toString()
-    return content.includes('from "enzyme"')
-  })
+  const newEnzymeImports = getCreatedFiles(danger.git.created_files)
+    .filter(testOnlyFilter)
+    .filter((filename) => {
+      const content = fs.readFileSync(filename).toString()
+      return content.includes('from "enzyme"')
+    })
   if (newEnzymeImports.length > 0) {
     warn(`We are trying to migrate away from Enzyme towards \`react-test-renderer\`, but found Enzyme imports in the following new unit test files:
 
@@ -37,10 +40,12 @@ See [\`placeholders-tests.tsx\`](https://github.com/artsy/eigen/blob/aebce6e50ec
 }
 
 const preventUsingRenderRelayTree = () => {
-  const newRenderRelayTreeImports = createdTestOnlyFiles.filter((filename) => {
-    const content = fs.readFileSync(filename).toString()
-    return content.includes('from "lib/tests/renderRelayTree"')
-  })
+  const newRenderRelayTreeImports = getCreatedFiles(danger.git.created_files)
+    .filter(testOnlyFilter)
+    .filter((filename) => {
+      const content = fs.readFileSync(filename).toString()
+      return content.includes('from "lib/tests/renderRelayTree"')
+    })
   if (newRenderRelayTreeImports.length > 0) {
     warn(`We are trying to migrate away from \`renderRelayTree\` towards \`relay-test-utils\`, but found Enzyme imports in the following new unit test files:
 
@@ -109,9 +114,59 @@ const validateChangelogYMLFile = async () => {
   }
 }
 
+// Require changelog on Eigen PRs to be valid
+// See Eigen RFC: https://github.com/artsy/eigen/issues/4499
+export const validatePRChangelog = () => {
+  const pr = danger.github.pr
+
+  const isOpen = pr.state === "open"
+  if (!isOpen) {
+    console.log("Skipping this check because the PR is not open")
+    return
+  }
+
+  const content = pr.body
+
+  const res = parsePRDescription(content) as ParseResult
+
+  // TODO: Delete this once we finish the new changelog work
+  if (!content.includes("#run_new_changelog_check")) {
+    return
+  }
+
+  if (res.type === "error") {
+    console.log("Something went wrong while parsing the PR description")
+    warn("❌ **An error occurred while validating your changelog, please make sure you provided a valid changelog.**")
+    return
+  }
+
+  if (res.type === "no_changes") {
+    console.log("PR has no changes")
+    warn("✅ **No changelog changes**")
+    return
+  }
+
+  // At this point, the PR description changelog changes are valid
+  // and res contains a list of the changes
+  console.log("PR Changelog is valid")
+
+  const { type, ...changedSections } = res
+
+  const message =
+    "### This PR contains the following changes:\n" +
+    Object.entries(changedSections)
+      .map(([section, sectionValue]) => {
+        return `\n- ${changelogTemplateSections[section as keyof typeof changedSections]} (${sectionValue})`
+      })
+      .join("")
+
+  console.log(message)
+  return markdown(message)
+}
 ;(async function () {
   preventUsingEnzyme()
   preventUsingRenderRelayTree()
   verifyRemainingDevWork()
   await validateChangelogYMLFile()
+  validatePRChangelog()
 })()
