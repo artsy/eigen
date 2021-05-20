@@ -221,7 +221,6 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.waysToBuy,
         filterOptionToDisplayConfigMap.attributionClass,
-        filterOptionToDisplayConfigMap.materialsTerms,
       ]
   }
 }
@@ -257,6 +256,7 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
       sortOrder = [
         "sort",
         "medium",
+        "materialsTerms",
         "attributionClass",
         "priceRange",
         "waysToBuy",
@@ -461,6 +461,7 @@ const CollectionFiltersSorted: FilterScreen[] = [
   "sort",
   "medium",
   "additionalGeneIDs",
+  "materialsTerms",
   "attributionClass",
   "priceRange",
   "waysToBuy",
@@ -486,6 +487,7 @@ const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "sort",
   "medium",
   "additionalGeneIDs",
+  "materialsTerms",
   "attributionClass",
   "priceRange",
   "waysToBuy",
@@ -500,6 +502,7 @@ const FairFiltersSorted: FilterScreen[] = [
   "artistsIFollow",
   "medium",
   "additionalGeneIDs",
+  "materialsTerms",
   "attributionClass",
   "priceRange",
   "waysToBuy",
@@ -515,6 +518,7 @@ const SaleArtworksFiltersSorted: FilterScreen[] = [
   "artistIDs",
   "medium",
   "additionalGeneIDs",
+  "materialsTerms",
 ]
 
 const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories", "sizes", "year"]
