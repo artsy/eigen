@@ -2,7 +2,7 @@
   "extends": ["tslint:recommended", "react", "tslint-config-prettier", "tslint-plugin-relay"],
   "rulesDirectory": "./tslint-rules",
   "linterOptions": {
-    "exclude": ["src/palette/**/*test.*"]
+    "exclude": ["src/palette/**/*test.*", "dangerfile.ts"]
   },
   "rules": {
     "arrow-parens": false,
