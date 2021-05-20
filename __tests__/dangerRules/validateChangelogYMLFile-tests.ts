@@ -38,7 +38,7 @@ describe("validatePRChangelog", () => {
     expect(dm.warn).toHaveBeenCalledWith("✅ **No changelog changes**")
   })
 
-  it("returns the list of changes detected", () => {
+  it("returns the list of changes detected when all sections are available", () => {
     dm.danger.github = {
       pr: {
         body: `# Description
@@ -75,6 +75,41 @@ blah`,
 for the checkout flow,Fixed modal close button)
 - Dev changes (Improved changelog tooling,Upgraded lodash)
 - iOS user-facing changes (Fixed input focus styles)`
+    )
+  })
+
+  it("returns the list of changes detected when not all sections are available", () => {
+    dm.danger.github = {
+      pr: {
+        body: `# Description
+
+This pull request adds some stuff to the thing so that it can blah.
+#run_new_changelog_check
+### Changelog updates
+
+#### Cross-platform user-facing changes
+- Added a new button
+  for the checkout flow
+- Fixed modal close button
+
+#### Dev changes
+- Improved changelog tooling
+- Upgraded lodash
+
+### Other stuff
+
+blah`,
+        base: { repo: { name: "eigen" } },
+        state: "open",
+      },
+    }
+    const res = validatePRChangelog()
+    expect(res).toEqual(
+      `### This PR contains the following changes:
+
+- Cross-platform user-facing changes (Added a new button
+for the checkout flow,Fixed modal close button)
+- Dev changes (Improved changelog tooling,Upgraded lodash)`
     )
   })
 })

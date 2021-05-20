@@ -2,6 +2,7 @@ import { danger, fail, markdown, warn } from "danger"
 // TypeScript thinks we're in React Native,
 // so the node API gives us errors:
 import * as fs from "fs"
+import { pickBy } from "lodash"
 import * as yaml from "yaml"
 import { ParseResult } from "./scripts/changelog/changelog-types"
 import { changelogTemplateSections } from "./scripts/changelog/generateChangelogSectionTemplate"
@@ -154,13 +155,12 @@ export const validatePRChangelog = () => {
 
   const message =
     "### This PR contains the following changes:\n" +
-    Object.entries(changedSections)
+    Object.entries(pickBy(changedSections, (changesArray) => changesArray.length))
       .map(([section, sectionValue]) => {
         return `\n- ${changelogTemplateSections[section as keyof typeof changedSections]} (${sectionValue})`
       })
       .join("")
 
-  console.log(message)
   return markdown(message)
 }
 ;(async function () {
