@@ -37,6 +37,7 @@ export type FilterScreen =
   | "viewAs"
   | "waysToBuy"
   | "year"
+  | "materialsTerms"
 
 export interface FilterDisplayConfig {
   filterType: FilterScreen
@@ -255,6 +256,7 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
       sortOrder = [
         "sort",
         "medium",
+        "materialsTerms",
         "attributionClass",
         "priceRange",
         "waysToBuy",
@@ -448,12 +450,18 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "waysToBuy",
     ScreenComponent: "WaysToBuyOptionsScreen",
   },
+  materialsTerms: {
+    displayText: FilterDisplayName.materialsTerms,
+    filterType: "materialsTerms",
+    ScreenComponent: "MaterialsTermsOptionsScreen",
+  },
 }
 
 const CollectionFiltersSorted: FilterScreen[] = [
   "sort",
   "medium",
   "additionalGeneIDs",
+  "materialsTerms",
   "attributionClass",
   "priceRange",
   "waysToBuy",
@@ -466,6 +474,7 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "sort",
   "medium",
   "additionalGeneIDs",
+  "materialsTerms",
   "attributionClass",
   "priceRange",
   "waysToBuy",
@@ -478,6 +487,7 @@ const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "sort",
   "medium",
   "additionalGeneIDs",
+  "materialsTerms",
   "attributionClass",
   "priceRange",
   "waysToBuy",
@@ -492,6 +502,7 @@ const FairFiltersSorted: FilterScreen[] = [
   "artistsIFollow",
   "medium",
   "additionalGeneIDs",
+  "materialsTerms",
   "attributionClass",
   "priceRange",
   "waysToBuy",
@@ -507,6 +518,7 @@ const SaleArtworksFiltersSorted: FilterScreen[] = [
   "artistIDs",
   "medium",
   "additionalGeneIDs",
+  "materialsTerms",
 ]
 
 const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories", "sizes", "year"]

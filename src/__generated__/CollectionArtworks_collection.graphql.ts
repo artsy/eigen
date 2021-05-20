@@ -106,7 +106,8 @@ return {
             "PARTNER",
             "MAJOR_PERIOD",
             "MEDIUM",
-            "PRICE_RANGE"
+            "PRICE_RANGE",
+            "MATERIALS_TERMS"
           ]
         },
         {
@@ -263,5 +264,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'ff711457103eb03e87e46bd7c9d451c8';
+(node as any).hash = '0c657cfc9796b7cbb55f3e36292476ab';
 export default node;

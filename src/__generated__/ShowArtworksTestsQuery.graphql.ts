@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ca9af872bd452240be255696af557338 */
+/* @relayHash 069a6288c21270180b81dc8973e4877c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -92,7 +92,7 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
 fragment ShowArtworks_show on Show {
   slug
   internalID
-  showArtworks: filterArtworksConnection(first: 30, aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  showArtworks: filterArtworksConnection(first: 30, aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS]) {
     aggregations {
       slice
       counts {
@@ -159,7 +159,8 @@ v4 = [
       "DIMENSION_RANGE",
       "MAJOR_PERIOD",
       "MEDIUM",
-      "PRICE_RANGE"
+      "PRICE_RANGE",
+      "MATERIALS_TERMS"
     ]
   },
   {
@@ -622,7 +623,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],first:30)"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"MATERIALS_TERMS\"],first:30)"
           },
           {
             "alias": "showArtworks",
@@ -643,7 +644,7 @@ return {
     ]
   },
   "params": {
-    "id": "ca9af872bd452240be255696af557338",
+    "id": "069a6288c21270180b81dc8973e4877c",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {

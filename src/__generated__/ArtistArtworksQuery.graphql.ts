@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1470d1787550a2640d505d9a52b82f88 */
+/* @relayHash 1d94db5944fa6941f0ca17cd3fc73558 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -94,7 +94,7 @@ fragment ArtistArtworks_artist_YCAiB on Artist {
   id
   slug
   internalID
-  artworks: filterArtworksConnection(first: $count, after: $cursor, input: $input, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  artworks: filterArtworksConnection(first: $count, after: $cursor, input: $input, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS]) {
     aggregations {
       slice
       counts {
@@ -258,7 +258,8 @@ v10 = [
       "PARTNER",
       "MAJOR_PERIOD",
       "MEDIUM",
-      "PRICE_RANGE"
+      "PRICE_RANGE",
+      "MATERIALS_TERMS"
     ]
   },
   {
@@ -736,7 +737,7 @@ return {
     ]
   },
   "params": {
-    "id": "1470d1787550a2640d505d9a52b82f88",
+    "id": "1d94db5944fa6941f0ca17cd3fc73558",
     "metadata": {},
     "name": "ArtistArtworksQuery",
     "operationKind": "query",
