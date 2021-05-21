@@ -113,11 +113,6 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       )
     }
 
-    const localOnChangeText = (text: string) => {
-      setValue(text)
-      rest.onChangeText?.(text)
-    }
-
     const placeholderWidths = useRef<number[]>([])
     const [inputWidth, setInputWidth] = useState(0)
     const placeholderMeasuringHack =
