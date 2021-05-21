@@ -97,7 +97,8 @@ const node: ReaderFragment = {
             "MAJOR_PERIOD",
             "MEDIUM",
             "PRICE_RANGE",
-            "MATERIALS_TERMS"
+            "MATERIALS_TERMS",
+            "ARTIST_NATIONALITY"
           ]
         },
         {
@@ -259,5 +260,5 @@ const node: ReaderFragment = {
   "type": "ArtistSeries",
   "abstractKey": null
 };
-(node as any).hash = 'a9d795af2c6d5f9781a340b705968938';
+(node as any).hash = 'f57c01b80642bb29e81c32b1b3e7d321';
 export default node;

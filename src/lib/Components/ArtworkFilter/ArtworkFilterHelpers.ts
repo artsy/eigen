@@ -6,12 +6,14 @@ export enum FilterDisplayName {
   // artist = "Artists",
   additionalGeneIDs = "Medium",
   artistIDs = "Artists",
+  artistNationalities = "Nationality & ethnicity",
   artistsIFollow = "Artist",
   attributionClass = "Rarity",
   categories = "Medium",
   color = "Color",
   colors = "Color",
   estimateRange = "Price/estimate range",
+  materialsTerms = "Material",
   medium = "Medium",
   partnerIDs = "Galleries and institutions",
   priceRange = "Price",
@@ -22,7 +24,6 @@ export enum FilterDisplayName {
   viewAs = "View as",
   waysToBuy = "Ways to buy",
   year = "Artwork date",
-  materialsTerms = "Material",
 }
 
 // General filter types and objects
@@ -30,6 +31,7 @@ export enum FilterParamName {
   additionalGeneIDs = "additionalGeneIDs",
   allowEmptyCreatedDates = "allowEmptyCreatedDates",
   artistIDs = "artistIDs",
+  artistNationalities = "artistNationalities",
   artistsIFollow = "includeArtworksByFollowedArtists",
   attributionClass = "attributionClass",
   categories = "categories",
@@ -81,6 +83,7 @@ export const ParamDefaultValues = {
   additionalGeneIDs: [],
   allowEmptyCreatedDates: true,
   artistIDs: [],
+  artistNationalities: [],
   atAuction: false,
   attributionClass: [],
   categories: undefined,
@@ -111,6 +114,7 @@ export const defaultCommonFilterOptions = {
   additionalGeneIDs: ParamDefaultValues.additionalGeneIDs,
   allowEmptyCreatedDates: ParamDefaultValues.allowEmptyCreatedDates,
   artistIDs: ParamDefaultValues.artistIDs,
+  artistNationalities: ParamDefaultValues.artistNationalities,
   atAuction: ParamDefaultValues.atAuction,
   attributionClass: ParamDefaultValues.attributionClass,
   categories: ParamDefaultValues.categories,
@@ -144,17 +148,18 @@ export type Aggregations = Array<{
  * Possible aggregations that can be passed
  */
 export type AggregationName =
+  | "ARTIST_NATIONALITY"
+  | "ARTIST"
   | "COLOR"
   | "DIMENSION_RANGE"
-  | "PARTNER"
-  | "MAJOR_PERIOD"
-  | "MEDIUM"
-  | "PRICE_RANGE"
-  | "FOLLOWED_ARTISTS"
-  | "ARTIST"
   | "earliestCreatedYear"
+  | "FOLLOWED_ARTISTS"
   | "latestCreatedYear"
+  | "MAJOR_PERIOD"
   | "MATERIALS_TERMS"
+  | "MEDIUM"
+  | "PARTNER"
+  | "PRICE_RANGE"
 
 export interface Aggregation {
   count: number
@@ -179,17 +184,18 @@ export interface FilterCounts {
 }
 
 export const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string | undefined> = {
+  ARTIST_NATIONALITY: FilterParamName.artistNationalities,
+  ARTIST: "artistIDs",
   COLOR: FilterParamName.color,
   DIMENSION_RANGE: FilterParamName.size,
-  PARTNER: FilterParamName.partnerIDs,
-  MAJOR_PERIOD: FilterParamName.timePeriod,
-  MEDIUM: FilterParamName.additionalGeneIDs,
-  PRICE_RANGE: FilterParamName.priceRange,
-  FOLLOWED_ARTISTS: "artistsIFollow",
-  ARTIST: "artistIDs",
   earliestCreatedYear: "earliestCreatedYear",
+  FOLLOWED_ARTISTS: "artistsIFollow",
   latestCreatedYear: "earliestCreatedYear",
+  MAJOR_PERIOD: FilterParamName.timePeriod,
   MATERIALS_TERMS: FilterParamName.materialsTerms,
+  MEDIUM: FilterParamName.additionalGeneIDs,
+  PARTNER: FilterParamName.partnerIDs,
+  PRICE_RANGE: FilterParamName.priceRange,
 }
 
 const DEFAULT_ARTWORKS_PARAMS = {
@@ -420,16 +426,17 @@ export const selectedOption = ({
 // is gallery and institution which share a paramName in metaphysics
 export const aggregationNameFromFilter: Record<string, AggregationName | undefined> = {
   artistIDs: "ARTIST",
+  artistNationalities: "ARTIST_NATIONALITY",
   artistsIFollow: "FOLLOWED_ARTISTS",
   color: "COLOR",
   dimensionRange: "DIMENSION_RANGE",
   earliestCreatedYear: "earliestCreatedYear",
   latestCreatedYear: "latestCreatedYear",
   majorPeriods: "MAJOR_PERIOD",
+  materialsTerms: "MATERIALS_TERMS",
   medium: "MEDIUM",
   partnerIDs: "PARTNER",
   priceRange: "PRICE_RANGE",
-  materialsTerms: "MATERIALS_TERMS",
 }
 
 export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {

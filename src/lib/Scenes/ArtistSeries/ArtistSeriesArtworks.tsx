@@ -1,6 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistSeriesArtworks_artistSeries } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
-import { filterArtworksParams, prepareFilterArtworksParamsForInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  filterArtworksParams,
+  prepareFilterArtworksParamsForInput,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -99,7 +102,16 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
         artistSeriesArtworks: filterArtworksConnection(
           first: 20
           after: $cursor
-          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS]
+          aggregations: [
+            COLOR
+            DIMENSION_RANGE
+            PARTNER
+            MAJOR_PERIOD
+            MEDIUM
+            PRICE_RANGE
+            MATERIALS_TERMS
+            ARTIST_NATIONALITY
+          ]
           input: $input
         ) @connection(key: "ArtistSeries_artistSeriesArtworks") {
           aggregations {
@@ -151,12 +163,7 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
         $input: FilterArtworksInput
       ) {
         artistSeries(id: $id) {
-          ...ArtistSeriesArtworks_artistSeries
-            @arguments(
-              count: $count
-              cursor: $cursor
-              input: $input
-            )
+          ...ArtistSeriesArtworks_artistSeries @arguments(count: $count, cursor: $cursor, input: $input)
         }
       }
     `,
