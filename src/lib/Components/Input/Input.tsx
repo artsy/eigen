@@ -68,15 +68,32 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     }
 
     useImperativeHandle(ref, () => ({
-      ...input.current!,
-      // these next three are a dirty hack in order for typecheck to pass
-      setState: () => {}, // tslint:disable-line:no-empty
-      forceUpdate: () => {}, // tslint:disable-line:no-empty
-      render: () => null,
+      // ...input.current!, for some reason destructuring is not working 😡
+      blur: input.current!.blur,
+      focus: input.current!.focus,
+      isFocused: input.current!.isFocused,
+      measure: input.current!.measure,
+      measureLayout: input.current!.measureLayout,
+      measureInWindow: input.current!.measureInWindow,
+      setNativeProps: input.current!.setNativeProps,
+      setTimeout: input.current!.setTimeout,
+      clearTimeout: input.current!.clearTimeout,
+      setImmediate: input.current!.setImmediate,
+      clearImmediate: input.current!.clearImmediate,
+      setInterval: input.current!.setInterval,
+      clearInterval: input.current!.clearInterval,
+      refs: input.current!.refs,
+      requestAnimationFrame: input.current!.requestAnimationFrame,
+      cancelAnimationFrame: input.current!.cancelAnimationFrame,
+      context: input.current!.context,
+      props: input.current!.props,
+      state: input.current!.state,
+      setState: input.current!.setState,
+      forceUpdate: input.current!.forceUpdate,
+      render: input.current!.render,
 
       // our actual changes
       clear: localClear,
-      blur: () => input.current!.blur(),
     }))
 
     useEffect(() => {
