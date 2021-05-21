@@ -1,12 +1,12 @@
+import _ from "lodash"
 import { color, Color, EyeOpenedIcon, Flex, Sans, TEXT_FONTS, XCircleIcon } from "palette"
 import { fontFamily } from "palette/platform/fonts/fontFamily"
-import _ from "lodash"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
   Platform,
-  TextInput,
   Text,
+  TextInput,
   TextInputProps,
   TextStyle,
   TouchableOpacity,
