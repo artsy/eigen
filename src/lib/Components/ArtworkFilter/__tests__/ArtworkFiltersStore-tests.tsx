@@ -797,7 +797,7 @@ describe("Apply Filters", () => {
     })
   })
 
-  fit("applies false ways to buy filters correctly", () => {
+  it("applies false ways to buy filters correctly", () => {
     filterState = {
       applyFilters: false,
       appliedFilters: [{ paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Buy now" }],
