@@ -797,6 +797,31 @@ describe("Apply Filters", () => {
     })
   })
 
+  fit("applies false ways to buy filters correctly", () => {
+    filterState = {
+      applyFilters: false,
+      appliedFilters: [{ paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Buy now" }],
+      previouslyAppliedFilters: [{ paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Buy now" }],
+      selectedFilters: [{ paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy now" }],
+      aggregations: [],
+      filterType: "artwork",
+      counts: { total: null, followedArtists: null },
+    }
+
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().applyFiltersAction()
+
+    expect(filterArtworksStore.getState()).toEqual({
+      applyFilters: false,
+      appliedFilters: [{ paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy now" }],
+      previouslyAppliedFilters: [{ paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Buy now" }],
+      selectedFilters: [],
+      aggregations: [],
+      filterType: "artwork",
+      counts: { total: null, followedArtists: null },
+    })
+  })
+
   it("replaces previously applied filters with newly selected ones", () => {
     filterState = {
       applyFilters: true,
