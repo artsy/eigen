@@ -131,10 +131,6 @@ interface PartnerLocationsProps {
 }
 const PartnerLocations: React.FC<PartnerLocationsProps> = (props) => <PartnerLocationsQueryRenderer {...props} />
 
-const Inbox: React.FC<{ isVisible: boolean }> = screenTrack<{}>(() => {
-  return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
-})((props) => <InboxWrapper {...props} />)
-
 interface GeneProps {
   geneID: string
   medium: string
@@ -329,7 +325,7 @@ export const modules = defineModules({
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
   Gene: reactModule(Gene),
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
-  Inbox: reactModule(Inbox, { isRootViewForTabName: "inbox" }),
+  Inbox: reactModule(InboxWrapper, { isRootViewForTabName: "inbox" }),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   LiveAuction: nativeModule({
     alwaysPresentModally: true,
