@@ -1,6 +1,7 @@
 import { SearchInput } from "lib/Components/SearchInput"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Check } from "palette"
 import React from "react"
 import { FilterData, FilterParamName } from "../../ArtworkFilterHelpers"
 import { MultiSelectOptionScreen } from "../MultiSelectOption"
@@ -44,6 +45,43 @@ describe("MultiSelectOption", () => {
       tree.root.findByType(SearchInput).props.onChangeText("garbage")
 
       expect(extractText(tree.root)).toEqual("No results")
+    })
+  })
+
+
+  describe("renders selected options to the top", () => {
+    it("one option selected", () => {
+      const initialOptions: FilterData[] = [
+        { displayText: "Paper", paramValue: false, paramName: FilterParamName.materialsTerms },
+        { displayText: "Wove paper", paramValue: false, paramName: FilterParamName.materialsTerms },
+        { displayText: "Vinyl", paramValue: true, paramName: FilterParamName.materialsTerms },
+      ]
+      const tree = renderWithWrappers(
+        <MultiSelectOptionScreen filterOptions={initialOptions} pinSelectedToTheTop {...getEssentialProps()} />
+      )
+
+      const options = tree.root.findAllByType(Check)
+
+      expect(options[0].props.selected).toBe(true)
+      expect(options[1].props.selected).toBe(false)
+      expect(options[2].props.selected).toBe(false)
+    })
+
+    it("two options selected", () => {
+      const initialOptions: FilterData[] = [
+        { displayText: "Paper", paramValue: false, paramName: FilterParamName.materialsTerms },
+        { displayText: "Wove paper", paramValue: true, paramName: FilterParamName.materialsTerms },
+        { displayText: "Vinyl", paramValue: true, paramName: FilterParamName.materialsTerms },
+      ]
+      const tree = renderWithWrappers(
+        <MultiSelectOptionScreen filterOptions={initialOptions} pinSelectedToTheTop {...getEssentialProps()} />
+      )
+
+      const options = tree.root.findAllByType(Check)
+
+      expect(options[0].props.selected).toBe(true)
+      expect(options[1].props.selected).toBe(true)
+      expect(options[2].props.selected).toBe(false)
     })
   })
 })
