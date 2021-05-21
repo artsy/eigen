@@ -9,6 +9,7 @@ upcoming:
     - Allow sticky tabs to add additional sticky content - mdole
     - Update android play store metadata - brian
     - Use string for user agent when debugging on Android - ole
+    - fix fastlane issue - brian
   user_facing:
     - Fix wrong input font on android - dzmitry
     - Fix home screen load failure on logout - brian
