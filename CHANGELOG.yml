@@ -19,7 +19,7 @@ upcoming:
     - Add search UI for material filter - dzmitry tratsiak
     - Implements custom size filter with localization (behind feature flag) - damon
     - Adds artist nationality & ethnicity filter (behind feature flag) - damon
-    -
+    - Add ability to unselected "ways to buy" filter - dzmitry tratsiak
 
 releases:
   - version: 6.9.1
