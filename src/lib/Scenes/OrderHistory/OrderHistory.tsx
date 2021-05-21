@@ -1,5 +1,5 @@
-import { MyProfileOrderHistory_me } from "__generated__/MyProfileOrderHistory_me.graphql"
-import { MyProfileOrderHistoryQuery } from "__generated__/MyProfileOrderHistoryQuery.graphql"
+import { OrderHistory_me } from "__generated__/OrderHistory_me.graphql"
+import { OrderHistoryQuery } from "__generated__/OrderHistoryQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import colors from "lib/data/colors"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -14,10 +14,7 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 
 const NUM_ORDERS_TO_FETCH = 10
 
-export const MyProfileOrderHistory: React.FC<{ me: MyProfileOrderHistory_me; relay: RelayPaginationProp }> = ({
-  relay,
-  me,
-}) => {
+export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginationProp }> = ({ relay, me }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
 
@@ -69,7 +66,7 @@ export const MyProfileOrderHistory: React.FC<{ me: MyProfileOrderHistory_me; rel
   )
 }
 
-export const MyProfileOrderHistoryPlaceholder: React.FC<{}> = () => (
+export const OrderHistoryPlaceholder: React.FC<{}> = () => (
   <PageWithSimpleHeader title="Order History">
     <Flex px={2} py={15}>
       {times(2).map((index: number) => (
@@ -81,13 +78,13 @@ export const MyProfileOrderHistoryPlaceholder: React.FC<{}> = () => (
   </PageWithSimpleHeader>
 )
 
-export const MyProfileOrderHistoryContainer = createPaginationContainer(
-  MyProfileOrderHistory,
+export const OrderHistoryContainer = createPaginationContainer(
+  OrderHistory,
   {
     me: graphql`
-      fragment MyProfileOrderHistory_me on Me
+      fragment OrderHistory_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        orders(first: $count, after: $cursor) @connection(key: "MyProfileOrderHistory_orders") {
+        orders(first: $count, after: $cursor) @connection(key: "OrderHistory_orders") {
           edges {
             node {
               internalID
@@ -109,29 +106,29 @@ export const MyProfileOrderHistoryContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query MyProfileOrderHistoryPaginationQuery($count: Int!, $cursor: String) {
+      query OrderHistoryPaginationQuery($count: Int!, $cursor: String) {
         me {
-          ...MyProfileOrderHistory_me @arguments(count: $count, cursor: $cursor)
+          ...OrderHistory_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
   }
 )
 
-export const MyProfileOrderHistoryQueryRender: React.FC<{}> = ({}) => {
+export const OrderHistoryQueryRender: React.FC<{}> = ({}) => {
   return (
-    <QueryRenderer<MyProfileOrderHistoryQuery>
+    <QueryRenderer<OrderHistoryQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query MyProfileOrderHistoryQuery($count: Int!) {
+        query OrderHistoryQuery($count: Int!) {
           me {
-            ...MyProfileOrderHistory_me @arguments(count: $count)
+            ...OrderHistory_me @arguments(count: $count)
           }
         }
       `}
       render={renderWithPlaceholder({
-        Container: MyProfileOrderHistoryContainer,
-        renderPlaceholder: () => <MyProfileOrderHistoryPlaceholder />,
+        Container: OrderHistoryContainer,
+        renderPlaceholder: () => <OrderHistoryPlaceholder />,
       })}
       variables={{ count: NUM_ORDERS_TO_FETCH }}
       cacheConfig={{ force: true }}

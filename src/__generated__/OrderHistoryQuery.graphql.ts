@@ -1,39 +1,37 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2967025039c69e1d4c948392d2b0f66b */
+/* @relayHash 05517b747862e3f29ddafe9e144f6dc6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyProfileOrderHistoryPaginationQueryVariables = {
+export type OrderHistoryQueryVariables = {
     count: number;
-    cursor?: string | null;
 };
-export type MyProfileOrderHistoryPaginationQueryResponse = {
+export type OrderHistoryQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"MyProfileOrderHistory_me">;
+        readonly " $fragmentRefs": FragmentRefs<"OrderHistory_me">;
     } | null;
 };
-export type MyProfileOrderHistoryPaginationQuery = {
-    readonly response: MyProfileOrderHistoryPaginationQueryResponse;
-    readonly variables: MyProfileOrderHistoryPaginationQueryVariables;
+export type OrderHistoryQuery = {
+    readonly response: OrderHistoryQueryResponse;
+    readonly variables: OrderHistoryQueryVariables;
 };
 
 
 
 /*
-query MyProfileOrderHistoryPaginationQuery(
+query OrderHistoryQuery(
   $count: Int!
-  $cursor: String
 ) {
   me {
-    ...MyProfileOrderHistory_me_1G22uz
+    ...OrderHistory_me_yu5n1
     id
   }
 }
 
-fragment MyProfileOrderHistory_me_1G22uz on Me {
-  orders(first: $count, after: $cursor) {
+fragment OrderHistory_me_yu5n1 on Me {
+  orders(first: $count) {
     edges {
       node {
         __typename
@@ -56,19 +54,9 @@ var v0 = [
     "defaultValue": null,
     "kind": "LocalArgument",
     "name": "count"
-  },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "cursor"
   }
 ],
 v1 = [
-  {
-    "kind": "Variable",
-    "name": "after",
-    "variableName": "cursor"
-  },
   {
     "kind": "Variable",
     "name": "first",
@@ -87,7 +75,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyProfileOrderHistoryPaginationQuery",
+    "name": "OrderHistoryQuery",
     "selections": [
       {
         "alias": null,
@@ -103,15 +91,10 @@ return {
                 "kind": "Variable",
                 "name": "count",
                 "variableName": "count"
-              },
-              {
-                "kind": "Variable",
-                "name": "cursor",
-                "variableName": "cursor"
               }
             ],
             "kind": "FragmentSpread",
-            "name": "MyProfileOrderHistory_me"
+            "name": "OrderHistory_me"
           }
         ],
         "storageKey": null
@@ -124,7 +107,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "MyProfileOrderHistoryPaginationQuery",
+    "name": "OrderHistoryQuery",
     "selections": [
       {
         "alias": null,
@@ -219,7 +202,7 @@ return {
             "args": (v1/*: any*/),
             "filters": null,
             "handle": "connection",
-            "key": "MyProfileOrderHistory_orders",
+            "key": "OrderHistory_orders",
             "kind": "LinkedHandle",
             "name": "orders"
           },
@@ -230,13 +213,13 @@ return {
     ]
   },
   "params": {
-    "id": "2967025039c69e1d4c948392d2b0f66b",
+    "id": "05517b747862e3f29ddafe9e144f6dc6",
     "metadata": {},
-    "name": "MyProfileOrderHistoryPaginationQuery",
+    "name": "OrderHistoryQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '7c6df1ee0527a27729199fa51299f2eb';
+(node as any).hash = 'f6fe62bcc2ced1ff25c4aec2d81b59c8';
 export default node;

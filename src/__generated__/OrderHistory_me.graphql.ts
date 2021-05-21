@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyProfileOrderHistory_me = {
+export type OrderHistory_me = {
     readonly orders: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -12,12 +12,12 @@ export type MyProfileOrderHistory_me = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "MyProfileOrderHistory_me";
+    readonly " $refType": "OrderHistory_me";
 };
-export type MyProfileOrderHistory_me$data = MyProfileOrderHistory_me;
-export type MyProfileOrderHistory_me$key = {
-    readonly " $data"?: MyProfileOrderHistory_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"MyProfileOrderHistory_me">;
+export type OrderHistory_me$data = OrderHistory_me;
+export type OrderHistory_me$key = {
+    readonly " $data"?: OrderHistory_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"OrderHistory_me">;
 };
 
 
@@ -48,14 +48,14 @@ const node: ReaderFragment = {
       }
     ]
   },
-  "name": "MyProfileOrderHistory_me",
+  "name": "OrderHistory_me",
   "selections": [
     {
       "alias": "orders",
       "args": null,
       "concreteType": "CommerceOrderConnectionWithTotalCount",
       "kind": "LinkedField",
-      "name": "__MyProfileOrderHistory_orders_connection",
+      "name": "__OrderHistory_orders_connection",
       "plural": false,
       "selections": [
         {
@@ -133,5 +133,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '4e578ccb9f85e57cdeda4e6b120c01f6';
+(node as any).hash = '4901713cb74871658a73278e024020b8';
 export default node;
