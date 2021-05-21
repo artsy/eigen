@@ -15,6 +15,7 @@ upcoming:
     - Add artwork Material filter - dzmitry tratsiak
     - Prevent android dark mode forced on users - kizito
     - Fix unusable slider on android - dzmitry
+    - Add search UI for material filter - dzmitry tratsiak
 
 releases:
   - version: 6.9.1
