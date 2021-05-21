@@ -812,9 +812,9 @@ describe("Apply Filters", () => {
     filterArtworksStore.getActions().applyFiltersAction()
 
     expect(filterArtworksStore.getState()).toEqual({
-      applyFilters: false,
-      appliedFilters: [{ paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy now" }],
-      previouslyAppliedFilters: [{ paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Buy now" }],
+      applyFilters: true,
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
