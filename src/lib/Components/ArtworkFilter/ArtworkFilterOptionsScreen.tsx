@@ -21,6 +21,7 @@ import { ArtworkFilterNavigationStack } from "./ArtworkFilter"
 export type FilterScreen =
   | "additionalGeneIDs"
   | "artistIDs"
+  | "artistNationalities"
   | "artistsIFollow"
   | "attributionClass"
   | "categories"
@@ -28,16 +29,16 @@ export type FilterScreen =
   | "colors"
   | "dimensionRange"
   | "estimateRange"
-  | "partnerIDs"
   | "majorPeriods"
+  | "materialsTerms"
   | "medium"
+  | "partnerIDs"
   | "priceRange"
   | "sizes"
   | "sort"
   | "viewAs"
   | "waysToBuy"
   | "year"
-  | "materialsTerms"
 
 export interface FilterDisplayConfig {
   filterType: FilterScreen
@@ -379,6 +380,11 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     displayText: FilterDisplayName.artistIDs,
     filterType: "artistIDs",
     ScreenComponent: "ArtistIDsOptionsScreen",
+  },
+  artistNationalities: {
+    displayText: FilterDisplayName.artistNationalities,
+    filterType: "artistNationalities",
+    ScreenComponent: "ArtistNationalitiesOptionsScreen",
   },
   attributionClass: {
     displayText: FilterDisplayName.attributionClass,
