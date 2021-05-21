@@ -14,6 +14,7 @@ upcoming:
     - Fix home screen load failure on logout - brian
     - Add artwork Material filter - dzmitry tratsiak
     - Fix unusable slider on android - dzmitry
+    - Fix vanishing artist series - mounir
 
 releases:
   - version: 6.9.1
