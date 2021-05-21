@@ -58,8 +58,7 @@ export const ArtworkFiltersModel: ArtworkFiltersModel = {
       sort: getSortDefaultValueByFilterType(state.filterType),
     }
 
-    let multiOptionFilters = unionBy(state.previouslyAppliedFilters, state.selectedFilters, "paramName")
-
+    let multiOptionFilters = unionBy(state.selectedFilters, state.previouslyAppliedFilters, "paramName")
     multiOptionFilters = multiOptionFilters.filter((f) => f.paramValue === true)
 
     // get all filter options excluding ways to buy filter types and replace previously applied options with currently selected options
