@@ -12,6 +12,7 @@ upcoming:
   user_facing:
     - Fix wrong input font on android - dzmitry
     - Add artwork Material filter - dzmitry tratsiak
+    - Prevent android dark mode forced on users - kizito
 
 releases:
   - version: 6.9.1
