@@ -98,6 +98,12 @@ jest.mock("rn-fetch-blob", () => ({
   },
 }))
 
+jest.mock("danger", () => ({
+  danger: {},
+  markdown: (message: string) => message,
+  warn: jest.fn(),
+}))
+
 jest.mock("@react-native-cookies/cookies", () => ({ clearAll: jest.fn() }))
 
 beforeEach(() => {
@@ -150,7 +156,6 @@ mockedModule("./lib/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueIm
 // mockedModule("./lib/Components/ArtworkGrids/InfiniteScrollGrid.tsx", "ArtworksGrid")
 
 // Artist tests
-mockedModule("./lib/Components/Artist/ArtistShows/ArtistShows.tsx", "ArtistShows")
 mockedModule("./lib/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "ArtistArtworks")
 
 // Gene tests

@@ -37,12 +37,11 @@ export const MyFuncComp: React.FC<Props> = (props) => {
   const id = 42
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={{
-        action: ActionType.screen,
+      info={screen({
         context_screen_owner_type: OwnerType.myCollectionArtwork,
         context_screen_owner_id: artwork.internalID,
         context_screen_owner_slug: artwork.slug,
-      }}
+      })}
     >
       <View />
     </ProvideScreenTrackingWithCohesionSchema>

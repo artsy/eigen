@@ -7,10 +7,14 @@ import { useStickyTabPageContext } from "./SitckyTabPageContext"
 
 interface FlatListRequiredContext {
   tabIsActive: Animated.Node<number>
+  tabSpecificContentHeight: Animated.Node<number> | null
+  setJSX(jsx: JSX.Element): void
 }
 
 const MOCK_CONTEXT: () => FlatListRequiredContext = () => ({
   tabIsActive: new Animated.Value(1),
+  setJSX: null as any,
+  tabSpecificContentHeight: null,
 })
 
 export const StickyTabPageFlatListContext = React.createContext<FlatListRequiredContext>(
@@ -39,7 +43,9 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
   if (!stickyHeaderHeight) {
     throw new Error("invalid state, mounted flat list before stickyHeaderHeight was determined")
   }
-  const { tabIsActive } = useContext(StickyTabPageFlatListContext)
+  const { tabIsActive, tabSpecificContentHeight } = useContext(StickyTabPageFlatListContext)
+
+  const totalStickyHeaderHeight = Animated.add(stickyHeaderHeight, tabSpecificContentHeight ?? 0)
 
   const contentHeight = useAnimatedValue(0)
   const layoutHeight = useAnimatedValue(0)
@@ -95,7 +101,7 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
   const { data, style, ...otherProps } = props
 
   return (
-    <Animated.View style={{ flex: 1, paddingTop: stickyHeaderHeight }}>
+    <Animated.View style={{ flex: 1, paddingTop: totalStickyHeaderHeight }}>
       <AnimatedFlatList
         style={[
           {

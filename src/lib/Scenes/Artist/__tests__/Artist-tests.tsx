@@ -1,7 +1,6 @@
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
 import { ArtistInsights } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
-import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
 import { StickyTab } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
@@ -43,7 +42,7 @@ describe("availableTabs", () => {
   }
 
   const TestWrapper = () => {
-    return <ArtistQueryRenderer artistID="ignored" environment={environment} isPad={false} />
+    return <ArtistQueryRenderer artistID="ignored" environment={environment} />
   }
 
   it("returns an empty state if artist has no metadata, shows, insights, or works", async () => {
@@ -104,41 +103,7 @@ describe("availableTabs", () => {
     expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(1)
   })
 
-  it("returns Shows tab if artist has shows", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewArtistInsightsPage: false })
-    const tree = renderWithWrappers(<TestWrapper />)
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
-      Artist() {
-        return {
-          has_metadata: false,
-          counts: { articles: 0, related_artists: 0, artworks: 0, partner_shows: 1 },
-        }
-      },
-    })
-    mockMostRecentOperation("ArtistBelowTheFoldQuery")
-    expect(tree.root.findAllByType(ArtistShows)).toHaveLength(1)
-  })
-
-  it("returns all three tabs if artist has metadata, works, and shows when AROptionsNewArtistInsightsPage is false", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewArtistInsightsPage: false })
-    const tree = renderWithWrappers(<TestWrapper />)
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
-      Artist() {
-        return {
-          has_metadata: true,
-          counts: { articles: 1, related_artists: 0, artworks: 1, partner_shows: 1 },
-        }
-      },
-    })
-    expect(tree.root.findAllByType(ArtistArtworks)).toHaveLength(1)
-    mockMostRecentOperation("ArtistBelowTheFoldQuery")
-    expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(1)
-    expect(tree.root.findAllByType(ArtistShows)).toHaveLength(1)
-    expect(tree.root.findAllByType(ArtistInsights)).toHaveLength(0)
-  })
-
-  it("returns two tabs if artist has metadata, works, and shows when AROptionsNewArtistInsightsPage is true", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewArtistInsightsPage: true })
+  it("returns three tabs if artist has metadata, works, and auction results", async () => {
     const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -154,12 +119,10 @@ describe("availableTabs", () => {
     expect(tree.root.findAllByType(ArtistArtworks)).toHaveLength(1)
     mockMostRecentOperation("ArtistBelowTheFoldQuery")
     expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(1)
-    expect(tree.root.findAllByType(ArtistShows)).toHaveLength(0)
     expect(tree.root.findAllByType(ArtistInsights)).toHaveLength(1)
   })
 
-  it("Hide Artist insights tab when AROptionsNewArtistInsightsPage is true and there are no auction results", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewArtistInsightsPage: true })
+  it("hides Artist insights tab when there are no auction results", async () => {
     const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -175,7 +138,6 @@ describe("availableTabs", () => {
     expect(tree.root.findAllByType(ArtistArtworks)).toHaveLength(1)
     mockMostRecentOperation("ArtistBelowTheFoldQuery")
     expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(1)
-    expect(tree.root.findAllByType(ArtistShows)).toHaveLength(0)
     expect(tree.root.findAllByType(ArtistInsights)).toHaveLength(0)
   })
 

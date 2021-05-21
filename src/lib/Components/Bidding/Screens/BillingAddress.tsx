@@ -4,15 +4,7 @@ import React from "react"
 import { Schema, screenTrack, track } from "../../../utils/track"
 
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
-import {
-  Dimensions,
-  EmitterSubscription,
-  Keyboard,
-  LayoutRectangle,
-  Platform,
-  ScrollView,
-  TouchableWithoutFeedback,
-} from "react-native"
+import { Dimensions, EmitterSubscription, Keyboard, LayoutRectangle, Platform, ScrollView } from "react-native"
 
 import { Flex } from "../Elements/Flex"
 
@@ -24,8 +16,9 @@ import { Input, InputProps } from "../Components/Input"
 import { Address, Country } from "../types"
 
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
+import { COUNTRY_SELECT_OPTIONS, CountrySelect } from "lib/Components/CountrySelect"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { SelectCountry } from "./SelectCountry"
+import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
 
 interface StyledInputInterface {
   /** The object which styled components wraps */
@@ -182,17 +175,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     this.props.navigator.pop()
   }
 
-  presentSelectCountry() {
-    this.props.navigator?.push({
-      component: SelectCountry,
-      title: "",
-      passProps: {
-        country: this.state.values.country,
-        onCountrySelected: this.onCountrySelected.bind(this),
-      },
-    })
-  }
-
   UNSAFE_componentWillMount() {
     this.keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
@@ -290,44 +272,32 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 placeholder="Add your phone number"
                 keyboardType="phone-pad"
                 textContentType="telephoneNumber"
-                onSubmitEditing={() => this.presentSelectCountry()}
               />
 
-              <Flex mb={4}>
-                <Serif size="3" mb={2}>
-                  Country
-                </Serif>
-
-                <TouchableWithoutFeedback
-                  testID="select-country-press-handler"
-                  onPress={() => this.presentSelectCountry()}
-                >
-                  <Flex
-                    mb={3}
-                    px={3}
-                    justifyContent="center"
-                    height={40}
-                    border={1}
-                    borderColor={errorForCountry ? "red100" : "black10"}
-                  >
-                    {this.state.values.country ? (
-                      <Serif size="2" color="black100">
-                        {this.state.values.country.longName}
-                      </Serif>
-                    ) : (
-                      <Serif size="2" color="black30">
-                        Select your country
-                      </Serif>
-                    )}
-                  </Flex>
-                </TouchableWithoutFeedback>
-
-                {!!errorForCountry && (
-                  <Sans size="2" color="red100">
-                    {errorForCountry}
-                  </Sans>
-                )}
-              </Flex>
+              <Theme override={serifOnly}>
+                <ScreenDimensionsContext.Consumer>
+                  {({ height }) => (
+                    <Flex mb={4}>
+                      <CountrySelect
+                        maxModalHeight={height * 0.95}
+                        onSelectValue={(value) => {
+                          this.onCountrySelected({
+                            shortName: value,
+                            longName: COUNTRY_SELECT_OPTIONS.find((opt) => opt.value === value)!.label,
+                          } as Country)
+                        }}
+                        value={this.state.values.country?.shortName}
+                        hasError={!!errorForCountry}
+                      />
+                      {!!errorForCountry && (
+                        <Sans size="2" color="red100">
+                          {errorForCountry}
+                        </Sans>
+                      )}
+                    </Flex>
+                  )}
+                </ScreenDimensionsContext.Consumer>
+              </Theme>
 
               <Button block width={100} onPress={() => this.onSubmit()}>
                 Add billing address
@@ -366,4 +336,41 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
     return isPhoneX ? 15 : 0
   }
+}
+
+const serifOnly = {
+  fontFamily: {
+    sans: {
+      regular: {
+        normal: "ReactNativeAGaramondPro-Regular",
+        italic: "ReactNativeAGaramondPro-Italic",
+      },
+      medium: {
+        normal: "ReactNativeAGaramondPro-Regular",
+        italic: "ReactNativeAGaramondPro-Italic",
+      },
+      semibold: {
+        normal: "ReactNativeAGaramondPro-Regular",
+        italic: "ReactNativeAGaramondPro-Regular",
+      },
+    },
+    serif: {
+      regular: {
+        normal: "ReactNativeAGaramondPro-Regular",
+        italic: "ReactNativeAGaramondPro-Italic",
+      },
+      medium: {
+        normal: null,
+        italic: null,
+      },
+      semibold: {
+        normal: "ReactNativeAGaramondPro-Semibold",
+        italic: null,
+      },
+    },
+  },
+  fonts: {
+    sans: "ReactNativeAGaramondPro-Regular",
+    serif: "ReactNativeAGaramondPro-Regular",
+  },
 }

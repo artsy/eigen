@@ -9,9 +9,11 @@ jest.mock("../../Components/Gene/Header", () => "Header")
 import { Gene } from "../Gene"
 
 const exampleProps = {
-  medium: "propupines",
-  price_range: "1000-80000",
-  sort: "-desc",
+  input: {
+    medium: "propupines",
+    priceRange: "1000-80000",
+    sort: "-desc",
+  },
   gene: { filtered_artworks: { aggregations: [] } },
 }
 
@@ -76,9 +78,11 @@ describe("state", () => {
 
       // As well as trigger new state for Relay ( triggering a new call to metaphysics )
       expect(gene.props.relay.refetchConnection).lastCalledWith(10, undefined, {
-        medium: "porcupines",
-        price_range: "1000-80000",
-        sort: "-desc",
+        input: {
+          medium: "porcupines",
+          priceRange: "1000-80000",
+          sort: "-desc",
+        }
       })
     })
   })

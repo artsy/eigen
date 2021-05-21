@@ -4,6 +4,8 @@ import {
   changedFiltersParams,
   filterArtworksParams,
   FilterParamName,
+  FilterParams,
+  prepareFilterArtworksParamsForInput,
   selectedOption,
 } from "../ArtworkFilterHelpers"
 
@@ -620,6 +622,43 @@ describe("selectedOption", () => {
       })
     })
   })
+
+  describe("materialsTerms", () => {
+    it("returns the correct result when nothing is selected", () => {
+      const selectedOptions = [
+        { paramName: FilterParamName.materialsTerms, paramValue: [], displayText: "All" },
+      ]
+
+      expect(selectedOption({ selectedOptions, filterScreen: "materialsTerms", aggregations: [] })).toEqual("All")
+    })
+
+    it("returns the correct result when one item is selected", () => {
+      const selectedOptions = [
+        { paramName: FilterParamName.timePeriod, paramValue: "*-*", displayText: "All" },
+        {
+          paramName: FilterParamName.materialsTerms,
+          paramValue: ["screen print"],
+          displayText: "Screen print",
+        },
+      ]
+
+      expect(selectedOption({ selectedOptions, filterScreen: "materialsTerms", aggregations: [] })).toEqual("Screen print")
+    })
+    it("returns the correct result when multiple items is selected", () => {
+      const selectedOptions = [
+        { paramName: FilterParamName.timePeriod, paramValue: "*-*", displayText: "All" },
+        {
+          paramName: FilterParamName.materialsTerms,
+          paramValue: ["screen print", "paper"],
+          displayText: "Screen print, Paper",
+        },
+      ]
+
+      expect(selectedOption({ selectedOptions, filterScreen: "materialsTerms", aggregations: [] })).toEqual(
+        "Screen print, Paper"
+      )
+    })
+  })
 })
 
 describe("aggregationsWithFollowedArtists", () => {
@@ -706,5 +745,67 @@ describe("aggregationsWithFollowedArtists", () => {
         ],
       },
     ])
+  })
+})
+
+describe("prepareFilterArtworksParamsForInput", () => {
+  it("returns only allowed params when default params are passed", () => {
+    const filters = {
+      acquireable: false,
+      atAuction: false,
+      dimensionRange: "*-*",
+      includeArtworksByFollowedArtists: false,
+      inquireableOnly: false,
+      medium: "*",
+      offerable: false,
+      priceRange: "*-*",
+      sort: "-decayed_merch",
+    } as FilterParams;
+
+    expect(prepareFilterArtworksParamsForInput(filters)).toEqual({
+      acquireable: false,
+      atAuction: false,
+      dimensionRange: "*-*",
+      includeArtworksByFollowedArtists: false,
+      inquireableOnly: false,
+      medium: "*",
+      offerable: false,
+      priceRange: "*-*",
+      sort: "-decayed_merch",
+    })
+  })
+
+  it("returns only allowed params when no params are passed", () => {
+    const filters = {} as FilterParams;
+
+    expect(prepareFilterArtworksParamsForInput(filters)).toEqual({})
+  })
+
+  it("returns only allowed params when extra params are passed", () => {
+    const filters = {
+      acquireable: false,
+      atAuction: false,
+      categories: undefined, // TO check
+      dimensionRange: "*-*",
+      estimateRange: "",
+      inquireableOnly: false,
+      medium: "*",
+      offerable: false,
+      priceRange: "*-*",
+      sort: "-decayed_merch",
+      includeArtworksByFollowedArtists: false,
+    } as FilterParams;
+
+    expect(prepareFilterArtworksParamsForInput(filters)).toEqual({
+      acquireable: false,
+      atAuction: false,
+      dimensionRange: "*-*",
+      includeArtworksByFollowedArtists: false,
+      inquireableOnly: false,
+      medium: "*",
+      offerable: false,
+      priceRange: "*-*",
+      sort: "-decayed_merch",
+    })
   })
 })

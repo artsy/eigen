@@ -49,36 +49,6 @@ var v0 = {
 return {
   "argumentDefinitions": [
     {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "acquireable"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "additionalGeneIDs"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "atAuction"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "attributionClass"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "color"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "colors"
-    },
-    {
       "defaultValue": 10,
       "kind": "LocalArgument",
       "name": "count"
@@ -89,44 +59,9 @@ return {
       "name": "cursor"
     },
     {
-      "defaultValue": "*-*",
-      "kind": "LocalArgument",
-      "name": "dimensionRange"
-    },
-    {
       "defaultValue": null,
       "kind": "LocalArgument",
-      "name": "inquireableOnly"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "majorPeriods"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "offerable"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "partnerID"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "partnerIDs"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "priceRange"
-    },
-    {
-      "defaultValue": "-decayed_merch",
-      "kind": "LocalArgument",
-      "name": "sort"
+      "name": "input"
     }
   ],
   "kind": "Fragment",
@@ -163,16 +98,6 @@ return {
       "alias": "collectionArtworks",
       "args": [
         {
-          "kind": "Variable",
-          "name": "acquireable",
-          "variableName": "acquireable"
-        },
-        {
-          "kind": "Variable",
-          "name": "additionalGeneIDs",
-          "variableName": "additionalGeneIDs"
-        },
-        {
           "kind": "Literal",
           "name": "aggregations",
           "value": [
@@ -181,68 +106,15 @@ return {
             "PARTNER",
             "MAJOR_PERIOD",
             "MEDIUM",
-            "PRICE_RANGE"
+            "PRICE_RANGE",
+            "MATERIALS_TERMS",
+            "ARTIST_NATIONALITY"
           ]
         },
         {
           "kind": "Variable",
-          "name": "atAuction",
-          "variableName": "atAuction"
-        },
-        {
-          "kind": "Variable",
-          "name": "attributionClass",
-          "variableName": "attributionClass"
-        },
-        {
-          "kind": "Variable",
-          "name": "color",
-          "variableName": "color"
-        },
-        {
-          "kind": "Variable",
-          "name": "colors",
-          "variableName": "colors"
-        },
-        {
-          "kind": "Variable",
-          "name": "dimensionRange",
-          "variableName": "dimensionRange"
-        },
-        {
-          "kind": "Variable",
-          "name": "inquireableOnly",
-          "variableName": "inquireableOnly"
-        },
-        {
-          "kind": "Variable",
-          "name": "majorPeriods",
-          "variableName": "majorPeriods"
-        },
-        {
-          "kind": "Variable",
-          "name": "offerable",
-          "variableName": "offerable"
-        },
-        {
-          "kind": "Variable",
-          "name": "partnerID",
-          "variableName": "partnerID"
-        },
-        {
-          "kind": "Variable",
-          "name": "partnerIDs",
-          "variableName": "partnerIDs"
-        },
-        {
-          "kind": "Variable",
-          "name": "priceRange",
-          "variableName": "priceRange"
-        },
-        {
-          "kind": "Variable",
-          "name": "sort",
-          "variableName": "sort"
+          "name": "input",
+          "variableName": "input"
         }
       ],
       "concreteType": "FilterArtworksConnection",
@@ -393,5 +265,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '2066dffaef4dd37023ca67e0b7ac998f';
+(node as any).hash = '0f05e5423727808d7ea2fec4e6852f78';
 export default node;

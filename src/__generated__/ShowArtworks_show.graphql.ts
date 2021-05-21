@@ -40,36 +40,6 @@ export type ShowArtworks_show$key = {
 const node: ReaderFragment = {
   "argumentDefinitions": [
     {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "acquireable"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "additionalGeneIDs"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "atAuction"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "attributionClass"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "color"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "colors"
-    },
-    {
       "defaultValue": 30,
       "kind": "LocalArgument",
       "name": "count"
@@ -80,34 +50,9 @@ const node: ReaderFragment = {
       "name": "cursor"
     },
     {
-      "defaultValue": "*-*",
-      "kind": "LocalArgument",
-      "name": "dimensionRange"
-    },
-    {
       "defaultValue": null,
       "kind": "LocalArgument",
-      "name": "inquireableOnly"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "majorPeriods"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "offerable"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "priceRange"
-    },
-    {
-      "defaultValue": "partner_show_position",
-      "kind": "LocalArgument",
-      "name": "sort"
+      "name": "input"
     }
   ],
   "kind": "Fragment",
@@ -143,16 +88,6 @@ const node: ReaderFragment = {
       "alias": "showArtworks",
       "args": [
         {
-          "kind": "Variable",
-          "name": "acquireable",
-          "variableName": "acquireable"
-        },
-        {
-          "kind": "Variable",
-          "name": "additionalGeneIDs",
-          "variableName": "additionalGeneIDs"
-        },
-        {
           "kind": "Literal",
           "name": "aggregations",
           "value": [
@@ -160,58 +95,15 @@ const node: ReaderFragment = {
             "DIMENSION_RANGE",
             "MAJOR_PERIOD",
             "MEDIUM",
-            "PRICE_RANGE"
+            "PRICE_RANGE",
+            "MATERIALS_TERMS",
+            "ARTIST_NATIONALITY"
           ]
         },
         {
           "kind": "Variable",
-          "name": "atAuction",
-          "variableName": "atAuction"
-        },
-        {
-          "kind": "Variable",
-          "name": "attributionClass",
-          "variableName": "attributionClass"
-        },
-        {
-          "kind": "Variable",
-          "name": "color",
-          "variableName": "color"
-        },
-        {
-          "kind": "Variable",
-          "name": "colors",
-          "variableName": "colors"
-        },
-        {
-          "kind": "Variable",
-          "name": "dimensionRange",
-          "variableName": "dimensionRange"
-        },
-        {
-          "kind": "Variable",
-          "name": "inquireableOnly",
-          "variableName": "inquireableOnly"
-        },
-        {
-          "kind": "Variable",
-          "name": "majorPeriods",
-          "variableName": "majorPeriods"
-        },
-        {
-          "kind": "Variable",
-          "name": "offerable",
-          "variableName": "offerable"
-        },
-        {
-          "kind": "Variable",
-          "name": "priceRange",
-          "variableName": "priceRange"
-        },
-        {
-          "kind": "Variable",
-          "name": "sort",
-          "variableName": "sort"
+          "name": "input",
+          "variableName": "input"
         }
       ],
       "concreteType": "FilterArtworksConnection",
@@ -367,5 +259,5 @@ const node: ReaderFragment = {
   "type": "Show",
   "abstractKey": null
 };
-(node as any).hash = 'a0da59964bcf6b0e086f24d0afca7043';
+(node as any).hash = 'e6a828b8857e6995b7675a93557e9c1e';
 export default node;

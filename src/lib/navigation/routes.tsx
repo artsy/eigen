@@ -88,9 +88,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-profile", "MyProfile"),
 
     new RouteMatcher("/artist/:artistID", "Artist"),
-    unsafe_getFeatureFlag("AROptionsNewArtistInsightsPage")
-      ? new RouteMatcher("/artist/:artistID/shows", "ArtistShows")
-      : null,
+    new RouteMatcher("/artist/:artistID/shows", "ArtistShows"),
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
     new RouteMatcher("/artwork/:artworkID/medium", "ArtworkMedium"),
     new RouteMatcher("/artist/:artistID/auction-results", "Artist", (params) => ({
@@ -179,6 +177,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     webViewRoute("/identity-verification-faq"),
     webViewRoute("/terms"),
     webViewRoute("/buy-now-feature-faq"),
+    webViewRoute("/buyer-guarantee"),
 
     new RouteMatcher("/city-bmw-list/:citySlug", "CityBMWList"),
     new RouteMatcher("/make-offer/:artworkID", "MakeOfferModal"),

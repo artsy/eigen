@@ -33,12 +33,11 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
   return (
     <View>
       <FancyModalHeader rightButtonDisabled hideBottomDivider>
-        Make Offer with Artsy Pay
+        Make Offer
       </FancyModalHeader>
       <Flex p={1.5}>
         <Text variant="largeTitle">Confirm Artwork</Text>
         <Text variant="small" color="black60">
-          {" "}
           Make sure the artwork below matches the intended work you're making an offer on.
         </Text>
         <BorderBox p={0} my={2}>
@@ -47,7 +46,6 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
         {!!artwork.isEdition && artwork.editionSets!.length > 1 && (
           <Flex mb={1}>
             <Text color="black100" mb={1}>
-              {" "}
               Which edition are you interested in?
             </Text>
             {artwork.editionSets?.map((edition) => (
@@ -80,6 +78,11 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
         >
           Cancel
         </Button>
+        <Flex bg="black5" p={1} mt={1}>
+          <Text variant="small">
+            Making an offer doesn’t guarantee you the work, as the seller might be receiving competing offers.
+          </Text>
+        </Flex>
       </Flex>
     </View>
   )

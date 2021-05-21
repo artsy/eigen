@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 934b5f67d66eb75b848f2cd2813ad60a */
+/* @relayHash e7639181bed16646fb2556e926c3665f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -68,7 +68,7 @@ fragment ArtworkTileRailCard_artwork on Artwork {
 fragment FairFollowedArtistsRail_fair on Fair {
   internalID
   slug
-  followedArtistArtworks: filterArtworksConnection(includeArtworksByFollowedArtists: true, first: 20) {
+  followedArtistArtworks: filterArtworksConnection(first: 20, input: {includeArtworksByFollowedArtists: true}) {
     edges {
       artwork: node {
         id
@@ -183,8 +183,10 @@ return {
               },
               {
                 "kind": "Literal",
-                "name": "includeArtworksByFollowedArtists",
-                "value": true
+                "name": "input",
+                "value": {
+                  "includeArtworksByFollowedArtists": true
+                }
               }
             ],
             "concreteType": "FilterArtworksConnection",
@@ -258,7 +260,7 @@ return {
               },
               (v4/*: any*/)
             ],
-            "storageKey": "filterArtworksConnection(first:20,includeArtworksByFollowedArtists:true)"
+            "storageKey": "filterArtworksConnection(first:20,input:{\"includeArtworksByFollowedArtists\":true})"
           },
           (v4/*: any*/)
         ],
@@ -267,7 +269,7 @@ return {
     ]
   },
   "params": {
-    "id": "934b5f67d66eb75b848f2cd2813ad60a",
+    "id": "e7639181bed16646fb2556e926c3665f",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": {

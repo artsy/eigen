@@ -41,41 +41,6 @@ export type FairArtworks_fair$key = {
 const node: ReaderFragment = {
   "argumentDefinitions": [
     {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "acquireable"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "additionalGeneIDs"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "artistIDs"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "atAuction"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "attributionClass"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "color"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "colors"
-    },
-    {
       "defaultValue": 30,
       "kind": "LocalArgument",
       "name": "count"
@@ -86,56 +51,16 @@ const node: ReaderFragment = {
       "name": "cursor"
     },
     {
-      "defaultValue": "*-*",
-      "kind": "LocalArgument",
-      "name": "dimensionRange"
-    },
-    {
       "defaultValue": null,
       "kind": "LocalArgument",
-      "name": "includeArtworksByFollowedArtists"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "inquireableOnly"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "majorPeriods"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "offerable"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "partnerID"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "partnerIDs"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "priceRange"
-    },
-    {
-      "defaultValue": "-decayed_merch",
-      "kind": "LocalArgument",
-      "name": "sort"
+      "name": "input"
     }
   ],
   "kind": "Fragment",
   "metadata": {
     "connection": [
       {
-        "count": null,
+        "count": "count",
         "cursor": "cursor",
         "direction": "forward",
         "path": [
@@ -164,16 +89,6 @@ const node: ReaderFragment = {
       "alias": "fairArtworks",
       "args": [
         {
-          "kind": "Variable",
-          "name": "acquireable",
-          "variableName": "acquireable"
-        },
-        {
-          "kind": "Variable",
-          "name": "additionalGeneIDs",
-          "variableName": "additionalGeneIDs"
-        },
-        {
           "kind": "Literal",
           "name": "aggregations",
           "value": [
@@ -184,78 +99,15 @@ const node: ReaderFragment = {
             "MEDIUM",
             "PRICE_RANGE",
             "FOLLOWED_ARTISTS",
-            "ARTIST"
+            "ARTIST",
+            "MATERIALS_TERMS",
+            "ARTIST_NATIONALITY"
           ]
         },
         {
           "kind": "Variable",
-          "name": "artistIDs",
-          "variableName": "artistIDs"
-        },
-        {
-          "kind": "Variable",
-          "name": "atAuction",
-          "variableName": "atAuction"
-        },
-        {
-          "kind": "Variable",
-          "name": "attributionClass",
-          "variableName": "attributionClass"
-        },
-        {
-          "kind": "Variable",
-          "name": "color",
-          "variableName": "color"
-        },
-        {
-          "kind": "Variable",
-          "name": "colors",
-          "variableName": "colors"
-        },
-        {
-          "kind": "Variable",
-          "name": "dimensionRange",
-          "variableName": "dimensionRange"
-        },
-        {
-          "kind": "Variable",
-          "name": "includeArtworksByFollowedArtists",
-          "variableName": "includeArtworksByFollowedArtists"
-        },
-        {
-          "kind": "Variable",
-          "name": "inquireableOnly",
-          "variableName": "inquireableOnly"
-        },
-        {
-          "kind": "Variable",
-          "name": "majorPeriods",
-          "variableName": "majorPeriods"
-        },
-        {
-          "kind": "Variable",
-          "name": "offerable",
-          "variableName": "offerable"
-        },
-        {
-          "kind": "Variable",
-          "name": "partnerID",
-          "variableName": "partnerID"
-        },
-        {
-          "kind": "Variable",
-          "name": "partnerIDs",
-          "variableName": "partnerIDs"
-        },
-        {
-          "kind": "Variable",
-          "name": "priceRange",
-          "variableName": "priceRange"
-        },
-        {
-          "kind": "Variable",
-          "name": "sort",
-          "variableName": "sort"
+          "name": "input",
+          "variableName": "input"
         }
       ],
       "concreteType": "FilterArtworksConnection",
@@ -418,5 +270,5 @@ const node: ReaderFragment = {
   "type": "Fair",
   "abstractKey": null
 };
-(node as any).hash = 'bd5afc5f907a3fbe230a2968b9d20dfa';
+(node as any).hash = '794b6c6130e2af7d3a970db28838888e';
 export default node;

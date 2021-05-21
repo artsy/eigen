@@ -68,24 +68,12 @@ describe("ArtistAbout", () => {
   })
 
   describe("ArtistAboutShows", () => {
-    it("is shown when AROptionsNewArtistInsightsPage is true", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewArtistInsightsPage: true })
-
+    it("is rendered by default", () => {
       const tree = renderWithWrappers(<TestRenderer />)
 
       mockEnvironmentPayload(mockEnvironment)
 
       expect(tree.root.findAllByType(ArtistAboutShowsFragmentContainer).length).toEqual(1)
-    })
-
-    it("is hidden when AROptionsNewArtistInsightsPage is false", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewArtistInsightsPage: false })
-
-      const tree = renderWithWrappers(<TestRenderer />)
-
-      mockEnvironmentPayload(mockEnvironment)
-
-      expect(tree.root.findAllByType(ArtistAboutShowsFragmentContainer).length).toEqual(0)
     })
   })
 })

@@ -1,4 +1,5 @@
 import React, { useImperativeHandle, useRef } from "react"
+import { ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./reanimatedHelpers"
 
@@ -7,8 +8,8 @@ export interface SnappyHorizontalRail {
 }
 export const SnappyHorizontalRail = React.forwardRef<
   SnappyHorizontalRail,
-  React.PropsWithChildren<{ initialOffset?: number; width: number }>
->(({ children, initialOffset = 0, width }, ref) => {
+  React.PropsWithChildren<{ initialOffset?: number; width: number; style?: ViewStyle }>
+>(({ children, initialOffset = 0, width, style }, ref) => {
   const currentOffset = useAnimatedValue(-initialOffset)
   const currentAnimation = useRef<Animated.BackwardCompatibleWrapper>()
 
@@ -36,16 +37,20 @@ export const SnappyHorizontalRail = React.forwardRef<
 
   return (
     <Animated.View
-      style={{
-        flex: 1,
-        width,
-        flexDirection: "row",
-        transform: [
-          {
-            translateX: currentOffset as any,
-          },
-        ],
-      }}
+      pointerEvents="box-none"
+      style={[
+        {
+          flex: 1,
+          width,
+          flexDirection: "row",
+          transform: [
+            {
+              translateX: currentOffset as any,
+            },
+          ],
+        },
+        style,
+      ]}
     >
       {children}
     </Animated.View>

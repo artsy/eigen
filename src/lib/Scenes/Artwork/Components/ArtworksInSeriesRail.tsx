@@ -125,7 +125,7 @@ export const ArtworksInSeriesRailFragmentContainer = createFragmentContainer(Art
           node {
             slug
             internalID
-            filterArtworksConnection(sort: "-decayed_merch", first: 20) {
+            filterArtworksConnection(first: 20, input: { sort: "-decayed_merch" }) {
               edges {
                 node {
                   slug

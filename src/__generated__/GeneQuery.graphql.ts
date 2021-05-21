@@ -1,14 +1,64 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 96489716b5fd3a17df933132d8669d32 */
+/* @relayHash 50272ee0bfab983d47df334ceacb7725 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type ArtworkAggregation = "ARTIST" | "ARTIST_NATIONALITY" | "ATTRIBUTION_CLASS" | "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "LOCATION_CITY" | "MAJOR_PERIOD" | "MATERIALS_TERMS" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
+export type ArtworkSizes = "LARGE" | "MEDIUM" | "SMALL" | "%future added value";
+export type FilterArtworksInput = {
+    acquireable?: boolean | null;
+    additionalGeneIDs?: Array<string | null> | null;
+    after?: string | null;
+    aggregationPartnerCities?: Array<string | null> | null;
+    aggregations?: Array<ArtworkAggregation | null> | null;
+    artistID?: string | null;
+    artistIDs?: Array<string | null> | null;
+    artistNationalities?: Array<string | null> | null;
+    artistSeriesID?: string | null;
+    atAuction?: boolean | null;
+    attributionClass?: Array<string | null> | null;
+    before?: string | null;
+    color?: string | null;
+    colors?: Array<string | null> | null;
+    dimensionRange?: string | null;
+    excludeArtworkIDs?: Array<string | null> | null;
+    extraAggregationGeneIDs?: Array<string | null> | null;
+    first?: number | null;
+    forSale?: boolean | null;
+    geneID?: string | null;
+    geneIDs?: Array<string | null> | null;
+    height?: string | null;
+    includeArtworksByFollowedArtists?: boolean | null;
+    includeMediumFilterInAggregation?: boolean | null;
+    inquireableOnly?: boolean | null;
+    keyword?: string | null;
+    keywordMatchExact?: boolean | null;
+    last?: number | null;
+    locationCities?: Array<string | null> | null;
+    majorPeriods?: Array<string | null> | null;
+    marketable?: boolean | null;
+    materialsTerms?: Array<string | null> | null;
+    medium?: string | null;
+    offerable?: boolean | null;
+    page?: number | null;
+    partnerCities?: Array<string | null> | null;
+    partnerID?: string | null;
+    partnerIDs?: Array<string | null> | null;
+    period?: string | null;
+    periods?: Array<string | null> | null;
+    priceRange?: string | null;
+    saleID?: string | null;
+    size?: number | null;
+    sizes?: Array<ArtworkSizes | null> | null;
+    sort?: string | null;
+    tagID?: string | null;
+    width?: string | null;
+};
 export type GeneQueryVariables = {
     geneID: string;
-    medium?: string | null;
-    price_range?: string | null;
+    input?: FilterArtworksInput | null;
 };
 export type GeneQueryResponse = {
     readonly gene: {
@@ -25,11 +75,10 @@ export type GeneQuery = {
 /*
 query GeneQuery(
   $geneID: String!
-  $medium: String
-  $price_range: String
+  $input: FilterArtworksInput
 ) {
   gene(id: $geneID) {
-    ...Gene_gene_3zv0k0
+    ...Gene_gene_2VV6jB
     id
   }
 }
@@ -81,12 +130,12 @@ fragment Biography_gene on Gene {
   description
 }
 
-fragment Gene_gene_3zv0k0 on Gene {
+fragment Gene_gene_2VV6jB on Gene {
   id
   internalID
   ...Header_gene
   ...About_gene
-  artworks: filterArtworksConnection(first: 10, after: "", medium: $medium, priceRange: $price_range, sort: "-partner_updated_at", aggregations: [MEDIUM, PRICE_RANGE, TOTAL], forSale: true) {
+  artworks: filterArtworksConnection(first: 10, after: "", aggregations: [MEDIUM, PRICE_RANGE, TOTAL], forSale: true, input: $input) {
     counts {
       total
     }
@@ -174,12 +223,7 @@ var v0 = [
   {
     "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "medium"
-  },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "price_range"
+    "name": "input"
   }
 ],
 v1 = [
@@ -191,50 +235,45 @@ v1 = [
 ],
 v2 = {
   "kind": "Variable",
-  "name": "medium",
-  "variableName": "medium"
+  "name": "input",
+  "variableName": "input"
 },
 v3 = {
-  "kind": "Variable",
-  "name": "priceRange",
-  "variableName": "price_range"
-},
-v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v5 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
   "storageKey": null
 },
-v6 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "slug",
   "storageKey": null
 },
-v7 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v8 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "href",
   "storageKey": null
 },
-v9 = {
+v8 = {
   "alias": null,
   "args": [
     {
@@ -247,7 +286,7 @@ v9 = {
   "name": "url",
   "storageKey": "url(version:\"large\")"
 },
-v10 = [
+v9 = [
   {
     "kind": "Literal",
     "name": "after",
@@ -272,15 +311,9 @@ v10 = [
     "name": "forSale",
     "value": true
   },
-  (v2/*: any*/),
-  (v3/*: any*/),
-  {
-    "kind": "Literal",
-    "name": "sort",
-    "value": "-partner_updated_at"
-  }
+  (v2/*: any*/)
 ],
-v11 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -304,8 +337,7 @@ return {
         "selections": [
           {
             "args": [
-              (v2/*: any*/),
-              (v3/*: any*/)
+              (v2/*: any*/)
             ],
             "kind": "FragmentSpread",
             "name": "Gene_gene"
@@ -331,9 +363,9 @@ return {
         "name": "gene",
         "plural": false,
         "selections": [
+          (v3/*: any*/),
           (v4/*: any*/),
           (v5/*: any*/),
-          (v6/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -341,7 +373,7 @@ return {
             "name": "isFollowed",
             "storageKey": null
           },
-          (v7/*: any*/),
+          (v6/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -357,9 +389,9 @@ return {
             "name": "trendingArtists",
             "plural": true,
             "selections": [
-              (v4/*: any*/),
-              (v8/*: any*/),
+              (v3/*: any*/),
               (v7/*: any*/),
+              (v6/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -393,7 +425,7 @@ return {
                 "name": "image",
                 "plural": false,
                 "selections": [
-                  (v9/*: any*/)
+                  (v8/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -402,7 +434,7 @@ return {
           },
           {
             "alias": "artworks",
-            "args": (v10/*: any*/),
+            "args": (v9/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "kind": "LinkedField",
             "name": "filterArtworksConnection",
@@ -456,7 +488,7 @@ return {
                         "name": "value",
                         "storageKey": null
                       },
-                      (v7/*: any*/),
+                      (v6/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -486,8 +518,8 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v4/*: any*/),
-                      (v11/*: any*/)
+                      (v3/*: any*/),
+                      (v10/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -526,7 +558,7 @@ return {
                 ],
                 "storageKey": null
               },
-              (v4/*: any*/),
+              (v3/*: any*/),
               {
                 "kind": "InlineFragment",
                 "selections": [
@@ -556,7 +588,7 @@ return {
                     "name": "edges",
                     "plural": true,
                     "selections": [
-                      (v11/*: any*/),
+                      (v10/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -565,7 +597,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v6/*: any*/),
+                          (v5/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -581,7 +613,7 @@ return {
                                 "name": "aspectRatio",
                                 "storageKey": null
                               },
-                              (v9/*: any*/)
+                              (v8/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -606,7 +638,7 @@ return {
                             "name": "saleMessage",
                             "storageKey": null
                           },
-                          (v5/*: any*/),
+                          (v4/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -614,7 +646,7 @@ return {
                             "name": "artistNames",
                             "storageKey": null
                           },
-                          (v8/*: any*/),
+                          (v7/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -651,7 +683,7 @@ return {
                                 "name": "endAt",
                                 "storageKey": null
                               },
-                              (v4/*: any*/)
+                              (v3/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -706,7 +738,7 @@ return {
                                 "name": "lotLabel",
                                 "storageKey": null
                               },
-                              (v4/*: any*/)
+                              (v3/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -718,8 +750,8 @@ return {
                             "name": "partner",
                             "plural": false,
                             "selections": [
-                              (v7/*: any*/),
-                              (v4/*: any*/)
+                              (v6/*: any*/),
+                              (v3/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -729,7 +761,7 @@ return {
                       {
                         "kind": "InlineFragment",
                         "selections": [
-                          (v4/*: any*/)
+                          (v3/*: any*/)
                         ],
                         "type": "Node",
                         "abstractKey": "__isNode"
@@ -746,13 +778,11 @@ return {
           },
           {
             "alias": "artworks",
-            "args": (v10/*: any*/),
+            "args": (v9/*: any*/),
             "filters": [
-              "medium",
-              "priceRange",
-              "sort",
               "aggregations",
-              "forSale"
+              "forSale",
+              "input"
             ],
             "handle": "connection",
             "key": "Gene_artworks",
@@ -765,7 +795,7 @@ return {
     ]
   },
   "params": {
-    "id": "96489716b5fd3a17df933132d8669d32",
+    "id": "50272ee0bfab983d47df334ceacb7725",
     "metadata": {},
     "name": "GeneQuery",
     "operationKind": "query",
@@ -773,5 +803,5 @@ return {
   }
 };
 })();
-(node as any).hash = '9e525c0b4500289ba11a410d72265960';
+(node as any).hash = 'c992522ba0da67924426b3a72d993285';
 export default node;
