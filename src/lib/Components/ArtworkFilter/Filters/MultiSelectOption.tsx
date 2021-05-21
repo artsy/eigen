@@ -19,6 +19,7 @@ interface MultiSelectOptionScreenProps extends FancyModalHeaderProps {
   /** Utilize a search input to further filter results */
   searchable?: boolean
   noResultsLabel?: string
+  pinSelectedToTheTop?: boolean
 }
 
 export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = ({
@@ -31,6 +32,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   children,
   searchable,
   noResultsLabel = "No results",
+  pinSelectedToTheTop,
   ...rest
 }) => {
   const handleBackNavigation = () => {
@@ -54,8 +56,16 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   }
 
   const [query, setQuery] = useState("")
+  let preparedOptions = filterOptions
 
-  const filteredOptions = filterOptions.filter((option) =>
+  if (pinSelectedToTheTop) {
+    const selectedOptions = filterOptions.filter(option => option.paramValue === true)
+    const unselectedOptions = filterOptions.filter(option => option.paramValue === false)
+
+    preparedOptions = [...selectedOptions, ...unselectedOptions];
+  }
+
+  const filteredOptions = preparedOptions.filter((option) =>
     option.displayText.toLowerCase().includes(query.toLowerCase())
   )
 
