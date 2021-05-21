@@ -8,6 +8,7 @@ upcoming:
     - Fix artist follow is incorrectly firing action_name - dzmitry
     - Allow sticky tabs to add additional sticky content - mdole
     - Update android play store metadata - brian
+    - Use string for user agent when debugging on Android - ole
   user_facing:
     - Fix wrong input font on android - dzmitry
     - Add artwork Material filter - dzmitry tratsiak
