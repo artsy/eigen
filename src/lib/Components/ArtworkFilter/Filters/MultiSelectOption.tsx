@@ -59,8 +59,8 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   let preparedOptions = filterOptions
 
   if (pinSelectedToTheTop) {
-    const selectedOptions = filterOptions.filter(option => option.paramValue === true)
-    const unselectedOptions = filterOptions.filter(option => option.paramValue === false)
+    const selectedOptions = filterOptions.filter(option => itemIsSelected(option))
+    const unselectedOptions = filterOptions.filter(option => !itemIsSelected(option))
 
     preparedOptions = [...selectedOptions, ...unselectedOptions];
   }
