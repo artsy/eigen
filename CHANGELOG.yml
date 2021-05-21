@@ -16,6 +16,8 @@ upcoming:
     - Prevent android dark mode forced on users - kizito
     - Fix unusable slider on android - dzmitry
     - Add search UI for material filter - dzmitry tratsiak
+    - Implements custom size filter with localization (behind feature flag) - damon
+    -
 
 releases:
   - version: 6.9.1
