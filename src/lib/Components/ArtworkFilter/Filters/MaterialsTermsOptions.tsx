@@ -32,6 +32,9 @@ export const MaterialsTermsOptionsScreen: React.FC<MaterialsTermsOptionsScreenPr
       filterHeaderText={FilterDisplayName.materialsTerms}
       filterOptions={sortedFilterOptions}
       navigation={navigation}
+      searchable
+      noResultsLabel="No results found"
+      pinSelectedToTheTop
       {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
     />
   )
