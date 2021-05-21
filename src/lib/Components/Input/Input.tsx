@@ -215,9 +215,11 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 ref={input}
                 placeholderTextColor={color("black60")}
                 style={{ flex: 1, fontSize: 15, ...inputTextStyle }}
+                numberOfLines={1}
                 secureTextEntry={!showPassword}
                 textAlignVertical="center"
                 placeholder={actualPlaceholder()}
+                value={value}
                 {...(rest as any)}
                 onChangeText={(text) => {
                   setValue(text)
