@@ -33,9 +33,6 @@ function defineFeatures<T extends string>(featureMap: { readonly [featureName in
 export type FeatureName = keyof typeof features
 
 export const features = defineFeatures({
-  AREnableOrderHistoryOption: {
-    readyForRelease: false,
-  },
   AROptionsBidManagement: {
     readyForRelease: true,
     echoFlagKey: "AROptionsBidManagement",
