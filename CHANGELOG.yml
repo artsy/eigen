@@ -2,7 +2,6 @@ upcoming:
   version: 6.9.2
   date: TBD
   dev:
-    -
     - Convert filter queries to use a single structured input for filterArtworksConnection requests - dzmitry tratsiak
     - lock screen orientation to portrait on android phones - mounir
     - Fix artist follow is incorrectly firing action_name - dzmitry
@@ -19,29 +18,9 @@ upcoming:
     - Add search UI for material filter - dzmitry tratsiak
     - Implements custom size filter with localization (behind feature flag) - damon
     - Adds artist nationality & ethnicity filter (behind feature flag) - damon
+    - Enable lotsByFollowedArtists - ole
     -
-    - CTA for inquiry checkout phase 2 - sepans
-    - Combine gallery and institution artwork filters - mdole
-    - Remove old login from android - adam, barry, david, jonathan, mounir, pavlos
-    - Allows multi-select filters to be searchable - damon
-    - Rename artist about tab to artist overview tab - iskounen
-    - Move rails on artist artwork tab to artist overview tab - iskounen
-    - Update onboarding screens copy - mounir
-    - Support dark and light themes on android - mounir
-    - Fix billing country field text color and style - ole
-    - Show loading spinner in all infinite scroll artowrk grids - ole
-    - Fix missing bottom space on the Partner Artworks screen - ole
-    - Animate welcome screen - mounir
-    - Add fading screen transition when transitioning from sign up to login
-    - Add onboarding personalization screen - mounir
-    - Move sort & filter button to artist artworks grid header - iskounen
-    - Show live auctions in webview on Android - brian
-    - Update home screen modules (change order, remove recently saved) - ole
-    - Route artist auction results to artist insights - ole
-    - Add "Lots by artists I follow" rails to the home screen - ole
-    - Add buyer guarantee message and link to inquiry make offer button - lily
-    - Fix extra padding on home module rails - mounir, ole
-    - Implements custom price filter option (behind feature flag) - damon
+
 
 releases:
   - version: 6.9.1
