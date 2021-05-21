@@ -1,6 +1,6 @@
 import { Action, action, createContextStore, State } from "easy-peasy"
 import { assignDeep } from "lib/store/persistence"
-import { filter, find, isEqual, pullAllBy, union, unionBy } from "lodash"
+import { filter, find, isEqual, unionBy } from "lodash"
 import {
   Aggregations,
   defaultCommonFilterOptions,
