@@ -35,7 +35,6 @@ export type FeatureName = keyof typeof features
 export const features = defineFeatures({
   AREnableOrderHistoryOption: {
     readyForRelease: false,
-    echoFlagKey: "AREnableOrderHistoryOption",
   },
   AROptionsBidManagement: {
     readyForRelease: true,
