@@ -238,7 +238,6 @@ GEM
     memoist (0.16.2)
     mini_magick (4.11.0)
     mini_mime (1.1.0)
-    mini_portile2 (2.5.0)
     minitest (5.14.4)
     molinillo (0.6.6)
     multi_json (1.15.0)
@@ -249,9 +248,6 @@ GEM
     netrc (0.11.0)
     nio4r (2.5.4)
     no_proxy_fix (0.1.2)
-    nokogiri (1.11.1)
-      mini_portile2 (~> 2.5.0)
-      racc (~> 1.4)
     octokit (4.20.0)
       faraday (>= 0.9)
       sawyer (~> 0.8.0, >= 0.5.3)
@@ -260,7 +256,6 @@ GEM
     plist (3.6.0)
     psych (3.3.0)
     public_suffix (4.0.6)
-    racc (1.5.2)
     rake (13.0.3)
     rchardet (1.8.0)
     representable (3.1.1)
@@ -333,7 +328,6 @@ DEPENDENCIES
   fastlane-plugin-sentry
   json
   lowdown
-  nokogiri (= 1.11.1)
   psych
   xcode-install
   xcpretty
