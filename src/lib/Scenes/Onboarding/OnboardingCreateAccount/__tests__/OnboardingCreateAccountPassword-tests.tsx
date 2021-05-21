@@ -77,7 +77,7 @@ describe("OnboardingCreateAccountPassword", () => {
       input.props.onChangeText("Nodigits")
       input.props.onSubmitEditing()
       await flushPromiseQueue()
-      expect(input.props.error).toEqual("You password should contain at least one digit")
+      expect(input.props.error).toEqual("Your password should contain at least one digit")
 
       input.props.onChangeText("MISSING1LOWERCASE")
       input.props.onSubmitEditing()
