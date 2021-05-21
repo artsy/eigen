@@ -117,3 +117,7 @@
   - this also required a patch to fix types
   - See issues here: https://github.com/CocoaPods/CocoaPods/issues/10385, https://github.com/react-native-mapbox-gl/maps/issues/1097
   - we should update to a non-beta version ASAP
+
+- android Input placeholder measuring hack
+
+  Once https://github.com/facebook/react-native/pull/29664 is merged or https://github.com/facebook/react-native/issues/29663 solved.

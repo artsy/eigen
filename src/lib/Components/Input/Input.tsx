@@ -1,10 +1,12 @@
 import { color, Color, EyeOpenedIcon, Flex, Sans, TEXT_FONTS, XCircleIcon } from "palette"
 import { fontFamily } from "palette/platform/fonts/fontFamily"
+import _ from "lodash"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
   Platform,
   TextInput,
+  Text,
   TextInputProps,
   TextStyle,
   TouchableOpacity,
@@ -17,7 +19,7 @@ import { InputTitle } from "./InputTitle"
 
 export const INPUT_HEIGHT = 43
 
-export interface InputProps extends TextInputProps {
+export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   containerStyle?: React.ComponentProps<typeof Flex>["style"]
   description?: string
   error?: string
@@ -25,6 +27,28 @@ export interface InputProps extends TextInputProps {
   disabled?: boolean
   required?: boolean
   title?: string
+
+  /**
+   * The placeholder can be an array of string, specifically for android, because of a bug.
+   * On ios, the longest string will always be picked, as ios can add ellipsis.
+   * On android, the longest string **that fits** will be picked, as android doesn't use ellipsis.
+   * The way to use it is to put the longest string first, and the shortest string last.
+   *
+   * Check `HACKS.md` for more info.
+   *
+   * @example
+   * const placeholders = [
+   *   "Wow this is a great and very long placeholder",
+   *   "Wow this is a great and long placeholder",
+   *   "Wow this is a great placeholder",
+   *   "Wow",
+   * ]
+   * ...
+   * <Input
+   *   placeholder={placeholders}
+   * />
+   */
+  placeholder?: string | string[]
   enableClearButton?: boolean
   canHidePassword?: boolean
   inputTextStyle?: TextStyle
@@ -52,6 +76,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       textContentType,
       canHidePassword,
       inputTextStyle,
+      placeholder,
       ...rest
     },
     ref
@@ -87,6 +112,72 @@ export const Input = React.forwardRef<TextInput, InputProps>(
         </Flex>
       )
     }
+
+    const localOnChangeText = (text: string) => {
+      setValue(text)
+      rest.onChangeText?.(text)
+    }
+
+    const placeholderWidths = useRef<number[]>([])
+    const [inputWidth, setInputWidth] = useState(0)
+    const placeholderMeasuringHack =
+      Platform.OS === "android" && _.isArray(placeholder) ? (
+        <View
+          style={{
+            position: "absolute",
+            top: -10000, // make sure its off the screen
+            width: 10000, // make sure Texts can take as much space as they need
+            alignItems: "baseline", // this is to make Texts get the smallest width they can get to fit the text
+          }}
+        >
+          {placeholder.map((placeholderString, index) => (
+            <Text
+              onLayout={(event) => {
+                placeholderWidths.current[index] = event.nativeEvent.layout.width
+              }}
+              numberOfLines={1}
+              style={{
+                borderColor: "red",
+                borderWidth: 1,
+                flex: 1,
+                fontFamily: fontFamily.sans.regular.normal,
+                fontSize: 15,
+                textAlign: "left",
+                ...inputTextStyle,
+              }}
+            >
+              {placeholderString}
+            </Text>
+          ))}
+        </View>
+      ) : null
+    const actualPlaceholder = () => {
+      if (placeholder === undefined) {
+        return placeholder
+      }
+
+      // ios works well. just return the longest placeholder
+      if (Platform.OS === "ios") {
+        return _.isArray(placeholder) ? placeholder[0] : placeholder
+      }
+
+      // if it's android and we only have one string, return that string
+      if (_.isString(placeholder)) {
+        return placeholder
+      }
+
+      // otherwise, find a placeholder that has longest width that fits in the inputtext
+      const longestFittingStringIndex = placeholderWidths.current.findIndex((placeholderWidth) => {
+        return placeholderWidth <= inputWidth
+      })
+      if (longestFittingStringIndex > -1) {
+        return placeholder[longestFittingStringIndex]
+      }
+
+      // otherwise just return the shortest placeholder
+      return placeholder[placeholder.length - 1]
+    }
+
     return (
       <Flex flexGrow={1} style={containerStyle}>
         <InputTitle required={required}>{title}</InputTitle>
@@ -116,12 +207,17 @@ export const Input = React.forwardRef<TextInput, InputProps>(
               </Flex>
             )}
             <Flex flexGrow={1}>
+              {placeholderMeasuringHack}
               <StyledInput
+                onLayout={(event) => {
+                  setInputWidth(event.nativeEvent.layout.width)
+                }}
                 ref={input}
                 placeholderTextColor={color("black60")}
                 style={{ flex: 1, fontSize: 15, ...inputTextStyle }}
                 secureTextEntry={!showPassword}
                 textAlignVertical="center"
+                placeholder={actualPlaceholder()}
                 {...(rest as any)}
                 onChangeText={(text) => {
                   setValue(text)
