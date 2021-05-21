@@ -70,8 +70,8 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     useImperativeHandle(ref, () => ({
       ...input.current!,
       // these next three are a dirty hack in order for typecheck to pass
-      setState: () => {},
-      forceUpdate: () => {},
+      setState: () => {}, // tslint:disable-line:no-empty
+      forceUpdate: () => {}, // tslint:disable-line:no-empty
       render: () => null,
 
       // our actual changes
@@ -164,7 +164,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
               />
             </Flex>
             {renderShowPasswordIcon()}
-            {value !== undefined && value !== "" && enableClearButton && (
+            {!!(value !== undefined && value !== "" && enableClearButton) && (
               <Flex pr="1" justifyContent="center" flexGrow={0}>
                 <TouchableOpacity
                   onPress={() => {
