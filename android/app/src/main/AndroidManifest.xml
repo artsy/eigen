@@ -38,29 +38,20 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:scheme="https"
-                    android:host="staging.artsy.net" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="https"
-                    android:host="www.artsy.net" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="https"
-                    android:host="artsy.net" />
+                <data android:scheme="https" />
+                <data android:host="staging.artsy.net" />
+                <data android:host="www.artsy.net" />
+                <data android:host="artsy.net" />
+                <data android:pathPrefix="/artwork" />
+                <data android:pathPrefix="/artworks" />
+                <data android:pathPrefix="/artist" />
+                <data android:pathPrefix="/artists" />
+                <data android:pathPrefix="/auction" />
+                <data android:pathPrefix="/auctions" />
+                <data android:pathPrefix="/gallery" />
+                <data android:pathPrefix="/galleries" />
+                <data android:pathPrefix="/fair" />
+                <data android:pathPrefix="/fairs" />
             </intent-filter>
         </activity>
 
