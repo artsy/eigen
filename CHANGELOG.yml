@@ -10,6 +10,7 @@ upcoming:
     - Update android play store metadata - brian
     - Use string for user agent when debugging on Android - ole
     - fix fastlane issue - brian
+    - Add admin menu item to clear relay cache - brian
   user_facing:
     - Fix wrong input font on android - dzmitry
     - Fix home screen load failure on logout - brian
@@ -18,6 +19,7 @@ upcoming:
     - Fix unusable slider on android - dzmitry
     - Add search UI for material filter - dzmitry tratsiak
     - Implements custom size filter with localization (behind feature flag) - damon
+    - Adds artist nationality & ethnicity filter (behind feature flag) - damon
     -
 
 releases:
