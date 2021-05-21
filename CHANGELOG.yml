@@ -13,6 +13,7 @@ upcoming:
     - Fix wrong input font on android - dzmitry
     - Fix home screen load failure on logout - brian
     - Add artwork Material filter - dzmitry tratsiak
+    - Prevent android dark mode forced on users - kizito
     - Fix unusable slider on android - dzmitry
 
 releases:
