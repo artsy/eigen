@@ -32,7 +32,18 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter android:autoVerify="true">
+        </activity>
+
+        <activity
+            android:name="com.zoontek.rnbootsplash.RNBootSplashActivity"
+            android:theme="@style/BootTheme"
+            android:launchMode="singleTask">
+            <intent-filter>
+              <action android:name="android.intent.action.MAIN" />
+              <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -42,7 +53,7 @@
                 <data android:host="staging.artsy.net" />
                 <data android:host="www.artsy.net" />
                 <data android:host="artsy.net" />
-                <data android:pathPrefix="/artwork" />
+                 <data android:pathPrefix="/artwork" />
                 <data android:pathPrefix="/artworks" />
                 <data android:pathPrefix="/artist" />
                 <data android:pathPrefix="/artists" />
@@ -54,11 +65,6 @@
                 <data android:pathPrefix="/fairs" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name="com.zoontek.rnbootsplash.RNBootSplashActivity"
-            android:theme="@style/BootTheme"
-            android:launchMode="singleTask" />
 
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>
