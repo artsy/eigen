@@ -4,10 +4,10 @@ import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import colors from "lib/data/colors"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
-import { PlaceholderText } from "lib/utils/placeholders"
+import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Flex, Sans, Separator } from "palette"
+import { Box, Flex, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -73,9 +73,30 @@ export const OrderHistoryPlaceholder: React.FC<{}> = () => (
   <PageWithSimpleHeader title="Order History">
     <Flex px={2} py={15}>
       {times(2).map((index: number) => (
-        <Flex key={index} py={1}>
-          <PlaceholderText width={100 + Math.random() * 100} />
-        </Flex>
+        <Box key={index}>
+          <Flex>
+            <Flex flexDirection="row" justifyContent="space-between">
+              <PlaceholderBox height={50} width={50} flexGrow={1} marginRight={10} />
+              <Box flexGrow={3}>
+                <PlaceholderText width={50 + Math.random() * 100} />
+                <PlaceholderText width={50 + Math.random() * 100} />
+                <PlaceholderText width={50 + Math.random() * 100} />
+              </Box>
+              <Box flexGrow={1}>
+                <Flex alignItems="flex-end">
+                  <PlaceholderText width={50} />
+                  <PlaceholderText width={70} />
+                </Flex>
+              </Box>
+            </Flex>
+          </Flex>
+          <Spacer mb={10} />
+          <PlaceholderButton />
+          <Spacer mb={10} />
+          <Flex flexDirection="column" justifyContent="center" alignItems="center">
+            <Separator mt={10} mb={20} width="90%" />
+          </Flex>
+        </Box>
       ))}
     </Flex>
   </PageWithSimpleHeader>
