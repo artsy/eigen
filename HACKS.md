@@ -108,7 +108,7 @@
 
 - react-native-mapbox-gl/maps - 8.2.0-beta2 postinstall script
 
-  Now.
+  We can remove these hacks NOW.
 
   We had issues with our archive becoming invalid and failing to export when we updated mapbox and cocoapods
   - mapbox released a beta version that fixed the issue for our setup
