@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-community/async-storage"
 import * as Sentry from "@sentry/react-native"
 import { MenuItem } from "lib/Components/MenuItem"
 import { useToast } from "lib/Components/Toast/toastHook"
+import { clearAll } from "lib/NativeModules/GraphQLQueryCache"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import { environment, EnvironmentKey } from "lib/store/config/EnvironmentModel"
 import { DevToggleName, devToggles, FeatureName, features } from "lib/store/config/features"
@@ -91,6 +92,13 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           chevron={null}
           onPress={() => {
             AsyncStorage.clear()
+          }}
+        />
+        <MenuItem
+          title="Clear Relay Cache"
+          chevron={null}
+          onPress={() => {
+            clearAll()
           }}
         />
         <MenuItem
