@@ -18,6 +18,7 @@ upcoming:
     - Add artwork Material filter - dzmitry tratsiak
     - Prevent android dark mode forced on users - kizito
     - Fix unusable slider on android - dzmitry
+    - Update auction registration flow UI - ole
     - Fix vanishing artist series - mounir
     - Add search UI for material filter - dzmitry tratsiak
     - Implements custom size filter with localization (behind feature flag) - damon

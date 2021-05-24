@@ -1,5 +1,5 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Serif } from "palette"
+import { Text } from "palette"
 import React from "react"
 
 import { BillingAddress } from "../../Screens/BillingAddress"
@@ -40,7 +40,7 @@ it("shows the billing address that the user typed in the billing address form", 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   expect(nextStep.component).toEqual(BillingAddress)
 
-  expect(billingAddressRow.findAllByType(Serif)[1].props.children).toEqual("401 Broadway 25th floor New York NY")
+  expect(billingAddressRow.findAllByType(Text)[1].props.children).toEqual("401 Broadway 25th floor New York NY")
 })
 
 it("shows the cc info that the user had typed into the form", () => {
@@ -53,7 +53,7 @@ it("shows the cc info that the user had typed into the form", () => {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   expect(nextStep.component).toEqual(CreditCardForm)
 
-  expect(creditCardRow.findAllByType(Serif)[1].props.children).toEqual("VISA •••• 4242")
+  expect(creditCardRow.findAllByType(Text)[1].props.children).toEqual("VISA •••• 4242")
 })
 
 const billingAddress = {
