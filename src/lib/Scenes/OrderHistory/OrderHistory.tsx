@@ -7,7 +7,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Flex, Sans, Spacer } from "palette"
+import { Flex, Sans, Separator } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -59,7 +59,11 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginatio
         }
         onEndReachedThreshold={0.25}
         onEndReached={onLoadMore}
-        ItemSeparatorComponent={() => <Spacer mb={10} />}
+        ItemSeparatorComponent={() => (
+          <Flex flexDirection="column" justifyContent="center" alignItems="center">
+            <Separator mt={10} mb={20} width="90%" />
+          </Flex>
+        )}
       />
     </PageWithSimpleHeader>
   )
