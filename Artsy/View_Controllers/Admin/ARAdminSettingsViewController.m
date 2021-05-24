@@ -42,11 +42,11 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     NSString *name = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
     NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    NSString *gitCommitRevision = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"GITCommitRev"];
+    NSString *gitCommitShortHash = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"GITCommitShortHash"];
     NSString *userEmail = [[[ARUserManager sharedManager] currentUser] email];
 
     ARSectionData *userSectionData = [[ARSectionData alloc] init];
-    userSectionData.headerTitle = [NSString stringWithFormat:@"%@ v%@, build %@ (%@), %@", name, version, build, gitCommitRevision, userEmail];
+    userSectionData.headerTitle = [NSString stringWithFormat:@"%@ v%@, build %@ (%@), %@", name, version, build, gitCommitShortHash, userEmail];
 
     [userSectionData addCellDataFromArray:@[
         [self generateRestart],

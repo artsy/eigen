@@ -129,12 +129,12 @@ lane :set_build_version_android do
   [next_version_name, next_version_code]
 end
 
-git_commit_rev = `git log -n1 --format='%h'`.chomp
+git_commit_short_hash = `git log -n1 --format='%h'`.chomp
 git_commit_hash = `git log -n1 --format='%H'`.chomp
 git_commit_date_str = DateTime.parse(`git log -n1 --format='%ci'`.chomp).iso8601
 git_remote_origin_url = `git config --get remote.origin.url`.chomp
 lane :set_git_properties_ios do
-  system("/usr/libexec/PlistBuddy -c \"Set GITCommitRev #{git_commit_rev}\" #{app_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set GITCommitShortHash #{git_commit_short_hash}\" #{app_plist}")
   system("/usr/libexec/PlistBuddy -c \"Set GITCommitHash #{git_commit_hash}\" #{app_plist}")
   system("/usr/libexec/PlistBuddy -c \"Set GITCommitDate #{git_commit_date_str}\" #{app_plist}")
   system("/usr/libexec/PlistBuddy -c \"Set GITRemoteOriginURL #{git_remote_origin_url}\" #{app_plist}")
@@ -143,7 +143,7 @@ end
 lane :set_git_properties_android do
   contents = File.read(build_gradle)
 
-  contents = contents.gsub(/(GITCommitRev.* '").*("')/, "\\1#{git_commit_rev}\\2")
+  contents = contents.gsub(/(GITCommitShortHash.* '").*("')/, "\\1#{git_commit_short_hash}\\2")
   contents = contents.gsub(/(GITCommitHash.* '").*("')/, "\\1#{git_commit_hash}\\2")
   contents = contents.gsub(/(GITCommitDate.* '").*("')/, "\\1#{git_commit_date_str}\\2")
   contents = contents.gsub(/(GITRemoteOriginURL.* '").*("')/, "\\1#{git_remote_origin_url}\\2")

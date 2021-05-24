@@ -77,7 +77,7 @@
 	<string>Artsy</string>
 	<key>GITCommitDate</key>
 	<string>2021-01-21T15:08:22+04:00</string>
-	<key>GITCommitRev</key>
+	<key>GITCommitShortHash</key>
 	<string>c77772ee1</string>
 	<key>GITCommitHash</key>
 	<string>c77772ee1f32093109049504f7865f9737ad8474</string>
