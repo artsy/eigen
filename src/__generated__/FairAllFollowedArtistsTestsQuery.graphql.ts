@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 50d11ed5f17d92c5ca457f5618520e52 */
+/* @relayHash bfeddee2aa01b8f62aa55055228ac5f4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -98,7 +98,7 @@ fragment FairAllFollowedArtists_fairForFilters on Fair {
 fragment FairArtworks_fair_6zGp3 on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST, MATERIALS_TERMS], input: {includeArtworksByFollowedArtists: true, sort: "-decayed_merch", dimensionRange: "*-*"}) {
+  fairArtworks: filterArtworksConnection(first: 30, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST, MATERIALS_TERMS, ARTIST_NATIONALITY], input: {includeArtworksByFollowedArtists: true, sort: "-decayed_merch", dimensionRange: "*-*"}) {
     aggregations {
       slice
       counts {
@@ -194,7 +194,8 @@ v4 = [
       "PRICE_RANGE",
       "FOLLOWED_ARTISTS",
       "ARTIST",
-      "MATERIALS_TERMS"
+      "MATERIALS_TERMS",
+      "ARTIST_NATIONALITY"
     ]
   },
   {
@@ -752,7 +753,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\",\"MATERIALS_TERMS\"],first:30,input:{\"dimensionRange\":\"*-*\",\"includeArtworksByFollowedArtists\":true,\"sort\":\"-decayed_merch\"})"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\"],first:30,input:{\"dimensionRange\":\"*-*\",\"includeArtworksByFollowedArtists\":true,\"sort\":\"-decayed_merch\"})"
           },
           {
             "alias": "fairArtworks",
@@ -830,7 +831,7 @@ return {
     ]
   },
   "params": {
-    "id": "50d11ed5f17d92c5ca457f5618520e52",
+    "id": "bfeddee2aa01b8f62aa55055228ac5f4",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": (v10/*: any*/),

@@ -54,6 +54,7 @@ import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyProfilePushNotifications"
+import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
@@ -130,10 +131,6 @@ interface PartnerLocationsProps {
   isVisible: boolean
 }
 const PartnerLocations: React.FC<PartnerLocationsProps> = (props) => <PartnerLocationsQueryRenderer {...props} />
-
-const Inbox: React.FC<{ isVisible: boolean }> = screenTrack<{}>(() => {
-  return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
-})((props) => <InboxWrapper {...props} />)
 
 interface GeneProps {
   geneID: string
@@ -329,7 +326,7 @@ export const modules = defineModules({
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
   Gene: reactModule(Gene),
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
-  Inbox: reactModule(Inbox, { isRootViewForTabName: "inbox" }),
+  Inbox: reactModule(InboxWrapper, { isRootViewForTabName: "inbox" }),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   LiveAuction: nativeModule({
     alwaysPresentModally: true,
@@ -359,6 +356,7 @@ export const modules = defineModules({
   MyCollectionArtworkImages: reactModule(MyCollectionArtworkImagesQueryRenderer),
   MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
+  OrderHistory: reactModule(OrderHistoryQueryRender),
   MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, { hidesBackButton: true }),
   MyProfilePushNotifications: reactModule(MyProfilePushNotificationsQueryRenderer),
   MySellingProfile: reactModule(View),

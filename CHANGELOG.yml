@@ -2,17 +2,18 @@ upcoming:
   version: 6.9.2
   date: TBD
   dev:
-    -
     - Convert filter queries to use a single structured input for filterArtworksConnection requests - dzmitry tratsiak
-    - lock screen orientation to portrait on android phones - mounir
-    - Fix artist follow is incorrectly firing action_name - dzmitry
     - Allow sticky tabs to add additional sticky content - mdole
+    - Fix url decoding in navigation infra code - kizito
     - Update android play store metadata - brian
     - Use string for user agent when debugging on Android - ole
+    - fix fastlane issue - brian
+    - Add admin menu item to clear relay cache - brian
   user_facing:
     - Fix wrong input font on android - dzmitry
     - Fix home screen load failure on logout - brian
     - Add artwork Material filter - dzmitry tratsiak
+    - Prevent android dark mode forced on users - kizito
     - Fix unusable slider on android - dzmitry
     - Fix vanishing artist series - mounir
 
