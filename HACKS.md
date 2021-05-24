@@ -150,3 +150,13 @@ We had issues with our archive becoming invalid and failing to export when we up
 - this also required a patch to fix types
 - See issues here: https://github.com/CocoaPods/CocoaPods/issues/10385, https://github.com/react-native-mapbox-gl/maps/issues/1097
 - we should update to a non-beta version ASAP
+
+# android Input placeholder measuring hack
+
+#### When can we remove this:
+Once https://github.com/facebook/react-native/pull/29664 is merged or https://github.com/facebook/react-native/issues/29663 solved.
+
+#### Explanation/Context:
+As you can see in the PR and issue, android doesn't use ellipsis on the placeholder of a TextInput. That makes for a funky cut-off.
+
+We added a workaround on Input, to accept an array of placeholders, from longest to shortest, so that android can measure which one fits in the TextInput as placeholder, and it uses that. When android can handle a long placeholder and use ellipsis or if we don't use long placeholders anymore, this can go.
