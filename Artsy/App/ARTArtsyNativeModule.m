@@ -5,6 +5,11 @@
 
 RCT_EXPORT_MODULE(ArtsyNativeModule);
 
++ (BOOL)requiresMainQueueSetup
+{
+    return YES;
+}
+
 - (NSDictionary *)constantsToExport
 {
     return @{
