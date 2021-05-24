@@ -12,6 +12,7 @@ upcoming:
     - Add admin menu item to clear relay cache - brian
   user_facing:
     - Fix wrong input font on android - dzmitry
+    - Fix android native getNavigationHeight method -  kizito
     - Fix home screen load failure on logout - brian
     - Add artwork Material filter - dzmitry tratsiak
     - Prevent android dark mode forced on users - kizito
