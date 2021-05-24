@@ -139,6 +139,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/local-discovery", "LocalDiscovery"),
     new RouteMatcher("/privacy-request", "PrivacyRequest"),
 
+    new RouteMatcher("/orders", "OrderHistory"),
+
+    new RouteMatcher("/my-account", "MyAccount"),
+
     new RouteMatcher("/my-collection", "MyCollection"),
     new RouteMatcher("/my-collection/artwork/:artworkSlug", "MyCollectionArtwork"),
     new RouteMatcher("/my-collection/artwork-details/:artworkSlug", "MyCollectionArtworkFullDetails"),
