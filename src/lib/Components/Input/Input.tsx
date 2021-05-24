@@ -60,7 +60,41 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     const [showPassword, setShowPassword] = useState(!secureTextEntry)
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
     const input = useRef<TextInput>()
-    useImperativeHandle(ref, () => input.current!)
+
+    const localClear = () => {
+      input.current?.clear()
+      localOnChangeText("")
+      rest.onClear?.()
+    }
+
+    useImperativeHandle(ref, () => ({
+      // ...input.current!, for some reason destructuring is not working 😡
+      blur: input.current!.blur,
+      focus: input.current!.focus,
+      isFocused: input.current!.isFocused,
+      measure: input.current!.measure,
+      measureLayout: input.current!.measureLayout,
+      measureInWindow: input.current!.measureInWindow,
+      setNativeProps: input.current!.setNativeProps,
+      setTimeout: input.current!.setTimeout,
+      clearTimeout: input.current!.clearTimeout,
+      setImmediate: input.current!.setImmediate,
+      clearImmediate: input.current!.clearImmediate,
+      setInterval: input.current!.setInterval,
+      clearInterval: input.current!.clearInterval,
+      refs: input.current!.refs,
+      requestAnimationFrame: input.current!.requestAnimationFrame,
+      cancelAnimationFrame: input.current!.cancelAnimationFrame,
+      context: input.current!.context,
+      props: input.current!.props,
+      state: input.current!.state,
+      setState: input.current!.setState,
+      forceUpdate: input.current!.forceUpdate,
+      render: input.current!.render,
+
+      // our actual changes
+      clear: localClear,
+    }))
 
     useEffect(() => {
       /* to make the font work for secure text inputs,
@@ -87,6 +121,12 @@ export const Input = React.forwardRef<TextInput, InputProps>(
         </Flex>
       )
     }
+
+    const localOnChangeText = (text: string) => {
+      setValue(text)
+      rest.onChangeText?.(text)
+    }
+
     return (
       <Flex flexGrow={1} style={containerStyle}>
         <InputTitle required={required}>{title}</InputTitle>
@@ -123,10 +163,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 secureTextEntry={!showPassword}
                 textAlignVertical="center"
                 {...(rest as any)}
-                onChangeText={(text) => {
-                  setValue(text)
-                  rest.onChangeText?.(text)
-                }}
+                onChangeText={localOnChangeText}
                 onFocus={(e) => {
                   if (Platform.OS === "android") {
                     LayoutAnimation.configureNext(LayoutAnimation.create(60, "easeInEaseOut", "opacity"))
@@ -144,14 +181,11 @@ export const Input = React.forwardRef<TextInput, InputProps>(
               />
             </Flex>
             {renderShowPasswordIcon()}
-            {!!(Boolean(value) && enableClearButton) && (
+            {!!(value !== undefined && value !== "" && enableClearButton) && (
               <Flex pr="1" justifyContent="center" flexGrow={0}>
                 <TouchableOpacity
                   onPress={() => {
-                    input.current?.clear()
-                    setValue("")
-                    rest.onChangeText?.("")
-                    rest.onClear?.()
+                    localClear()
                   }}
                   hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
                 >

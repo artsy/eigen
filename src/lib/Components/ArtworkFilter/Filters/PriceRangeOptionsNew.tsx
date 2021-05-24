@@ -10,6 +10,7 @@ import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/
 import { Input } from "lib/Components/Input/Input"
 import { Flex, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
+import { parseRange, Range } from "./helpers"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface PriceRangeOptionsScreenProps
@@ -17,7 +18,7 @@ interface PriceRangeOptionsScreenProps
 
 const PARAM_NAME = FilterParamName.priceRange
 
-const CUSTOM_PRICE_OPTION = {
+export const CUSTOM_PRICE_OPTION = {
   displayText: "Custom price",
   // Values need to be unique and we can't use "*-*" which is used by "All."
   // This essentially means the same thing.
@@ -35,25 +36,9 @@ const PRICE_RANGE_OPTIONS: FilterData[] = [
   CUSTOM_PRICE_OPTION,
 ]
 
-interface CustomPrice {
-  min: "*" | number
-  max: "*" | number
-}
-
-const parseRange = (range: string): CustomPrice => {
-  const [min, max] = range.split("-").map((s) => {
-    if (s === "*") {
-      return s
-    }
-    return parseInt(s, 10)
-  })
-
-  return { min, max }
-}
-
 interface CustomPriceInputProps {
-  initialValue: CustomPrice
-  onChange(value: CustomPrice): void
+  initialValue: Range
+  onChange(value: Range): void
 }
 
 export const CustomPriceInput: React.FC<CustomPriceInputProps> = ({
@@ -61,7 +46,7 @@ export const CustomPriceInput: React.FC<CustomPriceInputProps> = ({
   onChange,
 }) => {
   const isMounted = useRef(false)
-  const [state, setState] = useState<CustomPrice>(initialValue)
+  const [state, setState] = useState<Range>(initialValue)
 
   const handleChange = (key: "min" | "max") => (text: string) => {
     const parsed = parseInt(text, 10)
@@ -125,7 +110,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
     })
   }
 
-  const handleCustomPriceChange = (value: CustomPrice) => {
+  const handleCustomPriceChange = (value: Range) => {
     const min = value.min === "*" ? "0" : `$${value.min.toLocaleString("en-US", { maximumFractionDigits: 2 })}`
     const max = value.max === "*" ? "+" : `–${value.max.toLocaleString("en-US", { maximumFractionDigits: 2 })}`
 

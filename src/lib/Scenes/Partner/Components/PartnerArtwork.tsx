@@ -70,7 +70,7 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
         artworks: filterArtworksConnection(
           first: $count
           after: $cursor
-          aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS]
+          aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY]
           input: $input
         ) @connection(key: "Partner_artworks") {
           aggregations {
@@ -111,12 +111,7 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
         $input: FilterArtworksInput
       ) {
         partner(id: $id) {
-          ...PartnerArtwork_partner
-            @arguments(
-              count: $count
-              cursor: $cursor
-              input: $input
-            )
+          ...PartnerArtwork_partner @arguments(count: $count, cursor: $cursor, input: $input)
         }
       }
     `,
