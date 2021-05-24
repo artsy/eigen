@@ -1,6 +1,5 @@
 This update includes a number of improvements and bug fixes, including:
 
-- Purchasing artworks just got easier – make an offer and pay safely from an inquiry.
-- Fixes a bug causing users to get prompted for push notification permissions too often.
+- Improvements to Home screen and artwork filters.
 
 Have feedback? Email us at support@artsy.net

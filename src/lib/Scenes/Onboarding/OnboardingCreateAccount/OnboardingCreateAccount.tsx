@@ -37,17 +37,19 @@ export interface UserSchema {
   name: string
 }
 
-/**
- * User schema validation rules
- */
-export const userSchema = Yup.object().shape({
-  email: Yup.string().email("Please provide a valid email address").required(),
+export const emailSchema = Yup.object().shape({
+  email: Yup.string().email("Please provide a valid email address").required("Email field is required"),
+})
+export const passwordSchema = Yup.object().shape({
   password: Yup.string()
     .min(8, "Your password should be at least 8 characters")
     .matches(/[A-Z]/, "Your password should contain at least one uppercase letter")
     .matches(/[a-z]/, "Your password should contain at least one lowercase letter")
-    .matches(/[0-9]/, "You password should contain at least one digit"),
-  name: Yup.string().test("name", "Full name field is required", (value) => value !== ""),
+    .matches(/[0-9]/, "Your password should contain at least one digit")
+    .required("Password field is required"),
+})
+export const nameSchema = Yup.object().shape({
+  name: Yup.string().required("Full name field is required"),
 })
 
 const getCurrentRoute = () =>
@@ -102,7 +104,18 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
           break
       }
     },
-    validationSchema: userSchema,
+    validationSchema: () => {
+      switch (getCurrentRoute()) {
+        case "OnboardingCreateAccountEmail":
+          return emailSchema
+        case "OnboardingCreateAccountPassword":
+          return passwordSchema
+        case "OnboardingCreateAccountName":
+          return nameSchema
+        default:
+          break
+      }
+    },
   })
 
   return (
@@ -156,7 +169,6 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
           paddingTop: useScreenDimensions().safeAreaInsets.top,
           justifyContent: "flex-start",
         }}
-        showsVerticalScrollIndicator={false}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="always"
       >
@@ -214,7 +226,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
   }, [errors.email])
 
   return (
-    <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5} backgroundColor="white">
+    <Flex px={1.5} paddingBottom={1.5} backgroundColor="white">
       {errors.email === EMAIL_EXISTS_ERROR_MESSAGE && (
         <Animated.View style={{ bottom: -50, transform: [{ translateY: yTranslateAnim.current }] }}>
           <Button

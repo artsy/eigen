@@ -73,7 +73,7 @@ describe("OnboardingCreateAccount", () => {
     signUpButton.props.onPress()
     await flushPromiseQueue()
 
-    expect(passwordInput.props.error).toEqual("You password should contain at least one digit")
+    expect(passwordInput.props.error).toEqual("Your password should contain at least one digit")
 
     passwordInput.props.onChangeText("validEmail1")
     signUpButton.props.onPress()
