@@ -1,5 +1,5 @@
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
-import { Alert, RefreshControl, View, ViewProps } from "react-native"
+import { Alert, Platform, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
@@ -7,6 +7,7 @@ import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/Artwork
 import { CollectionsRailFragmentContainer } from "lib/Scenes/Home/Components/CollectionsRail"
 import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
+import { SaleArtworksHomeRailContainer } from "lib/Scenes/Home/Components/SaleArtworksHomeRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
@@ -67,6 +68,7 @@ const Home = (props: Props) => {
   */
   const rowData = compact([
     artworkRails[0],
+    { type: "lotsByFollowedArtists" } as const,
     artworkRails[1],
     salesModule &&
       ({
@@ -121,7 +123,7 @@ const Home = (props: Props) => {
             data={rowData}
             initialNumToRender={5}
             refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-            renderItem={({ item, index }) => {
+            renderItem={({ item, index, separators }) => {
               switch (item.type) {
                 case "artwork":
                   return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
@@ -140,6 +142,14 @@ const Home = (props: Props) => {
                   )
                 case "viewing-rooms":
                   return <ViewingRoomsHomeRail featured={featured} />
+                case "lotsByFollowedArtists":
+                  return (
+                    <SaleArtworksHomeRailContainer
+                      me={me}
+                      onShow={() => separators.updateProps("leading", { hideSeparator: false })}
+                      onHide={() => separators.updateProps("leading", { hideSeparator: true })}
+                    />
+                  )
               }
             }}
             ListHeaderComponent={
@@ -316,6 +326,11 @@ export const HomeQueryRenderer: React.FC = () => {
   const { flash_message } = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.tabProps.home ?? {}) as {
     flash_message?: string
   }
+
+  const userAccessToken = GlobalStore.useAppState((store) =>
+    Platform.OS === "ios" ? store.native.sessionState.authenticationToken : store.auth.userAccessToken
+  )
+
   useEffect(() => {
     if (flash_message) {
       const message = messages[flash_message as keyof typeof messages]
@@ -331,7 +346,9 @@ export const HomeQueryRenderer: React.FC = () => {
       GlobalStore.actions.bottomTabs.setTabProps({ tab: "home", props: {} })
     }
   }, [flash_message])
-  return (
+
+  // Avoid rendering when user is logged out, it will fail anyway
+  return userAccessToken ? (
     <QueryRenderer<HomeQuery>
       environment={defaultEnvironment}
       query={graphql`
@@ -351,5 +368,5 @@ export const HomeQueryRenderer: React.FC = () => {
       render={renderWithPlaceholder({ Container: HomeFragmentContainer, renderPlaceholder: () => <HomePlaceholder /> })}
       cacheConfig={{ force: true }}
     />
-  )
+  ) : null
 }

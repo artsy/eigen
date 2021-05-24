@@ -107,7 +107,8 @@ return {
             "MAJOR_PERIOD",
             "MEDIUM",
             "PRICE_RANGE",
-            "MATERIALS_TERMS"
+            "MATERIALS_TERMS",
+            "ARTIST_NATIONALITY"
           ]
         },
         {
@@ -264,5 +265,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '0c657cfc9796b7cbb55f3e36292476ab';
+(node as any).hash = '0f05e5423727808d7ea2fec4e6852f78';
 export default node;

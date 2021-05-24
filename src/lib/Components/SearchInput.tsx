@@ -43,8 +43,6 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
             {!!inputFocused && (
               <TouchableOpacity
                 onPress={() => {
-                  onChangeText?.("")
-                  onClear?.()
                   ;(ref as RefObject<TextInput>).current?.blur()
                   ;(ref as RefObject<TextInput>).current?.clear()
                 }}

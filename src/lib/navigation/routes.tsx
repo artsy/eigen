@@ -10,7 +10,17 @@ import { RouteMatcher } from "./RouteMatcher"
 export function matchRoute(
   url: string
 ): { type: "match"; module: AppModule; params: object } | { type: "external_url"; url: string } {
-  const parsed = parse(decodeURIComponent(url))
+  if (isProtocolEncoded(url)) {
+    // if entire url is encoded, decode!
+    // Else user will land on VanityUrlEntity for url that otherwise would have been valid
+    url = decodeUrl(url)
+  }
+  let parsed = parse(url)
+  if (parsed.host && isEncoded(url)) {
+    // likely from a deeplinked universal link as we do not pass urls with host in app
+    // special characters in paths passed as props in app must be intentional
+    parsed = parse(decodeUrl(url))
+  }
   const pathParts = parsed.pathname?.split(/\/+/).filter(Boolean) ?? []
   const queryParams: object = parsed.query ? parseQueryString(parsed.query) : {}
 
@@ -67,6 +77,26 @@ export function replaceParams(url: string, params: any) {
     }
     url = url.replace(":" + key, params[key])
     match = url.match(/:(\w+)/)
+  }
+  return url
+}
+
+function isProtocolEncoded(url: string): boolean {
+  const regex = new RegExp("^(http%|https%|%)")
+  return regex.test(url)
+}
+
+function isEncoded(url: string): boolean {
+  return url !== decodeURIComponent(url)
+}
+
+function decodeUrl(url: string): string {
+  let maxDepth = 10
+  // allows to exit the loop in cases of weird custom encoding
+  // or for some reason url is encoded more than 10 times
+  while (isEncoded(url) && maxDepth > 0) {
+    url = decodeURIComponent(url)
+    maxDepth--
   }
   return url
 }
@@ -138,6 +168,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-profile/push-notifications", "MyProfilePushNotifications"),
     new RouteMatcher("/local-discovery", "LocalDiscovery"),
     new RouteMatcher("/privacy-request", "PrivacyRequest"),
+
+    new RouteMatcher("/orders", "OrderHistory"),
+
+    new RouteMatcher("/my-account", "MyAccount"),
 
     new RouteMatcher("/my-collection", "MyCollection"),
     new RouteMatcher("/my-collection/artwork/:artworkSlug", "MyCollectionArtwork"),

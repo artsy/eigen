@@ -5,7 +5,7 @@ import { MenuItem } from "lib/Components/MenuItem"
 import { presentEmailComposer } from "lib/NativeModules/presentEmailComposer"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -19,8 +19,8 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 
 const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
+  const showOrderHistory = useFeatureFlag("AREnableOrderHistoryOption")
   const listRef = useRef<FlatList<any>>(null)
-
   const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
   const shouldDisplayMyCollection = me.labFeatures?.includes("My Collection")
   const shouldDisplayPushNotifications = Platform.OS === "ios"
@@ -50,6 +50,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       <Separator mt={3} mb={2} />
       <SectionHeading title="Account Settings" />
       <MenuItem title="Account" onPress={() => navigate("my-account")} />
+      {!!showOrderHistory && <MenuItem title="Order History" onPress={() => navigate("/orders")} />}
       <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
       {!!shouldDisplayPushNotifications && (
         <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />
