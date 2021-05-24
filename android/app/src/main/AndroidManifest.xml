@@ -26,43 +26,67 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
             android:launchMode="singleTask"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize">
-            <!-- Handle Deep Links -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name="com.zoontek.rnbootsplash.RNBootSplashActivity"
             android:theme="@style/BootTheme"
             android:launchMode="singleTask">
             <intent-filter>
-              <action android:name="android.intent.action.MAIN" />
-              <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-             <intent-filter android:autoVerify="true">
+              <!-- Handle Deep Links -->
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="https" />
-                <data android:host="staging.artsy.net" />
-                <data android:host="www.artsy.net" />
-                <data android:host="artsy.net" />
-                 <data android:pathPrefix="/artwork" />
-                <data android:pathPrefix="/artworks" />
+                <data android:scheme="https" android:host="www.artsy.net" />
+                <data android:pathPrefix="/about" />
+                <data android:pathPrefix="/artist-series" />
                 <data android:pathPrefix="/artist" />
                 <data android:pathPrefix="/artists" />
+                <data android:pathPrefix="/artwork-classifications" />
+                <data android:pathPrefix="/artwork" />
+                <data android:pathPrefix="/artworks" />
+                <data android:pathPrefix="/auction-faq" />
+                <data android:pathPrefix="/auction-registration" />
                 <data android:pathPrefix="/auction" />
                 <data android:pathPrefix="/auctions" />
-                <data android:pathPrefix="/gallery" />
-                <data android:pathPrefix="/galleries" />
+                <data android:pathPrefix="/buy-now-feature-faq" />
+                <data android:pathPrefix="/buyer-guarantee" />
+                <data android:pathPrefix="/collection" />
+                <data android:pathPrefix="/collections" />
+                <data android:pathPrefix="/conditions-of-sale" />
+                <data android:pathPrefix="/consign/" />
+                <data android:pathPrefix="/conversation" />
                 <data android:pathPrefix="/fair" />
                 <data android:pathPrefix="/fairs" />
+                <data android:pathPrefix="/favorites" />
+                <data android:pathPrefix="/feature" />
+                <data android:pathPrefix="/galleries" />
+                <data android:pathPrefix="/gallery" />
+                <data android:pathPrefix="/gene" />
+                <data android:pathPrefix="/identity-verification-faq" />
+                <data android:pathPrefix="/inbox" />
+                <data android:pathPrefix="/inquiry" />
+                <data android:pathPrefix="/make-offer" />
+                <data android:pathPrefix="/my-account" />
+                <data android:pathPrefix="/my-profile" />
+                <data android:pathPrefix="/orders" />
+                <data android:pathPrefix="/orders" />
+                <data android:pathPrefix="/privacy-request" />
+                <data android:pathPrefix="/privacy" />
+                <data android:pathPrefix="/sales" />
+                <data android:pathPrefix="/search" />
+                <data android:pathPrefix="/show" />
+                <data android:pathPrefix="/terms" />
+                <data android:pathPrefix="/user/conversations" />
+                <data android:pathPrefix="/viewing-room" />
+                <data android:pathPrefix="/viewing-rooms" />
+                <data android:pathPrefix="/works-for-you" />
             </intent-filter>
         </activity>
 
