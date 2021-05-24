@@ -98,6 +98,12 @@ jest.mock("rn-fetch-blob", () => ({
   },
 }))
 
+jest.mock("danger", () => ({
+  danger: {},
+  markdown: (message: string) => message,
+  warn: jest.fn(),
+}))
+
 jest.mock("@react-native-cookies/cookies", () => ({ clearAll: jest.fn() }))
 
 beforeEach(() => {

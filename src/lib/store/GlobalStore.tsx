@@ -163,7 +163,10 @@ export function getCurrentEmissionState() {
     return state?.native.sessionState ?? LegacyNativeModules.ARNotificationsManager.nativeState
   }
 
-  const userAgent = `${getUserAgentSync()} Artsy-Mobile/${version} Eigen/${getBuildNumber()}/${version}`
+  // `getUserAgentSync` breaks the Chrome Debugger, so we use a string instead.
+  const userAgent = `${
+    __DEV__ ? "Artsy-Mobile android" : getUserAgentSync()
+  } Artsy-Mobile/${version} Eigen/${getBuildNumber()}/${version}`
 
   const androidData: GlobalStoreModel["native"]["sessionState"] = {
     authenticationToken: state?.auth.userAccessToken!,

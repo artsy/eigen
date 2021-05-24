@@ -102,6 +102,10 @@ You can find documentation about how to do QA on the new shiny feature [here](ht
 
 There is also the general QA page [here](https://www.notion.so/artsy/QA-decba0c3a57a4508b726f3a8624ceca3).
 
+## Removing a Feature Flag
+
+Once a feature flag is no longer needed, it can be removed from the `features.ts` file. If that feature has no `echoFlagKey`, then removing it from `features.ts` and all the uses of the flag is all you need to do. If it **does** have an `echoFlagKey`, then a small PR on [echo](https://github.com/artsy/echo) is needed after your PR on eigen is done. You can find an [example here](https://github.com/artsy/echo/pull/86). This is needed so we can remove that flag from echo as well, after giving it a few months buffer, for all users to get the new version of the app with the flag removed.
+
 ## Still Need Help?
 
 Ask for help in the #practice-mobile slack channel, we will be happy to assist!
