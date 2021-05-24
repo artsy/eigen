@@ -169,7 +169,6 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
           paddingTop: useScreenDimensions().safeAreaInsets.top,
           justifyContent: "flex-start",
         }}
-        showsVerticalScrollIndicator={false}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="always"
       >

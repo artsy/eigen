@@ -6,12 +6,13 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Registration_sale = {
     readonly slug: string;
-    readonly end_at: string | null;
-    readonly is_preview: boolean | null;
-    readonly live_start_at: string | null;
+    readonly endAt: string | null;
+    readonly isPreview: boolean | null;
+    readonly liveStartAt: string | null;
     readonly name: string | null;
-    readonly start_at: string | null;
+    readonly startAt: string | null;
     readonly requireIdentityVerification: boolean | null;
+    readonly timeZone: string | null;
     readonly " $refType": "Registration_sale";
 };
 export type Registration_sale$data = Registration_sale;
@@ -36,21 +37,21 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
-      "alias": "end_at",
+      "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "endAt",
       "storageKey": null
     },
     {
-      "alias": "is_preview",
+      "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "isPreview",
       "storageKey": null
     },
     {
-      "alias": "live_start_at",
+      "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "liveStartAt",
@@ -64,7 +65,7 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
-      "alias": "start_at",
+      "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "startAt",
@@ -76,10 +77,17 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "name": "requireIdentityVerification",
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "timeZone",
+      "storageKey": null
     }
   ],
   "type": "Sale",
   "abstractKey": null
 };
-(node as any).hash = '87d8938cb35a159630b79a4a96417b16';
+(node as any).hash = '20de34834fc33fa39e91d0e3ec8be30d';
 export default node;

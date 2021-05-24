@@ -160,3 +160,13 @@ Once a new react-native-screens version is released (anything above 3.2.0), we c
 We had issues on the android app where whenever we navigate from a screen to an other screen by dispatching a native event action, the default orientation gets overwritten. This fix makes sure that we are maintaining the default orientation.
 
 react-native-screens already created a fix for this that can be found here and should be released in the next build. See https://github.com/software-mansion/react-native-screens/issues/836
+
+# android Input placeholder measuring hack
+
+#### When can we remove this:
+Once https://github.com/facebook/react-native/pull/29664 is merged or https://github.com/facebook/react-native/issues/29663 solved.
+
+#### Explanation/Context:
+As you can see in the PR and issue, android doesn't use ellipsis on the placeholder of a TextInput. That makes for a funky cut-off.
+
+We added a workaround on Input, to accept an array of placeholders, from longest to shortest, so that android can measure which one fits in the TextInput as placeholder, and it uses that. When android can handle a long placeholder and use ellipsis or if we don't use long placeholders anymore, this can go.
