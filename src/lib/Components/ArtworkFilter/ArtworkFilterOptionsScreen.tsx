@@ -7,6 +7,7 @@ import {
 import { selectedOption } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { TouchableRow } from "lib/Components/TouchableRow"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
@@ -21,6 +22,7 @@ import { ArtworkFilterNavigationStack } from "./ArtworkFilter"
 export type FilterScreen =
   | "additionalGeneIDs"
   | "artistIDs"
+  | "artistNationalities"
   | "artistsIFollow"
   | "attributionClass"
   | "categories"
@@ -28,9 +30,10 @@ export type FilterScreen =
   | "colors"
   | "dimensionRange"
   | "estimateRange"
-  | "partnerIDs"
   | "majorPeriods"
+  | "materialsTerms"
   | "medium"
+  | "partnerIDs"
   | "priceRange"
   | "sizes"
   | "sort"
@@ -77,6 +80,9 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const concreteAggregations = aggregationsState ?? []
 
   const isClearAllButtonEnabled = appliedFiltersState.length > 0 || selectedFiltersState.length > 0
+
+  // TODO: Remove when nationality filter is released
+  const shouldExcludeArtistNationalitiesFilter = !useFeatureFlag("ARUseImprovedArtworkFilters")
 
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
     concreteAggregations.map((aggregation) => {
@@ -159,6 +165,11 @@ export const ArtworkFilterOptionsScreen: React.FC<
         data={sortedFilterOptions}
         style={{ flexGrow: 1 }}
         renderItem={({ item }) => {
+          // TODO: Remove when nationality filter is released
+          if (shouldExcludeArtistNationalitiesFilter && item.displayText === FilterDisplayName.artistNationalities) {
+            return null
+          }
+
           const selectedCurrentOption = selectedOption({
             selectedOptions,
             filterScreen: item.filterType,
@@ -255,6 +266,7 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
       sortOrder = [
         "sort",
         "medium",
+        "materialsTerms",
         "attributionClass",
         "priceRange",
         "waysToBuy",
@@ -378,6 +390,11 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "artistIDs",
     ScreenComponent: "ArtistIDsOptionsScreen",
   },
+  artistNationalities: {
+    displayText: FilterDisplayName.artistNationalities,
+    filterType: "artistNationalities",
+    ScreenComponent: "ArtistNationalitiesOptionsScreen",
+  },
   attributionClass: {
     displayText: FilterDisplayName.attributionClass,
     filterType: "attributionClass",
@@ -448,12 +465,18 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "waysToBuy",
     ScreenComponent: "WaysToBuyOptionsScreen",
   },
+  materialsTerms: {
+    displayText: FilterDisplayName.materialsTerms,
+    filterType: "materialsTerms",
+    ScreenComponent: "MaterialsTermsOptionsScreen",
+  },
 }
 
 const CollectionFiltersSorted: FilterScreen[] = [
   "sort",
   "medium",
   "additionalGeneIDs",
+  "materialsTerms",
   "attributionClass",
   "priceRange",
   "waysToBuy",
@@ -466,6 +489,7 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "sort",
   "medium",
   "additionalGeneIDs",
+  "materialsTerms",
   "attributionClass",
   "priceRange",
   "waysToBuy",
@@ -478,6 +502,7 @@ const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "sort",
   "medium",
   "additionalGeneIDs",
+  "materialsTerms",
   "attributionClass",
   "priceRange",
   "waysToBuy",
@@ -492,6 +517,7 @@ const FairFiltersSorted: FilterScreen[] = [
   "artistsIFollow",
   "medium",
   "additionalGeneIDs",
+  "materialsTerms",
   "attributionClass",
   "priceRange",
   "waysToBuy",
@@ -507,6 +533,7 @@ const SaleArtworksFiltersSorted: FilterScreen[] = [
   "artistIDs",
   "medium",
   "additionalGeneIDs",
+  "materialsTerms",
 ]
 
 const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories", "sizes", "year"]

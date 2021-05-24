@@ -106,7 +106,9 @@ return {
             "PARTNER",
             "MAJOR_PERIOD",
             "MEDIUM",
-            "PRICE_RANGE"
+            "PRICE_RANGE",
+            "MATERIALS_TERMS",
+            "ARTIST_NATIONALITY"
           ]
         },
         {
@@ -263,5 +265,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'ff711457103eb03e87e46bd7c9d451c8';
+(node as any).hash = '0f05e5423727808d7ea2fec4e6852f78';
 export default node;

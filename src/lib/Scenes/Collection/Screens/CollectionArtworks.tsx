@@ -1,6 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
 import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_collection.graphql"
-import { filterArtworksParams, prepareFilterArtworksParamsForInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  filterArtworksParams,
+  prepareFilterArtworksParamsForInput,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -110,7 +113,16 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         collectionArtworks: artworksConnection(
           first: $count
           after: $cursor
-          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
+          aggregations: [
+            COLOR
+            DIMENSION_RANGE
+            PARTNER
+            MAJOR_PERIOD
+            MEDIUM
+            PRICE_RANGE
+            MATERIALS_TERMS
+            ARTIST_NATIONALITY
+          ]
           input: $input
         ) @connection(key: "Collection_collectionArtworks") {
           aggregations {
@@ -154,12 +166,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         $input: FilterArtworksInput
       ) {
         marketingCollection(slug: $id) {
-          ...CollectionArtworks_collection
-            @arguments(
-              count: $count
-              cursor: $cursor
-              input: $input
-            )
+          ...CollectionArtworks_collection @arguments(count: $count, cursor: $cursor, input: $input)
         }
       }
     `,

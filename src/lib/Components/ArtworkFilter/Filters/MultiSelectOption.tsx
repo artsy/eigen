@@ -18,6 +18,7 @@ interface MultiSelectOptionScreenProps extends FancyModalHeaderProps {
   isDisabled?: (item: FilterData) => boolean
   /** Utilize a search input to further filter results */
   searchable?: boolean
+  noResultsLabel?: string
 }
 
 export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = ({
@@ -29,6 +30,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   isDisabled,
   children,
   searchable,
+  noResultsLabel = "No results",
   ...rest
 }) => {
   const handleBackNavigation = () => {
@@ -71,7 +73,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
 
           {filteredOptions.length === 0 && (
             <Flex my={1.5} mx={2} alignItems="center">
-              <Text variant="caption">No results</Text>
+              <Text variant="caption">{noResultsLabel}</Text>
             </Flex>
           )}
         </>
