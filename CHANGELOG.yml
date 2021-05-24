@@ -16,6 +16,12 @@ upcoming:
     - Prevent android dark mode forced on users - kizito
     - Fix unusable slider on android - dzmitry
     - Fix vanishing artist series - mounir
+    - Add search UI for material filter - dzmitry tratsiak
+    - Implements custom size filter with localization (behind feature flag) - damon
+    - Adds artist nationality & ethnicity filter (behind feature flag) - damon
+    - Add order history to user profile (behind feature flag) - alexj105
+    - Enable lotsByFollowedArtists - ole
+    - Add ability to unselected "ways to buy" filter - dzmitry tratsiak
 
 releases:
   - version: 6.9.1
