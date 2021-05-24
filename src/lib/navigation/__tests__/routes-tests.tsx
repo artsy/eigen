@@ -79,6 +79,15 @@ describe("artsy.net routes", () => {
       Object {
         "module": "Artist",
         "params": Object {
+          "artistID": "more%26more",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("https://artsy.net/artist/more%26more")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artist",
+        "params": Object {
           "artistID": "more&more",
         },
         "type": "match",
@@ -97,8 +106,11 @@ describe("artsy.net routes", () => {
         "type": "match",
       }
     `)
-    expect(matchRoute("/artist/josef-albers%3Futm_medium%3Dsocial%26utm_source%3Dinstagram-story%26utm_campaign%3Ddp."))
-      .toMatchInlineSnapshot(`
+    expect(
+      matchRoute(
+        "https://artsy.net/artist/josef-albers%3Futm_medium%3Dsocial%26utm_source%3Dinstagram-story%26utm_campaign%3Ddp."
+      )
+    ).toMatchInlineSnapshot(`
       Object {
         "module": "Artist",
         "params": Object {
@@ -135,6 +147,25 @@ describe("artsy.net routes", () => {
       Object {
         "module": "Artwork",
         "params": Object {
+          "artworkID": "more%26more",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("https://artsy.net/artwork/more%26more")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artwork",
+        "params": Object {
+          "artworkID": "more&more",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute(encodeURIComponent(encodeURIComponent("https://artsy.net/artwork/more%26more"))))
+      .toMatchInlineSnapshot(`
+      Object {
+        "module": "Artwork",
+        "params": Object {
           "artworkID": "more&more",
         },
         "type": "match",
@@ -156,7 +187,7 @@ describe("artsy.net routes", () => {
     `)
     expect(
       matchRoute(
-        "/artwork/yayoi-kusama-red-pumpkin%3Futm_medium%3Dsocial%26utm_source%3Dinstagram-story%26utm_campaign%3Ddp."
+        "https://artsy.net/artwork/yayoi-kusama-red-pumpkin%3Futm_medium%3Dsocial%26utm_source%3Dinstagram-story%26utm_campaign%3Ddp."
       )
     ).toMatchInlineSnapshot(`
       Object {

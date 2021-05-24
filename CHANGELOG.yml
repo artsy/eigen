@@ -3,9 +3,8 @@ upcoming:
   date: TBD
   dev:
     - Convert filter queries to use a single structured input for filterArtworksConnection requests - dzmitry tratsiak
-    - lock screen orientation to portrait on android phones - mounir
-    - Fix artist follow is incorrectly firing action_name - dzmitry
     - Allow sticky tabs to add additional sticky content - mdole
+    - Fix url decoding in navigation infra code - kizito
     - Update android play store metadata - brian
     - Use string for user agent when debugging on Android - ole
     - fix fastlane issue - brian
