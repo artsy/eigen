@@ -6,6 +6,7 @@ upcoming:
     - Allow sticky tabs to add additional sticky content - mdole
     - Fix url decoding in navigation infra code - kizito
     - Update android play store metadata - brian
+    - Fix sign up validation - dzmitry
     - Use string for user agent when debugging on Android - ole
     - fix fastlane issue - brian
     - Add admin menu item to clear relay cache - brian
@@ -21,7 +22,6 @@ upcoming:
     - Add order history to user profile (behind feature flag) - alexj105
     - Enable lotsByFollowedArtists - ole
     - Add ability to unselected "ways to buy" filter - dzmitry tratsiak
-
 releases:
   - version: 6.9.1
     date: May 18, 2021
