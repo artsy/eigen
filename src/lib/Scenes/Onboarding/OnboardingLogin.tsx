@@ -146,7 +146,7 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
           </Text>
         </Touchable>
       </ScrollView>
-      <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5}>
+      <Flex px={1.5} paddingBottom={1.5}>
         <Button
           onPress={handleSubmit}
           block
