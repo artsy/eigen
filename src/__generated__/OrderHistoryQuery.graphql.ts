@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 05517b747862e3f29ddafe9e144f6dc6 */
+/* @relayHash 24fdf873bc23412e027a76d82eeaa757 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,12 +30,43 @@ query OrderHistoryQuery(
   }
 }
 
+fragment OrderHistoryRow_order on CommerceOrder {
+  __isCommerceOrder: __typename
+  internalID
+  state
+  buyerTotal
+  createdAt
+  itemsTotal
+  lineItems {
+    edges {
+      node {
+        artwork {
+          image {
+            resized(width: 55) {
+              url
+            }
+          }
+          partner {
+            name
+            id
+          }
+          title
+          artist_names: artistNames
+          id
+        }
+        id
+      }
+    }
+  }
+}
+
 fragment OrderHistory_me_yu5n1 on Me {
   orders(first: $count) {
     edges {
       node {
         __typename
-        internalID
+        code
+        ...OrderHistoryRow_order
         id
       }
       cursor
@@ -152,7 +183,160 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "code",
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "TypeDiscriminator",
+                        "abstractKey": "__isCommerceOrder"
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "internalID",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "state",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "buyerTotal",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "createdAt",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "itemsTotal",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "CommerceLineItemConnection",
+                        "kind": "LinkedField",
+                        "name": "lineItems",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "CommerceLineItemEdge",
+                            "kind": "LinkedField",
+                            "name": "edges",
+                            "plural": true,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "CommerceLineItem",
+                                "kind": "LinkedField",
+                                "name": "node",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Artwork",
+                                    "kind": "LinkedField",
+                                    "name": "artwork",
+                                    "plural": false,
+                                    "selections": [
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "Image",
+                                        "kind": "LinkedField",
+                                        "name": "image",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "alias": null,
+                                            "args": [
+                                              {
+                                                "kind": "Literal",
+                                                "name": "width",
+                                                "value": 55
+                                              }
+                                            ],
+                                            "concreteType": "ResizedImageUrl",
+                                            "kind": "LinkedField",
+                                            "name": "resized",
+                                            "plural": false,
+                                            "selections": [
+                                              {
+                                                "alias": null,
+                                                "args": null,
+                                                "kind": "ScalarField",
+                                                "name": "url",
+                                                "storageKey": null
+                                              }
+                                            ],
+                                            "storageKey": "resized(width:55)"
+                                          }
+                                        ],
+                                        "storageKey": null
+                                      },
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "Partner",
+                                        "kind": "LinkedField",
+                                        "name": "partner",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "kind": "ScalarField",
+                                            "name": "name",
+                                            "storageKey": null
+                                          },
+                                          (v2/*: any*/)
+                                        ],
+                                        "storageKey": null
+                                      },
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "kind": "ScalarField",
+                                        "name": "title",
+                                        "storageKey": null
+                                      },
+                                      {
+                                        "alias": "artist_names",
+                                        "args": null,
+                                        "kind": "ScalarField",
+                                        "name": "artistNames",
+                                        "storageKey": null
+                                      },
+                                      (v2/*: any*/)
+                                    ],
+                                    "storageKey": null
+                                  },
+                                  (v2/*: any*/)
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
+                        ],
                         "storageKey": null
                       },
                       (v2/*: any*/)
@@ -213,7 +397,7 @@ return {
     ]
   },
   "params": {
-    "id": "05517b747862e3f29ddafe9e144f6dc6",
+    "id": "24fdf873bc23412e027a76d82eeaa757",
     "metadata": {},
     "name": "OrderHistoryQuery",
     "operationKind": "query",

@@ -11,6 +11,7 @@ import { Flex, Sans, Spacer } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { OrderHistoryRowContainer } from "./OrderHistoryRow"
 
 const NUM_ORDERS_TO_FETCH = 10
 
@@ -42,13 +43,11 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginatio
         style={{ flex: 1 }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
         data={orders}
-        keyExtractor={(item) => item.internalID}
+        keyExtractor={(order) => order.code}
         contentContainerStyle={{ flexGrow: 1, paddingTop: orders.length === 0 ? 10 : 20 }}
         renderItem={({ item }) => (
           <Flex flexDirection="row" justifyContent="space-between" px={2}>
-            <Sans size="4t" color="red100">
-              {item.internalID}
-            </Sans>
+            <OrderHistoryRowContainer order={item} key={item.code} />
           </Flex>
         )}
         ListEmptyComponent={
@@ -87,7 +86,8 @@ export const OrderHistoryContainer = createPaginationContainer(
         orders(first: $count, after: $cursor) @connection(key: "OrderHistory_orders") {
           edges {
             node {
-              internalID
+              code
+              ...OrderHistoryRow_order
             }
           }
         }
