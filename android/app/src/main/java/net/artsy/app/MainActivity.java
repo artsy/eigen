@@ -45,7 +45,7 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+    super.onCreate(null);
     if (!isTablet()) {
       // prevent screen rotation on phones
       setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

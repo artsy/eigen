@@ -117,3 +117,10 @@
   - this also required a patch to fix types
   - See issues here: https://github.com/CocoaPods/CocoaPods/issues/10385, https://github.com/react-native-mapbox-gl/maps/issues/1097
   - we should update to a non-beta version ASAP
+
+- react-native-screens - 3.2.0 postinstall script
+
+  We had issues on the android app where whenever we navigate from a screen to an other screen by dispatching a native event action, the default orientation gets overwritten. This fix makes sure that we are maintaining the default orientation.
+
+  - react-native-screens already created a fix for this that can be found here and should be released in the next build. See https://github.com/software-mansion/react-native-screens/issues/836
+  - Once a new react-native-screens version is released, we can remove our patch and use it instead.
