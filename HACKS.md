@@ -123,4 +123,4 @@
   We had issues on the android app where whenever we navigate from a screen to an other screen by dispatching a native event action, the default orientation gets overwritten. This fix makes sure that we are maintaining the default orientation.
 
   - react-native-screens already created a fix for this that can be found here and should be released in the next build. See https://github.com/software-mansion/react-native-screens/issues/836
-  - Once a new react-native-screens version is released, we can remove our patch and use it instead.
+  - Once a new react-native-screens version is released (after 3.2.0), we can remove our patch and use it instead.
