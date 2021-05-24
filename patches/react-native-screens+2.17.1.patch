@@ -1,8 +1,8 @@
 diff --git a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfig.java b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfig.java
-index 941c2c6..9b821fb 100644
+index b05fce8..b94d30c 100644
 --- a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfig.java
 +++ b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfig.java
-@@ -46,7 +46,10 @@ public class ScreenStackHeaderConfig extends ViewGroup {
+@@ -44,7 +44,10 @@ public class ScreenStackHeaderConfig extends ViewGroup {
    private boolean mIsTranslucent;
    private int mTintColor;
    private final Toolbar mToolbar;
