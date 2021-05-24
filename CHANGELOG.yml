@@ -9,6 +9,7 @@ upcoming:
     - Use string for user agent when debugging on Android - ole
     - fix fastlane issue - brian
     - Add admin menu item to clear relay cache - brian
+    - Improve admin menu - dzmitry
   user_facing:
     - Fix wrong input font on android - dzmitry
     - Fix home screen load failure on logout - brian
