@@ -13,6 +13,8 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
 import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
+import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import { ActionNames, ActionTypes } from "lib/utils/track/schema"
 import { color, Flex, Sans, Separator } from "palette"
 import { useTracking } from "react-tracking"
@@ -94,7 +96,7 @@ export const Conversations: React.FC<Props> = (props) => {
   const shouldDisplayMyBids = unsafe_getFeatureFlag("AROptionsBidManagement")
 
   return (
-    <>
+    <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.inboxInquiries })}>
       {!shouldDisplayMyBids && (
         <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
           <Sans mx={2} mt={1} size="8" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
@@ -127,7 +129,7 @@ export const Conversations: React.FC<Props> = (props) => {
           <ActivityIndicator />
         </Flex>
       )}
-    </>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 

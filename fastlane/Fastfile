@@ -62,8 +62,6 @@ lane :ship_beta_ios do
     profile_name: 'match AppStore net.artsy.artsy.Artsy-Stickers'
   )
 
-  build_ios_app(configuration: 'Store', silent: true)
-
   root = File.expand_path('..', __dir__)
   bundle_version = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'Artsy/App_Resources/Artsy-Info.plist')}`.strip
   tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
@@ -71,6 +69,9 @@ lane :ship_beta_ios do
   # important! this much match the release version specified
   # in Eigen in order for sourcemaps to work correctly
   sentry_release_name = "ios-#{latest_version}+#{bundle_version}"
+  update_sentry_release_name(sentry_release_name: sentry_release_name)
+
+  build_ios_app(configuration: 'Store', silent: true)
 
   upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: bundle_version, platform: "ios")
 
@@ -159,13 +160,16 @@ lane :ship_beta_android do
   vname, vcode = set_build_version_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
+
+  sentry_release_name = "android-#{vname}-#{vcode}"
+  update_sentry_release_name(sentry_release_name: sentry_release_name)
+
   gradle(
     task: "bundle",
     build_type: "Release",
     project_dir: "android/",
   )
 
-  sentry_release_name = "android-#{vname}-#{vcode}"
   upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
 
   upload_to_play_store(
@@ -247,6 +251,15 @@ lane :promote_beta_ios do
   puts 'All done.'
 end
 
+# update releaseName in app.json to tag errors in sentry correctly
+lane :update_sentry_release_name do |options|
+  sentry_release_name = options[:sentry_release_name]
+  app_json['sentryReleaseName'] = sentry_release_name
+  File.open(app_json_path, 'w') do |file|
+    file.puts JSON.pretty_generate(app_json)
+  end
+end
+
 lane :upload_sentry_artifacts do |options|
   sentry_release_name = options[:sentry_release_name]
   platform = options[:platform]
@@ -274,12 +287,6 @@ lane :upload_sentry_artifacts do |options|
     source_map_path = 'android/app/build/generated/sourcemaps/react/release/index.android.bundle.map'
     bundle_path = 'android/app/build/generated/assets/react/release/index.android.bundle'
     outfile = '~/index.android.bundle'
-  end
-
-  # update releaseName in app.json to tag errors in sentry correctly
-  app_json['sentryReleaseName'] = sentry_release_name
-  File.open(app_json_path, 'w') do |file|
-    file.puts JSON.pretty_generate(app_json)
   end
 
   sentry_create_release(auth_token: ENV['SentryUploadAuthKey'],

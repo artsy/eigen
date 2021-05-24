@@ -622,6 +622,43 @@ describe("selectedOption", () => {
       })
     })
   })
+
+  describe("materialsTerms", () => {
+    it("returns the correct result when nothing is selected", () => {
+      const selectedOptions = [
+        { paramName: FilterParamName.materialsTerms, paramValue: [], displayText: "All" },
+      ]
+
+      expect(selectedOption({ selectedOptions, filterScreen: "materialsTerms", aggregations: [] })).toEqual("All")
+    })
+
+    it("returns the correct result when one item is selected", () => {
+      const selectedOptions = [
+        { paramName: FilterParamName.timePeriod, paramValue: "*-*", displayText: "All" },
+        {
+          paramName: FilterParamName.materialsTerms,
+          paramValue: ["screen print"],
+          displayText: "Screen print",
+        },
+      ]
+
+      expect(selectedOption({ selectedOptions, filterScreen: "materialsTerms", aggregations: [] })).toEqual("Screen print")
+    })
+    it("returns the correct result when multiple items is selected", () => {
+      const selectedOptions = [
+        { paramName: FilterParamName.timePeriod, paramValue: "*-*", displayText: "All" },
+        {
+          paramName: FilterParamName.materialsTerms,
+          paramValue: ["screen print", "paper"],
+          displayText: "Screen print, Paper",
+        },
+      ]
+
+      expect(selectedOption({ selectedOptions, filterScreen: "materialsTerms", aggregations: [] })).toEqual(
+        "Screen print, Paper"
+      )
+    })
+  })
 })
 
 describe("aggregationsWithFollowedArtists", () => {

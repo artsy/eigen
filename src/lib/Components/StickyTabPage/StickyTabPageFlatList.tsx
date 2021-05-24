@@ -45,10 +45,7 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
   }
   const { tabIsActive, tabSpecificContentHeight } = useContext(StickyTabPageFlatListContext)
 
-  const totalStickyHeaderHeight = Animated.add(
-    stickyHeaderHeight,
-    Animated.cond(Animated.defined(tabSpecificContentHeight), tabSpecificContentHeight!, 0)
-  )
+  const totalStickyHeaderHeight = Animated.add(stickyHeaderHeight, tabSpecificContentHeight ?? 0)
 
   const contentHeight = useAnimatedValue(0)
   const layoutHeight = useAnimatedValue(0)
