@@ -42,7 +42,6 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
     <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>
       <ScrollView
         contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top }}
-        showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
       >
         <BackButton onPress={() => navigation.goBack()} />
