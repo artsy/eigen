@@ -79,7 +79,7 @@
 	<string>2021-01-21T15:08:22+04:00</string>
 	<key>GITCommitRev</key>
 	<string>c77772ee1</string>
-	<key>GITCommitSha</key>
+	<key>GITCommitHash</key>
 	<string>c77772ee1f32093109049504f7865f9737ad8474</string>
 	<key>GITRemoteOriginURL</key>
 	<string>https://github.com/artsy/eigen.git</string>
