@@ -3,6 +3,7 @@ import { useFormikContext } from "formik"
 import { Input } from "lib/Components/Input/Input"
 import { color } from "palette"
 import React from "react"
+import { Platform } from "react-native"
 import {
   OnboardingCreateAccountNavigationStack,
   OnboardingCreateAccountScreenWrapper,
@@ -47,7 +48,7 @@ export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmail
         returnKeyType="next"
         spellCheck={false}
         autoCorrect={false}
-        textContentType="username"
+        textContentType={Platform.OS === "ios" ? "username" : "emailAddress"}
         error={errors.email}
         testID="emailInput"
       />

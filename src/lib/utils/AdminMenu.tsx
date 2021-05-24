@@ -2,22 +2,23 @@ import AsyncStorage from "@react-native-community/async-storage"
 import * as Sentry from "@sentry/react-native"
 import { MenuItem } from "lib/Components/MenuItem"
 import { useToast } from "lib/Components/Toast/toastHook"
+import { clearAll } from "lib/NativeModules/GraphQLQueryCache"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import { environment, EnvironmentKey } from "lib/store/config/EnvironmentModel"
 import { DevToggleName, devToggles, FeatureName, features } from "lib/store/config/features"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { capitalize, compact, sortBy } from "lodash"
 import { ChevronIcon, CloseIcon, color, Flex, ReloadIcon, Separator, Spacer, Text } from "palette"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Alert,
   AlertButton,
+  BackHandler,
   DevSettings,
   Platform,
   ScrollView,
   TouchableHighlight,
   TouchableOpacity,
-  View,
 } from "react-native"
 import Config from "react-native-config"
 import { useScreenDimensions } from "./useScreenDimensions"
@@ -32,6 +33,18 @@ const configurableDevToggleKeys = sortBy(Object.entries(devToggles), ([k, { desc
 )
 
 export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModal }) => {
+  useEffect(
+    React.useCallback(() => {
+      BackHandler.addEventListener("hardwareBackPress", handleBackButton)
+
+      return () => BackHandler.removeEventListener("hardwareBackPress", handleBackButton)
+    }, [])
+  )
+  const handleBackButton = () => {
+    onClose()
+    return true
+  }
+
   return (
     <Flex
       style={{
@@ -45,9 +58,13 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
       pb="2"
       pt={useScreenDimensions().safeAreaInsets.top + 20}
     >
-      <Text variant="largeTitle" pb="2" px="2">
-        Admin Settings
-      </Text>
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Text variant="largeTitle" pb="2" px="2">
+          Admin Settings
+        </Text>
+        <Buttons onClose={onClose} />
+      </Flex>
+
       <ScrollView
         style={{ flex: 1, backgroundColor: "white", borderRadius: 4, overflow: "hidden" }}
         contentContainerStyle={{ paddingVertical: 10 }}
@@ -94,6 +111,13 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           }}
         />
         <MenuItem
+          title="Clear Relay Cache"
+          chevron={null}
+          onPress={() => {
+            clearAll()
+          }}
+        />
+        <MenuItem
           title="Throw Sentry Error"
           onPress={() => {
             if (!Config.SENTRY_DSN) {
@@ -122,14 +146,13 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           chevron={null}
         />
       </ScrollView>
-      <Buttons onClose={onClose} />
     </Flex>
   )
 }
 
 const Buttons: React.FC<{ onClose(): void }> = ({ onClose }) => {
   return (
-    <View style={{ position: "absolute", top: 29, right: 20, flexDirection: "row", alignItems: "center" }}>
+    <Flex style={{ flexDirection: "row", alignItems: "center" }} pb="2" px="2">
       {!!__DEV__ && (
         <>
           <TouchableOpacity
@@ -148,7 +171,7 @@ const Buttons: React.FC<{ onClose(): void }> = ({ onClose }) => {
       <TouchableOpacity onPress={onClose} hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}>
         <CloseIcon />
       </TouchableOpacity>
-    </View>
+    </Flex>
   )
 }
 

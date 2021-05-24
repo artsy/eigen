@@ -2,7 +2,7 @@ import { FormikProvider, useFormik } from "formik"
 import { BackButton } from "lib/navigation/BackButton"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { UserSchema, userSchema } from "../OnboardingCreateAccount"
+import { nameSchema, UserSchema } from "../OnboardingCreateAccount"
 import { OnboardingCreateAccountName } from "../OnboardingCreateAccountName"
 
 const goBackMock = jest.fn()
@@ -21,7 +21,7 @@ describe("OnboardingCreateAccountName", () => {
       initialValues: { email: "", password: "", name },
       initialErrors: {},
       onSubmit: onSubmitMock,
-      validationSchema: userSchema,
+      validationSchema: nameSchema,
     })
 
     return (
