@@ -253,6 +253,7 @@ end
 
 # update releaseName in app.json to tag errors in sentry correctly
 lane :update_sentry_release_name do |options|
+  sentry_release_name = options[:sentry_release_name]
   app_json['sentryReleaseName'] = sentry_release_name
   File.open(app_json_path, 'w') do |file|
     file.puts JSON.pretty_generate(app_json)
