@@ -17,6 +17,7 @@ upcoming:
     - Fix unusable slider on android - dzmitry
     - Update auction registration flow UI - ole
     - Add search UI for material filter - dzmitry tratsiak
+    - Implements custom size filter with localization (behind feature flag) - damon
     - Adds artist nationality & ethnicity filter (behind feature flag) - damon
     - Add order history to user profile (behind feature flag) - alexj105
     - Enable lotsByFollowedArtists - ole
