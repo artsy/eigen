@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-community/async-storage"
 import * as Sentry from "@sentry/react-native"
 import { MenuItem } from "lib/Components/MenuItem"
 import { useToast } from "lib/Components/Toast/toastHook"
+import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { clearAll } from "lib/NativeModules/GraphQLQueryCache"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import { environment, EnvironmentKey } from "lib/store/config/EnvironmentModel"
@@ -21,6 +22,7 @@ import {
   TouchableOpacity,
 } from "react-native"
 import Config from "react-native-config"
+import { getBuildNumber, getVersion } from "react-native-device-info"
 import { useScreenDimensions } from "./useScreenDimensions"
 
 const configurableFeatureFlagKeys = sortBy(
@@ -69,6 +71,9 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         style={{ flex: 1, backgroundColor: "white", borderRadius: 4, overflow: "hidden" }}
         contentContainerStyle={{ paddingVertical: 10 }}
       >
+        <Text variant="small" color="grey" mx="2">
+          eigen v{getVersion()}, build {getBuildNumber()} ({ArtsyNativeModule.gitCommitShortHash})
+        </Text>
         {Platform.OS === "ios" && (
           <>
             <MenuItem

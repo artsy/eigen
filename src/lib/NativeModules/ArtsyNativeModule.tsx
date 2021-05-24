@@ -41,4 +41,5 @@ export const ArtsyNativeModule = {
           console.error("lockActivityScreenOrientation is unsupported on iOS")
         }
       : NativeModules.ArtsyNativeModule.lockActivityScreenOrientation,
+  gitCommitShortHash: Platform.OS === "ios" ? NativeModules.ArtsyNativeModule.gitCommitShortHash : "aha",
 }
