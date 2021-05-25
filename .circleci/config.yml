@@ -415,6 +415,22 @@ jobs:
           name: Promote if app_store_submission
           command: ./scripts/promote-if-appstore-submission-branch
 
+  promote-beta-to-play-store:
+    environment:
+      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+
+    docker:
+      - image: circleci/android:api-29-node
+
+    steps:
+      - checkout
+      - install-gems
+      - await-previous-builds:
+          branch: play_store_submission
+      - run:
+          name: Promote if play_store_submission
+          command: ./scripts/promote-if-playstore-submission-branch
+
 workflows:
   version: 2
   nightly:
@@ -446,6 +462,11 @@ workflows:
             branches:
               only:
                 - app_store_submission
+      - promote-beta-to-play-store:
+          filters:
+            branches:
+              only:
+                - play_store_submission
 
   test-build-deploy:
     jobs:
@@ -457,11 +478,13 @@ workflows:
                 - beta-ios
                 - beta-android
                 - app_store_submission
+                - play_store_submission
       - build-test-js:
           filters:
             branches:
               ignore:
                 - app_store_submission
+                - play_store_submission
       - horizon/block:
           context: horizon
           project_id: 37
@@ -475,6 +498,7 @@ workflows:
             branches:
               ignore:
                 - app_store_submission
+                - play_store_submission
                 - beta-android
           requires:
             - build-test-js
@@ -484,6 +508,7 @@ workflows:
             branches:
               ignore:
                 - app_store_submission
+                - play_store_submission
                 - beta-ios
           requires:
             - build-test-js
