@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 085f6973791bca3fd3f6b5605671e385 */
+/* @relayHash 3b3d909141225b20187753c10fedc429 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -97,7 +97,7 @@ fragment ShowArtworksEmptyState_show on Show {
 fragment ShowArtworks_show_1lt5O6 on Show {
   slug
   internalID
-  showArtworks: filterArtworksConnection(first: 30, aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY], input: {sort: "partner_show_position", dimensionRange: "*-*"}) {
+  showArtworks: filterArtworksConnection(first: 30, aggregations: [ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PRICE_RANGE], input: {sort: "partner_show_position", dimensionRange: "*-*"}) {
     aggregations {
       slice
       counts {
@@ -376,13 +376,14 @@ v14 = [
     "kind": "Literal",
     "name": "aggregations",
     "value": [
+      "ARTIST_NATIONALITY",
       "COLOR",
       "DIMENSION_RANGE",
+      "LOCATION_CITY",
       "MAJOR_PERIOD",
-      "MEDIUM",
-      "PRICE_RANGE",
       "MATERIALS_TERMS",
-      "ARTIST_NATIONALITY"
+      "MEDIUM",
+      "PRICE_RANGE"
     ]
   },
   {
@@ -1232,7 +1233,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\"],first:30,input:{\"dimensionRange\":\"*-*\",\"sort\":\"partner_show_position\"})"
+            "storageKey": "filterArtworksConnection(aggregations:[\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PRICE_RANGE\"],first:30,input:{\"dimensionRange\":\"*-*\",\"sort\":\"partner_show_position\"})"
           },
           {
             "alias": "showArtworks",
@@ -1279,7 +1280,7 @@ return {
     ]
   },
   "params": {
-    "id": "085f6973791bca3fd3f6b5605671e385",
+    "id": "3b3d909141225b20187753c10fedc429",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {
