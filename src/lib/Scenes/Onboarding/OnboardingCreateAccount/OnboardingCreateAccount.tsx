@@ -172,8 +172,6 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="always"
       >
-        {!!onBackButtonPress && <BackButton onPress={onBackButtonPress} />}
-
         <Spacer mt={60} />
         <Box height={130}>
           <Text variant="largeTitle">{title}</Text>
@@ -189,6 +187,7 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
         <Spacer mt={50} />
         {children}
       </ScrollView>
+      {!!onBackButtonPress && <BackButton onPress={onBackButtonPress} />}
     </Flex>
   )
 }
