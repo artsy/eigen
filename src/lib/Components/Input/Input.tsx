@@ -92,34 +92,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       rest.onClear?.()
     }
 
-    useImperativeHandle(ref, () => ({
-      // ...input.current!, for some reason destructuring is not working 😡
-      blur: input.current!.blur,
-      focus: input.current!.focus,
-      isFocused: input.current!.isFocused,
-      measure: input.current!.measure,
-      measureLayout: input.current!.measureLayout,
-      measureInWindow: input.current!.measureInWindow,
-      setNativeProps: input.current!.setNativeProps,
-      setTimeout: input.current!.setTimeout,
-      clearTimeout: input.current!.clearTimeout,
-      setImmediate: input.current!.setImmediate,
-      clearImmediate: input.current!.clearImmediate,
-      setInterval: input.current!.setInterval,
-      clearInterval: input.current!.clearInterval,
-      refs: input.current!.refs,
-      requestAnimationFrame: input.current!.requestAnimationFrame,
-      cancelAnimationFrame: input.current!.cancelAnimationFrame,
-      context: input.current!.context,
-      props: input.current!.props,
-      state: input.current!.state,
-      setState: input.current!.setState,
-      forceUpdate: input.current!.forceUpdate,
-      render: input.current!.render,
-
-      // our actual changes
-      clear: localClear,
-    }))
+    useImperativeHandle(ref, () => input.current!)
 
     useEffect(() => {
       /* to make the font work for secure text inputs,
@@ -244,7 +217,12 @@ export const Input = React.forwardRef<TextInput, InputProps>(
               {placeholderMeasuringHack}
               <StyledInput
                 onLayout={(event) => {
-                  setInputWidth(event.nativeEvent.layout.width)
+                  const newWidth = event.nativeEvent.layout.width
+                  if (newWidth > inputWidth) {
+                    requestAnimationFrame(() => setInputWidth(newWidth))
+                  } else {
+                    setInputWidth(newWidth)
+                  }
                 }}
                 ref={input}
                 placeholderTextColor={color("black60")}
