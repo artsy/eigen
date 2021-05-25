@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger promotion
-        run: echo we are in ${{branch}} and ${GIT_BRANCH_NAME} or ${{env.GIT_BRANCH_NAME}}
+        run: echo we are in ${GIT_BRANCH_NAME} or ${{env.GIT_BRANCH_NAME}}
         # run: |
         #   curl \
         #     -X POST \
