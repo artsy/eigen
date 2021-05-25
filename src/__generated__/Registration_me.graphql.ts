@@ -5,7 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Registration_me = {
-    readonly has_credit_cards: boolean | null;
+    readonly hasCreditCards: boolean | null;
     readonly identityVerified: boolean | null;
     readonly " $refType": "Registration_me";
 };
@@ -24,7 +24,7 @@ const node: ReaderFragment = {
   "name": "Registration_me",
   "selections": [
     {
-      "alias": "has_credit_cards",
+      "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "hasCreditCards",
@@ -41,5 +41,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'a9106c7ec262a05098449c8262c05fb4';
+(node as any).hash = 'e663b74c89150cc66e416da3aedaffd4';
 export default node;

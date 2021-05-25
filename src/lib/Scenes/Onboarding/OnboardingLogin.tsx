@@ -64,7 +64,6 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
     <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>
       <ScrollView
         contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top, paddingHorizontal: 20 }}
-        showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
       >
         <BackButton onPress={() => navigation.goBack()} />
@@ -146,7 +145,7 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
           </Text>
         </Touchable>
       </ScrollView>
-      <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5}>
+      <Flex px={1.5} paddingBottom={1.5}>
         <Button
           onPress={handleSubmit}
           block

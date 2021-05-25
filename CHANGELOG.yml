@@ -10,6 +10,8 @@ upcoming:
     - Use string for user agent when debugging on Android - ole
     - fix fastlane issue - brian
     - Add admin menu item to clear relay cache - brian
+    - Improve admin menu - dzmitry
+    - Use app links on android - mounir
   user_facing:
     - Fix wrong input font on android - dzmitry
     - Fix android native getNavigationHeight method -  kizito
@@ -17,6 +19,7 @@ upcoming:
     - Add artwork Material filter - dzmitry tratsiak
     - Prevent android dark mode forced on users - kizito
     - Fix unusable slider on android - dzmitry
+    - Update auction registration flow UI - ole
     - Fix vanishing artist series - mounir
     - Add search UI for material filter - dzmitry tratsiak
     - Implements custom size filter with localization (behind feature flag) - damon
