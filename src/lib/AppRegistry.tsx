@@ -54,6 +54,7 @@ import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyProfilePushNotifications"
+import { OrderDetailsQueryRender } from "./Scenes/OrderDetails/OrderDetails"
 import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
@@ -357,6 +358,7 @@ export const modules = defineModules({
   MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   OrderHistory: reactModule(OrderHistoryQueryRender),
+  OrderDetails: reactModule(OrderDetailsQueryRender),
   MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, { hidesBackButton: true }),
   MyProfilePushNotifications: reactModule(MyProfilePushNotificationsQueryRenderer),
   MySellingProfile: reactModule(View),
