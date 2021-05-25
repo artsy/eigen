@@ -428,8 +428,8 @@ jobs:
       - await-previous-builds:
           branch: play_store_submission
       - run:
-          name: Fetch secrets
-          command: aws s3 cp s3://artsy-citadel/eigen/android-secret.json android-secret.json
+          name: Setup
+          command: ./scripts/setup-distribute-linux
       - run:
           name: Promote if play_store_submission
           command: ./scripts/promote-if-playstore-submission-branch
