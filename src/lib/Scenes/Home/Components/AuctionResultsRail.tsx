@@ -1,32 +1,143 @@
-// //ToDo: Replace Collection types to AuctionResult types
-
 import { AuctionResultsRail_collectionsModule } from "__generated__/AuctionResultsRail_collectionsModule.graphql"
-import { Flex, Sans } from "palette"
+import { Flex } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 
-import {
-  CardRailAuctionResultsImageContainer,
-  CardRailAuctionResultsCard,
-  CardRailMetadataContainer as MetadataContainer,
-} from "lib/Components/Home/CardRailCard"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { extractNodes } from "lib/utils/extractNodes"
-import { compact } from "lodash"
 import { useTracking } from "react-tracking"
 import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
+import { AuctionResultForYouListItem } from "lib/Scenes/AuctionResultForYou/AuctionResultForYouListItem"
+
+const mockAuctionResults = [
+  {
+    currency: "USD",
+    dateText: "2006",
+    id: "QXVjdGlvblJlc3VsdDozMzAwMDY=",
+    internalID: "330006",
+    images: {
+      thumbnail: {
+        url: "https://d2v80f5yrouhh2.cloudfront.net/4V-XxYOjIKYMJt1CK63rCA/thumbnail.jpg",
+        height: null,
+        width: null,
+        aspectRatio: 1,
+      },
+    },
+    estimate: {
+      low: 5000000,
+    },
+    mediumText: "digital pigment print in colors, on wove paper",
+    organization: "Christie's",
+    boughtIn: false,
+    performance: {
+      mid: "4%",
+    },
+    priceRealized: {
+      display: "$62,500",
+      cents: 6250000,
+    },
+    saleDate: "2021-04-16T03:00:00+03:00",
+    title: "Napalm (Can't Beat the Feeling), from In the Darkest Hour There May Be Light",
+  },
+  {
+    currency: "GBP",
+    dateText: "1905",
+    id: "QXVjdGlvblJlc3VsdDozMjQyODE=",
+    internalID: "324281",
+    images: {
+      thumbnail: {
+        url: "https://d2v80f5yrouhh2.cloudfront.net/kJ3fvGeVUGDUpsyTjMKY5g/thumbnail.jpg",
+        height: null,
+        width: null,
+        aspectRatio: 1,
+      },
+    },
+    estimate: {
+      low: 4000000,
+    },
+    mediumText: "screenprint in colours, on wove paper",
+    organization: "Christie's",
+    boughtIn: false,
+    performance: {
+      mid: "38%",
+    },
+    priceRealized: {
+      display: "£68,750",
+      cents: 6875000,
+    },
+    saleDate: "2021-04-01T03:00:00+03:00",
+    title: "Napalm",
+  },
+  {
+    currency: "GBP",
+    dateText: "2002",
+    id: "QXVjdGlvblJlc3VsdDozMjM0OTE=",
+    internalID: "323491",
+    images: {
+      thumbnail: {
+        url: "https://d2v80f5yrouhh2.cloudfront.net/h5FmZDNX7NsABDszxsFRGQ/thumbnail.jpg",
+        height: null,
+        width: null,
+        aspectRatio: 1,
+      },
+    },
+    estimate: {
+      low: 40000000,
+    },
+    mediumText: "spray paint on canvas",
+    organization: "Sotheby's",
+    boughtIn: false,
+    performance: {
+      mid: "72%",
+    },
+    priceRealized: {
+      display: "£862,000",
+      cents: 86200000,
+    },
+    saleDate: "2021-04-07T03:00:00+03:00",
+    title: "Laugh Now",
+  },
+  {
+    currency: "USD",
+    dateText: "2002",
+    id: "QXVjdGlvblJlc3VsdDozMjk0OTc=",
+    internalID: "329497",
+    images: {
+      thumbnail: {
+        url: "https://d2v80f5yrouhh2.cloudfront.net/azk0ha0RO_Yhp6eyC9G6dg/thumbnail.jpg",
+        height: null,
+        width: null,
+        aspectRatio: 1,
+      },
+    },
+    estimate: {
+      low: 200000000,
+    },
+    mediumText: "spray paint and emulsion on paperboard",
+    organization: "Christie's",
+    boughtIn: false,
+    performance: {
+      mid: "-17%",
+    },
+    priceRealized: {
+      display: "$2,070,000",
+      cents: 207000000,
+    },
+    saleDate: "2021-05-11T03:00:00+03:00",
+    title: "Laugh Now But One Day We'll Be In Charge",
+  },
+]
 
 interface Props {
   collectionsModule: AuctionResultsRail_collectionsModule
 }
 
-type Collection = AuctionResultsRail_collectionsModule["results"][0]
+type AuctionResults = AuctionResultsRail_collectionsModule["results"][0]
 
 const AuctionResultsRail: React.FC<Props & RailScrollProps> = (props) => {
   const listRef = useRef<FlatList<any>>()
@@ -42,69 +153,33 @@ const AuctionResultsRail: React.FC<Props & RailScrollProps> = (props) => {
         <SectionTitle title="Auction Results for You" />
       </Flex>
 
-      <CardRailFlatList<NonNullable<Collection>>
+      <CardRailFlatList<NonNullable<AuctionResults>>
         listRef={listRef}
-        data={compact(props.collectionsModule.results)}
+        data={mockAuctionResults}
+        // data={compact(props.collectionsModule.results)}
         keyExtractor={(item, index) => item.slug || String(index)}
         horizontal={false}
+        initialNumToRender={3}
         renderItem={({ item: result, index }) => {
+          if (index >= 3) {
+            return
+          }
           const artworkImageURLs = extractNodes(result.artworksConnection, (artwork) => artwork.image?.url!)
 
           return (
-            <CardRailAuctionResultsCard
-              style={{ marginHorizontal: 20, flexDirection: "row" }}
-              onPress={
-                result?.slug
-                  ? () => {
-                      const tapEvent = HomeAnalytics.collectionThumbnailTapEvent(result?.slug, index)
-                      if (tapEvent) {
-                        tracking.trackEvent(tapEvent)
-                      }
-                      navigate(`/collection/${result.slug}`)
-                    }
-                  : undefined
-              }
-            >
-              <View style={{ flexDirection: "row" }}>
-                <CardRailAuctionResultsImageContainer>
-                  <ImageView
-                    style={{ marginHorizontal: 10, marginVertical: 15 }}
-                    width={80}
-                    height={80}
-                    imageURL={artworkImageURLs[0]}
-                  />
-                </CardRailAuctionResultsImageContainer>
-                <MetadataContainer style={{ flexDirection: "row" }}>
-                  <View>
-                    <Sans numberOfLines={1} weight="medium" size="3t">
-                      {/* {result?.title} */}
-                      {"Artist Name"}
-                    </Sans>
-                    <Sans numberOfLines={1} size="3t">
-                      {"Untitled, 2013"}
-                      {/* {result?.artworksConnection?.counts?.total ? `${result.artworksConnection.counts.total} works` : ""} */}
-                    </Sans>
-                    <Sans numberOfLines={1} size="3t" color="black60">
-                      {"Pastel on paper"}
-                      {/* {result?.title} */}
-                    </Sans>
-                    <Sans numberOfLines={1} size="3t" color="black60">
-                      {"Feb 13, 2019 * Sotheby's"}
-                      {/* {result?.artworksConnection?.counts?.total ? `${result.artworksConnection.counts.total} works` : ""} */}
-                    </Sans>
-                  </View>
-                  <View>
-                    <Sans numberOfLines={1} weight="medium" size="3t">
-                      {/* {result?.title} */}
-                      {"£162,500"}
-                    </Sans>
-                    <Sans numberOfLines={1} size="3t" color="#00A03E">
-                      {"235%"}
-                    </Sans>
-                  </View>
-                </MetadataContainer>
-              </View>
-            </CardRailAuctionResultsCard>
+            <AuctionResultForYouListItem
+              auctionResult={result}
+              onPress={() => {
+                const tapEvent = HomeAnalytics.collectionThumbnailTapEvent(result?.slug, index)
+                if (tapEvent) {
+                  tracking.trackEvent(tapEvent)
+                }
+                navigate(`/auction-result-for-you/auction-highlights`)
+                // Here the auction-highlights is mocked slug for the navigation to work
+                // ToDo: Refactor this part
+                // navigate(`/auction-result-for-you/${result.slug}`)
+              }}
+            />
           )
         }}
       />
