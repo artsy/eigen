@@ -44,7 +44,6 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
         contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top }}
         keyboardShouldPersistTaps="always"
       >
-        <BackButton onPress={() => navigation.goBack()} />
         <Flex flex={1} px={1.5} paddingTop={60} justifyContent="flex-start">
           <Text variant="largeTitle">Reset password</Text>
           <Text pt={1.5} variant="caption" color="black60">
@@ -82,6 +81,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
           )}
         </Flex>
       </ScrollView>
+      <BackButton onPress={() => navigation.goBack()} />
       <Flex px={1.5} paddingBottom={1.5}>
         {!!requestedPasswordReset ? (
           <Button

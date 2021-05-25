@@ -27,6 +27,7 @@ upcoming:
     - Add order history to user profile (behind feature flag) - alexj105
     - Enable lotsByFollowedArtists - ole
     - Add ability to unselected "ways to buy" filter - dzmitry tratsiak
+    - Fix back button in android onboarding is flying off in smaller screens - dzmitry
     - Prevent multiline input placeholder on Android - ole
 
 releases:
