@@ -3,15 +3,16 @@
 name: Trigger promotion to app store
 on:
   push:
-    branches: [app_store_submission]
+    branches: [app_store_submission, play_store_submission]
 jobs:
   trigger:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger promotion
-        run: |
-          curl \
-            -X POST \
-            --header "Content-Type: application/json" \
-            -d '{"branch": "app_store_submission"}' \
-            https://circleci.com/api/v1.1/project/github/artsy/eigen/build?circle-token=${{ secrets.CircleToken }}
+        run: echo we are in ${{branch}} and ${GIT_BRANCH_NAME} or ${{env.GIT_BRANCH_NAME}}
+        # run: |
+        #   curl \
+        #     -X POST \
+        #     --header "Content-Type: application/json" \
+        #     -d '{"branch": "app_store_submission"}' \
+        #     https://circleci.com/api/v1.1/project/github/artsy/eigen/build?circle-token=${{ secrets.CircleToken }}
