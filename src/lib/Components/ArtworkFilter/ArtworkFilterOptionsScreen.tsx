@@ -275,7 +275,6 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
         "waysToBuy",
         "artistNationalities",
         "majorPeriods",
-        "color",
         "colors",
       ]
       break
