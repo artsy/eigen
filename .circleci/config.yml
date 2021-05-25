@@ -478,11 +478,13 @@ workflows:
                 - beta-ios
                 - beta-android
                 - app_store_submission
+                - play_store_submission
       - build-test-js:
           filters:
             branches:
               ignore:
                 - app_store_submission
+                - play_store_submission
       - horizon/block:
           context: horizon
           project_id: 37
@@ -496,6 +498,7 @@ workflows:
             branches:
               ignore:
                 - app_store_submission
+                - play_store_submission
                 - beta-android
           requires:
             - build-test-js
@@ -505,6 +508,7 @@ workflows:
             branches:
               ignore:
                 - app_store_submission
+                - play_store_submission
                 - beta-ios
           requires:
             - build-test-js
