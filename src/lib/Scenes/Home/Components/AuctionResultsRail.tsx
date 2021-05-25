@@ -137,7 +137,7 @@ interface Props {
   collectionsModule: AuctionResultsRail_collectionsModule
 }
 
-type AuctionResults = AuctionResultsRail_collectionsModule["results"][0]
+// type AuctionResults = AuctionResultsRail_collectionsModule["results"][0]
 
 const AuctionResultsRail: React.FC<Props & RailScrollProps> = (props) => {
   const listRef = useRef<FlatList<any>>()
@@ -153,18 +153,17 @@ const AuctionResultsRail: React.FC<Props & RailScrollProps> = (props) => {
         <SectionTitle title="Auction Results for You" />
       </Flex>
 
-      <CardRailFlatList<NonNullable<AuctionResults>>
+      <CardRailFlatList
         listRef={listRef}
         data={mockAuctionResults}
         // data={compact(props.collectionsModule.results)}
-        keyExtractor={(item, index) => item.slug || String(index)}
+        keyExtractor={(_, index) => String(index)}
         horizontal={false}
         initialNumToRender={3}
         renderItem={({ item: result, index }) => {
           if (index >= 3) {
             return
           }
-          const artworkImageURLs = extractNodes(result.artworksConnection, (artwork) => artwork.image?.url!)
 
           return (
             <AuctionResultForYouListItem

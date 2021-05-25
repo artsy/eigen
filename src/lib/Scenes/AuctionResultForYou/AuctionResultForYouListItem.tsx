@@ -1,4 +1,3 @@
-import { AuctionResultListItem_auctionResult } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { auctionResultHasPrice, auctionResultText } from "lib/Scenes/AuctionResult/helpers"
 import { QAInfoManualPanel, QAInfoRow } from "lib/utils/QAInfo"
@@ -9,7 +8,7 @@ import React from "react"
 import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 
 interface Props {
-  auctionResult: AuctionResultListItem_auctionResult
+  auctionResult: any // add correct type after implementing actionResult query
   onPress: () => void
 }
 

@@ -6,7 +6,6 @@ import React from "react"
 import { Dimensions, SectionList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import moment from "moment"
-import { AuctionResultForYou_collection } from "../../../__generated__/AuctionResultForYou_collection.graphql"
 import { AuctionResultForYouQuery } from "__generated__/AuctionResultForYouQuery.graphql"
 import styled from "styled-components/native"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
@@ -145,25 +144,18 @@ const mockSectionAuctionResults = [
   },
 ]
 
-interface AuctionResultForYouProps {
-  collection: AuctionResultForYou_collection
-}
-
-export const AuctionResultForYou: React.FC<AuctionResultForYouProps> = () => (
+export const AuctionResultForYou: React.FC = () => (
   <PageWithSimpleHeader title="Auction Results for You">
     <ArtworkFiltersStoreProvider>
       <Sans size="3" textAlign="left" color="black60" style={{ marginHorizontal: 20, marginVertical: 17 }}>
-        The latest auction results for the{" "}
-        <LinkText onPress={() => navigate("/privacy", { modal: true })}>artists you follow</LinkText>. You can also look
-        up more auction results on the insights tab on any artist’s page.
+        The latest auction results for the {""}
+        <LinkText onPress={() => navigate("/favorite")}>artists you follow</LinkText>. You can also look up more auction
+        results on the insights tab on any artist’s page.
       </Sans>
       <SectionList
         sections={mockSectionAuctionResults}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => {
-          console.log("###!!!item.data: ", item)
-          return <AuctionResultForYouListItem auctionResult={item} onPress={() => {}} />
-        }}
+        renderItem={({ item }) => <AuctionResultForYouListItem auctionResult={item} onPress={() => {}} />}
         renderSectionHeader={({ section: { title } }) => {
           let date = new Date(title)
           let sectionMounth = moment(date).format("MMMM")
