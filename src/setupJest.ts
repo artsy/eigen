@@ -162,12 +162,15 @@ mockedModule("./lib/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "Artis
 mockedModule("./lib/Components/Gene/Header.tsx", "Header")
 
 // Native modules
+import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { postEventToProviders } from "lib/utils/track/providers"
 import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
 
-function getNativeModules(): typeof LegacyNativeModules {
+type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }
+
+function getNativeModules(): OurNativeModules {
   return {
     ARTakeCameraPhotoModule: {
       errorCodes: {
@@ -228,6 +231,15 @@ function getNativeModules(): typeof LegacyNativeModules {
     AREventsModule: {
       postEvent: jest.fn(),
       requestAppStoreRating: jest.fn(),
+    },
+    ArtsyNativeModule: {
+      launchCount: 3,
+      setAppStyling: jest.fn(),
+      setNavigationBarColor: jest.fn(),
+      setAppLightContrast: jest.fn(),
+      navigationBarHeight: 11,
+      lockActivityScreenOrientation: jest.fn(),
+      gitCommitShortHash: "de4dc0de",
     },
   }
 }
