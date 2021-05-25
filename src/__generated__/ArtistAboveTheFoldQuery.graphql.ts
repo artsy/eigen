@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e8c589d40442a5d7773f6877a07c42b7 */
+/* @relayHash b0e35a574a0826b37fa0ad51068d1d89 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -59,7 +59,7 @@ fragment ArtistArtworks_artist_44NygF on Artist {
   id
   slug
   internalID
-  artworks: filterArtworksConnection(first: 10, input: {dimensionRange: "*-*", sort: "-decayed_merch"}, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]) {
+  artworks: filterArtworksConnection(first: 10, input: {dimensionRange: "*-*", sort: "-decayed_merch"}, aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -272,9 +272,11 @@ v13 = [
     "value": [
       "COLOR",
       "DIMENSION_RANGE",
-      "PARTNER",
+      "LOCATION_CITY",
       "MAJOR_PERIOD",
+      "MATERIALS_TERMS",
       "MEDIUM",
+      "PARTNER",
       "PRICE_RANGE"
     ]
   },
@@ -767,7 +769,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-decayed_merch\"})"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-decayed_merch\"})"
           },
           {
             "alias": "artworks",
@@ -788,7 +790,7 @@ return {
     ]
   },
   "params": {
-    "id": "e8c589d40442a5d7773f6877a07c42b7",
+    "id": "b0e35a574a0826b37fa0ad51068d1d89",
     "metadata": {},
     "name": "ArtistAboveTheFoldQuery",
     "operationKind": "query",

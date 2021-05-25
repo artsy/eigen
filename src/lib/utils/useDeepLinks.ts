@@ -17,7 +17,7 @@ export function useDeepLinks() {
         handleDeepLink(url)
       }
     })
-  }, [])
+  }, [isHydrated])
 
   useEffect(() => {
     Linking.addEventListener("url", ({ url }) => {
@@ -27,7 +27,7 @@ export function useDeepLinks() {
     return () => {
       Linking.removeAllListeners("url")
     }
-  }, [])
+  }, [isHydrated])
 
   const handleDeepLink = (url: string) => {
     trackEvent(tracks.deepLink(url))

@@ -2,7 +2,12 @@ import { OwnerType } from "@artsy/cohesion"
 import { Show_show } from "__generated__/Show_show.graphql"
 import { ShowArtworks_show } from "__generated__/ShowArtworks_show.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
-import { aggregationsType, FilterArray, filterArtworksParams, prepareFilterArtworksParamsForInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  aggregationsType,
+  FilterArray,
+  filterArtworksParams,
+  prepareFilterArtworksParamsForInput,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -116,7 +121,16 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
         showArtworks: filterArtworksConnection(
           first: 30
           after: $cursor
-          aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
+          aggregations: [
+            ARTIST_NATIONALITY
+            COLOR
+            DIMENSION_RANGE
+            LOCATION_CITY
+            MAJOR_PERIOD
+            MATERIALS_TERMS
+            MEDIUM
+            PRICE_RANGE
+          ]
           input: $input
         ) @connection(key: "Show_showArtworks") {
           aggregations {
@@ -164,12 +178,7 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
         $input: FilterArtworksInput
       ) {
         show(id: $id) {
-          ...ShowArtworks_show
-            @arguments(
-              count: $count
-              cursor: $cursor
-              input: $input
-            )
+          ...ShowArtworks_show @arguments(count: $count, cursor: $cursor, input: $input)
         }
       }
     `,

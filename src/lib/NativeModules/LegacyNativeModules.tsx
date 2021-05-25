@@ -1,6 +1,7 @@
 import type { ViewDescriptor } from "lib/navigation/navigate"
 import type { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
 import type { NativeState } from "lib/store/NativeModel"
+import _ from "lodash"
 import { NativeModules as AllNativeModules, Platform } from "react-native"
 import type { Image as RNCImage } from "react-native-image-crop-picker"
 import { getLocales, getTimeZone } from "react-native-localize"
@@ -83,7 +84,7 @@ interface LegacyNativeModules {
     requestAppStoreRating(): void
   }
 }
-const LegacyNativeModulesIOS: LegacyNativeModules = AllNativeModules as any
+const LegacyNativeModulesIOS: LegacyNativeModules = _.omit(AllNativeModules, "ArtsyNativeModule") as any
 
 export const LegacyNativeModules: LegacyNativeModules =
   Platform.OS === "ios"

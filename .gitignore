@@ -44,8 +44,6 @@ Preview.html
 fastlane/report.xml
 fastlane/Preview.html
 
-Artsy/Eigen.playground/
-
 iOSInjectionProject/
 .vscode/.browse.VC.db
 Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
@@ -72,6 +70,7 @@ npm-debug.log
 .vscode/launchReactNative.js
 .vscode/.react/
 .vscode/typings
+.vscode/tasks.json.old
 .apphub
 coverage
 package-lock.json

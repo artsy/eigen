@@ -1,7 +1,6 @@
 import { ActionType, ContextModule } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
-
 import {
   changedFiltersParams,
   FilterArray,
@@ -11,10 +10,13 @@ import {
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { AdditionalGeneIDsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/AdditionalGeneIDsOptions"
 import { ArtistIDsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ArtistIDsOptionsScreen"
+import { ArtistNationalitiesOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ArtistNationalitiesOptions"
 import { AttributionClassOptionsScreen } from "lib/Components/ArtworkFilter/Filters/AttributionClassOptions"
 import { CategoriesOptionsScreen } from "lib/Components/ArtworkFilter/Filters/CategoriesOptions"
 import { ColorsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ColorsOptions"
 import { EstimateRangeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/EstimateRangeOptions"
+import { GalleriesAndInstitutionsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/GalleriesAndInstitutionsOptions"
+import { MaterialsTermsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/MaterialsTermsOptions"
 import { MediumOptionsScreen } from "lib/Components/ArtworkFilter/Filters/MediumOptions"
 import { PriceRangeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/PriceRangeOptions"
 import { SizeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/SizeOptions"
@@ -33,7 +35,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { FancyModal } from "../FancyModal/FancyModal"
 import { ArtworkFilterOptionsScreen, FilterModalMode as ArtworkFilterMode } from "./ArtworkFilterOptionsScreen"
-import { GalleriesAndInstitutionsOptionsScreen } from "./Filters/GalleriesAndInstitutionsOptions"
+import { LocationCitiesOptionsScreen } from "./Filters/LocationCitiesOptions"
 
 interface ArtworkFilterProps extends ViewProps {
   closeModal?: () => void
@@ -62,6 +64,7 @@ interface ArtworkFilterOptionsScreenParams {
 export type ArtworkFilterNavigationStack = {
   AdditionalGeneIDsOptionsScreen: undefined
   ArtistIDsOptionsScreen: undefined
+  ArtistNationalitiesOptionsScreen: undefined
   AttributionClassOptionsScreen: undefined
   CategoriesOptionsScreen: undefined
   ColorOptionsScreen: undefined
@@ -69,6 +72,8 @@ export type ArtworkFilterNavigationStack = {
   EstimateRangeOptionsScreen: undefined
   FilterOptionsScreen: ArtworkFilterOptionsScreenParams
   GalleriesAndInstitutionsOptionsScreen: undefined
+  MaterialsTermsOptionsScreen: undefined
+  LocationCitiesOptionsScreen: undefined
   MediumOptionsScreen: undefined
   PriceRangeOptionsScreen: undefined
   SizeOptionsScreen: undefined
@@ -175,6 +180,9 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             />
             <Stack.Screen name="WaysToBuyOptionsScreen" component={WaysToBuyOptionsScreen} />
             <Stack.Screen name="CategoriesOptionsScreen" component={CategoriesOptionsScreen} />
+            <Stack.Screen name="MaterialsTermsOptionsScreen" component={MaterialsTermsOptionsScreen} />
+            <Stack.Screen name="ArtistNationalitiesOptionsScreen" component={ArtistNationalitiesOptionsScreen} />
+            <Stack.Screen name="LocationCitiesOptionsScreen" component={LocationCitiesOptionsScreen} />
           </Stack.Navigator>
 
           <Separator my={0} />

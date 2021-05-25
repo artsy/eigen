@@ -3,7 +3,7 @@ import { BackButton } from "lib/navigation/BackButton"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { flushPromiseQueue } from "../../../../tests/flushPromiseQueue"
-import { UserSchema, userSchema } from "../OnboardingCreateAccount"
+import { passwordSchema, UserSchema } from "../OnboardingCreateAccount"
 import { OnboardingCreateAccountPassword } from "../OnboardingCreateAccountPassword"
 
 const goBackMock = jest.fn()
@@ -23,7 +23,7 @@ describe("OnboardingCreateAccountPassword", () => {
       initialValues: { email: "", password, name: "" },
       initialErrors: {},
       onSubmit: onSubmitMock,
-      validationSchema: userSchema,
+      validationSchema: passwordSchema,
     })
 
     return (
@@ -77,7 +77,17 @@ describe("OnboardingCreateAccountPassword", () => {
       input.props.onChangeText("Nodigits")
       input.props.onSubmitEditing()
       await flushPromiseQueue()
-      expect(input.props.error).toEqual("You password should contain at least one digit")
+      expect(input.props.error).toEqual("Your password should contain at least one digit")
+
+      input.props.onChangeText("MISSING1LOWERCASE")
+      input.props.onSubmitEditing()
+      await flushPromiseQueue()
+      expect(input.props.error).toEqual("Your password should contain at least one lowercase letter")
+
+      input.props.onChangeText("")
+      input.props.onSubmitEditing()
+      await flushPromiseQueue()
+      expect(input.props.error).toEqual("Password field is required")
     })
   })
 })

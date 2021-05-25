@@ -1,7 +1,10 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
-import { filterArtworksParams, prepareFilterArtworksParamsForInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  filterArtworksParams,
+  prepareFilterArtworksParamsForInput,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import {
@@ -102,7 +105,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
             throw new Error("ArtistArtworks/ArtistArtworks filter error: " + error.message)
           }
         },
-        { input: prepareFilterArtworksParamsForInput(filterParams) },
+        { input: prepareFilterArtworksParamsForInput(filterParams) }
       )
     }
   }, [appliedFilters])
@@ -194,7 +197,7 @@ export default createPaginationContainer(
           first: $count
           after: $cursor
           input: $input
-          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
+          aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE]
         ) @connection(key: "ArtistArtworksGrid_artworks") {
           aggregations {
             slice
@@ -230,20 +233,10 @@ export default createPaginationContainer(
       }
     },
     query: graphql`
-      query ArtistArtworksQuery(
-        $id: ID!
-        $count: Int!
-        $cursor: String
-        $input: FilterArtworksInput
-      ) {
+      query ArtistArtworksQuery($id: ID!, $count: Int!, $cursor: String, $input: FilterArtworksInput) {
         node(id: $id) {
           ... on Artist {
-            ...ArtistArtworks_artist
-              @arguments(
-                count: $count
-                cursor: $cursor
-                input: $input
-              )
+            ...ArtistArtworks_artist @arguments(count: $count, cursor: $cursor, input: $input)
           }
         }
       }

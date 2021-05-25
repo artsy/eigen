@@ -797,6 +797,31 @@ describe("Apply Filters", () => {
     })
   })
 
+  it("applies false ways to buy filters correctly", () => {
+    filterState = {
+      applyFilters: false,
+      appliedFilters: [{ paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Buy now" }],
+      previouslyAppliedFilters: [{ paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Buy now" }],
+      selectedFilters: [{ paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy now" }],
+      aggregations: [],
+      filterType: "artwork",
+      counts: { total: null, followedArtists: null },
+    }
+
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().applyFiltersAction()
+
+    expect(filterArtworksStore.getState()).toEqual({
+      applyFilters: true,
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      selectedFilters: [],
+      aggregations: [],
+      filterType: "artwork",
+      counts: { total: null, followedArtists: null },
+    })
+  })
+
   it("replaces previously applied filters with newly selected ones", () => {
     filterState = {
       applyFilters: true,
@@ -1093,6 +1118,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "priceRange",
           paramValue: "*-*",
         },
@@ -1104,6 +1134,11 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "partnerIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "locationCities",
           paramValue: [],
         },
         {
@@ -1191,6 +1226,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "priceRange",
           paramValue: "*-*",
         },
@@ -1202,6 +1242,11 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "partnerIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "locationCities",
           paramValue: [],
         },
         {
@@ -1299,6 +1344,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "priceRange",
           paramValue: "*-*",
         },
@@ -1310,6 +1360,11 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "partnerIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "locationCities",
           paramValue: [],
         },
         {
@@ -1418,6 +1473,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "priceRange",
           paramValue: "*-*",
         },
@@ -1429,6 +1489,11 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "partnerIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "locationCities",
           paramValue: [],
         },
         {
@@ -1527,6 +1592,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "priceRange",
           paramValue: "*-*",
         },
@@ -1538,6 +1608,11 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "partnerIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "locationCities",
           paramValue: [],
         },
         {
@@ -1612,6 +1687,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "priceRange",
           paramValue: "*-*",
         },
@@ -1623,6 +1703,11 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "partnerIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "locationCities",
           paramValue: [],
         },
         {
@@ -1710,6 +1795,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "priceRange",
           paramValue: "*-*",
         },
@@ -1721,6 +1811,11 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "partnerIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "locationCities",
           paramValue: [],
         },
         {
@@ -1809,6 +1904,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "priceRange",
           paramValue: "*-*",
         },
@@ -1820,6 +1920,11 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "partnerIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "locationCities",
           paramValue: [],
         },
         {
@@ -1889,6 +1994,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "priceRange",
           paramValue: "*-*",
         },
@@ -1900,6 +2010,11 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "All",
           paramName: "partnerIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "locationCities",
           paramValue: [],
         },
         {

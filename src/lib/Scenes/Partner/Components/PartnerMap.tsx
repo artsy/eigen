@@ -1,3 +1,4 @@
+import { useActionSheet } from "@expo/react-native-action-sheet"
 import MapboxGL from "@react-native-mapbox-gl/maps"
 import { PartnerMap_location } from "__generated__/PartnerMap_location.graphql"
 import { cityAndPostalCode, tappedOnMap } from "lib/Components/LocationMap"
@@ -24,13 +25,17 @@ const PartnerMap: React.FC<{
     lng = 0
   }
 
+  const { showActionSheetWithOptions } = useActionSheet()
+
   return (
     <Box px={2} mt={2}>
       <Sans size="3" weight="medium">
         {city}
       </Sans>
       <Spacer mb={0.5} />
-      <TouchableOpacity onPress={() => tappedOnMap(lat, lng, address, null, null, city, postalCode)}>
+      <TouchableOpacity
+        onPress={() => showActionSheetWithOptions(...tappedOnMap(lat, lng, address, null, null, city, postalCode))}
+      >
         <MapWrapper>
           <MapboxGL.MapView
             style={{ height: 120 }}

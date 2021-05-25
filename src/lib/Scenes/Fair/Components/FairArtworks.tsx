@@ -124,7 +124,19 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
         fairArtworks: filterArtworksConnection(
           first: $count
           after: $cursor
-          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST],
+          aggregations: [
+            ARTIST
+            ARTIST_NATIONALITY
+            COLOR
+            DIMENSION_RANGE
+            FOLLOWED_ARTISTS
+            LOCATION_CITY
+            MAJOR_PERIOD
+            MATERIALS_TERMS
+            MEDIUM
+            PARTNER
+            PRICE_RANGE
+          ]
           input: $input
         ) @connection(key: "Fair_fairArtworks") {
           aggregations {
@@ -177,12 +189,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
         $input: FilterArtworksInput
       ) {
         fair(id: $id) {
-          ...FairArtworks_fair
-            @arguments(
-              count: $count
-              cursor: $cursor
-              input: $input
-            )
+          ...FairArtworks_fair @arguments(count: $count, cursor: $cursor, input: $input)
         }
       }
     `,

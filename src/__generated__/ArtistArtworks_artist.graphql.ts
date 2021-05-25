@@ -103,9 +103,11 @@ return {
           "value": [
             "COLOR",
             "DIMENSION_RANGE",
-            "PARTNER",
+            "LOCATION_CITY",
             "MAJOR_PERIOD",
+            "MATERIALS_TERMS",
             "MEDIUM",
+            "PARTNER",
             "PRICE_RANGE"
           ]
         },
@@ -263,5 +265,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '8052b338d0a74f7d8857e05740092e5d';
+(node as any).hash = '772ab02113ce651f7426a24951d3cf6b';
 export default node;
