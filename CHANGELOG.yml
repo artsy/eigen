@@ -4,10 +4,6 @@ upcoming:
   dev:
     - Convert filter queries to use a single structured input for filterArtworksConnection requests - dzmitry tratsiak
     - Allow sticky tabs to add additional sticky content - mdole
-    - obfuscate env vars on android - kizito
-  user_facing:
-    - Fix wrong input font on android - dzmitry
-    -
     - Fix url decoding in navigation infra code - kizito
     - Update android play store metadata - brian
     - Fix sign up validation - dzmitry
@@ -16,6 +12,7 @@ upcoming:
     - Add admin menu item to clear relay cache - brian
     - Improve admin menu - dzmitry
     - Use app links on android - mounir
+    - obfuscate env vars on android - kizito
   user_facing:
     - Fix wrong input font on android - dzmitry
     - Fix android native getNavigationHeight method -  kizito
