@@ -1,8 +1,7 @@
 import { action, Action, computed, Computed, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
-import { echoLaunchJson } from "lib/utils/jsonFiles"
+import { appJson, echoLaunchJson } from "lib/utils/jsonFiles"
 import moment from "moment-timezone"
 import { Platform } from "react-native"
-import { getVersion } from "react-native-device-info"
 import { lt as lessThan } from "semver"
 import { unsafe_getDevToggle } from "../GlobalStore"
 import { GlobalStoreModel } from "../GlobalStoreModel"
@@ -67,7 +66,7 @@ export const getEchoModel = (): EchoModel => ({
     return state.state.messages.find((e) => e.name === key)?.content!
   }),
   forceUpdateMessage: computed((state) => {
-    const appVersion = getVersion()
+    const appVersion = appJson().version
     const killedVersions = state.state.killedVersions
 
     const killedVersion = killedVersions[Platform.OS as keyof Echo["killedVersions"]][appVersion]
