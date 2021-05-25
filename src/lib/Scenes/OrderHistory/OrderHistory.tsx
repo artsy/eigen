@@ -7,12 +7,12 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Flex, Sans, Separator, Spacer } from "palette"
+import { Box, Flex, Sans, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { ArtworkInfoSection } from "./OrderDetails/ArtworkInfoSection"
 import { OrderHistoryRowContainer } from "./OrderHistoryRow"
-
 const NUM_ORDERS_TO_FETCH = 10
 
 export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginationProp }> = ({ relay, me }) => {
@@ -46,8 +46,9 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginatio
         keyExtractor={(order) => order.code}
         contentContainerStyle={{ flexGrow: 1, paddingTop: orders.length === 0 ? 10 : 20 }}
         renderItem={({ item }) => (
-          <Flex flexDirection="row" justifyContent="space-between" px={2}>
+          <Flex flexDirection="column" justifyContent="space-between" px={2}>
             <OrderHistoryRowContainer order={item} key={item.code} />
+            <ArtworkInfoSection artwork={item} />
           </Flex>
         )}
         ListEmptyComponent={
