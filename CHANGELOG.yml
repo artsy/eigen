@@ -27,6 +27,7 @@ upcoming:
     - Add order history to user profile (behind feature flag) - alexj105
     - Enable lotsByFollowedArtists - ole
     - Add ability to unselected "ways to buy" filter - dzmitry tratsiak
+
 releases:
   - version: 6.9.1
     date: May 18, 2021
