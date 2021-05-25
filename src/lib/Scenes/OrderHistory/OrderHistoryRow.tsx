@@ -2,7 +2,7 @@ import { OrderHistoryRow_order } from "__generated__/OrderHistoryRow_order.graph
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import moment from "moment"
-import { Box, Button, Flex, Sans, Spacer, Text } from "palette"
+import { Box, Button, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { Image } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -26,21 +26,26 @@ const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             )}
           </Box>
           <Box flexGrow={3}>
-            <Sans size="3t" weight="medium">
-              {artwork?.artist_names}
-            </Sans>
-            <Text color="black60">{artwork?.partner?.name}</Text>
-            <Text color="black60">{moment(order.createdAt).format("l")}</Text>
+            <Text fontSize={16} fontWeight={500} lineHeight={22}>
+              {artwork?.artistNames}
+            </Text>
+            <Text fontSize={14} fontWeight={400} lineHeight={21} color="black60">
+              {artwork?.partner?.name}
+            </Text>
+            <Text fontSize={14} fontWeight={400} lineHeight={21} color="black60">
+              {moment(order.createdAt).format("l")}
+            </Text>
           </Box>
           <Box flexGrow={1}>
             <Flex justifyContent="flex-end">
-              <Sans textAlign="right" size="3t" weight="medium">
+              <Text textAlign="right" fontSize={15} fontWeight={400} lineHeight={22.5}>
                 {order.buyerTotal}
-              </Sans>
+              </Text>
               <Text
                 textAlign="right"
-                variant="text"
-                letterSpacing="tight"
+                fontSize={14}
+                fontWeight={400}
+                lineHeight={21}
                 color="black60"
                 style={{ textTransform: "capitalize" }}
               >
