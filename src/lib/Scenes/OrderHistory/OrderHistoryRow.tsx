@@ -19,7 +19,11 @@ const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
       <Flex>
         <Flex flexDirection="row" justifyContent="space-between">
           <Box flexGrow={1}>
-            <Image source={{ uri: artwork?.image?.resized?.url }} style={{ height: 50, width: 50 }} />
+            {!!artwork.image ? (
+              <Image source={{ uri: artwork?.image?.resized?.url }} style={{ height: 50, width: 50 }} />
+            ) : (
+              <Box width="50px" height="50px" backgroundColor="black10" />
+            )}
           </Box>
           <Box flexGrow={3}>
             <Sans size="3t" weight="medium">
