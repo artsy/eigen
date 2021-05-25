@@ -10,6 +10,7 @@
 		0C93322A1BA1FA6B00F3CE95 /* ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */; };
 		0CAC95391BA9E1D0008E9848 /* ARUserActivityAndSpotlightTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAC95371BA9E18B008E9848 /* ARUserActivityAndSpotlightTests.m */; };
 		0CE3C4361B8BB3630092A24F /* EXPMatcher+UINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */; };
+		1A248BDB265C282400E41409 /* ARTArtsyNativeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A248BDA265C282400E41409 /* ARTArtsyNativeModule.m */; };
 		1AC79210251A42D000F50228 /* EchoNew.json in Resources */ = {isa = PBXBuildFile; fileRef = 1AC7920F251A42CF00F50228 /* EchoNew.json */; };
 		1AD4F89E25FBBA89007FDB71 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AD4F89D25FBBA89007FDB71 /* Stickers.xcassets */; };
 		1AD4F8A225FBBA89007FDB71 /* Artsy Stickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1AD4F89B25FBBA85007FDB71 /* Artsy Stickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -517,6 +518,8 @@
 		0CAC95371BA9E18B008E9848 /* ARUserActivityAndSpotlightTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivityAndSpotlightTests.m; sourceTree = "<group>"; };
 		0CE3C4331B8BB35C0092A24F /* EXPMatcher+UINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatcher+UINavigationController.h"; sourceTree = "<group>"; };
 		0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatcher+UINavigationController.m"; sourceTree = "<group>"; };
+		1A248BD9265C282400E41409 /* ARTArtsyNativeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTArtsyNativeModule.h; sourceTree = "<group>"; };
+		1A248BDA265C282400E41409 /* ARTArtsyNativeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTArtsyNativeModule.m; sourceTree = "<group>"; };
 		1AC7920F251A42CF00F50228 /* EchoNew.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EchoNew.json; sourceTree = "<group>"; };
 		1AD4F89B25FBBA85007FDB71 /* Artsy Stickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Artsy Stickers.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AD4F89D25FBBA89007FDB71 /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
@@ -934,7 +937,6 @@
 		604166AF16C1D46F00CFBD2F /* ArtsyAPI+CurrentUserFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+CurrentUserFunctions.h"; sourceTree = "<group>"; };
 		604166B016C1D47000CFBD2F /* ArtsyAPI+CurrentUserFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+CurrentUserFunctions.m"; sourceTree = "<group>"; };
 		604166B316C1D55000CFBD2F /* ArtsyAPI+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Private.h"; sourceTree = "<group>"; };
-		6042979F1C84D08E0040F4C2 /* Eigen.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Eigen.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		60431FB618042A1E000118D7 /* ARAppNotificationsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppNotificationsDelegate.h; sourceTree = "<group>"; };
 		60431FB718042A1E000118D7 /* ARAppNotificationsDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppNotificationsDelegate.m; sourceTree = "<group>"; };
 		60438F881782F8CC00C1B63B /* ArtsyAPI+Search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Search.h"; sourceTree = "<group>"; };
@@ -1687,6 +1689,8 @@
 				5E47F34C1C3ECAA500EC0751 /* Artsy-Bridging-Header.h */,
 				49BA7E121655ABE600C06572 /* ARAppDelegate.h */,
 				49BA7E131655ABE600C06572 /* ARAppDelegate.m */,
+				1A248BD9265C282400E41409 /* ARTArtsyNativeModule.h */,
+				1A248BDA265C282400E41409 /* ARTArtsyNativeModule.m */,
 				60A0E9FF1C5107DB002754A8 /* Routing */,
 				60A0E9FE1C5107B2002754A8 /* Setup */,
 				60A0E9FD1C510758002754A8 /* Force Touch */,
@@ -1778,7 +1782,6 @@
 				60327DCA1987AD140075B399 /* Tooling */,
 				608B2F5A1657CED10046956C /* View Controllers */,
 				608B2F821657D4780046956C /* Views */,
-				6042979F1C84D08E0040F4C2 /* Eigen.playground */,
 			);
 			path = Artsy;
 			sourceTree = "<group>";
@@ -3609,6 +3612,7 @@
 				5E1DDF1D1CE24FBF00DFEE2A /* LiveAuctionBiddingViewModel.swift in Sources */,
 				5EA250661C4EE95B001E4950 /* NSArray+Additions.m in Sources */,
 				5EE9A3E51D131F6C0014A3C9 /* LiveAuctionLoadingView.swift in Sources */,
+				1A248BDB265C282400E41409 /* ARTArtsyNativeModule.m in Sources */,
 				5E1DDF1B1CE2340900DFEE2A /* LiveAuctionCurrentLotView.swift in Sources */,
 				5E6CBB011DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.m in Sources */,
 				7F9C7EF22221FE2900F6967E /* AREigenMapContainerViewController.m in Sources */,
