@@ -66,7 +66,6 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
         contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top, paddingHorizontal: 20 }}
         keyboardShouldPersistTaps="always"
       >
-        <BackButton onPress={() => navigation.goBack()} />
         <Spacer mt={60} />
         <Text variant="largeTitle">Log in with email</Text>
         <Spacer mt={50} />
@@ -145,6 +144,7 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
           </Text>
         </Touchable>
       </ScrollView>
+      <BackButton onPress={() => navigation.goBack()} />
       <Flex px={1.5} paddingBottom={1.5}>
         <Button
           onPress={handleSubmit}
