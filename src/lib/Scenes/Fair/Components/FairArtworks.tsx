@@ -38,6 +38,7 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
+  const setApplyFiltersFlag = ArtworksFiltersStore.useStoreActions((state) => state.setApplyFiltersFlagAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
 
@@ -80,6 +81,10 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
 
   useEffect(() => {
     setAggregationsAction(dispatchAggregations)
+
+    if (appliedFilters.length > 0) {
+      setApplyFiltersFlag(true);
+    }
   }, [])
 
   const screenWidth = useScreenDimensions().width
