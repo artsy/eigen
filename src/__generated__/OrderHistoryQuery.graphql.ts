@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 24fdf873bc23412e027a76d82eeaa757 */
+/* @relayHash 45af25c38943c1f7a07994778e49039a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,7 +37,7 @@ fragment OrderHistoryRow_order on CommerceOrder {
   buyerTotal
   createdAt
   itemsTotal
-  lineItems {
+  lineItems(first: 1) {
     edges {
       node {
         artwork {
@@ -51,7 +51,7 @@ fragment OrderHistoryRow_order on CommerceOrder {
             id
           }
           title
-          artist_names: artistNames
+          artistNames
           id
         }
         id
@@ -227,7 +227,13 @@ return {
                       },
                       {
                         "alias": null,
-                        "args": null,
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "first",
+                            "value": 1
+                          }
+                        ],
                         "concreteType": "CommerceLineItemConnection",
                         "kind": "LinkedField",
                         "name": "lineItems",
@@ -319,7 +325,7 @@ return {
                                         "storageKey": null
                                       },
                                       {
-                                        "alias": "artist_names",
+                                        "alias": null,
                                         "args": null,
                                         "kind": "ScalarField",
                                         "name": "artistNames",
@@ -337,7 +343,7 @@ return {
                             "storageKey": null
                           }
                         ],
-                        "storageKey": null
+                        "storageKey": "lineItems(first:1)"
                       },
                       (v2/*: any*/)
                     ],
@@ -397,7 +403,7 @@ return {
     ]
   },
   "params": {
-    "id": "24fdf873bc23412e027a76d82eeaa757",
+    "id": "45af25c38943c1f7a07994778e49039a",
     "metadata": {},
     "name": "OrderHistoryQuery",
     "operationKind": "query",

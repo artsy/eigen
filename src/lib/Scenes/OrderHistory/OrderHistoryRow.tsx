@@ -72,7 +72,7 @@ export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow,
       buyerTotal
       createdAt
       itemsTotal
-      lineItems {
+      lineItems(first: 1) {
         edges {
           node {
             artwork {
@@ -85,7 +85,7 @@ export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow,
                 name
               }
               title
-              artist_names: artistNames
+              artistNames
             }
           }
         }
