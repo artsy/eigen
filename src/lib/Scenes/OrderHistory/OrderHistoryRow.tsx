@@ -1,5 +1,6 @@
 import { OrderHistoryRow_order } from "__generated__/OrderHistoryRow_order.graphql"
 import { navigate } from "lib/navigation/navigate"
+import { extractNodes } from "lib/utils/extractNodes"
 import moment from "moment"
 import { Box, Button, Flex, Sans, Spacer, Text } from "palette"
 import React from "react"
@@ -10,10 +11,8 @@ interface OrderHistoryRowProps {
   order: OrderHistoryRow_order
 }
 
-const OrderHistoryRow: React.FC<OrderHistoryRowProps> = (props) => {
-  const { order } = props
-  // @ts-expect-error STRICT_NULL_CHECK
-  const artwork = order.lineItems.edges[0].node.artwork
+const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
+  const [{ artwork }] = extractNodes(order?.lineItems)
 
   return (
     <Box>
