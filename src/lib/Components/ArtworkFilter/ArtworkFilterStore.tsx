@@ -29,6 +29,7 @@ export interface ArtworkFiltersModel {
   setFiltersCountAction: Action<ArtworkFiltersModel, FilterCounts>
   setFilterTypeAction: Action<ArtworkFiltersModel, FilterType>
   setInitialFilterStateAction: Action<ArtworkFiltersModel, FilterArray>
+  setApplyFiltersFlagAction: Action<ArtworkFiltersModel, boolean>
 }
 
 export type ArtworkFiltersState = State<ArtworkFiltersModel>
@@ -217,6 +218,10 @@ export const ArtworkFiltersModel: ArtworkFiltersModel = {
     state.appliedFilters = payload
     state.previouslyAppliedFilters = payload
     state.applyFilters = false
+  }),
+
+  setApplyFiltersFlagAction: action((state, payload) => {
+    state.applyFilters = payload;
   }),
 }
 
