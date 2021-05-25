@@ -217,7 +217,12 @@ export const Input = React.forwardRef<TextInput, InputProps>(
               {placeholderMeasuringHack}
               <StyledInput
                 onLayout={(event) => {
-                  setInputWidth(event.nativeEvent.layout.width)
+                  const newWidth = event.nativeEvent.layout.width
+                  if (newWidth > inputWidth) {
+                    requestAnimationFrame(() => setInputWidth(newWidth))
+                  } else {
+                    setInputWidth(newWidth)
+                  }
                 }}
                 ref={input}
                 placeholderTextColor={color("black60")}
