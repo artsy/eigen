@@ -400,8 +400,11 @@ lane :promote_beta_android do
 
   supply(
     track: 'alpha',
-    track_promote_to: 'Gamma',
-    version_code: current_version_code
+    version_code: current_version_code,
+    track_promote_to: 'production',
+    skip_upload_metadata: true,
+    skip_upload_images: true,
+    skip_upload_screenshots: true,
   )
 end
 
