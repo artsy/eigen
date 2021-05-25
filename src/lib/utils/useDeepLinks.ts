@@ -17,7 +17,7 @@ export function useDeepLinks() {
         handleDeepLink(url)
       }
     })
-  }, [isHydrated])
+  }, [])
 
   useEffect(() => {
     Linking.addEventListener("url", ({ url }) => {
@@ -51,7 +51,7 @@ export function useDeepLinks() {
       // Reset the launchURL
       launchURL.current = null
     }
-  }, [isLoggedIn, launchURL.current])
+  }, [isLoggedIn, isHydrated, launchURL.current])
 }
 
 const tracks = {
