@@ -15,6 +15,7 @@ upcoming:
     - obfuscate env vars on android - kizito
     - Remove feature flag check for artist nationality filter - devon
     - Remove feature flag check for custom size filter - devon
+    - Fix iOS app blank screen - ole, mounir
   user_facing:
     - Fix wrong input font on android - dzmitry
     - Fix android native getNavigationHeight method -  kizito
