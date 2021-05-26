@@ -28,14 +28,12 @@ describe("ArtworkTileRailCard", () => {
   }
 
   it("renders a Text components", () => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const tree = renderWithWrappers(<ArtworkInfoSection artwork={defaultProps} />)
+    const tree = renderWithWrappers(<ArtworkInfoSection artwork={defaultProps as any} />)
     const textFileds = tree.root.findAllByType(Text)
     expect(textFileds.length).toBe(3)
   })
   it("check  Image component props", () => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const tree = renderWithWrappers(<ArtworkInfoSection artwork={defaultProps} />)
+    const tree = renderWithWrappers(<ArtworkInfoSection artwork={defaultProps as any} />)
     const image = tree.root.findByType(Image)
     expect(image.props.source.uri).toEqual("http://placekitten.com/200/200")
   })

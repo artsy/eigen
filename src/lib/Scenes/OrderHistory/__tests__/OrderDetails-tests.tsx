@@ -1,7 +1,6 @@
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { ArtworkInfoSectionFragmentContainer } from "../OrderDetails/ArtworkInfoSection"
 import { OrderDetailsPlaceholder, OrderDetailsQueryRender } from "../OrderDetails/OrderDetails"
 
 jest.unmock("react-relay")
