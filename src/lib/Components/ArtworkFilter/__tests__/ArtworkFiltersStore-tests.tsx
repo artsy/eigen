@@ -2103,3 +2103,36 @@ describe("SetFilterCounts", () => {
     })
   })
 })
+
+describe("setApplyFiltersFlag", () => {
+  it("Set the apply filters flag to true", () => {
+    filterState = {
+      appliedFilters: [],
+      selectedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+    }
+
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().setApplyFiltersFlagAction(true)
+
+    expect(filterArtworksStore.getState()).toEqual({
+      appliedFilters: [],
+      applyFilters: true,
+      selectedFilters: [],
+      previouslyAppliedFilters: [],
+      aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+    })
+  })
+})
