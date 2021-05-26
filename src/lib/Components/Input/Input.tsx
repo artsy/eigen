@@ -84,20 +84,20 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     const [focused, setFocused] = useState(false)
     const [showPassword, setShowPassword] = useState(!secureTextEntry)
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
-    const input = useRef<TextInput>()
+    const innerInput = useRef<TextInput>()
 
     const localClear = () => {
-      input.current?.clear()
+      innerInput.current?.clear()
       localOnChangeText("")
       rest.onClear?.()
     }
 
-    useImperativeHandle(ref, () => input.current!)
+    useImperativeHandle(ref, () => innerInput.current!)
 
     useEffect(() => {
       /* to make the font work for secure text inputs,
       see https://github.com/facebook/react-native/issues/30123#issuecomment-711076098 */
-      input.current?.setNativeProps({
+      innerInput.current?.setNativeProps({
         style: { fontFamily: TEXT_FONTS.sans },
       })
     }, [])
@@ -194,7 +194,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
             {description}
           </Sans>
         )}
-        <TouchableWithoutFeedback onPressIn={() => input.current?.focus()}>
+        <TouchableWithoutFeedback onPressIn={() => innerInput.current?.focus()}>
           <View
             style={[
               rest.style,
@@ -219,7 +219,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 onLayout={(event) => {
                   setInputWidth(event.nativeEvent.layout.width)
                 }}
-                ref={input}
+                ref={innerInput}
                 placeholderTextColor={color("black60")}
                 style={{ flex: 1, fontSize: 15, ...inputTextStyle }}
                 numberOfLines={1}
