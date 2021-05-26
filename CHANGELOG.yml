@@ -19,7 +19,8 @@ upcoming:
     - Fix webview overlaps status bar - dzmitry
     - Fix info button in conversation is hard to press - dzmitry
     - Update order of filters - dzmitry tratsiak
-    - 
+    - Fix time mismatch between auction list and individual auction page - matt
+
 
 releases:
   - version: 6.9.2
@@ -45,7 +46,7 @@ releases:
       - Add order history to user profile (behind feature flag) - alexj105
       - Enable lotsByFollowedArtists - ole
       - Add ability to unselected "ways to buy" filter - dzmitry tratsiak
- 
+
 
   - version: 6.9.1
     date: May 18, 2021

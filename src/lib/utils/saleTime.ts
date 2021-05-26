@@ -96,6 +96,8 @@ const relative = (
 }
 
 const maybePluralise = (word: string, unit: number) => word + (unit === 1 ? "" : "s")
+const maybeAddMinutes = (minutesUntilSale: number) =>
+  minutesUntilSale % 60 === 0 ? "" : ` ${minutesUntilSale % 60} ${maybePluralise("minute", minutesUntilSale)}`
 
 const starts = (now: moment.Moment, startDate: moment.Moment): string | null => {
   const hours = startDate.diff(now, "hours")
@@ -103,8 +105,8 @@ const starts = (now: moment.Moment, startDate: moment.Moment): string | null => 
   const days = startDate.startOf("day").diff(now.startOf("day"), "days")
   if (minutes < 60) {
     return `Starts in ${minutes} ${maybePluralise("minute", minutes)}`
-  } else if (days < 1) {
-    return `Starts in ${hours} ${maybePluralise("hour", hours)}`
+  } else if (hours < 24) {
+    return `Starts in ${hours} ${maybePluralise("hour", hours)}` + maybeAddMinutes(minutes)
   } else if (days < 7) {
     return `Starts in ${days} ${maybePluralise("day", days)}`
   } else {
