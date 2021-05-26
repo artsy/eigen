@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e9b85077297b7bdabc7467f9fb635728 */
+/* @relayHash 45c73a73c50b0b94c6617975c2129a10 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -126,7 +126,7 @@ fragment CollectionArtworks_collection_2T6kBV on MarketingCollection {
   isDepartment
   slug
   id
-  collectionArtworks: artworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY], input: {sort: "-decayed_merch", dimensionRange: "*-*"}) {
+  collectionArtworks: artworksConnection(first: 10, aggregations: [ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE], input: {sort: "-decayed_merch", dimensionRange: "*-*"}) {
     aggregations {
       slice
       counts {
@@ -325,14 +325,15 @@ v8 = [
     "kind": "Literal",
     "name": "aggregations",
     "value": [
+      "ARTIST_NATIONALITY",
       "COLOR",
       "DIMENSION_RANGE",
-      "PARTNER",
+      "LOCATION_CITY",
       "MAJOR_PERIOD",
-      "MEDIUM",
-      "PRICE_RANGE",
       "MATERIALS_TERMS",
-      "ARTIST_NATIONALITY"
+      "MEDIUM",
+      "PARTNER",
+      "PRICE_RANGE"
     ]
   },
   {
@@ -877,7 +878,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "artworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-decayed_merch\"})"
+            "storageKey": "artworksConnection(aggregations:[\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-decayed_merch\"})"
           },
           {
             "alias": "collectionArtworks",
@@ -1133,7 +1134,7 @@ return {
     ]
   },
   "params": {
-    "id": "e9b85077297b7bdabc7467f9fb635728",
+    "id": "45c73a73c50b0b94c6617975c2129a10",
     "metadata": {},
     "name": "AuctionResultForYouQuery",
     "operationKind": "query",
