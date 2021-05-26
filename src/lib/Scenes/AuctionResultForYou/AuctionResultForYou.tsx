@@ -14,6 +14,7 @@ import { navigate } from "lib/navigation/navigate"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { AuctionResultForYouListItem } from "./AuctionResultForYouListItem"
 import { Fonts } from "lib/data/fonts"
+import { Tab } from "../Favorites/Favorites"
 
 const mockSectionAuctionResults = [
   {
@@ -149,8 +150,10 @@ export const AuctionResultForYou: React.FC = () => (
     <ArtworkFiltersStoreProvider>
       <Sans size="3" textAlign="left" color="black60" style={{ marginHorizontal: 20, marginVertical: 17 }}>
         The latest auction results for the {""}
-        <LinkText onPress={() => navigate("/favorite")}>artists you follow</LinkText>. You can also look up more auction
-        results on the insights tab on any artist’s page.
+        <LinkText onPress={() => navigate("/favorites", { passProps: { initialTab: Tab.artists } })}>
+          artists you follow
+        </LinkText>
+        . You can also look up more auction results on the insights tab on any artist’s page.
       </Sans>
       <SectionList
         sections={mockSectionAuctionResults}
