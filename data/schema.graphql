@@ -959,6 +959,7 @@ type ArtistCounts {
     format: String
     label: String
   ): FormattedNumber
+  auctionResults: Int
   ecommerceArtworks(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
@@ -1042,6 +1043,13 @@ type ArtistPartnerConnection {
 # An edge in a connection.
 type ArtistPartnerEdge {
   artist: Artist
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: PartnerArtistArtworksSort
+  ): ArtworkConnection
   biography: String
   biographyBlurb(format: Format): PartnerArtistBlurb
   counts: PartnerArtistCounts
@@ -8340,6 +8348,13 @@ union PartnerAgreementOrErrorsUnion = Errors | PartnerAgreement
 
 type PartnerArtist {
   artist: Artist
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: PartnerArtistArtworksSort
+  ): ArtworkConnection
   biography: String
   biographyBlurb(format: Format): PartnerArtistBlurb
   counts: PartnerArtistCounts
@@ -8354,6 +8369,11 @@ type PartnerArtist {
   partner: Partner
   representedBy: Boolean
   sortableID: String
+}
+
+enum PartnerArtistArtworksSort {
+  POSITION_ASC
+  POSITION_DESC
 }
 
 type PartnerArtistBlurb {
@@ -8386,6 +8406,13 @@ type PartnerArtistCounts {
 # An edge in a connection.
 type PartnerArtistEdge {
   artist: Artist
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: PartnerArtistArtworksSort
+  ): ArtworkConnection
   biography: String
   biographyBlurb(format: Format): PartnerArtistBlurb
   counts: PartnerArtistCounts
