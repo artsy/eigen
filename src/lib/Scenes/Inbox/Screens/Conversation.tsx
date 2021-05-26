@@ -208,6 +208,7 @@ export class Conversation extends React.Component<Props, State> {
                       },
                     })
                   }}
+                  hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
                 >
                   <InfoCircleIcon />
                 </Touchable>
