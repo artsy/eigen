@@ -35,6 +35,7 @@ upcoming:
     - Fix back button in android onboarding is flying off in smaller screens - dzmitry
     - Prevent multiline input placeholder on Android - ole
     - Fix info button in conversation is hard to press - dzmitry
+    - Update order of filters - dzmitry tratsiak
 
 releases:
   - version: 6.9.1
