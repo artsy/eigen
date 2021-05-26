@@ -34,9 +34,9 @@ upcoming:
     - Add artwork location filter to artwork grids - iskounen
     - Fix back button in android onboarding is flying off in smaller screens - dzmitry
     - Prevent multiline input placeholder on Android - ole
+    - Fix webview overlaps status bar - dzmitry
     - Fix info button in conversation is hard to press - dzmitry
     - Update order of filters - dzmitry tratsiak
-
 releases:
   - version: 6.9.1
     date: May 18, 2021
