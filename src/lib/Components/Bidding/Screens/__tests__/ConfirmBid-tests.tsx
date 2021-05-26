@@ -17,10 +17,10 @@ import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { waitUntil } from "lib/tests/waitUntil"
 import { merge } from "lodash"
-import { Button, Sans, Serif } from "palette"
+import { Button, Sans, Serif, Text } from "palette"
 import React from "react"
 import "react-native"
-import { Text, TouchableWithoutFeedback } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
@@ -368,7 +368,7 @@ describe("editing bid amount", () => {
 
     const selectMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
 
-    expect(selectMaxBidRow.findAllByType(Serif)[1].props.children).toEqual("$45,000")
+    expect(selectMaxBidRow.findAllByType(Text)[1].props.children).toEqual("$45,000")
 
     selectMaxBidRow.instance.props.onPress()
 
@@ -653,7 +653,7 @@ describe("ConfirmBid for unqualified user", () => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     nextStep.passProps.onSubmit(billingAddress)
 
-    expect(billingAddressRow.findAllByType(Serif)[1].props.children).toEqual("401 Broadway 25th floor New York NY")
+    expect(billingAddressRow.findAllByType(Text)[1].props.children).toEqual("401 Broadway 25th floor New York NY")
   })
 
   it("shows the credit card form when the user tap the edit text in the credit card row", () => {
@@ -706,7 +706,7 @@ describe("ConfirmBid for unqualified user", () => {
 
     fillOutFormAndSubmit(component)
 
-    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
+    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
       "Your card's security code is incorrect."
     )
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -730,7 +730,7 @@ describe("ConfirmBid for unqualified user", () => {
 
     fillOutFormAndSubmit(component)
 
-    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
+    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
       "There was a problem processing your information. Check your payment details and try again."
     )
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -753,7 +753,7 @@ describe("ConfirmBid for unqualified user", () => {
 
     fillOutFormAndSubmit(component)
 
-    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
+    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
       "There was a problem processing your information. Check your payment details and try again."
     )
     component.root.findByType(Modal).findByType(Button).props.onPress()

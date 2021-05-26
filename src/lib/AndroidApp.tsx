@@ -65,11 +65,12 @@ const Main: React.FC<{}> = track()(({}) => {
     if (isHydrated) {
       // We wait a bit until the UI finishes drawing behind the splash screen
       setTimeout(() => {
-        RNBootSplash.hide()
-        ArtsyNativeModule.setAppStyling()
-        requestAnimationFrame(() => {
-          ArtsyNativeModule.lockActivityScreenOrientation()
+        RNBootSplash.hide().then(() => {
+          requestAnimationFrame(() => {
+            ArtsyNativeModule.lockActivityScreenOrientation()
+          })
         })
+        ArtsyNativeModule.setAppStyling()
         if (isLoggedIn) {
           ArtsyNativeModule.setNavigationBarColor("#FFFFFF")
           ArtsyNativeModule.setAppLightContrast(false)
