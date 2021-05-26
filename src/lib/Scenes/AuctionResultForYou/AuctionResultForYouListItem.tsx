@@ -22,7 +22,6 @@ export const AuctionResultForYouListItem: React.FC<Props> = ({ auctionResult, on
   return (
     <Touchable underlayColor={color("black5")} onPress={onPress}>
       <Flex py="2" px={2} flexDirection="row">
-        {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
           <Flex
             width={60}
@@ -48,7 +47,6 @@ export const AuctionResultForYouListItem: React.FC<Props> = ({ auctionResult, on
           </Flex>
         )}
 
-        {/* Sale Artwork Details */}
         <Flex pl={15} flex={1} flexDirection="row" justifyContent="space-between">
           <Flex flex={3}>
             <Flex flexDirection="row" mb={"3px"}>
@@ -72,7 +70,6 @@ export const AuctionResultForYouListItem: React.FC<Props> = ({ auctionResult, on
             )}
           </Flex>
 
-          {/* Sale Artwork Auction Result */}
           <Flex alignItems="flex-end" pl={15}>
             {auctionResultHasPrice(auctionResult) ? (
               <Flex alignItems="flex-end">

@@ -1,4 +1,3 @@
-import { AuctionResultsRail_collectionsModule } from "__generated__/AuctionResultsRail_collectionsModule.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
@@ -7,8 +6,6 @@ import { Flex } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { useTracking } from "react-tracking"
-import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
 
 const mockAuctionResults = [
@@ -130,15 +127,8 @@ const mockAuctionResults = [
   },
 ]
 
-interface Props {
-  collectionsModule: AuctionResultsRail_collectionsModule
-}
-
-// type AuctionResults = AuctionResultsRail_collectionsModule["results"][0]
-
-const AuctionResultsRail: React.FC<Props & RailScrollProps> = (props) => {
+const AuctionResultsRail: React.FC<RailScrollProps> = (props) => {
   const listRef = useRef<FlatList<any>>()
-  const tracking = useTracking()
 
   useImperativeHandle(props.scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
@@ -153,24 +143,24 @@ const AuctionResultsRail: React.FC<Props & RailScrollProps> = (props) => {
       <CardRailFlatList
         listRef={listRef}
         data={mockAuctionResults}
-        // data={compact(props.collectionsModule.results)}
         keyExtractor={(_, index) => String(index)}
         horizontal={false}
         initialNumToRender={3}
         renderItem={({ item: result, index }) => {
           if (index >= 3) {
-            return
+            return <></>
           }
 
           return (
             <AuctionResultForYouListItem
               auctionResult={result}
               onPress={() => {
-                const tapEvent = HomeAnalytics.collectionThumbnailTapEvent(result?.slug, index)
-                if (tapEvent) {
-                  tracking.trackEvent(tapEvent)
-                }
-                navigate(`/auction-result-for-you/auction-highlights`)
+                // uncomment after implementing AuctionResults query
+                // const tapEvent = HomeAnalytics.collectionThumbnailTapEvent(result?.slug, index)
+                // if (tapEvent) {
+                //   tracking.trackEvent(tapEvent)
+                // }
+                navigate(`/auction-result-for-you`)
                 // Here the auction-highlights is mocked slug for the navigation to work
                 // ToDo: Refactor this part
                 // navigate(`/auction-result-for-you/${result.slug}`)
@@ -184,6 +174,7 @@ const AuctionResultsRail: React.FC<Props & RailScrollProps> = (props) => {
 }
 
 export const ActionResultsRailFragmentContainer = createFragmentContainer(AuctionResultsRail, {
+  // Replace Query after implementing AuctionResults Query
   collectionsModule: graphql`
     fragment AuctionResultsRail_collectionsModule on HomePageMarketingCollectionsModule {
       results {

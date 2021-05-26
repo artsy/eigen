@@ -153,7 +153,7 @@ const Home = (props: Props) => {
                 case "auction-results":
                   return (
                     <ActionResultsRailFragmentContainer
-                      collectionsModule={item.data}
+                      // Pass auctionResults data after implementing query
                       scrollRef={scrollRefs.current[index]}
                     />
                   )

@@ -158,7 +158,7 @@ export const AuctionResultForYou: React.FC = () => (
       <SectionList
         sections={mockSectionAuctionResults}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <AuctionResultForYouListItem auctionResult={item} onPress={() => {}} />}
+        renderItem={({ item }) => <AuctionResultForYouListItem auctionResult={item} onPress={() => {}} />} // Add onPress action after implementing AuctionResults Query
         renderSectionHeader={({ section: { title } }) => {
           let date = new Date(title)
           let sectionMounth = moment(date).format("MMMM")
@@ -184,9 +184,8 @@ export const AuctionResultForYou: React.FC = () => (
   </PageWithSimpleHeader>
 )
 
-export const SortMode = styled(Text)``
-
 export const AuctionResultForYouContainer = createFragmentContainer(AuctionResultForYou, {
+  // Replace Query after implementing AuctionResults Query
   collection: graphql`
     fragment AuctionResultForYou_collection on MarketingCollection
     @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
@@ -209,7 +208,10 @@ interface AuctionResultForYouRendererProps {
   collectionID: string
 }
 
-export const AuctionResultForYouQueryRenderer: React.FC<AuctionResultForYouRendererProps> = ({ collectionID }) => (
+export const AuctionResultForYouQueryRenderer: React.FC<AuctionResultForYouRendererProps> = ({
+  collectionID = "auction-highlights",
+}) => (
+  // Replace Query after implementing AuctionResults Query
   <QueryRenderer<AuctionResultForYouQuery>
     environment={defaultEnvironment}
     query={graphql`
