@@ -35,6 +35,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { FancyModal } from "../FancyModal/FancyModal"
 import { ArtworkFilterOptionsScreen, FilterModalMode as ArtworkFilterMode } from "./ArtworkFilterOptionsScreen"
+import { LocationCitiesOptionsScreen } from "./Filters/LocationCitiesOptions"
 
 interface ArtworkFilterProps extends ViewProps {
   closeModal?: () => void
@@ -72,6 +73,7 @@ export type ArtworkFilterNavigationStack = {
   FilterOptionsScreen: ArtworkFilterOptionsScreenParams
   GalleriesAndInstitutionsOptionsScreen: undefined
   MaterialsTermsOptionsScreen: undefined
+  LocationCitiesOptionsScreen: undefined
   MediumOptionsScreen: undefined
   PriceRangeOptionsScreen: undefined
   SizeOptionsScreen: undefined
@@ -180,6 +182,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             <Stack.Screen name="CategoriesOptionsScreen" component={CategoriesOptionsScreen} />
             <Stack.Screen name="MaterialsTermsOptionsScreen" component={MaterialsTermsOptionsScreen} />
             <Stack.Screen name="ArtistNationalitiesOptionsScreen" component={ArtistNationalitiesOptionsScreen} />
+            <Stack.Screen name="LocationCitiesOptionsScreen" component={LocationCitiesOptionsScreen} />
           </Stack.Navigator>
 
           <Separator my={0} />

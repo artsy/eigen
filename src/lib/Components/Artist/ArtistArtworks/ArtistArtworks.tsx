@@ -197,7 +197,7 @@ export default createPaginationContainer(
           first: $count
           after: $cursor
           input: $input
-          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS]
+          aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE]
         ) @connection(key: "ArtistArtworksGrid_artworks") {
           aggregations {
             slice

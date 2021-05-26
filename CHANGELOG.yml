@@ -12,6 +12,9 @@ upcoming:
     - Add admin menu item to clear relay cache - brian
     - Improve admin menu - dzmitry
     - Use app links on android - mounir
+    - obfuscate env vars on android - kizito
+    - Remove feature flag check for artist nationality filter - devon
+    - Remove feature flag check for custom size filter - devon
   user_facing:
     - Fix wrong input font on android - dzmitry
     - Fix android native getNavigationHeight method -  kizito
@@ -22,11 +25,15 @@ upcoming:
     - Update auction registration flow UI - ole
     - Fix vanishing artist series - mounir
     - Add search UI for material filter - dzmitry tratsiak
-    - Implements custom size filter with localization (behind feature flag) - damon
-    - Adds artist nationality & ethnicity filter (behind feature flag) - damon
+    - Implements custom size filter with localization - damon
+    - Adds artist nationality & ethnicity filter - damon
     - Add order history to user profile (behind feature flag) - alexj105
     - Enable lotsByFollowedArtists - ole
     - Add ability to unselected "ways to buy" filter - dzmitry tratsiak
+    - Add artwork location filter to artwork grids - iskounen
+    - Fix back button in android onboarding is flying off in smaller screens - dzmitry
+    - Prevent multiline input placeholder on Android - ole
+
 releases:
   - version: 6.9.1
     date: May 18, 2021
