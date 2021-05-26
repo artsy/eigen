@@ -12,6 +12,7 @@ upcoming:
     - Add admin menu item to clear relay cache - brian
     - Improve admin menu - dzmitry
     - Use app links on android - mounir
+    - obfuscate env vars on android - kizito
     - Remove feature flag check for artist nationality filter - devon
     - Remove feature flag check for custom size filter - devon
   user_facing:
