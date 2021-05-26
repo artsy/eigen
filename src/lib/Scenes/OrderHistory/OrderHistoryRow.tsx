@@ -2,7 +2,7 @@ import { OrderHistoryRow_order } from "__generated__/OrderHistoryRow_order.graph
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import moment from "moment"
-import { Box, Button, Flex, Spacer, Text } from "palette"
+import { Box, Button, Flex, Text } from "palette"
 import React from "react"
 import { Image } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -16,15 +16,15 @@ const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
 
   return (
     <Box>
-      <Flex>
+      <Flex mb={10}>
         <Flex flexDirection="row" justifyContent="space-between">
-          <Box flexGrow={1}>
+          <Flex flexGrow={1} justifyContent="center">
             {!!artwork.image ? (
               <Image source={{ uri: artwork?.image?.resized?.url }} style={{ height: 50, width: 50 }} />
             ) : (
-              <Box width="50px" height="50px" backgroundColor="black10" />
+              <Box width={50} height={50} backgroundColor="black10" />
             )}
-          </Box>
+          </Flex>
           <Box flexGrow={3}>
             <Text fontSize={16} fontWeight={500} lineHeight={22}>
               {artwork?.artistNames}
@@ -55,11 +55,9 @@ const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
           </Box>
         </Flex>
       </Flex>
-      <Spacer mb={10} />
-      <Button block variant="secondaryGray" onPress={() => navigate(`/orders/${order.internalID}`)}>
+      <Button mb={10} block variant="secondaryGray" onPress={() => navigate(`/orders/${order.internalID}`)}>
         View Order
       </Button>
-      <Spacer mb={10} />
     </Box>
   )
 }
