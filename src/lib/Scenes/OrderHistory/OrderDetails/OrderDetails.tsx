@@ -41,8 +41,6 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
   order: graphql`
     fragment OrderDetails_order on CommerceOrder {
       internalID
-      code
-      state
     }
   `,
 })
