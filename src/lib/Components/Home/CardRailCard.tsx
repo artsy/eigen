@@ -29,16 +29,3 @@ export const CardRailArtworkImageContainer = styled.View`
   justify-content: space-between;
   overflow: hidden;
 `
-
-export const CardRailAuctionResultsImageContainer = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  overflow: hidden;
-`
-
-export const CardRailAuctionResultsCard = styled.TouchableHighlight.attrs({ underlayColor: "transparent" })`
-  border-color: ${colors["gray-regular"]};
-  border-bottom-width: 1px;
-  overflow: hidden;
-`
