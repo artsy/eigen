@@ -1,7 +1,7 @@
 import _ from "lodash"
 import { color, Color, EyeOpenedIcon, Flex, Sans, TEXT_FONTS, XCircleIcon } from "palette"
 import { fontFamily } from "palette/platform/fonts/fontFamily"
-import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import {
   LayoutAnimation,
   Platform,
@@ -77,22 +77,33 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       canHidePassword,
       inputTextStyle,
       placeholder,
+      value: parentValue,
       ...rest
     },
     ref
   ) => {
     const [focused, setFocused] = useState(false)
     const [showPassword, setShowPassword] = useState(!secureTextEntry)
-    const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
     const innerInput = useRef<TextInput>()
+
+    /**
+     * Don't use `setOurValue`, use `localOnChangeText` instead.
+     * That's because that way we can run the parent's `onChangeText`, which might be overriding `ourValue` anyway.
+     * Only use `setOurValue` within the `localOnChangeText` function.
+     */
+    const [ourValue, setOurValue] = useState(rest.defaultValue ?? "")
+    const value = parentValue ?? ourValue
+
+    const localOnChangeText = (text: string) => {
+      setOurValue(text) // here we set our value
+      rest.onChangeText?.(text) // and here we run the parent's func to update their value, if they are using it.
+    }
 
     const localClear = () => {
       innerInput.current?.clear()
       localOnChangeText("")
       rest.onClear?.()
     }
-
-    useImperativeHandle(ref, () => innerInput.current!)
 
     useEffect(() => {
       /* to make the font work for secure text inputs,
@@ -118,11 +129,6 @@ export const Input = React.forwardRef<TextInput, InputProps>(
           </TouchableOpacity>
         </Flex>
       )
-    }
-
-    const localOnChangeText = (text: string) => {
-      setValue(text)
-      rest.onChangeText?.(text)
     }
 
     const placeholderWidths = useRef<number[]>([])

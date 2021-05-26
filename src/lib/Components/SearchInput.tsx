@@ -9,19 +9,33 @@ interface SearchInputProps extends InputProps {
 }
 
 export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
-  ({ enableCancelButton, onChangeText, onClear, ...props }, ref) => {
+  ({ enableCancelButton, onChangeText, onClear, value: parentValue, ...props }, ref) => {
     const [inputFocused, setInputFocused] = useState(false)
+
+    /**
+     * Don't use `setOurValue`, use `localOnChangeText` instead.
+     * That's because that way we can run the parent's `onChangeText`, which might be overriding `ourValue` anyway.
+     * Only use `setOurValue` within the `localOnChangeText` function.
+     */
+    const [ourValue, setOurValue] = useState(props.defaultValue ?? "")
+    const value = parentValue ?? ourValue
+
+    const localOnChangeText = (text: string) => {
+      setOurValue(text) // here we set our value
+      onChangeText?.(text) // and here we run the parent's func to update their value, if they are using it.
+    }
 
     return (
       <Flex flexDirection="row">
         <Input
           ref={ref}
+          value={value}
           icon={<SearchIcon width={18} height={18} />}
           autoCorrect={false}
           enableClearButton
           returnKeyType="search"
           onClear={onClear}
-          onChangeText={onChangeText}
+          onChangeText={localOnChangeText}
           {...props}
           onFocus={(e) => {
             if (enableCancelButton) {
@@ -44,7 +58,7 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
               <TouchableOpacity
                 onPress={() => {
                   ;(ref as RefObject<TextInput>).current?.blur()
-                  ;(ref as RefObject<TextInput>).current?.clear()
+                  localOnChangeText("")
                 }}
                 hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
               >
