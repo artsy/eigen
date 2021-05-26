@@ -7,11 +7,10 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Flex, Sans, Separator, Spacer, Text } from "palette"
+import { Box, Flex, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { ArtworkInfoSection } from "./OrderDetails/ArtworkInfoSection"
 import { OrderHistoryRowContainer } from "./OrderHistoryRow"
 const NUM_ORDERS_TO_FETCH = 10
 

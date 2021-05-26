@@ -1,15 +1,9 @@
 import { ArtworkInfoSection_artwork } from "__generated__/ArtworkInfoSection_artwork.graphql"
-import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
-
-import { SectionTitle } from "lib/Components/SectionTitle"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
-import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Box, Flex, Sans, Text } from "palette"
+import { Box, Flex, Text } from "palette"
 import React from "react"
 import { Image } from "react-native"
 import { View } from "react-native"
-import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
