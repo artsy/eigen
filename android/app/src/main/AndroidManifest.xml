@@ -44,6 +44,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="https" android:host="www.artsy.net" />
+                <data android:scheme="https" android:host="artsy.net" />
+                <data android:scheme="http" />
                 <data android:pathPrefix="/about" />
                 <data android:pathPrefix="/artist-series" />
                 <data android:pathPrefix="/artist" />

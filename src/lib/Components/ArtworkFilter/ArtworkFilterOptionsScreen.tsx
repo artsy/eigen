@@ -7,7 +7,6 @@ import {
 import { selectedOption } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { TouchableRow } from "lib/Components/TouchableRow"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
@@ -81,9 +80,6 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const concreteAggregations = aggregationsState ?? []
 
   const isClearAllButtonEnabled = appliedFiltersState.length > 0 || selectedFiltersState.length > 0
-
-  // TODO: Remove when nationality filter is released
-  const shouldExcludeArtistNationalitiesFilter = !useFeatureFlag("ARUseImprovedArtworkFilters")
 
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
     concreteAggregations.map((aggregation) => {
@@ -166,11 +162,6 @@ export const ArtworkFilterOptionsScreen: React.FC<
         data={sortedFilterOptions}
         style={{ flexGrow: 1 }}
         renderItem={({ item }) => {
-          // TODO: Remove when nationality filter is released
-          if (shouldExcludeArtistNationalitiesFilter && item.displayText === FilterDisplayName.artistNationalities) {
-            return null
-          }
-
           const selectedCurrentOption = selectedOption({
             selectedOptions,
             filterScreen: item.filterType,
