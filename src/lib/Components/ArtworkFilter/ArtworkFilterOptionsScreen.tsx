@@ -519,7 +519,6 @@ const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "dimensionRange",
   "waysToBuy",
   "locationCities",
-  "artistNationalities",
   "majorPeriods",
   "colors",
   "partnerIDs",
