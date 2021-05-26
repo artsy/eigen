@@ -73,7 +73,7 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
         { input: prepareFilterArtworksParamsForInput(filterParams) }
       )
     }
-  }, [appliedFilters])
+  }, [appliedFilters, applyFilters])
 
   const dispatchFollowedArtistCount = (followedArtistCount || artworks?.counts?.followedArtists) ?? 0
   const artworkAggregations = ((aggregations || artworks?.aggregations) ?? []) as aggregationsType
