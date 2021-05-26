@@ -1,39 +1,82 @@
+import { ArtworkInfoSection_order } from "__generated__/ArtworkInfoSection_order.graphql"
+import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
+
 import { SectionTitle } from "lib/Components/SectionTitle"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { extractNodes } from "lib/utils/extractNodes"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Box, Flex, Sans, Text } from "palette"
 import React from "react"
 import { Image } from "react-native"
 import { View } from "react-native"
 import { ScrollView } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 
-export interface ArtworkInfoSectionProps {
-  artwork: any
+interface Props {
+  artwork: ArtworkInfoSection_order
 }
 
-export const ArtworkInfoSection: React.FC<ArtworkInfoSectionProps> = ({ artwork }) => {
-  console.log(artwork, "artwork")
-
+export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
+  const artworkItem = extractNodes(artwork.lineItems)[0].artwork
   return (
-    <ScrollView>
-      <SectionTitle title="Artwork Info" />
-      <Box>
-        {/* <Spacer mb={10} /> */}
-        <Flex>
-          <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 14 }}>
-            <Box style={{ marginHorizontal: 22 }}>
-              <Text>asd</Text>
-              <Image source={{ uri: artwork?.image?.resized?.url }} style={{ height: 50, width: 50 }} />
+    <Box>
+      <Text fontSize={15} fontWeight={500} lineHeight={22}>
+        Artwork Info
+      </Text>
+      <Flex>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 14 }}>
+          <Box style={{ marginHorizontal: 22 }}>
+            <Image source={{ uri: artworkItem?.image?.resized?.url }} style={{ height: 50, width: 50 }} />
+          </Box>
+          <Box style={{ flex: 1, flexShrink: 1 }}>
+            <Box mb={10}>
+              <Text fontSize="size4" numberOfLines={1} fontWeight="bold">
+                {artworkItem?.artist_names}
+              </Text>
             </Box>
-            <Box style={{ flex: 1, flexShrink: 1 }}>
-              <Box mb={10}>
-                <Sans size="3t" numberOfLines={1} weight="medium">
-                  {artwork?.artist_names}
-                </Sans>
-              </Box>
-              <Text color="black60">{artwork?.title}</Text>
-            </Box>
-          </View>
-        </Flex>
-      </Box>
-    </ScrollView>
+            <Text color="black60">{artworkItem?.title}</Text>
+          </Box>
+        </View>
+      </Flex>
+    </Box>
   )
 }
+
+export const ArtworkInfoSectionFragmentContainer = createFragmentContainer(ArtworkInfoSection, {
+  artwork: graphql`
+    fragment ArtworkInfoSection_order on CommerceOrder {
+      lineItems {
+        edges {
+          node {
+            artwork {
+              slug
+              date
+              image {
+                resized(width: 55) {
+                  url
+                }
+              }
+              partner {
+                slug
+                initials
+                name
+                profile {
+                  icon {
+                    url(version: "square140")
+                  }
+                }
+              }
+              shippingOrigin
+              internalID
+              title
+              artist_names: artistNames
+              artists {
+                slug
+              }
+            }
+          }
+        }
+      }
+    }
+  `,
+})

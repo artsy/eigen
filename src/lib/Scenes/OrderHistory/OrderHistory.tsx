@@ -48,7 +48,6 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginatio
         renderItem={({ item }) => (
           <Flex flexDirection="column" justifyContent="space-between" px={2}>
             <OrderHistoryRowContainer order={item} key={item.code} />
-            <ArtworkInfoSection artwork={item} />
           </Flex>
         )}
         ListEmptyComponent={

@@ -53,8 +53,8 @@ const node: ReaderFragment = {
       "name": "ArtworkInfoSection_order"
     }
   ],
-  "type": "CommerceOrder",
-  "abstractKey": "__isCommerceOrder"
+  "type": "CommerceBuyOrder",
+  "abstractKey": null
 };
-(node as any).hash = '11e0ed98e4eacd75e51a09eadbfba689';
+(node as any).hash = 'dbb2bf6b80e853ef02b2ca5104a848f3';
 export default node;

@@ -2,24 +2,29 @@ import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
 import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { Flex } from "palette"
 import React from "react"
-import { Text } from "react-native"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
 
 export interface OrderDetailsProps {
   order: OrderDetails_order
 }
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
+  console.log(order, "order")
+  // const artwork = extractNodes(order.lineItems)
   return (
     <PageWithSimpleHeader title="Order Details">
       <ScrollView>
-        <Text>{order.internalID}</Text>
+        <Flex flexDirection="column" justifyContent="space-between" px={2}>
+          <ArtworkInfoSectionFragmentContainer artwork={order} />
+        </Flex>
       </ScrollView>
     </PageWithSimpleHeader>
   )
@@ -43,6 +48,8 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
       internalID
       code
       state
+      ...ArtworkInfoSection_order
+      # ...ArtworkInfoSection_artwork
     }
   `,
 })

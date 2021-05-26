@@ -23,6 +23,7 @@ upcoming:
     - Adds artist nationality & ethnicity filter (behind feature flag) - damon
     - Add order history to user profile (behind feature flag) - alexj105
     - Add orders to order history (behind feature flag) - Serge0n
+    - Add order details page (app registry, a route with orderID, relay container)
     - Enable lotsByFollowedArtists - ole
     - Add ability to unselected "ways to buy" filter - dzmitry tratsiak
 releases:
