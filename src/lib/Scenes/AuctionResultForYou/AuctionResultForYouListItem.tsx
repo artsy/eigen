@@ -1,3 +1,4 @@
+import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { auctionResultHasPrice, auctionResultText } from "lib/Scenes/AuctionResult/helpers"
 import { QAInfoManualPanel, QAInfoRow } from "lib/utils/QAInfo"
@@ -5,7 +6,6 @@ import { capitalize } from "lodash"
 import moment from "moment"
 import { bullet, color, Flex, NoArtworkIcon, Text, Touchable } from "palette"
 import React from "react"
-import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 
 interface Props {
   auctionResult: any // add correct type after implementing actionResult query

@@ -1,18 +1,15 @@
 import { AuctionResultsRail_collectionsModule } from "__generated__/AuctionResultsRail_collectionsModule.graphql"
+import { SectionTitle } from "lib/Components/SectionTitle"
+import { navigate } from "lib/navigation/navigate"
+import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
+import { AuctionResultForYouListItem } from "lib/Scenes/AuctionResultForYou/AuctionResultForYouListItem"
 import { Flex } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-
-import { SectionTitle } from "lib/Components/SectionTitle"
-import { navigate } from "lib/navigation/navigate"
-
-import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
-import { extractNodes } from "lib/utils/extractNodes"
 import { useTracking } from "react-tracking"
 import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
-import { AuctionResultForYouListItem } from "lib/Scenes/AuctionResultForYou/AuctionResultForYouListItem"
 
 const mockAuctionResults = [
   {
