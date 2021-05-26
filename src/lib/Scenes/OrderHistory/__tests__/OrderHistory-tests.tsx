@@ -10,11 +10,13 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { OrderHistoryContainer } from "../OrderHistory"
 import { OrderHistoryQueryRender } from "../OrderHistory"
 import { OrderHistoryPlaceholder } from "../OrderHistory"
+import { OrderHistoryRowContainer } from "../OrderHistoryRow"
 jest.unmock("react-relay")
 
 jest.mock("lib/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
 }))
+
 describe(OrderHistoryQueryRender, () => {
   it("Loads OrderHistoryQueryRender", () => {
     const tree = renderWithWrappers(<OrderHistoryQueryRender />)
@@ -71,7 +73,17 @@ describe("Order history container", () => {
               edges: [
                 {
                   node: {
-                    internalID: "f2b0bd8d-599b-4611-8f37-da9b5b8ae444",
+                    code: "123456789",
+                  },
+                },
+                {
+                  node: {
+                    code: "987654321",
+                  },
+                },
+                {
+                  node: {
+                    code: "159482637",
                   },
                 },
               ],
@@ -80,6 +92,6 @@ describe("Order history container", () => {
         })
       )
     })
-    expect(extractText(tree.root.findByType(FlatList))).toContain("f2b0bd8d-599b-4611-8f37-da9b5b8ae444")
+    expect(tree.root.findAllByType(OrderHistoryRowContainer)).toHaveLength(3)
   })
 })
