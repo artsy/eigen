@@ -7,7 +7,6 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { parse as parseQueryString } from "query-string"
 import React, { useEffect, useRef, useState } from "react"
 import { Platform, View } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import WebView, { WebViewProps } from "react-native-webview"
 import { parse as parseURL } from "url"
 import { ArtsyKeyboardAvoidingView } from "./ArtsyKeyboardAvoidingView"
@@ -79,8 +78,10 @@ export const ArtsyReactWebView = React.forwardRef<
   const webURL = useEnvironment().webURL
   const uri = url.startsWith("/") ? webURL + url : url
 
+  const paddingTop = useScreenDimensions().safeAreaInsets.top
+
   return (
-    <View style={{ flex: 1, paddingTop: useSafeAreaInsets().top }}>
+    <View style={{ flex: 1, paddingTop }}>
       <WebView
         ref={ref}
         // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction
