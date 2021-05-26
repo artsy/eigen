@@ -9,7 +9,7 @@ export type OrderDetails_order = {
     readonly internalID: string;
     readonly code: string;
     readonly state: CommerceOrderStateEnum;
-    readonly " $fragmentRefs": FragmentRefs<"ArtworkInfoSection_order">;
+    readonly " $fragmentRefs": FragmentRefs<"ArtworkInfoSection_artwork">;
     readonly " $refType": "OrderDetails_order";
 };
 export type OrderDetails_order$data = OrderDetails_order;
@@ -50,11 +50,11 @@ const node: ReaderFragment = {
     {
       "args": null,
       "kind": "FragmentSpread",
-      "name": "ArtworkInfoSection_order"
+      "name": "ArtworkInfoSection_artwork"
     }
   ],
-  "type": "CommerceBuyOrder",
-  "abstractKey": null
+  "type": "CommerceOrder",
+  "abstractKey": "__isCommerceOrder"
 };
-(node as any).hash = 'dbb2bf6b80e853ef02b2ca5104a848f3';
+(node as any).hash = '71a66305a805e57ec8232416b47ce995';
 export default node;

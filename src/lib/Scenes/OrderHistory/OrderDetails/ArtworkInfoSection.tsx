@@ -1,4 +1,4 @@
-import { ArtworkInfoSection_order } from "__generated__/ArtworkInfoSection_order.graphql"
+import { ArtworkInfoSection_artwork } from "__generated__/ArtworkInfoSection_artwork.graphql"
 import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
 
 import { SectionTitle } from "lib/Components/SectionTitle"
@@ -13,7 +13,7 @@ import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  artwork: ArtworkInfoSection_order
+  artwork: ArtworkInfoSection_artwork
 }
 
 export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
@@ -44,35 +44,18 @@ export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
 
 export const ArtworkInfoSectionFragmentContainer = createFragmentContainer(ArtworkInfoSection, {
   artwork: graphql`
-    fragment ArtworkInfoSection_order on CommerceOrder {
+    fragment ArtworkInfoSection_artwork on CommerceOrder {
       lineItems {
         edges {
           node {
             artwork {
-              slug
-              date
               image {
                 resized(width: 55) {
                   url
                 }
               }
-              partner {
-                slug
-                initials
-                name
-                profile {
-                  icon {
-                    url(version: "square140")
-                  }
-                }
-              }
-              shippingOrigin
-              internalID
               title
               artist_names: artistNames
-              artists {
-                slug
-              }
             }
           }
         }

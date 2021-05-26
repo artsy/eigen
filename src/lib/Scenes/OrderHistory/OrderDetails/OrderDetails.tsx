@@ -17,8 +17,6 @@ export interface OrderDetailsProps {
 }
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
-  console.log(order, "order")
-  // const artwork = extractNodes(order.lineItems)
   return (
     <PageWithSimpleHeader title="Order Details">
       <ScrollView>
@@ -48,8 +46,7 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
       internalID
       code
       state
-      ...ArtworkInfoSection_order
-      # ...ArtworkInfoSection_artwork
+      ...ArtworkInfoSection_artwork
     }
   `,
 })
