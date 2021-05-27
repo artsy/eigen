@@ -322,7 +322,7 @@ describe("when pressing register button", () => {
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  it("shows the error screen with the default error message if there are unhandled errors from the updateUserProfile mutation", () => {
+  it("displays the default error message if there are unhandled errors from the updateUserProfile mutation", () => {
     const errors = [{ message: "malformed error" }]
 
     console.error = jest.fn() // Silences component logging.
@@ -387,7 +387,7 @@ describe("when pressing register button", () => {
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  it("shows the generic error screen on a updateUserProfile mutation network failure", () => {
+  it("displays an error message on a updateUserProfile mutation network failure", () => {
     console.error = jest.fn() // Silences component logging.
     relay.commitMutation = jest
       .fn()
@@ -450,7 +450,7 @@ describe("when pressing register button", () => {
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  it("shows the error screen with the default error message if there are unhandled errors from the createCreditCard mutation", () => {
+  it("displays the default error message if there are unhandled errors from the createCreditCard mutation", () => {
     const errors = [{ message: "malformed error" }]
 
     console.error = jest.fn() // Silences component logging.
@@ -492,7 +492,7 @@ describe("when pressing register button", () => {
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  it("shows the generic error screen on a createCreditCard mutation network failure", () => {
+  it("displays an error message on a createCreditCard mutation network failure", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
