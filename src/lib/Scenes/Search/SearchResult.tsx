@@ -8,7 +8,6 @@ import { ArtworkIcon, AuctionIcon, Box, CloseIcon, color, Flex, Sans, Spacer } f
 import React, { useContext } from "react"
 import { Pressable, Text, TouchableOpacity, View } from "react-native"
 import { useTracking } from "react-tracking"
-import { graphql, useQuery } from "relay-hooks"
 import styled from "styled-components/native"
 import { AutosuggestResult } from "./AutosuggestResults"
 import { SearchContext } from "./SearchContext"
@@ -38,29 +37,8 @@ export const SearchResult: React.FC<{
   const { trackEvent } = useTracking()
   const imageSide = 40
 
-  // remove below when metaphysics is ready
-  const { props } = useQuery(
-    graphql`
-      query ArtistAboveTheFoldQuery($artistID: String!) {
-        artist(id: $artistID) {
-          auctionResultsConnection {
-            totalCount
-          }
-        }
-      }
-    `,
-    { artistID: result.internalID },
-    { skip: !showQuickNavigationButtons || result.displayType !== "Artist" }
-  )
-  // remove above when metaphysics is ready
-
   const showNavigationButtons =
-    showQuickNavigationButtons &&
-    result.displayType === "Artist" &&
-    // change below when metaphysics is ready
-    // @ts-expect-error
-    !!props?.artist?.auctionResultsConnection?.totalCount // <-- check if there are Insights & Artworks tabs
-  // change above when metaphysics is ready
+    showQuickNavigationButtons && !!result.counts?.artworks && !!result.counts?.auctionResults
 
   const onPress = (passProps?: { navigateToSpecificArtistTab: ArtistTabs }) => {
     if (onResultPress) {
@@ -79,7 +57,7 @@ export const SearchResult: React.FC<{
           ? Schema.ActionNames.ARAnalyticsSearchRecentItemSelected
           : Schema.ActionNames.ARAnalyticsSearchItemSelected,
         query: queryRef.current,
-        selected_object_type: result.displayType,
+        selected_object_type: result.displayType || result.__typename,
         selected_object_slug: result.slug,
       })
     }
@@ -102,9 +80,9 @@ export const SearchResult: React.FC<{
             <Text ellipsizeMode="tail" numberOfLines={1}>
               {applyHighlight(result.displayLabel!, highlight)}
             </Text>
-            {!!result.displayType && !!showResultType && (
+            {(!!result.displayType || result.__typename === "Artist") && !!showResultType && (
               <Sans size="3t" color="black60">
-                {result.displayType}
+                {result.displayType || result.__typename}
               </Sans>
             )}
           </View>
@@ -136,14 +114,14 @@ export const SearchResult: React.FC<{
 
             <Pressable onPress={() => onPress({ navigateToSpecificArtistTab: "Artworks" })}>
               {({ pressed }) => (
-                <UtilButton>
+                <QuickNavigationButton>
                   <Box mr={0.5}>
                     <ArtworkIcon fill={pressed ? "blue100" : "black100"} />
                   </Box>
                   <Sans size="3" color={pressed ? "blue100" : "black100"}>
                     Artworks
                   </Sans>
-                </UtilButton>
+                </QuickNavigationButton>
               )}
             </Pressable>
 
@@ -151,14 +129,14 @@ export const SearchResult: React.FC<{
 
             <Pressable onPress={() => onPress({ navigateToSpecificArtistTab: "Insights" })}>
               {({ pressed }) => (
-                <UtilButton>
+                <QuickNavigationButton>
                   <Box mr={0.5}>
                     <AuctionIcon fill={pressed ? "blue100" : "black100"} />
                   </Box>
                   <Sans size="3" color={pressed ? "blue100" : "black100"}>
                     Auction Results
                   </Sans>
-                </UtilButton>
+                </QuickNavigationButton>
               )}
             </Pressable>
           </Flex>
@@ -167,7 +145,7 @@ export const SearchResult: React.FC<{
     </>
   )
 }
-const UtilButton = styled(Flex)`
+const QuickNavigationButton = styled(Flex)`
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -186,7 +164,7 @@ function navigateToResult(result: AutosuggestResult, navigateToSpecificArtistTab
     navigateToPartner(result.slug!)
   } else if (result.displayType === "Fair") {
     navigateToEntity(result.href!, EntityType.Fair, SlugType.ProfileID)
-  } else if (result.displayType === "Artist") {
+  } else if (result.__typename === "Artist") {
     navigate(result.href!, { passProps: { initialTab: navigateToSpecificArtistTab } })
   } else {
     navigate(result.href!)

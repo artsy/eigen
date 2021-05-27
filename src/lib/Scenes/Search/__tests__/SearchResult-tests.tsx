@@ -17,6 +17,7 @@ const result = {
   href: "banksy-href",
   imageUrl: "blah",
   displayType: "Artist",
+  __typename: "Artist",
 }
 
 let recentSearchesArray: any[] = []
@@ -146,6 +147,7 @@ describe(SearchResult, () => {
           slug: "art-expo-profile-slug",
           imageUrl: "blah",
           displayType: "Fair",
+          __typename: "SearchableItem",
         }}
       />
     )
