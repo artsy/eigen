@@ -1,6 +1,6 @@
+import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
-import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { AuctionResultForYouListItem } from "lib/Scenes/AuctionResultForYou/AuctionResultForYouListItem"
 import { Flex } from "palette"
 import React, { useImperativeHandle, useRef } from "react"

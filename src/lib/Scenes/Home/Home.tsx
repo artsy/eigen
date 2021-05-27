@@ -4,12 +4,12 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
 import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkRail"
+import { ActionResultsRailFragmentContainer } from "lib/Scenes/Home/Components/AuctionResultsRail"
 import { CollectionsRailFragmentContainer } from "lib/Scenes/Home/Components/CollectionsRail"
 import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
 import { SaleArtworksHomeRailContainer } from "lib/Scenes/Home/Components/SaleArtworksHomeRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
-import { ActionResultsRailFragmentContainer } from "lib/Scenes/Home/Components/AuctionResultsRail"
 
 import { Home_homePage } from "__generated__/Home_homePage.graphql"
 import { Home_me } from "__generated__/Home_me.graphql"
@@ -43,7 +43,7 @@ const Home = (props: Props) => {
   const collectionsModule = homePage.marketingCollectionsModule
   const artistModules = (homePage.artistModules && homePage.artistModules.concat()) || []
   const fairsModule = homePage.fairsModule
-  const auctionResultsModule = {} //!!! FIX TYPE
+  const auctionResultsModule = {} // !!! FIX TYPE
 
   const artworkRails = artworkModules.map(
     (module) =>
