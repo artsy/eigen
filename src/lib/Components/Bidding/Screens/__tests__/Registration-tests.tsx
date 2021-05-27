@@ -348,7 +348,7 @@ describe("when pressing register button", () => {
     jest.runAllTicks()
 
     expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
-      "There was a problem processing your information. Check your payment details and try again."
+      "There was a problem processing your phone number, please try again."
     )
     component.root.findByType(Modal).findByType(Button).props.onPress()
 
@@ -380,7 +380,7 @@ describe("when pressing register button", () => {
 
     jest.runAllTicks()
     expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
-      "There was a problem processing your information. Check your payment details and try again."
+      "There was a problem processing your phone number, please try again."
     )
     component.root.findByType(Modal).findByType(Button).props.onPress()
 
@@ -406,7 +406,7 @@ describe("when pressing register button", () => {
     component.root.findAllByType(Button)[1].props.onPress()
 
     expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
-      "There was a problem processing your information. Check your payment details and try again."
+      "There was a problem processing your phone number, please try again."
     )
 
     component.root.findByType(Modal).findByType(Button).props.onPress()

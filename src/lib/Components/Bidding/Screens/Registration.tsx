@@ -135,20 +135,22 @@ export class Registration extends React.Component<RegistrationProps, Registratio
    * need a separate call to update our User model to store that info
    */
   async updatePhoneNumber() {
+    const errorMessage = "There was a problem processing your phone number, please try again."
+
     return new Promise<void>((done, reject) => {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const { phoneNumber } = this.state.billingAddress
       commitMutation<RegistrationUpdateUserMutation>(this.props.relay.environment, {
         onCompleted: (_, errors) => {
           if (errors && errors.length) {
-            this.presentErrorModal(errors, null)
+            this.presentErrorModal(errors, errorMessage)
             reject(errors)
           } else {
             done()
           }
         },
         onError: (error) => {
-          this.presentErrorModal(error, null)
+          this.presentErrorModal(error, errorMessage)
         },
         mutation: graphql`
           mutation RegistrationUpdateUserMutation($input: UpdateMyProfileInput!) {
