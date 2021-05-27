@@ -83,6 +83,11 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableViewingRooms",
   },
+  ARAuctionResults: {
+    readyForRelease: false,
+    description: "Show Auction Results in Home Screen",
+    showInAdminMenu: true,
+  },
   AREnableCustomSharesheet: {
     readyForRelease: true,
     echoFlagKey: "AREnableCustomSharesheet",

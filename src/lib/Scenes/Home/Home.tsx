@@ -45,6 +45,8 @@ const Home = (props: Props) => {
   const fairsModule = homePage.fairsModule
   const auctionResultsModule = {} // !!! FIX TYPE
 
+  const auctionResultsEchoFlag = useFeatureFlag("ARAuctionResults")
+
   const artworkRails = artworkModules.map(
     (module) =>
       module &&
@@ -88,7 +90,8 @@ const Home = (props: Props) => {
         type: "collections",
         data: collectionsModule,
       } as const),
-    auctionResultsModule &&
+    auctionResultsEchoFlag &&
+      auctionResultsModule &&
       ({
         type: "auction-results",
         data: auctionResultsModule,
