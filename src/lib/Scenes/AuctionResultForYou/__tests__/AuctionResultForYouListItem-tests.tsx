@@ -1,10 +1,10 @@
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import React from "react"
 import { capitalize } from "lodash"
 import { NoArtworkIcon } from "palette"
+import React from "react"
 import { AuctionResultForYouListItem } from "../AuctionResultForYouListItem"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 
 jest.unmock("react-relay")
 
