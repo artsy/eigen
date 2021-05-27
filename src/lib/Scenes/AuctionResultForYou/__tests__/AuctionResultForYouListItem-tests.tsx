@@ -100,7 +100,14 @@ const mockAuctionResultForYoyListItemDataWithoutPrice = {
 
 describe("AuctionResultForYouListItem", () => {
   const renderAuctionResult = (mockData: any = mockAuctionResultForYoyListItemData) => {
-    const tree = renderWithWrappers(<AuctionResultForYouListItem auctionResult={mockData} onPress={() => {}} />)
+    const tree = renderWithWrappers(
+      <AuctionResultForYouListItem
+        auctionResult={mockData}
+        onPress={() => {
+          console.log("Pressed")
+        }}
+      />
+    )
 
     return tree
   }

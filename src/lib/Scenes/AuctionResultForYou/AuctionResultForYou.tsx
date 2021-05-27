@@ -157,10 +157,17 @@ export const AuctionResultForYou: React.FC = () => (
       <SectionList
         sections={mockSectionAuctionResults}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <AuctionResultForYouListItem auctionResult={item} onPress={() => {}} />} // Add onPress action after implementing AuctionResults Query
+        renderItem={({ item }) => (
+          <AuctionResultForYouListItem
+            auctionResult={item}
+            onPress={() => {
+              console.log("Pressed")
+            }}
+          />
+        )} // Add onPress action after implementing AuctionResults Query
         renderSectionHeader={({ section: { title } }) => {
-          let date = new Date(title)
-          let sectionMounth = moment(date).format("MMMM")
+          const date = new Date(title)
+          const sectionMounth = moment(date).format("MMMM")
 
           return (
             <Text
