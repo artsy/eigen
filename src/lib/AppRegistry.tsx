@@ -180,8 +180,9 @@ const SearchWithTracking: React.FC<SearchWithTrackingProps> = screenTrack<Search
   return <Search {...props} />
 })
 
+export type ModalPresentationStyle = "fullScreen" | "pageSheet" | "formSheet"
 export interface ViewOptions {
-  modalPresentationStyle?: "fullScreen" | "pageSheet" | "formSheet"
+  modalPresentationStyle?: ModalPresentationStyle
   hasOwnModalCloseButton?: boolean
   alwaysPresentModally?: boolean
   hidesBackButton?: boolean

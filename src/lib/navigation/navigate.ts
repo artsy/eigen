@@ -38,6 +38,7 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
 
   const module = modules[result.module]
   const presentModally = options.modal ?? module.options.alwaysPresentModally ?? false
+  const modalPresentationStyle = module.options.modalPresentationStyle ?? "pageSheet"
   const { replace = false } = options
 
   const screenDescriptor: ViewDescriptor = {
@@ -52,7 +53,7 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
   }
 
   if (presentModally) {
-    ARScreenPresenterModule.presentModal(screenDescriptor)
+    ARScreenPresenterModule.presentModal(screenDescriptor, modalPresentationStyle)
   } else if (module.options.isRootViewForTabName) {
     // this view is one of our root tab views, e.g. home, search, etc.
     // switch to the tab, pop the stack, and scroll to the top.

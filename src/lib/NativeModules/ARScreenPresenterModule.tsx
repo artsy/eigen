@@ -1,5 +1,6 @@
 import { NavigationContainerRef, NavigationState, StackActions, TabActions } from "@react-navigation/native"
 import immer from "immer-peasy"
+import { AppModule, ModalPresentationStyle } from "lib/AppRegistry"
 import { ViewDescriptor } from "lib/navigation/navigate"
 import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import { last } from "lodash"
@@ -74,22 +75,24 @@ export function __unsafe_switchTab(tab: BottomTabType) {
   __unsafe_mainModalStackRef.current?.dispatch(TabActions.jumpTo(tab))
 }
 
+export interface ScreenParams {
+  rootModuleName: AppModule
+  rootModuleProps?: {
+    modalPresentationStyle?: ModalPresentationStyle
+    [key: string]: any
+  }
+}
+
 export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterModule"] = {
-  presentModal(viewDescriptor: ViewDescriptor) {
+  presentModal(viewDescriptor: ViewDescriptor, modalPresentationStyle: ModalPresentationStyle) {
+    const screenParams: ScreenParams = {
+      rootModuleName: viewDescriptor.moduleName,
+      rootModuleProps: { ...viewDescriptor.props, modalPresentationStyle },
+    }
     if (viewDescriptor.replace) {
-      __unsafe_mainModalStackRef.current?.dispatch(
-        StackActions.replace("modal", {
-          rootModuleName: viewDescriptor.moduleName,
-          rootModuleProps: viewDescriptor.props,
-        })
-      )
+      __unsafe_mainModalStackRef.current?.dispatch(StackActions.replace("modal", screenParams))
     } else {
-      __unsafe_mainModalStackRef.current?.dispatch(
-        StackActions.push("modal", {
-          rootModuleName: viewDescriptor.moduleName,
-          rootModuleProps: viewDescriptor.props,
-        })
-      )
+      __unsafe_mainModalStackRef.current?.dispatch(StackActions.push("modal", screenParams))
     }
   },
   async popToRootAndScrollToTop(selectedTab: BottomTabType) {
