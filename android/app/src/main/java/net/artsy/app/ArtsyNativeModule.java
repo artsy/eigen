@@ -11,6 +11,7 @@ import android.os.Build;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -48,7 +49,8 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
         constants.put("launchCount", ArtsyNativeModule.launchCount);
-        constants.put("navigationBarHeight", getNavigationBarSize(this.getReactApplicationContext()).y);
+        constants.put("navigationBarHeight", getNavigationBarSize(this.getReactApplicationContext()));
+        constants.put("gitCommitShortHash", BuildConfig.GITCommitShortHash);
         return constants;
     }
 
@@ -142,47 +144,14 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
         });
     }
 
-    public static Point getNavigationBarSize(Context context) {
-        Point appUsableSize = getAppUsableScreenSize(context);
-        Point realScreenSize = getRealScreenSize(context);
-
-        // navigation bar on the side
-        if (appUsableSize.x < realScreenSize.x) {
-            return new Point(realScreenSize.x - appUsableSize.x, appUsableSize.y);
+    public static int getNavigationBarSize(Context context) {
+        boolean hasHardwareMenuKey = ViewConfiguration.get(context).hasPermanentMenuKey();
+        int resourceId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0 && !hasHardwareMenuKey)
+        {
+            return context.getResources().getDimensionPixelSize(resourceId);
         }
-
-        // navigation bar at the bottom
-        if (appUsableSize.y < realScreenSize.y) {
-            return new Point(appUsableSize.x, realScreenSize.y - appUsableSize.y);
-        }
-
-        // navigation bar is not present
-        return new Point();
-    }
-
-    public static Point getAppUsableScreenSize(Context context) {
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = windowManager.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        return size;
-    }
-
-    public static Point getRealScreenSize(Context context) {
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = windowManager.getDefaultDisplay();
-        Point size = new Point();
-
-        if (Build.VERSION.SDK_INT >= 17) {
-            display.getRealSize(size);
-        } else if (Build.VERSION.SDK_INT >= 14) {
-            try {
-                size.x = (Integer) Display.class.getMethod("getRawWidth").invoke(display);
-                size.y = (Integer) Display.class.getMethod("getRawHeight").invoke(display);
-            } catch (IllegalAccessException e) {} catch (InvocationTargetException e) {} catch (NoSuchMethodException e) {}
-        }
-
-        return size;
+        return 0;
     }
 
     private boolean isTablet() {

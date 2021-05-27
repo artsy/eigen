@@ -22,24 +22,25 @@ const times = {
 
   future01: "2020-09-04T15:01:00",
   future10: "2020-09-04T15:43:00",
-  future20: "2020-09-05T15:00:00",
-  future30: "2020-09-09T15:00:00",
-  future40: "2020-09-09T21:00:00",
-  future50: "2020-10-01T15:00:00",
-  future60: "2021-01-02T15:00:00",
+  future20: "2020-09-04T17:32:00",
+  future30: "2020-09-05T15:00:00",
+  future40: "2020-09-09T15:00:00",
+  future50: "2020-09-09T21:00:00",
+  future60: "2020-10-01T15:00:00",
+  future70: "2021-01-02T15:00:00",
 }
 
 type Sale = Parameters<typeof saleTime>[0]
 
 const liveSaleNY: Sale = {
   startAt: null,
-  liveStartAt: times.future50,
+  liveStartAt: times.future60,
   endAt: null,
   timeZone: timezones.ny,
 }
 
 const timedSaleNY: Sale = {
-  startAt: times.future50,
+  startAt: times.future60,
   liveStartAt: null,
   endAt: null,
   timeZone: timezones.ny,
@@ -53,7 +54,7 @@ const liveSaleImminentNY: Sale = {
 }
 
 const liveSaleSoonNY: Sale = {
-  startAt: times.future30,
+  startAt: times.future40,
   liveStartAt: null,
   endAt: null,
   timeZone: timezones.ny,
@@ -74,7 +75,7 @@ const liveSaleInOneMinuteNY: Sale = {
 }
 
 const liveSaleSoonLA: Sale = {
-  startAt: times.future40,
+  startAt: times.future50,
   liveStartAt: null,
   endAt: null,
   timeZone: timezones.la,
@@ -89,15 +90,15 @@ const finishedSaleNY: Sale = {
 
 const completeNotYetOpenSaleNY: Sale = {
   startAt: null,
-  liveStartAt: times.future20,
-  endAt: times.future30,
+  liveStartAt: times.future30,
+  endAt: times.future40,
   timeZone: timezones.ny,
 }
 
 const completeOpenSaleNY: Sale = {
   startAt: null,
   liveStartAt: times.past10,
-  endAt: times.future20,
+  endAt: times.future30,
   timeZone: timezones.ny,
 }
 
@@ -110,27 +111,34 @@ const completeFinishedSaleNY: Sale = {
 
 const liveSaleDE: Sale = {
   startAt: null,
-  liveStartAt: times.future50,
+  liveStartAt: times.future60,
   endAt: null,
   timeZone: timezones.de,
 }
 
+const liveSaleWithHoursAndMinutes: Sale = {
+  startAt: null,
+  liveStartAt: times.future20,
+  endAt: null,
+  timeZone: timezones.ny,
+}
+
 const liveSale2021: Sale = {
   startAt: null,
-  liveStartAt: times.future60,
+  liveStartAt: times.future70,
   endAt: null,
   timeZone: timezones.de,
 }
 
 const liveSaleTomorrow: Sale = {
   startAt: null,
-  liveStartAt: times.future20,
+  liveStartAt: times.future30,
   endAt: null,
   timeZone: timezones.de,
 }
 
 const futureNoEndAtSale: Sale = {
-  startAt: times.future20,
+  startAt: times.future30,
   liveStartAt: null,
   endAt: null,
   timeZone: timezones.ny,
@@ -146,7 +154,7 @@ const pastNoEndAtSale: Sale = {
 const futureNoStartAtSale: Sale = {
   startAt: null,
   liveStartAt: null,
-  endAt: times.future20,
+  endAt: times.future30,
   timeZone: timezones.ny,
 }
 
@@ -226,8 +234,12 @@ describe("#saleTime.relative", () => {
   })
 
   it("pluralises correctly", () => {
-    expect(saleTime(liveSaleTomorrow).relative).toEqual("Starts in 1 day")
+    expect(saleTime(liveSaleTomorrow).relative).toEqual("Starts in 18 hours")
     expect(saleTime(liveSaleInOneMinuteNY).relative).toEqual("Starts in 1 minute")
+  })
+
+  it("handles hours and minutes until sale correctly", () => {
+    expect(saleTime(liveSaleWithHoursAndMinutes).relative).toEqual("Starts in 2 hours 32 minutes")
   })
 
   it("handles complete sales correctly", () => {

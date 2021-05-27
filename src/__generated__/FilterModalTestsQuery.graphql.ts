@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2eb57afdd7380224047c4b6aedd80eb4 */
+/* @relayHash f70ec3fe8b1cdb7055b89f4a3f139539 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -136,7 +136,7 @@ fragment CollectionArtworks_collection on MarketingCollection {
   isDepartment
   slug
   id
-  collectionArtworks: artworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY]) {
+  collectionArtworks: artworksConnection(first: 10, aggregations: [ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -216,14 +216,15 @@ v3 = [
     "kind": "Literal",
     "name": "aggregations",
     "value": [
+      "ARTIST_NATIONALITY",
       "COLOR",
       "DIMENSION_RANGE",
-      "PARTNER",
+      "LOCATION_CITY",
       "MAJOR_PERIOD",
-      "MEDIUM",
-      "PRICE_RANGE",
       "MATERIALS_TERMS",
-      "ARTIST_NATIONALITY"
+      "MEDIUM",
+      "PARTNER",
+      "PRICE_RANGE"
     ]
   },
   {
@@ -698,7 +699,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "artworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\"],first:10)"
+            "storageKey": "artworksConnection(aggregations:[\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:10)"
           },
           {
             "alias": "collectionArtworks",
@@ -718,7 +719,7 @@ return {
     ]
   },
   "params": {
-    "id": "2eb57afdd7380224047c4b6aedd80eb4",
+    "id": "f70ec3fe8b1cdb7055b89f4a3f139539",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "marketingCollection": {

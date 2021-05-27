@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a56783a729ad46fa6adaee064c336914 */
+/* @relayHash 50e55edd5fade4e3df287928b8a78731 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,7 +28,7 @@ query ArtistSeriesArtworksTestsQuery {
 fragment ArtistSeriesArtworks_artistSeries on ArtistSeries {
   slug
   internalID
-  artistSeriesArtworks: filterArtworksConnection(first: 20, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY]) {
+  artistSeriesArtworks: filterArtworksConnection(first: 20, aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -145,12 +145,12 @@ v3 = [
     "value": [
       "COLOR",
       "DIMENSION_RANGE",
-      "PARTNER",
+      "LOCATION_CITY",
       "MAJOR_PERIOD",
-      "MEDIUM",
-      "PRICE_RANGE",
       "MATERIALS_TERMS",
-      "ARTIST_NATIONALITY"
+      "MEDIUM",
+      "PARTNER",
+      "PRICE_RANGE"
     ]
   },
   {
@@ -613,7 +613,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\"],first:20)"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:20)"
           },
           {
             "alias": "artistSeriesArtworks",
@@ -633,7 +633,7 @@ return {
     ]
   },
   "params": {
-    "id": "a56783a729ad46fa6adaee064c336914",
+    "id": "50e55edd5fade4e3df287928b8a78731",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artistSeries": {

@@ -7,9 +7,9 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 // import { LinkText } from "../../../Text/LinkText"
 import { mockTimezone } from "lib/tests/mockTimezone"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Button, Sans, Serif } from "palette"
+import { Button, Sans, Text } from "palette"
 import React from "react"
-import { Text, TouchableWithoutFeedback } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
@@ -52,7 +52,7 @@ it("renders properly for a user without a credit card", () => {
     </BiddingThemeProvider>
   )
 
-  expect(component.root.findAllByType(Sans)[4].props.children).toEqual("A valid credit card is required.")
+  expect(component.root.findAllByType(Text)[5].props.children).toEqual("A valid credit card is required.")
 })
 
 it("renders properly for a user with a credit card", () => {
@@ -62,7 +62,7 @@ it("renders properly for a user with a credit card", () => {
     </BiddingThemeProvider>
   )
 
-  expect(component.root.findAllByType(Sans)[2].props.children).toEqual(
+  expect(component.root.findAllByType(Text)[1].props.children).toEqual(
     "To complete your registration, please confirm that you agree to the Conditions of Sale."
   )
 })
@@ -74,14 +74,14 @@ it("renders properly for a verified user with a credit card", () => {
         {...initialProps}
         sale={{ ...sale, requireIdentityVerification: true }}
         me={{
-          has_credit_cards: true,
+          hasCreditCards: true,
           identityVerified: true,
         }}
       />
     </BiddingThemeProvider>
   )
 
-  expect(component.root.findAllByType(Sans)[2].props.children).toEqual(
+  expect(component.root.findAllByType(Text)[1].props.children).toEqual(
     "To complete your registration, please confirm that you agree to the Conditions of Sale."
   )
 })
@@ -99,7 +99,7 @@ it("shows the billing address that the user typed in the billing address form", 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   nextStep.passProps.onSubmit(billingAddress)
 
-  expect(billingAddressRow.findAllByType(Serif)[1].props.children).toEqual("401 Broadway 25th floor New York NY")
+  expect(billingAddressRow.findAllByType(Text)[1].props.children).toEqual("401 Broadway 25th floor New York NY")
 })
 
 it("shows the credit card form when the user tap the edit text in the credit card row", () => {
@@ -153,7 +153,7 @@ describe("when the sale requires identity verification", () => {
       </BiddingThemeProvider>
     )
 
-    expect(component.root.findAllByType(Sans)[5].props.children).toEqual(
+    expect(component.root.findAllByType(Text)[6].props.children).toEqual(
       "This auction requires Artsy to verify your identity before bidding."
     )
   })
@@ -165,7 +165,7 @@ describe("when the sale requires identity verification", () => {
       </BiddingThemeProvider>
     )
 
-    expect(component.root.findAllByType(Sans).map(({ props }) => props.children)).not.toContain(
+    expect(component.root.findAllByType(Text).map(({ props }) => props.children)).not.toContain(
       "This auction requires Artsy to verify your identity before bidding."
     )
   })
@@ -347,7 +347,7 @@ describe("when pressing register button", () => {
 
     jest.runAllTicks()
 
-    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
+    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
       "There was a problem processing your information. Check your payment details and try again."
     )
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -379,7 +379,7 @@ describe("when pressing register button", () => {
     component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
-    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
+    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
       "There was a problem processing your information. Check your payment details and try again."
     )
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -444,7 +444,7 @@ describe("when pressing register button", () => {
     component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
-    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
+    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
       "Your card's security code is incorrect."
     )
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -748,17 +748,17 @@ const stripeToken = {
 }
 
 const me: Partial<Registration_me> = {
-  has_credit_cards: false,
+  hasCreditCards: false,
   identityVerified: false,
 }
 
 const sale: Partial<Registration_sale> = {
   slug: "sale-id",
-  live_start_at: "2029-06-11T01:00:00+00:00",
-  end_at: null,
+  liveStartAt: "2029-06-11T01:00:00+00:00",
+  endAt: null,
   name: "Phillips New Now",
-  start_at: "2018-06-11T01:00:00+00:00",
-  is_preview: true,
+  startAt: "2018-06-11T01:00:00+00:00",
+  isPreview: true,
   requireIdentityVerification: false,
 }
 
@@ -809,7 +809,7 @@ const initialPropsForUserWithCreditCard = {
   ...initialProps,
   me: {
     ...me,
-    has_credit_cards: true,
+    hasCreditCards: true,
   },
 } as any
 

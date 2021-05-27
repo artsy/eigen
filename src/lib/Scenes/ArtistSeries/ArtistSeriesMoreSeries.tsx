@@ -3,7 +3,7 @@ import { ArtistSeriesMoreSeries_artist } from "__generated__/ArtistSeriesMoreSer
 import { navigate } from "lib/navigation/navigate"
 import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { Flex, FlexProps, Sans } from "palette"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -33,12 +33,19 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
   ...rest
 }) => {
   const series = artist?.artistSeriesConnection?.edges ?? []
+  const [artistSeries, setArtistSeries] = useState(series)
   const excludedArtistSeriesCount = currentArtistSeriesExcluded ? 1 : 0
   const totalCount = Number(artist?.artistSeriesConnection?.totalCount ?? 0) + excludedArtistSeriesCount
 
   if (!artist || series.length === 0) {
     return null
   }
+
+  // We are saving the artist series to the state here because we face a weird
+  // issue where this list gets updated whenever the user navigates to the ArtistsSeries
+  useEffect(() => {
+    setArtistSeries(series)
+  }, [])
 
   const { trackEvent } = useTracking()
 
@@ -59,7 +66,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
           </TouchableOpacity>
         )}
       </Flex>
-      {series.map((item, index) => {
+      {artistSeries.map((item, index) => {
         const artistSeriesItem = item?.node
 
         return (
