@@ -33,6 +33,7 @@ upcoming:
     - Update order of filters - dzmitry tratsiak
     - Fix time mismatch between auction list and individual auction page - matt
     - Fix swiping on filter options selects them - dzmitry tratsiak
+    - close keyboard on message send - lily
 
 releases:
   - version: 6.9.2
