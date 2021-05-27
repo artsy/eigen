@@ -8,7 +8,7 @@ import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { BorderBox, Button, Flex, Text } from "palette"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { InquiryMakeOfferButtonFragmentContainer as InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
@@ -22,6 +22,7 @@ interface MakeOfferModalProps {
 
 export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
   const { artwork, conversationID } = props
+  const { editionSets } = artwork
   const [selectedEdition, setSelectedEdition] = useState<string>()
 
   const selectEdition = (editionSetID: string, isAvailable?: boolean) => {
@@ -29,6 +30,12 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
       setSelectedEdition(editionSetID)
     }
   }
+
+  useEffect(() => {
+    if (editionSets?.length === 1) {
+      setSelectedEdition(editionSets[0]?.internalID)
+    }
+  })
 
   return (
     <View>
