@@ -33,6 +33,8 @@ upcoming:
     - Update order of filters - dzmitry tratsiak
     - Fix time mismatch between auction list and individual auction page - matt
     - Fix swiping on filter options selects them - dzmitry tratsiak
+    - Implement auction results section in home screen (behind feature flag) - yauheni
+    - Implement auctionResultsForYou screen (behind feature flag) - yauheni
 
 releases:
   - version: 6.9.2
