@@ -8,7 +8,8 @@ export type OrderHistory_me = {
     readonly orders: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly internalID: string;
+                readonly code: string;
+                readonly " $fragmentRefs": FragmentRefs<"OrderHistoryRow_order">;
             } | null;
         } | null> | null;
     } | null;
@@ -78,7 +79,7 @@ const node: ReaderFragment = {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
-                  "name": "internalID",
+                  "name": "code",
                   "storageKey": null
                 },
                 {
@@ -87,6 +88,11 @@ const node: ReaderFragment = {
                   "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
+                },
+                {
+                  "args": null,
+                  "kind": "FragmentSpread",
+                  "name": "OrderHistoryRow_order"
                 }
               ],
               "storageKey": null
@@ -133,5 +139,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '4901713cb74871658a73278e024020b8';
+(node as any).hash = '1555e5227d44f3d2a632e7f32264f44e';
 export default node;
