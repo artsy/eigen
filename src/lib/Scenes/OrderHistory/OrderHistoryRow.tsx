@@ -11,43 +11,46 @@ interface OrderHistoryRowProps {
   order: OrderHistoryRow_order
 }
 
-const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
+export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const [{ artwork }] = extractNodes(order?.lineItems)
 
   return (
     <Box>
       <Flex mb={10}>
         <Flex flexDirection="row" justifyContent="space-between">
-          <Flex flexGrow={1} justifyContent="center">
+          <Flex flexGrow={1} justifyContent="center" data-test-id="image-container">
             {!!artwork.image ? (
-              <Image source={{ uri: artwork?.image?.resized?.url }} style={{ height: 50, width: 50 }} />
+              <Image
+                source={{ uri: artwork?.image?.resized?.url }}
+                style={{ height: 50, width: 50 }}
+                data-test-id="image"
+              />
             ) : (
-              <Box width={50} height={50} backgroundColor="black10" />
+              <Box width={50} height={50} backgroundColor="black10" data-test-id="image-box" />
             )}
           </Flex>
           <Box flexGrow={3}>
-            <Text fontSize={16} fontWeight={500} lineHeight={22}>
+            <Text variant="mediumText" data-test-id="artist-names">
               {artwork?.artistNames}
             </Text>
-            <Text fontSize={14} fontWeight={400} lineHeight={21} color="black60">
+            <Text variant="caption" color="black60" data-test-id="partner-name">
               {artwork?.partner?.name}
             </Text>
-            <Text fontSize={14} fontWeight={400} lineHeight={21} color="black60">
+            <Text variant="caption" color="black60" data-test-id="date">
               {moment(order.createdAt).format("l")}
             </Text>
           </Box>
           <Box flexGrow={1}>
             <Flex justifyContent="flex-end">
-              <Text textAlign="right" fontSize={15} fontWeight={400} lineHeight={22.5}>
+              <Text textAlign="right" variant="text" data-test-id="price">
                 {order.buyerTotal}
               </Text>
               <Text
                 textAlign="right"
-                fontSize={14}
-                fontWeight={400}
-                lineHeight={21}
+                variant="caption"
                 color="black60"
                 style={{ textTransform: "capitalize" }}
+                data-test-id="order-status"
               >
                 {order.state.toLowerCase()}
               </Text>
@@ -55,7 +58,13 @@ const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
           </Box>
         </Flex>
       </Flex>
-      <Button mb={10} block variant="secondaryGray" onPress={() => navigate(`/orders/${order.internalID}`)}>
+      <Button
+        mb={10}
+        block
+        variant="secondaryGray"
+        onPress={() => navigate(`/order-history/${order.internalID}`)}
+        data-test-id="view-order"
+      >
         View Order
       </Button>
     </Box>
