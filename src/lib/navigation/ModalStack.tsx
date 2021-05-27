@@ -1,6 +1,5 @@
 import { NavigationContainer, Route } from "@react-navigation/native"
-import { CardStyleInterpolators, createStackNavigator, TransitionPresets } from "@react-navigation/stack"
-import { AppModule } from "lib/AppRegistry"
+import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { __unsafe_mainModalStackRef, ScreenParams } from "lib/NativeModules/ARScreenPresenterModule"
 import React from "react"
 import { Platform } from "react-native"
