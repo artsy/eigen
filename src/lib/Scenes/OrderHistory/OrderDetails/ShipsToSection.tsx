@@ -1,4 +1,4 @@
-import { ArtworkInfoSection_artwork } from "__generated__/ArtworkInfoSection_artwork.graphql"
+import { ShipsToSection_artwork } from "__generated__/ShipsToSection_artwork.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Box, Flex, Text } from "palette"
 import React from "react"
@@ -7,10 +7,10 @@ import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  artwork: ArtworkInfoSection_artwork
+  artwork: ShipsToSection_artwork
 }
 
-export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
+export const ShipsToSection: React.FC<Props> = ({ artwork }) => {
   const artworkItem = extractNodes(artwork.lineItems)[0].artwork
   return (
     <Flex>
@@ -31,9 +31,9 @@ export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
   )
 }
 
-export const ArtworkInfoSectionFragmentContainer = createFragmentContainer(ArtworkInfoSection, {
+export const ShipsToSectionFragmentContainer = createFragmentContainer(ShipsToSection, {
   artwork: graphql`
-    fragment ArtworkInfoSection_artwork on CommerceOrder {
+    fragment ShipsToSection_artwork on CommerceOrder {
       lineItems {
         edges {
           node {

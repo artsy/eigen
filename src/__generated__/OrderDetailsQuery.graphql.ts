@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 40014ff3f60d46f37beec2b28d038895 */
+/* @relayHash f271ec0b3ac7ad3938376c4e5e7d46bd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -57,6 +57,20 @@ fragment OrderDetails_order on CommerceOrder {
   internalID
   code
   state
+  requestedFulfillment {
+    __typename
+    ... on CommerceShip {
+      __typename
+      addressLine1
+      addressLine2
+      city
+      country
+      name
+      phoneNumber
+      postalCode
+      region
+    }
+  }
   ...ArtworkInfoSection_artwork
 }
 */
@@ -77,6 +91,13 @@ v1 = [
   }
 ],
 v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
+  "storageKey": null
+},
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -124,13 +145,7 @@ return {
         "name": "commerceOrder",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "__typename",
-            "storageKey": null
-          },
+          (v2/*: any*/),
           {
             "kind": "TypeDiscriminator",
             "abstractKey": "__isCommerceOrder"
@@ -154,6 +169,81 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "state",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": null,
+            "kind": "LinkedField",
+            "name": "requestedFulfillment",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              {
+                "kind": "InlineFragment",
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "addressLine1",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "addressLine2",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "city",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "country",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "name",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "phoneNumber",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "postalCode",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "region",
+                    "storageKey": null
+                  }
+                ],
+                "type": "CommerceShip",
+                "abstractKey": null
+              }
+            ],
             "storageKey": null
           },
           {
@@ -237,11 +327,11 @@ return {
                             "name": "artistNames",
                             "storageKey": null
                           },
-                          (v2/*: any*/)
+                          (v3/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v2/*: any*/)
+                      (v3/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -251,14 +341,14 @@ return {
             ],
             "storageKey": null
           },
-          (v2/*: any*/)
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "40014ff3f60d46f37beec2b28d038895",
+    "id": "f271ec0b3ac7ad3938376c4e5e7d46bd",
     "metadata": {},
     "name": "OrderDetailsQuery",
     "operationKind": "query",
