@@ -15,15 +15,14 @@ export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
   return (
     <Flex>
       <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 14 }}>
-        <Box style={{ marginHorizontal: 22 }}>
-          <Image source={{ uri: artworkItem?.image?.resized?.url }} style={{ height: 50, width: 50 }} />
-        </Box>
+        <Image
+          source={{ uri: artworkItem?.image?.resized?.url }}
+          style={{ height: 50, width: 50, marginHorizontal: 22 }}
+        />
         <Box style={{ flex: 1, flexShrink: 1 }}>
-          <Box mb={10}>
-            <Text fontSize="size4" numberOfLines={1} fontWeight="bold">
-              {artworkItem?.artist_names}
-            </Text>
-          </Box>
+          <Text pb={10} fontSize="size4" numberOfLines={1} fontWeight="bold">
+            {artworkItem?.artist_names}
+          </Text>
           <Text color="black60">{artworkItem?.title}</Text>
         </Box>
       </View>

@@ -1,15 +1,17 @@
 import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
 import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
+import { theme } from "lib/Components/Bidding/Elements/Theme"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Flex, Separator, Text } from "palette"
+import { Box, Flex, Text } from "palette"
 import React from "react"
 import { ScrollView, SectionList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
+import { ShipsToSectionFragmentContainer } from "./ShipsToSection"
 
 export interface OrderDetailsProps {
   order: OrderDetails_order
@@ -28,6 +30,11 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
       title: "Artwork Info",
       data: [<ArtworkInfoSectionFragmentContainer artwork={order} />],
     },
+    {
+      key: "ShipTo_Section",
+      title: "Ships to",
+      data: [<ShipsToSectionFragmentContainer address={order} />],
+    },
   ]
 
   return (
@@ -43,6 +50,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
                 <Box>{item}</Box>
               </Flex>
             )}
+            stickySectionHeadersEnabled={false}
             renderSectionHeader={({ section: { title } }) => (
               <Box mt={2}>
                 <Text fontSize={15} fontWeight={500} lineHeight={22}>
@@ -50,11 +58,16 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
                 </Text>
               </Box>
             )}
-            ItemSeparatorComponent={() => (
-              <Flex flexDirection="column" justifyContent="center" alignItems="center">
-                <Separator mt={10} mb={20} width="90%" />
-                <Text>asd</Text>
-              </Flex>
+            SectionSeparatorComponent={(data) => (
+              <Box
+                style={{
+                  height: !!data.leadingItem && !!data.trailingSection ? 2 : 0,
+                  backgroundColor: `${theme.colors.black10}`,
+                }}
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+              ></Box>
             )}
           />
         </Flex>
@@ -81,20 +94,8 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
       internalID
       code
       state
-      requestedFulfillment {
-        ... on CommerceShip {
-          __typename
-          addressLine1
-          addressLine2
-          city
-          country
-          name
-          phoneNumber
-          postalCode
-          region
-        }
-      }
       ...ArtworkInfoSection_artwork
+      ...ShipsToSection_address
     }
   `,
 })
