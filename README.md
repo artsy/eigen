@@ -3,7 +3,7 @@
 ### Meta
 
 - **State:** production
-- **Point People:** [Brian Beckerle](https://github.com/brainbicycle), [David Sheldrick](https://github.com/ds300)
+- **Point People:** [Brian Beckerle](https://github.com/brainbicycle), [Mounir Dhahri](https://github.com/MounirDhahri), [Pavlos Vinieratos](https://github.com/pvinis)
 - **CI :** [![Build Status](https://circleci.com/gh/artsy/eigen/tree/master.svg?style=shield&circle-token=f7a3e9b08ab306cd01a15da49933c0774d508ecb)](https://circleci.com/gh/artsy/eigen)
 
 This is an [Artsy](https://github.com/artsy) OSS project. Other mobile projects are [Energy](https://github.com/artsy/energy) and [Eidolon](https://github.com/artsy/eidolon), with the retired [Emission](https://github.com/artsy/emission) and [Emergence](https://github.com/artsy/emergence).
