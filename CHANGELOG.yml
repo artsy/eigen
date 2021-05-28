@@ -37,6 +37,7 @@ upcoming:
     - Fix swiping on filter options selects them - dzmitry tratsiak
     - Fix registration flow error handling (e.g. invalid phone number) - ole
     - Decode html entities in markdown - ole
+    - close keyboard on message send - lily
 
 releases:
   - version: 6.9.2
