@@ -394,8 +394,8 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "attributionClass",
     ScreenComponent: "AttributionClassOptionsScreen",
   },
-  color: {
-    displayText: FilterDisplayName.color,
+  colors: {
+    displayText: FilterDisplayName.colors,
     filterType: "colors",
     ScreenComponent: "ColorsOptionsScreen",
   },
