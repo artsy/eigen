@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 45af25c38943c1f7a07994778e49039a */
+/* @relayHash adfc5fae20436bd7bee30e683b6a6faf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -10,6 +10,7 @@ export type OrderHistoryQueryVariables = {
 };
 export type OrderHistoryQueryResponse = {
     readonly me: {
+        readonly name: string | null;
         readonly " $fragmentRefs": FragmentRefs<"OrderHistory_me">;
     } | null;
 };
@@ -25,6 +26,7 @@ query OrderHistoryQuery(
   $count: Int!
 ) {
   me {
+    name
     ...OrderHistory_me_yu5n1
     id
   }
@@ -87,14 +89,21 @@ var v0 = [
     "name": "count"
   }
 ],
-v1 = [
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v2 = [
   {
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
   }
 ],
-v2 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -116,6 +125,7 @@ return {
         "name": "me",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
           {
             "args": [
               {
@@ -148,9 +158,10 @@ return {
         "name": "me",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
           {
             "alias": null,
-            "args": (v1/*: any*/),
+            "args": (v2/*: any*/),
             "concreteType": "CommerceOrderConnectionWithTotalCount",
             "kind": "LinkedField",
             "name": "orders",
@@ -306,14 +317,8 @@ return {
                                         "name": "partner",
                                         "plural": false,
                                         "selections": [
-                                          {
-                                            "alias": null,
-                                            "args": null,
-                                            "kind": "ScalarField",
-                                            "name": "name",
-                                            "storageKey": null
-                                          },
-                                          (v2/*: any*/)
+                                          (v1/*: any*/),
+                                          (v3/*: any*/)
                                         ],
                                         "storageKey": null
                                       },
@@ -331,11 +336,11 @@ return {
                                         "name": "artistNames",
                                         "storageKey": null
                                       },
-                                      (v2/*: any*/)
+                                      (v3/*: any*/)
                                     ],
                                     "storageKey": null
                                   },
-                                  (v2/*: any*/)
+                                  (v3/*: any*/)
                                 ],
                                 "storageKey": null
                               }
@@ -345,7 +350,7 @@ return {
                         ],
                         "storageKey": "lineItems(first:1)"
                       },
-                      (v2/*: any*/)
+                      (v3/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -389,21 +394,21 @@ return {
           },
           {
             "alias": null,
-            "args": (v1/*: any*/),
+            "args": (v2/*: any*/),
             "filters": null,
             "handle": "connection",
             "key": "OrderHistory_orders",
             "kind": "LinkedHandle",
             "name": "orders"
           },
-          (v2/*: any*/)
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "45af25c38943c1f7a07994778e49039a",
+    "id": "adfc5fae20436bd7bee30e683b6a6faf",
     "metadata": {},
     "name": "OrderHistoryQuery",
     "operationKind": "query",
@@ -411,5 +416,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'f6fe62bcc2ced1ff25c4aec2d81b59c8';
+(node as any).hash = 'bffedd857934d9f67d742fd5b4abacbc';
 export default node;

@@ -1,5 +1,6 @@
 import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
 import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
+import { OrderHistory_me } from "__generated__/OrderHistory_me.graphql"
 import { theme } from "lib/Components/Bidding/Elements/Theme"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -15,6 +16,7 @@ import { ShipsToSectionFragmentContainer } from "./ShipsToSection"
 
 export interface OrderDetailsProps {
   order: OrderDetails_order
+  me: OrderHistory_me
 }
 interface SectionListItem {
   key: string
@@ -22,8 +24,7 @@ interface SectionListItem {
   data: readonly JSX.Element[]
 }
 
-const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
-  console.log(order, "myorder")
+const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
   const DATA: SectionListItem[] = [
     {
       key: "Artwork_Info",
@@ -32,7 +33,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
     },
     {
       key: "ShipTo_Section",
-      title: "Ships to",
+      title: `Ships to ${me.name}`,
       data: [<ShipsToSectionFragmentContainer address={order} />],
     },
   ]
@@ -107,6 +108,9 @@ export const OrderDetailsQueryRender: React.FC<{ orderID: string }> = ({ orderID
         query OrderDetailsQuery($orderID: ID!) {
           order: commerceOrder(id: $orderID) {
             ...OrderDetails_order
+          }
+          me: me {
+            name
           }
         }
       `}

@@ -146,6 +146,7 @@ export const OrderHistoryQueryRender: React.FC<{}> = ({}) => {
       query={graphql`
         query OrderHistoryQuery($count: Int!) {
           me {
+            name
             ...OrderHistory_me @arguments(count: $count)
           }
         }
