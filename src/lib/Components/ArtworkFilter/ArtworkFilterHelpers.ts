@@ -511,7 +511,6 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
     "atAuction",
     "attributionClass",
     "before",
-    "color",
     "colors",
     "dimensionRange",
     "excludeArtworkIDs",
