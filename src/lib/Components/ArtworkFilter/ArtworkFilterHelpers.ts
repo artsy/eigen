@@ -10,7 +10,6 @@ export enum FilterDisplayName {
   artistsIFollow = "Artist",
   attributionClass = "Rarity",
   categories = "Medium",
-  color = "Color",
   colors = "Color",
   estimateRange = "Price/estimate range",
   locationCities = "Artwork location",
