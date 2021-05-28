@@ -1,26 +1,68 @@
 import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
 import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
+import { theme } from "lib/Components/Bidding/Elements/Theme"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Flex } from "palette"
+import { Box, Flex, Text } from "palette"
 import React from "react"
-import { ScrollView } from "react-native"
+import { ScrollView, SectionList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
 
 export interface OrderDetailsProps {
   order: OrderDetails_order
 }
+interface SectionListItem {
+  key: string
+  title: string
+  data: readonly JSX.Element[]
+}
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
+  console.log(order, "myorder")
+  const DATA: SectionListItem[] = [
+    {
+      key: "Artwork_Info",
+      title: "Artwork Info",
+      data: [<ArtworkInfoSectionFragmentContainer artwork={order} />],
+    },
+  ]
+
   return (
     <PageWithSimpleHeader title="Order Details">
       <ScrollView>
         <Flex flexDirection="column" justifyContent="space-between" px={2}>
-          <ArtworkInfoSectionFragmentContainer artwork={order} />
+          <SectionList
+            sections={DATA}
+            keyExtractor={(item, index) => item.key + index.toString()}
+            renderItem={({ item }) => (
+              <Flex flexDirection="column" justifyContent="space-between">
+                <Box>{item}</Box>
+              </Flex>
+            )}
+            stickySectionHeadersEnabled={false}
+            renderSectionHeader={({ section: { title } }) => (
+              <Box mt={2}>
+                <Text fontSize={15} fontWeight={500} lineHeight={22}>
+                  {title}
+                </Text>
+              </Box>
+            )}
+            SectionSeparatorComponent={(data) => (
+              <Box
+                style={{
+                  height: !!data.leadingItem && !!data.trailingSection ? 2 : 0,
+                  backgroundColor: `${theme.colors.black10}`,
+                }}
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+              ></Box>
+            )}
+          />
         </Flex>
       </ScrollView>
     </PageWithSimpleHeader>
