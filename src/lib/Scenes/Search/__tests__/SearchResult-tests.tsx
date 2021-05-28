@@ -5,7 +5,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { CatchErrors } from "lib/utils/CatchErrors"
 import { CloseIcon } from "palette"
 import React from "react"
-import { TouchableOpacity } from "react-native"
+import { Pressable, TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
 import { SearchContext } from "../SearchContext"
 import { SearchResult } from "../SearchResult"
@@ -156,5 +156,52 @@ describe(SearchResult, () => {
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(navigateToEntity).toHaveBeenCalledWith("/art-expo-diff-profile-slug", EntityType.Fair, SlugType.ProfileID)
+  })
+
+  it(`shows navigation buttons when enabled and available`, async () => {
+    const tree = renderWithWrappers(
+      <TestWrapper
+        result={{
+          displayLabel: "Banksy",
+          href: "/artist/anto-carte",
+          imageUrl: "blah",
+          __typename: "Artist",
+          counts: {
+            articles: 1,
+            artworks: 12,
+            auctionResults: 4,
+          },
+        }}
+        showQuickNavigationButtons
+      />
+    )
+
+    expect(extractText(tree.root)).toContain("Auction Results")
+    expect(extractText(tree.root)).toContain("Artworks")
+  })
+
+  it(`quick navigation button navigates correctly`, async () => {
+    const tree = renderWithWrappers(
+      <TestWrapper
+        result={{
+          displayLabel: "Banksy",
+          href: "/artist/anto-carte",
+          imageUrl: "blah",
+          __typename: "Artist",
+          counts: {
+            articles: 1,
+            artworks: 12,
+            auctionResults: 4,
+          },
+        }}
+        showQuickNavigationButtons
+      />
+    )
+    console.log(tree.root.findAllByType(Pressable))
+    act(() => {
+      tree.root.findAllByType(Pressable)[1].props.onPress()
+    })
+    await new Promise((r) => setTimeout(r, 50))
+    expect(navigate).toHaveBeenCalledWith("/artist/anto-carte", { passProps: { initialTab: "Insights" } })
   })
 })
