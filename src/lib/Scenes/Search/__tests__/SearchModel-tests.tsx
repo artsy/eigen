@@ -11,6 +11,7 @@ const banksy: RecentSearch = {
     displayType: "Artist",
     href: "https://artsy.com/artist/banksy",
     imageUrl: "https://org-name.my-cloud-provider.com/bucket-hash/content-hash.jpg",
+    __typename: "Artist",
   },
 }
 
@@ -21,6 +22,7 @@ const andyWarhol: RecentSearch = {
     displayType: "Artist",
     href: "https://artsy.com/artist/andy-warhol",
     imageUrl: "https://org-name.my-cloud-provider.com/bucket-hash/content-hash.jpg",
+    __typename: "Artist",
   },
 }
 
@@ -69,6 +71,7 @@ describe("Recent Searches", () => {
           imageUrl: "",
           displayLabel: "",
           displayType: "",
+          __typename: "",
         },
       })
     }
@@ -113,6 +116,7 @@ describe(useRecentSearches, () => {
           imageUrl: "",
           displayLabel: "",
           displayType: "",
+          __typename: "",
         },
       })
     })
