@@ -14,26 +14,24 @@ export const ShipsToSection: React.FC<Props> = ({ address }) => {
   }
 
   const agressInfo = address.requestedFulfillment
-  console.log(agressInfo, "address")
-
   return (
     <Flex>
       <View style={{ flexDirection: "column", justifyContent: "space-between", marginVertical: 14 }}>
-        <Text color="black60" fontSize={15} fontWeight={400} lineHeight={22}>
+        <Text data-test-id="addressLine1" color="black60" fontSize={15} fontWeight={400} lineHeight={22}>
           {agressInfo.addressLine1}
         </Text>
         <Box display="flex" flexDirection="row">
-          <Text color="black60" fontSize={15} fontWeight={400} lineHeight={22} paddingRight={1}>
+          <Text data-test-id="city" color="black60" fontSize={15} fontWeight={400} lineHeight={22} paddingRight={1}>
             {agressInfo.city}
           </Text>
-          <Text color="black60" fontSize={15} fontWeight={400} lineHeight={22}>
+          <Text data-test-id="region" color="black60" fontSize={15} fontWeight={400} lineHeight={22}>
             {agressInfo.region}
           </Text>
         </Box>
-        <Text color="black60" fontSize={15} fontWeight={400} lineHeight={22}>
+        <Text data-test-id="country" color="black60" fontSize={15} fontWeight={400} lineHeight={22}>
           {agressInfo.country}
         </Text>
-        <Text color="black60" fontSize={15} fontWeight={400} lineHeight={22}>
+        <Text data-test-id="phoneNumber" color="black60" fontSize={15} fontWeight={400} lineHeight={22}>
           {agressInfo.phoneNumber}
         </Text>
       </View>
