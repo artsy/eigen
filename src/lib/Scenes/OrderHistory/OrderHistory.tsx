@@ -7,7 +7,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Flex, Sans, Separator, Spacer } from "palette"
+import { Box, Flex, Sans, Separator } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -45,12 +45,12 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginatio
         keyExtractor={(order) => order.code}
         contentContainerStyle={{ flexGrow: 1, paddingTop: orders.length === 0 ? 10 : 20 }}
         renderItem={({ item }) => (
-          <Flex flexDirection="column" justifyContent="space-between" px={2}>
+          <Flex flexDirection="row" justifyContent="space-between" px={15}>
             <OrderHistoryRowContainer order={item} key={item.code} />
           </Flex>
         )}
         ListEmptyComponent={
-          <Flex flex={1} flexDirection="column" justifyContent="center" alignItems="center" px={2}>
+          <Flex flex={1} flexDirection="column" justifyContent="center" alignItems="center" px={15}>
             <Sans size="5t" color={colors["gray-semibold"]}>
               No orders
             </Sans>
@@ -59,8 +59,8 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginatio
         onEndReachedThreshold={0.25}
         onEndReached={onLoadMore}
         ItemSeparatorComponent={() => (
-          <Flex flexDirection="column" justifyContent="center" alignItems="center">
-            <Separator mt={10} mb={20} width="90%" />
+          <Flex flexDirection="column" justifyContent="center" alignItems="center" px={15}>
+            <Separator mt={10} mb={20} />
           </Flex>
         )}
       />
@@ -70,12 +70,14 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginatio
 
 export const OrderHistoryPlaceholder: React.FC<{}> = () => (
   <PageWithSimpleHeader title="Order History">
-    <Flex px={2} py={15}>
+    <Flex px={15} mt={15}>
       {times(2).map((index: number) => (
         <Box key={index}>
-          <Flex>
+          <Flex mt={10}>
             <Flex flexDirection="row" justifyContent="space-between">
-              <PlaceholderBox height={50} width={50} flexGrow={1} marginRight={10} />
+              <Box flexGrow={1}>
+                <PlaceholderBox height={50} width={50} />
+              </Box>
               <Box flexGrow={3}>
                 <PlaceholderText width={50 + Math.random() * 100} />
                 <PlaceholderText width={50 + Math.random() * 100} />
@@ -89,11 +91,9 @@ export const OrderHistoryPlaceholder: React.FC<{}> = () => (
               </Box>
             </Flex>
           </Flex>
-          <Spacer mb={10} />
-          <PlaceholderButton />
-          <Spacer mb={10} />
-          <Flex flexDirection="column" justifyContent="center" alignItems="center">
-            <Separator mt={10} mb={20} width="90%" />
+          <PlaceholderButton marginTop={10} />
+          <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={10}>
+            <Separator mt={10} mb={20} />
           </Flex>
         </Box>
       ))}

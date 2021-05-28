@@ -101,14 +101,15 @@ return {
           "kind": "Literal",
           "name": "aggregations",
           "value": [
+            "ARTIST_NATIONALITY",
             "COLOR",
             "DIMENSION_RANGE",
-            "PARTNER",
+            "LOCATION_CITY",
             "MAJOR_PERIOD",
-            "MEDIUM",
-            "PRICE_RANGE",
             "MATERIALS_TERMS",
-            "ARTIST_NATIONALITY"
+            "MEDIUM",
+            "PARTNER",
+            "PRICE_RANGE"
           ]
         },
         {
@@ -265,5 +266,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '0f05e5423727808d7ea2fec4e6852f78';
+(node as any).hash = 'fbc59216c6350aa9be647245eba3529e';
 export default node;

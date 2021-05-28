@@ -27,7 +27,7 @@ export function useDeepLinks() {
     return () => {
       Linking.removeAllListeners("url")
     }
-  }, [])
+  }, [isHydrated])
 
   const handleDeepLink = (url: string) => {
     trackEvent(tracks.deepLink(url))
@@ -51,7 +51,7 @@ export function useDeepLinks() {
       // Reset the launchURL
       launchURL.current = null
     }
-  }, [isLoggedIn, launchURL.current])
+  }, [isLoggedIn, isHydrated, launchURL.current])
 }
 
 const tracks = {

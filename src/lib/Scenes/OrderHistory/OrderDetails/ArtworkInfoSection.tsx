@@ -20,7 +20,11 @@ export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
       <Flex>
         <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 14 }}>
           <Box style={{ marginHorizontal: 22 }}>
-            <Image source={{ uri: artworkItem?.image?.resized?.url }} style={{ height: 50, width: 50 }} />
+            {!!artworkItem?.image ? (
+              <Image source={{ uri: artworkItem?.image?.resized?.url }} style={{ height: 50, width: 50 }} />
+            ) : (
+              <Box width={50} height={50} backgroundColor="black10" data-test-id="image-box" />
+            )}
           </Box>
           <Box style={{ flex: 1, flexShrink: 1 }}>
             <Box mb={10}>

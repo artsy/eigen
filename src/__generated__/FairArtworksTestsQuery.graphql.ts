@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4b46371fe40b98676dc9f28452c21ebe */
+/* @relayHash d5dc737ccc3385ce39713501cec51669 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -68,7 +68,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment FairArtworks_fair on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST, MATERIALS_TERMS, ARTIST_NATIONALITY]) {
+  fairArtworks: filterArtworksConnection(first: 30, aggregations: [ARTIST, ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, FOLLOWED_ARTISTS, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -156,16 +156,17 @@ v4 = [
     "kind": "Literal",
     "name": "aggregations",
     "value": [
+      "ARTIST",
+      "ARTIST_NATIONALITY",
       "COLOR",
       "DIMENSION_RANGE",
-      "PARTNER",
-      "MAJOR_PERIOD",
-      "MEDIUM",
-      "PRICE_RANGE",
       "FOLLOWED_ARTISTS",
-      "ARTIST",
+      "LOCATION_CITY",
+      "MAJOR_PERIOD",
       "MATERIALS_TERMS",
-      "ARTIST_NATIONALITY"
+      "MEDIUM",
+      "PARTNER",
+      "PRICE_RANGE"
     ]
   },
   {
@@ -635,7 +636,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\"],first:30)"
+            "storageKey": "filterArtworksConnection(aggregations:[\"ARTIST\",\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"FOLLOWED_ARTISTS\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:30)"
           },
           {
             "alias": "fairArtworks",
@@ -656,7 +657,7 @@ return {
     ]
   },
   "params": {
-    "id": "4b46371fe40b98676dc9f28452c21ebe",
+    "id": "d5dc737ccc3385ce39713501cec51669",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": {

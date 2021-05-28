@@ -1,26 +1,24 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
+import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React from "react"
-import { ArtworkFilterNavigationStack } from "../ArtworkFilter"
-import { FilterData, FilterDisplayName, FilterParamName } from "../ArtworkFilterHelpers"
 import { useArtworkFiltersAggregation } from "../useArtworkFilters"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
-const PARAM_NAME = FilterParamName.artistNationalities
+interface LocationCitiesOptionsScreenProps
+  extends StackScreenProps<ArtworkFilterNavigationStack, "LocationCitiesOptionsScreen"> {}
 
-interface ArtistNationalitiesOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "ArtistNationalitiesOptionsScreen"> {}
-
-export const ArtistNationalitiesOptionsScreen: React.FC<ArtistNationalitiesOptionsScreenProps> = ({ navigation }) => {
-  const { aggregation } = useArtworkFiltersAggregation({ paramName: PARAM_NAME })
+export const LocationCitiesOptionsScreen: React.FC<LocationCitiesOptionsScreenProps> = ({ navigation }) => {
+  const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.locationCities })
 
   const options: FilterData[] = (aggregation?.counts ?? []).map(({ value: paramValue, name }) => {
-    return { displayText: name, paramName: PARAM_NAME, paramValue }
+    return { displayText: name, paramName: FilterParamName.locationCities, paramValue }
   })
 
   const { handleSelect, isSelected, handleClear, isActive } = useMultiSelect({
     options,
-    paramName: PARAM_NAME,
+    paramName: FilterParamName.locationCities,
   })
 
   const filterOptions = options.map((option) => ({ ...option, paramValue: isSelected(option) }))
@@ -28,7 +26,7 @@ export const ArtistNationalitiesOptionsScreen: React.FC<ArtistNationalitiesOptio
   return (
     <MultiSelectOptionScreen
       onSelect={handleSelect}
-      filterHeaderText={FilterDisplayName.artistNationalities}
+      filterHeaderText={FilterDisplayName.locationCities}
       filterOptions={filterOptions}
       navigation={navigation}
       searchable

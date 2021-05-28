@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 468eafe890b76cfe4e9e80743d4673b3 */
+/* @relayHash 3bc533513217920912dd364bb65784f9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -126,7 +126,7 @@ fragment CollectionArtworks_collection_YCAiB on MarketingCollection {
   isDepartment
   slug
   id
-  collectionArtworks: artworksConnection(first: $count, after: $cursor, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY], input: $input) {
+  collectionArtworks: artworksConnection(first: $count, after: $cursor, aggregations: [ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE], input: $input) {
     aggregations {
       slice
       counts {
@@ -236,14 +236,15 @@ v8 = [
     "kind": "Literal",
     "name": "aggregations",
     "value": [
+      "ARTIST_NATIONALITY",
       "COLOR",
       "DIMENSION_RANGE",
-      "PARTNER",
+      "LOCATION_CITY",
       "MAJOR_PERIOD",
-      "MEDIUM",
-      "PRICE_RANGE",
       "MATERIALS_TERMS",
-      "ARTIST_NATIONALITY"
+      "MEDIUM",
+      "PARTNER",
+      "PRICE_RANGE"
     ]
   },
   {
@@ -725,7 +726,7 @@ return {
     ]
   },
   "params": {
-    "id": "468eafe890b76cfe4e9e80743d4673b3",
+    "id": "3bc533513217920912dd364bb65784f9",
     "metadata": {},
     "name": "CollectionArtworksInfiniteScrollGridQuery",
     "operationKind": "query",

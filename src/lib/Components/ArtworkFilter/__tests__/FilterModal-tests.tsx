@@ -329,8 +329,8 @@ describe("Filter modal states", () => {
 
     expect(extractText(filterScreen.root.findAllByType(CurrentOption)[0])).toEqual("Price (low to high)")
     expect(extractText(filterScreen.root.findAllByType(CurrentOption)[1])).toEqual("Drawing")
-    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[2])).toEqual("")
-    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[3])).toEqual("$10,000-20,000")
+    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[2])).toEqual("$10,000-20,000")
+    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[3])).toEqual("")
     expect(extractText(filterScreen.root.findAllByType(CurrentOption)[4])).toEqual("Bid")
     expect(extractText(filterScreen.root.findAllByType(CurrentOption)[5])).toEqual("")
     expect(filterScreen.root.findAllByType(CurrentOption)).toHaveLength(6)

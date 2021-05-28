@@ -1,0 +1,16 @@
+diff --git a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfig.java b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfig.java
+index b05fce8..b94d30c 100644
+--- a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfig.java
++++ b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfig.java
+@@ -44,7 +44,10 @@ public class ScreenStackHeaderConfig extends ViewGroup {
+   private boolean mIsTranslucent;
+   private int mTintColor;
+   private final Toolbar mToolbar;
+-  private int mScreenOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
++  // We introduced this fix to solve an issue with react-native-screens where it's overwriting
++  // The screen orientation whenever the user changes screens and it allows the user to change orientation
++  // More details about this issue could be found here: https://github.com/software-mansion/react-native-screens/issues/836
++  private int mScreenOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+ 
+   private boolean mIsAttachedToWindow = false;
+ 

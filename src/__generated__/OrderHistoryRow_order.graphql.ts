@@ -24,7 +24,7 @@ export type OrderHistoryRow_order = {
                         readonly name: string | null;
                     } | null;
                     readonly title: string | null;
-                    readonly artist_names: string | null;
+                    readonly artistNames: string | null;
                 } | null;
             } | null;
         } | null> | null;
@@ -82,7 +82,13 @@ const node: ReaderFragment = {
     },
     {
       "alias": null,
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 1
+        }
+      ],
       "concreteType": "CommerceLineItemConnection",
       "kind": "LinkedField",
       "name": "lineItems",
@@ -173,7 +179,7 @@ const node: ReaderFragment = {
                       "storageKey": null
                     },
                     {
-                      "alias": "artist_names",
+                      "alias": null,
                       "args": null,
                       "kind": "ScalarField",
                       "name": "artistNames",
@@ -189,11 +195,11 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
-      "storageKey": null
+      "storageKey": "lineItems(first:1)"
     }
   ],
   "type": "CommerceOrder",
   "abstractKey": "__isCommerceOrder"
 };
-(node as any).hash = '39ba7e7f13550727ba14732ea4df0dc7';
+(node as any).hash = '57893b4f11a3152d13bacfe0144c438b';
 export default node;

@@ -60,7 +60,8 @@ export const ArtworkFiltersModel: ArtworkFiltersModel = {
 
     // replace previously applied options with currently selected options
     const filtersToApply = unionBy(
-      state.selectedFilters, state.previouslyAppliedFilters,
+      state.selectedFilters,
+      state.previouslyAppliedFilters,
       ({ paramValue, paramName }) => {
         // We don't want to union the artistID params, as each entry corresponds to a
         // different artist that may be selected. Instead we de-dupe based on the paramValue.
@@ -240,6 +241,7 @@ export const DEFAULT_FILTERS: FilterArray = [
   { paramName: FilterParamName.priceRange, paramValue: "*-*", displayText: "All" },
   { paramName: FilterParamName.size, paramValue: "*-*", displayText: "All" },
   { paramName: FilterParamName.partnerIDs, paramValue: [], displayText: "All" },
+  { paramName: FilterParamName.locationCities, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.colors, displayText: "All" },
   { paramName: FilterParamName.timePeriod, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy now" },

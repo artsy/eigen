@@ -93,7 +93,6 @@ export enum PageNames {
   Auction = "Auction",
   AuctionInfo = "AuctionInfo",
   AuctionResult = "AuctionResult",
-  Auctions = "Auctions",
   BidFlowBillingAddressPage = "YourBillingAddress",
   BidFlowConfirmBidPage = "ConfirmYourBid",
   BidFlowMaxBidPage = "YourMaxBid",

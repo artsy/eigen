@@ -64,10 +64,8 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
     <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>
       <ScrollView
         contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top, paddingHorizontal: 20 }}
-        showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
       >
-        <BackButton onPress={() => navigation.goBack()} />
         <Spacer mt={60} />
         <Text variant="largeTitle">Log in with email</Text>
         <Spacer mt={50} />
@@ -146,7 +144,8 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
           </Text>
         </Touchable>
       </ScrollView>
-      <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5}>
+      <BackButton onPress={() => navigation.goBack()} />
+      <Flex px={1.5} paddingBottom={1.5}>
         <Button
           onPress={handleSubmit}
           block
