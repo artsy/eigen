@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash bacd373c3bae0bd7cdc134fc2af1e709 */
+/* @relayHash 6c7d9358592a862bcd0df112eb085ec8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -18,20 +18,34 @@ export type AutosuggestResultsQueryRawResponse = {
     readonly results: ({
         readonly edges: ReadonlyArray<({
             readonly node: ({
-                readonly __typename: "SearchableItem";
                 readonly imageUrl: string | null;
                 readonly href: string | null;
                 readonly displayLabel: string | null;
+                readonly __typename: "SearchableItem";
                 readonly __isNode: "SearchableItem";
                 readonly id: string;
                 readonly internalID: string;
                 readonly displayType: string | null;
                 readonly slug: string;
             } | {
-                readonly __typename: string;
                 readonly imageUrl: string | null;
                 readonly href: string | null;
                 readonly displayLabel: string | null;
+                readonly __typename: "Artist";
+                readonly __isNode: "Artist";
+                readonly id: string;
+                readonly internalID: string;
+                readonly slug: string;
+                readonly counts: ({
+                    readonly artworks: number | null;
+                    readonly articles: number | null;
+                    readonly auctionResults: number | null;
+                }) | null;
+            } | {
+                readonly imageUrl: string | null;
+                readonly href: string | null;
+                readonly displayLabel: string | null;
+                readonly __typename: string;
                 readonly __isNode: string;
                 readonly id: string;
             }) | null;
@@ -64,14 +78,23 @@ fragment AutosuggestResults_results_2KyZFR on Query {
   results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, entities: $entities) {
     edges {
       node {
-        __typename
         imageUrl
         href
         displayLabel
+        __typename
         ... on SearchableItem {
           internalID
           displayType
           slug
+        }
+        ... on Artist {
+          internalID
+          slug
+          counts {
+            artworks
+            articles
+            auctionResults
+          }
         }
         ... on Node {
           __isNode: __typename
@@ -127,7 +150,21 @@ v5 = [
     "value": "AUTOSUGGEST"
   },
   (v4/*: any*/)
-];
+],
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": [
@@ -194,13 +231,6 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "__typename",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
                     "name": "imageUrl",
                     "storageKey": null
                   },
@@ -219,15 +249,16 @@ return {
                     "storageKey": null
                   },
                   {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "__typename",
+                    "storageKey": null
+                  },
+                  {
                     "kind": "InlineFragment",
                     "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "internalID",
-                        "storageKey": null
-                      },
+                      (v6/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -235,15 +266,50 @@ return {
                         "name": "displayType",
                         "storageKey": null
                       },
+                      (v7/*: any*/)
+                    ],
+                    "type": "SearchableItem",
+                    "abstractKey": null
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "selections": [
+                      (v6/*: any*/),
+                      (v7/*: any*/),
                       {
                         "alias": null,
                         "args": null,
-                        "kind": "ScalarField",
-                        "name": "slug",
+                        "concreteType": "ArtistCounts",
+                        "kind": "LinkedField",
+                        "name": "counts",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "artworks",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "articles",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "auctionResults",
+                            "storageKey": null
+                          }
+                        ],
                         "storageKey": null
                       }
                     ],
-                    "type": "SearchableItem",
+                    "type": "Artist",
                     "abstractKey": null
                   },
                   {
@@ -317,7 +383,7 @@ return {
     ]
   },
   "params": {
-    "id": "bacd373c3bae0bd7cdc134fc2af1e709",
+    "id": "6c7d9358592a862bcd0df112eb085ec8",
     "metadata": {},
     "name": "AutosuggestResultsQuery",
     "operationKind": "query",

@@ -11,9 +11,15 @@ export type AutosuggestResults_results = {
                 readonly imageUrl: string | null;
                 readonly href: string | null;
                 readonly displayLabel: string | null;
+                readonly __typename: string;
                 readonly internalID?: string;
                 readonly displayType?: string | null;
                 readonly slug?: string;
+                readonly counts?: {
+                    readonly artworks: number | null;
+                    readonly articles: number | null;
+                    readonly auctionResults: number | null;
+                } | null;
             } | null;
         } | null> | null;
     } | null;
@@ -27,7 +33,22 @@ export type AutosuggestResults_results$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [
     {
       "defaultValue": null,
@@ -144,13 +165,7 @@ const node: ReaderFragment = {
                 {
                   "kind": "InlineFragment",
                   "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "internalID",
-                      "storageKey": null
-                    },
+                    (v0/*: any*/),
                     {
                       "alias": null,
                       "args": null,
@@ -158,15 +173,50 @@ const node: ReaderFragment = {
                       "name": "displayType",
                       "storageKey": null
                     },
+                    (v1/*: any*/)
+                  ],
+                  "type": "SearchableItem",
+                  "abstractKey": null
+                },
+                {
+                  "kind": "InlineFragment",
+                  "selections": [
+                    (v0/*: any*/),
+                    (v1/*: any*/),
                     {
                       "alias": null,
                       "args": null,
-                      "kind": "ScalarField",
-                      "name": "slug",
+                      "concreteType": "ArtistCounts",
+                      "kind": "LinkedField",
+                      "name": "counts",
+                      "plural": false,
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "artworks",
+                          "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "articles",
+                          "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "auctionResults",
+                          "storageKey": null
+                        }
+                      ],
                       "storageKey": null
                     }
                   ],
-                  "type": "SearchableItem",
+                  "type": "Artist",
                   "abstractKey": null
                 }
               ],
@@ -214,5 +264,6 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = 'bb0ab705d1bba72b6c1441320beaee09';
+})();
+(node as any).hash = '7f2bf77dc6aca4dcc5c4d2884a4bb832';
 export default node;
