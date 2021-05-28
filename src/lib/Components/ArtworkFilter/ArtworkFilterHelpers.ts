@@ -13,6 +13,7 @@ export enum FilterDisplayName {
   color = "Color",
   colors = "Color",
   estimateRange = "Price/estimate range",
+  locationCities = "Artwork location",
   materialsTerms = "Material",
   medium = "Medium",
   partnerIDs = "Galleries and institutions",
@@ -42,6 +43,7 @@ export enum FilterParamName {
   estimateRange = "estimateRange",
   height = "height",
   latestCreatedYear = "latestCreatedYear",
+  locationCities = "locationCities",
   materialsTerms = "materialsTerms",
   medium = "medium",
   partnerIDs = "partnerIDs",
@@ -96,6 +98,7 @@ export const ParamDefaultValues = {
   includeArtworksByFollowedArtists: false,
   inquireableOnly: false,
   latestCreatedYear: undefined,
+  locationCities: [],
   majorPeriods: [],
   materialsTerms: [],
   medium: "*",
@@ -127,6 +130,7 @@ export const defaultCommonFilterOptions = {
   includeArtworksByFollowedArtists: ParamDefaultValues.includeArtworksByFollowedArtists,
   inquireableOnly: ParamDefaultValues.inquireableOnly,
   latestCreatedYear: ParamDefaultValues.latestCreatedYear,
+  locationCities: ParamDefaultValues.locationCities,
   majorPeriods: ParamDefaultValues.majorPeriods,
   materialsTerms: ParamDefaultValues.materialsTerms,
   medium: ParamDefaultValues.medium,
@@ -155,6 +159,7 @@ export type AggregationName =
   | "earliestCreatedYear"
   | "FOLLOWED_ARTISTS"
   | "latestCreatedYear"
+  | "LOCATION_CITY"
   | "MAJOR_PERIOD"
   | "MATERIALS_TERMS"
   | "MEDIUM"
@@ -191,6 +196,7 @@ export const filterKeyFromAggregation: Record<AggregationName, FilterParamName |
   earliestCreatedYear: "earliestCreatedYear",
   FOLLOWED_ARTISTS: "artistsIFollow",
   latestCreatedYear: "earliestCreatedYear",
+  LOCATION_CITY: FilterParamName.locationCities,
   MAJOR_PERIOD: FilterParamName.timePeriod,
   MATERIALS_TERMS: FilterParamName.materialsTerms,
   MEDIUM: FilterParamName.additionalGeneIDs,
@@ -432,6 +438,7 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   dimensionRange: "DIMENSION_RANGE",
   earliestCreatedYear: "earliestCreatedYear",
   latestCreatedYear: "latestCreatedYear",
+  locationCities: "LOCATION_CITY",
   majorPeriods: "MAJOR_PERIOD",
   materialsTerms: "MATERIALS_TERMS",
   medium: "MEDIUM",

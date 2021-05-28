@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 37e13791b239143c2214029e30fb2bd9 */
+/* @relayHash b6cf326384795f5eda7fb26709565cbc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -40,18 +40,19 @@ query RegistrationQuery(
 }
 
 fragment Registration_me on Me {
-  has_credit_cards: hasCreditCards
+  hasCreditCards
   identityVerified
 }
 
 fragment Registration_sale on Sale {
   slug
-  end_at: endAt
-  is_preview: isPreview
-  live_start_at: liveStartAt
+  endAt
+  isPreview
+  liveStartAt
   name
-  start_at: startAt
+  startAt
   requireIdentityVerification
+  timeZone
 }
 */
 
@@ -151,28 +152,28 @@ return {
             "storageKey": null
           },
           {
-            "alias": "end_at",
+            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "endAt",
             "storageKey": null
           },
           {
-            "alias": "is_preview",
+            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "isPreview",
             "storageKey": null
           },
           {
-            "alias": "live_start_at",
+            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "liveStartAt",
             "storageKey": null
           },
           {
-            "alias": "start_at",
+            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "startAt",
@@ -183,6 +184,13 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "requireIdentityVerification",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "timeZone",
             "storageKey": null
           },
           (v3/*: any*/)
@@ -198,7 +206,7 @@ return {
         "plural": false,
         "selections": [
           {
-            "alias": "has_credit_cards",
+            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "hasCreditCards",
@@ -218,7 +226,7 @@ return {
     ]
   },
   "params": {
-    "id": "37e13791b239143c2214029e30fb2bd9",
+    "id": "b6cf326384795f5eda7fb26709565cbc",
     "metadata": {},
     "name": "RegistrationQuery",
     "operationKind": "query",

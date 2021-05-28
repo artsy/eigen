@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 704f84d8a09cde94de470ddb79917c42 */
+/* @relayHash b32da57251f7e6c2c485ceda54d99d91 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,7 +37,7 @@ fragment OrderHistoryRow_order on CommerceOrder {
   buyerTotal
   createdAt
   itemsTotal
-  lineItems {
+  lineItems(first: 1) {
     edges {
       node {
         artwork {
@@ -51,7 +51,7 @@ fragment OrderHistoryRow_order on CommerceOrder {
             id
           }
           title
-          artist_names: artistNames
+          artistNames
           id
         }
         id
@@ -245,7 +245,13 @@ return {
                       },
                       {
                         "alias": null,
-                        "args": null,
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "first",
+                            "value": 1
+                          }
+                        ],
                         "concreteType": "CommerceLineItemConnection",
                         "kind": "LinkedField",
                         "name": "lineItems",
@@ -337,7 +343,7 @@ return {
                                         "storageKey": null
                                       },
                                       {
-                                        "alias": "artist_names",
+                                        "alias": null,
                                         "args": null,
                                         "kind": "ScalarField",
                                         "name": "artistNames",
@@ -355,7 +361,7 @@ return {
                             "storageKey": null
                           }
                         ],
-                        "storageKey": null
+                        "storageKey": "lineItems(first:1)"
                       },
                       (v2/*: any*/)
                     ],
@@ -415,7 +421,7 @@ return {
     ]
   },
   "params": {
-    "id": "704f84d8a09cde94de470ddb79917c42",
+    "id": "b32da57251f7e6c2c485ceda54d99d91",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -476,7 +482,7 @@ return {
           "plural": false,
           "type": "Artwork"
         },
-        "me.orders.edges.node.lineItems.edges.node.artwork.artist_names": (v5/*: any*/),
+        "me.orders.edges.node.lineItems.edges.node.artwork.artistNames": (v5/*: any*/),
         "me.orders.edges.node.lineItems.edges.node.artwork.id": (v3/*: any*/),
         "me.orders.edges.node.lineItems.edges.node.artwork.image": {
           "enumValues": null,

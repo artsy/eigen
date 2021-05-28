@@ -125,16 +125,17 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
           first: $count
           after: $cursor
           aggregations: [
+            ARTIST
+            ARTIST_NATIONALITY
             COLOR
             DIMENSION_RANGE
-            PARTNER
-            MAJOR_PERIOD
-            MEDIUM
-            PRICE_RANGE
             FOLLOWED_ARTISTS
-            ARTIST
+            LOCATION_CITY
+            MAJOR_PERIOD
             MATERIALS_TERMS
-            ARTIST_NATIONALITY
+            MEDIUM
+            PARTNER
+            PRICE_RANGE
           ]
           input: $input
         ) @connection(key: "Fair_fairArtworks") {

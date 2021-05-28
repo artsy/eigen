@@ -7,7 +7,6 @@ import {
 import { selectedOption } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { TouchableRow } from "lib/Components/TouchableRow"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
@@ -30,6 +29,7 @@ export type FilterScreen =
   | "colors"
   | "dimensionRange"
   | "estimateRange"
+  | "locationCities"
   | "majorPeriods"
   | "materialsTerms"
   | "medium"
@@ -80,9 +80,6 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const concreteAggregations = aggregationsState ?? []
 
   const isClearAllButtonEnabled = appliedFiltersState.length > 0 || selectedFiltersState.length > 0
-
-  // TODO: Remove when nationality filter is released
-  const shouldExcludeArtistNationalitiesFilter = !useFeatureFlag("ARUseImprovedArtworkFilters")
 
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
     concreteAggregations.map((aggregation) => {
@@ -165,11 +162,6 @@ export const ArtworkFilterOptionsScreen: React.FC<
         data={sortedFilterOptions}
         style={{ flexGrow: 1 }}
         renderItem={({ item }) => {
-          // TODO: Remove when nationality filter is released
-          if (shouldExcludeArtistNationalitiesFilter && item.displayText === FilterDisplayName.artistNationalities) {
-            return null
-          }
-
           const selectedCurrentOption = selectedOption({
             selectedOptions,
             filterScreen: item.filterType,
@@ -266,13 +258,15 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
       sortOrder = [
         "sort",
         "medium",
+        "additionalGeneIDs",
         "materialsTerms",
-        "attributionClass",
         "priceRange",
-        "waysToBuy",
+        "attributionClass",
         "dimensionRange",
+        "waysToBuy",
+        "artistNationalities",
         "majorPeriods",
-        "color",
+        "colors",
       ]
       break
   }
@@ -425,6 +419,11 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "partnerIDs",
     ScreenComponent: "GalleriesAndInstitutionsOptionsScreen",
   },
+  locationCities: {
+    displayText: FilterDisplayName.locationCities,
+    filterType: "locationCities",
+    ScreenComponent: "LocationCitiesOptionsScreen",
+  },
   majorPeriods: {
     displayText: FilterDisplayName.timePeriod,
     filterType: "majorPeriods",
@@ -477,10 +476,12 @@ const CollectionFiltersSorted: FilterScreen[] = [
   "medium",
   "additionalGeneIDs",
   "materialsTerms",
-  "attributionClass",
   "priceRange",
-  "waysToBuy",
+  "attributionClass",
   "dimensionRange",
+  "waysToBuy",
+  "locationCities",
+  "artistNationalities",
   "majorPeriods",
   "colors",
   "partnerIDs",
@@ -490,23 +491,25 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "medium",
   "additionalGeneIDs",
   "materialsTerms",
-  "attributionClass",
   "priceRange",
-  "waysToBuy",
-  "partnerIDs",
+  "attributionClass",
   "dimensionRange",
+  "waysToBuy",
+  "locationCities",
   "majorPeriods",
   "colors",
+  "partnerIDs",
 ]
 const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "sort",
   "medium",
   "additionalGeneIDs",
   "materialsTerms",
-  "attributionClass",
   "priceRange",
-  "waysToBuy",
+  "attributionClass",
   "dimensionRange",
+  "waysToBuy",
+  "locationCities",
   "majorPeriods",
   "colors",
   "partnerIDs",
@@ -518,10 +521,12 @@ const FairFiltersSorted: FilterScreen[] = [
   "medium",
   "additionalGeneIDs",
   "materialsTerms",
-  "attributionClass",
   "priceRange",
-  "waysToBuy",
+  "attributionClass",
   "dimensionRange",
+  "waysToBuy",
+  "locationCities",
+  "artistNationalities",
   "majorPeriods",
   "colors",
   "partnerIDs",
@@ -529,11 +534,10 @@ const FairFiltersSorted: FilterScreen[] = [
 const SaleArtworksFiltersSorted: FilterScreen[] = [
   "sort",
   "viewAs",
-  "estimateRange",
   "artistIDs",
   "medium",
   "additionalGeneIDs",
-  "materialsTerms",
+  "estimateRange",
 ]
 
 const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories", "sizes", "year"]

@@ -50,6 +50,7 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
         final Map<String, Object> constants = new HashMap<>();
         constants.put("launchCount", ArtsyNativeModule.launchCount);
         constants.put("navigationBarHeight", getNavigationBarSize(this.getReactApplicationContext()));
+        constants.put("gitCommitShortHash", BuildConfig.GITCommitShortHash);
         return constants;
     }
 

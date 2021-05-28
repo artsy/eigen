@@ -9,7 +9,7 @@ export const SegmentTrackingProvider: TrackingProvider = {
     analytics = require("@segment/analytics-react-native").default
 
     analytics
-      .setup(Config.SEGMENT_STAGING_WRITE_KEY_ANDROID, {})
+      .setup(__DEV__ ? Config.SEGMENT_STAGING_WRITE_KEY_ANDROID : Config.SEGMENT_PRODUCTION_WRITE_KEY_ANDROID, {})
       // trackAppLifecycleEvents: true,
       .then(() => console.log("Analytics is ready"))
       .catch((err) => console.error("Something went wrong", err))

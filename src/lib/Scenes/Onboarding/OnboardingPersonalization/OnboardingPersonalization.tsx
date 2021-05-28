@@ -114,7 +114,6 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
           paddingBottom: 80,
           justifyContent: "flex-start",
         }}
-        showsVerticalScrollIndicator={false}
       >
         <OnboardingPersonalizationListHeader
           navigateToModal={() => {

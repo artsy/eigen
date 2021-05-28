@@ -12,6 +12,13 @@ import { CityGuideCTA } from "./CityGuideCTA"
 import { RecentSearches } from "./RecentSearches"
 import { SearchContext, useSearchProviderValues } from "./SearchContext"
 
+const placeholders = [
+  "Search artists, artworks, galleries, etc",
+  "Search artists, artworks, etc",
+  "Search artworks, etc",
+  "Search",
+]
+
 export const Search: React.FC = () => {
   const [query, setQuery] = useState("")
   const { trackEvent } = useTracking()
@@ -23,7 +30,7 @@ export const Search: React.FC = () => {
         <Flex p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
           <SearchInput
             ref={searchProviderValues.inputRef}
-            placeholder="Search artists, artworks, galleries, etc"
+            placeholder={placeholders}
             enableCancelButton
             onChangeText={(queryText) => {
               queryText = queryText.trim()

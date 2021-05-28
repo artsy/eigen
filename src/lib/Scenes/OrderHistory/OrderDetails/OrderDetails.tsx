@@ -41,7 +41,6 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
     <PageWithSimpleHeader title="Order Details">
       <ScrollView>
         <Flex flexDirection="column" justifyContent="space-between" px={2}>
-          {/* <ArtworkInfoSectionFragmentContainer artwork={order} /> */}
           <SectionList
             sections={DATA}
             keyExtractor={(item, index) => item.key + index.toString()}

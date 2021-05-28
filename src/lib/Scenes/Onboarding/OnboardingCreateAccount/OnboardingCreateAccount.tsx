@@ -169,12 +169,9 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
           paddingTop: useScreenDimensions().safeAreaInsets.top,
           justifyContent: "flex-start",
         }}
-        showsVerticalScrollIndicator={false}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="always"
       >
-        {!!onBackButtonPress && <BackButton onPress={onBackButtonPress} />}
-
         <Spacer mt={60} />
         <Box height={130}>
           <Text variant="largeTitle">{title}</Text>
@@ -190,6 +187,7 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
         <Spacer mt={50} />
         {children}
       </ScrollView>
+      {!!onBackButtonPress && <BackButton onPress={onBackButtonPress} />}
     </Flex>
   )
 }
@@ -227,7 +225,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
   }, [errors.email])
 
   return (
-    <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5} backgroundColor="white">
+    <Flex px={1.5} paddingBottom={1.5} backgroundColor="white">
       {errors.email === EMAIL_EXISTS_ERROR_MESSAGE && (
         <Animated.View style={{ bottom: -50, transform: [{ translateY: yTranslateAnim.current }] }}>
           <Button

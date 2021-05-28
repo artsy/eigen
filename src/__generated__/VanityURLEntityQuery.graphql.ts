@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3e2b561f96afed58cb52550edf269e82 */
+/* @relayHash 15e3966a65b4152669828e6221f47660 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -99,7 +99,7 @@ fragment ArtworkTileRailCard_artwork on Artwork {
 fragment FairArtworks_fair_2T6kBV on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST, MATERIALS_TERMS, ARTIST_NATIONALITY], input: {sort: "-decayed_merch", dimensionRange: "*-*"}) {
+  fairArtworks: filterArtworksConnection(first: 30, aggregations: [ARTIST, ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, FOLLOWED_ARTISTS, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE], input: {sort: "-decayed_merch", dimensionRange: "*-*"}) {
     aggregations {
       slice
       counts {
@@ -749,16 +749,17 @@ v21 = [
     "kind": "Literal",
     "name": "aggregations",
     "value": [
+      "ARTIST",
+      "ARTIST_NATIONALITY",
       "COLOR",
       "DIMENSION_RANGE",
-      "PARTNER",
-      "MAJOR_PERIOD",
-      "MEDIUM",
-      "PRICE_RANGE",
       "FOLLOWED_ARTISTS",
-      "ARTIST",
+      "LOCATION_CITY",
+      "MAJOR_PERIOD",
       "MATERIALS_TERMS",
-      "ARTIST_NATIONALITY"
+      "MEDIUM",
+      "PARTNER",
+      "PRICE_RANGE"
     ]
   },
   (v20/*: any*/),
@@ -1744,7 +1745,7 @@ return {
                   (v5/*: any*/),
                   (v36/*: any*/)
                 ],
-                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\"],first:30,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-decayed_merch\"})"
+                "storageKey": "filterArtworksConnection(aggregations:[\"ARTIST\",\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"FOLLOWED_ARTISTS\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:30,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-decayed_merch\"})"
               },
               {
                 "alias": "fairArtworks",
@@ -2382,7 +2383,7 @@ return {
     ]
   },
   "params": {
-    "id": "3e2b561f96afed58cb52550edf269e82",
+    "id": "15e3966a65b4152669828e6221f47660",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",
