@@ -180,6 +180,7 @@ export const OnboardingLogin: React.FC<OnboardingLoginProps> = ({ navigation, ro
       if (!res) {
         // For security purposes, we are returning a generic error message
         setErrors({ password: "Incorrect email or password" })
+        await validateForm()
       }
     },
     validationSchema: loginSchema,
