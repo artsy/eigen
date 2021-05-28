@@ -315,6 +315,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
               </Button>
             )}
           </ParentAwareScrollView>
+
           <Flex
             alignItems="center"
             justifyContent="center"
@@ -322,11 +323,13 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             pb="9"
             style={{ opacity: this.state.isLoading && hasMore() ? 1 : 0 }}
           >
-            <ActivityIndicator
-              color={
-                Platform.OS === "android" ? getColorsForVariant("primaryBlack").default.backgroundColor : undefined
-              }
-            />
+            {!!this.props.autoFetch && (
+              <ActivityIndicator
+                color={
+                  Platform.OS === "android" ? getColorsForVariant("primaryBlack").default.backgroundColor : undefined
+                }
+              />
+            )}
           </Flex>
         </>
       </Theme>
