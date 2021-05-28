@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 187797d9c32671bed72f744767048e71 */
+/* @relayHash fbacee34d36b6928ca44385423c38b1d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -11,6 +11,9 @@ export type OrderDetailsQueryVariables = {
 export type OrderDetailsQueryResponse = {
     readonly order: {
         readonly " $fragmentRefs": FragmentRefs<"OrderDetails_order">;
+    } | null;
+    readonly me: {
+        readonly name: string | null;
     } | null;
 };
 export type OrderDetailsQuery = {
@@ -27,6 +30,10 @@ query OrderDetailsQuery(
   order: commerceOrder(id: $orderID) {
     __typename
     ...OrderDetails_order
+    id
+  }
+  me {
+    name
     id
   }
 }
@@ -98,10 +105,17 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "__typename",
+  "name": "name",
   "storageKey": null
 },
 v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
+  "storageKey": null
+},
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -130,6 +144,18 @@ return {
           }
         ],
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/)
+        ],
+        "storageKey": null
       }
     ],
     "type": "Query",
@@ -149,7 +175,7 @@ return {
         "name": "commerceOrder",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
+          (v3/*: any*/),
           {
             "kind": "TypeDiscriminator",
             "abstractKey": "__isCommerceOrder"
@@ -256,11 +282,11 @@ return {
                             "name": "artistNames",
                             "storageKey": null
                           },
-                          (v3/*: any*/)
+                          (v4/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v3/*: any*/)
+                      (v4/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -278,7 +304,7 @@ return {
             "name": "requestedFulfillment",
             "plural": false,
             "selections": [
-              (v2/*: any*/),
+              (v3/*: any*/),
               {
                 "kind": "InlineFragment",
                 "selections": [
@@ -310,13 +336,7 @@ return {
                     "name": "country",
                     "storageKey": null
                   },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "name",
-                    "storageKey": null
-                  },
+                  (v2/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -345,14 +365,27 @@ return {
             ],
             "storageKey": null
           },
-          (v3/*: any*/)
+          (v4/*: any*/)
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "187797d9c32671bed72f744767048e71",
+    "id": "fbacee34d36b6928ca44385423c38b1d",
     "metadata": {},
     "name": "OrderDetailsQuery",
     "operationKind": "query",
@@ -360,5 +393,5 @@ return {
   }
 };
 })();
-(node as any).hash = '8066640df756aa777d763d82714ee562';
+(node as any).hash = 'c990f0a83e5b896a2b688e4c43b49e1e';
 export default node;
