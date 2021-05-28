@@ -31,6 +31,8 @@ export const calculateLetterSpacing = (fontSize: TextFontSize, letterSpacing: Te
   return size * tracking
 }
 
+/// add test for searchinput rntl
+
 /**
  * unitless line-heights don't exist on React Native so we convert it
  * to a px string. Since unitless line-heights are valid/normal, styled-system

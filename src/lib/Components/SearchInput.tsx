@@ -1,8 +1,8 @@
 import SearchIcon from "lib/Icons/SearchIcon"
 import { Flex, Sans } from "palette"
-import React, { RefObject, useState } from "react"
+import React, { RefObject, useRef, useState } from "react"
 import { LayoutAnimation, TextInput, TouchableOpacity } from "react-native"
-import { Input, InputProps } from "./Input/Input"
+import { ARef, Input, InputProps } from "./Input/Input"
 
 interface SearchInputProps extends InputProps {
   enableCancelButton?: boolean
@@ -11,6 +11,7 @@ interface SearchInputProps extends InputProps {
 export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
   ({ enableCancelButton, onChangeText, onClear, value: parentValue, ...props }, ref) => {
     const [inputFocused, setInputFocused] = useState(false)
+    const inputRef = useRef<ARef>()
 
     /**
      * Don't use `setOurValue`, use `localOnChangeText` instead.
@@ -28,7 +29,7 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
     return (
       <Flex flexDirection="row">
         <Input
-          ref={ref}
+          ref={inputRef}
           value={value}
           icon={<SearchIcon width={18} height={18} />}
           autoCorrect={false}

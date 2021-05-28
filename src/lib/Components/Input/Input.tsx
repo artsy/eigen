@@ -1,7 +1,7 @@
 import _ from "lodash"
 import { color, Color, EyeOpenedIcon, Flex, Sans, TEXT_FONTS, XCircleIcon } from "palette"
 import { fontFamily } from "palette/platform/fonts/fontFamily"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
   Platform,
@@ -56,11 +56,18 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   renderLeftHandSection?(): JSX.Element
 }
 
+export type ARef = {
+  test: () => void
+  current: TextInput | undefined
+  focus: () => void
+  blur: () => void
+}
+// make a hook for The Value thing with the states. also for the forwardref?
 export type Input = TextInput
 /**
  * Input component
  */
-export const Input = React.forwardRef<TextInput, InputProps>(
+export const Input = React.forwardRef<ARef, InputProps>(
   (
     {
       containerStyle,
@@ -80,11 +87,16 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       value: parentValue,
       ...rest
     },
-    ref
+    forwardedRef
   ) => {
     const [focused, setFocused] = useState(false)
     const [showPassword, setShowPassword] = useState(!secureTextEntry)
-    const innerInput = useRef<TextInput>()
+
+    const innerRef = useRef<TextInput>()
+    useImperativeHandle(forwardedRef, () => ({
+      test: () => {},
+      current: innerRef.current,
+    }))
 
     /**
      * Don't use `setOurValue`, use `localOnChangeText` instead.
@@ -100,7 +112,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     }
 
     const localClear = () => {
-      innerInput.current?.clear()
+      innerRef.current?.clear()
       localOnChangeText("")
       rest.onClear?.()
     }
@@ -108,7 +120,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     useEffect(() => {
       /* to make the font work for secure text inputs,
       see https://github.com/facebook/react-native/issues/30123#issuecomment-711076098 */
-      innerInput.current?.setNativeProps({
+      innerRef.current?.setNativeProps({
         style: { fontFamily: TEXT_FONTS.sans },
       })
     }, [])
@@ -200,7 +212,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
             {description}
           </Sans>
         )}
-        <TouchableWithoutFeedback onPressIn={() => innerInput.current?.focus()}>
+        <TouchableWithoutFeedback onPressIn={() => innerRef.current?.focus()}>
           <View
             style={[
               rest.style,
@@ -222,10 +234,10 @@ export const Input = React.forwardRef<TextInput, InputProps>(
             <Flex flexGrow={1}>
               {placeholderMeasuringHack}
               <StyledInput
+                ref={innerRef}
                 onLayout={(event) => {
                   setInputWidth(event.nativeEvent.layout.width)
                 }}
-                ref={innerInput}
                 placeholderTextColor={color("black60")}
                 style={{ flex: 1, fontSize: 15, ...inputTextStyle }}
                 numberOfLines={1}
