@@ -150,7 +150,7 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
           onPress={handleSubmit}
           block
           haptic="impactMedium"
-          disabled={!(isValid && dirty)}
+          disabled={!(isValid && dirty) || isSubmitting} // isSubmitting to prevent weird appearances of the errors caused by async submiting
           loading={isSubmitting}
           testID="loginButton"
           variant="primaryBlack"
@@ -172,7 +172,7 @@ export const OnboardingLogin: React.FC<OnboardingLoginProps> = ({ navigation, ro
     initialValues,
     initialErrors: {},
     onSubmit: async ({ email, password }, { setErrors, validateForm }) => {
-      await validateForm()
+      validateForm()
       const res = await GlobalStore.actions.auth.signIn({
         email,
         password,
@@ -180,7 +180,7 @@ export const OnboardingLogin: React.FC<OnboardingLoginProps> = ({ navigation, ro
       if (!res) {
         // For security purposes, we are returning a generic error message
         setErrors({ password: "Incorrect email or password" })
-        await validateForm()
+        validateForm()
       }
     },
     validationSchema: loginSchema,
