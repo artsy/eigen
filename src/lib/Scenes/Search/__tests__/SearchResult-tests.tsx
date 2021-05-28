@@ -17,6 +17,7 @@ const result = {
   href: "banksy-href",
   imageUrl: "blah",
   displayType: "Artist",
+  __typename: "Artist",
 }
 
 let recentSearchesArray: any[] = []
@@ -68,7 +69,7 @@ describe(SearchResult, () => {
     tree.root.findByType(TouchableOpacity).props.onPress()
     await new Promise((r) => setTimeout(r, 50))
     expect(inputBlurMock).toHaveBeenCalled()
-    expect(navigate).toHaveBeenCalledWith(result.href)
+    expect(navigate).toHaveBeenCalledWith(result.href, { passProps: { initialTab: "Artworks" } })
   })
 
   it(`highlights a part of the string if possible`, async () => {
@@ -146,6 +147,7 @@ describe(SearchResult, () => {
           slug: "art-expo-profile-slug",
           imageUrl: "blah",
           displayType: "Fair",
+          __typename: "SearchableItem",
         }}
       />
     )

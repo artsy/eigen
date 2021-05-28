@@ -19,6 +19,7 @@ const banksy: RecentSearch = {
     displayType: "Artist",
     href: "https://artsy.com/artist/banksy",
     imageUrl: "https://org-name.my-cloud-provider.com/bucket-hash/content-hash.jpg",
+    __typename: "Artist",
   },
 }
 
