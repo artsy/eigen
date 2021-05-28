@@ -1,13 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 436b2fb030caee97fc2cee23255bb637 */
+/* @relayHash 42b713a386c04f476a51eff27ee946f5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FULFILLED" | "PENDING" | "REFUNDED" | "SUBMITTED" | "%future added value";
 export type OrderHistoryPaginationQueryVariables = {
     count: number;
     cursor?: string | null;
+    states?: Array<CommerceOrderStateEnum> | null;
 };
 export type OrderHistoryPaginationQueryResponse = {
     readonly me: {
@@ -25,9 +27,10 @@ export type OrderHistoryPaginationQuery = {
 query OrderHistoryPaginationQuery(
   $count: Int!
   $cursor: String
+  $states: [CommerceOrderStateEnum!]
 ) {
   me {
-    ...OrderHistory_me_1G22uz
+    ...OrderHistory_me_a4QoT
     id
   }
 }
@@ -62,8 +65,8 @@ fragment OrderHistoryRow_order on CommerceOrder {
   }
 }
 
-fragment OrderHistory_me_1G22uz on Me {
-  orders(first: $count, after: $cursor) {
+fragment OrderHistory_me_a4QoT on Me {
+  orders(first: $count, after: $cursor, states: $states) {
     edges {
       node {
         __typename
@@ -92,9 +95,19 @@ var v0 = [
     "defaultValue": null,
     "kind": "LocalArgument",
     "name": "cursor"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "states"
   }
 ],
-v1 = [
+v1 = {
+  "kind": "Variable",
+  "name": "states",
+  "variableName": "states"
+},
+v2 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -104,9 +117,10 @@ v1 = [
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
-  }
+  },
+  (v1/*: any*/)
 ],
-v2 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -139,7 +153,8 @@ return {
                 "kind": "Variable",
                 "name": "cursor",
                 "variableName": "cursor"
-              }
+              },
+              (v1/*: any*/)
             ],
             "kind": "FragmentSpread",
             "name": "OrderHistory_me"
@@ -167,7 +182,7 @@ return {
         "selections": [
           {
             "alias": null,
-            "args": (v1/*: any*/),
+            "args": (v2/*: any*/),
             "concreteType": "CommerceOrderConnectionWithTotalCount",
             "kind": "LinkedField",
             "name": "orders",
@@ -330,7 +345,7 @@ return {
                                             "name": "name",
                                             "storageKey": null
                                           },
-                                          (v2/*: any*/)
+                                          (v3/*: any*/)
                                         ],
                                         "storageKey": null
                                       },
@@ -348,11 +363,11 @@ return {
                                         "name": "artistNames",
                                         "storageKey": null
                                       },
-                                      (v2/*: any*/)
+                                      (v3/*: any*/)
                                     ],
                                     "storageKey": null
                                   },
-                                  (v2/*: any*/)
+                                  (v3/*: any*/)
                                 ],
                                 "storageKey": null
                               }
@@ -362,7 +377,7 @@ return {
                         ],
                         "storageKey": "lineItems(first:1)"
                       },
-                      (v2/*: any*/)
+                      (v3/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -406,21 +421,23 @@ return {
           },
           {
             "alias": null,
-            "args": (v1/*: any*/),
-            "filters": null,
+            "args": (v2/*: any*/),
+            "filters": [
+              "states"
+            ],
             "handle": "connection",
             "key": "OrderHistory_orders",
             "kind": "LinkedHandle",
             "name": "orders"
           },
-          (v2/*: any*/)
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "436b2fb030caee97fc2cee23255bb637",
+    "id": "42b713a386c04f476a51eff27ee946f5",
     "metadata": {},
     "name": "OrderHistoryPaginationQuery",
     "operationKind": "query",
@@ -428,5 +445,5 @@ return {
   }
 };
 })();
-(node as any).hash = '01fafe103a704c2e633ffe18efd3faa1';
+(node as any).hash = '28457f43894b0f6dd1ab177ca0966a38';
 export default node;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b32da57251f7e6c2c485ceda54d99d91 */
+/* @relayHash bc40df0634f67924e365748852ac0786 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -61,7 +61,7 @@ fragment OrderHistoryRow_order on CommerceOrder {
 }
 
 fragment OrderHistory_me_yu5n1 on Me {
-  orders(first: $count) {
+  orders(first: $count, states: [APPROVED, CANCELED, FULFILLED, REFUNDED, SUBMITTED]) {
     edges {
       node {
         __typename
@@ -92,6 +92,17 @@ v1 = [
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
+  },
+  {
+    "kind": "Literal",
+    "name": "states",
+    "value": [
+      "APPROVED",
+      "CANCELED",
+      "FULFILLED",
+      "REFUNDED",
+      "SUBMITTED"
+    ]
   }
 ],
 v2 = {
@@ -408,7 +419,9 @@ return {
           {
             "alias": null,
             "args": (v1/*: any*/),
-            "filters": null,
+            "filters": [
+              "states"
+            ],
             "handle": "connection",
             "key": "OrderHistory_orders",
             "kind": "LinkedHandle",
@@ -421,7 +434,7 @@ return {
     ]
   },
   "params": {
-    "id": "b32da57251f7e6c2c485ceda54d99d91",
+    "id": "bc40df0634f67924e365748852ac0786",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
