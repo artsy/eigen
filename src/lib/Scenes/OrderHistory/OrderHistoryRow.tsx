@@ -18,7 +18,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
     <Box>
       <Flex mb={10}>
         <Flex flexDirection="row" justifyContent="space-between">
-          <Flex flexGrow={1} justifyContent="center" data-test-id="image-container">
+          <Flex justifyContent="center" data-test-id="image-container" mr={2}>
             {!!artwork.image ? (
               <Image
                 source={{ uri: artwork?.image?.resized?.url }}
@@ -29,7 +29,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               <Box width={50} height={50} backgroundColor="black10" data-test-id="image-box" />
             )}
           </Flex>
-          <Box flexGrow={3}>
+          <Box flexGrow={1}>
             <Text variant="mediumText" data-test-id="artist-names">
               {artwork?.artistNames}
             </Text>
@@ -40,7 +40,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               {moment(order.createdAt).format("l")}
             </Text>
           </Box>
-          <Box flexGrow={1}>
+          <Box>
             <Flex justifyContent="flex-end">
               <Text textAlign="right" variant="text" data-test-id="price">
                 {order.buyerTotal}
