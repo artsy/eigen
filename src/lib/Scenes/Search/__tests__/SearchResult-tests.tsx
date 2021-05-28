@@ -180,7 +180,7 @@ describe(SearchResult, () => {
     expect(extractText(tree.root)).toContain("Artworks")
   })
 
-  it(`quick navigation button navigates correctly`, async () => {
+  it(`quick navigation buttons navigate correctly`, async () => {
     const tree = renderWithWrappers(
       <TestWrapper
         result={{
@@ -197,6 +197,12 @@ describe(SearchResult, () => {
         showQuickNavigationButtons
       />
     )
+
+    act(() => {
+      tree.root.findAllByType(Pressable)[0].props.onPress()
+    })
+    await new Promise((r) => setTimeout(r, 50))
+    expect(navigate).toHaveBeenCalledWith("/artist/anto-carte", { passProps: { initialTab: "Artworks" } })
 
     act(() => {
       tree.root.findAllByType(Pressable)[1].props.onPress()
