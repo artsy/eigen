@@ -35,6 +35,7 @@ upcoming:
     - Update order of filters - dzmitry tratsiak
     - Fix time mismatch between auction list and individual auction page - matt
     - Fix swiping on filter options selects them - dzmitry tratsiak
+    - Fix registration flow error handling (e.g. invalid phone number) - ole
     - Decode html entities in markdown - ole
 
 releases:

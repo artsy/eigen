@@ -291,7 +291,9 @@ describe("when pressing register button", () => {
     expect(conditionsOfSaleCheckbox.instance.props.disabled).toBeTruthy()
   })
 
-  it("displays an error message on a stripe failure", () => {
+  it("displays an error message on a stripe failure", async () => {
+    console.error = jest.fn() // Silences component logging.
+
     relay.commitMutation = jest
       .fn()
       .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
@@ -309,20 +311,18 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    await component.root.findAllByType(Button)[1].props.onPress()
 
-    jest.runAllTicks()
+    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
+      "There was a problem processing your information. Check your payment details and try again."
+    )
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(nextStep.component).toEqual(RegistrationResult)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(nextStep.passProps).toEqual({
-      status: RegistrationStatus.RegistrationStatusError,
-      needsIdentityVerification: false,
-    })
+    component.root.findByType(Modal).findByType(Button).props.onPress()
+
+    expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  it("shows the error screen with the default error message if there are unhandled errors from the updateUserProfile mutation", () => {
+  it("displays the default error message if there are unhandled errors from the updateUserProfile mutation", () => {
     const errors = [{ message: "malformed error" }]
 
     console.error = jest.fn() // Silences component logging.
@@ -348,7 +348,7 @@ describe("when pressing register button", () => {
     jest.runAllTicks()
 
     expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
-      "There was a problem processing your information. Check your payment details and try again."
+      "There was a problem processing your phone number, please try again."
     )
     component.root.findByType(Modal).findByType(Button).props.onPress()
 
@@ -356,7 +356,7 @@ describe("when pressing register button", () => {
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  it("displays an error message on a updateUserProfile failure", () => {
+  it("displays an error message on a updateUserProfile failure", async () => {
     console.error = jest.fn() // Silences component logging.
 
     const errors = [{ message: "There was an error with your request" }]
@@ -376,18 +376,18 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    await component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
     expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
-      "There was a problem processing your information. Check your payment details and try again."
+      "There was a problem processing your phone number, please try again."
     )
     component.root.findByType(Modal).findByType(Button).props.onPress()
 
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  it("shows the generic error screen on a updateUserProfile mutation network failure", () => {
+  it("displays an error message on a updateUserProfile mutation network failure", () => {
     console.error = jest.fn() // Silences component logging.
     relay.commitMutation = jest
       .fn()
@@ -405,15 +405,13 @@ describe("when pressing register button", () => {
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findAllByType(Button)[1].props.onPress()
 
-    jest.runAllTicks()
+    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
+      "There was a problem processing your phone number, please try again."
+    )
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(nextStep.component).toEqual(RegistrationResult)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(nextStep.passProps).toEqual({
-      status: RegistrationStatus.RegistrationStatusNetworkError,
-      needsIdentityVerification: false,
-    })
+    component.root.findByType(Modal).findByType(Button).props.onPress()
+
+    expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
   it("displays an error message on a creditCardMutation failure", () => {
@@ -452,7 +450,7 @@ describe("when pressing register button", () => {
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  it("shows the error screen with the default error message if there are unhandled errors from the createCreditCard mutation", () => {
+  it("displays the default error message if there are unhandled errors from the createCreditCard mutation", () => {
     const errors = [{ message: "malformed error" }]
 
     console.error = jest.fn() // Silences component logging.
@@ -494,7 +492,7 @@ describe("when pressing register button", () => {
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  it("shows the generic error screen on a createCreditCard mutation network failure", () => {
+  it("displays an error message on a createCreditCard mutation network failure", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
@@ -522,16 +520,16 @@ describe("when pressing register button", () => {
 
     jest.runAllTicks()
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(nextStep.component).toEqual(RegistrationResult)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(nextStep.passProps).toEqual({
-      status: RegistrationStatus.RegistrationStatusNetworkError,
-      needsIdentityVerification: false,
-    })
+    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
+      "There was a problem processing your information. Check your payment details and try again."
+    )
+    component.root.findByType(Modal).findByType(Button).props.onPress()
+
+    // it dismisses the modal
+    expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  it("displays an error message on a bidderMutation failure", () => {
+  it("displays an error message on a bidderMutation failure", async () => {
     const error = {
       message:
         'https://stagingapi.artsy.net/api/v1/bidder?sale_id=leclere-impressionist-and-modern-art - {"error":"Invalid Sale"}',
@@ -547,20 +545,18 @@ describe("when pressing register button", () => {
     )
 
     component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    await component.root.findAllByType(Button)[1].props.onPress()
 
-    jest.runAllTicks()
+    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
+      "There was a problem processing your information. Check your payment details and try again."
+    )
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(nextStep.component).toEqual(RegistrationResult)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(nextStep.passProps).toEqual({
-      status: RegistrationStatus.RegistrationStatusError,
-      needsIdentityVerification: false,
-    })
+    component.root.findByType(Modal).findByType(Button).props.onPress()
+
+    expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  it("displays an error message on a network failure", () => {
+  it("displays an error message on a network failure", async () => {
     console.error = jest.fn() // Silences component logging.
 
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -577,17 +573,15 @@ describe("when pressing register button", () => {
     )
 
     component.root.findByType(Checkbox).instance.props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    await component.root.findAllByType(Button)[1].props.onPress()
 
-    jest.runAllTicks()
+    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
+      "There was a problem processing your information. Check your payment details and try again."
+    )
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(nextStep.component).toEqual(RegistrationResult)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(nextStep.passProps).toEqual({
-      status: RegistrationStatus.RegistrationStatusNetworkError,
-      needsIdentityVerification: false,
-    })
+    component.root.findByType(Modal).findByType(Button).props.onPress()
+
+    expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
   it("displays the pending result when the bidder is not qualified_for_bidding", () => {
