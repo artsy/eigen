@@ -197,7 +197,7 @@ describe(SearchResult, () => {
         showQuickNavigationButtons
       />
     )
-    console.log(tree.root.findAllByType(Pressable))
+
     act(() => {
       tree.root.findAllByType(Pressable)[1].props.onPress()
     })
