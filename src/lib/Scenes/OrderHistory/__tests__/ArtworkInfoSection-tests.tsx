@@ -30,7 +30,7 @@ describe("ArtworkTileRailCard", () => {
   it("renders a Text components", () => {
     const tree = renderWithWrappers(<ArtworkInfoSection artwork={defaultProps as any} />)
     const textFileds = tree.root.findAllByType(Text)
-    expect(textFileds.length).toBe(3)
+    expect(textFileds.length).toBe(2)
   })
   it("check  Image component props", () => {
     const tree = renderWithWrappers(<ArtworkInfoSection artwork={defaultProps as any} />)

@@ -22,7 +22,6 @@ interface SectionListItem {
 }
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
-  console.log(order, "myorder")
   const DATA: SectionListItem[] = [
     {
       key: "Artwork_Info",
