@@ -7,7 +7,8 @@ import { useStripeConfig } from "lib/utils/useStripeConfig"
 import React, { useEffect } from "react"
 import { Appearance, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
-import { AppProviders } from "./AppProviders"
+import codePush from "react-native-code-push"
+import { AppProviders, codePushOptions } from "./AppProviders"
 import { useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { useSentryConfig } from "./ErrorReporting"
@@ -98,10 +99,10 @@ const Main: React.FC<{}> = track()(({}) => {
   )
 })
 
-export const App = () => (
+export const App = codePush(codePushOptions)(() => (
   <AppProviders>
     <AdminMenuWrapper>
       <Main />
     </AdminMenuWrapper>
   </AppProviders>
-)
+))

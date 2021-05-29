@@ -68,7 +68,8 @@ import { Search } from "./Scenes/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
-import { AppProviders } from "./AppProviders"
+import codePush from "react-native-code-push"
+import { AppProviders, codePushOptions } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
@@ -417,5 +418,5 @@ const Main: React.FC<{}> = track()(({}) => {
 })
 
 if (Platform.OS === "ios") {
-  register("Main", Main, { fullBleed: true, isMainView: true })
+  register("Main", codePush(codePushOptions)(Main), { fullBleed: true, isMainView: true })
 }

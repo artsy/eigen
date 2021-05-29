@@ -108,6 +108,7 @@
     "react": "16.13.1",
     "react-native": "0.63.3",
     "react-native-bootsplash": "^3.2.0",
+    "react-native-code-push": "^7.0.1",
     "react-native-config": "https://github.com/artsy/react-native-config.git",
     "react-native-credit-card-input": "^0.4.1",
     "react-native-device-info": "^8.1.2",

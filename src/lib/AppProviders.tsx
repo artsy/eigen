@@ -1,6 +1,7 @@
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { Theme } from "palette"
 import React, { ReactNode } from "react"
+import codePush from "react-native-code-push"
 import { RelayEnvironmentProvider } from "relay-hooks"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { ToastProvider } from "./Components/Toast/toastHook"
@@ -23,3 +24,5 @@ export const AppProviders = ({ children }: { children: ReactNode }) => (
     </ProvideScreenDimensions>
   </RelayEnvironmentProvider>
 )
+
+export const codePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_START }
