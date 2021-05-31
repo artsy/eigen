@@ -9,6 +9,16 @@ export type OrderDetails_order = {
     readonly internalID: string;
     readonly code: string;
     readonly state: CommerceOrderStateEnum;
+    readonly createdAt: string;
+    readonly requestedFulfillment: ({
+        readonly __typename: "CommerceShip";
+    } | {
+        readonly __typename: "CommercePickup";
+    } | {
+        /*This will never be '%other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    }) | null;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkInfoSection_artwork" | "ShipsToSection_address">;
     readonly " $refType": "OrderDetails_order";
 };
@@ -20,7 +30,17 @@ export type OrderDetails_order$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = [
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "__typename",
+    "storageKey": null
+  }
+];
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -48,6 +68,36 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "createdAt",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": null,
+      "kind": "LinkedField",
+      "name": "requestedFulfillment",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "InlineFragment",
+          "selections": (v0/*: any*/),
+          "type": "CommerceShip",
+          "abstractKey": null
+        },
+        {
+          "kind": "InlineFragment",
+          "selections": (v0/*: any*/),
+          "type": "CommercePickup",
+          "abstractKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
       "args": null,
       "kind": "FragmentSpread",
       "name": "ArtworkInfoSection_artwork"
@@ -61,5 +111,6 @@ const node: ReaderFragment = {
   "type": "CommerceOrder",
   "abstractKey": "__isCommerceOrder"
 };
-(node as any).hash = '96b48e6297d740f190060c4438bae257';
+})();
+(node as any).hash = '51cb3f03b68d3f28a267185ae8491a54';
 export default node;

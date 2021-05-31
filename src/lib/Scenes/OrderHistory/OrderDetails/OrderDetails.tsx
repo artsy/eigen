@@ -11,6 +11,7 @@ import React from "react"
 import { ScrollView, SectionList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
+import { OrderDetailsHeader } from "./OrderDetailsHeader"
 import { ShipsToSectionFragmentContainer } from "./ShipsToSection"
 
 export interface OrderDetailsProps {
@@ -21,12 +22,24 @@ export interface OrderDetailsProps {
 }
 interface SectionListItem {
   key: string
-  title: string
+  title?: string
   data: readonly JSX.Element[]
 }
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
+  console.log(order, "order")
+
   const DATA: SectionListItem[] = [
+    {
+      key: "OrderDetailsHeader",
+      data: [
+        <OrderDetailsHeader
+          code={order.code}
+          createdAt={order.createdAt}
+          fulfillment={order?.requestedFulfillment?.__typename}
+        />,
+      ],
+    },
     {
       key: "Artwork_Info",
       title: "Artwork Info",
@@ -52,13 +65,15 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
               </Flex>
             )}
             stickySectionHeadersEnabled={false}
-            renderSectionHeader={({ section: { title } }) => (
-              <Box mt={2}>
-                <Text fontSize={15} fontWeight={500} lineHeight={22}>
-                  {title}
-                </Text>
-              </Box>
-            )}
+            renderSectionHeader={({ section: { title } }) =>
+              title ? (
+                <Box mt={2}>
+                  <Text fontSize={15} fontWeight={500} lineHeight={22}>
+                    {title}
+                  </Text>
+                </Box>
+              ) : null
+            }
             SectionSeparatorComponent={(data) => (
               <Box
                 style={{
@@ -95,12 +110,20 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
       internalID
       code
       state
+      createdAt
+      requestedFulfillment {
+        ... on CommerceShip {
+          __typename
+        }
+        ... on CommercePickup {
+          __typename
+        }
+      }
       ...ArtworkInfoSection_artwork
       ...ShipsToSection_address
     }
   `,
 })
-
 export const OrderDetailsQueryRender: React.FC<{ orderID: string }> = ({ orderID: orderID }) => {
   return (
     <QueryRenderer<OrderDetailsQuery>
