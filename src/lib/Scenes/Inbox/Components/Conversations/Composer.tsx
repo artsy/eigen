@@ -4,7 +4,7 @@ import colors from "lib/data/colors"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { Button, color, Flex, themeProps } from "palette"
 import React from "react"
-import { TextInput, TouchableWithoutFeedback } from "react-native"
+import { Keyboard, TextInput, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { ConversationCTAFragmentContainer } from "./ConversationCTA"
@@ -60,6 +60,7 @@ export default class Composer extends React.Component<Props, State> {
     if (this.props.onSubmit && this.state.text) {
       this.props.onSubmit(this.state.text)
       this.setState({ text: null })
+      Keyboard.dismiss()
     }
   }
 
