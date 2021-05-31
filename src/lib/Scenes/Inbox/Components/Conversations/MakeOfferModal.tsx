@@ -22,7 +22,12 @@ interface MakeOfferModalProps {
 
 export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
   const { artwork, conversationID } = props
-  const [selectedEdition, setSelectedEdition] = useState<string>()
+  const { editionSets } = artwork
+
+  const knownEditionSets = (editionSets as unknown) as Array<{ internalID: string }>
+  const [selectedEdition, setSelectedEdition] = useState<string | null>(
+    editionSets?.length === 1 ? knownEditionSets[0].internalID : null
+  )
 
   const selectEdition = (editionSetID: string, isAvailable?: boolean) => {
     if (isAvailable) {

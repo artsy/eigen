@@ -68,7 +68,7 @@ describe("Colors options screen", () => {
     )
   }
 
-  const aggregation = aggregationForFilter(FilterParamName.color, mockAggregations)
+  const aggregation = aggregationForFilter(FilterParamName.colors, mockAggregations)
 
   it("shows the correct number of color options", () => {
     const tree = renderWithWrappers(
