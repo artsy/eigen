@@ -7,6 +7,12 @@ interface State {
   key: string
 }
 
+/**
+ * A Component that registers self a VirtualizedList child when nested in
+ * a VirtualizedList with the same orientation, thus allowing parent List
+ * to forward it onScroll events
+ * @returns ScrollView
+ */
 class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> {
   static contextTypes = {
     virtualizedList: PropTypes.shape({
@@ -29,7 +35,7 @@ class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> 
   }
 
   componentDidMount() {
-    if (this._isNestedInAVirtualizedListWithSameOrientation()) {
+    if (this.isNestedInAVirtualizedListWithSameOrientation()) {
       // register as a child of the parent virtualized list
       const cellKey = this.randomString()
       const key = this.randomString()
@@ -44,7 +50,7 @@ class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> 
   }
 
   componentWillUnmount() {
-    if (this._isNestedInAVirtualizedListWithSameOrientation()) {
+    if (this.isNestedInAVirtualizedListWithSameOrientation()) {
       this.context.virtualizedList.unregisterAsNestedChild({
         key: this.state.key,
         state: null,
@@ -52,20 +58,33 @@ class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> 
     }
   }
 
-  recordInteraction = () => null
+  randomString = (): string => [...Array(10)].map(() => Math.random().toString(36)[2]).join("")
+
+  isNestedInAVirtualizedListWithSameOrientation = (): boolean => {
+    const virtualizedListContext = this.context?.virtualizedList
+    return !!(virtualizedListContext && virtualizedListContext.horizontal === (this.props.horizontal ?? false))
+  }
+
+  // The following methods are required by any parent VirtualizedList
+  // in order to interact with this component as it would with a
+  // child VirtualizedList
+
+  recordInteraction = () => {
+    // Do not recalculate viewability based on this component
+    // as this component is not a VirtualizedList
+    return
+  }
 
   measureLayoutRelativeToContainingList() {
-    // Not expecting this component nor it's children to be used as a cell
+    // If we want to nest another VirtualizedList inside this Component
+    // For now we will return a ScrollView because Artworks cannot be
+    // rendered in a List like a FlatList
+    return
   }
 
   hasMore() {
-    // a scrollview wouldn't have more and this is not a real virtualized list
+    // a scrollview wouldn't have more as everything is rendered at once
     return false
-  }
-
-  _isNestedInAVirtualizedListWithSameOrientation = (): boolean => {
-    const virtualizedListContext = this.context?.virtualizedList
-    return !!(virtualizedListContext && virtualizedListContext.horizontal === (this.props.horizontal ?? false))
   }
 
   _onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -80,20 +99,28 @@ class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> 
     }
   }
 
-  randomString = (): string => [...Array(10)].map(() => Math.random().toString(36)[2]).join("")
-
   render(): React.ReactNode {
     const { children, onScroll, ...otherProps } = this.props
     return (
       <ScrollView.Context.Consumer>
         {(scrollContext: any) => {
-          // is nested in a scrollview if we can get a scrollview context
-          // TODO:- Implement logic for Parent Scrollview forwarding events
-          // to nested ScrollView if nestedScrollEnabled prop is present
           const isNestedInAScrollViewWithSameOrientation = !!(
-            scrollContext && !!scrollContext.horizontal === (otherProps.horizontal ?? false)
+            scrollContext &&
+            !!scrollContext.horizontal === (otherProps.horizontal ?? false) &&
+            !this.isNestedInAVirtualizedListWithSameOrientation()
           )
 
+          if (!!__DEV__ && isNestedInAScrollViewWithSameOrientation) {
+            console.warn(
+              "ParentAwareScrollView is nested in another ScrollView of the same orientation. \n" +
+                "However, it is not able to get the Parent's onScroll events because it " +
+                "currently supports getting Parent's onScroll events only when nested in VirtualizedLists."
+            )
+            // TODO:- return a scrollview that is able to get it's parent's onScroll events
+            // Eigen does not have need for that feature now.
+            // On android this might entail building a custom NestedScrollView that implements
+            // ViewTreeObserver.OnScrollChangedListener
+          }
           return <ScrollView {...otherProps}>{children}</ScrollView>
         }}
       </ScrollView.Context.Consumer>

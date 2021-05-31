@@ -18,22 +18,21 @@ const scrollEvent = {
 }
 
 describe("<ParentAwareScrollView>", () => {
-  describe("it receives events from parent", () => {
-    it("receives parent onScroll event when nested in a virtualized list", () => {
-      // the ParentAwareScrollView nested inside the Flatlist should
-      // react to the parent flatlist scroll by calling props.aFunc
-      const AFlatList = () => (
-        <FlatList
-          data={[<ParentAwareScrollView onScroll={() => props.aFunc()} />]}
-          renderItem={({ item }) => item}
-          keyExtractor={(_, i) => i.toString()}
-        ></FlatList>
-      )
-      const tree = renderWithWrappers(<AFlatList />)
-      const flatList = tree.root.findByType(FlatList)
-      flatList.instance._listRef._onScroll(scrollEvent)
+  it("receives parent onScroll event when nested in a virtualized list", () => {
+    // the ParentAwareScrollView nested inside the Flatlist should
+    // react to the parent flatlist scroll by calling props.aFunc
+    const AFlatList = () => (
+      <FlatList
+        data={[<ParentAwareScrollView onScroll={(e: typeof scrollEvent) => props.aFunc(e)} />]}
+        renderItem={({ item }) => item}
+        keyExtractor={(_, i) => i.toString()}
+      ></FlatList>
+    )
+    const tree = renderWithWrappers(<AFlatList />)
+    const flatList = tree.root.findByType(FlatList)
+    flatList.instance._listRef._onScroll(scrollEvent)
 
-      expect(props.aFunc).toHaveBeenCalled()
-    })
+    expect(props.aFunc).toHaveBeenCalled()
+    expect(props.aFunc).toHaveBeenCalledWith(scrollEvent)
   })
 })
