@@ -1,8 +1,6 @@
-import { fireEvent, render } from "@testing-library/react-native"
-import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import React, { useState } from "react"
-import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View, VirtualizedList } from "react-native"
+import React from "react"
+import { FlatList } from "react-native"
 import ParentAwareScrollView from "../ParentAwareScrollView"
 
 const props = {

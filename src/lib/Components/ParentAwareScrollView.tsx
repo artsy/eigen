@@ -2,6 +2,14 @@ import PropTypes from "prop-types"
 import React from "react"
 import { NativeScrollEvent, NativeSyntheticEvent, ScrollView, ScrollViewProps } from "react-native"
 
+// tslint:disable-next-line:interface-over-type-literal
+type ScrollContext = {
+  horizontal: boolean
+}
+
+// @ts-ignore
+const ScrollViewContext: React.Context<ScrollContext> = ScrollView.Context
+
 interface State {
   cellKey: string
   key: string
@@ -102,8 +110,8 @@ class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> 
   render(): React.ReactNode {
     const { children, onScroll, ...otherProps } = this.props
     return (
-      <ScrollView.Context.Consumer>
-        {(scrollContext: any) => {
+      <ScrollViewContext.Consumer>
+        {(scrollContext: ScrollContext) => {
           const isNestedInAScrollViewWithSameOrientation = !!(
             scrollContext &&
             !!scrollContext.horizontal === (otherProps.horizontal ?? false) &&
@@ -119,11 +127,11 @@ class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> 
             // TODO:- return a scrollview that is able to get it's parent's onScroll events
             // Eigen does not have need for that feature now.
             // On android this might entail building a custom NestedScrollView that implements
-            // ViewTreeObserver.OnScrollChangedListener
+            // ViewTreeObserver.OnScrollChangedListener. See https://github.com/facebook/react-native/issues/8024
           }
           return <ScrollView {...otherProps}>{children}</ScrollView>
         }}
-      </ScrollView.Context.Consumer>
+      </ScrollViewContext.Consumer>
     )
   }
 }
