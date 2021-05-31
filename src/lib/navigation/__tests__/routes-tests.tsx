@@ -1261,7 +1261,7 @@ describe(webViewRoute, () => {
 
   it("inlines params in the original order history route", () => {
     const matcher = webViewRoute("/user/purchases/:orderID")
-    expect(matcher.match(["user/purchases", "8907"])).toEqual({
+    expect(matcher.match(["user", "purchases", "8907"])).toEqual({
       url: "/user/purchases/8907",
     })
   })
