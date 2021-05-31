@@ -34,6 +34,7 @@ PODS:
     - "Artsy+UIColors (~> 3.0)"
     - "Artsy+UIFonts"
     - "UIView+BooleanAnimations"
+  - Base64 (1.1.2)
   - boost-for-react-native (1.63.0)
   - BVLinearGradient (2.5.6):
     - React
@@ -46,6 +47,11 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.4.0):
     - CocoaLumberjack/Default
+  - CodePush (7.0.1):
+    - Base64 (~> 1.1)
+    - JWT (~> 3.0.0-beta.12)
+    - React-Core
+    - SSZipArchive (~> 2.2.2)
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.6)
   - EDColor (1.0.0)
@@ -206,6 +212,8 @@ PODS:
   - ISO8601DateFormatter (0.7.1)
   - JLRoutes (2.0.0)
   - JSDecoupledAppDelegate (1.2.0)
+  - JWT (3.0.0-beta.12):
+    - Base64 (~> 1.1.2)
   - JWTDecode (2.0.0)
   - libevent (2.1.12)
   - Mantle (1.5.6):
@@ -541,6 +549,7 @@ PODS:
     - Sentry/Core (= 6.1.4)
   - Sentry/Core (6.1.4)
   - Specta (1.0.5)
+  - SSZipArchive (2.2.3)
   - Starscream (3.0.4)
   - Stripe (14.0.2)
   - SwiftyJSON (4.0.0)
@@ -575,6 +584,7 @@ DEPENDENCIES:
   - Artsy-UIButtons
   - BVLinearGradient (from `node_modules/react-native-linear-gradient`)
   - CocoaLumberjack (= 2.4.0)
+  - CodePush (from `node_modules/react-native-code-push`)
   - DHCShakeNotifier
   - DoubleConversion (from `./node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EDColor
@@ -694,6 +704,7 @@ SPEC REPOS:
     - AFNetworking
     - Analytics
     - ARAnalytics
+    - Base64
     - boost-for-react-native
     - CocoaAsyncSocket
     - CocoaLumberjack
@@ -715,6 +726,7 @@ SPEC REPOS:
     - FXBlurView
     - INTUAnimationEngine
     - JSDecoupledAppDelegate
+    - JWT
     - JWTDecode
     - libevent
     - Mantle
@@ -737,6 +749,7 @@ SPEC REPOS:
     - SDWebImage
     - Sentry
     - Specta
+    - SSZipArchive
     - Starscream
     - Stripe
     - SwiftyJSON
@@ -762,6 +775,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/artsy/ARGenericTableViewController.git
   BVLinearGradient:
     :path: node_modules/react-native-linear-gradient
+  CodePush:
+    :path: node_modules/react-native-code-push
   DoubleConversion:
     :podspec: "./node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   Emission:
@@ -917,10 +932,12 @@ SPEC CHECKSUMS:
   "Artsy+UIFonts": 597c44f264aead6bdc21898b690addd90e14edbd
   "Artsy+UILabels": 7cb6e290a4f70dddba037b7dbeb21e90b49d7275
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
+  Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CocoaLumberjack: aa9dcab71bdf9eaf2a63bbd9ddc87863efe45457
+  CodePush: 9bb93f52a44ee80b72739d89dead9c7e86c3bd3a
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
@@ -950,6 +967,7 @@ SPEC CHECKSUMS:
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
   JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
+  JWT: 9b5c05abbcc1a0e69c3c91e1655b3387fc7e581d
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
@@ -1018,6 +1036,7 @@ SPEC CHECKSUMS:
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
+  SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   Stripe: 25c07000e7e86ffc53da0e41a5dd1bce30470fe0
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa

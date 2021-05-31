@@ -8,7 +8,7 @@
 #import "ARCocoaConstantsModule.h"
 #import "ARGraphQLQueryPreloader.h"
 #import "ARGraphQLQueryCache.h"
-
+#import <CodePush/CodePush.h>
 
 @implementation AREmission
 
@@ -114,7 +114,7 @@ static AREmission *_sharedInstance = nil;
 
 - (NSURL *)releaseBundleURL;
 {
-  return [[NSBundle bundleForClass:self.class] URLForResource:@"Emission" withExtension:@"js"];
+        return [CodePush bundleURLForResource:@"Emission" withExtension:@"js"];
 }
 
 - (NSURL *)liveAuctionsURL
