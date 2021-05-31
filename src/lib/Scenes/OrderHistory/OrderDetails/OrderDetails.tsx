@@ -2,10 +2,9 @@ import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
 import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { PlaceholderText } from "lib/utils/placeholders"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { times } from "lodash"
-import { Flex } from "palette"
+import { Flex, Separator } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import { ScrollView } from "react-native"
@@ -27,12 +26,59 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
 
 export const OrderDetailsPlaceholder: React.FC<{}> = () => (
   <PageWithSimpleHeader title="Order Details">
-    <Flex px={2} py={15}>
-      {times(2).map((index: number) => (
-        <Flex key={index} py={1}>
-          <PlaceholderText width={100 + Math.random() * 100} />
+    <Flex px={20}>
+      <Flex flexDirection="row" mt={20}>
+        <Flex mr={20}>
+          <PlaceholderText width={80} />
+          <PlaceholderText width={100} marginTop={10} />
+          <PlaceholderText width={50} marginTop={10} />
         </Flex>
-      ))}
+        <Flex flexGrow={1}>
+          <PlaceholderText width={90} />
+          <PlaceholderText width={60} marginTop={10} />
+          <PlaceholderText width={65} marginTop={10} />
+        </Flex>
+      </Flex>
+      <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={10}>
+        <Separator mt={10} mb={20} />
+      </Flex>
+      <Flex>
+        <PlaceholderText width={90} />
+        <Flex flexDirection="row" mt={20}>
+          <PlaceholderBox height={60} width={60} marginLeft={16} marginRight={22} />
+          <Flex>
+            <PlaceholderText width={50 + Math.random() * 100} />
+            <PlaceholderText width={20 + Math.random() * 100} marginTop={10} />
+            <PlaceholderText width={80 + Math.random() * 100} />
+            <PlaceholderText width={30 + Math.random() * 100} />
+            <PlaceholderText width={30 + Math.random() * 100} />
+          </Flex>
+        </Flex>
+      </Flex>
+      <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={10}>
+        <Separator mt={10} mb={20} />
+      </Flex>
+      <PlaceholderText width={100} />
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Flex mt={22}>
+          <PlaceholderText width={40} />
+          <PlaceholderText width={110} marginTop={15} />
+          <PlaceholderText width={70} />
+          <PlaceholderText width={110} />
+          <PlaceholderText width={60} marginTop={15} />
+          <PlaceholderText width={60} />
+          <PlaceholderText width={40} marginTop={15} />
+        </Flex>
+        <Flex alignItems="flex-end">
+          <PlaceholderText width={50} />
+          <PlaceholderText width={40} marginTop={15} />
+          <PlaceholderText width={40} />
+          <PlaceholderText width={40} />
+          <PlaceholderText width={120} marginTop={15} />
+          <PlaceholderText width={40} />
+          <PlaceholderText width={50} marginTop={15} />
+        </Flex>
+      </Flex>
     </Flex>
   </PageWithSimpleHeader>
 )
