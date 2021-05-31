@@ -9012,6 +9012,16 @@ type Query {
     sort: ArticleSorts
   ): [Article]
 
+  # A connection of articles
+  articlesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    sort: ArticleSorts
+  ): ArticleConnection
+
   # An Artist
   artist(
     # The slug or ID of the Artist
@@ -11577,6 +11587,16 @@ type Viewer {
     showID: String
     sort: ArticleSorts
   ): [Article]
+
+  # A connection of articles
+  articlesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    sort: ArticleSorts
+  ): ArticleConnection
 
   # An Artist
   artist(
