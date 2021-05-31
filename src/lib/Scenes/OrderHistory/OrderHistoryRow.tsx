@@ -4,7 +4,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import moment from "moment"
 import { Box, Button, Flex, Text } from "palette"
 import React from "react"
-import { Image } from "react-native"
+import { Image, Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface OrderHistoryRowProps {
@@ -12,10 +12,18 @@ interface OrderHistoryRowProps {
 }
 
 export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
-  const [{ artwork }] = extractNodes(order?.lineItems)
+  const [
+    {
+      artwork,
+      fulfillments: { trackingId },
+    },
+  ] = extractNodes(order?.lineItems)
+  const trackingURL = `https://google.com/search?q=${trackingId}`
+
+  const orderIsInactive = order.state === "CANCELED" || order.state === "REFUNDED"
 
   return (
-    <Box>
+    <Flex width="100%">
       <Flex mb={10}>
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex justifyContent="center" data-test-id="image-container" mr={2}>
@@ -48,7 +56,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               <Text
                 textAlign="right"
                 variant="caption"
-                color="black60"
+                color={order.state === "CANCELED" ? "red100" : "black60"}
                 style={{ textTransform: "capitalize" }}
                 data-test-id="order-status"
               >
@@ -58,16 +66,47 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
           </Box>
         </Flex>
       </Flex>
-      <Button
-        mb={10}
-        block
-        variant="secondaryGray"
-        onPress={() => navigate(`/order-history/${order.internalID}`)}
-        data-test-id="view-order"
-      >
-        View Order
-      </Button>
-    </Box>
+      {trackingId ? (
+        <Flex flexDirection="row" justifyContent="space-between" mb={10}>
+          <Box width="50%" paddingRight={0.5}>
+            <Button
+              block
+              variant="secondaryGray"
+              onPress={() => navigate(`/order-history/${order.internalID}`)}
+              data-test-id="view-order"
+            >
+              View Order
+            </Button>
+          </Box>
+          <Box width="50%" paddingLeft={0.5}>
+            <Button
+              paddingLeft={0.5}
+              width="50%"
+              block
+              variant="primaryBlack"
+              onPress={() => Linking.openURL(trackingURL)}
+              data-test-id="track-package"
+            >
+              Track Package
+            </Button>
+          </Box>
+        </Flex>
+      ) : (
+        <Box>
+          {!orderIsInactive && (
+            <Button
+              mb={10}
+              block
+              variant="secondaryGray"
+              onPress={() => navigate(`/order-history/${order.internalID}`)}
+              data-test-id="view-order"
+            >
+              View Order
+            </Button>
+          )}
+        </Box>
+      )}
+    </Flex>
   )
 }
 
@@ -93,6 +132,13 @@ export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow,
               }
               title
               artistNames
+            }
+            fulfillments(first: 1) {
+              edges {
+                node {
+                  trackingId
+                }
+              }
             }
           }
         }

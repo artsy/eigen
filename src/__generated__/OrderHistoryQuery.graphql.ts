@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f4e785adad561170d32930bb2b2925ed */
+/* @relayHash 6c865154d97504e6829a27763d84031f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -54,6 +54,14 @@ fragment OrderHistoryRow_order on CommerceOrder {
           artistNames
           id
         }
+        fulfillments(first: 1) {
+          edges {
+            node {
+              trackingId
+              id
+            }
+          }
+        }
         id
       }
     }
@@ -105,7 +113,14 @@ v1 = [
     ]
   }
 ],
-v2 = {
+v2 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 1
+  }
+],
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -238,13 +253,7 @@ return {
                       },
                       {
                         "alias": null,
-                        "args": [
-                          {
-                            "kind": "Literal",
-                            "name": "first",
-                            "value": 1
-                          }
-                        ],
+                        "args": (v2/*: any*/),
                         "concreteType": "CommerceLineItemConnection",
                         "kind": "LinkedField",
                         "name": "lineItems",
@@ -324,7 +333,7 @@ return {
                                             "name": "name",
                                             "storageKey": null
                                           },
-                                          (v2/*: any*/)
+                                          (v3/*: any*/)
                                         ],
                                         "storageKey": null
                                       },
@@ -342,11 +351,52 @@ return {
                                         "name": "artistNames",
                                         "storageKey": null
                                       },
-                                      (v2/*: any*/)
+                                      (v3/*: any*/)
                                     ],
                                     "storageKey": null
                                   },
-                                  (v2/*: any*/)
+                                  {
+                                    "alias": null,
+                                    "args": (v2/*: any*/),
+                                    "concreteType": "CommerceFulfillmentConnection",
+                                    "kind": "LinkedField",
+                                    "name": "fulfillments",
+                                    "plural": false,
+                                    "selections": [
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "CommerceFulfillmentEdge",
+                                        "kind": "LinkedField",
+                                        "name": "edges",
+                                        "plural": true,
+                                        "selections": [
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "concreteType": "CommerceFulfillment",
+                                            "kind": "LinkedField",
+                                            "name": "node",
+                                            "plural": false,
+                                            "selections": [
+                                              {
+                                                "alias": null,
+                                                "args": null,
+                                                "kind": "ScalarField",
+                                                "name": "trackingId",
+                                                "storageKey": null
+                                              },
+                                              (v3/*: any*/)
+                                            ],
+                                            "storageKey": null
+                                          }
+                                        ],
+                                        "storageKey": null
+                                      }
+                                    ],
+                                    "storageKey": "fulfillments(first:1)"
+                                  },
+                                  (v3/*: any*/)
                                 ],
                                 "storageKey": null
                               }
@@ -356,7 +406,7 @@ return {
                         ],
                         "storageKey": "lineItems(first:1)"
                       },
-                      (v2/*: any*/)
+                      (v3/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -409,14 +459,14 @@ return {
             "kind": "LinkedHandle",
             "name": "orders"
           },
-          (v2/*: any*/)
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "f4e785adad561170d32930bb2b2925ed",
+    "id": "6c865154d97504e6829a27763d84031f",
     "metadata": {},
     "name": "OrderHistoryQuery",
     "operationKind": "query",
