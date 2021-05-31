@@ -68,9 +68,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
             renderSectionHeader={({ section: { title } }) =>
               title ? (
                 <Box mt={2}>
-                  <Text fontSize={15} fontWeight={500} lineHeight={22}>
-                    {title}
-                  </Text>
+                  <Text variant="mediumText">{title}</Text>
                 </Box>
               ) : null
             }

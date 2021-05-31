@@ -17,10 +17,10 @@ export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
       <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 14 }}>
         <Image
           source={{ uri: artworkItem?.image?.resized?.url }}
-          style={{ height: 50, width: 50, marginHorizontal: 22 }}
+          style={{ height: 60, width: 60, marginHorizontal: 22 }}
         />
         <Box style={{ flex: 1, flexShrink: 1 }}>
-          <Text pb={10} fontSize="size4" numberOfLines={1} fontWeight="bold">
+          <Text pb={10} variant="mediumText">
             {artworkItem?.artist_names}
           </Text>
           <Text color="black60">{artworkItem?.title}</Text>

@@ -17,21 +17,22 @@ export const ShipsToSection: React.FC<Props> = ({ address }) => {
   return (
     <Flex>
       <View style={{ flexDirection: "column", justifyContent: "space-between", marginVertical: 14 }}>
-        <Text data-test-id="addressLine1" color="black60" fontSize={15} fontWeight={400} lineHeight={22}>
+        <Text data-test-id="addressLine1" color="black60" variant="text">
           {agressInfo.addressLine1}
         </Text>
+
         <Box display="flex" flexDirection="row">
-          <Text data-test-id="city" color="black60" fontSize={15} fontWeight={400} lineHeight={22} paddingRight={1}>
+          <Text data-test-id="city" color="black60" variant="text" paddingRight={1}>
             {agressInfo.city}
           </Text>
-          <Text data-test-id="region" color="black60" fontSize={15} fontWeight={400} lineHeight={22}>
+          <Text data-test-id="region" color="black60" variant="text">
             {agressInfo.region}
           </Text>
         </Box>
-        <Text data-test-id="country" color="black60" fontSize={15} fontWeight={400} lineHeight={22}>
+        <Text data-test-id="country" color="black60" variant="text">
           {agressInfo.country}
         </Text>
-        <Text data-test-id="phoneNumber" color="black60" fontSize={15} fontWeight={400} lineHeight={22}>
+        <Text data-test-id="phoneNumber" color="black60" variant="text">
           {agressInfo.phoneNumber}
         </Text>
       </View>

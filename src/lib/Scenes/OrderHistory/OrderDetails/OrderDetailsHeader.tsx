@@ -13,31 +13,32 @@ interface Props {
 export const OrderDetailsHeader: React.FC<Props> = ({ createdAt, fulfillment, code }) => {
   const isShip = fulfillment === "CommerceShip"
   const orderCreatedAt = DateTime.fromISO(createdAt)
-  console.log(createdAt, "createdAt")
+
   return (
     <Flex>
       <View style={{ flexDirection: "column", justifyContent: "space-between", marginVertical: 14 }}>
         <Flex flexDirection="row">
-          <Text style={{ width: 112 }} mb={10} fontSize={15} fontWeight={400} lineHeight={22}>
+          <Text style={{ width: 112 }} mb={10} variant="text">
             Order Date
           </Text>
-          <Text mb={10} data-test-id="date" color="black60" fontSize={15} fontWeight={400} lineHeight={22}>
+
+          <Text mb={10} data-test-id="date" color="black60" variant="text">
             {orderCreatedAt.toLocaleString(DateTime.DATE_SHORT as LocaleOptions)}
           </Text>
         </Flex>
         <Flex flexDirection="row">
-          <Text style={{ width: 112 }} mb={10} fontSize={15} fontWeight={400} lineHeight={22}>
+          <Text style={{ width: 112 }} mb={10} variant="text">
             Order Number
           </Text>
-          <Text data-test-id="code" mb={10} color="black60" fontSize={15} fontWeight={400} lineHeight={22}>
+          <Text data-test-id="code" mb={10} color="black60" variant="text">
             {code}
           </Text>
         </Flex>
         <Flex flexDirection="row">
-          <Text style={{ width: 112 }} mb={10} fontSize={15} fontWeight={400} lineHeight={22}>
+          <Text style={{ width: 112 }} mb={10} variant="text">
             Status
           </Text>
-          <Text mb={10} data-test-id="commerceShip" color="black60" fontSize={15} fontWeight={400} lineHeight={22}>
+          <Text mb={10} data-test-id="commerceShip" color="black60" variant="text">
             {isShip ? "Delivery" : "Pickup"}
           </Text>
         </Flex>
