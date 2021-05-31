@@ -54,9 +54,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
             stickySectionHeadersEnabled={false}
             renderSectionHeader={({ section: { title } }) => (
               <Box mt={2}>
-                <Text fontSize={15} fontWeight={500} lineHeight={22}>
-                  {title}
-                </Text>
+                <Text variant="mediumText">{title}</Text>
               </Box>
             )}
             SectionSeparatorComponent={(data) => (
