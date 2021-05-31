@@ -28,7 +28,7 @@ export const ArtistNationalitiesOptionsScreen: React.FC<ArtistNationalitiesOptio
   return (
     <MultiSelectOptionScreen
       onSelect={handleSelect}
-      filterHeaderText={FilterDisplayName.partnerIDs}
+      filterHeaderText={FilterDisplayName.artistNationalities}
       filterOptions={filterOptions}
       navigation={navigation}
       searchable
