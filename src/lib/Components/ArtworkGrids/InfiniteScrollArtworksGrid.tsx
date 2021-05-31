@@ -7,16 +7,7 @@
 // 4. Update height of grid to encompass all items.
 
 import React from "react"
-import {
-  ActivityIndicator,
-  Dimensions,
-  LayoutChangeEvent,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from "react-native"
+import { ActivityIndicator, Dimensions, LayoutChangeEvent, Platform, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, RelayPaginationProp } from "react-relay"
 
 import Artwork from "./ArtworkGridItem"
