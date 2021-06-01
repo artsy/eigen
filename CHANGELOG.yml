@@ -9,7 +9,7 @@ upcoming:
     - Remove feature flag check for custom size filter - devon
     - Fix iOS app blank screen - ole, mounir
     - Replace "color" filter with "colors" filter - dzmitry tratsiak
-    - Added Saved Feature Flag - kizito
+    - Add Saved Search feature flag - kizito
   user_facing:
     - Fix wrong input font on android - dzmitry
     - Fix home screen load failure on logout - brian
