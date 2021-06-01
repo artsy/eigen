@@ -12,18 +12,13 @@ interface OrderHistoryRowProps {
 }
 
 export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
-  const [
-    {
-      artwork,
-      fulfillments: { trackingId },
-    },
-  ] = extractNodes(order?.lineItems)
+  const [{ artwork, fulfillments }] = extractNodes(order?.lineItems)
+  const [{ trackingId }] = extractNodes(fulfillments)
   const trackingURL = `https://google.com/search?q=${trackingId}`
-
   const orderIsInactive = order.state === "CANCELED" || order.state === "REFUNDED"
 
   return (
-    <Flex width="100%">
+    <Flex width="100%" data-test-id="order-container">
       <Flex mb={10}>
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex justifyContent="center" data-test-id="image-container" mr={2}>
@@ -73,7 +68,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               block
               variant="secondaryGray"
               onPress={() => navigate(`/order-history/${order.internalID}`)}
-              data-test-id="view-order"
+              data-test-id="view-order-button"
             >
               View Order
             </Button>
@@ -85,21 +80,21 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               block
               variant="primaryBlack"
               onPress={() => Linking.openURL(trackingURL)}
-              data-test-id="track-package"
+              data-test-id="track-package-button"
             >
               Track Package
             </Button>
           </Box>
         </Flex>
       ) : (
-        <Box>
+        <Box data-test-id="view-order-button-box">
           {!orderIsInactive && (
             <Button
               mb={10}
               block
               variant="secondaryGray"
               onPress={() => navigate(`/order-history/${order.internalID}`)}
-              data-test-id="view-order"
+              data-test-id="view-order-button"
             >
               View Order
             </Button>
