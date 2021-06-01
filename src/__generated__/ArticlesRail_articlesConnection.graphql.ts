@@ -8,7 +8,7 @@ export type ArticlesRail_articlesConnection = {
     readonly edges: ReadonlyArray<{
         readonly node: {
             readonly id: string;
-            readonly " $fragmentRefs": FragmentRefs<"Article_article">;
+            readonly " $fragmentRefs": FragmentRefs<"ArticleCard_article">;
         } | null;
     } | null> | null;
     readonly " $refType": "ArticlesRail_articlesConnection";
@@ -53,7 +53,7 @@ const node: ReaderFragment = {
             {
               "args": null,
               "kind": "FragmentSpread",
-              "name": "Article_article"
+              "name": "ArticleCard_article"
             }
           ],
           "storageKey": null
@@ -65,5 +65,5 @@ const node: ReaderFragment = {
   "type": "ArticleConnection",
   "abstractKey": null
 };
-(node as any).hash = '248abc0ad7707e8173e59c5934f05ea5';
+(node as any).hash = 'c42eca58db34ce8ed12c90f9100c9305';
 export default node;

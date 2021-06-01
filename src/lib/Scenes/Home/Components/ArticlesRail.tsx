@@ -1,5 +1,4 @@
 import { ArticlesRail_articlesConnection } from "__generated__/ArticlesRail_articlesConnection.graphql"
-import Article from "lib/Components/Artist/Articles/Article"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spacer } from "palette"
@@ -7,6 +6,7 @@ import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer } from "react-relay"
 import { graphql } from "relay-hooks"
+import { ArticleCardContainer } from "./ArticleCard"
 
 interface ArticlesRailProps {
   articlesConnection: ArticlesRail_articlesConnection
@@ -14,9 +14,6 @@ interface ArticlesRailProps {
 
 export const ArticlesRail: React.FC<ArticlesRailProps> = ({ articlesConnection }) => {
   const articles = extractNodes(articlesConnection)
-  // const articles = articlesConnection
-
-  console.log("ARTICLES:", articles)
 
   return (
     <Flex>
@@ -30,7 +27,7 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ articlesConnection }
           ListFooterComponent={() => <Spacer ml="2" />}
           data={articles}
           keyExtractor={(item) => `${item.id}`}
-          renderItem={({ item }) => <Article article={item} />}
+          renderItem={({ item }) => <ArticleCardContainer article={item} />}
         />
       </Flex>
     </Flex>
@@ -43,7 +40,7 @@ export const ArticlesRailFragmentContainer = createFragmentContainer(ArticlesRai
       edges {
         node {
           id
-          ...Article_article
+          ...ArticleCard_article
         }
       }
     }

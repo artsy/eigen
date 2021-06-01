@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash fcdfc8edbcfcf40ef6e9d8c0398c6917 */
+/* @relayHash 846b140937b0f9ca43ef59a62d68834a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -49,14 +49,14 @@ query HomeRefetchQuery(
   }
 }
 
-fragment Article_article on Article {
-  thumbnail_title: thumbnailTitle
+fragment ArticleCard_article on Article {
+  thumbnailTitle
   href
   author {
     name
     id
   }
-  thumbnail_image: thumbnailImage {
+  thumbnailImage {
     url(version: "large")
   }
 }
@@ -65,7 +65,7 @@ fragment ArticlesRail_articlesConnection on ArticleConnection {
   edges {
     node {
       id
-      ...Article_article
+      ...ArticleCard_article
     }
   }
 }
@@ -857,7 +857,7 @@ return {
                 "selections": [
                   (v3/*: any*/),
                   {
-                    "alias": "thumbnail_title",
+                    "alias": null,
                     "args": null,
                     "kind": "ScalarField",
                     "name": "thumbnailTitle",
@@ -875,7 +875,7 @@ return {
                     "storageKey": null
                   },
                   {
-                    "alias": "thumbnail_image",
+                    "alias": null,
                     "args": null,
                     "concreteType": "Image",
                     "kind": "LinkedField",
@@ -1766,7 +1766,7 @@ return {
     ]
   },
   "params": {
-    "id": "fcdfc8edbcfcf40ef6e9d8c0398c6917",
+    "id": "846b140937b0f9ca43ef59a62d68834a",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",
