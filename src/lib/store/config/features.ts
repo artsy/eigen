@@ -94,6 +94,11 @@ export const features = defineFeatures({
     description: "Enable Order History in settings",
     showInAdminMenu: true,
   },
+  AREnableSavedSearch: {
+    readyForRelease: false,
+    description: "Enable Saved Search",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

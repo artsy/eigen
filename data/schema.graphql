@@ -1828,6 +1828,64 @@ type AuctionResultPriceRealized {
   ): String
 }
 
+# An auction lot result
+type AuctionResultsByArtists {
+  artistId: String
+  boughtIn: Boolean!
+  categoryText: String
+  currency: String
+  date: ISO8601DateTime
+  dateText: String
+  depthCm: Int
+  description: String
+  diameterCm: Int
+  dimensionText: String
+  externalUrl: String
+  hammerPriceCents: BigInt
+  hammerPriceCentsUsd: BigInt
+  heightCm: Int
+  highEstimateCents: BigInt
+  highEstimateCentsUsd: BigInt
+  id: ID!
+  location: String
+  lowEstimateCents: BigInt
+  lowEstimateCentsUsd: BigInt
+  mediumText: String
+  organization: String
+  priceRealizedCents: BigInt
+  priceRealizedCentsUsd: BigInt
+  saleDate: String
+  saleDateText: String
+  saleOverEstimatePercentage: Float
+  saleTitle: String
+  title: String
+  widthCm: Int
+}
+
+# The connection type for AuctionResultsByArtists.
+type AuctionResultsByArtistsConnection {
+  # A list of edges.
+  edges: [AuctionResultsByArtistsEdge]
+
+  # A list of nodes.
+  nodes: [AuctionResultsByArtists]
+  pageCursors: PageCursors
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type AuctionResultsByArtistsEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: AuctionResultsByArtists
+}
+
 enum AuctionResultSorts {
   DATE_DESC
   ESTIMATE_AND_DATE_DESC
@@ -8954,6 +9012,16 @@ type Query {
     sort: ArticleSorts
   ): [Article]
 
+  # A connection of articles
+  articlesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    sort: ArticleSorts
+  ): ArticleConnection
+
   # An Artist
   artist(
     # The slug or ID of the Artist
@@ -9120,6 +9188,20 @@ type Query {
     # The ID of the auction result
     id: String!
   ): AuctionResult
+
+  # Auction lot results
+  auctionResultsByArtistsConnection(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+    artistIds: [ID!]!
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+  ): AuctionResultsByArtistsConnection
 
   # A list of cities
   cities(featured: Boolean = false): [City!]!
@@ -11505,6 +11587,16 @@ type Viewer {
     showID: String
     sort: ArticleSorts
   ): [Article]
+
+  # A connection of articles
+  articlesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    sort: ArticleSorts
+  ): ArticleConnection
 
   # An Artist
   artist(
