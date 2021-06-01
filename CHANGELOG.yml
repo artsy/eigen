@@ -41,6 +41,7 @@ upcoming:
    - close keyboard on message send - lily
    - Clear applied filters after click on "clear all" button immediately - dzmitry tratsiak
    - Release new price range filter to artwork grids - iskounen
+   - Fix padding between section titles and the artwork grids below them - stas hanchar
 
 releases:
   - version: 6.9.3
