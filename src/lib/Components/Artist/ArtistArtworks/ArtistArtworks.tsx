@@ -92,6 +92,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const [isSavedSearch, setIsSavedSearch] = useState(false)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+  const shouldShowSavedSearchBanner = enableSavedSearch && appliedFilters.length > 0
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
 
@@ -155,7 +156,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
             </Touchable>
           </Flex>
           <Separator mt={2} ml={-2} width={screenWidth} />
-          {!!enableSavedSearch && (
+          {!!shouldShowSavedSearchBanner && (
             <>
               <SavedSearchBanner enabled={isSavedSearch} onPress={handleSaveSearchFiltersPress} />
               <Separator ml={-2} width={screenWidth} />
@@ -163,7 +164,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
           )}
         </Box>
       ),
-    [artworksTotal, enableSavedSearch, isSavedSearch]
+    [artworksTotal, shouldShowSavedSearchBanner, isSavedSearch]
   )
 
   const filteredArtworks = () => {
