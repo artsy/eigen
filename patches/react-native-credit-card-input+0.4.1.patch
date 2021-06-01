@@ -35,9 +35,21 @@ index dde3aec..aec1f45 100644
                s.baseInputStyle,
                inputStyle,
 diff --git a/node_modules/react-native-credit-card-input/src/LiteCreditCardInput.js b/node_modules/react-native-credit-card-input/src/LiteCreditCardInput.js
-index a5f166b..dc5349b 100644
+index a5f166b..1570d20 100644
 --- a/node_modules/react-native-credit-card-input/src/LiteCreditCardInput.js
 +++ b/node_modules/react-native-credit-card-input/src/LiteCreditCardInput.js
+@@ -5,10 +5,10 @@ import {
+   Text,
+   StyleSheet,
+   Image,
+-  LayoutAnimation,
+   TouchableOpacity,
+   TextInput,
+ } from "react-native";
++import { Transition, Transitioning } from 'react-native-reanimated';
+ 
+ import Icons from "./Icons";
+ import CCInput from "./CCInput";
 @@ -20,13 +20,14 @@ const s = StyleSheet.create({
    container: {
      paddingLeft: 10,
@@ -82,6 +94,15 @@ index a5f166b..dc5349b 100644
        expiry: "MM/YY",
        cvc: "CVC",
      },
+@@ -105,7 +106,7 @@ export default class LiteCreditCardInput extends Component {
+   _focus = field => {
+     if (!field) return;
+     this.refs[field].focus();
+-    LayoutAnimation.easeInEaseOut();
++    animate()
+   }
+ 
+   _inputProps = field => {
 @@ -113,6 +114,7 @@ export default class LiteCreditCardInput extends Component {
        inputStyle, validColor, invalidColor, placeholderColor,
        placeholders, values, status,
@@ -123,7 +144,22 @@ index a5f166b..dc5349b 100644
          <View style={[
            s.leftPart,
            showRightPart ? s.hidden : s.expanded,
-@@ -161,7 +175,11 @@ export default class LiteCreditCardInput extends Component {
+@@ -152,16 +166,23 @@ export default class LiteCreditCardInput extends Component {
+             keyboardType="numeric"
+             containerStyle={s.numberInput} />
+         </View>
+-        <TouchableOpacity onPress={showRightPart ? this._focusNumber : this._focusExpiry }>
+-          <Image style={s.icon} source={Icons[this._iconToShow()]} />
+-        </TouchableOpacity>
++          <Transitioning.View transition={transition} ref={ANIMATION_REF}>
++            <TouchableOpacity onPress={showRightPart ? this._focusNumber : this._focusExpiry }>
++              <Image style={s.icon} source={Icons[this._iconToShow()]} />
++            </TouchableOpacity>
++          </Transitioning.View>
++
+         <View style={[
+           s.rightPart,
+           showRightPart ? s.expanded : s.hidden,
          ]}>
            <TouchableOpacity onPress={this._focusNumber}
              style={s.last4}>
@@ -136,6 +172,22 @@ index a5f166b..dc5349b 100644
                <CCInput field="last4"
                  keyboardType="numeric"
                  value={ numberStatus === "valid" ? number.substr(number.length - 4, 4) : "" }
+@@ -180,3 +201,14 @@ export default class LiteCreditCardInput extends Component {
+     );
+   }
+ }
++const transition = (
++  <Transition.Together>
++    <Transition.Change interpolation="easeInOut" />
++  </Transition.Together>
++);
++
++const ANIMATION_REF = React.createRef();
++
++function animate() {
++  ANIMATION_REF.current.animateNextTransition();
++}
+\ No newline at end of file
 diff --git a/node_modules/react-native-credit-card-input/src/connectToState.js b/node_modules/react-native-credit-card-input/src/connectToState.js
 index cda7fc6..d12a1de 100644
 --- a/node_modules/react-native-credit-card-input/src/connectToState.js
