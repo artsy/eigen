@@ -10,7 +10,6 @@ export type ShipsToSection_address = {
         readonly addressLine2?: string | null;
         readonly city?: string | null;
         readonly country?: string | null;
-        readonly name?: string | null;
         readonly phoneNumber?: string | null;
         readonly postalCode?: string | null;
         readonly region?: string | null;
@@ -74,13 +73,6 @@ const node: ReaderFragment = {
               "alias": null,
               "args": null,
               "kind": "ScalarField",
-              "name": "name",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
               "name": "phoneNumber",
               "storageKey": null
             },
@@ -109,5 +101,5 @@ const node: ReaderFragment = {
   "type": "CommerceOrder",
   "abstractKey": "__isCommerceOrder"
 };
-(node as any).hash = '2bde66a5e073d002ca8bbe7b9d523450';
+(node as any).hash = '54757664588c1244c2b7878e8fe6159f';
 export default node;

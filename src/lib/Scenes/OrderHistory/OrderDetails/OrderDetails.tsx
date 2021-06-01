@@ -1,6 +1,5 @@
 import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
 import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
-import { theme } from "lib/Components/Bidding/Elements/Theme"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderText } from "lib/utils/placeholders"
@@ -16,9 +15,7 @@ import { ShipsToSectionFragmentContainer } from "./ShipsToSection"
 
 export interface OrderDetailsProps {
   order: OrderDetails_order
-  me: {
-    name: string
-  }
+  me: OrderDetailsQuery["response"]["me"]
 }
 interface SectionListItem {
   key: string
@@ -43,48 +40,46 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
     {
       key: "Artwork_Info",
       title: "Artwork Info",
-      data: [<ArtworkInfoSectionFragmentContainer artwork={order} />],
+      data: [<ArtworkInfoSectionFragmentContainer testID="Artwork" artwork={order} />],
     },
     {
       key: "ShipTo_Section",
-      title: `Ships to ${me.name}`,
-      data: [<ShipsToSectionFragmentContainer address={order} />],
+      title: `Ships to ${me?.name}`,
+      data: [<ShipsToSectionFragmentContainer testID="ShipsToSection" address={order} />],
     },
   ]
 
   return (
     <PageWithSimpleHeader title="Order Details">
-      <ScrollView>
-        <Flex flexDirection="column" justifyContent="space-between" px={2}>
-          <SectionList
-            sections={DATA}
-            keyExtractor={(item, index) => item.key + index.toString()}
-            renderItem={({ item }) => (
-              <Flex flexDirection="column" justifyContent="space-between">
-                <Box>{item}</Box>
-              </Flex>
-            )}
-            stickySectionHeadersEnabled={false}
-            renderSectionHeader={({ section: { title } }) =>
-              title ? (
-                <Box mt={2}>
-                  <Text variant="mediumText">{title}</Text>
-                </Box>
-              ) : null
-            }
-            SectionSeparatorComponent={(data) => (
-              <Box
-                style={{
-                  height: !!data.leadingItem && !!data.trailingSection ? 2 : 0,
-                  backgroundColor: `${theme.colors.black10}`,
-                }}
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-              ></Box>
-            )}
-          />
-        </Flex>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+        <SectionList
+          sections={DATA}
+          keyExtractor={(item, index) => item.key + index.toString()}
+          renderItem={({ item }) => (
+            <Flex flexDirection="column" justifyContent="space-between">
+              <Box>{item}</Box>
+            </Flex>
+          )}
+          stickySectionHeadersEnabled={false}
+          renderSectionHeader={({ section: { title } }) => (
+            <Box>
+              <Text variant="mediumText">{title}</Text>
+            </Box>
+          )}
+          SectionSeparatorComponent={(data) => (
+            <Box
+              height={!!data.leadingItem && !!data.trailingSection ? 2 : 0}
+              marginTop={data.leadingItem && data.trailingSection ? 20 : 0}
+              backgroundColor="black10"
+              style={{
+                marginVertical: 20,
+              }}
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
+            ></Box>
+          )}
+        />
       </ScrollView>
     </PageWithSimpleHeader>
   )
@@ -131,7 +126,7 @@ export const OrderDetailsQueryRender: React.FC<{ orderID: string }> = ({ orderID
           order: commerceOrder(id: $orderID) {
             ...OrderDetails_order
           }
-          me: me {
+          me {
             name
           }
         }

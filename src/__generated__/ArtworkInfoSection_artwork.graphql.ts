@@ -9,13 +9,18 @@ export type ArtworkInfoSection_artwork = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly artwork: {
+                    readonly medium: string | null;
+                    readonly editionOf: string | null;
+                    readonly dimensions: {
+                        readonly in: string | null;
+                        readonly cm: string | null;
+                    } | null;
+                    readonly date: string | null;
                     readonly image: {
-                        readonly resized: {
-                            readonly url: string;
-                        } | null;
+                        readonly url: string | null;
                     } | null;
                     readonly title: string | null;
-                    readonly artist_names: string | null;
+                    readonly artistNames: string | null;
                 } | null;
             } | null;
         } | null> | null;
@@ -38,7 +43,13 @@ const node: ReaderFragment = {
   "selections": [
     {
       "alias": null,
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 1
+        }
+      ],
       "concreteType": "CommerceLineItemConnection",
       "kind": "LinkedField",
       "name": "lineItems",
@@ -71,6 +82,52 @@ const node: ReaderFragment = {
                     {
                       "alias": null,
                       "args": null,
+                      "kind": "ScalarField",
+                      "name": "medium",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "editionOf",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "concreteType": "dimensions",
+                      "kind": "LinkedField",
+                      "name": "dimensions",
+                      "plural": false,
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "in",
+                          "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "cm",
+                          "storageKey": null
+                        }
+                      ],
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "date",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
                       "concreteType": "Image",
                       "kind": "LinkedField",
                       "name": "image",
@@ -81,24 +138,13 @@ const node: ReaderFragment = {
                           "args": [
                             {
                               "kind": "Literal",
-                              "name": "width",
-                              "value": 55
+                              "name": "version",
+                              "value": "square60"
                             }
                           ],
-                          "concreteType": "ResizedImageUrl",
-                          "kind": "LinkedField",
-                          "name": "resized",
-                          "plural": false,
-                          "selections": [
-                            {
-                              "alias": null,
-                              "args": null,
-                              "kind": "ScalarField",
-                              "name": "url",
-                              "storageKey": null
-                            }
-                          ],
-                          "storageKey": "resized(width:55)"
+                          "kind": "ScalarField",
+                          "name": "url",
+                          "storageKey": "url(version:\"square60\")"
                         }
                       ],
                       "storageKey": null
@@ -111,7 +157,7 @@ const node: ReaderFragment = {
                       "storageKey": null
                     },
                     {
-                      "alias": "artist_names",
+                      "alias": null,
                       "args": null,
                       "kind": "ScalarField",
                       "name": "artistNames",
@@ -127,11 +173,11 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
-      "storageKey": null
+      "storageKey": "lineItems(first:1)"
     }
   ],
   "type": "CommerceOrder",
   "abstractKey": "__isCommerceOrder"
 };
-(node as any).hash = '39ad474ecc0785f58aa58c46b20a77d9';
+(node as any).hash = 'd7e75669f6f14420ca6bb07b8a281bee';
 export default node;

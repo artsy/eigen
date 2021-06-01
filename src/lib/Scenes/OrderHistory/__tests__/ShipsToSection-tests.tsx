@@ -1,46 +1,57 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { ArtworkInfoSection_artwork } from "__generated__/ArtworkInfoSection_artwork.graphql"
-import { extractText } from "lib/tests/extractText"
+import { ShipsToSectionTestsQuery } from "__generated__/ShipsToSectionTestsQuery.graphql"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Text } from "palette"
 import React from "react"
-import { ShipsToSection } from "../OrderDetails/ShipsToSection"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
+import { ShipsToSectionFragmentContainer } from "../OrderDetails/ShipsToSection"
 
-describe("ArtworkTileRailCard", () => {
-  const defaultProps = {
-    requestedFulfillment: {
-      addressLine1: "first address",
-      city: "city",
-      region: "me region",
-      country: "Brazil",
-      phoneNumber: "2000",
-    },
-  }
+jest.unmock("react-relay")
 
-  it("renders a Text components", () => {
-    const tree = renderWithWrappers(<ShipsToSection address={defaultProps as any} />)
-    const textFileds = tree.root.findAllByType(Text)
-    expect(textFileds.length).toBe(5)
-  })
-  it("render addressLine1", () => {
-    const tree = renderWithWrappers(<ShipsToSection address={defaultProps as any} />)
-    expect(extractText(tree.root.findByProps({ "data-test-id": "addressLine1" }))).toBe("first address")
-  })
+describe("ShipsToSection", () => {
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
-  it("render region", () => {
-    const tree = renderWithWrappers(<ShipsToSection address={defaultProps as any} />)
-    expect(extractText(tree.root.findByProps({ "data-test-id": "region" }))).toBe("me region")
-  })
-  it("render city", () => {
-    const tree = renderWithWrappers(<ShipsToSection address={defaultProps as any} />)
-    expect(extractText(tree.root.findByProps({ "data-test-id": "city" }))).toBe("city")
-  })
-  it("render country", () => {
-    const tree = renderWithWrappers(<ShipsToSection address={defaultProps as any} />)
-    expect(extractText(tree.root.findByProps({ "data-test-id": "country" }))).toBe("Brazil")
-  })
-  it("render phoneNumber", () => {
-    const tree = renderWithWrappers(<ShipsToSection address={defaultProps as any} />)
-    expect(extractText(tree.root.findByProps({ "data-test-id": "phoneNumber" }))).toBe("2000")
+  const TestRenderer = () => (
+    <QueryRenderer<ShipsToSectionTestsQuery>
+      environment={mockEnvironment}
+      query={graphql`
+        query ShipsToSectionTestsQuery @relay_test_operation {
+          commerceOrder(id: "some-id") {
+            internalID
+            ...ShipsToSection_address
+          }
+        }
+      `}
+      variables={{}}
+      render={({ props }) => {
+        if (props?.commerceOrder) {
+          return <ShipsToSectionFragmentContainer address={props.commerceOrder} />
+        }
+        return null
+      }}
+    />
+  )
+  it("renders auction result when auction results are available", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+    mockEnvironmentPayload(mockEnvironment, {
+      CommerceOrder: () => ({
+        requestedFulfillment: {
+          addressLine1: "myadress",
+          city: "mycity",
+          country: "mycountry",
+          postalCode: "11238",
+          phoneNumber: "7777",
+          region: "myregion",
+        },
+      }),
+    })
+
+    expect(tree.findByProps({ testID: "addressLine1" }).props.children).toBe("myadress")
+    expect(tree.findByProps({ testID: "city" }).props.children).toBe("mycity")
+    expect(tree.findByProps({ testID: "region" }).props.children).toBe("myregion")
+    expect(tree.findByProps({ testID: "phoneNumber" }).props.children).toBe("7777")
+    expect(tree.findByProps({ testID: "country" }).props.children).toBe("mycountry")
+    expect(tree.findByProps({ testID: "postalCode" }).props.children).toBe("11238")
   })
 })
