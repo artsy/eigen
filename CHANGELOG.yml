@@ -1,5 +1,5 @@
 upcoming:
-  version: 6.9.3
+  version: 6.9.4
   date: TBD
   dev:
     - Improve admin menu - dzmitry
@@ -9,7 +9,8 @@ upcoming:
     - Remove feature flag check for custom size filter - devon
     - Fix iOS app blank screen - ole, mounir
     - Replace "color" filter with "colors" filter - dzmitry tratsiak
-  user_facing:
+    - Add Saved Search feature flag - kizito
+ user_facing:
     - Fix wrong input font on android - dzmitry
     - Fix home screen load failure on logout - brian
     - Add artwork Material filter - dzmitry tratsiak
@@ -38,9 +39,18 @@ upcoming:
     - Fix registration flow error handling (e.g. invalid phone number) - ole
     - Decode html entities in markdown - ole
     - close keyboard on message send - lily
+    - Clear applied filters after click on "clear all" button immediately - dzmitry tratsiak
+    - Release new price range filter to artwork grids - iskounen
     - Fix padding between section titles and the artwork grids below them - stas hanchar
 
 releases:
+  - version: 6.9.3
+    date: June 1, 2021
+    dev:
+      - 
+    user_facing:
+      - fix disabled button bug for works with only one edition - lily
+
   - version: 6.9.2
     date: May 26, 2021
     dev:
