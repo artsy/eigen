@@ -5,8 +5,10 @@ import { Flex, Spacer } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer } from "react-relay"
+import { useTracking } from "react-tracking"
 import { graphql } from "relay-hooks"
-import { ArticleCardContainer } from "./ArticleCard"
+import { ArticleCardContainer } from "../../../Components/ArticleCard"
+import HomeAnalytics from "../homeAnalytics"
 
 interface ArticlesRailProps {
   articlesConnection: ArticlesRail_articlesConnection
@@ -14,6 +16,12 @@ interface ArticlesRailProps {
 
 export const ArticlesRail: React.FC<ArticlesRailProps> = ({ articlesConnection }) => {
   const articles = extractNodes(articlesConnection)
+
+  if (!articles.length) {
+    return <></>
+  }
+
+  const tracking = useTracking()
 
   return (
     <Flex>
@@ -26,8 +34,17 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ articlesConnection }
           ListHeaderComponent={() => <Spacer ml="2" />}
           ListFooterComponent={() => <Spacer ml="2" />}
           data={articles}
-          keyExtractor={(item) => `${item.id}`}
-          renderItem={({ item }) => <ArticleCardContainer article={item} />}
+          keyExtractor={(item) => `${item.internalID}`}
+          renderItem={({ item, index }) => (
+            <ArticleCardContainer
+              onPress={() => {
+                const tapEvent = HomeAnalytics.articleThumbnailTapEvent(item.internalID, item.slug || "", index)
+
+                tracking.trackEvent(tapEvent)
+              }}
+              article={item}
+            />
+          )}
         />
       </Flex>
     </Flex>
@@ -39,7 +56,8 @@ export const ArticlesRailFragmentContainer = createFragmentContainer(ArticlesRai
     fragment ArticlesRail_articlesConnection on ArticleConnection {
       edges {
         node {
-          id
+          internalID
+          slug
           ...ArticleCard_article
         }
       }

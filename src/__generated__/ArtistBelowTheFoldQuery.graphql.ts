@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f4849acfd7fd7bcb48aadb67980feada */
+/* @relayHash 80ec9cc12f3f583b3c34c12650bc7f37 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,21 +31,23 @@ query ArtistBelowTheFoldQuery(
   }
 }
 
-fragment Article_article on Article {
-  thumbnail_title: thumbnailTitle
+fragment ArticleCard_article on Article {
+  internalID
+  slug
+  thumbnailTitle
   href
   author {
     name
     id
   }
-  thumbnail_image: thumbnailImage {
+  thumbnailImage {
     url(version: "large")
   }
 }
 
 fragment Articles_articles on Article {
   id
-  ...Article_article
+  ...ArticleCard_article
 }
 
 fragment ArtistAboutShows_artist on Artist {
@@ -1230,8 +1232,10 @@ return {
                     "plural": false,
                     "selections": [
                       (v10/*: any*/),
+                      (v2/*: any*/),
+                      (v3/*: any*/),
                       {
-                        "alias": "thumbnail_title",
+                        "alias": null,
                         "args": null,
                         "kind": "ScalarField",
                         "name": "thumbnailTitle",
@@ -1249,7 +1253,7 @@ return {
                         "storageKey": null
                       },
                       {
-                        "alias": "thumbnail_image",
+                        "alias": null,
                         "args": null,
                         "concreteType": "Image",
                         "kind": "LinkedField",
@@ -1539,7 +1543,7 @@ return {
     ]
   },
   "params": {
-    "id": "f4849acfd7fd7bcb48aadb67980feada",
+    "id": "80ec9cc12f3f583b3c34c12650bc7f37",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",

@@ -7,7 +7,8 @@ import { FragmentRefs } from "relay-runtime";
 export type ArticlesRail_articlesConnection = {
     readonly edges: ReadonlyArray<{
         readonly node: {
-            readonly id: string;
+            readonly internalID: string;
+            readonly slug: string | null;
             readonly " $fragmentRefs": FragmentRefs<"ArticleCard_article">;
         } | null;
     } | null> | null;
@@ -47,7 +48,14 @@ const node: ReaderFragment = {
               "alias": null,
               "args": null,
               "kind": "ScalarField",
-              "name": "id",
+              "name": "internalID",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "slug",
               "storageKey": null
             },
             {
@@ -65,5 +73,5 @@ const node: ReaderFragment = {
   "type": "ArticleConnection",
   "abstractKey": null
 };
-(node as any).hash = 'c42eca58db34ce8ed12c90f9100c9305';
+(node as any).hash = 'd1faa0a4c1bf19ce469a9c78f1c5308f';
 export default node;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash abc3bbb89a74109eb1635a798d23d106 */
+/* @relayHash 2df0001fdb37989c9fd22e559a5a4f5e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -50,6 +50,8 @@ query HomeQuery(
 }
 
 fragment ArticleCard_article on Article {
+  internalID
+  slug
   thumbnailTitle
   href
   author {
@@ -64,8 +66,10 @@ fragment ArticleCard_article on Article {
 fragment ArticlesRail_articlesConnection on ArticleConnection {
   edges {
     node {
-      id
+      internalID
+      slug
       ...ArticleCard_article
+      id
     }
   }
 }
@@ -1725,7 +1729,8 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v3/*: any*/),
+                  (v10/*: any*/),
+                  (v9/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -1753,7 +1758,8 @@ return {
                     "plural": false,
                     "selections": (v28/*: any*/),
                     "storageKey": null
-                  }
+                  },
+                  (v3/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -1766,7 +1772,7 @@ return {
     ]
   },
   "params": {
-    "id": "abc3bbb89a74109eb1635a798d23d106",
+    "id": "2df0001fdb37989c9fd22e559a5a4f5e",
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",

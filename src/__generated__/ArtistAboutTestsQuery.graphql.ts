@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b4012d2dfba16e62157f2bd5dbbb4a4c */
+/* @relayHash a51d66d8044069c0ea254753de3a903a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,21 +30,23 @@ query ArtistAboutTestsQuery(
   }
 }
 
-fragment Article_article on Article {
-  thumbnail_title: thumbnailTitle
+fragment ArticleCard_article on Article {
+  internalID
+  slug
+  thumbnailTitle
   href
   author {
     name
     id
   }
-  thumbnail_image: thumbnailImage {
+  thumbnailImage {
     url(version: "large")
   }
 }
 
 fragment Articles_articles on Article {
   id
-  ...Article_article
+  ...ArticleCard_article
 }
 
 fragment ArtistAboutShows_artist on Artist {
@@ -1222,8 +1224,10 @@ return {
                     "plural": false,
                     "selections": [
                       (v9/*: any*/),
+                      (v2/*: any*/),
+                      (v3/*: any*/),
                       {
-                        "alias": "thumbnail_title",
+                        "alias": null,
                         "args": null,
                         "kind": "ScalarField",
                         "name": "thumbnailTitle",
@@ -1241,7 +1245,7 @@ return {
                         "storageKey": null
                       },
                       {
-                        "alias": "thumbnail_image",
+                        "alias": null,
                         "args": null,
                         "concreteType": "Image",
                         "kind": "LinkedField",
@@ -1266,7 +1270,7 @@ return {
     ]
   },
   "params": {
-    "id": "b4012d2dfba16e62157f2bd5dbbb4a4c",
+    "id": "a51d66d8044069c0ea254753de3a903a",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": (v18/*: any*/),
@@ -1298,9 +1302,11 @@ return {
         "artist.articles.edges.node.author.name": (v20/*: any*/),
         "artist.articles.edges.node.href": (v20/*: any*/),
         "artist.articles.edges.node.id": (v19/*: any*/),
-        "artist.articles.edges.node.thumbnail_image": (v21/*: any*/),
-        "artist.articles.edges.node.thumbnail_image.url": (v20/*: any*/),
-        "artist.articles.edges.node.thumbnail_title": (v20/*: any*/),
+        "artist.articles.edges.node.internalID": (v19/*: any*/),
+        "artist.articles.edges.node.slug": (v20/*: any*/),
+        "artist.articles.edges.node.thumbnailImage": (v21/*: any*/),
+        "artist.articles.edges.node.thumbnailImage.url": (v20/*: any*/),
+        "artist.articles.edges.node.thumbnailTitle": (v20/*: any*/),
         "artist.artistSeriesConnection": {
           "enumValues": null,
           "nullable": true,
