@@ -89,6 +89,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 }) => {
   const tracking = useTracking()
   const enableSavedSearch = useFeatureFlag("AREnableSavedSearch")
+  const [isSavedSearch, setIsSavedSearch] = useState(false)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
 
@@ -129,8 +130,9 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     })
   }
 
-  // tslint:disable-next-line:no-empty
-  const handleSaveSearchFiltersPress = () => {}
+  const handleSaveSearchFiltersPress = () => {
+    setIsSavedSearch(!isSavedSearch)
+  }
 
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
   const screenWidth = useScreenDimensions().width
@@ -155,13 +157,13 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
           <Separator mt={2} ml={-2} width={screenWidth} />
           {!!enableSavedSearch && (
             <>
-              <SavedSearchBanner enabled={false} onPress={handleSaveSearchFiltersPress} />
+              <SavedSearchBanner enabled={isSavedSearch} onPress={handleSaveSearchFiltersPress} />
               <Separator ml={-2} width={screenWidth} />
             </>
           )}
         </Box>
       ),
-    [artworksTotal, enableSavedSearch]
+    [artworksTotal, enableSavedSearch, isSavedSearch]
   )
 
   const filteredArtworks = () => {
