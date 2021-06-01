@@ -27,12 +27,12 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
     {
       key: "Artwork_Info",
       title: "Artwork Info",
-      data: [<ArtworkInfoSectionFragmentContainer artwork={order} />],
+      data: [<ArtworkInfoSectionFragmentContainer testID="Artwork" artwork={order} />],
     },
     {
       key: "ShipTo_Section",
       title: `Ships to ${me?.name}`,
-      data: [<ShipsToSectionFragmentContainer address={order} />],
+      data: [<ShipsToSectionFragmentContainer testID="ShipsToSection" address={order} />],
     },
   ]
 

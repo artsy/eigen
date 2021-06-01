@@ -26,7 +26,6 @@ describe("ShipsToSection", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.commerceOrder) {
-          console.log(props?.commerceOrder)
           return <ShipsToSectionFragmentContainer address={props.commerceOrder} />
         }
         return null

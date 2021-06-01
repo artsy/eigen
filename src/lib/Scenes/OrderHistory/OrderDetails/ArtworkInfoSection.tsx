@@ -8,6 +8,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
   artwork: ArtworkInfoSection_artwork
+  testID?: string
 }
 
 export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
