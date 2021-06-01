@@ -11,8 +11,9 @@ import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
 
 const splitConfig = {
   core: {
-    authorizationKey: "",
-    key: "",
+    authorizationKey:
+      "add the key for eigen-test-key from https://app.split.io/org/37f2ce10-9e25-11eb-8abb-128f4a94c92f/ws/37f87360-9e25-11eb-8abb-128f4a94c92f/admin/apis",
+    key: "test",
   },
 }
 
