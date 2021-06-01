@@ -11,24 +11,111 @@ import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
 } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { useAnimatedValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
+import { StickyTabPageContext } from "lib/Components/StickyTabPage/SitckyTabPageContext"
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, FilterIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect, useMemo, useState } from "react"
+import Animated, { Easing } from "react-native-reanimated"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+
+const {
+  Clock,
+  Value,
+  call,
+  set,
+  cond,
+  startClock,
+  clockRunning,
+  timing,
+  stopClock,
+  block,
+  useCode,
+  onChange,
+  lessOrEq,
+  add,
+} = Animated
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
   relay: RelayPaginationProp
 }
 
+function runTiming(clock, value, dest) {
+  const state = {
+    finished: new Value(0),
+    position: new Value(0),
+    time: new Value(0),
+    frameTime: new Value(0),
+  }
+
+  const config = {
+    duration: 1000,
+    toValue: new Value(0),
+    easing: Easing.inOut(Easing.ease),
+  }
+
+  return block([
+    cond(
+      clockRunning(clock),
+      [
+        // if the clock is already running we update the toValue, in case a new dest has been passed in
+        set(config.toValue, dest),
+      ],
+      [
+        // call([], () => console.log("[ANIMATED] the clock NOT running")),
+        // if the clock isn't running we reset all the animation params and start the clock
+        set(state.finished, 0),
+        set(state.time, 0),
+        set(state.position, value),
+        set(state.frameTime, 0),
+        set(config.toValue, dest),
+        startClock(clock),
+      ]
+    ),
+    // we run the step here that is going to update position
+    timing(clock, state, config),
+    // if the animation is over we stop the clock
+    cond(state.finished, stopClock(clock)),
+    // we made the block return the updated position
+    state.position,
+  ])
+}
+
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
   const tracking = useTracking()
+  const screenWidth = useScreenDimensions().width
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const { staticHeaderHeight, stickyHeaderHeight, headerOffsetY } = useContext(StickyTabPageContext)
+  const { tabSpecificContentHeight } = useContext(StickyTabPageFlatListContext)
+
+  const shouldShowSavedSearchBanner = true
+  const fromOpacity = useAnimatedValue(1)
+  const toOpacity = useAnimatedValue(1)
+  const clock = useMemo(() => new Clock(), [])
+  const opacity = useMemo(() => runTiming(clock, fromOpacity, toOpacity), [])
+  const shouldHide = lessOrEq(headerOffsetY, -150)
+
+  useCode(() => [
+    call([], () => console.log('[ANIMATED] refresh')),
+    onChange(shouldHide, block([
+      call([], () => console.log('[ANIMATED] changed')),
+      cond(shouldHide, [
+        call([], () => console.log('[ANIMATED] step 1')),
+        set(fromOpacity, 1),
+        set(toOpacity, 0),
+      ], [
+        call([], () => console.log('[ANIMATED] step 2')),
+        set(fromOpacity, 0),
+        set(toOpacity, 1),
+      ]),
+    ]))
+  ], [])
 
   const handleFilterArtworksModal = () => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
@@ -60,7 +147,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
 
   return (
     <ArtworkFiltersStoreProvider>
-      <StickyTabPageScrollView>
+      <StickyTabPageScrollView contentContainerStyle={{ paddingTop: shouldShowSavedSearchBanner ? 50 : 0 }}>
         <ArtistArtworksContainer {...props} artist={artist} relay={relay} openFilterModal={openFilterArtworksModal} />
         <ArtworkFilterNavigator
           {...props}
@@ -72,6 +159,19 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
           mode={FilterModalMode.ArtistArtworks}
         />
       </StickyTabPageScrollView>
+      {staticHeaderHeight !== null && stickyHeaderHeight !== null && tabSpecificContentHeight !== null && (
+        <Animated.View
+          style={{
+            width: screenWidth,
+            height: 58,
+            backgroundColor: "red",
+            position: "absolute",
+            left: 0,
+            top: add(staticHeaderHeight, stickyHeaderHeight, tabSpecificContentHeight, headerOffsetY),
+            opacity,
+          }}
+        />
+      )}
     </ArtworkFiltersStoreProvider>
   )
 }
@@ -197,7 +297,16 @@ export default createPaginationContainer(
           first: $count
           after: $cursor
           input: $input
-          aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE]
+          aggregations: [
+            COLOR
+            DIMENSION_RANGE
+            LOCATION_CITY
+            MAJOR_PERIOD
+            MATERIALS_TERMS
+            MEDIUM
+            PARTNER
+            PRICE_RANGE
+          ]
         ) @connection(key: "ArtistArtworksGrid_artworks") {
           aggregations {
             slice
