@@ -38,6 +38,7 @@ upcoming:
     - Fix registration flow error handling (e.g. invalid phone number) - ole
     - Decode html entities in markdown - ole
     - close keyboard on message send - lily
+    - Fix padding between section titles and the artwork grids below them - stas hanchar
 
 releases:
   - version: 6.9.2
