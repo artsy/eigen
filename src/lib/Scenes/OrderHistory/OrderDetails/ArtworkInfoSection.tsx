@@ -1,9 +1,9 @@
 import { ArtworkInfoSection_artwork } from "__generated__/ArtworkInfoSection_artwork.graphql"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Box, Flex, Text } from "palette"
 import React from "react"
 import { Image } from "react-native"
-import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
@@ -12,20 +12,54 @@ interface Props {
 
 export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
   const artworkItem = extractNodes(artwork.lineItems)[0].artwork
+  if (!artworkItem) {
+    return null
+  }
+
+  const { image, artistNames, title, dimensions, editionOf, date, medium } = artworkItem
+  const addedComma = date ? ", " : ""
+
   return (
     <Flex>
-      <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 14 }}>
-        <Image
-          source={{ uri: artworkItem?.image?.resized?.url }}
-          style={{ height: 60, width: 60, marginHorizontal: 22 }}
-        />
+      <Flex style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        {!!image?.url ? (
+          <Image
+            resizeMode="contain"
+            source={{ uri: image.url }}
+            style={{ height: 60, width: 60, marginHorizontal: 22 }}
+            testID="image"
+          />
+        ) : (
+          <Box width={60} height={60} backgroundColor="black10" />
+        )}
         <Box style={{ flex: 1, flexShrink: 1 }}>
-          <Text pb={10} variant="mediumText">
-            {artworkItem?.artist_names}
+          <Text pb={10} variant="mediumText" testID="artistNames">
+            {artistNames}
           </Text>
-          <Text color="black60">{artworkItem?.title}</Text>
+          <Text>
+            <Text variant="text" color="black60" testID="title">
+              {title + addedComma}
+            </Text>
+            <Text variant="text" color="black60" testID="date">
+              {date}
+            </Text>
+          </Text>
+          <Text variant="text" color="black60" testID="medium">
+            {medium}
+          </Text>
+          {!!dimensions!.in && !!dimensions!.cm && (
+            <Text variant="text" color="black60">
+              {LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US" ? dimensions!.in : dimensions!.cm}
+            </Text>
+          )}
+
+          {!!editionOf && (
+            <Text testID="editionOf" variant="text" color="black60">
+              {editionOf}
+            </Text>
+          )}
         </Box>
-      </View>
+      </Flex>
     </Flex>
   )
 }
@@ -33,17 +67,22 @@ export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
 export const ArtworkInfoSectionFragmentContainer = createFragmentContainer(ArtworkInfoSection, {
   artwork: graphql`
     fragment ArtworkInfoSection_artwork on CommerceOrder {
-      lineItems {
+      lineItems(first: 1) {
         edges {
           node {
             artwork {
+              medium
+              editionOf
+              dimensions {
+                in
+                cm
+              }
+              date
               image {
-                resized(width: 55) {
-                  url
-                }
+                url(version: "square60")
               }
               title
-              artist_names: artistNames
+              artistNames
             }
           }
         }

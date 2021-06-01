@@ -1,46 +1,78 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { ArtworkInfoSection_artwork } from "__generated__/ArtworkInfoSection_artwork.graphql"
+import { ArtworkInfoSectionTestsQuery } from "__generated__/ArtworkInfoSectionTestsQuery.graphql"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Text } from "palette"
 import React from "react"
-import { Image } from "react-native"
-import { ArtworkInfoSection } from "../OrderDetails/ArtworkInfoSection"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
+import { ArtworkInfoSectionFragmentContainer } from "../OrderDetails/ArtworkInfoSection"
 
-describe("ArtworkTileRailCard", () => {
-  const defaultProps = {
-    lineItems: {
-      edges: [
-        {
-          node: {
-            artwork: {
-              image: {
-                resized: {
-                  url: "http://placekitten.com/200/200",
+jest.unmock("react-relay")
+
+describe("ArtworkInfoSection", () => {
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  beforeEach(() => (mockEnvironment = createMockEnvironment()))
+
+  const TestRenderer = () => (
+    <QueryRenderer<ArtworkInfoSectionTestsQuery>
+      environment={mockEnvironment}
+      query={graphql`
+        query ArtworkInfoSectionTestsQuery @relay_test_operation {
+          commerceOrder(id: "some-id") {
+            internalID
+            ...ArtworkInfoSection_artwork
+          }
+        }
+      `}
+      variables={{}}
+      render={({ props }) => {
+        if (props?.commerceOrder) {
+          console.log(props?.commerceOrder)
+          return <ArtworkInfoSectionFragmentContainer artwork={props.commerceOrder} />
+        }
+        return null
+      }}
+    />
+  )
+  it("renders auction result when auction results are available", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+    mockEnvironmentPayload(mockEnvironment, {
+      CommerceOrder: () => ({
+        internalID: "222",
+        lineItems: {
+          edges: [
+            {
+              node: {
+                artwork: {
+                  medium: "Rayon thread on poly twill backed",
+                  editionOf: "edit of 30",
+                  dimensions: {
+                    cm: "10.5 × 7.9 cm",
+                    in: "4 1/8 × 3 1/8 in",
+                  },
+                  artistNames: "Kerry James Marshall",
+                  date: "2017",
+                  image: {
+                    url: "https://homepages.cae.wisc.edu/~ece533/images/airplane.png",
+                  },
+                  title: "Set of Six (Six) Scout Series Embroidered Patches",
                 },
               },
-              title: "CoronaCats",
-              artist_names: "Andy Goldsworthy",
             },
-          },
+          ],
         },
-      ],
-    },
-  }
+      }),
+    })
 
-  it("renders a Text components", () => {
-    const tree = renderWithWrappers(<ArtworkInfoSection artwork={defaultProps as any} />)
-    const textFileds = tree.root.findAllByType(Text)
-    expect(textFileds.length).toBe(2)
-  })
-  it("check  Image component props", () => {
-    const tree = renderWithWrappers(<ArtworkInfoSection artwork={defaultProps as any} />)
-    const image = tree.root.findByType(Image)
-    expect(image.props.source.uri).toEqual("http://placekitten.com/200/200")
-  })
+    expect(tree.findByProps({ testID: "date" }).props.children).toBe("2017")
+    expect(tree.findByProps({ testID: "medium" }).props.children).toBe("Rayon thread on poly twill backed")
 
-  it("renders Image component", () => {
-    const tree = renderWithWrappers(<ArtworkInfoSection artwork={defaultProps as any} />)
-    const image = tree.root.findAllByType(Image)
-    expect(image.length).toBe(1)
+    expect(tree.findByProps({ testID: "title" }).props.children).toBe(
+      "Set of Six (Six) Scout Series Embroidered Patches, "
+    )
+    expect(tree.findByProps({ testID: "image" }).props.source).toStrictEqual({
+      uri: "https://homepages.cae.wisc.edu/~ece533/images/airplane.png",
+    })
+    expect(tree.findByProps({ testID: "artistNames" }).props.children).toBe("Kerry James Marshall")
+    expect(tree.findByProps({ testID: "editionOf" }).props.children).toBe("edit of 30")
   })
 })
