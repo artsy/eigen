@@ -19,7 +19,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
 
   return (
     <Flex width="100%" data-test-id="order-container">
-      <Flex mb={10}>
+      <Flex mb={1}>
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex justifyContent="center" data-test-id="image-container" mr={2}>
             {!!artwork.image ? (
@@ -29,7 +29,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
                 data-test-id="image"
               />
             ) : (
-              <Box width={50} height={50} backgroundColor="black10" data-test-id="image-box" />
+              <Box width={5} height={5} backgroundColor="black10" data-test-id="image-box" />
             )}
           </Flex>
           <Box flexGrow={1}>
@@ -62,7 +62,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
         </Flex>
       </Flex>
       {trackingId ? (
-        <Flex flexDirection="row" justifyContent="space-between" mb={10}>
+        <Flex flexDirection="row" justifyContent="space-between" mb={1}>
           <Box width="50%" paddingRight={0.5}>
             <Button
               block
@@ -90,7 +90,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
         <Box data-test-id="view-order-button-box">
           {!orderIsInactive && (
             <Button
-              mb={10}
+              mb={1}
               block
               variant="secondaryGray"
               onPress={() => navigate(`/order-history/${order.internalID}`)}
