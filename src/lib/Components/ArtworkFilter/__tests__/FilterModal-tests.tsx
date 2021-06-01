@@ -367,7 +367,7 @@ describe("Clearing filters", () => {
     expect(extractText(filterScreen.root.findAllByType(CurrentOption)[0])).toEqual("")
   })
 
-  it("exit modal when clear all button was pressed", () => {
+  it("exits the modal when clear all button is pressed", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [],
       appliedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
