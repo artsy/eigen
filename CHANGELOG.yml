@@ -40,6 +40,7 @@ upcoming:
    - Decode html entities in markdown - ole
    - close keyboard on message send - lily
    - Clear applied filters after click on "clear all" button immediately - dzmitry tratsiak
+   - Release new price range filter to artwork grids - iskounen
 
 releases:
   - version: 6.9.3
