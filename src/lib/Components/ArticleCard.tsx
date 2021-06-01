@@ -42,8 +42,6 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress }) =>
 export const ArticleCardContainer = createFragmentContainer(ArticleCard, {
   article: graphql`
     fragment ArticleCard_article on Article {
-      internalID
-      slug
       thumbnailTitle
       href
       author {
