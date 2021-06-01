@@ -14,12 +14,14 @@ import {
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
+import { useFeatureFlag } from 'lib/store/GlobalStore'
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, FilterIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
 import React, { useContext, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { SavedSearchBanner } from "./SavedSearchBanner"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
@@ -86,6 +88,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   ...props
 }) => {
   const tracking = useTracking()
+  const enableSavedSearch = useFeatureFlag("AREnableSavedSearch")
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
 
@@ -126,6 +129,9 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     })
   }
 
+  // tslint:disable-next-line:no-empty
+  const handleSaveSearchFiltersPress = () => {}
+
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
   const screenWidth = useScreenDimensions().width
 
@@ -147,9 +153,15 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
             </Touchable>
           </Flex>
           <Separator mt={2} ml={-2} width={screenWidth} />
+          {!!enableSavedSearch && (
+            <>
+              <SavedSearchBanner enabled={false} onPress={handleSaveSearchFiltersPress} />
+              <Separator ml={-2} width={screenWidth} />
+            </>
+          )}
         </Box>
       ),
-    [artworksTotal]
+    [artworksTotal, enableSavedSearch]
   )
 
   const filteredArtworks = () => {
