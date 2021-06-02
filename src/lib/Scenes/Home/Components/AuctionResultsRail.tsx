@@ -173,7 +173,7 @@ const AuctionResultsRail: React.FC<RailScrollProps> = (props) => {
   )
 }
 
-export const ActionResultsRailFragmentContainer = createFragmentContainer(AuctionResultsRail, {
+export const AuctionResultsRailFragmentContainer = createFragmentContainer(AuctionResultsRail, {
   // Replace Query after implementing AuctionResults Query
   collectionsModule: graphql`
     fragment AuctionResultsRail_collectionsModule on HomePageMarketingCollectionsModule {

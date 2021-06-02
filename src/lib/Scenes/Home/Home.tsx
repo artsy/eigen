@@ -4,7 +4,7 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
 import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkRail"
-import { ActionResultsRailFragmentContainer } from "lib/Scenes/Home/Components/AuctionResultsRail"
+import { AuctionResultsRailFragmentContainer } from "lib/Scenes/Home/Components/AuctionResultsRail"
 import { CollectionsRailFragmentContainer } from "lib/Scenes/Home/Components/CollectionsRail"
 import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
@@ -155,7 +155,7 @@ const Home = (props: Props) => {
 
                 case "auction-results":
                   return (
-                    <ActionResultsRailFragmentContainer
+                    <AuctionResultsRailFragmentContainer
                       // Pass auctionResults data after implementing query
                       scrollRef={scrollRefs.current[index]}
                     />
