@@ -209,6 +209,7 @@
     "luxon": "1.25.0",
     "metro-react-native-babel-preset": "0.63.0",
     "node-fetch": "2.6.1",
+    "ora": "^5.4.0",
     "patch-package": "6.2.1",
     "postinstall-prepare": "1.0.1",
     "prettier": "^2.2.0",
