@@ -8,7 +8,7 @@ const { changelogTemplateSections } = require("./generateChangelogSectionTemplat
  */
 module.exports.parsePRDescription = (description) => {
   description = stripComments(description)
-  if (description.includes("#nochangelog") || description.includes("#run_new_changelog_check")) {
+  if (description.includes("#nochangelog") || !description.includes("#run_new_changelog_check")) {
     return { type: "no_changes" }
   }
 
