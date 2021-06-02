@@ -129,6 +129,17 @@ const mockAuctionResults = [
 
 const AuctionResultsRail: React.FC<RailScrollProps> = (props) => {
   const listRef = useRef<FlatList<any>>()
+  const navigateToAuctionResultsForYou = () => {
+    // uncomment after implementing AuctionResults query
+    // const tapEvent = HomeAnalytics.collectionThumbnailTapEvent(result?.slug, index)
+    // if (tapEvent) {
+    //   tracking.trackEvent(tapEvent)
+    // }
+    navigate(`/auction-result-for-you`)
+    // Here the auction-highlights is mocked slug for the navigation to work
+    // ToDo: Refactor this part
+    // navigate(`/auction-result-for-you/${result.slug}`)
+  }
 
   useImperativeHandle(props.scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
@@ -137,7 +148,7 @@ const AuctionResultsRail: React.FC<RailScrollProps> = (props) => {
   return (
     <View>
       <Flex pl="2" pr="2">
-        <SectionTitle title="Auction Results for You" />
+        <SectionTitle title="Auction Results for You" onPress={navigateToAuctionResultsForYou} />
       </Flex>
 
       <CardRailFlatList
@@ -151,22 +162,7 @@ const AuctionResultsRail: React.FC<RailScrollProps> = (props) => {
             return <></>
           }
 
-          return (
-            <AuctionResultForYouListItem
-              auctionResult={result}
-              onPress={() => {
-                // uncomment after implementing AuctionResults query
-                // const tapEvent = HomeAnalytics.collectionThumbnailTapEvent(result?.slug, index)
-                // if (tapEvent) {
-                //   tracking.trackEvent(tapEvent)
-                // }
-                navigate(`/auction-result-for-you`)
-                // Here the auction-highlights is mocked slug for the navigation to work
-                // ToDo: Refactor this part
-                // navigate(`/auction-result-for-you/${result.slug}`)
-              }}
-            />
-          )
+          return <AuctionResultForYouListItem auctionResult={result} onPress={navigateToAuctionResultsForYou} />
         }}
       />
     </View>
