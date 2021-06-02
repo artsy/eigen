@@ -24,7 +24,7 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
           Order Date
         </Text>
 
-        <Text mb={10} data-test-id="date" color="black60" variant="text">
+        <Text mb={10} testID="date" color="black60" variant="text">
           {orderCreatedAt.toLocaleString(DateTime.DATE_SHORT as LocaleOptions)}
         </Text>
       </Flex>
@@ -32,7 +32,7 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
         <Text style={{ width: 112 }} mb={10} variant="text">
           Order Number
         </Text>
-        <Text data-test-id="code" mb={10} color="black60" variant="text">
+        <Text testID="code" mb={10} color="black60" variant="text">
           {code}
         </Text>
       </Flex>
@@ -40,7 +40,7 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
         <Text style={{ width: 112 }} mb={10} variant="text">
           Status
         </Text>
-        <Text mb={10} data-test-id="commerceShip" color="black60" variant="text">
+        <Text mb={10} testID="commerceShip" color="black60" variant="text">
           {isShip ? "Delivery" : "Pickup"}
         </Text>
       </Flex>

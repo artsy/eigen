@@ -1,14 +1,15 @@
-import { extractText } from "lib/tests/extractText"
+import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
+import { OrderDetailsHeaderTestsQuery } from "__generated__/OrderDetailsHeaderTestsQuery.graphql"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Text } from "palette"
 import React from "react"
+import { QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { createMockEnvironment } from "relay-test-utils"
-import { OrderDetailsHeader, OrderDetailsHeaderFragmentContainer } from "../OrderDetails/OrderDetailsHeader"
+import { OrderDetailsHeaderFragmentContainer } from "../OrderDetails/OrderDetailsHeader"
 
 jest.unmock("react-relay")
-describe("ArtworkTileRailCard", () => {
+describe("OrderDetailsHeader", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
   const TestRenderer = () => (
@@ -24,30 +25,25 @@ describe("ArtworkTileRailCard", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.commerceOrder) {
-          return <OrderDetailsHeaderFragmentContainer info={props.commerceOrder} />
+          return <OrderDetailsHeaderFragmentContainer info={props.commerceOrder as any} />
         }
         return null
       }}
     />
   )
 
-  it("renders auction result when auction results are available", () => {
+  it("renders createAt data code fields", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
     mockEnvironmentPayload(mockEnvironment, {
       CommerceOrder: () => ({
-        requestedFulfillment: {
-          addressLine1: "myadress",
-          city: "mycity",
-          country: "mycountry",
-          postalCode: "11238",
-          phoneNumber: "7777",
-          region: "myregion",
-        },
+        code: "075381384",
+        createdAt: "2021-06-02T14:51:19+03:00",
+        requestedFulfillment: { __typename: "CommerceShip" },
       }),
     })
 
-    // expect(tree.findByProps({ testID: "addressLine1" }).props.children).toBe("myadress")
-    // expect(tree.findByProps({ testID: "city" }).props.children).toBe("mycity")
-    // expect(tree.findByProps({ testID: "region" }).props.children).toBe("myregion")
+    expect(tree.findByProps({ testID: "commerceShip" }).props.children).toBe("Delivery")
+    expect(tree.findByProps({ testID: "code" }).props.children).toBe("075381384")
+    expect(tree.findByProps({ testID: "date" }).props.children).toBe("6/2/2021")
   })
 })
