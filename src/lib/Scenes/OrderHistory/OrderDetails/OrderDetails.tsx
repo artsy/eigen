@@ -26,9 +26,9 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
 
 export const OrderDetailsPlaceholder: React.FC<{}> = () => (
   <PageWithSimpleHeader title="Order Details">
-    <Flex px={20}>
-      <Flex flexDirection="row" mt={20}>
-        <Flex mr={20}>
+    <Flex px={2}>
+      <Flex flexDirection="row" mt={2}>
+        <Flex mr={2}>
           <PlaceholderText width={80} />
           <PlaceholderText width={100} marginTop={10} />
           <PlaceholderText width={50} marginTop={10} />
@@ -39,12 +39,12 @@ export const OrderDetailsPlaceholder: React.FC<{}> = () => (
           <PlaceholderText width={65} marginTop={10} />
         </Flex>
       </Flex>
-      <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={10}>
-        <Separator mt={10} mb={20} />
+      <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={1}>
+        <Separator mt={1} mb={2} />
       </Flex>
       <Flex>
         <PlaceholderText width={90} />
-        <Flex flexDirection="row" mt={20}>
+        <Flex flexDirection="row" mt={2}>
           <PlaceholderBox height={60} width={60} marginLeft={16} marginRight={22} />
           <Flex>
             <PlaceholderText width={50 + Math.random() * 100} />
@@ -55,29 +55,26 @@ export const OrderDetailsPlaceholder: React.FC<{}> = () => (
           </Flex>
         </Flex>
       </Flex>
-      <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={10}>
-        <Separator mt={10} mb={20} />
+      <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={1}>
+        <Separator mt={1} mb={2} />
       </Flex>
       <PlaceholderText width={100} />
       <Flex flexDirection="row" justifyContent="space-between">
-        <Flex mt={22}>
+        <Flex mt={2.2}>
           <PlaceholderText width={40} />
-          <PlaceholderText width={110} marginTop={15} />
-          <PlaceholderText width={70} />
-          <PlaceholderText width={110} />
           <PlaceholderText width={60} marginTop={15} />
-          <PlaceholderText width={60} />
+          <PlaceholderText width={30} />
           <PlaceholderText width={40} marginTop={15} />
         </Flex>
         <Flex alignItems="flex-end">
           <PlaceholderText width={50} />
           <PlaceholderText width={40} marginTop={15} />
           <PlaceholderText width={40} />
-          <PlaceholderText width={40} />
-          <PlaceholderText width={120} marginTop={15} />
-          <PlaceholderText width={40} />
           <PlaceholderText width={50} marginTop={15} />
         </Flex>
+      </Flex>
+      <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={1}>
+        <Separator mt={1} mb={2} />
       </Flex>
     </Flex>
   </PageWithSimpleHeader>
