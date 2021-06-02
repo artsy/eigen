@@ -11,6 +11,7 @@ upcoming:
    - Replace "color" filter with "colors" filter - dzmitry tratsiak
    - Add Saved Search feature flag - kizito
  user_facing:
+   - Add order details skeleton (behind feature flag) - Serge0n
    - Fix wrong input font on android - dzmitry
    - Fix home screen load failure on logout - brian
    - Add artwork Material filter - dzmitry tratsiak
