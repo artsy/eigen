@@ -107,8 +107,15 @@ export const OrderHistoryContainer = createPaginationContainer(
   {
     me: graphql`
       fragment OrderHistory_me on Me
-      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        orders(first: $count, after: $cursor) @connection(key: "OrderHistory_orders") {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 10 }
+        cursor: { type: "String" }
+        states: {
+          type: "[CommerceOrderStateEnum!]"
+          defaultValue: [APPROVED, CANCELED, FULFILLED, REFUNDED, SUBMITTED]
+        }
+      ) {
+        orders(first: $count, after: $cursor, states: $states) @connection(key: "OrderHistory_orders") {
           edges {
             node {
               code
@@ -131,9 +138,9 @@ export const OrderHistoryContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query OrderHistoryPaginationQuery($count: Int!, $cursor: String) {
+      query OrderHistoryPaginationQuery($count: Int!, $cursor: String, $states: [CommerceOrderStateEnum!]) {
         me {
-          ...OrderHistory_me @arguments(count: $count, cursor: $cursor)
+          ...OrderHistory_me @arguments(count: $count, cursor: $cursor, states: $states)
         }
       }
     `,
