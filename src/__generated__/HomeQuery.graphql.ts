@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6346e0b68112c07443494dd5cdc683e5 */
+/* @relayHash 1a62ff7d600fccc9cee6022f9c84a61a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -44,7 +44,7 @@ query HomeQuery(
   featured: viewingRooms(featured: true) {
     ...Home_featured
   }
-  articlesConnection(first: 10, sort: PUBLISHED_AT_DESC) {
+  articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
     ...Home_articlesConnection
   }
 }
@@ -464,6 +464,11 @@ v2 = [
   },
   {
     "kind": "Literal",
+    "name": "inEditorialFeed",
+    "value": true
+  },
+  {
+    "kind": "Literal",
     "name": "sort",
     "value": "PUBLISHED_AT_DESC"
   }
@@ -822,7 +827,7 @@ return {
             "name": "Home_articlesConnection"
           }
         ],
-        "storageKey": "articlesConnection(first:10,sort:\"PUBLISHED_AT_DESC\")"
+        "storageKey": "articlesConnection(first:10,inEditorialFeed:true,sort:\"PUBLISHED_AT_DESC\")"
       }
     ],
     "type": "Query",
@@ -1773,12 +1778,12 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "articlesConnection(first:10,sort:\"PUBLISHED_AT_DESC\")"
+        "storageKey": "articlesConnection(first:10,inEditorialFeed:true,sort:\"PUBLISHED_AT_DESC\")"
       }
     ]
   },
   "params": {
-    "id": "6346e0b68112c07443494dd5cdc683e5",
+    "id": "1a62ff7d600fccc9cee6022f9c84a61a",
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
@@ -1786,5 +1791,5 @@ return {
   }
 };
 })();
-(node as any).hash = '8da0cd033c6a03247da1a2e8dcd0790d';
+(node as any).hash = '8947450694a1fa2b237cd2c5619b3c29';
 export default node;

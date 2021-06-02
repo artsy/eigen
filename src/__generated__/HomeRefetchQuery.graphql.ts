@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ce418c732b1ac28fe516695454ba5854 */
+/* @relayHash 0a3aa491be1ba899fe875418e797d7d4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,7 +34,7 @@ export type HomeRefetchQuery = {
 query HomeRefetchQuery(
   $heroImageVersion: HomePageHeroUnitImageVersion!
 ) {
-  articlesConnection(first: 10, sort: PUBLISHED_AT_DESC) {
+  articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
     ...Home_articlesConnection
   }
   homePage {
@@ -457,6 +457,11 @@ v1 = [
   },
   {
     "kind": "Literal",
+    "name": "inEditorialFeed",
+    "value": true
+  },
+  {
+    "kind": "Literal",
     "name": "sort",
     "value": "PUBLISHED_AT_DESC"
   }
@@ -768,7 +773,7 @@ return {
             "name": "Home_articlesConnection"
           }
         ],
-        "storageKey": "articlesConnection(first:10,sort:\"PUBLISHED_AT_DESC\")"
+        "storageKey": "articlesConnection(first:10,inEditorialFeed:true,sort:\"PUBLISHED_AT_DESC\")"
       },
       {
         "alias": null,
@@ -903,7 +908,7 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "articlesConnection(first:10,sort:\"PUBLISHED_AT_DESC\")"
+        "storageKey": "articlesConnection(first:10,inEditorialFeed:true,sort:\"PUBLISHED_AT_DESC\")"
       },
       {
         "alias": null,
@@ -1778,7 +1783,7 @@ return {
     ]
   },
   "params": {
-    "id": "ce418c732b1ac28fe516695454ba5854",
+    "id": "0a3aa491be1ba899fe875418e797d7d4",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",
@@ -1786,5 +1791,5 @@ return {
   }
 };
 })();
-(node as any).hash = '244e5a477a88b17a5aa0a5bc91cb5335';
+(node as any).hash = 'd38a7ccc847f63b99cc4d0afe1b8d18e';
 export default node;
