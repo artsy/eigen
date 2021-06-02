@@ -111,7 +111,7 @@ export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow,
     fragment OrderHistoryRow_order on CommerceOrder {
       internalID
       state
-      buyerTotal
+      buyerTotal(precision: 2)
       createdAt
       itemsTotal
       lineItems(first: 1) {

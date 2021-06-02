@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8b6dc8fae83d243de03b75f311440c16 */
+/* @relayHash b57d8705dccf7b6ea6f28cb5c5a413f3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -39,7 +39,7 @@ fragment OrderHistoryRow_order on CommerceOrder {
   __isCommerceOrder: __typename
   internalID
   state
-  buyerTotal
+  buyerTotal(precision: 2)
   createdAt
   itemsTotal
   lineItems(first: 1) {
@@ -253,10 +253,16 @@ return {
                       },
                       {
                         "alias": null,
-                        "args": null,
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "precision",
+                            "value": 2
+                          }
+                        ],
                         "kind": "ScalarField",
                         "name": "buyerTotal",
-                        "storageKey": null
+                        "storageKey": "buyerTotal(precision:2)"
                       },
                       {
                         "alias": null,
@@ -487,7 +493,7 @@ return {
     ]
   },
   "params": {
-    "id": "8b6dc8fae83d243de03b75f311440c16",
+    "id": "b57d8705dccf7b6ea6f28cb5c5a413f3",
     "metadata": {},
     "name": "OrderHistoryPaginationQuery",
     "operationKind": "query",

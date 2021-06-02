@@ -76,10 +76,16 @@ return {
     },
     {
       "alias": null,
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "precision",
+          "value": 2
+        }
+      ],
       "kind": "ScalarField",
       "name": "buyerTotal",
-      "storageKey": null
+      "storageKey": "buyerTotal(precision:2)"
     },
     {
       "alias": null,
@@ -251,5 +257,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = '8980e85a538a9f82112b7aa23be09ec3';
+(node as any).hash = '65a62c8226f67b79fbfcdbfc9d28d8c9';
 export default node;
