@@ -14,6 +14,7 @@ interface OrderHistoryRowProps {
 export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const [{ artwork, fulfillments }] = extractNodes(order?.lineItems)
   const trackingId = fulfillments?.edges?.[0]?.node?.trackingId
+  // TODO: Add a transition to the real Track Order page when the trackingId will be available
   const trackingURL = `https://google.com/search?q=${trackingId}`
   const orderIsInactive = order.state === "CANCELED" || order.state === "REFUNDED"
 
