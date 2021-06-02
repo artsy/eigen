@@ -68,7 +68,7 @@ export default class HomeAnalytics {
       destinationScreenOwnerId: articleID,
       destinationScreenOwnerSlug: articleSlug,
       destinationScreenOwnerType: Analytics.OwnerType.article,
-      contextModule: "articleRail", // Analytics.ContextModule.articleRail,
+      contextModule: Analytics.ContextModule.articleRail,
       horizontalSlidePosition: index,
       moduleHeight: "double",
       type: "thumbnail",

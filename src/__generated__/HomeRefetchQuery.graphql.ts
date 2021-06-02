@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ff8820992cfc7b34d8dece9e12412d0a */
+/* @relayHash ce418c732b1ac28fe516695454ba5854 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -50,15 +50,16 @@ query HomeRefetchQuery(
 }
 
 fragment ArticleCard_article on Article {
-  thumbnailTitle
-  href
   author {
     name
     id
   }
+  href
   thumbnailImage {
     url(version: "large")
   }
+  thumbnailTitle
+  vertical
 }
 
 fragment ArticlesRail_articlesConnection on ArticleConnection {
@@ -485,27 +486,27 @@ v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "href",
+  "name": "name",
   "storageKey": null
 },
 v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
-  "storageKey": null
-},
-v7 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v8 = [
-  (v6/*: any*/),
-  (v7/*: any*/)
+v7 = [
+  (v5/*: any*/),
+  (v6/*: any*/)
 ],
+v8 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "href",
+  "storageKey": null
+},
 v9 = {
   "alias": null,
   "args": [
@@ -621,7 +622,7 @@ v21 = {
   "kind": "LinkedField",
   "name": "partner",
   "plural": false,
-  "selections": (v8/*: any*/),
+  "selections": (v7/*: any*/),
   "storageKey": null
 },
 v22 = {
@@ -652,11 +653,11 @@ v25 = {
   "kind": "LinkedField",
   "name": "basedOn",
   "plural": false,
-  "selections": (v8/*: any*/),
+  "selections": (v7/*: any*/),
   "storageKey": null
 },
 v26 = [
-  (v5/*: any*/)
+  (v8/*: any*/)
 ],
 v27 = [
   {
@@ -684,7 +685,7 @@ v29 = {
 },
 v30 = [
   (v29/*: any*/),
-  (v7/*: any*/)
+  (v6/*: any*/)
 ],
 v31 = [
   {
@@ -715,7 +716,7 @@ v33 = {
 },
 v34 = [
   (v33/*: any*/),
-  (v7/*: any*/)
+  (v6/*: any*/)
 ],
 v35 = [
   {
@@ -862,21 +863,14 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "thumbnailTitle",
-                    "storageKey": null
-                  },
-                  (v5/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
                     "concreteType": "Author",
                     "kind": "LinkedField",
                     "name": "author",
                     "plural": false,
-                    "selections": (v8/*: any*/),
+                    "selections": (v7/*: any*/),
                     "storageKey": null
                   },
+                  (v8/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -887,7 +881,21 @@ return {
                     "selections": (v10/*: any*/),
                     "storageKey": null
                   },
-                  (v7/*: any*/)
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "thumbnailTitle",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "vertical",
+                    "storageKey": null
+                  },
+                  (v6/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -947,7 +955,7 @@ return {
             "name": "artworkModules",
             "plural": true,
             "selections": [
-              (v7/*: any*/),
+              (v6/*: any*/),
               (v11/*: any*/),
               (v12/*: any*/),
               {
@@ -958,7 +966,7 @@ return {
                 "name": "results",
                 "plural": true,
                 "selections": [
-                  (v5/*: any*/),
+                  (v8/*: any*/),
                   (v13/*: any*/),
                   (v14/*: any*/),
                   (v4/*: any*/),
@@ -981,7 +989,7 @@ return {
                         "name": "endAt",
                         "storageKey": null
                       },
-                      (v7/*: any*/)
+                      (v6/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -995,7 +1003,7 @@ return {
                     "selections": [
                       (v18/*: any*/),
                       (v19/*: any*/),
-                      (v7/*: any*/),
+                      (v6/*: any*/),
                       (v20/*: any*/)
                     ],
                     "storageKey": null
@@ -1028,7 +1036,7 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v7/*: any*/),
+                  (v6/*: any*/),
                   (v11/*: any*/),
                   (v23/*: any*/)
                 ],
@@ -1056,8 +1064,8 @@ return {
                         "selections": [
                           (v4/*: any*/),
                           (v3/*: any*/),
-                          (v5/*: any*/),
-                          (v7/*: any*/)
+                          (v8/*: any*/),
+                          (v6/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -1077,8 +1085,8 @@ return {
                         "name": "artist",
                         "plural": false,
                         "selections": [
-                          (v5/*: any*/),
-                          (v7/*: any*/)
+                          (v8/*: any*/),
+                          (v6/*: any*/)
                         ],
                         "storageKey": null
                       }
@@ -1107,7 +1115,7 @@ return {
                   {
                     "kind": "InlineFragment",
                     "selections": [
-                      (v7/*: any*/)
+                      (v6/*: any*/)
                     ],
                     "type": "Node",
                     "abstractKey": "__isNode"
@@ -1126,7 +1134,7 @@ return {
             "name": "artistModules",
             "plural": true,
             "selections": [
-              (v7/*: any*/),
+              (v6/*: any*/),
               (v12/*: any*/),
               {
                 "alias": null,
@@ -1136,11 +1144,11 @@ return {
                 "name": "results",
                 "plural": true,
                 "selections": [
-                  (v7/*: any*/),
+                  (v6/*: any*/),
                   (v4/*: any*/),
                   (v3/*: any*/),
+                  (v8/*: any*/),
                   (v5/*: any*/),
-                  (v6/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -1217,7 +1225,7 @@ return {
                 "name": "results",
                 "plural": true,
                 "selections": [
-                  (v7/*: any*/),
+                  (v6/*: any*/),
                   (v3/*: any*/),
                   (v4/*: any*/),
                   {
@@ -1229,11 +1237,11 @@ return {
                     "plural": false,
                     "selections": [
                       (v4/*: any*/),
-                      (v7/*: any*/)
+                      (v6/*: any*/)
                     ],
                     "storageKey": null
                   },
-                  (v6/*: any*/),
+                  (v5/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -1264,7 +1272,7 @@ return {
                         "name": "country",
                         "storageKey": null
                       },
-                      (v7/*: any*/)
+                      (v6/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -1321,11 +1329,11 @@ return {
                 "name": "results",
                 "plural": true,
                 "selections": [
-                  (v7/*: any*/),
+                  (v6/*: any*/),
                   (v4/*: any*/),
                   (v3/*: any*/),
+                  (v8/*: any*/),
                   (v5/*: any*/),
-                  (v6/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -1375,7 +1383,7 @@ return {
                                 "selections": (v30/*: any*/),
                                 "storageKey": null
                               },
-                              (v7/*: any*/)
+                              (v6/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -1436,11 +1444,11 @@ return {
                         "storageKey": null
                       },
                       (v33/*: any*/),
-                      (v7/*: any*/)
+                      (v6/*: any*/)
                     ],
                     "storageKey": "artworksConnection(first:3)"
                   },
-                  (v7/*: any*/)
+                  (v6/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -1483,7 +1491,7 @@ return {
                 "name": "linkText",
                 "storageKey": null
               },
-              (v5/*: any*/),
+              (v8/*: any*/),
               {
                 "alias": null,
                 "args": [
@@ -1497,7 +1505,7 @@ return {
                 "name": "backgroundImageURL",
                 "storageKey": null
               },
-              (v7/*: any*/)
+              (v6/*: any*/)
             ],
             "storageKey": "heroUnits(platform:\"MOBILE\")"
           }
@@ -1575,8 +1583,8 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v7/*: any*/),
-                      (v5/*: any*/),
+                      (v6/*: any*/),
+                      (v8/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -1595,7 +1603,7 @@ return {
                             "selections": [
                               (v14/*: any*/),
                               (v23/*: any*/),
-                              (v5/*: any*/),
+                              (v8/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -1619,7 +1627,7 @@ return {
                               (v4/*: any*/),
                               (v13/*: any*/),
                               (v11/*: any*/),
-                              (v7/*: any*/)
+                              (v6/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -1637,11 +1645,11 @@ return {
                               (v15/*: any*/),
                               (v16/*: any*/),
                               (v17/*: any*/),
-                              (v7/*: any*/)
+                              (v6/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v7/*: any*/)
+                          (v6/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -1656,7 +1664,7 @@ return {
                     "name": "cursor",
                     "storageKey": null
                   },
-                  (v7/*: any*/)
+                  (v6/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -1676,7 +1684,7 @@ return {
             "kind": "LinkedHandle",
             "name": "lotsByFollowedArtistsConnection"
           },
-          (v7/*: any*/)
+          (v6/*: any*/)
         ],
         "storageKey": null
       },
@@ -1770,7 +1778,7 @@ return {
     ]
   },
   "params": {
-    "id": "ff8820992cfc7b34d8dece9e12412d0a",
+    "id": "ce418c732b1ac28fe516695454ba5854",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",

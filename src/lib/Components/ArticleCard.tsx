@@ -14,22 +14,23 @@ interface ArticleCardProps extends ViewProps {
 export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress }) => {
   const imageURL = article.thumbnailImage?.url
 
+  const onTap = (event: GestureResponderEvent) => {
+    onPress?.(event)
+    navigate(article.href!)
+  }
+
   return (
     <Flex width={320}>
-      <TouchableWithoutFeedback
-        onPress={(event) => {
-          onPress?.(event)
-          navigate(article.href!)
-        }}
-      >
+      <TouchableWithoutFeedback onPress={onTap}>
         <Flex width={300} overflow="hidden">
           {!!imageURL && <ImageView imageURL={article.thumbnailImage?.url} width={295} height={230} />}
           <Spacer mb={1} />
-          <Text numberOfLines={2} ellipsizeMode="tail" variant={"title"}>
+          <Text variant={"small"}>{article.vertical || " "}</Text>
+          <Text numberOfLines={3} ellipsizeMode="tail" variant={"title"}>
             {article.thumbnailTitle}
           </Text>
           {!!article.author && (
-            <Text color="black60" variant={"subtitle"}>
+            <Text color="black60" variant={"small"}>
               {article.author.name}
             </Text>
           )}
@@ -42,14 +43,15 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress }) =>
 export const ArticleCardContainer = createFragmentContainer(ArticleCard, {
   article: graphql`
     fragment ArticleCard_article on Article {
-      thumbnailTitle
-      href
       author {
         name
       }
+      href
       thumbnailImage {
         url(version: "large")
       }
+      thumbnailTitle
+      vertical
     }
   `,
 })

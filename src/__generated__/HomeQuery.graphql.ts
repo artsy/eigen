@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8239bc20cf7eeb96192cdbe87a3b0e51 */
+/* @relayHash 6346e0b68112c07443494dd5cdc683e5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -50,15 +50,16 @@ query HomeQuery(
 }
 
 fragment ArticleCard_article on Article {
-  thumbnailTitle
-  href
   author {
     name
     id
   }
+  href
   thumbnailImage {
     url(version: "large")
   }
+  thumbnailTitle
+  vertical
 }
 
 fragment ArticlesRail_articlesConnection on ArticleConnection {
@@ -1732,14 +1733,6 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "thumbnailTitle",
-                    "storageKey": null
-                  },
-                  (v6/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
                     "concreteType": "Author",
                     "kind": "LinkedField",
                     "name": "author",
@@ -1747,6 +1740,7 @@ return {
                     "selections": (v18/*: any*/),
                     "storageKey": null
                   },
+                  (v6/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -1755,6 +1749,20 @@ return {
                     "name": "thumbnailImage",
                     "plural": false,
                     "selections": (v28/*: any*/),
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "thumbnailTitle",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "vertical",
                     "storageKey": null
                   },
                   (v3/*: any*/)
@@ -1770,7 +1778,7 @@ return {
     ]
   },
   "params": {
-    "id": "8239bc20cf7eeb96192cdbe87a3b0e51",
+    "id": "6346e0b68112c07443494dd5cdc683e5",
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",

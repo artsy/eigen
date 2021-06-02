@@ -5,14 +5,15 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArticleCard_article = {
-    readonly thumbnailTitle: string | null;
-    readonly href: string | null;
     readonly author: {
         readonly name: string | null;
     } | null;
+    readonly href: string | null;
     readonly thumbnailImage: {
         readonly url: string | null;
     } | null;
+    readonly thumbnailTitle: string | null;
+    readonly vertical: string | null;
     readonly " $refType": "ArticleCard_article";
 };
 export type ArticleCard_article$data = ArticleCard_article;
@@ -32,20 +33,6 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "thumbnailTitle",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "href",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
       "concreteType": "Author",
       "kind": "LinkedField",
       "name": "author",
@@ -59,6 +46,13 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "href",
       "storageKey": null
     },
     {
@@ -84,10 +78,24 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "thumbnailTitle",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "vertical",
+      "storageKey": null
     }
   ],
   "type": "Article",
   "abstractKey": null
 };
-(node as any).hash = '8945632454a913861ee470bb05cdd4a8';
+(node as any).hash = 'b1063f139b2c079200291680102199aa';
 export default node;

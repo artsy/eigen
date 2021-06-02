@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 63df39f1ae1e1856b52198571050f43d */
+/* @relayHash 8a6380176e71d9ddaf203d0fc7f217c4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,15 +31,16 @@ query ArtistAboutTestsQuery(
 }
 
 fragment ArticleCard_article on Article {
-  thumbnailTitle
-  href
   author {
     name
     id
   }
+  href
   thumbnailImage {
     url(version: "large")
   }
+  thumbnailTitle
+  vertical
 }
 
 fragment Articles_articles on Article {
@@ -1225,14 +1226,6 @@ return {
                       {
                         "alias": null,
                         "args": null,
-                        "kind": "ScalarField",
-                        "name": "thumbnailTitle",
-                        "storageKey": null
-                      },
-                      (v14/*: any*/),
-                      {
-                        "alias": null,
-                        "args": null,
                         "concreteType": "Author",
                         "kind": "LinkedField",
                         "name": "author",
@@ -1240,6 +1233,7 @@ return {
                         "selections": (v16/*: any*/),
                         "storageKey": null
                       },
+                      (v14/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -1248,6 +1242,20 @@ return {
                         "name": "thumbnailImage",
                         "plural": false,
                         "selections": (v15/*: any*/),
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "thumbnailTitle",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "vertical",
                         "storageKey": null
                       }
                     ],
@@ -1266,7 +1274,7 @@ return {
     ]
   },
   "params": {
-    "id": "63df39f1ae1e1856b52198571050f43d",
+    "id": "8a6380176e71d9ddaf203d0fc7f217c4",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": (v18/*: any*/),
@@ -1301,6 +1309,7 @@ return {
         "artist.articles.edges.node.thumbnailImage": (v21/*: any*/),
         "artist.articles.edges.node.thumbnailImage.url": (v20/*: any*/),
         "artist.articles.edges.node.thumbnailTitle": (v20/*: any*/),
+        "artist.articles.edges.node.vertical": (v20/*: any*/),
         "artist.artistSeriesConnection": {
           "enumValues": null,
           "nullable": true,
