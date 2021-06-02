@@ -91,13 +91,19 @@ async function getPRsBeforeDate(commitDate) {
   return filteredPRs
 }
 
+/**
+ * @param {import('@octokit/rest').PullsGetResponse[]} prs List of merged pull requests
+ */
+// function getChangeLogs(prs) {
+//   return prs.map((pr) => parsePRDescription(pr.body))
+// }
 
 
 (async function() {
   try {
     const commitDate = await getLastReleaseCommitDate("ios")
-    await getPRsBeforeDate(commitDate)
-
+    const prs = await getPRsBeforeDate(commitDate)
+    getChangeLogs(prs)
     ora("Successfully loaded list of PRs before tag").succeed()
   } catch (error) {
     const error_message = "Failed to get the list of PRs before tag"
