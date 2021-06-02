@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b32da57251f7e6c2c485ceda54d99d91 */
+/* @relayHash be1c7bd18bc109ca30f15311a2738e24 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,7 +34,7 @@ fragment OrderHistoryRow_order on CommerceOrder {
   __isCommerceOrder: __typename
   internalID
   state
-  buyerTotal
+  buyerTotal(precision: 2)
   createdAt
   itemsTotal
   lineItems(first: 1) {
@@ -54,6 +54,14 @@ fragment OrderHistoryRow_order on CommerceOrder {
           artistNames
           id
         }
+        fulfillments(first: 1) {
+          edges {
+            node {
+              trackingId
+              id
+            }
+          }
+        }
         id
       }
     }
@@ -61,7 +69,7 @@ fragment OrderHistoryRow_order on CommerceOrder {
 }
 
 fragment OrderHistory_me_yu5n1 on Me {
-  orders(first: $count) {
+  orders(first: $count, states: [APPROVED, CANCELED, FULFILLED, REFUNDED, SUBMITTED]) {
     edges {
       node {
         __typename
@@ -92,28 +100,46 @@ v1 = [
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
+  },
+  {
+    "kind": "Literal",
+    "name": "states",
+    "value": [
+      "APPROVED",
+      "CANCELED",
+      "FULFILLED",
+      "REFUNDED",
+      "SUBMITTED"
+    ]
   }
 ],
-v2 = {
+v2 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 1
+  }
+],
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v3 = {
+v4 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v4 = {
+v5 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "String"
 },
-v5 = {
+v6 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -224,10 +250,16 @@ return {
                       },
                       {
                         "alias": null,
-                        "args": null,
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "precision",
+                            "value": 2
+                          }
+                        ],
                         "kind": "ScalarField",
                         "name": "buyerTotal",
-                        "storageKey": null
+                        "storageKey": "buyerTotal(precision:2)"
                       },
                       {
                         "alias": null,
@@ -245,13 +277,7 @@ return {
                       },
                       {
                         "alias": null,
-                        "args": [
-                          {
-                            "kind": "Literal",
-                            "name": "first",
-                            "value": 1
-                          }
-                        ],
+                        "args": (v2/*: any*/),
                         "concreteType": "CommerceLineItemConnection",
                         "kind": "LinkedField",
                         "name": "lineItems",
@@ -331,7 +357,7 @@ return {
                                             "name": "name",
                                             "storageKey": null
                                           },
-                                          (v2/*: any*/)
+                                          (v3/*: any*/)
                                         ],
                                         "storageKey": null
                                       },
@@ -349,11 +375,52 @@ return {
                                         "name": "artistNames",
                                         "storageKey": null
                                       },
-                                      (v2/*: any*/)
+                                      (v3/*: any*/)
                                     ],
                                     "storageKey": null
                                   },
-                                  (v2/*: any*/)
+                                  {
+                                    "alias": null,
+                                    "args": (v2/*: any*/),
+                                    "concreteType": "CommerceFulfillmentConnection",
+                                    "kind": "LinkedField",
+                                    "name": "fulfillments",
+                                    "plural": false,
+                                    "selections": [
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "CommerceFulfillmentEdge",
+                                        "kind": "LinkedField",
+                                        "name": "edges",
+                                        "plural": true,
+                                        "selections": [
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "concreteType": "CommerceFulfillment",
+                                            "kind": "LinkedField",
+                                            "name": "node",
+                                            "plural": false,
+                                            "selections": [
+                                              {
+                                                "alias": null,
+                                                "args": null,
+                                                "kind": "ScalarField",
+                                                "name": "trackingId",
+                                                "storageKey": null
+                                              },
+                                              (v3/*: any*/)
+                                            ],
+                                            "storageKey": null
+                                          }
+                                        ],
+                                        "storageKey": null
+                                      }
+                                    ],
+                                    "storageKey": "fulfillments(first:1)"
+                                  },
+                                  (v3/*: any*/)
                                 ],
                                 "storageKey": null
                               }
@@ -363,7 +430,7 @@ return {
                         ],
                         "storageKey": "lineItems(first:1)"
                       },
-                      (v2/*: any*/)
+                      (v3/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -408,20 +475,22 @@ return {
           {
             "alias": null,
             "args": (v1/*: any*/),
-            "filters": null,
+            "filters": [
+              "states"
+            ],
             "handle": "connection",
             "key": "OrderHistory_orders",
             "kind": "LinkedHandle",
             "name": "orders"
           },
-          (v2/*: any*/)
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "b32da57251f7e6c2c485ceda54d99d91",
+    "id": "be1c7bd18bc109ca30f15311a2738e24",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -430,7 +499,7 @@ return {
           "plural": false,
           "type": "Me"
         },
-        "me.id": (v3/*: any*/),
+        "me.id": (v4/*: any*/),
         "me.orders": {
           "enumValues": null,
           "nullable": true,
@@ -443,21 +512,21 @@ return {
           "plural": true,
           "type": "CommerceOrderEdge"
         },
-        "me.orders.edges.cursor": (v4/*: any*/),
+        "me.orders.edges.cursor": (v5/*: any*/),
         "me.orders.edges.node": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "CommerceOrder"
         },
-        "me.orders.edges.node.__isCommerceOrder": (v4/*: any*/),
-        "me.orders.edges.node.__typename": (v4/*: any*/),
-        "me.orders.edges.node.buyerTotal": (v5/*: any*/),
-        "me.orders.edges.node.code": (v4/*: any*/),
-        "me.orders.edges.node.createdAt": (v4/*: any*/),
-        "me.orders.edges.node.id": (v3/*: any*/),
-        "me.orders.edges.node.internalID": (v3/*: any*/),
-        "me.orders.edges.node.itemsTotal": (v5/*: any*/),
+        "me.orders.edges.node.__isCommerceOrder": (v5/*: any*/),
+        "me.orders.edges.node.__typename": (v5/*: any*/),
+        "me.orders.edges.node.buyerTotal": (v6/*: any*/),
+        "me.orders.edges.node.code": (v5/*: any*/),
+        "me.orders.edges.node.createdAt": (v5/*: any*/),
+        "me.orders.edges.node.id": (v4/*: any*/),
+        "me.orders.edges.node.internalID": (v4/*: any*/),
+        "me.orders.edges.node.itemsTotal": (v6/*: any*/),
         "me.orders.edges.node.lineItems": {
           "enumValues": null,
           "nullable": true,
@@ -482,8 +551,8 @@ return {
           "plural": false,
           "type": "Artwork"
         },
-        "me.orders.edges.node.lineItems.edges.node.artwork.artistNames": (v5/*: any*/),
-        "me.orders.edges.node.lineItems.edges.node.artwork.id": (v3/*: any*/),
+        "me.orders.edges.node.lineItems.edges.node.artwork.artistNames": (v6/*: any*/),
+        "me.orders.edges.node.lineItems.edges.node.artwork.id": (v4/*: any*/),
         "me.orders.edges.node.lineItems.edges.node.artwork.image": {
           "enumValues": null,
           "nullable": true,
@@ -496,17 +565,37 @@ return {
           "plural": false,
           "type": "ResizedImageUrl"
         },
-        "me.orders.edges.node.lineItems.edges.node.artwork.image.resized.url": (v4/*: any*/),
+        "me.orders.edges.node.lineItems.edges.node.artwork.image.resized.url": (v5/*: any*/),
         "me.orders.edges.node.lineItems.edges.node.artwork.partner": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Partner"
         },
-        "me.orders.edges.node.lineItems.edges.node.artwork.partner.id": (v3/*: any*/),
-        "me.orders.edges.node.lineItems.edges.node.artwork.partner.name": (v5/*: any*/),
-        "me.orders.edges.node.lineItems.edges.node.artwork.title": (v5/*: any*/),
-        "me.orders.edges.node.lineItems.edges.node.id": (v3/*: any*/),
+        "me.orders.edges.node.lineItems.edges.node.artwork.partner.id": (v4/*: any*/),
+        "me.orders.edges.node.lineItems.edges.node.artwork.partner.name": (v6/*: any*/),
+        "me.orders.edges.node.lineItems.edges.node.artwork.title": (v6/*: any*/),
+        "me.orders.edges.node.lineItems.edges.node.fulfillments": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceFulfillmentConnection"
+        },
+        "me.orders.edges.node.lineItems.edges.node.fulfillments.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "CommerceFulfillmentEdge"
+        },
+        "me.orders.edges.node.lineItems.edges.node.fulfillments.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceFulfillment"
+        },
+        "me.orders.edges.node.lineItems.edges.node.fulfillments.edges.node.id": (v4/*: any*/),
+        "me.orders.edges.node.lineItems.edges.node.fulfillments.edges.node.trackingId": (v6/*: any*/),
+        "me.orders.edges.node.lineItems.edges.node.id": (v4/*: any*/),
         "me.orders.edges.node.state": {
           "enumValues": [
             "ABANDONED",
@@ -527,7 +616,7 @@ return {
           "plural": false,
           "type": "CommercePageInfo"
         },
-        "me.orders.pageInfo.endCursor": (v5/*: any*/),
+        "me.orders.pageInfo.endCursor": (v6/*: any*/),
         "me.orders.pageInfo.hasNextPage": {
           "enumValues": null,
           "nullable": false,
