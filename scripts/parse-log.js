@@ -19,7 +19,10 @@ const TAG = "ios-6.9.2-2021.05.22.06-submission"
 
 const isMergedAfter = (mergeDate, commitDate) => mergeDate !== null && new Date(mergeDate) > commitDate
 
-async function getLastReleaseCommitDate(releaseTag) {
+/**
+ * @param {string} platform
+ */
+async function getLastReleaseCommitDate(platform) {
   const tagsSpinner = ora("loading list of tags...").start()
   const tags = await octokit.paginate(`GET /repos/${owner}/${repo}/tags`, {
     owner,
@@ -28,10 +31,23 @@ async function getLastReleaseCommitDate(releaseTag) {
   })
   tagsSpinner.succeed()
 
-  const targetTag = tags.find((tag) => tag.name === releaseTag);
-  if (!targetTag) {
-    throw new Error("Could not find tag");
+  let targetTag
+  if (platform === "ios") {
+    // ios submitted builds have this format
+    // ios-6.9.2-2021.05.22.06-submission
+    targetTag = tags.find((tag) => tag.name.match(/^ios-.*submission$/))
+  } else if (platform === "android") {
+    // android submitted builds have this format
+    // android-6.9.2-2021.05.22.06-submission
+    targetTag = tags.find((tag) => tag.name.match(/^android-.*submission$/))
   }
+
+
+  if (!targetTag) {
+    throw new Error(`Could not find tag on ${platform}`);
+  }
+
+  ora(`last submission tag on ${platform}: ${targetTag.name}`).succeed()
 
   const { data: commit } = await octokit.repos.getCommit({
     owner,
@@ -43,6 +59,9 @@ async function getLastReleaseCommitDate(releaseTag) {
 }
 
 
+/**
+ * @param {Date} commitDate
+ */
 async function getPRsBeforeDate(commitDate) {
   const prsSpinner = ora("loading list of prs...").start()
   const prs = await octokit.paginate(`GET /repos/${owner}/${repo}/pulls`, {
@@ -73,7 +92,7 @@ async function getPRsBeforeDate(commitDate) {
 
 (async function() {
   try {
-    const commitDate = await getLastReleaseCommitDate(TAG)
+    const commitDate = await getLastReleaseCommitDate("ios")
     await getPRsBeforeDate(commitDate)
 
     ora("Successfully loaded list of PRs before tag").succeed()
