@@ -31,6 +31,18 @@ This pull request adds some stuff to the thing so that it can blah.
     ).toEqual(NO_CHANGES)
   })
 
+  it("returns no_changes when the user includes '#run_new_changelog_check' hashtag", () => {
+    expect(
+      parsePRDescription(`
+# Description
+
+This pull request adds some stuff to the thing so that it can blah.
+
+#nochangelog
+    `)
+    ).toEqual(NO_CHANGES)
+  })
+
   it("returns error when no changes have been declared and #nochangelog has not been included", () => {
     expect(
       parsePRDescription(`
