@@ -19,28 +19,27 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
 
   return (
     <Flex flexDirection="column" justifyContent="space-between">
-      <Flex flexDirection="row">
-        <Text style={{ width: 112 }} mb={10} variant="text">
+      <Flex mb={10} flexDirection="row">
+        <Text style={{ width: 112 }} variant="text">
           Order Date
         </Text>
-
-        <Text mb={10} testID="date" color="black60" variant="text">
+        <Text testID="date" color="black60" variant="text">
           {orderCreatedAt.toLocaleString(DateTime.DATE_SHORT as LocaleOptions)}
         </Text>
       </Flex>
-      <Flex flexDirection="row">
-        <Text style={{ width: 112 }} mb={10} variant="text">
+      <Flex mb={10} flexDirection="row">
+        <Text style={{ width: 112 }} variant="text">
           Order Number
         </Text>
-        <Text testID="code" mb={10} color="black60" variant="text">
+        <Text testID="code" color="black60" variant="text">
           {code}
         </Text>
       </Flex>
       <Flex flexDirection="row">
-        <Text style={{ width: 112 }} mb={10} variant="text">
+        <Text style={{ width: 112 }} variant="text">
           Status
         </Text>
-        <Text mb={10} testID="commerceShip" color="black60" variant="text">
+        <Text testID="commerceShip" color="black60" variant="text">
           {isShip ? "Delivery" : "Pickup"}
         </Text>
       </Flex>

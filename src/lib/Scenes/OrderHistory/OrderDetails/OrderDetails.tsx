@@ -2,10 +2,9 @@ import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
 import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { PlaceholderText } from "lib/utils/placeholders"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { times } from "lodash"
-import { Box, Flex, Text } from "palette"
+import { Box, Flex, Separator, Text } from "palette"
 import React from "react"
 import { ScrollView, SectionList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -43,7 +42,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
 
   return (
     <PageWithSimpleHeader title="Order Details">
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, marginTop: 20 }}>
         <SectionList
           sections={DATA}
           keyExtractor={(item, index) => item.key + index.toString()}
@@ -53,19 +52,20 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
             </Flex>
           )}
           stickySectionHeadersEnabled={false}
-          renderSectionHeader={({ section: { title } }) => (
-            <Box>
-              <Text variant="mediumText">{title}</Text>
-            </Box>
-          )}
+          renderSectionHeader={({ section: { title } }) =>
+            title ? (
+              <Box>
+                <Text mt={20} mb={10} variant="mediumText">
+                  {title}
+                </Text>
+              </Box>
+            ) : null
+          }
           SectionSeparatorComponent={(data) => (
             <Box
               height={!!data.leadingItem && !!data.trailingSection ? 2 : 0}
               marginTop={data.leadingItem && data.trailingSection ? 20 : 0}
               backgroundColor="black10"
-              style={{
-                marginVertical: 20,
-              }}
               flexDirection="column"
               justifyContent="center"
               alignItems="center"
@@ -79,12 +79,56 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
 
 export const OrderDetailsPlaceholder: React.FC<{}> = () => (
   <PageWithSimpleHeader title="Order Details">
-    <Flex px={2} py={15}>
-      {times(2).map((index: number) => (
-        <Flex key={index} py={1}>
-          <PlaceholderText width={100 + Math.random() * 100} />
+    <Flex px={2}>
+      <Flex flexDirection="row" mt={2}>
+        <Flex mr={2}>
+          <PlaceholderText width={80} />
+          <PlaceholderText width={100} marginTop={10} />
+          <PlaceholderText width={50} marginTop={10} />
         </Flex>
-      ))}
+        <Flex flexGrow={1}>
+          <PlaceholderText width={90} />
+          <PlaceholderText width={60} marginTop={10} />
+          <PlaceholderText width={65} marginTop={10} />
+        </Flex>
+      </Flex>
+      <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={1}>
+        <Separator mt={1} mb={2} />
+      </Flex>
+      <Flex>
+        <PlaceholderText width={90} />
+        <Flex flexDirection="row" mt={2}>
+          <PlaceholderBox height={60} width={60} marginLeft={16} marginRight={22} />
+          <Flex>
+            <PlaceholderText width={50 + Math.random() * 100} />
+            <PlaceholderText width={20 + Math.random() * 100} marginTop={10} />
+            <PlaceholderText width={80 + Math.random() * 100} />
+            <PlaceholderText width={30 + Math.random() * 100} />
+            <PlaceholderText width={30 + Math.random() * 100} />
+          </Flex>
+        </Flex>
+      </Flex>
+      <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={1}>
+        <Separator mt={1} mb={2} />
+      </Flex>
+      <PlaceholderText width={100} />
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Flex mt={2.2}>
+          <PlaceholderText width={40} />
+          <PlaceholderText width={60} marginTop={15} />
+          <PlaceholderText width={30} />
+          <PlaceholderText width={40} marginTop={15} />
+        </Flex>
+        <Flex alignItems="flex-end">
+          <PlaceholderText width={50} />
+          <PlaceholderText width={40} marginTop={15} />
+          <PlaceholderText width={40} />
+          <PlaceholderText width={50} marginTop={15} />
+        </Flex>
+      </Flex>
+      <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={1}>
+        <Separator mt={1} mb={2} />
+      </Flex>
     </Flex>
   </PageWithSimpleHeader>
 )
