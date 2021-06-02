@@ -9,6 +9,7 @@ upcoming:
     - Remove feature flag check for custom size filter - devon
     - Fix iOS app blank screen - ole, mounir
   user_facing:
+    - Add order details with ArtworkInfo and SectionTo   to user profile (behind feature flag) - alexj105
     - Fix wrong input font on android - dzmitry
     - Fix home screen load failure on logout - brian
     - Add artwork Material filter - dzmitry tratsiak
