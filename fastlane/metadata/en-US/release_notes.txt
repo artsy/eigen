@@ -1,5 +1,5 @@
 This update includes a number of improvements and bug fixes, including:
 
-- Improvements to Home screen and artwork filters.
+- Fixes make offer bug for artworks with a single edition
 
 Have feedback? Email us at support@artsy.net

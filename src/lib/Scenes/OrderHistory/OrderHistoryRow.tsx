@@ -62,7 +62,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
         mb={10}
         block
         variant="secondaryGray"
-        onPress={() => navigate(`/order-history/${order.internalID}`)}
+        onPress={() => navigate(`/user/purchases/${order.internalID}`)}
         data-test-id="view-order"
       >
         View Order
