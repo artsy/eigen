@@ -264,7 +264,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
               >
                 Privacy Policy
               </Text>{" "}
-              and{" "}
+              ,and{" "}
               <Text
                 onPress={() => {
                   Linking.openURL(`${webURL}/conditions-of-sale`)

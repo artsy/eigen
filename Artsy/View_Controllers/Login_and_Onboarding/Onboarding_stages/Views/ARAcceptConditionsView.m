@@ -31,7 +31,7 @@
     self.helpTextLabel.textContainerInset = UIEdgeInsetsZero;
     self.helpTextLabel.textContainer.lineFragmentPadding = 0;
 
-    NSString *string = @"Please agree to Artsy's Terms of Use, Privacy Policy and Conditions of Sale and to receive emails from Artsy.";
+    NSString *string = @"I agree to Artsy’s Terms of Use, Privacy Policy, and Conditions of Sale.";
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.lineSpacing = 3.0;
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:string

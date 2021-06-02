@@ -27,7 +27,7 @@
     self.tintColor = textColor;
     self.editable = NO;
     self.scrollEnabled = NO;
-    NSString *string = @"By creating your Artsy account you agree\nto our Terms of Use, Privacy Policy and Conditions of Sale.";
+    NSString *string = @"By creating your Artsy account you agree\nto our Terms of Use, Privacy Policy, and Conditions of Sale.";
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:string
                                                                                          attributes:@{
                                                                                              NSFontAttributeName : [UIFont serifFontWithSize:14],
