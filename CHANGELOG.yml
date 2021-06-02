@@ -43,6 +43,7 @@ upcoming:
    - Release new price range filter to artwork grids - iskounen
    - Fix padding between section titles and the artwork grids below them - stas hanchar
    - Add saved search banner (behind feature flag) - dzmitry tratsiak
+   - Vertically aligned 'Follow/Following' artist button text - stas hanchar
 
 releases:
   - version: 6.9.3
