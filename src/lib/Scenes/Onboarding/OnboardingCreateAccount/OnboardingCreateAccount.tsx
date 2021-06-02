@@ -263,8 +263,8 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
                 style={{ textDecorationLine: "underline" }}
               >
                 Privacy Policy
-              </Text>{" "}
-              ,and{" "}
+              </Text>
+              , and{" "}
               <Text
                 onPress={() => {
                   Linking.openURL(`${webURL}/conditions-of-sale`)
