@@ -26,7 +26,6 @@ describe("ArtworkInfoSection", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.commerceOrder) {
-          console.log(props?.commerceOrder)
           return <ArtworkInfoSectionFragmentContainer artwork={props.commerceOrder} />
         }
         return null
