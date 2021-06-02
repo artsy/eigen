@@ -1,5 +1,4 @@
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
-import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
@@ -8,6 +7,7 @@ import React, { Component, createRef } from "react"
 import { Dimensions, FlatList, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { Collection_collection } from "../../../__generated__/Collection_collection.graphql"
+import { CollectionArtworksFilterFragmentContainer as CollectionArtworksFilter } from "../../../lib/Scenes/Collection/Components/CollectionArtworksFilter"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "../../../lib/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "../../../lib/Scenes/Collection/Screens/CollectionHeader"
 import { Schema, screenTrack } from "../../../lib/utils/track"
@@ -97,11 +97,15 @@ export class Collection extends Component<CollectionProps, CollectionState> {
   }
 
   render() {
-    const { isArtworkGridVisible } = this.state
     const { collection } = this.props
     const { linkedCollections, isDepartment } = collection
 
-    const sections = ["collectionFeaturedArtists", "collectionHubsRails", "collectionArtworks"]
+    const sections = [
+      "collectionFeaturedArtists",
+      "collectionHubsRails",
+      "collectionArtworksFilter",
+      "collectionArtworks",
+    ]
 
     return (
       <ArtworkFiltersStoreProvider>
@@ -109,12 +113,14 @@ export class Collection extends Component<CollectionProps, CollectionState> {
           <View style={{ flex: 1 }}>
             <FlatList
               ref={this.flatList}
+              onScroll={(ev) => console.log("ev", ev.nativeEvent)}
               onViewableItemsChanged={this.onViewableItemsChanged}
               viewabilityConfig={this.viewabilityConfig}
               keyExtractor={(_item, index) => String(index)}
               data={sections}
               ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
               ItemSeparatorComponent={() => <Spacer mb={2} />}
+              stickyHeaderIndices={[3]}
               renderItem={({ item }): null | any => {
                 switch (item) {
                   case "collectionFeaturedArtists":
@@ -127,27 +133,16 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                     return isDepartment ? (
                       <CollectionHubsRails linkedCollections={linkedCollections} {...this.props} />
                     ) : null
+                  case "collectionArtworksFilter":
+                    return <CollectionArtworksFilter collection={collection} />
                   case "collectionArtworks":
                     return (
                       <Box px={2}>
                         <CollectionArtworks collection={collection} scrollToTop={() => this.scrollToTop()} />
-                        <ArtworkFilterNavigator
-                          {...this.props}
-                          isFilterArtworksModalVisible={this.state.isFilterArtworksModalVisible}
-                          id={collection.id}
-                          slug={collection.slug}
-                          mode={FilterModalMode.Collection}
-                          exitModal={this.handleFilterArtworksModal.bind(this)}
-                          closeModal={this.closeFilterArtworksModal.bind(this)}
-                        />
                       </Box>
                     )
                 }
               }}
-            />
-            <AnimatedArtworkFilterButton
-              isVisible={isArtworkGridVisible}
-              onPress={this.openFilterArtworksModal.bind(this)}
             />
           </View>
         </Theme>
@@ -164,12 +159,7 @@ export const CollectionContainer = createFragmentContainer(Collection, {
       slug
       isDepartment
       ...CollectionHeader_collection
-      ...CollectionArtworks_collection @arguments(
-        input: {
-          sort: "-decayed_merch"
-          dimensionRange: "*-*"
-        }
-      )
+      ...CollectionArtworks_collection @arguments(input: { sort: "-decayed_merch", dimensionRange: "*-*" })
       ...FeaturedArtists_collection
       ...CollectionHubsRails_collection
 

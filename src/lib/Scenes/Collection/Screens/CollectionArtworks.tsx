@@ -30,10 +30,12 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
   const artworksTotal = artworks?.counts?.total
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
+  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((action) => action.setFiltersCountAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
 
   const filterParams = filterArtworksParams(appliedFilters)
+  const followedArtists = ArtworksFiltersStore.useStoreState((state) => state.counts.followedArtists)
 
   useEffect(() => {
     if (applyFilters) {
@@ -54,6 +56,14 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
   useEffect(() => {
     setAggregationsAction(collection.collectionArtworks!.aggregations)
   }, [])
+
+  useEffect(() => {
+    // for use by CollectionArtworksFilter to keep count
+    setFiltersCountAction({
+      total: artworksTotal ?? null,
+      followedArtists,
+    })
+  }, [artworksTotal])
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
@@ -77,9 +87,6 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
 
   return artworks ? (
     <ArtworkGridWrapper isDepartment={isDepartment}>
-      <Box mb={3} mt={1}>
-        <Separator />
-      </Box>
       <InfiniteScrollArtworksGrid
         connection={artworks}
         loadMore={relay.loadMore}
