@@ -11,6 +11,7 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
 import { CreditCardSummaryItemFragmentContainer } from "./OrderDetailsPayment"
 import { ShipsToSectionFragmentContainer } from "./ShipsToSection"
+import { SummarySectionFragmentContainer } from "./SummarySection"
 
 export interface OrderDetailsProps {
   order: OrderDetails_order
@@ -28,6 +29,11 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
       key: "Artwork_Info",
       title: "Artwork Info",
       data: [<ArtworkInfoSectionFragmentContainer testID="Artwork" artwork={order} />],
+    },
+    {
+      key: "Summary_Section",
+      title: "Order Summary",
+      data: [<SummarySectionFragmentContainer testID="SummarySection" section={order} />],
     },
     {
       key: "Payment_Method",
@@ -140,8 +146,9 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
       code
       state
       ...ArtworkInfoSection_artwork
-      ...ShipsToSection_address
+      ...SummarySection_section
       ...OrderDetailsPayment_order
+      ...ShipsToSection_address
     }
   `,
 })

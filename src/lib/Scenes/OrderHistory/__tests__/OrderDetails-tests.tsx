@@ -94,6 +94,7 @@ describe(OrderDetailsQueryRender, () => {
     expect(tree.root.findAllByType(SectionList).length).toBe(1)
     expect(tree.root.findAllByProps({ testID: "separetor" })).not.toBe(0)
     expect(tree.root.findAllByProps({ testID: "Artwork" }).length).not.toBe(0)
+    expect(tree.root.findAllByProps({ testID: "SummarySection" }).length).not.toBe(0)
     expect(tree.root.findAllByProps({ testID: "ShipsToSection" }).length).not.toBe(0)
   })
 

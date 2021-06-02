@@ -1,7 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
+<<<<<<< HEAD
 /* @relayHash 87c8d7c6815b44d3d7834495ec8e620d */
+=======
+/* @relayHash ca9926f3157c41efd0d48b534cb6b342 */
+>>>>>>> 24b2799cbf (Added summary section and tests)
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -76,7 +80,11 @@ fragment OrderDetails_order on CommerceOrder {
   state
   ...ArtworkInfoSection_artwork
   ...ShipsToSection_address
+<<<<<<< HEAD
   ...OrderDetailsPayment_order
+=======
+  ...SummarySection_section
+>>>>>>> 24b2799cbf (Added summary section and tests)
 }
 
 fragment ShipsToSection_address on CommerceOrder {
@@ -93,6 +101,14 @@ fragment ShipsToSection_address on CommerceOrder {
       region
     }
   }
+}
+
+fragment SummarySection_section on CommerceOrder {
+  __isCommerceOrder: __typename
+  buyerTotal(precision: 2)
+  taxTotal(precision: 2)
+  shippingTotal(precision: 2)
+  totalListPrice(precision: 2)
 }
 */
 
@@ -124,7 +140,14 @@ v3 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-};
+},
+v4 = [
+  {
+    "kind": "Literal",
+    "name": "precision",
+    "value": 2
+  }
+];
 return {
   "fragment": {
     "argumentDefinitions": [],
@@ -410,6 +433,7 @@ return {
           },
           {
             "alias": null,
+<<<<<<< HEAD
             "args": null,
             "concreteType": "CreditCard",
             "kind": "LinkedField",
@@ -433,6 +457,33 @@ return {
               (v3/*: any*/)
             ],
             "storageKey": null
+=======
+            "args": (v4/*: any*/),
+            "kind": "ScalarField",
+            "name": "buyerTotal",
+            "storageKey": "buyerTotal(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": (v4/*: any*/),
+            "kind": "ScalarField",
+            "name": "taxTotal",
+            "storageKey": "taxTotal(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": (v4/*: any*/),
+            "kind": "ScalarField",
+            "name": "shippingTotal",
+            "storageKey": "shippingTotal(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": (v4/*: any*/),
+            "kind": "ScalarField",
+            "name": "totalListPrice",
+            "storageKey": "totalListPrice(precision:2)"
+>>>>>>> 24b2799cbf (Added summary section and tests)
           },
           (v3/*: any*/)
         ],
@@ -454,7 +505,11 @@ return {
     ]
   },
   "params": {
+<<<<<<< HEAD
     "id": "87c8d7c6815b44d3d7834495ec8e620d",
+=======
+    "id": "ca9926f3157c41efd0d48b534cb6b342",
+>>>>>>> 24b2799cbf (Added summary section and tests)
     "metadata": {},
     "name": "OrderDetailsTestsQuery",
     "operationKind": "query",
