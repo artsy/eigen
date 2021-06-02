@@ -1,16 +1,20 @@
+import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
 import { DateTime } from "luxon"
 import { LocaleOptions } from "luxon"
 import { Flex, Text } from "palette"
 import React from "react"
+import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  fulfillment: "CommerceShip" | "CommercePickup" | "%other" | undefined
-  code: string
-  createdAt: string
+  info: OrderDetails_order
 }
 
-export const OrderDetailsHeader: React.FC<Props> = ({ createdAt, fulfillment, code }) => {
-  const isShip = fulfillment === "CommerceShip"
+export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
+  if (!info) {
+    return null
+  }
+  const { createdAt, requestedFulfillment, code } = info
+  const isShip = requestedFulfillment?.__typename === "CommerceShip"
   const orderCreatedAt = DateTime.fromISO(createdAt)
 
   return (
@@ -43,3 +47,20 @@ export const OrderDetailsHeader: React.FC<Props> = ({ createdAt, fulfillment, co
     </Flex>
   )
 }
+
+export const OrderDetailsHeaderFragmentContainer = createFragmentContainer(OrderDetailsHeader, {
+  info: graphql`
+    fragment OrderDetailsHeader_info on CommerceOrder {
+      createdAt
+      requestedFulfillment {
+        ... on CommerceShip {
+          __typename
+        }
+        ... on CommercePickup {
+          __typename
+        }
+      }
+      code
+    }
+  `,
+})

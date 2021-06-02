@@ -12,6 +12,7 @@ interface Props {
 }
 
 export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
+  console.log(artwork, "artwork")
   const artworkItem = extractNodes(artwork.lineItems)[0].artwork
   if (!artworkItem) {
     return null

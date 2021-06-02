@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 92482e12dcc6c5a8ac4b7869cd52086c */
+/* @relayHash 067be5cb43c826ec7bf2afec879b0ad9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -62,9 +62,6 @@ fragment ArtworkInfoSection_artwork on CommerceOrder {
 
 fragment OrderDetails_order on CommerceOrder {
   __isCommerceOrder: __typename
-  internalID
-  code
-  state
   createdAt
   requestedFulfillment {
     __typename
@@ -75,6 +72,7 @@ fragment OrderDetails_order on CommerceOrder {
       __typename
     }
   }
+  code
   ...ArtworkInfoSection_artwork
   ...ShipsToSection_address
 }
@@ -187,27 +185,6 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "internalID",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "code",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "state",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
             "name": "createdAt",
             "storageKey": null
           },
@@ -277,6 +254,13 @@ return {
                 "abstractKey": null
               }
             ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "code",
             "storageKey": null
           },
           {
@@ -435,7 +419,7 @@ return {
     ]
   },
   "params": {
-    "id": "92482e12dcc6c5a8ac4b7869cd52086c",
+    "id": "067be5cb43c826ec7bf2afec879b0ad9",
     "metadata": {},
     "name": "OrderDetailsTestsQuery",
     "operationKind": "query",

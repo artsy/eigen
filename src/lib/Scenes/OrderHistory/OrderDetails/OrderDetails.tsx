@@ -24,18 +24,10 @@ interface SectionListItem {
 }
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
-  console.log(order, "order")
-
   const DATA: SectionListItem[] = [
     {
       key: "OrderDetailsHeader",
-      data: [
-        <OrderDetailsHeader
-          code={order.code}
-          createdAt={order.createdAt}
-          fulfillment={order?.requestedFulfillment?.__typename}
-        />,
-      ],
+      data: [<OrderDetailsHeader info={order} />],
     },
     {
       key: "Artwork_Info",
@@ -100,18 +92,7 @@ export const OrderDetailsPlaceholder: React.FC<{}> = () => (
 export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
   order: graphql`
     fragment OrderDetails_order on CommerceOrder {
-      internalID
-      code
-      state
-      createdAt
-      requestedFulfillment {
-        ... on CommerceShip {
-          __typename
-        }
-        ... on CommercePickup {
-          __typename
-        }
-      }
+      ...OrderDetailsHeader_info @relay(mask: false)
       ...ArtworkInfoSection_artwork
       ...ShipsToSection_address
     }
