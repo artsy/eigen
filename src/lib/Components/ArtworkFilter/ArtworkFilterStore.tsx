@@ -22,7 +22,6 @@ export interface ArtworkFiltersModel {
   counts: FilterCounts
   applyFiltersAction: Action<ArtworkFiltersModel>
   selectFiltersAction: Action<ArtworkFiltersModel, FilterData>
-  clearAllAction: Action<ArtworkFiltersModel>
   resetFiltersAction: Action<ArtworkFiltersModel>
   clearFiltersZeroStateAction: Action<ArtworkFiltersModel>
   setAggregationsAction: Action<ArtworkFiltersModel, any>
@@ -178,12 +177,6 @@ export const ArtworkFiltersModel: ArtworkFiltersModel = {
     })
 
     state.selectedFilters = selectedFilters
-    state.applyFilters = false
-  }),
-
-  clearAllAction: action((state) => {
-    state.selectedFilters = []
-    state.previouslyAppliedFilters = []
     state.applyFilters = false
   }),
 

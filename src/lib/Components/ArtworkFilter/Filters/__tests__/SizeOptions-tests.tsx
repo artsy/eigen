@@ -7,7 +7,7 @@ import { Text } from "palette"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider, useSelectedOptionsDisplay } from "../../ArtworkFilterStore"
-import { SizeOptionsScreen } from "../SizeOptionsNew"
+import { SizeOptionsScreen } from "../SizeOptions"
 import { getEssentialProps } from "./helper"
 
 type Key = FilterParamName.dimensionRange | FilterParamName.width | FilterParamName.height

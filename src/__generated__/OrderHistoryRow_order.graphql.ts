@@ -26,6 +26,13 @@ export type OrderHistoryRow_order = {
                     readonly title: string | null;
                     readonly artistNames: string | null;
                 } | null;
+                readonly fulfillments: {
+                    readonly edges: ReadonlyArray<{
+                        readonly node: {
+                            readonly trackingId: string | null;
+                        } | null;
+                    } | null> | null;
+                } | null;
             } | null;
         } | null> | null;
     } | null;
@@ -39,7 +46,15 @@ export type OrderHistoryRow_order$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 1
+  }
+];
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -61,10 +76,16 @@ const node: ReaderFragment = {
     },
     {
       "alias": null,
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "precision",
+          "value": 2
+        }
+      ],
       "kind": "ScalarField",
       "name": "buyerTotal",
-      "storageKey": null
+      "storageKey": "buyerTotal(precision:2)"
     },
     {
       "alias": null,
@@ -82,13 +103,7 @@ const node: ReaderFragment = {
     },
     {
       "alias": null,
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "first",
-          "value": 1
-        }
-      ],
+      "args": (v0/*: any*/),
       "concreteType": "CommerceLineItemConnection",
       "kind": "LinkedField",
       "name": "lineItems",
@@ -187,6 +202,46 @@ const node: ReaderFragment = {
                     }
                   ],
                   "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": (v0/*: any*/),
+                  "concreteType": "CommerceFulfillmentConnection",
+                  "kind": "LinkedField",
+                  "name": "fulfillments",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "concreteType": "CommerceFulfillmentEdge",
+                      "kind": "LinkedField",
+                      "name": "edges",
+                      "plural": true,
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "concreteType": "CommerceFulfillment",
+                          "kind": "LinkedField",
+                          "name": "node",
+                          "plural": false,
+                          "selections": [
+                            {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "trackingId",
+                              "storageKey": null
+                            }
+                          ],
+                          "storageKey": null
+                        }
+                      ],
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": "fulfillments(first:1)"
                 }
               ],
               "storageKey": null
@@ -201,5 +256,6 @@ const node: ReaderFragment = {
   "type": "CommerceOrder",
   "abstractKey": "__isCommerceOrder"
 };
-(node as any).hash = '57893b4f11a3152d13bacfe0144c438b';
+})();
+(node as any).hash = '65a62c8226f67b79fbfcdbfc9d28d8c9';
 export default node;
