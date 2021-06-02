@@ -23,6 +23,7 @@
 - (void)sendPasswordResetEmail:(NSString *)email sender:(id)sender;
 - (void)privacyPolicyLinkTapped;
 - (void)termsAndConditionsLinkTapped;
+- (void)conditionsOfSaleLinkTapped;
 - (NSString *)userEmail;
 @end
 
@@ -62,5 +63,6 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 - (void)finishAccountCreation;
 - (void)showTermsAndConditions;
 - (void)showPrivacyPolicy;
+- (void)showСonditionsOfSale;
 
 @end
