@@ -14,6 +14,7 @@ upcoming:
     - Send only changed filter params in the analytics event - dzmitry tratsiak
   user_facing:
     - Add payment method section (behind feature flag) - irina-sid
+    - Add Order Summary section into OrderDetails page - Serge0n
     - Add order details skeleton (behind feature flag) - Serge0n
     - Fix wrong input font on android - dzmitry
     - Fix home screen load failure on logout - brian
