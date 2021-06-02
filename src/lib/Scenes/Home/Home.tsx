@@ -67,7 +67,6 @@ const Home = (props: Props) => {
   Please make sure to keep this page in sync with the home screen.
   */
   const rowData = compact([
-    { type: "articles" } as const,
     artworkRails[0],
     { type: "lotsByFollowedArtists" } as const,
     artworkRails[1],
@@ -76,6 +75,7 @@ const Home = (props: Props) => {
         type: "sales",
         data: salesModule,
       } as const),
+    { type: "articles" } as const,
     !!viewingRoomsEchoFlag && ({ type: "viewing-rooms" } as const),
     fairsModule &&
       ({
