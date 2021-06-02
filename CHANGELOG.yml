@@ -1,7 +1,8 @@
 upcoming:
-  version: 6.9.3
+  version: 6.9.4
   date: TBD
   dev:
+    - OrderDetails with ArtInfo and ShipsTo - alexj105
     - Improve admin menu - dzmitry
     - Use app links on android - mounir
     - obfuscate env vars on android - kizito
@@ -9,7 +10,10 @@ upcoming:
     - Remove feature flag check for custom size filter - devon
     - Fix iOS app blank screen - ole, mounir
     - Replace "color" filter with "colors" filter - dzmitry tratsiak
+    - Add Saved Search feature flag - kizito
+    - Send only changed filter params in the analytics event - dzmitry tratsiak
   user_facing:
+    - Add order details skeleton (behind feature flag) - Serge0n
     - Fix wrong input font on android - dzmitry
     - Fix home screen load failure on logout - brian
     - Add artwork Material filter - dzmitry tratsiak
@@ -21,7 +25,7 @@ upcoming:
     - Add order history to user profile (behind feature flag) - alexj105
     - Add order history skeleton (behind feature flag) - Serge0n
     - Add orders to order history (behind feature flag) - Serge0n
-    - Add order details page (app registry, a route with orderID, relay container)
+    - Add order details page (app registry, a route with orderID, relay container) - irina-sid
     - Enable lotsByFollowedArtists - ole
     - Add ability to unselected "ways to buy" filter - dzmitry tratsia
     - Update auction registration flow UI - ole
@@ -40,8 +44,21 @@ upcoming:
     - Fix registration flow error handling (e.g. invalid phone number) - ole
     - Decode html entities in markdown - ole
     - close keyboard on message send - lily
+    - Clear applied filters after click on "clear all" button immediately - dzmitry tratsiak
+    - Release new price range filter to artwork grids - iskounen
+    - Fix padding between section titles and the artwork grids below them - stas hanchar
+    - Add saved search banner (behind feature flag) - dzmitry tratsiak
+    - Add articles rail to home screen - ole
+    - Update articles rail design on artist overview screen - ole
 
 releases:
+  - version: 6.9.3
+    date: June 1, 2021
+    dev:
+      -
+    user_facing:
+      - fix disabled button bug for works with only one edition - lily
+
   - version: 6.9.2
     date: May 26, 2021
     dev:

@@ -94,14 +94,14 @@ export const features = defineFeatures({
     description: "Enable custom share sheet",
     showInAdminMenu: true,
   },
-  ARUseImprovedArtworkFilters: {
-    readyForRelease: false,
-    description: "Use improved artwork filters",
-    showInAdminMenu: true,
-  },
   AREnableOrderHistoryOption: {
     readyForRelease: false,
     description: "Enable Order History in settings",
+    showInAdminMenu: true,
+  },
+  AREnableSavedSearch: {
+    readyForRelease: false,
+    description: "Enable Saved Search",
     showInAdminMenu: true,
   },
 })

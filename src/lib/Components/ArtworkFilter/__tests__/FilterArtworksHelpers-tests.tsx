@@ -111,7 +111,7 @@ describe("changedFiltersParams helper", () => {
     ).toEqual({ sort: "year" })
   })
 
-  it("when clearing applied filters", () => {
+  it("when clearing applied sort selection", () => {
     const appliedFilters = filterArtworksParams([
       {
         displayText: "Artwork year (ascending)",
@@ -125,7 +125,13 @@ describe("changedFiltersParams helper", () => {
         paramName: FilterParamName.priceRange,
       },
     ])
-    expect(changedFiltersParams(appliedFilters, [])).toEqual({
+    expect(changedFiltersParams(appliedFilters, [
+      {
+        displayText: "Default",
+        paramValue: "-decayed_merch",
+        paramName: FilterParamName.sort,
+      },
+    ])).toEqual({
       sort: "-decayed_merch",
     })
   })
@@ -143,7 +149,18 @@ describe("changedFiltersParams helper", () => {
         paramName: FilterParamName.medium,
       },
     ])
-    expect(changedFiltersParams(appliedFilters, [])).toEqual({ sort: "-decayed_merch", medium: "*" })
+    expect(changedFiltersParams(appliedFilters, [
+      {
+        displayText: "Default",
+        paramValue: "-decayed_merch",
+        paramName: FilterParamName.sort,
+      },
+      {
+        displayText: "All",
+        paramValue: "*",
+        paramName: FilterParamName.medium,
+      },
+    ])).toEqual({ sort: "-decayed_merch", medium: "*" })
   })
 })
 
