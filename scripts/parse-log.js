@@ -1,4 +1,5 @@
-#!/usr/bin/env node
+// @ts-check
+
 /**
  * This file is used in CI to parse the list of merged pull requests
  * since the last public release per platform and get the changelogs for each one
@@ -15,12 +16,14 @@ const owner = "artsy";
 const repo = "eigen";
 
 
-const TAG = "ios-6.9.2-2021.05.22.06-submission"
-
-const isMergedAfter = (mergeDate, commitDate) => mergeDate !== null && new Date(mergeDate) > commitDate
+/**
+ * @param {Date | null} mergeDate Date when the commit was merged
+ * @param {Date | null} lastReleaseCommitDate Last release commit date
+ */
+const isMergedAfter = (mergeDate, lastReleaseCommitDate) => mergeDate !== null && new Date(mergeDate) > lastReleaseCommitDate
 
 /**
- * @param {string} platform
+ * @param {"ios" | "android"} platform
  */
 async function getLastReleaseCommitDate(platform) {
   const tagsSpinner = ora("loading list of tags...").start()
