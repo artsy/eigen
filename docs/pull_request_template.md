@@ -22,3 +22,29 @@ This PR resolves [CX-]
 - [ ] I have documented any follow-up work that this PR will require, or it does not require any.
 - [ ] I have added an app state migration, or my changes do not require one. ([What are migrations?](https://github.com/artsy/eigen/blob/master/docs/adding_state_migrations.md))
 - [ ] I have added a [CHANGELOG.yml](/CHANGELOG.yml) entry or my changes do not require one.
+
+### Changelog updates
+
+<!-- 📝 Please fill out at least one of these sections. -->
+<!-- ⓘ 'User-facing' changes will be published as release notes. -->
+<!-- ⌫ Feel free to remove sections that don't apply. -->
+<!-- • Write a markdown list or just a single paragraph, but stick to plain text. -->
+<!-- 🤷‍♂️ Replace this entire block with the hashtag `#nochangelog` to avoid updating the changelog. -->
+
+#### Android user-facing changes
+
+-
+
+#### Cross-platform user-facing changes
+
+-
+
+#### Dev changes
+
+-
+
+#### iOS user-facing changes
+
+-
+
+<!-- end_changelog_updates -->
