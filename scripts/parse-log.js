@@ -19,7 +19,7 @@ const TAG = "ios-6.9.2-2021.05.22.06-submission"
 
 const isMergedAfter = (mergeDate, commitDate) => mergeDate !== null && new Date(mergeDate) > commitDate
 
-async function getLastReleaseDateByTag(releaseTag) {
+async function getLastReleaseCommitDate(releaseTag) {
   const tagsSpinner = ora("loading list of tags...").start()
   const tags = await octokit.paginate(`GET /repos/${owner}/${repo}/tags`, {
     owner,
@@ -65,6 +65,7 @@ async function getPRsBeforeDate(commitDate) {
 
   const filteredPRs = compact(prs).filter((pr) => isMergedAfter(pr.merged_at, commitDate))
   prsSpinner.succeed()
+
   return filteredPRs
 }
 
@@ -72,7 +73,7 @@ async function getPRsBeforeDate(commitDate) {
 
 (async function() {
   try {
-    const commitDate = await getLastReleaseDateByTag(TAG)
+    const commitDate = await getLastReleaseCommitDate(TAG)
     await getPRsBeforeDate(commitDate)
 
     ora("Successfully loaded list of PRs before tag").succeed()
