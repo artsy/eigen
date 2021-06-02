@@ -12,7 +12,6 @@ import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { OrderHistoryRowContainer } from "./OrderHistoryRow"
-
 const NUM_ORDERS_TO_FETCH = 10
 
 export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginationProp }> = ({ relay, me }) => {
@@ -154,6 +153,7 @@ export const OrderHistoryQueryRender: React.FC<{}> = ({}) => {
       query={graphql`
         query OrderHistoryQuery($count: Int!) {
           me {
+            name
             ...OrderHistory_me @arguments(count: $count)
           }
         }

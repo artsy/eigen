@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash db9327b8b759ee87efcb4ca92972b51e */
+/* @relayHash 2c8aaef022af5fa13dff33170a658669 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -10,6 +10,7 @@ export type OrderHistoryQueryVariables = {
 };
 export type OrderHistoryQueryResponse = {
     readonly me: {
+        readonly name: string | null;
         readonly " $fragmentRefs": FragmentRefs<"OrderHistory_me">;
     } | null;
 };
@@ -25,6 +26,7 @@ query OrderHistoryQuery(
   $count: Int!
 ) {
   me {
+    name
     ...OrderHistory_me_yu5n1
     id
   }
@@ -95,7 +97,14 @@ var v0 = [
     "name": "count"
   }
 ],
-v1 = [
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v2 = [
   {
     "kind": "Variable",
     "name": "first",
@@ -113,14 +122,14 @@ v1 = [
     ]
   }
 ],
-v2 = [
+v3 = [
   {
     "kind": "Literal",
     "name": "first",
     "value": 1
   }
 ],
-v3 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -142,6 +151,7 @@ return {
         "name": "me",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
           {
             "args": [
               {
@@ -174,9 +184,10 @@ return {
         "name": "me",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
           {
             "alias": null,
-            "args": (v1/*: any*/),
+            "args": (v2/*: any*/),
             "concreteType": "CommerceOrderConnectionWithTotalCount",
             "kind": "LinkedField",
             "name": "orders",
@@ -259,7 +270,7 @@ return {
                       },
                       {
                         "alias": null,
-                        "args": (v2/*: any*/),
+                        "args": (v3/*: any*/),
                         "concreteType": "CommerceLineItemConnection",
                         "kind": "LinkedField",
                         "name": "lineItems",
@@ -332,14 +343,8 @@ return {
                                         "name": "partner",
                                         "plural": false,
                                         "selections": [
-                                          {
-                                            "alias": null,
-                                            "args": null,
-                                            "kind": "ScalarField",
-                                            "name": "name",
-                                            "storageKey": null
-                                          },
-                                          (v3/*: any*/)
+                                          (v1/*: any*/),
+                                          (v4/*: any*/)
                                         ],
                                         "storageKey": null
                                       },
@@ -357,13 +362,13 @@ return {
                                         "name": "artistNames",
                                         "storageKey": null
                                       },
-                                      (v3/*: any*/)
+                                      (v4/*: any*/)
                                     ],
                                     "storageKey": null
                                   },
                                   {
                                     "alias": null,
-                                    "args": (v2/*: any*/),
+                                    "args": (v3/*: any*/),
                                     "concreteType": "CommerceFulfillmentConnection",
                                     "kind": "LinkedField",
                                     "name": "fulfillments",
@@ -392,7 +397,7 @@ return {
                                                 "name": "trackingId",
                                                 "storageKey": null
                                               },
-                                              (v3/*: any*/)
+                                              (v4/*: any*/)
                                             ],
                                             "storageKey": null
                                           }
@@ -402,7 +407,7 @@ return {
                                     ],
                                     "storageKey": "fulfillments(first:1)"
                                   },
-                                  (v3/*: any*/)
+                                  (v4/*: any*/)
                                 ],
                                 "storageKey": null
                               }
@@ -412,7 +417,7 @@ return {
                         ],
                         "storageKey": "lineItems(first:1)"
                       },
-                      (v3/*: any*/)
+                      (v4/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -456,7 +461,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v1/*: any*/),
+            "args": (v2/*: any*/),
             "filters": [
               "states"
             ],
@@ -465,14 +470,14 @@ return {
             "kind": "LinkedHandle",
             "name": "orders"
           },
-          (v3/*: any*/)
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "db9327b8b759ee87efcb4ca92972b51e",
+    "id": "2c8aaef022af5fa13dff33170a658669",
     "metadata": {},
     "name": "OrderHistoryQuery",
     "operationKind": "query",
@@ -480,5 +485,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'f6fe62bcc2ced1ff25c4aec2d81b59c8';
+(node as any).hash = 'bffedd857934d9f67d742fd5b4abacbc';
 export default node;

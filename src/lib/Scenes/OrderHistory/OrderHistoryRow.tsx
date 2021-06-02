@@ -68,7 +68,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             <Button
               block
               variant="secondaryGray"
-              onPress={() => navigate(`/order-history/${order.internalID}`)}
+              onPress={() => navigate(`/user/purchases/${order.internalID}`)}
               data-test-id="view-order-button"
             >
               View Order
@@ -94,7 +94,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               mb={1}
               block
               variant="secondaryGray"
-              onPress={() => navigate(`/order-history/${order.internalID}`)}
+              onPress={() => navigate(`/user/purchases/${order.internalID}`)}
               data-test-id="view-order-button"
             >
               View Order
