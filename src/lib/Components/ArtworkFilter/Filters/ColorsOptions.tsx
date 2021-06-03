@@ -40,9 +40,8 @@ interface ColorsOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigat
 export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ navigation }) => {
   const { layout, handleLayout } = useLayout()
 
-  // Pull out aggregations for 'color' not 'colors'
   const { aggregation } = useArtworkFiltersAggregation({
-    paramName: FilterParamName.color,
+    paramName: FilterParamName.colors,
   })
 
   // Convert aggregations to filter options

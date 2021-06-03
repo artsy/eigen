@@ -1,3 +1,4 @@
+import { decode } from "html-entities"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { navigate } from "lib/navigation/navigate"
 import _ from "lodash"
@@ -66,7 +67,7 @@ export function defaultRules({
     },
     text: {
       react: (node) => {
-        return node.content
+        return decode(node.content)
       },
     },
 

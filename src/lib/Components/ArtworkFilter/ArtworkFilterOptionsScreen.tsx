@@ -62,14 +62,16 @@ export const ArtworkFilterOptionsScreen: React.FC<
   StackScreenProps<ArtworkFilterNavigationStack, "FilterOptionsScreen">
 > = ({ navigation, route }) => {
   const tracking = useTracking()
-  const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
+  const { closeModal, exitModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
   const aggregationsState = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
 
-  const clearAllAction = ArtworksFiltersStore.useStoreActions((action) => action.clearAllAction)
+  const clearFiltersZeroStateAction = ArtworksFiltersStore.useStoreActions(
+    (action) => action.clearFiltersZeroStateAction
+  )
 
   const selectedOptions = useSelectedOptionsDisplay()
 
@@ -95,7 +97,8 @@ export const ArtworkFilterOptionsScreen: React.FC<
     .filter((filterOption) => filterOption.filterType)
 
   const clearAllFilters = () => {
-    clearAllAction()
+    clearFiltersZeroStateAction()
+    exitModal?.()
   }
 
   const trackClear = (screenName: PageNames, ownerEntity: OwnerEntityTypes) => {
@@ -169,8 +172,6 @@ export const ArtworkFilterOptionsScreen: React.FC<
             aggregations: aggregationsState,
           })
 
-          // TODO: When unwinding the `ARUseImprovedArtworkFilters` flag; simply return `null`
-          // instead of `"All"` in the `selectedOption` function
           const currentOption =
             selectedCurrentOption === "All" || selectedCurrentOption === "Default" ? null : selectedCurrentOption
 
@@ -394,8 +395,8 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "attributionClass",
     ScreenComponent: "AttributionClassOptionsScreen",
   },
-  color: {
-    displayText: FilterDisplayName.color,
+  colors: {
+    displayText: FilterDisplayName.colors,
     filterType: "colors",
     ScreenComponent: "ColorsOptionsScreen",
   },

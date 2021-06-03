@@ -6,7 +6,7 @@ import {
   TouchableHighlightProps,
   TouchableWithoutFeedback as RNTouchableWithoutFeedback,
 } from "react-native"
-import { TouchableHighlight, TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { TouchableHighlight, TouchableWithoutFeedback } from "react-native-gesture-handler"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 
 import { color } from "../../Theme"

@@ -22,7 +22,6 @@ export interface ArtworkFiltersModel {
   counts: FilterCounts
   applyFiltersAction: Action<ArtworkFiltersModel>
   selectFiltersAction: Action<ArtworkFiltersModel, FilterData>
-  clearAllAction: Action<ArtworkFiltersModel>
   resetFiltersAction: Action<ArtworkFiltersModel>
   clearFiltersZeroStateAction: Action<ArtworkFiltersModel>
   setAggregationsAction: Action<ArtworkFiltersModel, any>
@@ -60,7 +59,8 @@ export const ArtworkFiltersModel: ArtworkFiltersModel = {
 
     // replace previously applied options with currently selected options
     const filtersToApply = unionBy(
-      state.selectedFilters, state.previouslyAppliedFilters,
+      state.selectedFilters,
+      state.previouslyAppliedFilters,
       ({ paramValue, paramName }) => {
         // We don't want to union the artistID params, as each entry corresponds to a
         // different artist that may be selected. Instead we de-dupe based on the paramValue.
@@ -177,12 +177,6 @@ export const ArtworkFiltersModel: ArtworkFiltersModel = {
     })
 
     state.selectedFilters = selectedFilters
-    state.applyFilters = false
-  }),
-
-  clearAllAction: action((state) => {
-    state.selectedFilters = []
-    state.previouslyAppliedFilters = []
     state.applyFilters = false
   }),
 
