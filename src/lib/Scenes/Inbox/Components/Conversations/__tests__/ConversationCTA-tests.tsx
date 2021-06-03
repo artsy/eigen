@@ -150,6 +150,15 @@ describe("ConversationCTA", () => {
       expectReviewOfferButton(wrapper, { bg: "green100", strings: ["Offer Accepted"], Icon: MoneyFillIcon })
     })
 
+    it("shows the 'approved' banner for fulfilled offers", () => {
+      const wrapper = getWrapperWithOrders({
+        state: "FULFILLED",
+        lastOffer: { fromParticipant: "BUYER" },
+      })
+
+      expectReviewOfferButton(wrapper, { bg: "green100", strings: ["Offer Accepted"], Icon: MoneyFillIcon })
+    })
+
     it("shows counter received - confirm total when offer defines total and amount changes", () => {
       const wrapper = getWrapperWithOrders({
         state: "SUBMITTED",
