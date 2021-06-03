@@ -34,5 +34,6 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://www.jitpack.io' }
+        maven { url "http://appboy.github.io/appboy-android-sdk/sdk" }
     }
 }
