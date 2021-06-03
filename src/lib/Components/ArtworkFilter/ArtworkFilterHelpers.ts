@@ -1,6 +1,6 @@
 import { FilterScreen } from "lib/Components/ArtworkFilter"
 import { capitalize, compact, groupBy, isEqual, pick, sortBy } from "lodash"
-import { LOCALIZED_UNIT } from "./Filters/helpers"
+import { getFilterArtworkSizeName, LOCALIZED_UNIT, parseRange } from "./Filters/helpers"
 
 export enum FilterDisplayName {
   // artist = "Artists",
@@ -67,6 +67,17 @@ export type FilterParams = {
 export enum ViewAsValues {
   Grid = "grid",
   List = "list",
+}
+
+export interface SaveSearchInput {
+  artistID?: string
+  attribution?: string
+  category?: string
+  clientMutationId?: string
+  priceMax?: number
+  priceMin?: number
+  size?: string
+  [key: string]: any
 }
 
 export const getSortDefaultValueByFilterType = (filterType: FilterType) => {
@@ -536,4 +547,52 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
     "tagID",
     "width",
   ])
+}
+
+export const parseFilterParamSize = (value: string) => {
+  const size = getFilterArtworkSizeName(value)
+  const input: SaveSearchInput = {}
+
+  if (size === "custom") {
+    // TODO: Pass minWidth, maxWidth, minHeight, maxHeight
+  } else if (size !== "all") {
+    input.size = size!
+  }
+
+  return input
+}
+
+export const parseFilterParamPrice = (value: string) => {
+  const { min, max } = parseRange(value)
+  const input: SaveSearchInput = {}
+
+  if (min !== "*") {
+    input.priceMin = min
+  }
+
+  if (max !== "*") {
+    input.priceMax = max
+  }
+
+  return input
+}
+
+export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams) => {
+  let input: SaveSearchInput = {}
+
+  Object.entries(filterParams).forEach((entry) => {
+    const [key, value] = entry
+
+    if (key === FilterParamName.priceRange) {
+      input = { ...input, ...parseFilterParamPrice(value as string) }
+    } else if (key === FilterParamName.dimensionRange) {
+      input = { ...input, ...parseFilterParamSize(value as string) }
+    } else if (key === FilterParamName.attributionClass) {
+      input.attribution = (value as string[])[0]
+    } else if (key === FilterParamName.additionalGeneIDs) {
+      input.category = (value as string[])[0]
+    }
+  })
+
+  return input
 }

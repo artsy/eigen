@@ -6,6 +6,7 @@ import {
   FilterParamName,
   FilterParams,
   prepareFilterArtworksParamsForInput,
+  prepareFilterParamsForSaveSearchInput,
   selectedOption,
 } from "../ArtworkFilterHelpers"
 import { FilterArtworkSize, getFilterArtworkSizeName } from '../Filters/helpers'
@@ -851,5 +852,88 @@ describe("getFilterArtworkSizeName", () => {
 
   it(`returns "null" for the unknown value`, () => {
     expect(getFilterArtworkSizeName("some-custom-value")).toBeNull()
+  })
+})
+
+describe("prepareFilterParamsForSaveSearchInput", () => {
+  it("returns fields in the CreateSavedSearchInput format", () => {
+    const filters = filterArtworksParams([
+      {
+        displayText: "Large (over 100cm)",
+        paramName: FilterParamName.dimensionRange,
+        paramValue: FilterArtworkSize.Large,
+      },
+      {
+        displayText: "Limited Edition",
+        paramName: FilterParamName.attributionClass,
+        paramValue: ["limited edition"],
+      },
+      {
+        displayText: "$5,000-10,000",
+        paramName: FilterParamName.priceRange,
+        paramValue: "5000-10000",
+      },
+      {
+        displayText: "Prints",
+        paramName: FilterParamName.additionalGeneIDs,
+        paramValue: ["prints"],
+      },
+      {
+        displayText: "Paper",
+        paramName: FilterParamName.materialsTerms,
+        paramValue: ["paper"],
+      }
+    ]);
+
+    expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
+      priceMin: 5000,
+      priceMax: 10000,
+      size: "large",
+      attribution: "limited edition",
+      category: "prints",
+    })
+  })
+
+  it("returns minPrice and maxPrice fields if only the price filter is selected", () => {
+    const filters = filterArtworksParams([
+      {
+        displayText: "$1,000-5,000",
+        paramName: FilterParamName.priceRange,
+        paramValue: "1000-5000",
+      },
+    ]);
+
+    expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
+      priceMin: 1000,
+      priceMax: 5000,
+    })
+  })
+
+  it("returns minPrice field if only the minimum price filter is specified", () => {
+    const filters = filterArtworksParams([
+      {
+        displayText: "$50,000+",
+        paramName: FilterParamName.priceRange,
+        paramValue: "50000-*",
+      },
+    ]);
+
+    expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
+      priceMin: 50000,
+    })
+  })
+
+  it("returns size field if only the size filter is specified", () => {
+    const filters = filterArtworksParams([
+      {
+        displayText: "Large (over 100cm)",
+        paramName: FilterParamName.dimensionRange,
+        paramValue: FilterArtworkSize.Large,
+      },
+    ]);
+
+    expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
+      size: "large",
+    })
   })
 })
