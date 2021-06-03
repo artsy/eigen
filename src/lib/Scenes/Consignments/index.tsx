@@ -62,21 +62,21 @@ export interface ConsignmentSetup {
   editionScreenViewed?: boolean
 }
 
-export interface GlobalStoreData {
+export interface SellTabProps {
   initialGoBackPath?: BottomTabType
 }
 
 export const Consignments: React.FC = () => {
-  const globalStoreData = GlobalStore.useAppState((state) => {
+  const sellTabProps = GlobalStore.useAppState((state) => {
     return state.bottomTabs.sessionState.tabProps.sell ?? {}
-  }) as GlobalStoreData
+  }) as SellTabProps
 
-  const initialGoPackPathString = globalStoreData?.initialGoBackPath ?? null
+  const initialGoPackPathString = sellTabProps?.initialGoBackPath ?? null
 
-  const globalStoreDataRef = useRef<BottomTabType | null>(null)
+  const sellTabPropsRef = useRef<BottomTabType | null>(null)
 
   useEffect(() => {
-    globalStoreDataRef.current = initialGoPackPathString
+    sellTabPropsRef.current = initialGoPackPathString
   }, [initialGoPackPathString])
 
   useEffect(
@@ -88,8 +88,8 @@ export const Consignments: React.FC = () => {
   )
 
   const handleBackButton = () => {
-    if (globalStoreDataRef.current !== null) {
-      switchTab(globalStoreDataRef.current)
+    if (sellTabPropsRef.current !== null) {
+      switchTab(sellTabPropsRef.current)
       GlobalStore.actions.bottomTabs.setTabProps({ tab: "sell", props: {} })
     } else {
       goBack()
