@@ -5,7 +5,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { CatchErrors } from "lib/utils/CatchErrors"
 import { CloseIcon } from "palette"
 import React from "react"
-import { TouchableOpacity } from "react-native"
+import { Pressable, TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
 import { SearchContext } from "../SearchContext"
 import { SearchResult } from "../SearchResult"
@@ -17,6 +17,7 @@ const result = {
   href: "banksy-href",
   imageUrl: "blah",
   displayType: "Artist",
+  __typename: "Artist",
 }
 
 let recentSearchesArray: any[] = []
@@ -68,7 +69,7 @@ describe(SearchResult, () => {
     tree.root.findByType(TouchableOpacity).props.onPress()
     await new Promise((r) => setTimeout(r, 50))
     expect(inputBlurMock).toHaveBeenCalled()
-    expect(navigate).toHaveBeenCalledWith(result.href)
+    expect(navigate).toHaveBeenCalledWith(result.href, { passProps: { initialTab: "Artworks" } })
   })
 
   it(`highlights a part of the string if possible`, async () => {
@@ -146,6 +147,7 @@ describe(SearchResult, () => {
           slug: "art-expo-profile-slug",
           imageUrl: "blah",
           displayType: "Fair",
+          __typename: "SearchableItem",
         }}
       />
     )
@@ -154,5 +156,77 @@ describe(SearchResult, () => {
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(navigateToEntity).toHaveBeenCalledWith("/art-expo-diff-profile-slug", EntityType.Fair, SlugType.ProfileID)
+  })
+
+  it(`shows navigation buttons when enabled and available`, async () => {
+    const tree = renderWithWrappers(
+      <TestWrapper
+        result={{
+          displayLabel: "Banksy",
+          href: "/artist/anto-carte",
+          imageUrl: "blah",
+          __typename: "Artist",
+          counts: {
+            artworks: 12,
+            auctionResults: 4,
+          },
+        }}
+        showQuickNavigationButtons
+      />
+    )
+
+    expect(extractText(tree.root)).toContain("Auction Results")
+    expect(extractText(tree.root)).toContain("Artworks")
+  })
+
+  it(`does not show navigation buttons when enabled, but unavailable`, async () => {
+    const tree = renderWithWrappers(
+      <TestWrapper
+        result={{
+          displayLabel: "Banksy",
+          href: "/artist/anto-carte",
+          imageUrl: "blah",
+          __typename: "Artist",
+          counts: {
+            artworks: 12,
+            auctionResults: 0,
+          },
+        }}
+        showQuickNavigationButtons
+      />
+    )
+
+    expect(extractText(tree.root)).not.toContain("Auction Results")
+    expect(extractText(tree.root)).not.toContain("Artworks")
+  })
+
+  it(`quick navigation buttons navigate correctly`, async () => {
+    const tree = renderWithWrappers(
+      <TestWrapper
+        result={{
+          displayLabel: "Banksy",
+          href: "/artist/anto-carte",
+          imageUrl: "blah",
+          __typename: "Artist",
+          counts: {
+            artworks: 12,
+            auctionResults: 4,
+          },
+        }}
+        showQuickNavigationButtons
+      />
+    )
+
+    act(() => {
+      tree.root.findAllByType(Pressable)[0].props.onPress()
+    })
+    await new Promise((r) => setTimeout(r, 50))
+    expect(navigate).toHaveBeenCalledWith("/artist/anto-carte", { passProps: { initialTab: "Artworks" } })
+
+    act(() => {
+      tree.root.findAllByType(Pressable)[1].props.onPress()
+    })
+    await new Promise((r) => setTimeout(r, 50))
+    expect(navigate).toHaveBeenCalledWith("/artist/anto-carte", { passProps: { initialTab: "Insights" } })
   })
 })
