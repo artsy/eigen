@@ -1,5 +1,9 @@
-import React from "react"
+import { goBack, switchTab } from "lib/navigation/navigate"
+import { GlobalStore } from "lib/store/GlobalStore"
+import React, { useCallback, useEffect, useRef } from "react"
+import { BackHandler } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
+import { BottomTabType } from "../../Scenes/BottomTabs/BottomTabType"
 import { ConsignmentsHomeQueryRenderer } from "./ConsignmentsHome/ConsignmentsHome"
 
 /** The metadata for a consigned work */
@@ -58,6 +62,41 @@ export interface ConsignmentSetup {
   editionScreenViewed?: boolean
 }
 
+export interface SellTabProps {
+  overwriteHardwareBackButtonPath?: BottomTabType
+}
+
 export const Consignments: React.FC = () => {
+  const sellTabProps = GlobalStore.useAppState((state) => {
+    return state.bottomTabs.sessionState.tabProps.sell ?? {}
+  }) as SellTabProps
+
+  const overwriteHardwareBackButtonPath = sellTabProps?.overwriteHardwareBackButtonPath ?? null
+
+  const sellTabPropsRef = useRef<BottomTabType | null>(null)
+
+  useEffect(() => {
+    sellTabPropsRef.current = overwriteHardwareBackButtonPath
+  }, [overwriteHardwareBackButtonPath])
+
+  useEffect(
+    useCallback(() => {
+      BackHandler.addEventListener("hardwareBackPress", handleBackButton)
+
+      return () => BackHandler.removeEventListener("hardwareBackPress", handleBackButton)
+    }, [])
+  )
+
+  const handleBackButton = useCallback(() => {
+    if (sellTabPropsRef.current) {
+      switchTab(sellTabPropsRef.current)
+      GlobalStore.actions.bottomTabs.setTabProps({ tab: "sell", props: {} })
+    } else {
+      goBack()
+    }
+
+    return true
+  }, [sellTabPropsRef.current])
+
   return <ConsignmentsHomeQueryRenderer />
 }

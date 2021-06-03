@@ -59,7 +59,7 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
     // this view is one of our root tab views, e.g. home, search, etc.
     // switch to the tab, pop the stack, and scroll to the top.
     await LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(module.options.isRootViewForTabName)
-    switchTab(module.options.isRootViewForTabName, result.params)
+    switchTab(module.options.isRootViewForTabName, screenDescriptor.props)
   } else {
     const selectedTab = unsafe__getSelectedTab()
     if (module.options.onlyShowInTabName) {
