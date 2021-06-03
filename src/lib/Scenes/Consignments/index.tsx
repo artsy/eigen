@@ -63,7 +63,7 @@ export interface ConsignmentSetup {
 }
 
 export interface SellTabProps {
-  initialGoBackPath?: BottomTabType
+  overwriteHardwareBackButtonPath?: BottomTabType
 }
 
 export const Consignments: React.FC = () => {
@@ -71,13 +71,13 @@ export const Consignments: React.FC = () => {
     return state.bottomTabs.sessionState.tabProps.sell ?? {}
   }) as SellTabProps
 
-  const initialGoBackPathString = sellTabProps?.initialGoBackPath ?? null
+  const overwriteHardwareBackButtonPath = sellTabProps?.overwriteHardwareBackButtonPath ?? null
 
   const sellTabPropsRef = useRef<BottomTabType | null>(null)
 
   useEffect(() => {
-    sellTabPropsRef.current = initialGoBackPathString
-  }, [initialGoBackPathString])
+    sellTabPropsRef.current = overwriteHardwareBackButtonPath
+  }, [overwriteHardwareBackButtonPath])
 
   useEffect(
     useCallback(() => {

@@ -44,7 +44,9 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = (props) =
           destination_path: destination,
         })
 
-        isSalesTab ? navigate(destination) : navigate(destination, { passProps: { initialGoBackPath: "search" } })
+        isSalesTab
+          ? navigate(destination)
+          : navigate(destination, { passProps: { overwriteHardwareBackButtonPath: "search" } })
       }}
     >
       <BorderBox p={0}>

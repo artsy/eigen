@@ -220,7 +220,7 @@ describe("ArtistConsignButton", () => {
       })
       tree.root.findByType(TouchableOpacity).props.onPress()
 
-      expect(navigate).toHaveBeenCalledWith("/sales", { passProps: { initialGoBackPath: "search" } })
+      expect(navigate).toHaveBeenCalledWith("/sales", { passProps: { overwriteHardwareBackButtonPath: "search" } })
     })
 
     it("sends user to a new instance of landing page if user is already in sales tab", () => {
