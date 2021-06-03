@@ -40,14 +40,14 @@ export const SearchResult: React.FC<{
   const showNavigationButtons =
     showQuickNavigationButtons && !!result.counts?.artworks && !!result.counts?.auctionResults
 
-  const onPress = (passProps?: { navigateToSpecificArtistTab: ArtistTabs }) => {
+  const onPress = (passProps?: { artistTab: ArtistTabs }) => {
     if (onResultPress) {
       onResultPress(result)
     } else {
       inputRef.current?.blur()
       // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
       setTimeout(() => {
-        navigateToResult(result, passProps?.navigateToSpecificArtistTab)
+        navigateToResult(result, passProps?.artistTab)
         if (updateRecentSearchesOnTap) {
           GlobalStore.actions.search.addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
         }
@@ -112,7 +112,7 @@ export const SearchResult: React.FC<{
             <View style={{ width: imageSide }}></View>
             <Spacer ml={1} />
 
-            <Pressable onPress={() => onPress({ navigateToSpecificArtistTab: "Artworks" })}>
+            <Pressable onPress={() => onPress({ artistTab: "Artworks" })}>
               {({ pressed }) => (
                 <QuickNavigationButton>
                   <Box mr={0.5}>
@@ -127,7 +127,7 @@ export const SearchResult: React.FC<{
 
             <Spacer ml={1} />
 
-            <Pressable onPress={() => onPress({ navigateToSpecificArtistTab: "Insights" })}>
+            <Pressable onPress={() => onPress({ artistTab: "Insights" })}>
               {({ pressed }) => (
                 <QuickNavigationButton>
                   <Box mr={0.5}>
@@ -159,13 +159,13 @@ const splitter = new GraphemeSplitter()
  * about the entity type to render the correct placeholder/skeleton loader
  * @param result
  */
-function navigateToResult(result: AutosuggestResult, navigateToSpecificArtistTab: ArtistTabs = "Artworks") {
+function navigateToResult(result: AutosuggestResult, artistTab: ArtistTabs = "Artworks") {
   if (result.displayType === "Gallery" || result.displayType === "Institution") {
     navigateToPartner(result.slug!)
   } else if (result.displayType === "Fair") {
     navigateToEntity(result.href!, EntityType.Fair, SlugType.ProfileID)
   } else if (result.__typename === "Artist") {
-    navigate(result.href!, { passProps: { initialTab: navigateToSpecificArtistTab } })
+    navigate(result.href!, { passProps: { initialTab: artistTab } })
   } else {
     navigate(result.href!)
   }
