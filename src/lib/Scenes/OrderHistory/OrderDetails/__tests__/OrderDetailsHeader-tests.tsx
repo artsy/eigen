@@ -5,7 +5,7 @@ import React from "react"
 import { QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { createMockEnvironment } from "relay-test-utils"
-import { OrderDetailsHeaderFragmentContainer } from "../OrderDetails/OrderDetailsHeader"
+import { OrderDetailsHeaderFragmentContainer } from "../Components/OrderDetailsHeader"
 
 jest.unmock("react-relay")
 describe("OrderDetailsHeader", () => {

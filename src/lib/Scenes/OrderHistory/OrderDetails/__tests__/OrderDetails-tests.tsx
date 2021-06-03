@@ -8,7 +8,7 @@ import { SectionList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { OrderDetailsContainer, OrderDetailsPlaceholder, OrderDetailsQueryRender } from "../OrderDetails/OrderDetails"
+import { OrderDetailsContainer, OrderDetailsPlaceholder, OrderDetailsQueryRender } from "../Components/OrderDetails"
 
 jest.unmock("react-relay")
 
