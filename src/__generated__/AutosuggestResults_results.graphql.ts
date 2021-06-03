@@ -17,7 +17,6 @@ export type AutosuggestResults_results = {
                 readonly slug?: string;
                 readonly counts?: {
                     readonly artworks: number | null;
-                    readonly articles: number | null;
                     readonly auctionResults: number | null;
                 } | null;
             } | null;
@@ -202,13 +201,6 @@ return {
                           "alias": null,
                           "args": null,
                           "kind": "ScalarField",
-                          "name": "articles",
-                          "storageKey": null
-                        },
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
                           "name": "auctionResults",
                           "storageKey": null
                         }
@@ -265,5 +257,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '7f2bf77dc6aca4dcc5c4d2884a4bb832';
+(node as any).hash = 'e9155b8891618f6bcae79f330dad3306';
 export default node;

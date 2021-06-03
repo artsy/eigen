@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6c7d9358592a862bcd0df112eb085ec8 */
+/* @relayHash af4e61e0a1aafe2e2be937d1665777b0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -38,7 +38,6 @@ export type AutosuggestResultsQueryRawResponse = {
                 readonly slug: string;
                 readonly counts: ({
                     readonly artworks: number | null;
-                    readonly articles: number | null;
                     readonly auctionResults: number | null;
                 }) | null;
             } | {
@@ -92,7 +91,6 @@ fragment AutosuggestResults_results_2KyZFR on Query {
           slug
           counts {
             artworks
-            articles
             auctionResults
           }
         }
@@ -295,13 +293,6 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "articles",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
                             "name": "auctionResults",
                             "storageKey": null
                           }
@@ -383,7 +374,7 @@ return {
     ]
   },
   "params": {
-    "id": "6c7d9358592a862bcd0df112eb085ec8",
+    "id": "af4e61e0a1aafe2e2be937d1665777b0",
     "metadata": {},
     "name": "AutosuggestResultsQuery",
     "operationKind": "query",

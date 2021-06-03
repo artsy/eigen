@@ -124,7 +124,7 @@ const AutosuggestResultsFlatList: React.FC<{
               result={item}
               showResultType={showResultType}
               onResultPress={onResultPress}
-              showQuickNavigationButtons={index === 0}
+              showQuickNavigationButtons
             />
           </Flex>
         )
@@ -164,7 +164,6 @@ const AutosuggestResultsContainer = createPaginationContainer(
                 slug
                 counts {
                   artworks
-                  articles
                   auctionResults
                 }
               }
