@@ -142,7 +142,11 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
       mutation: graphql`
       mutation ArtistArtworksContainerCreateSavedSearchMutation($input: CreateSavedSearchInput!) {
         createSavedSearch(input: $input) {
-          clientMutationId
+          savedSearchOrErrors {
+            ... on SearchCriteria {
+              internalID
+            }
+          }
         }
       }
     `,

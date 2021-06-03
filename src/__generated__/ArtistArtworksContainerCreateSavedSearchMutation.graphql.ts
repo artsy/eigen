@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0a9e6fd7f91224c79b579d7c3bd40c82 */
+/* @relayHash 3842c737387a99e03f0d577d6430f91b */
 
 import { ConcreteRequest } from "relay-runtime";
 export type CreateSavedSearchInput = {
@@ -18,7 +18,9 @@ export type ArtistArtworksContainerCreateSavedSearchMutationVariables = {
 };
 export type ArtistArtworksContainerCreateSavedSearchMutationResponse = {
     readonly createSavedSearch: {
-        readonly clientMutationId: string | null;
+        readonly savedSearchOrErrors: {
+            readonly internalID?: string;
+        };
     } | null;
 };
 export type ArtistArtworksContainerCreateSavedSearchMutation = {
@@ -33,7 +35,12 @@ mutation ArtistArtworksContainerCreateSavedSearchMutation(
   $input: CreateSavedSearchInput!
 ) {
   createSavedSearch(input: $input) {
-    clientMutationId
+    savedSearchOrErrors {
+      __typename
+      ... on SearchCriteria {
+        internalID
+      }
+    }
   }
 }
 */
@@ -48,37 +55,56 @@ var v0 = [
 ],
 v1 = [
   {
-    "alias": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "input",
-        "variableName": "input"
-      }
-    ],
-    "concreteType": "CreateSavedSearchPayload",
-    "kind": "LinkedField",
-    "name": "createSavedSearch",
-    "plural": false,
-    "selections": [
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "clientMutationId",
-        "storageKey": null
-      }
-    ],
-    "storageKey": null
+    "kind": "Variable",
+    "name": "input",
+    "variableName": "input"
   }
-];
+],
+v2 = {
+  "kind": "InlineFragment",
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
+      "storageKey": null
+    }
+  ],
+  "type": "SearchCriteria",
+  "abstractKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "ArtistArtworksContainerCreateSavedSearchMutation",
-    "selections": (v1/*: any*/),
+    "selections": [
+      {
+        "alias": null,
+        "args": (v1/*: any*/),
+        "concreteType": "CreateSavedSearchPayload",
+        "kind": "LinkedField",
+        "name": "createSavedSearch",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": null,
+            "kind": "LinkedField",
+            "name": "savedSearchOrErrors",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/)
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      }
+    ],
     "type": "Mutation",
     "abstractKey": null
   },
@@ -87,10 +113,41 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "ArtistArtworksContainerCreateSavedSearchMutation",
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "alias": null,
+        "args": (v1/*: any*/),
+        "concreteType": "CreateSavedSearchPayload",
+        "kind": "LinkedField",
+        "name": "createSavedSearch",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": null,
+            "kind": "LinkedField",
+            "name": "savedSearchOrErrors",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "__typename",
+                "storageKey": null
+              },
+              (v2/*: any*/)
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      }
+    ]
   },
   "params": {
-    "id": "0a9e6fd7f91224c79b579d7c3bd40c82",
+    "id": "3842c737387a99e03f0d577d6430f91b",
     "metadata": {},
     "name": "ArtistArtworksContainerCreateSavedSearchMutation",
     "operationKind": "mutation",
@@ -98,5 +155,5 @@ return {
   }
 };
 })();
-(node as any).hash = '7024ad4eb3954afdbea20b02568bf2a9';
+(node as any).hash = '7bb63934512b019e56e62d406910e6a6';
 export default node;
