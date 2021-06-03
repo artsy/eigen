@@ -58,6 +58,8 @@ upcoming:
     - Fix android native go back from sale tab to search - yauheni
     - Vertically aligned 'Follow/Following' artist button text - stas hanchar
 
+    - Specified a more specific error for logging in with Apple or Facebook - stas hanchar
+
 releases:
   - version: 6.9.3
     date: June 1, 2021
