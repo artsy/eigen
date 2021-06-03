@@ -5,22 +5,22 @@
  * since the last public release per platform and get the changelogs for each one
  */
 
-const Octokit = require("@octokit/rest");
-const compact = require("lodash/compact");
-const ora = require("ora");
+const Octokit = require("@octokit/rest")
+const compact = require("lodash/compact")
+const parsePRDescription = require("./parsePRDescription").parsePRDescription
+const ora = require("ora")
 
-const octokit = new Octokit({ auth: process.env.GH_TOKEN });
+const octokit = new Octokit({ auth: process.env.GH_TOKEN })
 
-
-const owner = "artsy";
-const repo = "eigen";
-
+const owner = "artsy"
+const repo = "eigen"
 
 /**
- * @param {Date | null} mergeDate Date when the commit was merged
- * @param {Date | null} lastReleaseCommitDate Last release commit date
+ * @param {string | null} mergeDate Date when the commit was merged
+ * @param {Date} lastReleaseCommitDate Last release commit date
  */
-const isMergedAfter = (mergeDate, lastReleaseCommitDate) => mergeDate !== null && new Date(mergeDate) > lastReleaseCommitDate
+const isMergedAfter = (mergeDate, lastReleaseCommitDate) =>
+  mergeDate !== null && new Date(mergeDate) > lastReleaseCommitDate
 
 /**
  * @param {"ios" | "android"} platform
@@ -30,7 +30,7 @@ async function getLastReleaseCommitDate(platform) {
   const tags = await octokit.paginate(`GET /repos/${owner}/${repo}/tags`, {
     owner,
     repo,
-    per_page: 100
+    per_page: 100,
   })
   tagsSpinner.succeed()
 
@@ -45,9 +45,8 @@ async function getLastReleaseCommitDate(platform) {
     targetTag = tags.find((tag) => tag.name.match(/^android-.*submission$/))
   }
 
-
   if (!targetTag) {
-    throw new Error(`Could not find tag on ${platform}`);
+    throw new Error(`Could not find tag on ${platform}`)
   }
 
   ora(`last submission tag on ${platform}: ${targetTag.name}`).succeed()
@@ -56,32 +55,32 @@ async function getLastReleaseCommitDate(platform) {
     owner,
     repo,
     ref: targetTag.commit.sha,
-  });
+  })
 
-  return new Date(commit.commit.committer.date);
+  return new Date(commit.commit.committer.date)
 }
-
 
 /**
  * @param {Date} commitDate
  */
 async function getPRsBeforeDate(commitDate) {
   const prsSpinner = ora("loading list of prs...").start()
-  const prs = await octokit.paginate(`GET /repos/${owner}/${repo}/pulls`, {
-    owner,
-    repo,
-    state: "closed",
-    sort: "updated",
-    direction: "desc",
-    per_page: 20,
-  }, (response, done) => {
+  const prs = await octokit.paginate(
+    `GET /repos/${owner}/${repo}/pulls`,
+    {
+      owner,
+      repo,
+      state: "closed",
+      sort: "updated",
+      direction: "desc",
+      per_page: 20,
+    },
+    (/** @type {{ data: import('@octokit/rest').PullsGetResponse[]; }} */ response, /** @type {() => void} */ done) => {
       // Bail when some of the PRs were merged before the tag
-      if (response.data.find((pr) =>
-         isMergedAfter(pr.merged_at, commitDate)
-      )) {
+      if (response.data.find((pr) => isMergedAfter(pr.merged_at, commitDate))) {
         return response.data
       }
-      done();
+      done()
     }
   )
 
@@ -94,20 +93,44 @@ async function getPRsBeforeDate(commitDate) {
 /**
  * @param {import('@octokit/rest').PullsGetResponse[]} prs List of merged pull requests
  */
-// function getChangeLogs(prs) {
-//   return prs.map((pr) => parsePRDescription(pr.body))
-// }
+function getChangeLog(prs) {
+  const changeLog = {
+    androidUserFacingChanges: [],
+    crossPlatformUserFacingChanges: [],
+    devChanges: [],
+    iOSUserFacingChanges: [],
+  }
 
+  prs
+    .map((pr) => parsePRDescription(pr.body))
+    .filter((parseResult) => parseResult.type === "changes")
+    .map((parseResult) => {
+      for (const entry of Object.keys(changeLog)) {
+        // @ts-ignore
+        changeLog[entry] = changeLog[entry].concat(parseResult[entry])
+      }
+    })
 
-(async function() {
+  return changeLog
+}
+
+;(async function () {
   try {
     const commitDate = await getLastReleaseCommitDate("ios")
     const prs = await getPRsBeforeDate(commitDate)
-    getChangeLogs(prs)
+    console.log(prs)
+    getChangeLog(prs)
     ora("Successfully loaded list of PRs before tag").succeed()
   } catch (error) {
     const error_message = "Failed to get the list of PRs before tag"
     ora(error_message).fail()
-    throw new Error(error);
+    throw new Error(error)
   }
 })()
+
+module.exports = {
+  isMergedAfter,
+  getLastReleaseCommitDate,
+  getPRsBeforeDate,
+  getChangeLog,
+}
