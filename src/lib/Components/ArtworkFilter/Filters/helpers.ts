@@ -3,6 +3,13 @@ import { isNull, isUndefined, round as __round__ } from "lodash"
 
 type Numeric = "*" | number
 type Unit = "in" | "cm"
+export enum FilterArtworkSize {
+  All = "*-*",
+  Small = "*-16.0",
+  Medium = "16.0-40.0",
+  Large = "40.0-*",
+  Custom = "0-*",
+}
 
 export interface Range {
   min: Numeric
@@ -97,4 +104,16 @@ export const parseRange = (range: string): Range => {
   })
 
   return { min: enforceNumeric(min), max: enforceNumeric(max) }
+}
+
+export const getFilterArtworkSizeName = (filterArtworkSize: string): string | null => {
+  const sizes: Record<FilterArtworkSize, string> = {
+    [FilterArtworkSize.All]: "all",
+    [FilterArtworkSize.Small]: "small",
+    [FilterArtworkSize.Medium]: "medium",
+    [FilterArtworkSize.Large]: "large",
+    [FilterArtworkSize.Custom]: "custom",
+  }
+
+  return sizes[filterArtworkSize as FilterArtworkSize] ?? null
 }
