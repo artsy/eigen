@@ -237,9 +237,7 @@ describe("ArtistConsignButton", () => {
       })
       tree.root.findByType(TouchableOpacity).props.onPress()
 
-      expect(navigate).toHaveBeenCalledWith("/collections/my-collection/marketing-landing", {
-        passProps: { initialGoBackPath: "search" },
-      })
+      expect(navigate).toHaveBeenCalledWith("/collections/my-collection/marketing-landing")
     })
   })
 })
