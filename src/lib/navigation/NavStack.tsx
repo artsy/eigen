@@ -1,9 +1,11 @@
 import { Route, useIsFocused, useNavigationState } from "@react-navigation/native"
 import { AppModule, modules } from "lib/AppRegistry"
 import { ArtsyKeyboardAvoidingViewContext } from "lib/Components/ArtsyKeyboardAvoidingView"
-import { ProvideScreenDimensions, useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { NativeViewController } from "lib/Components/NativeViewController"
+import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useState } from "react"
-import { View } from "react-native"
+import { Platform, View } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { BackButton } from "./BackButton"
 
@@ -21,9 +23,9 @@ interface ScreenProps {
  */
 const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) => {
   const module = modules[route.params.moduleName]
-  if (module.type !== "react") {
+  if (Platform.OS === "android" && module.type !== "react") {
     console.warn(route.params.moduleName, { module })
-    throw new Error("native modules not yet supported in new nav setup")
+    throw new Error("native modules not yet supported on android")
   }
   // tslint:disable-next-line:variable-name
   const [legacy_shouldHideBackButton, updateShouldHideBackButton] = useState(false)
@@ -32,19 +34,30 @@ const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) =
   const showBackButton = !isRootScreen && !module.options.hidesBackButton && !legacy_shouldHideBackButton
 
   const isPresentedModally = (route.params.props as any)?.isPresentedModally
+  const bottomSafeArea = useSafeAreaInsets().bottom
+  const keyboardBottomOffset = isPresentedModally ? bottomSafeArea : 0
 
   const isVisible = useIsFocused()
 
   return (
     <LegacyBackButtonContext.Provider value={{ updateShouldHideBackButton }}>
       <ProvideScreenDimensions>
-        <ArtsyKeyboardAvoidingViewContext.Provider value={{ isPresentedModally, isVisible, bottomOffset: 0 }}>
+        <ArtsyKeyboardAvoidingViewContext.Provider
+          value={{ isPresentedModally, isVisible, bottomOffset: keyboardBottomOffset }}
+        >
           <ScreenPadding
             isPresentedModally={isPresentedModally}
             isVisible={isVisible}
-            fullBleed={!!module.options.fullBleed}
+            fullBleed={module.type === "native" || !!module.options.fullBleed}
           >
-            <module.Component {...route.params.props} isVisible={isVisible} />
+            {module.type === "react" ? (
+              <module.Component {...route.params.props} isVisible={isVisible} />
+            ) : (
+              <NativeViewController
+                viewName={route.params.moduleName as any}
+                viewProps={route.params.props}
+              ></NativeViewController>
+            )}
             <BackButton show={showBackButton} />
           </ScreenPadding>
         </ArtsyKeyboardAvoidingViewContext.Provider>
@@ -56,9 +69,21 @@ const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) =
 const ScreenPadding: React.FC<{ fullBleed: boolean; isPresentedModally: boolean; isVisible: boolean }> = ({
   fullBleed,
   children,
+  isPresentedModally,
 }) => {
-  const topInset = useScreenDimensions().safeAreaInsets.top
-  return <View style={{ flex: 1, backgroundColor: "white", paddingTop: fullBleed ? 0 : topInset }}>{children}</View>
+  const { top, bottom } = useSafeAreaInsets()
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "white",
+        paddingTop: fullBleed ? 0 : top,
+        paddingBottom: isPresentedModally ? bottom : 0,
+      }}
+    >
+      {children}
+    </View>
+  )
 }
 
 /**

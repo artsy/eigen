@@ -39,7 +39,7 @@ export const environment = defineEnvironmentOptions({
   predictionURL: {
     description: "Prediction URL",
     presets: {
-      local: "http://localhost:3000/v2",
+      local: "http://localhost:5000",
       staging: "https://live-staging.artsy.net",
       production: "https://live.artsy.net",
     },

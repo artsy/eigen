@@ -1,8 +1,6 @@
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { LegacyBackButtonContext } from "lib/navigation/NavStack"
-import { unsafe__getSelectedTab } from "lib/store/GlobalStore"
 import { useContext, useMemo } from "react"
-import { FlatListProps, Platform } from "react-native"
+import { FlatListProps } from "react-native"
 
 const SCROLL_UP_TO_SHOW_THRESHOLD = 150
 const SCROLL_DOWN_TO_HIDE_THRESHOLD = 50
@@ -58,12 +56,7 @@ export const createHideBackButtonOnScroll: (
 }
 
 export function useUpdadeShouldHideBackButton() {
-  if (Platform.OS === "ios") {
-    return (shouldHide: boolean) =>
-      LegacyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton(shouldHide, unsafe__getSelectedTab())
-  } else {
-    return useContext(LegacyBackButtonContext).updateShouldHideBackButton
-  }
+  return useContext(LegacyBackButtonContext).updateShouldHideBackButton
 }
 
 export function useHideBackButtonOnScroll() {

@@ -1,22 +1,13 @@
-import type { AppModule } from "lib/AppRegistry"
-import type { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
+import type { NativeAppModule } from "lib/AppRegistry"
 import React from "react"
 import { requireNativeComponent } from "react-native"
 
 const ARNativeViewController = requireNativeComponent("ARNativeViewController") as any
 
-type NativeViewProps =
-  | {
-      viewName: "Onboarding"
-      viewProps?: undefined
-    }
-  | {
-      viewName: "TabNavigationStack"
-      viewProps: {
-        tabName: BottomTabType
-        rootModuleName: AppModule
-      }
-    }
+interface NativeViewProps {
+  viewName: "Onboarding" | NativeAppModule
+  viewProps?: object
+}
 
 export const NativeViewController: React.FC<NativeViewProps> = ({ viewName, viewProps }) => {
   return <ARNativeViewController style={{ flex: 1 }} key={viewName} viewName={viewName} viewProps={viewProps ?? {}} />

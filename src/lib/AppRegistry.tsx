@@ -29,7 +29,6 @@ import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 import { Consignments } from "./Scenes/Consignments"
 import { ConsignmentsSubmissionForm } from "./Scenes/Consignments/ConsignmentsHome/ConsignmentsSubmissionForm"
 
-import { FadeIn } from "./Components/FadeIn"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { NativeViewController } from "./Components/NativeViewController"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
@@ -69,15 +68,15 @@ import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { AppProviders } from "./AppProviders"
-import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
 import { NativeAnalyticsProvider } from "./NativeModules/Events"
+import { ModalStack } from "./navigation/ModalStack"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { AuctionResultForYouQueryRenderer } from "./Scenes/AuctionResultForYou/AuctionResultForYou"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
-import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
+import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
@@ -87,11 +86,10 @@ import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
+import { GlobalStore } from "./store/GlobalStore"
 import { AdminMenu } from "./utils/AdminMenu"
 import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
-import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
 
 LogBox.ignoreLogs([
@@ -184,64 +182,9 @@ const SearchWithTracking: React.FC<SearchWithTrackingProps> = screenTrack<Search
   return <Search {...props} />
 })
 
-interface PageWrapperProps {
-  fullBleed?: boolean
-  isMainView?: boolean
-  ViewComponent: React.ComponentType<any>
-  viewProps: any
-}
-
-const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, ViewComponent, viewProps }) => {
-  const safeAreaInsets = useScreenDimensions().safeAreaInsets
-  const paddingTop = fullBleed ? 0 : safeAreaInsets.top
-  const paddingBottom = isMainView ? 0 : safeAreaInsets.bottom
-  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
-  // if we're in a modal, just pass isVisible through
-  const currentTab = useSelectedTab()
-  let isVisible = viewProps.isVisible
-  if (BottomTabOption[viewProps.navStackID as BottomTabType]) {
-    // otherwise, make sure it respects the current tab
-    isVisible = isVisible && currentTab === viewProps.navStackID
-  }
-  const isPresentedModally = viewProps.isPresentedModally
-  return (
-    <ArtsyKeyboardAvoidingViewContext.Provider value={{ isVisible, isPresentedModally, bottomOffset: paddingBottom }}>
-      <View style={{ flex: 1, paddingTop, paddingBottom }}>
-        {isHydrated ? (
-          <FadeIn style={{ flex: 1 }} slide={false}>
-            <ViewComponent {...{ ...viewProps, isVisible }} />
-          </FadeIn>
-        ) : null}
-      </View>
-    </ArtsyKeyboardAvoidingViewContext.Provider>
-  )
-}
-
-// provide the tracking context so pages can use `useTracking` all the time
-@track()
-class PageWrapper extends React.Component<PageWrapperProps> {
-  render() {
-    return (
-      <AppProviders>
-        <InnerPageWrapper {...this.props} />
-      </AppProviders>
-    )
-  }
-}
-
-function register(
-  screenName: string,
-  Component: React.ComponentType<any>,
-  options?: Omit<PageWrapperProps, "ViewComponent" | "viewProps">
-) {
-  const WrappedComponent = (props: any) => (
-    <PageWrapper {...options} ViewComponent={Component} viewProps={props}></PageWrapper>
-  )
-  AppRegistry.registerComponent(screenName, () => WrappedComponent)
-}
-
+export type ModalPresentationStyle = "fullScreen" | "pageSheet" | "formSheet"
 export interface ViewOptions {
-  modalPresentationStyle?: "fullScreen" | "pageSheet" | "formSheet"
+  modalPresentationStyle?: ModalPresentationStyle
   hasOwnModalCloseButton?: boolean
   alwaysPresentModally?: boolean
   hidesBackButton?: boolean
@@ -252,31 +195,36 @@ export interface ViewOptions {
   onlyShowInTabName?: BottomTabType
 }
 
-type ModuleDescriptor =
-  | {
-      type: "react"
-      Component: React.ComponentType<any>
-      options: ViewOptions
-    }
-  | {
-      type: "native"
-      options: ViewOptions
-    }
+interface ReactModuleDescriptor {
+  type: "react"
+  Component: React.ComponentType<any>
+  options: ViewOptions
+}
+interface NativeModuleDescriptor {
+  type: "native"
+  options: ViewOptions
+}
 
-function reactModule(Component: React.ComponentType<any>, options: ViewOptions = {}): ModuleDescriptor {
+function reactModule(Component: React.ComponentType<any>, options: ViewOptions = {}): ReactModuleDescriptor {
   return { type: "react", options, Component }
 }
 
-function nativeModule(options: ViewOptions = {}): ModuleDescriptor {
+function nativeModule(options: ViewOptions = {}): NativeModuleDescriptor {
   return { type: "native", options }
 }
 
 // little helper function to make sure we get both intellisense and good type information on the result
-function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
+function defineModules<T extends object>(obj: T) {
   return obj
 }
 
-export type AppModule = keyof typeof modules
+export type AppModule = Extract<keyof typeof modules, string>
+type ExtractNativeAppModule<M = AppModule> = M extends AppModule
+  ? typeof modules[M] extends NativeModuleDescriptor
+    ? M
+    : never
+  : never
+export type NativeAppModule = ExtractNativeAppModule
 
 export const modules = defineModules({
   Admin: nativeModule({ alwaysPresentModally: true }),
@@ -383,16 +331,6 @@ export const modules = defineModules({
   WorksForYou: reactModule(WorksForYouQueryRenderer),
 })
 
-// Register react modules with the app registry
-for (const moduleName of Object.keys(modules)) {
-  const descriptor = modules[moduleName as AppModule]
-  if ("Component" in descriptor) {
-    if (Platform.OS === "ios") {
-      register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed })
-    }
-  }
-}
-
 const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.native.sessionState.userID)
@@ -411,13 +349,38 @@ const Main: React.FC<{}> = track()(({}) => {
     return <ForceUpdate forceUpdateMessage={forceUpdateMessage} />
   }
 
-  if (!isLoggedIn || onboardingState === "incomplete") {
-    return <NativeViewController viewName="Onboarding" />
-  }
-
-  return <BottomTabsNavigator />
+  return (
+    <ModalStack>
+      {!isLoggedIn || onboardingState === "incomplete" ? (
+        // This needs to be within the modal stack so we can access the admin menu before loggin in.
+        <NativeViewController viewName="Onboarding" />
+      ) : (
+        <BottomTabsNavigator />
+      )}
+    </ModalStack>
+  )
 })
 
 if (Platform.OS === "ios") {
-  register("Main", Main, { fullBleed: true, isMainView: true })
+  AppRegistry.registerComponent("Main", () => () => (
+    <AppProviders>
+      <Main />
+    </AppProviders>
+  ))
+  for (const module of [
+    "Map",
+    "City",
+    "CityBMWList",
+    "CityFairList",
+    "CityPicker",
+    "CitySavedList",
+    "CitySectionList",
+  ] as const) {
+    const Component = modules[module].Component
+    AppRegistry.registerComponent(module, () => (props) => (
+      <AppProviders>
+        <Component {...props} />
+      </AppProviders>
+    ))
+  }
 }

@@ -5,6 +5,15 @@
 #import <Emission/ARComponentViewController.h>
 #import <React/RCTRootView.h>
 #import "ARScreenPresenterModule.h"
+#import "ARAdminSettingsViewController.h"
+#import "AROptions.h"
+#import <Emission/AREmission.h>
+#import "ARInternalMobileWebViewController.h"
+#import "ARSerifNavigationViewController.h"
+#import "Artsy-Swift.h"
+#import "AREigenMapContainerViewController.h"
+#import <Aerodramus/Message.h>
+#import "ARAppDelegate+Echo.h"
 
 @interface ARNativeViewControllerWrapperView : UIView
 
@@ -37,24 +46,32 @@
 }
 
 - (UIViewController *)getWrappedViewController {
-    if ([self.viewName isEqualToString:@"Onboarding"]) {
-        return [[AROnboardingViewController alloc] init];
-    } else if ([self.viewName isEqualToString:@"TabNavigationStack"]) {
-        NSString *tabName = self.viewProps[@"tabName"];
-        NSString *moduleName = self.viewProps[@"rootModuleName"];
-        if (!moduleName || !tabName) {
-            NSAssert(NO, @"ARNativeViewControllerManager->TabNavigationStack requires both tabName and moduleName");
-            return nil;
+    UIViewController *vc = nil;
+    
+    if ([self.viewName isEqualToString:@"Admin"]) {
+        vc = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    } else if ([self.viewName isEqualToString:@"LiveAuction"]) {
+        if ([AROptions boolForOption:AROptionsDisableNativeLiveAuctions] || [self.class requiresUpdateForWebSocketVersionUpdate]) {
+            NSString *slug = self.viewProps[@"slug"];
+            NSURL *liveAuctionsURL = [[AREmission sharedInstance] liveAuctionsURL];
+            NSURL *auctionURL = [NSURL URLWithString:slug relativeToURL:liveAuctionsURL];
+            ARInternalMobileWebViewController *webVC = [[ARInternalMobileWebViewController alloc] initWithURL:auctionURL];
+            vc = [[ARSerifNavigationViewController alloc] initWithRootViewController:webVC];
+        } else {
+            NSString *slug = self.viewProps[@"slug"];
+            vc = [[LiveAuctionViewController alloc] initWithSaleSlugOrID:slug];
         }
-        return [self getOrCreateNavStackForModule:tabName module:moduleName withProps:@{}];
+    } else if ([self.viewName isEqualToString:@"LocalDiscovery"]) {
+        vc = [[AREigenMapContainerViewController alloc] init];
+    } else if ([self.viewName isEqualToString:@"WebView"]) {
+        vc = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:self.viewProps[@"url"]]];
+    } else if ([self.viewName isEqualToString:@"Onboarding"]) {
+        return [[AROnboardingViewController alloc] init];
     } else {
-        return nil;
+        NSAssert(false, @"Unrecognized native module name", self.viewName);
     }
-}
-
-- (ARNavigationController *)getOrCreateNavStackForModule:(NSString *)tabName module:(NSString *)moduleName withProps:(NSDictionary *)props
-{
-    return [ARScreenPresenterModule getNavigationStack:tabName] ?: [ARScreenPresenterModule createNavigationStack:tabName rootViewController:[ARComponentViewController module:moduleName withProps:props]];
+    
+    return vc;
 }
 
 - (UIViewController *)myParentViewController {
@@ -67,6 +84,14 @@
         }
     }
     return nil;
+}
+
++ (NSInteger) ARLiveAuctionsCurrentWebSocketVersionCompatibility { return 4; }
+
++ (BOOL)requiresUpdateForWebSocketVersionUpdate
+{
+    Message *webSocketVersion = ARAppDelegate.sharedInstance.echo.messages[@"LiveAuctionsCurrentWebSocketVersion"];
+    return webSocketVersion.content.integerValue > self.ARLiveAuctionsCurrentWebSocketVersionCompatibility;
 }
 
 @end
