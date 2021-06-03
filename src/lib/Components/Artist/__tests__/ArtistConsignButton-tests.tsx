@@ -220,7 +220,7 @@ describe("ArtistConsignButton", () => {
       })
       tree.root.findByType(TouchableOpacity).props.onPress()
 
-      expect(navigate).toHaveBeenCalledWith("/sales")
+      expect(navigate).toHaveBeenCalledWith("/sales", { passProps: { initialGoBackPath: "search" } })
     })
 
     it("sends user to a new instance of landing page if user is already in sales tab", () => {
@@ -237,7 +237,9 @@ describe("ArtistConsignButton", () => {
       })
       tree.root.findByType(TouchableOpacity).props.onPress()
 
-      expect(navigate).toHaveBeenCalledWith("/collections/my-collection/marketing-landing")
+      expect(navigate).toHaveBeenCalledWith("/collections/my-collection/marketing-landing", {
+        passProps: { initialGoBackPath: "search" },
+      })
     })
   })
 })
