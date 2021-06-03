@@ -33,33 +33,31 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               <Box width={5} height={5} backgroundColor="black10" data-test-id="image-box" />
             )}
           </Flex>
-          <Box flexGrow={1}>
-            <Text variant="mediumText" data-test-id="artist-names">
+          <Flex width="50%" flexGrow={1} mr={2}>
+            <Text variant="mediumText" data-test-id="artist-names" ellipsizeMode="tail" numberOfLines={1}>
               {artwork?.artistNames}
             </Text>
-            <Text variant="caption" color="black60" data-test-id="partner-name">
+            <Text variant="caption" color="black60" data-test-id="partner-name" ellipsizeMode="tail" numberOfLines={1}>
               {artwork?.partner?.name}
             </Text>
             <Text variant="caption" color="black60" data-test-id="date">
               {moment(order.createdAt).format("l")}
             </Text>
-          </Box>
-          <Box>
-            <Flex justifyContent="flex-end">
-              <Text textAlign="right" variant="text" data-test-id="price">
-                {order.buyerTotal}
-              </Text>
-              <Text
-                textAlign="right"
-                variant="caption"
-                color={order.state === "CANCELED" ? "red100" : "black60"}
-                style={{ textTransform: "capitalize" }}
-                data-test-id="order-status"
-              >
-                {order.state.toLowerCase()}
-              </Text>
-            </Flex>
-          </Box>
+          </Flex>
+          <Flex>
+            <Text textAlign="right" variant="text" data-test-id="price">
+              {order.buyerTotal}
+            </Text>
+            <Text
+              textAlign="right"
+              variant="caption"
+              color={order.state === "CANCELED" ? "red100" : "black60"}
+              style={{ textTransform: "capitalize" }}
+              data-test-id="order-status"
+            >
+              {order.state.toLowerCase()}
+            </Text>
+          </Flex>
         </Flex>
       </Flex>
       {trackingId ? (
