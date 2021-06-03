@@ -9,7 +9,15 @@ interface SavedSearchBannerProps {
 
 export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ enabled, loading, onPress }) => {
   return (
-    <Flex backgroundColor="white" flexDirection="row" mx={-2} px={2} py={11} justifyContent="space-between" alignItems="center">
+    <Flex
+      backgroundColor="white"
+      flexDirection="row"
+      mx={-2}
+      px={2}
+      py={11}
+      justifyContent="space-between"
+      alignItems="center"
+    >
       <Text variant="small" color="black">
         New works alert for this search
       </Text>

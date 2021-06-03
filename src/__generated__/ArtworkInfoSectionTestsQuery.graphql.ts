@@ -1,39 +1,30 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7b171e3479ca46f71fc2fda3e310d346 */
+/* @relayHash f9d791b0cf5a271c14bd41ef6c571e88 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type OrderDetailsQueryVariables = {
-    orderID: string;
-};
-export type OrderDetailsQueryResponse = {
-    readonly order: {
-        readonly " $fragmentRefs": FragmentRefs<"OrderDetails_order">;
-    } | null;
-    readonly me: {
-        readonly name: string | null;
+export type ArtworkInfoSectionTestsQueryVariables = {};
+export type ArtworkInfoSectionTestsQueryResponse = {
+    readonly commerceOrder: {
+        readonly internalID: string;
+        readonly " $fragmentRefs": FragmentRefs<"ArtworkInfoSection_artwork">;
     } | null;
 };
-export type OrderDetailsQuery = {
-    readonly response: OrderDetailsQueryResponse;
-    readonly variables: OrderDetailsQueryVariables;
+export type ArtworkInfoSectionTestsQuery = {
+    readonly response: ArtworkInfoSectionTestsQueryResponse;
+    readonly variables: ArtworkInfoSectionTestsQueryVariables;
 };
 
 
 
 /*
-query OrderDetailsQuery(
-  $orderID: ID!
-) {
-  order: commerceOrder(id: $orderID) {
+query ArtworkInfoSectionTestsQuery {
+  commerceOrder(id: "some-id") {
     __typename
-    ...OrderDetails_order
-    id
-  }
-  me {
-    name
+    internalID
+    ...ArtworkInfoSection_artwork
     id
   }
 }
@@ -63,113 +54,71 @@ fragment ArtworkInfoSection_artwork on CommerceOrder {
     }
   }
 }
-
-fragment OrderDetailsPayment_order on CommerceOrder {
-  __isCommerceOrder: __typename
-  creditCard {
-    brand
-    lastDigits
-    id
-  }
-}
-
-fragment OrderDetails_order on CommerceOrder {
-  __isCommerceOrder: __typename
-  internalID
-  code
-  state
-  ...ArtworkInfoSection_artwork
-  ...ShipsToSection_address
-  ...OrderDetailsPayment_order
-}
-
-fragment ShipsToSection_address on CommerceOrder {
-  __isCommerceOrder: __typename
-  requestedFulfillment {
-    __typename
-    ... on CommerceShip {
-      addressLine1
-      addressLine2
-      city
-      country
-      phoneNumber
-      postalCode
-      region
-    }
-  }
-}
 */
 
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "orderID"
-  }
-],
-v1 = [
-  {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "id",
-    "variableName": "orderID"
+    "value": "some-id"
   }
 ],
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
 v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "name",
-  "storageKey": null
-},
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "__typename",
-  "storageKey": null
-},
-v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
+},
+v3 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "String"
+},
+v4 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v5 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
 };
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "OrderDetailsQuery",
+    "name": "ArtworkInfoSectionTestsQuery",
     "selections": [
       {
-        "alias": "order",
-        "args": (v1/*: any*/),
+        "alias": null,
+        "args": (v0/*: any*/),
         "concreteType": null,
         "kind": "LinkedField",
         "name": "commerceOrder",
         "plural": false,
         "selections": [
+          (v1/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "OrderDetails_order"
+            "name": "ArtworkInfoSection_artwork"
           }
         ],
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "Me",
-        "kind": "LinkedField",
-        "name": "me",
-        "plural": false,
-        "selections": [
-          (v2/*: any*/)
-        ],
-        "storageKey": null
+        "storageKey": "commerceOrder(id:\"some-id\")"
       }
     ],
     "type": "Query",
@@ -177,43 +126,29 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "OrderDetailsQuery",
+    "name": "ArtworkInfoSectionTestsQuery",
     "selections": [
       {
-        "alias": "order",
-        "args": (v1/*: any*/),
+        "alias": null,
+        "args": (v0/*: any*/),
         "concreteType": null,
         "kind": "LinkedField",
         "name": "commerceOrder",
         "plural": false,
         "selections": [
-          (v3/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "__typename",
+            "storageKey": null
+          },
+          (v1/*: any*/),
           {
             "kind": "TypeDiscriminator",
             "abstractKey": "__isCommerceOrder"
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "internalID",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "code",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "state",
-            "storageKey": null
           },
           {
             "alias": null,
@@ -337,11 +272,11 @@ return {
                             "name": "artistNames",
                             "storageKey": null
                           },
-                          (v4/*: any*/)
+                          (v2/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v4/*: any*/)
+                      (v2/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -351,127 +286,79 @@ return {
             ],
             "storageKey": "lineItems(first:1)"
           },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": null,
-            "kind": "LinkedField",
-            "name": "requestedFulfillment",
-            "plural": false,
-            "selections": [
-              (v3/*: any*/),
-              {
-                "kind": "InlineFragment",
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "addressLine1",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "addressLine2",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "city",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "country",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "phoneNumber",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "postalCode",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "region",
-                    "storageKey": null
-                  }
-                ],
-                "type": "CommerceShip",
-                "abstractKey": null
-              }
-            ],
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "CreditCard",
-            "kind": "LinkedField",
-            "name": "creditCard",
-            "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "brand",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "lastDigits",
-                "storageKey": null
-              },
-              (v4/*: any*/)
-            ],
-            "storageKey": null
-          },
-          (v4/*: any*/)
+          (v2/*: any*/)
         ],
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "Me",
-        "kind": "LinkedField",
-        "name": "me",
-        "plural": false,
-        "selections": [
-          (v2/*: any*/),
-          (v4/*: any*/)
-        ],
-        "storageKey": null
+        "storageKey": "commerceOrder(id:\"some-id\")"
       }
     ]
   },
   "params": {
-    "id": "7b171e3479ca46f71fc2fda3e310d346",
-    "metadata": {},
-    "name": "OrderDetailsQuery",
+    "id": "f9d791b0cf5a271c14bd41ef6c571e88",
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "commerceOrder": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceOrder"
+        },
+        "commerceOrder.__isCommerceOrder": (v3/*: any*/),
+        "commerceOrder.__typename": (v3/*: any*/),
+        "commerceOrder.id": (v4/*: any*/),
+        "commerceOrder.internalID": (v4/*: any*/),
+        "commerceOrder.lineItems": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceLineItemConnection"
+        },
+        "commerceOrder.lineItems.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "CommerceLineItemEdge"
+        },
+        "commerceOrder.lineItems.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceLineItem"
+        },
+        "commerceOrder.lineItems.edges.node.artwork": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Artwork"
+        },
+        "commerceOrder.lineItems.edges.node.artwork.artistNames": (v5/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.date": (v5/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.dimensions": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "dimensions"
+        },
+        "commerceOrder.lineItems.edges.node.artwork.dimensions.cm": (v5/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.dimensions.in": (v5/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.editionOf": (v5/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.id": (v4/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.image": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Image"
+        },
+        "commerceOrder.lineItems.edges.node.artwork.image.url": (v5/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.medium": (v5/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.title": (v5/*: any*/),
+        "commerceOrder.lineItems.edges.node.id": (v4/*: any*/)
+      }
+    },
+    "name": "ArtworkInfoSectionTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '2c64d5c8cae59749f393fe76f293dde6';
+(node as any).hash = '5d2179e9e1db79f20da2095123598bf9';
 export default node;

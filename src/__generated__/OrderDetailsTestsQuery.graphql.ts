@@ -1,14 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7b171e3479ca46f71fc2fda3e310d346 */
+/* @relayHash 87c8d7c6815b44d3d7834495ec8e620d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type OrderDetailsQueryVariables = {
-    orderID: string;
-};
-export type OrderDetailsQueryResponse = {
+export type OrderDetailsTestsQueryVariables = {};
+export type OrderDetailsTestsQueryResponse = {
     readonly order: {
         readonly " $fragmentRefs": FragmentRefs<"OrderDetails_order">;
     } | null;
@@ -16,18 +14,16 @@ export type OrderDetailsQueryResponse = {
         readonly name: string | null;
     } | null;
 };
-export type OrderDetailsQuery = {
-    readonly response: OrderDetailsQueryResponse;
-    readonly variables: OrderDetailsQueryVariables;
+export type OrderDetailsTestsQuery = {
+    readonly response: OrderDetailsTestsQueryResponse;
+    readonly variables: OrderDetailsTestsQueryVariables;
 };
 
 
 
 /*
-query OrderDetailsQuery(
-  $orderID: ID!
-) {
-  order: commerceOrder(id: $orderID) {
+query OrderDetailsTestsQuery {
+  order: commerceOrder(id: "order-id") {
     __typename
     ...OrderDetails_order
     id
@@ -103,33 +99,26 @@ fragment ShipsToSection_address on CommerceOrder {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "orderID"
-  }
-],
-v1 = [
-  {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "id",
-    "variableName": "orderID"
+    "value": "order-id"
   }
 ],
-v2 = {
+v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v3 = {
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v4 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -138,14 +127,14 @@ v4 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "OrderDetailsQuery",
+    "name": "OrderDetailsTestsQuery",
     "selections": [
       {
         "alias": "order",
-        "args": (v1/*: any*/),
+        "args": (v0/*: any*/),
         "concreteType": null,
         "kind": "LinkedField",
         "name": "commerceOrder",
@@ -157,7 +146,7 @@ return {
             "name": "OrderDetails_order"
           }
         ],
-        "storageKey": null
+        "storageKey": "commerceOrder(id:\"order-id\")"
       },
       {
         "alias": null,
@@ -167,7 +156,7 @@ return {
         "name": "me",
         "plural": false,
         "selections": [
-          (v2/*: any*/)
+          (v1/*: any*/)
         ],
         "storageKey": null
       }
@@ -177,19 +166,19 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "OrderDetailsQuery",
+    "name": "OrderDetailsTestsQuery",
     "selections": [
       {
         "alias": "order",
-        "args": (v1/*: any*/),
+        "args": (v0/*: any*/),
         "concreteType": null,
         "kind": "LinkedField",
         "name": "commerceOrder",
         "plural": false,
         "selections": [
-          (v3/*: any*/),
+          (v2/*: any*/),
           {
             "kind": "TypeDiscriminator",
             "abstractKey": "__isCommerceOrder"
@@ -337,11 +326,11 @@ return {
                             "name": "artistNames",
                             "storageKey": null
                           },
-                          (v4/*: any*/)
+                          (v3/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v4/*: any*/)
+                      (v3/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -359,7 +348,7 @@ return {
             "name": "requestedFulfillment",
             "plural": false,
             "selections": [
-              (v3/*: any*/),
+              (v2/*: any*/),
               {
                 "kind": "InlineFragment",
                 "selections": [
@@ -441,13 +430,13 @@ return {
                 "name": "lastDigits",
                 "storageKey": null
               },
-              (v4/*: any*/)
+              (v3/*: any*/)
             ],
             "storageKey": null
           },
-          (v4/*: any*/)
+          (v3/*: any*/)
         ],
-        "storageKey": null
+        "storageKey": "commerceOrder(id:\"order-id\")"
       },
       {
         "alias": null,
@@ -457,21 +446,21 @@ return {
         "name": "me",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v4/*: any*/)
+          (v1/*: any*/),
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "7b171e3479ca46f71fc2fda3e310d346",
+    "id": "87c8d7c6815b44d3d7834495ec8e620d",
     "metadata": {},
-    "name": "OrderDetailsQuery",
+    "name": "OrderDetailsTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '2c64d5c8cae59749f393fe76f293dde6';
+(node as any).hash = '256ff19a85686a62616295c42e63501c';
 export default node;
