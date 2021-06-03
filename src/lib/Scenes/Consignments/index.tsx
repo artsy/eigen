@@ -71,13 +71,13 @@ export const Consignments: React.FC = () => {
     return state.bottomTabs.sessionState.tabProps.sell ?? {}
   }) as SellTabProps
 
-  const initialGoPackPathString = sellTabProps?.initialGoBackPath ?? null
+  const initialGoBackPathString = sellTabProps?.initialGoBackPath ?? null
 
   const sellTabPropsRef = useRef<BottomTabType | null>(null)
 
   useEffect(() => {
-    sellTabPropsRef.current = initialGoPackPathString
-  }, [initialGoPackPathString])
+    sellTabPropsRef.current = initialGoBackPathString
+  }, [initialGoBackPathString])
 
   useEffect(
     useCallback(() => {
