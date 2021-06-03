@@ -723,7 +723,7 @@
 
 - (void)authorizationController:(ASAuthorizationController *)controller didCompleteWithError:(NSError *)error  API_AVAILABLE(ios(13.0)){
     NSLog(@"Did complete with error %@", error.localizedDescription);
-    [self displayError:@"There was a problem authenticating with Apple"];
+    [self displayError:@"There was a problem authenticating with Apple."];
     [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 }
 
@@ -806,7 +806,7 @@
                                                       }
                                         authenticationFailure:^(NSError *error) {
                                             __strong typeof (wself) sself = wself;
-                                            [sself displayError:@"There was a problem authenticating with Apple"];
+                                            [sself displayError:@"There was a problem authenticating with Apple."];
                                             [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
                                         }
                                                networkFailure:^(NSError *error) {

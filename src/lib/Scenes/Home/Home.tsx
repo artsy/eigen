@@ -4,6 +4,7 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
 import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkRail"
+import { AuctionResultsRailFragmentContainer } from "lib/Scenes/Home/Components/AuctionResultsRail"
 import { CollectionsRailFragmentContainer } from "lib/Scenes/Home/Components/CollectionsRail"
 import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
@@ -42,6 +43,9 @@ const Home = (props: Props) => {
   const collectionsModule = homePage.marketingCollectionsModule
   const artistModules = (homePage.artistModules && homePage.artistModules.concat()) || []
   const fairsModule = homePage.fairsModule
+  const auctionResultsModule = {} // !!! FIX TYPE
+
+  const auctionResultsEchoFlag = useFeatureFlag("ARAuctionResults")
 
   const artworkRails = artworkModules.map(
     (module) =>
@@ -85,6 +89,12 @@ const Home = (props: Props) => {
       ({
         type: "collections",
         data: collectionsModule,
+      } as const),
+    auctionResultsEchoFlag &&
+      auctionResultsModule &&
+      ({
+        type: "auction-results",
+        data: auctionResultsModule,
       } as const),
     ...flatten(zip(drop(artworkRails, 2), artistRails)),
   ])
@@ -142,6 +152,14 @@ const Home = (props: Props) => {
                   )
                 case "viewing-rooms":
                   return <ViewingRoomsHomeRail featured={featured} />
+
+                case "auction-results":
+                  return (
+                    <AuctionResultsRailFragmentContainer
+                      // Pass auctionResults data after implementing query
+                      scrollRef={scrollRefs.current[index]}
+                    />
+                  )
                 case "lotsByFollowedArtists":
                   return (
                     <SaleArtworksHomeRailContainer
