@@ -7,6 +7,7 @@
 
 const Octokit = require("@octokit/rest")
 const compact = require("lodash/compact")
+const fs = require("fs")
 const parsePRDescription = require("./parsePRDescription").parsePRDescription
 const ora = require("ora")
 
@@ -46,7 +47,8 @@ async function getLastReleaseCommitDate(platform) {
   }
 
   if (!targetTag) {
-    throw new Error(`Could not find tag on ${platform}`)
+    console.error(`Could not find tag on ${platform}`)
+    process.exit(1)
   }
 
   ora(`last submission tag on ${platform}: ${targetTag.name}`).succeed()
@@ -114,11 +116,62 @@ function getChangeLog(prs) {
   return changeLog
 }
 
+/**
+ * @param {"android" | "ios"} platform
+ * @param {import("./changelog-types").ParseResultChanges} changelog
+ */
+function generatePlatformChangelog(platform, changelog) {
+  const spinner = ora("Generating platform specific changelog")
+
+  const fileContent = fs.readFileSync(`../../CHANGELOG/${platform}-changelog.md`, "utf8").toString()
+
+  const regex = /## Deployed Changes/
+
+  if (!fileContent.match(regex)) {
+    // tslint:disable-next-line
+    console.error(`Can't find 'Deployed Changes' section in the ${platform} template file`)
+    spinner.fail()
+    process.exit(1)
+  }
+
+  fileContent.replace(regex, "test")
+}
+
+/**
+ * @param {"android" | "ios"} platform
+ * @param {"string"} commitTag
+ * @returns {string}
+ * @example
+ * ### 6.9.2
+  - Status: **Released**
+  - Build tag: **${commitTag}**
+  - App store submission date: **${new Date().toDateString()}**
+  - Changelog:
+    - User facing changes:
+      - Made button bigger
+    - Dev changes:
+      - Fixed rerendering issues
+ *
+ */
+function getPlafromSpecificChangeLog(platform, commitTag) {
+  let changeLogMD = `
+  ### 6.9.2
+  - Status: **Released**
+  - Build tag: **${commitTag}**
+  - App store submission date: **${new Date().toDateString()}**
+  - Changelog:
+    - User facing changes:
+      -
+    - Dev changes:
+      -
+  `
+  return changeLogMD
+}
+
 ;(async function () {
   try {
     const commitDate = await getLastReleaseCommitDate("ios")
     const prs = await getPRsBeforeDate(commitDate)
-    console.log(prs)
     getChangeLog(prs)
     ora("Successfully loaded list of PRs before tag").succeed()
   } catch (error) {
