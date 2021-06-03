@@ -2,6 +2,7 @@ import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
 import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Box, Flex, Separator, Text } from "palette"
@@ -11,6 +12,7 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
 import { OrderDetailsHeader } from "./OrderDetailsHeader"
 import { ShipsToSectionFragmentContainer } from "./ShipsToSection"
+import { SoldBySection, SoldBySectionFragmentContainer } from "./SoldBySection"
 
 export interface OrderDetailsProps {
   order: OrderDetails_order
@@ -23,6 +25,8 @@ interface SectionListItem {
 }
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
+  console.log(order, "order")
+  const partnerName = extractNodes(order.lineItems)[0].artwork?.partner
   const DATA: SectionListItem[] = [
     {
       key: "OrderDetailsHeader",
@@ -38,11 +42,16 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
       title: `Ships to ${me?.name}`,
       data: [<ShipsToSectionFragmentContainer testID="ShipsToSection" address={order} />],
     },
+    {
+      key: "Sold By",
+      title: `Sold by ${partnerName?.name}`,
+      data: [<SoldBySectionFragmentContainer testID="ShipsToSection" soldBy={order} />],
+    },
   ]
 
   return (
     <PageWithSimpleHeader title="Order Details">
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, marginTop: 20 }}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, marginTop: 20, paddingBottom: 20 }}>
         <SectionList
           sections={DATA}
           keyExtractor={(item, index) => item.key + index.toString()}
@@ -136,9 +145,21 @@ export const OrderDetailsPlaceholder: React.FC<{}> = () => (
 export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
   order: graphql`
     fragment OrderDetails_order on CommerceOrder {
+      lineItems(first: 1) {
+        edges {
+          node {
+            artwork {
+              partner {
+                name
+              }
+            }
+          }
+        }
+      }
       ...OrderDetailsHeader_info @relay(mask: false)
       ...ArtworkInfoSection_artwork
       ...ShipsToSection_address
+      ...SoldBySection_soldBy
     }
   `,
 })
