@@ -116,7 +116,7 @@ const AutosuggestResultsFlatList: React.FC<{
             }
           : null
       }
-      renderItem={({ item, index }) => {
+      renderItem={({ item }) => {
         return (
           <Flex mb={2}>
             <SearchResult
