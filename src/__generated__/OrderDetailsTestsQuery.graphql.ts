@@ -1,11 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-<<<<<<< HEAD
-/* @relayHash 87c8d7c6815b44d3d7834495ec8e620d */
-=======
-/* @relayHash ca9926f3157c41efd0d48b534cb6b342 */
->>>>>>> 24b2799cbf (Added summary section and tests)
+/* @relayHash 6c12aaef3bb42441b9ad31201e108c43 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -79,12 +75,9 @@ fragment OrderDetails_order on CommerceOrder {
   code
   state
   ...ArtworkInfoSection_artwork
-  ...ShipsToSection_address
-<<<<<<< HEAD
-  ...OrderDetailsPayment_order
-=======
   ...SummarySection_section
->>>>>>> 24b2799cbf (Added summary section and tests)
+  ...OrderDetailsPayment_order
+  ...ShipsToSection_address
 }
 
 fragment ShipsToSection_address on CommerceOrder {
@@ -365,6 +358,60 @@ return {
           },
           {
             "alias": null,
+            "args": (v4/*: any*/),
+            "kind": "ScalarField",
+            "name": "buyerTotal",
+            "storageKey": "buyerTotal(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": (v4/*: any*/),
+            "kind": "ScalarField",
+            "name": "taxTotal",
+            "storageKey": "taxTotal(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": (v4/*: any*/),
+            "kind": "ScalarField",
+            "name": "shippingTotal",
+            "storageKey": "shippingTotal(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": (v4/*: any*/),
+            "kind": "ScalarField",
+            "name": "totalListPrice",
+            "storageKey": "totalListPrice(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "CreditCard",
+            "kind": "LinkedField",
+            "name": "creditCard",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "brand",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "lastDigits",
+                "storageKey": null
+              },
+              (v3/*: any*/)
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
             "args": null,
             "concreteType": null,
             "kind": "LinkedField",
@@ -431,60 +478,6 @@ return {
             ],
             "storageKey": null
           },
-          {
-            "alias": null,
-<<<<<<< HEAD
-            "args": null,
-            "concreteType": "CreditCard",
-            "kind": "LinkedField",
-            "name": "creditCard",
-            "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "brand",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "lastDigits",
-                "storageKey": null
-              },
-              (v3/*: any*/)
-            ],
-            "storageKey": null
-=======
-            "args": (v4/*: any*/),
-            "kind": "ScalarField",
-            "name": "buyerTotal",
-            "storageKey": "buyerTotal(precision:2)"
-          },
-          {
-            "alias": null,
-            "args": (v4/*: any*/),
-            "kind": "ScalarField",
-            "name": "taxTotal",
-            "storageKey": "taxTotal(precision:2)"
-          },
-          {
-            "alias": null,
-            "args": (v4/*: any*/),
-            "kind": "ScalarField",
-            "name": "shippingTotal",
-            "storageKey": "shippingTotal(precision:2)"
-          },
-          {
-            "alias": null,
-            "args": (v4/*: any*/),
-            "kind": "ScalarField",
-            "name": "totalListPrice",
-            "storageKey": "totalListPrice(precision:2)"
->>>>>>> 24b2799cbf (Added summary section and tests)
-          },
           (v3/*: any*/)
         ],
         "storageKey": "commerceOrder(id:\"order-id\")"
@@ -505,11 +498,7 @@ return {
     ]
   },
   "params": {
-<<<<<<< HEAD
-    "id": "87c8d7c6815b44d3d7834495ec8e620d",
-=======
-    "id": "ca9926f3157c41efd0d48b534cb6b342",
->>>>>>> 24b2799cbf (Added summary section and tests)
+    "id": "6c12aaef3bb42441b9ad31201e108c43",
     "metadata": {},
     "name": "OrderDetailsTestsQuery",
     "operationKind": "query",
