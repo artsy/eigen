@@ -54,8 +54,8 @@ upcoming:
     - Add saved search banner (behind feature flag) - dzmitry tratsiak
     - Add articles rail to home screen - ole
     - Update articles rail design on artist overview screen - ole
+    - Fix home screen placeholder changing with bug 🎉 - ole
     - Fix android native go back from sale tab to search - yauheni
-
     - Vertically aligned 'Follow/Following' artist button text - stas hanchar
 
 releases:

@@ -22,7 +22,7 @@ import { Home_featured } from "__generated__/Home_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { isPad } from "lib/utils/hardware"
-import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
+import { PlaceholderBox, PlaceholderText, RandomWidthPlaceholderText, useMemoizedRandom } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
@@ -251,9 +251,6 @@ export const HomeFragmentContainer = createRefetchContainer(
 )
 
 const HomePlaceholder: React.FC<{}> = () => {
-  // We use Math.random() here instead of PlaceholderRaggedText because its random
-  // length is too deterministic, and we don't have any snapshot tests to worry about.
-
   const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
 
   return (
@@ -270,15 +267,15 @@ const HomePlaceholder: React.FC<{}> = () => {
           times(2).map((r) => (
             <Box key={r} ml={2} mr={2}>
               <Spacer mb={3} />
-              <PlaceholderText width={100 + Math.random() * 100} />
+              <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
               <Flex flexDirection="row" mt={1}>
                 <Join separator={<Spacer width={15} />}>
-                  {times(3 + Math.random() * 10).map((index) => (
+                  {times(3 + useMemoizedRandom() * 10).map((index) => (
                     <Flex key={index}>
                       <PlaceholderBox height={120} width={120} />
                       <Spacer mb={2} />
                       <PlaceholderText width={120} />
-                      <PlaceholderText width={30 + Math.random() * 60} />
+                      <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
                     </Flex>
                   ))}
                 </Join>
@@ -291,7 +288,7 @@ const HomePlaceholder: React.FC<{}> = () => {
         {/* Larger tiles to mimic the fairs, sales, and collections rails */}
         <Box ml={2} mr={2}>
           <Spacer mb={3} />
-          <PlaceholderText width={100 + Math.random() * 100} />
+          <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
           <Flex flexDirection="row" mt={1}>
             <Join separator={<Spacer width={15} />}>
               {times(10).map((index) => (
@@ -304,7 +301,7 @@ const HomePlaceholder: React.FC<{}> = () => {
 
         {!!viewingRoomsEchoFlag && (
           <Flex ml="2" mt="3">
-            <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
+            <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
             <Flex flexDirection="row">
               {times(4).map((i) => (
                 <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
