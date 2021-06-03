@@ -12,7 +12,6 @@ interface Props {
 }
 
 export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
-  console.log(artwork, "artwork")
   const artworkItem = extractNodes(artwork.lineItems)[0].artwork
   if (!artworkItem) {
     return null
@@ -22,7 +21,7 @@ export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
   const addedComma = date ? ", " : ""
 
   return (
-    <Flex style={{ flexDirection: "row", justifyContent: "space-between" }}>
+    <Flex flexDirection="row" justifyContent="space-between">
       {!!image?.url ? (
         <Image
           resizeMode="contain"
@@ -34,7 +33,7 @@ export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
         <Box width={60} height={60} backgroundColor="black10" />
       )}
       <Box style={{ flex: 1, flexShrink: 1 }}>
-        <Text pb={10} variant="mediumText" testID="artistNames">
+        <Text pb={1} variant="mediumText" testID="artistNames">
           {artistNames}
         </Text>
         <Text>

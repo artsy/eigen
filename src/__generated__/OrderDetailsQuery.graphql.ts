@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 73a3fade61e57af96e6dd165a2772477 */
+/* @relayHash 069f14d3d8dce75a08ba4cf38abea6e0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -64,6 +64,15 @@ fragment ArtworkInfoSection_artwork on CommerceOrder {
   }
 }
 
+fragment OrderDetailsPayment_order on CommerceOrder {
+  __isCommerceOrder: __typename
+  creditCard {
+    brand
+    lastDigits
+    id
+  }
+}
+
 fragment OrderDetails_order on CommerceOrder {
   __isCommerceOrder: __typename
   createdAt
@@ -79,6 +88,7 @@ fragment OrderDetails_order on CommerceOrder {
   code
   ...ArtworkInfoSection_artwork
   ...ShipsToSection_address
+  ...OrderDetailsPayment_order
 }
 
 fragment ShipsToSection_address on CommerceOrder {
@@ -410,6 +420,32 @@ return {
             ],
             "storageKey": "lineItems(first:1)"
           },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "CreditCard",
+            "kind": "LinkedField",
+            "name": "creditCard",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "brand",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "lastDigits",
+                "storageKey": null
+              },
+              (v4/*: any*/)
+            ],
+            "storageKey": null
+          },
           (v4/*: any*/)
         ],
         "storageKey": null
@@ -430,7 +466,7 @@ return {
     ]
   },
   "params": {
-    "id": "73a3fade61e57af96e6dd165a2772477",
+    "id": "069f14d3d8dce75a08ba4cf38abea6e0",
     "metadata": {},
     "name": "OrderDetailsQuery",
     "operationKind": "query",

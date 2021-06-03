@@ -10,6 +10,7 @@ import { ScrollView, SectionList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
 import { OrderDetailsHeader } from "./OrderDetailsHeader"
+import { CreditCardSummaryItemFragmentContainer } from "./OrderDetailsPayment"
 import { ShipsToSectionFragmentContainer } from "./ShipsToSection"
 
 export interface OrderDetailsProps {
@@ -32,6 +33,11 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
       key: "Artwork_Info",
       title: "Artwork Info",
       data: [<ArtworkInfoSectionFragmentContainer testID="Artwork" artwork={order} />],
+    },
+    {
+      key: "Payment_Method",
+      title: "Payment Method",
+      data: [<CreditCardSummaryItemFragmentContainer order={order} />],
     },
     {
       key: "ShipTo_Section",
@@ -139,6 +145,7 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
       ...OrderDetailsHeader_info @relay(mask: false)
       ...ArtworkInfoSection_artwork
       ...ShipsToSection_address
+      ...OrderDetailsPayment_order
     }
   `,
 })

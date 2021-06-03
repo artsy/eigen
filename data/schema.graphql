@@ -8943,6 +8943,9 @@ type Query {
   # Find partners by IDs
   _unused_gravity_partners(ids: [ID!]!): [DoNotUseThisPartner!]
 
+  # Find a saved search by ID or criteria
+  _unused_gravity_savedSearch(criteria: SearchCriteriaAttributes, id: ID): SearchCriteria
+
   # List enabled Two-Factor Authentication factors
   _unused_gravity_secondFactors(kinds: [SecondFactorKind!] = [app, sms, backup]): [SecondFactor!]!
 
@@ -10358,6 +10361,16 @@ type SearchCriteria {
   attribution: String
   category: String
   internalID: ID!
+  priceMax: Int
+  priceMin: Int
+  size: String
+}
+
+# Attributes for a search criteria
+input SearchCriteriaAttributes {
+  artistID: String
+  attribution: String
+  category: String
   priceMax: Int
   priceMin: Int
   size: String

@@ -124,6 +124,7 @@ const AutosuggestResultsFlatList: React.FC<{
               result={item}
               showResultType={showResultType}
               onResultPress={onResultPress}
+              showQuickNavigationButtons
             />
           </Flex>
         )
@@ -152,10 +153,19 @@ const AutosuggestResultsContainer = createPaginationContainer(
               imageUrl
               href
               displayLabel
+              __typename
               ... on SearchableItem {
                 internalID
                 displayType
                 slug
+              }
+              ... on Artist {
+                internalID
+                slug
+                counts {
+                  artworks
+                  auctionResults
+                }
               }
             }
           }

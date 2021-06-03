@@ -13,6 +13,7 @@ upcoming:
     - Add Saved Search feature flag - kizito
     - Send only changed filter params in the analytics event - dzmitry tratsiak
   user_facing:
+    - Add payment method section (behind feature flag) - irina-sid
     - Add order details skeleton (behind feature flag) - Serge0n
     - Fix wrong input font on android - dzmitry
     - Fix home screen load failure on logout - brian
@@ -39,6 +40,10 @@ upcoming:
     - Update order of filters - dzmitry tratsiak
     - Fix time mismatch between auction list and individual auction page - matt
     - Fix swiping on filter options selects them - dzmitry tratsiak
+    - User can enter auction results tab from search - dzmitry
+    - Fix double tapping on the 'Log in' button opens a blank page - dzmitry
+    - Implement auction results section in home screen (behind feature flag) - yauheni
+    - Implement auctionResultsForYou screen (behind feature flag) - yauheni
     - Fix registration flow error handling (e.g. invalid phone number) - ole
     - Decode html entities in markdown - ole
     - close keyboard on message send - lily
@@ -48,6 +53,7 @@ upcoming:
     - Add saved search banner (behind feature flag) - dzmitry tratsiak
     - Add articles rail to home screen - ole
     - Update articles rail design on artist overview screen - ole
+    - Vertically aligned 'Follow/Following' artist button text - stas hanchar
 
 releases:
   - version: 6.9.3
