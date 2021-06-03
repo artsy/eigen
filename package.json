@@ -112,6 +112,7 @@
     "react-native-config": "https://github.com/artsy/react-native-config.git",
     "react-native-credit-card-input": "^0.4.1",
     "react-native-device-info": "^8.1.2",
+    "react-native-fbsdk-next": "^4.3.0",
     "react-native-gesture-handler": "^1.8.0",
     "react-native-haptic-feedback": "1.10.0",
     "react-native-hyperlink": "0.0.11",
