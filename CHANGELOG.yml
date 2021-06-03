@@ -51,6 +51,9 @@ upcoming:
     - Add saved search banner (behind feature flag) - dzmitry tratsiak
     - Add articles rail to home screen - ole
     - Update articles rail design on artist overview screen - ole
+
+    - Vertically aligned 'Follow/Following' artist button text - stas hanchar
+
 releases:
   - version: 6.9.3
     date: June 1, 2021
