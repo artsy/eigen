@@ -167,7 +167,6 @@ describe(SearchResult, () => {
           imageUrl: "blah",
           __typename: "Artist",
           counts: {
-            articles: 1,
             artworks: 12,
             auctionResults: 4,
           },
@@ -180,6 +179,27 @@ describe(SearchResult, () => {
     expect(extractText(tree.root)).toContain("Artworks")
   })
 
+  it(`does not show navigation buttons when enabled, but unavailable`, async () => {
+    const tree = renderWithWrappers(
+      <TestWrapper
+        result={{
+          displayLabel: "Banksy",
+          href: "/artist/anto-carte",
+          imageUrl: "blah",
+          __typename: "Artist",
+          counts: {
+            artworks: 12,
+            auctionResults: 0,
+          },
+        }}
+        showQuickNavigationButtons
+      />
+    )
+
+    expect(extractText(tree.root)).not.toContain("Auction Results")
+    expect(extractText(tree.root)).not.toContain("Artworks")
+  })
+
   it(`quick navigation buttons navigate correctly`, async () => {
     const tree = renderWithWrappers(
       <TestWrapper
@@ -189,7 +209,6 @@ describe(SearchResult, () => {
           imageUrl: "blah",
           __typename: "Artist",
           counts: {
-            articles: 1,
             artworks: 12,
             auctionResults: 4,
           },
