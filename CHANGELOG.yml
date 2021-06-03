@@ -39,6 +39,7 @@ upcoming:
     - Update order of filters - dzmitry tratsiak
     - Fix time mismatch between auction list and individual auction page - matt
     - Fix swiping on filter options selects them - dzmitry tratsiak
+    - Fix double tapping on the 'Log in' button opens a blank page - dzmitry
     - Implement auction results section in home screen (behind feature flag) - yauheni
     - Implement auctionResultsForYou screen (behind feature flag) - yauheni
     - Fix registration flow error handling (e.g. invalid phone number) - ole
@@ -51,6 +52,8 @@ upcoming:
     - Add articles rail to home screen - ole
     - Update articles rail design on artist overview screen - ole
     - Fix android native go back from sale tab to search - yauheni
+
+    - Vertically aligned 'Follow/Following' artist button text - stas hanchar
 
 releases:
   - version: 6.9.3
