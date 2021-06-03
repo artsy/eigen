@@ -51,8 +51,8 @@ upcoming:
     - Add saved search banner (behind feature flag) - dzmitry tratsiak
     - Add articles rail to home screen - ole
     - Update articles rail design on artist overview screen - ole
-
     - Vertically aligned 'Follow/Following' artist button text - stas hanchar
+    - Specified a more specific error for logging in with Apple or Facebook - stas hanchar
 
 releases:
   - version: 6.9.3
