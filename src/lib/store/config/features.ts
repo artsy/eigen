@@ -83,20 +83,25 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableViewingRooms",
   },
+  ARAuctionResults: {
+    readyForRelease: false,
+    description: "Show Auction Results in Home Screen",
+    showInAdminMenu: true,
+  },
   AREnableCustomSharesheet: {
     readyForRelease: true,
     echoFlagKey: "AREnableCustomSharesheet",
     description: "Enable custom share sheet",
     showInAdminMenu: true,
   },
-  ARUseImprovedArtworkFilters: {
-    readyForRelease: false,
-    description: "Use improved artwork filters",
-    showInAdminMenu: true,
-  },
   AREnableOrderHistoryOption: {
     readyForRelease: false,
     description: "Enable Order History in settings",
+    showInAdminMenu: true,
+  },
+  AREnableSavedSearch: {
+    readyForRelease: false,
+    description: "Enable Saved Search",
     showInAdminMenu: true,
   },
 })

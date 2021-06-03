@@ -646,6 +646,7 @@ type Article implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  vertical: String
 }
 
 # A connection to a list of items.
@@ -679,6 +680,8 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     after: String
     before: String
     first: Int
+
+    # Articles that are ready to be publicly viewed in the feed by everyone.
     inEditorialFeed: Boolean
     last: Int
     limit: Int
@@ -1826,6 +1829,64 @@ type AuctionResultPriceRealized {
     # Passes in to numeral, such as `'0.00'`
     format: String = ""
   ): String
+}
+
+# An auction lot result
+type AuctionResultsByArtists {
+  artistId: String
+  boughtIn: Boolean!
+  categoryText: String
+  currency: String
+  date: ISO8601DateTime
+  dateText: String
+  depthCm: Int
+  description: String
+  diameterCm: Int
+  dimensionText: String
+  externalUrl: String
+  hammerPriceCents: BigInt
+  hammerPriceCentsUsd: BigInt
+  heightCm: Int
+  highEstimateCents: BigInt
+  highEstimateCentsUsd: BigInt
+  id: ID!
+  location: String
+  lowEstimateCents: BigInt
+  lowEstimateCentsUsd: BigInt
+  mediumText: String
+  organization: String
+  priceRealizedCents: BigInt
+  priceRealizedCentsUsd: BigInt
+  saleDate: String
+  saleDateText: String
+  saleOverEstimatePercentage: Float
+  saleTitle: String
+  title: String
+  widthCm: Int
+}
+
+# The connection type for AuctionResultsByArtists.
+type AuctionResultsByArtistsConnection {
+  # A list of edges.
+  edges: [AuctionResultsByArtistsEdge]
+
+  # A list of nodes.
+  nodes: [AuctionResultsByArtists]
+  pageCursors: PageCursors
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type AuctionResultsByArtistsEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: AuctionResultsByArtists
 }
 
 enum AuctionResultSorts {
@@ -8882,6 +8943,9 @@ type Query {
   # Find partners by IDs
   _unused_gravity_partners(ids: [ID!]!): [DoNotUseThisPartner!]
 
+  # Find a saved search by ID or criteria
+  _unused_gravity_savedSearch(criteria: SearchCriteriaAttributes, id: ID): SearchCriteria
+
   # List enabled Two-Factor Authentication factors
   _unused_gravity_secondFactors(kinds: [SecondFactorKind!] = [app, sms, backup]): [SecondFactor!]!
 
@@ -8953,6 +9017,19 @@ type Query {
     showID: String
     sort: ArticleSorts
   ): [Article]
+
+  # A connection of articles
+  articlesConnection(
+    after: String
+    before: String
+    first: Int
+
+    # Articles that are ready to be publicly viewed in the feed by everyone.
+    inEditorialFeed: Boolean
+    last: Int
+    page: Int
+    sort: ArticleSorts
+  ): ArticleConnection
 
   # An Artist
   artist(
@@ -9120,6 +9197,20 @@ type Query {
     # The ID of the auction result
     id: String!
   ): AuctionResult
+
+  # Auction lot results
+  auctionResultsByArtistsConnection(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+    artistIds: [ID!]!
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+  ): AuctionResultsByArtistsConnection
 
   # A list of cities
   cities(featured: Boolean = false): [City!]!
@@ -10270,6 +10361,16 @@ type SearchCriteria {
   attribution: String
   category: String
   internalID: ID!
+  priceMax: Int
+  priceMin: Int
+  size: String
+}
+
+# Attributes for a search criteria
+input SearchCriteriaAttributes {
+  artistID: String
+  attribution: String
+  category: String
   priceMax: Int
   priceMin: Int
   size: String
@@ -11505,6 +11606,19 @@ type Viewer {
     showID: String
     sort: ArticleSorts
   ): [Article]
+
+  # A connection of articles
+  articlesConnection(
+    after: String
+    before: String
+    first: Int
+
+    # Articles that are ready to be publicly viewed in the feed by everyone.
+    inEditorialFeed: Boolean
+    last: Int
+    page: Int
+    sort: ArticleSorts
+  ): ArticleConnection
 
   # An Artist
   artist(

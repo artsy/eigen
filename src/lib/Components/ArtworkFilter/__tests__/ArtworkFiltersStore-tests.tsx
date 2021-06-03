@@ -8,69 +8,6 @@ let filterState: ArtworkFiltersState
 const getFilterArtworksStore = (state: ArtworkFiltersState) =>
   createStore<ArtworkFiltersModel>({ ...ArtworkFiltersModel, ...state })
 
-describe("Clear All Filters", () => {
-  it("clears out the previouslyAppliedFilters if nothing has been applied", () => {
-    filterState = {
-      appliedFilters: [],
-      selectedFilters: [],
-      previouslyAppliedFilters: [{ displayText: "Price (low to high)", paramName: FilterParamName.sort }],
-      applyFilters: false,
-      aggregations: [],
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    }
-    const filterArtworksStore = getFilterArtworksStore(filterState)
-    filterArtworksStore.getActions().clearAllAction()
-
-    expect(filterArtworksStore.getState()).toEqual({
-      appliedFilters: [],
-      applyFilters: false,
-      selectedFilters: [],
-      previouslyAppliedFilters: [],
-      aggregations: [],
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    })
-  })
-
-  it("clears out the previouslyAppliedFilters and selectedFilters", () => {
-    filterState = {
-      appliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
-      selectedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
-      applyFilters: true,
-      aggregations: [],
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    }
-
-    const filterArtworksStore = getFilterArtworksStore(filterState)
-    filterArtworksStore.getActions().clearAllAction()
-
-    expect(filterArtworksStore.getState()).toEqual({
-      appliedFilters: [{ displayText: "Recently updated", paramName: FilterParamName.sort }],
-      applyFilters: false,
-      selectedFilters: [],
-      previouslyAppliedFilters: [],
-      aggregations: [],
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    })
-  })
-})
-
 describe("Reset Filters", () => {
   it("returns empty arrays/default state values ", () => {
     filterState = {
@@ -1053,6 +990,37 @@ describe("clearFiltersZeroState", () => {
       appliedFilters: [],
       previouslyAppliedFilters: [],
       selectedFilters: [],
+      aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+    })
+  })
+
+  it("clears out the selectedFilters", () => {
+    filterState = {
+      appliedFilters: [],
+      selectedFilters: [{ displayText: "Artwork year (descending)", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [],
+      applyFilters: true,
+      aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+    }
+
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+    filterArtworksStore.getActions().clearFiltersZeroStateAction()
+
+    expect(filterArtworksStore.getState()).toEqual({
+      appliedFilters: [],
+      applyFilters: true,
+      selectedFilters: [],
+      previouslyAppliedFilters: [],
       aggregations: [],
       filterType: "artwork",
       counts: {
