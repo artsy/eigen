@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7b171e3479ca46f71fc2fda3e310d346 */
+/* @relayHash 215c263906d52e203fb8419e5759b5e5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -79,8 +79,9 @@ fragment OrderDetails_order on CommerceOrder {
   code
   state
   ...ArtworkInfoSection_artwork
-  ...ShipsToSection_address
+  ...SummarySection_section
   ...OrderDetailsPayment_order
+  ...ShipsToSection_address
 }
 
 fragment ShipsToSection_address on CommerceOrder {
@@ -97,6 +98,14 @@ fragment ShipsToSection_address on CommerceOrder {
       region
     }
   }
+}
+
+fragment SummarySection_section on CommerceOrder {
+  __isCommerceOrder: __typename
+  buyerTotal(precision: 2)
+  taxTotal(precision: 2)
+  shippingTotal(precision: 2)
+  totalListPrice(precision: 2)
 }
 */
 
@@ -135,7 +144,14 @@ v4 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-};
+},
+v5 = [
+  {
+    "kind": "Literal",
+    "name": "precision",
+    "value": 2
+  }
+];
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -353,6 +369,60 @@ return {
           },
           {
             "alias": null,
+            "args": (v5/*: any*/),
+            "kind": "ScalarField",
+            "name": "buyerTotal",
+            "storageKey": "buyerTotal(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": (v5/*: any*/),
+            "kind": "ScalarField",
+            "name": "taxTotal",
+            "storageKey": "taxTotal(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": (v5/*: any*/),
+            "kind": "ScalarField",
+            "name": "shippingTotal",
+            "storageKey": "shippingTotal(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": (v5/*: any*/),
+            "kind": "ScalarField",
+            "name": "totalListPrice",
+            "storageKey": "totalListPrice(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "CreditCard",
+            "kind": "LinkedField",
+            "name": "creditCard",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "brand",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "lastDigits",
+                "storageKey": null
+              },
+              (v4/*: any*/)
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
             "args": null,
             "concreteType": null,
             "kind": "LinkedField",
@@ -419,32 +489,6 @@ return {
             ],
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "CreditCard",
-            "kind": "LinkedField",
-            "name": "creditCard",
-            "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "brand",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "lastDigits",
-                "storageKey": null
-              },
-              (v4/*: any*/)
-            ],
-            "storageKey": null
-          },
           (v4/*: any*/)
         ],
         "storageKey": null
@@ -465,7 +509,7 @@ return {
     ]
   },
   "params": {
-    "id": "7b171e3479ca46f71fc2fda3e310d346",
+    "id": "215c263906d52e203fb8419e5759b5e5",
     "metadata": {},
     "name": "OrderDetailsQuery",
     "operationKind": "query",

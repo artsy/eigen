@@ -9,7 +9,7 @@ export type OrderDetails_order = {
     readonly internalID: string;
     readonly code: string;
     readonly state: CommerceOrderStateEnum;
-    readonly " $fragmentRefs": FragmentRefs<"ArtworkInfoSection_artwork" | "ShipsToSection_address" | "OrderDetailsPayment_order">;
+    readonly " $fragmentRefs": FragmentRefs<"ArtworkInfoSection_artwork" | "SummarySection_section" | "OrderDetailsPayment_order" | "ShipsToSection_address">;
     readonly " $refType": "OrderDetails_order";
 };
 export type OrderDetails_order$data = OrderDetails_order;
@@ -55,16 +55,21 @@ const node: ReaderFragment = {
     {
       "args": null,
       "kind": "FragmentSpread",
-      "name": "ShipsToSection_address"
+      "name": "SummarySection_section"
     },
     {
       "args": null,
       "kind": "FragmentSpread",
       "name": "OrderDetailsPayment_order"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "ShipsToSection_address"
     }
   ],
   "type": "CommerceOrder",
   "abstractKey": "__isCommerceOrder"
 };
-(node as any).hash = '7ce6f73f592205aaa44c75d9f00d8bbf';
+(node as any).hash = '448100cce016464d55b1ca52e19999ee';
 export default node;
