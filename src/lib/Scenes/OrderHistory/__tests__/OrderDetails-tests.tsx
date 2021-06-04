@@ -8,7 +8,11 @@ import { SectionList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { ArtworkInfoSectionFragmentContainer } from "../OrderDetails/ArtworkInfoSection"
 import { OrderDetailsContainer, OrderDetailsPlaceholder, OrderDetailsQueryRender } from "../OrderDetails/OrderDetails"
+import { CreditCardSummaryItemFragmentContainer } from "../OrderDetails/OrderDetailsPayment"
+import { ShipsToSectionFragmentContainer } from "../OrderDetails/ShipsToSection"
+import { SummarySectionFragmentContainer } from "../OrderDetails/SummarySection"
 
 jest.unmock("react-relay")
 
@@ -91,11 +95,11 @@ describe(OrderDetailsQueryRender, () => {
       }),
     })
 
-    expect(tree.root.findAllByType(SectionList).length).toBe(1)
-    expect(tree.root.findAllByProps({ testID: "separetor" })).not.toBe(0)
-    expect(tree.root.findAllByProps({ testID: "Artwork" }).length).not.toBe(0)
-    expect(tree.root.findAllByProps({ testID: "SummarySection" }).length).not.toBe(0)
-    expect(tree.root.findAllByProps({ testID: "ShipsToSection" }).length).not.toBe(0)
+    expect(tree.root.findByType(SectionList)).toBeTruthy()
+    expect(tree.root.findByType(ArtworkInfoSectionFragmentContainer)).toBeTruthy()
+    expect(tree.root.findByType(SummarySectionFragmentContainer)).toBeTruthy()
+    expect(tree.root.findByType(CreditCardSummaryItemFragmentContainer)).toBeTruthy()
+    expect(tree.root.findByType(ShipsToSectionFragmentContainer)).toBeTruthy()
   })
 
   it("renders without throwing an error", () => {
