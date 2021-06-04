@@ -6,6 +6,7 @@ import {
   FilterParamName,
   FilterParams,
   prepareFilterArtworksParamsForInput,
+  prepareFilterParamsForSaveSearchInput,
   selectedOption,
 } from "../ArtworkFilterHelpers"
 
@@ -823,6 +824,122 @@ describe("prepareFilterArtworksParamsForInput", () => {
       offerable: false,
       priceRange: "*-*",
       sort: "-decayed_merch",
+    })
+  })
+})
+
+describe("prepareFilterParamsForSaveSearchInput", () => {
+  it("returns fields in the CreateSavedSearchInput format", () => {
+    const filters = filterArtworksParams([
+      {
+        displayText: "Large (over 100cm)",
+        paramName: FilterParamName.dimensionRange,
+        paramValue: "40.0-*",
+      },
+      {
+        displayText: "Limited Edition",
+        paramName: FilterParamName.attributionClass,
+        paramValue: ["limited edition"],
+      },
+      {
+        displayText: "$5,000-10,000",
+        paramName: FilterParamName.priceRange,
+        paramValue: "5000-10000",
+      },
+      {
+        displayText: "Prints",
+        paramName: FilterParamName.additionalGeneIDs,
+        paramValue: ["prints"],
+      },
+      {
+        displayText: "Paper",
+        paramName: FilterParamName.materialsTerms,
+        paramValue: ["paper"],
+      },
+      {
+        displayText: "Bid",
+        paramName: FilterParamName.waysToBuyBid,
+        paramValue: true,
+      },
+      {
+        displayText: "London, United Kingdom",
+        paramName: FilterParamName.locationCities,
+        paramValue: ["London, United Kingdom"]
+      },
+      {
+        displayText: "1990-1999",
+        paramName: FilterParamName.timePeriod,
+        paramValue: ["1990"]
+      },
+      {
+        displayText: "Yellow, Red",
+        paramName: FilterParamName.colors,
+        paramValue: ["yellow", "red"]
+      },
+      {
+        displayText: "Cypress Test Partner [For Automated Testing Purposes], Tate Ward Auctions",
+        paramName: FilterParamName.partnerIDs,
+        paramValue: [
+          "cypress-test-partner-for-automated-testing-purposes",
+          "tate-ward-auctions"
+        ]
+      },
+    ]);
+
+    expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
+      priceMin: 5000,
+      priceMax: 10000,
+      attributionClasses: ["limited edition"],
+      additionalGeneIDs: ["prints"],
+      acquireable: false,
+      atAuction: true,
+      inquireableOnly: false,
+      offerable: false,
+      majorPeriods: ["1990"],
+      colors: ["yellow", "red"],
+      locationCities: ["London, United Kingdom"],
+      materialsTerms: ["paper"],
+      partnerIDs: [
+        "cypress-test-partner-for-automated-testing-purposes",
+        "tate-ward-auctions"
+      ],
+    })
+  })
+
+  it("returns minPrice and maxPrice fields if only the price filter is selected", () => {
+    const filters = filterArtworksParams([
+      {
+        displayText: "$1,000-5,000",
+        paramName: FilterParamName.priceRange,
+        paramValue: "1000-5000",
+      },
+    ]);
+
+    expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
+      priceMin: 1000,
+      priceMax: 5000,
+      acquireable: false,
+      atAuction: false,
+      inquireableOnly: false,
+      offerable: false,
+    })
+  })
+
+  it("returns minPrice field if only the minimum price filter is specified", () => {
+    const filters = filterArtworksParams([
+      {
+        displayText: "$50,000+",
+        paramName: FilterParamName.priceRange,
+        paramValue: "50000-*",
+      },
+    ]);
+
+    expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
+      priceMin: 50000,
+      acquireable: false,
+      atAuction: false,
+      inquireableOnly: false,
+      offerable: false,
     })
   })
 })

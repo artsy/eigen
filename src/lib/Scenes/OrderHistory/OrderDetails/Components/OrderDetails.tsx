@@ -6,11 +6,13 @@ import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Box, Flex, Separator, Text } from "palette"
 import React from "react"
-import { ScrollView, SectionList } from "react-native"
+import { SectionList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
+import { OrderDetailsHeader } from "./OrderDetailsHeader"
 import { CreditCardSummaryItemFragmentContainer } from "./OrderDetailsPayment"
 import { ShipsToSectionFragmentContainer } from "./ShipsToSection"
+import { SummarySectionFragmentContainer } from "./SummarySection"
 
 export interface OrderDetailsProps {
   order: OrderDetails_order
@@ -18,16 +20,25 @@ export interface OrderDetailsProps {
 }
 interface SectionListItem {
   key: string
-  title: string
+  title?: string
   data: readonly JSX.Element[]
 }
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
   const DATA: SectionListItem[] = [
     {
+      key: "OrderDetailsHeader",
+      data: [<OrderDetailsHeader info={order} />],
+    },
+    {
       key: "Artwork_Info",
       title: "Artwork Info",
-      data: [<ArtworkInfoSectionFragmentContainer testID="Artwork" artwork={order} />],
+      data: [<ArtworkInfoSectionFragmentContainer artwork={order} />],
+    },
+    {
+      key: "Summary_Section",
+      title: "Order Summary",
+      data: [<SummarySectionFragmentContainer section={order} />],
     },
     {
       key: "Payment_Method",
@@ -37,42 +48,43 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
     {
       key: "ShipTo_Section",
       title: `Ships to ${me?.name}`,
-      data: [<ShipsToSectionFragmentContainer testID="ShipsToSection" address={order} />],
+      data: [<ShipsToSectionFragmentContainer address={order} />],
     },
   ]
 
   return (
     <PageWithSimpleHeader title="Order Details">
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20 }}>
-        <SectionList
-          sections={DATA}
-          keyExtractor={(item, index) => item.key + index.toString()}
-          renderItem={({ item }) => (
-            <Flex flexDirection="column" justifyContent="space-between">
-              <Box>{item}</Box>
-            </Flex>
-          )}
-          stickySectionHeadersEnabled={false}
-          renderSectionHeader={({ section: { title } }) => (
+      <SectionList
+        initialNumToRender={15}
+        contentContainerStyle={{ paddingHorizontal: 20, marginTop: 20, paddingBottom: 25 }}
+        sections={DATA}
+        keyExtractor={(item, index) => item.key + index.toString()}
+        renderItem={({ item }) => (
+          <Flex flexDirection="column" justifyContent="space-between">
+            <Box>{item}</Box>
+          </Flex>
+        )}
+        stickySectionHeadersEnabled={false}
+        renderSectionHeader={({ section: { title } }) =>
+          title ? (
             <Box>
-              <Text variant="mediumText">{title}</Text>
+              <Text mt={20} mb={10} variant="mediumText">
+                {title}
+              </Text>
             </Box>
-          )}
-          SectionSeparatorComponent={(data) => (
-            <Box
-              height={!!data.leadingItem && !!data.trailingSection ? 2 : 0}
-              marginTop={data.leadingItem && data.trailingSection ? 20 : 0}
-              backgroundColor="black10"
-              style={{
-                marginVertical: 20,
-              }}
-              flexDirection="column"
-              justifyContent="center"
-              alignItems="center"
-            ></Box>
-          )}
-        />
-      </ScrollView>
+          ) : null
+        }
+        SectionSeparatorComponent={(data) => (
+          <Box
+            height={!!data.leadingItem && !!data.trailingSection ? 2 : 0}
+            marginTop={data.leadingItem && data.trailingSection ? 20 : 0}
+            backgroundColor="black10"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+          ></Box>
+        )}
+      />
     </PageWithSimpleHeader>
   )
 }
@@ -136,16 +148,14 @@ export const OrderDetailsPlaceholder: React.FC<{}> = () => (
 export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
   order: graphql`
     fragment OrderDetails_order on CommerceOrder {
-      internalID
-      code
-      state
+      ...OrderDetailsHeader_info @relay(mask: false)
       ...ArtworkInfoSection_artwork
-      ...ShipsToSection_address
+      ...SummarySection_section
       ...OrderDetailsPayment_order
+      ...ShipsToSection_address
     }
   `,
 })
-
 export const OrderDetailsQueryRender: React.FC<{ orderID: string }> = ({ orderID: orderID }) => {
   return (
     <QueryRenderer<OrderDetailsQuery>
