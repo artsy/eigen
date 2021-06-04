@@ -58,6 +58,8 @@ upcoming:
     - Fix home screen placeholder changing with bug 🎉 - ole
     - Fix android native go back from sale tab to search - yauheni
     - Vertically aligned 'Follow/Following' artist button text - stas hanchar
+    - Add articles rail to home screen - ole
+    - Change articles rail design in artist overview page - ole
 
     - Specified a more specific error for logging in with Apple or Facebook - stas hanchar
 
