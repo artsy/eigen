@@ -123,6 +123,7 @@ target 'Artsy' do
   # Facebook
   pod 'FBSDKCoreKit', '~> 9.3'
   pod 'FBSDKLoginKit', '~> 9.3'
+  pod 'FBSDKShareKit', '~> 9.3'
 
   # Analytics
   pod 'Analytics'

@@ -604,6 +604,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `./node_modules/react-native/Libraries/FBReactNativeSpec`)
   - FBSDKCoreKit (~> 9.3)
   - FBSDKLoginKit (~> 9.3)
+  - FBSDKShareKit (~> 9.3)
   - Flipper (= 0.87.0)
   - Flipper-DoubleConversion (= 1.1.7)
   - Flipper-Folly (= 2.5.3)
@@ -1054,6 +1055,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 960cb4b9d066cc1aebde660060b4eb0fe57f9d1e
+PODFILE CHECKSUM: ee78128b95eb9e452f20ca0d54a96f466d841012
 
 COCOAPODS: 1.10.1
