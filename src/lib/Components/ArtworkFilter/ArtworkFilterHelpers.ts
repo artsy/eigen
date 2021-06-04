@@ -1,3 +1,4 @@
+import { CreateSavedSearchInput } from "__generated__/ArtistArtworksContainerCreateSavedSearchMutation.graphql"
 import { FilterScreen } from "lib/Components/ArtworkFilter"
 import { capitalize, compact, groupBy, isEqual, pick, sortBy } from "lodash"
 import { getFilterArtworkSizeName, LOCALIZED_UNIT, parseRange } from "./Filters/helpers"
@@ -67,17 +68,6 @@ export type FilterParams = {
 export enum ViewAsValues {
   Grid = "grid",
   List = "list",
-}
-
-export interface SaveSearchInput {
-  artistID?: string
-  attribution?: string
-  category?: string
-  clientMutationId?: string
-  priceMax?: number
-  priceMin?: number
-  size?: string
-  [key: string]: any
 }
 
 export const getSortDefaultValueByFilterType = (filterType: FilterType) => {
@@ -551,7 +541,7 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
 
 export const parseFilterParamSize = (value: string) => {
   const size = getFilterArtworkSizeName(value)
-  const input: SaveSearchInput = {}
+  const input: CreateSavedSearchInput = {}
 
   if (size === "custom") {
     // TODO: Pass minWidth, maxWidth, minHeight, maxHeight
@@ -564,7 +554,7 @@ export const parseFilterParamSize = (value: string) => {
 
 export const parseFilterParamPrice = (value: string) => {
   const { min, max } = parseRange(value)
-  const input: SaveSearchInput = {}
+  const input: CreateSavedSearchInput = {}
 
   if (min !== "*") {
     input.priceMin = min
@@ -578,7 +568,7 @@ export const parseFilterParamPrice = (value: string) => {
 }
 
 export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams) => {
-  let input: SaveSearchInput = {}
+  let input: CreateSavedSearchInput = {}
 
   Object.entries(filterParams).forEach((entry) => {
     const [key, value] = entry
