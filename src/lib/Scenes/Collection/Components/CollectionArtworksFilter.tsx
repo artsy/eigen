@@ -6,7 +6,7 @@ import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, FilterIcon, Flex, Separator, Text, Touchable } from "palette"
 import React, { useEffect, useState } from "react"
-import { Animated, Dimensions, LayoutChangeEvent, PixelRatio, Platform } from "react-native"
+import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -98,11 +98,16 @@ export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection, an
     setOnLayoutCalled(true)
   }
 
-  const ANIM_START = BACK_BUTTON_SIZE.image.height * 2
+  const extraOffset = 1
+  const topInset = useScreenDimensions().safeAreaInsets.top
 
+  const ANIM_START = BACK_BUTTON_SIZE.image.height * 2
   const TRANSLATE_X_VALUE = BACK_BUTTON_SIZE.image.width
-  const extraOffset = Platform.select({ android: -6, ios: 3, default: 3 })
-  const TRANSLATE_Y_VALUE = BACK_BUTTON_SIZE.image.height / 2 - BACK_BUTTON_SIZE.top + extraOffset
+  const TRANSLATE_Y_VALUE =
+    topInset -
+    BACK_BUTTON_SIZE.image.height / 2 -
+    BACK_BUTTON_SIZE.top -
+    PixelRatio.getPixelSizeForLayoutSize(extraOffset)
 
   return artworksTotal && artworksTotal > 0 ? (
     <Box backgroundColor="white" onLayout={(e) => _onLayout(e)}>
