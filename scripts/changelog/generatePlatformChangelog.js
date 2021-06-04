@@ -1,20 +1,40 @@
+#!/usr/bin/env node
+
 // @ts-check
+"use strict"
 
 /**
  * This file is used in CI to parse the list of merged pull requests
  * since the last public release per platform and get the changelogs for each one
  */
-
+const { ArgumentParser } = require("argparse")
 const Octokit = require("@octokit/rest")
 const compact = require("lodash/compact")
 const fs = require("fs")
 const parsePRDescription = require("./parsePRDescription").parsePRDescription
 const ora = require("ora")
+const prettier = require("prettier")
+const appVersion = require("../../app.json").version
 
 const octokit = new Octokit({ auth: process.env.GH_TOKEN })
 
 const owner = "artsy"
 const repo = "eigen"
+
+const parser = new ArgumentParser({})
+
+parser.add_argument("-p", "--platform", {
+  help: `select destination platform ("android" or "ios")`,
+})
+
+const parsedArgs = parser.parse_args()
+
+if (parsedArgs.platform !== "android" && parsedArgs.platform !== "ios") {
+  console.error(`plaform needs to be either "android" or "ios"`)
+  process.exit(1)
+}
+
+updatePlatfromChangeLog(parsedArgs.platform)
 
 /**
  * @param {string | null} mergeDate Date when the commit was merged
@@ -95,7 +115,7 @@ async function getPRsBeforeDate(commitDate) {
 /**
  * @param {import('@octokit/rest').PullsGetResponse[]} prs List of merged pull requests
  */
-function getChangeLog(prs) {
+function getCombinedChangeLog(prs) {
   const changeLog = {
     androidUserFacingChanges: [],
     crossPlatformUserFacingChanges: [],
@@ -123,7 +143,8 @@ function getChangeLog(prs) {
 function generatePlatformChangelog(platform, changelog) {
   const spinner = ora("Generating platform specific changelog")
 
-  const fileContent = fs.readFileSync(`../../CHANGELOG/${platform}-changelog.md`, "utf8").toString()
+  const changelogFilePath = `./CHANGELOG/${platform}-changelog.md`
+  let fileContent = fs.readFileSync(changelogFilePath, "utf8").toString()
 
   const regex = /## Deployed Changes/
 
@@ -134,18 +155,22 @@ function generatePlatformChangelog(platform, changelog) {
     process.exit(1)
   }
 
-  fileContent.replace(regex, "test")
+  const platformSpecificChanges = getPlafromSpecificChangeLog(platform, changelog)
+  fileContent = fileContent.replace(regex, platformSpecificChanges)
+  fileContent = prettier.format(fileContent, { parser: "markdown" })
+
+  fs.writeFileSync(changelogFilePath, fileContent, "utf8")
 }
 
 /**
  * @param {"android" | "ios"} platform
- * @param {"string"} commitTag
+ * @param {import("./changelog-types").ParseResultChanges} changelog
  * @returns {string}
  * @example
  * ### 6.9.2
   - Status: **Released**
   - Build tag: **${commitTag}**
-  - App store submission date: **${new Date().toDateString()}**
+  - App store submission date: **Fri Jun 04 2021 15:48:24 GMT+0200 (Central European Summer Time)**
   - Changelog:
     - User facing changes:
       - Made button bigger
@@ -153,37 +178,65 @@ function generatePlatformChangelog(platform, changelog) {
       - Fixed rerendering issues
  *
  */
-function getPlafromSpecificChangeLog(platform, commitTag) {
+function getPlafromSpecificChangeLog(platform, changelog) {
   let changeLogMD = `
-  ### 6.9.2
-  - Status: **Released**
-  - Build tag: **${commitTag}**
-  - App store submission date: **${new Date().toDateString()}**
-  - Changelog:
-    - User facing changes:
-      -
-    - Dev changes:
-      -
-  `
+## Deployed Changes
+
+### v${appVersion}
+
+- Status: **Released**
+- App store submission date: **${new Date().toString()}**
+- Changelog:
+`
+  let userFacingChanges = changelog.crossPlatformUserFacingChanges
+  if (platform === "android") {
+    userFacingChanges = userFacingChanges.concat(changelog.androidUserFacingChanges)
+  } else if (platform === "ios") {
+    userFacingChanges = userFacingChanges.concat(changelog.iOSUserFacingChanges)
+  }
+
+  /**
+   * Fill in the user facing changes if any are available
+   */
+  if (userFacingChanges.length > 0) {
+    changeLogMD = `${changeLogMD}
+  - User facing changes:
+    - ${userFacingChanges.join("\n    - ")}
+`
+  }
+
+  /**
+   * Fill in the dev changes if any are available
+   */
+  if (changelog.devChanges.length > 0) {
+    changeLogMD = `${changeLogMD}
+  - Dev changes:
+    - ${changelog.devChanges.join("\n    - ")}
+`
+  }
+
   return changeLogMD
 }
 
-;(async function () {
+/**
+ * @param {"android" | "ios"} platform
+ */
+async function updatePlatfromChangeLog(platform) {
   try {
-    const commitDate = await getLastReleaseCommitDate("ios")
+    const commitDate = await getLastReleaseCommitDate(platform)
     const prs = await getPRsBeforeDate(commitDate)
-    getChangeLog(prs)
+    const changelog = getCombinedChangeLog(prs)
+    generatePlatformChangelog(platform, changelog)
     ora("Successfully loaded list of PRs before tag").succeed()
   } catch (error) {
-    const error_message = "Failed to get the list of PRs before tag"
-    ora(error_message).fail()
     throw new Error(error)
   }
-})()
+}
 
 module.exports = {
   isMergedAfter,
   getLastReleaseCommitDate,
   getPRsBeforeDate,
-  getChangeLog,
+  getCombinedChangeLog,
+  getPlafromSpecificChangeLog,
 }

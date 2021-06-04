@@ -3036,6 +3036,11 @@
     "@turf/line-intersect" "6.x"
     "@turf/meta" "6.x"
 
+"@types/argparse@^2.0.8":
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/@types/argparse/-/argparse-2.0.8.tgz#14bebdb0479b610bf11fae8b2d59d6a1a09dc1e5"
+  integrity sha512-H/YVlchGvyHN2LSD3gRueCe8mo5zC0lU505LYqpQL75SMOIIZmtyronj/tETOCUVRzeMp4PHW02BaGWMSuNcxA==
+
 "@types/babel__core@^7.1.0":
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.0.tgz#710f2487dda4dcfd010ca6abb2b4dc7394365c51"
@@ -3683,6 +3688,11 @@ argparse@^1.0.7:
   integrity sha1-c9g7wmP4bpf4zE9rrhsOkKfSLIY=
   dependencies:
     sprintf-js "~1.0.2"
+
+argparse@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/argparse/-/argparse-2.0.1.tgz#246f50f3ca78a3240f6c997e8a9bd1eac49e4b38"
+  integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
 
 arr-diff@^1.0.1:
   version "1.1.0"
