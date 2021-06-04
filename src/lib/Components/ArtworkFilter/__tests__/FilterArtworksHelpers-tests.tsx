@@ -856,15 +856,54 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
         displayText: "Paper",
         paramName: FilterParamName.materialsTerms,
         paramValue: ["paper"],
-      }
+      },
+      {
+        displayText: "Bid",
+        paramName: FilterParamName.waysToBuyBid,
+        paramValue: true,
+      },
+      {
+        displayText: "London, United Kingdom",
+        paramName: FilterParamName.locationCities,
+        paramValue: ["London, United Kingdom"]
+      },
+      {
+        displayText: "1990-1999",
+        paramName: FilterParamName.timePeriod,
+        paramValue: ["1990"]
+      },
+      {
+        displayText: "Yellow, Red",
+        paramName: FilterParamName.colors,
+        paramValue: ["yellow", "red"]
+      },
+      {
+        displayText: "Cypress Test Partner [For Automated Testing Purposes], Tate Ward Auctions",
+        paramName: FilterParamName.partnerIDs,
+        paramValue: [
+          "cypress-test-partner-for-automated-testing-purposes",
+          "tate-ward-auctions"
+        ]
+      },
     ]);
 
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
       priceMin: 5000,
       priceMax: 10000,
-      size: "large",
-      attribution: "limited edition",
-      category: "prints",
+      attributionClasses: ["limited edition"],
+      additionalGeneIDs: ["prints"],
+      acquireable: false,
+      atAuction: true,
+      inquireableOnly: false,
+      offerable: false,
+      majorPeriods: ["1990"],
+      colors: ["yellow", "red"],
+      locationCities: ["London, United Kingdom"],
+      materialsTerms: ["paper"],
+      partnerIDs: [
+        "cypress-test-partner-for-automated-testing-purposes",
+        "tate-ward-auctions"
+      ],
     })
   })
 
@@ -880,6 +919,10 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
       priceMin: 1000,
       priceMax: 5000,
+      acquireable: false,
+      atAuction: false,
+      inquireableOnly: false,
+      offerable: false,
     })
   })
 
@@ -894,20 +937,10 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
 
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
       priceMin: 50000,
-    })
-  })
-
-  it("returns size field if only the size filter is specified", () => {
-    const filters = filterArtworksParams([
-      {
-        displayText: "Large (over 100cm)",
-        paramName: FilterParamName.dimensionRange,
-        paramValue: FilterArtworkSize.Large,
-      },
-    ]);
-
-    expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
-      size: "large",
+      acquireable: false,
+      atAuction: false,
+      inquireableOnly: false,
+      offerable: false,
     })
   })
 })
