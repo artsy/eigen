@@ -65,6 +65,16 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     })
   }, [artworksTotal])
 
+  useEffect(() => {
+    // restore the ArtworksFiltersStore to default
+    return () => {
+      setFiltersCountAction({
+        total: null,
+        followedArtists: null,
+      })
+    }
+  }, [])
+
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
       action_name: "clearFilters",

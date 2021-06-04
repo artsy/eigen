@@ -4,7 +4,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Box, Spacer, Theme } from "palette"
 import React, { Component, createRef } from "react"
-import { Dimensions, FlatList, View } from "react-native"
+import { Animated, Dimensions, FlatList, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { Collection_collection } from "../../../__generated__/Collection_collection.graphql"
 import { CollectionArtworksFilterFragmentContainer as CollectionArtworksFilter } from "../../../lib/Scenes/Collection/Components/CollectionArtworksFilter"
@@ -14,25 +14,8 @@ import { Schema, screenTrack } from "../../../lib/utils/track"
 import { CollectionsHubRailsContainer as CollectionHubsRails } from "./Components/CollectionHubsRails/index"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
 
-interface ViewableItems {
-  viewableItems?: ViewToken[]
-}
-
-interface ViewToken {
-  item?: any
-  key?: string
-  index?: number | null
-  isViewable?: boolean
-  section?: any
-}
-
 interface CollectionProps {
   collection: Collection_collection
-}
-
-interface CollectionState {
-  isArtworkGridVisible: boolean
-  isFilterArtworksModalVisible: boolean
 }
 
 @screenTrack((props: CollectionProps) => ({
@@ -41,52 +24,9 @@ interface CollectionState {
   context_screen_owner_id: props.collection.id,
   context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
 }))
-export class Collection extends Component<CollectionProps, CollectionState> {
-  state = {
-    isArtworkGridVisible: false,
-    isFilterArtworksModalVisible: false,
-  }
-  viewabilityConfig = {
-    viewAreaCoveragePercentThreshold: 30, // The percentage of the artworks component should be in the screen before toggling the filter button
-  }
+export class Collection extends Component<CollectionProps> {
+  filterComponentAnimationValue = new Animated.Value(0)
   private flatList = createRef<FlatList<any>>()
-
-  onViewableItemsChanged = ({ viewableItems }: ViewableItems) => {
-    const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
-      return viewableItem?.item === "collectionArtworks"
-    })
-    this.setState((_prevState) => ({ isArtworkGridVisible: artworksItem?.isViewable ?? false }))
-  }
-
-  handleFilterArtworksModal() {
-    this.setState((_prevState) => {
-      return { isFilterArtworksModalVisible: !_prevState.isFilterArtworksModalVisible }
-    })
-  }
-
-  @screenTrack((props: CollectionProps) => ({
-    action_name: "filter",
-    context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
-    context_screen: Schema.PageNames.Collection,
-    context_screen_owner_id: props.collection.id,
-    context_screen_owner_slug: props.collection.slug,
-    action_type: Schema.ActionTypes.Tap,
-  }))
-  openFilterArtworksModal() {
-    this.handleFilterArtworksModal()
-  }
-
-  @screenTrack((props: CollectionProps) => ({
-    action_name: "closeFilterWindow",
-    context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
-    context_screen: Schema.PageNames.Collection,
-    context_screen_owner_id: props.collection.id,
-    context_screen_owner_slug: props.collection.slug,
-    action_type: Schema.ActionTypes.Tap,
-  }))
-  closeFilterArtworksModal() {
-    this.handleFilterArtworksModal()
-  }
 
   scrollToTop() {
     const {
@@ -111,11 +51,14 @@ export class Collection extends Component<CollectionProps, CollectionState> {
       <ArtworkFiltersStoreProvider>
         <Theme>
           <View style={{ flex: 1 }}>
-            <FlatList
+            <Animated.FlatList
               ref={this.flatList}
-              onScroll={(ev) => console.log("ev", ev.nativeEvent)}
-              onViewableItemsChanged={this.onViewableItemsChanged}
-              viewabilityConfig={this.viewabilityConfig}
+              onScroll={Animated.event(
+                [{ nativeEvent: { contentOffset: { y: this.filterComponentAnimationValue } } }],
+                {
+                  useNativeDriver: true,
+                }
+              )}
               keyExtractor={(_item, index) => String(index)}
               data={sections}
               ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
@@ -134,7 +77,12 @@ export class Collection extends Component<CollectionProps, CollectionState> {
                       <CollectionHubsRails linkedCollections={linkedCollections} {...this.props} />
                     ) : null
                   case "collectionArtworksFilter":
-                    return <CollectionArtworksFilter collection={collection} />
+                    return (
+                      <CollectionArtworksFilter
+                        collection={collection}
+                        animationValue={this.filterComponentAnimationValue}
+                      />
+                    )
                   case "collectionArtworks":
                     return (
                       <Box px={2}>
