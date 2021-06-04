@@ -152,8 +152,10 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     `,
       variables: {
         input: {
-          artistID: artist.internalID,
-          ...input,
+          attributes: {
+            artistID: artist.internalID,
+            ...input,
+          }
         }
       },
       onCompleted: () => {

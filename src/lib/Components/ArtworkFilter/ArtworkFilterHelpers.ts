@@ -1,4 +1,4 @@
-import { CreateSavedSearchInput } from "__generated__/ArtistArtworksContainerCreateSavedSearchMutation.graphql"
+import { SearchCriteriaAttributes } from "__generated__/ArtistArtworksContainerCreateSavedSearchMutation.graphql"
 import { FilterScreen } from "lib/Components/ArtworkFilter"
 import { capitalize, compact, groupBy, isEqual, pick, sortBy } from "lodash"
 import { getFilterArtworkSizeName, LOCALIZED_UNIT, parseRange } from "./Filters/helpers"
@@ -541,7 +541,7 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
 
 export const parseFilterParamSize = (value: string) => {
   const size = getFilterArtworkSizeName(value)
-  const input: CreateSavedSearchInput = {}
+  const input: SearchCriteriaAttributes = {}
 
   if (size === "custom") {
     // TODO: Pass minWidth, maxWidth, minHeight, maxHeight
@@ -554,7 +554,7 @@ export const parseFilterParamSize = (value: string) => {
 
 export const parseFilterParamPrice = (value: string) => {
   const { min, max } = parseRange(value)
-  const input: CreateSavedSearchInput = {}
+  const input: SearchCriteriaAttributes = {}
 
   if (min !== "*") {
     input.priceMin = min
@@ -568,7 +568,19 @@ export const parseFilterParamPrice = (value: string) => {
 }
 
 export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams) => {
-  let input: CreateSavedSearchInput = {}
+  let input: SearchCriteriaAttributes = {}
+  const canSendWithoutChangesKeys = [
+    FilterParamName.waysToBuyBuy,
+    FilterParamName.waysToBuyBid,
+    FilterParamName.waysToBuyInquire,
+    FilterParamName.waysToBuyMakeOffer,
+    FilterParamName.additionalGeneIDs,
+    FilterParamName.colors,
+    FilterParamName.locationCities,
+    FilterParamName.timePeriod,
+    FilterParamName.materialsTerms,
+    FilterParamName.partnerIDs,
+  ]
 
   Object.entries(filterParams).forEach((entry) => {
     const [key, value] = entry
@@ -578,9 +590,9 @@ export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams
     } else if (key === FilterParamName.dimensionRange) {
       input = { ...input, ...parseFilterParamSize(value as string) }
     } else if (key === FilterParamName.attributionClass) {
-      input.attribution = (value as string[])[0]
-    } else if (key === FilterParamName.additionalGeneIDs) {
-      input.category = (value as string[])[0]
+      input.attributionClasses = value as string[]
+    } else if (canSendWithoutChangesKeys.includes(key as FilterParamName)) {
+      input[key as keyof SearchCriteriaAttributes] = value as any
     }
   })
 
