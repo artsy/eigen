@@ -26,7 +26,7 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ articlesConnection }
   return (
     <Flex>
       <Flex mx={2}>
-        <SectionTitle title="Latest from Artsy Editorial" />
+        <SectionTitle title="Market news" />
       </Flex>
       <Flex>
         <FlatList
