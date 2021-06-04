@@ -5,7 +5,6 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
   address: ShipsToSection_address
-  testID?: string
 }
 
 export const ShipsToSection: React.FC<Props> = ({ address }) => {

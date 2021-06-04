@@ -1,8 +1,11 @@
-import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
-import { Alert, Platform, RefreshControl, View, ViewProps } from "react-native"
-import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-
+import { Home_articlesConnection } from "__generated__/Home_articlesConnection.graphql"
+import { Home_featured } from "__generated__/Home_featured.graphql"
+import { Home_homePage } from "__generated__/Home_homePage.graphql"
+import { Home_me } from "__generated__/Home_me.graphql"
+import { HomeQuery } from "__generated__/HomeQuery.graphql"
+import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkRail"
 import { AuctionResultsRailFragmentContainer } from "lib/Scenes/Home/Components/AuctionResultsRail"
 import { CollectionsRailFragmentContainer } from "lib/Scenes/Home/Components/CollectionsRail"
@@ -10,26 +13,23 @@ import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Compon
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
 import { SaleArtworksHomeRailContainer } from "lib/Scenes/Home/Components/SaleArtworksHomeRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
-
-import { Home_homePage } from "__generated__/Home_homePage.graphql"
-import { Home_me } from "__generated__/Home_me.graphql"
-import { HomeQuery } from "__generated__/HomeQuery.graphql"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { compact, drop, flatten, times, zip } from "lodash"
-import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "palette"
-
-import { Home_featured } from "__generated__/Home_featured.graphql"
-import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { isPad } from "lib/utils/hardware"
 import { PlaceholderBox, PlaceholderText, RandomWidthPlaceholderText, useMemoizedRandom } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { compact, drop, flatten, times, zip } from "lodash"
+import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "palette"
+import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
+import { Alert, Platform, RefreshControl, View, ViewProps } from "react-native"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
+import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProps {
+  articlesConnection: Home_articlesConnection
   homePage: Home_homePage
   me: Home_me
   featured: Home_featured
@@ -37,7 +37,7 @@ interface Props extends ViewProps {
 }
 
 const Home = (props: Props) => {
-  const { homePage, me, featured } = props
+  const { articlesConnection, homePage, me, featured } = props
   const artworkModules = homePage.artworkModules || []
   const salesModule = homePage.salesModule
   const collectionsModule = homePage.marketingCollectionsModule
@@ -79,6 +79,7 @@ const Home = (props: Props) => {
         type: "sales",
         data: salesModule,
       } as const),
+    { type: "articles" } as const,
     !!viewingRoomsEchoFlag && ({ type: "viewing-rooms" } as const),
     fairsModule &&
       ({
@@ -135,6 +136,8 @@ const Home = (props: Props) => {
             refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
             renderItem={({ item, index, separators }) => {
               switch (item.type) {
+                case "articles":
+                  return <ArticlesRailFragmentContainer articlesConnection={articlesConnection} />
                 case "artwork":
                   return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
                 case "artist":
@@ -234,9 +237,17 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...ViewingRoomsListFeatured_featured
       }
     `,
+    articlesConnection: graphql`
+      fragment Home_articlesConnection on ArticleConnection {
+        ...ArticlesRail_articlesConnection
+      }
+    `,
   },
   graphql`
     query HomeRefetchQuery($heroImageVersion: HomePageHeroUnitImageVersion!) {
+      articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
+        ...Home_articlesConnection
+      }
       homePage {
         ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
       }
@@ -376,6 +387,9 @@ export const HomeQueryRenderer: React.FC = () => {
           }
           featured: viewingRooms(featured: true) {
             ...Home_featured
+          }
+          articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
+            ...Home_articlesConnection
           }
         }
       `}

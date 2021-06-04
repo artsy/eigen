@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type OrderDetails_order = {
+export type OrderDetailsHeader_info = {
     readonly createdAt: string;
     readonly requestedFulfillment: ({
         readonly __typename: "CommerceShip";
@@ -16,13 +16,12 @@ export type OrderDetails_order = {
         readonly __typename: "%other";
     }) | null;
     readonly code: string;
-    readonly " $fragmentRefs": FragmentRefs<"ArtworkInfoSection_artwork" | "SummarySection_section" | "OrderDetailsPayment_order" | "ShipsToSection_address">;
-    readonly " $refType": "OrderDetails_order";
+    readonly " $refType": "OrderDetailsHeader_info";
 };
-export type OrderDetails_order$data = OrderDetails_order;
-export type OrderDetails_order$key = {
-    readonly " $data"?: OrderDetails_order$data;
-    readonly " $fragmentRefs": FragmentRefs<"OrderDetails_order">;
+export type OrderDetailsHeader_info$data = OrderDetailsHeader_info;
+export type OrderDetailsHeader_info$key = {
+    readonly " $data"?: OrderDetailsHeader_info$data;
+    readonly " $fragmentRefs": FragmentRefs<"OrderDetailsHeader_info">;
 };
 
 
@@ -41,7 +40,7 @@ return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "OrderDetails_order",
+  "name": "OrderDetailsHeader_info",
   "selections": [
     {
       "alias": null,
@@ -79,31 +78,11 @@ return {
       "kind": "ScalarField",
       "name": "code",
       "storageKey": null
-    },
-    {
-      "args": null,
-      "kind": "FragmentSpread",
-      "name": "ArtworkInfoSection_artwork"
-    },
-    {
-      "args": null,
-      "kind": "FragmentSpread",
-      "name": "SummarySection_section"
-    },
-    {
-      "args": null,
-      "kind": "FragmentSpread",
-      "name": "OrderDetailsPayment_order"
-    },
-    {
-      "args": null,
-      "kind": "FragmentSpread",
-      "name": "ShipsToSection_address"
     }
   ],
   "type": "CommerceOrder",
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = 'a481da5dbd8781c433af659ec87de022';
+(node as any).hash = '4717062b7a556b67b08c934508eaafe9';
 export default node;
