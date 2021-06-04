@@ -33,7 +33,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               <Box width={5} height={5} backgroundColor="black10" data-test-id="image-box" />
             )}
           </Flex>
-          <Flex width="50%" flexGrow={1} mr={2}>
+          <Flex width="40%" flexGrow={1} mr={2}>
             <Text variant="mediumText" data-test-id="artist-names" ellipsizeMode="tail" numberOfLines={1}>
               {artwork?.artistNames}
             </Text>

@@ -2,6 +2,7 @@ upcoming:
   version: 6.9.4
   date: TBD
   dev:
+    - OrderDetails with headInfo - alexj105
     - OrderDetails with ArtInfo and ShipsTo - alexj105
     - Improve admin menu - dzmitry
     - Use app links on android - mounir

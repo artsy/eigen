@@ -8,11 +8,12 @@ import { SectionList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ArtworkInfoSectionFragmentContainer } from "../OrderDetails/ArtworkInfoSection"
-import { OrderDetailsContainer, OrderDetailsPlaceholder, OrderDetailsQueryRender } from "../OrderDetails/OrderDetails"
-import { CreditCardSummaryItemFragmentContainer } from "../OrderDetails/OrderDetailsPayment"
-import { ShipsToSectionFragmentContainer } from "../OrderDetails/ShipsToSection"
-import { SummarySectionFragmentContainer } from "../OrderDetails/SummarySection"
+import { ArtworkInfoSectionFragmentContainer } from "../Components/ArtworkInfoSection"
+import { OrderDetailsContainer, OrderDetailsPlaceholder, OrderDetailsQueryRender } from "../Components/OrderDetails"
+import { OrderDetailsHeader } from "../Components/OrderDetailsHeader"
+import { CreditCardSummaryItemFragmentContainer } from "../Components/OrderDetailsPayment"
+import { ShipsToSectionFragmentContainer } from "../Components/ShipsToSection"
+import { SummarySectionFragmentContainer } from "../Components/SummarySection"
 
 jest.unmock("react-relay")
 
@@ -100,6 +101,7 @@ describe(OrderDetailsQueryRender, () => {
     expect(tree.root.findByType(SummarySectionFragmentContainer)).toBeTruthy()
     expect(tree.root.findByType(CreditCardSummaryItemFragmentContainer)).toBeTruthy()
     expect(tree.root.findByType(ShipsToSectionFragmentContainer)).toBeTruthy()
+    expect(tree.root.findByType(OrderDetailsHeader)).toBeTruthy()
   })
 
   it("renders without throwing an error", () => {

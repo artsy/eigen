@@ -9,6 +9,7 @@ import React from "react"
 import { SectionList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
+import { OrderDetailsHeader } from "./OrderDetailsHeader"
 import { CreditCardSummaryItemFragmentContainer } from "./OrderDetailsPayment"
 import { ShipsToSectionFragmentContainer } from "./ShipsToSection"
 import { SummarySectionFragmentContainer } from "./SummarySection"
@@ -19,12 +20,16 @@ export interface OrderDetailsProps {
 }
 interface SectionListItem {
   key: string
-  title: string
+  title?: string
   data: readonly JSX.Element[]
 }
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
   const DATA: SectionListItem[] = [
+    {
+      key: "OrderDetailsHeader",
+      data: [<OrderDetailsHeader info={order} />],
+    },
     {
       key: "Artwork_Info",
       title: "Artwork Info",
@@ -50,8 +55,8 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
   return (
     <PageWithSimpleHeader title="Order Details">
       <SectionList
-        initialNumToRender={12}
-        contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20 }}
+        initialNumToRender={15}
+        contentContainerStyle={{ paddingHorizontal: 20, marginTop: 20, paddingBottom: 25 }}
         sections={DATA}
         keyExtractor={(item, index) => item.key + index.toString()}
         renderItem={({ item }) => (
@@ -60,19 +65,20 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
           </Flex>
         )}
         stickySectionHeadersEnabled={false}
-        renderSectionHeader={({ section: { title } }) => (
-          <Box>
-            <Text variant="mediumText">{title}</Text>
-          </Box>
-        )}
+        renderSectionHeader={({ section: { title } }) =>
+          title ? (
+            <Box>
+              <Text mt={20} mb={10} variant="mediumText">
+                {title}
+              </Text>
+            </Box>
+          ) : null
+        }
         SectionSeparatorComponent={(data) => (
           <Box
             height={!!data.leadingItem && !!data.trailingSection ? 2 : 0}
             marginTop={data.leadingItem && data.trailingSection ? 20 : 0}
             backgroundColor="black10"
-            style={{
-              marginVertical: 20,
-            }}
             flexDirection="column"
             justifyContent="center"
             alignItems="center"
@@ -142,9 +148,7 @@ export const OrderDetailsPlaceholder: React.FC<{}> = () => (
 export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
   order: graphql`
     fragment OrderDetails_order on CommerceOrder {
-      internalID
-      code
-      state
+      ...OrderDetailsHeader_info @relay(mask: false)
       ...ArtworkInfoSection_artwork
       ...SummarySection_section
       ...OrderDetailsPayment_order
@@ -152,7 +156,6 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
     }
   `,
 })
-
 export const OrderDetailsQueryRender: React.FC<{ orderID: string }> = ({ orderID: orderID }) => {
   return (
     <QueryRenderer<OrderDetailsQuery>
