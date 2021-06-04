@@ -152,7 +152,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     `,
       variables: {
         input: {
-          artistID: artist.slug,
+          artistID: artist.internalID,
           ...input,
         }
       },
