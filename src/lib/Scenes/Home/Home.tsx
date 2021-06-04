@@ -1,5 +1,5 @@
-import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
-import { Alert, Platform, RefreshControl, View, ViewProps } from "react-native"
+import React, { createRef, RefObject, useContext, useEffect, useRef, useState } from "react"
+import { Alert, Platform, RefreshControl, Text, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
@@ -18,6 +18,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { compact, drop, flatten, times, zip } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "palette"
 
+import { SplitContext, SplitTreatments, useClient } from "@splitsoftware/splitio-react"
 import { Home_featured } from "__generated__/Home_featured.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
@@ -46,6 +47,8 @@ const Home = (props: Props) => {
   const auctionResultsModule = {} // !!! FIX TYPE
 
   const auctionResultsEchoFlag = useFeatureFlag("ARAuctionResults")
+
+  const { client } = useContext(SplitContext)
 
   const artworkRails = artworkModules.map(
     (module) =>
@@ -174,6 +177,18 @@ const Home = (props: Props) => {
               <Box mb={1} mt={2}>
                 <Flex alignItems="center">
                   <ArtsyLogoIcon scale={0.75} />
+                  <ArtsyLogoIcon scale={0.75} />
+                  <SplitTreatments names={["test", "Eigen-test"]}>
+                    {({ treatments, isReady }) => {
+                      // Passes down a TreatmentsWithConfig object and SplitContext properties like the boolean `isReady` flag.
+                      return isReady ? (
+                        // this.renderContent(treatments[featureName]) : // Use the treatments and configs.
+                        <Text>ready: {treatments["Eigen-test"].treatment}</Text>
+                      ) : (
+                        <Text>waiting</Text>
+                      )
+                    }}
+                  </SplitTreatments>
                 </Flex>
                 <Spacer mb="15px" />
                 <HomeHeroContainer homePage={homePage} />
