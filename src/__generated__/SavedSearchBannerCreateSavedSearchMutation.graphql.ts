@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3842c737387a99e03f0d577d6430f91b */
+/* @relayHash 2d4ce3cc3701a50d6da342637f2e179c */
 
 import { ConcreteRequest } from "relay-runtime";
 export type CreateSavedSearchInput = {
@@ -31,25 +31,25 @@ export type SearchCriteriaAttributes = {
     widthMax?: number | null;
     widthMin?: number | null;
 };
-export type ArtistArtworksContainerCreateSavedSearchMutationVariables = {
+export type SavedSearchBannerCreateSavedSearchMutationVariables = {
     input: CreateSavedSearchInput;
 };
-export type ArtistArtworksContainerCreateSavedSearchMutationResponse = {
+export type SavedSearchBannerCreateSavedSearchMutationResponse = {
     readonly createSavedSearch: {
         readonly savedSearchOrErrors: {
             readonly internalID?: string;
         };
     } | null;
 };
-export type ArtistArtworksContainerCreateSavedSearchMutation = {
-    readonly response: ArtistArtworksContainerCreateSavedSearchMutationResponse;
-    readonly variables: ArtistArtworksContainerCreateSavedSearchMutationVariables;
+export type SavedSearchBannerCreateSavedSearchMutation = {
+    readonly response: SavedSearchBannerCreateSavedSearchMutationResponse;
+    readonly variables: SavedSearchBannerCreateSavedSearchMutationVariables;
 };
 
 
 
 /*
-mutation ArtistArtworksContainerCreateSavedSearchMutation(
+mutation SavedSearchBannerCreateSavedSearchMutation(
   $input: CreateSavedSearchInput!
 ) {
   createSavedSearch(input: $input) {
@@ -97,7 +97,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "ArtistArtworksContainerCreateSavedSearchMutation",
+    "name": "SavedSearchBannerCreateSavedSearchMutation",
     "selections": [
       {
         "alias": null,
@@ -130,7 +130,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "ArtistArtworksContainerCreateSavedSearchMutation",
+    "name": "SavedSearchBannerCreateSavedSearchMutation",
     "selections": [
       {
         "alias": null,
@@ -165,13 +165,13 @@ return {
     ]
   },
   "params": {
-    "id": "3842c737387a99e03f0d577d6430f91b",
+    "id": "2d4ce3cc3701a50d6da342637f2e179c",
     "metadata": {},
-    "name": "ArtistArtworksContainerCreateSavedSearchMutation",
+    "name": "SavedSearchBannerCreateSavedSearchMutation",
     "operationKind": "mutation",
     "text": null
   }
 };
 })();
-(node as any).hash = '7bb63934512b019e56e62d406910e6a6';
+(node as any).hash = 'ec74f515330205f5267cbaee00cf40f3';
 export default node;
