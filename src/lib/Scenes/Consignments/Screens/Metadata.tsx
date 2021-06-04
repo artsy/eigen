@@ -88,20 +88,33 @@ export default class Metadata extends React.Component<Props, State> {
   updateTitle = (title) => this.setState({ title })
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateYear = (year) => {
-    const value = year.replace(/[^0-9]/g, "")
     if (year.length > 4) {
       return
     }
+    const value = year.replace(/[^0-9]/g, "")
+
     return this.setState({ year: value })
   }
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateMedium = (medium) => this.setState({ medium })
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  updateWidth = (width) => this.setState({ width })
+  updateWidth = (width) => {
+    const value = width.match(/\d*[\.\,]?\d*/g)
+
+    return this.setState({ width: value[0] })
+  }
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  updateHeight = (height) => this.setState({ height })
+  updateHeight = (height) => {
+    const value = height.match(/\d*[\.\,]?\d*/g)
+
+    return this.setState({ height: value[0] })
+  }
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  updateDepth = (depth) => this.setState({ depth })
+  updateDepth = (depth) => {
+    const value = depth.match(/\d*[\.\,]?\d*/g)
+
+    return this.setState({ depth: value[0] })
+  }
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   changeCategoryValue = (_value, index) => {
