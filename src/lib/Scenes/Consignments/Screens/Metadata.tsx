@@ -85,7 +85,11 @@ export default class Metadata extends React.Component<Props, State> {
 
   updateUnit = () => this.setState({ unit: this.state.unit === "CM" ? "IN" : "CM" })
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  updateTitle = (title) => this.setState({ title })
+  updateTitle = (title) => {
+    const value = title.replace(/^ +/gm, "")
+
+    return this.setState({ title: value })
+  }
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateYear = (year) => {
     if (year.length > 4) {
@@ -96,7 +100,11 @@ export default class Metadata extends React.Component<Props, State> {
     return this.setState({ year: value })
   }
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  updateMedium = (medium) => this.setState({ medium })
+  updateMedium = (medium) => {
+    const value = medium.replace(/^ +/gm, "")
+
+    return this.setState({ medium: value })
+  }
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateWidth = (width) => {
     const value = width.match(/\d*[\.\,]?\d*/g)
