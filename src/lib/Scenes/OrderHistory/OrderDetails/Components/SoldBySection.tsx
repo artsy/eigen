@@ -10,22 +10,17 @@ interface Props {
 }
 
 export const SoldBySection: React.FC<Props> = ({ soldBy }) => {
-  const artworkItem = extractNodes(soldBy.lineItems)[0].artwork
-  if (!artworkItem) {
+  const fulfillments = extractNodes(soldBy.lineItems)[0].fulfillments[0]
+  if (!soldBy) {
     return null
   }
 
   return (
-    <Flex style={{ flexDirection: "column", justifyContent: "space-between" }}>
-      <Box display="flex" flexDirection="row">
-        <Text variant="text" color="black60">
-          {!!artworkItem?.shippingOrigin && artworkItem?.shippingOrigin.replace(/, US/g, "")}
-        </Text>
-      </Box>
-      <Text testID="country" variant="text">
-        Estimated Delivery:
+    <Box flexDirection="column" justifyContent="space-between">
+      <Text testID="delivery" variant="text">
+        Estimated Delivery: {fulfillments.trackingId}
       </Text>
-    </Flex>
+    </Box>
   )
 }
 
@@ -35,19 +30,11 @@ export const SoldBySectionFragmentContainer = createFragmentContainer(SoldBySect
       lineItems(first: 1) {
         edges {
           node {
-            fulfillments {
+            fulfillments(first: 1) {
               edges {
                 node {
-                  courier
                   trackingId
-                  estimatedDelivery(format: "MMM Do, YYYY")
                 }
-              }
-            }
-            artwork {
-              shippingOrigin
-              partner {
-                name
               }
             }
           }

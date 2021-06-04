@@ -11,17 +11,9 @@ export type SoldBySection_soldBy = {
                 readonly fulfillments: {
                     readonly edges: ReadonlyArray<{
                         readonly node: {
-                            readonly courier: string;
                             readonly trackingId: string | null;
-                            readonly estimatedDelivery: string | null;
                         } | null;
                     } | null> | null;
-                } | null;
-                readonly artwork: {
-                    readonly shippingOrigin: string | null;
-                    readonly partner: {
-                        readonly name: string | null;
-                    } | null;
                 } | null;
             } | null;
         } | null> | null;
@@ -36,7 +28,15 @@ export type SoldBySection_soldBy$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 1
+  }
+];
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -44,13 +44,7 @@ const node: ReaderFragment = {
   "selections": [
     {
       "alias": null,
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "first",
-          "value": 1
-        }
-      ],
+      "args": (v0/*: any*/),
       "concreteType": "CommerceLineItemConnection",
       "kind": "LinkedField",
       "name": "lineItems",
@@ -74,7 +68,7 @@ const node: ReaderFragment = {
               "selections": [
                 {
                   "alias": null,
-                  "args": null,
+                  "args": (v0/*: any*/),
                   "concreteType": "CommerceFulfillmentConnection",
                   "kind": "LinkedField",
                   "name": "fulfillments",
@@ -100,28 +94,8 @@ const node: ReaderFragment = {
                               "alias": null,
                               "args": null,
                               "kind": "ScalarField",
-                              "name": "courier",
-                              "storageKey": null
-                            },
-                            {
-                              "alias": null,
-                              "args": null,
-                              "kind": "ScalarField",
                               "name": "trackingId",
                               "storageKey": null
-                            },
-                            {
-                              "alias": null,
-                              "args": [
-                                {
-                                  "kind": "Literal",
-                                  "name": "format",
-                                  "value": "MMM Do, YYYY"
-                                }
-                              ],
-                              "kind": "ScalarField",
-                              "name": "estimatedDelivery",
-                              "storageKey": "estimatedDelivery(format:\"MMM Do, YYYY\")"
                             }
                           ],
                           "storageKey": null
@@ -130,43 +104,7 @@ const node: ReaderFragment = {
                       "storageKey": null
                     }
                   ],
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "Artwork",
-                  "kind": "LinkedField",
-                  "name": "artwork",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "shippingOrigin",
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "concreteType": "Partner",
-                      "kind": "LinkedField",
-                      "name": "partner",
-                      "plural": false,
-                      "selections": [
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "name",
-                          "storageKey": null
-                        }
-                      ],
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
+                  "storageKey": "fulfillments(first:1)"
                 }
               ],
               "storageKey": null
@@ -181,5 +119,6 @@ const node: ReaderFragment = {
   "type": "CommerceOrder",
   "abstractKey": "__isCommerceOrder"
 };
-(node as any).hash = 'fcdc5eee656c52d7dd5a078df71c7e25';
+})();
+(node as any).hash = '61785d5e278d3ef028b87cdc6a7d6293';
 export default node;

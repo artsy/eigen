@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 910bbca7e009a462de0f054b68b139d8 */
+/* @relayHash 7bcada5bd2cfa2f37d99bae8211e33cb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -113,23 +113,13 @@ fragment SoldBySection_soldBy on CommerceOrder {
   lineItems(first: 1) {
     edges {
       node {
-        fulfillments {
+        fulfillments(first: 1) {
           edges {
             node {
-              courier
               trackingId
-              estimatedDelivery(format: "MMM Do, YYYY")
               id
             }
           }
-        }
-        artwork {
-          shippingOrigin
-          partner {
-            name
-            id
-          }
-          id
         }
         id
       }
@@ -160,16 +150,23 @@ v2 = {
   "name": "__typename",
   "storageKey": null
 },
-v3 = {
+v3 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 1
+  }
+],
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v4 = [
+v5 = [
   (v1/*: any*/),
-  (v3/*: any*/)
+  (v4/*: any*/)
 ];
 return {
   "fragment": {
@@ -231,13 +228,7 @@ return {
           },
           {
             "alias": null,
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 1
-              }
-            ],
+            "args": (v3/*: any*/),
             "concreteType": "CommerceLineItemConnection",
             "kind": "LinkedField",
             "name": "lineItems",
@@ -274,10 +265,10 @@ return {
                             "kind": "LinkedField",
                             "name": "partner",
                             "plural": false,
-                            "selections": (v4/*: any*/),
+                            "selections": (v5/*: any*/),
                             "storageKey": null
                           },
-                          (v3/*: any*/),
+                          (v4/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -361,21 +352,14 @@ return {
                             "kind": "ScalarField",
                             "name": "artistNames",
                             "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "shippingOrigin",
-                            "storageKey": null
                           }
                         ],
                         "storageKey": null
                       },
-                      (v3/*: any*/),
+                      (v4/*: any*/),
                       {
                         "alias": null,
-                        "args": null,
+                        "args": (v3/*: any*/),
                         "concreteType": "CommerceFulfillmentConnection",
                         "kind": "LinkedField",
                         "name": "fulfillments",
@@ -401,30 +385,10 @@ return {
                                     "alias": null,
                                     "args": null,
                                     "kind": "ScalarField",
-                                    "name": "courier",
-                                    "storageKey": null
-                                  },
-                                  {
-                                    "alias": null,
-                                    "args": null,
-                                    "kind": "ScalarField",
                                     "name": "trackingId",
                                     "storageKey": null
                                   },
-                                  {
-                                    "alias": null,
-                                    "args": [
-                                      {
-                                        "kind": "Literal",
-                                        "name": "format",
-                                        "value": "MMM Do, YYYY"
-                                      }
-                                    ],
-                                    "kind": "ScalarField",
-                                    "name": "estimatedDelivery",
-                                    "storageKey": "estimatedDelivery(format:\"MMM Do, YYYY\")"
-                                  },
-                                  (v3/*: any*/)
+                                  (v4/*: any*/)
                                 ],
                                 "storageKey": null
                               }
@@ -432,7 +396,7 @@ return {
                             "storageKey": null
                           }
                         ],
-                        "storageKey": null
+                        "storageKey": "fulfillments(first:1)"
                       }
                     ],
                     "storageKey": null
@@ -525,7 +489,7 @@ return {
             "name": "code",
             "storageKey": null
           },
-          (v3/*: any*/)
+          (v4/*: any*/)
         ],
         "storageKey": "commerceOrder(id:\"order-id\")"
       },
@@ -536,13 +500,13 @@ return {
         "kind": "LinkedField",
         "name": "me",
         "plural": false,
-        "selections": (v4/*: any*/),
+        "selections": (v5/*: any*/),
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "910bbca7e009a462de0f054b68b139d8",
+    "id": "7bcada5bd2cfa2f37d99bae8211e33cb",
     "metadata": {},
     "name": "OrderDetailsTestsQuery",
     "operationKind": "query",

@@ -12,7 +12,7 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
 import { OrderDetailsHeader } from "./OrderDetailsHeader"
 import { ShipsToSectionFragmentContainer } from "./ShipsToSection"
-import { SoldBySection, SoldBySectionFragmentContainer } from "./SoldBySection"
+import { SoldBySectionFragmentContainer } from "./SoldBySection"
 
 export interface OrderDetailsProps {
   order: OrderDetails_order

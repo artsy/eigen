@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 965de0146b1fee5f2d680a66c1da689c */
+/* @relayHash 031a9a535a3ceb5d6a55d6d77c0a305b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -32,23 +32,13 @@ fragment SoldBySection_soldBy on CommerceOrder {
   lineItems(first: 1) {
     edges {
       node {
-        fulfillments {
+        fulfillments(first: 1) {
           edges {
             node {
-              courier
               trackingId
-              estimatedDelivery(format: "MMM Do, YYYY")
               id
             }
           }
-        }
-        artwork {
-          shippingOrigin
-          partner {
-            name
-            id
-          }
-          id
         }
         id
       }
@@ -65,30 +55,31 @@ var v0 = [
     "value": "some-id"
   }
 ],
-v1 = {
+v1 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 1
+  }
+],
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v2 = {
-  "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "String"
-},
 v3 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
-  "type": "ID"
+  "type": "String"
 },
 v4 = {
   "enumValues": null,
-  "nullable": true,
+  "nullable": false,
   "plural": false,
-  "type": "String"
+  "type": "ID"
 };
 return {
   "fragment": {
@@ -144,13 +135,7 @@ return {
           },
           {
             "alias": null,
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 1
-              }
-            ],
+            "args": (v1/*: any*/),
             "concreteType": "CommerceLineItemConnection",
             "kind": "LinkedField",
             "name": "lineItems",
@@ -174,7 +159,7 @@ return {
                     "selections": [
                       {
                         "alias": null,
-                        "args": null,
+                        "args": (v1/*: any*/),
                         "concreteType": "CommerceFulfillmentConnection",
                         "kind": "LinkedField",
                         "name": "fulfillments",
@@ -200,30 +185,10 @@ return {
                                     "alias": null,
                                     "args": null,
                                     "kind": "ScalarField",
-                                    "name": "courier",
-                                    "storageKey": null
-                                  },
-                                  {
-                                    "alias": null,
-                                    "args": null,
-                                    "kind": "ScalarField",
                                     "name": "trackingId",
                                     "storageKey": null
                                   },
-                                  {
-                                    "alias": null,
-                                    "args": [
-                                      {
-                                        "kind": "Literal",
-                                        "name": "format",
-                                        "value": "MMM Do, YYYY"
-                                      }
-                                    ],
-                                    "kind": "ScalarField",
-                                    "name": "estimatedDelivery",
-                                    "storageKey": "estimatedDelivery(format:\"MMM Do, YYYY\")"
-                                  },
-                                  (v1/*: any*/)
+                                  (v2/*: any*/)
                                 ],
                                 "storageKey": null
                               }
@@ -231,47 +196,9 @@ return {
                             "storageKey": null
                           }
                         ],
-                        "storageKey": null
+                        "storageKey": "fulfillments(first:1)"
                       },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "Artwork",
-                        "kind": "LinkedField",
-                        "name": "artwork",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "shippingOrigin",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Partner",
-                            "kind": "LinkedField",
-                            "name": "partner",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "name",
-                                "storageKey": null
-                              },
-                              (v1/*: any*/)
-                            ],
-                            "storageKey": null
-                          },
-                          (v1/*: any*/)
-                        ],
-                        "storageKey": null
-                      },
-                      (v1/*: any*/)
+                      (v2/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -281,14 +208,14 @@ return {
             ],
             "storageKey": "lineItems(first:1)"
           },
-          (v1/*: any*/)
+          (v2/*: any*/)
         ],
         "storageKey": "commerceOrder(id:\"some-id\")"
       }
     ]
   },
   "params": {
-    "id": "965de0146b1fee5f2d680a66c1da689c",
+    "id": "031a9a535a3ceb5d6a55d6d77c0a305b",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "commerceOrder": {
@@ -297,9 +224,9 @@ return {
           "plural": false,
           "type": "CommerceOrder"
         },
-        "commerceOrder.__isCommerceOrder": (v2/*: any*/),
-        "commerceOrder.__typename": (v2/*: any*/),
-        "commerceOrder.id": (v3/*: any*/),
+        "commerceOrder.__isCommerceOrder": (v3/*: any*/),
+        "commerceOrder.__typename": (v3/*: any*/),
+        "commerceOrder.id": (v4/*: any*/),
         "commerceOrder.lineItems": {
           "enumValues": null,
           "nullable": true,
@@ -318,22 +245,6 @@ return {
           "plural": false,
           "type": "CommerceLineItem"
         },
-        "commerceOrder.lineItems.edges.node.artwork": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Artwork"
-        },
-        "commerceOrder.lineItems.edges.node.artwork.id": (v3/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.partner": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Partner"
-        },
-        "commerceOrder.lineItems.edges.node.artwork.partner.id": (v3/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.partner.name": (v4/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.shippingOrigin": (v4/*: any*/),
         "commerceOrder.lineItems.edges.node.fulfillments": {
           "enumValues": null,
           "nullable": true,
@@ -352,11 +263,14 @@ return {
           "plural": false,
           "type": "CommerceFulfillment"
         },
-        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.courier": (v2/*: any*/),
-        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.estimatedDelivery": (v4/*: any*/),
-        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.id": (v3/*: any*/),
-        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.trackingId": (v4/*: any*/),
-        "commerceOrder.lineItems.edges.node.id": (v3/*: any*/)
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.id": (v4/*: any*/),
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.trackingId": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "String"
+        },
+        "commerceOrder.lineItems.edges.node.id": (v4/*: any*/)
       }
     },
     "name": "SoldBySectionTestsQuery",

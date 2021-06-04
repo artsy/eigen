@@ -43,7 +43,7 @@ describe("SoldBySection", () => {
                   edges: [
                     {
                       node: {
-                        createdAt: "asd",
+                        fulfillments: "May 14",
                       },
                     },
                   ],
@@ -55,16 +55,6 @@ describe("SoldBySection", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "date" }).props.children).toBe("2017")
-    expect(tree.findByProps({ testID: "medium" }).props.children).toBe("Rayon thread on poly twill backed")
-
-    expect(tree.findByProps({ testID: "title" }).props.children).toBe(
-      "Set of Six (Six) Scout Series Embroidered Patches, "
-    )
-    expect(tree.findByProps({ testID: "image" }).props.source).toStrictEqual({
-      uri: "https://homepages.cae.wisc.edu/~ece533/images/airplane.png",
-    })
-    expect(tree.findByProps({ testID: "artistNames" }).props.children).toBe("Kerry James Marshall")
-    expect(tree.findByProps({ testID: "editionOf" }).props.children).toBe("edit of 30")
+    expect(tree.findByProps({ testID: "delivery" }).props.children).toBe("May 14")
   })
 })
