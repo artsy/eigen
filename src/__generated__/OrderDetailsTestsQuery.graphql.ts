@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 53fe33e4516a3309f845cb24109ac05a */
+/* @relayHash 10fbfafde07a6c9ceb06c9c82a3b7579 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -83,8 +83,9 @@ fragment OrderDetails_order on CommerceOrder {
   }
   code
   ...ArtworkInfoSection_artwork
-  ...ShipsToSection_address
+  ...SummarySection_section
   ...OrderDetailsPayment_order
+  ...ShipsToSection_address
 }
 
 fragment ShipsToSection_address on CommerceOrder {
@@ -101,6 +102,14 @@ fragment ShipsToSection_address on CommerceOrder {
       region
     }
   }
+}
+
+fragment SummarySection_section on CommerceOrder {
+  __isCommerceOrder: __typename
+  buyerTotal(precision: 2)
+  taxTotal(precision: 2)
+  shippingTotal(precision: 2)
+  totalListPrice(precision: 2)
 }
 */
 
@@ -132,7 +141,14 @@ v3 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-};
+},
+v4 = [
+  {
+    "kind": "Literal",
+    "name": "precision",
+    "value": 2
+  }
+];
 return {
   "fragment": {
     "argumentDefinitions": [],
@@ -411,6 +427,34 @@ return {
           },
           {
             "alias": null,
+            "args": (v4/*: any*/),
+            "kind": "ScalarField",
+            "name": "buyerTotal",
+            "storageKey": "buyerTotal(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": (v4/*: any*/),
+            "kind": "ScalarField",
+            "name": "taxTotal",
+            "storageKey": "taxTotal(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": (v4/*: any*/),
+            "kind": "ScalarField",
+            "name": "shippingTotal",
+            "storageKey": "shippingTotal(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": (v4/*: any*/),
+            "kind": "ScalarField",
+            "name": "totalListPrice",
+            "storageKey": "totalListPrice(precision:2)"
+          },
+          {
+            "alias": null,
             "args": null,
             "concreteType": "CreditCard",
             "kind": "LinkedField",
@@ -455,7 +499,7 @@ return {
     ]
   },
   "params": {
-    "id": "53fe33e4516a3309f845cb24109ac05a",
+    "id": "10fbfafde07a6c9ceb06c9c82a3b7579",
     "metadata": {},
     "name": "OrderDetailsTestsQuery",
     "operationKind": "query",

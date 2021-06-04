@@ -78,6 +78,21 @@ describe("Events", () => {
     })
   })
 
+  it("returns correct articles events", () => {
+    const artistThumbnailTapEvent = HomeAnalytics.articleThumbnailTapEvent("article-id", "article-slug", 1)
+    expect(artistThumbnailTapEvent).toEqual({
+      action: Analytics.ActionType.tappedArticleGroup,
+      context_module: Analytics.ContextModule.articleRail,
+      context_screen_owner_type: "home",
+      destination_screen_owner_id: "article-id",
+      destination_screen_owner_slug: "article-slug",
+      destination_screen_owner_type: "article",
+      module_height: "double",
+      type: "thumbnail",
+      horizontal_slide_position: 1,
+    })
+  })
+
   it("returns correct fairs events", () => {
     const fairThumbnailTapEvent = HomeAnalytics.fairThumbnailTapEvent("fair-id", "fair-slug")
     expect(fairThumbnailTapEvent).toEqual({

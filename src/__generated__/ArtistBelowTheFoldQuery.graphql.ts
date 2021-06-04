@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f4849acfd7fd7bcb48aadb67980feada */
+/* @relayHash ccad9616033e93c95b04e7df7cee5cd3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,21 +31,22 @@ query ArtistBelowTheFoldQuery(
   }
 }
 
-fragment Article_article on Article {
-  thumbnail_title: thumbnailTitle
-  href
+fragment ArticleCard_article on Article {
   author {
     name
     id
   }
-  thumbnail_image: thumbnailImage {
+  href
+  thumbnailImage {
     url(version: "large")
   }
+  thumbnailTitle
+  vertical
 }
 
 fragment Articles_articles on Article {
   id
-  ...Article_article
+  ...ArticleCard_article
 }
 
 fragment ArtistAboutShows_artist on Artist {
@@ -1231,14 +1232,6 @@ return {
                     "selections": [
                       (v10/*: any*/),
                       {
-                        "alias": "thumbnail_title",
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "thumbnailTitle",
-                        "storageKey": null
-                      },
-                      (v17/*: any*/),
-                      {
                         "alias": null,
                         "args": null,
                         "concreteType": "Author",
@@ -1248,14 +1241,29 @@ return {
                         "selections": (v20/*: any*/),
                         "storageKey": null
                       },
+                      (v17/*: any*/),
                       {
-                        "alias": "thumbnail_image",
+                        "alias": null,
                         "args": null,
                         "concreteType": "Image",
                         "kind": "LinkedField",
                         "name": "thumbnailImage",
                         "plural": false,
                         "selections": (v18/*: any*/),
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "thumbnailTitle",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "vertical",
                         "storageKey": null
                       }
                     ],
@@ -1539,7 +1547,7 @@ return {
     ]
   },
   "params": {
-    "id": "f4849acfd7fd7bcb48aadb67980feada",
+    "id": "ccad9616033e93c95b04e7df7cee5cd3",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",
