@@ -1,5 +1,6 @@
 import { ArticlesRail_articlesConnection } from "__generated__/ArticlesRail_articlesConnection.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spacer } from "palette"
 import React from "react"
@@ -26,7 +27,14 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ articlesConnection }
   return (
     <Flex>
       <Flex mx={2}>
-        <SectionTitle title="Market news" />
+        <SectionTitle
+          title="Market News"
+          onPress={() => {
+            // TODO
+            // tracking.trackEvent(HomeAnalytics.auctionHeaderTapEvent())
+            navigate("/articles")
+          }}
+        />
       </Flex>
       <Flex>
         <FlatList
@@ -42,6 +50,7 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ articlesConnection }
                 tracking.trackEvent(tapEvent)
               }}
               article={item}
+              isRailCard={true}
             />
           )}
         />

@@ -1,7 +1,7 @@
 import { tappedTabBar } from "@artsy/cohesion"
 import { PopIn } from "lib/Components/PopIn"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { switchTab } from "lib/navigation/navigate"
+import { navigate, switchTab } from "lib/navigation/navigate"
 import { unsafe__getSelectedTab, useSelectedTab } from "lib/store/GlobalStore"
 import { color, Sans } from "palette"
 import React, { useEffect, useRef, useState } from "react"
@@ -37,6 +37,11 @@ export const BottomTabsButton: React.FC<{
   const tracking = useTracking()
 
   const onPress = () => {
+    if (tab === "search") {
+      navigate("/articles")
+      return
+    }
+
     if (tab === unsafe__getSelectedTab()) {
       LegacyNativeModules.ARScreenPresenterModule.popToRootOrScrollToTop(tab)
     } else {
