@@ -9,7 +9,6 @@ import {
   prepareFilterParamsForSaveSearchInput,
   selectedOption,
 } from "../ArtworkFilterHelpers"
-import { FilterArtworkSize } from '../Filters/helpers'
 
 describe("changedFiltersParams helper", () => {
   it("when a medium selection changed and sort selection unchanged", () => {
@@ -835,7 +834,7 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
       {
         displayText: "Large (over 100cm)",
         paramName: FilterParamName.dimensionRange,
-        paramValue: FilterArtworkSize.Large,
+        paramValue: "40.0-*",
       },
       {
         displayText: "Limited Edition",

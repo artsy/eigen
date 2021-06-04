@@ -3,13 +3,6 @@ import { isNull, isUndefined, round as __round__ } from "lodash"
 
 type Numeric = "*" | number
 type Unit = "in" | "cm"
-export enum FilterArtworkSize {
-  All = "*-*",
-  Small = "*-16.0",
-  Medium = "16.0-40.0",
-  Large = "40.0-*",
-  Custom = "0-*",
-}
 
 export interface Range {
   min: Numeric
