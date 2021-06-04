@@ -87,7 +87,13 @@ export default class Metadata extends React.Component<Props, State> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateTitle = (title) => this.setState({ title })
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  updateYear = (year) => this.setState({ year })
+  updateYear = (year) => {
+    const value = year.replace(/[^0-9]/g, "")
+    if (year.length > 4) {
+      return
+    }
+    return this.setState({ year: value })
+  }
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateMedium = (medium) => this.setState({ medium })
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -149,6 +155,7 @@ export default class Metadata extends React.Component<Props, State> {
                     value: this.state.year,
                     onSubmitEditing: this.selectNextInput,
                     ref: (component) => (this.yearInput = component),
+                    keyboardType: "numeric",
                     returnKeyType: "next",
                   }}
                   style={{ margin: 10 }}
