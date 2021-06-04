@@ -92,6 +92,22 @@ const mockEditionsResolver = {
   }),
 }
 
+const mockSingleEditionResolver = {
+  Artwork: () => ({
+    title: "test-single-edition-artwork",
+    isEdition: true,
+    editionSets: [
+      {
+        internalID: "edition-1",
+        isOfferableFromInquiry: true,
+        listPrice: {
+          display: "€100",
+        },
+      },
+    ],
+  }),
+}
+
 const getWrapper = (mockResolvers = mockResolver, renderer = renderComponent) => {
   const tree = renderWithWrappers(<TestRenderer renderer={renderer} />)
   act(() => {
@@ -138,6 +154,13 @@ describe("<MakeOfferModal />", () => {
       const confirmBtn = wrapper.root.findByType(InquiryMakeOfferButton)
       expect(confirmBtn.props.disabled).toBeTruthy()
     })
+
+    it("doesn't disable the confirm button if an editioned work only has one edition", () => {
+      const wrapper = getWrapper(mockSingleEditionResolver)
+      const confirmBtn = wrapper.root.findByType(InquiryMakeOfferButton)
+      expect(confirmBtn.props.disabled).toBeFalsy()
+    })
+
     it("shows unavailable editions as unavailable and doesn't allow selection", async () => {
       const wrapper = getWrapper(mockEditionsResolver)
       const selection = wrapper.root

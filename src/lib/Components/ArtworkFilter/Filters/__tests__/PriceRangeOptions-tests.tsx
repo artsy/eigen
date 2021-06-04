@@ -1,59 +1,56 @@
-import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { Input } from "lib/Components/Input/Input"
+import { TouchableRow } from "lib/Components/TouchableRow"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { RadioDot } from "palette"
 import React from "react"
-import { ReactTestRenderer } from "react-test-renderer"
-import { PriceRangeOptionsScreen } from "../PriceRangeOptions"
-import { InnerOptionListItem, OptionListItem } from "../SingleSelectOption"
+import { Text } from "react-native"
+import { act } from "react-test-renderer"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider, useSelectedOptionsDisplay } from "../../ArtworkFilterStore"
+import { CustomPriceInput, PriceRangeOptionsScreen } from "../PriceRangeOptions"
 import { getEssentialProps } from "./helper"
 
-const aggregations: Aggregations = [
-  {
-    slice: "PRICE_RANGE",
-    counts: [
-      {
-        name: "for Sale",
-        count: 2028,
-        value: "*-*",
-      },
-      {
-        name: "between $10,000 & $50,000",
-        count: 598,
-        value: "10000-50000",
-      },
-      {
-        name: "between $1,000 & $5,000",
-        count: 544,
-        value: "1000-5000",
-      },
-      {
-        name: "Under $1,000",
-        count: 393,
-        value: "*-1000",
-      },
-      {
-        name: "between $5,000 & $10,000",
-        count: 251,
-        value: "5000-10000",
-      },
-      {
-        name: "over $50,000",
-        count: 233,
-        value: "50000-*",
-      },
-    ],
-  },
-]
+describe("CustomPriceInput", () => {
+  it("renders without error", () => {
+    const tree = renderWithWrappers(<CustomPriceInput onChange={jest.fn()} {...getEssentialProps()} />)
+    expect(extractText(tree.root)).toEqual("to")
+  })
 
-describe("Price Range Options Screen", () => {
-  const initialState: ArtworkFiltersState = {
+  it("renders the initialValue", () => {
+    const tree = renderWithWrappers(
+      <CustomPriceInput initialValue={{ min: 444, max: 99999 }} onChange={jest.fn()} {...getEssentialProps()} />
+    )
+    expect(extractText(tree.root)).toEqual("444to99999")
+  })
+
+  it("calls onChange with the min/max when either is updated", () => {
+    const handleChange = jest.fn()
+    const tree = renderWithWrappers(<CustomPriceInput onChange={handleChange} {...getEssentialProps()} />)
+
+    const [minInput, maxInput] = tree.root.findAllByType(Input)
+
+    act(() => {
+      minInput.props.onChangeText("777")
+    })
+
+    expect(handleChange).toHaveBeenCalledTimes(1)
+    expect(handleChange).toHaveBeenLastCalledWith({ min: 777, max: "*" })
+
+    act(() => {
+      maxInput.props.onChangeText("12345")
+    })
+
+    expect(handleChange).toHaveBeenCalledTimes(2)
+    expect(handleChange).toHaveBeenLastCalledWith({ min: 777, max: 12345 })
+  })
+})
+
+describe("PriceRangeOptions", () => {
+  const INITIAL_DATA: ArtworkFiltersState = {
     selectedFilters: [],
     appliedFilters: [],
     previouslyAppliedFilters: [],
     applyFilters: false,
-    aggregations,
+    aggregations: [],
     filterType: "artwork",
     counts: {
       total: null,
@@ -61,143 +58,57 @@ describe("Price Range Options Screen", () => {
     },
   }
 
-  const MockPriceRangeScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
+  const MockPriceRangeOptionsScreen = () => {
+    const selected = useSelectedOptionsDisplay()
     return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
+      <>
+        <Text>{JSON.stringify(selected)}</Text>
         <PriceRangeOptionsScreen {...getEssentialProps()} />
+      </>
+    )
+  }
+
+  const getTree = () => {
+    return renderWithWrappers(
+      <ArtworkFiltersStoreProvider initialData={INITIAL_DATA}>
+        <MockPriceRangeOptionsScreen />
       </ArtworkFiltersStoreProvider>
     )
   }
 
-  const selectedPriceRangeOption = (componentTree: ReactTestRenderer) => {
-    const innerOptions = componentTree.root.findAllByType(InnerOptionListItem)
-    const selectedOption = innerOptions.filter((item) => item.findByType(RadioDot).props.selected)[0]
-    return selectedOption
-  }
+  it("renders the options", () => {
+    const tree = getTree()
+    const text = extractText(tree.root)
 
-  it("renders the correct number of price range options", () => {
-    const tree = renderWithWrappers(<MockPriceRangeScreen initialData={initialState} />)
-    expect(tree.root.findAllByType(OptionListItem)).toHaveLength(6)
+    expect(text).toContain("All")
+    expect(text).toContain("$50,000+")
+    expect(text).toContain("$10,000–50,000")
+    expect(text).toContain("$5,000–10,000")
+    expect(text).toContain("$1,000–5,000")
+    expect(text).toContain("$0–1,000")
+    expect(text).toContain("Custom price")
   })
 
-  it("has an all option", () => {
-    const tree = renderWithWrappers(<MockPriceRangeScreen initialData={initialState} />)
-    const firstOption = tree.root.findAllByType(OptionListItem)[0]
-    expect(extractText(firstOption)).toContain("All")
-  })
+  it("dispatches a custom price", () => {
+    const tree = getTree()
+    const options = tree.root.findAllByType(TouchableRow)
+    const customPriceOption = options.find((node) => extractText(node) === "Custom price")!
 
-  it("renders price range options from most to least expensive", () => {
-    const tree = renderWithWrappers(<MockPriceRangeScreen initialData={initialState} />)
-    const options = tree.root.findAllByType(OptionListItem)
-    const renderedOptions = options.map(extractText)
-
-    expect(renderedOptions).toEqual(["All", "$50,000+", "$10,000-50,000", "$5,000-10,000", "$1000-5,000", "$0-1,000"])
-  })
-
-  describe("selectedPriceRangeOption", () => {
-    it("returns the default option if there are no selected or applied filters", () => {
-      const tree = renderWithWrappers(<MockPriceRangeScreen initialData={initialState} />)
-      const selectedOption = selectedPriceRangeOption(tree)
-      expect(extractText(selectedOption)).toContain("All")
+    // Tap the Custom price option to display the inputs
+    act(() => {
+      customPriceOption.props.onPress()
     })
 
-    it("prefers an applied filter over the default filter", () => {
-      const injectedState: ArtworkFiltersState = {
-        selectedFilters: [],
-        appliedFilters: [
-          {
-            displayText: "$5,000-10,000",
+    const [minInput, maxInput] = tree.root.findAllByType(Input)
 
-            paramName: FilterParamName.priceRange,
-            paramValue: "$5,000-10,000",
-          },
-        ],
-        previouslyAppliedFilters: [
-          {
-            displayText: "$5,000-10,000",
-
-            paramName: FilterParamName.priceRange,
-            paramValue: "$5,000-10,000",
-          },
-        ],
-        applyFilters: false,
-        aggregations,
-        filterType: "artwork",
-        counts: {
-          total: null,
-          followedArtists: null,
-        },
-      }
-
-      const tree = renderWithWrappers(<MockPriceRangeScreen initialData={injectedState} />)
-      const selectedOption = selectedPriceRangeOption(tree)
-      expect(extractText(selectedOption)).toContain("$5,000-10,000")
+    // Input min and max
+    act(() => {
+      minInput.props.onChangeText("1111")
+      maxInput.props.onChangeText("98765")
     })
 
-    it("prefers the selected filter over the default filter", () => {
-      const injectedState: ArtworkFiltersState = {
-        selectedFilters: [
-          {
-            displayText: "$5,000-10,000",
-
-            paramName: FilterParamName.priceRange,
-            paramValue: "$5,000-10,000",
-          },
-        ],
-        appliedFilters: [],
-        previouslyAppliedFilters: [],
-        applyFilters: false,
-        aggregations,
-        filterType: "artwork",
-        counts: {
-          total: null,
-          followedArtists: null,
-        },
-      }
-
-      const component = renderWithWrappers(<MockPriceRangeScreen initialData={injectedState} />)
-      const selectedOption = selectedPriceRangeOption(component)
-      expect(extractText(selectedOption)).toContain("$5,000-10,000")
-    })
-
-    it("prefers the selected filter over an applied filter", () => {
-      const injectedState: ArtworkFiltersState = {
-        selectedFilters: [
-          {
-            displayText: "$5,000-10,000",
-
-            paramName: FilterParamName.priceRange,
-            paramValue: "$5,000-10,000",
-          },
-        ],
-        appliedFilters: [
-          {
-            displayText: "$10,000-20,000",
-
-            paramName: FilterParamName.priceRange,
-            paramValue: "$10,000-20,000",
-          },
-        ],
-        previouslyAppliedFilters: [
-          {
-            displayText: "$10,000-20,000",
-
-            paramName: FilterParamName.priceRange,
-            paramValue: "$10,000-20,000",
-          },
-        ],
-        applyFilters: false,
-        aggregations,
-        filterType: "artwork",
-        counts: {
-          total: null,
-          followedArtists: null,
-        },
-      }
-
-      const tree = renderWithWrappers(<MockPriceRangeScreen initialData={injectedState} />)
-      const selectedOption = selectedPriceRangeOption(tree)
-      expect(extractText(selectedOption)).toContain("$5,000-10,000")
-    })
+    expect(extractText(tree.root.findAllByType(Text)[0])).toContain(
+      `{"displayText":"$1,111–98,765","paramValue":"1111-98765","paramName":"priceRange"}`
+    )
   })
 })
