@@ -1,7 +1,7 @@
 import { SearchCriteriaAttributes } from "__generated__/ArtistArtworksContainerCreateSavedSearchMutation.graphql"
 import { FilterScreen } from "lib/Components/ArtworkFilter"
 import { capitalize, compact, groupBy, isEqual, pick, sortBy } from "lodash"
-import { getFilterArtworkSizeName, LOCALIZED_UNIT, parseRange } from "./Filters/helpers"
+import { LOCALIZED_UNIT, parseRange } from "./Filters/helpers"
 
 export enum FilterDisplayName {
   // artist = "Artists",
@@ -539,19 +539,6 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
   ])
 }
 
-export const parseFilterParamSize = (value: string) => {
-  const size = getFilterArtworkSizeName(value)
-  const input: SearchCriteriaAttributes = {}
-
-  if (size === "custom") {
-    // TODO: Pass minWidth, maxWidth, minHeight, maxHeight
-  } else if (size !== "all") {
-    input.size = size!
-  }
-
-  return input
-}
-
 export const parseFilterParamPrice = (value: string) => {
   const { min, max } = parseRange(value)
   const input: SearchCriteriaAttributes = {}
@@ -587,8 +574,6 @@ export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams
 
     if (key === FilterParamName.priceRange) {
       input = { ...input, ...parseFilterParamPrice(value as string) }
-    } else if (key === FilterParamName.dimensionRange) {
-      input = { ...input, ...parseFilterParamSize(value as string) }
     } else if (key === FilterParamName.attributionClass) {
       input.attributionClasses = value as string[]
     } else if (canSendWithoutChangesKeys.includes(key as FilterParamName)) {

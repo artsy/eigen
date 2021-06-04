@@ -105,15 +105,3 @@ export const parseRange = (range: string): Range => {
 
   return { min: enforceNumeric(min), max: enforceNumeric(max) }
 }
-
-export const getFilterArtworkSizeName = (filterArtworkSize: string): string | null => {
-  const sizes: Record<FilterArtworkSize, string> = {
-    [FilterArtworkSize.All]: "all",
-    [FilterArtworkSize.Small]: "small",
-    [FilterArtworkSize.Medium]: "medium",
-    [FilterArtworkSize.Large]: "large",
-    [FilterArtworkSize.Custom]: "custom",
-  }
-
-  return sizes[filterArtworkSize as FilterArtworkSize] ?? null
-}

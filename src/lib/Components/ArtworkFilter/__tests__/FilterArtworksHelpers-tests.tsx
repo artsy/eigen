@@ -9,7 +9,7 @@ import {
   prepareFilterParamsForSaveSearchInput,
   selectedOption,
 } from "../ArtworkFilterHelpers"
-import { FilterArtworkSize, getFilterArtworkSizeName } from '../Filters/helpers'
+import { FilterArtworkSize } from '../Filters/helpers'
 
 describe("changedFiltersParams helper", () => {
   it("when a medium selection changed and sort selection unchanged", () => {
@@ -826,32 +826,6 @@ describe("prepareFilterArtworksParamsForInput", () => {
       priceRange: "*-*",
       sort: "-decayed_merch",
     })
-  })
-})
-
-describe("getFilterArtworkSizeName", () => {
-  it(`returns "small" for the value "*-16.0"`, () => {
-    expect(getFilterArtworkSizeName(FilterArtworkSize.Small)).toEqual("small")
-  })
-
-  it(`returns "medium" for the value "16.0-40.0"`, () => {
-    expect(getFilterArtworkSizeName(FilterArtworkSize.Medium)).toEqual("medium")
-  })
-
-  it(`returns "large" for the value "40.0-*"`, () => {
-    expect(getFilterArtworkSizeName(FilterArtworkSize.Large)).toEqual("large")
-  })
-
-  it(`returns "custom" for the value "0-*"`, () => {
-    expect(getFilterArtworkSizeName(FilterArtworkSize.Custom)).toEqual("custom")
-  })
-
-  it(`returns "all" for the value "*-*"`, () => {
-    expect(getFilterArtworkSizeName(FilterArtworkSize.All)).toEqual("all")
-  })
-
-  it(`returns "null" for the unknown value`, () => {
-    expect(getFilterArtworkSizeName("some-custom-value")).toBeNull()
   })
 })
 
