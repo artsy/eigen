@@ -108,6 +108,7 @@ export const CollectionContainer = createFragmentContainer(Collection, {
       isDepartment
       ...CollectionHeader_collection
       ...CollectionArtworks_collection @arguments(input: { sort: "-decayed_merch", dimensionRange: "*-*" })
+      ...CollectionArtworksFilter_collection
       ...FeaturedArtists_collection
       ...CollectionHubsRails_collection
 

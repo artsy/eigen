@@ -31,16 +31,9 @@ const BACK_BUTTON_SIZE = {
 export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection, animationValue }) => {
   const tracking = useTracking()
 
-  const filteredTotal = ArtworksFiltersStore.useStoreState((state) => state.counts.total) || 0
-  const filtersPresent = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters.length > 0)
+  const artworksTotal = ArtworksFiltersStore.useStoreState((state) => state.counts.total) || 0
 
   const screenWidth = useScreenDimensions().width
-
-  const artworksTotal = filtersPresent
-    ? filteredTotal > 0
-      ? filteredTotal
-      : 0
-    : collection.collectionArtworks?.counts?.total
 
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const [onLayoutCalled, setOnLayoutCalled] = useState(false)
@@ -109,7 +102,7 @@ export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection, an
     BACK_BUTTON_SIZE.top -
     PixelRatio.getPixelSizeForLayoutSize(extraOffset)
 
-  return artworksTotal && artworksTotal > 0 ? (
+  return (
     <Box backgroundColor="white" onLayout={(e) => _onLayout(e)}>
       <Animated.View
         style={{
@@ -150,18 +143,22 @@ export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection, an
                 ],
               }}
             >
-              <Text variant="subtitle" color="black60">
-                Showing {artworksTotal} works
-              </Text>
-            </Animated.View>
-            <Touchable haptic onPress={openFilterArtworksModal}>
-              <Flex flexDirection="row">
-                <FilterIcon fill="black100" width="20px" height="20px" />
-                <Text variant="subtitle" color="black100">
-                  Sort & Filter
+              {!!artworksTotal && (
+                <Text variant="subtitle" color="black60">
+                  Showing {artworksTotal} works
                 </Text>
-              </Flex>
-            </Touchable>
+              )}
+            </Animated.View>
+            {!!artworksTotal && (
+              <Touchable haptic onPress={openFilterArtworksModal}>
+                <Flex flexDirection="row">
+                  <FilterIcon fill="black100" width="20px" height="20px" />
+                  <Text variant="subtitle" color="black100">
+                    Sort & Filter
+                  </Text>
+                </Flex>
+              </Touchable>
+            )}
           </Flex>
 
           <ArtworkFilterNavigator
@@ -175,20 +172,15 @@ export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection, an
         </Box>
       </Animated.View>
     </Box>
-  ) : null
+  )
 }
 
 export const CollectionArtworksFilterFragmentContainer = createFragmentContainer(CollectionArtworksFilter, {
   collection: graphql`
-    fragment CollectionArtworks_collection on MarketingCollection
+    fragment CollectionArtworksFilter_collection on MarketingCollection
     @argumentDefinitions(input: { type: "FilterArtworksInput" }) {
       slug
       id
-      collectionArtworks: artworksConnection(input: $input) @connection(key: "Collection_collectionArtworks") {
-        counts {
-          total
-        }
-      }
     }
   `,
 })

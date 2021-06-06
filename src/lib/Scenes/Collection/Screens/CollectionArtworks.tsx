@@ -31,11 +31,11 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((action) => action.setFiltersCountAction)
+  const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
 
   const filterParams = filterArtworksParams(appliedFilters)
-  const followedArtists = ArtworksFiltersStore.useStoreState((state) => state.counts.followedArtists)
 
   useEffect(() => {
     if (applyFilters) {
@@ -59,21 +59,9 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
 
   useEffect(() => {
     // for use by CollectionArtworksFilter to keep count
-    setFiltersCountAction({
-      total: artworksTotal ?? null,
-      followedArtists,
-    })
+    const filterCount = { ...counts, ...artworks?.counts }
+    setFiltersCountAction(filterCount)
   }, [artworksTotal])
-
-  useEffect(() => {
-    // restore the ArtworksFiltersStore to default
-    return () => {
-      setFiltersCountAction({
-        total: null,
-        followedArtists: null,
-      })
-    }
-  }, [])
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
