@@ -2,8 +2,8 @@ import { captureMessage } from "@sentry/react-native"
 import { SavedSearchBanner_me } from "__generated__/SavedSearchBanner_me.graphql"
 import { SavedSearchBannerCreateSavedSearchMutation } from "__generated__/SavedSearchBannerCreateSavedSearchMutation.graphql"
 import { SavedSearchBannerDeleteSavedSearchMutation } from "__generated__/SavedSearchBannerDeleteSavedSearchMutation.graphql"
-import { SavedSearchBannerQuery, SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
-import { FilterParams, prepareFilterParamsForSaveSearchInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { SavedSearchBannerQuery, SearchCriteriaAttributes } from '__generated__/SavedSearchBannerQuery.graphql'
+import { FilterParams, prepareFilterParamsForSaveSearchInput } from 'lib/Components/ArtworkFilter/ArtworkFilterHelpers'
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { Button, Flex, Text } from "palette"
 import React, { useState } from "react"
@@ -75,6 +75,34 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, attrib
       onError: () => {
         setSaving(false)
       },
+    })
+  }
+
+  const deleteSavedSearch = () => {
+    setSaving(true)
+    commitMutation<SavedSearchBannerDeleteSavedSearchMutation>(relay.environment, {
+      mutation: graphql`
+      mutation SavedSearchBannerDeleteSavedSearchMutation($input: DeleteSavedSearchInput!) {
+        deleteSavedSearch(input: $input) {
+          savedSearchOrErrors {
+            ... on SearchCriteria {
+              internalID
+            }
+          }
+        }
+      }
+    `,
+      variables: {
+        input: {
+          searchCriteriaID: me!.savedSearch!.internalID
+        }
+      },
+      onCompleted: () => {
+        setSaving(false)
+      },
+      onError: () => {
+        setSaving(false)
+      }
     })
   }
 
