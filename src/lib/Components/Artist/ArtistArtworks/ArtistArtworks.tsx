@@ -136,7 +136,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 
   useEffect(
     () => {
-      console.log('[SavedSearchBanner] setJSX rerender')
       setJSX(
         <Box backgroundColor="white" mt={2} px={2}>
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
