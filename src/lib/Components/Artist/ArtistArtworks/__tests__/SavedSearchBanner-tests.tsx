@@ -1,4 +1,4 @@
-import { SavedSearchBannerQuery, SearchCriteriaAttributes } from '__generated__/SavedSearchBannerQuery.graphql'
+import { SearchCriteriaAttributes } from '__generated__/SavedSearchBannerQuery.graphql'
 import { SavedSearchBannerTestsQuery } from "__generated__/SavedSearchBannerTestsQuery.graphql"
 import { mockEnvironmentPayload } from 'lib/tests/mockEnvironmentPayload'
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
