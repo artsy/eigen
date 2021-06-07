@@ -891,14 +891,12 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
       priceMax: 10000,
       attributionClasses: ["limited edition"],
       additionalGeneIDs: ["prints"],
-      acquireable: false,
       atAuction: true,
-      inquireableOnly: false,
-      offerable: false,
       majorPeriods: ["1990"],
       colors: ["yellow", "red"],
       locationCities: ["London, United Kingdom"],
       materialsTerms: ["paper"],
+      dimensionScoreMin: 40,
       partnerIDs: [
         "cypress-test-partner-for-automated-testing-purposes",
         "tate-ward-auctions"
@@ -918,10 +916,6 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
       priceMin: 1000,
       priceMax: 5000,
-      acquireable: false,
-      atAuction: false,
-      inquireableOnly: false,
-      offerable: false,
     })
   })
 
@@ -936,10 +930,92 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
 
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
       priceMin: 50000,
-      acquireable: false,
-      atAuction: false,
-      inquireableOnly: false,
-      offerable: false,
+    })
+  })
+
+  it("returns only the selected `ways to buy` values", () => {
+    const filters = filterArtworksParams([
+      {
+        displayText: "Bid",
+        paramName: FilterParamName.waysToBuyBid,
+        paramValue: true,
+      },
+      {
+        displayText: "Bid",
+        paramName: FilterParamName.waysToBuyInquire,
+        paramValue: true,
+      },
+    ]);
+
+    expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
+      atAuction: true,
+      inquireableOnly: true,
+    })
+  })
+
+  it("returns custom filter sizes", () => {
+    const filters = filterArtworksParams([
+      {
+        displayText: "200-250",
+        paramName: FilterParamName.height,
+        paramValue: "78.74015748031496-98.4251968503937",
+      },
+      {
+        displayText: "100-150",
+        paramName: FilterParamName.width,
+        paramValue: "39.37007874015748-59.05511811023622",
+      },
+      {
+        displayText: "Custom size",
+        paramName: FilterParamName.dimensionRange,
+        paramValue: "0-*",
+      }
+    ]);
+
+    expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
+      widthMin: 39.37007874015748,
+      widthMax: 59.05511811023622,
+      heightMin: 78.74015748031496,
+      heightMax: 98.4251968503937,
+    })
+  })
+
+  it("returns only custom width sizes", () => {
+    const filters = filterArtworksParams([
+      {
+        displayText: "100-150",
+        paramName: FilterParamName.width,
+        paramValue: "12.5-34.6",
+      },
+      {
+        displayText: "Custom size",
+        paramName: FilterParamName.dimensionRange,
+        paramValue: "0-*",
+      }
+    ]);
+
+    expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
+      widthMin: 12.5,
+      widthMax: 34.6,
+    })
+  })
+
+  it("returns only custom min height size", () => {
+    const filters = filterArtworksParams([
+      {
+        displayText: "100-150",
+        paramName: FilterParamName.width,
+        paramValue: "10-*",
+      },
+      {
+        displayText: "Custom size",
+        paramName: FilterParamName.dimensionRange,
+        paramValue: "0-*",
+      }
+    ]);
+
+    expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
+      widthMin: 10,
     })
   })
 })
