@@ -87,7 +87,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, attrib
   )
 }
 
-export const SavedSearchBannerContainer = createFragmentContainer(
+export const SavedSearchBannerFragmentContainer = createFragmentContainer(
   SavedSearchBanner,
   {
     me: graphql`
@@ -119,7 +119,7 @@ export const SavedSearchBannerQueryRender: React.FC<{ filters: FilterParams, art
           }
         }
       `}
-      render={({ props }) => <SavedSearchBannerContainer {...props} loading={props === null} attributes={attributes} artistId={artistId} />}
+      render={({ props }) => <SavedSearchBannerFragmentContainer {...props} loading={props === null} attributes={attributes} artistId={artistId} />}
       variables={{
         criteria: attributes
       }}
