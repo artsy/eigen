@@ -56,6 +56,7 @@ upcoming:
     - Add articles rail to home screen - ole
     - Change articles rail design in artist overview page - ole
     - Specified a more specific error for logging in with Apple or Facebook - stas hanchar
+    - Check saved search when the user applied the filter - dzmitry tratsiak
 
 releases:
   - version: 6.9.3
