@@ -1,6 +1,7 @@
+import { SearchCriteriaAttributes } from "__generated__/ArtistArtworksContainerCreateSavedSearchMutation.graphql"
 import { FilterScreen } from "lib/Components/ArtworkFilter"
-import { capitalize, compact, forOwn, groupBy, pick, sortBy } from "lodash"
-import { LOCALIZED_UNIT } from "./Filters/helpers"
+import { capitalize, compact, groupBy, isEqual, pick, sortBy } from "lodash"
+import { LOCALIZED_UNIT, parseRange } from "./Filters/helpers"
 
 export enum FilterDisplayName {
   // artist = "Artists",
@@ -257,27 +258,18 @@ const getDefaultParamsByType = (filterType: FilterType) => {
   }[filterType]
 }
 
-const getChangedParams = (appliedFilters: FilterArray, filterType: FilterType = "artwork") => {
-  const defaultFilterParams = getDefaultParamsByType(filterType)
-  const filterParams = paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams }, filterType)
-  // when filters cleared return default params
-  return Object.keys(filterParams).length === 0 ? defaultFilterParams : filterParams
-}
-
 export const changedFiltersParams = (currentFilterParams: FilterParams, selectedFilterOptions: FilterArray) => {
-  const selectedFilterParams = getChangedParams(selectedFilterOptions)
   const changedFilters: { [key: string]: any } = {}
 
-  /***
-   *  If a filter option has been updated e.g. was { medium: "photography" } but
-   *  is now { medium: "sculpture" } add the updated filter to changedFilters. Otherwise,
-   *  add filter option to changedFilters.
-   ***/
-  forOwn(getChangedParams(selectedFilterOptions), (_value, paramName) => {
-    const filterParamName = paramName as FilterParamName
-    if (currentFilterParams[filterParamName] !== selectedFilterParams[filterParamName]) {
-      changedFilters[filterParamName] = selectedFilterParams[filterParamName]
+  selectedFilterOptions.forEach((selectedFilterOption) => {
+    const { paramName, paramValue } = selectedFilterOption
+    const currentFilterParamValue = currentFilterParams[paramName]
+
+    if (currentFilterParamValue && isEqual(paramValue, currentFilterParamValue)) {
+      return
     }
+
+    changedFilters[paramName] = paramValue
   })
 
   return changedFilters
@@ -545,4 +537,49 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
     "tagID",
     "width",
   ])
+}
+
+export const parseFilterParamPrice = (value: string) => {
+  const { min, max } = parseRange(value)
+  const input: SearchCriteriaAttributes = {}
+
+  if (min !== "*") {
+    input.priceMin = min
+  }
+
+  if (max !== "*") {
+    input.priceMax = max
+  }
+
+  return input
+}
+
+export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams) => {
+  let input: SearchCriteriaAttributes = {}
+  const canSendWithoutChangesKeys = [
+    FilterParamName.waysToBuyBuy,
+    FilterParamName.waysToBuyBid,
+    FilterParamName.waysToBuyInquire,
+    FilterParamName.waysToBuyMakeOffer,
+    FilterParamName.additionalGeneIDs,
+    FilterParamName.colors,
+    FilterParamName.locationCities,
+    FilterParamName.timePeriod,
+    FilterParamName.materialsTerms,
+    FilterParamName.partnerIDs,
+  ]
+
+  Object.entries(filterParams).forEach((entry) => {
+    const [key, value] = entry
+
+    if (key === FilterParamName.priceRange) {
+      input = { ...input, ...parseFilterParamPrice(value as string) }
+    } else if (key === FilterParamName.attributionClass) {
+      input.attributionClasses = value as string[]
+    } else if (canSendWithoutChangesKeys.includes(key as FilterParamName)) {
+      input[key as keyof SearchCriteriaAttributes] = value as any
+    }
+  })
+
+  return input
 }

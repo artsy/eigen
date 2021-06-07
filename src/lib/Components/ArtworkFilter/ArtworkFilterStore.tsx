@@ -59,7 +59,8 @@ export const ArtworkFiltersModel: ArtworkFiltersModel = {
 
     // replace previously applied options with currently selected options
     const filtersToApply = unionBy(
-      state.selectedFilters, state.previouslyAppliedFilters,
+      state.selectedFilters,
+      state.previouslyAppliedFilters,
       ({ paramValue, paramName }) => {
         // We don't want to union the artistID params, as each entry corresponds to a
         // different artist that may be selected. Instead we de-dupe based on the paramValue.

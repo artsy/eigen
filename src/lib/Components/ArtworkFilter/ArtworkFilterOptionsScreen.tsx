@@ -69,7 +69,9 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const aggregationsState = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
 
-  const clearFiltersZeroStateAction = ArtworksFiltersStore.useStoreActions((action) => action.clearFiltersZeroStateAction)
+  const clearFiltersZeroStateAction = ArtworksFiltersStore.useStoreActions(
+    (action) => action.clearFiltersZeroStateAction
+  )
 
   const selectedOptions = useSelectedOptionsDisplay()
 
