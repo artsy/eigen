@@ -146,10 +146,10 @@ export const SavedSearchBannerQueryRender: React.FC<{ filters: FilterParams; art
           }
         }
       `}
-      render={({ props }) => (
+      render={({ props, error }) => (
         <SavedSearchBannerFragmentContainer
           me={props?.me ?? null}
-          loading={props === null}
+          loading={props === null && error === null}
           attributes={attributes}
           artistId={artistId}
         />
