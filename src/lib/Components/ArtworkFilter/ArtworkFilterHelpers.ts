@@ -1,7 +1,6 @@
-import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { FilterScreen } from "lib/Components/ArtworkFilter"
 import { capitalize, compact, groupBy, isEqual, pick, sortBy } from "lodash"
-import { LOCALIZED_UNIT, parseRange } from "./Filters/helpers"
+import { LOCALIZED_UNIT } from "./Filters/helpers"
 
 export enum FilterDisplayName {
   // artist = "Artists",
@@ -537,49 +536,4 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
     "tagID",
     "width",
   ])
-}
-
-export const parseFilterParamPrice = (value: string) => {
-  const { min, max } = parseRange(value)
-  const input: SearchCriteriaAttributes = {}
-
-  if (min !== "*") {
-    input.priceMin = min
-  }
-
-  if (max !== "*") {
-    input.priceMax = max
-  }
-
-  return input
-}
-
-export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams) => {
-  let input: SearchCriteriaAttributes = {}
-  const canSendWithoutChangesKeys = [
-    FilterParamName.waysToBuyBuy,
-    FilterParamName.waysToBuyBid,
-    FilterParamName.waysToBuyInquire,
-    FilterParamName.waysToBuyMakeOffer,
-    FilterParamName.additionalGeneIDs,
-    FilterParamName.colors,
-    FilterParamName.locationCities,
-    FilterParamName.timePeriod,
-    FilterParamName.materialsTerms,
-    FilterParamName.partnerIDs,
-  ]
-
-  Object.entries(filterParams).forEach((entry) => {
-    const [key, value] = entry
-
-    if (key === FilterParamName.priceRange) {
-      input = { ...input, ...parseFilterParamPrice(value as string) }
-    } else if (key === FilterParamName.attributionClass) {
-      input.attributionClasses = value as string[]
-    } else if (canSendWithoutChangesKeys.includes(key as FilterParamName)) {
-      input[key as keyof SearchCriteriaAttributes] = value as any
-    }
-  })
-
-  return input
 }

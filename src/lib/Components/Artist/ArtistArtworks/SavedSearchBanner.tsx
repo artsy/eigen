@@ -2,7 +2,8 @@ import { SavedSearchBanner_me } from "__generated__/SavedSearchBanner_me.graphql
 import { SavedSearchBannerCreateSavedSearchMutation } from "__generated__/SavedSearchBannerCreateSavedSearchMutation.graphql"
 import { SavedSearchBannerDeleteSavedSearchMutation } from "__generated__/SavedSearchBannerDeleteSavedSearchMutation.graphql"
 import { SavedSearchBannerQuery, SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
-import { FilterParams, prepareFilterParamsForSaveSearchInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { FilterParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { prepareFilterParamsForSaveSearchInput } from 'lib/Components/ArtworkFilter/ArtworkFilterSavedSearchHandlers'
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { Button, Flex, Text } from "palette"
 import React, { useState } from "react"
