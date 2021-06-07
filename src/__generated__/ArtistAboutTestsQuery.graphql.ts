@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8a6380176e71d9ddaf203d0fc7f217c4 */
+/* @relayHash 101f05ed5f0b542daf7b91a6db5c6c4c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,6 +31,7 @@ query ArtistAboutTestsQuery(
 }
 
 fragment ArticleCard_article on Article {
+  internalID
   author {
     name
     id
@@ -1223,6 +1224,7 @@ return {
                     "plural": false,
                     "selections": [
                       (v9/*: any*/),
+                      (v2/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -1274,7 +1276,7 @@ return {
     ]
   },
   "params": {
-    "id": "8a6380176e71d9ddaf203d0fc7f217c4",
+    "id": "101f05ed5f0b542daf7b91a6db5c6c4c",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": (v18/*: any*/),
@@ -1306,6 +1308,7 @@ return {
         "artist.articles.edges.node.author.name": (v20/*: any*/),
         "artist.articles.edges.node.href": (v20/*: any*/),
         "artist.articles.edges.node.id": (v19/*: any*/),
+        "artist.articles.edges.node.internalID": (v19/*: any*/),
         "artist.articles.edges.node.thumbnailImage": (v21/*: any*/),
         "artist.articles.edges.node.thumbnailImage.url": (v20/*: any*/),
         "artist.articles.edges.node.thumbnailTitle": (v20/*: any*/),

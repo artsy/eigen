@@ -16,6 +16,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isRa
   const imageURL = article.thumbnailImage?.url
 
   const onTap = (event: GestureResponderEvent) => {
+    console.log(article.href)
     onPress?.(event)
     navigate(article.href!)
   }
@@ -51,6 +52,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isRa
 export const ArticleCardContainer = createFragmentContainer(ArticleCard, {
   article: graphql`
     fragment ArticleCard_article on Article {
+      internalID
       author {
         name
       }

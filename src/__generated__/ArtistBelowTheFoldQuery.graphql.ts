@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ccad9616033e93c95b04e7df7cee5cd3 */
+/* @relayHash 50cb23aa188b74a3b568370c1908f897 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -32,6 +32,7 @@ query ArtistBelowTheFoldQuery(
 }
 
 fragment ArticleCard_article on Article {
+  internalID
   author {
     name
     id
@@ -1231,6 +1232,7 @@ return {
                     "plural": false,
                     "selections": [
                       (v10/*: any*/),
+                      (v2/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -1547,7 +1549,7 @@ return {
     ]
   },
   "params": {
-    "id": "ccad9616033e93c95b04e7df7cee5cd3",
+    "id": "50cb23aa188b74a3b568370c1908f897",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",

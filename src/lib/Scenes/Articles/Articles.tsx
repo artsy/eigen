@@ -1,25 +1,61 @@
 import { Articles_articlesConnection$key } from "__generated__/Articles_articlesConnection.graphql"
 import { ArticlesQuery } from "__generated__/ArticlesQuery.graphql"
-import { ArticleCard } from "lib/Components/ArticleCard"
 import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { extractNodes } from "lib/utils/extractNodes"
-import {
-  PlaceholderBox,
-  PlaceholderText,
-  ProvidePlaceholderContext,
-  RandomWidthPlaceholderText,
-} from "lib/utils/placeholders"
-import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { PlaceholderBox, ProvidePlaceholderContext, RandomWidthPlaceholderText } from "lib/utils/placeholders"
 import _ from "lodash"
-import { Flex, Separator, Spacer, Text } from "palette"
-import React, { useEffect, useRef, useState } from "react"
-import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native"
+import { Flex, Spacer, Text } from "palette"
+import React, { useEffect, useState } from "react"
 import { ConnectionConfig } from "react-relay"
 import { usePagination, useQuery } from "relay-hooks"
 import { graphql } from "relay-runtime"
-import { RailScrollRef } from "../Home/Components/types"
+import { ArticlesList } from "./ArticlesList"
 
 const PAGE_SIZE = 5
+
+interface ArticlesProps {
+  query: Articles_articlesConnection$key
+}
+
+export const ArticlesContainer: React.FC<ArticlesProps> = (props) => {
+  const [queryData, { isLoading, hasMore, loadMore, refetchConnection }] = usePagination(fragmentSpec, props.query)
+  const articles = extractNodes(queryData.articlesConnection)
+
+  useEffect(() => {
+    loadMore(connectionConfig, PAGE_SIZE)
+  }, [])
+
+  const [refreshing, setRefreshing] = useState(false)
+
+  const handleLoadMore = () => {
+    if (!hasMore() || isLoading()) {
+      return
+    }
+    loadMore(connectionConfig, PAGE_SIZE)
+  }
+  const handleRefresh = () => {
+    setRefreshing(true)
+    refetchConnection(connectionConfig, PAGE_SIZE)
+    setRefreshing(false)
+  }
+
+  return (
+    <ArticlesList
+      articles={articles as any}
+      isLoading={isLoading}
+      hasMore={hasMore}
+      refreshing={refreshing}
+      handleLoadMore={handleLoadMore}
+      handleRefresh={handleRefresh}
+    />
+  )
+}
+
+export const ArticlesHeader = () => (
+  <Text mx="2" variant={"largeTitle"} mb={1} mt={6}>
+    Market News
+  </Text>
+)
 
 const fragmentSpec = graphql`
   fragment Articles_articlesConnection on Query
@@ -51,82 +87,6 @@ const fragmentSpec = graphql`
     }
   }
 `
-
-interface ArticlesProps {
-  query: Articles_articlesConnection$key
-}
-
-export const ArticlesContainer: React.FC<ArticlesProps> = (props) => {
-  const [queryData, { isLoading, hasMore, loadMore, refetchConnection }] = usePagination(fragmentSpec, props.query)
-  const articles = extractNodes(queryData.articlesConnection)
-  console.log(articles)
-
-  useEffect(() => {
-    loadMore(connectionConfig, PAGE_SIZE)
-  }, [])
-
-  const [refreshing, setRefreshing] = useState(false)
-
-  const handleLoadMore = () => {
-    if (!hasMore() || isLoading()) {
-      return
-    }
-    loadMore(connectionConfig, PAGE_SIZE)
-  }
-  const handleRefresh = () => {
-    setRefreshing(true)
-    refetchConnection(connectionConfig, PAGE_SIZE)
-    setRefreshing(false)
-    scrollRef.current?.scrollToTop()
-  }
-  const scrollRef = useRef<RailScrollRef>(null)
-
-  return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.ArtistPage,
-        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-      }}
-    >
-      <Flex flexDirection="column" justifyContent="space-between" height="100%" pb={8}>
-        <Separator />
-        <FlatList
-          numColumns={1}
-          key={`${1}`}
-          ListHeaderComponent={() => (
-            <Text mx="2" variant={"largeTitle"} mb={1} mt={6}>
-              Market News
-            </Text>
-          )}
-          data={articles}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-          keyExtractor={(item) => `${item.internalID}-${1}`}
-          renderItem={({ item }) => {
-            return (
-              <Flex mx="2">
-                <ArticleCard article={item as any} />
-              </Flex>
-            )
-          }}
-          ItemSeparatorComponent={() => <Spacer mt="3" />}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={1}
-          ListFooterComponent={() => (
-            <Flex
-              alignItems="center"
-              justifyContent="center"
-              p="3"
-              pb="5"
-              style={{ opacity: isLoading() && hasMore() ? 1 : 0 }}
-            >
-              <ActivityIndicator />
-            </Flex>
-          )}
-        />
-      </Flex>
-    </ProvideScreenTracking>
-  )
-}
 
 const query = graphql`
   query ArticlesQuery($count: Int, $after: String, $sort: ArticleSorts, $inEditorialFeed: Boolean) {
@@ -166,9 +126,7 @@ export const ArticlesQueryRenderer: React.FC = () => {
 export const ArticlesPlaceholder: React.FC = () => {
   return (
     <ProvidePlaceholderContext>
-      <Text mx="2" variant={"largeTitle"} mb={1} mt={6}>
-        Market News
-      </Text>
+      <ArticlesHeader />
       <Flex mx={2}>
         {_.times(4).map(() => (
           <>
