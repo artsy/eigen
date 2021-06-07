@@ -123,7 +123,6 @@ export const SavedSearchBannerQueryRender: React.FC<{ filters: FilterParams, art
       variables={{
         criteria: attributes
       }}
-      cacheConfig={{ force: true }}
     />
   )
 }
