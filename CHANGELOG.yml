@@ -12,7 +12,6 @@ upcoming:
     - Fix iOS app blank screen - ole, mounir
     - Replace "color" filter with "colors" filter - dzmitry tratsiak
     - Add Saved Search feature flag - kizito
-  user_facing:
     - Send only changed filter params in the analytics event - dzmitry tratsiak
     - Update PR template to not automatically attach an unrelated Jira ticket - erikdstock
     - Add createSavedSearch mutation - dzmitry tratsiak
