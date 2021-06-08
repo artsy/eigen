@@ -32,9 +32,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   const tracking = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
-  const handleFilterArtworksModal = () => {
-    setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
-  }
+  const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
+  const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
 
   const openFilterArtworksModal = () => {
     tracking.trackEvent({
@@ -45,7 +44,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
       context_screen_owner_slug: artist.slug,
       action_type: Schema.ActionTypes.Tap,
     })
-    handleFilterArtworksModal()
+    handleOpenFilterArtworksModal()
   }
 
   const closeFilterArtworksModal = () => {
@@ -57,7 +56,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
       context_screen_owner_slug: artist.slug,
       action_type: Schema.ActionTypes.Tap,
     })
-    handleFilterArtworksModal()
+    handleCloseFilterArtworksModal()
   }
 
   return (
@@ -69,7 +68,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
           id={artist.internalID}
           slug={artist.slug}
           isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-          exitModal={handleFilterArtworksModal}
+          exitModal={handleCloseFilterArtworksModal}
           closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.ArtistArtworks}
         />
