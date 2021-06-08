@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksContainerCreateSavedSearchMutation } from "__generated__/ArtistArtworksContainerCreateSavedSearchMutation.graphql"
+import { ArtistArtworksContainerDeleteSavedSearchMutation } from "__generated__/ArtistArtworksContainerDeleteSavedSearchMutation.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import {
   filterArtworksParams,
@@ -134,6 +135,34 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     })
   }
 
+  const deleteSavedSearch = (searchCriteriaID: string) => {
+    setSavingFilterSearch(true)
+    commitMutation<ArtistArtworksContainerDeleteSavedSearchMutation>(relay.environment, {
+      mutation: graphql`
+      mutation ArtistArtworksContainerDeleteSavedSearchMutation($input: DeleteSavedSearchInput!) {
+        deleteSavedSearch(input: $input) {
+          savedSearchOrErrors {
+            ... on SearchCriteria {
+              internalID
+            }
+          }
+        }
+      }
+    `,
+      variables: {
+        input: {
+          searchCriteriaID
+        }
+      },
+      onCompleted: () => {
+        setSavingFilterSearch(false)
+      },
+      onError: () => {
+        setSavingFilterSearch(false)
+      }
+    })
+  }
+
   const createSavedSearch = () => {
     const input = prepareFilterParamsForSaveSearchInput(filterParams)
 
@@ -158,8 +187,13 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
           }
         }
       },
-      onCompleted: () => {
+      onCompleted: (response) => {
         setSavingFilterSearch(false)
+        const savedSearchId = response.createSavedSearch?.savedSearchOrErrors.internalID;
+
+        if (savedSearchId) {
+          deleteSavedSearch(savedSearchId)
+        }
       },
       onError: () => {
         setSavingFilterSearch(false)
