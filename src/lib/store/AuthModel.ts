@@ -5,6 +5,7 @@ import { stringify } from "qs"
 import { Platform } from "react-native"
 import Config from "react-native-config"
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "react-native-fbsdk-next"
+import { getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 
@@ -37,21 +38,8 @@ export interface AuthModel {
     GlobalStoreModel,
     Promise<boolean>
   >
-  signUp: Thunk<
-    AuthModel,
-    {
-      email: string
-      name: string
-      password?: string
-      accessToken?: InstanceType<typeof AccessToken>
-      oauthProvider?: "facebook" | "google" | "apple"
-    },
-    {},
-    GlobalStoreModel,
-    Promise<boolean>
-  >
-  signUpFacebook: Thunk<AuthModel, void, {}, GlobalStoreModel, Promise<void>>
-  signInFacebook: Thunk<AuthModel, void, {}, GlobalStoreModel, Promise<void>>
+  signUp: Thunk<AuthModel, { email: string; name: string; password: string }, {}, GlobalStoreModel, Promise<boolean>>
+  authFacebook: Thunk<AuthModel, void, {}, GlobalStoreModel, Promise<void>>
   forgotPassword: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel, Promise<boolean>>
   gravityUnauthenticatedRequest: Thunk<
     this,
@@ -217,39 +205,25 @@ export const getAuthModel = (): AuthModel => ({
 
     return false
   }),
-  signUp: thunk(async (actions, { email, password, name, accessToken, oauthProvider }) => {
-    let body
-    if (oauthProvider === "facebook") {
-      body = {
-        provider: "facebook",
-        oauth_token: accessToken?.accessToken,
-        email,
-        name,
-        agreed_to_receive_emails: true,
-        accepted_terms_of_service: true,
-      }
-    } else {
-      body = {
-        email,
-        password,
-        name,
-        agreed_to_receive_emails: true,
-        accepted_terms_of_service: true,
-      }
-    }
-
+  signUp: thunk(async (actions, { email, password, name }) => {
     const result = await actions.gravityUnauthenticatedRequest({
       path: `/api/v1/user`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body,
+      body: {
+        email,
+        password,
+        name,
+        agreed_to_receive_emails: true,
+        accepted_terms_of_service: true,
+      },
     })
 
     // The user account has been successfully created
     if (result.status === 201) {
-      await actions.signIn({ email, password, accessToken, oauthProvider })
+      await actions.signIn({ email, password })
       actions.setState({
         onboardingState: "incomplete",
       })
@@ -257,21 +231,51 @@ export const getAuthModel = (): AuthModel => ({
     }
     return false
   }),
-  signUpFacebook: thunk(async (actions) => {
+  authFacebook: thunk(async (actions) => {
     const resultFacebook = await LoginManager.logInWithPermissions(["public_profile"])
     if (!resultFacebook.isCancelled) {
       const accessToken = await AccessToken.getCurrentAccessToken()
       if (accessToken) {
-        // if(user with this accessToken exists) sing in using email from artsy(not from facebook!!!)
-        // else sign up
-        const responseInfoCallback = async (error: {}, result: { email: string; name: string }) => {
+        const responseInfoCallback = async (error: {}, resFacebook: { email: string; name: string }) => {
           if (error) {
             console.log(error)
             console.log("Error fetching data")
           } else {
-            console.log(result)
-            console.log("Success fetching data" + result)
-            await actions.signUp({ email: result.email, name: result.name, accessToken, oauthProvider: "facebook" })
+            console.log(resFacebook)
+            console.log("Success fetching data" + resFacebook)
+
+            const resultGravity = await actions.gravityUnauthenticatedRequest({
+              path: `/api/v1/user`,
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: {
+                provider: "facebook",
+                oauth_token: accessToken?.accessToken,
+                email: resFacebook.email,
+                name: resFacebook.name,
+                agreed_to_receive_emails: true,
+                accepted_terms_of_service: true,
+              },
+            })
+            const resGravity = await resultGravity.json()
+
+            if (resultGravity.status === 201) {
+              await actions.signIn({ email: resFacebook.email, accessToken, oauthProvider: "facebook" })
+              actions.setState({
+                onboardingState: "incomplete",
+              })
+            } else if (resGravity.error === "Another Account Already Linked") {
+              await actions.signIn({ email: resFacebook.email, accessToken, oauthProvider: "facebook" })
+              const { authenticationToken } = getCurrentEmissionState()
+              const result2 = await actions.gravityUnauthenticatedRequest({
+                path: `/api/v1/me`,
+                headers: { "X-ACCESS-TOKEN": authenticationToken },
+              })
+              const result3 = await result2.json()
+              await actions.signIn({ email: result3.email, accessToken, oauthProvider: "facebook" })
+            }
           }
         }
 
@@ -282,39 +286,6 @@ export const getAuthModel = (): AuthModel => ({
             parameters: {
               fields: {
                 string: "email,name",
-              },
-            },
-          },
-          responseInfoCallback
-        )
-
-        new GraphRequestManager().addRequest(infoRequest).start()
-      }
-    }
-  }),
-  signInFacebook: thunk(async (actions) => {
-    // combine signInFacebook and signUpFacebook
-    const resultFacebook = await LoginManager.logInWithPermissions(["public_profile"])
-    if (!resultFacebook.isCancelled) {
-      const accessToken = await AccessToken.getCurrentAccessToken()
-      if (accessToken) {
-        const responseInfoCallback = async (error: {}, result: { email: string }) => {
-          if (error) {
-            console.log(error)
-            console.log("Error fetching data")
-          } else {
-            console.log(result)
-            console.log("Success fetching data" + result)
-            await actions.signIn({ email: result.email, accessToken, oauthProvider: "facebook" })
-          }
-        }
-        const infoRequest = new GraphRequest(
-          "/me",
-          {
-            accessToken: accessToken.accessToken,
-            parameters: {
-              fields: {
-                string: "email",
               },
             },
           },
