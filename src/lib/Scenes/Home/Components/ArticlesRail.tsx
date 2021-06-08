@@ -30,8 +30,7 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ articlesConnection }
         <SectionTitle
           title="Market News"
           onPress={() => {
-            // TODO
-            // tracking.trackEvent(HomeAnalytics.auctionHeaderTapEvent())
+            tracking.trackEvent(HomeAnalytics.articlesHeaderTapEvent())
             navigate("/articles")
           }}
         />

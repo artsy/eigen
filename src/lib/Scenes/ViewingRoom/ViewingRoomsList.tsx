@@ -7,7 +7,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { useNumColumns } from "lib/utils/useScreenDimensions"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
 import { Flex, Sans, Separator, space, Spacer } from "palette"
 import React, { useRef, useState } from "react"
@@ -30,6 +30,17 @@ const fragmentSpec = graphql`
     }
   }
 `
+
+export const useNumColumns = () => {
+  const { width, orientation } = useScreenDimensions()
+  const isIPad = width > 700
+
+  if (!isIPad) {
+    return 1
+  }
+
+  return orientation === "portrait" ? 2 : 3
+}
 
 interface ViewingRoomsListProps {
   query: ViewingRoomsList_query$key

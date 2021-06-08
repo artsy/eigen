@@ -1,7 +1,9 @@
+import { OwnerType } from "@artsy/cohesion"
 import { ArticleCard_article } from "__generated__/ArticleCard_article.graphql"
 import { ArticleCard } from "lib/Components/ArticleCard"
-import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { useNumColumns } from "lib/utils/useScreenDimensions"
+import { ProvideScreenTracking } from "lib/utils/track"
+import { PageNames } from "lib/utils/track/schema"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Separator, Spacer } from "palette"
 import React from "react"
 import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
@@ -29,8 +31,8 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   return (
     <ProvideScreenTracking
       info={{
-        context_screen: Schema.PageNames.ArtistPage,
-        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+        context_screen: PageNames.Articles,
+        context_screen_owner_type: OwnerType.articles,
       }}
     >
       <Flex flexDirection="column" justifyContent="space-between" height="100%" pb={8}>
@@ -81,4 +83,15 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
       </Flex>
     </ProvideScreenTracking>
   )
+}
+
+export const useNumColumns = () => {
+  const { width, orientation } = useScreenDimensions()
+  const isIPad = width > 700
+
+  if (!isIPad) {
+    return 1
+  }
+
+  return orientation === "portrait" ? 2 : 3
 }
