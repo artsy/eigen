@@ -234,7 +234,7 @@ export const getAuthModel = (): AuthModel => ({
     }
     return false
   }),
-  authFacebook: thunk(async (actions, payload, context) => {
+  authFacebook: thunk(async (actions, _payload, context) => {
     const resultFacebook = await LoginManager.logInWithPermissions(["public_profile"])
     if (!resultFacebook.isCancelled) {
       const accessToken = await AccessToken.getCurrentAccessToken()
