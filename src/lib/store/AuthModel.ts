@@ -5,7 +5,6 @@ import { stringify } from "qs"
 import { Platform } from "react-native"
 import Config from "react-native-config"
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "react-native-fbsdk-next"
-import { getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 
@@ -29,7 +28,7 @@ export interface AuthModel {
   signIn: Thunk<
     AuthModel,
     {
-      email: string
+      email?: string
       password?: string
       accessToken?: InstanceType<typeof AccessToken>
       oauthProvider?: "facebook" | "google" | "apple"
@@ -186,21 +185,25 @@ export const getAuthModel = (): AuthModel => ({
 
     if (result.status === 201) {
       const { expires_in, access_token } = await result.json()
-      const { id } = await (
-        await actions.gravityUnauthenticatedRequest({
-          path: `/api/v1/user?${stringify({ email })}`,
-        })
-      ).json()
-
       actions.setState({
         userAccessToken: access_token,
         userAccessTokenExpiresIn: expires_in,
-        userID: id,
-        androidUserEmail: email,
       })
-      actions.notifyTracking({ userId: id })
+      if (email) {
+        const { id } = await (
+          await actions.gravityUnauthenticatedRequest({
+            path: `/api/v1/user?${stringify({ email })}`,
+          })
+        ).json()
 
-      return true
+        actions.setState({
+          userID: id,
+          androidUserEmail: email,
+        })
+        actions.notifyTracking({ userId: id })
+
+        return true
+      }
     }
 
     return false
@@ -231,7 +234,7 @@ export const getAuthModel = (): AuthModel => ({
     }
     return false
   }),
-  authFacebook: thunk(async (actions) => {
+  authFacebook: thunk(async (actions, payload, context) => {
     const resultFacebook = await LoginManager.logInWithPermissions(["public_profile"])
     if (!resultFacebook.isCancelled) {
       const accessToken = await AccessToken.getCurrentAccessToken()
@@ -271,14 +274,16 @@ export const getAuthModel = (): AuthModel => ({
               })
             } else if (resultGravitySignInJSON.error === "Another Account Already Linked") {
               // if the account already exists sign in to existing one
-              await actions.signIn({ email: facebookInfo.email, accessToken, oauthProvider: "facebook" })
-              const { authenticationToken } = getCurrentEmissionState()
-              const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
-                path: `/api/v1/me`,
-                headers: { "X-ACCESS-TOKEN": authenticationToken },
-              })
-              const resGravityEmail = await resultGravityEmail.json()
-              await actions.signIn({ email: resGravityEmail.email, accessToken, oauthProvider: "facebook" })
+              await actions.signIn({ accessToken, oauthProvider: "facebook" })
+              const xAccessToken = context.getStoreState().auth.userAccessToken
+              if (xAccessToken) {
+                const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
+                  path: `/api/v1/me`,
+                  headers: { "X-ACCESS-TOKEN": xAccessToken },
+                })
+                const { email } = await resultGravityEmail.json()
+                await actions.signIn({ email, accessToken, oauthProvider: "facebook" })
+              }
             }
           }
         }
