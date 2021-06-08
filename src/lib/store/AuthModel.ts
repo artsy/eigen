@@ -13,6 +13,7 @@ export interface AuthModel {
   userID: string | null
   androidUserEmail: string | null
   userAccessToken: string | null
+  userAccessTokenTEMP: string | null
   userAccessTokenExpiresIn: string | null
   xAppToken: string | null
   xApptokenExpiresIn: string | null
@@ -62,6 +63,7 @@ export const getAuthModel = (): AuthModel => ({
   androidUserEmail: null,
   userAccessToken: null,
   userAccessTokenExpiresIn: null,
+  userAccessTokenTEMP: null,
   xAppToken: null,
   xApptokenExpiresIn: null,
   onboardingState: "none",
@@ -186,8 +188,7 @@ export const getAuthModel = (): AuthModel => ({
     if (result.status === 201) {
       const { expires_in, access_token } = await result.json()
       actions.setState({
-        userAccessToken: access_token,
-        userAccessTokenExpiresIn: expires_in,
+        userAccessTokenTEMP: access_token,
       })
       if (email) {
         const { id } = await (
@@ -197,6 +198,8 @@ export const getAuthModel = (): AuthModel => ({
         ).json()
 
         actions.setState({
+          userAccessToken: access_token,
+          userAccessTokenExpiresIn: expires_in,
           userID: id,
           androidUserEmail: email,
         })
@@ -275,7 +278,7 @@ export const getAuthModel = (): AuthModel => ({
             } else if (resultGravitySignInJSON.error === "Another Account Already Linked") {
               // if the account already exists sign in to existing one
               await actions.signIn({ accessToken, oauthProvider: "facebook" })
-              const xAccessToken = context.getStoreState().auth.userAccessToken
+              const xAccessToken = context.getStoreState().auth.userAccessTokenTEMP
               if (xAccessToken) {
                 const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
                   path: `/api/v1/me`,
