@@ -1,12 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
-import { ArtistArtworksContainerCreateSavedSearchMutation } from "__generated__/ArtistArtworksContainerCreateSavedSearchMutation.graphql"
-import { ArtistArtworksContainerDeleteSavedSearchMutation } from "__generated__/ArtistArtworksContainerDeleteSavedSearchMutation.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import {
   filterArtworksParams,
   prepareFilterArtworksParamsForInput,
-  prepareFilterParamsForSaveSearchInput,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -21,10 +18,10 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, FilterIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
-import React, { useContext, useEffect, useState } from "react"
-import { commitMutation, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import React, { useContext, useEffect, useMemo, useState } from "react"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { SavedSearchBanner } from "./SavedSearchBanner"
+import { SavedSearchBannerQueryRender } from "./SavedSearchBanner"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
@@ -92,18 +89,17 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 }) => {
   const tracking = useTracking()
   const enableSavedSearch = useFeatureFlag("AREnableSavedSearch")
-  const [isSavedSearch, setIsSavedSearch] = useState(false)
-  const [savingFilterSearch, setSavingFilterSearch] = useState(false)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
   const shouldShowSavedSearchBanner = enableSavedSearch && appliedFilters.length > 0
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
 
-  const filterParams = filterArtworksParams(appliedFilters)
+  const filterParams = useMemo(() => filterArtworksParams(appliedFilters), [appliedFilters])
   const artworks = artist.artworks
   const artworksCount = artworks?.edges?.length
   const artworksTotal = artworks?.counts?.total
+  const artistInternalId = artist.internalID
 
   useEffect(() => {
     if (applyFilters) {
@@ -135,91 +131,11 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     })
   }
 
-  const deleteSavedSearch = (searchCriteriaID: string) => {
-    setSavingFilterSearch(true)
-    commitMutation<ArtistArtworksContainerDeleteSavedSearchMutation>(relay.environment, {
-      mutation: graphql`
-      mutation ArtistArtworksContainerDeleteSavedSearchMutation($input: DeleteSavedSearchInput!) {
-        deleteSavedSearch(input: $input) {
-          savedSearchOrErrors {
-            ... on SearchCriteria {
-              internalID
-            }
-          }
-        }
-      }
-    `,
-      variables: {
-        input: {
-          searchCriteriaID
-        }
-      },
-      onCompleted: () => {
-        setSavingFilterSearch(false)
-      },
-      onError: () => {
-        setSavingFilterSearch(false)
-      }
-    })
-  }
-
-  const createSavedSearch = () => {
-    const input = prepareFilterParamsForSaveSearchInput(filterParams)
-
-    setSavingFilterSearch(true)
-    commitMutation<ArtistArtworksContainerCreateSavedSearchMutation>(relay.environment, {
-      mutation: graphql`
-      mutation ArtistArtworksContainerCreateSavedSearchMutation($input: CreateSavedSearchInput!) {
-        createSavedSearch(input: $input) {
-          savedSearchOrErrors {
-            ... on SearchCriteria {
-              internalID
-            }
-          }
-        }
-      }
-    `,
-      variables: {
-        input: {
-          attributes: {
-            artistID: artist.internalID,
-            ...input,
-          }
-        }
-      },
-      onCompleted: (response) => {
-        setSavingFilterSearch(false)
-        const savedSearchId = response.createSavedSearch?.savedSearchOrErrors.internalID;
-
-        if (savedSearchId) {
-          deleteSavedSearch(savedSearchId)
-        }
-      },
-      onError: () => {
-        setSavingFilterSearch(false)
-      }
-    })
-  }
-
-  const handleSaveSearchFiltersPress = () => {
-    if (savingFilterSearch) {
-      return
-    }
-
-    const nextIsSavedSearchState = !isSavedSearch
-
-    if (nextIsSavedSearchState) {
-      createSavedSearch()
-    }
-
-    setIsSavedSearch(nextIsSavedSearchState)
-  }
-
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
   const screenWidth = useScreenDimensions().width
 
   useEffect(
-    () =>
+    () => {
       setJSX(
         <Box backgroundColor="white" mt={2} px={2}>
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
@@ -238,13 +154,14 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
           <Separator mt={2} ml={-2} width={screenWidth} />
           {!!shouldShowSavedSearchBanner && (
             <>
-              <SavedSearchBanner enabled={isSavedSearch} onPress={handleSaveSearchFiltersPress} loading={savingFilterSearch} />
+              <SavedSearchBannerQueryRender artistId={artistInternalId} filters={filterParams} />
               <Separator ml={-2} width={screenWidth} />
             </>
           )}
         </Box>
-      ),
-    [artworksTotal, shouldShowSavedSearchBanner, isSavedSearch, savingFilterSearch]
+      )
+    },
+    [artworksTotal, shouldShowSavedSearchBanner, artistInternalId, filterParams]
   )
 
   const filteredArtworks = () => {
