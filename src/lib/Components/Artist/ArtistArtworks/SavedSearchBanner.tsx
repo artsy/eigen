@@ -78,34 +78,6 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, attrib
     })
   }
 
-  const deleteSavedSearch = () => {
-    setSaving(true)
-    commitMutation<SavedSearchBannerDeleteSavedSearchMutation>(relay.environment, {
-      mutation: graphql`
-        mutation SavedSearchBannerDeleteSavedSearchMutation($input: DeleteSavedSearchInput!) {
-          deleteSavedSearch(input: $input) {
-            savedSearchOrErrors {
-              ... on SearchCriteria {
-                internalID
-              }
-            }
-          }
-        }
-      `,
-      variables: {
-        input: {
-          searchCriteriaID: me!.savedSearch!.internalID,
-        },
-      },
-      onCompleted: () => {
-        setSaving(false)
-      },
-      onError: () => {
-        setSaving(false)
-      },
-    })
-  }
-
   const handleSaveSearchFiltersPress = () => {
     if (inProcess) {
       return
