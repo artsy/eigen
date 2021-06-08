@@ -8,6 +8,9 @@ export type SoldBySection_soldBy = {
     readonly lineItems: {
         readonly edges: ReadonlyArray<{
             readonly node: {
+                readonly artwork: {
+                    readonly shippingOrigin: string | null;
+                } | null;
                 readonly fulfillments: {
                     readonly edges: ReadonlyArray<{
                         readonly node: {
@@ -68,6 +71,24 @@ return {
               "selections": [
                 {
                   "alias": null,
+                  "args": null,
+                  "concreteType": "Artwork",
+                  "kind": "LinkedField",
+                  "name": "artwork",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "shippingOrigin",
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
                   "args": (v0/*: any*/),
                   "concreteType": "CommerceFulfillmentConnection",
                   "kind": "LinkedField",
@@ -120,5 +141,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = '8bb967b43da38ef057b233c4a443308e';
+(node as any).hash = '858d48a0fb09c332db0d60297af07234';
 export default node;

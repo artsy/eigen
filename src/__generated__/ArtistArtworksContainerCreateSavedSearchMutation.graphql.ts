@@ -6,12 +6,30 @@
 import { ConcreteRequest } from "relay-runtime";
 export type CreateSavedSearchInput = {
     artistID?: string | null;
-    attribution?: string | null;
-    category?: string | null;
+    attributes?: SearchCriteriaAttributes | null;
     clientMutationId?: string | null;
+};
+export type SearchCriteriaAttributes = {
+    acquireable?: boolean | null;
+    additionalGeneIDs?: Array<string> | null;
+    artistID?: string | null;
+    atAuction?: boolean | null;
+    attributionClasses?: Array<string> | null;
+    colors?: Array<string> | null;
+    dimensionScoreMax?: number | null;
+    dimensionScoreMin?: number | null;
+    heightMax?: number | null;
+    heightMin?: number | null;
+    inquireableOnly?: boolean | null;
+    locationCities?: Array<string> | null;
+    majorPeriods?: Array<string> | null;
+    materialsTerms?: Array<string> | null;
+    offerable?: boolean | null;
+    partnerIDs?: Array<string> | null;
     priceMax?: number | null;
     priceMin?: number | null;
-    size?: string | null;
+    widthMax?: number | null;
+    widthMin?: number | null;
 };
 export type ArtistArtworksContainerCreateSavedSearchMutationVariables = {
     input: CreateSavedSearchInput;

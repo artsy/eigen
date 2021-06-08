@@ -2,9 +2,6 @@ upcoming:
   version: 6.9.4
   date: TBD
   dev:
-    - OrderDetails with SoldBy section - alexj105
-    - OrderDetails with headInfo - alexj105
-    - OrderDetails with ArtInfo and ShipsTo - alexj105
     - Improve admin menu - dzmitry
     - Use app links on android - mounir
     - obfuscate env vars on android - kizito
@@ -18,6 +15,9 @@ upcoming:
     - Add createSavedSearch mutation - dzmitry tratsiak
     - Add deleteSavedSearch mutation - dzmitry tratsiak
   user_facing:
+    - OrderDetails with SoldBy section - alexj105
+    - OrderDetails with headInfo - alexj105
+    - OrderDetails with ArtInfo and ShipsTo - alexj105
     - Fix wrong displaying in Order History when fields are too long - Serge0n
     - Add payment method section (behind feature flag) - irina-sid
     - Add Order Summary section into OrderDetails page - Serge0n
@@ -33,7 +33,6 @@ upcoming:
     - Add artwork location filter to artwork grids - iskounen
     - Fix back button in android onboarding is flying off in smaller screens - dzmitry
     - Prevent multiline input placeholder on Android - ole
-    - Fix webview overlaps status bar - dzmitry
     - Fix info button in conversation is hard to press - dzmitry
     - Update order of filters - dzmitry tratsiak
     - Fix time mismatch between auction list and individual auction page - matt
@@ -58,6 +57,7 @@ upcoming:
     - Add articles rail to home screen - ole
     - Change articles rail design in artist overview page - ole
     - Specified a more specific error for logging in with Apple or Facebook - stas hanchar
+    - fix inaccurate validators for artwork submission - yauheni
 
 releases:
   - version: 6.9.3

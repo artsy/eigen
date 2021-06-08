@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 31cc9e0b93a64c54d7b45db71bf1c266 */
+/* @relayHash 6b5bba482249ddd8c0ce7cb3bb4bf61a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -32,6 +32,10 @@ fragment SoldBySection_soldBy on CommerceOrder {
   lineItems(first: 1) {
     edges {
       node {
+        artwork {
+          shippingOrigin
+          id
+        }
         fulfillments(first: 1) {
           edges {
             node {
@@ -80,6 +84,12 @@ v4 = {
   "nullable": false,
   "plural": false,
   "type": "ID"
+},
+v5 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
 };
 return {
   "fragment": {
@@ -159,6 +169,25 @@ return {
                     "selections": [
                       {
                         "alias": null,
+                        "args": null,
+                        "concreteType": "Artwork",
+                        "kind": "LinkedField",
+                        "name": "artwork",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "shippingOrigin",
+                            "storageKey": null
+                          },
+                          (v2/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
                         "args": (v1/*: any*/),
                         "concreteType": "CommerceFulfillmentConnection",
                         "kind": "LinkedField",
@@ -215,7 +244,7 @@ return {
     ]
   },
   "params": {
-    "id": "31cc9e0b93a64c54d7b45db71bf1c266",
+    "id": "6b5bba482249ddd8c0ce7cb3bb4bf61a",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "commerceOrder": {
@@ -245,6 +274,14 @@ return {
           "plural": false,
           "type": "CommerceLineItem"
         },
+        "commerceOrder.lineItems.edges.node.artwork": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Artwork"
+        },
+        "commerceOrder.lineItems.edges.node.artwork.id": (v4/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.shippingOrigin": (v5/*: any*/),
         "commerceOrder.lineItems.edges.node.fulfillments": {
           "enumValues": null,
           "nullable": true,
@@ -263,12 +300,7 @@ return {
           "plural": false,
           "type": "CommerceFulfillment"
         },
-        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.estimatedDelivery": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "String"
-        },
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.estimatedDelivery": (v5/*: any*/),
         "commerceOrder.lineItems.edges.node.fulfillments.edges.node.id": (v4/*: any*/),
         "commerceOrder.lineItems.edges.node.id": (v4/*: any*/)
       }

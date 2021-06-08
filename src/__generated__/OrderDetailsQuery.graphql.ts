@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e2b9452f6cac28095d4716a334c596ac */
+/* @relayHash d4366e850aa5c5430312b0f6f321b027 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -128,6 +128,10 @@ fragment SoldBySection_soldBy on CommerceOrder {
   lineItems(first: 1) {
     edges {
       node {
+        artwork {
+          shippingOrigin
+          id
+        }
         fulfillments(first: 1) {
           edges {
             node {
@@ -389,6 +393,13 @@ return {
                             "kind": "ScalarField",
                             "name": "artistNames",
                             "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "shippingOrigin",
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -597,7 +608,7 @@ return {
     ]
   },
   "params": {
-    "id": "e2b9452f6cac28095d4716a334c596ac",
+    "id": "d4366e850aa5c5430312b0f6f321b027",
     "metadata": {},
     "name": "OrderDetailsQuery",
     "operationKind": "query",

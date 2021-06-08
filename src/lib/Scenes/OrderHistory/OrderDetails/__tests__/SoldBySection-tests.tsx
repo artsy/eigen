@@ -39,6 +39,9 @@ describe("SoldBySection", () => {
           edges: [
             {
               node: {
+                artwork: {
+                  shippingOrigin: "Minsk, Belarus",
+                },
                 fulfillments: {
                   edges: [
                     {
@@ -56,5 +59,6 @@ describe("SoldBySection", () => {
     })
 
     expect(tree.findByProps({ testID: "delivery" }).props.children).toBe("8/10/2021")
+    expect(tree.findByProps({ testID: "shippingOrigin" }).props.children).toBe("Minsk, Belarus")
   })
 })

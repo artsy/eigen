@@ -1,3 +1,7 @@
-This update includes a number of small improvements and bug fixes.
+This update includes a number of improvements and bug fixes, including:
+
+- New filters and improvements to existing filters
+- Search shortcuts to artist insights and artworks 
+- Home feed improvements, see Artsy articles in your feed
 
 Have feedback? Email us at support@artsy.net

@@ -80,7 +80,7 @@ const Main: React.FC<{}> = track()(({}) => {
   }, [isHydrated])
 
   if (!isHydrated) {
-    return <View></View>
+    return <View />
   }
 
   if (forceUpdateMessage) {
