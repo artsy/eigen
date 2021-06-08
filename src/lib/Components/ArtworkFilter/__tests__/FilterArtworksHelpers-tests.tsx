@@ -829,7 +829,7 @@ describe("prepareFilterArtworksParamsForInput", () => {
 })
 
 describe("prepareFilterParamsForSaveSearchInput", () => {
-  it("returns fields in the CreateSavedSearchInput format", () => {
+  it("returns fields in the saved search criteria format", () => {
     const filters = filterArtworksParams([
       {
         displayText: "Large (over 100cm)",
@@ -904,6 +904,18 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
     })
   })
 
+  it("return nothing if only the sort filter is selected", () => {
+    const filters = filterArtworksParams([
+      {
+        displayText: "Recently updated",
+        paramName: FilterParamName.sort,
+        paramValue: "-partner_updated_at",
+      },
+    ]);
+
+    expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({})
+  })
+
   it("returns minPrice and maxPrice fields if only the price filter is selected", () => {
     const filters = filterArtworksParams([
       {
@@ -933,7 +945,7 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
     })
   })
 
-  it("returns only the selected `ways to buy` values", () => {
+  it("returns the selected `ways to buy` values", () => {
     const filters = filterArtworksParams([
       {
         displayText: "Bid",
@@ -941,7 +953,7 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
         paramValue: true,
       },
       {
-        displayText: "Bid",
+        displayText: "Inquire",
         paramName: FilterParamName.waysToBuyInquire,
         paramValue: true,
       },
@@ -997,6 +1009,25 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
       widthMin: 12.5,
       widthMax: 34.6,
+    })
+  })
+
+  it("returns only custom max width size", () => {
+    const filters = filterArtworksParams([
+      {
+        displayText: "*-500",
+        paramName: FilterParamName.width,
+        paramValue: "*-196.8503937007874",
+      },
+      {
+        displayText: "Custom size",
+        paramName: FilterParamName.dimensionRange,
+        paramValue: "0-*",
+      }
+    ]);
+
+    expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
+      widthMax: 196.8503937007874,
     })
   })
 
