@@ -1,3 +1,4 @@
+import { captureMessage } from "@sentry/react-native"
 import { SavedSearchBanner_me } from "__generated__/SavedSearchBanner_me.graphql"
 import { SavedSearchBannerCreateSavedSearchMutation } from "__generated__/SavedSearchBannerCreateSavedSearchMutation.graphql"
 import { SavedSearchBannerDeleteSavedSearchMutation } from "__generated__/SavedSearchBannerDeleteSavedSearchMutation.graphql"
@@ -146,14 +147,24 @@ export const SavedSearchBannerQueryRender: React.FC<{ filters: FilterParams; art
           }
         }
       `}
-      render={({ props, error }) => (
-        <SavedSearchBannerFragmentContainer
-          me={props?.me ?? null}
-          loading={props === null && error === null}
-          attributes={attributes}
-          artistId={artistId}
-        />
-      )}
+      render={({ props, error }) => {
+        if (error) {
+          if (__DEV__) {
+            console.error(error)
+          } else {
+            captureMessage(error.stack!)
+          }
+        }
+
+        return (
+          <SavedSearchBannerFragmentContainer
+            me={props?.me ?? null}
+            loading={props === null && error === null}
+            attributes={attributes}
+            artistId={artistId}
+          />
+        )
+      }}
       variables={{
         criteria: attributes,
       }}
