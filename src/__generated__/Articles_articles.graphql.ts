@@ -6,7 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Articles_articles = ReadonlyArray<{
     readonly id: string;
-    readonly " $fragmentRefs": FragmentRefs<"Article_article">;
+    readonly " $fragmentRefs": FragmentRefs<"ArticleCard_article">;
     readonly " $refType": "Articles_articles";
 }>;
 export type Articles_articles$data = Articles_articles;
@@ -35,11 +35,11 @@ const node: ReaderFragment = {
     {
       "args": null,
       "kind": "FragmentSpread",
-      "name": "Article_article"
+      "name": "ArticleCard_article"
     }
   ],
   "type": "Article",
   "abstractKey": null
 };
-(node as any).hash = '48bbee277fbab78d7648e775633f67ad';
+(node as any).hash = 'bea2241c7d72bc68731af217c056ded4';
 export default node;

@@ -14,7 +14,7 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
     return null
   }
   const { createdAt, requestedFulfillment, code } = info
-  const isShip = requestedFulfillment?.__typename === "CommerceShip"
+  const isShippedOrder = requestedFulfillment?.__typename === "CommerceShip"
   const orderCreatedAt = DateTime.fromISO(createdAt)
 
   return (
@@ -40,7 +40,7 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
           Status
         </Text>
         <Text testID="commerceShip" color="black60" variant="text">
-          {isShip ? "Delivery" : "Pickup"}
+          {isShippedOrder ? "Delivery" : "Pickup"}
         </Text>
       </Flex>
     </Flex>

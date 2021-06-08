@@ -58,7 +58,7 @@ export class FollowArtistButton extends React.Component<Props> {
     const followButtonText = this.props.artist.is_followed ? "Following" : "Follow"
     return (
       <Touchable onPress={() => this.handleFollowArtist()} haptic noFeedback>
-        <Sans color="black60" weight="medium" size="3t">
+        <Sans color="black60" weight="medium" size="3t" py="5px">
           {followButtonText}
         </Sans>
       </Touchable>

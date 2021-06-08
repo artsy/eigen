@@ -11,7 +11,7 @@ export type SoldBySection_soldBy = {
                 readonly fulfillments: {
                     readonly edges: ReadonlyArray<{
                         readonly node: {
-                            readonly trackingId: string | null;
+                            readonly estimatedDelivery: string | null;
                         } | null;
                     } | null> | null;
                 } | null;
@@ -94,7 +94,7 @@ return {
                               "alias": null,
                               "args": null,
                               "kind": "ScalarField",
-                              "name": "trackingId",
+                              "name": "estimatedDelivery",
                               "storageKey": null
                             }
                           ],
@@ -120,5 +120,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = '61785d5e278d3ef028b87cdc6a7d6293';
+(node as any).hash = '8bb967b43da38ef057b233c4a443308e';
 export default node;

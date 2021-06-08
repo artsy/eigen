@@ -27,7 +27,7 @@ export type OrderDetails_order = {
         readonly __typename: "%other";
     }) | null;
     readonly code: string;
-    readonly " $fragmentRefs": FragmentRefs<"ArtworkInfoSection_artwork" | "ShipsToSection_address" | "SoldBySection_soldBy">;
+    readonly " $fragmentRefs": FragmentRefs<"ArtworkInfoSection_artwork" | "SummarySection_section" | "OrderDetailsPayment_order" | "ShipsToSection_address" | "SoldBySection_soldBy">;
     readonly " $refType": "OrderDetails_order";
 };
 export type OrderDetails_order$data = OrderDetails_order;
@@ -167,6 +167,16 @@ return {
     {
       "args": null,
       "kind": "FragmentSpread",
+      "name": "SummarySection_section"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "OrderDetailsPayment_order"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
       "name": "ShipsToSection_address"
     },
     {
@@ -179,5 +189,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = '50af7b69dc48298514bddce355e777bd';
+(node as any).hash = 'a82b83c51656e4c08b43c53aa8b09d6b';
 export default node;

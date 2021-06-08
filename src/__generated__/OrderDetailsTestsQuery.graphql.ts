@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7bcada5bd2cfa2f37d99bae8211e33cb */
+/* @relayHash 85c3075a1b03e0bf8d82826ea3159bfa */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -60,6 +60,15 @@ fragment ArtworkInfoSection_artwork on CommerceOrder {
   }
 }
 
+fragment OrderDetailsPayment_order on CommerceOrder {
+  __isCommerceOrder: __typename
+  creditCard {
+    brand
+    lastDigits
+    id
+  }
+}
+
 fragment OrderDetails_order on CommerceOrder {
   __isCommerceOrder: __typename
   lineItems(first: 1) {
@@ -88,6 +97,8 @@ fragment OrderDetails_order on CommerceOrder {
   }
   code
   ...ArtworkInfoSection_artwork
+  ...SummarySection_section
+  ...OrderDetailsPayment_order
   ...ShipsToSection_address
   ...SoldBySection_soldBy
 }
@@ -116,7 +127,7 @@ fragment SoldBySection_soldBy on CommerceOrder {
         fulfillments(first: 1) {
           edges {
             node {
-              trackingId
+              estimatedDelivery
               id
             }
           }
@@ -125,6 +136,14 @@ fragment SoldBySection_soldBy on CommerceOrder {
       }
     }
   }
+}
+
+fragment SummarySection_section on CommerceOrder {
+  __isCommerceOrder: __typename
+  buyerTotal(precision: 2)
+  taxTotal(precision: 2)
+  shippingTotal(precision: 2)
+  totalListPrice(precision: 2)
 }
 */
 
@@ -167,6 +186,13 @@ v4 = {
 v5 = [
   (v1/*: any*/),
   (v4/*: any*/)
+],
+v6 = [
+  {
+    "kind": "Literal",
+    "name": "precision",
+    "value": 2
+  }
 ];
 return {
   "fragment": {
@@ -385,7 +411,7 @@ return {
                                     "alias": null,
                                     "args": null,
                                     "kind": "ScalarField",
-                                    "name": "trackingId",
+                                    "name": "estimatedDelivery",
                                     "storageKey": null
                                   },
                                   (v4/*: any*/)
@@ -489,6 +515,60 @@ return {
             "name": "code",
             "storageKey": null
           },
+          {
+            "alias": null,
+            "args": (v6/*: any*/),
+            "kind": "ScalarField",
+            "name": "buyerTotal",
+            "storageKey": "buyerTotal(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": (v6/*: any*/),
+            "kind": "ScalarField",
+            "name": "taxTotal",
+            "storageKey": "taxTotal(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": (v6/*: any*/),
+            "kind": "ScalarField",
+            "name": "shippingTotal",
+            "storageKey": "shippingTotal(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": (v6/*: any*/),
+            "kind": "ScalarField",
+            "name": "totalListPrice",
+            "storageKey": "totalListPrice(precision:2)"
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "CreditCard",
+            "kind": "LinkedField",
+            "name": "creditCard",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "brand",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "lastDigits",
+                "storageKey": null
+              },
+              (v4/*: any*/)
+            ],
+            "storageKey": null
+          },
           (v4/*: any*/)
         ],
         "storageKey": "commerceOrder(id:\"order-id\")"
@@ -506,7 +586,7 @@ return {
     ]
   },
   "params": {
-    "id": "7bcada5bd2cfa2f37d99bae8211e33cb",
+    "id": "85c3075a1b03e0bf8d82826ea3159bfa",
     "metadata": {},
     "name": "OrderDetailsTestsQuery",
     "operationKind": "query",

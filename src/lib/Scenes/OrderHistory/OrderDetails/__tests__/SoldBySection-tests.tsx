@@ -43,7 +43,7 @@ describe("SoldBySection", () => {
                   edges: [
                     {
                       node: {
-                        fulfillments: "May 14",
+                        estimatedDelivery: "2021-08-10T03:00:00+03:00",
                       },
                     },
                   ],
@@ -55,6 +55,6 @@ describe("SoldBySection", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "delivery" }).props.children).toBe("May 14")
+    expect(tree.findByProps({ testID: "delivery" }).props.children).toBe("8/10/2021")
   })
 })

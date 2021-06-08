@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 031a9a535a3ceb5d6a55d6d77c0a305b */
+/* @relayHash 31cc9e0b93a64c54d7b45db71bf1c266 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -35,7 +35,7 @@ fragment SoldBySection_soldBy on CommerceOrder {
         fulfillments(first: 1) {
           edges {
             node {
-              trackingId
+              estimatedDelivery
               id
             }
           }
@@ -185,7 +185,7 @@ return {
                                     "alias": null,
                                     "args": null,
                                     "kind": "ScalarField",
-                                    "name": "trackingId",
+                                    "name": "estimatedDelivery",
                                     "storageKey": null
                                   },
                                   (v2/*: any*/)
@@ -215,7 +215,7 @@ return {
     ]
   },
   "params": {
-    "id": "031a9a535a3ceb5d6a55d6d77c0a305b",
+    "id": "31cc9e0b93a64c54d7b45db71bf1c266",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "commerceOrder": {
@@ -263,13 +263,13 @@ return {
           "plural": false,
           "type": "CommerceFulfillment"
         },
-        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.id": (v4/*: any*/),
-        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.trackingId": {
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.estimatedDelivery": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "String"
         },
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.id": (v4/*: any*/),
         "commerceOrder.lineItems.edges.node.id": (v4/*: any*/)
       }
     },

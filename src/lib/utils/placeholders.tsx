@@ -69,6 +69,20 @@ const TEXT_MARGIN = 7
 export const PlaceholderText: React.FC<ViewStyle> = ({ ...props }) => {
   return <PlaceholderBox height={TEXT_HEIGHT} marginBottom={TEXT_MARGIN} {...props} />
 }
+
+export const useMemoizedRandom = () => useMemo(Math.random, [])
+
+/**
+ * Placeholder with memoized random with between `minWidth` and `maxWidth`.
+ */
+export const RandomWidthPlaceholderText: React.FC<ViewStyle & { minWidth: number; maxWidth: number }> = ({
+  minWidth,
+  maxWidth,
+  ...props
+}) => {
+  return <PlaceholderText width={minWidth + useMemoizedRandom() * (maxWidth - minWidth)} {...props} />
+}
+
 const BUTTON_HEIGHT = 42
 export const PlaceholderButton: React.FC<ViewStyle> = ({ ...props }) => {
   return <PlaceholderBox height={BUTTON_HEIGHT} {...props} />
