@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b0e35a574a0826b37fa0ad51068d1d89 */
+/* @relayHash 98305b57b5f10457d96c81332691d8af */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,6 +23,9 @@ export type ArtistAboveTheFoldQueryResponse = {
             readonly totalCount: number | null;
         } | null;
         readonly " $fragmentRefs": FragmentRefs<"ArtistHeader_artist" | "ArtistArtworks_artist">;
+    } | null;
+    readonly me: {
+        readonly " $fragmentRefs": FragmentRefs<"ArtistArtworks_me">;
     } | null;
 };
 export type ArtistAboveTheFoldQuery = {
@@ -51,6 +54,10 @@ query ArtistAboveTheFoldQuery(
     auctionResultsConnection {
       totalCount
     }
+    id
+  }
+  me {
+    ...ArtistArtworks_me_44ZiwF
     id
   }
 }
@@ -84,6 +91,13 @@ fragment ArtistArtworks_artist_44NygF on Artist {
       hasNextPage
     }
     id
+  }
+}
+
+fragment ArtistArtworks_me_44ZiwF on Me {
+  name
+  savedSearch {
+    internalID
   }
 }
 
@@ -339,6 +353,34 @@ return {
             ],
             "kind": "FragmentSpread",
             "name": "ArtistArtworks_artist"
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
+        "plural": false,
+        "selections": [
+          {
+            "args": [
+              {
+                "fields": [
+                  {
+                    "kind": "Variable",
+                    "name": "artistID",
+                    "variableName": "artistID"
+                  }
+                ],
+                "kind": "ObjectValue",
+                "name": "criteria"
+              }
+            ],
+            "kind": "FragmentSpread",
+            "name": "ArtistArtworks_me"
           }
         ],
         "storageKey": null
@@ -786,11 +828,36 @@ return {
           (v9/*: any*/)
         ],
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
+        "plural": false,
+        "selections": [
+          (v12/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "SearchCriteria",
+            "kind": "LinkedField",
+            "name": "savedSearch",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/)
+            ],
+            "storageKey": null
+          },
+          (v11/*: any*/)
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "b0e35a574a0826b37fa0ad51068d1d89",
+    "id": "98305b57b5f10457d96c81332691d8af",
     "metadata": {},
     "name": "ArtistAboveTheFoldQuery",
     "operationKind": "query",
@@ -798,5 +865,5 @@ return {
   }
 };
 })();
-(node as any).hash = '98b710cba3d88ac681900f6f01c51c65';
+(node as any).hash = 'd9385ae8b330edb79b038cbb08d183a6';
 export default node;

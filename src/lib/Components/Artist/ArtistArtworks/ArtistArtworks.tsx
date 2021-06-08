@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
+import { ArtistArtworks_me } from "__generated__/ArtistArtworks_me.graphql"
 import { ArtistArtworksContainerCreateSavedSearchMutation } from "__generated__/ArtistArtworksContainerCreateSavedSearchMutation.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import {
@@ -19,18 +20,25 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, FilterIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import { Box, Button, FilterIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import { commitMutation, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import {
+  commitMutation,
+  createPaginationContainer,
+  createRefetchContainer,
+  graphql,
+  RelayPaginationProp,
+  RelayRefetchProp,
+} from "react-relay"
 import { useTracking } from "react-tracking"
-import { SavedSearchBanner } from "./SavedSearchBanner"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
   relay: RelayPaginationProp
+  me: ArtistArtworks_me
 }
 
-const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
+const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, me, ...props }) => {
   const tracking = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
@@ -65,7 +73,13 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   return (
     <ArtworkFiltersStoreProvider>
       <StickyTabPageScrollView>
-        <ArtistArtworksContainer {...props} artist={artist} relay={relay} openFilterModal={openFilterArtworksModal} />
+        <ArtistArtworksContainer
+          {...props}
+          me={me}
+          artist={artist}
+          relay={relay}
+          openFilterModal={openFilterArtworksModal}
+        />
         <ArtworkFilterNavigator
           {...props}
           id={artist.internalID}
@@ -87,6 +101,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   artist,
   relay,
   openFilterModal,
+  me,
   ...props
 }) => {
   const tracking = useTracking()
@@ -140,30 +155,30 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     setSavingFilterSearch(true)
     commitMutation<ArtistArtworksContainerCreateSavedSearchMutation>(relay.environment, {
       mutation: graphql`
-      mutation ArtistArtworksContainerCreateSavedSearchMutation($input: CreateSavedSearchInput!) {
-        createSavedSearch(input: $input) {
-          savedSearchOrErrors {
-            ... on SearchCriteria {
-              internalID
+        mutation ArtistArtworksContainerCreateSavedSearchMutation($input: CreateSavedSearchInput!) {
+          createSavedSearch(input: $input) {
+            savedSearchOrErrors {
+              ... on SearchCriteria {
+                internalID
+              }
             }
           }
         }
-      }
-    `,
+      `,
       variables: {
         input: {
           attributes: {
             artistID: artist.internalID,
             ...input,
-          }
-        }
+          },
+        },
       },
       onCompleted: () => {
         setSavingFilterSearch(false)
       },
       onError: () => {
         setSavingFilterSearch(false)
-      }
+      },
     })
   }
 
@@ -204,7 +219,12 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
           <Separator mt={2} ml={-2} width={screenWidth} />
           {!!shouldShowSavedSearchBanner && (
             <>
-              <SavedSearchBanner enabled={isSavedSearch} onPress={handleSaveSearchFiltersPress} loading={savingFilterSearch} />
+              <SavedSearchBannerContainer
+                me={me}
+                enabled={isSavedSearch}
+                onPress={handleSaveSearchFiltersPress}
+                loading={savingFilterSearch}
+              />
               <Separator ml={-2} width={screenWidth} />
             </>
           )}
@@ -240,6 +260,81 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 
   return artist.artworks ? filteredArtworks() : null
 }
+
+interface SavedSearchBannerProps {
+  loading?: boolean
+  onPress: () => void
+  relay: RelayRefetchProp
+  me: ArtistArtworks_me
+}
+
+const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ loading, onPress, relay, me }) => {
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const filterParams = filterArtworksParams(appliedFilters)
+  const parameterised = prepareFilterArtworksParamsForInput(filterParams)
+
+  const [buttonEnabled, setButtonEnabled] = useState<boolean>(!!me.savedSearch?.internalID)
+
+  console.log("ME NAME", me.name)
+
+  useEffect(() => {
+    relay.refetch(
+      { criteria: parameterised },
+      null,
+      () => {
+        setButtonEnabled(!!me.savedSearch?.internalID)
+      },
+      { force: true }
+    )
+  }, [appliedFilters])
+
+  return (
+    <Flex
+      backgroundColor="white"
+      flexDirection="row"
+      mx={-2}
+      px={2}
+      py={11}
+      justifyContent="space-between"
+      alignItems="center"
+    >
+      <Text variant="small" color="black">
+        New works alert for this search
+      </Text>
+      <Button
+        variant={buttonEnabled ? "secondaryOutline" : "primaryBlack"}
+        onPress={onPress}
+        size="small"
+        loading={loading}
+        longestText="Disable"
+        haptic
+      >
+        {buttonEnabled ? "Disable" : "Enable"}
+      </Button>
+    </Flex>
+  )
+}
+
+export const SavedSearchBannerContainer = createRefetchContainer(
+  SavedSearchBanner,
+  {
+    me: graphql`
+      fragment ArtistArtworks_me on Me @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
+        name
+        savedSearch(criteria: $criteria) {
+          internalID
+        }
+      }
+    `,
+  },
+  graphql`
+    query ArtistArtworksRefetchQuery($criteria: SearchCriteriaAttributes) {
+      me {
+        ...ArtistArtworks_me @arguments(criteria: $criteria)
+      }
+    }
+  `
+)
 
 export default createPaginationContainer(
   ArtworksGrid,
