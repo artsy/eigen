@@ -59,6 +59,7 @@ upcoming:
     - Specified a more specific error for logging in with Apple or Facebook - stas hanchar
     - fix inaccurate validators for artwork submission - yauheni
     - Check saved search when the user applied the filter - dzmitry tratsiak
+    - Don't close filter artwork modal when "clear all" tapped - dzmitry tratsiak
 
 releases:
   - version: 6.9.3
