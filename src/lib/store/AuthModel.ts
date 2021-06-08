@@ -38,7 +38,7 @@ export interface AuthModel {
     GlobalStoreModel,
     Promise<boolean>
   >
-  signUp: Thunk<AuthModel, { email: string; name: string; password: string }, {}, GlobalStoreModel, Promise<boolean>>
+  signUp: Thunk<AuthModel, { email: string; password: string; name: string }, {}, GlobalStoreModel, Promise<boolean>>
   authFacebook: Thunk<AuthModel, void, {}, GlobalStoreModel, Promise<void>>
   forgotPassword: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel, Promise<boolean>>
   gravityUnauthenticatedRequest: Thunk<
@@ -236,15 +236,16 @@ export const getAuthModel = (): AuthModel => ({
     if (!resultFacebook.isCancelled) {
       const accessToken = await AccessToken.getCurrentAccessToken()
       if (accessToken) {
-        const responseInfoCallback = async (error: {}, resFacebook: { email: string; name: string }) => {
+        const responseFacebookInfoCallback = async (error: {}, facebookInfo: { email: string; name: string }) => {
           if (error) {
             console.log(error)
             console.log("Error fetching data")
           } else {
-            console.log(resFacebook)
-            console.log("Success fetching data" + resFacebook)
+            console.log(facebookInfo)
+            console.log("Success fetching data" + facebookInfo)
 
-            const resultGravity = await actions.gravityUnauthenticatedRequest({
+            // sign up
+            const resultGravitySignIn = await actions.gravityUnauthenticatedRequest({
               path: `/api/v1/user`,
               method: "POST",
               headers: {
@@ -253,32 +254,36 @@ export const getAuthModel = (): AuthModel => ({
               body: {
                 provider: "facebook",
                 oauth_token: accessToken?.accessToken,
-                email: resFacebook.email,
-                name: resFacebook.name,
+                email: facebookInfo.email,
+                name: facebookInfo.name,
                 agreed_to_receive_emails: true,
                 accepted_terms_of_service: true,
               },
             })
-            const resGravity = await resultGravity.json()
+            const resultGravitySignInJSON = await resultGravitySignIn.json()
 
-            if (resultGravity.status === 201) {
-              await actions.signIn({ email: resFacebook.email, accessToken, oauthProvider: "facebook" })
+            // sign in
+            if (resultGravitySignIn.status === 201) {
+              // if new account
+              await actions.signIn({ email: facebookInfo.email, accessToken, oauthProvider: "facebook" })
               actions.setState({
                 onboardingState: "incomplete",
               })
-            } else if (resGravity.error === "Another Account Already Linked") {
-              await actions.signIn({ email: resFacebook.email, accessToken, oauthProvider: "facebook" })
+            } else if (resultGravitySignInJSON.error === "Another Account Already Linked") {
+              // if the account already exists sign in to existing one
+              await actions.signIn({ email: facebookInfo.email, accessToken, oauthProvider: "facebook" })
               const { authenticationToken } = getCurrentEmissionState()
-              const result2 = await actions.gravityUnauthenticatedRequest({
+              const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
                 path: `/api/v1/me`,
                 headers: { "X-ACCESS-TOKEN": authenticationToken },
               })
-              const result3 = await result2.json()
-              await actions.signIn({ email: result3.email, accessToken, oauthProvider: "facebook" })
+              const resGravityEmail = await resultGravityEmail.json()
+              await actions.signIn({ email: resGravityEmail.email, accessToken, oauthProvider: "facebook" })
             }
           }
         }
 
+        // get info from facebook
         const infoRequest = new GraphRequest(
           "/me",
           {
@@ -289,7 +294,7 @@ export const getAuthModel = (): AuthModel => ({
               },
             },
           },
-          responseInfoCallback
+          responseFacebookInfoCallback
         )
         new GraphRequestManager().addRequest(infoRequest).start()
       }
