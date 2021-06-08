@@ -48,6 +48,7 @@ upcoming:
     - Release new price range filter to artwork grids - iskounen
     - Fix padding between section titles and the artwork grids below them - stas hanchar
     - Add saved search banner (behind feature flag) - dzmitry tratsiak
+    - Add Filter Component to Collections Page - kizito
     - Add articles rail to home screen - ole
     - Update articles rail design on artist overview screen - ole
     - Fix home screen placeholder changing with bug 🎉 - ole
@@ -58,6 +59,7 @@ upcoming:
     - Change articles rail design in artist overview page - ole
     - Specified a more specific error for logging in with Apple or Facebook - stas hanchar
     - fix inaccurate validators for artwork submission - yauheni
+    - Check saved search when the user applied the filter - dzmitry tratsiak
 
 releases:
   - version: 6.9.3
