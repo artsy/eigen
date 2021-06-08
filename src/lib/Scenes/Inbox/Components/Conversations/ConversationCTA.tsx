@@ -54,13 +54,10 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
         }
       } else if (state === "FULFILLED") {
         kind = "OFFER_ACCEPTED"
-      } else if (state === "APPROVED" && lastOffer?.fromParticipant === "BUYER") {
-        kind = "OFFER_ACCEPTED"
-      } else if (state === "APPROVED" && lastOffer?.fromParticipant === "SELLER" && lastOffer?.definesTotal) {
-        // green CTA. Offer accepted. This appears when collector confirms totals on an accepted provisional offer
-        kind = "PROVISIONAL_OFFER_ACCEPTED"
+      } else if (state === "APPROVED") {
+        const isProvisionalOffer = lastOffer?.fromParticipant === "SELLER" && lastOffer?.definesTotal
+        kind = isProvisionalOffer ? "PROVISIONAL_OFFER_ACCEPTED" : "OFFER_ACCEPTED"
       }
-
       CTA = kind && <ReviewOfferButton kind={kind} activeOrder={activeOrder} conversationID={conversationID} />
     }
   }
