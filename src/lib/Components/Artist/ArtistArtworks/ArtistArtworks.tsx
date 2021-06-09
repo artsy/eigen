@@ -91,8 +91,10 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const enableSavedSearch = useFeatureFlag("AREnableSavedSearch")
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
-  const onlySortFilterApplied = appliedFilters.length === 1 && appliedFilters[0].paramName === FilterParamName.sort
-  const shouldShowSavedSearchBanner = enableSavedSearch && appliedFilters.length > 0 && !onlySortFilterApplied
+  const relevantFiltersForSavedSearch = appliedFilters.filter(
+    (filter) => !(filter.paramName === FilterParamName.sort)
+  )
+  const shouldShowSavedSearchBanner = enableSavedSearch && relevantFiltersForSavedSearch.length > 0
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
 
