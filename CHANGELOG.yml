@@ -16,6 +16,7 @@ upcoming:
     - Update PR template to not automatically attach an unrelated Jira ticket - erikdstock
     - Add createSavedSearch mutation - dzmitry tratsiak
     - Add deleteSavedSearch mutation - dzmitry tratsiak
+    - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
   user_facing:
     - Fix wrong displaying in Order History when fields are too long - Serge0n
     - Add payment method section (behind feature flag) - irina-sid
@@ -60,6 +61,7 @@ upcoming:
     - fix inaccurate validators for artwork submission - yauheni
     - Check saved search when the user applied the filter - dzmitry tratsiak
     - Don't close filter artwork modal when "clear all" tapped - dzmitry tratsiak
+    - Continue to show the offer approved banner in an inquiry offer conversation after fulfillment - erikdstock
 
 releases:
   - version: 6.9.3
