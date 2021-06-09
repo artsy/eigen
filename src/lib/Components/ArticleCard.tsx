@@ -16,7 +16,6 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isRa
   const imageURL = article.thumbnailImage?.url
 
   const onTap = (event: GestureResponderEvent) => {
-    console.log(article.href)
     onPress?.(event)
     navigate(article.href!)
   }

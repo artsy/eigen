@@ -76,6 +76,7 @@ import { useSentryConfig } from "./ErrorReporting"
 import { NativeAnalyticsProvider } from "./NativeModules/Events"
 import { ArticlesQueryRenderer } from "./Scenes/Articles/Articles"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
+import { AuctionResultForYouQueryRenderer } from "./Scenes/AuctionResultForYou/AuctionResultForYou"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
@@ -111,8 +112,6 @@ LogBox.ignoreLogs([
 
 addTrackingProvider("native ios analytics", NativeAnalyticsProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
-
-const Articles: React.FC = () => <ArticlesQueryRenderer />
 
 interface ArtworkProps {
   artworkID: string
@@ -284,7 +283,7 @@ export const modules = defineModules({
   Admin: nativeModule({ alwaysPresentModally: true }),
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
-  Articles: reactModule(Articles),
+  Articles: reactModule(ArticlesQueryRenderer),
   Artist: reactModule(ArtistQueryRenderer),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
@@ -297,6 +296,7 @@ export const modules = defineModules({
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
   AuctionResult: reactModule(AuctionResultQueryRenderer),
+  AuctionResultForYou: reactModule(AuctionResultForYouQueryRenderer),
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,

@@ -10,7 +10,7 @@ import { FlatList } from "react-native"
 import { ConnectionConfig } from "react-relay"
 import { usePagination, useQuery } from "relay-hooks"
 import { graphql } from "relay-runtime"
-import { ArticleGridItem, ArticlesList, useNumColumns } from "./ArticlesList"
+import { ArticlesList, ArticlesListItem, useNumColumns } from "./ArticlesList"
 
 const PAGE_SIZE = 10
 
@@ -49,6 +49,55 @@ export const ArticlesContainer: React.FC<ArticlesProps> = (props) => {
       handleLoadMore={handleLoadMore}
       handleRefresh={handleRefresh}
     />
+  )
+}
+
+export const ArticlesQueryRenderer: React.FC = () => {
+  const { props, error, retry } = useQuery<ArticlesQuery>(query, {
+    count: PAGE_SIZE,
+    inEditorialFeed: true,
+    sort: "PUBLISHED_AT_DESC",
+  })
+
+  if (props) {
+    return <ArticlesContainer query={props} />
+  }
+  if (error) {
+    console.error(error)
+    return <LoadFailureView onRetry={retry} />
+  }
+
+  return <ArticlesPlaceholder />
+}
+
+export const ArticlesPlaceholder: React.FC = () => {
+  const numColumns = useNumColumns()
+
+  return (
+    <ProvidePlaceholderContext>
+      <Flex flexDirection="column" justifyContent="space-between" height="100%" pb={8}>
+        <FlatList
+          numColumns={numColumns}
+          key={`${numColumns}`}
+          ListHeaderComponent={() => <ArticlesHeader />}
+          data={_.times(6)}
+          keyExtractor={(item) => `${item}-${numColumns}`}
+          renderItem={({ item }) => {
+            return (
+              <ArticlesListItem index={item} key={item}>
+                <PlaceholderBox aspectRatio={1.33} width={"100%"} marginBottom={10} />
+                <RandomWidthPlaceholderText minWidth={50} maxWidth={100} marginTop={1} />
+                <RandomWidthPlaceholderText height={18} minWidth={200} maxWidth={200} marginTop={1} />
+                <RandomWidthPlaceholderText minWidth={100} maxWidth={100} marginTop={1} />
+                <Spacer mb={2} />
+              </ArticlesListItem>
+            )
+          }}
+          ItemSeparatorComponent={() => <Spacer mt="3" />}
+          onEndReachedThreshold={1}
+        />
+      </Flex>
+    </ProvidePlaceholderContext>
   )
 }
 
@@ -104,53 +153,4 @@ const connectionConfig: ConnectionConfig = {
     inEditorialFeed: true,
     sort: "PUBLISHED_AT_DESC",
   }),
-}
-
-export const ArticlesQueryRenderer: React.FC = () => {
-  const { props, error, retry } = useQuery<ArticlesQuery>(query, {
-    count: PAGE_SIZE,
-    inEditorialFeed: true,
-    sort: "PUBLISHED_AT_DESC",
-  })
-
-  if (props) {
-    return <ArticlesContainer query={props} />
-  }
-  if (error) {
-    console.error(error)
-    return <LoadFailureView onRetry={retry} />
-  }
-
-  return <ArticlesPlaceholder />
-}
-
-export const ArticlesPlaceholder: React.FC = () => {
-  const numColumns = useNumColumns()
-
-  return (
-    <ProvidePlaceholderContext>
-      <Flex flexDirection="column" justifyContent="space-between" height="100%" pb={8}>
-        <FlatList
-          numColumns={numColumns}
-          key={`${numColumns}`}
-          ListHeaderComponent={() => <ArticlesHeader />}
-          data={_.times(6)}
-          keyExtractor={(item) => `${item}-${numColumns}`}
-          renderItem={({ item }) => {
-            return (
-              <ArticleGridItem index={item} key={item}>
-                <PlaceholderBox aspectRatio={1.33} width={"100%"} marginBottom={10} />
-                <RandomWidthPlaceholderText minWidth={50} maxWidth={100} marginTop={1} />
-                <RandomWidthPlaceholderText height={18} minWidth={200} maxWidth={200} marginTop={1} />
-                <RandomWidthPlaceholderText minWidth={100} maxWidth={100} marginTop={1} />
-                <Spacer mb={2} />
-              </ArticleGridItem>
-            )
-          }}
-          ItemSeparatorComponent={() => <Spacer mt="3" />}
-          onEndReachedThreshold={1}
-        />
-      </Flex>
-    </ProvidePlaceholderContext>
-  )
 }

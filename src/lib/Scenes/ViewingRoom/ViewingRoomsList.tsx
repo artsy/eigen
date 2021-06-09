@@ -31,7 +31,7 @@ const fragmentSpec = graphql`
   }
 `
 
-export const useNumColumns = () => {
+const useNumColumns = () => {
   const { width, orientation } = useScreenDimensions()
   const isIPad = width > 700
 

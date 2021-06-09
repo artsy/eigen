@@ -46,9 +46,9 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
           keyExtractor={(item) => `${item.internalID}-${numColumns}`}
           renderItem={({ item, index }) => {
             return (
-              <ArticleGridItem index={index}>
+              <ArticlesListItem index={index}>
                 <ArticleCard article={item as any} />
-              </ArticleGridItem>
+              </ArticlesListItem>
             )
           }}
           ItemSeparatorComponent={() => <Spacer mt="3" />}
@@ -70,11 +70,11 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
     </ProvideScreenTracking>
   )
 }
-interface ArticleGridItemProps {
+interface ArticlesListItemProps {
   index: number
 }
 
-export const ArticleGridItem: React.FC<ArticleGridItemProps> = ({ children, index }) => {
+export const ArticlesListItem: React.FC<ArticlesListItemProps> = ({ children, index }) => {
   const numColumns = useNumColumns()
 
   if (numColumns === 1) {
