@@ -32,11 +32,13 @@ export const ArtsyReactWebViewPage: React.FC<
     isPresentedModally?: boolean
   } & ArtsyWebViewConfig
 > = ({ url, title, isPresentedModally, allowWebViewInnerNavigation = true, mimicBrowserBackButton = true }) => {
+  const paddingTop = useScreenDimensions().safeAreaInsets.top
+
   const [canGoBack, setCanGoBack] = useState(false)
   const ref = useRef<WebView>(null)
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, paddingTop }}>
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
           useXButton={isPresentedModally && !canGoBack}
@@ -76,10 +78,8 @@ export const ArtsyReactWebView = React.forwardRef<
   const webURL = useEnvironment().webURL
   const uri = url.startsWith("/") ? webURL + url : url
 
-  const paddingTop = useScreenDimensions().safeAreaInsets.top
-
   return (
-    <View style={{ flex: 1, paddingTop }}>
+    <View style={{ flex: 1 }}>
       <WebView
         ref={ref}
         // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction
