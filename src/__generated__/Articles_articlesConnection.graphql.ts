@@ -42,7 +42,7 @@ const node: ReaderFragment = {
       "name": "after"
     },
     {
-      "defaultValue": 5,
+      "defaultValue": 10,
       "kind": "LocalArgument",
       "name": "count"
     },
@@ -241,5 +241,5 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = '47e082db96b8ea87f7f3c90d31f0b6f0';
+(node as any).hash = '219340dd2cef6f1f57329729d813baa6';
 export default node;

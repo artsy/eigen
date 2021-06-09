@@ -45,24 +45,10 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
           keyExtractor={(item) => `${item.internalID}-${numColumns}`}
           renderItem={({ item, index }) => {
-            if (numColumns === 1) {
-              return (
-                <Flex mx="2">
-                  <ArticleCard article={item as any} />
-                </Flex>
-              )
-            }
-
             return (
-              <Flex flex={1 / numColumns} flexDirection="row">
-                {/* left list padding */ index % numColumns === 0 && <Spacer ml="2" />}
-                {/* left side separator */ index % numColumns > 0 && <Spacer ml="1" />}
-                <Flex flex={1}>
-                  <ArticleCard article={item as any} />
-                </Flex>
-                {/* right side separator*/ index % numColumns < numColumns - 1 && <Spacer mr="1" />}
-                {/* right list padding */ index % numColumns === numColumns - 1 && <Spacer mr="2" />}
-              </Flex>
+              <ArticleGridItem index={index}>
+                <ArticleCard article={item as any} />
+              </ArticleGridItem>
             )
           }}
           ItemSeparatorComponent={() => <Spacer mt="3" />}
@@ -84,12 +70,32 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
     </ProvideScreenTracking>
   )
 }
+interface ArticleGridItemProps {
+  index: number
+}
+
+export const ArticleGridItem: React.FC<ArticleGridItemProps> = ({ children, index }) => {
+  const numColumns = useNumColumns()
+
+  if (numColumns === 1) {
+    return <Flex mx="2">{children}</Flex>
+  }
+
+  const ml = index % numColumns === 0 ? 2 : 1
+  const mr = index % numColumns < numColumns - 1 ? 1 : 2
+
+  return (
+    <Flex flex={1 / numColumns} flexDirection="row" ml={ml} mr={mr}>
+      <Flex flex={1}>{children}</Flex>
+    </Flex>
+  )
+}
 
 export const useNumColumns = () => {
   const { width, orientation } = useScreenDimensions()
-  const isIPad = width > 700
+  const isTablet = width > 700
 
-  if (!isIPad) {
+  if (!isTablet) {
     return 1
   }
 

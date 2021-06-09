@@ -64,14 +64,3 @@ export const ProvideScreenDimensions: React.FC = ({ children }) => {
 export function useScreenDimensions() {
   return useContext(ScreenDimensionsContext)
 }
-
-export const useNumColumns = () => {
-  const { width, orientation } = useScreenDimensions()
-  const isIPad = width > 700
-
-  if (!isIPad) {
-    return 1
-  }
-
-  return orientation === "portrait" ? 2 : 3
-}

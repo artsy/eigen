@@ -6,12 +6,13 @@ import { PlaceholderBox, ProvidePlaceholderContext, RandomWidthPlaceholderText }
 import _ from "lodash"
 import { Flex, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
+import { FlatList } from "react-native"
 import { ConnectionConfig } from "react-relay"
 import { usePagination, useQuery } from "relay-hooks"
 import { graphql } from "relay-runtime"
-import { ArticlesList } from "./ArticlesList"
+import { ArticleGridItem, ArticlesList, useNumColumns } from "./ArticlesList"
 
-const PAGE_SIZE = 5
+const PAGE_SIZE = 10
 
 interface ArticlesProps {
   query: Articles_articlesConnection$key
@@ -60,7 +61,7 @@ export const ArticlesHeader = () => (
 const fragmentSpec = graphql`
   fragment Articles_articlesConnection on Query
   @argumentDefinitions(
-    count: { type: "Int", defaultValue: 5 }
+    count: { type: "Int", defaultValue: 10 }
     after: { type: "String" }
     sort: { type: "ArticleSorts" }
     inEditorialFeed: { type: "Boolean" }
@@ -124,19 +125,31 @@ export const ArticlesQueryRenderer: React.FC = () => {
 }
 
 export const ArticlesPlaceholder: React.FC = () => {
+  const numColumns = useNumColumns()
+
   return (
     <ProvidePlaceholderContext>
-      <ArticlesHeader />
-      <Flex mx={2}>
-        {_.times(4).map(() => (
-          <>
-            <PlaceholderBox aspectRatio={1.33} width={"100%"} marginBottom={10} />
-            <RandomWidthPlaceholderText minWidth={50} maxWidth={100} marginTop={1} />
-            <RandomWidthPlaceholderText height={18} minWidth={200} maxWidth={200} marginTop={1} />
-            <RandomWidthPlaceholderText minWidth={100} maxWidth={100} marginTop={1} />
-            <Spacer mb={2} />
-          </>
-        ))}
+      <Flex flexDirection="column" justifyContent="space-between" height="100%" pb={8}>
+        <FlatList
+          numColumns={numColumns}
+          key={`${numColumns}`}
+          ListHeaderComponent={() => <ArticlesHeader />}
+          data={_.times(6)}
+          keyExtractor={(item) => `${item}-${numColumns}`}
+          renderItem={({ item }) => {
+            return (
+              <ArticleGridItem index={item} key={item}>
+                <PlaceholderBox aspectRatio={1.33} width={"100%"} marginBottom={10} />
+                <RandomWidthPlaceholderText minWidth={50} maxWidth={100} marginTop={1} />
+                <RandomWidthPlaceholderText height={18} minWidth={200} maxWidth={200} marginTop={1} />
+                <RandomWidthPlaceholderText minWidth={100} maxWidth={100} marginTop={1} />
+                <Spacer mb={2} />
+              </ArticleGridItem>
+            )
+          }}
+          ItemSeparatorComponent={() => <Spacer mt="3" />}
+          onEndReachedThreshold={1}
+        />
       </Flex>
     </ProvidePlaceholderContext>
   )
