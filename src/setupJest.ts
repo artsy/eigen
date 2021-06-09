@@ -111,6 +111,12 @@ beforeEach(() => {
   require("@react-native-cookies/cookies").clearAll.mockReset()
 })
 
+jest.mock("react-native-fbsdk-next", () => ({
+  LoginManager: {
+    logOut: jest.fn(),
+  },
+}))
+
 // prettier-ignore
 // tslint:disable-next-line:no-empty
 jest.mock("@sentry/react-native", () => ({ captureMessage() {},  init() {},  setUser() {},  addBreadcrumb() {},  withScope() {} }))
