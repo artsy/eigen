@@ -164,7 +164,7 @@ export function useOnTabFocusedEffect(effect: EffectCallback, tabIndex: number) 
   }, [activeTabIndex.current])
 }
 
-function useAutoCollapsingMeasuredView(content: React.ReactChild) {
+export function useAutoCollapsingMeasuredView(content: React.ReactChild) {
   const [nativeHeight, setNativeHeight] = useState<Animated.Value<number> | null>(
     __TEST__ ? new Animated.Value(100) : null
   )
