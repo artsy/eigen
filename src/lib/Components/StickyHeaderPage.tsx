@@ -53,6 +53,7 @@ export const StickyHeaderPage: React.FC<StickyHeaderPageProps> = (props) => {
     <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
       <Animated.ScrollView
         scrollEventThrottle={0.0000000001}
+        showsVerticalScrollIndicator={false}
         onScroll={Animated.event(
           [
             {
