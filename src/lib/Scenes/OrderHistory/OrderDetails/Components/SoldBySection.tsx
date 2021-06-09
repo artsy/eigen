@@ -11,9 +11,7 @@ interface Props {
 }
 
 export const SoldBySection: React.FC<Props> = ({ soldBy }) => {
-  console.log(soldBy, "soldBy")
   const { fulfillments, artwork } = extractNodes(soldBy.lineItems)[0]
-  // const shippingOrigin =
   const estimatedDelivery = extractNodes(fulfillments)[0].estimatedDelivery
   const orderEstimatedDelivery = estimatedDelivery ? DateTime.fromISO(estimatedDelivery) : null
   if (!soldBy) {
@@ -22,14 +20,16 @@ export const SoldBySection: React.FC<Props> = ({ soldBy }) => {
 
   return (
     <Box>
-      <Box flexDirection="row" alignItems="center">
-        <Text color="black60">Ships from </Text>
+      <Box flexDirection="row">
+        <Text variant="text" color="black60">
+          Ships from{" "}
+        </Text>
         <Text testID="shippingOrigin" color="black60" variant="text">
           {artwork?.shippingOrigin}
         </Text>
       </Box>
-      <Box flexDirection="row" alignItems="center">
-        <Text>Estimated Delivery: </Text>
+      <Box flexDirection="row">
+        <Text variant="text">Estimated Delivery: </Text>
         <Text testID="delivery" variant="text">
           {orderEstimatedDelivery ? orderEstimatedDelivery.toLocaleString(DateTime.DATE_SHORT as LocaleOptions) : null}
         </Text>
