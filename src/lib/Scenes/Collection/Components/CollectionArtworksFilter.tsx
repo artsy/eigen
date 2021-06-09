@@ -4,7 +4,7 @@ import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilter
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, FilterIcon, Flex, Separator, Text, Touchable, TouchableHighlightColor } from "palette"
+import { Box, FilterIcon, Flex, Separator, Text, TouchableHighlightColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
