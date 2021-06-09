@@ -73,7 +73,7 @@ Once you've built & run the app through Xcode once, you can use [Flipper](https:
 Make sure Flipper is running, then start the iOS simulator directly via your terminal:
 
 ```sh
-open /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app
+yarn open-sim
 ```
 
 The simulator that opens should include the Artsy app even if you don’t have xcode running, and then you can use Flipper's dev tools for inspecting log output.
@@ -136,9 +136,9 @@ When you connect an iPhone to your machine, Xcode will prompt you to join a team
 
 1. On your Android device go to Settings > About Phone
 2. Find the 'Build number' menu item and tap it 7 times to enable developer mode.
-4. Now go to Settings > System > Developer Options, and turn on 'USB Debugging'
-5. Connect your device to your computer via USB cable. After a moment the device should show a prompt for you to allow USB debugging for your computer. Press yes.
-7. After that run `yarn android` from within the eigen directory. This will build the app, install it on your device, and run it.
+3. Now go to Settings > System > Developer Options, and turn on 'USB Debugging'
+4. Connect your device to your computer via USB cable. After a moment the device should show a prompt for you to allow USB debugging for your computer. Press yes.
+5. After that run `yarn android` from within the eigen directory. This will build the app, install it on your device, and run it.
 
 ## Read more
 
