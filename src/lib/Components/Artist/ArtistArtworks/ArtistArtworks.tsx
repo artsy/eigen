@@ -17,7 +17,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, FilterIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import { Box, FilterIcon, Flex, Separator, Spacer, Text, TouchableHighlightColor } from "palette"
 import React, { useContext, useEffect, useMemo, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -133,32 +133,39 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
   const screenWidth = useScreenDimensions().width
 
-  useEffect(() => {
-    setJSX(
-      <Box backgroundColor="white" mt={2} px={2}>
-        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-          <Text variant="subtitle" color="black60">
-            Showing {artworksTotal} works
-          </Text>
-          <Touchable haptic onPress={openFilterModal}>
-            <Flex flexDirection="row">
-              <FilterIcon fill="black100" width="20px" height="20px" />
-              <Text variant="subtitle" color="black100">
-                Sort & Filter
-              </Text>
-            </Flex>
-          </Touchable>
-        </Flex>
-        <Separator mt={2} ml={-2} width={screenWidth} />
-        {!!shouldShowSavedSearchBanner && (
-          <>
-            <SavedSearchBannerQueryRender artistId={artistInternalId} filters={filterParams} />
-            <Separator ml={-2} width={screenWidth} />
-          </>
-        )}
-      </Box>
-    )
-  }, [artworksTotal, shouldShowSavedSearchBanner, artistInternalId, filterParams])
+  useEffect(
+    () => {
+      setJSX(
+        <Box backgroundColor="white" mt={2} px={2}>
+          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+            <Text variant="subtitle" color="black60">
+              Showing {artworksTotal} works
+            </Text>
+            <TouchableHighlightColor
+              haptic
+              onPress={openFilterModal}
+              render={({ color }) => (
+                <Flex flexDirection="row" alignItems="center">
+                  <FilterIcon fill={color} width="20px" height="20px" />
+                  <Text variant="subtitle" color={color}>
+                    Sort & Filter
+                  </Text>
+                </Flex>
+              )}
+            />
+          </Flex>
+          <Separator mt={2} ml={-2} width={screenWidth} />
+          {!!shouldShowSavedSearchBanner && (
+            <>
+              <SavedSearchBannerQueryRender artistId={artistInternalId} filters={filterParams} />
+              <Separator ml={-2} width={screenWidth} />
+            </>
+          )}
+        </Box>
+      )
+    },
+    [artworksTotal, shouldShowSavedSearchBanner, artistInternalId, filterParams]
+  )
 
   const filteredArtworks = () => {
     if (artworksCount === 0) {
