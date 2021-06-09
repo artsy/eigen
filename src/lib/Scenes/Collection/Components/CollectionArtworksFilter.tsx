@@ -4,7 +4,7 @@ import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilter
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, FilterIcon, Flex, Separator, Text, Touchable } from "palette"
+import { Box, FilterIcon, Flex, Separator, Text, Touchable, TouchableHighlightColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -150,14 +150,18 @@ export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection, an
               )}
             </Animated.View>
             {!!artworksTotal && (
-              <Touchable haptic onPress={openFilterArtworksModal}>
-                <Flex flexDirection="row">
-                  <FilterIcon fill="black100" width="20px" height="20px" />
-                  <Text variant="subtitle" color="black100">
-                    Sort & Filter
-                  </Text>
-                </Flex>
-              </Touchable>
+              <TouchableHighlightColor
+                haptic
+                onPress={openFilterArtworksModal}
+                render={({ color }) => (
+                  <Flex flexDirection="row">
+                    <FilterIcon fill={color} width="20px" height="20px" />
+                    <Text variant="subtitle" color={color}>
+                      Sort & Filter
+                    </Text>
+                  </Flex>
+                )}
+              />
             )}
           </Flex>
 
