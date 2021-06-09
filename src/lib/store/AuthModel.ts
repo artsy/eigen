@@ -231,8 +231,14 @@ export const getAuthModel = (): AuthModel => ({
     return false
   }),
   authFacebook: thunk(async (actions) => {
-    const resultFacebook = await LoginManager.logInWithPermissions(["public_profile"])
-    const accessToken = !resultFacebook.isCancelled && (await AccessToken.getCurrentAccessToken())
+    const resultFacebook = await LoginManager.logInWithPermissions(["public_profile", "email"])
+    if (resultFacebook?.declinedPermissions?.includes("email")) {
+      Alert.alert("Error", "Allow the use of email to continue", [{ text: "Ok" }])
+    }
+    const accessToken =
+      !resultFacebook.isCancelled &&
+      !resultFacebook?.declinedPermissions?.includes("email") &&
+      (await AccessToken.getCurrentAccessToken())
     if (accessToken) {
       const responseFacebookInfoCallback = async (error: any, facebookInfo: { email: string; name: string }) => {
         if (error) {
