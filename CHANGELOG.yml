@@ -2,8 +2,6 @@ upcoming:
   version: 6.9.4
   date: TBD
   dev:
-    - OrderDetails with headInfo - alexj105
-    - OrderDetails with ArtInfo and ShipsTo - alexj105
     - Improve admin menu - dzmitry
     - Use app links on android - mounir
     - obfuscate env vars on android - kizito
@@ -19,6 +17,9 @@ upcoming:
     - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
     - Update open simulator command in getting started docs - ole
   user_facing:
+    - OrderDetails with SoldBy section - alexj105
+    - OrderDetails with headInfo - alexj105
+    - OrderDetails with ArtInfo and ShipsTo - alexj105
     - Fix wrong displaying in Order History when fields are too long - Serge0n
     - Add payment method section (behind feature flag) - irina-sid
     - Add Order Summary section into OrderDetails page - Serge0n

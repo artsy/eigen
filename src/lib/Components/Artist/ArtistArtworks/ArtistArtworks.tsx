@@ -133,35 +133,32 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
   const screenWidth = useScreenDimensions().width
 
-  useEffect(
-    () => {
-      setJSX(
-        <Box backgroundColor="white" mt={2} px={2}>
-          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-            <Text variant="subtitle" color="black60">
-              Showing {artworksTotal} works
-            </Text>
-            <Touchable haptic onPress={openFilterModal}>
-              <Flex flexDirection="row">
-                <FilterIcon fill="black100" width="20px" height="20px" />
-                <Text variant="subtitle" color="black100">
-                  Sort & Filter
-                </Text>
-              </Flex>
-            </Touchable>
-          </Flex>
-          <Separator mt={2} ml={-2} width={screenWidth} />
-          {!!shouldShowSavedSearchBanner && (
-            <>
-              <SavedSearchBannerQueryRender artistId={artistInternalId} filters={filterParams} />
-              <Separator ml={-2} width={screenWidth} />
-            </>
-          )}
-        </Box>
-      )
-    },
-    [artworksTotal, shouldShowSavedSearchBanner, artistInternalId, filterParams]
-  )
+  useEffect(() => {
+    setJSX(
+      <Box backgroundColor="white" mt={2} px={2}>
+        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Text variant="subtitle" color="black60">
+            Showing {artworksTotal} works
+          </Text>
+          <Touchable haptic onPress={openFilterModal}>
+            <Flex flexDirection="row">
+              <FilterIcon fill="black100" width="20px" height="20px" />
+              <Text variant="subtitle" color="black100">
+                Sort & Filter
+              </Text>
+            </Flex>
+          </Touchable>
+        </Flex>
+        <Separator mt={2} ml={-2} width={screenWidth} />
+        {!!shouldShowSavedSearchBanner && (
+          <>
+            <SavedSearchBannerQueryRender artistId={artistInternalId} filters={filterParams} />
+            <Separator ml={-2} width={screenWidth} />
+          </>
+        )}
+      </Box>
+    )
+  }, [artworksTotal, shouldShowSavedSearchBanner, artistInternalId, filterParams])
 
   const filteredArtworks = () => {
     if (artworksCount === 0) {

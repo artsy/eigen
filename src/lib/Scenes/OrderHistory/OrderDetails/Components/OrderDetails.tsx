@@ -2,6 +2,7 @@ import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
 import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Box, Flex, Separator, Text } from "palette"
@@ -12,6 +13,7 @@ import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
 import { OrderDetailsHeader } from "./OrderDetailsHeader"
 import { CreditCardSummaryItemFragmentContainer } from "./OrderDetailsPayment"
 import { ShipsToSectionFragmentContainer } from "./ShipsToSection"
+import { SoldBySectionFragmentContainer } from "./SoldBySection"
 import { SummarySectionFragmentContainer } from "./SummarySection"
 
 export interface OrderDetailsProps {
@@ -25,6 +27,7 @@ interface SectionListItem {
 }
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
+  const partnerName = extractNodes(order.lineItems)[0].artwork?.partner
   const DATA: SectionListItem[] = [
     {
       key: "OrderDetailsHeader",
@@ -50,13 +53,18 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
       title: `Ships to ${me?.name}`,
       data: [<ShipsToSectionFragmentContainer address={order} />],
     },
+    {
+      key: "Sold By",
+      title: `Sold by ${partnerName?.name}`,
+      data: [<SoldBySectionFragmentContainer testID="ShipsToSection" soldBy={order} />],
+    },
   ]
 
   return (
     <PageWithSimpleHeader title="Order Details">
       <SectionList
         initialNumToRender={15}
-        contentContainerStyle={{ paddingHorizontal: 20, marginTop: 20, paddingBottom: 25 }}
+        contentContainerStyle={{ paddingHorizontal: 20, marginTop: 20, paddingBottom: 47 }}
         sections={DATA}
         keyExtractor={(item, index) => item.key + index.toString()}
         renderItem={({ item }) => (
@@ -148,11 +156,23 @@ export const OrderDetailsPlaceholder: React.FC<{}> = () => (
 export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
   order: graphql`
     fragment OrderDetails_order on CommerceOrder {
+      lineItems(first: 1) {
+        edges {
+          node {
+            artwork {
+              partner {
+                name
+              }
+            }
+          }
+        }
+      }
       ...OrderDetailsHeader_info @relay(mask: false)
       ...ArtworkInfoSection_artwork
       ...SummarySection_section
       ...OrderDetailsPayment_order
       ...ShipsToSection_address
+      ...SoldBySection_soldBy
     }
   `,
 })
