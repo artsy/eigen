@@ -235,7 +235,7 @@ export const getAuthModel = (): AuthModel => ({
     if (!resultFacebook.isCancelled) {
       const accessToken = await AccessToken.getCurrentAccessToken()
       if (accessToken) {
-        const responseFacebookInfoCallback = async (error: {}, facebookInfo: { email: string; name: string }) => {
+        const responseFacebookInfoCallback = async (error: any, facebookInfo: { email: string; name: string }) => {
           if (error) {
             Alert.alert("Error", "Error fetching data", [{ text: "Ok" }])
           } else {
@@ -287,14 +287,12 @@ export const getAuthModel = (): AuthModel => ({
 
               if (resultGravityAccessToken.status === 201) {
                 const { access_token } = await resultGravityAccessToken.json()
-                if (access_token) {
-                  const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
-                    path: `/api/v1/me`,
-                    headers: { "X-ACCESS-TOKEN": access_token },
-                  })
-                  const { email } = await resultGravityEmail.json()
-                  await actions.signIn({ email, accessToken, oauthProvider: "facebook" })
-                }
+                const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
+                  path: `/api/v1/me`,
+                  headers: { "X-ACCESS-TOKEN": access_token },
+                })
+                const { email } = await resultGravityEmail.json()
+                await actions.signIn({ email, accessToken, oauthProvider: "facebook" })
               }
             } else if (
               resultGravitySignUpJSON.error === "User Already Exists" ||
