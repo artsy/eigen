@@ -3,6 +3,7 @@ import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graph
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import {
   filterArtworksParams,
+  FilterParamName,
   prepareFilterArtworksParamsForInput,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
@@ -90,7 +91,8 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const enableSavedSearch = useFeatureFlag("AREnableSavedSearch")
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
-  const shouldShowSavedSearchBanner = enableSavedSearch && appliedFilters.length > 0
+  const onlySortFilterApplied = appliedFilters.length === 1 && appliedFilters[0].paramName === FilterParamName.sort
+  const shouldShowSavedSearchBanner = enableSavedSearch && appliedFilters.length > 0 && !onlySortFilterApplied
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
 
