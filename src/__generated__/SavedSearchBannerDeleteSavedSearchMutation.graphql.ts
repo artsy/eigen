@@ -1,62 +1,35 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3842c737387a99e03f0d577d6430f91b */
+/* @relayHash 956ec3ea65b6fb1a68dabdf45a966f9f */
 
 import { ConcreteRequest } from "relay-runtime";
-export type CreateSavedSearchInput = {
-    artistID?: string | null;
-    attributes?: SearchCriteriaAttributes | null;
-    attribution?: string | null;
-    category?: string | null;
+export type DeleteSavedSearchInput = {
     clientMutationId?: string | null;
-    priceMax?: number | null;
-    priceMin?: number | null;
-    size?: string | null;
+    searchCriteriaID: string;
 };
-export type SearchCriteriaAttributes = {
-    acquireable?: boolean | null;
-    additionalGeneIDs?: Array<string> | null;
-    artistID?: string | null;
-    atAuction?: boolean | null;
-    attributionClasses?: Array<string> | null;
-    colors?: Array<string> | null;
-    heightMax?: number | null;
-    heightMin?: number | null;
-    inquireableOnly?: boolean | null;
-    locationCities?: Array<string> | null;
-    majorPeriods?: Array<string> | null;
-    materialsTerms?: Array<string> | null;
-    offerable?: boolean | null;
-    partnerIDs?: Array<string> | null;
-    priceMax?: number | null;
-    priceMin?: number | null;
-    size?: string | null;
-    widthMax?: number | null;
-    widthMin?: number | null;
+export type SavedSearchBannerDeleteSavedSearchMutationVariables = {
+    input: DeleteSavedSearchInput;
 };
-export type ArtistArtworksContainerCreateSavedSearchMutationVariables = {
-    input: CreateSavedSearchInput;
-};
-export type ArtistArtworksContainerCreateSavedSearchMutationResponse = {
-    readonly createSavedSearch: {
+export type SavedSearchBannerDeleteSavedSearchMutationResponse = {
+    readonly deleteSavedSearch: {
         readonly savedSearchOrErrors: {
             readonly internalID?: string;
         };
     } | null;
 };
-export type ArtistArtworksContainerCreateSavedSearchMutation = {
-    readonly response: ArtistArtworksContainerCreateSavedSearchMutationResponse;
-    readonly variables: ArtistArtworksContainerCreateSavedSearchMutationVariables;
+export type SavedSearchBannerDeleteSavedSearchMutation = {
+    readonly response: SavedSearchBannerDeleteSavedSearchMutationResponse;
+    readonly variables: SavedSearchBannerDeleteSavedSearchMutationVariables;
 };
 
 
 
 /*
-mutation ArtistArtworksContainerCreateSavedSearchMutation(
-  $input: CreateSavedSearchInput!
+mutation SavedSearchBannerDeleteSavedSearchMutation(
+  $input: DeleteSavedSearchInput!
 ) {
-  createSavedSearch(input: $input) {
+  deleteSavedSearch(input: $input) {
     savedSearchOrErrors {
       __typename
       ... on SearchCriteria {
@@ -101,14 +74,14 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "ArtistArtworksContainerCreateSavedSearchMutation",
+    "name": "SavedSearchBannerDeleteSavedSearchMutation",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "CreateSavedSearchPayload",
+        "concreteType": "DeleteSavedSearchPayload",
         "kind": "LinkedField",
-        "name": "createSavedSearch",
+        "name": "deleteSavedSearch",
         "plural": false,
         "selections": [
           {
@@ -134,14 +107,14 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "ArtistArtworksContainerCreateSavedSearchMutation",
+    "name": "SavedSearchBannerDeleteSavedSearchMutation",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "CreateSavedSearchPayload",
+        "concreteType": "DeleteSavedSearchPayload",
         "kind": "LinkedField",
-        "name": "createSavedSearch",
+        "name": "deleteSavedSearch",
         "plural": false,
         "selections": [
           {
@@ -169,13 +142,13 @@ return {
     ]
   },
   "params": {
-    "id": "3842c737387a99e03f0d577d6430f91b",
+    "id": "956ec3ea65b6fb1a68dabdf45a966f9f",
     "metadata": {},
-    "name": "ArtistArtworksContainerCreateSavedSearchMutation",
+    "name": "SavedSearchBannerDeleteSavedSearchMutation",
     "operationKind": "mutation",
     "text": null
   }
 };
 })();
-(node as any).hash = '7bb63934512b019e56e62d406910e6a6';
+(node as any).hash = '4aa47c8faec3244c12d629027d56602d';
 export default node;

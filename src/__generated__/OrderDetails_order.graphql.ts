@@ -5,6 +5,17 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type OrderDetails_order = {
+    readonly lineItems: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly artwork: {
+                    readonly partner: {
+                        readonly name: string | null;
+                    } | null;
+                } | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly createdAt: string;
     readonly requestedFulfillment: ({
         readonly __typename: "CommerceShip";
@@ -16,7 +27,7 @@ export type OrderDetails_order = {
         readonly __typename: "%other";
     }) | null;
     readonly code: string;
-    readonly " $fragmentRefs": FragmentRefs<"ArtworkInfoSection_artwork" | "SummarySection_section" | "OrderDetailsPayment_order" | "ShipsToSection_address">;
+    readonly " $fragmentRefs": FragmentRefs<"ArtworkInfoSection_artwork" | "SummarySection_section" | "OrderDetailsPayment_order" | "ShipsToSection_address" | "SoldBySection_soldBy">;
     readonly " $refType": "OrderDetails_order";
 };
 export type OrderDetails_order$data = OrderDetails_order;
@@ -43,6 +54,74 @@ return {
   "metadata": null,
   "name": "OrderDetails_order",
   "selections": [
+    {
+      "alias": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 1
+        }
+      ],
+      "concreteType": "CommerceLineItemConnection",
+      "kind": "LinkedField",
+      "name": "lineItems",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "CommerceLineItemEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "CommerceLineItem",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "Artwork",
+                  "kind": "LinkedField",
+                  "name": "artwork",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "concreteType": "Partner",
+                      "kind": "LinkedField",
+                      "name": "partner",
+                      "plural": false,
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "name",
+                          "storageKey": null
+                        }
+                      ],
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": "lineItems(first:1)"
+    },
     {
       "alias": null,
       "args": null,
@@ -99,11 +178,16 @@ return {
       "args": null,
       "kind": "FragmentSpread",
       "name": "ShipsToSection_address"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "SoldBySection_soldBy"
     }
   ],
   "type": "CommerceOrder",
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = 'a481da5dbd8781c433af659ec87de022';
+(node as any).hash = 'a82b83c51656e4c08b43c53aa8b09d6b';
 export default node;

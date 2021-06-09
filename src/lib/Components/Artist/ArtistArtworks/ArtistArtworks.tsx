@@ -1,12 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
-import { ArtistArtworks_me } from "__generated__/ArtistArtworks_me.graphql"
-import { ArtistArtworksContainerCreateSavedSearchMutation } from "__generated__/ArtistArtworksContainerCreateSavedSearchMutation.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import {
   filterArtworksParams,
   prepareFilterArtworksParamsForInput,
-  prepareFilterParamsForSaveSearchInput,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -20,31 +17,23 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Button, FilterIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
-import React, { useContext, useEffect, useState } from "react"
-import {
-  commitMutation,
-  createPaginationContainer,
-  createRefetchContainer,
-  graphql,
-  RelayPaginationProp,
-  RelayRefetchProp,
-} from "react-relay"
+import { Box, FilterIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import React, { useContext, useEffect, useMemo, useState } from "react"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { SavedSearchBannerQueryRender } from "./SavedSearchBanner"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
   relay: RelayPaginationProp
-  me: ArtistArtworks_me
 }
 
-const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, me, ...props }) => {
+const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
   const tracking = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
-  const handleFilterArtworksModal = () => {
-    setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
-  }
+  const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
+  const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
 
   const openFilterArtworksModal = () => {
     tracking.trackEvent({
@@ -55,7 +44,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, me, ...props
       context_screen_owner_slug: artist.slug,
       action_type: Schema.ActionTypes.Tap,
     })
-    handleFilterArtworksModal()
+    handleOpenFilterArtworksModal()
   }
 
   const closeFilterArtworksModal = () => {
@@ -67,25 +56,19 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, me, ...props
       context_screen_owner_slug: artist.slug,
       action_type: Schema.ActionTypes.Tap,
     })
-    handleFilterArtworksModal()
+    handleCloseFilterArtworksModal()
   }
 
   return (
     <ArtworkFiltersStoreProvider>
       <StickyTabPageScrollView>
-        <ArtistArtworksContainer
-          {...props}
-          me={me}
-          artist={artist}
-          relay={relay}
-          openFilterModal={openFilterArtworksModal}
-        />
+        <ArtistArtworksContainer {...props} artist={artist} relay={relay} openFilterModal={openFilterArtworksModal} />
         <ArtworkFilterNavigator
           {...props}
           id={artist.internalID}
           slug={artist.slug}
           isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-          exitModal={handleFilterArtworksModal}
+          exitModal={handleCloseFilterArtworksModal}
           closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.ArtistArtworks}
         />
@@ -101,23 +84,21 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   artist,
   relay,
   openFilterModal,
-  me,
   ...props
 }) => {
   const tracking = useTracking()
   const enableSavedSearch = useFeatureFlag("AREnableSavedSearch")
-  const [isSavedSearch, setIsSavedSearch] = useState(false)
-  const [savingFilterSearch, setSavingFilterSearch] = useState(false)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
   const shouldShowSavedSearchBanner = enableSavedSearch && appliedFilters.length > 0
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
 
-  const filterParams = filterArtworksParams(appliedFilters)
+  const filterParams = useMemo(() => filterArtworksParams(appliedFilters), [appliedFilters])
   const artworks = artist.artworks
   const artworksCount = artworks?.edges?.length
   const artworksTotal = artworks?.counts?.total
+  const artistInternalId = artist.internalID
 
   useEffect(() => {
     if (applyFilters) {
@@ -149,89 +130,35 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     })
   }
 
-  const createSavedSearch = () => {
-    const input = prepareFilterParamsForSaveSearchInput(filterParams)
-
-    setSavingFilterSearch(true)
-    commitMutation<ArtistArtworksContainerCreateSavedSearchMutation>(relay.environment, {
-      mutation: graphql`
-        mutation ArtistArtworksContainerCreateSavedSearchMutation($input: CreateSavedSearchInput!) {
-          createSavedSearch(input: $input) {
-            savedSearchOrErrors {
-              ... on SearchCriteria {
-                internalID
-              }
-            }
-          }
-        }
-      `,
-      variables: {
-        input: {
-          attributes: {
-            artistID: artist.internalID,
-            ...input,
-          },
-        },
-      },
-      onCompleted: () => {
-        setSavingFilterSearch(false)
-      },
-      onError: () => {
-        setSavingFilterSearch(false)
-      },
-    })
-  }
-
-  const handleSaveSearchFiltersPress = () => {
-    if (savingFilterSearch) {
-      return
-    }
-
-    const nextIsSavedSearchState = !isSavedSearch
-
-    if (nextIsSavedSearchState) {
-      createSavedSearch()
-    }
-
-    setIsSavedSearch(nextIsSavedSearchState)
-  }
-
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
   const screenWidth = useScreenDimensions().width
 
-  useEffect(
-    () =>
-      setJSX(
-        <Box backgroundColor="white" mt={2} px={2}>
-          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-            <Text variant="subtitle" color="black60">
-              Showing {artworksTotal} works
-            </Text>
-            <Touchable haptic onPress={openFilterModal}>
-              <Flex flexDirection="row">
-                <FilterIcon fill="black100" width="20px" height="20px" />
-                <Text variant="subtitle" color="black100">
-                  Sort & Filter
-                </Text>
-              </Flex>
-            </Touchable>
-          </Flex>
-          <Separator mt={2} ml={-2} width={screenWidth} />
-          {!!shouldShowSavedSearchBanner && (
-            <>
-              <SavedSearchBannerContainer
-                me={me}
-                enabled={isSavedSearch}
-                onPress={handleSaveSearchFiltersPress}
-                loading={savingFilterSearch}
-              />
-              <Separator ml={-2} width={screenWidth} />
-            </>
-          )}
-        </Box>
-      ),
-    [artworksTotal, shouldShowSavedSearchBanner, isSavedSearch, savingFilterSearch]
-  )
+  useEffect(() => {
+    setJSX(
+      <Box backgroundColor="white" mt={2} px={2}>
+        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Text variant="subtitle" color="black60">
+            Showing {artworksTotal} works
+          </Text>
+          <Touchable haptic onPress={openFilterModal}>
+            <Flex flexDirection="row">
+              <FilterIcon fill="black100" width="20px" height="20px" />
+              <Text variant="subtitle" color="black100">
+                Sort & Filter
+              </Text>
+            </Flex>
+          </Touchable>
+        </Flex>
+        <Separator mt={2} ml={-2} width={screenWidth} />
+        {!!shouldShowSavedSearchBanner && (
+          <>
+            <SavedSearchBannerQueryRender artistId={artistInternalId} filters={filterParams} />
+            <Separator ml={-2} width={screenWidth} />
+          </>
+        )}
+      </Box>
+    )
+  }, [artworksTotal, shouldShowSavedSearchBanner, artistInternalId, filterParams])
 
   const filteredArtworks = () => {
     if (artworksCount === 0) {
@@ -260,81 +187,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 
   return artist.artworks ? filteredArtworks() : null
 }
-
-interface SavedSearchBannerProps {
-  loading?: boolean
-  onPress: () => void
-  relay: RelayRefetchProp
-  me: ArtistArtworks_me
-}
-
-const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ loading, onPress, relay, me }) => {
-  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-  const filterParams = filterArtworksParams(appliedFilters)
-  const parameterised = prepareFilterArtworksParamsForInput(filterParams)
-
-  const [buttonEnabled, setButtonEnabled] = useState<boolean>(!!me.savedSearch?.internalID)
-
-  console.log("ME NAME", me.name)
-
-  useEffect(() => {
-    relay.refetch(
-      { criteria: parameterised },
-      null,
-      () => {
-        setButtonEnabled(!!me.savedSearch?.internalID)
-      },
-      { force: true }
-    )
-  }, [appliedFilters])
-
-  return (
-    <Flex
-      backgroundColor="white"
-      flexDirection="row"
-      mx={-2}
-      px={2}
-      py={11}
-      justifyContent="space-between"
-      alignItems="center"
-    >
-      <Text variant="small" color="black">
-        New works alert for this search
-      </Text>
-      <Button
-        variant={buttonEnabled ? "secondaryOutline" : "primaryBlack"}
-        onPress={onPress}
-        size="small"
-        loading={loading}
-        longestText="Disable"
-        haptic
-      >
-        {buttonEnabled ? "Disable" : "Enable"}
-      </Button>
-    </Flex>
-  )
-}
-
-export const SavedSearchBannerContainer = createRefetchContainer(
-  SavedSearchBanner,
-  {
-    me: graphql`
-      fragment ArtistArtworks_me on Me @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
-        name
-        savedSearch(criteria: $criteria) {
-          internalID
-        }
-      }
-    `,
-  },
-  graphql`
-    query ArtistArtworksRefetchQuery($criteria: SearchCriteriaAttributes) {
-      me {
-        ...ArtistArtworks_me @arguments(criteria: $criteria)
-      }
-    }
-  `
-)
 
 export default createPaginationContainer(
   ArtworksGrid,

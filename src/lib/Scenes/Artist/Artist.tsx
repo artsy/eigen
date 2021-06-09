@@ -2,7 +2,6 @@ import {
   ArtistAboveTheFoldQuery,
   ArtistAboveTheFoldQueryVariables,
 } from "__generated__/ArtistAboveTheFoldQuery.graphql"
-import { ArtistArtworks_me } from "__generated__/ArtistArtworks_me.graphql"
 import {
   ArtistBelowTheFoldQuery,
   ArtistBelowTheFoldQueryVariables,
@@ -29,8 +28,7 @@ export const Artist: React.FC<{
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
   artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
   initialTab?: string
-  me: ArtistArtworks_me
-}> = ({ artistAboveTheFold, artistBelowTheFold, initialTab = INITIAL_TAB, me }) => {
+}> = ({ artistAboveTheFold, artistBelowTheFold, initialTab = INITIAL_TAB }) => {
   const tabs: TabProps[] = []
   const displayAboutSection =
     artistAboveTheFold.has_metadata ||
@@ -47,7 +45,7 @@ export const Artist: React.FC<{
   if ((artistAboveTheFold.counts?.artworks ?? 0) > 0) {
     tabs.push({
       title: "Artworks",
-      content: <ArtistArtworks me={me} artist={artistAboveTheFold} />,
+      content: <ArtistArtworks artist={artistAboveTheFold} />,
     })
   }
 
@@ -128,9 +126,6 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artist
                 totalCount
               }
             }
-            me {
-              ...ArtistArtworks_me @arguments(criteria: { artistID: $artistID })
-            }
           }
         `,
         variables: { artistID },
@@ -152,14 +147,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artist
           if (!above.artist) {
             throw new Error("no artist data")
           }
-          return (
-            <Artist
-              me={above.me}
-              artistAboveTheFold={above.artist}
-              artistBelowTheFold={below?.artist}
-              initialTab={initialTab}
-            />
-          )
+          return <Artist artistAboveTheFold={above.artist} artistBelowTheFold={below?.artist} initialTab={initialTab} />
         },
       }}
     />

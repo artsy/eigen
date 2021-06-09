@@ -434,6 +434,9 @@
     } else if ([path isEqualToString:@"privacy"]) {
         [self.delegate privacyPolicyLinkTapped];
     }
+    else if ([path isEqualToString:@"conditions-of-sale"]) {
+       [self.delegate conditionsOfSaleLinkTapped];
+    }
 
     return NO;
 }

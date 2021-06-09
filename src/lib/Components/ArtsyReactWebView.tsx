@@ -78,10 +78,8 @@ export const ArtsyReactWebView = React.forwardRef<
   const webURL = useEnvironment().webURL
   const uri = url.startsWith("/") ? webURL + url : url
 
-  const paddingTop = useScreenDimensions().safeAreaInsets.top
-
   return (
-    <View style={{ flex: 1, paddingTop }}>
+    <View style={{ flex: 1 }}>
       <WebView
         ref={ref}
         // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction

@@ -20,6 +20,14 @@ describe("About", () => {
     expect(navigate).toHaveBeenCalledWith("/privacy", { modal: true })
   })
 
+  it("renders Conditions of Sale", () => {
+    const tree = renderWithWrappers(<About />)
+
+    expect(tree.root.findAllByProps({ title: "Conditions of Sale" })).toBeTruthy()
+    tree.root.findByProps({ title: "Conditions of Sale" }).props.onPress()
+    expect(navigate).toHaveBeenCalledWith("/conditions-of-sale", { modal: true })
+  })
+
   it("renders Version", () => {
     const tree = renderWithWrappers(<About />)
 

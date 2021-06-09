@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a26c5ad4ee9b5cc35f64833286d5e674 */
+/* @relayHash 49a9660077d5ee2cfb30cfde706fb0ee */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,33 +26,32 @@ export type SearchCriteriaAttributes = {
     widthMax?: number | null;
     widthMin?: number | null;
 };
-export type ArtistArtworksRefetchQueryVariables = {
-    criteria?: SearchCriteriaAttributes | null;
+export type SavedSearchBannerTestsQueryVariables = {
+    criteria: SearchCriteriaAttributes;
 };
-export type ArtistArtworksRefetchQueryResponse = {
+export type SavedSearchBannerTestsQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"ArtistArtworks_me">;
+        readonly " $fragmentRefs": FragmentRefs<"SavedSearchBanner_me">;
     } | null;
 };
-export type ArtistArtworksRefetchQuery = {
-    readonly response: ArtistArtworksRefetchQueryResponse;
-    readonly variables: ArtistArtworksRefetchQueryVariables;
+export type SavedSearchBannerTestsQuery = {
+    readonly response: SavedSearchBannerTestsQueryResponse;
+    readonly variables: SavedSearchBannerTestsQueryVariables;
 };
 
 
 
 /*
-query ArtistArtworksRefetchQuery(
-  $criteria: SearchCriteriaAttributes
+query SavedSearchBannerTestsQuery(
+  $criteria: SearchCriteriaAttributes!
 ) {
   me {
-    ...ArtistArtworks_me_1ff8oJ
+    ...SavedSearchBanner_me_1ff8oJ
     id
   }
 }
 
-fragment ArtistArtworks_me_1ff8oJ on Me {
-  name
+fragment SavedSearchBanner_me_1ff8oJ on Me {
   savedSearch(criteria: $criteria) {
     internalID
   }
@@ -73,13 +72,19 @@ v1 = [
     "name": "criteria",
     "variableName": "criteria"
   }
-];
+],
+v2 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "ArtistArtworksRefetchQuery",
+    "name": "SavedSearchBannerTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -92,7 +97,7 @@ return {
           {
             "args": (v1/*: any*/),
             "kind": "FragmentSpread",
-            "name": "ArtistArtworks_me"
+            "name": "SavedSearchBanner_me"
           }
         ],
         "storageKey": null
@@ -105,7 +110,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "ArtistArtworksRefetchQuery",
+    "name": "SavedSearchBannerTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -115,13 +120,6 @@ return {
         "name": "me",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "name",
-            "storageKey": null
-          },
           {
             "alias": null,
             "args": (v1/*: any*/),
@@ -153,13 +151,30 @@ return {
     ]
   },
   "params": {
-    "id": "a26c5ad4ee9b5cc35f64833286d5e674",
-    "metadata": {},
-    "name": "ArtistArtworksRefetchQuery",
+    "id": "49a9660077d5ee2cfb30cfde706fb0ee",
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "me": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Me"
+        },
+        "me.id": (v2/*: any*/),
+        "me.savedSearch": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "SearchCriteria"
+        },
+        "me.savedSearch.internalID": (v2/*: any*/)
+      }
+    },
+    "name": "SavedSearchBannerTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '71438327a65d4a726d83b9ed738caa54';
+(node as any).hash = 'ccd74d9b109fe4a436fbcdceeb46e417';
 export default node;

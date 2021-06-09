@@ -27,7 +27,7 @@
     self.tintColor = textColor;
     self.editable = NO;
     self.scrollEnabled = NO;
-    NSString *string = @"By creating your Artsy account you agree\nto our Terms of Use and Privacy Policy.";
+    NSString *string = @"By creating your Artsy account you agree\nto our Terms of Use, Privacy Policy, and Conditions of Sale.";
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:string
                                                                                          attributes:@{
                                                                                              NSFontAttributeName : [UIFont serifFontWithSize:14],
@@ -36,6 +36,7 @@
 
     NSRange termsRange = [attributedString.string rangeOfString:@"Terms of Use"];
     NSRange privacyRange = [attributedString.string rangeOfString:@"Privacy Policy"];
+    NSRange conditionsOfSaleRange = [attributedString.string rangeOfString:@"Conditions of Sale"];
     [attributedString beginEditing];
     [attributedString addAttribute:NSLinkAttributeName
                              value:[NSURL URLWithString:@"/terms"]
@@ -52,6 +53,14 @@
     [attributedString addAttribute:NSLinkAttributeName
                              value:[NSURL URLWithString:@"/privacy"]
                              range:privacyRange];
+    
+    [attributedString addAttribute:NSUnderlineStyleAttributeName
+                             value:@(NSUnderlineStyleSingle)
+                             range:conditionsOfSaleRange];
+
+    [attributedString addAttribute:NSLinkAttributeName
+                             value:[NSURL URLWithString:@"/conditions-of-sale"]
+                             range:conditionsOfSaleRange];
     [attributedString endEditing];
 
     [self setAttributedText:attributedString];
@@ -69,6 +78,9 @@
 
     } else if ([path isEqualToString:@"privacy"]) {
         [[UIApplication sharedApplication] sendAction:@selector(openPrivacy) to:nil from:self forEvent:nil];
+    }
+    else if ([path isEqualToString:@"conditions-of-sale"]) {
+        [[UIApplication sharedApplication] sendAction:@selector(openConditionsOfSale) to:nil from:self forEvent:nil];
     }
 
     return NO;

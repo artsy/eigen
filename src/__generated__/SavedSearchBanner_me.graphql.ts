@@ -4,17 +4,16 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtistArtworks_me = {
-    readonly name: string | null;
+export type SavedSearchBanner_me = {
     readonly savedSearch: {
         readonly internalID: string;
     } | null;
-    readonly " $refType": "ArtistArtworks_me";
+    readonly " $refType": "SavedSearchBanner_me";
 };
-export type ArtistArtworks_me$data = ArtistArtworks_me;
-export type ArtistArtworks_me$key = {
-    readonly " $data"?: ArtistArtworks_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"ArtistArtworks_me">;
+export type SavedSearchBanner_me$data = SavedSearchBanner_me;
+export type SavedSearchBanner_me$key = {
+    readonly " $data"?: SavedSearchBanner_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"SavedSearchBanner_me">;
 };
 
 
@@ -29,15 +28,8 @@ const node: ReaderFragment = {
   ],
   "kind": "Fragment",
   "metadata": null,
-  "name": "ArtistArtworks_me",
+  "name": "SavedSearchBanner_me",
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "name",
-      "storageKey": null
-    },
     {
       "alias": null,
       "args": [
@@ -66,5 +58,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '6cfd836b4f76bd4cfcf5e8de53350a51';
+(node as any).hash = 'ba718ab14d3a5c00afa6b2fb930f9fab';
 export default node;

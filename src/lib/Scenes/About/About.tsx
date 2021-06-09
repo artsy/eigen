@@ -44,6 +44,7 @@ export const About: React.FC = () => {
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
         <MenuItem title="Terms of Use" onPress={() => navigate("/terms", { modal: true })} />
         <MenuItem title="Privacy Policy" onPress={() => navigate("/privacy", { modal: true })} />
+        <MenuItem title="Conditions of Sale" onPress={() => navigate("/conditions-of-sale", { modal: true })} />
         <MenuItem
           title="Version"
           text={appVersion}
