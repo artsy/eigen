@@ -232,98 +232,96 @@ export const getAuthModel = (): AuthModel => ({
   }),
   authFacebook: thunk(async (actions) => {
     const resultFacebook = await LoginManager.logInWithPermissions(["public_profile"])
-    if (!resultFacebook.isCancelled) {
-      const accessToken = await AccessToken.getCurrentAccessToken()
-      if (accessToken) {
-        const responseFacebookInfoCallback = async (error: any, facebookInfo: { email: string; name: string }) => {
-          if (error) {
-            Alert.alert("Error", "Error fetching data", [{ text: "Ok" }])
-          } else {
-            // sign up
-            const resultGravitySignUp = await actions.gravityUnauthenticatedRequest({
-              path: `/api/v1/user`,
+    const accessToken = !resultFacebook.isCancelled && (await AccessToken.getCurrentAccessToken())
+    if (accessToken) {
+      const responseFacebookInfoCallback = async (error: any, facebookInfo: { email: string; name: string }) => {
+        if (error) {
+          Alert.alert("Error", "Error fetching data", [{ text: "Ok" }])
+        } else {
+          // sign up
+          const resultGravitySignUp = await actions.gravityUnauthenticatedRequest({
+            path: `/api/v1/user`,
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: {
+              provider: "facebook",
+              oauth_token: accessToken?.accessToken,
+              email: facebookInfo.email,
+              name: facebookInfo.name,
+              agreed_to_receive_emails: true,
+              accepted_terms_of_service: true,
+            },
+          })
+          const resultGravitySignUpJSON = await resultGravitySignUp.json()
+
+          // sign in
+          if (resultGravitySignUp.status === 201) {
+            // we've created a user, now let's log them in
+            await actions.signIn({ email: facebookInfo.email, accessToken, oauthProvider: "facebook" })
+            actions.setState({
+              onboardingState: "incomplete",
+            })
+          } else if (resultGravitySignUpJSON.error === "Another Account Already Linked") {
+            // this facebook account is already an artsy account
+            // let's log them in
+
+            // we need to get X-ACCESS-TOKEN before actual sign in
+            const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
+              path: `/oauth2/access_token`,
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
               body: {
-                provider: "facebook",
+                oauth_provider: "facebook",
                 oauth_token: accessToken?.accessToken,
-                email: facebookInfo.email,
-                name: facebookInfo.name,
-                agreed_to_receive_emails: true,
-                accepted_terms_of_service: true,
+                client_id: Config.ARTSY_API_CLIENT_KEY,
+                client_secret: Config.ARTSY_API_CLIENT_SECRET,
+                grant_type: "oauth_token",
+                scope: "offline_access",
               },
             })
-            const resultGravitySignUpJSON = await resultGravitySignUp.json()
 
-            // sign in
-            if (resultGravitySignUp.status === 201) {
-              // we've created a user, now let's log them in
-              await actions.signIn({ email: facebookInfo.email, accessToken, oauthProvider: "facebook" })
-              actions.setState({
-                onboardingState: "incomplete",
+            if (resultGravityAccessToken.status === 201) {
+              const { access_token } = await resultGravityAccessToken.json()
+              const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
+                path: `/api/v1/me`,
+                headers: { "X-ACCESS-TOKEN": access_token },
               })
-            } else if (resultGravitySignUpJSON.error === "Another Account Already Linked") {
-              // this facebook account is already an artsy account
-              // let's log them in
-
-              // we need to get X-ACCESS-TOKEN before actual sign in
-              const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
-                path: `/oauth2/access_token`,
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: {
-                  oauth_provider: "facebook",
-                  oauth_token: accessToken?.accessToken,
-                  client_id: Config.ARTSY_API_CLIENT_KEY,
-                  client_secret: Config.ARTSY_API_CLIENT_SECRET,
-                  grant_type: "oauth_token",
-                  scope: "offline_access",
-                },
-              })
-
-              if (resultGravityAccessToken.status === 201) {
-                const { access_token } = await resultGravityAccessToken.json()
-                const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
-                  path: `/api/v1/me`,
-                  headers: { "X-ACCESS-TOKEN": access_token },
-                })
-                const { email } = await resultGravityEmail.json()
-                await actions.signIn({ email, accessToken, oauthProvider: "facebook" })
-              }
-            } else if (
-              resultGravitySignUpJSON.error === "User Already Exists" ||
-              resultGravitySignUpJSON.error === "User Already Invited"
-            ) {
-              // there's already a user with this email
-              Alert.alert("Error", "User already exists with this email. Please log in with your email and password", [
-                { text: "Ok" },
-              ])
-            } else {
-              // something else went wrong
-              Alert.alert("Error", "Couldn't link Facebook account", [{ text: "Ok" }])
+              const { email } = await resultGravityEmail.json()
+              await actions.signIn({ email, accessToken, oauthProvider: "facebook" })
             }
+          } else if (
+            resultGravitySignUpJSON.error === "User Already Exists" ||
+            resultGravitySignUpJSON.error === "User Already Invited"
+          ) {
+            // there's already a user with this email
+            Alert.alert("Error", "User already exists with this email. Please log in with your email and password", [
+              { text: "Ok" },
+            ])
+          } else {
+            // something else went wrong
+            Alert.alert("Error", "Couldn't link Facebook account", [{ text: "Ok" }])
           }
         }
+      }
 
-        // get info from facebook
-        const infoRequest = new GraphRequest(
-          "/me",
-          {
-            accessToken: accessToken.accessToken,
-            parameters: {
-              fields: {
-                string: "email,name",
-              },
+      // get info from facebook
+      const infoRequest = new GraphRequest(
+        "/me",
+        {
+          accessToken: accessToken.accessToken,
+          parameters: {
+            fields: {
+              string: "email,name",
             },
           },
-          responseFacebookInfoCallback
-        )
-        new GraphRequestManager().addRequest(infoRequest).start()
-      }
+        },
+        responseFacebookInfoCallback
+      )
+      new GraphRequestManager().addRequest(infoRequest).start()
     }
   }),
   notifyTracking: thunk((_, { userId }) => {
