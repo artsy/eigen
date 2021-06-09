@@ -62,7 +62,7 @@ upcoming:
     - Check saved search when the user applied the filter - dzmitry tratsiak
     - Don't close filter artwork modal when "clear all" tapped - dzmitry tratsiak
     - Continue to show the offer approved banner in an inquiry offer conversation after fulfillment - erikdstock
-
+    - Add link to Conditions of Sale in sign up - dzmitry
 releases:
   - version: 6.9.3
     date: June 1, 2021

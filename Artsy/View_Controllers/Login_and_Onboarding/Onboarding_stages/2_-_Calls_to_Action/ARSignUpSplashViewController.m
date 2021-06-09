@@ -312,6 +312,11 @@
     [self.onboardingViewController showPrivacyPolicy];
 }
 
+- (void)openConditionsOfSale
+{
+    [self.onboardingViewController showСonditionsOfSale];
+}
+
 #pragma mark View setup
 
 - (void)setFormEnabled:(BOOL)enabled animated:(BOOL)animated
