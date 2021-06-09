@@ -269,7 +269,7 @@ export const getAuthModel = (): AuthModel => ({
               // let's log them in
 
               // we need to get X-ACCESS-TOKEN before actual sign in
-              const result = await actions.gravityUnauthenticatedRequest({
+              const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
                 path: `/oauth2/access_token`,
                 method: "POST",
                 headers: {
@@ -285,8 +285,8 @@ export const getAuthModel = (): AuthModel => ({
                 },
               })
 
-              if (result.status === 201) {
-                const { access_token } = await result.json()
+              if (resultGravityAccessToken.status === 201) {
+                const { access_token } = await resultGravityAccessToken.json()
                 if (access_token) {
                   const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
                     path: `/api/v1/me`,
