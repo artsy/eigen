@@ -11759,6 +11759,11 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
 
+react-native-appboy-sdk@^1.29.1:
+  version "1.29.1"
+  resolved "https://registry.yarnpkg.com/react-native-appboy-sdk/-/react-native-appboy-sdk-1.29.1.tgz#ff38f7e02e3928fa804e55c6ec5034384cf63dd3"
+  integrity sha512-FwnbOqxWwivJyXL/XcWpfXIqb72/d0DVgpRDTSDJk5shze24EujvoYV9m7HNHl8rvKYLEu9QQ5Xzn7X34Fgsag==
+
 react-native-bootsplash@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/react-native-bootsplash/-/react-native-bootsplash-3.2.0.tgz#671861fdd75444f91196d3e64d3539ef50c3a30f"
