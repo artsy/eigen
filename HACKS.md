@@ -169,6 +169,7 @@ These are fairly superficial styling hacks for
 - focused/error border states
 - shrinking the icon size to work nicely with our inputs
 - aligning inner inputs nicely
+- icon animation to work properly on android
 
 ## react-native-mapbox-gl/maps - 8.2.0-beta2 postinstall script
 

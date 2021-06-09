@@ -1029,7 +1029,6 @@ describe("clearFiltersZeroState", () => {
       },
     })
   })
-
 })
 
 describe("SetInitialFilterState", () => {

@@ -32,13 +32,11 @@ export const ArtsyReactWebViewPage: React.FC<
     isPresentedModally?: boolean
   } & ArtsyWebViewConfig
 > = ({ url, title, isPresentedModally, allowWebViewInnerNavigation = true, mimicBrowserBackButton = true }) => {
-  const paddingTop = useScreenDimensions().safeAreaInsets.top
-
   const [canGoBack, setCanGoBack] = useState(false)
   const ref = useRef<WebView>(null)
 
   return (
-    <View style={{ flex: 1, paddingTop }}>
+    <View style={{ flex: 1 }}>
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
           useXButton={isPresentedModally && !canGoBack}

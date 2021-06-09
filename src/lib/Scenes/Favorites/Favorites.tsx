@@ -1,5 +1,5 @@
 import React from "react"
-import { View } from "react-native"
+import { View, ViewProps } from "react-native"
 
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 
@@ -15,14 +15,18 @@ import { FavoriteArtworksQueryRenderer } from "./FavoriteArtworks"
 import { FavoriteCategoriesQueryRenderer } from "./FavoriteCategories"
 import { FavoriteShowsQueryRenderer } from "./FavoriteShows"
 
-enum Tab {
+export enum Tab {
   works = "Works",
   artists = "Artists",
   shows = "Shows",
   categories = "Categories",
 }
 
-export const Favorites: React.FC<{}> = ({}) => {
+interface Props extends ViewProps {
+  initialTab: Tab
+}
+
+export const Favorites: React.FC<Props> = ({ initialTab = Tab.works }) => {
   const tracking = useTracking()
   const isStaging = useIsStaging()
 
@@ -60,19 +64,22 @@ export const Favorites: React.FC<{}> = ({}) => {
             {
               title: Tab.works,
               content: <FavoriteArtworksQueryRenderer />,
-              initial: true,
+              initial: initialTab === Tab.works,
             },
             {
               title: Tab.artists,
               content: <FavoriteArtistsQueryRenderer />,
+              initial: initialTab === Tab.artists,
             },
             {
               title: Tab.shows,
               content: <FavoriteShowsQueryRenderer />,
+              initial: initialTab === Tab.shows,
             },
             {
               title: Tab.categories,
               content: <FavoriteCategoriesQueryRenderer />,
+              initial: initialTab === Tab.categories,
             },
           ]}
           staticHeaderContent={<></>}

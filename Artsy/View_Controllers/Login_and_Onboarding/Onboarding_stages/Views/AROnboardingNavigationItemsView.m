@@ -182,7 +182,7 @@
         UIViewController *presentingController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
 
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:text preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [presentingController dismissViewControllerAnimated:YES completion:nil];
         }]];
         [presentingController presentViewController:alert animated:YES completion:nil];

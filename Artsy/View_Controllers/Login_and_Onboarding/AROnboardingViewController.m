@@ -644,7 +644,7 @@
                                                                                  || [JSON[@"error"] isEqualToString:@"User Already Invited"]) {
                                                                           // there's already a user with this email
                                                                           __strong typeof (wself) sself = wself;
-                                                                          [sself displayError:@"User already exists with this email. Please log in with your email and password."];
+                                                                          [sself displayError:@"There is already an account with this email address, so you can’t log in with Facebook. Please login with your email instead."];
                                                                           [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 
                                                                           return;
@@ -732,7 +732,7 @@
 
 - (void)authorizationController:(ASAuthorizationController *)controller didCompleteWithError:(NSError *)error  API_AVAILABLE(ios(13.0)){
     NSLog(@"Did complete with error %@", error.localizedDescription);
-    [self displayError:@"There was a problem authenticating with Apple"];
+    [self displayError:@"There was a problem authenticating with Apple."];
     [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 }
 
@@ -779,7 +779,7 @@
                                                                                  || [JSON[@"error"] isEqualToString:@"User Already Invited"]) {
                                                                           // there's already a user with this email
                                                                           __strong typeof (wself) sself = wself;
-                                                                          [sself displayError:@"User already exists with this email. Please log in with your email and password."];
+                                                                          [sself displayError:@"There is already an account with this email address, so you can’t log in with Apple. Please login with your email instead."];
                                                                           [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 
                                                                           return;
@@ -815,7 +815,7 @@
                                                       }
                                         authenticationFailure:^(NSError *error) {
                                             __strong typeof (wself) sself = wself;
-                                            [sself displayError:@"There was a problem authenticating with Apple"];
+                                            [sself displayError:@"There was a problem authenticating with Apple."];
                                             [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
                                         }
                                                networkFailure:^(NSError *error) {

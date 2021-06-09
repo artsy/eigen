@@ -1,4 +1,4 @@
-import { localizeDimension, parseRange } from "../helpers"
+import { localizeDimension, parseRange, parseRangeByKeys } from "../helpers"
 
 describe("parseRange", () => {
   it("parses a default range string", () => {
@@ -29,6 +29,20 @@ describe("parseRange", () => {
     expect(parseRange("0-*")).toEqual({ min: 0, max: "*" })
     expect(parseRange("*-0")).toEqual({ min: "*", max: 0 })
     expect(parseRange("0-0")).toEqual({ min: 0, max: 0 })
+  })
+})
+
+describe("parseRangeByKeys", () => {
+  it("parses min value as minValue and max as maxValue", () => {
+    expect(parseRangeByKeys("*-*", { minKey: "minValue", maxKey: "maxValue" })).toEqual({ minValue: "*", maxValue: "*" })
+  })
+
+  it("parses min value as minValue and max", () => {
+    expect(parseRangeByKeys("1.333-99.1234", { minKey: "minValue" })).toEqual({ minValue: 1.333, max: 99.1234 })
+  })
+
+  it("parses max value as maxValue and min", () => {
+    expect(parseRangeByKeys("1-2", { maxKey: "maxValue" })).toEqual({ min: 1, maxValue: 2 })
   })
 })
 

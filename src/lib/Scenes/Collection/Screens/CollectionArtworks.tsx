@@ -9,7 +9,7 @@ import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { get } from "lib/utils/get"
 import { Schema } from "lib/utils/track"
-import { Box, Separator } from "palette"
+import { Box, Spacer } from "palette"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -30,6 +30,8 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
   const artworksTotal = artworks?.counts?.total
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
+  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((action) => action.setFiltersCountAction)
+  const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
 
@@ -55,6 +57,12 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     setAggregationsAction(collection.collectionArtworks!.aggregations)
   }, [])
 
+  useEffect(() => {
+    // for use by CollectionArtworksFilter to keep count
+    const filterCount = { ...counts, ...artworks?.counts }
+    setFiltersCountAction(filterCount)
+  }, [artworksTotal])
+
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
       action_name: "clearFilters",
@@ -69,7 +77,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
   if (artworksTotal === 0) {
     return (
       <Box mt={isDepartment ? "0px" : "-50px"} mb="80px">
-        <Separator mb={2} />
+        <Spacer mt={3} />
         <FilteredArtworkGridZeroState id={collection.id} slug={collection.slug} trackClear={trackClear} />
       </Box>
     )
@@ -77,9 +85,6 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
 
   return artworks ? (
     <ArtworkGridWrapper isDepartment={isDepartment}>
-      <Box mb={3} mt={1}>
-        <Separator />
-      </Box>
       <InfiniteScrollArtworksGrid
         connection={artworks}
         loadMore={relay.loadMore}
