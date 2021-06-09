@@ -64,7 +64,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
     <PageWithSimpleHeader title="Order Details">
       <SectionList
         initialNumToRender={15}
-        contentContainerStyle={{ paddingHorizontal: 20, marginTop: 20, paddingBottom: 25 }}
+        contentContainerStyle={{ paddingHorizontal: 20, marginTop: 20, paddingBottom: 47 }}
         sections={DATA}
         keyExtractor={(item, index) => item.key + index.toString()}
         renderItem={({ item }) => (
