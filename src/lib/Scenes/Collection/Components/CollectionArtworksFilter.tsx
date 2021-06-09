@@ -154,7 +154,7 @@ export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection, an
                 haptic
                 onPress={openFilterArtworksModal}
                 render={({ color }) => (
-                  <Flex flexDirection="row">
+                  <Flex flexDirection="row" alignItems="center">
                     <FilterIcon fill={color} width="20px" height="20px" />
                     <Text variant="subtitle" color={color}>
                       Sort & Filter

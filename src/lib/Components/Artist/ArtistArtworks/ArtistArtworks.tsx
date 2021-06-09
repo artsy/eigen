@@ -145,7 +145,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
               haptic
               onPress={openFilterModal}
               render={({ color }) => (
-                <Flex flexDirection="row">
+                <Flex flexDirection="row" alignItems="center">
                   <FilterIcon fill={color} width="20px" height="20px" />
                   <Text variant="subtitle" color={color}>
                     Sort & Filter
