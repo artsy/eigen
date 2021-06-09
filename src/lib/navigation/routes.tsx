@@ -116,7 +116,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/search", "Search"),
     new RouteMatcher("/inbox", "Inbox"),
     new RouteMatcher("/my-profile", "MyProfile"),
-
     new RouteMatcher("/articles", "Articles"),
     webViewRoute("/articles/:articleID"),
     new RouteMatcher("/artist/:artistID", "Artist"),
