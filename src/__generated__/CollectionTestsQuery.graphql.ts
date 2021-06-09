@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a2ec26020d078a0dec233d01aba90586 */
+/* @relayHash 3cedf7665654bb3cc75f53be59932707 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -104,6 +104,11 @@ fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup 
   }
 }
 
+fragment CollectionArtworksFilter_collection on MarketingCollection {
+  slug
+  id
+}
+
 fragment CollectionArtworks_collection_2T6kBV on MarketingCollection {
   isDepartment
   slug
@@ -171,6 +176,7 @@ fragment Collection_collection on MarketingCollection {
   isDepartment
   ...CollectionHeader_collection
   ...CollectionArtworks_collection_2T6kBV
+  ...CollectionArtworksFilter_collection
   ...FeaturedArtists_collection
   ...CollectionHubsRails_collection
   linkedCollections {
@@ -1177,7 +1183,7 @@ return {
     ]
   },
   "params": {
-    "id": "a2ec26020d078a0dec233d01aba90586",
+    "id": "3cedf7665654bb3cc75f53be59932707",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "marketingCollection": {

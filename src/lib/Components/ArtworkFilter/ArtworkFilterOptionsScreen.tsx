@@ -62,14 +62,16 @@ export const ArtworkFilterOptionsScreen: React.FC<
   StackScreenProps<ArtworkFilterNavigationStack, "FilterOptionsScreen">
 > = ({ navigation, route }) => {
   const tracking = useTracking()
-  const { closeModal, exitModal, id, mode, slug, title = "Sort & Filter" } = route.params
+  const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
   const aggregationsState = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
 
-  const clearFiltersZeroStateAction = ArtworksFiltersStore.useStoreActions((action) => action.clearFiltersZeroStateAction)
+  const clearFiltersZeroStateAction = ArtworksFiltersStore.useStoreActions(
+    (action) => action.clearFiltersZeroStateAction
+  )
 
   const selectedOptions = useSelectedOptionsDisplay()
 
@@ -96,7 +98,6 @@ export const ArtworkFilterOptionsScreen: React.FC<
 
   const clearAllFilters = () => {
     clearFiltersZeroStateAction()
-    exitModal?.()
   }
 
   const trackClear = (screenName: PageNames, ownerEntity: OwnerEntityTypes) => {

@@ -56,6 +56,25 @@ export default class HomeAnalytics {
     })
   }
 
+  // Article events
+
+  static articleThumbnailTapEvent(
+    articleID?: string,
+    articleSlug?: string,
+    index?: number
+  ): Analytics.TappedEntityGroup {
+    return Analytics.tappedEntityGroup({
+      contextScreenOwnerType: Analytics.OwnerType.home,
+      destinationScreenOwnerId: articleID,
+      destinationScreenOwnerSlug: articleSlug,
+      destinationScreenOwnerType: Analytics.OwnerType.article,
+      contextModule: Analytics.ContextModule.articleRail,
+      horizontalSlidePosition: index,
+      moduleHeight: "double",
+      type: "thumbnail",
+    })
+  }
+
   // Artwork Events
 
   static artworkHeaderTapEvent(key: string | null): Analytics.TappedEntityGroup | null {

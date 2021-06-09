@@ -34,6 +34,17 @@ const node: ReaderFragment = {
       "defaultValue": null,
       "kind": "LocalArgument",
       "name": "cursor"
+    },
+    {
+      "defaultValue": [
+        "APPROVED",
+        "CANCELED",
+        "FULFILLED",
+        "REFUNDED",
+        "SUBMITTED"
+      ],
+      "kind": "LocalArgument",
+      "name": "states"
     }
   ],
   "kind": "Fragment",
@@ -53,7 +64,13 @@ const node: ReaderFragment = {
   "selections": [
     {
       "alias": "orders",
-      "args": null,
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "states",
+          "variableName": "states"
+        }
+      ],
       "concreteType": "CommerceOrderConnectionWithTotalCount",
       "kind": "LinkedField",
       "name": "__OrderHistory_orders_connection",
@@ -139,5 +156,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '1555e5227d44f3d2a632e7f32264f44e';
+(node as any).hash = 'bcca7e6a4e813dc6741a48fa49afccd8';
 export default node;
