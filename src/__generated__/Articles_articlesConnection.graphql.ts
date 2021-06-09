@@ -10,7 +10,6 @@ export type Articles_articlesConnection = {
             readonly cursor: string;
             readonly node: {
                 readonly internalID: string;
-                readonly slug: string | null;
                 readonly author: {
                     readonly name: string | null;
                 } | null;
@@ -20,7 +19,6 @@ export type Articles_articlesConnection = {
                 } | null;
                 readonly thumbnailTitle: string | null;
                 readonly vertical: string | null;
-                readonly " $fragmentRefs": FragmentRefs<"ArticleCard_article">;
             } | null;
         } | null> | null;
     } | null;
@@ -124,13 +122,6 @@ const node: ReaderFragment = {
                 {
                   "alias": null,
                   "args": null,
-                  "kind": "ScalarField",
-                  "name": "slug",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
                   "concreteType": "Author",
                   "kind": "LinkedField",
                   "name": "author",
@@ -197,11 +188,6 @@ const node: ReaderFragment = {
                   "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
-                },
-                {
-                  "args": null,
-                  "kind": "FragmentSpread",
-                  "name": "ArticleCard_article"
                 }
               ],
               "storageKey": null
@@ -241,5 +227,5 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = '219340dd2cef6f1f57329729d813baa6';
+(node as any).hash = '9f0b24d9c60209f96a92bcc1e224c95b';
 export default node;

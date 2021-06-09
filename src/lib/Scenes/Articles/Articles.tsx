@@ -18,7 +18,7 @@ interface ArticlesProps {
   query: Articles_articlesConnection$key
 }
 
-export const ArticlesContainer: React.FC<ArticlesProps> = (props) => {
+export const Articles: React.FC<ArticlesProps> = (props) => {
   const [queryData, { isLoading, hasMore, loadMore, refetchConnection }] = usePagination(fragmentSpec, props.query)
   const articles = extractNodes(queryData.articlesConnection)
 
@@ -60,7 +60,7 @@ export const ArticlesQueryRenderer: React.FC = () => {
   })
 
   if (props) {
-    return <ArticlesContainer query={props} />
+    return <Articles query={props} />
   }
   if (error) {
     console.error(error)
@@ -120,18 +120,7 @@ const fragmentSpec = graphql`
       edges {
         cursor
         node {
-          internalID
-          slug
-          author {
-            name
-          }
-          href
-          thumbnailImage {
-            url(version: "large")
-          }
-          thumbnailTitle
-          vertical
-          ...ArticleCard_article
+          ...ArticleCard_article @relay(mask: false)
         }
       }
     }
