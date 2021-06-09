@@ -10,15 +10,7 @@ export type Articles_articlesConnection = {
             readonly cursor: string;
             readonly node: {
                 readonly internalID: string;
-                readonly author: {
-                    readonly name: string | null;
-                } | null;
-                readonly href: string | null;
-                readonly thumbnailImage: {
-                    readonly url: string | null;
-                } | null;
-                readonly thumbnailTitle: string | null;
-                readonly vertical: string | null;
+                readonly " $fragmentRefs": FragmentRefs<"ArticleCard_article">;
             } | null;
         } | null> | null;
     } | null;
@@ -122,72 +114,14 @@ const node: ReaderFragment = {
                 {
                   "alias": null,
                   "args": null,
-                  "concreteType": "Author",
-                  "kind": "LinkedField",
-                  "name": "author",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "name",
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "href",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "Image",
-                  "kind": "LinkedField",
-                  "name": "thumbnailImage",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": [
-                        {
-                          "kind": "Literal",
-                          "name": "version",
-                          "value": "large"
-                        }
-                      ],
-                      "kind": "ScalarField",
-                      "name": "url",
-                      "storageKey": "url(version:\"large\")"
-                    }
-                  ],
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "thumbnailTitle",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "vertical",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
                   "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
+                },
+                {
+                  "args": null,
+                  "kind": "FragmentSpread",
+                  "name": "ArticleCard_article"
                 }
               ],
               "storageKey": null
@@ -227,5 +161,5 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = '9f0b24d9c60209f96a92bcc1e224c95b';
+(node as any).hash = '00fff63600d074ef0f89358f4e98ff5b';
 export default node;

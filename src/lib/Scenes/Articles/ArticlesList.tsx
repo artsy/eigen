@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArticleCard_article } from "__generated__/ArticleCard_article.graphql"
-import { ArticleCard } from "lib/Components/ArticleCard"
+import { ArticleCardContainer } from "lib/Components/ArticleCard"
 import { ProvideScreenTracking } from "lib/utils/track"
 import { PageNames } from "lib/utils/track/schema"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -47,7 +47,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
           renderItem={({ item, index }) => {
             return (
               <ArticlesListItem index={index}>
-                <ArticleCard article={item as any} />
+                <ArticleCardContainer article={item as any} isFluid />
               </ArticlesListItem>
             )
           }}

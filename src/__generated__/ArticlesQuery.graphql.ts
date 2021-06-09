@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d3b243e4855b92eea3c6edb262123bbc */
+/* @relayHash 740be4b7ccfd8c368a0c7ee9cf163af2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -32,22 +32,27 @@ query ArticlesQuery(
   ...Articles_articlesConnection_44T6UW
 }
 
+fragment ArticleCard_article on Article {
+  internalID
+  author {
+    name
+    id
+  }
+  href
+  thumbnailImage {
+    url(version: "large")
+  }
+  thumbnailTitle
+  vertical
+}
+
 fragment Articles_articlesConnection_44T6UW on Query {
   articlesConnection(first: $count, after: $after, sort: $sort, inEditorialFeed: $inEditorialFeed) {
     edges {
       cursor
       node {
         internalID
-        author {
-          name
-          id
-        }
-        href
-        thumbnailImage {
-          url(version: "large")
-        }
-        thumbnailTitle
-        vertical
+        ...ArticleCard_article
         id
         __typename
       }
@@ -313,7 +318,7 @@ return {
     ]
   },
   "params": {
-    "id": "d3b243e4855b92eea3c6edb262123bbc",
+    "id": "740be4b7ccfd8c368a0c7ee9cf163af2",
     "metadata": {},
     "name": "ArticlesQuery",
     "operationKind": "query",

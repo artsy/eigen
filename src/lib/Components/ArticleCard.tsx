@@ -8,11 +8,11 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArticleCardProps extends ViewProps {
   article: ArticleCard_article
-  isRailCard?: boolean
+  isFluid?: boolean
   onPress?(event: GestureResponderEvent): void
 }
 
-export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isRailCard = false }) => {
+export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFluid }) => {
   const imageURL = article.thumbnailImage?.url
 
   const onTap = (event: GestureResponderEvent) => {
@@ -21,16 +21,16 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isRa
   }
 
   return (
-    <Flex width={isRailCard ? 320 : "100%"}>
+    <Flex width={isFluid ? "100%" : 320}>
       <TouchableWithoutFeedback onPress={onTap}>
-        <Flex width={isRailCard ? 300 : "100%"} overflow="hidden">
+        <Flex width={isFluid ? "100%" : 300} overflow="hidden">
           {!!imageURL &&
-            (isRailCard ? (
-              <ImageView imageURL={article.thumbnailImage?.url} width={295} height={230} />
-            ) : (
+            (isFluid ? (
               <View style={{ width: "100%", aspectRatio: 1.33, flexDirection: "row" }}>
                 <ImageView imageURL={article.thumbnailImage?.url} style={{ flex: 1 }} />
               </View>
+            ) : (
+              <ImageView imageURL={article.thumbnailImage?.url} width={295} height={230} />
             ))}
           <Spacer mb={1} />
           <Text variant={"small"}>{article.vertical || " "}</Text>

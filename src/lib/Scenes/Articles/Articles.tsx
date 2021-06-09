@@ -4,7 +4,7 @@ import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, ProvidePlaceholderContext, RandomWidthPlaceholderText } from "lib/utils/placeholders"
 import _ from "lodash"
-import { Flex, Spacer, Text } from "palette"
+import { Flex, Separator, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { ConnectionConfig } from "react-relay"
@@ -76,6 +76,7 @@ export const ArticlesPlaceholder: React.FC = () => {
   return (
     <ProvidePlaceholderContext>
       <Flex flexDirection="column" justifyContent="space-between" height="100%" pb={8}>
+        <Separator />
         <FlatList
           numColumns={numColumns}
           key={`${numColumns}`}
@@ -120,7 +121,8 @@ const fragmentSpec = graphql`
       edges {
         cursor
         node {
-          ...ArticleCard_article @relay(mask: false)
+          internalID
+          ...ArticleCard_article
         }
       }
     }

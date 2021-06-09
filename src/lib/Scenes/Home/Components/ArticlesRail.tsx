@@ -49,7 +49,6 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ articlesConnection }
                 tracking.trackEvent(tapEvent)
               }}
               article={item}
-              isRailCard={true}
             />
           )}
         />
