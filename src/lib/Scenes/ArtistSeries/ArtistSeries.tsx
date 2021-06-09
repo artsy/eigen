@@ -1,22 +1,21 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistSeries_artistSeries } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
+import { StickyHeaderPage } from "lib/Components/StickyHeaderPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesArtworksFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeaderFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { Box, Flex, Separator, Spacer, Theme } from "palette"
+import { Box, FilterIcon, Flex, Separator, Spacer, Text, Theme, Touchable } from "palette"
 import React, { useState } from "react"
 
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { useHideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
-import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 interface ArtistSeriesProps {
@@ -29,6 +28,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
   const artist = artistSeries.artist?.[0]
+  const artistSeriesTotalCount = artist?.artistSeriesConnection?.totalCount ?? 0
 
   const handleFilterArtworksModal = () => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
@@ -58,7 +58,6 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
     handleFilterArtworksModal()
   }
 
-  const hideBackButtonOnScroll = useHideBackButtonOnScroll()
 
   return (
     <ProvideScreenTracking
@@ -71,12 +70,52 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
     >
       <ArtworkFiltersStoreProvider>
         <Theme>
-          <ScrollView style={{ flex: 1 }} onScroll={hideBackButtonOnScroll}>
+          <StickyHeaderPage
+            headerContent={(
+              <>
+                <Flex px={2}>
+                  <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
+                  <Spacer mt={2} mb={1} />
+                  <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
+                </Flex>
+                <Separator mt={2} mb={1} />
+              </>
+            )}
+            footerContent={artistSeriesTotalCount !== 0 ? (
+              <>
+                <Separator mb={2} />
+                <Box pb={2} px={2}>
+                  <ArtistSeriesMoreSeriesFragmentContainer
+                    contextScreenOwnerId={artistSeries.internalID}
+                    contextScreenOwnerSlug={artistSeries.slug}
+                    contextScreenOwnerType={OwnerType.artistSeries}
+                    artist={artist}
+                    artistSeriesHeader="More series by this artist"
+                    currentArtistSeriesExcluded
+                  />
+                </Box>
+              </>
+            ) : undefined}
+            stickyHeaderContent={(
+              <Box backgroundColor="white100" py={1}>
+                <Flex flexDirection="row" px={2} justifyContent="space-between" alignItems="center">
+                  <Text variant="subtitle" color="black60">
+                    Showing 100 works
+                  </Text>
+                  <Touchable haptic onPress={openFilterArtworksModal}>
+                    <Flex flexDirection="row">
+                      <FilterIcon fill="black100" width="20px" height="20px" />
+                      <Text variant="subtitle" color="black100">
+                        Sort & Filter
+                      </Text>
+                    </Flex>
+                  </Touchable>
+                </Flex>
+                <Spacer mb={1} />
+              </Box>
+            )}
+          >
             <Flex px={2}>
-              <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
-              <Spacer mt={2} mb={1} />
-              <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
-              <Separator mt={2} mb={1} />
               <ArtistSeriesArtworksFragmentContainer
                 artistSeries={artistSeries}
                 openFilterModal={openFilterArtworksModal}
@@ -90,23 +129,8 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
                 exitModal={handleFilterArtworksModal}
                 closeModal={closeFilterArtworksModal}
               />
-              {!((artist?.artistSeriesConnection?.totalCount ?? 0) === 0) && (
-                <>
-                  <Separator mb={2} />
-                  <Box pb={2}>
-                    <ArtistSeriesMoreSeriesFragmentContainer
-                      contextScreenOwnerId={artistSeries.internalID}
-                      contextScreenOwnerSlug={artistSeries.slug}
-                      contextScreenOwnerType={OwnerType.artistSeries}
-                      artist={artist}
-                      artistSeriesHeader="More series by this artist"
-                      currentArtistSeriesExcluded
-                    />
-                  </Box>
-                </>
-              )}
             </Flex>
-          </ScrollView>
+          </StickyHeaderPage>
         </Theme>
       </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>

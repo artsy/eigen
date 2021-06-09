@@ -82,25 +82,6 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
           contextScreenOwnerType={OwnerType.artistSeries}
           contextScreenOwnerId={artistSeries.internalID}
           contextScreenOwnerSlug={artistSeries.slug}
-          stickyHeaderIndices={[0]}
-          HeaderComponent={() => (
-            <Box backgroundColor="white100" py={1}>
-              <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                <Text variant="subtitle" color="black60">
-                  Showing {artworksTotal} works
-                </Text>
-                <Touchable haptic onPress={openFilterModal}>
-                  <Flex flexDirection="row">
-                    <FilterIcon fill="black100" width="20px" height="20px" />
-                    <Text variant="subtitle" color="black100">
-                      Sort & Filter
-                    </Text>
-                  </Flex>
-                </Touchable>
-              </Flex>
-              <Spacer mb={1} />
-            </Box>
-          )}
         />
       </Box>
     )
