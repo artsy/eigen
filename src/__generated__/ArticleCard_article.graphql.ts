@@ -15,6 +15,7 @@ export type ArticleCard_article = {
     } | null;
     readonly thumbnailTitle: string | null;
     readonly vertical: string | null;
+    readonly slug: string | null;
     readonly " $refType": "ArticleCard_article";
 };
 export type ArticleCard_article$data = ArticleCard_article;
@@ -100,10 +101,17 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "name": "vertical",
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
+      "storageKey": null
     }
   ],
   "type": "Article",
   "abstractKey": null
 };
-(node as any).hash = '869d7b383440ec26bbe5745ef4e1b751';
+(node as any).hash = '54be26675dbf03de9e0d3adab628657d';
 export default node;

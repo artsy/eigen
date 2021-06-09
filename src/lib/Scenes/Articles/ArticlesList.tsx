@@ -1,12 +1,13 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArticleCard_article } from "__generated__/ArticleCard_article.graphql"
 import { ArticleCardContainer } from "lib/Components/ArticleCard"
-import { ProvideScreenTracking } from "lib/utils/track"
-import { PageNames } from "lib/utils/track/schema"
+import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Separator, Spacer } from "palette"
 import React from "react"
 import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
+import { useTracking } from "react-tracking"
 import { ArticlesHeader } from "./Articles"
 
 interface ArticlesListProps {
@@ -28,12 +29,13 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
 }) => {
   const numColumns = useNumColumns()
 
+  const tracking = useTracking()
+
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: PageNames.Articles,
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
         context_screen_owner_type: OwnerType.articles,
-      }}
+      })}
     >
       <Flex flexDirection="column" justifyContent="space-between" height="100%" pb={8}>
         <Separator />
@@ -47,7 +49,14 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
           renderItem={({ item, index }) => {
             return (
               <ArticlesListItem index={index}>
-                <ArticleCardContainer article={item as any} isFluid />
+                <ArticleCardContainer
+                  article={item as any}
+                  isFluid
+                  onPress={() => {
+                    const tapEvent = tracks.tapArticlesListItem(item.internalID, item.slug || "")
+                    tracking.trackEvent(tapEvent)
+                  }}
+                />
               </ArticlesListItem>
             )
           }}
@@ -67,7 +76,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
           )}
         />
       </Flex>
-    </ProvideScreenTracking>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 interface ArticlesListItemProps {
@@ -100,4 +109,15 @@ export const useNumColumns = () => {
   }
 
   return orientation === "portrait" ? 2 : 3
+}
+
+export const tracks = {
+  tapArticlesListItem: (articleId: string, articleSlug: string) => ({
+    action: ActionType.tappedArticleGroup,
+    context_module: ContextModule.articles,
+    context_screen_owner_type: OwnerType.articles,
+    destination_screen_owner_type: OwnerType.article,
+    destination_screen_owner_id: articleId,
+    destination_screen_owner_slug: articleSlug,
+  }),
 }

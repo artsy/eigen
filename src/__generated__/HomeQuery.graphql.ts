@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 453fb6568b5f664d7c70c8bfbf7345ce */
+/* @relayHash 77279b58a28086a97fa1ca098e56f8b8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -61,6 +61,7 @@ fragment ArticleCard_article on Article {
   }
   thumbnailTitle
   vertical
+  slug
 }
 
 fragment ArticlesRail_articlesConnection on ArticleConnection {
@@ -1784,7 +1785,7 @@ return {
     ]
   },
   "params": {
-    "id": "453fb6568b5f664d7c70c8bfbf7345ce",
+    "id": "77279b58a28086a97fa1ca098e56f8b8",
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",

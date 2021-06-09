@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 101f05ed5f0b542daf7b91a6db5c6c4c */
+/* @relayHash c3c7d9dc6d5526490fe7cd33d6ea9ce9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -42,6 +42,7 @@ fragment ArticleCard_article on Article {
   }
   thumbnailTitle
   vertical
+  slug
 }
 
 fragment Articles_articles on Article {
@@ -1259,7 +1260,8 @@ return {
                         "kind": "ScalarField",
                         "name": "vertical",
                         "storageKey": null
-                      }
+                      },
+                      (v3/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -1276,7 +1278,7 @@ return {
     ]
   },
   "params": {
-    "id": "101f05ed5f0b542daf7b91a6db5c6c4c",
+    "id": "c3c7d9dc6d5526490fe7cd33d6ea9ce9",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": (v18/*: any*/),
@@ -1309,6 +1311,7 @@ return {
         "artist.articles.edges.node.href": (v20/*: any*/),
         "artist.articles.edges.node.id": (v19/*: any*/),
         "artist.articles.edges.node.internalID": (v19/*: any*/),
+        "artist.articles.edges.node.slug": (v20/*: any*/),
         "artist.articles.edges.node.thumbnailImage": (v21/*: any*/),
         "artist.articles.edges.node.thumbnailImage.url": (v20/*: any*/),
         "artist.articles.edges.node.thumbnailTitle": (v20/*: any*/),

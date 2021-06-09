@@ -61,6 +61,7 @@ export const ArticleCardContainer = createFragmentContainer(ArticleCard, {
       }
       thumbnailTitle
       vertical
+      slug
     }
   `,
 })

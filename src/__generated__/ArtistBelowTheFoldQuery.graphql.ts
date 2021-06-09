@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 50cb23aa188b74a3b568370c1908f897 */
+/* @relayHash 186b847325ae1636bae3781918655c01 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -43,6 +43,7 @@ fragment ArticleCard_article on Article {
   }
   thumbnailTitle
   vertical
+  slug
 }
 
 fragment Articles_articles on Article {
@@ -1267,7 +1268,8 @@ return {
                         "kind": "ScalarField",
                         "name": "vertical",
                         "storageKey": null
-                      }
+                      },
+                      (v3/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -1549,7 +1551,7 @@ return {
     ]
   },
   "params": {
-    "id": "50cb23aa188b74a3b568370c1908f897",
+    "id": "186b847325ae1636bae3781918655c01",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",

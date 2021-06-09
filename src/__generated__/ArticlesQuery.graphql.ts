@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 740be4b7ccfd8c368a0c7ee9cf163af2 */
+/* @relayHash e0c52e84cc1d861042efb2fd588226ac */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -44,6 +44,7 @@ fragment ArticleCard_article on Article {
   }
   thumbnailTitle
   vertical
+  slug
 }
 
 fragment Articles_articlesConnection_44T6UW on Query {
@@ -261,6 +262,13 @@ return {
                     "name": "vertical",
                     "storageKey": null
                   },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "slug",
+                    "storageKey": null
+                  },
                   (v8/*: any*/),
                   {
                     "alias": null,
@@ -318,7 +326,7 @@ return {
     ]
   },
   "params": {
-    "id": "740be4b7ccfd8c368a0c7ee9cf163af2",
+    "id": "e0c52e84cc1d861042efb2fd588226ac",
     "metadata": {},
     "name": "ArticlesQuery",
     "operationKind": "query",

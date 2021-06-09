@@ -86,7 +86,6 @@ export enum PageNames {
   AboutTheFairPage = "AboutTheFair",
   AboutTheShowPage = "AboutTheShow",
   AllArtistSeriesPage = "AllArtistSeries",
-  Articles = "Articles",
   ArtistPage = "Artist",
   ArtistSeriesPage = "ArtistSeries",
   ArtworkClassificationsPage = "ArtworkClassifications",
