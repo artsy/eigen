@@ -12,6 +12,8 @@ export type SearchCriteriaAttributes = {
     atAuction?: boolean | null;
     attributionClasses?: Array<string> | null;
     colors?: Array<string> | null;
+    dimensionScoreMax?: number | null;
+    dimensionScoreMin?: number | null;
     heightMax?: number | null;
     heightMin?: number | null;
     inquireableOnly?: boolean | null;
@@ -22,7 +24,6 @@ export type SearchCriteriaAttributes = {
     partnerIDs?: Array<string> | null;
     priceMax?: number | null;
     priceMin?: number | null;
-    size?: string | null;
     widthMax?: number | null;
     widthMin?: number | null;
 };
