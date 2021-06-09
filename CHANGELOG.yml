@@ -66,8 +66,8 @@ upcoming:
     - Continue to show the offer approved banner in an inquiry offer conversation after fulfillment - erikdstock
     - Add link to Conditions of Sale in sign up - dzmitry
     - Show visual feedback when the "Sort & Filter" button is pressed - dzmitry tratsiak
-
     - Don't show saved search banner when only sort filter is selected - dzmitry tratsiak
+
 releases:
   - version: 6.9.3
     date: June 1, 2021
