@@ -75,6 +75,16 @@ export default class HomeAnalytics {
     })
   }
 
+  static articlesHeaderTapEvent(): Analytics.TappedEntityGroup {
+    return Analytics.tappedEntityGroup({
+      contextModule: Analytics.ContextModule.articleRail,
+      contextScreenOwnerType: Analytics.OwnerType.home,
+      destinationScreenOwnerType: Analytics.OwnerType.articles,
+      moduleHeight: "double",
+      type: "header",
+    })
+  }
+
   // Artwork Events
 
   static artworkHeaderTapEvent(key: string | null): Analytics.TappedEntityGroup | null {
