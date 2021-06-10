@@ -216,14 +216,14 @@ describe("AuthModel", () => {
       expect(__globalStoreTestUtils__?.getCurrentState().auth.userID).toBe("my-user-id")
     })
 
-    it("returns false if the creating an account fails", async () => {
+    it("returns response if the creating an account fails", async () => {
       mockFetchJsonOnce({ error: "bad times" }, 500)
       const result = await GlobalStore.actions.auth.signUp({
         email: "user@example.com",
         password: "validpassword",
         name: "full name",
       })
-      expect(result).toBe(false)
+      expect(result).not.toBe(true)
     })
   })
 })
