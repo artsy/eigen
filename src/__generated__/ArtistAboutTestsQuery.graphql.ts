@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c3c7d9dc6d5526490fe7cd33d6ea9ce9 */
+/* @relayHash 392f2ae70505bb8ed99e48a0bbc4afb4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -32,6 +32,7 @@ query ArtistAboutTestsQuery(
 
 fragment ArticleCard_article on Article {
   internalID
+  slug
   author {
     name
     id
@@ -42,7 +43,6 @@ fragment ArticleCard_article on Article {
   }
   thumbnailTitle
   vertical
-  slug
 }
 
 fragment Articles_articles on Article {
@@ -1226,6 +1226,7 @@ return {
                     "selections": [
                       (v9/*: any*/),
                       (v2/*: any*/),
+                      (v3/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -1260,8 +1261,7 @@ return {
                         "kind": "ScalarField",
                         "name": "vertical",
                         "storageKey": null
-                      },
-                      (v3/*: any*/)
+                      }
                     ],
                     "storageKey": null
                   }
@@ -1278,7 +1278,7 @@ return {
     ]
   },
   "params": {
-    "id": "c3c7d9dc6d5526490fe7cd33d6ea9ce9",
+    "id": "392f2ae70505bb8ed99e48a0bbc4afb4",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": (v18/*: any*/),

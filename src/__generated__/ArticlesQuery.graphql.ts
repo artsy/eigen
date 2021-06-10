@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e0c52e84cc1d861042efb2fd588226ac */
+/* @relayHash 82fa12e3e7e28f85ab7cbe0e02af37f6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,6 +34,7 @@ query ArticlesQuery(
 
 fragment ArticleCard_article on Article {
   internalID
+  slug
   author {
     name
     id
@@ -44,7 +45,6 @@ fragment ArticleCard_article on Article {
   }
   thumbnailTitle
   vertical
-  slug
 }
 
 fragment Articles_articlesConnection_44T6UW on Query {
@@ -53,6 +53,7 @@ fragment Articles_articlesConnection_44T6UW on Query {
       cursor
       node {
         internalID
+        slug
         ...ArticleCard_article
         id
         __typename
@@ -201,6 +202,13 @@ return {
                   {
                     "alias": null,
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "slug",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
                     "concreteType": "Author",
                     "kind": "LinkedField",
                     "name": "author",
@@ -262,13 +270,6 @@ return {
                     "name": "vertical",
                     "storageKey": null
                   },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "slug",
-                    "storageKey": null
-                  },
                   (v8/*: any*/),
                   {
                     "alias": null,
@@ -326,7 +327,7 @@ return {
     ]
   },
   "params": {
-    "id": "e0c52e84cc1d861042efb2fd588226ac",
+    "id": "82fa12e3e7e28f85ab7cbe0e02af37f6",
     "metadata": {},
     "name": "ArticlesQuery",
     "operationKind": "query",

@@ -52,6 +52,7 @@ export const ArticleCardContainer = createFragmentContainer(ArticleCard, {
   article: graphql`
     fragment ArticleCard_article on Article {
       internalID
+      slug
       author {
         name
       }
@@ -61,7 +62,6 @@ export const ArticleCardContainer = createFragmentContainer(ArticleCard, {
       }
       thumbnailTitle
       vertical
-      slug
     }
   `,
 })

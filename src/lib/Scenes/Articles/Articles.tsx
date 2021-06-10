@@ -122,6 +122,7 @@ const fragmentSpec = graphql`
         cursor
         node {
           internalID
+          slug
           ...ArticleCard_article
         }
       }
