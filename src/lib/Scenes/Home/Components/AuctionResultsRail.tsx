@@ -1,3 +1,4 @@
+import { AuctionResultsRail_me } from "__generated__/AuctionResultsRail_me.graphql"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
@@ -8,126 +9,10 @@ import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { RailScrollProps } from "./types"
 
-const mockAuctionResults = [
-  {
-    currency: "USD",
-    dateText: "2006",
-    id: "QXVjdGlvblJlc3VsdDozMzAwMDY=",
-    internalID: "330006",
-    images: {
-      thumbnail: {
-        url: "https://d2v80f5yrouhh2.cloudfront.net/4V-XxYOjIKYMJt1CK63rCA/thumbnail.jpg",
-        height: null,
-        width: null,
-        aspectRatio: 1,
-      },
-    },
-    estimate: {
-      low: 5000000,
-    },
-    mediumText: "digital pigment print in colors, on wove paper",
-    organization: "Christie's",
-    boughtIn: false,
-    performance: {
-      mid: "4%",
-    },
-    priceRealized: {
-      display: "$62,500",
-      cents: 6250000,
-    },
-    saleDate: "2021-04-16T03:00:00+03:00",
-    title: "Napalm (Can't Beat the Feeling), from In the Darkest Hour There May Be Light",
-  },
-  {
-    currency: "GBP",
-    dateText: "1905",
-    id: "QXVjdGlvblJlc3VsdDozMjQyODE=",
-    internalID: "324281",
-    images: {
-      thumbnail: {
-        url: "https://d2v80f5yrouhh2.cloudfront.net/kJ3fvGeVUGDUpsyTjMKY5g/thumbnail.jpg",
-        height: null,
-        width: null,
-        aspectRatio: 1,
-      },
-    },
-    estimate: {
-      low: 4000000,
-    },
-    mediumText: "screenprint in colours, on wove paper",
-    organization: "Christie's",
-    boughtIn: false,
-    performance: {
-      mid: "38%",
-    },
-    priceRealized: {
-      display: "£68,750",
-      cents: 6875000,
-    },
-    saleDate: "2021-04-01T03:00:00+03:00",
-    title: "Napalm",
-  },
-  {
-    currency: "GBP",
-    dateText: "2002",
-    id: "QXVjdGlvblJlc3VsdDozMjM0OTE=",
-    internalID: "323491",
-    images: {
-      thumbnail: {
-        url: "https://d2v80f5yrouhh2.cloudfront.net/h5FmZDNX7NsABDszxsFRGQ/thumbnail.jpg",
-        height: null,
-        width: null,
-        aspectRatio: 1,
-      },
-    },
-    estimate: {
-      low: 40000000,
-    },
-    mediumText: "spray paint on canvas",
-    organization: "Sotheby's",
-    boughtIn: false,
-    performance: {
-      mid: "72%",
-    },
-    priceRealized: {
-      display: "£862,000",
-      cents: 86200000,
-    },
-    saleDate: "2021-04-07T03:00:00+03:00",
-    title: "Laugh Now",
-  },
-  {
-    currency: "USD",
-    dateText: "2002",
-    id: "QXVjdGlvblJlc3VsdDozMjk0OTc=",
-    internalID: "329497",
-    images: {
-      thumbnail: {
-        url: "https://d2v80f5yrouhh2.cloudfront.net/azk0ha0RO_Yhp6eyC9G6dg/thumbnail.jpg",
-        height: null,
-        width: null,
-        aspectRatio: 1,
-      },
-    },
-    estimate: {
-      low: 200000000,
-    },
-    mediumText: "spray paint and emulsion on paperboard",
-    organization: "Christie's",
-    boughtIn: false,
-    performance: {
-      mid: "-17%",
-    },
-    priceRealized: {
-      display: "$2,070,000",
-      cents: 207000000,
-    },
-    saleDate: "2021-05-11T03:00:00+03:00",
-    title: "Laugh Now But One Day We'll Be In Charge",
-  },
-]
 
-const AuctionResultsRail: React.FC<RailScrollProps> = (props) => {
+const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } &RailScrollProps> = (props) => {
+  const {me,scrollRef} = props
+  const {auctionResultsByFollowedArtists} = me
   const listRef = useRef<FlatList<any>>()
   const navigateToAuctionResultsForYou = () => {
     // uncomment after implementing AuctionResults query
@@ -141,7 +26,7 @@ const AuctionResultsRail: React.FC<RailScrollProps> = (props) => {
     // navigate(`/auction-result-for-you/${result.slug}`)
   }
 
-  useImperativeHandle(props.scrollRef, () => ({
+  useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
@@ -153,16 +38,16 @@ const AuctionResultsRail: React.FC<RailScrollProps> = (props) => {
 
       <CardRailFlatList
         listRef={listRef}
-        data={mockAuctionResults}
+        data={auctionResultsByFollowedArtists?.edges}
         keyExtractor={(_, index) => String(index)}
         horizontal={false}
         initialNumToRender={3}
-        renderItem={({ item: result, index }) => {
+        renderItem={({ item, index }) => {
           if (index >= 3) {
             return <></>
           }
 
-          return <AuctionResultForYouListItem auctionResult={result} onPress={navigateToAuctionResultsForYou} />
+          return <AuctionResultForYouListItem auctionResult={item?.node} onPress={navigateToAuctionResultsForYou} />
         }}
       />
     </View>
@@ -170,25 +55,37 @@ const AuctionResultsRail: React.FC<RailScrollProps> = (props) => {
 }
 
 export const AuctionResultsRailFragmentContainer = createFragmentContainer(AuctionResultsRail, {
-  // Replace Query after implementing AuctionResults Query
-  collectionsModule: graphql`
-    fragment AuctionResultsRail_collectionsModule on HomePageMarketingCollectionsModule {
-      results {
-        title
-        slug
-        artworksConnection(first: 3) {
-          counts {
-            total
+  me: graphql`
+    fragment AuctionResultsRail_me on Me {
+      auctionResultsByFollowedArtists(first: 3) {
+       totalCount
+       edges {
+        cursor
+        node {
+          id
+          title
+          date(format: "MMM")
+          currency
+          dateText
+          mediumText
+          saleDate
+          organization
+          boughtIn
+          priceRealized {
+            cents
+            display
           }
-          edges {
-            node {
-              image {
-                url(version: "large")
-              }
+          performance {
+            mid
+          }
+          images {
+            thumbnail {
+              url
             }
           }
         }
-      }
+       }
+     }
     }
   `,
 })
