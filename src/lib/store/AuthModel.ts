@@ -256,14 +256,12 @@ export const getAuthModel = (): AuthModel => ({
     return result
   }),
   authFacebook: thunk(async (actions) => {
-    const resultFacebook = await LoginManager.logInWithPermissions(["public_profile", "email"])
-    if (resultFacebook.declinedPermissions?.includes("email")) {
+    const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions(["public_profile", "email"])
+    if (declinedPermissions?.includes("email")) {
       Alert.alert("Error", "Please allow the use of email to continue", [{ text: "Ok" }])
     }
     const accessToken =
-      !resultFacebook.isCancelled &&
-      !resultFacebook.declinedPermissions?.includes("email") &&
-      (await AccessToken.getCurrentAccessToken())
+      !isCancelled && !declinedPermissions?.includes("email") && (await AccessToken.getCurrentAccessToken())
     if (accessToken) {
       const responseFacebookInfoCallback = async (error: any, facebookInfo: { email: string; name: string }) => {
         if (error) {
@@ -295,7 +293,7 @@ export const getAuthModel = (): AuthModel => ({
                   },
                   body: {
                     oauth_provider: "facebook",
-                    oauth_token: accessToken?.accessToken,
+                    oauth_token: accessToken.accessToken,
                     client_id: Config.ARTSY_API_CLIENT_KEY,
                     client_secret: Config.ARTSY_API_CLIENT_SECRET,
                     grant_type: "oauth_token",
@@ -304,10 +302,10 @@ export const getAuthModel = (): AuthModel => ({
                 })
 
                 if (resultGravityAccessToken.status === 201) {
-                  const { access_token } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
+                  const { access_token: xAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
                   const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
                     path: `/api/v1/me`,
-                    headers: { "X-ACCESS-TOKEN": access_token },
+                    headers: { "X-ACCESS-TOKEN": xAccessToken },
                   })
                   const { email } = await resultGravityEmail.json()
                   await actions.signIn({ email, accessToken: accessToken.accessToken, oauthProvider: "facebook" })
