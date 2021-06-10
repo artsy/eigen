@@ -1,6 +1,6 @@
-import { SearchCriteriaAttributes } from '__generated__/SavedSearchBannerQuery.graphql'
+import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { SavedSearchBannerTestsQuery } from "__generated__/SavedSearchBannerTestsQuery.graphql"
-import { mockEnvironmentPayload } from 'lib/tests/mockEnvironmentPayload'
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
@@ -22,19 +22,26 @@ describe("SavedSearchBanner", () => {
   const TestRenderer = () => {
     return (
       <QueryRenderer<SavedSearchBannerTestsQuery>
-          environment={mockEnvironment}
-          query={graphql`
-            query SavedSearchBannerTestsQuery($criteria: SearchCriteriaAttributes!) @relay_test_operation {
-              me {
-                ...SavedSearchBanner_me @arguments(criteria: $criteria)
-              }
+        environment={mockEnvironment}
+        query={graphql`
+          query SavedSearchBannerTestsQuery($criteria: SearchCriteriaAttributes!) @relay_test_operation {
+            me {
+              ...SavedSearchBanner_me @arguments(criteria: $criteria)
             }
-          `}
-          render={({ props }) => <SavedSearchBannerFragmentContainer {...props} loading={props === null} attributes={attributes} artistId="banksy" />}
-          variables={{
-            criteria: attributes
-          }}
-        />
+          }
+        `}
+        render={({ props }) => (
+          <SavedSearchBannerFragmentContainer
+            {...props}
+            loading={props === null}
+            attributes={attributes}
+            artistId="banksy"
+          />
+        )}
+        variables={{
+          criteria: attributes,
+        }}
+      />
     )
   }
 
@@ -42,8 +49,8 @@ describe("SavedSearchBanner", () => {
     const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironmentPayload(mockEnvironment, {
       Me: () => ({
-        savedSearch: null
-      })
+        savedSearch: null,
+      }),
     })
 
     const buttonComponent = tree.root.findByType(Button)

@@ -3,6 +3,7 @@ import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graph
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import {
   filterArtworksParams,
+  FilterParamName,
   prepareFilterArtworksParamsForInput,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
@@ -17,7 +18,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, FilterIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import { Box, FilterIcon, Flex, Separator, Spacer, Text, TouchableHighlightColor } from "palette"
 import React, { useContext, useEffect, useMemo, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -90,7 +91,10 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const enableSavedSearch = useFeatureFlag("AREnableSavedSearch")
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
-  const shouldShowSavedSearchBanner = enableSavedSearch && appliedFilters.length > 0
+  const relevantFiltersForSavedSearch = appliedFilters.filter(
+    (filter) => !(filter.paramName === FilterParamName.sort)
+  )
+  const shouldShowSavedSearchBanner = enableSavedSearch && relevantFiltersForSavedSearch.length > 0
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
 
@@ -141,14 +145,18 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
             <Text variant="subtitle" color="black60">
               Showing {artworksTotal} works
             </Text>
-            <Touchable haptic onPress={openFilterModal}>
-              <Flex flexDirection="row">
-                <FilterIcon fill="black100" width="20px" height="20px" />
-                <Text variant="subtitle" color="black100">
-                  Sort & Filter
-                </Text>
-              </Flex>
-            </Touchable>
+            <TouchableHighlightColor
+              haptic
+              onPress={openFilterModal}
+              render={({ color }) => (
+                <Flex flexDirection="row" alignItems="center">
+                  <FilterIcon fill={color} width="20px" height="20px" />
+                  <Text variant="subtitle" color={color}>
+                    Sort & Filter
+                  </Text>
+                </Flex>
+              )}
+            />
           </Flex>
           <Separator mt={2} ml={-2} width={screenWidth} />
           {!!shouldShowSavedSearchBanner && (

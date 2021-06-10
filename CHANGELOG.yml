@@ -2,8 +2,6 @@ upcoming:
   version: 6.9.4
   date: TBD
   dev:
-    - OrderDetails with headInfo - alexj105
-    - OrderDetails with ArtInfo and ShipsTo - alexj105
     - Improve admin menu - dzmitry
     - Use app links on android - mounir
     - obfuscate env vars on android - kizito
@@ -17,7 +15,11 @@ upcoming:
     - Add createSavedSearch mutation - dzmitry tratsiak
     - Add deleteSavedSearch mutation - dzmitry tratsiak
     - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
+    - Update open simulator command in getting started docs - ole
   user_facing:
+    - OrderDetails with SoldBy section - alexj105
+    - OrderDetails with headInfo - alexj105
+    - OrderDetails with ArtInfo and ShipsTo - alexj105
     - Fix wrong displaying in Order History when fields are too long - Serge0n
     - Add payment method section (behind feature flag) - irina-sid
     - Add Order Summary section into OrderDetails page - Serge0n
@@ -62,6 +64,9 @@ upcoming:
     - Check saved search when the user applied the filter - dzmitry tratsiak
     - Don't close filter artwork modal when "clear all" tapped - dzmitry tratsiak
     - Continue to show the offer approved banner in an inquiry offer conversation after fulfillment - erikdstock
+    - Add link to Conditions of Sale in sign up - dzmitry
+    - Show visual feedback when the "Sort & Filter" button is pressed - dzmitry tratsiak
+    - Don't show saved search banner when only sort filter is selected - dzmitry tratsiak
     - Add articles (market news) screen - ole
 
 releases:

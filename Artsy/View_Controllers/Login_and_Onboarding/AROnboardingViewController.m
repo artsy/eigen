@@ -265,6 +265,10 @@
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.artsy.net/privacy"] options:@{} completionHandler:nil];
 }
 
+- (void)showСonditionsOfSale
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.artsy.net/conditions-of-sale"] options:@{} completionHandler:nil];
+}
 
 #pragma mark -
 #pragma mark Personalize level
@@ -463,6 +467,11 @@
 - (void)termsAndConditionsLinkTapped
 {
     [self showTermsAndConditions];
+}
+
+- (void)conditionsOfSaleLinkTapped
+{
+    [self showСonditionsOfSale];
 }
 
 - (void)setPriceRangeDone:(NSInteger)range
