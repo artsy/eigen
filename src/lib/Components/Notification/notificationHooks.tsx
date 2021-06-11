@@ -10,7 +10,6 @@ export const useNotification = () => {
     () => ({
       show: contextValue.show,
       hide: contextValue.hide,
-      hideOldest: contextValue.hideOldest,
     }),
     [contextValue]
   )
