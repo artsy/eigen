@@ -12,7 +12,7 @@ interface Props {
 
 export const SoldBySection: React.FC<Props> = ({ soldBy }) => {
   const { fulfillments, artwork } = extractNodes(soldBy.lineItems)[0]
-  const estimatedDelivery = extractNodes(fulfillments)[0].estimatedDelivery
+  const estimatedDelivery = extractNodes(fulfillments)[0]?.estimatedDelivery
   const orderEstimatedDelivery = estimatedDelivery ? DateTime.fromISO(estimatedDelivery) : null
   if (!soldBy) {
     return null
@@ -28,12 +28,14 @@ export const SoldBySection: React.FC<Props> = ({ soldBy }) => {
           {artwork?.shippingOrigin}
         </Text>
       </Box>
-      <Box flexDirection="row">
-        <Text variant="text">Estimated Delivery: </Text>
-        <Text testID="delivery" variant="text">
-          {orderEstimatedDelivery ? orderEstimatedDelivery.toLocaleString(DateTime.DATE_SHORT as LocaleOptions) : null}
-        </Text>
-      </Box>
+      {!!orderEstimatedDelivery && (
+        <Box flexDirection="row">
+          <Text variant="text">Estimated Delivery: </Text>
+          <Text testID="delivery" variant="text">
+            {orderEstimatedDelivery.toLocaleString(DateTime.DATE_SHORT as LocaleOptions)}
+          </Text>
+        </Box>
+      )}
     </Box>
   )
 }
