@@ -125,7 +125,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       await this.createBidder()
     } catch (error) {
       if (!this.state.errorModalVisible) {
-        this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusError)
+        this.presentErrorModal(error, null)
       }
     }
   }
@@ -135,20 +135,22 @@ export class Registration extends React.Component<RegistrationProps, Registratio
    * need a separate call to update our User model to store that info
    */
   async updatePhoneNumber() {
+    const errorMessage = "There was a problem processing your phone number, please try again."
+
     return new Promise<void>((done, reject) => {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const { phoneNumber } = this.state.billingAddress
       commitMutation<RegistrationUpdateUserMutation>(this.props.relay.environment, {
         onCompleted: (_, errors) => {
           if (errors && errors.length) {
-            this.presentErrorModal(errors, null)
+            this.presentErrorModal(errors, errorMessage)
             reject(errors)
           } else {
             done()
           }
         },
         onError: (error) => {
-          this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusNetworkError)
+          this.presentErrorModal(error, errorMessage)
         },
         mutation: graphql`
           mutation RegistrationUpdateUserMutation($input: UpdateMyProfileInput!) {
@@ -201,7 +203,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             }
           }
         },
-        onError: (errors) => this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusNetworkError),
+        onError: (errors) => this.presentErrorModal(errors, null),
         mutation: graphql`
           mutation RegistrationCreateCreditCardMutation($input: CreditCardInput!) {
             createCreditCard(input: $input) {
@@ -235,12 +237,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   createBidder() {
     commitMutation<RegistrationCreateBidderMutation>(this.props.relay.environment, {
       onCompleted: (results, errors) =>
-        isEmpty(errors)
-          ? this.presentRegistrationSuccess(results)
-          : this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusError),
-      onError: (error) => {
-        this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusNetworkError)
-      },
+        isEmpty(errors) ? this.presentRegistrationSuccess(results) : this.presentErrorModal(errors, null),
+      onError: (error) => this.presentErrorModal(error, null),
       mutation: graphql`
         mutation RegistrationCreateBidderMutation($input: CreateBidderInput!) {
           createBidder(input: $input) {
@@ -273,12 +271,6 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     } else {
       this.presentRegistrationResult(RegistrationStatus.RegistrationStatusPending)
     }
-  }
-
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  presentRegistrationError(error, status) {
-    console.error("Registration.tsx", error)
-    this.presentRegistrationResult(status)
   }
 
   presentRegistrationResult(status: RegistrationStatus) {

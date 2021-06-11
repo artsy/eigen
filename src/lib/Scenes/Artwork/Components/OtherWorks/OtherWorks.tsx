@@ -40,7 +40,7 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: Ot
           {gridsToShow.map((grid, index) => (
             <React.Fragment key={`Grid-${index}`}>
               <Header title={grid.title!} />
-              <Spacer mb={3} />
+              <Spacer mb={2} />
               <GenericGrid
                 trackingFlow={Schema.Flow.RecommendedArtworks}
                 contextModule={grid.__typename}

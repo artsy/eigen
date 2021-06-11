@@ -103,7 +103,6 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
           first: 20
           after: $cursor
           aggregations: [
-            ARTIST_NATIONALITY
             COLOR
             DIMENSION_RANGE
             LOCATION_CITY

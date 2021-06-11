@@ -69,7 +69,9 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const aggregationsState = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
 
-  const clearAllAction = ArtworksFiltersStore.useStoreActions((action) => action.clearAllAction)
+  const clearFiltersZeroStateAction = ArtworksFiltersStore.useStoreActions(
+    (action) => action.clearFiltersZeroStateAction
+  )
 
   const selectedOptions = useSelectedOptionsDisplay()
 
@@ -95,7 +97,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
     .filter((filterOption) => filterOption.filterType)
 
   const clearAllFilters = () => {
-    clearAllAction()
+    clearFiltersZeroStateAction()
   }
 
   const trackClear = (screenName: PageNames, ownerEntity: OwnerEntityTypes) => {
@@ -169,8 +171,6 @@ export const ArtworkFilterOptionsScreen: React.FC<
             aggregations: aggregationsState,
           })
 
-          // TODO: When unwinding the `ARUseImprovedArtworkFilters` flag; simply return `null`
-          // instead of `"All"` in the `selectedOption` function
           const currentOption =
             selectedCurrentOption === "All" || selectedCurrentOption === "Default" ? null : selectedCurrentOption
 
@@ -258,13 +258,15 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
       sortOrder = [
         "sort",
         "medium",
+        "additionalGeneIDs",
         "materialsTerms",
-        "attributionClass",
         "priceRange",
-        "waysToBuy",
+        "attributionClass",
         "dimensionRange",
+        "waysToBuy",
+        "artistNationalities",
         "majorPeriods",
-        "color",
+        "colors",
       ]
       break
   }
@@ -392,8 +394,8 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "attributionClass",
     ScreenComponent: "AttributionClassOptionsScreen",
   },
-  color: {
-    displayText: FilterDisplayName.color,
+  colors: {
+    displayText: FilterDisplayName.colors,
     filterType: "colors",
     ScreenComponent: "ColorsOptionsScreen",
   },
@@ -474,11 +476,12 @@ const CollectionFiltersSorted: FilterScreen[] = [
   "medium",
   "additionalGeneIDs",
   "materialsTerms",
-  "attributionClass",
   "priceRange",
+  "attributionClass",
+  "dimensionRange",
   "waysToBuy",
   "locationCities",
-  "dimensionRange",
+  "artistNationalities",
   "majorPeriods",
   "colors",
   "partnerIDs",
@@ -488,25 +491,25 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "medium",
   "additionalGeneIDs",
   "materialsTerms",
-  "attributionClass",
   "priceRange",
+  "attributionClass",
+  "dimensionRange",
   "waysToBuy",
   "locationCities",
-  "partnerIDs",
-  "dimensionRange",
   "majorPeriods",
   "colors",
+  "partnerIDs",
 ]
 const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "sort",
   "medium",
   "additionalGeneIDs",
   "materialsTerms",
-  "attributionClass",
   "priceRange",
+  "attributionClass",
+  "dimensionRange",
   "waysToBuy",
   "locationCities",
-  "dimensionRange",
   "majorPeriods",
   "colors",
   "partnerIDs",
@@ -518,11 +521,12 @@ const FairFiltersSorted: FilterScreen[] = [
   "medium",
   "additionalGeneIDs",
   "materialsTerms",
-  "attributionClass",
   "priceRange",
+  "attributionClass",
+  "dimensionRange",
   "waysToBuy",
   "locationCities",
-  "dimensionRange",
+  "artistNationalities",
   "majorPeriods",
   "colors",
   "partnerIDs",
@@ -530,11 +534,10 @@ const FairFiltersSorted: FilterScreen[] = [
 const SaleArtworksFiltersSorted: FilterScreen[] = [
   "sort",
   "viewAs",
-  "estimateRange",
   "artistIDs",
   "medium",
   "additionalGeneIDs",
-  "materialsTerms",
+  "estimateRange",
 ]
 
 const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories", "sizes", "year"]

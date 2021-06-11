@@ -116,7 +116,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/search", "Search"),
     new RouteMatcher("/inbox", "Inbox"),
     new RouteMatcher("/my-profile", "MyProfile"),
-
+    new RouteMatcher("/articles", "Articles"),
+    webViewRoute("/articles/:articleID"),
     new RouteMatcher("/artist/:artistID", "Artist"),
     new RouteMatcher("/artist/:artistID/shows", "ArtistShows"),
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
@@ -145,6 +146,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     new RouteMatcher("/inquiry/:artworkID", "Inquiry"),
     new RouteMatcher("/viewing-rooms", "ViewingRooms"),
+    new RouteMatcher("/auction-result-for-you", "AuctionResultForYou"),
     new RouteMatcher("/viewing-room/:viewing_room_id", "ViewingRoom"),
     new RouteMatcher("/viewing-room/:viewing_room_id/artworks", "ViewingRoomArtworks"),
     new RouteMatcher("/viewing-room/:viewing_room_id/:artwork_id", "ViewingRoomArtwork"),
@@ -211,6 +213,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     new RouteMatcher("/city-bmw-list/:citySlug", "CityBMWList"),
     new RouteMatcher("/make-offer/:artworkID", "MakeOfferModal"),
+    new RouteMatcher("/user/purchases/:orderID", "OrderDetails"),
     unsafe_getFeatureFlag("AROptionsUseReactNativeWebView")
       ? webViewRoute("/orders/:orderID", { mimicBrowserBackButton: false })
       : new RouteMatcher("/orders/:orderID", "Checkout"),

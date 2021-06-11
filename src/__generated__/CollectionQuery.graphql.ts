@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash bce1eeba6db6ec04d8db232126b32ce7 */
+/* @relayHash b6001100023c1fee6cf61869ea45e127 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -109,6 +109,11 @@ fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup 
   }
 }
 
+fragment CollectionArtworksFilter_collection on MarketingCollection {
+  slug
+  id
+}
+
 fragment CollectionArtworks_collection_2T6kBV on MarketingCollection {
   isDepartment
   slug
@@ -176,6 +181,7 @@ fragment Collection_collection_2qE49v on MarketingCollection {
   isDepartment
   ...CollectionHeader_collection
   ...CollectionArtworks_collection_2T6kBV
+  ...CollectionArtworksFilter_collection
   ...FeaturedArtists_collection
   ...CollectionHubsRails_collection
   linkedCollections {
@@ -1134,7 +1140,7 @@ return {
     ]
   },
   "params": {
-    "id": "bce1eeba6db6ec04d8db232126b32ce7",
+    "id": "b6001100023c1fee6cf61869ea45e127",
     "metadata": {},
     "name": "CollectionQuery",
     "operationKind": "query",

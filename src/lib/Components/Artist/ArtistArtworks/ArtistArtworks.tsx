@@ -3,6 +3,7 @@ import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graph
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import {
   filterArtworksParams,
+  FilterParamName,
   prepareFilterArtworksParamsForInput,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
@@ -14,12 +15,14 @@ import {
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, FilterIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
-import React, { useContext, useEffect, useState } from "react"
+import { Box, FilterIcon, Flex, Separator, Spacer, Text, TouchableHighlightColor } from "palette"
+import React, { useContext, useEffect, useMemo, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { SavedSearchBannerQueryRender } from "./SavedSearchBanner"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
@@ -30,9 +33,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   const tracking = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
-  const handleFilterArtworksModal = () => {
-    setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
-  }
+  const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
+  const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
 
   const openFilterArtworksModal = () => {
     tracking.trackEvent({
@@ -43,7 +45,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
       context_screen_owner_slug: artist.slug,
       action_type: Schema.ActionTypes.Tap,
     })
-    handleFilterArtworksModal()
+    handleOpenFilterArtworksModal()
   }
 
   const closeFilterArtworksModal = () => {
@@ -55,7 +57,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
       context_screen_owner_slug: artist.slug,
       action_type: Schema.ActionTypes.Tap,
     })
-    handleFilterArtworksModal()
+    handleCloseFilterArtworksModal()
   }
 
   return (
@@ -67,7 +69,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
           id={artist.internalID}
           slug={artist.slug}
           isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-          exitModal={handleFilterArtworksModal}
+          exitModal={handleCloseFilterArtworksModal}
           closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.ArtistArtworks}
         />
@@ -86,15 +88,21 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   ...props
 }) => {
   const tracking = useTracking()
+  const enableSavedSearch = useFeatureFlag("AREnableSavedSearch")
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+  const relevantFiltersForSavedSearch = appliedFilters.filter(
+    (filter) => !(filter.paramName === FilterParamName.sort)
+  )
+  const shouldShowSavedSearchBanner = enableSavedSearch && relevantFiltersForSavedSearch.length > 0
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
 
-  const filterParams = filterArtworksParams(appliedFilters)
+  const filterParams = useMemo(() => filterArtworksParams(appliedFilters), [appliedFilters])
   const artworks = artist.artworks
   const artworksCount = artworks?.edges?.length
   const artworksTotal = artworks?.counts?.total
+  const artistInternalId = artist.internalID
 
   useEffect(() => {
     if (applyFilters) {
@@ -130,26 +138,37 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const screenWidth = useScreenDimensions().width
 
   useEffect(
-    () =>
+    () => {
       setJSX(
         <Box backgroundColor="white" mt={2} px={2}>
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <Text variant="subtitle" color="black60">
               Showing {artworksTotal} works
             </Text>
-            <Touchable haptic onPress={openFilterModal}>
-              <Flex flexDirection="row">
-                <FilterIcon fill="black100" width="20px" height="20px" />
-                <Text variant="subtitle" color="black100">
-                  Sort & Filter
-                </Text>
-              </Flex>
-            </Touchable>
+            <TouchableHighlightColor
+              haptic
+              onPress={openFilterModal}
+              render={({ color }) => (
+                <Flex flexDirection="row" alignItems="center">
+                  <FilterIcon fill={color} width="20px" height="20px" />
+                  <Text variant="subtitle" color={color}>
+                    Sort & Filter
+                  </Text>
+                </Flex>
+              )}
+            />
           </Flex>
           <Separator mt={2} ml={-2} width={screenWidth} />
+          {!!shouldShowSavedSearchBanner && (
+            <>
+              <SavedSearchBannerQueryRender artistId={artistInternalId} filters={filterParams} />
+              <Separator ml={-2} width={screenWidth} />
+            </>
+          )}
         </Box>
-      ),
-    [artworksTotal]
+      )
+    },
+    [artworksTotal, shouldShowSavedSearchBanner, artistInternalId, filterParams]
   )
 
   const filteredArtworks = () => {
@@ -197,7 +216,16 @@ export default createPaginationContainer(
           first: $count
           after: $cursor
           input: $input
-          aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE]
+          aggregations: [
+            COLOR
+            DIMENSION_RANGE
+            LOCATION_CITY
+            MAJOR_PERIOD
+            MATERIALS_TERMS
+            MEDIUM
+            PARTNER
+            PRICE_RANGE
+          ]
         ) @connection(key: "ArtistArtworksGrid_artworks") {
           aggregations {
             slice

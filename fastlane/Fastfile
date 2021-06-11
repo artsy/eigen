@@ -172,8 +172,11 @@ lane :ship_beta_android do
 
   upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
 
-  upload_to_play_store(
+  supply(
     track: "alpha",
+    skip_upload_metadata: true,
+    skip_upload_images: true,
+    skip_upload_screenshots: true,
   )
 end
 

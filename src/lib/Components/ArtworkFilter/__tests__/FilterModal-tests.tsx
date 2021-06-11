@@ -329,8 +329,8 @@ describe("Filter modal states", () => {
 
     expect(extractText(filterScreen.root.findAllByType(CurrentOption)[0])).toEqual("Price (low to high)")
     expect(extractText(filterScreen.root.findAllByType(CurrentOption)[1])).toEqual("Drawing")
-    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[2])).toEqual("")
-    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[3])).toEqual("$10,000-20,000")
+    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[2])).toEqual("$10,000-20,000")
+    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[3])).toEqual("")
     expect(extractText(filterScreen.root.findAllByType(CurrentOption)[4])).toEqual("Bid")
     expect(extractText(filterScreen.root.findAllByType(CurrentOption)[5])).toEqual("")
     expect(filterScreen.root.findAllByType(CurrentOption)).toHaveLength(6)
@@ -367,7 +367,7 @@ describe("Clearing filters", () => {
     expect(extractText(filterScreen.root.findAllByType(CurrentOption)[0])).toEqual("")
   })
 
-  it("enables the apply button when clearing all if no other options are selected", () => {
+  it("exits the modal when clear all button is pressed", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [],
       appliedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
@@ -392,7 +392,6 @@ describe("Clearing filters", () => {
 
     expect(filterModal.find(CurrentOption).at(0).text()).toEqual("")
     expect(filterModal.find(CurrentOption).at(1).text()).toEqual("")
-    expect(filterModal.find(ApplyButton).at(0).props().disabled).toEqual(false)
   })
 })
 

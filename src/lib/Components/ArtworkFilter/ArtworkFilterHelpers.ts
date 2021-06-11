@@ -1,6 +1,7 @@
+import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { FilterScreen } from "lib/Components/ArtworkFilter"
-import { capitalize, compact, forOwn, groupBy, pick, sortBy } from "lodash"
-import { LOCALIZED_UNIT } from "./Filters/helpers"
+import { capitalize, compact, groupBy, isEqual, pick, sortBy } from "lodash"
+import { LOCALIZED_UNIT, parseRangeByKeys } from "./Filters/helpers"
 
 export enum FilterDisplayName {
   // artist = "Artists",
@@ -10,7 +11,6 @@ export enum FilterDisplayName {
   artistsIFollow = "Artist",
   attributionClass = "Rarity",
   categories = "Medium",
-  color = "Color",
   colors = "Color",
   estimateRange = "Price/estimate range",
   locationCities = "Artwork location",
@@ -36,7 +36,6 @@ export enum FilterParamName {
   artistsIFollow = "includeArtworksByFollowedArtists",
   attributionClass = "attributionClass",
   categories = "categories",
-  color = "color",
   colors = "colors",
   dimensionRange = "dimensionRange",
   earliestCreatedYear = "earliestCreatedYear",
@@ -89,7 +88,6 @@ export const ParamDefaultValues = {
   atAuction: false,
   attributionClass: [],
   categories: undefined,
-  color: undefined,
   colors: [],
   dimensionRange: "*-*",
   earliestCreatedYear: undefined,
@@ -121,7 +119,6 @@ export const defaultCommonFilterOptions = {
   atAuction: ParamDefaultValues.atAuction,
   attributionClass: ParamDefaultValues.attributionClass,
   categories: ParamDefaultValues.categories,
-  color: ParamDefaultValues.color,
   colors: ParamDefaultValues.colors,
   dimensionRange: ParamDefaultValues.dimensionRange,
   earliestCreatedYear: ParamDefaultValues.earliestCreatedYear,
@@ -191,7 +188,7 @@ export interface FilterCounts {
 export const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string | undefined> = {
   ARTIST_NATIONALITY: FilterParamName.artistNationalities,
   ARTIST: "artistIDs",
-  COLOR: FilterParamName.color,
+  COLOR: FilterParamName.colors,
   DIMENSION_RANGE: FilterParamName.size,
   earliestCreatedYear: "earliestCreatedYear",
   FOLLOWED_ARTISTS: "artistsIFollow",
@@ -261,27 +258,18 @@ const getDefaultParamsByType = (filterType: FilterType) => {
   }[filterType]
 }
 
-const getChangedParams = (appliedFilters: FilterArray, filterType: FilterType = "artwork") => {
-  const defaultFilterParams = getDefaultParamsByType(filterType)
-  const filterParams = paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams }, filterType)
-  // when filters cleared return default params
-  return Object.keys(filterParams).length === 0 ? defaultFilterParams : filterParams
-}
-
 export const changedFiltersParams = (currentFilterParams: FilterParams, selectedFilterOptions: FilterArray) => {
-  const selectedFilterParams = getChangedParams(selectedFilterOptions)
   const changedFilters: { [key: string]: any } = {}
 
-  /***
-   *  If a filter option has been updated e.g. was { medium: "photography" } but
-   *  is now { medium: "sculpture" } add the updated filter to changedFilters. Otherwise,
-   *  add filter option to changedFilters.
-   ***/
-  forOwn(getChangedParams(selectedFilterOptions), (_value, paramName) => {
-    const filterParamName = paramName as FilterParamName
-    if (currentFilterParams[filterParamName] !== selectedFilterParams[filterParamName]) {
-      changedFilters[filterParamName] = selectedFilterParams[filterParamName]
+  selectedFilterOptions.forEach((selectedFilterOption) => {
+    const { paramName, paramValue } = selectedFilterOption
+    const currentFilterParamValue = currentFilterParams[paramName]
+
+    if (currentFilterParamValue && isEqual(paramValue, currentFilterParamValue)) {
+      return
     }
+
+    changedFilters[paramName] = paramValue
   })
 
   return changedFilters
@@ -434,7 +422,7 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   artistIDs: "ARTIST",
   artistNationalities: "ARTIST_NATIONALITY",
   artistsIFollow: "FOLLOWED_ARTISTS",
-  color: "COLOR",
+  colors: "COLOR",
   dimensionRange: "DIMENSION_RANGE",
   earliestCreatedYear: "earliestCreatedYear",
   latestCreatedYear: "latestCreatedYear",
@@ -514,7 +502,6 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
     "atAuction",
     "attributionClass",
     "before",
-    "color",
     "colors",
     "dimensionRange",
     "excludeArtworkIDs",
@@ -550,4 +537,90 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
     "tagID",
     "width",
   ])
+}
+
+export const parseFilledRangeByKeys = (range: string, minKey: string, maxKey: string) => {
+  const filledRange: Record<string, number> = {}
+  const parsedRange = parseRangeByKeys(range, { minKey, maxKey })
+
+  Object.entries(parsedRange).forEach((entry) => {
+    const [key, value] = entry
+
+    if (value !== "*") {
+      filledRange[key] = value
+    }
+  })
+
+  return filledRange
+}
+
+export const parseFilterParamSize = (filterParams: FilterParams) => {
+  let input: SearchCriteriaAttributes = {}
+  const sizeParamValue = filterParams[FilterParamName.dimensionRange] as string
+  const widthParamValue = filterParams[FilterParamName.width] as string
+  const heightParamValue = filterParams[FilterParamName.height] as string
+
+  // Custom sizes
+  if (sizeParamValue === "0-*") {
+    if (widthParamValue) {
+      input = {
+        ...input,
+        ...parseFilledRangeByKeys(widthParamValue, "widthMin", "widthMax"),
+      }
+    }
+
+    if (heightParamValue) {
+      input = {
+        ...input,
+        ...parseFilledRangeByKeys(heightParamValue, "heightMin", "heightMax"),
+      }
+    }
+  } else {
+    input = {
+      ...input,
+      ...parseFilledRangeByKeys(sizeParamValue, "dimensionScoreMin", "dimensionScoreMax"),
+    }
+  }
+
+  return input
+}
+
+export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams) => {
+  let input: SearchCriteriaAttributes = {}
+  const canSendIfNotEqualByDefault = [
+    FilterParamName.waysToBuyBuy,
+    FilterParamName.waysToBuyBid,
+    FilterParamName.waysToBuyInquire,
+    FilterParamName.waysToBuyMakeOffer,
+  ]
+  const canSendWithoutChangesKeys = [
+    FilterParamName.additionalGeneIDs,
+    FilterParamName.colors,
+    FilterParamName.locationCities,
+    FilterParamName.timePeriod,
+    FilterParamName.materialsTerms,
+    FilterParamName.partnerIDs,
+  ]
+
+  Object.entries(filterParams).forEach((entry) => {
+    const [key, value] = entry
+
+    if (key === FilterParamName.priceRange) {
+      input = { ...input, ...parseFilledRangeByKeys(value as string, "priceMin", "priceMax") }
+    } else if (key === FilterParamName.attributionClass) {
+      input.attributionClasses = value as string[]
+    } else if (key === FilterParamName.dimensionRange) {
+      input = { ...input, ...parseFilterParamSize(filterParams) }
+    } else if (canSendWithoutChangesKeys.includes(key as FilterParamName)) {
+      input[key as keyof SearchCriteriaAttributes] = value as any
+    } else if (canSendIfNotEqualByDefault.includes(key as FilterParamName)) {
+      const defaultValue = defaultCommonFilterOptions[key as FilterParamName]
+
+      if (!isEqual(defaultValue, value)) {
+        input[key as keyof SearchCriteriaAttributes] = value as any
+      }
+    }
+  })
+
+  return input
 }
