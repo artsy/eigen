@@ -1,5 +1,5 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { CloseIcon, Color, color, Flex, Text, Touchable } from "palette"
+import { Box, CloseIcon, Color, color, Flex, Text, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
@@ -116,14 +116,18 @@ export const Notification: React.FC<NotificationProps> = (props) => {
 
   const content = (
     <Flex p={1}>
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Text color={titleColor} variant="subtitle">
-          {title}
-        </Text>
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Flex flex={1}>
+          <Text color={titleColor} variant="subtitle">
+            {title}
+          </Text>
+        </Flex>
         {!!showCloseIcon && (
-          <Touchable onPress={handleNotificationClosePress}>
-            <CloseIcon />
-          </Touchable>
+          <Box mt={0.25}>
+            <Touchable onPress={handleNotificationClosePress}>
+              <CloseIcon />
+            </Touchable>
+          </Box>
         )}
       </Flex>
       {!!message && (
