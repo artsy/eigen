@@ -234,14 +234,7 @@ describe("AuthModel", () => {
     Alert.alert = jest.fn()
 
     beforeEach(async () => {
-      // mockFetchJsonOnce({
-      //   xapp_token: "my-special-token",
-      //   expires_in: "never",
-      // })
-      // await GlobalStore.actions.auth.getXAppToken()
-      // mockFetch.mockClear()
       ;(Alert.alert as jest.Mock).mockClear()
-      GlobalStore.actions.auth.signIn = jest.fn() as any
       ;(LoginManager.logInWithPermissions as jest.Mock).mockReturnValue({ isCancelled: false })
       ;(AccessToken.getCurrentAccessToken as jest.Mock).mockReturnValue({ accessToken: "facebook-token" })
       ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
@@ -288,6 +281,7 @@ describe("AuthModel", () => {
     })
 
     it("signs in if facebook account is already an artsy account", async () => {
+      GlobalStore.actions.auth.signIn = jest.fn() as any
       GlobalStore.actions.auth.signUp = jest.fn(() =>
         Promise.resolve({
           json: () => Promise.resolve({ error: "Another Account Already Linked" }),
