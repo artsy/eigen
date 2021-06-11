@@ -4,9 +4,6 @@ upcoming:
   dev:
     - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
     - Update open simulator command in getting started docs - ole
-    - Add native modalDismissed event - lily & christina
-    - Refactor filter event payloads to send JSON - roop
-    - Convert artist series filter to static button - mdole
   user_facing:
     - OrderDetails with SoldBy section - alexj105
     - OrderDetails with headInfo - alexj105
