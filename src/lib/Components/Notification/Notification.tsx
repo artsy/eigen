@@ -1,13 +1,13 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, CloseIcon, Color, color, Flex, Text, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { Animated } from "react-native"
+import { Animated, Platform } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
 import { useNotification } from "./notificationHooks"
 
 export const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
-const EDGE_NOTIFICATION_HEIGHT = 80
+const EDGE_NOTIFICATION_HEIGHT = Platform.OS === "ios" ? 80 : 90
 const EDGE_NOTIFICATION_PADDING = 10
 const FRICTION = 20
 const NAVBAR_HEIGHT = 44
