@@ -8,9 +8,6 @@ upcoming:
     - Add diagnose script - mounir
     - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
     - Update open simulator command in getting started docs - ole
-    - Add native modalDismissed event - lily & christina
-    - Refactor filter event payloads to send JSON - roop
-    - Convert artist series filter to static button - mdole
   user_facing:
     - Fix unfollowing categories - katsiaryna alshannikava
     - Remove "Enable push notification" guard for disabling saved search - dzmitry tratsiak
