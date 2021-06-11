@@ -36,9 +36,6 @@ describe("Artist Series Artworks", () => {
             <ArtworkFiltersStoreProvider>
               <ArtistSeriesArtworksFragmentContainer
                 artistSeries={props.artistSeries}
-                openFilterModal={() => {
-                  console.log("hi")
-                }}
               />
             </ArtworkFiltersStoreProvider>
           )
