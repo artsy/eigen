@@ -24,16 +24,19 @@ export const StickyHeaderPage: React.FC<StickyHeaderPageProps> = (props) => {
 
   const shouldHideBackButton = Animated.greaterOrEq(scrollOffsetY, 10)
   const stickyHeaderOffsetY = Animated.max(Animated.sub(headerHeight ?? 0, scrollOffsetY), 0)
-  const scrollStickyHeaderOffsetY = Animated.add(scrollOffsetY, stickyHeaderHeight ?? 0)
-  const translateY = Animated.cond(
+  const scrollOffsetYAndStickyHeaderHeight = Animated.add(scrollOffsetY, stickyHeaderHeight ?? 0)
+  // If we have the starting position of the footer and the user scrolled to it
+  const nearToTheFooter = Animated.and(
     Animated.greaterThan(footerOffsetY, 0),
-    Animated.cond(
-      Animated.greaterThan(scrollStickyHeaderOffsetY, footerOffsetY),
-      Animated.max(
-        Animated.sub(footerOffsetY, scrollStickyHeaderOffsetY),
-        Animated.multiply(-1, stickyHeaderHeight ?? 0)
-      ),
-      stickyHeaderOffsetY
+    Animated.greaterThan(scrollOffsetYAndStickyHeaderHeight, footerOffsetY)
+  )
+  const translateY = Animated.cond(
+    nearToTheFooter,
+    // For example, the starting point of the footer component is 300 by Y, and the user has already scrolled 310.
+    // So we move the sticky header up by 10 on translateY until it is fully hidden
+    Animated.max(
+      Animated.multiply(-1, stickyHeaderHeight ?? 0),
+      Animated.sub(footerOffsetY, scrollOffsetYAndStickyHeaderHeight),
     ),
     stickyHeaderOffsetY
   )
