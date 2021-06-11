@@ -5,7 +5,7 @@ import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
 import { useNotification } from "./notificationHooks"
 
-const AnimatedFlex = Animated.createAnimatedComponent(Flex)
+export const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
 const EDGE_NOTIFICATION_HEIGHT = 80
 const EDGE_NOTIFICATION_PADDING = 10
@@ -14,6 +14,7 @@ const NAVBAR_HEIGHT = 44
 
 export type NotificationPlacement = "top" | "bottom"
 export type NotificationType = "info" | "success" | "default"
+export type NotificationOptions = Omit<NotificationProps, "id" | "positionIndex">
 
 export const getTitleColorByType = (type?: NotificationType): Color => {
   if (type === "success") {

@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo, useState } from "react"
-import { Notification, NotificationPlacement, NotificationProps } from "./Notification"
+import { Notification, NotificationOptions, NotificationPlacement, NotificationProps } from "./Notification"
 
 interface NotificationContextValue {
-  show: (options: Omit<NotificationProps, "id" | "positionIndex">) => void
+  show: (options: NotificationOptions) => void
   hide: (id: string) => void
 }
 
