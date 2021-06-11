@@ -114,7 +114,17 @@ beforeEach(() => {
 jest.mock("react-native-fbsdk-next", () => ({
   LoginManager: {
     logOut: jest.fn(),
+    logInWithPermissions: jest.fn(),
   },
+  AccessToken: {
+    getCurrentAccessToken: jest.fn(),
+  },
+  GraphRequest: jest.fn(),
+  GraphRequestManager: jest.fn(() => ({
+    addRequest: jest.fn(() => ({
+      start: jest.fn(),
+    })),
+  })),
 }))
 
 // prettier-ignore
