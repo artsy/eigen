@@ -104,7 +104,6 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
             <Flex px={2}>
               <ArtistSeriesArtworksFragmentContainer
                 artistSeries={artistSeries}
-                openFilterModal={openFilterArtworksModal}
               />
               <ArtworkFilterNavigator
                 {...props}
