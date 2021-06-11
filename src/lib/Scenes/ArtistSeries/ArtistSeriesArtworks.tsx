@@ -24,6 +24,7 @@ const PAGE_SIZE = 20
 
 export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ artistSeries, relay, openFilterModal }) => {
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
+  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((state) => state.setFiltersCountAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
 
@@ -31,6 +32,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
   const filterParams = filterArtworksParams(appliedFilters)
 
   const artworks = artistSeries?.artistSeriesArtworks!
+  const artworksTotal = artworks?.counts?.total ?? 0
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
@@ -61,9 +63,14 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
     setAggregationsAction(artworks?.aggregations)
   }, [])
 
-  const artworksTotal = artworks?.counts?.total
+  useEffect(() => {
+    setFiltersCountAction({
+      total: artworksTotal,
+      followedArtists: null,
+    })
+  }, [artworksTotal])
 
-  if ((artworksTotal ?? 0) === 0) {
+  if (artworksTotal === 0) {
     return (
       <Box>
         <FilteredArtworkGridZeroState id={artistSeries.internalID} slug={artistSeries.slug} trackClear={trackClear} />
