@@ -899,11 +899,7 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
       materialsTerms: ["paper"],
 
       dimensionScoreMin: 40,
-      partnerIDs: [
-        "cypress-test-partner-for-automated-testing-purposes",
-        "tate-ward-auctions"
-      ],
-
+      partnerIDs: ["cypress-test-partner-for-automated-testing-purposes", "tate-ward-auctions"],
     })
   })
 
@@ -914,7 +910,7 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
         paramName: FilterParamName.sort,
         paramValue: "-partner_updated_at",
       },
-    ]);
+    ])
 
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({})
   })
@@ -960,7 +956,7 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
         paramName: FilterParamName.waysToBuyInquire,
         paramValue: true,
       },
-    ]);
+    ])
 
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
       atAuction: true,
@@ -984,8 +980,8 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
         displayText: "Custom size",
         paramName: FilterParamName.dimensionRange,
         paramValue: "0-*",
-      }
-    ]);
+      },
+    ])
 
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
       widthMin: 39.37007874015748,
@@ -1006,8 +1002,8 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
         displayText: "Custom size",
         paramName: FilterParamName.dimensionRange,
         paramValue: "0-*",
-      }
-    ]);
+      },
+    ])
 
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
       widthMin: 12.5,
@@ -1026,8 +1022,8 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
         displayText: "Custom size",
         paramName: FilterParamName.dimensionRange,
         paramValue: "0-*",
-      }
-    ]);
+      },
+    ])
 
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
       widthMax: 196.8503937007874,
@@ -1045,8 +1041,8 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
         displayText: "Custom size",
         paramName: FilterParamName.dimensionRange,
         paramValue: "0-*",
-      }
-    ]);
+      },
+    ])
 
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
       widthMin: 10,
