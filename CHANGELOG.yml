@@ -18,6 +18,7 @@ upcoming:
     - Don't show saved search banner when only sort filter is selected - dzmitry tratsiak
     - Add articles (market news) screen - ole
     - Add Filter Component to Collections Page - kizito
+    - Check push notification permissions before saving search - kizito
 
 releases:
   - version: 6.9.4

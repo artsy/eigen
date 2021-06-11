@@ -4,9 +4,12 @@ import { SavedSearchBannerCreateSavedSearchMutation } from "__generated__/SavedS
 import { SavedSearchBannerDeleteSavedSearchMutation } from "__generated__/SavedSearchBannerDeleteSavedSearchMutation.graphql"
 import { SavedSearchBannerQuery, SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { FilterParams, prepareFilterParamsForSaveSearchInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
 import { Button, Flex, Text } from "palette"
 import React, { useState } from "react"
+import { Alert, Linking, Platform } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 interface SavedSearchBannerProps {
@@ -95,12 +98,57 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, attrib
     if (inProcess) {
       return
     }
-
-    if (enabled) {
-      deleteSavedSearch()
-    } else {
-      createSavedSearch()
+    const executeSaveSearch = () => {
+      if (enabled) {
+        deleteSavedSearch()
+      } else {
+        createSavedSearch()
+      }
     }
+    if (Platform.OS === "android") {
+      // TODO:- When android Push notification setup is ready add check for permission
+      // NotificationManagerCompat.from(getReactApplicationContext()).areNotificationsEnabled();
+      executeSaveSearch()
+      return
+    }
+    LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
+      switch (result) {
+        case PushAuthorizationStatus.Authorized:
+          return executeSaveSearch()
+        case PushAuthorizationStatus.Denied:
+          return Alert.alert(
+            "Turn on notifications",
+            'To receive push notification alerts from Artsy on new works by this artist, you\'ll need to enable them in your iOS Settings. Tap Notifications, and then toggle "Allow Notifications" on.',
+            [
+              {
+                text: "Settings",
+                onPress: () => Linking.openURL("App-prefs:NOTIFICATIONS_ID"),
+              },
+              {
+                text: "Cancel",
+                style: "cancel",
+              },
+            ]
+          )
+        case PushAuthorizationStatus.NotDetermined:
+          return Alert.alert(
+            "Turn on notifications",
+            "Artsy needs your permission to send push notification alerts on new works by this artist.",
+            [
+              {
+                text: "Proceed",
+                onPress: () => LegacyNativeModules.ARTemporaryAPIModule.requestNotificationPermissions(),
+              },
+              {
+                text: "Cancel",
+                style: "cancel",
+              },
+            ]
+          )
+        default:
+          return
+      }
+    })
   }
 
   return (
