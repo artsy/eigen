@@ -34,7 +34,10 @@ describe("parseRange", () => {
 
 describe("parseRangeByKeys", () => {
   it("parses min value as minValue and max as maxValue", () => {
-    expect(parseRangeByKeys("*-*", { minKey: "minValue", maxKey: "maxValue" })).toEqual({ minValue: "*", maxValue: "*" })
+    expect(parseRangeByKeys("*-*", { minKey: "minValue", maxKey: "maxValue" })).toEqual({
+      minValue: "*",
+      maxValue: "*",
+    })
   })
 
   it("parses min value as minValue and max", () => {
