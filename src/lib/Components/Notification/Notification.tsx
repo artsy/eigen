@@ -30,7 +30,7 @@ export interface NotificationProps {
   positionIndex: number
   placement: NotificationPlacement
   title: string
-  message: string
+  message?: string
   autoHide?: boolean
   hideTimeout?: number
   showCloseIcon?: boolean
@@ -126,9 +126,11 @@ export const Notification: React.FC<NotificationProps> = (props) => {
           </Touchable>
         )}
       </Flex>
-      <Text numberOfLines={2} mt={0.5} color="black60" variant="small">
-        {message}
-      </Text>
+      {!!message && (
+        <Text numberOfLines={2} mt={0.5} color="black60" variant="small">
+          {message}
+        </Text>
+      )}
     </Flex>
   )
 
