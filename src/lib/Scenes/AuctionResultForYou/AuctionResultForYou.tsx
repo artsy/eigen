@@ -1,17 +1,13 @@
-import { AuctionResultForYouQuery } from "__generated__/AuctionResultForYouQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { Fonts } from "lib/data/fonts"
 import { navigate } from "lib/navigation/navigate"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import moment from "moment"
 import { Flex, Sans, Separator, Text } from "palette"
 import React from "react"
-import { Dimensions, SectionList } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { SectionList } from "react-native"
 import { Tab } from "../Favorites/Favorites"
 import { AuctionResultForYouListItem } from "./AuctionResultForYouListItem"
 
@@ -188,52 +184,4 @@ export const AuctionResultForYou: React.FC = () => (
       />
     </ArtworkFiltersStoreProvider>
   </PageWithSimpleHeader>
-)
-
-export const AuctionResultForYouContainer = createFragmentContainer(AuctionResultForYou, {
-  // Replace Query after implementing AuctionResults Query
-  collection: graphql`
-    fragment AuctionResultForYou_collection on MarketingCollection
-    @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
-      id
-      slug
-      isDepartment
-      ...CollectionHeader_collection
-      ...CollectionArtworks_collection @arguments(input: { sort: "-decayed_merch", dimensionRange: "*-*" })
-      ...FeaturedArtists_collection
-      ...CollectionHubsRails_collection
-
-      linkedCollections {
-        ...CollectionHubsRails_linkedCollections
-      }
-    }
-  `,
-})
-
-interface AuctionResultForYouRendererProps {
-  collectionID: string
-}
-
-export const AuctionResultForYouQueryRenderer: React.FC<AuctionResultForYouRendererProps> = ({
-  collectionID = "auction-highlights",
-}) => (
-  // Replace Query after implementing AuctionResults Query
-  <QueryRenderer<AuctionResultForYouQuery>
-    environment={defaultEnvironment}
-    query={graphql`
-      query AuctionResultForYouQuery($collectionID: String!, $screenWidth: Int) {
-        collection: marketingCollection(slug: $collectionID) {
-          ...AuctionResultForYou_collection @arguments(screenWidth: $screenWidth)
-        }
-      }
-    `}
-    variables={{
-      collectionID,
-      screenWidth: Dimensions.get("screen").width,
-    }}
-    cacheConfig={{
-      force: true,
-    }}
-    render={renderWithLoadProgress(AuctionResultForYouContainer)}
-  />
 )
