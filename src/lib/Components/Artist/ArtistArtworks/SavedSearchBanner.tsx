@@ -99,39 +99,41 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, attrib
       return
     }
     LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
-      if (result === PushAuthorizationStatus.Authorized) {
-        executeSaveSearch()
-      } else if (result === PushAuthorizationStatus.Denied) {
-        // open settings banner
-        Alert.alert(
-          "Turn on notifications",
-          'To receive push notifications from Artsy on new works by this artist, you\'ll need enable them in your iOS Settings. Tap Notifications, and then toggle "Allow Notifications" on.',
-          [
-            {
-              text: "Settings",
-              onPress: () => Linking.openURL("App-prefs:NOTIFICATIONS_ID"),
-            },
-            {
-              text: "Cancel",
-              style: "cancel",
-            },
-          ]
-        )
-      } else if (result === PushAuthorizationStatus.NotDetermined) {
-        Alert.alert(
-          "Turn on notifications",
-          "Artsy needs your permission to send push notifications alerts on this artist.",
-          [
-            {
-              text: "Proceed",
-              onPress: () => LegacyNativeModules.ARTemporaryAPIModule.requestNotificationPermissions(),
-            },
-            {
-              text: "Cancel",
-              style: "cancel",
-            },
-          ]
-        )
+      switch (result) {
+        case PushAuthorizationStatus.Authorized:
+          return executeSaveSearch()
+        case PushAuthorizationStatus.Denied:
+          return Alert.alert(
+            "Turn on notifications",
+            'To receive push notification alerts from Artsy on new works by this artist, you\'ll need to enable them in your iOS Settings. Tap Notifications, and then toggle "Allow Notifications" on.',
+            [
+              {
+                text: "Settings",
+                onPress: () => Linking.openURL("App-prefs:NOTIFICATIONS_ID"),
+              },
+              {
+                text: "Cancel",
+                style: "cancel",
+              },
+            ]
+          )
+        case PushAuthorizationStatus.NotDetermined:
+          return Alert.alert(
+            "Turn on notifications",
+            "Artsy needs your permission to send push notification alerts on new works by this artist.",
+            [
+              {
+                text: "Proceed",
+                onPress: () => LegacyNativeModules.ARTemporaryAPIModule.requestNotificationPermissions(),
+              },
+              {
+                text: "Cancel",
+                style: "cancel",
+              },
+            ]
+          )
+        default:
+          return
       }
     })
   }
