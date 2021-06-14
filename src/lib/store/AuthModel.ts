@@ -262,90 +262,90 @@ export const getAuthModel = (): AuthModel => ({
     }
     const accessToken =
       !isCancelled && !declinedPermissions?.includes("email") && (await AccessToken.getCurrentAccessToken())
-    if (accessToken) {
-      const responseFacebookInfoCallback = async (error: any, facebookInfo: { email: string; name: string }) => {
-        if (error) {
-          Alert.alert("Error", "Error fetching data", [{ text: "Ok" }])
-        } else {
-          // sign up
-          const resultGravitySignUp = await actions.signUp({
-            email: facebookInfo.email,
-            name: facebookInfo.name,
-            accessToken: accessToken.accessToken,
-            oauthProvider: "facebook",
-          })
+    if (!accessToken) {
+      return
+    }
 
-          // if sign up failed
-          if (resultGravitySignUp !== true) {
-            const resultGravitySignUpJSON = await resultGravitySignUp.json()
+    const responseFacebookInfoCallback = async (error: any, facebookInfo: { email: string; name: string }) => {
+      if (error) {
+        Alert.alert("Error", "Error fetching data", [{ text: "Ok" }])
+      } else {
+        // sign up
+        const resultGravitySignUp = await actions.signUp({
+          email: facebookInfo.email,
+          name: facebookInfo.name,
+          accessToken: accessToken.accessToken,
+          oauthProvider: "facebook",
+        })
 
-            switch (resultGravitySignUpJSON.error) {
-              case "Another Account Already Linked":
-                // this facebook account is already an artsy account
-                // let's log them in
+        // if sign up failed
+        if (resultGravitySignUp !== true) {
+          const resultGravitySignUpJSON = await resultGravitySignUp.json()
 
-                // we need to get X-ACCESS-TOKEN before actual sign in
-                const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
-                  path: `/oauth2/access_token`,
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: {
-                    oauth_provider: "facebook",
-                    oauth_token: accessToken.accessToken,
-                    client_id: Config.ARTSY_API_CLIENT_KEY,
-                    client_secret: Config.ARTSY_API_CLIENT_SECRET,
-                    grant_type: "oauth_token",
-                    scope: "offline_access",
-                  },
+          switch (resultGravitySignUpJSON.error) {
+            case "Another Account Already Linked":
+              // this facebook account is already an artsy account
+              // let's log them in
+
+              // we need to get X-ACCESS-TOKEN before actual sign in
+              const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
+                path: `/oauth2/access_token`,
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: {
+                  oauth_provider: "facebook",
+                  oauth_token: accessToken.accessToken,
+                  client_id: Config.ARTSY_API_CLIENT_KEY,
+                  client_secret: Config.ARTSY_API_CLIENT_SECRET,
+                  grant_type: "oauth_token",
+                  scope: "offline_access",
+                },
+              })
+
+              if (resultGravityAccessToken.status === 201) {
+                const { access_token: xAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
+                const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
+                  path: `/api/v1/me`,
+                  headers: { "X-ACCESS-TOKEN": xAccessToken },
                 })
+                const { email } = await resultGravityEmail.json()
+                await actions.signIn({ email, accessToken: accessToken.accessToken, oauthProvider: "facebook" })
+              }
 
-                if (resultGravityAccessToken.status === 201) {
-                  const { access_token: xAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
-                  const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
-                    path: `/api/v1/me`,
-                    headers: { "X-ACCESS-TOKEN": xAccessToken },
-                  })
-                  const { email } = await resultGravityEmail.json()
-                  await actions.signIn({ email, accessToken: accessToken.accessToken, oauthProvider: "facebook" })
-                }
+              break
+            case "User Already Exists":
+            case "User Already Invited":
+              // there's already a user with this email
+              Alert.alert("Error", "User already exists with this email. Please log in with your email and password", [
+                { text: "Ok" },
+              ])
 
-                break
-              case "User Already Exists":
-              case "User Already Invited":
-                // there's already a user with this email
-                Alert.alert(
-                  "Error",
-                  "User already exists with this email. Please log in with your email and password",
-                  [{ text: "Ok" }]
-                )
-
-                break
-              default:
-                // something else went wrong
-                Alert.alert("Error", "Couldn't link Facebook account", [{ text: "Ok" }])
-                break
-            }
+              break
+            default:
+              // something else went wrong
+              Alert.alert("Error", "Couldn't link Facebook account", [{ text: "Ok" }])
+              break
           }
         }
       }
+    }
 
-      // get info from facebook
-      const infoRequest = new GraphRequest(
-        "/me",
-        {
-          accessToken: accessToken.accessToken,
-          parameters: {
-            fields: {
-              string: "email,name",
-            },
+    // get info from facebook
+    const infoRequest = new GraphRequest(
+      "/me",
+      {
+        accessToken: accessToken.accessToken,
+        parameters: {
+          fields: {
+            string: "email,name",
           },
         },
-        responseFacebookInfoCallback
-      )
-      new GraphRequestManager().addRequest(infoRequest).start()
-    }
+      },
+      responseFacebookInfoCallback
+    )
+    new GraphRequestManager().addRequest(infoRequest).start()
   }),
   notifyTracking: thunk((_, { userId }) => {
     SegmentTrackingProvider.identify?.(userId, { is_temporary_user: userId === null ? 1 : 0 })
