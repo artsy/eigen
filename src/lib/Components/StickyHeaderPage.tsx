@@ -1,6 +1,6 @@
 import { useAnimatedValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
-import { useAutoCollapsingMeasuredView } from "lib/Components/StickyTabPage/StickyTabPage"
 import { useUpdadeShouldHideBackButton } from "lib/utils/hideBackButtonOnScroll"
+import { useAutoCollapsingMeasuredView } from "lib/utils/useAutoCollapsingMeasuredView"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useState } from "react"
 import { View } from "react-native"
