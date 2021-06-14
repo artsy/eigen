@@ -38,6 +38,7 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ articlesConnection }
       <Flex>
         <FlatList
           horizontal
+          showsHorizontalScrollIndicator={false}
           ListHeaderComponent={() => <Spacer ml="2" />}
           ListFooterComponent={() => <Spacer ml="2" />}
           data={articles}
