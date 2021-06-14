@@ -1,6 +1,5 @@
 import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
-import { DateTime } from "luxon"
-import { LocaleOptions } from "luxon"
+import { DateTime, LocaleOptions } from "luxon"
 import { Flex, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -13,7 +12,7 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
   if (!info) {
     return null
   }
-  const { createdAt, requestedFulfillment, code } = info
+  const { createdAt, requestedFulfillment, code, state } = info
   const isShippedOrder = requestedFulfillment?.__typename === "CommerceShip"
   const orderCreatedAt = DateTime.fromISO(createdAt)
 
@@ -35,9 +34,17 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
           {code}
         </Text>
       </Flex>
-      <Flex flexDirection="row">
+      <Flex mb={10} flexDirection="row">
         <Text style={{ width: 112 }} variant="text">
           Status
+        </Text>
+        <Text testID="status" color="black60" variant="text" style={{ textTransform: "capitalize" }}>
+          {state.toLowerCase()}
+        </Text>
+      </Flex>
+      <Flex flexDirection="row">
+        <Text style={{ width: 112 }} variant="text">
+          Fulfillment
         </Text>
         <Text testID="commerceShip" color="black60" variant="text">
           {isShippedOrder ? "Delivery" : "Pickup"}
@@ -51,6 +58,7 @@ export const OrderDetailsHeaderFragmentContainer = createFragmentContainer(Order
   info: graphql`
     fragment OrderDetailsHeader_info on CommerceOrder {
       createdAt
+      state
       requestedFulfillment {
         ... on CommerceShip {
           __typename

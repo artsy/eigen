@@ -1,7 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
+<<<<<<< HEAD
 /* @relayHash cbdca208b96f1b3c2149688ce296fdb8 */
+=======
+/* @relayHash 5138cb67d5d86c894701924da7e6ec01 */
+>>>>>>> 18ae456754 (User can see the way of delivery, and date fix)
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -99,6 +103,19 @@ fragment OrderDetails_order on CommerceOrder {
     }
   }
   createdAt
+<<<<<<< HEAD
+=======
+  state
+  requestedFulfillment {
+    __typename
+    ... on CommerceShip {
+      __typename
+    }
+    ... on CommercePickup {
+      __typename
+    }
+  }
+>>>>>>> 18ae456754 (User can see the way of delivery, and date fix)
   code
   ...ArtworkInfoSection_artwork
   ...SummarySection_section
@@ -537,6 +554,84 @@ return {
           {
             "alias": null,
             "args": null,
+<<<<<<< HEAD
+=======
+            "kind": "ScalarField",
+            "name": "state",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": null,
+            "kind": "LinkedField",
+            "name": "requestedFulfillment",
+            "plural": false,
+            "selections": [
+              (v3/*: any*/),
+              {
+                "kind": "InlineFragment",
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "addressLine1",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "addressLine2",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "city",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "country",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "phoneNumber",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "postalCode",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "region",
+                    "storageKey": null
+                  }
+                ],
+                "type": "CommerceShip",
+                "abstractKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+>>>>>>> 18ae456754 (User can see the way of delivery, and date fix)
             "kind": "ScalarField",
             "name": "code",
             "storageKey": null
@@ -612,7 +707,11 @@ return {
     ]
   },
   "params": {
+<<<<<<< HEAD
     "id": "cbdca208b96f1b3c2149688ce296fdb8",
+=======
+    "id": "5138cb67d5d86c894701924da7e6ec01",
+>>>>>>> 18ae456754 (User can see the way of delivery, and date fix)
     "metadata": {},
     "name": "OrderDetailsQuery",
     "operationKind": "query",
