@@ -4,6 +4,7 @@ upcoming:
   dev:
     - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
     - Update open simulator command in getting started docs - ole
+    - Update debugging docs - mounir
   user_facing:
     - OrderDetails with SoldBy section - alexj105
     - OrderDetails with headInfo - alexj105
