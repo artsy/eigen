@@ -41,6 +41,7 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ articlesConnection }
           showsHorizontalScrollIndicator={false}
           ListHeaderComponent={() => <Spacer ml="2" />}
           ListFooterComponent={() => <Spacer ml="2" />}
+          ItemSeparatorComponent={() => <Spacer ml={15} />}
           data={articles}
           keyExtractor={(item) => `${item.internalID}`}
           renderItem={({ item, index }) => (
