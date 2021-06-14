@@ -4,6 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FULFILLED" | "PENDING" | "REFUNDED" | "SUBMITTED" | "%future added value";
 export type OrderDetails_order = {
     readonly lineItems: {
         readonly edges: ReadonlyArray<{
@@ -17,6 +18,7 @@ export type OrderDetails_order = {
         } | null> | null;
     } | null;
     readonly createdAt: string;
+    readonly state: CommerceOrderStateEnum;
     readonly requestedFulfillment: ({
         readonly __typename: "CommerceShip";
     } | {
@@ -127,6 +129,13 @@ return {
       "args": null,
       "kind": "ScalarField",
       "name": "createdAt",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "state",
       "storageKey": null
     },
     {

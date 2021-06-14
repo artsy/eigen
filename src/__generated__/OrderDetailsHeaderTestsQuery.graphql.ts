@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7625a13d2478d82ccb7152e6db65236d */
+/* @relayHash 54fcb20a39fab79fda2c99bf3595670d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,6 +30,7 @@ query OrderDetailsHeaderTestsQuery {
 fragment OrderDetailsHeader_info on CommerceOrder {
   __isCommerceOrder: __typename
   createdAt
+  state
   requestedFulfillment {
     __typename
     ... on CommerceShip {
@@ -120,6 +121,13 @@ return {
           {
             "alias": null,
             "args": null,
+            "kind": "ScalarField",
+            "name": "state",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": null,
             "kind": "LinkedField",
             "name": "requestedFulfillment",
@@ -149,7 +157,7 @@ return {
     ]
   },
   "params": {
-    "id": "7625a13d2478d82ccb7152e6db65236d",
+    "id": "54fcb20a39fab79fda2c99bf3595670d",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "commerceOrder": {
@@ -174,7 +182,21 @@ return {
           "plural": false,
           "type": "CommerceRequestedFulfillmentUnion"
         },
-        "commerceOrder.requestedFulfillment.__typename": (v2/*: any*/)
+        "commerceOrder.requestedFulfillment.__typename": (v2/*: any*/),
+        "commerceOrder.state": {
+          "enumValues": [
+            "ABANDONED",
+            "APPROVED",
+            "CANCELED",
+            "FULFILLED",
+            "PENDING",
+            "REFUNDED",
+            "SUBMITTED"
+          ],
+          "nullable": false,
+          "plural": false,
+          "type": "CommerceOrderStateEnum"
+        }
       }
     },
     "name": "OrderDetailsHeaderTestsQuery",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 39265194e56a97a0a1736d04d762876c */
+/* @relayHash 656f057079bb53fea3f1315510e1323b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -86,6 +86,7 @@ fragment OrderDetails_order on CommerceOrder {
     }
   }
   createdAt
+  state
   requestedFulfillment {
     __typename
     ... on CommerceShip {
@@ -454,6 +455,13 @@ return {
           {
             "alias": null,
             "args": null,
+            "kind": "ScalarField",
+            "name": "state",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": null,
             "kind": "LinkedField",
             "name": "requestedFulfillment",
@@ -597,7 +605,7 @@ return {
     ]
   },
   "params": {
-    "id": "39265194e56a97a0a1736d04d762876c",
+    "id": "656f057079bb53fea3f1315510e1323b",
     "metadata": {},
     "name": "OrderDetailsTestsQuery",
     "operationKind": "query",
