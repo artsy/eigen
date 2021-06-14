@@ -1,6 +1,7 @@
+import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { FilterScreen } from "lib/Components/ArtworkFilter"
 import { capitalize, compact, groupBy, isEqual, pick, sortBy } from "lodash"
-import { LOCALIZED_UNIT } from "./Filters/helpers"
+import { LOCALIZED_UNIT, parseRangeByKeys } from "./Filters/helpers"
 
 export enum FilterDisplayName {
   // artist = "Artists",
@@ -536,4 +537,90 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
     "tagID",
     "width",
   ])
+}
+
+export const parseFilledRangeByKeys = (range: string, minKey: string, maxKey: string) => {
+  const filledRange: Record<string, number> = {}
+  const parsedRange = parseRangeByKeys(range, { minKey, maxKey })
+
+  Object.entries(parsedRange).forEach((entry) => {
+    const [key, value] = entry
+
+    if (value !== "*") {
+      filledRange[key] = value
+    }
+  })
+
+  return filledRange
+}
+
+export const parseFilterParamSize = (filterParams: FilterParams) => {
+  let input: SearchCriteriaAttributes = {}
+  const sizeParamValue = filterParams[FilterParamName.dimensionRange] as string
+  const widthParamValue = filterParams[FilterParamName.width] as string
+  const heightParamValue = filterParams[FilterParamName.height] as string
+
+  // Custom sizes
+  if (sizeParamValue === "0-*") {
+    if (widthParamValue) {
+      input = {
+        ...input,
+        ...parseFilledRangeByKeys(widthParamValue, "widthMin", "widthMax"),
+      }
+    }
+
+    if (heightParamValue) {
+      input = {
+        ...input,
+        ...parseFilledRangeByKeys(heightParamValue, "heightMin", "heightMax"),
+      }
+    }
+  } else {
+    input = {
+      ...input,
+      ...parseFilledRangeByKeys(sizeParamValue, "dimensionScoreMin", "dimensionScoreMax"),
+    }
+  }
+
+  return input
+}
+
+export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams) => {
+  let input: SearchCriteriaAttributes = {}
+  const canSendIfNotEqualByDefault = [
+    FilterParamName.waysToBuyBuy,
+    FilterParamName.waysToBuyBid,
+    FilterParamName.waysToBuyInquire,
+    FilterParamName.waysToBuyMakeOffer,
+  ]
+  const canSendWithoutChangesKeys = [
+    FilterParamName.additionalGeneIDs,
+    FilterParamName.colors,
+    FilterParamName.locationCities,
+    FilterParamName.timePeriod,
+    FilterParamName.materialsTerms,
+    FilterParamName.partnerIDs,
+  ]
+
+  Object.entries(filterParams).forEach((entry) => {
+    const [key, value] = entry
+
+    if (key === FilterParamName.priceRange) {
+      input = { ...input, ...parseFilledRangeByKeys(value as string, "priceMin", "priceMax") }
+    } else if (key === FilterParamName.attributionClass) {
+      input.attributionClasses = value as string[]
+    } else if (key === FilterParamName.dimensionRange) {
+      input = { ...input, ...parseFilterParamSize(filterParams) }
+    } else if (canSendWithoutChangesKeys.includes(key as FilterParamName)) {
+      input[key as keyof SearchCriteriaAttributes] = value as any
+    } else if (canSendIfNotEqualByDefault.includes(key as FilterParamName)) {
+      const defaultValue = defaultCommonFilterOptions[key as FilterParamName]
+
+      if (!isEqual(defaultValue, value)) {
+        input[key as keyof SearchCriteriaAttributes] = value as any
+      }
+    }
+  })
+
+  return input
 }

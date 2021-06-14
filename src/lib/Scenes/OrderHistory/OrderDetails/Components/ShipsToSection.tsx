@@ -5,15 +5,15 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
   address: ShipsToSection_address
-  testID?: string
 }
 
 export const ShipsToSection: React.FC<Props> = ({ address }) => {
   if (!address.requestedFulfillment) {
     return null
   }
-
   const agressInfo = address.requestedFulfillment
+  const addedComma = agressInfo.city ? "," : ""
+
   return (
     <Flex style={{ flexDirection: "column", justifyContent: "space-between" }}>
       <Text testID="addressLine1" color="black60" variant="text">
@@ -21,11 +21,11 @@ export const ShipsToSection: React.FC<Props> = ({ address }) => {
       </Text>
 
       <Box display="flex" flexDirection="row">
-        <Text testID="city" color="black60" variant="text" paddingRight={1}>
-          {agressInfo.city}
+        <Text testID="city" color="black60" variant="text">
+          {agressInfo.city + addedComma + " "}
         </Text>
         <Text testID="region" color="black60" variant="text">
-          {agressInfo.region}
+          {agressInfo.region + " "}
         </Text>
         <Text testID="postalCode" color="black60" variant="text">
           {agressInfo.postalCode}

@@ -4,7 +4,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { ShipsToSectionFragmentContainer } from "../OrderDetails/ShipsToSection"
+import { ShipsToSectionFragmentContainer } from "../Components/ShipsToSection"
 
 jest.unmock("react-relay")
 
@@ -48,8 +48,8 @@ describe("ShipsToSection", () => {
     })
 
     expect(tree.findByProps({ testID: "addressLine1" }).props.children).toBe("myadress")
-    expect(tree.findByProps({ testID: "city" }).props.children).toBe("mycity")
-    expect(tree.findByProps({ testID: "region" }).props.children).toBe("myregion")
+    expect(tree.findByProps({ testID: "city" }).props.children).toBe("mycity, ")
+    expect(tree.findByProps({ testID: "region" }).props.children).toBe("myregion ")
     expect(tree.findByProps({ testID: "phoneNumber" }).props.children).toBe("7777")
     expect(tree.findByProps({ testID: "country" }).props.children).toBe("mycountry")
     expect(tree.findByProps({ testID: "postalCode" }).props.children).toBe("11238")

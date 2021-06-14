@@ -265,6 +265,10 @@
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.artsy.net/privacy"] options:@{} completionHandler:nil];
 }
 
+- (void)showСonditionsOfSale
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.artsy.net/conditions-of-sale"] options:@{} completionHandler:nil];
+}
 
 #pragma mark -
 #pragma mark Personalize level
@@ -465,6 +469,11 @@
     [self showTermsAndConditions];
 }
 
+- (void)conditionsOfSaleLinkTapped
+{
+    [self showСonditionsOfSale];
+}
+
 - (void)setPriceRangeDone:(NSInteger)range
 {
     NSString *stringRange = [NSString stringWithFormat:@"%@", @(range)];
@@ -635,7 +644,7 @@
                                                                                  || [JSON[@"error"] isEqualToString:@"User Already Invited"]) {
                                                                           // there's already a user with this email
                                                                           __strong typeof (wself) sself = wself;
-                                                                          [sself displayError:@"User already exists with this email. Please log in with your email and password."];
+                                                                          [sself displayError:@"There is already an account with this email address, so you can’t log in with Facebook. Please login with your email instead."];
                                                                           [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 
                                                                           return;
@@ -770,7 +779,7 @@
                                                                                  || [JSON[@"error"] isEqualToString:@"User Already Invited"]) {
                                                                           // there's already a user with this email
                                                                           __strong typeof (wself) sself = wself;
-                                                                          [sself displayError:@"User already exists with this email. Please log in with your email and password."];
+                                                                          [sself displayError:@"There is already an account with this email address, so you can’t log in with Apple. Please login with your email instead."];
                                                                           [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
 
                                                                           return;

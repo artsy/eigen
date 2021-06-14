@@ -54,7 +54,7 @@ import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyProfilePushNotifications"
-import { OrderDetailsQueryRender } from "./Scenes/OrderHistory/OrderDetails/OrderDetails"
+import { OrderDetailsQueryRender } from "./Scenes/OrderHistory/OrderDetails/Components/OrderDetails"
 import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
@@ -74,6 +74,7 @@ import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReac
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
 import { NativeAnalyticsProvider } from "./NativeModules/Events"
+import { ArticlesQueryRenderer } from "./Scenes/Articles/Articles"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { AuctionResultForYouQueryRenderer } from "./Scenes/AuctionResultForYou/AuctionResultForYou"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
@@ -282,6 +283,7 @@ export const modules = defineModules({
   Admin: nativeModule({ alwaysPresentModally: true }),
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
+  Articles: reactModule(ArticlesQueryRenderer),
   Artist: reactModule(ArtistQueryRenderer),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
