@@ -1,5 +1,5 @@
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { Box, FilterIcon, Flex, Spacer, Text, Touchable } from "palette"
+import { Box, FilterIcon, Flex, Spacer, Text, TouchableHighlightColor } from "palette"
 import React from "react"
 
 interface ArtistSeriesFilterHeaderProps {
@@ -16,14 +16,18 @@ export const ArtistSeriesFilterHeader: React.FC<ArtistSeriesFilterHeaderProps> =
         <Text variant="subtitle" color="black60">
           Showing {artworksTotal} works
         </Text>
-        <Touchable haptic onPress={onFilterArtworksPress}>
-          <Flex flexDirection="row">
-            <FilterIcon fill="black100" width="20px" height="20px" />
-            <Text variant="subtitle" color="black100">
-              Sort & Filter
-            </Text>
-          </Flex>
-        </Touchable>
+        <TouchableHighlightColor
+          haptic
+          onPress={onFilterArtworksPress}
+          render={({ color }) => (
+            <Flex flexDirection="row" alignItems="center">
+              <FilterIcon fill={color} width="20px" height="20px" />
+              <Text variant="subtitle" color={color}>
+                Sort & Filter
+              </Text>
+            </Flex>
+          )}
+        />
       </Flex>
       <Spacer mb={1} />
     </Box>
