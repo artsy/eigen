@@ -4,6 +4,7 @@ import { LinkText } from "lib/Components/Text/LinkText"
 import { Fonts } from "lib/data/fonts"
 import { navigate } from "lib/navigation/navigate"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { groupBy } from "lodash"
 import moment from "moment"
 import { Flex, Sans, Separator, Text } from "palette"
 import React from "react"
@@ -11,177 +12,52 @@ import { SectionList } from "react-native"
 import { Tab } from "../Favorites/Favorites"
 import { AuctionResultForYouListItem } from "./AuctionResultForYouListItem"
 
-const mockSectionAuctionResults = [
-  {
-    title: "2021-04-16T03:00:00+03:00",
-    data: [
-      {
-        currency: "USD",
-        dateText: "2006",
-        id: "QXVjdGlvblJlc3VsdDozMzAwMDY=",
-        internalID: "330006",
-        images: {
-          thumbnail: {
-            url: "https://d2v80f5yrouhh2.cloudfront.net/4V-XxYOjIKYMJt1CK63rCA/thumbnail.jpg",
-            height: null,
-            width: null,
-            aspectRatio: 1,
-          },
-        },
-        estimate: {
-          low: 5000000,
-        },
-        mediumText: "digital pigment print in colors, on wove paper",
-        organization: "Christie's",
-        boughtIn: false,
-        performance: {
-          mid: "4%",
-        },
-        priceRealized: {
-          display: "$62,500",
-          cents: 6250000,
-        },
-        saleDate: "2021-04-16T03:00:00+03:00",
-        title: "Napalm (Can't Beat the Feeling), from In the Darkest Hour There May Be Light",
-      },
-      {
-        currency: "GBP",
-        dateText: "1905",
-        id: "QXVjdGlvblJlc3VsdDozMjQyODE=",
-        internalID: "324281",
-        images: {
-          thumbnail: {
-            url: "https://d2v80f5yrouhh2.cloudfront.net/kJ3fvGeVUGDUpsyTjMKY5g/thumbnail.jpg",
-            height: null,
-            width: null,
-            aspectRatio: 1,
-          },
-        },
-        estimate: {
-          low: 4000000,
-        },
-        mediumText: "screenprint in colours, on wove paper",
-        organization: "Christie's",
-        boughtIn: false,
-        performance: {
-          mid: "38%",
-        },
-        priceRealized: {
-          display: "£68,750",
-          cents: 6875000,
-        },
-        saleDate: "2021-04-01T03:00:00+03:00",
-        title: "Napalm",
-      },
-    ],
-  },
-  {
-    title: "2021-05-11T03:00:00+03:00",
-    data: [
-      {
-        currency: "GBP",
-        dateText: "2002",
-        id: "QXVjdGlvblJlc3VsdDozMjM0OTE=",
-        internalID: "323491",
-        images: {
-          thumbnail: {
-            url: "https://d2v80f5yrouhh2.cloudfront.net/h5FmZDNX7NsABDszxsFRGQ/thumbnail.jpg",
-            height: null,
-            width: null,
-            aspectRatio: 1,
-          },
-        },
-        estimate: {
-          low: 40000000,
-        },
-        mediumText: "spray paint on canvas",
-        organization: "Sotheby's",
-        boughtIn: false,
-        performance: {
-          mid: "72%",
-        },
-        priceRealized: {
-          display: "£862,000",
-          cents: 86200000,
-        },
-        saleDate: "2021-04-07T03:00:00+03:00",
-        title: "Laugh Now",
-      },
-      {
-        currency: "USD",
-        dateText: "2002",
-        id: "QXVjdGlvblJlc3VsdDozMjk0OTc=",
-        internalID: "329497",
-        images: {
-          thumbnail: {
-            url: "https://d2v80f5yrouhh2.cloudfront.net/azk0ha0RO_Yhp6eyC9G6dg/thumbnail.jpg",
-            height: null,
-            width: null,
-            aspectRatio: 1,
-          },
-        },
-        estimate: {
-          low: 200000000,
-        },
-        mediumText: "spray paint and emulsion on paperboard",
-        organization: "Christie's",
-        boughtIn: false,
-        performance: {
-          mid: "-17%",
-        },
-        priceRealized: {
-          display: "$2,070,000",
-          cents: 207000000,
-        },
-        saleDate: "2021-05-11T03:00:00+03:00",
-        title: "Laugh Now But One Day We'll Be In Charge",
-      },
-    ],
-  },
-]
+export const AuctionResultForYou: React.FC = ({ me }) => {
+  const auctionResultData = me.auctionResultsByFollowedArtists.edges
 
-export const AuctionResultForYou: React.FC = () => (
-  <PageWithSimpleHeader title="Auction Results for You">
-    <ArtworkFiltersStoreProvider>
-      <Sans size="3" textAlign="left" color="black60" style={{ marginHorizontal: 20, marginVertical: 17 }}>
-        The latest auction results for the {""}
-        <LinkText onPress={() => navigate("/favorites", { passProps: { initialTab: Tab.artists } })}>
-          artists you follow
-        </LinkText>
-        . You can also look up more auction results on the insights tab on any artist’s page.
-      </Sans>
-      <SectionList
-        sections={mockSectionAuctionResults}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <AuctionResultForYouListItem
-            auctionResult={item}
-            onPress={() => {
-              console.log("Pressed")
-            }}
-          />
-        )} // Add onPress action after implementing AuctionResults Query
-        renderSectionHeader={({ section: { title } }) => {
-          const date = new Date(title)
-          const sectionMounth = moment(date).format("MMMM")
+  const groupedAuctionResultData = groupBy(auctionResultData, (item) => moment(item.node.saleDate).format("MMM"))
 
-          return (
+  const groupedAuctionResultSectionData = Object.keys(groupedAuctionResultData).map((key) => {
+    return { date: key, data: groupedAuctionResultData[key] }
+  })
+
+  return (
+    <PageWithSimpleHeader title="Auction Results for You">
+      <ArtworkFiltersStoreProvider>
+        <Sans size="3" textAlign="left" color="black60" style={{ marginHorizontal: 20, marginVertical: 17 }}>
+          The latest auction results for the {""}
+          <LinkText onPress={() => navigate("/favorites", { passProps: { initialTab: Tab.artists } })}>
+            artists you follow
+          </LinkText>
+          . You can also look up more auction results on the insights tab on any artist’s page.
+        </Sans>
+        <SectionList
+          sections={groupedAuctionResultSectionData}
+          renderItem={({ item }) => (
+            <AuctionResultForYouListItem
+              auctionResult={item.node}
+              onPress={() => {
+                console.log("Pressed")
+              }}
+            />
+          )} // Add onPress action after implementing AuctionResults Query
+          renderSectionHeader={({ section: { date } }) => (
             <Text
               textAlign="left"
               color="black"
               style={{ fontFamily: Fonts.Unica77LLRegular, fontSize: 18, marginLeft: 20 }}
             >
-              {sectionMounth}
+              {date}
             </Text>
-          )
-        }}
-        ItemSeparatorComponent={() => (
-          <Flex px={2}>
-            <Separator />
-          </Flex>
-        )}
-        style={{ width: useScreenDimensions().width }}
-      />
-    </ArtworkFiltersStoreProvider>
-  </PageWithSimpleHeader>
-)
+          )}
+          ItemSeparatorComponent={() => (
+            <Flex px={2}>
+              <Separator />
+            </Flex>
+          )}
+          style={{ width: useScreenDimensions().width }}
+        />
+      </ArtworkFiltersStoreProvider>
+    </PageWithSimpleHeader>
+  )
+}
