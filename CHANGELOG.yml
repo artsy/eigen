@@ -21,7 +21,6 @@ upcoming:
     - Add Filter Component to Collections Page - kizito
     - Check push notification permissions before saving search - kizito
     - Implement infinite scroll on android - kizito
-
     - Show a toast message for saved search mutations - dzmitry tratsiak
 
 releases:
