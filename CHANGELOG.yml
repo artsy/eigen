@@ -2,16 +2,6 @@ upcoming:
   version: 6.9.5
   date: TBD
   dev:
-    - OrderDetails with ArtInfo and ShipsTo - alexj105
-    - Improve admin menu - dzmitry
-    - Use app links on android - mounir
-    - obfuscate env vars on android - kizito
-    - Remove feature flag check for artist nationality filter - devon
-    - Remove feature flag check for custom size filter - devon
-    - Fix iOS app blank screen - ole, mounir
-    - Replace "color" filter with "colors" filter - dzmitry tratsiak
-    - Add Saved Search feature flag - kizito
-    - Send only changed filter params in the analytics event - dzmitry tratsiak
     - Add facebook authentication - dzmitry
     - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
     - Update open simulator command in getting started docs - ole
