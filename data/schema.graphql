@@ -929,9 +929,10 @@ enum ArtistArtworksFilters {
 
 type ArtistBlurb {
   credit: String
+  partner: Partner
 
   # The partner id of the partner who submitted the featured bio.
-  partnerID: String
+  partnerID: String @deprecated(reason: "No longer used as the partner field contains the partner.id")
   text: String
 }
 
