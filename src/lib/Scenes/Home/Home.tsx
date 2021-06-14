@@ -91,9 +91,9 @@ const Home = (props: Props) => {
         data: collectionsModule,
       } as const),
     auctionResultsEchoFlag &&
-      {
+      ({
         type: "auction-results",
-      } as const,
+      } as const),
     ...flatten(zip(drop(artworkRails, 2), artistRails)),
   ])
 
@@ -154,12 +154,7 @@ const Home = (props: Props) => {
                   return <ViewingRoomsHomeRail featured={featured} />
 
                 case "auction-results":
-                  return (
-                    <AuctionResultsRailFragmentContainer
-                      me={me}
-                      scrollRef={scrollRefs.current[index]}
-                    />
-                  )
+                  return <AuctionResultsRailFragmentContainer me={me} scrollRef={scrollRefs.current[index]} />
                 case "lotsByFollowedArtists":
                   return (
                     <SaleArtworksHomeRailContainer

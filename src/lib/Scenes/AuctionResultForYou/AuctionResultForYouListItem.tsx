@@ -12,7 +12,9 @@ interface Props {
   onPress: () => void
 }
 
-export const AuctionResultForYouListItem: React.FC<Props> = ({ auctionResult, onPress }) => {
+export const AuctionResultForYouListItem: React.FC<Props> = (props) => {
+  const { auctionResult, onPress } = props
+
   const QAInfo: React.FC = () => (
     <QAInfoManualPanel position="absolute" top={0} left={95}>
       <QAInfoRow name="id" value={auctionResult.internalID} />
