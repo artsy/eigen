@@ -8368,6 +8368,7 @@ type Partner implements Node {
   counts: PartnerCounts
   defaultProfileID: String
   displayArtistsSection: Boolean
+  displayFullPartnerPage: Boolean
   displayWorksSection: Boolean
   distinguishRepresentedArtists: Boolean
 
@@ -8430,7 +8431,7 @@ type Partner implements Node {
     tagID: String
     width: String
   ): FilterArtworksConnection
-  fullProfileEligible: Boolean
+  fullProfileEligible: Boolean @deprecated(reason: "Prefer displayFullPartnerPage")
   hasFairPartnership: Boolean
   href: String
 
@@ -8455,6 +8456,8 @@ type Partner implements Node {
   locationsConnection(after: String, before: String, first: Int, last: Int): LocationConnection
   meta: PartnerMeta
   name: String
+  partnerPageEligible: Boolean
+  partnerType: String
   profile: Profile
   profileArtistsLayout: String
   profileBannerDisplay: String
