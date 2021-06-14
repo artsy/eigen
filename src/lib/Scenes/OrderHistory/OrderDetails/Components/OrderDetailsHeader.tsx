@@ -1,5 +1,4 @@
 import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
-import { DateTime } from "luxon"
 import moment from "moment"
 import { Flex, Text } from "palette"
 import React from "react"
@@ -15,37 +14,32 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
   }
   const { createdAt, requestedFulfillment, code, state } = info
   const isShippedOrder = requestedFulfillment?.__typename === "CommerceShip"
-  const orderCreatedAt = DateTime.fromISO(createdAt)
 
   return (
-    <Flex flexDirection="column" justifyContent="space-between">
-      <Flex mb={10} flexDirection="row">
-        <Text style={{ width: 112 }} variant="text">
+    <Flex flexDirection="row">
+      <Flex flexDirection="column" mr={2}>
+        <Text style={{ width: 112 }} variant="text" mb={1}>
           Order Date
         </Text>
-        <Text testID="date" color="black60" variant="text">
-          {moment(orderCreatedAt).format("ll")}
-        </Text>
-      </Flex>
-      <Flex mb={10} flexDirection="row">
-        <Text style={{ width: 112 }} variant="text">
+        <Text style={{ width: 112 }} variant="text" mb={1}>
           Order Number
         </Text>
-        <Text testID="code" color="black60" variant="text">
-          {code}
-        </Text>
-      </Flex>
-      <Flex mb={10} flexDirection="row">
-        <Text style={{ width: 112 }} variant="text">
+        <Text style={{ width: 112 }} variant="text" mb={1}>
           Status
         </Text>
-        <Text testID="status" color="black60" variant="text" style={{ textTransform: "capitalize" }}>
-          {state.toLowerCase()}
-        </Text>
-      </Flex>
-      <Flex flexDirection="row">
         <Text style={{ width: 112 }} variant="text">
           Fulfillment
+        </Text>
+      </Flex>
+      <Flex flexDirection="column">
+        <Text testID="date" color="black60" variant="text" mb={1}>
+          {moment(createdAt).format("ll")}
+        </Text>
+        <Text testID="code" color="black60" variant="text" mb={1}>
+          {code}
+        </Text>
+        <Text testID="status" color="black60" variant="text" mb={1} style={{ textTransform: "capitalize" }}>
+          {state.toLowerCase()}
         </Text>
         <Text testID="commerceShip" color="black60" variant="text">
           {isShippedOrder ? "Delivery" : "Pickup"}
