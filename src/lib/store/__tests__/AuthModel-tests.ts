@@ -303,11 +303,13 @@ describe("AuthModel", () => {
 
       await GlobalStore.actions.auth.authFacebook()
 
-      expect(GlobalStore.actions.auth.signIn).toHaveBeenCalledWith({
-        email: "emailFromArtsy@mail.com",
-        accessToken: "facebook-token",
-        oauthProvider: "facebook",
-      })
+      setTimeout(() => {
+        expect(GlobalStore.actions.auth.signIn).toHaveBeenCalledWith({
+          email: "emailFromArtsy@mail.com",
+          accessToken: "facebook-token",
+          oauthProvider: "facebook",
+        })
+      }, 0)
     })
 
     it("shows an error if the email was used, but not via facebook auth", async () => {
