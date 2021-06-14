@@ -5,6 +5,15 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type OrderDetails_order = {
+    readonly requestedFulfillment: ({
+        readonly __typename: "CommerceShip";
+    } | {
+        readonly __typename: "CommercePickup";
+    } | {
+        /*This will never be '%other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    }) | null;
     readonly lineItems: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -17,15 +26,6 @@ export type OrderDetails_order = {
         } | null> | null;
     } | null;
     readonly createdAt: string;
-    readonly requestedFulfillment: ({
-        readonly __typename: "CommerceShip";
-    } | {
-        readonly __typename: "CommercePickup";
-    } | {
-        /*This will never be '%other', but we need some
-        value in case none of the concrete values match.*/
-        readonly __typename: "%other";
-    }) | null;
     readonly code: string;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkInfoSection_artwork" | "SummarySection_section" | "OrderDetailsPayment_order" | "ShipsToSection_address" | "SoldBySection_soldBy">;
     readonly " $refType": "OrderDetails_order";
@@ -54,6 +54,29 @@ return {
   "metadata": null,
   "name": "OrderDetails_order",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": null,
+      "kind": "LinkedField",
+      "name": "requestedFulfillment",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "InlineFragment",
+          "selections": (v0/*: any*/),
+          "type": "CommerceShip",
+          "abstractKey": null
+        },
+        {
+          "kind": "InlineFragment",
+          "selections": (v0/*: any*/),
+          "type": "CommercePickup",
+          "abstractKey": null
+        }
+      ],
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": [
@@ -132,29 +155,6 @@ return {
     {
       "alias": null,
       "args": null,
-      "concreteType": null,
-      "kind": "LinkedField",
-      "name": "requestedFulfillment",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "InlineFragment",
-          "selections": (v0/*: any*/),
-          "type": "CommerceShip",
-          "abstractKey": null
-        },
-        {
-          "kind": "InlineFragment",
-          "selections": (v0/*: any*/),
-          "type": "CommercePickup",
-          "abstractKey": null
-        }
-      ],
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
       "kind": "ScalarField",
       "name": "code",
       "storageKey": null
@@ -189,5 +189,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = 'a82b83c51656e4c08b43c53aa8b09d6b';
+(node as any).hash = '64be54dcbe4dad3f094f88d2fb3a876d';
 export default node;

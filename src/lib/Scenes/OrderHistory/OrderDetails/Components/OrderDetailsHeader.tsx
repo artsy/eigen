@@ -24,7 +24,7 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
           Order Date
         </Text>
         <Text testID="date" color="black60" variant="text">
-          {orderCreatedAt.toLocaleString(DateTime.DATE_SHORT as LocaleOptions)}
+          {orderCreatedAt.toLocaleString(DateTime.DATE_MED as LocaleOptions)}
         </Text>
       </Flex>
       <Flex mb={10} flexDirection="row">

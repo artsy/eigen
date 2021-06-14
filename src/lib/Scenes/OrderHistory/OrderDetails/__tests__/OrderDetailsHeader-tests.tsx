@@ -43,6 +43,6 @@ describe("OrderDetailsHeader", () => {
 
     expect(tree.findByProps({ testID: "commerceShip" }).props.children).toBe("Delivery")
     expect(tree.findByProps({ testID: "code" }).props.children).toBe("075381384")
-    expect(tree.findByProps({ testID: "date" }).props.children).toBe("6/2/2021")
+    expect(tree.findByProps({ testID: "date" }).props.children).toBe("Jun 2, 2021")
   })
 })
