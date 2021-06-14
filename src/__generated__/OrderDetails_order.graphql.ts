@@ -27,19 +27,7 @@ export type OrderDetails_order = {
         } | null> | null;
     } | null;
     readonly createdAt: string;
-<<<<<<< HEAD
-=======
     readonly state: CommerceOrderStateEnum;
-    readonly requestedFulfillment: ({
-        readonly __typename: "CommerceShip";
-    } | {
-        readonly __typename: "CommercePickup";
-    } | {
-        /*This will never be '%other', but we need some
-        value in case none of the concrete values match.*/
-        readonly __typename: "%other";
-    }) | null;
->>>>>>> 18ae456754 (User can see the way of delivery, and date fix)
     readonly code: string;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkInfoSection_artwork" | "SummarySection_section" | "OrderDetailsPayment_order" | "ShipsToSection_address" | "SoldBySection_soldBy">;
     readonly " $refType": "OrderDetails_order";
@@ -169,8 +157,6 @@ return {
     {
       "alias": null,
       "args": null,
-<<<<<<< HEAD
-=======
       "kind": "ScalarField",
       "name": "state",
       "storageKey": null
@@ -178,30 +164,6 @@ return {
     {
       "alias": null,
       "args": null,
-      "concreteType": null,
-      "kind": "LinkedField",
-      "name": "requestedFulfillment",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "InlineFragment",
-          "selections": (v0/*: any*/),
-          "type": "CommerceShip",
-          "abstractKey": null
-        },
-        {
-          "kind": "InlineFragment",
-          "selections": (v0/*: any*/),
-          "type": "CommercePickup",
-          "abstractKey": null
-        }
-      ],
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
->>>>>>> 18ae456754 (User can see the way of delivery, and date fix)
       "kind": "ScalarField",
       "name": "code",
       "storageKey": null
