@@ -258,7 +258,7 @@ export const getAuthModel = (): AuthModel => ({
   authFacebook: thunk(async (actions) => {
     const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions(["public_profile", "email"])
     if (declinedPermissions?.includes("email")) {
-      Alert.alert("Error", "Please allow the use of email to continue", [{ text: "Ok" }])
+      Alert.alert("Error", "Please allow the use of email to continue.", [{ text: "Ok" }])
     }
     const accessToken =
       !isCancelled && !declinedPermissions?.includes("email") && (await AccessToken.getCurrentAccessToken())
@@ -268,7 +268,7 @@ export const getAuthModel = (): AuthModel => ({
 
     const responseFacebookInfoCallback = async (error: any, facebookInfo: { email: string; name: string }) => {
       if (error) {
-        Alert.alert("Error", "Error fetching data", [{ text: "Ok" }])
+        Alert.alert("Error", "Error fetching data.", [{ text: "Ok" }])
       } else {
         // sign up
         const resultGravitySignUp = await actions.signUp({
@@ -318,14 +318,14 @@ export const getAuthModel = (): AuthModel => ({
             case "User Already Exists":
             case "User Already Invited":
               // there's already a user with this email
-              Alert.alert("Error", "User already exists with this email. Please log in with your email and password", [
+              Alert.alert("Error", "User already exists with this email. Please log in with your email and password.", [
                 { text: "Ok" },
               ])
 
               break
             default:
               // something else went wrong
-              Alert.alert("Error", "Couldn't link Facebook account", [{ text: "Ok" }])
+              Alert.alert("Error", "Couldn't link Facebook account.", [{ text: "Ok" }])
               break
           }
         }

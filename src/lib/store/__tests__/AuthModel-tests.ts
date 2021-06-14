@@ -248,7 +248,7 @@ describe("AuthModel", () => {
       await GlobalStore.actions.auth.authFacebook()
 
       expect(LoginManager.logInWithPermissions).toHaveBeenCalledWith(["public_profile", "email"])
-      expect(Alert.alert).toHaveBeenCalledWith("Error", "Please allow the use of email to continue", [{ text: "Ok" }])
+      expect(Alert.alert).toHaveBeenCalledWith("Error", "Please allow the use of email to continue.", [{ text: "Ok" }])
     })
 
     it("fetches access token from facebook", async () => {
@@ -264,7 +264,7 @@ describe("AuthModel", () => {
 
       await GlobalStore.actions.auth.authFacebook()
 
-      expect(Alert.alert).toHaveBeenCalledWith("Error", "Error fetching data", [{ text: "Ok" }])
+      expect(Alert.alert).toHaveBeenCalledWith("Error", "Error fetching data.", [{ text: "Ok" }])
     })
 
     it("fetches profile info from facebook and signs up", async () => {
@@ -323,7 +323,7 @@ describe("AuthModel", () => {
 
       expect(Alert.alert).toHaveBeenCalledWith(
         "Error",
-        "User already exists with this email. Please log in with your email and password",
+        "User already exists with this email. Please log in with your email and password.",
         [{ text: "Ok" }]
       )
     })
@@ -337,7 +337,7 @@ describe("AuthModel", () => {
 
       await GlobalStore.actions.auth.authFacebook()
 
-      expect(Alert.alert).toHaveBeenCalledWith("Error", "Couldn't link Facebook account", [{ text: "Ok" }])
+      expect(Alert.alert).toHaveBeenCalledWith("Error", "Couldn't link Facebook account.", [{ text: "Ok" }])
     })
   })
 })
