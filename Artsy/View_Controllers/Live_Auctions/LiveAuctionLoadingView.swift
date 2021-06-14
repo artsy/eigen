@@ -5,7 +5,6 @@ class LiveAuctionLoadingView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        commonSetup()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -53,13 +52,8 @@ class LiveAuctionLoadingView: UIView {
 
         addSubview(closeButton)
         closeButton.alignTrailingEdge(withView: self, predicate: "-20")
-        if #available(iOS 11.0, *) {
-            NSLayoutConstraint.activate([
-                closeButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 8)
-            ])
-        } else {
-            closeButton.alignTopEdge(withView: self, predicate: "31")
-        }
+        let predicate = "\(LiveAuctionViewController.topSafeAreaHeight() + 8)"
+        closeButton.alignTopEdge(withView: self, predicate: predicate)
 
         closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
     }

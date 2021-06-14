@@ -176,8 +176,17 @@ class LiveAuctionViewController: UIViewController {
 
         offlineView.addSubview(closeButton)
         closeButton.alignTrailingEdge(withView: offlineView, predicate: "-20")
-        closeButton.alignTopEdge(withView: offlineView, predicate: "20")
+        let topPredicate : String = "\(LiveAuctionViewController.topSafeAreaHeight() + 8)"
+        closeButton.alignTopEdge(withView: offlineView, predicate: topPredicate)
         closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
+    }
+
+    static func topSafeAreaHeight() -> Int {
+        guard let topSafeAreaHeight = UIApplication.shared.keyWindow?.rootViewController?.view.safeAreaInsets.top else {
+            return 0
+        }
+
+        return Int(topSafeAreaHeight)
     }
 
     @objc func userHasChangedRegistrationStatus() {
