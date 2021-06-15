@@ -1,5 +1,7 @@
+import { AuctionResultForYouContainer_me } from "__generated__/AuctionResultForYouContainer_me.graphql"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
+import Spinner from "lib/Components/Spinner"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { PAGE_SIZE } from "lib/data/constants"
 import { Fonts } from "lib/data/fonts"
@@ -7,18 +9,24 @@ import { navigate } from "lib/navigation/navigate"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { groupBy } from "lodash"
 import moment from "moment"
-import { Flex, Sans, Separator, Spinner, Text } from "palette"
+import { Flex, Sans, Separator, Text } from "palette"
 import React, { useState } from "react"
-import { SectionList, View } from "react-native"
+import { SectionList } from "react-native"
+import { RelayPaginationProp } from "react-relay"
 import { Tab } from "../Favorites/Favorites"
 import { AuctionResultForYouListItem } from "./AuctionResultForYouListItem"
 
-export const AuctionResultForYou: React.FC = ({ me, relay }) => {
+interface Props {
+  me: AuctionResultForYouContainer_me
+  relay: RelayPaginationProp
+}
+
+export const AuctionResultForYou: React.FC<Props> = ({ me, relay }) => {
   const { hasMore, isLoading, loadMore } = relay
   const [loadingMoreData, setLoadingMoreData] = useState(false)
-  const auctionResultData = me.auctionResultsByFollowedArtists.edges
+  const auctionResultData = me?.auctionResultsByFollowedArtists?.edges
 
-  const groupedAuctionResultData = groupBy(auctionResultData, (item) => moment(item.node.saleDate).format("MMM"))
+  const groupedAuctionResultData = groupBy(auctionResultData, (item) => moment(item!.node!.saleDate!).format("MMM"))
 
   const groupedAuctionResultSectionData = Object.keys(groupedAuctionResultData).map((key) => {
     return { date: key, data: groupedAuctionResultData[key] }
@@ -54,7 +62,7 @@ export const AuctionResultForYou: React.FC = ({ me, relay }) => {
           onEndReached={loadMoreArtworks}
           renderItem={({ item }) => (
             <AuctionResultForYouListItem
-              auctionResult={item.node}
+              auctionResult={item?.node}
               onPress={() => {
                 console.log("Pressed")
               }}
@@ -74,13 +82,7 @@ export const AuctionResultForYou: React.FC = ({ me, relay }) => {
               <Separator />
             </Flex>
           )}
-          ListFooterComponent={
-            loadingMoreData ? (
-              <View style={{ alignItems: "center" }}>
-                <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
-              </View>
-            ) : null
-          }
+          ListFooterComponent={loadingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null}
           style={{ width: useScreenDimensions().width }}
         />
       </ArtworkFiltersStoreProvider>
