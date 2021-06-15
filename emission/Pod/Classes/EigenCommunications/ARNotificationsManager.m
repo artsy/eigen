@@ -44,12 +44,12 @@
 
 // event keys
 // These should match the values in src/lib/store/NativeModel.ts
-static const NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
-static const NSString *modalDismissed = @"MODAL_DISMISSED";
-static const NSString *stateChanged = @"STATE_CHANGED";
-static const NSString *reactStateChanged = @"STATE_CHANGED";
-static const NSString *requestNavigation = @"REQUEST_NAVIGATION";
-
+static NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
+static NSString *modalDismissed = @"MODAL_DISMISSED";
+static NSString *stateChanged = @"STATE_CHANGED";
+static NSString *reactStateChanged = @"STATE_CHANGED";
+static NSString *requestNavigation = @"REQUEST_NAVIGATION";
+static NSString *requestDismissModal = @"REQUEST_DISMISS_MODAL";
 
 @implementation ARNotificationsManager
 
@@ -127,6 +127,11 @@ RCT_EXPORT_MODULE();
         if (!sself) return;
         [sself dispatch:requestNavigation data:@{@"route": route}];
     }];
+}
+
+- (void)requestModalDismiss
+{
+    [self dispatch:requestDismissModal data:@{}];
 }
 
 // Will be called when this module's first listener is added.

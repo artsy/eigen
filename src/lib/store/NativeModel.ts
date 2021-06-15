@@ -1,4 +1,5 @@
 import { Action, action, Thunk, thunk } from "easy-peasy"
+import { ARScreenPresenterModule } from "lib/NativeModules/ARScreenPresenterModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { NotificationsManager } from "lib/NativeModules/NotificationsManager"
 import { navigate } from "lib/navigation/navigate"
@@ -18,6 +19,10 @@ export type NativeEvent =
   | {
       type: "REQUEST_NAVIGATION"
       payload: { route: string }
+    }
+  | {
+      type: "REQUEST_DISMISS_MODAL"
+      payload: any
     }
 
 export interface NativeState {
@@ -60,6 +65,9 @@ listenToNativeEvents((event: NativeEvent) => {
       return
     case "REQUEST_NAVIGATION":
       afterBottomTabsBootstrap(() => navigate(event.payload.route))
+      return
+    case "REQUEST_DISMISS_MODAL":
+      ARScreenPresenterModule.dismissModal()
       return
     default:
       assertNever(event)

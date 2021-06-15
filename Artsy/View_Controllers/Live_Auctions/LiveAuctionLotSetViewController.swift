@@ -1,6 +1,7 @@
 import UIKit
 import Interstellar
 
+
 class LiveAuctionLotSetViewController: UIViewController {
     let salesPerson: LiveAuctionsSalesPersonType
 
@@ -259,8 +260,10 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     @objc func dismissModal() {
-        guard let presentor = splitViewController?.presentingViewController else { return }
-        presentor.dismiss(animated: true, completion: nil)
+        // TODO: Handle this better, possibly delegate
+//        guard let presentor = splitViewController?.presentingViewController else { return }
+//        presentor.dismiss(animated: true, completion: nil)
+        AREmission.sharedInstance().notificationsManagerModule.requestModalDismiss()
     }
 
     @objc func moreInfo() {

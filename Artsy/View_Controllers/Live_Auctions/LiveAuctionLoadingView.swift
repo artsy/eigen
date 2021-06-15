@@ -3,16 +3,18 @@ import Then
 
 class LiveAuctionLoadingView: UIView {
 
+    var spinningImageView = UIImageView()
+    var operation: (() -> Void)?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
+        commonSetup()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonSetup()
     }
-
-    var spinningImageView = UIImageView()
 
     func commonSetup() {
         backgroundColor = .white
@@ -70,7 +72,6 @@ class LiveAuctionLoadingView: UIView {
         }
     }
 
-    var operation: (() -> Void)?
     @objc func performOperation() {
         operation?()
     }
