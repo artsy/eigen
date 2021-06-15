@@ -1,4 +1,4 @@
-import Spinner from "lib/Components/Spinner"
+import { Spinner } from "palette"
 import React from "react"
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

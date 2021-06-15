@@ -2,8 +2,8 @@ import React from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
-import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
+import { Spinner } from "palette"
 
 import { PAGE_SIZE } from "lib/data/constants"
 

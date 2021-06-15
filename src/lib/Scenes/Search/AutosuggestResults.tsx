@@ -5,9 +5,9 @@ import {
   AutosuggestResultsQueryVariables,
 } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
+import { Spinner } from "palette"
 import { Flex, space, Text } from "palette"
 import { useCallback, useEffect, useMemo, useRef } from "react"
 import React from "react"

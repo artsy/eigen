@@ -1,6 +1,6 @@
-import Spinner from "lib/Components/Spinner"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Spinner } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import renderWithLoadProgress from "../renderWithLoadProgress"

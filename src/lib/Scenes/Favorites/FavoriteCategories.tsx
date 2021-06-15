@@ -3,9 +3,9 @@ import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 import { SavedItemRow } from "lib/Components/Lists/SavedItemRow"
-import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
+import { Spinner } from "palette"
 
 import { FavoriteCategories_me } from "__generated__/FavoriteCategories_me.graphql"
 import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
