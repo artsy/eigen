@@ -8,11 +8,10 @@ export type AuctionResultForYouContainer_me = {
     readonly auctionResultsByFollowedArtists: {
         readonly totalCount: number | null;
         readonly edges: ReadonlyArray<{
-            readonly cursor: string;
             readonly node: {
                 readonly id: string;
+                readonly internalID: string;
                 readonly title: string | null;
-                readonly date: string | null;
                 readonly currency: string | null;
                 readonly dateText: string | null;
                 readonly mediumText: string | null;
@@ -45,13 +44,24 @@ export type AuctionResultForYouContainer_me$key = {
 
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "after"
+    },
+    {
+      "defaultValue": 10,
+      "kind": "LocalArgument",
+      "name": "first"
+    }
+  ],
   "kind": "Fragment",
   "metadata": {
     "connection": [
       {
-        "count": null,
-        "cursor": null,
+        "count": "first",
+        "cursor": "after",
         "direction": "forward",
         "path": [
           "auctionResultsByFollowedArtists"
@@ -87,13 +97,6 @@ const node: ReaderFragment = {
             {
               "alias": null,
               "args": null,
-              "kind": "ScalarField",
-              "name": "cursor",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
               "concreteType": "AuctionResult",
               "kind": "LinkedField",
               "name": "node",
@@ -110,21 +113,15 @@ const node: ReaderFragment = {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
-                  "name": "title",
+                  "name": "internalID",
                   "storageKey": null
                 },
                 {
                   "alias": null,
-                  "args": [
-                    {
-                      "kind": "Literal",
-                      "name": "format",
-                      "value": "MMM"
-                    }
-                  ],
+                  "args": null,
                   "kind": "ScalarField",
-                  "name": "date",
-                  "storageKey": "date(format:\"MMM\")"
+                  "name": "title",
+                  "storageKey": null
                 },
                 {
                   "alias": null,
@@ -249,6 +246,13 @@ const node: ReaderFragment = {
                 }
               ],
               "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
+              "storageKey": null
             }
           ],
           "storageKey": null
@@ -285,5 +289,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '52440e23a4410d7e4b0a946e25274a6b';
+(node as any).hash = 'd9c3738d4777c9c8ef225444a1d54413';
 export default node;

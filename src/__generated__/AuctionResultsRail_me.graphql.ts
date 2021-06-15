@@ -12,7 +12,6 @@ export type AuctionResultsRail_me = {
             readonly node: {
                 readonly id: string;
                 readonly title: string | null;
-                readonly date: string | null;
                 readonly currency: string | null;
                 readonly dateText: string | null;
                 readonly mediumText: string | null;
@@ -107,19 +106,6 @@ const node: ReaderFragment = {
                   "kind": "ScalarField",
                   "name": "title",
                   "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": [
-                    {
-                      "kind": "Literal",
-                      "name": "format",
-                      "value": "MMM"
-                    }
-                  ],
-                  "kind": "ScalarField",
-                  "name": "date",
-                  "storageKey": "date(format:\"MMM\")"
                 },
                 {
                   "alias": null,
@@ -248,5 +234,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '03b2e2234015a588d51d42f98ac06d86';
+(node as any).hash = '1ae09d92b998bd9edf3728180d02ef01';
 export default node;

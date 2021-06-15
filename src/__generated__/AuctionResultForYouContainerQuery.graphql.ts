@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 82716bfbf5eb24663602ff81e6afea59 */
+/* @relayHash dab6466360e9b1ce7cbadf2b85f886de */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,14 +27,13 @@ query AuctionResultForYouContainerQuery {
 }
 
 fragment AuctionResultForYouContainer_me on Me {
-  auctionResultsByFollowedArtists(first: 3) {
+  auctionResultsByFollowedArtists(first: 10) {
     totalCount
     edges {
-      cursor
       node {
         id
+        internalID
         title
-        date(format: "MMM")
         currency
         dateText
         mediumText
@@ -55,6 +54,7 @@ fragment AuctionResultForYouContainer_me on Me {
         }
         __typename
       }
+      cursor
     }
     pageInfo {
       endCursor
@@ -69,7 +69,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 3
+    "value": 10
   }
 ],
 v1 = {
@@ -146,13 +146,6 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "cursor",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
                     "concreteType": "AuctionResult",
                     "kind": "LinkedField",
                     "name": "node",
@@ -163,21 +156,15 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "title",
+                        "name": "internalID",
                         "storageKey": null
                       },
                       {
                         "alias": null,
-                        "args": [
-                          {
-                            "kind": "Literal",
-                            "name": "format",
-                            "value": "MMM"
-                          }
-                        ],
+                        "args": null,
                         "kind": "ScalarField",
-                        "name": "date",
-                        "storageKey": "date(format:\"MMM\")"
+                        "name": "title",
+                        "storageKey": null
                       },
                       {
                         "alias": null,
@@ -302,6 +289,13 @@ return {
                       }
                     ],
                     "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "cursor",
+                    "storageKey": null
                   }
                 ],
                 "storageKey": null
@@ -332,7 +326,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "auctionResultsByFollowedArtists(first:3)"
+            "storageKey": "auctionResultsByFollowedArtists(first:10)"
           },
           {
             "alias": null,
@@ -350,7 +344,7 @@ return {
     ]
   },
   "params": {
-    "id": "82716bfbf5eb24663602ff81e6afea59",
+    "id": "dab6466360e9b1ce7cbadf2b85f886de",
     "metadata": {},
     "name": "AuctionResultForYouContainerQuery",
     "operationKind": "query",

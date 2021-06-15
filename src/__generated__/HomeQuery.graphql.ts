@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d6a40df1ad2b8a95a41a41b1fe264990 */
+/* @relayHash ed1e0d5c000e12981ae8333b170cf779 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -195,7 +195,6 @@ fragment AuctionResultsRail_me on Me {
       node {
         id
         title
-        date(format: "MMM")
         currency
         dateText
         mediumText
@@ -1697,19 +1696,6 @@ return {
                       (v4/*: any*/),
                       {
                         "alias": null,
-                        "args": [
-                          {
-                            "kind": "Literal",
-                            "name": "format",
-                            "value": "MMM"
-                          }
-                        ],
-                        "kind": "ScalarField",
-                        "name": "date",
-                        "storageKey": "date(format:\"MMM\")"
-                      },
-                      {
-                        "alias": null,
                         "args": null,
                         "kind": "ScalarField",
                         "name": "currency",
@@ -1990,7 +1976,7 @@ return {
     ]
   },
   "params": {
-    "id": "d6a40df1ad2b8a95a41a41b1fe264990",
+    "id": "ed1e0d5c000e12981ae8333b170cf779",
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
