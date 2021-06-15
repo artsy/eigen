@@ -1,4 +1,4 @@
-import { NotificationProvider } from "lib/Components/Notification/NotificationProvider"
+import { PopoverMessageProvider } from "lib/Components/PopoverMessage/PopoverMessageProvider"
 import { ToastProvider } from "lib/Components/Toast/toastHook"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { track } from "lib/utils/track"
@@ -53,9 +53,9 @@ export const componentWithWrappers = (component: ReactElement) => {
       <GlobalStoreProvider>
         <Theme>
           <ToastProvider>
-            <NotificationProvider>
+            <PopoverMessageProvider>
               <ProvideScreenDimensions>{component}</ProvideScreenDimensions>
-            </NotificationProvider>
+            </PopoverMessageProvider>
           </ToastProvider>
         </Theme>
       </GlobalStoreProvider>

@@ -3,20 +3,20 @@ import { Box, CloseIcon, Color, color, Flex, Text, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Platform } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
-import { useNotification } from "./notificationHooks"
+import { usePopoverMessage } from "./popoverMessageHooks"
 
 export const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
-const EDGE_NOTIFICATION_HEIGHT = Platform.OS === "ios" ? 80 : 90
-const EDGE_NOTIFICATION_PADDING = 10
+const EDGE_POPOVER_MESSAGE_HEIGHT = Platform.OS === "ios" ? 80 : 90
+const EDGE_POPOVER_MESSAGE_PADDING = 10
 const FRICTION = 20
 const NAVBAR_HEIGHT = 44
 
-export type NotificationPlacement = "top" | "bottom"
-export type NotificationType = "info" | "success" | "default"
-export type NotificationOptions = Omit<NotificationProps, "id" | "positionIndex">
+export type PopoverMessagePlacement = "top" | "bottom"
+export type PopoverMessageType = "info" | "success" | "default"
+export type PopoverMessageOptions = Omit<PopoverMessageProps, "id" | "positionIndex">
 
-export const getTitleColorByType = (type?: NotificationType): Color => {
+export const getTitleColorByType = (type?: PopoverMessageType): Color => {
   if (type === "success") {
     return "green100"
   } else if (type === "info") {
@@ -26,22 +26,22 @@ export const getTitleColorByType = (type?: NotificationType): Color => {
   return "black100"
 }
 
-export interface NotificationProps {
+export interface PopoverMessageProps {
   id: string
   positionIndex: number
-  placement: NotificationPlacement
+  placement: PopoverMessagePlacement
   title: string
   message?: string
   autoHide?: boolean
   hideTimeout?: number
   showCloseIcon?: boolean
-  type?: NotificationType
+  type?: PopoverMessageType
   onPress?: () => void
   onClose?: () => void
 }
 
 // TODO: Remove NAVBAR_HEIGHT when a new design without a floating back button is added
-export const Notification: React.FC<NotificationProps> = (props) => {
+export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
   const {
     id,
     positionIndex,
@@ -56,7 +56,7 @@ export const Notification: React.FC<NotificationProps> = (props) => {
     onClose,
   } = props
   const { safeAreaInsets } = useScreenDimensions()
-  const { hide } = useNotification()
+  const { hide } = usePopoverMessage()
   const [opacityAnim] = useState(new Animated.Value(0))
   const [translateYAnim] = useState(new Animated.Value(0))
   const isClosed = useRef<boolean>(false)
@@ -93,12 +93,12 @@ export const Notification: React.FC<NotificationProps> = (props) => {
     ]).start(() => hide(id))
   }
 
-  const handleNotificationPress = () => {
+  const handlePopoverMessagePress = () => {
     hideAnimation()
     onPress?.()
   }
 
-  const handleNotificationClosePress = () => {
+  const handlePopoverMessageClosePress = () => {
     hideAnimation()
     onClose?.()
   }
@@ -109,11 +109,11 @@ export const Notification: React.FC<NotificationProps> = (props) => {
     }
   }, hideTimeout)
 
-  const range = [-EDGE_NOTIFICATION_HEIGHT, 0]
+  const range = [-EDGE_POPOVER_MESSAGE_HEIGHT, 0]
   const outputRange = placement === "top" ? range : range.map((item) => item * -1)
   const translateY = translateYAnim.interpolate({ inputRange: [0, 1], outputRange })
   const opacity = opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 1] })
-  const offset = EDGE_NOTIFICATION_PADDING + positionIndex * (EDGE_NOTIFICATION_HEIGHT + EDGE_NOTIFICATION_PADDING)
+  const offset = EDGE_POPOVER_MESSAGE_PADDING + positionIndex * (EDGE_POPOVER_MESSAGE_HEIGHT + EDGE_POPOVER_MESSAGE_PADDING)
 
   const content = (
     <Flex p={1}>
@@ -125,7 +125,7 @@ export const Notification: React.FC<NotificationProps> = (props) => {
         </Flex>
         {!!showCloseIcon && (
           <Box mt={0.25}>
-            <Touchable onPress={handleNotificationClosePress}>
+            <Touchable onPress={handlePopoverMessageClosePress}>
               <CloseIcon />
             </Touchable>
           </Box>
@@ -144,7 +144,7 @@ export const Notification: React.FC<NotificationProps> = (props) => {
       position="absolute"
       left="1"
       right="1"
-      height={EDGE_NOTIFICATION_HEIGHT}
+      height={EDGE_POPOVER_MESSAGE_HEIGHT}
       bottom={placement === "bottom" ? safeAreaInsets.bottom + offset : undefined}
       top={placement === "top" ? safeAreaInsets.top + offset + NAVBAR_HEIGHT : undefined}
       style={{
@@ -164,7 +164,7 @@ export const Notification: React.FC<NotificationProps> = (props) => {
       backgroundColor={color("white100")}
     >
       {typeof onPress !== "undefined" ? (
-        <Touchable noFeedback onPress={handleNotificationPress}>
+        <Touchable noFeedback onPress={handlePopoverMessagePress}>
           {content}
         </Touchable>
       ) : (

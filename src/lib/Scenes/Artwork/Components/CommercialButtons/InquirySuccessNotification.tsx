@@ -10,7 +10,7 @@ interface InquirySuccessNotificationProps {
   toggleNotification: (state: boolean) => void
 }
 
-// TODO: Replace by useNotification when the floating back button is removed from the design
+// TODO: Replace by usePopoverMessage when the floating back button is removed from the design
 // See https://artsy.slack.com/archives/C02BAQ5K7/p1623332112279700
 export const InquirySuccessNotification: React.FC<InquirySuccessNotificationProps> = ({
   modalVisible,
