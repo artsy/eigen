@@ -21,6 +21,7 @@ upcoming:
     - Add Filter Component to Collections Page - kizito
     - Check push notification permissions before saving search - kizito
     - Implement infinite scroll on android - kizito
+    - Lowercase news in market news home rail heading - ole
 
 
 releases:
