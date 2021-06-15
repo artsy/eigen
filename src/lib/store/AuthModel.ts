@@ -318,13 +318,13 @@ export const getAuthModel = (): AuthModel => ({
               })
 
               if (resultGravitySignIn !== true) {
-                const { error_description: signInError } = await resultGravitySignIn.json() // error_description look better than error
+                const { error_description: signInError } = await resultGravitySignIn.json() // error_description looks better than error
                 resolve(signInError)
               } else {
                 resolve()
               }
             } else {
-              const { error_description: xAccessTokenError } = await resultGravityAccessToken.json() // error_description look better than error
+              const { error_description: xAccessTokenError } = await resultGravityAccessToken.json() // error_description looks better than error
               resolve(xAccessTokenError)
             }
           }
