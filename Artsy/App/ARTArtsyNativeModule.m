@@ -1,4 +1,5 @@
 #import "ARTArtsyNativeModule.h"
+#import "ARAppStatus.h"
 
 
 @implementation ARTArtsyNativeModule
@@ -14,6 +15,7 @@ RCT_EXPORT_MODULE(ArtsyNativeModule);
 {
     return @{
         @"gitCommitShortHash": [[[NSBundle mainBundle] infoDictionary] objectForKey:@"GITCommitShortHash"],
+        @"isBetaOrDev": @([ARAppStatus isBetaOrDev]),
     };
 }
 

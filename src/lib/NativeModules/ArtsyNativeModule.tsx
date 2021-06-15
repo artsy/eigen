@@ -42,4 +42,5 @@ export const ArtsyNativeModule = {
         }
       : NativeModules.ArtsyNativeModule.lockActivityScreenOrientation,
   gitCommitShortHash: NativeModules.ArtsyNativeModule.gitCommitShortHash,
+  isBetaOrDev: NativeModules.ArtsyNativeModule.isBetaOrDev,
 }
