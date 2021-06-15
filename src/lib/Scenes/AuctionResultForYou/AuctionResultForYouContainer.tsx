@@ -9,17 +9,16 @@ export const AuctionResultForYouContainer = createPaginationContainer(
   AuctionResultForYou,
   {
     me: graphql`
-      fragment AuctionResultForYouContainer_me on Me {
-        auctionResultsByFollowedArtists(first: 10)
+      fragment AuctionResultForYouContainer_me on Me
+      @argumentDefinitions(first: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
+        auctionResultsByFollowedArtists(first: $first, after: $after)
           @connection(key: "AuctionResultForYouContainer_auctionResultsByFollowedArtists") {
           totalCount
           edges {
-            cursor
             node {
               id
               internalID
               title
-              date(format: "MMM")
               currency
               dateText
               mediumText
@@ -51,20 +50,14 @@ export const AuctionResultForYouContainer = createPaginationContainer(
     getVariables(_props, { count, cursor }, fragmentVariables) {
       return {
         ...fragmentVariables,
-        cursor,
-        count,
-      }
-    },
-    getFragmentVariables(previousVariables, count) {
-      return {
-        ...previousVariables,
+        after: cursor,
         count,
       }
     },
     query: graphql`
-      query AuctionResultForYouContainerPaginationQuery {
+      query AuctionResultForYouContainerPaginationQuery($first: Int!, $after: String) {
         me {
-          ...AuctionResultForYouContainer_me
+          ...AuctionResultForYouContainer_me @arguments(first: $first, after: $after)
         }
       }
     `,
