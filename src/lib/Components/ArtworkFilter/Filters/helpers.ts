@@ -1,7 +1,7 @@
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { isNull, isUndefined, round as __round__ } from "lodash"
 
-type Numeric = "*" | number
+export type Numeric = "*" | number
 type Unit = "in" | "cm"
 
 export interface Range {
@@ -104,4 +104,18 @@ export const parseRange = (range: string): Range => {
   })
 
   return { min: enforceNumeric(min), max: enforceNumeric(max) }
+}
+
+export const parsePriceRangeLabel = (min: Numeric, max: Numeric) => {
+  let parsedMin = "$0"
+  let parsedMax = "+"
+
+  if (min !== "*") {
+    parsedMin = `$${min.toLocaleString("en-US", { maximumFractionDigits: 2 })}`
+  }
+  if (max !== "*") {
+    parsedMax = `–${max.toLocaleString("en-US", { maximumFractionDigits: 2 })}`
+  }
+
+  return `${parsedMin}${parsedMax}`
 }
