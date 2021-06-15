@@ -48,7 +48,6 @@ export const ArtsyReactWebViewPage: React.FC<
   mimicBrowserBackButton = true,
   showShareButton,
 }) => {
-  console.log("showShareButton", showShareButton)
   const paddingTop = useScreenDimensions().safeAreaInsets.top
 
   const [canGoBack, setCanGoBack] = useState(false)

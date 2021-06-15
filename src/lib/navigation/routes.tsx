@@ -117,7 +117,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/inbox", "Inbox"),
     new RouteMatcher("/my-profile", "MyProfile"),
     new RouteMatcher("/articles", "Articles"),
-    webViewRoute("/articles/:articleID", { showShareButton: true }),
+    webViewRoute("/articles/:articleID"),
+    webViewRoute("/article/:articleID", { showShareButton: true }),
     new RouteMatcher("/artist/:artistID", "Artist"),
     new RouteMatcher("/artist/:artistID/shows", "ArtistShows"),
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
@@ -128,7 +129,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     })),
     new RouteMatcher("/artist/:artistID/auction-result/:auctionResultInternalID", "AuctionResult"),
     new RouteMatcher("/artist/:artistID/artist-series", "FullArtistSeriesList"),
-    webViewRoute("/artist/:artistID/articles", { showShareButton: true }),
+    webViewRoute("/artist/:artistID/articles"),
     new RouteMatcher("/artist/:artistID/*", "Artist"),
     // For artists in a gallery context, like https://artsy.net/spruth-magers/artist/astrid-klein . Until we have a native
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
@@ -220,7 +221,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       : new RouteMatcher("/orders/:orderID", "Checkout"),
 
     new RouteMatcher("/:slug", "VanityURLEntity"),
-    webViewRoute("/*", { showShareButton: true }),
+    webViewRoute("/*"),
   ])
 
   const routesForDomain = {
