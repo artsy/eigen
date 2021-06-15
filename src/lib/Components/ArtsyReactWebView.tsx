@@ -1,13 +1,16 @@
+import { OwnerType } from "@artsy/cohesion"
 import { color } from "@artsy/palette-tokens"
 import { addBreadcrumb } from "@sentry/react-native"
 import { goBack, navigate } from "lib/navigation/navigate"
 import { matchRoute } from "lib/navigation/routes"
 import { getCurrentEmissionState, GlobalStore, useEnvironment } from "lib/store/GlobalStore"
+import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { parse as parseQueryString } from "query-string"
 import React, { useEffect, useRef, useState } from "react"
-import { Platform, View } from "react-native"
+import { Platform, Share, View } from "react-native"
 import WebView, { WebViewProps } from "react-native-webview"
+import { useTracking } from "react-tracking"
 import { parse as parseURL } from "url"
 import { ArtsyKeyboardAvoidingView } from "./ArtsyKeyboardAvoidingView"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
@@ -24,18 +27,50 @@ export interface ArtsyWebViewConfig {
    * Set this to false if you want all clicked links to be handled by our `navigate` method.
    */
   allowWebViewInnerNavigation?: boolean
+  /**
+   * Show the share URL button
+   */
+  showShareButton?: boolean
 }
+
+type CustomWebView = WebView & { shareTitleUrl: string }
 
 export const ArtsyReactWebViewPage: React.FC<
   {
     url: string
     isPresentedModally?: boolean
   } & ArtsyWebViewConfig
-> = ({ url, title, isPresentedModally, allowWebViewInnerNavigation = true, mimicBrowserBackButton = true }) => {
+> = ({
+  url,
+  title,
+  isPresentedModally,
+  allowWebViewInnerNavigation = true,
+  mimicBrowserBackButton = true,
+  showShareButton,
+}) => {
+  console.log("showShareButton", showShareButton)
   const paddingTop = useScreenDimensions().safeAreaInsets.top
 
   const [canGoBack, setCanGoBack] = useState(false)
-  const ref = useRef<WebView>(null)
+  const webURL = useEnvironment().webURL
+  const ref = useRef<CustomWebView>(null)
+
+  const tracking = useTracking()
+  async function handleArticleShare() {
+    const uri = url.startsWith("/") ? webURL + url : url
+    /*
+     * We only set shareTitleUrl if we navigate to a different URL within the same WebView
+     */
+    const shareUrl = ref.current?.shareTitleUrl || uri
+    tracking.trackEvent(tracks.share(shareUrl))
+    try {
+      await Share.share({
+        url: shareUrl,
+      })
+    } catch (error) {
+      console.error("ArtsyReactWebView.tsx", error)
+    }
+  }
 
   return (
     <View style={{ flex: 1, paddingTop }}>
@@ -49,6 +84,8 @@ export const ArtsyReactWebViewPage: React.FC<
               ref.current?.goBack()
             }
           }}
+          useShareButton={showShareButton}
+          onRightButtonPress={() => handleArticleShare()}
         >
           {title}
         </FancyModalHeader>
@@ -64,7 +101,7 @@ export const ArtsyReactWebViewPage: React.FC<
 }
 
 export const ArtsyReactWebView = React.forwardRef<
-  WebView,
+  CustomWebView,
   {
     url: string
     allowWebViewInnerNavigation?: boolean
@@ -115,6 +152,9 @@ export const ArtsyReactWebView = React.forwardRef<
 
           // If the target URL points to another page that we can handle with a web view, let's go there
           if (allowWebViewInnerNavigation && result.type === "match" && result.module === "ReactWebView") {
+            if (ref) {
+              ;(ref as any).current.shareTitleUrl = targetURL
+            }
             return true
           }
 
@@ -219,3 +259,12 @@ export const __webViewTestUtils__ = __TEST__
       expandGoogleAdLink,
     }
   : null
+
+export const tracks = {
+  share: (slug: string) => ({
+    action: Schema.ActionNames.Share,
+    action_type: Schema.ActionTypes.Tap,
+    context_screen_owner_type: OwnerType.articles,
+    context_screen_owner_slug: slug,
+  }),
+}
