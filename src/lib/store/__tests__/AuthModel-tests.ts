@@ -317,11 +317,11 @@ describe("AuthModel", () => {
     it("returns an error if getting X-ACCESS-TOKEN fails", async () => {
       GlobalStore.actions.auth.gravityUnauthenticatedRequest = jest.fn(() =>
         Promise.resolve({
-          json: () => Promise.resolve({ error: "getting X-ACCESS-TOKEN error" }),
+          json: () => Promise.resolve({ error_description: "getting X-ACCESS-TOKEN error" }),
         })
       ) as any
 
-      const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp" })
+      const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" })
 
       expect(result).toBe("getting X-ACCESS-TOKEN error")
     })
