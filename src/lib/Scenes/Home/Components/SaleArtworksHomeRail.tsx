@@ -52,7 +52,10 @@ export const SaleArtworksHomeRail: React.FC<Props> = ({ me, relay, onShow, onHid
   return (
     <Flex>
       <Flex mx={2}>
-        <SectionTitle title="Auction lots for you ending soon" />
+        <SectionTitle
+          title="Auction lots for you ending soon"
+          onPress={() => navigate("/lots-by-artists-you-follow")}
+        />
       </Flex>
       <CardRailFlatList
         data={artworks}

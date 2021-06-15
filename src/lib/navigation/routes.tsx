@@ -203,6 +203,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/city-fair/:citySlug", "CityFairList"),
     new RouteMatcher("/city-save/:citySlug", "CitySavedList"),
     new RouteMatcher("/auctions", "Auctions"),
+    new RouteMatcher("/lots-by-artists-you-follow", "LotsByArtistsYouFollow"),
     new RouteMatcher("/works-for-you", "WorksForYou"),
     webViewRoute("/categories"),
     webViewRoute("/privacy"),
