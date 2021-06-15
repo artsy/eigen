@@ -29,12 +29,29 @@ export const parsePriceForFilterParams = (priceMin: number | null, priceMax: num
   }
 }
 
-export const parseSizeForFilterParams = (criteria: SearchCriteriaAttributes): FilterData[] => {
-  const dimensionScoreMin = criteria.dimensionScoreMin ?? "*"
-  const dimensionScoreMax = criteria.dimensionScoreMax ?? "*"
+export const parseCustomSizeFilterParamByName = (
+  paramName: FilterParamName,
+  min: number | null,
+  max: number | null
+) => {
+  const minSizeValue = min ?? "*"
+  const maxSizeValue = max ?? "*"
+  const widthMinLocalized = localizeDimension(minSizeValue, "in")
+  const widthMaxLocalized = localizeDimension(maxSizeValue, "in")
 
-  // Skip default size option (use case "*-*")
-  if (dimensionScoreMin !== "*" || dimensionScoreMax !== "*") {
+  return {
+    displayText: `${widthMinLocalized.value}-${widthMaxLocalized.value}`,
+    paramValue: `${minSizeValue}-${maxSizeValue}`,
+    paramName,
+  }
+}
+
+export const parseSizeForFilterParams = (criteria: SearchCriteriaAttributes): FilterData[] => {
+  // Parse predefined size
+  if (isNumber(criteria.dimensionScoreMin) || isNumber(criteria.dimensionScoreMax)) {
+    const dimensionScoreMin = criteria.dimensionScoreMin ?? "*"
+    const dimensionScoreMax = criteria.dimensionScoreMax ?? "*"
+
     const sizeOptionItem = SIZE_OPTIONS.find((option) => {
       const { min, max } = parseRange(option.paramValue as string)
       return min === dimensionScoreMin && max === dimensionScoreMax
@@ -45,45 +62,37 @@ export const parseSizeForFilterParams = (criteria: SearchCriteriaAttributes): Fi
     }
   }
 
-  const filterParams: FilterData[] = []
+  const customFilterParams: FilterData[] = []
 
   // Parse custom width size
   if (isNumber(criteria.widthMin) || isNumber(criteria.widthMax)) {
-    const widthMin = criteria.widthMin ?? "*"
-    const widthMax = criteria.widthMax ?? "*"
-    const widthMinLocalized = localizeDimension(widthMin, "in")
-    const widthMaxLocalized = localizeDimension(widthMax, "in")
-
-    filterParams.push({
-      displayText: `${widthMinLocalized.value}-${widthMaxLocalized.value}`,
-      paramValue: `${widthMin}-${widthMax}`,
-      paramName: FilterParamName.width,
-    })
+    const filterParamItem = parseCustomSizeFilterParamByName(
+      FilterParamName.width,
+      criteria.widthMin!,
+      criteria.widthMax!
+    )
+    customFilterParams.push(filterParamItem)
   }
 
   // Parse custom height size
   if (isNumber(criteria.heightMin) || isNumber(criteria.heightMax)) {
-    const heightMin = criteria.heightMin ?? "*"
-    const heightMax = criteria.heightMax ?? "*"
-    const heightMinLocalized = localizeDimension(heightMin, "in")
-    const heightMaxLocalized = localizeDimension(heightMax, "in")
-
-    filterParams.push({
-      displayText: `${heightMinLocalized.value}-${heightMaxLocalized.value}`,
-      paramValue: `${heightMin}-${heightMax}`,
-      paramName: FilterParamName.height,
-    })
+    const filterParamItem = parseCustomSizeFilterParamByName(
+      FilterParamName.height,
+      criteria.heightMin!,
+      criteria.heightMax!
+    )
+    customFilterParams.push(filterParamItem)
   }
 
   // If we has custom width or size then we set the custom size mode for the size filter
-  if (filterParams.length > 0) {
-    filterParams.push({
+  if (customFilterParams.length > 0) {
+    customFilterParams.push({
       displayText: "Custom size",
       paramValue: "0-*",
       paramName: FilterParamName.dimensionRange,
     })
 
-    return filterParams
+    return customFilterParams
   }
 
   // Size filter value by default
