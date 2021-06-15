@@ -9,10 +9,9 @@ import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { RailScrollProps } from "./types"
 
-
-const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } &RailScrollProps> = (props) => {
-  const {me,scrollRef} = props
-  const {auctionResultsByFollowedArtists} = me
+const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollProps> = (props) => {
+  const { me, scrollRef } = props
+  const { auctionResultsByFollowedArtists } = me
   const listRef = useRef<FlatList<any>>()
   const navigateToAuctionResultsForYou = () => {
     // uncomment after implementing AuctionResults query
@@ -58,34 +57,33 @@ export const AuctionResultsRailFragmentContainer = createFragmentContainer(Aucti
   me: graphql`
     fragment AuctionResultsRail_me on Me {
       auctionResultsByFollowedArtists(first: 3) {
-       totalCount
-       edges {
-        cursor
-        node {
-          id
-          title
-          date(format: "MMM")
-          currency
-          dateText
-          mediumText
-          saleDate
-          organization
-          boughtIn
-          priceRealized {
-            cents
-            display
-          }
-          performance {
-            mid
-          }
-          images {
-            thumbnail {
-              url
+        totalCount
+        edges {
+          cursor
+          node {
+            id
+            title
+            currency
+            dateText
+            mediumText
+            saleDate
+            organization
+            boughtIn
+            priceRealized {
+              cents
+              display
+            }
+            performance {
+              mid
+            }
+            images {
+              thumbnail {
+                url
+              }
             }
           }
         }
-       }
-     }
+      }
     }
   `,
 })
