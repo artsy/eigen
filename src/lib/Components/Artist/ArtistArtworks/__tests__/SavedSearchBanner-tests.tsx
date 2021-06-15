@@ -6,7 +6,7 @@ import { Button } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { SavedSearchBannerFragmentContainer } from "../SavedSearchBanner"
+import { SavedSearchBannerRefetchContainer } from "../SavedSearchBanner"
 
 jest.unmock("react-relay")
 
@@ -31,7 +31,7 @@ describe("SavedSearchBanner", () => {
           }
         `}
         render={({ props }) => (
-          <SavedSearchBannerFragmentContainer
+          <SavedSearchBannerRefetchContainer
             {...props}
             loading={props === null}
             attributes={attributes}

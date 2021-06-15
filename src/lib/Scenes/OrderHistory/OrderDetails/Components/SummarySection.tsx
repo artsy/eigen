@@ -14,11 +14,13 @@ export const SummarySection: React.FC<Props> = ({ section }) => {
     <Flex flexDirection="row" justifyContent="space-between">
       <Flex>
         <Text variant="text">Price</Text>
-        <Text variant="text" mt={1.5}>
-          Shipping
+        <Text variant="text" mt={0.5}>
+          Premium delivery
         </Text>
-        <Text variant="text">Tax</Text>
-        <Text variant="mediumText" mt={1.5}>
+        <Text mt={0.5} variant="text">
+          Sales Tax
+        </Text>
+        <Text variant="mediumText" mt={0.5}>
           Total
         </Text>
       </Flex>
@@ -32,7 +34,7 @@ export const SummarySection: React.FC<Props> = ({ section }) => {
         <Text variant="text" color="black60" testID="taxTotal">
           {taxTotal}
         </Text>
-        <Text variant="mediumText" mt={1.5} testID="buyerTotal">
+        <Text variant="mediumText" mt={0.5} testID="buyerTotal">
           {buyerTotal}
         </Text>
       </Flex>

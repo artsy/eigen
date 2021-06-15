@@ -59,7 +59,9 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
       data: [<SoldBySectionFragmentContainer testID="ShipsToSection" soldBy={order} />],
     },
   ]
-
+  if (order.requestedFulfillment?.__typename === "CommercePickup") {
+    DATA.splice(4, 1)
+  }
   return (
     <PageWithSimpleHeader title="Order Details">
       <SectionList
@@ -67,14 +69,16 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
         contentContainerStyle={{ paddingHorizontal: 20, marginTop: 20, paddingBottom: 47 }}
         sections={DATA}
         keyExtractor={(item, index) => item.key + index.toString()}
-        renderItem={({ item }) => (
-          <Flex flexDirection="column" justifyContent="space-between">
-            <Box>{item}</Box>
-          </Flex>
-        )}
+        renderItem={({ item }) => {
+          return (
+            <Flex flexDirection="column" justifyContent="space-between">
+              <Box>{item}</Box>
+            </Flex>
+          )
+        }}
         stickySectionHeadersEnabled={false}
-        renderSectionHeader={({ section: { title } }) =>
-          title ? (
+        renderSectionHeader={({ section: { title, data } }) =>
+          title && data ? (
             <Box>
               <Text mt={20} mb={10} variant="mediumText">
                 {title}
@@ -156,6 +160,15 @@ export const OrderDetailsPlaceholder: React.FC<{}> = () => (
 export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
   order: graphql`
     fragment OrderDetails_order on CommerceOrder {
+      requestedFulfillment {
+        ... on CommerceShip {
+          __typename
+        }
+        ... on CommercePickup {
+          __typename
+        }
+      }
+
       lineItems(first: 1) {
         edges {
           node {
