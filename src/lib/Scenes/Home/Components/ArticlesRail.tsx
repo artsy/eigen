@@ -28,7 +28,7 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ articlesConnection }
     <Flex>
       <Flex mx={2}>
         <SectionTitle
-          title="Market News"
+          title="Market news"
           onPress={() => {
             tracking.trackEvent(HomeAnalytics.articlesHeaderTapEvent())
             navigate("/articles")
