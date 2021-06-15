@@ -1,8 +1,7 @@
 import { LoggedInUserInfo_me } from "__generated__/LoggedInUserInfo_me.graphql"
 import { LoggedInUserInfoQuery } from "__generated__/LoggedInUserInfoQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { Spinner } from "palette"
-import { Box, Serif } from "palette"
+import { Box, Serif, Spinner } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 

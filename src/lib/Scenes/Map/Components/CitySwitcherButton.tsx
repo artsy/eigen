@@ -1,7 +1,6 @@
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { Spinner } from "palette"
-import { Box, color, Flex, Sans } from "palette"
+import { Box, color, Flex, Sans, Spinner } from "palette"
 import React, { Component } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"

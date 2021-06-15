@@ -6,7 +6,7 @@ import { Text } from "react-native"
 import renderWithLoadProgress from "../renderWithLoadProgress"
 
 describe(renderWithLoadProgress, () => {
-  it(`renders a spinner while the graphqls are loaeding`, () => {
+  it(`renders a spinner while the graphqls are loading`, () => {
     const result = renderWithLoadProgress(() => null, {})({ error: null, props: null, retry: () => null })
 
     expect(React.isValidElement(result)).toBeTruthy()

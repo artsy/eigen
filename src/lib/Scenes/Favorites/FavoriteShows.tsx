@@ -4,7 +4,6 @@ import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Spinner } from "palette"
 import React, { Component } from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -13,7 +12,7 @@ import { FavoriteShows_me } from "__generated__/FavoriteShows_me.graphql"
 import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Spacer } from "palette"
+import { Spacer, Spinner } from "palette"
 
 interface Props {
   me: FavoriteShows_me
