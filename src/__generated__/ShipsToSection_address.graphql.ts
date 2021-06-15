@@ -5,15 +5,22 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ShipsToSection_address = {
-    readonly requestedFulfillment: {
-        readonly addressLine1?: string | null;
-        readonly addressLine2?: string | null;
-        readonly city?: string | null;
-        readonly country?: string | null;
-        readonly phoneNumber?: string | null;
-        readonly postalCode?: string | null;
-        readonly region?: string | null;
-    } | null;
+    readonly requestedFulfillment: ({
+        readonly __typename: "CommerceShip";
+        readonly addressLine1: string | null;
+        readonly addressLine2: string | null;
+        readonly city: string | null;
+        readonly country: string | null;
+        readonly phoneNumber: string | null;
+        readonly postalCode: string | null;
+        readonly region: string | null;
+    } | {
+        readonly __typename: "CommercePickup";
+    } | {
+        /*This will never be '%other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    }) | null;
     readonly " $refType": "ShipsToSection_address";
 };
 export type ShipsToSection_address$data = ShipsToSection_address;
@@ -24,7 +31,15 @@ export type ShipsToSection_address$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -41,6 +56,7 @@ const node: ReaderFragment = {
         {
           "kind": "InlineFragment",
           "selections": [
+            (v0/*: any*/),
             {
               "alias": null,
               "args": null,
@@ -93,6 +109,14 @@ const node: ReaderFragment = {
           ],
           "type": "CommerceShip",
           "abstractKey": null
+        },
+        {
+          "kind": "InlineFragment",
+          "selections": [
+            (v0/*: any*/)
+          ],
+          "type": "CommercePickup",
+          "abstractKey": null
         }
       ],
       "storageKey": null
@@ -101,5 +125,6 @@ const node: ReaderFragment = {
   "type": "CommerceOrder",
   "abstractKey": "__isCommerceOrder"
 };
-(node as any).hash = '54757664588c1244c2b7878e8fe6159f';
+})();
+(node as any).hash = '278325df71ae6be251db29d7cb7f067d';
 export default node;

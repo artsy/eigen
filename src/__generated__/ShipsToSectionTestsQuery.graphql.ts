@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 90e93118cfa9f704d7ad05622a5447fe */
+/* @relayHash f4927b7755f85bb9933c83460110ea95 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,6 +34,7 @@ fragment ShipsToSection_address on CommerceOrder {
   requestedFulfillment {
     __typename
     ... on CommerceShip {
+      __typename
       addressLine1
       addressLine2
       city
@@ -41,6 +42,9 @@ fragment ShipsToSection_address on CommerceOrder {
       phoneNumber
       postalCode
       region
+    }
+    ... on CommercePickup {
+      __typename
     }
   }
 }
@@ -215,7 +219,7 @@ return {
     ]
   },
   "params": {
-    "id": "90e93118cfa9f704d7ad05622a5447fe",
+    "id": "f4927b7755f85bb9933c83460110ea95",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "commerceOrder": {
