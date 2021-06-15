@@ -90,7 +90,7 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
         case "OnboardingCreateAccountName":
           if (acceptedTerms) {
             const res = await GlobalStore.actions.auth.signUp({ email, password, name })
-            if (!res) {
+            if (res !== true) {
               Alert.alert("Error", "Please try signing up again")
             }
           } else {

@@ -1,4 +1,3 @@
-import { Alert } from "react-native"
 import { AccessToken, GraphRequest, LoginManager } from "react-native-fbsdk-next"
 import { __globalStoreTestUtils__, GlobalStore } from "../GlobalStore"
 
@@ -173,13 +172,13 @@ describe("AuthModel", () => {
       expect(__globalStoreTestUtils__?.getCurrentState().auth.userID).toBe("my-user-id")
     })
 
-    it("returns false if the token creation fails", async () => {
+    it("returns result if the token creation fails", async () => {
       mockFetchJsonOnce({ error: "bad times" }, 500)
       const result = await GlobalStore.actions.auth.signIn({
         email: "user@example.com",
         password: "hunter2",
       })
-      expect(result).toBe(false)
+      expect(result).not.toBe(true)
     })
   })
 
@@ -230,11 +229,7 @@ describe("AuthModel", () => {
   })
 
   describe("authFacebook", () => {
-    jest.spyOn(Alert, "alert").mockImplementation()
-    Alert.alert = jest.fn()
-
     beforeEach(async () => {
-      ;(Alert.alert as jest.Mock).mockClear()
       ;(LoginManager.logInWithPermissions as jest.Mock).mockReturnValue({ isCancelled: false })
       ;(AccessToken.getCurrentAccessToken as jest.Mock).mockReturnValue({ accessToken: "facebook-token" })
       ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
@@ -242,35 +237,37 @@ describe("AuthModel", () => {
       })
     })
 
-    it("shows an error alert when email permission was denied", async () => {
+    it("returns an error when email permission was denied", async () => {
       ;(LoginManager.logInWithPermissions as jest.Mock).mockReturnValue({ declinedPermissions: ["email"] })
 
-      await GlobalStore.actions.auth.authFacebook()
+      const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp" })
 
       expect(LoginManager.logInWithPermissions).toHaveBeenCalledWith(["public_profile", "email"])
-      expect(Alert.alert).toHaveBeenCalledWith("Error", "Please allow the use of email to continue.", [{ text: "Ok" }])
+      expect(result).toBe("Please allow the use of email to continue.")
     })
 
     it("fetches access token from facebook", async () => {
-      await GlobalStore.actions.auth.authFacebook()
+      GlobalStore.actions.auth.signUp = jest.fn(() => true) as any
 
-      expect(AccessToken.getCurrentAccessToken).toHaveBeenCalledTimes(1)
+      await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp" })
+
+      expect(AccessToken.getCurrentAccessToken).toHaveBeenCalled()
     })
 
-    it("shows an error alert when error fetching data from facebook", async () => {
+    it("returns an error if fetching data from facebook fails", async () => {
       ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
         callback("fetching fb data error", undefined)
       })
 
-      await GlobalStore.actions.auth.authFacebook()
+      const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp" })
 
-      expect(Alert.alert).toHaveBeenCalledWith("Error", "Error fetching data.", [{ text: "Ok" }])
+      expect(result).toBe("Error fetching data.")
     })
 
     it("fetches profile info from facebook and signs up", async () => {
-      GlobalStore.actions.auth.signUp = jest.fn() as any
+      GlobalStore.actions.auth.signUp = jest.fn(() => true) as any
 
-      await GlobalStore.actions.auth.authFacebook()
+      await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp" })
 
       expect(GlobalStore.actions.auth.signUp).toHaveBeenCalledWith({
         email: "emailFromFacebook@email.com",
@@ -280,13 +277,20 @@ describe("AuthModel", () => {
       })
     })
 
-    it("signs in if facebook account is already an artsy account", async () => {
-      GlobalStore.actions.auth.signIn = jest.fn() as any
+    it("returns an error if sign up fails", async () => {
       GlobalStore.actions.auth.signUp = jest.fn(() =>
         Promise.resolve({
-          json: () => Promise.resolve({ error: "Another Account Already Linked" }),
+          json: () => Promise.resolve({ error: "User Already Exists" }),
         })
       ) as any
+
+      const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp" })
+
+      expect(result).toBe("User Already Exists")
+    })
+
+    it("fetches profile info from facebook and signs in", async () => {
+      GlobalStore.actions.auth.signIn = jest.fn(() => true) as any
       GlobalStore.actions.auth.gravityUnauthenticatedRequest = jest
         .fn()
         .mockImplementationOnce(() =>
@@ -301,43 +305,25 @@ describe("AuthModel", () => {
           })
         ) as any
 
-      await GlobalStore.actions.auth.authFacebook()
+      await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" })
 
-      setTimeout(() => {
-        expect(GlobalStore.actions.auth.signIn).toHaveBeenCalledWith({
-          email: "emailFromArtsy@mail.com",
-          accessToken: "facebook-token",
-          oauthProvider: "facebook",
-        })
-      }, 0)
+      expect(GlobalStore.actions.auth.signIn).toHaveBeenCalledWith({
+        email: "emailFromArtsy@mail.com",
+        accessToken: "facebook-token",
+        oauthProvider: "facebook",
+      })
     })
 
-    it("shows an error if the email was used, but not via facebook auth", async () => {
-      GlobalStore.actions.auth.signUp = jest.fn(() =>
+    it("returns an error if getting X-ACCESS-TOKEN fails", async () => {
+      GlobalStore.actions.auth.gravityUnauthenticatedRequest = jest.fn(() =>
         Promise.resolve({
-          json: () => Promise.resolve({ error: "User Already Exists" }),
+          json: () => Promise.resolve({ error: "getting X-ACCESS-TOKEN error" }),
         })
       ) as any
 
-      await GlobalStore.actions.auth.authFacebook()
+      const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp" })
 
-      expect(Alert.alert).toHaveBeenCalledWith(
-        "Error",
-        "User already exists with this email. Please log in with your email and password.",
-        [{ text: "Ok" }]
-      )
-    })
-
-    it("shows an error if something else went wrong", async () => {
-      GlobalStore.actions.auth.signUp = jest.fn(() =>
-        Promise.resolve({
-          json: () => Promise.resolve({ error: "other error" }),
-        })
-      ) as any
-
-      await GlobalStore.actions.auth.authFacebook()
-
-      expect(Alert.alert).toHaveBeenCalledWith("Error", "Couldn't link Facebook account.", [{ text: "Ok" }])
+      expect(result).toBe("getting X-ACCESS-TOKEN error")
     })
   })
 })
