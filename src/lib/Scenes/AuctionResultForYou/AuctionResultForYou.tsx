@@ -9,7 +9,7 @@ import { groupBy } from "lodash"
 import moment from "moment"
 import { Flex, Sans, Separator, Spinner, Text } from "palette"
 import React, { useState } from "react"
-import { SectionList } from "react-native"
+import { SectionList, View } from "react-native"
 import { Tab } from "../Favorites/Favorites"
 import { AuctionResultForYouListItem } from "./AuctionResultForYouListItem"
 
@@ -50,7 +50,7 @@ export const AuctionResultForYou: React.FC = ({ me, relay }) => {
         </Sans>
         <SectionList
           sections={groupedAuctionResultSectionData}
-          onEndReachedThreshold={0.2}
+          onEndReachedThreshold={0.5}
           onEndReached={loadMoreArtworks}
           renderItem={({ item }) => (
             <AuctionResultForYouListItem
@@ -74,6 +74,13 @@ export const AuctionResultForYou: React.FC = ({ me, relay }) => {
               <Separator />
             </Flex>
           )}
+          ListFooterComponent={
+            loadingMoreData ? (
+              <View style={{ alignItems: "center" }}>
+                <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
+              </View>
+            ) : null
+          }
           style={{ width: useScreenDimensions().width }}
         />
       </ArtworkFiltersStoreProvider>
