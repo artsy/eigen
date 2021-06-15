@@ -19,12 +19,4 @@
     [self.view addSubview:self.stack.view];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    if(self.isBeingDismissed){
-        [AREmission.sharedInstance.notificationsManagerModule modalDismissed];
-    }
-}
-
 @end

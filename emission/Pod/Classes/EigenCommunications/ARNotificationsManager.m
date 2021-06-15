@@ -45,7 +45,6 @@
 // event keys
 // These should match the values in src/lib/store/NativeModel.ts
 static NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
-static NSString *modalDismissed = @"MODAL_DISMISSED";
 static NSString *stateChanged = @"STATE_CHANGED";
 static NSString *reactStateChanged = @"STATE_CHANGED";
 static NSString *requestNavigation = @"REQUEST_NAVIGATION";
@@ -112,11 +111,6 @@ RCT_EXPORT_MODULE();
 - (void)notificationReceived
 {
     [self dispatch:notificationReceived data:@{}];
-}
-
-- (void)modalDismissed
-{
-    [self dispatch:modalDismissed data:@{}];
 }
 
 - (void)requestNavigation:(NSString *)route

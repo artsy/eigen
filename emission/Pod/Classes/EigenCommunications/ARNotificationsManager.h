@@ -33,8 +33,6 @@
 
 - (void)notificationReceived;
 
-- (void)modalDismissed;
-
 // this is exported only for tests
 - (void)updateReactState:(NSDictionary *)reactState;
 
