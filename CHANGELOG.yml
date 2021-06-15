@@ -6,6 +6,7 @@ upcoming:
     - Update open simulator command in getting started docs - ole
     - Update debugging docs - mounir
   user_facing:
+    - User can see the way of delivery - Serge0n
     - OrderDetails with SoldBy section - alexj105
     - OrderDetails with headInfo - alexj105
     - OrderDetails with ArtInfo and ShipsTo - alexj105
@@ -27,58 +28,58 @@ releases:
   - version: 6.9.4
   - date: June 10, 2021
   - dev:
-     - Improve admin menu - dzmitry
-     - Use app links on android - mounir
-     - obfuscate env vars on android - kizito
-     - Remove feature flag check for artist nationality filter - devon
-     - Remove feature flag check for custom size filter - devon
-     - Fix iOS app blank screen - ole, mounir
-     - Replace "color" filter with "colors" filter - dzmitry tratsiak
-     - Add Saved Search feature flag - kizito
-     - Send only changed filter params in the analytics event - dzmitry tratsiak
-     - Update PR template to not automatically attach an unrelated Jira ticket - erikdstock
-     - Add createSavedSearch mutation - dzmitry tratsiak
-     - Add deleteSavedSearch mutation - dzmitry tratsiak
+      - Improve admin menu - dzmitry
+      - Use app links on android - mounir
+      - obfuscate env vars on android - kizito
+      - Remove feature flag check for artist nationality filter - devon
+      - Remove feature flag check for custom size filter - devon
+      - Fix iOS app blank screen - ole, mounir
+      - Replace "color" filter with "colors" filter - dzmitry tratsiak
+      - Add Saved Search feature flag - kizito
+      - Send only changed filter params in the analytics event - dzmitry tratsiak
+      - Update PR template to not automatically attach an unrelated Jira ticket - erikdstock
+      - Add createSavedSearch mutation - dzmitry tratsiak
+      - Add deleteSavedSearch mutation - dzmitry tratsiak
   - user_facing:
-     - Fix wrong displaying in Order History when fields are too long - Serge0n
-     - Add payment method section (behind feature flag) - irina-sid
-     - Add Order Summary section into OrderDetails page - Serge0n
-     - Add order details skeleton (behind feature flag) - Serge0n
-     - Implements custom size filter with localization (behind feature flag) - damon
-     - Adds artist nationality & ethnicity filter (behind feature flag) - damon
-     - Add order history skeleton (behind feature flag) - Serge0n
-     - Add orders to order history (behind feature flag) - Serge0n
-     - Add order details page (app registry, a route with orderID, relay container) - irina-sid
-     - Update auction registration flow UI - ole
-     - Implements custom size filter with localization - damon
-     - Adds artist nationality & ethnicity filter - damon
-     - Add artwork location filter to artwork grids - iskounen
-     - Fix back button in android onboarding is flying off in smaller screens - dzmitry
-     - Prevent multiline input placeholder on Android - ole
-     - Fix info button in conversation is hard to press - dzmitry
-     - Update order of filters - dzmitry tratsiak
-     - Fix time mismatch between auction list and individual auction page - matt
-     - Fix swiping on filter options selects them - dzmitry tratsiak
-     - User can enter auction results tab from search - dzmitry
-     - Fix double tapping on the 'Log in' button opens a blank page - dzmitry
-     - Implement auction results section in home screen (behind feature flag) - yauheni
-     - Implement auctionResultsForYou screen (behind feature flag) - yauheni
-     - Fix registration flow error handling (e.g. invalid phone number) - ole
-     - Decode html entities in markdown - ole
-     - close keyboard on message send - lily
-     - Clear applied filters after click on "clear all" button immediately - dzmitry tratsiak
-     - Release new price range filter to artwork grids - iskounen
-     - Fix padding between section titles and the artwork grids below them - stas hanchar
-     - Add saved search banner (behind feature flag) - dzmitry tratsiak
-     - Add articles rail to home screen - ole
-     - Update articles rail design on artist overview screen - ole
-     - Fix home screen placeholder changing with bug 🎉 - ole
-     - Fix android native go back from sale tab to search - yauheni
-     - Vertically aligned 'Follow/Following' artist button text - stas hanchar
-     - Fix card input on android - dzmitry
-     - Add articles rail to home screen - ole
-     - Change articles rail design in artist overview page - ole
-     - Specified a more specific error for logging in with Apple or Facebook - stas hanchar
+      - Fix wrong displaying in Order History when fields are too long - Serge0n
+      - Add payment method section (behind feature flag) - irina-sid
+      - Add Order Summary section into OrderDetails page - Serge0n
+      - Add order details skeleton (behind feature flag) - Serge0n
+      - Implements custom size filter with localization (behind feature flag) - damon
+      - Adds artist nationality & ethnicity filter (behind feature flag) - damon
+      - Add order history skeleton (behind feature flag) - Serge0n
+      - Add orders to order history (behind feature flag) - Serge0n
+      - Add order details page (app registry, a route with orderID, relay container) - irina-sid
+      - Update auction registration flow UI - ole
+      - Implements custom size filter with localization - damon
+      - Adds artist nationality & ethnicity filter - damon
+      - Add artwork location filter to artwork grids - iskounen
+      - Fix back button in android onboarding is flying off in smaller screens - dzmitry
+      - Prevent multiline input placeholder on Android - ole
+      - Fix info button in conversation is hard to press - dzmitry
+      - Update order of filters - dzmitry tratsiak
+      - Fix time mismatch between auction list and individual auction page - matt
+      - Fix swiping on filter options selects them - dzmitry tratsiak
+      - User can enter auction results tab from search - dzmitry
+      - Fix double tapping on the 'Log in' button opens a blank page - dzmitry
+      - Implement auction results section in home screen (behind feature flag) - yauheni
+      - Implement auctionResultsForYou screen (behind feature flag) - yauheni
+      - Fix registration flow error handling (e.g. invalid phone number) - ole
+      - Decode html entities in markdown - ole
+      - close keyboard on message send - lily
+      - Clear applied filters after click on "clear all" button immediately - dzmitry tratsiak
+      - Release new price range filter to artwork grids - iskounen
+      - Fix padding between section titles and the artwork grids below them - stas hanchar
+      - Add saved search banner (behind feature flag) - dzmitry tratsiak
+      - Add articles rail to home screen - ole
+      - Update articles rail design on artist overview screen - ole
+      - Fix home screen placeholder changing with bug 🎉 - ole
+      - Fix android native go back from sale tab to search - yauheni
+      - Vertically aligned 'Follow/Following' artist button text - stas hanchar
+      - Fix card input on android - dzmitry
+      - Add articles rail to home screen - ole
+      - Change articles rail design in artist overview page - ole
+      - Specified a more specific error for logging in with Apple or Facebook - stas hanchar
 
   - version: 6.9.3
     date: June 1, 2021
