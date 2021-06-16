@@ -1,5 +1,6 @@
 import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "lib/navigation/navigate"
 import { auctionResultHasPrice, auctionResultText } from "lib/Scenes/AuctionResult/helpers"
 import { QAInfoManualPanel, QAInfoRow } from "lib/utils/QAInfo"
 import { capitalize } from "lodash"
@@ -9,11 +10,10 @@ import React from "react"
 
 interface Props {
   auctionResult: any // add correct type after implementing actionResult query
-  onPress: () => void
 }
 
 export const AuctionResultForYouListItem: React.FC<Props> = (props) => {
-  const { auctionResult, onPress } = props
+  const { auctionResult } = props
 
   const QAInfo: React.FC = () => (
     <QAInfoManualPanel position="absolute" top={0} left={95}>
@@ -22,7 +22,10 @@ export const AuctionResultForYouListItem: React.FC<Props> = (props) => {
   )
 
   return (
-    <Touchable underlayColor={color("black5")} onPress={onPress}>
+    <Touchable
+      underlayColor={color("black5")}
+      onPress={() => navigate(`/artist/${auctionResult?.artistID}/auction-result/${auctionResult?.internalID}`)}
+    >
       <Flex py="2" px={2} flexDirection="row">
         {!auctionResult.images?.thumbnail?.url ? (
           <Flex

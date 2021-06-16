@@ -46,7 +46,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
             return <></>
           }
 
-          return <AuctionResultForYouListItem auctionResult={item?.node} onPress={navigateToAuctionResultsForYou} />
+          return <AuctionResultForYouListItem auctionResult={item?.node} />
         }}
       />
     </View>
@@ -62,6 +62,8 @@ export const AuctionResultsRailFragmentContainer = createFragmentContainer(Aucti
           cursor
           node {
             id
+            artistID
+            internalID
             title
             currency
             dateText

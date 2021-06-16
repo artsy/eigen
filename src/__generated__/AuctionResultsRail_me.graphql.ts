@@ -11,6 +11,8 @@ export type AuctionResultsRail_me = {
             readonly cursor: string;
             readonly node: {
                 readonly id: string;
+                readonly artistID: string;
+                readonly internalID: string;
                 readonly title: string | null;
                 readonly currency: string | null;
                 readonly dateText: string | null;
@@ -98,6 +100,20 @@ const node: ReaderFragment = {
                   "args": null,
                   "kind": "ScalarField",
                   "name": "id",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "artistID",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "internalID",
                   "storageKey": null
                 },
                 {
@@ -234,5 +250,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '1ae09d92b998bd9edf3728180d02ef01';
+(node as any).hash = '1d0a097d00d87b74bde3cc348dd80684';
 export default node;

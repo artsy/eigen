@@ -63,9 +63,7 @@ export const AuctionResultForYou: React.FC<Props> = ({ me, relay }) => {
           renderItem={({ item }) => (
             <AuctionResultForYouListItem
               auctionResult={item?.node}
-              onPress={() => {
-                console.log("Pressed")
-              }}
+              onPress={() => navigate(`/artist/${item?.node?.artistID}/auction-result/${item?.node?.internalID}`)}
             />
           )} // Add onPress action after implementing AuctionResults Query
           renderSectionHeader={({ section: { date } }) => (

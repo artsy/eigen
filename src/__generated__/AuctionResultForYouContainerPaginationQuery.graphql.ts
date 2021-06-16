@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4d18a9dbf23e8457e4f2b52846902b96 */
+/* @relayHash 19680ebf7d997e51e63db6d9c3bc2725 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -38,6 +38,7 @@ fragment AuctionResultForYouContainer_me_2HEEH6 on Me {
     edges {
       node {
         id
+        artistID
         internalID
         title
         currency
@@ -179,6 +180,13 @@ return {
                     "plural": false,
                     "selections": [
                       (v3/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "artistID",
+                        "storageKey": null
+                      },
                       {
                         "alias": null,
                         "args": null,
@@ -371,7 +379,7 @@ return {
     ]
   },
   "params": {
-    "id": "4d18a9dbf23e8457e4f2b52846902b96",
+    "id": "19680ebf7d997e51e63db6d9c3bc2725",
     "metadata": {},
     "name": "AuctionResultForYouContainerPaginationQuery",
     "operationKind": "query",

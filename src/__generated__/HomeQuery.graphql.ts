@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ed1e0d5c000e12981ae8333b170cf779 */
+/* @relayHash f86a5c5526ac149477c79cb2874ea170 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -194,6 +194,8 @@ fragment AuctionResultsRail_me on Me {
       cursor
       node {
         id
+        artistID
+        internalID
         title
         currency
         dateText
@@ -1693,6 +1695,14 @@ return {
                     "plural": false,
                     "selections": [
                       (v3/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "artistID",
+                        "storageKey": null
+                      },
+                      (v10/*: any*/),
                       (v4/*: any*/),
                       {
                         "alias": null,
@@ -1976,7 +1986,7 @@ return {
     ]
   },
   "params": {
-    "id": "ed1e0d5c000e12981ae8333b170cf779",
+    "id": "f86a5c5526ac149477c79cb2874ea170",
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",

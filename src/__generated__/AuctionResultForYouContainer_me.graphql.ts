@@ -10,6 +10,7 @@ export type AuctionResultForYouContainer_me = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
+                readonly artistID: string;
                 readonly internalID: string;
                 readonly title: string | null;
                 readonly currency: string | null;
@@ -107,6 +108,13 @@ const node: ReaderFragment = {
                   "args": null,
                   "kind": "ScalarField",
                   "name": "id",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "artistID",
                   "storageKey": null
                 },
                 {
@@ -289,5 +297,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'd9c3738d4777c9c8ef225444a1d54413';
+(node as any).hash = 'd4357a123e08d498ef608a17f1b6a813';
 export default node;

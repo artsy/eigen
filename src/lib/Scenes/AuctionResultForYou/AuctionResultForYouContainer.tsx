@@ -17,6 +17,7 @@ export const AuctionResultForYouContainer = createPaginationContainer(
           edges {
             node {
               id
+              artistID
               internalID
               title
               currency
