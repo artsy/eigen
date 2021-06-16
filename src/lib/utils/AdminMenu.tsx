@@ -21,6 +21,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
 } from "react-native"
+import codePush from "react-native-code-push"
 import Config from "react-native-config"
 import { getBuildNumber, getVersion } from "react-native-device-info"
 import { useScreenDimensions } from "./useScreenDimensions"
@@ -147,6 +148,15 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
               return
             }
             Sentry.nativeCrash()
+          }}
+          chevron={null}
+        />
+        <MenuItem
+          title="Sync code-push"
+          onPress={() => {
+            codePush.sync({
+              installMode: codePush.InstallMode.IMMEDIATE,
+            })
           }}
           chevron={null}
         />

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Artsy</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">@string/CODE_PUSH_DEPLOYMENT_KEY</string>
 </resources>

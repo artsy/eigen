@@ -13,6 +13,8 @@ import com.facebook.soloader.SoLoader;
 import io.sentry.react.RNSentryPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.microsoft.codepush.react.CodePush;
+
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -35,6 +37,14 @@ public class MainApplication extends Application implements ReactApplication {
         @Override
         protected String getJSMainModuleName() {
           return "index";
+        }
+
+        // Override the getJSBundleFile method in order to let
+        // the CodePush runtime determine where to get the JS
+        // bundle location from on each app start
+         @Override
+        protected String getJSBundleFile() {
+            return CodePush.getJSBundleFile();
         }
       };
 
