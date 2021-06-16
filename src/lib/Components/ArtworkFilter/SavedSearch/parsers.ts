@@ -1,6 +1,7 @@
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
-import { isNumber } from "lodash"
+import { isNil, isNumber, keyBy } from "lodash"
 import { FilterData, FilterParamName } from "../ArtworkFilterHelpers"
+import { COLORS } from "../Filters/ColorsOptions"
 import { localizeDimension, Numeric, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
 import { SIZE_OPTIONS } from "../Filters/SizeOptions"
 
@@ -103,4 +104,22 @@ export const parseSizeForFilterParams = (criteria: SearchCriteriaAttributes): Fi
       paramName: FilterParamName.dimensionRange,
     },
   ]
+}
+
+export const parseColorsForFilterParams = (criteria: SearchCriteriaAttributes): FilterData | null => {
+  if (!isNil(criteria.colors)) {
+    const colorItemByValue = keyBy(COLORS, "value")
+    const availableColors = criteria.colors.filter((color) => !!colorItemByValue[color])
+    const colorNames = availableColors.map((color) => colorItemByValue[color].name)
+
+    if (availableColors.length > 0) {
+      return {
+        displayText: colorNames.join(", "),
+        paramValue: availableColors,
+        paramName: FilterParamName.colors,
+      }
+    }
+  }
+
+  return null
 }

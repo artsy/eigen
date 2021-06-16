@@ -10,7 +10,7 @@ import React from "react"
 import { ColorsSwatch } from "./ColorsSwatch"
 import { useMultiSelect } from "./useMultiSelect"
 
-const COLORS = [
+export const COLORS = [
   { value: "black-and-white", name: "Black and white", backgroundColor: "#000", foregroundColor: "#fff" },
   { value: "red", name: "Red", backgroundColor: "#FF0000", foregroundColor: "#fff" },
   { value: "yellow", name: "Yellow", backgroundColor: "#FBE854", foregroundColor: "#000" },

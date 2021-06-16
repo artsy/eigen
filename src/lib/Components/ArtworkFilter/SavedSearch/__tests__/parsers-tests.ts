@@ -1,5 +1,5 @@
 import { FilterParamName } from "../../ArtworkFilterHelpers"
-import { parsePriceForFilterParams, parseSizeForFilterParams } from "../parsers"
+import { parseColorsForFilterParams, parsePriceForFilterParams, parseSizeForFilterParams } from "../parsers"
 
 describe("parsePriceForFilterParams", () => {
   it("returns `$100–200` price range", () => {
@@ -174,5 +174,41 @@ describe("parseSizeForFilterParams", () => {
         paramName: FilterParamName.dimensionRange,
       },
     ])
+  })
+})
+
+describe("parseColorsForFilterParams", () => {
+  it("returns the color filter", () => {
+    expect(
+      parseColorsForFilterParams({
+        colors: ["gold", "red"],
+        additionalGeneIDs: ["prints"],
+      })
+    ).toEqual({
+      displayText: "Gold, Red",
+      paramValue: ["gold", "red"],
+      paramName: FilterParamName.colors,
+    })
+  })
+
+  it("returns only the available colors in the color filter", () => {
+    expect(
+      parseColorsForFilterParams({
+        colors: ["pink", "violet", "deep-purple"],
+      })
+    ).toEqual({
+      displayText: "Pink, Violet",
+      paramValue: ["pink", "violet"],
+      paramName: FilterParamName.colors,
+    })
+  })
+
+  it("returns nothing", () => {
+    expect(parseColorsForFilterParams({})).toBeNull()
+    expect(
+      parseColorsForFilterParams({
+        colors: null,
+      })
+    ).toBeNull()
   })
 })
