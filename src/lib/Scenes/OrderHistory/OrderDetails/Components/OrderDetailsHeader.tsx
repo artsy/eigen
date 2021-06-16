@@ -1,6 +1,5 @@
 import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
-import { DateTime } from "luxon"
-import { LocaleOptions } from "luxon"
+import { DateTime, LocaleOptions } from "luxon"
 import { Flex, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -13,31 +12,34 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
   if (!info) {
     return null
   }
-  const { createdAt, requestedFulfillment, code } = info
+  const { createdAt, requestedFulfillment, code, state } = info
   const isShippedOrder = requestedFulfillment?.__typename === "CommerceShip"
-  const orderCreatedAt = DateTime.fromISO(createdAt)
 
   return (
-    <Flex flexDirection="column" justifyContent="space-between">
-      <Flex mb={10} flexDirection="row">
-        <Text style={{ width: 112 }} variant="text">
+    <Flex flexDirection="row">
+      <Flex flexDirection="column" mr={2}>
+        <Text style={{ width: 112 }} variant="text" mb={1}>
           Order Date
         </Text>
-        <Text testID="date" color="black60" variant="text">
-          {orderCreatedAt.toLocaleString(DateTime.DATE_MED as LocaleOptions)}
-        </Text>
-      </Flex>
-      <Flex mb={10} flexDirection="row">
-        <Text style={{ width: 112 }} variant="text">
+        <Text style={{ width: 112 }} variant="text" mb={1}>
           Order Number
         </Text>
-        <Text testID="code" color="black60" variant="text">
-          {code}
+        <Text style={{ width: 112 }} variant="text" mb={1}>
+          Status
+        </Text>
+        <Text style={{ width: 112 }} variant="text">
+          Fulfillment
         </Text>
       </Flex>
-      <Flex flexDirection="row">
-        <Text style={{ width: 112 }} variant="text">
-          Status
+      <Flex flexDirection="column">
+        <Text testID="date" color="black60" variant="text" mb={1}>
+          {DateTime.fromISO(createdAt).toLocaleString(DateTime.DATE_MED as LocaleOptions)}
+        </Text>
+        <Text testID="code" color="black60" variant="text" mb={1}>
+          {code}
+        </Text>
+        <Text testID="status" color="black60" variant="text" mb={1} style={{ textTransform: "capitalize" }}>
+          {state.toLowerCase()}
         </Text>
         <Text testID="commerceShip" color="black60" variant="text">
           {isShippedOrder ? "Delivery" : "Pickup"}
@@ -51,6 +53,7 @@ export const OrderDetailsHeaderFragmentContainer = createFragmentContainer(Order
   info: graphql`
     fragment OrderDetailsHeader_info on CommerceOrder {
       createdAt
+      state
       requestedFulfillment {
         ... on CommerceShip {
           __typename

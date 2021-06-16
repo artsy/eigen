@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 473c72a44759fc427879b9acc70342d1 */
+/* @relayHash 551f5542aa059832c842dea04667183b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -95,6 +95,7 @@ fragment OrderDetails_order on CommerceOrder {
     }
   }
   createdAt
+  state
   code
   ...ArtworkInfoSection_artwork
   ...SummarySection_section
@@ -527,6 +528,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "state",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "code",
             "storageKey": null
           },
@@ -601,7 +609,7 @@ return {
     ]
   },
   "params": {
-    "id": "473c72a44759fc427879b9acc70342d1",
+    "id": "551f5542aa059832c842dea04667183b",
     "metadata": {},
     "name": "OrderDetailsTestsQuery",
     "operationKind": "query",

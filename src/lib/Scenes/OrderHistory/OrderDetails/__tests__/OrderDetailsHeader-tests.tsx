@@ -35,14 +35,16 @@ describe("OrderDetailsHeader", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
     mockEnvironmentPayload(mockEnvironment, {
       CommerceOrder: () => ({
+        state: "SUBMITTED",
         code: "075381384",
         createdAt: "2021-06-02T14:51:19+03:00",
         requestedFulfillment: { __typename: "CommerceShip" },
       }),
     })
 
-    expect(tree.findByProps({ testID: "commerceShip" }).props.children).toBe("Delivery")
-    expect(tree.findByProps({ testID: "code" }).props.children).toBe("075381384")
     expect(tree.findByProps({ testID: "date" }).props.children).toBe("Jun 2, 2021")
+    expect(tree.findByProps({ testID: "code" }).props.children).toBe("075381384")
+    expect(tree.findByProps({ testID: "status" }).props.children).toBe("submitted")
+    expect(tree.findByProps({ testID: "commerceShip" }).props.children).toBe("Delivery")
   })
 })

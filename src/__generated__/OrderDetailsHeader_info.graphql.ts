@@ -4,8 +4,10 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FULFILLED" | "PENDING" | "REFUNDED" | "SUBMITTED" | "%future added value";
 export type OrderDetailsHeader_info = {
     readonly createdAt: string;
+    readonly state: CommerceOrderStateEnum;
     readonly requestedFulfillment: ({
         readonly __typename: "CommerceShip";
     } | {
@@ -52,6 +54,13 @@ return {
     {
       "alias": null,
       "args": null,
+      "kind": "ScalarField",
+      "name": "state",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
       "concreteType": null,
       "kind": "LinkedField",
       "name": "requestedFulfillment",
@@ -84,5 +93,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = '4717062b7a556b67b08c934508eaafe9';
+(node as any).hash = '7f65290e648b667614df1cd8f95b1606';
 export default node;
