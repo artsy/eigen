@@ -1,3 +1,4 @@
+import { AccessToken, GraphRequest, LoginManager } from "react-native-fbsdk-next"
 import { __globalStoreTestUtils__, GlobalStore } from "../GlobalStore"
 
 const mockFetch = jest.fn()
@@ -224,6 +225,92 @@ describe("AuthModel", () => {
         name: "full name",
       })
       expect(result).toBe(false)
+    })
+  })
+
+  describe("authFacebook", () => {
+    beforeEach(async () => {
+      mockFetchJsonOnce({
+        xapp_token: "my-special-token",
+        expires_in: "never",
+      })
+      await GlobalStore.actions.auth.getXAppToken()
+      mockFetch.mockClear()
+      ;(LoginManager.logInWithPermissions as jest.Mock).mockReturnValue({ isCancelled: false })
+      ;(AccessToken.getCurrentAccessToken as jest.Mock).mockReturnValue({ accessToken: "facebook-token" })
+      ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
+        callback(undefined, { email: "emailFromFacebook@email.com", name: "name from facebook" })
+      })
+    })
+
+    it("throws an error when email permission was denied", async () => {
+      ;(LoginManager.logInWithPermissions as jest.Mock).mockReturnValue({ declinedPermissions: ["email"] })
+
+      const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp" }).catch((e) => e)
+
+      expect(LoginManager.logInWithPermissions).toHaveBeenCalledWith(["public_profile", "email"])
+      expect(result).toBe("Please allow the use of email to continue.")
+    })
+
+    it("fetches access token from facebook", async () => {
+      GlobalStore.actions.auth.signUp = jest.fn(() => true) as any
+
+      await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp" })
+
+      expect(AccessToken.getCurrentAccessToken).toHaveBeenCalled()
+    })
+
+    it("throws an error if fetching data from facebook fails", async () => {
+      ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
+        callback({ message: "fetching fb data error" }, undefined)
+      })
+
+      const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp" }).catch((e) => e)
+
+      expect(result).toBe("Error fetching facebook data: fetching fb data error")
+    })
+
+    it("fetches profile info from facebook and signs up", async () => {
+      GlobalStore.actions.auth.signUp = jest.fn(() => true) as any
+
+      await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp" })
+
+      expect(GlobalStore.actions.auth.signUp).toHaveBeenCalledWith({
+        email: "emailFromFacebook@email.com",
+        name: "name from facebook",
+        accessToken: "facebook-token",
+        oauthProvider: "facebook",
+      })
+    })
+
+    it("throws an error if sign up fails", async () => {
+      GlobalStore.actions.auth.signUp = jest.fn(() => false) as any
+
+      const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp" }).catch((e) => e)
+
+      expect(result).toBe("Failed to sign up.")
+    })
+
+    it("fetches profile info from facebook and signs in", async () => {
+      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+      mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
+      GlobalStore.actions.auth.signIn = jest.fn(() => true) as any
+
+      await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" })
+
+      expect(GlobalStore.actions.auth.signIn).toHaveBeenCalledWith({
+        email: "emailFromArtsy@mail.com",
+        accessToken: "facebook-token",
+        oauthProvider: "facebook",
+      })
+    })
+
+    it("throws an error if getting X-ACCESS-TOKEN fails", async () => {
+      mockFetchJsonOnce({ error_description: "getting X-ACCESS-TOKEN error" })
+
+      const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" }).catch((e) => e)
+
+      expect(result).toBe("Failed to get gravity token from gravity: getting X-ACCESS-TOKEN error")
     })
   })
 })

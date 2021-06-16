@@ -3315,7 +3315,7 @@
 				"${PODS_ROOT}/Artsy+UILabels/Pod/Assets/Chevron_Black.png",
 				"${PODS_ROOT}/Artsy+UILabels/Pod/Assets/Chevron_Black@2x.png",
 				"${PODS_ROOT}/Extraction/Extraction/Assets/ARLoadFailureRetryIcon@2x.png",
-				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/MARKRangeSlider/MARKRangeSlider.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
