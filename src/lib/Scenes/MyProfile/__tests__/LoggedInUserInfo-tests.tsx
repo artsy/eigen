@@ -2,7 +2,6 @@ import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-
 import { Serif } from "palette"
 import React from "react"
 import { act } from "react-test-renderer"
