@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@4.5.0
-  queue: eddiewebb/queue@1.0.110
+  queue: eddiewebb/queue@1.5.2
   horizon: artsy/release@0.0.1
 
 commands:
