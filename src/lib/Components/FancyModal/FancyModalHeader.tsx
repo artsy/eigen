@@ -34,10 +34,10 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
   }
 
   const rightButton = () => {
-    if (!useShareButton) {
-      return <ArrowRightIcon fill="black100" />
-    } else {
+    if (useShareButton) {
       return <ShareIcon fill="black100" height="25px" width="25px" />
+    } else {
+      return <ArrowRightIcon fill="black100" />
     }
   }
 

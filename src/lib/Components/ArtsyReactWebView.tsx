@@ -55,7 +55,7 @@ export const ArtsyReactWebViewPage: React.FC<
   const ref = useRef<CustomWebView>(null)
 
   const tracking = useTracking()
-  async function handleArticleShare() {
+  const handleArticleShare = async () => {
     const uri = url.startsWith("/") ? webURL + url : url
     /*
      * We only set shareTitleUrl if we navigate to a different URL within the same WebView
@@ -84,7 +84,7 @@ export const ArtsyReactWebViewPage: React.FC<
             }
           }}
           useShareButton={showShareButton}
-          onRightButtonPress={() => handleArticleShare()}
+          onRightButtonPress={handleArticleShare}
         >
           {title}
         </FancyModalHeader>
