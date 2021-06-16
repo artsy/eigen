@@ -2,6 +2,7 @@ import React from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
+import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "lib/data/constants"
@@ -14,7 +15,7 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { space, Spacer, Spinner } from "palette"
+import { space, Spacer } from "palette"
 
 interface Props {
   me: FavoriteArtists_me

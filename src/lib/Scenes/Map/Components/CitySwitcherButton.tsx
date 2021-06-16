@@ -1,6 +1,7 @@
+import Spinner from "lib/Components/Spinner"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { Box, color, Flex, Sans, Spinner } from "palette"
+import { Box, color, Flex, Sans } from "palette"
 import React, { Component } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -62,7 +63,7 @@ export class CitySwitcherButton extends Component<Props> {
             </>
           ) : (
             <Flex alignItems="center" justifyContent="center" flexGrow={1}>
-              <Spinner color="black60" style={{ backgroundColor: "transparent" }} width={16} height={16} />
+              <Spinner spinnerColor="black60" style={{ backgroundColor: "transparent" }} size="medium" />
             </Flex>
           )}
         </Background>

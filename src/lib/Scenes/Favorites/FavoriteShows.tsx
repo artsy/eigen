@@ -1,5 +1,6 @@
 import { FavoriteShowsQuery } from "__generated__/FavoriteShowsQuery.graphql"
 import { ShowItemRowContainer as ShowItemRow } from "lib/Components/Lists/ShowItemRow"
+import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -12,7 +13,7 @@ import { FavoriteShows_me } from "__generated__/FavoriteShows_me.graphql"
 import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Spacer, Spinner } from "palette"
+import { Spacer } from "palette"
 
 interface Props {
   me: FavoriteShows_me

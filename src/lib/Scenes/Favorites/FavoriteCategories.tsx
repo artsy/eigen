@@ -3,6 +3,7 @@ import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 import { SavedItemRow } from "lib/Components/Lists/SavedItemRow"
+import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 
@@ -10,7 +11,7 @@ import { FavoriteCategories_me } from "__generated__/FavoriteCategories_me.graph
 import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Spacer, Spinner } from "palette"
+import { Spacer } from "palette"
 
 import { FavoriteCategoriesQuery } from "__generated__/FavoriteCategoriesQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
