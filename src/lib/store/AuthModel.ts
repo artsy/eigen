@@ -35,7 +35,7 @@ export interface AuthModel {
     },
     {},
     GlobalStoreModel,
-    Promise<true | Response>
+    Promise<boolean>
   >
   signUp: Thunk<
     AuthModel,
@@ -48,9 +48,9 @@ export interface AuthModel {
     },
     {},
     GlobalStoreModel,
-    Promise<true | Response>
+    Promise<boolean>
   >
-  authFacebook: Thunk<AuthModel, { signInOrUp: "signIn" | "signUp" }, {}, GlobalStoreModel, Promise<string | void>>
+  authFacebook: Thunk<AuthModel, { signInOrUp: "signIn" | "signUp" }, {}, GlobalStoreModel, Promise<true>>
   forgotPassword: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel, Promise<boolean>>
   gravityUnauthenticatedRequest: Thunk<
     this,
@@ -214,7 +214,7 @@ export const getAuthModel = (): AuthModel => ({
       return true
     }
 
-    return result
+    return false
   }),
   signUp: thunk(async (actions, { email, password, name, accessToken, oauthProvider }) => {
     let body
@@ -253,22 +253,25 @@ export const getAuthModel = (): AuthModel => ({
       })
       return true
     }
-    return result
+    return false
   }),
   authFacebook: thunk(async (actions, { signInOrUp }) => {
-    return await new Promise<string | void>(async (resolve) => {
+    return await new Promise<true>(async (resolve, reject) => {
       const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions(["public_profile", "email"])
       if (declinedPermissions?.includes("email")) {
-        resolve("Please allow the use of email to continue.")
+        reject("Please allow the use of email to continue.")
       }
       const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
       if (!accessToken) {
         return
       }
 
-      const responseFacebookInfoCallback = async (error: any, facebookInfo: { email: string; name: string }) => {
+      const responseFacebookInfoCallback = async (
+        error: { message: string },
+        facebookInfo: { email: string; name: string }
+      ) => {
         if (error) {
-          resolve("Error fetching data.")
+          reject(`Error fetching facebook data: ${error.message}`)
         } else {
           if (signInOrUp === "signUp") {
             const resultGravitySignUp = await actions.signUp({
@@ -278,12 +281,7 @@ export const getAuthModel = (): AuthModel => ({
               oauthProvider: "facebook",
             })
 
-            if (resultGravitySignUp !== true) {
-              const { error: signUpError } = await resultGravitySignUp.json()
-              resolve(signUpError)
-            } else {
-              resolve()
-            }
+            resultGravitySignUp ? resolve(true) : reject("Failed to sign up")
           }
 
           if (signInOrUp === "signIn") {
@@ -317,15 +315,13 @@ export const getAuthModel = (): AuthModel => ({
                 oauthProvider: "facebook",
               })
 
-              if (resultGravitySignIn !== true) {
-                const { error_description: signInError } = await resultGravitySignIn.json() // error_description looks better than error
-                resolve(signInError)
-              } else {
-                resolve()
-              }
+              resultGravitySignIn ? resolve(true) : reject("Failed to log in")
             } else {
-              const { error_description: xAccessTokenError } = await resultGravityAccessToken.json() // error_description looks better than error
-              resolve(xAccessTokenError)
+              const res = await resultGravityAccessToken.json()
+              if (res.error_description) {
+                console.log(res) // This will get us the error on sentry because we capture console.logs there
+                reject(`Failed to get gravity token from gravity: ${res.error_description}`)
+              }
             }
           }
         }
