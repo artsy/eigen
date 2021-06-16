@@ -60,12 +60,7 @@ export const AuctionResultForYou: React.FC<Props> = ({ me, relay }) => {
           sections={groupedAuctionResultSectionData}
           onEndReachedThreshold={0.5}
           onEndReached={loadMoreArtworks}
-          renderItem={({ item }) => (
-            <AuctionResultForYouListItem
-              auctionResult={item?.node}
-              onPress={() => navigate(`/artist/${item?.node?.artistID}/auction-result/${item?.node?.internalID}`)}
-            />
-          )} // Add onPress action after implementing AuctionResults Query
+          renderItem={({ item }) => <AuctionResultForYouListItem auctionResult={item?.node} />} // Add onPress action after implementing AuctionResults Query
           renderSectionHeader={({ section: { date } }) => (
             <Text
               textAlign="left"
