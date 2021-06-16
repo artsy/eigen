@@ -8,37 +8,44 @@ interface Props {
 }
 
 export const ShipsToSection: React.FC<Props> = ({ address }) => {
-  if (!address.requestedFulfillment) {
+  if (!address.requestedFulfillment || address.requestedFulfillment.__typename === "CommercePickup") {
     return null
   }
-  const agressInfo = address.requestedFulfillment
-  const addedComma = agressInfo.city ? "," : ""
+  if (address.requestedFulfillment.__typename === "CommerceShip") {
+    const addressInfo = address.requestedFulfillment
+    const addedComma = addressInfo.city ? "," : ""
+    return (
+      <Flex style={{ flexDirection: "column", justifyContent: "space-between" }}>
+        <Text testID="addressLine1" color="black60" variant="text">
+          {addressInfo.addressLine1}
+        </Text>
+        {!!addressInfo.addressLine2 && (
+          <Text color="black60" variant="text">
+            {addressInfo.addressLine2}
+          </Text>
+        )}
 
-  return (
-    <Flex style={{ flexDirection: "column", justifyContent: "space-between" }}>
-      <Text testID="addressLine1" color="black60" variant="text">
-        {agressInfo.addressLine1}
-      </Text>
-
-      <Box display="flex" flexDirection="row">
-        <Text testID="city" color="black60" variant="text">
-          {agressInfo.city + addedComma + " "}
+        <Box display="flex" flexDirection="row">
+          <Text testID="city" color="black60" variant="text">
+            {addressInfo.city + addedComma + " "}
+          </Text>
+          <Text testID="region" color="black60" variant="text">
+            {addressInfo.region + " "}
+          </Text>
+          <Text testID="postalCode" color="black60" variant="text">
+            {addressInfo.postalCode}
+          </Text>
+        </Box>
+        <Text testID="country" color="black60" variant="text">
+          {addressInfo.country}
         </Text>
-        <Text testID="region" color="black60" variant="text">
-          {agressInfo.region + " "}
+        <Text testID="phoneNumber" color="black60" variant="text">
+          {addressInfo.phoneNumber}
         </Text>
-        <Text testID="postalCode" color="black60" variant="text">
-          {agressInfo.postalCode}
-        </Text>
-      </Box>
-      <Text testID="country" color="black60" variant="text">
-        {agressInfo.country}
-      </Text>
-      <Text testID="phoneNumber" color="black60" variant="text">
-        {agressInfo.phoneNumber}
-      </Text>
-    </Flex>
-  )
+      </Flex>
+    )
+  }
+  return null
 }
 
 export const ShipsToSectionFragmentContainer = createFragmentContainer(ShipsToSection, {
@@ -46,6 +53,7 @@ export const ShipsToSectionFragmentContainer = createFragmentContainer(ShipsToSe
     fragment ShipsToSection_address on CommerceOrder {
       requestedFulfillment {
         ... on CommerceShip {
+          __typename
           addressLine1
           addressLine2
           city
@@ -53,6 +61,9 @@ export const ShipsToSectionFragmentContainer = createFragmentContainer(ShipsToSe
           phoneNumber
           postalCode
           region
+        }
+        ... on CommercePickup {
+          __typename
         }
       }
     }

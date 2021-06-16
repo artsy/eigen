@@ -4,6 +4,7 @@ import { SavedSearchBannerCreateSavedSearchMutation } from "__generated__/SavedS
 import { SavedSearchBannerDeleteSavedSearchMutation } from "__generated__/SavedSearchBannerDeleteSavedSearchMutation.graphql"
 import { SavedSearchBannerQuery, SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { FilterParams, prepareFilterParamsForSaveSearchInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { usePopoverMessage } from 'lib/Components/PopoverMessage/popoverMessageHooks'
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
@@ -22,6 +23,7 @@ interface SavedSearchBannerProps {
 
 export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, attributes, loading, relay }) => {
   const [saving, setSaving] = useState(false)
+  const popoverMessage = usePopoverMessage()
   const enabled = !!me?.savedSearch?.internalID
   const inProcess = loading || saving
 
@@ -59,6 +61,11 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, attrib
       },
       onCompleted: () => {
         doRefetch()
+        popoverMessage.show({
+          title: "Your alert has been set.",
+          message: "We will send you a push notification once new works are added.",
+          placement: "top",
+        })
       },
       onError: () => {
         setSaving(false)
@@ -87,6 +94,11 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, attrib
       },
       onCompleted: () => {
         doRefetch()
+        popoverMessage.show({
+          title: "Your alert has been removed.",
+          message: "Don't worry, you can always create a new one.",
+          placement: "top",
+        })
       },
       onError: () => {
         setSaving(false)

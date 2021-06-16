@@ -4,19 +4,19 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type LotsByFollowedArtists_me = {
+export type LotsByArtistsYouFollow_me = {
     readonly lotsByFollowedArtistsConnection: {
         readonly edges: ReadonlyArray<{
             readonly cursor: string | null;
         } | null> | null;
-        readonly " $fragmentRefs": FragmentRefs<"ArtworkTileRail_artworksConnection">;
+        readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
     } | null;
-    readonly " $refType": "LotsByFollowedArtists_me";
+    readonly " $refType": "LotsByArtistsYouFollow_me";
 };
-export type LotsByFollowedArtists_me$data = LotsByFollowedArtists_me;
-export type LotsByFollowedArtists_me$key = {
-    readonly " $data"?: LotsByFollowedArtists_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"LotsByFollowedArtists_me">;
+export type LotsByArtistsYouFollow_me$data = LotsByArtistsYouFollow_me;
+export type LotsByArtistsYouFollow_me$key = {
+    readonly " $data"?: LotsByArtistsYouFollow_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"LotsByArtistsYouFollow_me">;
 };
 
 
@@ -47,7 +47,7 @@ const node: ReaderFragment = {
       }
     ]
   },
-  "name": "LotsByFollowedArtists_me",
+  "name": "LotsByArtistsYouFollow_me",
   "selections": [
     {
       "alias": "lotsByFollowedArtistsConnection",
@@ -65,7 +65,7 @@ const node: ReaderFragment = {
       ],
       "concreteType": "SaleArtworksConnection",
       "kind": "LinkedField",
-      "name": "__LotsByFollowedArtists_lotsByFollowedArtistsConnection_connection",
+      "name": "__LotsByArtistsYouFollow_lotsByFollowedArtistsConnection_connection",
       "plural": false,
       "selections": [
         {
@@ -132,14 +132,14 @@ const node: ReaderFragment = {
         {
           "args": null,
           "kind": "FragmentSpread",
-          "name": "ArtworkTileRail_artworksConnection"
+          "name": "InfiniteScrollArtworksGrid_connection"
         }
       ],
-      "storageKey": "__LotsByFollowedArtists_lotsByFollowedArtistsConnection_connection(isAuction:true,liveSale:true)"
+      "storageKey": "__LotsByArtistsYouFollow_lotsByFollowedArtistsConnection_connection(isAuction:true,liveSale:true)"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '95ed4669c2625b69e7fa1ba683b9b92c';
+(node as any).hash = 'ace64acc07e9ecbaaa1c447f34eb3840';
 export default node;
