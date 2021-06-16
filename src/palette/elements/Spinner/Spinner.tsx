@@ -54,13 +54,17 @@ export const Spinner: React.FC<SpinnerProps> = ({ size = "medium", color = "blac
   const rotation = useMemo(() => new Animated.Value(0), [])
 
   const startRotation = () => {
-    rotation.setValue(0)
-    Animated.timing(rotation, {
-      toValue: 1,
-      duration: 1000,
-      easing: Easing.linear,
-      useNativeDriver: true,
-    }).start(() => startRotation())
+    Animated.loop(
+      Animated.timing(rotation, {
+        toValue: 1,
+        duration: 1000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+      {
+        iterations: -1,
+      }
+    ).start()
   }
 
   useEffect(() => {
