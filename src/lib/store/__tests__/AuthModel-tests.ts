@@ -288,7 +288,7 @@ describe("AuthModel", () => {
 
       const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp" }).catch((e) => e)
 
-      expect(result).toBe("Failed to sign up")
+      expect(result).toBe("Failed to sign up.")
     })
 
     it("fetches profile info from facebook and signs in", async () => {

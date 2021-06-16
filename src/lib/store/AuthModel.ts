@@ -281,7 +281,7 @@ export const getAuthModel = (): AuthModel => ({
               oauthProvider: "facebook",
             })
 
-            resultGravitySignUp ? resolve(true) : reject("Failed to sign up")
+            resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
           }
 
           if (signInOrUp === "signIn") {
@@ -315,7 +315,7 @@ export const getAuthModel = (): AuthModel => ({
                 oauthProvider: "facebook",
               })
 
-              resultGravitySignIn ? resolve(true) : reject("Failed to log in")
+              resultGravitySignIn ? resolve(true) : reject("Failed to log in.")
             } else {
               const res = await resultGravityAccessToken.json()
               if (res.error_description) {
