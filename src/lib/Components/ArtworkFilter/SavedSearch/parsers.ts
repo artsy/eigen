@@ -1,6 +1,6 @@
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { isNil, isNumber, keyBy } from "lodash"
-import { FilterData, FilterParamName } from "../ArtworkFilterHelpers"
+import { Aggregation, FilterData, FilterParamName } from "../ArtworkFilterHelpers"
 import { COLORS } from "../Filters/ColorsOptions"
 import { localizeDimension, Numeric, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
 import { SIZE_OPTIONS } from "../Filters/SizeOptions"
@@ -118,6 +118,26 @@ export const parseColorsForFilterParams = (criteria: SearchCriteriaAttributes): 
         paramValue: availableColors,
         paramName: FilterParamName.colors,
       }
+    }
+  }
+
+  return null
+}
+
+export const parseAggregationValueNamesForFilterParams = (
+  paramName: FilterParamName,
+  aggregations: Aggregation[],
+  criteriaValues: string[]
+): FilterData | null => {
+  const aggregationValueByName = keyBy(aggregations, "value")
+  const availableValues = criteriaValues.filter((criteriaValue) => !!aggregationValueByName[criteriaValue])
+  const names = availableValues.map((value) => aggregationValueByName[value].name)
+
+  if (availableValues.length > 0) {
+    return {
+      displayText: names.join(", "),
+      paramValue: availableValues,
+      paramName,
     }
   }
 

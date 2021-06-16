@@ -1,5 +1,10 @@
-import { FilterParamName } from "../../ArtworkFilterHelpers"
-import { parseColorsForFilterParams, parsePriceForFilterParams, parseSizeForFilterParams } from "../parsers"
+import { Aggregation, FilterParamName } from "../../ArtworkFilterHelpers"
+import {
+  parseAggregationValueNamesForFilterParams,
+  parseColorsForFilterParams,
+  parsePriceForFilterParams,
+  parseSizeForFilterParams,
+} from "../parsers"
 
 describe("parsePriceForFilterParams", () => {
   it("returns `$100–200` price range", () => {
@@ -210,5 +215,63 @@ describe("parseColorsForFilterParams", () => {
         colors: null,
       })
     ).toBeNull()
+  })
+})
+
+describe("parseAggregationValueNamesForFilterParams", () => {
+  it("returns the filter param with only available values", () => {
+    const criteriaValues = ["prints", "ephemera-or-merchandise"]
+    const aggregations: Aggregation[] = [
+      {
+        count: 18037,
+        name: "Photography",
+        value: "photography",
+      },
+      {
+        count: 2420,
+        name: "Prints",
+        value: "prints",
+      },
+      {
+        count: 513,
+        name: "Ephemera or Merchandise",
+        value: "ephemera-or-merchandise",
+      },
+    ]
+    const result = parseAggregationValueNamesForFilterParams(
+      FilterParamName.additionalGeneIDs,
+      aggregations,
+      criteriaValues
+    )
+
+    expect(result).toEqual({
+      displayText: "Prints, Ephemera or Merchandise",
+      paramValue: ["prints", "ephemera-or-merchandise"],
+      paramName: FilterParamName.additionalGeneIDs,
+    })
+  })
+
+  it("returns nothing", () => {
+    const criteriaValues = ["prints", "ephemera-or-merchandise"]
+    const aggregations: Aggregation[] = [
+      {
+        count: 18061,
+        name: "New York, NY, USA",
+        value: "New York, NY, USA",
+      },
+      {
+        count: 322,
+        name: "London, United Kingdom",
+        value: "London, United Kingdom",
+      },
+    ]
+
+    const result = parseAggregationValueNamesForFilterParams(
+      FilterParamName.additionalGeneIDs,
+      aggregations,
+      criteriaValues
+    )
+
+    expect(result).toBeNull()
   })
 })
