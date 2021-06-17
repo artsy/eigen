@@ -27,7 +27,8 @@ interface SectionListItem {
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
   const partnerName = extractNodes(order.lineItems)[0].artwork?.partner
-  const shippingName = order?.requestedFulfillment?.__typename === "CommerceShip" && order?.requestedFulfillment.name
+  const shippingName =
+    order?.requestedFulfillment?.__typename === "CommerceShip" ? order?.requestedFulfillment.name : null
   const DATA: SectionListItem[] = [
     {
       key: "OrderDetailsHeader",
