@@ -37,9 +37,11 @@ describe("ShipsToSection", () => {
     mockEnvironmentPayload(mockEnvironment, {
       CommerceOrder: () => ({
         requestedFulfillment: {
+          ____typename: "CommerceShip",
+          name: "my name",
           addressLine1: "myadress",
           city: "mycity",
-          country: "mycountry",
+          country: "BY",
           postalCode: "11238",
           phoneNumber: "7777",
           region: "myregion",
@@ -51,7 +53,7 @@ describe("ShipsToSection", () => {
     expect(tree.findByProps({ testID: "city" }).props.children).toBe("mycity, ")
     expect(tree.findByProps({ testID: "region" }).props.children).toBe("myregion ")
     expect(tree.findByProps({ testID: "phoneNumber" }).props.children).toBe("7777")
-    expect(tree.findByProps({ testID: "country" }).props.children).toBe("mycountry")
+    expect(tree.findByProps({ testID: "country" }).props.children).toBe("Belarus")
     expect(tree.findByProps({ testID: "postalCode" }).props.children).toBe("11238")
   })
 })

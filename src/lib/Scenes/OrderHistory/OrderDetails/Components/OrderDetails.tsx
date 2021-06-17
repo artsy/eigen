@@ -18,7 +18,6 @@ import { SummarySectionFragmentContainer } from "./SummarySection"
 
 export interface OrderDetailsProps {
   order: OrderDetails_order
-  me: OrderDetailsQuery["response"]["me"]
 }
 interface SectionListItem {
   key: string
@@ -26,8 +25,9 @@ interface SectionListItem {
   data: readonly JSX.Element[]
 }
 
-const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
+const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
   const partnerName = extractNodes(order.lineItems)[0].artwork?.partner
+  const shippingName = order?.requestedFulfillment?.__typename === "CommerceShip" && order?.requestedFulfillment.name
   const DATA: SectionListItem[] = [
     {
       key: "OrderDetailsHeader",
@@ -50,7 +50,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
     },
     {
       key: "ShipTo_Section",
-      title: `Ships to ${me?.name}`,
+      title: `Ships to ${shippingName}`,
       data: [<ShipsToSectionFragmentContainer address={order} />],
     },
     {
@@ -163,6 +163,7 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
       requestedFulfillment {
         ... on CommerceShip {
           __typename
+          name
         }
         ... on CommercePickup {
           __typename
@@ -197,9 +198,6 @@ export const OrderDetailsQueryRender: React.FC<{ orderID: string }> = ({ orderID
         query OrderDetailsQuery($orderID: ID!) {
           order: commerceOrder(id: $orderID) {
             ...OrderDetails_order
-          }
-          me {
-            name
           }
         }
       `}

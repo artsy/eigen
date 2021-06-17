@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 551f5542aa059832c842dea04667183b */
+/* @relayHash cfb062dadb66b0560e969f68f8b04c31 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -75,6 +75,7 @@ fragment OrderDetails_order on CommerceOrder {
     __typename
     ... on CommerceShip {
       __typename
+      name
     }
     ... on CommercePickup {
       __typename
@@ -273,6 +274,7 @@ return {
               {
                 "kind": "InlineFragment",
                 "selections": [
+                  (v1/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -609,7 +611,7 @@ return {
     ]
   },
   "params": {
-    "id": "551f5542aa059832c842dea04667183b",
+    "id": "cfb062dadb66b0560e969f68f8b04c31",
     "metadata": {},
     "name": "OrderDetailsTestsQuery",
     "operationKind": "query",
