@@ -60,7 +60,8 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
       }}
     >
       <OpaqueImageView
-        imageURL={imageURL.replace(":version", desiredVersion)}
+        // imageURL={imageURL.replace(":version", desiredVersion)}
+        imageURL={null}
         width={imageWidth}
         height={imageHeight}
         style={{ flex: 1 }}
