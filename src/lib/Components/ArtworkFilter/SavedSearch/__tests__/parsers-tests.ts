@@ -5,6 +5,7 @@ import {
   parseColorsForFilterParams,
   parsePriceForFilterParams,
   parseSizeForFilterParams,
+  parseWaysToBuyForFilterParams,
 } from "../parsers"
 
 describe("parsePriceForFilterParams", () => {
@@ -311,3 +312,57 @@ describe("parseAttributionClassesForFilterParams", () => {
   })
 })
 
+describe("parseWaysToBuyForFilterParams", () => {
+  it("returns the ways to buy filter", () => {
+    const result = parseWaysToBuyForFilterParams({
+      acquireable: null,
+      atAuction: true,
+      inquireableOnly: null,
+      offerable: true,
+    })
+
+    expect(result).toEqual([
+      {
+        displayText: "Make offer",
+        paramValue: true,
+        paramName: FilterParamName.waysToBuyMakeOffer,
+      },
+      {
+        displayText: "Bid",
+        paramValue: true,
+        paramName: FilterParamName.waysToBuyBid,
+      },
+    ])
+  })
+
+  it("returns the filter param with only available values", () => {
+    const result = parseWaysToBuyForFilterParams({
+      attributionClasses: ["limited edition", "unique", "something-unknown"],
+      acquireable: true,
+      atAuction: null,
+      inquireableOnly: true,
+      offerable: null,
+    })
+
+    expect(result).toEqual([
+      {
+        displayText: "Buy now",
+        paramValue: true,
+        paramName: FilterParamName.waysToBuyBuy,
+      },
+      {
+        displayText: "Inquire",
+        paramValue: true,
+        paramName: FilterParamName.waysToBuyInquire,
+      },
+    ])
+  })
+
+  it("returns nothing", () => {
+    const result = parseAttributionClassesForFilterParams({
+      attributionClasses: null,
+    })
+
+    expect(result).toBeNull()
+  })
+})

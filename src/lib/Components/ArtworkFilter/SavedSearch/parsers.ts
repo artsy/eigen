@@ -1,10 +1,14 @@
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { isNil, isNumber, keyBy } from "lodash"
 import { Aggregation, FilterData, FilterParamName } from "../ArtworkFilterHelpers"
+import { DEFAULT_FILTERS } from "../ArtworkFilterStore"
 import { ATTRIBUTION_CLASS_OPTIONS } from "../Filters/AttributionClassOptions"
 import { COLORS } from "../Filters/ColorsOptions"
 import { localizeDimension, Numeric, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
 import { SIZE_OPTIONS } from "../Filters/SizeOptions"
+import { WAYS_TO_BUY_FILTER_PARAM_NAMES } from "../Filters/WaysToBuyOptions"
+
+type SearchCriteriaAttributeKeys = keyof SearchCriteriaAttributes
 
 // TODO: Update tests
 export const parsePriceForFilterParams = (criteria: SearchCriteriaAttributes): FilterData | null => {
@@ -158,6 +162,23 @@ export const parseAttributionClassesForFilterParams = (criteria: SearchCriteriaA
         paramName: FilterParamName.attributionClass,
       }
     }
+  }
+
+  return null
+}
+
+export const parseWaysToBuyForFilterParams = (criteria: SearchCriteriaAttributes): FilterData[] | null => {
+  const defautFilterParamByName = keyBy(DEFAULT_FILTERS, "paramName")
+  const availableWaysToBuyFilterParamNames = WAYS_TO_BUY_FILTER_PARAM_NAMES.filter(
+    (filterParamName) => !isNil(criteria[filterParamName as SearchCriteriaAttributeKeys])
+  )
+
+  if (availableWaysToBuyFilterParamNames.length > 0) {
+    return availableWaysToBuyFilterParamNames.map((filterParamName) => ({
+      displayText: defautFilterParamByName[filterParamName].displayText,
+      paramValue: criteria[filterParamName as SearchCriteriaAttributeKeys]!,
+      paramName: filterParamName,
+    }))
   }
 
   return null
