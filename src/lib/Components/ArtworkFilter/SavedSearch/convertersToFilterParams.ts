@@ -17,7 +17,7 @@ import { WAYS_TO_BUY_FILTER_PARAM_NAMES } from "../Filters/WaysToBuyOptions"
 
 type SearchCriteriaAttributeKeys = keyof SearchCriteriaAttributes
 
-export const parsePriceForFilterParams = (criteria: SearchCriteriaAttributes): FilterData | null => {
+export const convertPriceToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
   let parsedPriceMin: Numeric = "*"
   let parsedPriceMax: Numeric = "*"
 
@@ -39,7 +39,7 @@ export const parsePriceForFilterParams = (criteria: SearchCriteriaAttributes): F
   return null
 }
 
-export const parseCustomSizeFilterParamByName = (
+export const convertCustomSizeToFilterParamByName = (
   paramName: FilterParamName,
   min: number | null,
   max: number | null
@@ -56,7 +56,7 @@ export const parseCustomSizeFilterParamByName = (
   }
 }
 
-export const parseSizeForFilterParams = (criteria: SearchCriteriaAttributes): FilterData[] => {
+export const convertSizeToFilterParams = (criteria: SearchCriteriaAttributes): FilterData[] => {
   // Parse predefined size
   if (isNumber(criteria.dimensionScoreMin) || isNumber(criteria.dimensionScoreMax)) {
     const dimensionScoreMin = criteria.dimensionScoreMin ?? "*"
@@ -76,7 +76,7 @@ export const parseSizeForFilterParams = (criteria: SearchCriteriaAttributes): Fi
 
   // Parse custom width size
   if (isNumber(criteria.widthMin) || isNumber(criteria.widthMax)) {
-    const filterParamItem = parseCustomSizeFilterParamByName(
+    const filterParamItem = convertCustomSizeToFilterParamByName(
       FilterParamName.width,
       criteria.widthMin!,
       criteria.widthMax!
@@ -86,7 +86,7 @@ export const parseSizeForFilterParams = (criteria: SearchCriteriaAttributes): Fi
 
   // Parse custom height size
   if (isNumber(criteria.heightMin) || isNumber(criteria.heightMax)) {
-    const filterParamItem = parseCustomSizeFilterParamByName(
+    const filterParamItem = convertCustomSizeToFilterParamByName(
       FilterParamName.height,
       criteria.heightMin!,
       criteria.heightMax!
@@ -115,7 +115,7 @@ export const parseSizeForFilterParams = (criteria: SearchCriteriaAttributes): Fi
   ]
 }
 
-export const parseColorsForFilterParams = (criteria: SearchCriteriaAttributes): FilterData | null => {
+export const convertColorsToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
   if (!isNil(criteria.colors)) {
     const colorItemByValue = keyBy(COLORS, "value")
     const availableColors = criteria.colors.filter((color) => !!colorItemByValue[color])
@@ -133,7 +133,7 @@ export const parseColorsForFilterParams = (criteria: SearchCriteriaAttributes): 
   return null
 }
 
-export const parseAggregationValueNamesForFilterParams = (
+export const convertAggregationValueNamesToFilterParam = (
   paramName: FilterParamName,
   aggregations: Aggregation[],
   criteriaValues: string[]
@@ -153,7 +153,7 @@ export const parseAggregationValueNamesForFilterParams = (
   return null
 }
 
-export const parseAttributionClassesForFilterParams = (criteria: SearchCriteriaAttributes): FilterData | null => {
+export const convertAttributionToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
   if (!isNil(criteria.attributionClasses)) {
     const attributionItemByValue = keyBy(ATTRIBUTION_CLASS_OPTIONS, "paramValue")
     const availableAttributions = criteria.attributionClasses.filter(
@@ -173,7 +173,7 @@ export const parseAttributionClassesForFilterParams = (criteria: SearchCriteriaA
   return null
 }
 
-export const parseWaysToBuyForFilterParams = (criteria: SearchCriteriaAttributes): FilterData[] | null => {
+export const convertWaysToBuyToFilterParams = (criteria: SearchCriteriaAttributes): FilterData[] | null => {
   const defautFilterParamByName = keyBy(DEFAULT_FILTERS, "paramName")
   const availableWaysToBuyFilterParamNames = WAYS_TO_BUY_FILTER_PARAM_NAMES.filter(
     (filterParamName) => !isNil(criteria[filterParamName as SearchCriteriaAttributeKeys])
@@ -190,7 +190,7 @@ export const parseWaysToBuyForFilterParams = (criteria: SearchCriteriaAttributes
   return null
 }
 
-export const parseSavedSearchCriteriaForFilterParams = (
+export const convertSavedSearchCriteriaToFilterParams = (
   criteria: SearchCriteriaAttributes,
   aggregations: Aggregations
 ) => {
@@ -199,7 +199,7 @@ export const parseSavedSearchCriteriaForFilterParams = (
     aggregations,
     (aggregation) => filterKeyFromAggregation[aggregation.slice]
   ) as Dictionary<AggregationItem>
-  const shouldParseValueNamesFromAggregations: Partial<Record<SearchCriteriaAttributeKeys, FilterParamName>> = {
+  const shouldConvertValueNamesFromAggregations: Partial<Record<SearchCriteriaAttributeKeys, FilterParamName>> = {
     locationCities: FilterParamName.locationCities,
     majorPeriods: FilterParamName.timePeriod,
     materialsTerms: FilterParamName.materialsTerms,
@@ -207,16 +207,16 @@ export const parseSavedSearchCriteriaForFilterParams = (
     partnerIDs: FilterParamName.partnerIDs,
   }
 
-  const parserHandlers = [
-    parsePriceForFilterParams,
-    parseSizeForFilterParams,
-    parseColorsForFilterParams,
-    parseAttributionClassesForFilterParams,
-    parseWaysToBuyForFilterParams,
+  const converters = [
+    convertPriceToFilterParam,
+    convertSizeToFilterParams,
+    convertColorsToFilterParam,
+    convertAttributionToFilterParam,
+    convertWaysToBuyToFilterParams,
   ]
 
-  parserHandlers.forEach((parserHandler) => {
-    const filterParamItem = parserHandler(criteria)
+  converters.forEach((converter) => {
+    const filterParamItem = converter(criteria)
 
     if (filterParamItem) {
       filterParams = filterParams.concat(filterParamItem)
@@ -227,12 +227,12 @@ export const parseSavedSearchCriteriaForFilterParams = (
     const [key, value] = entry as [SearchCriteriaAttributeKeys, any]
 
     if (!isNull(value)) {
-      const filterParamName = shouldParseValueNamesFromAggregations[key]
+      const filterParamName = shouldConvertValueNamesFromAggregations[key]
       const aggregationValue = filterParamName && aggregationByFilterParamName[filterParamName]
 
       // Should get value names from aggregation
       if (filterParamName && aggregationValue) {
-        const filterParamItem = parseAggregationValueNamesForFilterParams(
+        const filterParamItem = convertAggregationValueNamesToFilterParam(
           filterParamName,
           aggregationValue.counts,
           value

@@ -1,18 +1,18 @@
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { Aggregation, Aggregations, FilterParamName } from "../../ArtworkFilterHelpers"
 import {
-  parseAggregationValueNamesForFilterParams,
-  parseAttributionClassesForFilterParams,
-  parseColorsForFilterParams,
-  parsePriceForFilterParams,
-  parseSavedSearchCriteriaForFilterParams,
-  parseSizeForFilterParams,
-  parseWaysToBuyForFilterParams,
-} from "../parsers"
+  convertAggregationValueNamesToFilterParam,
+  convertAttributionToFilterParam,
+  convertColorsToFilterParam,
+  convertPriceToFilterParam,
+  convertSavedSearchCriteriaToFilterParams,
+  convertSizeToFilterParams,
+  convertWaysToBuyToFilterParams,
+} from "../convertersToFilterParams"
 
-describe("parsePriceForFilterParams", () => {
+describe("convertPriceToFilterParam", () => {
   it("returns `$100–200` price range", () => {
-    const result = parsePriceForFilterParams({
+    const result = convertPriceToFilterParam({
       priceMin: 100,
       priceMax: 200,
     })
@@ -25,7 +25,7 @@ describe("parsePriceForFilterParams", () => {
   })
 
   it("returns `$50,000+` price range", () => {
-    const result = parsePriceForFilterParams({
+    const result = convertPriceToFilterParam({
       priceMin: 50000,
       priceMax: null,
     })
@@ -38,7 +38,7 @@ describe("parsePriceForFilterParams", () => {
   })
 
   it("returns `$0–1,000` price range", () => {
-    const result = parsePriceForFilterParams({
+    const result = convertPriceToFilterParam({
       priceMin: null,
       priceMax: 1000,
     })
@@ -51,7 +51,7 @@ describe("parsePriceForFilterParams", () => {
   })
 
   it("returns `*-*` price range", () => {
-    const result = parsePriceForFilterParams({
+    const result = convertPriceToFilterParam({
       priceMin: null,
       priceMax: null,
     })
@@ -60,9 +60,9 @@ describe("parsePriceForFilterParams", () => {
   })
 })
 
-describe("parseSizeForFilterParams", () => {
+describe("convertSizeToFilterParams", () => {
   it("returns the default size filter value", () => {
-    expect(parseSizeForFilterParams({})).toEqual([
+    expect(convertSizeToFilterParams({})).toEqual([
       {
         displayText: "All",
         paramValue: "*-*",
@@ -72,7 +72,7 @@ describe("parseSizeForFilterParams", () => {
   })
 
   it("returns the small size filter value", () => {
-    expect(parseSizeForFilterParams({ dimensionScoreMax: 16 })).toEqual([
+    expect(convertSizeToFilterParams({ dimensionScoreMax: 16 })).toEqual([
       {
         displayText: "Small (under 16in)",
         paramValue: "*-16.0",
@@ -82,7 +82,7 @@ describe("parseSizeForFilterParams", () => {
   })
 
   it("returns the medium size filter value", () => {
-    expect(parseSizeForFilterParams({ dimensionScoreMin: 16, dimensionScoreMax: 40 })).toEqual([
+    expect(convertSizeToFilterParams({ dimensionScoreMin: 16, dimensionScoreMax: 40 })).toEqual([
       {
         displayText: "Medium (under 16in – 40in)",
         paramValue: "16.0-40.0",
@@ -92,7 +92,7 @@ describe("parseSizeForFilterParams", () => {
   })
 
   it("returns only the minimum width for the size filter", () => {
-    expect(parseSizeForFilterParams({ widthMin: 100 })).toEqual([
+    expect(convertSizeToFilterParams({ widthMin: 100 })).toEqual([
       {
         displayText: "100-*",
         paramValue: "100-*",
@@ -107,7 +107,7 @@ describe("parseSizeForFilterParams", () => {
   })
 
   it("returns only the maximum width for the size filter", () => {
-    expect(parseSizeForFilterParams({ widthMax: 150 })).toEqual([
+    expect(convertSizeToFilterParams({ widthMax: 150 })).toEqual([
       {
         displayText: "*-150",
         paramValue: "*-150",
@@ -122,7 +122,7 @@ describe("parseSizeForFilterParams", () => {
   })
 
   it("returns the minimum and maximum width for the size filter", () => {
-    expect(parseSizeForFilterParams({ widthMin: 100, widthMax: 150 })).toEqual([
+    expect(convertSizeToFilterParams({ widthMin: 100, widthMax: 150 })).toEqual([
       {
         displayText: "100-150",
         paramValue: "100-150",
@@ -137,7 +137,7 @@ describe("parseSizeForFilterParams", () => {
   })
 
   it("returns only the minimum height for the size filter", () => {
-    expect(parseSizeForFilterParams({ heightMin: 200 })).toEqual([
+    expect(convertSizeToFilterParams({ heightMin: 200 })).toEqual([
       {
         displayText: "200-*",
         paramValue: "200-*",
@@ -152,7 +152,7 @@ describe("parseSizeForFilterParams", () => {
   })
 
   it("returns only the maximum height for the size filter", () => {
-    expect(parseSizeForFilterParams({ heightMax: 250 })).toEqual([
+    expect(convertSizeToFilterParams({ heightMax: 250 })).toEqual([
       {
         displayText: "*-250",
         paramValue: "*-250",
@@ -167,7 +167,7 @@ describe("parseSizeForFilterParams", () => {
   })
 
   it("returns the minimum and maximum height for the size filter", () => {
-    expect(parseSizeForFilterParams({ heightMin: 200, heightMax: 250 })).toEqual([
+    expect(convertSizeToFilterParams({ heightMin: 200, heightMax: 250 })).toEqual([
       {
         displayText: "200-250",
         paramValue: "200-250",
@@ -182,7 +182,7 @@ describe("parseSizeForFilterParams", () => {
   })
 
   it("returns the width and height for the size filter", () => {
-    expect(parseSizeForFilterParams({ widthMin: 100, widthMax: 150, heightMin: 200, heightMax: 250 })).toEqual([
+    expect(convertSizeToFilterParams({ widthMin: 100, widthMax: 150, heightMin: 200, heightMax: 250 })).toEqual([
       {
         displayText: "100-150",
         paramValue: "100-150",
@@ -202,10 +202,10 @@ describe("parseSizeForFilterParams", () => {
   })
 })
 
-describe("parseColorsForFilterParams", () => {
+describe("convertColorsToFilterParam", () => {
   it("returns the color filter", () => {
     expect(
-      parseColorsForFilterParams({
+      convertColorsToFilterParam({
         colors: ["gold", "red"],
         additionalGeneIDs: ["prints"],
       })
@@ -218,7 +218,7 @@ describe("parseColorsForFilterParams", () => {
 
   it("returns only the available colors in the color filter", () => {
     expect(
-      parseColorsForFilterParams({
+      convertColorsToFilterParam({
         colors: ["pink", "violet", "deep-purple"],
       })
     ).toEqual({
@@ -229,16 +229,16 @@ describe("parseColorsForFilterParams", () => {
   })
 
   it("returns nothing", () => {
-    expect(parseColorsForFilterParams({})).toBeNull()
+    expect(convertColorsToFilterParam({})).toBeNull()
     expect(
-      parseColorsForFilterParams({
+      convertColorsToFilterParam({
         colors: null,
       })
     ).toBeNull()
   })
 })
 
-describe("parseAggregationValueNamesForFilterParams", () => {
+describe("convertAggregationValueNamesToFilterParam", () => {
   it("returns the filter param with only available values", () => {
     const criteriaValues = ["prints", "ephemera-or-merchandise"]
     const aggregations: Aggregation[] = [
@@ -258,7 +258,7 @@ describe("parseAggregationValueNamesForFilterParams", () => {
         value: "ephemera-or-merchandise",
       },
     ]
-    const result = parseAggregationValueNamesForFilterParams(
+    const result = convertAggregationValueNamesToFilterParam(
       FilterParamName.additionalGeneIDs,
       aggregations,
       criteriaValues
@@ -286,7 +286,7 @@ describe("parseAggregationValueNamesForFilterParams", () => {
       },
     ]
 
-    const result = parseAggregationValueNamesForFilterParams(
+    const result = convertAggregationValueNamesToFilterParam(
       FilterParamName.additionalGeneIDs,
       aggregations,
       criteriaValues
@@ -296,9 +296,9 @@ describe("parseAggregationValueNamesForFilterParams", () => {
   })
 })
 
-describe("parseAttributionClassesForFilterParams", () => {
+describe("convertAttributionToFilterParam", () => {
   it("returns the rarity filter", () => {
-    const result = parseAttributionClassesForFilterParams({
+    const result = convertAttributionToFilterParam({
       attributionClasses: ["unknown edition", "open edition"],
     })
 
@@ -310,7 +310,7 @@ describe("parseAttributionClassesForFilterParams", () => {
   })
 
   it("returns the filter param with only available values", () => {
-    const result = parseAttributionClassesForFilterParams({
+    const result = convertAttributionToFilterParam({
       attributionClasses: ["limited edition", "unique", "something-unknown"],
     })
 
@@ -322,7 +322,7 @@ describe("parseAttributionClassesForFilterParams", () => {
   })
 
   it("returns nothing", () => {
-    const result = parseAttributionClassesForFilterParams({
+    const result = convertAttributionToFilterParam({
       attributionClasses: null,
     })
 
@@ -330,9 +330,9 @@ describe("parseAttributionClassesForFilterParams", () => {
   })
 })
 
-describe("parseWaysToBuyForFilterParams", () => {
+describe("convertWaysToBuyToFilterParams", () => {
   it("returns the ways to buy filter", () => {
-    const result = parseWaysToBuyForFilterParams({
+    const result = convertWaysToBuyToFilterParams({
       acquireable: null,
       atAuction: true,
       inquireableOnly: null,
@@ -354,7 +354,7 @@ describe("parseWaysToBuyForFilterParams", () => {
   })
 
   it("returns the filter param with only available values", () => {
-    const result = parseWaysToBuyForFilterParams({
+    const result = convertWaysToBuyToFilterParams({
       attributionClasses: ["limited edition", "unique", "something-unknown"],
       acquireable: true,
       atAuction: null,
@@ -377,7 +377,7 @@ describe("parseWaysToBuyForFilterParams", () => {
   })
 
   it("returns nothing", () => {
-    const result = parseAttributionClassesForFilterParams({
+    const result = convertWaysToBuyToFilterParams({
       attributionClasses: null,
     })
 
@@ -385,7 +385,7 @@ describe("parseWaysToBuyForFilterParams", () => {
   })
 })
 
-describe("parseSavedSearchCriteriaForFilterParams", () => {
+describe("convertSavedSearchCriteriaToFilterParams", () => {
   it("returns filter params for existing search criteria", () => {
     const aggregations: Aggregations = [
       {
@@ -460,7 +460,7 @@ describe("parseSavedSearchCriteriaForFilterParams", () => {
       widthMax: null,
       widthMin: null,
     }
-    const result = parseSavedSearchCriteriaForFilterParams(criteria, aggregations)
+    const result = convertSavedSearchCriteriaToFilterParams(criteria, aggregations)
 
     expect(result).toContainEqual({
       displayText: "$10,000–50,000",
@@ -598,7 +598,7 @@ describe("parseSavedSearchCriteriaForFilterParams", () => {
       widthMax: null,
       widthMin: null,
     }
-    const result = parseSavedSearchCriteriaForFilterParams(criteria, aggregations)
+    const result = convertSavedSearchCriteriaToFilterParams(criteria, aggregations)
 
     expect(result).toHaveLength(7)
   })
