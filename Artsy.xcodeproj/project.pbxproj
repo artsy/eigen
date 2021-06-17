@@ -36,6 +36,7 @@
 		1CFA4EB61E5C4B6B00D44A5A /* full_logo_black_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CFA4EB31E5C4B6B00D44A5A /* full_logo_black_large@2x.png */; };
 		1CFA4EB71E5C4B6B00D44A5A /* full_logo_black_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CFA4EB41E5C4B6B00D44A5A /* full_logo_black_medium@2x.png */; };
 		1CFA4EB81E5C4B6B00D44A5A /* full_logo_black_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CFA4EB51E5C4B6B00D44A5A /* full_logo_black_small@2x.png */; };
+		219967EC267B4B1C00ECA8E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 219967EB267B4B1C00ECA8E1 /* GoogleService-Info.plist */; };
 		229364D31EC65CDC00D2045E /* SaleStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229364D21EC65CDC00D2045E /* SaleStatusView.swift */; };
 		342F902302C1CF0FD342AB93 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F97C153D8524B132D0927 /* NSDate+Util.m */; };
 		342F9061CC93426E7F8579A2 /* ARFeedImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F966C989CF0BE97711FB6 /* ARFeedImageLoader.m */; };
@@ -552,6 +553,7 @@
 		1CFA4EB31E5C4B6B00D44A5A /* full_logo_black_large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_logo_black_large@2x.png"; sourceTree = "<group>"; };
 		1CFA4EB41E5C4B6B00D44A5A /* full_logo_black_medium@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_logo_black_medium@2x.png"; sourceTree = "<group>"; };
 		1CFA4EB51E5C4B6B00D44A5A /* full_logo_black_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_logo_black_small@2x.png"; sourceTree = "<group>"; };
+		219967EB267B4B1C00ECA8E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		229364D21EC65CDC00D2045E /* SaleStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaleStatusView.swift; path = Live_Auctions/Views/SaleStatusView.swift; sourceTree = "<group>"; };
 		29773A6F17B9749800FC89B3 /* ARHasImageBaseURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHasImageBaseURL.h; sourceTree = "<group>"; };
 		342F9036F798770D9E0CC66C /* UIImageView+AsyncImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AsyncImageLoading.h"; sourceTree = "<group>"; };
@@ -1704,6 +1706,7 @@
 		49BA7DF41655ABE600C06572 = {
 			isa = PBXGroup;
 			children = (
+				219967EB267B4B1C00ECA8E1 /* GoogleService-Info.plist */,
 				60FFE3D5188E916C0012B485 /* Documentation */,
 				49BA7E091655ABE600C06572 /* Artsy */,
 				B3ECE82B1819D1E6009F5C5B /* Artsy Tests */,
@@ -3178,6 +3181,7 @@
 				3C4AE99419094F96009C0E8B /* ViewInRoom_Bench@2x.png in Resources */,
 				3C4AE99219094F96009C0E8B /* ViewInRoom_Base@2x.png in Resources */,
 				609A42BD20C1D3F200B1B933 /* ARVIRTick@2x.png in Resources */,
+				219967EC267B4B1C00ECA8E1 /* GoogleService-Info.plist in Resources */,
 				609A42BC20C1D3F200B1B933 /* ARVIRTick.png in Resources */,
 				66A43C691CE470C400FFD6ED /* Hash@3x.png in Resources */,
 				605191931C7525AF0002E11A /* serif_modal_close@2x.png in Resources */,
@@ -3316,6 +3320,7 @@
 				"${PODS_ROOT}/Artsy+UILabels/Pod/Assets/Chevron_Black@2x.png",
 				"${PODS_ROOT}/Extraction/Extraction/Assets/ARLoadFailureRetryIcon@2x.png",
 				"${PODS_CONFIGURATION_BUILD_DIR}/FBSDKCoreKit/FacebookSDKStrings.bundle",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/MARKRangeSlider/MARKRangeSlider.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
@@ -3359,6 +3364,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Chevron_Black@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ARLoadFailureRetryIcon@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MARKRangeSlider.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/NPKeyboardLayoutGuide.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",

@@ -89,6 +89,7 @@
     "@react-native-community/netinfo": "4.6.1",
     "@react-native-community/viewpager": "^4.2.2",
     "@react-native-cookies/cookies": "^6.0.4",
+    "@react-native-google-signin/google-signin": "^6.0.0",
     "@react-native-mapbox-gl/maps": "8.2.0-beta2",
     "@react-navigation/bottom-tabs": "^5.11.7",
     "@react-navigation/native": "^5.9.2",

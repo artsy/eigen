@@ -66,6 +66,14 @@
 				<string>applewebdata</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.673710093763-se1qs22hunrs8dql3c0nq2b2in7vou11</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>2019.05.24.09</string>
@@ -77,10 +85,10 @@
 	<string>Artsy</string>
 	<key>GITCommitDate</key>
 	<string>2021-01-21T15:08:22+04:00</string>
-	<key>GITCommitShortHash</key>
-	<string>c77772ee1</string>
 	<key>GITCommitHash</key>
 	<string>c77772ee1f32093109049504f7865f9737ad8474</string>
+	<key>GITCommitShortHash</key>
+	<string>c77772ee1</string>
 	<key>GITRemoteOriginURL</key>
 	<string>https://github.com/artsy/eigen.git</string>
 	<key>ITSAppUsesNonExemptEncryption</key>

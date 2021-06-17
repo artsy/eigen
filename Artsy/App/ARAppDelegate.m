@@ -4,6 +4,7 @@
 #import <AFOAuth1Client/AFOAuth1Client.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <SailthruMobile/SailthruMobile.h>
+#import <Firebase.h>
 
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
@@ -181,6 +182,9 @@ static ARAppDelegate *_sharedInstance = nil;
 
     FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
     [fbAppDelegate application:application didFinishLaunchingWithOptions:launchOptions];
+    if ([FIRApp defaultApp] == nil) {
+        [FIRApp configure];
+    }
     return YES;
 }
 
