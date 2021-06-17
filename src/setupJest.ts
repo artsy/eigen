@@ -127,6 +127,12 @@ jest.mock("react-native-fbsdk-next", () => ({
   })),
 }))
 
+jest.mock("@react-native-google-signin/google-signin", () => ({
+  GoogleSignin: {
+    signOut: jest.fn(),
+  },
+}))
+
 // prettier-ignore
 // tslint:disable-next-line:no-empty
 jest.mock("@sentry/react-native", () => ({ captureMessage() {},  init() {},  setUser() {},  addBreadcrumb() {},  withScope() {} }))

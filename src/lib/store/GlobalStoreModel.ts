@@ -1,4 +1,5 @@
 import CookieManager from "@react-native-cookies/cookies"
+import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { Action, action, createStore, State, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import * as RelayCache from "lib/relay/RelayCache"
@@ -63,6 +64,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
     if (Platform.OS === "ios") {
       await LegacyNativeModules.ARTemporaryAPIModule.clearUserData()
     }
+    await GoogleSignin.signOut()
     LoginManager.logOut()
     CookieManager.clearAll()
     RelayCache.clearAll()
