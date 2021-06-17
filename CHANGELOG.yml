@@ -27,6 +27,7 @@ upcoming:
     - Show a toast message for saved search mutations - dzmitry tratsiak
     - Added "Auction lots for you" landing screen - damon
     - Fix Aligned InfoCircleIcon - gkartalis
+    - Aligned 'Next' button in the 'Sell work' menu
 
 releases:
   - version: 6.9.4
