@@ -8,7 +8,7 @@ import { AuctionResultForYouListItem } from "../AuctionResultForYouListItem"
 
 jest.unmock("react-relay")
 
-const mockAuctionResultForYoyListItemData = {
+const mockAuctionResultForYouListItemData = {
   currency: "GBP",
   dateText: "2002",
   id: "QXVjdGlvblJlc3VsdDozMjM0OTE=",
@@ -38,7 +38,7 @@ const mockAuctionResultForYoyListItemData = {
   title: "Laugh Now",
 }
 
-const mockAuctionResultForYoyListItemDataWithoutThumbnail = {
+const mockAuctionResultForYouListItemDataWithoutThumbnail = {
   currency: "GBP",
   dateText: "2002",
   id: "QXVjdGlvblJlc3VsdDozMjM0OTE=",
@@ -68,7 +68,7 @@ const mockAuctionResultForYoyListItemDataWithoutThumbnail = {
   title: "Laugh Now",
 }
 
-const mockAuctionResultForYoyListItemDataWithoutPrice = {
+const mockAuctionResultForYouListItemDataWithoutPrice = {
   currency: "GBP",
   dateText: "2002",
   id: "QXVjdGlvblJlc3VsdDozMjM0OTE=",
@@ -99,7 +99,7 @@ const mockAuctionResultForYoyListItemDataWithoutPrice = {
 }
 
 describe("AuctionResultForYouListItem", () => {
-  const renderAuctionResult = (mockData: any = mockAuctionResultForYoyListItemData) => {
+  const renderAuctionResult = (mockData: any = mockAuctionResultForYouListItemData) => {
     const tree = renderWithWrappers(<AuctionResultForYouListItem auctionResult={mockData} />)
 
     return tree
@@ -118,7 +118,7 @@ describe("AuctionResultForYouListItem", () => {
   })
 
   it("renders without a thumbnail", () => {
-    const tree = renderAuctionResult(mockAuctionResultForYoyListItemDataWithoutThumbnail)
+    const tree = renderAuctionResult(mockAuctionResultForYouListItemDataWithoutThumbnail)
 
     expect(tree.root.findByType(NoArtworkIcon)).toBeDefined()
   })
@@ -126,14 +126,14 @@ describe("AuctionResultForYouListItem", () => {
   it("displaying data in an auction result item", () => {
     const tree = renderAuctionResult()
 
-    expect(extractText(tree.root)).toContain(capitalize(mockAuctionResultForYoyListItemData.mediumText))
-    expect(extractText(tree.root)).toContain(mockAuctionResultForYoyListItemData.organization)
-    expect(extractText(tree.root)).toContain(mockAuctionResultForYoyListItemData.priceRealized.display)
-    expect(extractText(tree.root)).toContain(mockAuctionResultForYoyListItemData.performance.mid)
+    expect(extractText(tree.root)).toContain(capitalize(mockAuctionResultForYouListItemData.mediumText))
+    expect(extractText(tree.root)).toContain(mockAuctionResultForYouListItemData.organization)
+    expect(extractText(tree.root)).toContain(mockAuctionResultForYouListItemData.priceRealized.display)
+    expect(extractText(tree.root)).toContain(mockAuctionResultForYouListItemData.performance.mid)
   })
 
   it("renders Not available label in the case rendering a component without a price", () => {
-    const tree = renderAuctionResult(mockAuctionResultForYoyListItemDataWithoutPrice)
+    const tree = renderAuctionResult(mockAuctionResultForYouListItemDataWithoutPrice)
 
     expect(extractText(tree.root)).toContain("Not available")
   })
