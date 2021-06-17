@@ -73,7 +73,7 @@ PODS:
     - React-RCTText (= 0.63.3)
     - RNSentry (= 2.2.1)
     - RNSVG (= 9.13.3)
-    - SDWebImage (< 4, >= 3.7.2)
+    - SDWebImage (= 5.8.3)
     - tipsi-stripe (= 7.5.0)
   - Expecta (1.0.6)
   - "Expecta+Snapshots (3.1.1)":
@@ -212,6 +212,15 @@ PODS:
   - JSDecoupledAppDelegate (1.2.0)
   - JWTDecode (2.0.0)
   - libevent (2.1.12)
+  - libwebp (1.2.0):
+    - libwebp/demux (= 1.2.0)
+    - libwebp/mux (= 1.2.0)
+    - libwebp/webp (= 1.2.0)
+  - libwebp/demux (1.2.0):
+    - libwebp/webp
+  - libwebp/mux (1.2.0):
+    - libwebp/demux
+  - libwebp/webp (1.2.0)
   - Mantle (1.5.6):
     - Mantle/extobjc (= 1.5.6)
   - Mantle/extobjc (1.5.6)
@@ -523,6 +532,10 @@ PODS:
     - React
   - RNDeviceInfo (8.1.2):
     - React-Core
+  - RNFastImage (8.3.4):
+    - React-Core
+    - SDWebImage (~> 5.8)
+    - SDWebImageWebPCoder (~> 0.6.1)
   - RNGestureHandler (1.8.0):
     - React
   - RNImageCropPicker (0.35.1):
@@ -552,9 +565,12 @@ PODS:
   - SailthruMobile (11.0.1):
     - SailthruMobile/Extension (= 11.0.1)
   - SailthruMobile/Extension (11.0.1)
-  - SDWebImage (3.7.3):
-    - SDWebImage/Core (= 3.7.3)
-  - SDWebImage/Core (3.7.3)
+  - SDWebImage (5.8.3):
+    - SDWebImage/Core (= 5.8.3)
+  - SDWebImage/Core (5.8.3)
+  - SDWebImageWebPCoder (0.6.1):
+    - libwebp (~> 1.0)
+    - SDWebImage/Core (~> 5.7)
   - Sentry (6.1.4):
     - Sentry/Core (= 6.1.4)
   - Sentry/Core (6.1.4)
@@ -687,6 +703,7 @@ DEPENDENCIES:
   - "RNCClipboard (from `node_modules/@react-native-community/clipboard`)"
   - "RNCMaskedView (from `node_modules/@react-native-community/masked-view`)"
   - RNDeviceInfo (from `node_modules/react-native-device-info`)
+  - RNFastImage (from `node_modules/react-native-fast-image`)
   - RNGestureHandler (from `node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `node_modules/react-native-image-crop-picker`)
   - RNLocalize (from `node_modules/react-native-localize`)
@@ -697,7 +714,7 @@ DEPENDENCIES:
   - RNShare (from `node_modules/react-native-share`)
   - RNSVG (from `node_modules/react-native-svg`)
   - SailthruMobile
-  - SDWebImage (>= 3.7.2)
+  - SDWebImage (= 5.8.3)
   - Specta
   - Starscream
   - SwiftyJSON
@@ -709,7 +726,14 @@ DEPENDENCIES:
   - Yoga (from `./node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://cdn.cocoapods.org/:
+  https://github.com/artsy/Specs.git:
+    - Aerodramus
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts"
+    - "Artsy+UILabels"
+    - Artsy-UIButtons
+    - Extraction
+  trunk:
     - AFNetworkActivityLogger
     - AFNetworking
     - Analytics
@@ -738,6 +762,7 @@ SPEC REPOS:
     - JSDecoupledAppDelegate
     - JWTDecode
     - libevent
+    - libwebp
     - Mantle
     - Mapbox-iOS-SDK
     - MapboxMobileEvents
@@ -756,6 +781,7 @@ SPEC REPOS:
     - Quick
     - SailthruMobile
     - SDWebImage
+    - SDWebImageWebPCoder
     - Sentry
     - Specta
     - Starscream
@@ -767,13 +793,6 @@ SPEC REPOS:
     - "UIView+BooleanAnimations"
     - "XCTest+OHHTTPStubSuiteCleanUp"
     - YogaKit
-  https://github.com/artsy/Specs.git:
-    - Aerodramus
-    - "Artsy+UIColors"
-    - "Artsy+UIFonts"
-    - "Artsy+UILabels"
-    - Artsy-UIButtons
-    - Extraction
 
 EXTERNAL SOURCES:
   AFOAuth1Client:
@@ -882,6 +901,8 @@ EXTERNAL SOURCES:
     :path: "node_modules/@react-native-community/masked-view"
   RNDeviceInfo:
     :path: node_modules/react-native-device-info
+  RNFastImage:
+    :path: node_modules/react-native-fast-image
   RNGestureHandler:
     :path: node_modules/react-native-gesture-handler
   RNImageCropPicker:
@@ -947,7 +968,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 9ede96bbbc777ebfc06e0e633599c4d09f72978d
+  Emission: d1ca04d191776a641ee1224cd26da9eeec5d52ff
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": dcff217eef506dabd6dfdc7864ea2da321fafbb8
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
@@ -976,6 +997,7 @@ SPEC CHECKSUMS:
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
+  libwebp: e90b9c01d99205d03b6bb8f2c8c415e5a4ef66f0
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
   Mapbox-iOS-SDK: 2563ed87ead6ec08f1c2090873977b8a7be335a8
   MapboxMobileEvents: d0a581dedd8f47411cc65ea520b965e83914316e
@@ -1030,6 +1052,7 @@ SPEC CHECKSUMS:
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDeviceInfo: 3266783bcb6aa4b0c785d6080a407f8a5fc68326
+  RNFastImage: d4870d58f5936111c56218dbd7fcfc18e65b58ff
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNImageCropPicker: 16951bc02411f50c4d197488ed6406a23dc3b5f1
   RNLocalize: 41026b7c14878f1a1b381bc79f668f1fbf841adb
@@ -1040,7 +1063,8 @@ SPEC CHECKSUMS:
   RNShare: fed99fd743f80ca255903c1da46fc9a6430efab6
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SailthruMobile: df0a457a0be8cc9feaba16cc52deb527d89cab04
-  SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
+  SDWebImage: 112503ec94a5a2a41869503844a15e8d8f1ead5c
+  SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
   Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
@@ -1055,6 +1079,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: ee78128b95eb9e452f20ca0d54a96f466d841012
+PODFILE CHECKSUM: 0834572c384b645532b8633de4ca32604aab497f
 
 COCOAPODS: 1.10.1

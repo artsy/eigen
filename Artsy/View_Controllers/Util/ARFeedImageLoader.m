@@ -4,7 +4,7 @@
 
 #import "UIImage+ImageFromColor.h"
 #import "UIImageView+AsyncImageLoading.h"
-
+#import <SDWebImage/SDImageCache.h>
 // From the gravity source
 
 //version :small, if: :is_processing_delayed? do

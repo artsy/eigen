@@ -75,65 +75,65 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *
 
 - (void)setImageURL:(NSURL *)imageURL;
 {
-  if ([_imageURL isEqual:imageURL]) {
-    return;
-  }
-
-  // This is a weak reference, so either an operation is in-flight and
-  // needs cancelling, or it will be nil and this is a no-op.
-  [self.downloadOperation cancel];
-
-  _imageURL = imageURL;
-  if (_imageURL == nil) {
-    return;
-  }
-
-  // TODO: Setting decompress to NO, because Eigen sets it to YES.
-  //      We need to send a PR to SDWebImage to disable decoding
-  //      with an option to the download method.
-  //
-  SDWebImageManager *manager = [SDWebImageManager sharedManager];
-
-  manager.imageCache.shouldDecompressImages = NO;
-  manager.imageDownloader.shouldDecompressImages = NO;
-
-  __weak typeof(self) weakSelf = self;
-  [manager cachedImageExistsForURL:self.imageURL completion:^(BOOL isInCache) {
-    if (!isInCache) {
-      self.backgroundColor = self.placeholderBackgroundColor;
-    }
-
-
-    SDWebImageOptions options = 0;
-    options = options | (self.retryFailedURLs ? SDWebImageRetryFailed : 0);
-    options = options | (self.highPriority ? SDWebImageHighPriority : 0);
-
-    self.downloadOperation = [manager downloadImageWithURL:self.imageURL
-                                                   options:options
-                                                  progress:nil
-                                                 completed:^(UIImage *image,
-                                                             NSError *error,
-                                                             SDImageCacheType __,
-                                                             BOOL completed,
-                                                             NSURL *imageURL) {
-
-     __strong typeof(weakSelf) strongSelf = weakSelf;
-     // Only really assign if the URL we downloaded still matches `self.imageURL`.
-     if (strongSelf && [imageURL isEqual:strongSelf.imageURL]) {
-       if (strongSelf.failSilently && (error != nil || !completed)) {
-         return;
-       }
-       // The view might not yet be associated with a window, in which case
-       // -[UIView contentScaleFactor] would always return 1, so use screen instead.
-       CGFloat scaleFactor = [[UIScreen mainScreen] scale];
-       LoadImage(image, strongSelf.bounds.size, scaleFactor, strongSelf.placeholderBackgroundColor, strongSelf.highPriority, ^(UIImage *loadedImage) {
-         if ([imageURL isEqual:weakSelf.imageURL]) {
-           weakSelf.image = loadedImage;
-         }
-       });
-     }
-   }];
-  }];
+//  if ([_imageURL isEqual:imageURL]) {
+//    return;
+//  }
+//
+//  // This is a weak reference, so either an operation is in-flight and
+//  // needs cancelling, or it will be nil and this is a no-op.
+//  [self.downloadOperation cancel];
+//
+//  _imageURL = imageURL;
+//  if (_imageURL == nil) {
+//    return;
+//  }
+//
+//  // TODO: Setting decompress to NO, because Eigen sets it to YES.
+//  //      We need to send a PR to SDWebImage to disable decoding
+//  //      with an option to the download method.
+//  //
+//  SDWebImageManager *manager = [SDWebImageManager sharedManager];
+//
+//  manager.imageCache.shouldDecompressImages = NO;
+//  manager.imageDownloader.shouldDecompressImages = NO;
+//
+//  __weak typeof(self) weakSelf = self;
+//  [manager cachedImageExistsForURL:self.imageURL completion:^(BOOL isInCache) {
+//    if (!isInCache) {
+//      self.backgroundColor = self.placeholderBackgroundColor;
+//    }
+//
+//
+//    SDWebImageOptions options = 0;
+//    options = options | (self.retryFailedURLs ? SDWebImageRetryFailed : 0);
+//    options = options | (self.highPriority ? SDWebImageHighPriority : 0);
+//
+//    self.downloadOperation = [manager downloadImageWithURL:self.imageURL
+//                                                   options:options
+//                                                  progress:nil
+//                                                 completed:^(UIImage *image,
+//                                                             NSError *error,
+//                                                             SDImageCacheType __,
+//                                                             BOOL completed,
+//                                                             NSURL *imageURL) {
+//
+//     __strong typeof(weakSelf) strongSelf = weakSelf;
+//     // Only really assign if the URL we downloaded still matches `self.imageURL`.
+//     if (strongSelf && [imageURL isEqual:strongSelf.imageURL]) {
+//       if (strongSelf.failSilently && (error != nil || !completed)) {
+//         return;
+//       }
+//       // The view might not yet be associated with a window, in which case
+//       // -[UIView contentScaleFactor] would always return 1, so use screen instead.
+//       CGFloat scaleFactor = [[UIScreen mainScreen] scale];
+//       LoadImage(image, strongSelf.bounds.size, scaleFactor, strongSelf.placeholderBackgroundColor, strongSelf.highPriority, ^(UIImage *loadedImage) {
+//         if ([imageURL isEqual:weakSelf.imageURL]) {
+//           weakSelf.image = loadedImage;
+//         }
+//       });
+//     }
+//   }];
+//  }];
 }
 
 @end
