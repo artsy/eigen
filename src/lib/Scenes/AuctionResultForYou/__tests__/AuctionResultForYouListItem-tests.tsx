@@ -1,8 +1,9 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { capitalize } from "lodash"
-import { NoArtworkIcon } from "palette"
+import { capitalize, first } from "lodash"
+import { NoArtworkIcon, Touchable } from "palette"
 import React from "react"
 import { AuctionResultForYouListItem } from "../AuctionResultForYouListItem"
 
@@ -12,6 +13,7 @@ const mockAuctionResultForYouListItemData = {
   currency: "GBP",
   dateText: "2002",
   id: "QXVjdGlvblJlc3VsdDozMjM0OTE=",
+  artistID: "4d8b92bb4eb68a1b2c000452",
   internalID: "323491",
   images: {
     thumbnail: {
@@ -42,6 +44,7 @@ const mockAuctionResultForYouListItemDataWithoutThumbnail = {
   currency: "GBP",
   dateText: "2002",
   id: "QXVjdGlvblJlc3VsdDozMjM0OTE=",
+  artistID: "4d8b92bb4eb68a1b2c000452",
   internalID: "323491",
   images: {
     thumbnail: {
@@ -72,6 +75,7 @@ const mockAuctionResultForYouListItemDataWithoutPrice = {
   currency: "GBP",
   dateText: "2002",
   id: "QXVjdGlvblJlc3VsdDozMjM0OTE=",
+  artistID: "4d8b92bb4eb68a1b2c000452",
   internalID: "323491",
   images: {
     thumbnail: {
@@ -136,5 +140,15 @@ describe("AuctionResultForYouListItem", () => {
     const tree = renderAuctionResult(mockAuctionResultForYouListItemDataWithoutPrice)
 
     expect(extractText(tree.root)).toContain("Not available")
+  })
+
+  it("navigate to AuctionResult component", () => {
+    const tree = renderAuctionResult()
+
+    // @ts-ignore
+    first(tree.root.findAllByType(Touchable)).props.onPress()
+    expect(navigate).toHaveBeenCalledWith(
+      `/artist/${mockAuctionResultForYouListItemData?.artistID}/auction-result/${mockAuctionResultForYouListItemData?.internalID}`
+    )
   })
 })
