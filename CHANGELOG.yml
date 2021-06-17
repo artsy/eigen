@@ -2,6 +2,7 @@ upcoming:
   version: 6.9.5
   date: TBD
   dev:
+    - Add facebook authentication - dzmitry
     - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
     - Update open simulator command in getting started docs - ole
     - Update debugging docs - mounir
@@ -22,6 +23,7 @@ upcoming:
     - Add Filter Component to Collections Page - kizito
     - Check push notification permissions before saving search - kizito
     - Implement infinite scroll on android - kizito
+    - Removed native spinner component and replaced with palette spinner - gkartalis, pvinis
     - Show a toast message for saved search mutations - dzmitry tratsiak
     - Added "Auction lots for you" landing screen - damon
     - Fix Aligned InfoCircleIcon - gkartalis

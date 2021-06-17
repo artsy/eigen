@@ -1,11 +1,9 @@
-// @ts-ignore
-import React from "react"
-import { Animated, Easing } from "react-native"
+import React, { useEffect, useMemo } from "react"
+import { Animated, Easing, ViewProps } from "react-native"
 import styled from "styled-components/native"
-import { color } from "../../Theme"
-import { Color } from "../../Theme"
+import { Color, color as colorResolve } from "../../Theme"
 
-export interface SpinnerProps {
+export interface SpinnerProps extends ViewProps {
   /** Delay before spinner appears */
   delay?: number
   /** Width of the spinner */
@@ -52,47 +50,42 @@ export const getSize = (props: SpinnerProps) => {
 /**
  * Spinner component for React Native
  */
-export class Spinner extends React.Component<SpinnerProps> {
-  static defaultProps: SpinnerProps = {
-    size: "medium",
-    color: "black100",
-  }
-  rotation: Animated.Value
+export const Spinner: React.FC<SpinnerProps> = ({ size = "medium", color = "black100", ...rest }) => {
+  const rotation = useMemo(() => new Animated.Value(0), [])
 
-  constructor(props: SpinnerProps) {
-    super(props)
-    this.rotation = new Animated.Value(0)
-  }
-
-  componentDidMount() {
-    this.startRotation()
-  }
-
-  startRotation() {
-    this.rotation.setValue(0)
-    Animated.timing(this.rotation, {
-      toValue: 1,
-      duration: 1000,
-      easing: Easing.linear,
-      useNativeDriver: true,
-    }).start(() => this.startRotation())
+  const startRotation = () => {
+    Animated.loop(
+      Animated.timing(rotation, {
+        toValue: 1,
+        duration: 1000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+      {
+        iterations: -1,
+      }
+    ).start()
   }
 
-  render() {
-    const RotateData = this.rotation.interpolate({
-      inputRange: [0, 1],
-      outputRange: ["0deg", "360deg"],
-    })
+  useEffect(() => {
+    startRotation()
+  }, [])
 
-    return (
-      <Bar
-        {...this.props}
-        style={{
-          transform: [{ rotate: RotateData }],
-        }}
-      />
-    )
-  }
+  const style = [
+    {
+      transform: [
+        {
+          rotate: rotation.interpolate({
+            inputRange: [0, 1],
+            outputRange: ["0deg", "360deg"],
+          }),
+        },
+      ],
+    },
+    rest.style,
+  ]
+
+  return <Bar size={size} color={color} {...rest} style={style} />
 }
 
 /** Generic Spinner component */
@@ -104,7 +97,7 @@ const Bar = styled(Animated.View)<SpinnerProps>`
     const { width, height } = getSize(props)
 
     return `
-      background: ${color(props.color)};
+      background: ${colorResolve(props.color)};
       width: ${width}px;
       height: ${height}px;
     `
