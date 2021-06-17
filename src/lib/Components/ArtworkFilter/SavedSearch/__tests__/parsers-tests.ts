@@ -1,6 +1,7 @@
 import { Aggregation, FilterParamName } from "../../ArtworkFilterHelpers"
 import {
   parseAggregationValueNamesForFilterParams,
+  parseAttributionClassesForFilterParams,
   parseColorsForFilterParams,
   parsePriceForFilterParams,
   parseSizeForFilterParams,
@@ -275,3 +276,38 @@ describe("parseAggregationValueNamesForFilterParams", () => {
     expect(result).toBeNull()
   })
 })
+
+describe("parseAttributionClassesForFilterParams", () => {
+  it("returns the rarity filter", () => {
+    const result = parseAttributionClassesForFilterParams({
+      attributionClasses: ["unknown edition", "open edition"],
+    })
+
+    expect(result).toEqual({
+      displayText: "Unknown Edition, Open Edition",
+      paramValue: ["unknown edition", "open edition"],
+      paramName: FilterParamName.attributionClass,
+    })
+  })
+
+  it("returns the filter param with only available values", () => {
+    const result = parseAttributionClassesForFilterParams({
+      attributionClasses: ["limited edition", "unique", "something-unknown"],
+    })
+
+    expect(result).toEqual({
+      displayText: "Limited Edition, Unique",
+      paramValue: ["limited edition", "unique"],
+      paramName: FilterParamName.attributionClass,
+    })
+  })
+
+  it("returns nothing", () => {
+    const result = parseAttributionClassesForFilterParams({
+      attributionClasses: null,
+    })
+
+    expect(result).toBeNull()
+  })
+})
+

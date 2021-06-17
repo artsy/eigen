@@ -1,33 +1,32 @@
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { isNil, isNumber, keyBy } from "lodash"
 import { Aggregation, FilterData, FilterParamName } from "../ArtworkFilterHelpers"
+import { ATTRIBUTION_CLASS_OPTIONS } from "../Filters/AttributionClassOptions"
 import { COLORS } from "../Filters/ColorsOptions"
 import { localizeDimension, Numeric, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
 import { SIZE_OPTIONS } from "../Filters/SizeOptions"
 
-export const parsePriceForFilterParams = (priceMin: number | null, priceMax: number | null): FilterData => {
+// TODO: Update tests
+export const parsePriceForFilterParams = (criteria: SearchCriteriaAttributes): FilterData | null => {
   let parsedPriceMin: Numeric = "*"
   let parsedPriceMax: Numeric = "*"
-  let paramValue = "*-*"
-  let displayText = "All"
 
-  if (isNumber(priceMin)) {
-    parsedPriceMin = priceMin
+  if (isNumber(criteria.priceMin)) {
+    parsedPriceMin = criteria.priceMin
   }
-  if (isNumber(priceMax)) {
-    parsedPriceMax = priceMax
+  if (isNumber(criteria.priceMax)) {
+    parsedPriceMax = criteria.priceMax
   }
 
   if (parsedPriceMin !== "*" || parsedPriceMax !== "*") {
-    displayText = parsePriceRangeLabel(parsedPriceMin, parsedPriceMax)
-    paramValue = `${parsedPriceMin}-${parsedPriceMax}`
+    return {
+      displayText: parsePriceRangeLabel(parsedPriceMin, parsedPriceMax),
+      paramValue: `${parsedPriceMin}-${parsedPriceMax}`,
+      paramName: FilterParamName.priceRange,
+    }
   }
 
-  return {
-    displayText,
-    paramValue,
-    paramName: FilterParamName.priceRange,
-  }
+  return null
 }
 
 export const parseCustomSizeFilterParamByName = (
@@ -138,6 +137,26 @@ export const parseAggregationValueNamesForFilterParams = (
       displayText: names.join(", "),
       paramValue: availableValues,
       paramName,
+    }
+  }
+
+  return null
+}
+
+export const parseAttributionClassesForFilterParams = (criteria: SearchCriteriaAttributes): FilterData | null => {
+  if (!isNil(criteria.attributionClasses)) {
+    const attributionItemByValue = keyBy(ATTRIBUTION_CLASS_OPTIONS, "paramValue")
+    const availableAttributions = criteria.attributionClasses.filter(
+      (attribution) => !!attributionItemByValue[attribution]
+    )
+    const names = availableAttributions.map((attribution) => attributionItemByValue[attribution].displayText)
+
+    if (availableAttributions.length > 0) {
+      return {
+        displayText: names.join(", "),
+        paramValue: availableAttributions,
+        paramName: FilterParamName.attributionClass,
+      }
     }
   }
 
