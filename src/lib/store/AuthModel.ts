@@ -1,4 +1,4 @@
-import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin"
+import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { isArtsyEmail } from "lib/utils/general"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
