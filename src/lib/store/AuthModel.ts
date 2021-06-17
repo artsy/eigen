@@ -1,3 +1,4 @@
+import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { isArtsyEmail } from "lib/utils/general"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
@@ -51,6 +52,7 @@ export interface AuthModel {
     Promise<boolean>
   >
   authFacebook: Thunk<AuthModel, { signInOrUp: "signIn" | "signUp" }, {}, GlobalStoreModel, Promise<true>>
+  authGoogle: Thunk<AuthModel, { signInOrUp: "signIn" | "signUp" }, {}, GlobalStoreModel, Promise<boolean>>
   forgotPassword: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel, Promise<boolean>>
   gravityUnauthenticatedRequest: Thunk<
     this,
@@ -166,24 +168,28 @@ export const getAuthModel = (): AuthModel => ({
   }),
   signIn: thunk(async (actions, { email, password, accessToken, oauthProvider }) => {
     let body
-    if (oauthProvider === "facebook") {
-      body = {
-        oauth_provider: "facebook",
-        oauth_token: accessToken,
-        client_id: Config.ARTSY_API_CLIENT_KEY,
-        client_secret: Config.ARTSY_API_CLIENT_SECRET,
-        grant_type: "oauth_token",
-        scope: "offline_access",
-      }
-    } else {
-      body = {
-        email,
-        password,
-        client_id: Config.ARTSY_API_CLIENT_KEY,
-        client_secret: Config.ARTSY_API_CLIENT_SECRET,
-        grant_type: "credentials",
-        scope: "offline_access",
-      }
+    switch (oauthProvider) {
+      case "facebook":
+      case "google":
+        body = {
+          oauth_provider: oauthProvider,
+          oauth_token: accessToken,
+          client_id: Config.ARTSY_API_CLIENT_KEY,
+          client_secret: Config.ARTSY_API_CLIENT_SECRET,
+          grant_type: "oauth_token",
+          scope: "offline_access",
+        }
+        break
+      default:
+        body = {
+          email,
+          password,
+          client_id: Config.ARTSY_API_CLIENT_KEY,
+          client_secret: Config.ARTSY_API_CLIENT_SECRET,
+          grant_type: "credentials",
+          scope: "offline_access",
+        }
+        break
     }
 
     const result = await actions.gravityUnauthenticatedRequest({
@@ -218,24 +224,29 @@ export const getAuthModel = (): AuthModel => ({
   }),
   signUp: thunk(async (actions, { email, password, name, accessToken, oauthProvider }) => {
     let body
-    if (oauthProvider === "facebook") {
-      body = {
-        provider: "facebook",
-        oauth_token: accessToken,
-        email,
-        name,
-        agreed_to_receive_emails: true,
-        accepted_terms_of_service: true,
-      }
-    } else {
-      body = {
-        email,
-        password,
-        name,
-        agreed_to_receive_emails: true,
-        accepted_terms_of_service: true,
-      }
+    switch (oauthProvider) {
+      case "facebook":
+      case "google":
+        body = {
+          provider: oauthProvider,
+          oauth_token: accessToken,
+          email,
+          name,
+          agreed_to_receive_emails: true,
+          accepted_terms_of_service: true,
+        }
+        break
+      default:
+        body = {
+          email,
+          password,
+          name,
+          agreed_to_receive_emails: true,
+          accepted_terms_of_service: true,
+        }
+        break
     }
+
     const result = await actions.gravityUnauthenticatedRequest({
       path: `/api/v1/user`,
       method: "POST",
@@ -341,6 +352,78 @@ export const getAuthModel = (): AuthModel => ({
         responseFacebookInfoCallback
       )
       new GraphRequestManager().addRequest(infoRequest).start()
+    })
+  }),
+  authGoogle: thunk(async (actions, { signInOrUp }) => {
+    GoogleSignin.configure({
+      webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
+    })
+    return await new Promise<true>(async (resolve, reject) => {
+      try {
+        await GoogleSignin.hasPlayServices()
+        const userInfo = await GoogleSignin.signIn()
+        const accessToken = (await GoogleSignin.getTokens()).accessToken
+
+        if (signInOrUp === "signUp") {
+          const resultGravitySignUp =
+            userInfo.user.name &&
+            (await actions.signUp({
+              email: userInfo.user.email,
+              name: userInfo.user.name,
+              accessToken,
+              oauthProvider: "google",
+            }))
+
+          resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
+        }
+
+        if (signInOrUp === "signIn") {
+          // we need to get X-ACCESS-TOKEN before actual sign in
+          const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
+            path: `/oauth2/access_token`,
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: {
+              oauth_provider: "google",
+              oauth_token: accessToken,
+              client_id: Config.ARTSY_API_CLIENT_KEY,
+              client_secret: Config.ARTSY_API_CLIENT_SECRET,
+              grant_type: "oauth_token",
+              scope: "offline_access",
+            },
+          })
+
+          if (resultGravityAccessToken.status === 201) {
+            const { access_token: xAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
+            const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
+              path: `/api/v1/me`,
+              headers: { "X-ACCESS-TOKEN": xAccessToken },
+            })
+            const { email } = await resultGravityEmail.json()
+            const resultGravitySignIn = await actions.signIn({
+              email,
+              accessToken,
+              oauthProvider: "google",
+            })
+
+            resultGravitySignIn ? resolve(true) : reject("Failed to log in.")
+          } else {
+            const res = await resultGravityAccessToken.json()
+            if (res.error_description) {
+              console.log(res) // This will get us the error on sentry because we capture console.logs there
+              reject(`Failed to get gravity token from gravity: ${res.error_description}`)
+            }
+          }
+        }
+      } catch (error) {
+        if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+          reject("Play services are not available.")
+        } else {
+          reject("Failed to sign up.")
+        }
+      }
     })
   }),
   notifyTracking: thunk((_, { userId }) => {
