@@ -1,5 +1,5 @@
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
-import { Dictionary, isNil, isNull, isNumber, keyBy } from "lodash"
+import { Dictionary, isNil, isNumber, keyBy } from "lodash"
 import {
   Aggregation,
   AggregationItem,
@@ -138,9 +138,9 @@ export const convertAggregationValueNamesToFilterParam = (
   aggregations: Aggregation[],
   criteriaValues: string[]
 ): FilterData | null => {
-  const aggregationValueByName = keyBy(aggregations, "value")
-  const availableValues = criteriaValues.filter((criteriaValue) => !!aggregationValueByName[criteriaValue])
-  const names = availableValues.map((value) => aggregationValueByName[value].name)
+  const aggregationByValue = keyBy(aggregations, "value")
+  const availableValues = criteriaValues.filter((criteriaValue) => !!aggregationByValue[criteriaValue])
+  const names = availableValues.map((value) => aggregationByValue[value].name)
 
   if (availableValues.length > 0) {
     return {
@@ -199,13 +199,13 @@ export const convertSavedSearchCriteriaToFilterParams = (
     aggregations,
     (aggregation) => filterKeyFromAggregation[aggregation.slice]
   ) as Dictionary<AggregationItem>
-  const shouldConvertValueNamesFromAggregations: Partial<Record<SearchCriteriaAttributeKeys, FilterParamName>> = {
-    locationCities: FilterParamName.locationCities,
-    majorPeriods: FilterParamName.timePeriod,
-    materialsTerms: FilterParamName.materialsTerms,
-    additionalGeneIDs: FilterParamName.additionalGeneIDs,
-    partnerIDs: FilterParamName.partnerIDs,
-  }
+  const shouldExtractValueNamesFromAggregation = [
+    FilterParamName.locationCities,
+    FilterParamName.timePeriod,
+    FilterParamName.materialsTerms,
+    FilterParamName.additionalGeneIDs,
+    FilterParamName.partnerIDs,
+  ]
 
   const converters = [
     convertPriceToFilterParam,
@@ -223,24 +223,20 @@ export const convertSavedSearchCriteriaToFilterParams = (
     }
   })
 
-  Object.entries(criteria).forEach((entry) => {
-    const [key, value] = entry as [SearchCriteriaAttributeKeys, any]
+  // Extract value names from aggregation
+  shouldExtractValueNamesFromAggregation.forEach((filterParamName) => {
+    const aggregationValue = aggregationByFilterParamName[filterParamName]
+    const criteriaValue = criteria[filterParamName as SearchCriteriaAttributeKeys] as string[]
 
-    if (!isNull(value)) {
-      const filterParamName = shouldConvertValueNamesFromAggregations[key]
-      const aggregationValue = filterParamName && aggregationByFilterParamName[filterParamName]
+    if (aggregationValue) {
+      const filterParamItem = convertAggregationValueNamesToFilterParam(
+        filterParamName,
+        aggregationValue.counts,
+        criteriaValue
+      )
 
-      // Should get value names from aggregation
-      if (filterParamName && aggregationValue) {
-        const filterParamItem = convertAggregationValueNamesToFilterParam(
-          filterParamName,
-          aggregationValue.counts,
-          value
-        )
-
-        if (filterParamItem) {
-          filterParams = filterParams.concat(filterParamItem)
-        }
+      if (filterParamItem) {
+        filterParams = filterParams.concat(filterParamItem)
       }
     }
   })
