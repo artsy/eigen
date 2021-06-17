@@ -37,7 +37,7 @@ describe("ShipsToSection", () => {
     mockEnvironmentPayload(mockEnvironment, {
       CommerceOrder: () => ({
         requestedFulfillment: {
-          ____typename: "CommerceShip",
+          __typename: "CommerceShip",
           name: "my name",
           addressLine1: "myadress",
           city: "mycity",

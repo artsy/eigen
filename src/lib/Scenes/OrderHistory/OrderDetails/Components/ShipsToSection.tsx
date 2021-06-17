@@ -38,7 +38,7 @@ export const ShipsToSection: React.FC<Props> = ({ address }) => {
           </Text>
         </Box>
         <Text testID="country" color="black60" variant="text">
-          {COUNTRY_SELECT_OPTIONS.find(({ value }) => value === country)!.label}
+          {COUNTRY_SELECT_OPTIONS.find(({ value }) => value === country)?.label || country}
         </Text>
         <Text testID="phoneNumber" color="black60" variant="text">
           {phoneNumber}
