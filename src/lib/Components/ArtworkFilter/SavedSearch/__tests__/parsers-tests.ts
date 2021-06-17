@@ -10,7 +10,12 @@ import {
 
 describe("parsePriceForFilterParams", () => {
   it("returns `$100–200` price range", () => {
-    expect(parsePriceForFilterParams(100, 200)).toEqual({
+    const result = parsePriceForFilterParams({
+      priceMin: 100,
+      priceMax: 200,
+    })
+
+    expect(result).toEqual({
       displayText: "$100–200",
       paramValue: "100-200",
       paramName: FilterParamName.priceRange,
@@ -18,7 +23,12 @@ describe("parsePriceForFilterParams", () => {
   })
 
   it("returns `$50,000+` price range", () => {
-    expect(parsePriceForFilterParams(50000, null)).toEqual({
+    const result = parsePriceForFilterParams({
+      priceMin: 50000,
+      priceMax: null,
+    })
+
+    expect(result).toEqual({
       displayText: "$50,000+",
       paramValue: "50000-*",
       paramName: FilterParamName.priceRange,
@@ -26,7 +36,12 @@ describe("parsePriceForFilterParams", () => {
   })
 
   it("returns `$0–1,000` price range", () => {
-    expect(parsePriceForFilterParams(null, 1000)).toEqual({
+    const result = parsePriceForFilterParams({
+      priceMin: null,
+      priceMax: 1000,
+    })
+
+    expect(result).toEqual({
       displayText: "$0–1,000",
       paramValue: "*-1000",
       paramName: FilterParamName.priceRange,
@@ -34,11 +49,12 @@ describe("parsePriceForFilterParams", () => {
   })
 
   it("returns `*-*` price range", () => {
-    expect(parsePriceForFilterParams(null, null)).toEqual({
-      displayText: "All",
-      paramValue: "*-*",
-      paramName: FilterParamName.priceRange,
+    const result = parsePriceForFilterParams({
+      priceMin: null,
+      priceMax: null,
     })
+
+    expect(result).toBeNull()
   })
 })
 
