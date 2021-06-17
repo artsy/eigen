@@ -130,6 +130,10 @@ jest.mock("react-native-fbsdk-next", () => ({
 jest.mock("@react-native-google-signin/google-signin", () => ({
   GoogleSignin: {
     signOut: jest.fn(),
+    configure: jest.fn(),
+    hasPlayServices: jest.fn(),
+    signIn: jest.fn(),
+    getTokens: jest.fn(),
   },
 }))
 
