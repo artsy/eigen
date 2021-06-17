@@ -1,6 +1,13 @@
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
-import { isNil, isNumber, keyBy } from "lodash"
-import { Aggregation, FilterData, FilterParamName } from "../ArtworkFilterHelpers"
+import { Dictionary, isNil, isNull, isNumber, keyBy } from "lodash"
+import {
+  Aggregation,
+  AggregationItem,
+  Aggregations,
+  FilterData,
+  filterKeyFromAggregation,
+  FilterParamName,
+} from "../ArtworkFilterHelpers"
 import { DEFAULT_FILTERS } from "../ArtworkFilterStore"
 import { ATTRIBUTION_CLASS_OPTIONS } from "../Filters/AttributionClassOptions"
 import { COLORS } from "../Filters/ColorsOptions"
@@ -10,7 +17,6 @@ import { WAYS_TO_BUY_FILTER_PARAM_NAMES } from "../Filters/WaysToBuyOptions"
 
 type SearchCriteriaAttributeKeys = keyof SearchCriteriaAttributes
 
-// TODO: Update tests
 export const parsePriceForFilterParams = (criteria: SearchCriteriaAttributes): FilterData | null => {
   let parsedPriceMin: Numeric = "*"
   let parsedPriceMax: Numeric = "*"
@@ -182,4 +188,62 @@ export const parseWaysToBuyForFilterParams = (criteria: SearchCriteriaAttributes
   }
 
   return null
+}
+
+export const parseSavedSearchCriteriaForFilterParams = (
+  criteria: SearchCriteriaAttributes,
+  aggregations: Aggregations
+) => {
+  let filterParams: FilterData[] = []
+  const aggregationByFilterParamName = keyBy(
+    aggregations,
+    (aggregation) => filterKeyFromAggregation[aggregation.slice]
+  ) as Dictionary<AggregationItem>
+  const shouldParseValueNamesFromAggregations: Partial<Record<SearchCriteriaAttributeKeys, FilterParamName>> = {
+    locationCities: FilterParamName.locationCities,
+    majorPeriods: FilterParamName.timePeriod,
+    materialsTerms: FilterParamName.materialsTerms,
+    additionalGeneIDs: FilterParamName.additionalGeneIDs,
+    partnerIDs: FilterParamName.partnerIDs,
+  }
+
+  const parserHandlers = [
+    parsePriceForFilterParams,
+    parseSizeForFilterParams,
+    parseColorsForFilterParams,
+    parseAttributionClassesForFilterParams,
+    parseWaysToBuyForFilterParams,
+  ]
+
+  parserHandlers.forEach((parserHandler) => {
+    const filterParamItem = parserHandler(criteria)
+
+    if (filterParamItem) {
+      filterParams = filterParams.concat(filterParamItem)
+    }
+  })
+
+  Object.entries(criteria).forEach((entry) => {
+    const [key, value] = entry as [SearchCriteriaAttributeKeys, any]
+
+    if (!isNull(value)) {
+      const filterParamName = shouldParseValueNamesFromAggregations[key]
+      const aggregationValue = filterParamName && aggregationByFilterParamName[filterParamName]
+
+      // Should get value names from aggregation
+      if (filterParamName && aggregationValue) {
+        const filterParamItem = parseAggregationValueNamesForFilterParams(
+          filterParamName,
+          aggregationValue.counts,
+          value
+        )
+
+        if (filterParamItem) {
+          filterParams = filterParams.concat(filterParamItem)
+        }
+      }
+    }
+  })
+
+  return filterParams
 }

@@ -1,9 +1,11 @@
-import { Aggregation, FilterParamName } from "../../ArtworkFilterHelpers"
+import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
+import { Aggregation, Aggregations, FilterParamName } from "../../ArtworkFilterHelpers"
 import {
   parseAggregationValueNamesForFilterParams,
   parseAttributionClassesForFilterParams,
   parseColorsForFilterParams,
   parsePriceForFilterParams,
+  parseSavedSearchCriteriaForFilterParams,
   parseSizeForFilterParams,
   parseWaysToBuyForFilterParams,
 } from "../parsers"
@@ -380,5 +382,224 @@ describe("parseWaysToBuyForFilterParams", () => {
     })
 
     expect(result).toBeNull()
+  })
+})
+
+describe("parseSavedSearchCriteriaForFilterParams", () => {
+  it("returns filter params for existing search criteria", () => {
+    const aggregations: Aggregations = [
+      {
+        slice: "MEDIUM",
+        counts: [
+          {
+            count: 18037,
+            name: "Photography",
+            value: "photography",
+          },
+          {
+            count: 2420,
+            name: "Prints",
+            value: "prints",
+          },
+          {
+            count: 513,
+            name: "Ephemera or Merchandise",
+            value: "ephemera-or-merchandise",
+          },
+        ],
+      },
+      {
+        slice: "LOCATION_CITY",
+        counts: [
+          {
+            count: 18242,
+            name: "New York, NY, USA",
+            value: "New York, NY, USA",
+          },
+          {
+            count: 322,
+            name: "London, United Kingdom",
+            value: "London, United Kingdom",
+          },
+        ],
+      },
+      {
+        slice: "PARTNER",
+        counts: [
+          {
+            count: 18210,
+            name: "Cypress Test Partner [For Automated Testing Purposes]",
+            value: "cypress-test-partner-for-automated-testing-purposes",
+          },
+          {
+            count: 578,
+            name: "Tate Ward Auctions",
+            value: "tate-ward-auctions",
+          },
+        ],
+      },
+    ]
+    const criteria: SearchCriteriaAttributes = {
+      acquireable: null,
+      additionalGeneIDs: ["prints"],
+      atAuction: true,
+      attributionClasses: ["unknown edition", "open edition"],
+      colors: ["gold", "red"],
+      dimensionScoreMax: 40,
+      dimensionScoreMin: 16,
+      heightMax: null,
+      heightMin: null,
+      inquireableOnly: null,
+      locationCities: ["New York, NY, USA"],
+      majorPeriods: ["2000"],
+      materialsTerms: ["screen print"],
+      offerable: true,
+      partnerIDs: ["tate-ward-auctions"],
+      priceMax: 50000,
+      priceMin: 10000,
+      widthMax: null,
+      widthMin: null,
+    }
+    const result = parseSavedSearchCriteriaForFilterParams(criteria, aggregations)
+
+    expect(result).toContainEqual({
+      displayText: "$10,000–50,000",
+      paramValue: "10000-50000",
+      paramName: FilterParamName.priceRange,
+    })
+    expect(result).toContainEqual({
+      displayText: `Medium (under 16in – 40in)`,
+      paramValue: "16.0-40.0",
+      paramName: FilterParamName.dimensionRange,
+    })
+    expect(result).toContainEqual({
+      displayText: `Medium (under 16in – 40in)`,
+      paramValue: "16.0-40.0",
+      paramName: FilterParamName.dimensionRange,
+    })
+    expect(result).toContainEqual({
+      displayText: `Medium (under 16in – 40in)`,
+      paramValue: "16.0-40.0",
+      paramName: FilterParamName.dimensionRange,
+    })
+    expect(result).toContainEqual({
+      displayText: "Gold, Red",
+      paramValue: ["gold", "red"],
+      paramName: FilterParamName.colors,
+    })
+    expect(result).toContainEqual({
+      displayText: "New York, NY, USA",
+      paramValue: ["New York, NY, USA"],
+      paramName: FilterParamName.locationCities,
+    })
+    expect(result).toContainEqual({
+      displayText: "New York, NY, USA",
+      paramValue: ["New York, NY, USA"],
+      paramName: FilterParamName.locationCities,
+    })
+    expect(result).toContainEqual({
+      displayText: "Prints",
+      paramValue: ["prints"],
+      paramName: FilterParamName.additionalGeneIDs,
+    })
+    expect(result).toContainEqual({
+      displayText: "Unknown Edition, Open Edition",
+      paramValue: ["unknown edition", "open edition"],
+      paramName: FilterParamName.attributionClass,
+    })
+    expect(result).toContainEqual({
+      displayText: "Make offer",
+      paramValue: true,
+      paramName: FilterParamName.waysToBuyMakeOffer,
+    })
+    expect(result).toContainEqual({
+      displayText: "Bid",
+      paramValue: true,
+      paramName: FilterParamName.waysToBuyBid,
+    })
+    expect(result).toContainEqual({
+      displayText: "Tate Ward Auctions",
+      paramValue: ["tate-ward-auctions"],
+      paramName: FilterParamName.partnerIDs,
+    })
+  })
+
+  it("returns the correct length of filter params", () => {
+    const aggregations: Aggregations = [
+      {
+        slice: "MEDIUM",
+        counts: [
+          {
+            count: 18037,
+            name: "Photography",
+            value: "photography",
+          },
+          {
+            count: 2420,
+            name: "Prints",
+            value: "prints",
+          },
+          {
+            count: 513,
+            name: "Ephemera or Merchandise",
+            value: "ephemera-or-merchandise",
+          },
+        ],
+      },
+      {
+        slice: "LOCATION_CITY",
+        counts: [
+          {
+            count: 18242,
+            name: "New York, NY, USA",
+            value: "New York, NY, USA",
+          },
+          {
+            count: 322,
+            name: "London, United Kingdom",
+            value: "London, United Kingdom",
+          },
+        ],
+      },
+      {
+        slice: "PARTNER",
+        counts: [
+          {
+            count: 18210,
+            name: "Cypress Test Partner [For Automated Testing Purposes]",
+            value: "cypress-test-partner-for-automated-testing-purposes",
+          },
+          {
+            count: 578,
+            name: "Tate Ward Auctions",
+            value: "tate-ward-auctions",
+          },
+        ],
+      },
+    ]
+    const criteria: SearchCriteriaAttributes = {
+      acquireable: null,
+      additionalGeneIDs: ["prints"],
+      atAuction: true,
+      attributionClasses: null,
+      colors: null,
+      dimensionScoreMax: 40,
+      dimensionScoreMin: 16,
+      heightMax: null,
+      heightMin: null,
+      inquireableOnly: null,
+      locationCities: ["New York, NY, USA"],
+      majorPeriods: ["2000"],
+      materialsTerms: ["screen print"],
+      offerable: true,
+      partnerIDs: ["tate-ward-auctions"],
+      priceMax: 50000,
+      priceMin: 10000,
+      widthMax: null,
+      widthMin: null,
+    }
+    const result = parseSavedSearchCriteriaForFilterParams(criteria, aggregations)
+
+    expect(result).toHaveLength(7)
   })
 })
