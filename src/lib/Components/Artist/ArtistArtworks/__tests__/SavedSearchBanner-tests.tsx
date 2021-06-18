@@ -1,14 +1,21 @@
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { SavedSearchBannerTestsQuery } from "__generated__/SavedSearchBannerTestsQuery.graphql"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { act } from "react-test-renderer"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SavedSearchBannerRefetchContainer } from "../SavedSearchBanner"
 
 jest.unmock("react-relay")
+
+const mockFetchNotificationPermissions = LegacyNativeModules.ARTemporaryAPIModule
+  .fetchNotificationPermissions as jest.Mock<any>
 
 describe("SavedSearchBanner", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -76,5 +83,40 @@ describe("SavedSearchBanner", () => {
     const buttonComponent = tree.root.findByType(Button)
 
     expect(buttonComponent.props.loading).toBe(true)
+  })
+
+  it("returns", async () => {
+    mockFetchNotificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Authorized))
+
+    const tree = renderWithWrappers(<TestRenderer />)
+    const buttonComponent = tree.root.findByType(Button)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Me: () => ({
+        savedSearch: null,
+      }),
+    })
+
+    act(() => buttonComponent.props.onPress())
+
+    const createOperation = mockEnvironment.mock.getMostRecentOperation()
+
+    expect(createOperation.request.node.operation.name).toEqual("SavedSearchBannerCreateSavedSearchMutation")
+    expect(createOperation.request.variables).toEqual({
+      input: {
+        attributes,
+      },
+    })
+    expect(buttonComponent.props.loading).toBe(true)
+
+    act(() => mockEnvironment.mock.resolve(createOperation, MockPayloadGenerator.generate(createOperation)))
+
+    const refetchOperation = mockEnvironment.mock.getMostRecentOperation()
+    expect(refetchOperation.request.node.operation.name).toEqual("SavedSearchBannerRefetchQuery")
+
+    act(() => mockEnvironment.mock.resolve(refetchOperation, MockPayloadGenerator.generate(refetchOperation)))
+
+    await flushPromiseQueue()
+    expect(buttonComponent.props.loading).toBe(false)
   })
 })
