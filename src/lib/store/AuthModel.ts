@@ -29,29 +29,69 @@ export interface AuthModel {
   userExists: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel>
   signIn: Thunk<
     AuthModel,
-    {
-      email: string
-      password?: string
-      accessToken?: string
-      oauthProvider?: "facebook" | "google" | "apple"
-      idToken?: string
-      appleUID?: string
-    },
+    | {
+        email: string
+        password: string
+
+        accessToken?: never
+        oauthProvider?: never
+        idToken?: never
+        appleUID?: never
+      }
+    | {
+        email: string
+        oauthProvider: "facebook" | "google"
+        accessToken: string
+
+        password?: never
+        idToken?: never
+        appleUID?: never
+      }
+    | {
+        email: string
+        oauthProvider: "apple"
+        idToken: string
+        appleUID: string
+
+        password?: never
+        accessToken?: never
+      },
     {},
     GlobalStoreModel,
     Promise<boolean>
   >
   signUp: Thunk<
     AuthModel,
-    {
-      email: string
-      name: string
-      password?: string
-      accessToken?: string
-      oauthProvider?: "facebook" | "google" | "apple"
-      idToken?: string
-      appleUID?: string
-    },
+    | {
+        email: string
+        name: string
+        password: string
+
+        accessToken?: never
+        oauthProvider?: never
+        idToken?: never
+        appleUID?: never
+      }
+    | {
+        email: string
+        name: string
+        accessToken: string
+        oauthProvider: "facebook" | "google"
+
+        password?: never
+        idToken?: never
+        appleUID?: never
+      }
+    | {
+        email: string
+        name: string
+        oauthProvider: "apple"
+        idToken: string
+        appleUID: string
+
+        password?: never
+        accessToken?: never
+      },
     {},
     GlobalStoreModel,
     Promise<boolean>
@@ -286,6 +326,7 @@ export const getAuthModel = (): AuthModel => ({
 
     // The user account has been successfully created
     if (result.status === 201) {
+      // @ts-ignore
       await actions.signIn({ email, password, accessToken, oauthProvider, idToken, appleUID })
       actions.setState({
         onboardingState: "incomplete",
