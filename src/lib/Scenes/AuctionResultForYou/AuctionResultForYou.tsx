@@ -60,7 +60,7 @@ export const AuctionResultForYou: React.FC<Props> = ({ me, relay }) => {
           sections={groupedAuctionResultSectionData}
           onEndReachedThreshold={0.5}
           onEndReached={loadMoreArtworks}
-          renderItem={({ item }) => <AuctionResultForYouListItem auctionResult={item?.node} />}
+          renderItem={({ item }) => (item?.node ? <AuctionResultForYouListItem auctionResult={item.node} /> : <></>)}
           renderSectionHeader={({ section: { date } }) => (
             <Text
               textAlign="left"
