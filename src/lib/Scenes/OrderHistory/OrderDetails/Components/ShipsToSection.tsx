@@ -1,4 +1,5 @@
 import { ShipsToSection_address } from "__generated__/ShipsToSection_address.graphql"
+import { COUNTRY_SELECT_OPTIONS } from "lib/Components/CountrySelect"
 import { Box, Flex, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -12,35 +13,35 @@ export const ShipsToSection: React.FC<Props> = ({ address }) => {
     return null
   }
   if (address.requestedFulfillment.__typename === "CommerceShip") {
-    const addressInfo = address.requestedFulfillment
-    const addedComma = addressInfo.city ? "," : ""
+    const { city, addressLine1, addressLine2, region, postalCode, country, phoneNumber } = address.requestedFulfillment
+    const addedComma = city ? "," : ""
     return (
       <Flex style={{ flexDirection: "column", justifyContent: "space-between" }}>
         <Text testID="addressLine1" color="black60" variant="text">
-          {addressInfo.addressLine1}
+          {addressLine1}
         </Text>
-        {!!addressInfo.addressLine2 && (
+        {!!addressLine2 && (
           <Text color="black60" variant="text">
-            {addressInfo.addressLine2}
+            {addressLine2}
           </Text>
         )}
 
         <Box display="flex" flexDirection="row">
           <Text testID="city" color="black60" variant="text">
-            {addressInfo.city + addedComma + " "}
+            {city + addedComma + " "}
           </Text>
           <Text testID="region" color="black60" variant="text">
-            {addressInfo.region + " "}
+            {region + " "}
           </Text>
           <Text testID="postalCode" color="black60" variant="text">
-            {addressInfo.postalCode}
+            {postalCode}
           </Text>
         </Box>
         <Text testID="country" color="black60" variant="text">
-          {addressInfo.country}
+          {COUNTRY_SELECT_OPTIONS.find(({ value }) => value === country)?.label || country}
         </Text>
         <Text testID="phoneNumber" color="black60" variant="text">
-          {addressInfo.phoneNumber}
+          {phoneNumber}
         </Text>
       </Flex>
     )
