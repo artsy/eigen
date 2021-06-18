@@ -1,3 +1,4 @@
+import { AuctionResultForYouContainer_me } from "__generated__/AuctionResultForYouContainer_me.graphql"
 import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
@@ -9,7 +10,11 @@ import { bullet, color, Flex, NoArtworkIcon, Text, Touchable } from "palette"
 import React from "react"
 
 interface Props {
-  auctionResult: any // add correct type after implementing actionResult query
+  auctionResult: NonNullable<
+    NonNullable<
+      NonNullable<NonNullable<AuctionResultForYouContainer_me["auctionResultsByFollowedArtists"]>["edges"]>[0]
+    >["node"]
+  >
 }
 
 export const AuctionResultForYouListItem: React.FC<Props> = (props) => {
@@ -56,7 +61,7 @@ export const AuctionResultForYouListItem: React.FC<Props> = (props) => {
           <Flex flex={3}>
             <Flex mb={"3px"}>
               <Text variant="caption" ellipsizeMode="middle" numberOfLines={2} fontWeight="bold">
-                {auctionResult.artist.name}
+                {auctionResult.artist?.name}
               </Text>
               <Text variant="caption" ellipsizeMode="middle" numberOfLines={2} style={{ flexShrink: 1 }}>
                 {auctionResult.title}
