@@ -1,6 +1,7 @@
 import { AuctionResultForYouContainerTestsQuery } from "__generated__/AuctionResultForYouContainerTestsQuery.graphql"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { navigate } from "lib/navigation/navigate"
+import { Tab } from "lib/Scenes/Favorites/Favorites"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { first } from "lodash"
@@ -8,7 +9,6 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { AuctionResultForYouContainer } from "../AuctionResultForYouContainer"
-import { Tab } from "lib/Scenes/Favorites/Favorites"
 
 jest.unmock("react-relay")
 
