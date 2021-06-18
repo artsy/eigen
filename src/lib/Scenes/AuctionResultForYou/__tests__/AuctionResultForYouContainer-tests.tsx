@@ -1,10 +1,14 @@
 import { AuctionResultForYouContainerTestsQuery } from "__generated__/AuctionResultForYouContainerTestsQuery.graphql"
+import { LinkText } from "lib/Components/Text/LinkText"
+import { navigate } from "lib/navigation/navigate"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { first } from "lodash"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { AuctionResultForYouContainer } from "../AuctionResultForYouContainer"
+import { Tab } from "lib/Scenes/Favorites/Favorites"
 
 jest.unmock("react-relay")
 
@@ -51,6 +55,23 @@ describe("AuctionResultForYouContainer", () => {
 
     expect(tree.root.findAllByType(AuctionResultForYouContainer)).toHaveLength(1)
   })
+
+  it("routes to favorites URL with passProps", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+    const mockProps = {
+      auctionResultsByFollowedArtists: () => ({
+        counts: {
+          total: 0,
+        },
+        edges: [auctionResultEdge, auctionResultEdge, auctionResultEdge],
+      }),
+    }
+
+    mockEnvironmentPayload(mockEnvironment, mockProps)
+    first(tree.root.findAllByType(LinkText))?.props.onPress()
+
+    expect(navigate).toHaveBeenCalledWith("/favorites", { passProps: { initialTab: Tab.artists } })
+  })
 })
 
 const auctionResultEdge = {
@@ -76,15 +97,6 @@ const auctionResultEdge = {
       thumbnail: {
         url: "https://d2v80f5yrouhh2.cloudfront.net/OTJxNHuhGDnPi8wQcvXvxA/thumbnail.jpg",
       },
-    },
-  },
-}
-
-const meResponseMock = {
-  me: {
-    auctionResultsByFollowedArtists: {
-      totalCount: 1510,
-      edges: [auctionResultEdge, auctionResultEdge, auctionResultEdge],
     },
   },
 }
