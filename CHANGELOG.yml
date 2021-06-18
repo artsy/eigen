@@ -6,6 +6,7 @@ upcoming:
     - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
     - Update open simulator command in getting started docs - ole
     - Update debugging docs - mounir
+    - Connect auction results for you to metaphysics endpoint - yauheni
   user_facing:
     - Country should be written with full name - Serge0n
     - Name from shipping address should be displayed instead of account name - Serge0n
