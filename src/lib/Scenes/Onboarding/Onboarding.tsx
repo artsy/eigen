@@ -8,6 +8,7 @@ import { View } from "react-native"
 import { ForgotPassword } from "./ForgotPassword"
 import { OnboardingCreateAccount } from "./OnboardingCreateAccount/OnboardingCreateAccount"
 import { OnboardingLogin } from "./OnboardingLogin"
+import { OnboardingLoginWith } from "./OnboardingLoginWith"
 import { OnboardingPersonalization } from "./OnboardingPersonalization/OnboardingPersonalization"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
@@ -15,6 +16,7 @@ import { OnboardingWelcome } from "./OnboardingWelcome"
 export type OnboardingNavigationStack = {
   OnboardingWelcome: undefined
   OnboardingLogin: { withFadeAnimation: boolean; email: string } | undefined
+  OnboardingLoginWith: undefined
   OnboardingCreateAccount: undefined
   ForgotPassword: undefined
 }
@@ -31,6 +33,7 @@ export const OnboardingWelcomeScreens = () => (
       }}
     >
       <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
+      <StackNavigator.Screen name="OnboardingLoginWith" component={OnboardingLoginWith} />
       <StackNavigator.Screen
         name="OnboardingLogin"
         component={OnboardingLogin}
