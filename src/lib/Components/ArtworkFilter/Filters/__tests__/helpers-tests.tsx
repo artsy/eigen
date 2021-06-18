@@ -69,5 +69,10 @@ describe("localizeDimension", () => {
     it("accepts inches and returns centimeters", () => {
       expect(localizeDimension(10, "in")).toEqual({ value: 25.4, unit: "cm" })
     })
+
+    it("correct converts inches to centimeters", () => {
+      const inches = localizeDimension(100, "cm")
+      expect(localizeDimension(inches.value, "in")).toEqual(100)
+    })
   })
 })

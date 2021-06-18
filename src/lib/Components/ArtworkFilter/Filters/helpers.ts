@@ -47,7 +47,9 @@ export const inToCm = (inches: Numeric) => {
     return inches
   }
 
-  return inches * ONE_IN_TO_CM
+  // Values will always be in inches since that's what Gravity accepts.
+  // Round off floating point precision errors.
+  return round(inches * ONE_IN_TO_CM)
 }
 
 export const toIn = (value: Numeric, unit: Unit): Numeric => {

@@ -148,10 +148,8 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
     return {
       ...acc,
       [option.paramName]: {
-        // Values will always be in inches since that's what Gravity accepts.
-        // Round off floating point precision errors.
-        min: round(localizeDimension(min, "in").value),
-        max: round(localizeDimension(max, "in").value),
+        min: localizeDimension(min, "in").value,
+        max: localizeDimension(max, "in").value,
       },
     }
   }, DEFAULT_CUSTOM_SIZE)
