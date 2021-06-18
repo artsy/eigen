@@ -54,7 +54,10 @@ export const AuctionResultForYouListItem: React.FC<Props> = (props) => {
 
         <Flex pl={15} flex={1} flexDirection="row" justifyContent="space-between">
           <Flex flex={3}>
-            <Flex flexDirection="row" mb={"3px"}>
+            <Flex mb={"3px"}>
+              <Text variant="caption" ellipsizeMode="middle" numberOfLines={2} fontWeight="bold">
+                {auctionResult.artist.name}
+              </Text>
               <Text variant="caption" ellipsizeMode="middle" numberOfLines={2} style={{ flexShrink: 1 }}>
                 {auctionResult.title}
                 {!!auctionResult.dateText && auctionResult.dateText !== "" && `, ${auctionResult.dateText}`}
@@ -78,7 +81,7 @@ export const AuctionResultForYouListItem: React.FC<Props> = (props) => {
           <Flex alignItems="flex-end" pl={15}>
             {auctionResultHasPrice(auctionResult) ? (
               <Flex alignItems="flex-end">
-                <Text variant="caption" fontWeight="bold" testID="price">
+                <Text variant="text" fontWeight="bold" testID="price">
                   {(auctionResult.priceRealized?.display ?? "").replace(`${auctionResult.currency} `, "")}
                 </Text>
                 {!!auctionResult.performance?.mid && (
@@ -87,7 +90,7 @@ export const AuctionResultForYouListItem: React.FC<Props> = (props) => {
               </Flex>
             ) : (
               <Flex alignItems="flex-end">
-                <Text variant="caption" fontWeight="bold" style={{ width: 100 }} textAlign="right" testID="price">
+                <Text variant="text" fontWeight="bold" style={{ width: 100 }} textAlign="right" testID="price">
                   {auctionResultText(auctionResult)}
                 </Text>
               </Flex>

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a52430cd617c89d45533b3710552966d */
+/* @relayHash dcce45bdc1c5bfca93db7e7ffbf2866d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -20,6 +20,10 @@ export type AuctionResultsRailTestsQueryRawResponse = {
                 readonly node: ({
                     readonly id: string;
                     readonly artistID: string;
+                    readonly artist: ({
+                        readonly name: string | null;
+                        readonly id: string;
+                    }) | null;
                     readonly internalID: string;
                     readonly title: string | null;
                     readonly currency: string | null;
@@ -70,6 +74,10 @@ fragment AuctionResultsRail_me on Me {
       node {
         id
         artistID
+        artist {
+          name
+          id
+        }
         internalID
         title
         currency
@@ -195,6 +203,25 @@ return {
                         "args": null,
                         "kind": "ScalarField",
                         "name": "artistID",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "artist",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "name",
+                            "storageKey": null
+                          },
+                          (v0/*: any*/)
+                        ],
                         "storageKey": null
                       },
                       {
@@ -341,7 +368,7 @@ return {
     ]
   },
   "params": {
-    "id": "a52430cd617c89d45533b3710552966d",
+    "id": "dcce45bdc1c5bfca93db7e7ffbf2866d",
     "metadata": {},
     "name": "AuctionResultsRailTestsQuery",
     "operationKind": "query",

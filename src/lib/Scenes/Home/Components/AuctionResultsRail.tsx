@@ -63,6 +63,9 @@ export const AuctionResultsRailFragmentContainer = createFragmentContainer(Aucti
           node {
             id
             artistID
+            artist {
+              name
+            }
             internalID
             title
             currency

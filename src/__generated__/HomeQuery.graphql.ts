@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f86a5c5526ac149477c79cb2874ea170 */
+/* @relayHash 9da36fd468a35ce48ba31bc00090e55f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -195,6 +195,10 @@ fragment AuctionResultsRail_me on Me {
       node {
         id
         artistID
+        artist {
+          name
+          id
+        }
         internalID
         title
         currency
@@ -1702,6 +1706,16 @@ return {
                         "name": "artistID",
                         "storageKey": null
                       },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "artist",
+                        "plural": false,
+                        "selections": (v19/*: any*/),
+                        "storageKey": null
+                      },
                       (v10/*: any*/),
                       (v4/*: any*/),
                       {
@@ -1986,7 +2000,7 @@ return {
     ]
   },
   "params": {
-    "id": "f86a5c5526ac149477c79cb2874ea170",
+    "id": "9da36fd468a35ce48ba31bc00090e55f",
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",

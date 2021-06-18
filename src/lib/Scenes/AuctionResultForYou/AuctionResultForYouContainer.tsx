@@ -19,6 +19,9 @@ export const AuctionResultForYouContainer = createPaginationContainer(
               id
               artistID
               internalID
+              artist {
+                name
+              }
               title
               currency
               dateText

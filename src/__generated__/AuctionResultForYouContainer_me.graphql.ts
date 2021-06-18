@@ -12,6 +12,9 @@ export type AuctionResultForYouContainer_me = {
                 readonly id: string;
                 readonly artistID: string;
                 readonly internalID: string;
+                readonly artist: {
+                    readonly name: string | null;
+                } | null;
                 readonly title: string | null;
                 readonly currency: string | null;
                 readonly dateText: string | null;
@@ -122,6 +125,24 @@ const node: ReaderFragment = {
                   "args": null,
                   "kind": "ScalarField",
                   "name": "internalID",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "Artist",
+                  "kind": "LinkedField",
+                  "name": "artist",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "name",
+                      "storageKey": null
+                    }
+                  ],
                   "storageKey": null
                 },
                 {
@@ -297,5 +318,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'd4357a123e08d498ef608a17f1b6a813';
+(node as any).hash = '3f2da11b28bb87915639acd78e70869a';
 export default node;

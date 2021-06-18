@@ -93,6 +93,9 @@ const auctionResultEdge = {
   node: {
     id: "QXVjdGlvblJlc3VsdDozMzM5NTI=",
     artistID: "4d8b92bb4eb68a1b2c000452",
+    artist: {
+      name: "Takashi Murakami",
+    },
     internalID: "333952",
     title: "Enso: The Sound of the Bell of Paired Sal Trees",
     currency: "HKD",

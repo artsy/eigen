@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 003380ad0e797e7ac7f7d212d9f98292 */
+/* @relayHash 2b0bd79afafb610b57c20026f7139a91 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -40,6 +40,10 @@ fragment AuctionResultForYouContainer_me_2HEEH6 on Me {
         id
         artistID
         internalID
+        artist {
+          name
+          id
+        }
         title
         currency
         dateText
@@ -109,15 +113,15 @@ v4 = {
 },
 v5 = {
   "enumValues": null,
-  "nullable": true,
-  "plural": false,
-  "type": "String"
-},
-v6 = {
-  "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
+},
+v6 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
 };
 return {
   "fragment": {
@@ -210,6 +214,25 @@ return {
                         "args": null,
                         "kind": "ScalarField",
                         "name": "internalID",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "artist",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "name",
+                            "storageKey": null
+                          },
+                          (v3/*: any*/)
+                        ],
                         "storageKey": null
                       },
                       {
@@ -397,7 +420,7 @@ return {
     ]
   },
   "params": {
-    "id": "003380ad0e797e7ac7f7d212d9f98292",
+    "id": "2b0bd79afafb610b57c20026f7139a91",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -426,6 +449,14 @@ return {
           "type": "AuctionResult"
         },
         "me.auctionResultsByFollowedArtists.edges.node.__typename": (v4/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.artist": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Artist"
+        },
+        "me.auctionResultsByFollowedArtists.edges.node.artist.id": (v5/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.artist.name": (v6/*: any*/),
         "me.auctionResultsByFollowedArtists.edges.node.artistID": (v4/*: any*/),
         "me.auctionResultsByFollowedArtists.edges.node.boughtIn": {
           "enumValues": null,
@@ -433,9 +464,9 @@ return {
           "plural": false,
           "type": "Boolean"
         },
-        "me.auctionResultsByFollowedArtists.edges.node.currency": (v5/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.dateText": (v5/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.id": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.currency": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.dateText": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.id": (v5/*: any*/),
         "me.auctionResultsByFollowedArtists.edges.node.images": {
           "enumValues": null,
           "nullable": true,
@@ -448,17 +479,17 @@ return {
           "plural": false,
           "type": "Image"
         },
-        "me.auctionResultsByFollowedArtists.edges.node.images.thumbnail.url": (v5/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.internalID": (v6/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.mediumText": (v5/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.organization": (v5/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.images.thumbnail.url": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.internalID": (v5/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.mediumText": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.organization": (v6/*: any*/),
         "me.auctionResultsByFollowedArtists.edges.node.performance": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "AuctionLotPerformance"
         },
-        "me.auctionResultsByFollowedArtists.edges.node.performance.mid": (v5/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.performance.mid": (v6/*: any*/),
         "me.auctionResultsByFollowedArtists.edges.node.priceRealized": {
           "enumValues": null,
           "nullable": true,
@@ -471,16 +502,16 @@ return {
           "plural": false,
           "type": "Float"
         },
-        "me.auctionResultsByFollowedArtists.edges.node.priceRealized.display": (v5/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.saleDate": (v5/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.title": (v5/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.priceRealized.display": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.saleDate": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.title": (v6/*: any*/),
         "me.auctionResultsByFollowedArtists.pageInfo": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "PageInfo"
         },
-        "me.auctionResultsByFollowedArtists.pageInfo.endCursor": (v5/*: any*/),
+        "me.auctionResultsByFollowedArtists.pageInfo.endCursor": (v6/*: any*/),
         "me.auctionResultsByFollowedArtists.pageInfo.hasNextPage": {
           "enumValues": null,
           "nullable": false,
@@ -493,7 +524,7 @@ return {
           "plural": false,
           "type": "Int"
         },
-        "me.id": (v6/*: any*/)
+        "me.id": (v5/*: any*/)
       }
     },
     "name": "AuctionResultForYouContainerTestsQuery",
