@@ -206,21 +206,18 @@ describe("convertSizeToFilterParams", () => {
 describe("convertColorsToFilterParam", () => {
   it("returns the color filter", () => {
     const aggregation: AggregationByFilterParamName = {
-      colors: {
-        slice: "COLOR",
-        counts: [
-          {
-            count: 11359,
-            name: "gold",
-            value: "gold",
-          },
-          {
-            count: 406,
-            name: "red",
-            value: "red",
-          },
-        ],
-      },
+      colors: [
+        {
+          count: 11359,
+          name: "gold",
+          value: "gold",
+        },
+        {
+          count: 406,
+          name: "red",
+          value: "red",
+        },
+      ],
     }
     const criteria: SearchCriteriaAttributes = {
       colors: ["gold", "red"],
@@ -236,21 +233,18 @@ describe("convertColorsToFilterParam", () => {
 
   it("returns only the available colors in the color filter", () => {
     const aggregation: AggregationByFilterParamName = {
-      colors: {
-        slice: "COLOR",
-        counts: [
-          {
-            count: 13,
-            name: "violet",
-            value: "violet",
-          },
-          {
-            count: 83,
-            name: "pink",
-            value: "pink",
-          },
-        ],
-      },
+      colors: [
+        {
+          count: 13,
+          name: "violet",
+          value: "violet",
+        },
+        {
+          count: 83,
+          name: "pink",
+          value: "pink",
+        },
+      ],
     }
     const criteria: SearchCriteriaAttributes = {
       colors: ["pink", "violet", "deep-purple"],
