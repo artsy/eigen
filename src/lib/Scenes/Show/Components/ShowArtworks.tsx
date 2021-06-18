@@ -47,13 +47,14 @@ export const ShowArtworksWithNavigation = (props: ArtworkProps) => {
 
 const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) => {
   const artworks = show.showArtworks!
+  const artworksTotal = artworks?.counts?.total ?? 0
   const { internalID, slug } = show
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
   const setFilterTypeAction = ArtworksFiltersStore.useStoreActions((state) => state.setFilterTypeAction)
-
+  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((state) => state.setFiltersCountAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const filterParams = filterArtworksParams(appliedFilters, "showArtwork")
@@ -86,7 +87,14 @@ const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) 
     setAggregationsAction(artworkAggregations)
   }, [])
 
-  if ((artworks?.counts?.total ?? 0) === 0) {
+  useEffect(() => {
+    setFiltersCountAction({
+      total: artworksTotal,
+      followedArtists: null,
+    })
+  }, [artworksTotal])
+
+  if (artworksTotal === 0) {
     return <FilteredArtworkGridZeroState id={internalID} slug={slug} />
   }
 
