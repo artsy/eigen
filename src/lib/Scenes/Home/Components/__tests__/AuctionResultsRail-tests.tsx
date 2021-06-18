@@ -58,7 +58,6 @@ describe("AuctionResultsRailFragmentContainer", () => {
   it("looks correct when rendered with sales missing auctionResultsByFollowedArtists", () => {
     const auctionResultsCopy = cloneDeep(meResponseMock)
     auctionResultsCopy.results.forEach((result) => {
-      // @ts-ignore
       result.auctionResultsByFollowedArtists.edges = []
     })
     renderWithWrappers(<TestRenderer />)
