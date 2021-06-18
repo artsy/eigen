@@ -17,9 +17,7 @@ interface Props {
   >
 }
 
-export const AuctionResultForYouListItem: React.FC<Props> = (props) => {
-  const { auctionResult } = props
-
+export const AuctionResultForYouListItem: React.FC<Props> = ({ auctionResult }) => {
   const QAInfo: React.FC = () => (
     <QAInfoManualPanel position="absolute" top={0} left={95}>
       <QAInfoRow name="id" value={auctionResult.internalID} />
