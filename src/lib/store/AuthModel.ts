@@ -496,8 +496,7 @@ export const getAuthModel = (): AuthModel => ({
         requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
       })
 
-      if (!userInfo.identityToken || !userInfo.email) {
-        reject("Failed to sign up.")
+      if (!userInfo.identityToken) {
         return
       }
       const idToken = userInfo.identityToken
@@ -506,13 +505,15 @@ export const getAuthModel = (): AuthModel => ({
       const lastName = userInfo.fullName?.familyName ? userInfo.fullName.familyName : ""
 
       if (signInOrUp === "signUp") {
-        const resultGravitySignUp = await actions.signUp({
-          email: userInfo.email,
-          name: `${firstName} ${lastName}`,
-          appleUID,
-          idToken,
-          oauthProvider: "apple",
-        })
+        const resultGravitySignUp =
+          userInfo.email &&
+          (await actions.signUp({
+            email: userInfo.email,
+            name: `${firstName} ${lastName}`,
+            appleUID,
+            idToken,
+            oauthProvider: "apple",
+          }))
 
         resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
       }
