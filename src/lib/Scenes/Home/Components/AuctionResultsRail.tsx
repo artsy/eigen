@@ -42,7 +42,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
         horizontal={false}
         initialNumToRender={3}
         renderItem={({ item, index }) => {
-          if (index >= 3) {
+          if (index >= 3 || !item?.node) {
             return <></>
           }
 
