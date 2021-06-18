@@ -10,12 +10,13 @@ import {
 } from "../ArtworkFilterHelpers"
 import { DEFAULT_FILTERS } from "../ArtworkFilterStore"
 import { ATTRIBUTION_CLASS_OPTIONS } from "../Filters/AttributionClassOptions"
-import { COLORS } from "../Filters/ColorsOptions"
+import { COLORS_INDEXED_BY_VALUE } from "../Filters/ColorsOptions"
 import { localizeDimension, Numeric, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
 import { SIZE_OPTIONS } from "../Filters/SizeOptions"
 import { WAYS_TO_BUY_FILTER_PARAM_NAMES } from "../Filters/WaysToBuyOptions"
 
 type SearchCriteriaAttributeKeys = keyof SearchCriteriaAttributes
+export type AggregationByFilterParamName = Dictionary<AggregationItem>
 
 export const convertPriceToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
   let parsedPriceMin: Numeric = "*"
@@ -115,11 +116,14 @@ export const convertSizeToFilterParams = (criteria: SearchCriteriaAttributes): F
   ]
 }
 
-export const convertColorsToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
+export const convertColorsToFilterParam = (
+  criteria: SearchCriteriaAttributes,
+  aggregation: AggregationByFilterParamName
+): FilterData | null => {
   if (!isNil(criteria.colors)) {
-    const colorItemByValue = keyBy(COLORS, "value")
-    const availableColors = criteria.colors.filter((color) => !!colorItemByValue[color])
-    const colorNames = availableColors.map((color) => colorItemByValue[color].name)
+    const colorFromAggregationByValue = keyBy(aggregation[FilterParamName.colors].counts, "value")
+    const availableColors = criteria.colors.filter((color) => !!colorFromAggregationByValue[color])
+    const colorNames = availableColors.map((color) => COLORS_INDEXED_BY_VALUE[color].name)
 
     if (availableColors.length > 0) {
       return {
@@ -198,7 +202,7 @@ export const convertSavedSearchCriteriaToFilterParams = (
   const aggregationByFilterParamName = keyBy(
     aggregations,
     (aggregation) => filterKeyFromAggregation[aggregation.slice]
-  ) as Dictionary<AggregationItem>
+  ) as AggregationByFilterParamName
   const shouldExtractValueNamesFromAggregation = [
     FilterParamName.locationCities,
     FilterParamName.timePeriod,
@@ -216,7 +220,7 @@ export const convertSavedSearchCriteriaToFilterParams = (
   ]
 
   converters.forEach((converter) => {
-    const filterParamItem = converter(criteria)
+    const filterParamItem = converter(criteria, aggregationByFilterParamName)
 
     if (filterParamItem) {
       filterParams = filterParams.concat(filterParamItem)

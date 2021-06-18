@@ -1,6 +1,7 @@
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { Aggregation, Aggregations, FilterParamName } from "../../ArtworkFilterHelpers"
 import {
+  AggregationByFilterParamName,
   convertAggregationValueNamesToFilterParam,
   convertAttributionToFilterParam,
   convertColorsToFilterParam,
@@ -204,12 +205,29 @@ describe("convertSizeToFilterParams", () => {
 
 describe("convertColorsToFilterParam", () => {
   it("returns the color filter", () => {
-    expect(
-      convertColorsToFilterParam({
-        colors: ["gold", "red"],
-        additionalGeneIDs: ["prints"],
-      })
-    ).toEqual({
+    const aggregation: AggregationByFilterParamName = {
+      colors: {
+        slice: "COLOR",
+        counts: [
+          {
+            count: 11359,
+            name: "gold",
+            value: "gold",
+          },
+          {
+            count: 406,
+            name: "red",
+            value: "red",
+          },
+        ],
+      },
+    }
+    const criteria: SearchCriteriaAttributes = {
+      colors: ["gold", "red"],
+      additionalGeneIDs: ["prints"],
+    }
+
+    expect(convertColorsToFilterParam(criteria, aggregation)).toEqual({
       displayText: "Gold, Red",
       paramValue: ["gold", "red"],
       paramName: FilterParamName.colors,
@@ -217,11 +235,28 @@ describe("convertColorsToFilterParam", () => {
   })
 
   it("returns only the available colors in the color filter", () => {
-    expect(
-      convertColorsToFilterParam({
-        colors: ["pink", "violet", "deep-purple"],
-      })
-    ).toEqual({
+    const aggregation: AggregationByFilterParamName = {
+      colors: {
+        slice: "COLOR",
+        counts: [
+          {
+            count: 13,
+            name: "violet",
+            value: "violet",
+          },
+          {
+            count: 83,
+            name: "pink",
+            value: "pink",
+          },
+        ],
+      },
+    }
+    const criteria: SearchCriteriaAttributes = {
+      colors: ["pink", "violet", "deep-purple"],
+    }
+
+    expect(convertColorsToFilterParam(criteria, aggregation)).toEqual({
       displayText: "Pink, Violet",
       paramValue: ["pink", "violet"],
       paramName: FilterParamName.colors,
@@ -229,11 +264,14 @@ describe("convertColorsToFilterParam", () => {
   })
 
   it("returns nothing", () => {
-    expect(convertColorsToFilterParam({})).toBeNull()
+    expect(convertColorsToFilterParam({}, {})).toBeNull()
     expect(
-      convertColorsToFilterParam({
-        colors: null,
-      })
+      convertColorsToFilterParam(
+        {
+          colors: null,
+        },
+        {}
+      )
     ).toBeNull()
   })
 })
@@ -435,6 +473,26 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
             count: 578,
             name: "Tate Ward Auctions",
             value: "tate-ward-auctions",
+          },
+        ],
+      },
+      {
+        slice: "COLOR",
+        counts: [
+          {
+            count: 11359,
+            name: "gold",
+            value: "gold",
+          },
+          {
+            count: 7211,
+            name: "lightblue",
+            value: "lightblue",
+          },
+          {
+            count: 406,
+            name: "red",
+            value: "red",
           },
         ],
       },

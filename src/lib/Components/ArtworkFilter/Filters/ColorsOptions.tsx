@@ -28,7 +28,7 @@ export const COLORS = [
 
 type Color = typeof COLORS[number]
 
-const COLORS_INDEXED_BY_VALUE = COLORS.reduce(
+export const COLORS_INDEXED_BY_VALUE = COLORS.reduce(
   (acc: Record<string, Color>, color) => ({ ...acc, [color.value]: color }),
   {}
 )
