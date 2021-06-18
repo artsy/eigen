@@ -64,8 +64,8 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
     BACK_BUTTON_SIZE.top -
     PixelRatio.getPixelSizeForLayoutSize(extraOffset)
 
-  return (
-    <Box backgroundColor="white" onLayout={(e) => _onLayout(e)}>
+  const SeparatorWithSmoothOpacity = () => {
+    return (
       <Animated.View
         style={{
           opacity: animationValue.interpolate({
@@ -77,6 +77,16 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
       >
         <Separator mt={2} width={screenWidth * 2} />
       </Animated.View>
+    )
+  }
+
+  if (!total) {
+    return <SeparatorWithSmoothOpacity />
+  }
+
+  return (
+    <Box backgroundColor="white" onLayout={(e) => _onLayout(e)}>
+      <SeparatorWithSmoothOpacity />
       <Animated.View
         style={{
           transform: [
