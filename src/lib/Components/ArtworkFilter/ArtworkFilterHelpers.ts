@@ -140,12 +140,10 @@ export const defaultCommonFilterOptions = {
   width: ParamDefaultValues.width,
 }
 
-export interface AggregationItem {
+export type Aggregations = Array<{
   slice: AggregationName
   counts: Aggregation[]
-}
-
-export type Aggregations = AggregationItem[]
+}>
 
 /**
  * Possible aggregations that can be passed
