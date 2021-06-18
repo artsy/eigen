@@ -7,6 +7,8 @@ upcoming:
     - Update open simulator command in getting started docs - ole
     - Update debugging docs - mounir
   user_facing:
+    - Country should be written with full name - Serge0n
+    - Name from shipping address should be displayed instead of account name - Serge0n
     - User can see the way of delivery - Serge0n
     - OrderDetails with SoldBy section - alexj105
     - OrderDetails with headInfo - alexj105
@@ -28,6 +30,7 @@ upcoming:
     - Added "Auction lots for you" landing screen - damon
     - Fix Aligned InfoCircleIcon - gkartalis
     - Hide spinner when there is no more artworks to load - katsiaryna alshannikava
+    - Aligned 'Next' button in the 'Sell work' menu - katsiaryna alshannikava
 
 releases:
   - version: 6.9.4

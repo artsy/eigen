@@ -8,6 +8,7 @@ export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FU
 export type OrderDetails_order = {
     readonly requestedFulfillment: ({
         readonly __typename: "CommerceShip";
+        readonly name: string | null;
     } | {
         readonly __typename: "CommercePickup";
     } | {
@@ -41,15 +42,20 @@ export type OrderDetails_order$key = {
 
 
 const node: ReaderFragment = (function(){
-var v0 = [
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "__typename",
-    "storageKey": null
-  }
-];
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+};
 return {
   "argumentDefinitions": [],
   "kind": "Fragment",
@@ -66,13 +72,18 @@ return {
       "selections": [
         {
           "kind": "InlineFragment",
-          "selections": (v0/*: any*/),
+          "selections": [
+            (v0/*: any*/),
+            (v1/*: any*/)
+          ],
           "type": "CommerceShip",
           "abstractKey": null
         },
         {
           "kind": "InlineFragment",
-          "selections": (v0/*: any*/),
+          "selections": [
+            (v0/*: any*/)
+          ],
           "type": "CommercePickup",
           "abstractKey": null
         }
@@ -125,13 +136,7 @@ return {
                       "name": "partner",
                       "plural": false,
                       "selections": [
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "name",
-                          "storageKey": null
-                        }
+                        (v1/*: any*/)
                       ],
                       "storageKey": null
                     }
@@ -198,5 +203,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = '64be54dcbe4dad3f094f88d2fb3a876d';
+(node as any).hash = '699ce8fe541eef672d38b01ff49fd337';
 export default node;
