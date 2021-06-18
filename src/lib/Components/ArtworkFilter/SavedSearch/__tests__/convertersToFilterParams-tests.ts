@@ -5,6 +5,7 @@ import {
   convertAggregationValueNamesToFilterParam,
   convertAttributionToFilterParam,
   convertColorsToFilterParam,
+  convertMajorPeriodToFilterParam,
   convertPriceToFilterParam,
   convertSavedSearchCriteriaToFilterParams,
   convertSizeToFilterParams,
@@ -417,6 +418,25 @@ describe("convertWaysToBuyToFilterParams", () => {
   })
 })
 
+describe("convertMajorPeriodToFilterParam", () => {
+  it("returns the major time periods in the correct format", () => {
+    const criteria: SearchCriteriaAttributes = {
+      majorPeriods: ["2020", "2010"],
+    }
+    const result = convertMajorPeriodToFilterParam(criteria)
+
+    expect(result).toEqual({
+      displayText: "2020–today, 2010–2019",
+      paramValue: ["2020", "2010"],
+      paramName: FilterParamName.timePeriod,
+    })
+  })
+
+  it("returns nothing", () => {
+    expect(convertMajorPeriodToFilterParam({})).toBeNull()
+  })
+})
+
 describe("convertSavedSearchCriteriaToFilterParams", () => {
   it("returns filter params for existing search criteria", () => {
     const aggregations: Aggregations = [
@@ -574,6 +594,11 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       paramValue: ["tate-ward-auctions"],
       paramName: FilterParamName.partnerIDs,
     })
+    expect(result).toContainEqual({
+      displayText: "2000–2009",
+      paramValue: ["2000"],
+      paramName: FilterParamName.timePeriod,
+    })
   })
 
   it("returns the correct length of filter params", () => {
@@ -652,6 +677,6 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
     }
     const result = convertSavedSearchCriteriaToFilterParams(criteria, aggregations)
 
-    expect(result).toHaveLength(7)
+    expect(result).toHaveLength(8)
   })
 })

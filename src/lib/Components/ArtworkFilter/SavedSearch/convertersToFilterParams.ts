@@ -6,6 +6,7 @@ import {
   FilterData,
   filterKeyFromAggregation,
   FilterParamName,
+  getDisplayNameForTimePeriod,
 } from "../ArtworkFilterHelpers"
 import { DEFAULT_FILTERS } from "../ArtworkFilterStore"
 import { ATTRIBUTION_CLASS_OPTIONS } from "../Filters/AttributionClassOptions"
@@ -193,6 +194,21 @@ export const convertWaysToBuyToFilterParams = (criteria: SearchCriteriaAttribute
   return null
 }
 
+export const convertMajorPeriodToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
+  const periods = criteria[FilterParamName.timePeriod]
+
+  if (!isNil(periods)) {
+    const namedPeriods = periods.map((period) => getDisplayNameForTimePeriod(period))
+    return {
+      displayText: namedPeriods.join(", "),
+      paramValue: periods,
+      paramName: FilterParamName.timePeriod,
+    }
+  }
+
+  return null
+}
+
 export const convertSavedSearchCriteriaToFilterParams = (
   criteria: SearchCriteriaAttributes,
   aggregations: Aggregations
@@ -205,7 +221,6 @@ export const convertSavedSearchCriteriaToFilterParams = (
   ) as AggregationByFilterParamName
   const shouldExtractValueNamesFromAggregation = [
     FilterParamName.locationCities,
-    FilterParamName.timePeriod,
     FilterParamName.materialsTerms,
     FilterParamName.additionalGeneIDs,
     FilterParamName.partnerIDs,
@@ -217,6 +232,7 @@ export const convertSavedSearchCriteriaToFilterParams = (
     convertColorsToFilterParam,
     convertAttributionToFilterParam,
     convertWaysToBuyToFilterParams,
+    convertMajorPeriodToFilterParam,
   ]
 
   converters.forEach((converter) => {
