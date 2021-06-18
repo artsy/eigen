@@ -17,7 +17,7 @@ import { Tab } from "../Favorites/Favorites"
 import { AuctionResultForYouListItem } from "./AuctionResultForYouListItem"
 
 interface Props {
-  me: AuctionResultForYouContainer_me
+  me: AuctionResultForYouContainer_me | null
   relay: RelayPaginationProp
 }
 

@@ -24,7 +24,7 @@ describe("AuctionResultForYouContainer", () => {
       variables={{ after: "YXJyYXljb25uZWN0aW9uOjA", first: 3 }}
       render={({ props }) => {
         if (props) {
-          return <AuctionResultForYouContainer me={meResponseMock} />
+          return <AuctionResultForYouContainer me={props.me} />
         }
         return null
       }}
