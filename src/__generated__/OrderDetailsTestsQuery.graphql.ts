@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ea59384642e4efcc932f22547de960ed */
+/* @relayHash 2a2112c6ef6818738e048d1629a5b99c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -120,6 +120,12 @@ fragment ShipsToSection_address on CommerceOrder {
 
 fragment SoldBySection_soldBy on CommerceOrder {
   __isCommerceOrder: __typename
+  requestedFulfillment {
+    __typename
+    ... on CommercePickup {
+      __typename
+    }
+  }
   lineItems(first: 1) {
     edges {
       node {
@@ -599,7 +605,7 @@ return {
     ]
   },
   "params": {
-    "id": "ea59384642e4efcc932f22547de960ed",
+    "id": "2a2112c6ef6818738e048d1629a5b99c",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "commerceOrder": {
