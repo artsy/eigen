@@ -115,10 +115,7 @@ describe("SavedSearchBanner", () => {
     const refetchOperation = mockEnvironment.mock.getMostRecentOperation()
     expect(refetchOperation.request.node.operation.name).toEqual("SavedSearchBannerRefetchQuery")
 
-    act(() => mockEnvironment.mock.resolveMostRecentOperation({
-      errors: [],
-      data: {}
-    }))
+    act(() => mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate(refetchOperation)))
 
     const popoverMessageInstance = tree.root.findByType(PopoverMessage)
     const textInstances = popoverMessageInstance.findAllByType(Text)
