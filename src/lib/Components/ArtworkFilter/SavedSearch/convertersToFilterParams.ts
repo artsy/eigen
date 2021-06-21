@@ -1,5 +1,5 @@
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
-import { Dictionary, isNil, isNumber, keyBy, mapValues } from "lodash"
+import { Dictionary, isNil, keyBy, mapValues } from "lodash"
 import {
   Aggregation,
   Aggregations,
@@ -11,7 +11,7 @@ import {
 import { DEFAULT_FILTERS } from "../ArtworkFilterStore"
 import { ATTRIBUTION_CLASS_OPTIONS } from "../Filters/AttributionClassOptions"
 import { COLORS_INDEXED_BY_VALUE } from "../Filters/ColorsOptions"
-import { localizeDimension, Numeric, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
+import { localizeDimension, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
 import { SIZE_OPTIONS } from "../Filters/SizeOptions"
 import { WAYS_TO_BUY_FILTER_PARAM_NAMES } from "../Filters/WaysToBuyOptions"
 
