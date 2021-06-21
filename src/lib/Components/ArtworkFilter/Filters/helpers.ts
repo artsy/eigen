@@ -105,19 +105,3 @@ export const parseRange = (range: string): Range => {
 
   return { min: enforceNumeric(min), max: enforceNumeric(max) }
 }
-
-export const parseRangeByKeys = (
-  range: string,
-  keys?: {
-    minKey?: string
-    maxKey?: string
-  }
-): Record<string, Numeric> => {
-  const minKey = keys?.minKey ?? "min"
-  const maxKey = keys?.maxKey ?? "max"
-  const { min, max } = parseRange(range)
-  return {
-    [minKey]: min,
-    [maxKey]: max,
-  }
-}

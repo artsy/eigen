@@ -1,7 +1,7 @@
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { FilterScreen } from "lib/Components/ArtworkFilter"
 import { capitalize, compact, groupBy, isEqual, pick, sortBy } from "lodash"
-import { LOCALIZED_UNIT, parseRangeByKeys } from "./Filters/helpers"
+import { LOCALIZED_UNIT } from "./Filters/helpers"
 
 export enum FilterDisplayName {
   // artist = "Artists",
