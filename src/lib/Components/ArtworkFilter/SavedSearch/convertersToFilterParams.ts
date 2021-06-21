@@ -19,21 +19,15 @@ type SearchCriteriaAttributeKeys = keyof SearchCriteriaAttributes
 export type AggregationByFilterParamName = Dictionary<Aggregation[]>
 
 export const convertPriceToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
-  let parsedPriceMin: Numeric = "*"
-  let parsedPriceMax: Numeric = "*"
+  if (!isNil(criteria.priceRange)) {
+    const { min, max } = parseRange(criteria.priceRange)
 
-  if (isNumber(criteria.priceMin)) {
-    parsedPriceMin = criteria.priceMin
-  }
-  if (isNumber(criteria.priceMax)) {
-    parsedPriceMax = criteria.priceMax
-  }
-
-  if (parsedPriceMin !== "*" || parsedPriceMax !== "*") {
-    return {
-      displayText: parsePriceRangeLabel(parsedPriceMin, parsedPriceMax),
-      paramValue: `${parsedPriceMin}-${parsedPriceMax}`,
-      paramName: FilterParamName.priceRange,
+    if (min !== "*" || max !== "*") {
+      return {
+        displayText: parsePriceRangeLabel(min, max),
+        paramValue: `${min}-${max}`,
+        paramName: FilterParamName.priceRange,
+      }
     }
   }
 

@@ -15,8 +15,7 @@ import {
 describe("convertPriceToFilterParam", () => {
   it("returns `$100–200` price range", () => {
     const result = convertPriceToFilterParam({
-      priceMin: 100,
-      priceMax: 200,
+      priceRange: "100-200",
     })
 
     expect(result).toEqual({
@@ -28,8 +27,7 @@ describe("convertPriceToFilterParam", () => {
 
   it("returns `$50,000+` price range", () => {
     const result = convertPriceToFilterParam({
-      priceMin: 50000,
-      priceMax: null,
+      priceRange: "50000-*",
     })
 
     expect(result).toEqual({
@@ -41,8 +39,7 @@ describe("convertPriceToFilterParam", () => {
 
   it("returns `$0–1,000` price range", () => {
     const result = convertPriceToFilterParam({
-      priceMin: null,
-      priceMax: 1000,
+      priceRange: "*-1000",
     })
 
     expect(result).toEqual({
@@ -54,8 +51,7 @@ describe("convertPriceToFilterParam", () => {
 
   it("returns `*-*` price range", () => {
     const result = convertPriceToFilterParam({
-      priceMin: null,
-      priceMax: null,
+      priceRange: null,
     })
 
     expect(result).toBeNull()
@@ -527,8 +523,7 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       materialsTerms: ["screen print"],
       offerable: true,
       partnerIDs: ["tate-ward-auctions"],
-      priceMax: 50000,
-      priceMin: 10000,
+      priceRange: "10000-50000",
       widthMax: null,
       widthMin: null,
     }
@@ -670,8 +665,7 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       materialsTerms: ["screen print"],
       offerable: true,
       partnerIDs: ["tate-ward-auctions"],
-      priceMax: 50000,
-      priceMin: 10000,
+      priceRange: "10000-50000",
       widthMax: null,
       widthMin: null,
     }
