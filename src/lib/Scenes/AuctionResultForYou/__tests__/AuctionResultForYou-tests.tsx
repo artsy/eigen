@@ -1,4 +1,4 @@
-import { AuctionResultForYouContainerTestsQuery } from "__generated__/AuctionResultForYouContainerTestsQuery.graphql"
+import { AuctionResultForYouTestsQuery } from "__generated__/AuctionResultForYouTestsQuery.graphql"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { navigate } from "lib/navigation/navigate"
 import { Tab } from "lib/Scenes/Favorites/Favorites"
@@ -16,10 +16,10 @@ describe("AuctionResultForYouContainer", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
-    <QueryRenderer<AuctionResultForYouContainerTestsQuery>
+    <QueryRenderer<AuctionResultForYouTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query AuctionResultForYouContainerTestsQuery($first: Int!, $after: String) @relay_test_operation {
+        query AuctionResultForYouTestsQuery($first: Int!, $after: String) @relay_test_operation {
           me {
             ...AuctionResultForYou_me @arguments(first: $first, after: $after)
           }

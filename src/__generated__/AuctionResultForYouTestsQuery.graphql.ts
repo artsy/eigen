@@ -1,28 +1,28 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash df6b9fd40eba866c6294a478c58a335f */
+/* @relayHash 57cb4fc1359eb13ab9e6a2a93bb36e8f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type AuctionResultForYouContainerTestsQueryVariables = {
+export type AuctionResultForYouTestsQueryVariables = {
     first: number;
     after?: string | null;
 };
-export type AuctionResultForYouContainerTestsQueryResponse = {
+export type AuctionResultForYouTestsQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"AuctionResultForYou_me">;
     } | null;
 };
-export type AuctionResultForYouContainerTestsQuery = {
-    readonly response: AuctionResultForYouContainerTestsQueryResponse;
-    readonly variables: AuctionResultForYouContainerTestsQueryVariables;
+export type AuctionResultForYouTestsQuery = {
+    readonly response: AuctionResultForYouTestsQueryResponse;
+    readonly variables: AuctionResultForYouTestsQueryVariables;
 };
 
 
 
 /*
-query AuctionResultForYouContainerTestsQuery(
+query AuctionResultForYouTestsQuery(
   $first: Int!
   $after: String
 ) {
@@ -131,7 +131,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "AuctionResultForYouContainerTestsQuery",
+    "name": "AuctionResultForYouTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -160,7 +160,7 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "AuctionResultForYouContainerTestsQuery",
+    "name": "AuctionResultForYouTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -420,7 +420,7 @@ return {
     ]
   },
   "params": {
-    "id": "df6b9fd40eba866c6294a478c58a335f",
+    "id": "57cb4fc1359eb13ab9e6a2a93bb36e8f",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -527,11 +527,11 @@ return {
         "me.id": (v5/*: any*/)
       }
     },
-    "name": "AuctionResultForYouContainerTestsQuery",
+    "name": "AuctionResultForYouTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '9e19a1431e0583fccce25267aa5e6b20';
+(node as any).hash = '014e1258a03ca013b9d79b311bc696c1';
 export default node;
