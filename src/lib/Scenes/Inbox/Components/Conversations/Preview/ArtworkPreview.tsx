@@ -63,11 +63,7 @@ export class ArtworkPreview extends React.Component<Props> {
     const artworkImage = artwork.image
 
     return (
-      <Touchable
-        style={{ maxWidth: "66.67%", flex: 1 }}
-        underlayColor={Colors.GrayLight}
-        onPress={this.props.onSelected && this.attachmentSelected.bind(this)}
-      >
+      <Touchable underlayColor={Colors.GrayLight} onPress={this.props.onSelected && this.attachmentSelected.bind(this)}>
         <Container>
           {!!artworkImage && (
             <ImageContainer>
