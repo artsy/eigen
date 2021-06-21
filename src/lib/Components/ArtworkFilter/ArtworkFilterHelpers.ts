@@ -586,41 +586,34 @@ export const parseFilterParamSize = (filterParams: FilterParams) => {
 }
 
 export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams) => {
-  let input: SearchCriteriaAttributes = {}
-  const canSendIfNotEqualByDefault = [
-    FilterParamName.waysToBuyBuy,
-    FilterParamName.waysToBuyBid,
-    FilterParamName.waysToBuyInquire,
-    FilterParamName.waysToBuyMakeOffer,
-  ]
-  const canSendWithoutChangesKeys = [
-    FilterParamName.additionalGeneIDs,
-    FilterParamName.colors,
-    FilterParamName.locationCities,
-    FilterParamName.timePeriod,
-    FilterParamName.materialsTerms,
-    FilterParamName.partnerIDs,
-  ]
+  const input: SearchCriteriaAttributes = {}
+  const allowedKeys = pick(filterParams, [
+    "artistID",
+    "locationCities",
+    "colors",
+    "partnerIDs",
+    "additionalGeneIDs",
+    "attributionClass",
+    "majorPeriods",
+    "acquireable",
+    "atAuction",
+    "inquireableOnly",
+    "offerable",
+    "materialsTerms",
+    "priceRange",
+    "dimensionRange",
+    "height",
+    "width",
+  ])
 
-  Object.entries(filterParams).forEach((entry) => {
-    const [key, value] = entry
+  for (const key of Object.keys(allowedKeys)) {
+    const value = filterParams[key as FilterParamName]
+    const defaultValue = defaultCommonFilterOptions[key as FilterParamName]
 
-    if (key === FilterParamName.priceRange) {
-      input = { ...input, ...parseFilledRangeByKeys(value as string, "priceMin", "priceMax") }
-    } else if (key === FilterParamName.attributionClass) {
-      input.attributionClasses = value as string[]
-    } else if (key === FilterParamName.dimensionRange) {
-      input = { ...input, ...parseFilterParamSize(filterParams) }
-    } else if (canSendWithoutChangesKeys.includes(key as FilterParamName)) {
+    if (!isEqual(defaultValue, value)) {
       input[key as keyof SearchCriteriaAttributes] = value as any
-    } else if (canSendIfNotEqualByDefault.includes(key as FilterParamName)) {
-      const defaultValue = defaultCommonFilterOptions[key as FilterParamName]
-
-      if (!isEqual(defaultValue, value)) {
-        input[key as keyof SearchCriteriaAttributes] = value as any
-      }
     }
-  })
+  }
 
   return input
 }
