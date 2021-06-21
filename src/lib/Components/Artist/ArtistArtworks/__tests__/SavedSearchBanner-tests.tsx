@@ -1,11 +1,12 @@
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { SavedSearchBannerTestsQuery } from "__generated__/SavedSearchBannerTestsQuery.graphql"
+import { PopoverMessage } from 'lib/Components/PopoverMessage/PopoverMessage'
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Button } from "palette"
+import { Button, Text } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -114,9 +115,15 @@ describe("SavedSearchBanner", () => {
     const refetchOperation = mockEnvironment.mock.getMostRecentOperation()
     expect(refetchOperation.request.node.operation.name).toEqual("SavedSearchBannerRefetchQuery")
 
-    act(() => mockEnvironment.mock.resolve(refetchOperation, MockPayloadGenerator.generate(refetchOperation)))
+    act(() => mockEnvironment.mock.resolveMostRecentOperation({
+      errors: [],
+      data: {}
+    }))
 
-    await flushPromiseQueue()
-    expect(buttonComponent.props.loading).toBe(false)
+    const popoverMessageInstance = tree.root.findByType(PopoverMessage)
+    const textInstances = popoverMessageInstance.findAllByType(Text)
+
+    expect(textInstances[0].props.children).toEqual("Your alert has been set.")
+    expect(textInstances[1].props.children).toEqual("We will send you a push notification once new works are added.")
   })
 })
