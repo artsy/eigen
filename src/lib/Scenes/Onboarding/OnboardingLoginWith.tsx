@@ -1,8 +1,9 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Button, Flex, Spacer, Text } from "palette"
+import { AppleIcon, Box, Button, EmailIcon, FacebookIcon, Flex, GoogleIcon, Spacer, Text } from "palette"
 import React from "react"
-import { ScrollView, View } from "react-native"
+import { Image, ScrollView, View } from "react-native"
 import { OnboardingNavigationStack } from "./Onboarding"
 
 interface OnboardingLogInWithProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWith"> {}
@@ -16,22 +17,32 @@ export const OnboardingLoginWith: React.FC<OnboardingLogInWithProps> = ({ naviga
         <Spacer mt={122} />
         <Text fontSize="50px">Log In</Text>
         <Spacer mt={60} />
-        <Flex justifyContent="space-around" flexDirection="column" height="100%">
+        <Flex>
           <Button onPress={() => navigation.navigate("OnboardingLogin")} block variant="secondaryOutline">
-            Continue with email
+            <EmailIcon></EmailIcon>
+            <Text fontSize="16px">Continue with email</Text>
+          </Button>
+          <Spacer mt={20} />
+          <Button
+            onPress={() => GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" })}
+            block
+            variant="secondaryOutline"
+          >
+            <FacebookIcon></FacebookIcon>
+            <Text fontSize="16px">Continue with Facebook</Text>
           </Button>
           <Spacer mt={20} />
           <Button block variant="secondaryOutline">
-            Continue with Facebook
+            <GoogleIcon></GoogleIcon>
+            <Text fontSize="16px">Continue with Google</Text>
           </Button>
           <Spacer mt={20} />
           <Button block variant="secondaryOutline">
-            Continue with Google
+            <AppleIcon></AppleIcon>
+            <Text fontSize="16px">Continue with Apple</Text>
           </Button>
-          <Spacer mt={20} />
-          <Button block variant="secondaryOutline">
-            Continue with Apple
-          </Button>
+        </Flex>
+        <Flex>
           <Spacer mt={80} />
           <Text variant="small" color="black60">
             By tapping Next, Continue with Facebook or Apple, you agree to Artsy's Terms of Use and Privacy Policy
