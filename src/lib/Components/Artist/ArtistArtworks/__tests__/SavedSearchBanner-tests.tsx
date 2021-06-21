@@ -3,7 +3,6 @@ import { SavedSearchBannerTestsQuery } from "__generated__/SavedSearchBannerTest
 import { PopoverMessage } from 'lib/Components/PopoverMessage/PopoverMessage'
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button, Text } from "palette"
@@ -86,7 +85,7 @@ describe("SavedSearchBanner", () => {
     expect(buttonComponent.props.loading).toBe(true)
   })
 
-  it("returns", async () => {
+  it("createSavedSearch mutation is handled correctly", async () => {
     mockFetchNotificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Authorized))
 
     const tree = renderWithWrappers(<TestRenderer />)
