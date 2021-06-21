@@ -23,13 +23,21 @@ import { graphql } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
 const INITIAL_TAB = "Artworks"
+interface NotificationPayload {
+  searchCriteriaID: string
+  // TODO: replace with proper searchCriteriaAttributes type when defined
+  searchCriteriaAttributes: {}
+}
 
-export const Artist: React.FC<{
+interface ArtistProps {
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
   artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
   initialTab?: string
-  searchCriteriaID?: string
-}> = ({ artistAboveTheFold, artistBelowTheFold, initialTab = INITIAL_TAB, searchCriteriaID }) => {
+  notificationPayload?: NotificationPayload
+}
+
+export const Artist: React.FC<ArtistProps> = (props) => {
+  const { artistAboveTheFold, artistBelowTheFold, initialTab = INITIAL_TAB, notificationPayload } = props
   const tabs: TabProps[] = []
   const displayAboutSection =
     artistAboveTheFold.has_metadata ||
@@ -50,7 +58,12 @@ export const Artist: React.FC<{
 
     tabs.push({
       title: "Artworks",
-      content: <ArtistArtworks artist={artistAboveTheFold} />,
+      content: (
+        <ArtistArtworks
+          artist={artistAboveTheFold}
+          searchCriteriaAttributes={notificationPayload?.searchCriteriaAttributes}
+        />
+      ),
     })
   }
 
@@ -106,15 +119,11 @@ export const Artist: React.FC<{
 interface ArtistQueryRendererProps extends ArtistAboveTheFoldQueryVariables, ArtistBelowTheFoldQueryVariables {
   environment?: RelayModernEnvironment
   initialTab?: string
-  searchCriteriaID?: string
+  notificationPayload?: NotificationPayload
 }
 
-export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
-  artistID,
-  environment,
-  initialTab,
-  searchCriteriaID,
-}) => {
+export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) => {
+  const { artistID, environment, initialTab, notificationPayload } = props
   return (
     <AboveTheFoldQueryRenderer<ArtistAboveTheFoldQuery, ArtistBelowTheFoldQuery>
       environment={environment || defaultEnvironment}
@@ -163,7 +172,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
               artistAboveTheFold={above.artist}
               artistBelowTheFold={below?.artist}
               initialTab={initialTab}
-              searchCriteriaID={searchCriteriaID}
+              notificationPayload={notificationPayload}
             />
           )
         },
