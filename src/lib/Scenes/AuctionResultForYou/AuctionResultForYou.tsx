@@ -1,4 +1,5 @@
-import { AuctionResultForYouContainer_me } from "__generated__/AuctionResultForYouContainer_me.graphql"
+import { AuctionResultForYou_me } from "__generated__/AuctionResultForYou_me.graphql"
+import { AuctionResultForYouContainerQuery } from "__generated__/AuctionResultForYouContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import Spinner from "lib/Components/Spinner"
@@ -6,6 +7,8 @@ import { LinkText } from "lib/Components/Text/LinkText"
 import { PAGE_SIZE } from "lib/data/constants"
 import { Fonts } from "lib/data/fonts"
 import { navigate } from "lib/navigation/navigate"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { groupBy } from "lodash"
 import moment from "moment"
@@ -13,11 +16,12 @@ import { Flex, Sans, Separator, Text } from "palette"
 import React, { useState } from "react"
 import { SectionList } from "react-native"
 import { RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer } from "react-relay"
 import { Tab } from "../Favorites/Favorites"
 import { AuctionResultForYouListItem } from "./AuctionResultForYouListItem"
 
 interface Props {
-  me: AuctionResultForYouContainer_me | null
+  me: AuctionResultForYou_me | null
   relay: RelayPaginationProp
 }
 
@@ -82,3 +86,84 @@ export const AuctionResultForYou: React.FC<Props> = ({ me, relay }) => {
     </PageWithSimpleHeader>
   )
 }
+
+export const AuctionResultForYouContainer = createPaginationContainer(
+  AuctionResultForYou,
+  {
+    me: graphql`
+      fragment AuctionResultForYou_me on Me
+      @argumentDefinitions(first: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
+        auctionResultsByFollowedArtists(first: $first, after: $after)
+          @connection(key: "AuctionResultForYouContainer_auctionResultsByFollowedArtists") {
+          totalCount
+          edges {
+            node {
+              id
+              artistID
+              internalID
+              artist {
+                name
+              }
+              title
+              currency
+              dateText
+              mediumText
+              saleDate
+              organization
+              boughtIn
+              priceRealized {
+                cents
+                display
+              }
+              performance {
+                mid
+              }
+              images {
+                thumbnail {
+                  url
+                }
+              }
+            }
+          }
+        }
+      }
+    `,
+  },
+  {
+    getConnectionFromProps(props) {
+      return props?.me?.auctionResultsByFollowedArtists
+    },
+    getVariables(_props, { count, cursor }, fragmentVariables) {
+      return {
+        ...fragmentVariables,
+        after: cursor,
+        count,
+      }
+    },
+    query: graphql`
+      query AuctionResultForYouContainerPaginationQuery($first: Int!, $after: String) {
+        me {
+          ...AuctionResultForYou_me @arguments(first: $first, after: $after)
+        }
+      }
+    `,
+  }
+)
+
+export const AuctionResultForYouQueryRenderer: React.FC = () => (
+  <QueryRenderer<AuctionResultForYouContainerQuery>
+    environment={defaultEnvironment}
+    query={graphql`
+      query AuctionResultForYouContainerQuery {
+        me {
+          ...AuctionResultForYou_me
+        }
+      }
+    `}
+    variables={{}}
+    cacheConfig={{
+      force: true,
+    }}
+    render={renderWithLoadProgress(AuctionResultForYouContainer)}
+  />
+)

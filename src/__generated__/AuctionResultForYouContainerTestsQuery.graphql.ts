@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2b0bd79afafb610b57c20026f7139a91 */
+/* @relayHash df6b9fd40eba866c6294a478c58a335f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -11,7 +11,7 @@ export type AuctionResultForYouContainerTestsQueryVariables = {
 };
 export type AuctionResultForYouContainerTestsQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"AuctionResultForYouContainer_me">;
+        readonly " $fragmentRefs": FragmentRefs<"AuctionResultForYou_me">;
     } | null;
 };
 export type AuctionResultForYouContainerTestsQuery = {
@@ -27,12 +27,12 @@ query AuctionResultForYouContainerTestsQuery(
   $after: String
 ) {
   me {
-    ...AuctionResultForYouContainer_me_2HEEH6
+    ...AuctionResultForYou_me_2HEEH6
     id
   }
 }
 
-fragment AuctionResultForYouContainer_me_2HEEH6 on Me {
+fragment AuctionResultForYou_me_2HEEH6 on Me {
   auctionResultsByFollowedArtists(first: $first, after: $after) {
     totalCount
     edges {
@@ -144,7 +144,7 @@ return {
           {
             "args": (v2/*: any*/),
             "kind": "FragmentSpread",
-            "name": "AuctionResultForYouContainer_me"
+            "name": "AuctionResultForYou_me"
           }
         ],
         "storageKey": null
@@ -420,7 +420,7 @@ return {
     ]
   },
   "params": {
-    "id": "2b0bd79afafb610b57c20026f7139a91",
+    "id": "df6b9fd40eba866c6294a478c58a335f",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -533,5 +533,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'e3b6fb4f6c2e746f6b199d0024f28ef2';
+(node as any).hash = '9e19a1431e0583fccce25267aa5e6b20';
 export default node;

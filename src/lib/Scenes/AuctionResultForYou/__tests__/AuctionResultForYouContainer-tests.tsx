@@ -8,7 +8,7 @@ import { first } from "lodash"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { AuctionResultForYouContainer } from "../AuctionResultForYouContainer"
+import { AuctionResultForYouContainer } from "../AuctionResultForYou"
 
 jest.unmock("react-relay")
 
@@ -21,7 +21,7 @@ describe("AuctionResultForYouContainer", () => {
       query={graphql`
         query AuctionResultForYouContainerTestsQuery($first: Int!, $after: String) @relay_test_operation {
           me {
-            ...AuctionResultForYouContainer_me @arguments(first: $first, after: $after)
+            ...AuctionResultForYou_me @arguments(first: $first, after: $after)
           }
         }
       `}

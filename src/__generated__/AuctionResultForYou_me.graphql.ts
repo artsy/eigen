@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type AuctionResultForYouContainer_me = {
+export type AuctionResultForYou_me = {
     readonly auctionResultsByFollowedArtists: {
         readonly totalCount: number | null;
         readonly edges: ReadonlyArray<{
@@ -37,12 +37,12 @@ export type AuctionResultForYouContainer_me = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "AuctionResultForYouContainer_me";
+    readonly " $refType": "AuctionResultForYou_me";
 };
-export type AuctionResultForYouContainer_me$data = AuctionResultForYouContainer_me;
-export type AuctionResultForYouContainer_me$key = {
-    readonly " $data"?: AuctionResultForYouContainer_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"AuctionResultForYouContainer_me">;
+export type AuctionResultForYou_me$data = AuctionResultForYou_me;
+export type AuctionResultForYou_me$key = {
+    readonly " $data"?: AuctionResultForYou_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"AuctionResultForYou_me">;
 };
 
 
@@ -73,7 +73,7 @@ const node: ReaderFragment = {
       }
     ]
   },
-  "name": "AuctionResultForYouContainer_me",
+  "name": "AuctionResultForYou_me",
   "selections": [
     {
       "alias": "auctionResultsByFollowedArtists",
@@ -318,5 +318,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '3f2da11b28bb87915639acd78e70869a';
+(node as any).hash = 'bf184ae225cdd10e98431690bbfc2747';
 export default node;
