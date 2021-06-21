@@ -7,6 +7,7 @@ import React from "react"
 import { View } from "react-native"
 import { ForgotPassword } from "./ForgotPassword"
 import { OnboardingCreateAccount } from "./OnboardingCreateAccount/OnboardingCreateAccount"
+import { OnboardingCreateAccountWith } from "./OnboardingCreateAccount/OnboardingCreateAccountWith"
 import { OnboardingLogin } from "./OnboardingLogin"
 import { OnboardingLoginWith } from "./OnboardingLoginWith"
 import { OnboardingPersonalization } from "./OnboardingPersonalization/OnboardingPersonalization"
@@ -18,6 +19,7 @@ export type OnboardingNavigationStack = {
   OnboardingLogin: { withFadeAnimation: boolean; email: string } | undefined
   OnboardingLoginWith: undefined
   OnboardingCreateAccount: undefined
+  OnboardingCreateAccountWith: undefined
   ForgotPassword: undefined
 }
 
@@ -43,6 +45,7 @@ export const OnboardingWelcomeScreens = () => (
             : CardStyleInterpolators.forHorizontalIOS,
         })}
       />
+      <StackNavigator.Screen name="OnboardingCreateAccountWith" component={OnboardingCreateAccountWith} />
       <StackNavigator.Screen name="OnboardingCreateAccount" component={OnboardingCreateAccount} />
       <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
     </StackNavigator.Navigator>

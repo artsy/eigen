@@ -120,7 +120,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
         </Text>
         <Spacer mt={2} />
         <Touchable
-          onPress={() => navigation.navigate("OnboardingCreateAccount")}
+          onPress={() => navigation.navigate("OnboardingCreateAccountWith")}
           underlayColor={color("black5")}
           haptic="impactMedium"
           style={{

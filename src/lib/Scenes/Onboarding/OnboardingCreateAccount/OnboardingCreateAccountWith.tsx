@@ -3,21 +3,22 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Button, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { ScrollView, View } from "react-native"
-import { OnboardingNavigationStack } from "./Onboarding"
+import { OnboardingNavigationStack } from "../Onboarding"
 
-interface OnboardingLogInWithProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWith"> {}
+interface OnboardingCreateAccountWithProps
+  extends StackScreenProps<OnboardingNavigationStack, "OnboardingCreateAccountWith"> {}
 
-export const OnboardingLoginWith: React.FC<OnboardingLogInWithProps> = ({ navigation }) => {
+export const OnboardingCreateAccountWith: React.FC<OnboardingCreateAccountWithProps> = ({ navigation }) => {
   return (
     <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>
       <ScrollView
         contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top, paddingHorizontal: 20 }}
       >
         <Spacer mt={122} />
-        <Text fontSize="50px">Log In</Text>
+        <Text fontSize="50px">Sign Up</Text>
         <Spacer mt={60} />
-        <Flex justifyContent="space-around" flexDirection="column" height="100%">
-          <Button onPress={() => navigation.navigate("OnboardingLogin")} block variant="secondaryOutline">
+        <Flex>
+          <Button onPress={() => navigation.navigate("OnboardingCreateAccount")} block variant="secondaryOutline">
             Continue with email
           </Button>
           <Spacer mt={20} />
