@@ -10,13 +10,10 @@ export type SearchCriteriaAttributes = {
     additionalGeneIDs?: Array<string> | null;
     artistID?: string | null;
     atAuction?: boolean | null;
-    attributionClass?: Array<string> | null;
     attributionClasses?: Array<string> | null;
     colors?: Array<string> | null;
-    dimensionRange?: string | null;
     dimensionScoreMax?: number | null;
     dimensionScoreMin?: number | null;
-    height?: string | null;
     heightMax?: number | null;
     heightMin?: number | null;
     inquireableOnly?: boolean | null;
@@ -27,8 +24,6 @@ export type SearchCriteriaAttributes = {
     partnerIDs?: Array<string> | null;
     priceMax?: number | null;
     priceMin?: number | null;
-    priceRange?: string | null;
-    width?: number | null;
     widthMax?: number | null;
     widthMin?: number | null;
 };
