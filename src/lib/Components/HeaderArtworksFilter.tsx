@@ -3,6 +3,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, FilterIcon, Flex, Separator, Text, TouchableHighlightColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-native"
+import styled from "styled-components/native"
 
 interface FilterProps {
   total: number
@@ -22,6 +23,10 @@ const BACK_BUTTON_SIZE = {
     width: 40,
   },
 }
+
+export const Container = styled(Box)`
+  background-color: white;
+`
 
 export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationValue, onPress }) => {
   const screenWidth = useScreenDimensions().width
@@ -85,7 +90,7 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
   }
 
   return (
-    <Box backgroundColor="white" onLayout={(e) => _onLayout(e)}>
+    <Container onLayout={(e) => _onLayout(e)}>
       <SeparatorWithSmoothOpacity />
       <Animated.View
         style={{
@@ -115,29 +120,25 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
                 ],
               }}
             >
-              {!!total && (
-                <Text variant="subtitle" color="black60">
-                  Showing {total} works
-                </Text>
-              )}
+              <Text variant="subtitle" color="black60">
+                Showing {total} works
+              </Text>
             </Animated.View>
-            {!!total && (
-              <TouchableHighlightColor
-                haptic
-                onPress={onPress}
-                render={({ color }) => (
-                  <Flex flexDirection="row" alignItems="center">
-                    <FilterIcon fill={color} width="20px" height="20px" />
-                    <Text variant="subtitle" color={color}>
-                      Sort & Filter
-                    </Text>
-                  </Flex>
-                )}
-              />
-            )}
+            <TouchableHighlightColor
+              haptic
+              onPress={onPress}
+              render={({ color }) => (
+                <Flex flexDirection="row" alignItems="center">
+                  <FilterIcon fill={color} width="20px" height="20px" />
+                  <Text variant="subtitle" color={color}>
+                    Sort & Filter
+                  </Text>
+                </Flex>
+              )}
+            />
           </Flex>
         </Box>
       </Animated.View>
-    </Box>
+    </Container>
   )
 }
