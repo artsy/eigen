@@ -7,6 +7,7 @@ upcoming:
     - Update open simulator command in getting started docs - ole
     - Update debugging docs - mounir
     - Send data in the filter params format for saved search - dzmitry tratsiak
+    - Enables external flag for order history - sweir
   user_facing:
     - Pick up should be displayed in Sold by section - Serge0n
     - Country should be written with full name - Serge0n
