@@ -11,29 +11,31 @@ interface Props {
 }
 
 export const SoldBySection: React.FC<Props> = ({ soldBy }) => {
-  if (!soldBy) {
+  if (!soldBy || !soldBy.lineItems || !soldBy.lineItems.edges?.length) {
     return null
   }
   const { fulfillments, artwork } = extractNodes(soldBy.lineItems)[0]
-  const estimatedDelivery = extractNodes(fulfillments)[0]?.estimatedDelivery
+  const estimatedDelivery = extractNodes(fulfillments)?.[0]?.estimatedDelivery
   const orderEstimatedDelivery = estimatedDelivery ? DateTime.fromISO(estimatedDelivery) : null
-  const pickUpCondition = soldBy?.requestedFulfillment?.__typename === "CommercePickup"
+  const isForPickup = soldBy?.requestedFulfillment?.__typename === "CommercePickup"
 
   return (
     <Box>
       <Box flexDirection="row" testID="soldByInfo">
         <Text variant="text" color="black60">
-          {pickUpCondition ? "Pick up " : "Ships from "}
+          {isForPickup ? "Pick up " : "Ships from "}
         </Text>
         <Text testID="shippingOrigin" color="black60" variant="text">
-          {pickUpCondition ? `(${artwork?.shippingOrigin})` : artwork?.shippingOrigin}
+          {isForPickup ? `(${artwork?.shippingOrigin})` : artwork?.shippingOrigin}
         </Text>
       </Box>
       {!!orderEstimatedDelivery && (
         <Box flexDirection="row">
-          <Text variant="text">Estimated Delivery: </Text>
-          <Text testID="delivery" variant="text">
-            {orderEstimatedDelivery.toLocaleString(DateTime.DATE_SHORT as LocaleOptions)}
+          <Text color="black60" variant="text">
+            Estimated Delivery:{" "}
+          </Text>
+          <Text color="black60" testID="delivery" variant="text">
+            {orderEstimatedDelivery.toLocaleString(DateTime.DATE_MED as LocaleOptions)}
           </Text>
         </Box>
       )}

@@ -96,7 +96,7 @@ describe("SoldBySection", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "delivery" }).props.children).toBe("8/10/2021")
+    expect(tree.findByProps({ testID: "delivery" }).props.children).toBe("May 8, 2022")
     expect(extractText(tree.findByProps({ testID: "soldByInfo" }))).toBe("Pick up (Minsk, Belarus)")
   })
 })
