@@ -507,10 +507,11 @@ export const getAuthModel = (): AuthModel => ({
         return
       }
       const appleUID = userInfo.user
-      const firstName = userInfo.fullName?.givenName ? userInfo.fullName.givenName : ""
-      const lastName = userInfo.fullName?.familyName ? userInfo.fullName.familyName : ""
 
       if (signInOrUp === "signUp") {
+        const firstName = userInfo.fullName?.givenName ? userInfo.fullName.givenName : ""
+        const lastName = userInfo.fullName?.familyName ? userInfo.fullName.familyName : ""
+
         const resultGravitySignUp =
           userInfo.email &&
           (await actions.signUp({
