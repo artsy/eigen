@@ -29,6 +29,7 @@ upcoming:
     - Show a toast message for saved search mutations - dzmitry tratsiak
     - Added "Auction lots for you" landing screen - damon
     - Fix Aligned InfoCircleIcon - gkartalis
+    - Hide spinner when there is no more artworks to load - katsiaryna alshannikava
     - Aligned 'Next' button in the 'Sell work' menu - katsiaryna alshannikava
 
 releases:
