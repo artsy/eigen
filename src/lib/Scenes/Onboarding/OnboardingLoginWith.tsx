@@ -19,8 +19,10 @@ export const OnboardingLoginWith: React.FC<OnboardingLogInWithProps> = ({ naviga
         <Spacer mt={60} />
         <Flex>
           <Button onPress={() => navigation.navigate("OnboardingLogin")} block variant="secondaryOutline">
-            <EmailIcon></EmailIcon>
-            <Text fontSize="16px">Continue with email</Text>
+            <Flex flexDirection="row" alignItems="center">
+              <EmailIcon></EmailIcon>
+              <Text fontSize="16px">Continue with email</Text>
+            </Flex>
           </Button>
           <Spacer mt={20} />
           <Button
@@ -28,18 +30,24 @@ export const OnboardingLoginWith: React.FC<OnboardingLogInWithProps> = ({ naviga
             block
             variant="secondaryOutline"
           >
-            <FacebookIcon></FacebookIcon>
-            <Text fontSize="16px">Continue with Facebook</Text>
+            <Flex flexDirection="row" alignItems="center">
+              <FacebookIcon width="25px" height="25px"></FacebookIcon>
+              <Text fontSize="16px">Continue with Facebook</Text>
+            </Flex>
           </Button>
           <Spacer mt={20} />
           <Button block variant="secondaryOutline">
-            <GoogleIcon></GoogleIcon>
-            <Text fontSize="16px">Continue with Google</Text>
+            <Flex flexDirection="row" alignItems="center">
+              <GoogleIcon></GoogleIcon>
+              <Text fontSize="16px">Continue with Google</Text>
+            </Flex>
           </Button>
           <Spacer mt={20} />
           <Button block variant="secondaryOutline">
-            <AppleIcon></AppleIcon>
-            <Text fontSize="16px">Continue with Apple</Text>
+            <Flex flexDirection="row" alignItems="center">
+              <AppleIcon></AppleIcon>
+              <Text fontSize="16px">Continue with Apple</Text>
+            </Flex>
           </Button>
         </Flex>
         <Flex>

@@ -20,8 +20,10 @@ export const OnboardingCreateAccountWith: React.FC<OnboardingCreateAccountWithPr
         <Spacer mt={60} />
         <Flex>
           <Button onPress={() => navigation.navigate("OnboardingCreateAccount")} block variant="secondaryOutline">
-            <EmailIcon></EmailIcon>
-            <Text fontSize="16px">Sign up with email</Text>
+            <Flex flexDirection="row" alignItems="center">
+              <EmailIcon></EmailIcon>
+              <Text fontSize="16px">Sign up with email</Text>
+            </Flex>
           </Button>
           <Spacer mt={20} />
           <Button
@@ -29,18 +31,24 @@ export const OnboardingCreateAccountWith: React.FC<OnboardingCreateAccountWithPr
             block
             variant="secondaryOutline"
           >
-            <FacebookIcon></FacebookIcon>
-            <Text fontSize="16px">Sign up with Facebook</Text>
+            <Flex flexDirection="row" alignItems="center">
+              <FacebookIcon width="25px" height="25px"></FacebookIcon>
+              <Text fontSize="16px">Sign up with Facebook</Text>
+            </Flex>
           </Button>
           <Spacer mt={20} />
           <Button block variant="secondaryOutline">
-            <GoogleIcon></GoogleIcon>
-            <Text fontSize="16px">Sign up with Google</Text>
+            <Flex flexDirection="row" alignItems="center">
+              <GoogleIcon></GoogleIcon>
+              <Text fontSize="16px">Sign up with Google</Text>
+            </Flex>
           </Button>
           <Spacer mt={20} />
           <Button block variant="secondaryOutline">
-            <AppleIcon></AppleIcon>
-            <Text fontSize="16px">Sign up with Apple</Text>
+            <Flex flexDirection="row" alignItems="center">
+              <AppleIcon></AppleIcon>
+              <Text fontSize="16px">Sign up with Apple</Text>
+            </Flex>
           </Button>
         </Flex>
         <Flex>
