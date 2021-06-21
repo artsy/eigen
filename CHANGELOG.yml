@@ -6,6 +6,7 @@ upcoming:
     - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
     - Update open simulator command in getting started docs - ole
     - Update debugging docs - mounir
+    - Send data in the filter params format for saved search - dzmitry tratsiak
   user_facing:
     - Pick up should be displayed in Sold by section - Serge0n
     - Country should be written with full name - Serge0n
