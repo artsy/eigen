@@ -60,17 +60,11 @@ describe("convertPriceToFilterParam", () => {
 
 describe("convertSizeToFilterParams", () => {
   it("returns the default size filter value", () => {
-    expect(convertSizeToFilterParams({})).toEqual([
-      {
-        displayText: "All",
-        paramValue: "*-*",
-        paramName: FilterParamName.dimensionRange,
-      },
-    ])
+    expect(convertSizeToFilterParams({})).toEqual(null)
   })
 
   it("returns the small size filter value", () => {
-    expect(convertSizeToFilterParams({ dimensionScoreMax: 16 })).toEqual([
+    expect(convertSizeToFilterParams({ dimensionRange: "*-16.0" })).toEqual([
       {
         displayText: "Small (under 16in)",
         paramValue: "*-16.0",
@@ -80,7 +74,7 @@ describe("convertSizeToFilterParams", () => {
   })
 
   it("returns the medium size filter value", () => {
-    expect(convertSizeToFilterParams({ dimensionScoreMin: 16, dimensionScoreMax: 40 })).toEqual([
+    expect(convertSizeToFilterParams({ dimensionRange: "16.0-40.0" })).toEqual([
       {
         displayText: "Medium (under 16in – 40in)",
         paramValue: "16.0-40.0",
@@ -90,97 +84,102 @@ describe("convertSizeToFilterParams", () => {
   })
 
   it("returns only the minimum width for the size filter", () => {
-    expect(convertSizeToFilterParams({ widthMin: 100 })).toEqual([
+    expect(convertSizeToFilterParams({ dimensionRange: "0-*", width: "100-*" })).toEqual([
+      {
+        displayText: "Custom size",
+        paramValue: "0-*",
+        paramName: FilterParamName.dimensionRange,
+      },
       {
         displayText: "100-*",
         paramValue: "100-*",
         paramName: FilterParamName.width,
       },
+    ])
+  })
+
+  it("returns only the maximum width for the size filter", () => {
+    expect(convertSizeToFilterParams({ dimensionRange: "0-*", width: "*-150" })).toEqual([
       {
         displayText: "Custom size",
         paramValue: "0-*",
         paramName: FilterParamName.dimensionRange,
       },
-    ])
-  })
-
-  it("returns only the maximum width for the size filter", () => {
-    expect(convertSizeToFilterParams({ widthMax: 150 })).toEqual([
       {
         displayText: "*-150",
         paramValue: "*-150",
         paramName: FilterParamName.width,
       },
-      {
-        displayText: "Custom size",
-        paramValue: "0-*",
-        paramName: FilterParamName.dimensionRange,
-      },
     ])
   })
 
   it("returns the minimum and maximum width for the size filter", () => {
-    expect(convertSizeToFilterParams({ widthMin: 100, widthMax: 150 })).toEqual([
-      {
-        displayText: "100-150",
-        paramValue: "100-150",
-        paramName: FilterParamName.width,
-      },
+    expect(convertSizeToFilterParams({ dimensionRange: "0-*", width: "100-150" })).toEqual([
       {
         displayText: "Custom size",
         paramValue: "0-*",
         paramName: FilterParamName.dimensionRange,
+      },
+      {
+        displayText: "100-150",
+        paramValue: "100-150",
+        paramName: FilterParamName.width,
       },
     ])
   })
 
   it("returns only the minimum height for the size filter", () => {
-    expect(convertSizeToFilterParams({ heightMin: 200 })).toEqual([
+    expect(convertSizeToFilterParams({ dimensionRange: "0-*", height: "200-*" })).toEqual([
+      {
+        displayText: "Custom size",
+        paramValue: "0-*",
+        paramName: FilterParamName.dimensionRange,
+      },
       {
         displayText: "200-*",
         paramValue: "200-*",
         paramName: FilterParamName.height,
       },
+    ])
+  })
+
+  it("returns only the maximum height for the size filter", () => {
+    expect(convertSizeToFilterParams({ dimensionRange: "0-*", height: "*-250" })).toEqual([
       {
         displayText: "Custom size",
         paramValue: "0-*",
         paramName: FilterParamName.dimensionRange,
       },
-    ])
-  })
-
-  it("returns only the maximum height for the size filter", () => {
-    expect(convertSizeToFilterParams({ heightMax: 250 })).toEqual([
       {
         displayText: "*-250",
         paramValue: "*-250",
         paramName: FilterParamName.height,
       },
+    ])
+  })
+
+  it("returns the minimum and maximum height for the size filter", () => {
+    expect(convertSizeToFilterParams({ dimensionRange: "0-*", height: "200-250" })).toEqual([
       {
         displayText: "Custom size",
         paramValue: "0-*",
         paramName: FilterParamName.dimensionRange,
       },
-    ])
-  })
-
-  it("returns the minimum and maximum height for the size filter", () => {
-    expect(convertSizeToFilterParams({ heightMin: 200, heightMax: 250 })).toEqual([
       {
         displayText: "200-250",
         paramValue: "200-250",
         paramName: FilterParamName.height,
       },
+    ])
+  })
+
+  it("returns the width and height for the size filter", () => {
+    expect(convertSizeToFilterParams({ dimensionRange: "0-*", width: "100-150", height: "200-250" })).toEqual([
       {
         displayText: "Custom size",
         paramValue: "0-*",
         paramName: FilterParamName.dimensionRange,
       },
-    ])
-  })
-
-  it("returns the width and height for the size filter", () => {
-    expect(convertSizeToFilterParams({ widthMin: 100, widthMax: 150, heightMin: 200, heightMax: 250 })).toEqual([
       {
         displayText: "100-150",
         paramValue: "100-150",
@@ -190,11 +189,6 @@ describe("convertSizeToFilterParams", () => {
         displayText: "200-250",
         paramValue: "200-250",
         paramName: FilterParamName.height,
-      },
-      {
-        displayText: "Custom size",
-        paramValue: "0-*",
-        paramName: FilterParamName.dimensionRange,
       },
     ])
   })
@@ -513,8 +507,7 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       atAuction: true,
       attributionClasses: ["unknown edition", "open edition"],
       colors: ["gold", "red"],
-      dimensionScoreMax: 40,
-      dimensionScoreMin: 16,
+      dimensionRange: "16.0-40.0",
       heightMax: null,
       heightMin: null,
       inquireableOnly: null,
@@ -655,8 +648,7 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       atAuction: true,
       attributionClasses: null,
       colors: null,
-      dimensionScoreMax: 40,
-      dimensionScoreMin: 16,
+      dimensionRange: "16.0-40.0",
       heightMax: null,
       heightMin: null,
       inquireableOnly: null,
