@@ -28,7 +28,7 @@ export type SearchCriteriaAttributes = {
     priceMax?: number | null;
     priceMin?: number | null;
     priceRange?: string | null;
-    width?: number | null;
+    width?: string | null;
     widthMax?: number | null;
     widthMin?: number | null;
 };

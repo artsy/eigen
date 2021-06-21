@@ -10606,7 +10606,7 @@ input SearchCriteriaAttributes {
   priceMax: Int = null
   priceMin: Int = null
   priceRange: String = null
-  width: Float = null
+  width: String = null
   widthMax: Float = null
   widthMin: Float = null
 }
