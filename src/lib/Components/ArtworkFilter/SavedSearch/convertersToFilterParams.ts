@@ -85,7 +85,7 @@ export const convertColorsToFilterParam = (
 ): FilterData | null => {
   const colorsValue = criteria[FilterParamName.colors]
 
-  if (!isNil(colorsValue)) {
+  if (Array.isArray(colorsValue) && colorsValue.length > 0) {
     const colorFromAggregationByValue = keyBy(aggregation[FilterParamName.colors], "value")
     const availableColors = colorsValue.filter((color) => !!colorFromAggregationByValue[color])
     const colorNames = availableColors.map((color) => COLORS_INDEXED_BY_VALUE[color].name)
@@ -123,11 +123,11 @@ export const convertAggregationValueNamesToFilterParam = (
 }
 
 export const convertAttributionToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
-  const attributionValue = criteria[FilterParamName.attributionClass]
+  const attributionValues = criteria[FilterParamName.attributionClass]
 
-  if (!isNil(attributionValue)) {
+  if (Array.isArray(attributionValues) && attributionValues.length > 0) {
     const attributionItemByValue = keyBy(ATTRIBUTION_CLASS_OPTIONS, "paramValue")
-    const availableAttributions = attributionValue.filter((attribution) => !!attributionItemByValue[attribution])
+    const availableAttributions = attributionValues.filter((attribution) => !!attributionItemByValue[attribution])
     const names = availableAttributions.map((attribution) => attributionItemByValue[attribution].displayText)
 
     if (availableAttributions.length > 0) {
@@ -162,8 +162,9 @@ export const convertWaysToBuyToFilterParams = (criteria: SearchCriteriaAttribute
 export const convertMajorPeriodToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
   const periods = criteria[FilterParamName.timePeriod]
 
-  if (!isNil(periods)) {
+  if (Array.isArray(periods) && periods.length > 0) {
     const namedPeriods = periods.map((period) => getDisplayNameForTimePeriod(period))
+
     return {
       displayText: namedPeriods.join(", "),
       paramValue: periods,
