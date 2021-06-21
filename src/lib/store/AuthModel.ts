@@ -493,13 +493,13 @@ export const getAuthModel = (): AuthModel => ({
     return await new Promise<true>(async (resolve, reject) => {
       const userInfo = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
-        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+        ...(signInOrUp === "signUp" && { requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME] }),
       })
 
-      if (!userInfo.identityToken) {
+      const idToken = userInfo.identityToken
+      if (!idToken) {
         return
       }
-      const idToken = userInfo.identityToken
       const appleUID = userInfo.user
       const firstName = userInfo.fullName?.givenName ? userInfo.fullName.givenName : ""
       const lastName = userInfo.fullName?.familyName ? userInfo.fullName.familyName : ""
