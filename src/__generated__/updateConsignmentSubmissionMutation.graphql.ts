@@ -29,6 +29,9 @@ export type UpdateSubmissionMutationInput = {
     signature?: boolean | null;
     state?: ConsignmentSubmissionStateAggregation | null;
     title?: string | null;
+    utmMedium?: string | null;
+    utmSource?: string | null;
+    utmTerm?: string | null;
     width?: string | null;
     year?: string | null;
 };

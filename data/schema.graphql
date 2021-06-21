@@ -4130,6 +4130,7 @@ type ConsignmentOffer {
   saleLocation: String
   saleName: String
   shippingInfo: String
+  startingBidCents: Int
   state: String
   submission: ConsignmentSubmission!
 }
@@ -4357,6 +4358,12 @@ enum ConsignmentOfferSort {
   # sort by shipping_info in descending order
   SHIPPING_INFO_DESC
 
+  # sort by starting_bid_cents in ascending order
+  STARTING_BID_CENTS_ASC
+
+  # sort by starting_bid_cents in descending order
+  STARTING_BID_CENTS_DESC
+
   # sort by state in ascending order
   STATE_ASC
 
@@ -4434,6 +4441,12 @@ enum ConsignmentSort {
 
   # sort by id in descending order
   ID_DESC
+
+  # sort by invoice_number in ascending order
+  INVOICE_NUMBER_ASC
+
+  # sort by invoice_number in descending order
+  INVOICE_NUMBER_DESC
 
   # sort by notes in ascending order
   NOTES_ASC
@@ -4570,6 +4583,9 @@ type ConsignmentSubmission {
   title: String
   userAgent: String
   userId: String!
+  utmMedium: String
+  utmSource: String
+  utmTerm: String
   width: String
   year: String
 }
@@ -4655,6 +4671,12 @@ enum ConsignmentSubmissionSort {
   # sort by artist_id in descending order
   ARTIST_ID_DESC
 
+  # sort by artist_proofs in ascending order
+  ARTIST_PROOFS_ASC
+
+  # sort by artist_proofs in descending order
+  ARTIST_PROOFS_DESC
+
   # sort by artist_score in ascending order
   ARTIST_SCORE_ASC
 
@@ -4666,6 +4688,12 @@ enum ConsignmentSubmissionSort {
 
   # sort by assigned_to in descending order
   ASSIGNED_TO_DESC
+
+  # sort by attribution_class in ascending order
+  ATTRIBUTION_CLASS_ASC
+
+  # sort by attribution_class in descending order
+  ATTRIBUTION_CLASS_DESC
 
   # sort by auction_score in ascending order
   AUCTION_SCORE_ASC
@@ -4684,6 +4712,12 @@ enum ConsignmentSubmissionSort {
 
   # sort by category in descending order
   CATEGORY_DESC
+
+  # sort by condition_report in ascending order
+  CONDITION_REPORT_ASC
+
+  # sort by condition_report in descending order
+  CONDITION_REPORT_DESC
 
   # sort by consigned_partner_submission_id in ascending order
   CONSIGNED_PARTNER_SUBMISSION_ID_ASC
@@ -4745,6 +4779,12 @@ enum ConsignmentSubmissionSort {
   # sort by edition_size in descending order
   EDITION_SIZE_DESC
 
+  # sort by exhibition in ascending order
+  EXHIBITION_ASC
+
+  # sort by exhibition in descending order
+  EXHIBITION_DESC
+
   # sort by ext_user_id in ascending order
   EXT_USER_ID_ASC
 
@@ -4762,6 +4802,12 @@ enum ConsignmentSubmissionSort {
 
   # sort by id in descending order
   ID_DESC
+
+  # sort by literature in ascending order
+  LITERATURE_ASC
+
+  # sort by literature in descending order
+  LITERATURE_DESC
 
   # sort by location_city in ascending order
   LOCATION_CITY_ASC
@@ -4817,6 +4863,12 @@ enum ConsignmentSubmissionSort {
   # sort by published_at in descending order
   PUBLISHED_AT_DESC
 
+  # sort by publisher in ascending order
+  PUBLISHER_ASC
+
+  # sort by publisher in descending order
+  PUBLISHER_DESC
+
   # sort by qualified in ascending order
   QUALIFIED_ASC
 
@@ -4852,6 +4904,12 @@ enum ConsignmentSubmissionSort {
 
   # sort by signature in descending order
   SIGNATURE_DESC
+
+  # sort by signature_detail in ascending order
+  SIGNATURE_DETAIL_ASC
+
+  # sort by signature_detail in descending order
+  SIGNATURE_DETAIL_DESC
 
   # sort by source_artwork_id in ascending order
   SOURCE_ARTWORK_ID_ASC
@@ -4894,6 +4952,24 @@ enum ConsignmentSubmissionSort {
 
   # sort by user_id in descending order
   USER_ID_DESC
+
+  # sort by utm_medium in ascending order
+  UTM_MEDIUM_ASC
+
+  # sort by utm_medium in descending order
+  UTM_MEDIUM_DESC
+
+  # sort by utm_source in ascending order
+  UTM_SOURCE_ASC
+
+  # sort by utm_source in descending order
+  UTM_SOURCE_DESC
+
+  # sort by utm_term in ascending order
+  UTM_TERM_ASC
+
+  # sort by utm_term in descending order
+  UTM_TERM_DESC
 
   # sort by width in ascending order
   WIDTH_ASC
@@ -5192,6 +5268,7 @@ input CreateOfferMutationInput {
   saleLocation: String
   saleName: String
   shippingInfo: String
+  startingBidDollars: Int
   state: String
   submissionId: ID!
 }
@@ -5281,6 +5358,9 @@ input CreateSubmissionMutationInput {
   state: ConsignmentSubmissionStateAggregation
   title: String
   userAgent: String
+  utmMedium: String
+  utmSource: String
+  utmTerm: String
   width: String
   year: String
 }
@@ -7886,7 +7966,10 @@ union MoneyOrErrorUnion = Error
 
 type Mutation {
   acceptPartnerAgreement(input: AcceptPartnerAgreementInput!): AcceptPartnerAgreementPayload
-  addAssetToConsignmentSubmission(input: AddAssetToConsignmentSubmissionInput!): AddAssetToConsignmentSubmissionPayload
+  addAssetToConsignmentSubmission(
+    # Parameters for AddAssetToConsignmentSubmission
+    input: AddAssetToConsignmentSubmissionInput!
+  ): AddAssetToConsignmentSubmissionPayload
   captureHold(input: CaptureHoldInput!): CaptureHoldPayload
   commerceAddInitialOfferToOrder(
     # Parameters for AddInitialOfferToOrder
@@ -7994,9 +8077,18 @@ type Mutation {
 
   # Creates a bidder position
   createBidderPosition(input: BidderPositionInput!): BidderPositionPayload
-  createConsignmentOffer(input: CreateOfferMutationInput!): CreateOfferMutationPayload
-  createConsignmentOfferResponse(input: CreateOfferResponseMutationInput!): CreateOfferResponseMutationPayload
-  createConsignmentSubmission(input: CreateSubmissionMutationInput!): CreateSubmissionMutationPayload
+  createConsignmentOffer(
+    # Parameters for CreateOfferMutation
+    input: CreateOfferMutationInput!
+  ): CreateOfferMutationPayload
+  createConsignmentOfferResponse(
+    # Parameters for CreateOfferResponseMutation
+    input: CreateOfferResponseMutationInput!
+  ): CreateOfferResponseMutationPayload
+  createConsignmentSubmission(
+    # Parameters for CreateSubmissionMutation
+    input: CreateSubmissionMutationInput!
+  ): CreateSubmissionMutationPayload
 
   # Create a credit card
   createCreditCard(input: CreditCardInput!): CreditCardPayload
@@ -8079,7 +8171,10 @@ type Mutation {
 
   # Updating a collector profile (loyalty applicant status).
   updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
-  updateConsignmentSubmission(input: UpdateSubmissionMutationInput!): UpdateSubmissionMutationPayload
+  updateConsignmentSubmission(
+    # Parameters for UpdateSubmissionMutation
+    input: UpdateSubmissionMutationInput!
+  ): UpdateSubmissionMutationPayload
 
   # Update a conversation.
   updateConversation(input: UpdateConversationMutationInput!): UpdateConversationMutationPayload
@@ -11549,6 +11644,9 @@ input UpdateSubmissionMutationInput {
   signature: Boolean
   state: ConsignmentSubmissionStateAggregation
   title: String
+  utmMedium: String
+  utmSource: String
+  utmTerm: String
   width: String
   year: String
 }
