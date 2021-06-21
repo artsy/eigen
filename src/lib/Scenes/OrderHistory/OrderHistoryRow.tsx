@@ -23,22 +23,22 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
       <Flex mb={1}>
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex justifyContent="center" data-test-id="image-container" mr={2}>
-            {!!artwork.image ? (
+            {!!artwork?.image ? (
               <Image
                 source={{ uri: artwork?.image?.resized?.url }}
                 style={{ height: 50, width: 50 }}
                 data-test-id="image"
               />
             ) : (
-              <Box width={5} height={5} backgroundColor="black10" data-test-id="image-box" />
+              <Box width={50} height={50} backgroundColor="black10" data-test-id="image-box" />
             )}
           </Flex>
           <Flex width="40%" flexGrow={1} mr={2}>
             <Text variant="mediumText" data-test-id="artist-names" ellipsizeMode="tail" numberOfLines={1}>
-              {artwork?.artistNames}
+              {artwork?.artistNames ?? "Deleted"}
             </Text>
             <Text variant="caption" color="black60" data-test-id="partner-name" ellipsizeMode="tail" numberOfLines={1}>
-              {artwork?.partner?.name}
+              {artwork?.partner?.name ?? "Deleted"}
             </Text>
             <Text variant="caption" color="black60" data-test-id="date">
               {moment(order.createdAt).format("l")}
