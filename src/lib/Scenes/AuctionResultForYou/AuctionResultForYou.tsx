@@ -12,7 +12,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { groupBy } from "lodash"
 import moment from "moment"
-import { Flex, Sans, Separator, Text } from "palette"
+import { Flex, Separator, Text } from "palette"
 import React, { useState } from "react"
 import { SectionList } from "react-native"
 import { RelayPaginationProp } from "react-relay"
@@ -53,13 +53,19 @@ export const AuctionResultForYou: React.FC<Props> = ({ me, relay }) => {
   return (
     <PageWithSimpleHeader title="Auction Results for You">
       <ArtworkFiltersStoreProvider>
-        <Sans size="3" textAlign="left" color="black60" style={{ marginHorizontal: 20, marginVertical: 17 }}>
+        <Text
+          fontSize={14}
+          lineHeight={21}
+          textAlign="left"
+          color="black60"
+          style={{ marginHorizontal: 20, marginVertical: 17 }}
+        >
           The latest auction results for the {""}
           <LinkText onPress={() => navigate("/favorites", { passProps: { initialTab: Tab.artists } })}>
             artists you follow
           </LinkText>
           . You can also look up more auction results on the insights tab on any artist’s page.
-        </Sans>
+        </Text>
         <SectionList
           sections={groupedAuctionResultSectionData}
           onEndReachedThreshold={0.5}
