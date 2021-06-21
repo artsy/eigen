@@ -75,7 +75,11 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
     // if there's a change in columns, we'll need to re-render
-    if (this.props.artworks === nextProps.artworks && this.state.sectionCount === nextState.sectionCount) {
+    if (
+      this.props.artworks === nextProps.artworks &&
+      this.state.sectionCount === nextState.sectionCount &&
+      this.props.isLoading === nextProps.isLoading
+    ) {
       return false
     }
     return true

@@ -22,6 +22,15 @@ it("handles showing an update when there are new artworks", () => {
   expect(shouldUpdate).toBeTruthy()
 })
 
+it("handles showing an update when data loading was stopped", () => {
+  const artworks = [artwork(), artwork()] as any
+
+  const grid = new GenericArtworksGrid({ artworks, isLoading: true })
+  const shouldUpdate = grid.shouldComponentUpdate({ artworks, isLoading: false }, {} as any)
+
+  expect(shouldUpdate).toBeTruthy()
+})
+
 const artwork = () => {
   return {
     id: "artwork-long-title",
