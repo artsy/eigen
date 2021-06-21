@@ -322,7 +322,7 @@ describe("convertAggregationValueNamesToFilterParam", () => {
 describe("convertAttributionToFilterParam", () => {
   it("returns the rarity filter", () => {
     const result = convertAttributionToFilterParam({
-      attributionClasses: ["unknown edition", "open edition"],
+      attributionClass: ["unknown edition", "open edition"],
     })
 
     expect(result).toEqual({
@@ -334,7 +334,7 @@ describe("convertAttributionToFilterParam", () => {
 
   it("returns the filter param with only available values", () => {
     const result = convertAttributionToFilterParam({
-      attributionClasses: ["limited edition", "unique", "something-unknown"],
+      attributionClass: ["limited edition", "unique", "something-unknown"],
     })
 
     expect(result).toEqual({
@@ -346,7 +346,7 @@ describe("convertAttributionToFilterParam", () => {
 
   it("returns nothing", () => {
     const result = convertAttributionToFilterParam({
-      attributionClasses: null,
+      attributionClass: null,
     })
 
     expect(result).toBeNull()
@@ -378,7 +378,7 @@ describe("convertWaysToBuyToFilterParams", () => {
 
   it("returns the filter param with only available values", () => {
     const result = convertWaysToBuyToFilterParams({
-      attributionClasses: ["limited edition", "unique", "something-unknown"],
+      attributionClass: ["limited edition", "unique", "something-unknown"],
       acquireable: true,
       atAuction: null,
       inquireableOnly: true,
@@ -401,7 +401,7 @@ describe("convertWaysToBuyToFilterParams", () => {
 
   it("returns nothing", () => {
     const result = convertWaysToBuyToFilterParams({
-      attributionClasses: null,
+      attributionClass: null,
     })
 
     expect(result).toBeNull()
@@ -505,7 +505,7 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       acquireable: null,
       additionalGeneIDs: ["prints"],
       atAuction: true,
-      attributionClasses: ["unknown edition", "open edition"],
+      attributionClass: ["unknown edition", "open edition"],
       colors: ["gold", "red"],
       dimensionRange: "16.0-40.0",
       heightMax: null,
@@ -646,7 +646,7 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       acquireable: null,
       additionalGeneIDs: ["prints"],
       atAuction: true,
-      attributionClasses: null,
+      attributionClass: null,
       colors: null,
       dimensionRange: "16.0-40.0",
       heightMax: null,

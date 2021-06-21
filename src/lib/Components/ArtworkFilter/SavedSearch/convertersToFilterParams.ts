@@ -116,9 +116,9 @@ export const convertAggregationValueNamesToFilterParam = (
 }
 
 export const convertAttributionToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
-  if (!isNil(criteria.attributionClasses)) {
+  if (!isNil(criteria.attributionClass)) {
     const attributionItemByValue = keyBy(ATTRIBUTION_CLASS_OPTIONS, "paramValue")
-    const availableAttributions = criteria.attributionClasses.filter(
+    const availableAttributions = criteria.attributionClass.filter(
       (attribution) => !!attributionItemByValue[attribution]
     )
     const names = availableAttributions.map((attribution) => attributionItemByValue[attribution].displayText)
