@@ -19,8 +19,10 @@ type SearchCriteriaAttributeKeys = keyof SearchCriteriaAttributes
 export type AggregationByFilterParamName = Dictionary<Aggregation[]>
 
 export const convertPriceToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
-  if (!isNil(criteria.priceRange)) {
-    const { min, max } = parseRange(criteria.priceRange)
+  const priceRangeValue = criteria[FilterParamName.priceRange]
+
+  if (!isNil(priceRangeValue)) {
+    const { min, max } = parseRange(priceRangeValue)
 
     if (min !== "*" || max !== "*") {
       return {
@@ -48,9 +50,12 @@ export const convertCustomSizeToFilterParamByName = (paramName: FilterParamName,
 
 export const convertSizeToFilterParams = (criteria: SearchCriteriaAttributes): FilterData[] | null => {
   const filterParams: FilterData[] = []
+  const dimensionRangeValue = criteria[FilterParamName.dimensionRange]
+  const widthValue = criteria[FilterParamName.width]
+  const heightValue = criteria[FilterParamName.height]
 
-  if (!isNil(criteria.dimensionRange)) {
-    const sizeOptionItem = SIZE_OPTIONS.find((option) => option.paramValue === criteria.dimensionRange)
+  if (!isNil(dimensionRangeValue)) {
+    const sizeOptionItem = SIZE_OPTIONS.find((option) => option.paramValue === dimensionRangeValue)
 
     if (sizeOptionItem) {
       filterParams.push(sizeOptionItem)
@@ -58,13 +63,13 @@ export const convertSizeToFilterParams = (criteria: SearchCriteriaAttributes): F
   }
 
   // Parse custom width size
-  if (!isNil(criteria.width)) {
-    filterParams.push(convertCustomSizeToFilterParamByName(FilterParamName.width, criteria.width))
+  if (!isNil(widthValue)) {
+    filterParams.push(convertCustomSizeToFilterParamByName(FilterParamName.width, widthValue))
   }
 
   // Parse custom height size
-  if (!isNil(criteria.height)) {
-    filterParams.push(convertCustomSizeToFilterParamByName(FilterParamName.height, criteria.height))
+  if (!isNil(heightValue)) {
+    filterParams.push(convertCustomSizeToFilterParamByName(FilterParamName.height, heightValue))
   }
 
   if (filterParams.length > 0) {
@@ -78,9 +83,11 @@ export const convertColorsToFilterParam = (
   criteria: SearchCriteriaAttributes,
   aggregation: AggregationByFilterParamName
 ): FilterData | null => {
-  if (!isNil(criteria.colors)) {
+  const colorsValue = criteria[FilterParamName.colors]
+
+  if (!isNil(colorsValue)) {
     const colorFromAggregationByValue = keyBy(aggregation[FilterParamName.colors], "value")
-    const availableColors = criteria.colors.filter((color) => !!colorFromAggregationByValue[color])
+    const availableColors = colorsValue.filter((color) => !!colorFromAggregationByValue[color])
     const colorNames = availableColors.map((color) => COLORS_INDEXED_BY_VALUE[color].name)
 
     if (availableColors.length > 0) {
@@ -116,11 +123,11 @@ export const convertAggregationValueNamesToFilterParam = (
 }
 
 export const convertAttributionToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
-  if (!isNil(criteria.attributionClass)) {
+  const attributionValue = criteria[FilterParamName.attributionClass]
+
+  if (!isNil(attributionValue)) {
     const attributionItemByValue = keyBy(ATTRIBUTION_CLASS_OPTIONS, "paramValue")
-    const availableAttributions = criteria.attributionClass.filter(
-      (attribution) => !!attributionItemByValue[attribution]
-    )
+    const availableAttributions = attributionValue.filter((attribution) => !!attributionItemByValue[attribution])
     const names = availableAttributions.map((attribution) => attributionItemByValue[attribution].displayText)
 
     if (availableAttributions.length > 0) {
