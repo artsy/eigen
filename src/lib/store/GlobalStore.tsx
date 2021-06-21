@@ -23,6 +23,11 @@ function createGlobalStore() {
     middleware.push(persistenceMiddleware)
   }
 
+  if (__DEV__) {
+    const reduxInFlipper = require("redux-flipper").default
+    middleware.push(reduxInFlipper())
+  }
+
   // At dev time but not test time, let's log out each action that is dispatched
   if (__DEV__ && !__TEST__) {
     middleware.push((_api) => (next) => (_action) => {
