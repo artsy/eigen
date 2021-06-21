@@ -888,17 +888,15 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
     ])
 
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
-      priceMin: 5000,
-      priceMax: 10000,
-      attributionClasses: ["limited edition"],
+      priceRange: "5000-10000",
+      attributionClass: ["limited edition"],
       additionalGeneIDs: ["prints"],
       atAuction: true,
       majorPeriods: ["1990"],
       colors: ["yellow", "red"],
       locationCities: ["London, United Kingdom"],
       materialsTerms: ["paper"],
-
-      dimensionScoreMin: 40,
+      dimensionRange: "40.0-*",
       partnerIDs: ["cypress-test-partner-for-automated-testing-purposes", "tate-ward-auctions"],
     })
   })
@@ -925,8 +923,7 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
     ])
 
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
-      priceMin: 1000,
-      priceMax: 5000,
+      priceRange: "1000-5000",
     })
   })
 
@@ -940,7 +937,7 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
     ])
 
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
-      priceMin: 50000,
+      priceRange: "50000-*",
     })
   })
 
@@ -984,10 +981,9 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
     ])
 
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
-      widthMin: 39.37007874015748,
-      widthMax: 59.05511811023622,
-      heightMin: 78.74015748031496,
-      heightMax: 98.4251968503937,
+      dimensionRange: "0-*",
+      width: "39.37007874015748-59.05511811023622",
+      height: "78.74015748031496-98.4251968503937",
     })
   })
 
@@ -1006,8 +1002,8 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
     ])
 
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
-      widthMin: 12.5,
-      widthMax: 34.6,
+      dimensionRange: "0-*",
+      width: "12.5-34.6",
     })
   })
 
@@ -1026,7 +1022,8 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
     ])
 
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
-      widthMax: 196.8503937007874,
+      dimensionRange: "0-*",
+      width: "*-196.8503937007874",
     })
   })
 
@@ -1045,7 +1042,8 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
     ])
 
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
-      widthMin: 10,
+      dimensionRange: "0-*",
+      width: "10-*",
     })
   })
 })
