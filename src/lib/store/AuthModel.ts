@@ -491,10 +491,16 @@ export const getAuthModel = (): AuthModel => ({
   }),
   authApple: thunk(async (actions, { signInOrUp }) => {
     return await new Promise<true>(async (resolve, reject) => {
-      const userInfo = await appleAuth.performRequest({
-        requestedOperation: appleAuth.Operation.LOGIN,
-        ...(signInOrUp === "signUp" && { requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME] }),
-      })
+      const userInfo = await appleAuth.performRequest(
+        signInOrUp === "signUp"
+          ? {
+              requestedOperation: appleAuth.Operation.LOGIN,
+              requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+            }
+          : {
+              requestedOperation: appleAuth.Operation.LOGIN,
+            }
+      )
 
       const idToken = userInfo.identityToken
       if (!idToken) {
