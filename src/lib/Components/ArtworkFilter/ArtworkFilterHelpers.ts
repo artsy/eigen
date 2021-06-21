@@ -539,52 +539,6 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
   ])
 }
 
-export const parseFilledRangeByKeys = (range: string, minKey: string, maxKey: string) => {
-  const filledRange: Record<string, number> = {}
-  const parsedRange = parseRangeByKeys(range, { minKey, maxKey })
-
-  Object.entries(parsedRange).forEach((entry) => {
-    const [key, value] = entry
-
-    if (value !== "*") {
-      filledRange[key] = value
-    }
-  })
-
-  return filledRange
-}
-
-export const parseFilterParamSize = (filterParams: FilterParams) => {
-  let input: SearchCriteriaAttributes = {}
-  const sizeParamValue = filterParams[FilterParamName.dimensionRange] as string
-  const widthParamValue = filterParams[FilterParamName.width] as string
-  const heightParamValue = filterParams[FilterParamName.height] as string
-
-  // Custom sizes
-  if (sizeParamValue === "0-*") {
-    if (widthParamValue) {
-      input = {
-        ...input,
-        ...parseFilledRangeByKeys(widthParamValue, "widthMin", "widthMax"),
-      }
-    }
-
-    if (heightParamValue) {
-      input = {
-        ...input,
-        ...parseFilledRangeByKeys(heightParamValue, "heightMin", "heightMax"),
-      }
-    }
-  } else {
-    input = {
-      ...input,
-      ...parseFilledRangeByKeys(sizeParamValue, "dimensionScoreMin", "dimensionScoreMax"),
-    }
-  }
-
-  return input
-}
-
 export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams) => {
   const input: SearchCriteriaAttributes = {}
   const allowedKeys = pick(filterParams, [
