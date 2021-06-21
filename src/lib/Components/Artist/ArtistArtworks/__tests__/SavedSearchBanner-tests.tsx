@@ -101,13 +101,13 @@ describe("SavedSearchBanner", () => {
 
     const createOperation = mockEnvironment.mock.getMostRecentOperation()
 
+    expect(buttonComponent.props.loading).toBe(true)
     expect(createOperation.request.node.operation.name).toEqual("SavedSearchBannerCreateSavedSearchMutation")
     expect(createOperation.request.variables).toEqual({
       input: {
         attributes,
       },
     })
-    expect(buttonComponent.props.loading).toBe(true)
 
     act(() => mockEnvironment.mock.resolve(createOperation, MockPayloadGenerator.generate(createOperation)))
 
@@ -121,5 +121,46 @@ describe("SavedSearchBanner", () => {
 
     expect(textInstances[0].props.children).toEqual("Your alert has been set.")
     expect(textInstances[1].props.children).toEqual("We will send you a push notification once new works are added.")
+  })
+
+  it("deleteSavedSearch mutation is handled correctly", async () => {
+    mockFetchNotificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Authorized))
+
+    const savedSearchCriteriaId = "some-unique-name"
+    const tree = renderWithWrappers(<TestRenderer />)
+    const buttonComponent = tree.root.findByType(Button)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Me: () => ({
+        savedSearch: {
+          internalID: savedSearchCriteriaId,
+        },
+      }),
+    })
+
+    act(() => buttonComponent.props.onPress())
+
+    const createOperation = mockEnvironment.mock.getMostRecentOperation()
+
+    expect(buttonComponent.props.loading).toBe(true)
+    expect(createOperation.request.node.operation.name).toEqual("SavedSearchBannerDeleteSavedSearchMutation")
+    expect(createOperation.request.variables).toEqual({
+      input: {
+        searchCriteriaID: savedSearchCriteriaId,
+      },
+    })
+
+    act(() => mockEnvironment.mock.resolve(createOperation, MockPayloadGenerator.generate(createOperation)))
+
+    const refetchOperation = mockEnvironment.mock.getMostRecentOperation()
+    expect(refetchOperation.request.node.operation.name).toEqual("SavedSearchBannerRefetchQuery")
+
+    act(() => mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate(refetchOperation)))
+
+    const popoverMessageInstance = tree.root.findByType(PopoverMessage)
+    const textInstances = popoverMessageInstance.findAllByType(Text)
+
+    expect(textInstances[0].props.children).toEqual("Your alert has been removed.")
+    expect(textInstances[1].props.children).toEqual("Don't worry, you can always create a new one.")
   })
 })
