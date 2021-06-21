@@ -1,4 +1,5 @@
 import { SoldBySectionTestsQuery } from "__generated__/SoldBySectionTestsQuery.graphql"
+import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -31,10 +32,13 @@ describe("SoldBySection", () => {
       }}
     />
   )
-  it("renders auction result when auction results are available", () => {
+  it("renders correctly for shipping fulfillment", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
     mockEnvironmentPayload(mockEnvironment, {
       CommerceOrder: () => ({
+        requestedFulfillment: {
+          __typename: "CommerceShip",
+        },
         lineItems: {
           edges: [
             {
@@ -59,6 +63,40 @@ describe("SoldBySection", () => {
     })
 
     expect(tree.findByProps({ testID: "delivery" }).props.children).toBe("8/10/2021")
-    expect(tree.findByProps({ testID: "shippingOrigin" }).props.children).toBe("Minsk, Belarus")
+    expect(extractText(tree.findByProps({ testID: "soldByInfo" }))).toBe("Ships from Minsk, Belarus")
+  })
+
+  it("renders correctly for pick up fulfillment", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+    mockEnvironmentPayload(mockEnvironment, {
+      CommerceOrder: () => ({
+        requestedFulfillment: {
+          __typename: "CommercePickup",
+        },
+        lineItems: {
+          edges: [
+            {
+              node: {
+                artwork: {
+                  shippingOrigin: "Minsk, Belarus",
+                },
+                fulfillments: {
+                  edges: [
+                    {
+                      node: {
+                        estimatedDelivery: "2021-08-10T03:00:00+03:00",
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    expect(tree.findByProps({ testID: "delivery" }).props.children).toBe("8/10/2021")
+    expect(extractText(tree.findByProps({ testID: "soldByInfo" }))).toBe("Pick up (Minsk, Belarus)")
   })
 })

@@ -7,6 +7,7 @@ upcoming:
     - Update open simulator command in getting started docs - ole
     - Update debugging docs - mounir
   user_facing:
+    - Pick up should be displayed in Sold by section - Serge0n
     - Country should be written with full name - Serge0n
     - Name from shipping address should be displayed instead of account name - Serge0n
     - User can see the way of delivery - Serge0n

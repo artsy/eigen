@@ -11,21 +11,22 @@ interface Props {
 }
 
 export const SoldBySection: React.FC<Props> = ({ soldBy }) => {
-  const { fulfillments, artwork } = extractNodes(soldBy.lineItems)[0]
-  const estimatedDelivery = extractNodes(fulfillments)[0]?.estimatedDelivery
-  const orderEstimatedDelivery = estimatedDelivery ? DateTime.fromISO(estimatedDelivery) : null
   if (!soldBy) {
     return null
   }
+  const { fulfillments, artwork } = extractNodes(soldBy.lineItems)[0]
+  const estimatedDelivery = extractNodes(fulfillments)[0]?.estimatedDelivery
+  const orderEstimatedDelivery = estimatedDelivery ? DateTime.fromISO(estimatedDelivery) : null
+  const pickUpCondition = soldBy?.requestedFulfillment?.__typename === "CommercePickup"
 
   return (
     <Box>
-      <Box flexDirection="row">
+      <Box flexDirection="row" testID="soldByInfo">
         <Text variant="text" color="black60">
-          Ships from{" "}
+          {pickUpCondition ? "Pick up " : "Ships from "}
         </Text>
         <Text testID="shippingOrigin" color="black60" variant="text">
-          {artwork?.shippingOrigin}
+          {pickUpCondition ? `(${artwork?.shippingOrigin})` : artwork?.shippingOrigin}
         </Text>
       </Box>
       {!!orderEstimatedDelivery && (
@@ -43,6 +44,11 @@ export const SoldBySection: React.FC<Props> = ({ soldBy }) => {
 export const SoldBySectionFragmentContainer = createFragmentContainer(SoldBySection, {
   soldBy: graphql`
     fragment SoldBySection_soldBy on CommerceOrder {
+      requestedFulfillment {
+        ... on CommercePickup {
+          __typename
+        }
+      }
       lineItems(first: 1) {
         edges {
           node {
