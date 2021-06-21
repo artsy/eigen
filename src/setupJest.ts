@@ -137,6 +137,19 @@ jest.mock("@react-native-google-signin/google-signin", () => ({
   },
 }))
 
+jest.mock("@invertase/react-native-apple-authentication", () => ({
+  appleAuth: {
+    performRequest: jest.fn(),
+    Operation: {
+      LOGIN: 1,
+    },
+    Scope: {
+      EMAIL: 0,
+      FULL_NAME: 1,
+    },
+  },
+}))
+
 // prettier-ignore
 // tslint:disable-next-line:no-empty
 jest.mock("@sentry/react-native", () => ({ captureMessage() {},  init() {},  setUser() {},  addBreadcrumb() {},  withScope() {} }))
