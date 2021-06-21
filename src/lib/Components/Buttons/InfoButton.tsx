@@ -30,7 +30,7 @@ export const InfoButton: React.FC<InfoButtonProps> = ({
 
   return (
     <>
-      <Flex flexDirection="row">
+      <Flex flexDirection="row" alignItems="center">
         {titleElement ? (
           titleElement
         ) : (
@@ -46,7 +46,7 @@ export const InfoButton: React.FC<InfoButtonProps> = ({
           }}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <InfoCircleIcon style={{ top: 3 }} fill="black60" />
+          <InfoCircleIcon fill="black60" />
         </TouchableOpacity>
       </Flex>
       {!!subTitle && <Text color="black60">{subTitle}</Text>}

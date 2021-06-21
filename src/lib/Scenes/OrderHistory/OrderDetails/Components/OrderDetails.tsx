@@ -18,7 +18,6 @@ import { SummarySectionFragmentContainer } from "./SummarySection"
 
 export interface OrderDetailsProps {
   order: OrderDetails_order
-  me: OrderDetailsQuery["response"]["me"]
 }
 interface SectionListItem {
   key: string
@@ -26,8 +25,10 @@ interface SectionListItem {
   data: readonly JSX.Element[]
 }
 
-const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
+const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
   const partnerName = extractNodes(order.lineItems)[0].artwork?.partner
+  const shippingName =
+    order?.requestedFulfillment?.__typename === "CommerceShip" ? order?.requestedFulfillment.name : null
   const DATA: SectionListItem[] = [
     {
       key: "OrderDetailsHeader",
@@ -50,7 +51,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
     },
     {
       key: "ShipTo_Section",
-      title: `Ships to ${me?.name}`,
+      title: `Ships to ${shippingName}`,
       data: [<ShipsToSectionFragmentContainer address={order} />],
     },
     {
@@ -59,7 +60,9 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
       data: [<SoldBySectionFragmentContainer testID="ShipsToSection" soldBy={order} />],
     },
   ]
-
+  if (order.requestedFulfillment?.__typename === "CommercePickup") {
+    DATA.splice(4, 1)
+  }
   return (
     <PageWithSimpleHeader title="Order Details">
       <SectionList
@@ -67,14 +70,16 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, me }) => {
         contentContainerStyle={{ paddingHorizontal: 20, marginTop: 20, paddingBottom: 47 }}
         sections={DATA}
         keyExtractor={(item, index) => item.key + index.toString()}
-        renderItem={({ item }) => (
-          <Flex flexDirection="column" justifyContent="space-between">
-            <Box>{item}</Box>
-          </Flex>
-        )}
+        renderItem={({ item }) => {
+          return (
+            <Flex flexDirection="column" justifyContent="space-between">
+              <Box>{item}</Box>
+            </Flex>
+          )
+        }}
         stickySectionHeadersEnabled={false}
-        renderSectionHeader={({ section: { title } }) =>
-          title ? (
+        renderSectionHeader={({ section: { title, data } }) =>
+          title && data ? (
             <Box>
               <Text mt={20} mb={10} variant="mediumText">
                 {title}
@@ -156,6 +161,16 @@ export const OrderDetailsPlaceholder: React.FC<{}> = () => (
 export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
   order: graphql`
     fragment OrderDetails_order on CommerceOrder {
+      requestedFulfillment {
+        ... on CommerceShip {
+          __typename
+          name
+        }
+        ... on CommercePickup {
+          __typename
+        }
+      }
+
       lineItems(first: 1) {
         edges {
           node {
@@ -184,9 +199,6 @@ export const OrderDetailsQueryRender: React.FC<{ orderID: string }> = ({ orderID
         query OrderDetailsQuery($orderID: ID!) {
           order: commerceOrder(id: $orderID) {
             ...OrderDetails_order
-          }
-          me {
-            name
           }
         }
       `}

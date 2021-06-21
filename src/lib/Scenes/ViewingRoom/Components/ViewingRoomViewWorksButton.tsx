@@ -24,9 +24,13 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
   }
 
   const pluralizedArtworksCount = artworksCount === 1 ? "work" : "works"
+
+  const roundedButtonStyle = { borderRadius: 20 }
+
   return (
     <View>
       <AnimatedBottomButton
+        buttonStyles={roundedButtonStyle}
         isVisible={props.isVisible}
         onPress={() => {
           tracking.trackEvent(tracks.tappedViewWorksButton(viewingRoom.internalID, viewingRoom.slug))

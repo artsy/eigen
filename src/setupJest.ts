@@ -111,6 +111,22 @@ beforeEach(() => {
   require("@react-native-cookies/cookies").clearAll.mockReset()
 })
 
+jest.mock("react-native-fbsdk-next", () => ({
+  LoginManager: {
+    logOut: jest.fn(),
+    logInWithPermissions: jest.fn(),
+  },
+  AccessToken: {
+    getCurrentAccessToken: jest.fn(),
+  },
+  GraphRequest: jest.fn(),
+  GraphRequestManager: jest.fn(() => ({
+    addRequest: jest.fn(() => ({
+      start: jest.fn(),
+    })),
+  })),
+}))
+
 // prettier-ignore
 // tslint:disable-next-line:no-empty
 jest.mock("@sentry/react-native", () => ({ captureMessage() {},  init() {},  setUser() {},  addBreadcrumb() {},  withScope() {} }))
@@ -152,7 +168,6 @@ console.error = (message?: any) => {
   }
 }
 
-mockedModule("./lib/Components/Spinner.tsx", "ARSpinner")
 mockedModule("./lib/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueImageView")
 // mockedModule("./lib/Components/ArtworkGrids/InfiniteScrollGrid.tsx", "ArtworksGrid")
 

@@ -309,8 +309,9 @@ export class Overview extends React.Component<Props, State> {
             />
             <Spacer mb={isPad ? 80 : 2} />
           </View>
-          <Flex px="2" width="100%" maxWidth={540}>
+          <Flex px="2" width="100%" alignItems="center">
             <Button
+              maxWidth={540}
               block
               onPress={this.state.hasLoaded && canSubmit ? this.submitFinalSubmission : undefined}
               disabled={!canSubmit}

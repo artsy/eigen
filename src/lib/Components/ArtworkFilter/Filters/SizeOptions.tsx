@@ -11,7 +11,7 @@ import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/
 import { Input } from "lib/Components/Input/Input"
 import { Flex, Spacer, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { IS_USA, LOCALIZED_UNIT, localizeDimension, parseRange, Range, round, toIn } from "./helpers"
+import { IS_USA, LOCALIZED_UNIT, localizeDimension, parseRange, Range, toIn } from "./helpers"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 const PARAM_NAME = FilterParamName.size // dimensionRange
@@ -148,10 +148,8 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
     return {
       ...acc,
       [option.paramName]: {
-        // Values will always be in inches since that's what Gravity accepts.
-        // Round off floating point precision errors.
-        min: round(localizeDimension(min, "in").value),
-        max: round(localizeDimension(max, "in").value),
+        min: localizeDimension(min, "in").value,
+        max: localizeDimension(max, "in").value,
       },
     }
   }, DEFAULT_CUSTOM_SIZE)
