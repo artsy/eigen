@@ -6,6 +6,9 @@ import React from "react"
 import { GestureResponderEvent, TouchableWithoutFeedback, View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
+const WIDTH = 295
+const HEIGHT = 230
+
 interface ArticleCardProps extends ViewProps {
   article: ArticleCard_article
   isFluid?: boolean
@@ -21,16 +24,16 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
   }
 
   return (
-    <Flex width={isFluid ? "100%" : 320}>
+    <Flex width={isFluid ? "100%" : WIDTH}>
       <TouchableWithoutFeedback onPress={onTap}>
-        <Flex width={isFluid ? "100%" : 300} overflow="hidden">
+        <Flex width={isFluid ? "100%" : WIDTH} overflow="hidden">
           {!!imageURL &&
             (isFluid ? (
               <View style={{ width: "100%", aspectRatio: 1.33, flexDirection: "row" }}>
                 <ImageView imageURL={article.thumbnailImage?.url} style={{ flex: 1 }} />
               </View>
             ) : (
-              <ImageView imageURL={article.thumbnailImage?.url} width={295} height={230} />
+              <ImageView imageURL={article.thumbnailImage?.url} width={WIDTH} height={HEIGHT} />
             ))}
           <Spacer mb={1} />
           <Text variant={"small"}>{article.vertical || " "}</Text>
