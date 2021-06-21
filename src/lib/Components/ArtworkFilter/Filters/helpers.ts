@@ -42,12 +42,19 @@ export const cmToIn = (centimeters: Numeric) => {
   return centimeters / ONE_IN_TO_CM
 }
 
-export const inToCm = (inches: Numeric) => {
+export const inToCm = (inches: Numeric, shouldRound: boolean = true) => {
   if (inches === "*") {
     return inches
   }
 
-  return inches * ONE_IN_TO_CM
+  const centimeters = inches * ONE_IN_TO_CM
+
+  if (shouldRound) {
+    // Round off floating point precision errors.
+    return round(centimeters)
+  }
+
+  return centimeters
 }
 
 export const toIn = (value: Numeric, unit: Unit): Numeric => {
