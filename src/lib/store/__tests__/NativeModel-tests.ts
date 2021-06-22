@@ -1,4 +1,5 @@
 import { NotificationsManager } from "lib/NativeModules/NotificationsManager"
+import { navigate } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__ } from "../GlobalStore"
 import { NativeEvent } from "../NativeModel"
 
@@ -13,5 +14,44 @@ describe("NativeModel", () => {
       type: "NOTIFICATION_RECEIVED",
     } as NativeEvent)
     expect(__globalStoreTestUtils__?.getLastAction().type).toContain("fetchCurrentUnreadConversationCount")
+  })
+
+  describe("REQUEST_NAVIGATION", () => {
+    it("calls the navigation method with only the route param", () => {
+      NotificationsManager.emit("event", {
+        type: "REQUEST_NAVIGATION",
+        payload: {
+          route: "some-route-path",
+        },
+      } as NativeEvent)
+
+      expect(navigate).toBeCalledWith("some-route-path", {
+        passProps: {
+          notifcationPayload: undefined,
+        },
+      })
+    })
+
+    it("calls the navigation method with the route and the passed params", () => {
+      NotificationsManager.emit("event", {
+        type: "REQUEST_NAVIGATION",
+        payload: {
+          route: "some-route-path",
+          payload: {
+            canRead: false,
+            someAdditionalKey: "value",
+          },
+        },
+      } as NativeEvent)
+
+      expect(navigate).toBeCalledWith("some-route-path", {
+        passProps: {
+          notifcationPayload: {
+            canRead: false,
+            someAdditionalKey: "value",
+          },
+        },
+      })
+    })
   })
 })
