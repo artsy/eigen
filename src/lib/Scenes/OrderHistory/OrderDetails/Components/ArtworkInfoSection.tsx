@@ -13,7 +13,11 @@ interface Props {
 export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
   const artworkItem = extractNodes(artwork.lineItems)[0].artwork
   if (!artworkItem) {
-    return null
+    return (
+      <Text variant="text" color="black60">
+        Related artwork has been deleted
+      </Text>
+    )
   }
 
   const { image, artistNames, title, dimensions, editionOf, date, medium } = artworkItem
@@ -29,7 +33,7 @@ export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
           testID="image"
         />
       ) : (
-        <Box width={60} height={60} backgroundColor="black10" />
+        <Box width={60} height={60} marginX={22} backgroundColor="black10" />
       )}
       <Box style={{ flex: 1, flexShrink: 1 }}>
         <Text pb={1} variant="mediumText" testID="artistNames">

@@ -38,6 +38,7 @@ upcoming:
     - Aligned 'Next' button in the 'Sell work' menu - katsiaryna alshannikava
     - Fix home screen articles rail spacing - ole
     - Decrease web view scroll deceleration rate - ole
+    - Show price with currency prefix in auction result list - ole
 
 releases:
   - version: 6.9.4
