@@ -57,3 +57,23 @@ it("calls update submission when submitting a non-draft version", () => {
   overview.submitFinalSubmission()
   expect(updateConsignmentSubmission).toBeCalledWith({ state: "SUBMITTED", submissionID: "123" })
 })
+
+it("passes utm params when submitting", () => {
+  const overview = new Overview({
+    nav,
+    route,
+    setup: { submissionID: "123" },
+    params: { utm_term: "some-term", utm_source: "some-source", utm_medium: "some-medium" },
+  })
+  overview.setState = jest.fn()
+  overview.showConfirmationScreen = () => void overview.submitFinalSubmission()
+
+  overview.submitFinalSubmission()
+  expect(updateConsignmentSubmission).toBeCalledWith({
+    state: "SUBMITTED",
+    submissionID: "123",
+    utmTerm: "some-term",
+    utmSource: "some-source",
+    utmMedium: "some-medium",
+  })
+})
