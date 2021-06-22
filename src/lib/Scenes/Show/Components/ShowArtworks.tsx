@@ -56,6 +56,7 @@ const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) 
   const setFilterTypeAction = ArtworksFiltersStore.useStoreActions((state) => state.setFilterTypeAction)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((state) => state.setFiltersCountAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
 
   const filterParams = filterArtworksParams(appliedFilters, "showArtwork")
 
@@ -88,10 +89,7 @@ const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) 
   }, [])
 
   useEffect(() => {
-    setFiltersCountAction({
-      total: artworksTotal,
-      followedArtists: null,
-    })
+    setFiltersCountAction({ ...counts, total: artworksTotal })
   }, [artworksTotal])
 
   if (artworksTotal === 0) {
