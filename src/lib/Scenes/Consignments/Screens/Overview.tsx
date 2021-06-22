@@ -15,6 +15,7 @@ import { Box, Button, Flex, Spacer, Text } from "palette"
 import { Image as RNCImage } from "react-native-image-crop-picker"
 import { ArtistResult, ConsignmentMetadata, ConsignmentSetup, Photo } from "../"
 import TODO from "../Components/ArtworkConsignmentTodo"
+import { ConsignmentsSubmissionFormProps } from "../ConsignmentsHome/ConsignmentsSubmissionForm"
 import { createConsignmentSubmission } from "../Submission/createConsignmentSubmission"
 import { updateConsignmentSubmission } from "../Submission/updateConsignmentSubmission"
 import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
@@ -29,6 +30,7 @@ const consignmentsStateKey = "ConsignmentsStoredState"
 
 interface Props {
   navigator: NavigatorIOS
+  params: ConsignmentsSubmissionFormProps
   setup: ConsignmentSetup
   showActionSheetWithOptions: (options: ActionSheetOptions, callback: (i: number) => void) => void
 }
@@ -54,6 +56,7 @@ export class Overview extends React.Component<Props, State> {
 
     // Grab stored details from the local storage if no
     // props have been passed in
+
     if (!props.setup) {
       this.restoreFromLocalStorage()
     }
@@ -131,7 +134,10 @@ export class Overview extends React.Component<Props, State> {
     if (this.state.submissionID) {
       try {
         await this.uploadPhotosIfNeeded()
-        updateConsignmentSubmission(this.state)
+        const utmSource = this.props.params.utm_source
+        const utmMedium = this.props.params.utm_medium
+        const utmTerm = this.props.params.utm_term
+        updateConsignmentSubmission({ ...this.state, utmSource, utmTerm, utmMedium })
       } catch (error) {
         this.showUploadFailureAlert(error)
       }
@@ -176,7 +182,10 @@ export class Overview extends React.Component<Props, State> {
     const submission = this.state as ConsignmentSetup
     let hasSubmittedSuccessfully = true
     try {
-      await updateConsignmentSubmission({ ...submission, state: "SUBMITTED" })
+      const utmSource = this.props.params.utm_source
+      const utmMedium = this.props.params.utm_medium
+      const utmTerm = this.props.params.utm_term
+      await updateConsignmentSubmission({ ...submission, utmSource, utmTerm, utmMedium, state: "SUBMITTED" })
       await AsyncStorage.removeItem(consignmentsStateKey)
       this.submissionDraftSubmitted()
     } catch (error) {
