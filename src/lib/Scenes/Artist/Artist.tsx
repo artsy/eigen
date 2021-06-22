@@ -23,7 +23,7 @@ import { graphql } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
 const INITIAL_TAB = "Artworks"
-interface NotificationPayload {
+export interface NotificationPayload {
   searchCriteriaID: string
   // TODO: replace with proper searchCriteriaAttributes type when defined
   searchCriteriaAttributes: {}
