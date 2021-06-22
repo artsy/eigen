@@ -9,7 +9,6 @@ import { Platform } from "react-native"
 import { LoginManager } from "react-native-fbsdk-next"
 import { AuthModel, getAuthModel } from "./AuthModel"
 import { ConfigModel, getConfigModel } from "./ConfigModel"
-import { ConsignmentsModel, getConsignmentsModel } from "./ConsignmentModel"
 import { unsafe__getEnvironment } from "./GlobalStore"
 import { CURRENT_APP_VERSION } from "./migration"
 import { getNativeModel, NativeModel } from "./NativeModel"
@@ -27,7 +26,6 @@ interface GlobalStoreStateModel {
   myCollection: MyCollectionModel
   config: ConfigModel
   auth: AuthModel
-  consignments: ConsignmentsModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
@@ -90,7 +88,6 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   myCollection: getMyCollectionModel(),
   config: getConfigModel(),
   auth: getAuthModel(),
-  consignments: getConsignmentsModel(),
 
   // for testing only. noop otherwise.
   __inject: __TEST__
