@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 52ecae885b0a9f2d97a4b6f1d86deb57 */
+/* @relayHash 15e42dffba61b27a7432217e9182a68d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -80,6 +80,11 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
   dateText
   id
   internalID
+  artist {
+    name
+    slug
+    id
+  }
   images {
     thumbnail {
       url(version: "square140")
@@ -195,17 +200,24 @@ v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "slug",
   "storageKey": null
 },
 v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v10 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "internalID",
   "storageKey": null
 },
-v10 = [
+v11 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -288,18 +300,12 @@ return {
             "name": "birthday",
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "slug",
-            "storageKey": null
-          },
           (v8/*: any*/),
           (v9/*: any*/),
+          (v10/*: any*/),
           {
             "alias": null,
-            "args": (v10/*: any*/),
+            "args": (v11/*: any*/),
             "concreteType": "AuctionResultConnection",
             "kind": "LinkedField",
             "name": "auctionResultsConnection",
@@ -353,8 +359,8 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v8/*: any*/),
                       (v9/*: any*/),
+                      (v10/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -367,6 +373,26 @@ return {
                         "args": null,
                         "kind": "ScalarField",
                         "name": "dateText",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "artist",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "name",
+                            "storageKey": null
+                          },
+                          (v8/*: any*/),
+                          (v9/*: any*/)
+                        ],
                         "storageKey": null
                       },
                       {
@@ -571,7 +597,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v10/*: any*/),
+            "args": (v11/*: any*/),
             "filters": [
               "allowEmptyCreatedDates",
               "categories",
@@ -591,7 +617,7 @@ return {
     ]
   },
   "params": {
-    "id": "52ecae885b0a9f2d97a4b6f1d86deb57",
+    "id": "15e42dffba61b27a7432217e9182a68d",
     "metadata": {},
     "name": "ArtistInsightsAuctionResultsQuery",
     "operationKind": "query",

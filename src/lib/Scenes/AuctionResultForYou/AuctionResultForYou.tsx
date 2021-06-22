@@ -1,6 +1,7 @@
 import { AuctionResultForYou_me } from "__generated__/AuctionResultForYou_me.graphql"
 import { AuctionResultForYouContainerQuery } from "__generated__/AuctionResultForYouContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import Spinner from "lib/Components/Spinner"
 import { LinkText } from "lib/Components/Text/LinkText"
@@ -18,7 +19,6 @@ import { SectionList } from "react-native"
 import { RelayPaginationProp } from "react-relay"
 import { createPaginationContainer, graphql, QueryRenderer } from "react-relay"
 import { Tab } from "../Favorites/Favorites"
-import { AuctionResultForYouListItemContainer } from "./AuctionResultForYouListItem"
 
 interface Props {
   me: AuctionResultForYou_me | null
@@ -71,7 +71,14 @@ export const AuctionResultForYou: React.FC<Props> = ({ me, relay }) => {
           onEndReachedThreshold={0.5}
           onEndReached={loadMoreArtworks}
           renderItem={({ item }) =>
-            item?.node ? <AuctionResultForYouListItemContainer auctionResult={item.node} /> : <></>
+            item?.node ? (
+              <AuctionResultFragmentContainer
+                auctionResult={item.node}
+                onPress={() => navigate(`/artist/${item.node?.artistID}/auction-result/${item.node?.internalID}`)}
+              />
+            ) : (
+              <></>
+            )
           }
           renderSectionHeader={({ section: { date } }) => (
             <Text
@@ -106,7 +113,35 @@ export const AuctionResultForYouContainer = createPaginationContainer(
           totalCount
           edges {
             node {
-              ...AuctionResultForYouListItem_auctionResult
+              ...AuctionResultListItem_auctionResult
+              currency
+              dateText
+              id
+              artistID
+              internalID
+              images {
+                thumbnail {
+                  url(version: "square140")
+                  height
+                  width
+                  aspectRatio
+                }
+              }
+              estimate {
+                low
+              }
+              mediumText
+              organization
+              boughtIn
+              performance {
+                mid
+              }
+              priceRealized {
+                display
+                cents
+              }
+              saleDate
+              title
             }
           }
         }

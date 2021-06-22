@@ -10,31 +10,9 @@ export type AuctionResultsRail_me = {
         readonly edges: ReadonlyArray<{
             readonly cursor: string;
             readonly node: {
-                readonly id: string;
                 readonly artistID: string;
-                readonly artist: {
-                    readonly name: string | null;
-                } | null;
                 readonly internalID: string;
-                readonly title: string | null;
-                readonly currency: string | null;
-                readonly dateText: string | null;
-                readonly mediumText: string | null;
-                readonly saleDate: string | null;
-                readonly organization: string | null;
-                readonly boughtIn: boolean | null;
-                readonly priceRealized: {
-                    readonly cents: number | null;
-                    readonly display: string | null;
-                } | null;
-                readonly performance: {
-                    readonly mid: string | null;
-                } | null;
-                readonly images: {
-                    readonly thumbnail: {
-                        readonly url: string | null;
-                    } | null;
-                } | null;
+                readonly " $fragmentRefs": FragmentRefs<"AuctionResultListItem_auctionResult">;
             } | null;
         } | null> | null;
     } | null;
@@ -102,32 +80,7 @@ const node: ReaderFragment = {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
-                  "name": "id",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
                   "name": "artistID",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "Artist",
-                  "kind": "LinkedField",
-                  "name": "artist",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "name",
-                      "storageKey": null
-                    }
-                  ],
                   "storageKey": null
                 },
                 {
@@ -138,125 +91,9 @@ const node: ReaderFragment = {
                   "storageKey": null
                 },
                 {
-                  "alias": null,
                   "args": null,
-                  "kind": "ScalarField",
-                  "name": "title",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "currency",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "dateText",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "mediumText",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "saleDate",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "organization",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "boughtIn",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "AuctionResultPriceRealized",
-                  "kind": "LinkedField",
-                  "name": "priceRealized",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "cents",
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "display",
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "AuctionLotPerformance",
-                  "kind": "LinkedField",
-                  "name": "performance",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "mid",
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "AuctionLotImages",
-                  "kind": "LinkedField",
-                  "name": "images",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "concreteType": "Image",
-                      "kind": "LinkedField",
-                      "name": "thumbnail",
-                      "plural": false,
-                      "selections": [
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "url",
-                          "storageKey": null
-                        }
-                      ],
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
+                  "kind": "FragmentSpread",
+                  "name": "AuctionResultListItem_auctionResult"
                 }
               ],
               "storageKey": null
@@ -271,5 +108,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '561bfbc7b87ff8db945325de8cdb9672';
+(node as any).hash = 'cf7079894134d7ded2654593eac9f58c';
 export default node;

@@ -1,8 +1,8 @@
 import { AuctionResultsRail_me } from "__generated__/AuctionResultsRail_me.graphql"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
+import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
-import { AuctionResultForYouListItem } from "lib/Scenes/AuctionResultForYou/AuctionResultForYouListItem"
 import { Flex } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
@@ -41,12 +41,17 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
         keyExtractor={(_, index) => String(index)}
         horizontal={false}
         initialNumToRender={3}
-        renderItem={({ item, index }) => {
-          if (index >= 3 || !item?.node) {
+        renderItem={({ item }) => {
+          if (!item?.node) {
             return <></>
           }
 
-          return <AuctionResultForYouListItem auctionResult={item?.node} />
+          return (
+            <AuctionResultFragmentContainer
+              auctionResult={item?.node}
+              onPress={() => navigate(`/artist/${item.node?.artistID}/auction-result/${item.node?.internalID}`)}
+            />
+          )
         }}
       />
     </View>
@@ -61,31 +66,9 @@ export const AuctionResultsRailFragmentContainer = createFragmentContainer(Aucti
         edges {
           cursor
           node {
-            id
+            ...AuctionResultListItem_auctionResult
             artistID
-            artist {
-              name
-            }
             internalID
-            title
-            currency
-            dateText
-            mediumText
-            saleDate
-            organization
-            boughtIn
-            priceRealized {
-              cents
-              display
-            }
-            performance {
-              mid
-            }
-            images {
-              thumbnail {
-                url
-              }
-            }
           }
         }
       }
