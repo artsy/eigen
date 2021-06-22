@@ -3,7 +3,6 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, FilterIcon, Flex, Separator, Text, TouchableHighlightColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-native"
-import styled from "styled-components/native"
 
 export interface FilterProps {
   total: number
@@ -23,10 +22,6 @@ const BACK_BUTTON_SIZE = {
     width: 40,
   },
 }
-
-export const Container = styled(Box)`
-  background-color: white;
-`
 
 export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationValue, onPress }) => {
   const screenWidth = useScreenDimensions().width
@@ -85,60 +80,58 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
     )
   }
 
-  if (!total) {
-    return <SeparatorWithSmoothOpacity />
-  }
-
   return (
-    <Container onLayout={(e) => _onLayout(e)}>
+    <Box backgroundColor="white" onLayout={(e) => _onLayout(e)}>
       <SeparatorWithSmoothOpacity />
-      <Animated.View
-        style={{
-          transform: [
-            {
-              translateY: animationValue.interpolate({
-                inputRange: filterPageY > 0 ? [0, filterPageY - ANIM_START, filterPageY] : [0, 0, 0],
-                outputRange: filterPageY > 0 ? [0, 0, TRANSLATE_Y_VALUE] : [0, 0, 0],
-                extrapolate: "clamp",
-              }),
-            },
-          ],
-        }}
-      >
-        <Box backgroundColor="white" mt={3} px={2} mb={3}>
-          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-            <Animated.View
-              style={{
-                transform: [
-                  {
-                    translateX: animationValue.interpolate({
-                      inputRange: filterPageY > 0 ? [0, filterPageY - ANIM_START, filterPageY] : [0, 0, 0],
-                      outputRange: filterPageY > 0 ? [0, 0, TRANSLATE_X_VALUE] : [0, 0, 0],
-                      extrapolate: "clamp",
-                    }),
-                  },
-                ],
-              }}
-            >
-              <Text variant="subtitle" color="black60">
-                Showing {total} works
-              </Text>
-            </Animated.View>
-            <TouchableHighlightColor
-              haptic
-              onPress={onPress}
-              render={({ color }) => (
-                <Flex flexDirection="row" alignItems="center">
-                  <FilterIcon fill={color} width="20px" height="20px" />
-                  <Text variant="subtitle" color={color}>
-                    Sort & Filter
-                  </Text>
-                </Flex>
-              )}
-            />
-          </Flex>
-        </Box>
-      </Animated.View>
-    </Container>
+      {!!total && (
+        <Animated.View
+          style={{
+            transform: [
+              {
+                translateY: animationValue.interpolate({
+                  inputRange: filterPageY > 0 ? [0, filterPageY - ANIM_START, filterPageY] : [0, 0, 0],
+                  outputRange: filterPageY > 0 ? [0, 0, TRANSLATE_Y_VALUE] : [0, 0, 0],
+                  extrapolate: "clamp",
+                }),
+              },
+            ],
+          }}
+        >
+          <Box backgroundColor="white" mt={3} px={2} mb={3}>
+            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+              <Animated.View
+                style={{
+                  transform: [
+                    {
+                      translateX: animationValue.interpolate({
+                        inputRange: filterPageY > 0 ? [0, filterPageY - ANIM_START, filterPageY] : [0, 0, 0],
+                        outputRange: filterPageY > 0 ? [0, 0, TRANSLATE_X_VALUE] : [0, 0, 0],
+                        extrapolate: "clamp",
+                      }),
+                    },
+                  ],
+                }}
+              >
+                <Text variant="subtitle" color="black60">
+                  Showing {total} works
+                </Text>
+              </Animated.View>
+              <TouchableHighlightColor
+                haptic
+                onPress={onPress}
+                render={({ color }) => (
+                  <Flex flexDirection="row" alignItems="center">
+                    <FilterIcon fill={color} width="20px" height="20px" />
+                    <Text variant="subtitle" color={color}>
+                      Sort & Filter
+                    </Text>
+                  </Flex>
+                )}
+              />
+            </Flex>
+          </Box>
+        </Animated.View>
+      )}
+    </Box>
   )
 }

@@ -1,5 +1,4 @@
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { Container } from "lib/Components/HeaderArtworksFilter"
 import { useAnimatedValue } from "lib/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -46,7 +45,6 @@ describe("Show", () => {
         },
       },
     })
-    expect(wrapper.root.findAllByType(Container)).toHaveLength(1)
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Showing 12 works")
@@ -55,6 +53,10 @@ describe("Show", () => {
 
   it("doesn't render show artworks filter header", () => {
     const wrapper = getWrapper({})
-    expect(wrapper.root.findAllByType(Container)).toHaveLength(0)
+
+    const text = extractText(wrapper.root)
+    expect(text).not.toContain("Showing")
+    expect(text).not.toContain("works")
+    expect(text).not.toContain("Sort & Filter")
   })
 })
