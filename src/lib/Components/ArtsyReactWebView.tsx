@@ -85,7 +85,7 @@ export const ArtsyReactWebView = React.forwardRef<
         // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction
         // on android it works without it
         sharedCookiesEnabled
-        decelerationRate="normal"
+        decelerationRate="fast"
         source={{ uri }}
         style={{ flex: 1 }}
         userAgent={userAgent}
