@@ -16,8 +16,8 @@ const route = {} as any
 
 beforeEach(jest.resetAllMocks)
 
-it("does nothing when there's no photos in setuip", () => {
-  const overview = new Overview({ nav, route, setup: {} })
+it("does nothing when there's no photos in setup", () => {
+  const overview = new Overview({ nav, route, setup: {}, params: {} })
   overview.uploadPhotosIfNeeded()
   expect(uploadImageAndPassToGemini).not.toBeCalled()
 })
@@ -27,6 +27,7 @@ it("uploads a photo when there's an photo without upload as true", () => {
     nav,
     route,
     setup: { submissionID: 1, photos: [{ image: { path: "/a/b/c.png" }, uploaded: false }] },
+    params: {},
   })
   overview.setState = jest.fn()
   overview.uploadPhotosIfNeeded()
@@ -42,13 +43,14 @@ it("doesnt upload a photo when when uploading is true", () => {
     nav,
     route,
     setup: { submission_id: 1, photos },
+    params: {},
   })
   overview.uploadPhotosIfNeeded()
   expect(uploadImageAndPassToGemini).not.toBeCalled()
 })
 
 it("calls update submission when submitting a non-draft version", () => {
-  const overview = new Overview({ nav, route, setup: { submissionID: "123" } })
+  const overview = new Overview({ nav, route, setup: { submissionID: "123" }, params: {} })
   overview.setState = jest.fn()
   overview.showConfirmationScreen = () => void overview.submitFinalSubmission()
 
