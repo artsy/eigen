@@ -90,7 +90,7 @@ export const AuctionResultForYouListItem: React.FC<Props> = ({ auctionResult }) 
               </Flex>
             ) : (
               <Flex alignItems="flex-end">
-                <Text variant="text" fontWeight="bold" style={{ width: 100 }} textAlign="right" testID="price">
+                <Text variant="text" fontWeight="bold" textAlign="right" testID="price">
                   {auctionResultText(auctionResult)}
                 </Text>
               </Flex>
