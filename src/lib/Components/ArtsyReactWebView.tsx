@@ -90,6 +90,7 @@ export const ArtsyReactWebView = React.forwardRef<
         source={{ uri }}
         style={{ flex: 1 }}
         userAgent={userAgent}
+        decelerationRate={"normal"}
         onLoadStart={() => setLoadProgress((p) => Math.max(0.02, p ?? 0))}
         onLoadEnd={() => setLoadProgress(null)}
         onLoadProgress={(e) => {
