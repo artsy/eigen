@@ -1,7 +1,7 @@
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { isNull, isUndefined, round as __round__ } from "lodash"
 
-export type Numeric = "*" | number
+type Numeric = "*" | number
 type Unit = "in" | "cm"
 
 export interface Range {
