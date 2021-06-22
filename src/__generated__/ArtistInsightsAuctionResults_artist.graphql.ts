@@ -83,6 +83,11 @@ return {
     {
       "defaultValue": null,
       "kind": "LocalArgument",
+      "name": "organizations"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
       "name": "sizes"
     },
     {
@@ -144,6 +149,11 @@ return {
           "kind": "Variable",
           "name": "latestCreatedYear",
           "variableName": "latestCreatedYear"
+        },
+        {
+          "kind": "Variable",
+          "name": "organizations",
+          "variableName": "organizations"
         },
         {
           "kind": "Variable",
@@ -269,5 +279,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'e007772a86b76ef047e934bbb4506ee3';
+(node as any).hash = 'e01dfeaf6c8fb1c07086255fef66716a';
 export default node;

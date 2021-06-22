@@ -35,6 +35,7 @@ export type FilterScreen =
   | "medium"
   | "partnerIDs"
   | "priceRange"
+  | "organizations"
   | "sizes"
   | "sort"
   | "viewAs"
@@ -216,6 +217,7 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
         filterOptionToDisplayConfigMap.categories,
         filterOptionToDisplayConfigMap.sizes,
         filterOptionToDisplayConfigMap.year,
+        filterOptionToDisplayConfigMap.organizations,
       ]
 
     default:
@@ -434,6 +436,11 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "medium",
     ScreenComponent: "MediumOptionsScreen",
   },
+  organizations: {
+    displayText: FilterDisplayName.organizations,
+    filterType: "organizations",
+    ScreenComponent: "AuctionHouseOptionsScreen",
+  },
   priceRange: {
     displayText: FilterDisplayName.priceRange,
     filterType: "priceRange",
@@ -540,4 +547,4 @@ const SaleArtworksFiltersSorted: FilterScreen[] = [
   "estimateRange",
 ]
 
-const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories", "sizes", "year"]
+const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories", "sizes", "year", "organizations"]
