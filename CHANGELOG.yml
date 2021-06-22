@@ -36,6 +36,7 @@ upcoming:
     - Hide spinner when there is no more artworks to load - katsiaryna alshannikava
     - Aligned 'Next' button in the 'Sell work' menu - katsiaryna alshannikava
     - Fix home screen articles rail spacing - ole
+    - Add auction house filter for auction results - ole
 
 releases:
   - version: 6.9.4
