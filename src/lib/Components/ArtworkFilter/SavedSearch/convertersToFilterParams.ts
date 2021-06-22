@@ -178,7 +178,7 @@ export const convertMajorPeriodToFilterParam = (criteria: SearchCriteriaAttribut
 export const convertSavedSearchCriteriaToFilterParams = (
   criteria: SearchCriteriaAttributes,
   aggregations: Aggregations
-) => {
+): FilterData[] => {
   let filterParams: FilterData[] = []
   const aggregationByFilterParamName = keyBy(aggregations, (aggregation) => filterKeyFromAggregation[aggregation.slice])
   const aggregationValueByFilterParamName = mapValues(
