@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react"
 import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-native"
 import styled from "styled-components/native"
 
-interface FilterProps {
+export interface FilterProps {
   total: number
   animationValue: Animated.Value
   onPress: () => void

@@ -1,12 +1,14 @@
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { Container } from "lib/Components/HeaderArtworksFilter"
-import { useAnimatedValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
+import { useAnimatedValue } from "lib/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { ShowArtworksFilter } from "../Components/ShowArtworksFilter"
 
 describe("Show", () => {
+  const onPress = jest.fn()
+
   const initialState: ArtworkFiltersState = {
     selectedFilters: [],
     appliedFilters: [],
@@ -24,7 +26,7 @@ describe("Show", () => {
     const animationValue = useAnimatedValue(0)
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>
-        <ShowArtworksFilter animationValue={animationValue} />
+        <ShowArtworksFilter animationValue={animationValue} onPress={onPress} />
       </ArtworkFiltersStoreProvider>
     )
   }
