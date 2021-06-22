@@ -30,6 +30,9 @@ export type CreateSubmissionMutationInput = {
     state?: ConsignmentSubmissionStateAggregation | null;
     title?: string | null;
     userAgent?: string | null;
+    utmMedium?: string | null;
+    utmSource?: string | null;
+    utmTerm?: string | null;
     width?: string | null;
     year?: string | null;
 };

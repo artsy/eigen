@@ -7,7 +7,11 @@ upcoming:
     - Update open simulator command in getting started docs - ole
     - Update debugging docs - mounir
     - Connect auction results for you to metaphysics endpoint - yauheni
+    - Send data in the filter params format for saved search - dzmitry tratsiak
+    - Enables external flag for order history - sweir
   user_facing:
+    - Fixed "Unable to load" error on OrderHistory page when artwork is deleted/unpublished from order
+    - Pick up should be displayed in Sold by section - Serge0n
     - Country should be written with full name - Serge0n
     - Name from shipping address should be displayed instead of account name - Serge0n
     - User can see the way of delivery - Serge0n
