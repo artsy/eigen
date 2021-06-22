@@ -27,7 +27,7 @@ describe("NativeModel", () => {
 
       expect(navigate).toBeCalledWith("some-route-path", {
         passProps: {
-          notifcationPayload: undefined,
+          notificationPayload: undefined,
         },
       })
     })
@@ -46,7 +46,7 @@ describe("NativeModel", () => {
 
       expect(navigate).toBeCalledWith("some-route-path", {
         passProps: {
-          notifcationPayload: {
+          notificationPayload: {
             canRead: false,
             someAdditionalKey: "value",
           },
