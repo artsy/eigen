@@ -116,7 +116,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/search", "Search"),
     new RouteMatcher("/inbox", "Inbox"),
     new RouteMatcher("/my-profile", "MyProfile"),
-
+    new RouteMatcher("/articles", "Articles"),
+    webViewRoute("/articles/:articleID"),
     new RouteMatcher("/artist/:artistID", "Artist"),
     new RouteMatcher("/artist/:artistID/shows", "ArtistShows"),
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
@@ -202,6 +203,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/city-fair/:citySlug", "CityFairList"),
     new RouteMatcher("/city-save/:citySlug", "CitySavedList"),
     new RouteMatcher("/auctions", "Auctions"),
+    new RouteMatcher("/lots-by-artists-you-follow", "LotsByArtistsYouFollow"),
     new RouteMatcher("/works-for-you", "WorksForYou"),
     webViewRoute("/categories"),
     webViewRoute("/privacy"),

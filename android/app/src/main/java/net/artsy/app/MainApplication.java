@@ -2,13 +2,15 @@ package net.artsy.app;
 
 import android.app.Application;
 import android.content.Context;
+
+import com.appboy.AppboyLifecycleCallbackListener;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import io.sentry.react.RNSentryPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
+import io.sentry.react.RNSentryPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -46,7 +48,9 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
-    ArtsyNativeModule.didLaunch(this.getSharedPreferences("launchConfig", MODE_PRIVATE));
+    ArtsyNativeModule.didLaunch(
+        this.getSharedPreferences("launchConfig", MODE_PRIVATE));
+    registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener(true, true));
   }
 
   /**

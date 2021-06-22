@@ -2,6 +2,7 @@ import { Articles_articles } from "__generated__/Articles_articles.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArticleCardContainer } from "lib/Components/ArticleCard"
 import { SectionTitle } from "lib/Components/SectionTitle"
+import { Spacer } from "palette"
 import React, { Component } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -20,6 +21,7 @@ class Articles extends Component<Props> {
         <AboveTheFoldFlatList<Articles_articles[number]>
           horizontal
           showsHorizontalScrollIndicator={false}
+          ItemSeparatorComponent={() => <Spacer ml="2" />}
           scrollsToTop={false}
           style={{ overflow: "visible" }}
           initialNumToRender={2}

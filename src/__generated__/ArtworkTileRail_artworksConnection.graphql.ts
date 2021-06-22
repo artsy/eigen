@@ -36,7 +36,7 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
-      "concreteType": "ArtworkEdge",
+      "concreteType": null,
       "kind": "LinkedField",
       "name": "edges",
       "plural": true,
@@ -109,8 +109,8 @@ const node: ReaderFragment = {
       "storageKey": null
     }
   ],
-  "type": "ArtworkConnection",
-  "abstractKey": null
+  "type": "ArtworkConnectionInterface",
+  "abstractKey": "__isArtworkConnectionInterface"
 };
-(node as any).hash = '8e817d114e27d6cc5f4df4790d88d310';
+(node as any).hash = 'e5ea0e4564d7f425eae7b2580d80a223';
 export default node;

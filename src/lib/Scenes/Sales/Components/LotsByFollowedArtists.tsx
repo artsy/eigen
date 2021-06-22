@@ -1,45 +1,34 @@
 import { LotsByFollowedArtists_me } from "__generated__/LotsByFollowedArtists_me.graphql"
-import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { ArtworkTileRail } from "lib/Components/ArtworkTileRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import { Box, Theme } from "palette"
-import React, { Component } from "react"
+import { navigate } from "lib/navigation/navigate"
+import { Box } from "palette"
+import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
-const DEFAULT_TITLE = "Lots by Artists You Follow"
-
-interface Props {
-  relay: RelayPaginationProp
+interface LotsByFollowedArtistsProps {
   title?: string
   me: LotsByFollowedArtists_me
-  hideUrgencyTags?: boolean
-  hidePartner?: boolean
-  showLotLabel?: boolean
+  relay: RelayPaginationProp
 }
 
-export class LotsByFollowedArtists extends Component<Props> {
-  render() {
-    if (!this.props.me.lotsByFollowedArtistsConnection?.edges?.length) {
-      return null
-    }
-
-    const { title = DEFAULT_TITLE, hideUrgencyTags, showLotLabel, hidePartner } = this.props
-
-    return (
-      <Theme>
-        <Box px={2}>
-          <InfiniteScrollArtworksGrid
-            loadMore={this.props.relay.loadMore}
-            hasMore={this.props.relay.hasMore}
-            connection={this.props.me.lotsByFollowedArtistsConnection}
-            HeaderComponent={<SectionTitle title={title} />}
-            hideUrgencyTags={hideUrgencyTags}
-            hidePartner={hidePartner}
-            showLotLabel={showLotLabel}
-          />
-        </Box>
-      </Theme>
-    )
+export const LotsByFollowedArtists: React.FC<LotsByFollowedArtistsProps> = ({
+  me,
+  title = "Lots by Artists You Follow",
+}) => {
+  if (!me.lotsByFollowedArtistsConnection?.edges?.length) {
+    return null
   }
+
+  return (
+    <Box>
+      <Box px={2}>
+        <SectionTitle title={title} onPress={() => navigate("/lots-by-artists-you-follow")} />
+      </Box>
+
+      <ArtworkTileRail artworksConnection={me.lotsByFollowedArtistsConnection} />
+    </Box>
+  )
 }
 
 export default createPaginationContainer(
@@ -53,7 +42,7 @@ export default createPaginationContainer(
           edges {
             cursor
           }
-          ...InfiniteScrollArtworksGrid_connection
+          ...ArtworkTileRail_artworksConnection
         }
       }
     `,

@@ -42,12 +42,19 @@ export const cmToIn = (centimeters: Numeric) => {
   return centimeters / ONE_IN_TO_CM
 }
 
-export const inToCm = (inches: Numeric) => {
+export const inToCm = (inches: Numeric, shouldRound: boolean = true) => {
   if (inches === "*") {
     return inches
   }
 
-  return inches * ONE_IN_TO_CM
+  const centimeters = inches * ONE_IN_TO_CM
+
+  if (shouldRound) {
+    // Round off floating point precision errors.
+    return round(centimeters)
+  }
+
+  return centimeters
 }
 
 export const toIn = (value: Numeric, unit: Unit): Numeric => {
@@ -97,4 +104,18 @@ export const parseRange = (range: string): Range => {
   })
 
   return { min: enforceNumeric(min), max: enforceNumeric(max) }
+}
+
+export const parsePriceRangeLabel = (min: Numeric, max: Numeric) => {
+  let parsedMin = "$0"
+  let parsedMax = "+"
+
+  if (min !== "*") {
+    parsedMin = `$${min.toLocaleString("en-US", { maximumFractionDigits: 2 })}`
+  }
+  if (max !== "*") {
+    parsedMax = `–${max.toLocaleString("en-US", { maximumFractionDigits: 2 })}`
+  }
+
+  return `${parsedMin}${parsedMax}`
 }

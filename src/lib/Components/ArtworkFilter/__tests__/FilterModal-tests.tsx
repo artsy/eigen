@@ -392,7 +392,6 @@ describe("Clearing filters", () => {
 
     expect(filterModal.find(CurrentOption).at(0).text()).toEqual("")
     expect(filterModal.find(CurrentOption).at(1).text()).toEqual("")
-    expect(exitModalMock).toHaveBeenCalled()
   })
 })
 

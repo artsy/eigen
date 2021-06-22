@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0a3aa491be1ba899fe875418e797d7d4 */
+/* @relayHash 06bf55fd8c1a792d697286b299422a6f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -50,6 +50,8 @@ query HomeRefetchQuery(
 }
 
 fragment ArticleCard_article on Article {
+  internalID
+  slug
   author {
     name
     id
@@ -1783,7 +1785,7 @@ return {
     ]
   },
   "params": {
-    "id": "0a3aa491be1ba899fe875418e797d7d4",
+    "id": "06bf55fd8c1a792d697286b299422a6f",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",

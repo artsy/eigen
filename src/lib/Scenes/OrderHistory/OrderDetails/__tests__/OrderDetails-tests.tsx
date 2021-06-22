@@ -8,41 +8,37 @@ import { SectionList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ArtworkInfoSectionFragmentContainer } from "../OrderDetails/ArtworkInfoSection"
-import { OrderDetailsContainer, OrderDetailsPlaceholder, OrderDetailsQueryRender } from "../OrderDetails/OrderDetails"
-import { CreditCardSummaryItemFragmentContainer } from "../OrderDetails/OrderDetailsPayment"
-import { ShipsToSectionFragmentContainer } from "../OrderDetails/ShipsToSection"
-import { SummarySectionFragmentContainer } from "../OrderDetails/SummarySection"
+import { ArtworkInfoSectionFragmentContainer } from "../Components/ArtworkInfoSection"
+import { OrderDetailsContainer, OrderDetailsPlaceholder, OrderDetailsQueryRender } from "../Components/OrderDetails"
+import { OrderDetailsHeader } from "../Components/OrderDetailsHeader"
+import { CreditCardSummaryItemFragmentContainer } from "../Components/OrderDetailsPayment"
+import { ShipsToSectionFragmentContainer } from "../Components/ShipsToSection"
+import { SummarySectionFragmentContainer } from "../Components/SummarySection"
 
 jest.unmock("react-relay")
 
 describe(OrderDetailsQueryRender, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   const TestRenderer = () => (
     <QueryRenderer<OrderDetailsTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query OrderDetailsTestsQuery {
-          order: commerceOrder(id: "order-id") {
+        query OrderDetailsTestsQuery @relay_test_operation {
+          commerceOrder(id: "order-id") {
             ...OrderDetails_order
-          }
-          me {
-            name
           }
         }
       `}
-      variables={{}}
+      variables={{ id: "order-id" }}
       render={({ props }) => {
-        if (props?.order) {
-          return <OrderDetailsContainer me={props.me} order={props.order} />
+        if (props?.commerceOrder) {
+          return <OrderDetailsContainer order={props.commerceOrder} />
         }
       }}
     />
   )
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
@@ -57,15 +53,13 @@ describe(OrderDetailsQueryRender, () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
     mockEnvironmentPayload(mockEnvironment, {
-      Me: () => ({
-        name: "my name",
-      }),
       CommerceOrder: () => ({
         internalID: "222",
         requestedFulfillment: {
+          name: "my name",
           addressLine1: "myadress",
           city: "mycity",
-          country: "mycountry",
+          country: "BY",
           postalCode: "11238",
           phoneNumber: "7777",
           region: "myregion",
@@ -100,6 +94,7 @@ describe(OrderDetailsQueryRender, () => {
     expect(tree.root.findByType(SummarySectionFragmentContainer)).toBeTruthy()
     expect(tree.root.findByType(CreditCardSummaryItemFragmentContainer)).toBeTruthy()
     expect(tree.root.findByType(ShipsToSectionFragmentContainer)).toBeTruthy()
+    expect(tree.root.findByType(OrderDetailsHeader)).toBeTruthy()
   })
 
   it("renders without throwing an error", () => {
@@ -108,8 +103,12 @@ describe(OrderDetailsQueryRender, () => {
 
   it("renders props for OrderDetails if feature flag is on", () => {
     const tree = getWrapper({
-      Me: () => ({
-        name: "my name",
+      CommerceOrder: () => ({
+        internalID: "222",
+        requestedFulfillment: {
+          __typename: "CommerceShip",
+          name: "my name",
+        },
       }),
     })
     expect(extractText(tree.root)).toContain("my name")

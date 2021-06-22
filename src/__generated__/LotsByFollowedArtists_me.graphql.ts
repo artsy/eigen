@@ -9,7 +9,7 @@ export type LotsByFollowedArtists_me = {
         readonly edges: ReadonlyArray<{
             readonly cursor: string | null;
         } | null> | null;
-        readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
+        readonly " $fragmentRefs": FragmentRefs<"ArtworkTileRail_artworksConnection">;
     } | null;
     readonly " $refType": "LotsByFollowedArtists_me";
 };
@@ -132,7 +132,7 @@ const node: ReaderFragment = {
         {
           "args": null,
           "kind": "FragmentSpread",
-          "name": "InfiniteScrollArtworksGrid_connection"
+          "name": "ArtworkTileRail_artworksConnection"
         }
       ],
       "storageKey": "__LotsByFollowedArtists_lotsByFollowedArtistsConnection_connection(isAuction:true,liveSale:true)"
@@ -141,5 +141,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'eb53558caf3b671c1440b8fd4ce1b7db';
+(node as any).hash = '95ed4669c2625b69e7fa1ba683b9b92c';
 export default node;

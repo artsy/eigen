@@ -152,7 +152,7 @@ export const OrderHistoryQueryRender: React.FC<{}> = ({}) => {
       environment={defaultEnvironment}
       query={graphql`
         query OrderHistoryQuery($count: Int!) {
-          me {
+          me @principalField {
             name
             ...OrderHistory_me @arguments(count: $count)
           }

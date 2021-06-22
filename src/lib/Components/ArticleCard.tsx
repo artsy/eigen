@@ -3,15 +3,19 @@ import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { Flex, Spacer, Text } from "palette"
 import React from "react"
-import { GestureResponderEvent, TouchableWithoutFeedback, ViewProps } from "react-native"
+import { GestureResponderEvent, TouchableWithoutFeedback, View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+
+const WIDTH = 295
+const HEIGHT = 230
 
 interface ArticleCardProps extends ViewProps {
   article: ArticleCard_article
+  isFluid?: boolean
   onPress?(event: GestureResponderEvent): void
 }
 
-export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress }) => {
+export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFluid }) => {
   const imageURL = article.thumbnailImage?.url
 
   const onTap = (event: GestureResponderEvent) => {
@@ -20,10 +24,17 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress }) =>
   }
 
   return (
-    <Flex width={320}>
+    <Flex width={isFluid ? "100%" : WIDTH}>
       <TouchableWithoutFeedback onPress={onTap}>
-        <Flex width={300} overflow="hidden">
-          {!!imageURL && <ImageView imageURL={article.thumbnailImage?.url} width={295} height={230} />}
+        <Flex width={isFluid ? "100%" : WIDTH} overflow="hidden">
+          {!!imageURL &&
+            (isFluid ? (
+              <View style={{ width: "100%", aspectRatio: 1.33, flexDirection: "row" }}>
+                <ImageView imageURL={article.thumbnailImage?.url} style={{ flex: 1 }} />
+              </View>
+            ) : (
+              <ImageView imageURL={article.thumbnailImage?.url} width={WIDTH} height={HEIGHT} />
+            ))}
           <Spacer mb={1} />
           <Text variant={"small"}>{article.vertical || " "}</Text>
           <Text numberOfLines={3} ellipsizeMode="tail" variant={"title"}>
@@ -43,6 +54,8 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress }) =>
 export const ArticleCardContainer = createFragmentContainer(ArticleCard, {
   article: graphql`
     fragment ArticleCard_article on Article {
+      internalID
+      slug
       author {
         name
       }

@@ -5,7 +5,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { CreditCardSummaryItemFragmentContainer } from "../OrderDetails/OrderDetailsPayment"
+import { CreditCardSummaryItemFragmentContainer } from "../Components/OrderDetailsPayment"
 
 jest.unmock("react-relay")
 

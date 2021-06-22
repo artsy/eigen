@@ -1,17 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6c12aaef3bb42441b9ad31201e108c43 */
+/* @relayHash 2a2112c6ef6818738e048d1629a5b99c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type OrderDetailsTestsQueryVariables = {};
 export type OrderDetailsTestsQueryResponse = {
-    readonly order: {
+    readonly commerceOrder: {
         readonly " $fragmentRefs": FragmentRefs<"OrderDetails_order">;
-    } | null;
-    readonly me: {
-        readonly name: string | null;
     } | null;
 };
 export type OrderDetailsTestsQuery = {
@@ -23,13 +20,9 @@ export type OrderDetailsTestsQuery = {
 
 /*
 query OrderDetailsTestsQuery {
-  order: commerceOrder(id: "order-id") {
+  commerceOrder(id: "order-id") {
     __typename
     ...OrderDetails_order
-    id
-  }
-  me {
-    name
     id
   }
 }
@@ -71,13 +64,38 @@ fragment OrderDetailsPayment_order on CommerceOrder {
 
 fragment OrderDetails_order on CommerceOrder {
   __isCommerceOrder: __typename
-  internalID
-  code
+  requestedFulfillment {
+    __typename
+    ... on CommerceShip {
+      __typename
+      name
+    }
+    ... on CommercePickup {
+      __typename
+    }
+  }
+  lineItems(first: 1) {
+    edges {
+      node {
+        artwork {
+          partner {
+            name
+            id
+          }
+          id
+        }
+        id
+      }
+    }
+  }
+  createdAt
   state
+  code
   ...ArtworkInfoSection_artwork
   ...SummarySection_section
   ...OrderDetailsPayment_order
   ...ShipsToSection_address
+  ...SoldBySection_soldBy
 }
 
 fragment ShipsToSection_address on CommerceOrder {
@@ -85,6 +103,7 @@ fragment ShipsToSection_address on CommerceOrder {
   requestedFulfillment {
     __typename
     ... on CommerceShip {
+      __typename
       addressLine1
       addressLine2
       city
@@ -92,6 +111,38 @@ fragment ShipsToSection_address on CommerceOrder {
       phoneNumber
       postalCode
       region
+    }
+    ... on CommercePickup {
+      __typename
+    }
+  }
+}
+
+fragment SoldBySection_soldBy on CommerceOrder {
+  __isCommerceOrder: __typename
+  requestedFulfillment {
+    __typename
+    ... on CommercePickup {
+      __typename
+    }
+  }
+  lineItems(first: 1) {
+    edges {
+      node {
+        artwork {
+          shippingOrigin
+          id
+        }
+        fulfillments(first: 1) {
+          edges {
+            node {
+              estimatedDelivery
+              id
+            }
+          }
+        }
+        id
+      }
     }
   }
 }
@@ -117,30 +168,55 @@ v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "__typename",
   "storageKey": null
 },
 v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "__typename",
+  "name": "name",
   "storageKey": null
 },
-v3 = {
+v3 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 1
+  }
+],
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v4 = [
+v5 = [
   {
     "kind": "Literal",
     "name": "precision",
     "value": 2
   }
-];
+],
+v6 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "String"
+},
+v7 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
+},
+v8 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+};
 return {
   "fragment": {
     "argumentDefinitions": [],
@@ -149,7 +225,7 @@ return {
     "name": "OrderDetailsTestsQuery",
     "selections": [
       {
-        "alias": "order",
+        "alias": null,
         "args": (v0/*: any*/),
         "concreteType": null,
         "kind": "LinkedField",
@@ -163,18 +239,6 @@ return {
           }
         ],
         "storageKey": "commerceOrder(id:\"order-id\")"
-      },
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "Me",
-        "kind": "LinkedField",
-        "name": "me",
-        "plural": false,
-        "selections": [
-          (v1/*: any*/)
-        ],
-        "storageKey": null
       }
     ],
     "type": "Query",
@@ -187,14 +251,14 @@ return {
     "name": "OrderDetailsTestsQuery",
     "selections": [
       {
-        "alias": "order",
+        "alias": null,
         "args": (v0/*: any*/),
         "concreteType": null,
         "kind": "LinkedField",
         "name": "commerceOrder",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
+          (v1/*: any*/),
           {
             "kind": "TypeDiscriminator",
             "abstractKey": "__isCommerceOrder"
@@ -202,33 +266,75 @@ return {
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
-            "name": "internalID",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "code",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "state",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": [
+            "concreteType": null,
+            "kind": "LinkedField",
+            "name": "requestedFulfillment",
+            "plural": false,
+            "selections": [
+              (v1/*: any*/),
               {
-                "kind": "Literal",
-                "name": "first",
-                "value": 1
+                "kind": "InlineFragment",
+                "selections": [
+                  (v2/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "addressLine1",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "addressLine2",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "city",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "country",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "phoneNumber",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "postalCode",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "region",
+                    "storageKey": null
+                  }
+                ],
+                "type": "CommerceShip",
+                "abstractKey": null
               }
             ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": (v3/*: any*/),
             "concreteType": "CommerceLineItemConnection",
             "kind": "LinkedField",
             "name": "lineItems",
@@ -258,6 +364,20 @@ return {
                         "name": "artwork",
                         "plural": false,
                         "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Partner",
+                            "kind": "LinkedField",
+                            "name": "partner",
+                            "plural": false,
+                            "selections": [
+                              (v2/*: any*/),
+                              (v4/*: any*/)
+                            ],
+                            "storageKey": null
+                          },
+                          (v4/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -342,11 +462,58 @@ return {
                             "name": "artistNames",
                             "storageKey": null
                           },
-                          (v3/*: any*/)
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "shippingOrigin",
+                            "storageKey": null
+                          }
                         ],
                         "storageKey": null
                       },
-                      (v3/*: any*/)
+                      (v4/*: any*/),
+                      {
+                        "alias": null,
+                        "args": (v3/*: any*/),
+                        "concreteType": "CommerceFulfillmentConnection",
+                        "kind": "LinkedField",
+                        "name": "fulfillments",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "CommerceFulfillmentEdge",
+                            "kind": "LinkedField",
+                            "name": "edges",
+                            "plural": true,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "CommerceFulfillment",
+                                "kind": "LinkedField",
+                                "name": "node",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "estimatedDelivery",
+                                    "storageKey": null
+                                  },
+                                  (v4/*: any*/)
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": "fulfillments(first:1)"
+                      }
                     ],
                     "storageKey": null
                   }
@@ -358,28 +525,49 @@ return {
           },
           {
             "alias": null,
-            "args": (v4/*: any*/),
+            "args": null,
+            "kind": "ScalarField",
+            "name": "createdAt",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "state",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "code",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": (v5/*: any*/),
             "kind": "ScalarField",
             "name": "buyerTotal",
             "storageKey": "buyerTotal(precision:2)"
           },
           {
             "alias": null,
-            "args": (v4/*: any*/),
+            "args": (v5/*: any*/),
             "kind": "ScalarField",
             "name": "taxTotal",
             "storageKey": "taxTotal(precision:2)"
           },
           {
             "alias": null,
-            "args": (v4/*: any*/),
+            "args": (v5/*: any*/),
             "kind": "ScalarField",
             "name": "shippingTotal",
             "storageKey": "shippingTotal(precision:2)"
           },
           {
             "alias": null,
-            "args": (v4/*: any*/),
+            "args": (v5/*: any*/),
             "kind": "ScalarField",
             "name": "totalListPrice",
             "storageKey": "totalListPrice(precision:2)"
@@ -406,105 +594,155 @@ return {
                 "name": "lastDigits",
                 "storageKey": null
               },
-              (v3/*: any*/)
+              (v4/*: any*/)
             ],
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": null,
-            "kind": "LinkedField",
-            "name": "requestedFulfillment",
-            "plural": false,
-            "selections": [
-              (v2/*: any*/),
-              {
-                "kind": "InlineFragment",
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "addressLine1",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "addressLine2",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "city",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "country",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "phoneNumber",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "postalCode",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "region",
-                    "storageKey": null
-                  }
-                ],
-                "type": "CommerceShip",
-                "abstractKey": null
-              }
-            ],
-            "storageKey": null
-          },
-          (v3/*: any*/)
+          (v4/*: any*/)
         ],
         "storageKey": "commerceOrder(id:\"order-id\")"
-      },
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "Me",
-        "kind": "LinkedField",
-        "name": "me",
-        "plural": false,
-        "selections": [
-          (v1/*: any*/),
-          (v3/*: any*/)
-        ],
-        "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "6c12aaef3bb42441b9ad31201e108c43",
-    "metadata": {},
+    "id": "2a2112c6ef6818738e048d1629a5b99c",
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "commerceOrder": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceOrder"
+        },
+        "commerceOrder.__isCommerceOrder": (v6/*: any*/),
+        "commerceOrder.__typename": (v6/*: any*/),
+        "commerceOrder.buyerTotal": (v7/*: any*/),
+        "commerceOrder.code": (v6/*: any*/),
+        "commerceOrder.createdAt": (v6/*: any*/),
+        "commerceOrder.creditCard": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CreditCard"
+        },
+        "commerceOrder.creditCard.brand": (v6/*: any*/),
+        "commerceOrder.creditCard.id": (v8/*: any*/),
+        "commerceOrder.creditCard.lastDigits": (v6/*: any*/),
+        "commerceOrder.id": (v8/*: any*/),
+        "commerceOrder.lineItems": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceLineItemConnection"
+        },
+        "commerceOrder.lineItems.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "CommerceLineItemEdge"
+        },
+        "commerceOrder.lineItems.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceLineItem"
+        },
+        "commerceOrder.lineItems.edges.node.artwork": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Artwork"
+        },
+        "commerceOrder.lineItems.edges.node.artwork.artistNames": (v7/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.date": (v7/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.dimensions": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "dimensions"
+        },
+        "commerceOrder.lineItems.edges.node.artwork.dimensions.cm": (v7/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.dimensions.in": (v7/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.editionOf": (v7/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.id": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.image": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Image"
+        },
+        "commerceOrder.lineItems.edges.node.artwork.image.url": (v7/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.medium": (v7/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.partner": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Partner"
+        },
+        "commerceOrder.lineItems.edges.node.artwork.partner.id": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.partner.name": (v7/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.shippingOrigin": (v7/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.title": (v7/*: any*/),
+        "commerceOrder.lineItems.edges.node.fulfillments": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceFulfillmentConnection"
+        },
+        "commerceOrder.lineItems.edges.node.fulfillments.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "CommerceFulfillmentEdge"
+        },
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceFulfillment"
+        },
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.estimatedDelivery": (v7/*: any*/),
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.id": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.id": (v8/*: any*/),
+        "commerceOrder.requestedFulfillment": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceRequestedFulfillmentUnion"
+        },
+        "commerceOrder.requestedFulfillment.__typename": (v6/*: any*/),
+        "commerceOrder.requestedFulfillment.addressLine1": (v7/*: any*/),
+        "commerceOrder.requestedFulfillment.addressLine2": (v7/*: any*/),
+        "commerceOrder.requestedFulfillment.city": (v7/*: any*/),
+        "commerceOrder.requestedFulfillment.country": (v7/*: any*/),
+        "commerceOrder.requestedFulfillment.name": (v7/*: any*/),
+        "commerceOrder.requestedFulfillment.phoneNumber": (v7/*: any*/),
+        "commerceOrder.requestedFulfillment.postalCode": (v7/*: any*/),
+        "commerceOrder.requestedFulfillment.region": (v7/*: any*/),
+        "commerceOrder.shippingTotal": (v7/*: any*/),
+        "commerceOrder.state": {
+          "enumValues": [
+            "ABANDONED",
+            "APPROVED",
+            "CANCELED",
+            "FULFILLED",
+            "PENDING",
+            "REFUNDED",
+            "SUBMITTED"
+          ],
+          "nullable": false,
+          "plural": false,
+          "type": "CommerceOrderStateEnum"
+        },
+        "commerceOrder.taxTotal": (v7/*: any*/),
+        "commerceOrder.totalListPrice": (v7/*: any*/)
+      }
+    },
     "name": "OrderDetailsTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '256ff19a85686a62616295c42e63501c';
+(node as any).hash = '76f7f61c266d40b4bf94126da71e5bb3';
 export default node;

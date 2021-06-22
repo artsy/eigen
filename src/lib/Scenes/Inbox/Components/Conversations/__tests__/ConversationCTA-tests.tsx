@@ -141,10 +141,19 @@ describe("ConversationCTA", () => {
       expectReviewOfferButton(wrapper, { bg: "copper100", strings: ["Offer Received"], Icon: AlertCircleFillIcon })
     })
 
-    it("shows correct message for accepted offers", () => {
+    it("shows correct message for an offer accepted by the buyer", () => {
       const wrapper = getWrapperWithOrders({
         state: "APPROVED",
         lastOffer: { fromParticipant: "BUYER" },
+      })
+
+      expectReviewOfferButton(wrapper, { bg: "green100", strings: ["Offer Accepted"], Icon: MoneyFillIcon })
+    })
+
+    it("shows correct message for an offer accepted by the seller that does not define total (change amount)", () => {
+      const wrapper = getWrapperWithOrders({
+        state: "APPROVED",
+        lastOffer: { fromParticipant: "SELLER", definesTotal: false },
       })
 
       expectReviewOfferButton(wrapper, { bg: "green100", strings: ["Offer Accepted"], Icon: MoneyFillIcon })
@@ -161,6 +170,15 @@ describe("ConversationCTA", () => {
         strings: ["Counteroffer Received", "Confirm Total"],
         Icon: AlertCircleFillIcon,
       })
+    })
+
+    it("shows the 'approved' banner for fulfilled offers", () => {
+      const wrapper = getWrapperWithOrders({
+        state: "FULFILLED",
+        lastOffer: { fromParticipant: "BUYER" },
+      })
+
+      expectReviewOfferButton(wrapper, { bg: "green100", strings: ["Offer Accepted"], Icon: MoneyFillIcon })
     })
 
     it("shows accepted  - confirm total when offer defines total and amount stays the same", () => {

@@ -63,11 +63,7 @@ export class CitySwitcherButton extends Component<Props> {
             </>
           ) : (
             <Flex alignItems="center" justifyContent="center" flexGrow={1}>
-              <Spinner
-                spinnerColor={color("black60")}
-                style={{ backgroundColor: "transparent" }}
-                size={{ width: 16, height: 16 }}
-              />
+              <Spinner spinnerColor="black60" style={{ backgroundColor: "transparent" }} size="medium" />
             </Flex>
           )}
         </Background>

@@ -7,16 +7,7 @@
 // 4. Update height of grid to encompass all items.
 
 import React from "react"
-import {
-  ActivityIndicator,
-  Dimensions,
-  LayoutChangeEvent,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from "react-native"
+import { ActivityIndicator, Dimensions, LayoutChangeEvent, Platform, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, RelayPaginationProp } from "react-relay"
 
 import Artwork from "./ArtworkGridItem"
@@ -28,8 +19,9 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, Button, Flex, space, Theme } from "palette"
+import { Box, Button, Flex, getColorsForVariant, space, Theme } from "palette"
 import { graphql } from "relay-runtime"
+import ParentAwareScrollView from "../ParentAwareScrollView"
 
 /**
  * TODO:
@@ -276,15 +268,14 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
     const { shouldAddPadding, hasMore, stickyHeaderIndices } = this.props
-    const autoFetch = Platform.OS === "android" ? false : this.props.autoFetch
     const boxPadding = shouldAddPadding ? 2 : 0
 
     return (
       <Theme>
         <>
-          <ScrollView
+          <ParentAwareScrollView
             onScroll={(ev) => {
-              if (autoFetch) {
+              if (this.props.autoFetch) {
                 this.handleFetchNextPageOnScroll(ev)
               }
             }}
@@ -301,7 +292,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
               </View>
             </Box>
 
-            {!autoFetch && !!hasMore() && (
+            {!this.props.autoFetch && !!hasMore() && (
               <Button
                 mt={5}
                 mb={3}
@@ -314,7 +305,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
                 Show more
               </Button>
             )}
-          </ScrollView>
+          </ParentAwareScrollView>
+
           <Flex
             alignItems="center"
             justifyContent="center"
@@ -322,7 +314,13 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             pb="9"
             style={{ opacity: this.state.isLoading && hasMore() ? 1 : 0 }}
           >
-            <ActivityIndicator />
+            {!!this.props.autoFetch && (
+              <ActivityIndicator
+                color={
+                  Platform.OS === "android" ? getColorsForVariant("primaryBlack").default.backgroundColor : undefined
+                }
+              />
+            )}
           </Flex>
         </>
       </Theme>
