@@ -231,6 +231,7 @@ export const DEFAULT_FILTERS: FilterArray = [
   { paramName: FilterParamName.estimateRange, paramValue: "", displayText: "All" },
   { paramName: FilterParamName.medium, paramValue: "*", displayText: "All" },
   { paramName: FilterParamName.materialsTerms, paramValue: [], displayText: "All" },
+  { paramName: FilterParamName.organizations, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.priceRange, paramValue: "*-*", displayText: "All" },
   { paramName: FilterParamName.size, paramValue: "*-*", displayText: "All" },
   { paramName: FilterParamName.partnerIDs, paramValue: [], displayText: "All" },
