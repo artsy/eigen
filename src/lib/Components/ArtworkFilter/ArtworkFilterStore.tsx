@@ -1,6 +1,6 @@
 import { Action, action, createContextStore, State } from "easy-peasy"
 import { assignDeep } from "lib/store/persistence"
-import { filter, find, isEqual, pullAllBy, union, unionBy } from "lodash"
+import { filter, find, isEqual, unionBy } from "lodash"
 import {
   Aggregations,
   defaultCommonFilterOptions,
@@ -22,7 +22,6 @@ export interface ArtworkFiltersModel {
   counts: FilterCounts
   applyFiltersAction: Action<ArtworkFiltersModel>
   selectFiltersAction: Action<ArtworkFiltersModel, FilterData>
-  clearAllAction: Action<ArtworkFiltersModel>
   resetFiltersAction: Action<ArtworkFiltersModel>
   clearFiltersZeroStateAction: Action<ArtworkFiltersModel>
   setAggregationsAction: Action<ArtworkFiltersModel, any>
@@ -58,13 +57,10 @@ export const ArtworkFiltersModel: ArtworkFiltersModel = {
       sort: getSortDefaultValueByFilterType(state.filterType),
     }
 
-    let multiOptionFilters = unionBy(state.previouslyAppliedFilters, state.selectedFilters, "paramName")
-
-    multiOptionFilters = multiOptionFilters.filter((f) => f.paramValue === true)
-
-    // get all filter options excluding ways to buy filter types and replace previously applied options with currently selected options
-    const singleOptionFilters = unionBy(
-      pullAllBy([...state.selectedFilters, ...state.previouslyAppliedFilters], multiOptionFilters, "paramValue"),
+    // replace previously applied options with currently selected options
+    const filtersToApply = unionBy(
+      state.selectedFilters,
+      state.previouslyAppliedFilters,
       ({ paramValue, paramName }) => {
         // We don't want to union the artistID params, as each entry corresponds to a
         // different artist that may be selected. Instead we de-dupe based on the paramValue.
@@ -75,8 +71,6 @@ export const ArtworkFiltersModel: ArtworkFiltersModel = {
         }
       }
     )
-
-    const filtersToApply = union([...singleOptionFilters, ...multiOptionFilters])
 
     // Remove default values as those are accounted for when we make the API request.
     const appliedFilters = filter(filtersToApply, ({ paramName, paramValue }) => {
@@ -186,12 +180,6 @@ export const ArtworkFiltersModel: ArtworkFiltersModel = {
     state.applyFilters = false
   }),
 
-  clearAllAction: action((state) => {
-    state.selectedFilters = []
-    state.previouslyAppliedFilters = []
-    state.applyFilters = false
-  }),
-
   resetFiltersAction: action((state) => {
     state.applyFilters = false
     state.selectedFilters = []
@@ -242,9 +230,11 @@ export const useSelectedOptionsDisplay = (): FilterArray => {
 export const DEFAULT_FILTERS: FilterArray = [
   { paramName: FilterParamName.estimateRange, paramValue: "", displayText: "All" },
   { paramName: FilterParamName.medium, paramValue: "*", displayText: "All" },
+  { paramName: FilterParamName.materialsTerms, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.priceRange, paramValue: "*-*", displayText: "All" },
   { paramName: FilterParamName.size, paramValue: "*-*", displayText: "All" },
   { paramName: FilterParamName.partnerIDs, paramValue: [], displayText: "All" },
+  { paramName: FilterParamName.locationCities, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.colors, displayText: "All" },
   { paramName: FilterParamName.timePeriod, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy now" },

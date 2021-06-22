@@ -4,7 +4,7 @@ import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { navigate } from "lib/navigation/navigate"
 import { get } from "lib/utils/get"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { take } from "lodash"
+import { compact, take } from "lodash"
 import { Sans, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -38,22 +38,17 @@ export class ShowArtistsPreview extends React.Component<Props> {
     const artistsShown = 5
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const artists = get(show, (s) => s.artists, []).concat(get(show, (s) => s.artists_without_artworks, []))
-    const items = take(artists, artistsShown)
+    const items = compact(take(artists, artistsShown))
 
     return (
       <>
         <Sans size="4t">Artists</Sans>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           const { id } = artist
           return (
             <React.Fragment key={id}>
-              <ArtistListItem
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                artist={artist}
-                Component={Component}
-              />
+              <ArtistListItem artist={artist} Component={Component} />
               {idx < arr.length - 1 && <Spacer m={1} />}
             </React.Fragment>
           )

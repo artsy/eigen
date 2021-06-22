@@ -5,7 +5,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CTAPopUp } from "./CTAPopUp"
 import { OpenInquiryModalButtonQueryRenderer } from "./OpenInquiryModalButton"
-import { ReviewOfferButton } from "./ReviewOfferButton"
+import { ReviewOfferButton, ReviewOfferCTAKind } from "./ReviewOfferButton"
 
 interface Props {
   show: boolean
@@ -31,13 +31,34 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
     } else {
       const { lastTransactionFailed, state, lastOffer } = activeOrder
 
+      let kind: ReviewOfferCTAKind | null = null
+
       if (lastTransactionFailed) {
-        CTA = <ReviewOfferButton kind="PAYMENT_FAILED" activeOrder={activeOrder} conversationID={conversationID} />
+        kind = "PAYMENT_FAILED"
       } else if (state === "SUBMITTED" && lastOffer?.fromParticipant === "SELLER") {
-        CTA = <ReviewOfferButton kind="OFFER_RECEIVED" activeOrder={activeOrder} conversationID={conversationID} />
-      } else if (state === "APPROVED" && lastOffer?.fromParticipant === "BUYER") {
-        CTA = <ReviewOfferButton kind="OFFER_ACCEPTED" activeOrder={activeOrder} conversationID={conversationID} />
+        if (lastOffer.definesTotal) {
+          // provisional inquery checkout offer scenarios where metadata was initially missing
+          if (lastOffer.offerAmountChanged) {
+            // Brown CTA: 'Counteroffer received - confirm total'
+            kind = "OFFER_RECEIVED_CONFIRM_NEEDED"
+          } else {
+            // Brown CTA: 'Offer accepted - confirm total'
+            kind = "OFFER_ACCEPTED_CONFIRM_NEEDED"
+          }
+        } else {
+          // regular counter offer. either a definite offer on artwork with all metadata, or a provisional offer but metadata was provided in previous back and forth
+          if (lastOffer.offerAmountChanged) {
+            // Brown CTA: 'Counteroffer received'
+            kind = "OFFER_RECEIVED"
+          }
+        }
+      } else if (state === "FULFILLED") {
+        kind = "OFFER_ACCEPTED"
+      } else if (state === "APPROVED") {
+        const isProvisionalOffer = lastOffer?.fromParticipant === "SELLER" && lastOffer?.definesTotal
+        kind = isProvisionalOffer ? "PROVISIONAL_OFFER_ACCEPTED" : "OFFER_ACCEPTED"
       }
+      CTA = kind && <ReviewOfferButton kind={kind} activeOrder={activeOrder} conversationID={conversationID} />
     }
   }
   if (!CTA) {
@@ -71,6 +92,8 @@ export const ConversationCTAFragmentContainer = createFragmentContainer(Conversa
               lastOffer {
                 fromParticipant
                 createdAt
+                definesTotal
+                offerAmountChanged
               }
               offers(first: 5) {
                 edges {

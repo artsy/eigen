@@ -47,22 +47,25 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
    * to overwrite withFadeAnimation param once the screen shows up
    */
   useEffect(() => {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       navigation.setParams({ withFadeAnimation: false })
     }, 1000)
     if (route.params?.email) {
       handleChange("email")(route.params.email)
     }
+
+    // When the user presses back on the back button immediately
+    // after opening the screen, we need to clear the timeout to avoid
+    // setting params on an unmounted screen
+    return clearTimeout(timeout)
   }, [])
 
   return (
     <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>
       <ScrollView
         contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top, paddingHorizontal: 20 }}
-        showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
       >
-        <BackButton onPress={() => navigation.goBack()} />
         <Spacer mt={60} />
         <Text variant="largeTitle">Log in with email</Text>
         <Spacer mt={50} />
@@ -141,18 +144,18 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
           </Text>
         </Touchable>
       </ScrollView>
-      <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5}>
+      <BackButton onPress={() => navigation.goBack()} />
+      <Flex px={1.5} paddingBottom={1.5}>
         <Button
           onPress={handleSubmit}
           block
           haptic="impactMedium"
-          disabled={!(isValid && dirty)}
+          disabled={!(isValid && dirty) || isSubmitting} // isSubmitting to prevent weird appearances of the errors caused by async submiting
           loading={isSubmitting}
           testID="loginButton"
+          variant="primaryBlack"
         >
-          <Text color="white" variant="mediumText">
-            Log in
-          </Text>
+          Log in
         </Button>
       </Flex>
     </View>
@@ -169,7 +172,7 @@ export const OnboardingLogin: React.FC<OnboardingLoginProps> = ({ navigation, ro
     initialValues,
     initialErrors: {},
     onSubmit: async ({ email, password }, { setErrors, validateForm }) => {
-      await validateForm()
+      validateForm()
       const res = await GlobalStore.actions.auth.signIn({
         email,
         password,
@@ -177,6 +180,7 @@ export const OnboardingLogin: React.FC<OnboardingLoginProps> = ({ navigation, ro
       if (!res) {
         // For security purposes, we are returning a generic error message
         setErrors({ password: "Incorrect email or password" })
+        validateForm()
       }
     },
     validationSchema: loginSchema,

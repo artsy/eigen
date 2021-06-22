@@ -99,8 +99,8 @@ export const ArtistNotableWorksRailFragmentContainer = createFragmentContainer(A
     fragment ArtistNotableWorksRail_artist on Artist {
       internalID
       slug
-      # this should match the notableWorks query in ArtistArtworks
-      filterArtworksConnection(sort: "-weighted_iconicity", first: 10) {
+      # this should match the notableWorks query in ArtistAbout
+      filterArtworksConnection(first: 10, input: { sort: "-weighted_iconicity" }) {
         edges {
           node {
             id

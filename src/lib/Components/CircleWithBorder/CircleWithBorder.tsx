@@ -17,7 +17,7 @@ export const CircleWithBorder: React.FC<CircleWithBorderProps> = ({
   borderWidth,
   ...wrapperProps
 }) => (
-  <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor={borderColor} {...wrapperProps}>
+  <Flex justifyContent="center" alignItems="center" backgroundColor={borderColor} {...wrapperProps}>
     <Flex
       justifyContent="center"
       alignItems="center"

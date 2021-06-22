@@ -10,14 +10,11 @@ import { ArtistAboutContainer } from "lib/Components/Artist/ArtistAbout/ArtistAb
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
 import { ArtistInsightsFragmentContainer } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
-import ArtistShows from "lib/Components/Artist/ArtistShows/ArtistShows"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
-import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
+import { StickyTabPage, TabProps } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
-import { isPad } from "lib/utils/hardware"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Flex, Message } from "palette"
 import React from "react"
@@ -25,11 +22,14 @@ import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
+const INITIAL_TAB = "Artworks"
+
 export const Artist: React.FC<{
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
   artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
-}> = ({ artistAboveTheFold, artistBelowTheFold }) => {
-  const tabs = []
+  initialTab?: string
+}> = ({ artistAboveTheFold, artistBelowTheFold, initialTab = INITIAL_TAB }) => {
+  const tabs: TabProps[] = []
   const displayAboutSection =
     artistAboveTheFold.has_metadata ||
     (artistAboveTheFold.counts?.articles ?? 0) > 0 ||
@@ -37,7 +37,7 @@ export const Artist: React.FC<{
 
   if (displayAboutSection) {
     tabs.push({
-      title: "About",
+      title: "Overview",
       content: artistBelowTheFold ? <ArtistAboutContainer artist={artistBelowTheFold} /> : <LoadingPage />,
     })
   }
@@ -45,21 +45,11 @@ export const Artist: React.FC<{
   if ((artistAboveTheFold.counts?.artworks ?? 0) > 0) {
     tabs.push({
       title: "Artworks",
-      initial: true,
       content: <ArtistArtworks artist={artistAboveTheFold} />,
     })
   }
 
-  const isArtistInsightsEnabled = useFeatureFlag("AROptionsNewArtistInsightsPage")
-
-  if ((artistAboveTheFold.counts?.partner_shows ?? 0) > 0 && !isArtistInsightsEnabled) {
-    tabs.push({
-      title: "Shows",
-      content: artistBelowTheFold ? <ArtistShows artist={artistBelowTheFold} /> : <LoadingPage />,
-    })
-  }
-
-  if (isArtistInsightsEnabled && artistAboveTheFold?.auctionResultsConnection?.totalCount) {
+  if (artistAboveTheFold?.auctionResultsConnection?.totalCount) {
     tabs.push({
       title: "Insights",
       content: artistBelowTheFold ? (
@@ -84,6 +74,11 @@ export const Artist: React.FC<{
     })
   }
 
+  // Set initial tab
+  tabs.forEach((tab) => {
+    tab.initial = tab.title === initialTab
+  })
+
   return (
     <ProvideScreenTracking
       info={{
@@ -105,9 +100,10 @@ export const Artist: React.FC<{
 
 interface ArtistQueryRendererProps extends ArtistAboveTheFoldQueryVariables, ArtistBelowTheFoldQueryVariables {
   environment?: RelayModernEnvironment
+  initialTab?: string
 }
 
-export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artistID, environment }) => {
+export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artistID, environment, initialTab }) => {
   return (
     <AboveTheFoldQueryRenderer<ArtistAboveTheFoldQuery, ArtistBelowTheFoldQuery>
       environment={environment || defaultEnvironment}
@@ -125,7 +121,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artist
                 articles
               }
               ...ArtistHeader_artist
-              ...ArtistArtworks_artist
+              ...ArtistArtworks_artist @arguments(input: { dimensionRange: "*-*", sort: "-decayed_merch" })
               auctionResultsConnection {
                 totalCount
               }
@@ -136,15 +132,14 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artist
       }}
       below={{
         query: graphql`
-          query ArtistBelowTheFoldQuery($artistID: String!, $isPad: Boolean!) {
+          query ArtistBelowTheFoldQuery($artistID: String!) {
             artist(id: $artistID) {
               ...ArtistAbout_artist
-              ...ArtistShows_artist
               ...ArtistInsights_artist
             }
           }
         `,
-        variables: { artistID, isPad: isPad() },
+        variables: { artistID },
       }}
       render={{
         renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
@@ -152,7 +147,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artist
           if (!above.artist) {
             throw new Error("no artist data")
           }
-          return <Artist artistAboveTheFold={above.artist} artistBelowTheFold={below?.artist} />
+          return <Artist artistAboveTheFold={above.artist} artistBelowTheFold={below?.artist} initialTab={initialTab} />
         },
       }}
     />

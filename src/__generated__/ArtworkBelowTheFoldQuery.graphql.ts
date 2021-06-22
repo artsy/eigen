@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5af9d9e83732a04e8e966a909155a16d */
+/* @relayHash 90e5b68f4950577d20b244cc0a0793b0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -219,7 +219,7 @@ fragment Artwork_artworkBelowTheFold on Artwork {
   artistSeriesConnection(first: 1) {
     edges {
       node {
-        filterArtworksConnection(sort: "-decayed_merch", first: 20) {
+        filterArtworksConnection(first: 20, input: {sort: "-decayed_merch"}) {
           edges {
             node {
               id
@@ -248,7 +248,7 @@ fragment ArtworksInSeriesRail_artwork on Artwork {
       node {
         slug
         internalID
-        filterArtworksConnection(sort: "-decayed_merch", first: 20) {
+        filterArtworksConnection(first: 20, input: {sort: "-decayed_merch"}) {
           edges {
             node {
               slug
@@ -1246,8 +1246,10 @@ return {
                           },
                           {
                             "kind": "Literal",
-                            "name": "sort",
-                            "value": "-decayed_merch"
+                            "name": "input",
+                            "value": {
+                              "sort": "-decayed_merch"
+                            }
                           }
                         ],
                         "concreteType": "FilterArtworksConnection",
@@ -1336,7 +1338,7 @@ return {
                           },
                           (v2/*: any*/)
                         ],
-                        "storageKey": "filterArtworksConnection(first:20,sort:\"-decayed_merch\")"
+                        "storageKey": "filterArtworksConnection(first:20,input:{\"sort\":\"-decayed_merch\"})"
                       },
                       (v4/*: any*/),
                       (v7/*: any*/)
@@ -1418,7 +1420,7 @@ return {
     ]
   },
   "params": {
-    "id": "5af9d9e83732a04e8e966a909155a16d",
+    "id": "90e5b68f4950577d20b244cc0a0793b0",
     "metadata": {},
     "name": "ArtworkBelowTheFoldQuery",
     "operationKind": "query",

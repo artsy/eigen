@@ -1,4 +1,4 @@
-import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
+import { ArtistAbout_artist } from "__generated__/ArtistAbout_artist.graphql"
 import { ArtistCollectionsRail_artist } from "__generated__/ArtistCollectionsRail_artist.graphql"
 import { GenericArtistSeriesRail } from "lib/Components/GenericArtistSeriesRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
@@ -9,7 +9,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 interface ArtistCollectionsRailProps {
-  collections: ArtistArtworks_artist["iconicCollections"]
+  collections: ArtistAbout_artist["iconicCollections"]
   artist: ArtistCollectionsRail_artist
 }
 
@@ -35,7 +35,7 @@ export const ArtistCollectionsRail: React.FC<ArtistCollectionsRailProps> = (prop
 }
 
 const ArtistSeriesRailWrapper = styled(Box)`
-  margin: 0px -20px 20px -40px;
+  margin: 0 -20px 20px -40px;
 `
 
 export const ArtistCollectionsRailFragmentContainer = createFragmentContainer(ArtistCollectionsRail, {

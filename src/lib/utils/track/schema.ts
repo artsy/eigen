@@ -1,3 +1,4 @@
+// TODO: This file and the types here can be removed once everything is moved to cohesion.
 import { OwnerType } from "@artsy/cohesion"
 /**
  * Useful notes:
@@ -92,7 +93,6 @@ export enum PageNames {
   Auction = "Auction",
   AuctionInfo = "AuctionInfo",
   AuctionResult = "AuctionResult",
-  Auctions = "Auctions",
   BidFlowBillingAddressPage = "YourBillingAddress",
   BidFlowConfirmBidPage = "ConfirmYourBid",
   BidFlowMaxBidPage = "YourMaxBid",
@@ -122,7 +122,6 @@ export enum PageNames {
   FairBoothPage = "FairBoothPage",
   GenePage = "Gene",
   Home = "Home",
-  InboxPage = "Inbox",
   InquiryPage = "Inquiry",
   PartnerPage = "PartnerPage",
   SavesAndFollows = "SavesAndFollows",
@@ -154,7 +153,6 @@ export enum OwnerEntityTypes {
   Gallery = "Gallery",
   Gene = "Gene",
   Home = "home",
-  Inbox = "Inbox",
   Fair = "Fair",
   FairMoreInfo = "moreInfo",
   Partner = "Partner",

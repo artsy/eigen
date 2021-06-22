@@ -1,4 +1,4 @@
-import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
+import { ArtistAbout_artist } from "__generated__/ArtistAbout_artist.graphql"
 import { ArtistCollectionsRail_collections } from "__generated__/ArtistCollectionsRail_collections.graphql"
 import { CollectionArtistSeriesRail_collectionGroup } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
 import {
@@ -20,7 +20,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 interface GenericArtistSeriesRailProps {
-  collections: CollectionArtistSeriesRail_collectionGroup["members"] | ArtistArtworks_artist["iconicCollections"]
+  collections: CollectionArtistSeriesRail_collectionGroup["members"] | ArtistAbout_artist["iconicCollections"]
   contextScreenOwnerType: Schema.OwnerEntityTypes.Collection | Schema.OwnerEntityTypes.Artist
   contextScreenOwnerId: string
   contextScreenOwnerSlug: string
@@ -118,11 +118,11 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
 }
 
 export const GenericArtistSeriesMeta = styled(Sans)`
-  margin: 0px 15px;
+  margin: 0 15px;
 `
 
 export const GenericArtistSeriesTitle = styled(Sans)`
-  margin: 15px 15px 0px 15px;
+  margin: 15px 15px 0 15px;
 `
 
 const MetadataContainer = styled(View)`

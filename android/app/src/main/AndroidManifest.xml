@@ -1,54 +1,120 @@
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="net.artsy.app">
+    package="net.artsy.app">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
-    <uses-feature android:name="android.hardware.camera.front" android:required="false" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="false" />
 
     <application
-      android:name=".MainApplication"
-      android:launchMode="singleTask"
-      android:label="@string/app_name"
-      android:icon="@mipmap/ic_launcher"
-      android:roundIcon="@mipmap/ic_launcher_round"
-      android:allowBackup="false"
-      android:theme="@style/AppTheme">
-      <activity
-        android:name=".MainActivity"
-        android:label="@string/app_name"
-        android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
+        android:name=".MainApplication"
         android:launchMode="singleTask"
-        android:exported="true"
-        android:windowSoftInputMode="adjustResize">
-      </activity>
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:allowBackup="false"
+        android:theme="@style/AppTheme">
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 
-      <activity
-          android:name="com.zoontek.rnbootsplash.RNBootSplashActivity"
-          android:theme="@style/BootTheme"
-          android:launchMode="singleTask">
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
 
-          <!-- Handle Deep Links -->
-          <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="artsy" />
-            <data android:scheme="https"
-                android:host="www.artsy.net" />
-                <data android:scheme="https"
-                android:host="m.artsy.net" />
-          </intent-filter>
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
 
-          <intent-filter>
-              <action android:name="android.intent.action.MAIN" />
-              <category android:name="android.intent.category.LAUNCHER" />
-          </intent-filter>
-      </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
+            android:launchMode="singleTask"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
 
-      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+        <activity
+            android:name="com.zoontek.rnbootsplash.RNBootSplashActivity"
+            android:theme="@style/BootTheme"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+              <!-- Handle Deep Links -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" android:host="www.artsy.net" />
+                <data android:scheme="https" android:host="artsy.net" />
+                <data android:scheme="http" />
+                <data android:pathPrefix="/about" />
+                <data android:pathPrefix="/artist-series" />
+                <data android:pathPrefix="/article" />
+                <data android:pathPrefix="/articles" />
+                <data android:pathPrefix="/artist" />
+                <data android:pathPrefix="/artists" />
+                <data android:pathPrefix="/artwork-classifications" />
+                <data android:pathPrefix="/artwork" />
+                <data android:pathPrefix="/artworks" />
+                <data android:pathPrefix="/auction-faq" />
+                <data android:pathPrefix="/auction-registration" />
+                <data android:pathPrefix="/auction" />
+                <data android:pathPrefix="/auctions" />
+                <data android:pathPrefix="/buy-now-feature-faq" />
+                <data android:pathPrefix="/buyer-guarantee" />
+                <data android:pathPrefix="/collection" />
+                <data android:pathPrefix="/collections" />
+                <data android:pathPrefix="/conditions-of-sale" />
+                <data android:pathPrefix="/consign" />
+                <data android:pathPrefix="/conversation" />
+                <data android:pathPrefix="/fair" />
+                <data android:pathPrefix="/fairs" />
+                <data android:pathPrefix="/favorites" />
+                <data android:pathPrefix="/feature" />
+                <data android:pathPrefix="/galleries" />
+                <data android:pathPrefix="/gallery" />
+                <data android:pathPrefix="/gene" />
+                <data android:pathPrefix="/identity-verification-faq" />
+                <data android:pathPrefix="/inbox" />
+                <data android:pathPrefix="/inquiry" />
+                <data android:pathPrefix="/make-offer" />
+                <data android:pathPrefix="/my-account" />
+                <data android:pathPrefix="/my-profile" />
+                <data android:pathPrefix="/orders" />
+                <data android:pathPrefix="/orders" />
+                <data android:pathPrefix="/privacy-request" />
+                <data android:pathPrefix="/privacy" />
+                <data android:pathPrefix="/sales" />
+                <data android:pathPrefix="/search" />
+                <data android:pathPrefix="/show" />
+                <data android:pathPrefix="/terms" />
+                <data android:pathPrefix="/user/conversations" />
+                <data android:pathPrefix="/user/purchases" />
+                <data android:pathPrefix="/viewing-room" />
+                <data android:pathPrefix="/viewing-rooms" />
+                <data android:pathPrefix="/works-for-you" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>
 
 </manifest>

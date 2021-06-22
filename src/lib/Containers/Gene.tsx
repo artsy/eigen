@@ -159,9 +159,11 @@ export class Gene extends React.Component<Props, State> {
         })
 
         this.props.relay.refetchConnection(10, undefined, {
-          medium: newSettings.medium,
-          price_range: newSettings.selectedPrice,
-          sort: newSettings.sort,
+          input: {
+            medium: newSettings.medium,
+            priceRange: newSettings.selectedPrice,
+            sort: newSettings.sort,
+          }
         })
       }
     })
@@ -314,9 +316,7 @@ export const GeneFragmentContainer = createPaginationContainer(
       @argumentDefinitions(
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String", defaultValue: "" }
-        sort: { type: "String", defaultValue: "-partner_updated_at" }
-        medium: { type: "String", defaultValue: "*" }
-        priceRange: { type: "String", defaultValue: "*-*" }
+        input: { type: "FilterArtworksInput" }
       ) {
         id
         internalID
@@ -325,11 +325,9 @@ export const GeneFragmentContainer = createPaginationContainer(
         artworks: filterArtworksConnection(
           first: $count
           after: $cursor
-          medium: $medium
-          priceRange: $price_range
-          sort: $sort
-          aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
-          forSale: true
+          aggregations: [MEDIUM, PRICE_RANGE, TOTAL],
+          forSale: true,
+          input: $input
         ) @connection(key: "Gene_artworks") {
           counts {
             total
@@ -359,7 +357,7 @@ export const GeneFragmentContainer = createPaginationContainer(
     },
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
-        ...fragmentVariables,
+        input: fragmentVariables.input,
         id: props.gene.id,
         count,
         cursor,
@@ -370,14 +368,12 @@ export const GeneFragmentContainer = createPaginationContainer(
         $id: ID!
         $count: Int!
         $cursor: String
-        $sort: String
-        $medium: String
-        $price_range: String
+        $input: FilterArtworksInput
       ) {
         node(id: $id) {
           ... on Gene {
             ...Gene_gene
-              @arguments(count: $count, cursor: $cursor, sort: $sort, medium: $medium, priceRange: $price_range)
+              @arguments(count: $count, cursor: $cursor, input: $input)
           }
         }
       }
@@ -391,21 +387,24 @@ interface GeneQueryRendererProps {
   price_range?: string
 }
 
-export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = ({ geneID, medium, price_range }) => {
+export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = ({ geneID, medium = "*", price_range = "*-*" }) => {
   return (
     <QueryRenderer<GeneQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query GeneQuery($geneID: String!, $medium: String, $price_range: String) {
+        query GeneQuery($geneID: String!, $input: FilterArtworksInput) {
           gene(id: $geneID) {
-            ...Gene_gene @arguments(medium: $medium, priceRange: $price_range)
+            ...Gene_gene @arguments(input: $input)
           }
         }
       `}
       variables={{
         geneID,
-        medium,
-        price_range,
+        input: {
+          medium,
+          priceRange: price_range,
+          sort: "-partner_updated_at",
+        },
       }}
       render={renderWithLoadProgress(GeneFragmentContainer)}
     />

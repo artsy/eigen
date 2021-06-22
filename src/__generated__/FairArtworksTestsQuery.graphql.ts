@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 53d8bb5789d751e294f666a8c4d7ee05 */
+/* @relayHash d5dc737ccc3385ce39713501cec51669 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -68,7 +68,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment FairArtworks_fair on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, sort: "-decayed_merch", dimensionRange: "*-*", aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]) {
+  fairArtworks: filterArtworksConnection(first: 30, aggregations: [ARTIST, ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, FOLLOWED_ARTISTS, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -156,30 +156,23 @@ v4 = [
     "kind": "Literal",
     "name": "aggregations",
     "value": [
+      "ARTIST",
+      "ARTIST_NATIONALITY",
       "COLOR",
       "DIMENSION_RANGE",
-      "PARTNER",
-      "MAJOR_PERIOD",
-      "MEDIUM",
-      "PRICE_RANGE",
       "FOLLOWED_ARTISTS",
-      "ARTIST"
+      "LOCATION_CITY",
+      "MAJOR_PERIOD",
+      "MATERIALS_TERMS",
+      "MEDIUM",
+      "PARTNER",
+      "PRICE_RANGE"
     ]
-  },
-  {
-    "kind": "Literal",
-    "name": "dimensionRange",
-    "value": "*-*"
   },
   {
     "kind": "Literal",
     "name": "first",
     "value": 30
-  },
-  {
-    "kind": "Literal",
-    "name": "sort",
-    "value": "-decayed_merch"
   }
 ],
 v5 = {
@@ -643,29 +636,14 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"PARTNER\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"FOLLOWED_ARTISTS\",\"ARTIST\"],dimensionRange:\"*-*\",first:30,sort:\"-decayed_merch\")"
+            "storageKey": "filterArtworksConnection(aggregations:[\"ARTIST\",\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"FOLLOWED_ARTISTS\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:30)"
           },
           {
             "alias": "fairArtworks",
             "args": (v4/*: any*/),
             "filters": [
-              "sort",
-              "additionalGeneIDs",
-              "priceRange",
-              "color",
-              "colors",
-              "partnerID",
-              "partnerIDs",
-              "dimensionRange",
-              "majorPeriods",
-              "acquireable",
-              "inquireableOnly",
-              "atAuction",
-              "offerable",
-              "includeArtworksByFollowedArtists",
-              "artistIDs",
               "aggregations",
-              "attributionClass"
+              "input"
             ],
             "handle": "connection",
             "key": "Fair_fairArtworks",
@@ -679,7 +657,7 @@ return {
     ]
   },
   "params": {
-    "id": "53d8bb5789d751e294f666a8c4d7ee05",
+    "id": "d5dc737ccc3385ce39713501cec51669",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": {

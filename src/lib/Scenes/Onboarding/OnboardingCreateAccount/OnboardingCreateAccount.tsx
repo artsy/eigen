@@ -37,17 +37,19 @@ export interface UserSchema {
   name: string
 }
 
-/**
- * User schema validation rules
- */
-export const userSchema = Yup.object().shape({
-  email: Yup.string().email("Please provide a valid email address").required(),
+export const emailSchema = Yup.object().shape({
+  email: Yup.string().email("Please provide a valid email address").required("Email field is required"),
+})
+export const passwordSchema = Yup.object().shape({
   password: Yup.string()
     .min(8, "Your password should be at least 8 characters")
     .matches(/[A-Z]/, "Your password should contain at least one uppercase letter")
     .matches(/[a-z]/, "Your password should contain at least one lowercase letter")
-    .matches(/[0-9]/, "You password should contain at least one digit"),
-  name: Yup.string().test("name", "Full name field is required", (value) => value !== ""),
+    .matches(/[0-9]/, "Your password should contain at least one digit")
+    .required("Password field is required"),
+})
+export const nameSchema = Yup.object().shape({
+  name: Yup.string().required("Full name field is required"),
 })
 
 const getCurrentRoute = () =>
@@ -102,7 +104,18 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
           break
       }
     },
-    validationSchema: userSchema,
+    validationSchema: () => {
+      switch (getCurrentRoute()) {
+        case "OnboardingCreateAccountEmail":
+          return emailSchema
+        case "OnboardingCreateAccountPassword":
+          return passwordSchema
+        case "OnboardingCreateAccountName":
+          return nameSchema
+        default:
+          break
+      }
+    },
   })
 
   return (
@@ -125,7 +138,7 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
         </StackNavigator.Navigator>
         <OnboardingCreateAccountButton
           navigateToLogin={() => {
-            navigation.replace("OnboardingLogin", { withFadeAnimation: false, email: formik.values.email })
+            navigation.replace("OnboardingLogin", { withFadeAnimation: true, email: formik.values.email })
           }}
           acceptedTerms={acceptedTerms}
           setAcceptedTerms={setAcceptedTerms}
@@ -137,7 +150,7 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
 }
 
 interface OnboardingCreateAccountScreenWrapperProps {
-  onBackButtonPress: () => void
+  onBackButtonPress?: () => void
   title: string
   caption?: string
 }
@@ -156,11 +169,9 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
           paddingTop: useScreenDimensions().safeAreaInsets.top,
           justifyContent: "flex-start",
         }}
-        showsVerticalScrollIndicator={false}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="always"
       >
-        <BackButton onPress={onBackButtonPress} />
         <Spacer mt={60} />
         <Box height={130}>
           <Text variant="largeTitle">{title}</Text>
@@ -176,6 +187,7 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
         <Spacer mt={50} />
         {children}
       </ScrollView>
+      {!!onBackButtonPress && <BackButton onPress={onBackButtonPress} />}
     </Flex>
   )
 }
@@ -213,7 +225,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
   }, [errors.email])
 
   return (
-    <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5} backgroundColor="white">
+    <Flex px={1.5} paddingBottom={1.5} backgroundColor="white">
       {errors.email === EMAIL_EXISTS_ERROR_MESSAGE && (
         <Animated.View style={{ bottom: -50, transform: [{ translateY: yTranslateAnim.current }] }}>
           <Button
@@ -225,7 +237,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
             variant="secondaryOutline"
             testID="loginButton"
           >
-            <Text variant="mediumText">Go to Login</Text>
+            Go to Login
           </Button>
         </Animated.View>
       )}
@@ -242,8 +254,8 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
                 style={{ textDecorationLine: "underline" }}
               >
                 Terms of Use
-              </Text>{" "}
-              and{" "}
+              </Text>
+              ,{" "}
               <Text
                 onPress={() => {
                   Linking.openURL(`${webURL}/privacy`)
@@ -251,6 +263,15 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
                 style={{ textDecorationLine: "underline" }}
               >
                 Privacy Policy
+              </Text>
+              , and{" "}
+              <Text
+                onPress={() => {
+                  Linking.openURL(`${webURL}/conditions-of-sale`)
+                }}
+                style={{ textDecorationLine: "underline" }}
+              >
+                Conditions of Sale
               </Text>
               .
             </Text>
@@ -264,10 +285,9 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
         disabled={isLastStep && !acceptedTerms}
         loading={isSubmitting}
         testID="signUpButton"
+        variant="primaryBlack"
       >
-        <Text color="white" variant="mediumText">
-          Next
-        </Text>
+        Next
       </Button>
     </Flex>
   )

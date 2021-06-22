@@ -79,6 +79,15 @@ describe("artsy.net routes", () => {
       Object {
         "module": "Artist",
         "params": Object {
+          "artistID": "more%26more",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("https://artsy.net/artist/more%26more")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artist",
+        "params": Object {
           "artistID": "more&more",
         },
         "type": "match",
@@ -97,8 +106,11 @@ describe("artsy.net routes", () => {
         "type": "match",
       }
     `)
-    expect(matchRoute("/artist/josef-albers%3Futm_medium%3Dsocial%26utm_source%3Dinstagram-story%26utm_campaign%3Ddp."))
-      .toMatchInlineSnapshot(`
+    expect(
+      matchRoute(
+        "https://artsy.net/artist/josef-albers%3Futm_medium%3Dsocial%26utm_source%3Dinstagram-story%26utm_campaign%3Ddp."
+      )
+    ).toMatchInlineSnapshot(`
       Object {
         "module": "Artist",
         "params": Object {
@@ -135,6 +147,25 @@ describe("artsy.net routes", () => {
       Object {
         "module": "Artwork",
         "params": Object {
+          "artworkID": "more%26more",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("https://artsy.net/artwork/more%26more")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Artwork",
+        "params": Object {
+          "artworkID": "more&more",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute(encodeURIComponent(encodeURIComponent("https://artsy.net/artwork/more%26more"))))
+      .toMatchInlineSnapshot(`
+      Object {
+        "module": "Artwork",
+        "params": Object {
           "artworkID": "more&more",
         },
         "type": "match",
@@ -156,7 +187,7 @@ describe("artsy.net routes", () => {
     `)
     expect(
       matchRoute(
-        "/artwork/yayoi-kusama-red-pumpkin%3Futm_medium%3Dsocial%26utm_source%3Dinstagram-story%26utm_campaign%3Ddp."
+        "https://artsy.net/artwork/yayoi-kusama-red-pumpkin%3Futm_medium%3Dsocial%26utm_source%3Dinstagram-story%26utm_campaign%3Ddp."
       )
     ).toMatchInlineSnapshot(`
       Object {
@@ -172,21 +203,23 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes Artist auction results to a web view", () => {
+  it("routes Artist auction results to artist insights", () => {
     expect(matchRoute("/artist/banksy/auction-results")).toMatchInlineSnapshot(`
       Object {
-        "module": "ReactWebView",
+        "module": "Artist",
         "params": Object {
-          "url": "/artist/banksy/auction-results",
+          "artistID": "banksy",
+          "initialTab": "Insights",
         },
         "type": "match",
       }
     `)
     expect(matchRoute("/artist/josef-albers/auction-results")).toMatchInlineSnapshot(`
       Object {
-        "module": "ReactWebView",
+        "module": "Artist",
         "params": Object {
-          "url": "/artist/josef-albers/auction-results",
+          "artistID": "josef-albers",
+          "initialTab": "Insights",
         },
         "type": "match",
       }
@@ -1223,6 +1256,13 @@ describe(webViewRoute, () => {
     const matcher = webViewRoute("/artist/:artistID/*")
     expect(matcher.match(["artist", "banksy", "auction-results", "8907"])).toEqual({
       url: "/artist/banksy/auction-results/8907",
+    })
+  })
+
+  it("inlines params in the original order history route", () => {
+    const matcher = webViewRoute("/user/purchases/:orderID")
+    expect(matcher.match(["user", "purchases", "8907"])).toEqual({
+      url: "/user/purchases/8907",
     })
   })
 })

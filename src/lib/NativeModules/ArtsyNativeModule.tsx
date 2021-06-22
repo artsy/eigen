@@ -11,27 +11,35 @@ export const ArtsyNativeModule = {
     Platform.OS === "ios"
       ? LegacyNativeModules.ARNotificationsManager.nativeState.launchCount
       : (NativeModules.ArtsyNativeModule.getConstants().launchCount as number),
-  /**
-   * Set android app theme
-   */
   setAppStyling:
     Platform.OS === "ios"
       ? () => {
           console.error("setAppStyling is unsupported on iOS")
         }
       : NativeModules.ArtsyNativeModule.setAppStyling,
-  /**
-   * Set android app system navigation bar color
-   */
   setNavigationBarColor:
     Platform.OS === "ios"
       ? () => {
           console.error("setNavigationBarColor is unsupported on iOS")
         }
       : NativeModules.ArtsyNativeModule.setNavigationBarColor,
+  setAppLightContrast:
+    Platform.OS === "ios"
+      ? () => {
+          console.error("setAppLightContrast is unsupported on iOS")
+        }
+      : NativeModules.ArtsyNativeModule.setAppLightContrast,
   get navigationBarHeight() {
     return Platform.OS === "ios"
       ? 0
       : NativeModules.ArtsyNativeModule.getConstants().navigationBarHeight / PixelRatio.get()
   },
+  // We only lock screen orientation for phones. For tablets this has no impact
+  lockActivityScreenOrientation:
+    Platform.OS === "ios"
+      ? () => {
+          console.error("lockActivityScreenOrientation is unsupported on iOS")
+        }
+      : NativeModules.ArtsyNativeModule.lockActivityScreenOrientation,
+  gitCommitShortHash: NativeModules.ArtsyNativeModule.gitCommitShortHash,
 }

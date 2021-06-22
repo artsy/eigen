@@ -1,53 +1,27 @@
-import { color } from "palette"
+import { Spinner as PaletteSpinner } from "palette"
+import { Color } from "palette/Theme"
 import React from "react"
-import {
-  ActivityIndicator,
-  Platform,
-  processColor,
-  requireNativeComponent,
-  StyleSheet,
-  View,
-  ViewProps,
-} from "react-native"
+import { StyleSheet, View, ViewProps } from "react-native"
 
-interface SpinnerProps extends ViewProps {
-  spinnerColor?: string
-  size?: {
-    width: number
-    height: number
-  }
+interface Props extends ViewProps {
+  spinnerColor?: Color
+  size?: "small" | "medium" | "large"
 }
 
-const Spinner: React.FC<SpinnerProps> = ({
-  spinnerColor = color("black100"),
-  size = {
-    width: 22,
-    height: 22,
-  },
-  ...props
-}) => {
-  if (Platform.OS === "ios") {
-    return (
-      <View style={[props.style, styles.container]} testID={props.testID}>
-        <NativeSpinner spinnerColor={processColor(spinnerColor)} style={{ size }} />
-      </View>
-    )
-  }
-
+const Spinner: React.FC<Props> = ({ spinnerColor = "black100", size = "large", ...props }) => {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} testID={props.testID}>
-      <ActivityIndicator size="large" color={spinnerColor} />
+    <View style={[props.style, styles.container]} testID={props.testID}>
+      <PaletteSpinner color={spinnerColor} size={size} />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
 })
-
-const NativeSpinner: React.ComponentClass<any> = requireNativeComponent("ARSpinner")
 
 export default Spinner

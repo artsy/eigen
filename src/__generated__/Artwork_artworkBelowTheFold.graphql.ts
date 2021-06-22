@@ -462,8 +462,10 @@ return {
                     },
                     {
                       "kind": "Literal",
-                      "name": "sort",
-                      "value": "-decayed_merch"
+                      "name": "input",
+                      "value": {
+                        "sort": "-decayed_merch"
+                      }
                     }
                   ],
                   "concreteType": "FilterArtworksConnection",
@@ -482,7 +484,7 @@ return {
                       "storageKey": null
                     }
                   ],
-                  "storageKey": "filterArtworksConnection(first:20,sort:\"-decayed_merch\")"
+                  "storageKey": "filterArtworksConnection(first:20,input:{\"sort\":\"-decayed_merch\"})"
                 }
               ],
               "storageKey": null
@@ -538,5 +540,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'dfff91a7572af9d6442cf9cec8030151';
+(node as any).hash = '30f25615a303c3c2dde099834bad0a23';
 export default node;

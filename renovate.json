@@ -1,5 +1,5 @@
 {
   "extends": ["@artsy:app"],
-  "assignees": ["ds300"],
+  "assignees": ["pvinis"],
   "reviewers": ["pvinis"]
 }

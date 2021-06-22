@@ -59,23 +59,9 @@ return {
       "name": "cursor"
     },
     {
-      "defaultValue": "*",
+      "defaultValue": null,
       "kind": "LocalArgument",
-      "name": "medium"
-    },
-    {
-      "defaultValue": "*-*",
-      "kind": "LocalArgument",
-      "name": "priceRange"
-    },
-    {
-      "kind": "RootArgument",
-      "name": "price_range"
-    },
-    {
-      "defaultValue": "-partner_updated_at",
-      "kind": "LocalArgument",
-      "name": "sort"
+      "name": "input"
     }
   ],
   "kind": "Fragment",
@@ -120,18 +106,8 @@ return {
         },
         {
           "kind": "Variable",
-          "name": "medium",
-          "variableName": "medium"
-        },
-        {
-          "kind": "Variable",
-          "name": "priceRange",
-          "variableName": "price_range"
-        },
-        {
-          "kind": "Variable",
-          "name": "sort",
-          "variableName": "sort"
+          "name": "input",
+          "variableName": "input"
         }
       ],
       "concreteType": "FilterArtworksConnection",
@@ -292,5 +268,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'b65180f716521310a86843895b5fceeb';
+(node as any).hash = '5d21f435787c427fb70edb84b2903d4b';
 export default node;

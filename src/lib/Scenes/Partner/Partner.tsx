@@ -69,7 +69,10 @@ export const PartnerContainer = createRefetchContainer(
           internalID
         }
 
-        ...PartnerArtwork_partner
+        ...PartnerArtwork_partner @arguments(input: {
+          sort: "-partner_updated_at",
+          dimensionRange: "*-*"
+        })
         ...PartnerOverview_partner
         ...PartnerShows_partner
         ...PartnerHeader_partner
@@ -102,9 +105,7 @@ export const PartnerQueryRenderer: React.FC<{
                 }
               }
             `}
-            variables={{
-              partnerID,
-            }}
+            variables={{ partnerID }}
             cacheConfig={{
               // Bypass Relay cache on retries.
               ...(isRetry && { force: true }),

@@ -8,13 +8,11 @@ import { ArtworkExtraLinks } from "../index"
 
 jest.unmock("react-tracking")
 
-jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
-
 import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
-import { postEvent } from "lib/NativeModules/Events"
 import { navigate } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
+import { postEventToProviders } from "lib/utils/track/providers"
 
 function getWrapper({
   artwork,
@@ -299,7 +297,7 @@ describe("ArtworkExtraLinks", () => {
         .first()
         .props()
         .onPress()
-      expect(postEvent).toBeCalledWith({
+      expect(postEventToProviders).toBeCalledWith({
         action_name: "askASpecialist",
         action_type: "tap",
         context_module: "ArtworkExtraLinks",
@@ -314,7 +312,7 @@ describe("ArtworkExtraLinks", () => {
         .first()
         .props()
         .onPress()
-      expect(postEvent).toBeCalledWith({
+      expect(postEventToProviders).toBeCalledWith({
         action_name: "auctionsFAQ",
         action_type: "tap",
         context_module: "ArtworkExtraLinks",
@@ -329,7 +327,7 @@ describe("ArtworkExtraLinks", () => {
         .first()
         .props()
         .onPress()
-      expect(postEvent).toBeCalledWith({
+      expect(postEventToProviders).toBeCalledWith({
         action_name: "conditionsOfSale",
         action_type: "tap",
         context_module: "ArtworkExtraLinks",

@@ -13,6 +13,7 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import { Button, Flex, Join, Spacer } from "palette"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
@@ -34,12 +35,11 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={{
-        action: ActionType.screen,
+      info={screen({
         context_screen_owner_type: OwnerType.myCollectionArtwork,
         context_screen_owner_id: artwork.internalID,
         context_screen_owner_slug: artwork.slug,
-      }}
+      })}
     >
       <ScrollView>
         <MyCollectionArtworkFormModal

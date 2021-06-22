@@ -49,6 +49,7 @@ password #{ENV['MAPBOX_DOWNLOAD_TOKEN']}
 """)
   }
 end
+
 def remove_mapbox_creds
   if $user_already_had_netrc_file
     contents = File.read($netrc_path)
@@ -64,10 +65,11 @@ def remove_mapbox_creds
   end
 end
 
-
-# pre_install
 add_mapbox_creds
-
+     
+pre_install do |installer|
+   $RNMBGL.pre_install(installer)
+end
 
 target 'Artsy' do
   config = use_native_modules!
@@ -119,8 +121,9 @@ target 'Artsy' do
   pod 'Pulley', git: 'https://github.com/artsy/Pulley.git', branch: 'master'
 
   # Facebook
-  pod 'FBSDKCoreKit', '~> 9.0.0'
-  pod 'FBSDKLoginKit', '~> 9.0.0'
+  pod 'FBSDKCoreKit', '~> 9.3'
+  pod 'FBSDKLoginKit', '~> 9.3'
+  pod 'FBSDKShareKit', '~> 9.3'
 
   # Analytics
   pod 'Analytics'
@@ -162,9 +165,11 @@ end
 # Enables Flipper.
 # Note that if you have use_frameworks! enabled, Flipper will not work and
 # you should disable these next few lines.
-use_flipper!
+use_flipper!({ 'Flipper-Folly' => '2.5.3', 'Flipper' => '0.87.0', 'Flipper-RSocket' => '1.3.1' })
 post_install do |installer|
   flipper_post_install(installer)
+
+  $RNMBGL.post_install(installer)
 
   remove_mapbox_creds
 

@@ -75,7 +75,16 @@ return {
       "storageKey": null
     },
     {
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "input",
+          "value": {
+            "dimensionRange": "*-*",
+            "sort": "-partner_updated_at"
+          }
+        }
+      ],
       "kind": "FragmentSpread",
       "name": "PartnerArtwork_partner"
     },
@@ -99,5 +108,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '1c1790711f9aa1867fea2a077435e852';
+(node as any).hash = '7fa0395369fdf04450d4be9d31ceb520';
 export default node;

@@ -1,5 +1,6 @@
 import { ConversationTestsQuery } from "__generated__/ConversationTestsQuery.graphql"
 import ConnectivityBanner from "lib/Components/ConnectivityBanner"
+import { navigationEvents } from "lib/navigation/navigate"
 import Composer from "lib/Scenes/Inbox/Components/Conversations/Composer"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Touchable } from "palette"
@@ -93,4 +94,24 @@ it("clicking on detail link opens pushes detail screen into navigator", () => {
     passProps: { conversationID: "123" },
     title: "",
   })
+})
+
+it("handles a dismissed modal with modalDismiss event", () => {
+  const conversation = getWrapper()
+  const componentInstance = (conversation.root.findByType(Conversation).children[0] as ReactTestInstance).instance
+
+  jest.spyOn(componentInstance, "refetch")
+  navigationEvents.emit("modalDismissed")
+
+  expect(componentInstance.refetch).toHaveBeenCalled()
+})
+
+it("handles a dismissed modal with goBack event", () => {
+  const conversation = getWrapper()
+  const componentInstance = (conversation.root.findByType(Conversation).children[0] as ReactTestInstance).instance
+
+  jest.spyOn(componentInstance, "refetch")
+  navigationEvents.emit("goBack")
+
+  expect(componentInstance.refetch).toHaveBeenCalled()
 })

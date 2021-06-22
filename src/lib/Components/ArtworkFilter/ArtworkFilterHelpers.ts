@@ -1,16 +1,20 @@
+import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { FilterScreen } from "lib/Components/ArtworkFilter"
-import { capitalize, compact, forOwn, groupBy, sortBy } from "lodash"
+import { capitalize, compact, groupBy, isEqual, pick, sortBy } from "lodash"
+import { LOCALIZED_UNIT } from "./Filters/helpers"
 
 export enum FilterDisplayName {
   // artist = "Artists",
   additionalGeneIDs = "Medium",
   artistIDs = "Artists",
+  artistNationalities = "Nationality & ethnicity",
   artistsIFollow = "Artist",
   attributionClass = "Rarity",
   categories = "Medium",
-  color = "Color",
   colors = "Color",
   estimateRange = "Price/estimate range",
+  locationCities = "Artwork location",
+  materialsTerms = "Material",
   medium = "Medium",
   partnerIDs = "Galleries and institutions",
   priceRange = "Price",
@@ -28,17 +32,22 @@ export enum FilterParamName {
   additionalGeneIDs = "additionalGeneIDs",
   allowEmptyCreatedDates = "allowEmptyCreatedDates",
   artistIDs = "artistIDs",
+  artistNationalities = "artistNationalities",
   artistsIFollow = "includeArtworksByFollowedArtists",
   attributionClass = "attributionClass",
   categories = "categories",
-  color = "color",
   colors = "colors",
+  dimensionRange = "dimensionRange",
   earliestCreatedYear = "earliestCreatedYear",
   estimateRange = "estimateRange",
-  partnerIDs = "partnerIDs",
+  height = "height",
   latestCreatedYear = "latestCreatedYear",
+  locationCities = "locationCities",
+  materialsTerms = "materialsTerms",
   medium = "medium",
+  partnerIDs = "partnerIDs",
   priceRange = "priceRange",
+  // TODO: Delete `size` once the new size filter is deployed
   size = "dimensionRange",
   sizes = "sizes",
   sort = "sort",
@@ -48,6 +57,7 @@ export enum FilterParamName {
   waysToBuyBuy = "acquireable",
   waysToBuyInquire = "inquireableOnly",
   waysToBuyMakeOffer = "offerable",
+  width = "width",
 }
 
 // Types for the parameters passed to Relay
@@ -74,18 +84,21 @@ export const ParamDefaultValues = {
   additionalGeneIDs: [],
   allowEmptyCreatedDates: true,
   artistIDs: [],
+  artistNationalities: [],
   atAuction: false,
   attributionClass: [],
   categories: undefined,
-  color: undefined,
   colors: [],
   dimensionRange: "*-*",
   earliestCreatedYear: undefined,
   estimateRange: "",
+  height: "*-*",
   includeArtworksByFollowedArtists: false,
   inquireableOnly: false,
   latestCreatedYear: undefined,
+  locationCities: [],
   majorPeriods: [],
+  materialsTerms: [],
   medium: "*",
   offerable: false,
   partnerIDs: [],
@@ -94,25 +107,29 @@ export const ParamDefaultValues = {
   sortArtworks: "-decayed_merch",
   sortSaleArtworks: "position",
   viewAs: ViewAsValues.Grid,
+  width: "*-*",
 }
 
 export const defaultCommonFilterOptions = {
   acquireable: ParamDefaultValues.acquireable,
+  additionalGeneIDs: ParamDefaultValues.additionalGeneIDs,
   allowEmptyCreatedDates: ParamDefaultValues.allowEmptyCreatedDates,
   artistIDs: ParamDefaultValues.artistIDs,
+  artistNationalities: ParamDefaultValues.artistNationalities,
   atAuction: ParamDefaultValues.atAuction,
   attributionClass: ParamDefaultValues.attributionClass,
   categories: ParamDefaultValues.categories,
-  color: ParamDefaultValues.color,
   colors: ParamDefaultValues.colors,
-  additionalGeneIDs: ParamDefaultValues.additionalGeneIDs,
   dimensionRange: ParamDefaultValues.dimensionRange,
   earliestCreatedYear: ParamDefaultValues.earliestCreatedYear,
   estimateRange: ParamDefaultValues.estimateRange,
+  height: ParamDefaultValues.height,
   includeArtworksByFollowedArtists: ParamDefaultValues.includeArtworksByFollowedArtists,
   inquireableOnly: ParamDefaultValues.inquireableOnly,
   latestCreatedYear: ParamDefaultValues.latestCreatedYear,
+  locationCities: ParamDefaultValues.locationCities,
   majorPeriods: ParamDefaultValues.majorPeriods,
+  materialsTerms: ParamDefaultValues.materialsTerms,
   medium: ParamDefaultValues.medium,
   offerable: ParamDefaultValues.offerable,
   partnerIDs: ParamDefaultValues.partnerIDs,
@@ -120,6 +137,7 @@ export const defaultCommonFilterOptions = {
   sizes: ParamDefaultValues.sizes,
   sort: ParamDefaultValues.sortArtworks,
   viewAs: ParamDefaultValues.viewAs,
+  width: ParamDefaultValues.width,
 }
 
 export type Aggregations = Array<{
@@ -131,16 +149,19 @@ export type Aggregations = Array<{
  * Possible aggregations that can be passed
  */
 export type AggregationName =
+  | "ARTIST_NATIONALITY"
+  | "ARTIST"
   | "COLOR"
   | "DIMENSION_RANGE"
-  | "PARTNER"
-  | "MAJOR_PERIOD"
-  | "MEDIUM"
-  | "PRICE_RANGE"
-  | "FOLLOWED_ARTISTS"
-  | "ARTIST"
   | "earliestCreatedYear"
+  | "FOLLOWED_ARTISTS"
   | "latestCreatedYear"
+  | "LOCATION_CITY"
+  | "MAJOR_PERIOD"
+  | "MATERIALS_TERMS"
+  | "MEDIUM"
+  | "PARTNER"
+  | "PRICE_RANGE"
 
 export interface Aggregation {
   count: number
@@ -165,16 +186,19 @@ export interface FilterCounts {
 }
 
 export const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string | undefined> = {
-  COLOR: FilterParamName.color,
-  DIMENSION_RANGE: FilterParamName.size,
-  PARTNER: FilterParamName.partnerIDs,
-  MAJOR_PERIOD: FilterParamName.timePeriod,
-  MEDIUM: FilterParamName.additionalGeneIDs,
-  PRICE_RANGE: FilterParamName.priceRange,
-  FOLLOWED_ARTISTS: "artistsIFollow",
+  ARTIST_NATIONALITY: FilterParamName.artistNationalities,
   ARTIST: "artistIDs",
+  COLOR: FilterParamName.colors,
+  DIMENSION_RANGE: FilterParamName.size,
   earliestCreatedYear: "earliestCreatedYear",
+  FOLLOWED_ARTISTS: "artistsIFollow",
   latestCreatedYear: "earliestCreatedYear",
+  LOCATION_CITY: FilterParamName.locationCities,
+  MAJOR_PERIOD: FilterParamName.timePeriod,
+  MATERIALS_TERMS: FilterParamName.materialsTerms,
+  MEDIUM: FilterParamName.additionalGeneIDs,
+  PARTNER: FilterParamName.partnerIDs,
+  PRICE_RANGE: FilterParamName.priceRange,
 }
 
 const DEFAULT_ARTWORKS_PARAMS = {
@@ -234,27 +258,18 @@ const getDefaultParamsByType = (filterType: FilterType) => {
   }[filterType]
 }
 
-const getChangedParams = (appliedFilters: FilterArray, filterType: FilterType = "artwork") => {
-  const defaultFilterParams = getDefaultParamsByType(filterType)
-  const filterParams = paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams }, filterType)
-  // when filters cleared return default params
-  return Object.keys(filterParams).length === 0 ? defaultFilterParams : filterParams
-}
-
 export const changedFiltersParams = (currentFilterParams: FilterParams, selectedFilterOptions: FilterArray) => {
-  const selectedFilterParams = getChangedParams(selectedFilterOptions)
   const changedFilters: { [key: string]: any } = {}
 
-  /***
-   *  If a filter option has been updated e.g. was { medium: "photography" } but
-   *  is now { medium: "sculpture" } add the updated filter to changedFilters. Otherwise,
-   *  add filter option to changedFilters.
-   ***/
-  forOwn(getChangedParams(selectedFilterOptions), (_value, paramName) => {
-    const filterParamName = paramName as FilterParamName
-    if (currentFilterParams[filterParamName] !== selectedFilterParams[filterParamName]) {
-      changedFilters[filterParamName] = selectedFilterParams[filterParamName]
+  selectedFilterOptions.forEach((selectedFilterOption) => {
+    const { paramName, paramValue } = selectedFilterOption
+    const currentFilterParamValue = currentFilterParams[paramName]
+
+    if (currentFilterParamValue && isEqual(paramValue, currentFilterParamValue)) {
+      return
     }
+
+    changedFilters[paramName] = paramValue
   })
 
   return changedFilters
@@ -279,6 +294,22 @@ export const selectedOption = ({
   filterType?: FilterType
   aggregations: Aggregations
 }) => {
+  if (filterScreen === "dimensionRange") {
+    const selectedDimensionRange = selectedOptions.find(({ paramName }) => paramName === FilterParamName.dimensionRange)
+
+    // Handle custom range
+    if (selectedDimensionRange?.displayText === "Custom size") {
+      const selectedCustomWidth = selectedOptions.find(({ paramName }) => paramName === FilterParamName.width)
+      const selectedCustomHeight = selectedOptions.find(({ paramName }) => paramName === FilterParamName.height)
+      return (
+        [selectedCustomWidth?.displayText, selectedCustomHeight?.displayText].filter(Boolean).join(" × ") +
+        LOCALIZED_UNIT
+      )
+    }
+
+    // Intentionally doesn't return anything
+  }
+
   if (filterScreen === "categories") {
     const selectedCategoriesValues = selectedOptions.find((filter) => filter.paramName === FilterParamName.categories)
       ?.paramValue as string[] | undefined
@@ -389,12 +420,15 @@ export const selectedOption = ({
 // is gallery and institution which share a paramName in metaphysics
 export const aggregationNameFromFilter: Record<string, AggregationName | undefined> = {
   artistIDs: "ARTIST",
+  artistNationalities: "ARTIST_NATIONALITY",
   artistsIFollow: "FOLLOWED_ARTISTS",
-  color: "COLOR",
+  colors: "COLOR",
   dimensionRange: "DIMENSION_RANGE",
   earliestCreatedYear: "earliestCreatedYear",
   latestCreatedYear: "latestCreatedYear",
+  locationCities: "LOCATION_CITY",
   majorPeriods: "MAJOR_PERIOD",
+  materialsTerms: "MATERIALS_TERMS",
   medium: "MEDIUM",
   partnerIDs: "PARTNER",
   priceRange: "PRICE_RANGE",
@@ -452,4 +486,88 @@ export const getDisplayNameForTimePeriod = (aggregationName: string) => {
   }
 
   return DISPLAY_TEXT[aggregationName] ?? aggregationName
+}
+
+export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
+  return pick(filters, [
+    "acquireable",
+    "additionalGeneIDs",
+    "after",
+    "aggregationPartnerCities",
+    "aggregations",
+    "artistID",
+    "artistIDs",
+    "artistNationalities",
+    "artistSeriesID",
+    "atAuction",
+    "attributionClass",
+    "before",
+    "colors",
+    "dimensionRange",
+    "excludeArtworkIDs",
+    "extraAggregationGeneIDs",
+    "first",
+    "forSale",
+    "geneID",
+    "geneIDs",
+    "height",
+    "includeArtworksByFollowedArtists",
+    "includeMediumFilterInAggregation",
+    "inquireableOnly",
+    "keyword",
+    "keywordMatchExact",
+    "last",
+    "locationCities",
+    "majorPeriods",
+    "marketable",
+    "materialsTerms",
+    "medium",
+    "offerable",
+    "page",
+    "partnerCities",
+    "partnerID",
+    "partnerIDs",
+    "period",
+    "periods",
+    "priceRange",
+    "saleID",
+    "size",
+    "sizes",
+    "sort",
+    "tagID",
+    "width",
+  ])
+}
+
+export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams) => {
+  const input: SearchCriteriaAttributes = {}
+  const allowedKeys = pick(filterParams, [
+    "artistID",
+    "locationCities",
+    "colors",
+    "partnerIDs",
+    "additionalGeneIDs",
+    "attributionClass",
+    "majorPeriods",
+    "acquireable",
+    "atAuction",
+    "inquireableOnly",
+    "offerable",
+    "materialsTerms",
+    "priceRange",
+    "dimensionRange",
+    "height",
+    "width",
+  ])
+
+  for (const key of Object.keys(allowedKeys)) {
+    const value = filterParams[key as FilterParamName]
+    const defaultValue = defaultCommonFilterOptions[key as FilterParamName]
+
+    if (!isEqual(defaultValue, value)) {
+      input[key as keyof SearchCriteriaAttributes] = value as any
+    }
+  }
+
+  return input
 }

@@ -11,7 +11,7 @@ export type Collection_collection = {
     readonly linkedCollections: ReadonlyArray<{
         readonly " $fragmentRefs": FragmentRefs<"CollectionHubsRails_linkedCollections">;
     }>;
-    readonly " $fragmentRefs": FragmentRefs<"CollectionHeader_collection" | "CollectionArtworks_collection" | "FeaturedArtists_collection" | "CollectionHubsRails_collection">;
+    readonly " $fragmentRefs": FragmentRefs<"CollectionHeader_collection" | "CollectionArtworks_collection" | "CollectionArtworksFilter_collection" | "FeaturedArtists_collection" | "CollectionHubsRails_collection">;
     readonly " $refType": "Collection_collection";
 };
 export type Collection_collection$data = Collection_collection;
@@ -77,9 +77,23 @@ const node: ReaderFragment = {
       "name": "CollectionHeader_collection"
     },
     {
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "input",
+          "value": {
+            "dimensionRange": "*-*",
+            "sort": "-decayed_merch"
+          }
+        }
+      ],
       "kind": "FragmentSpread",
       "name": "CollectionArtworks_collection"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "CollectionArtworksFilter_collection"
     },
     {
       "args": null,
@@ -95,5 +109,5 @@ const node: ReaderFragment = {
   "type": "MarketingCollection",
   "abstractKey": null
 };
-(node as any).hash = '772fca1c6419295f14c6a3689e3e626c';
+(node as any).hash = 'ea7eef65be396a8c8d10cd921c3cfe12';
 export default node;

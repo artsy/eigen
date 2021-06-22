@@ -12,9 +12,10 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { bidderNeedsIdentityVerification } from "lib/utils/auction"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { saleTime } from "lib/utils/saleTime"
 import { Schema, screenTrack } from "lib/utils/track"
 import { get, isEmpty } from "lodash"
-import { Box, Button, Sans, Serif } from "palette"
+import { Box, Button, Flex, Text } from "palette"
 import React from "react"
 import { ScrollView, View, ViewProps } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
@@ -24,8 +25,6 @@ import { LinkText } from "../../Text/LinkText"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Checkbox } from "../Components/Checkbox"
 import { PaymentInfo } from "../Components/PaymentInfo"
-import { Timer } from "../Components/Timer"
-import { Flex } from "../Elements/Flex"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
@@ -47,10 +46,11 @@ interface RegistrationState {
   errorModalDetailText: string
 }
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const Hint = (props) => {
-  return <Sans mt="5" mx="4" size="3t" textAlign="center" {...props} />
-}
+const Hint: React.FC = ({ children }) => (
+  <Text variant="small" fontSize="2" mb="4">
+    {children}
+  </Text>
+)
 
 @screenTrack({
   context_screen: Schema.PageNames.BidFlowRegistration,
@@ -61,8 +61,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   constructor(props) {
     super(props)
 
-    const { has_credit_cards } = this.props.me
-    const requiresPaymentInformation = !has_credit_cards
+    const { hasCreditCards } = this.props.me
+    const requiresPaymentInformation = !hasCreditCards
 
     this.state = {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -125,7 +125,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       await this.createBidder()
     } catch (error) {
       if (!this.state.errorModalVisible) {
-        this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusError)
+        this.presentErrorModal(error, null)
       }
     }
   }
@@ -135,20 +135,22 @@ export class Registration extends React.Component<RegistrationProps, Registratio
    * need a separate call to update our User model to store that info
    */
   async updatePhoneNumber() {
+    const errorMessage = "There was a problem processing your phone number, please try again."
+
     return new Promise<void>((done, reject) => {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const { phoneNumber } = this.state.billingAddress
       commitMutation<RegistrationUpdateUserMutation>(this.props.relay.environment, {
         onCompleted: (_, errors) => {
           if (errors && errors.length) {
-            this.presentErrorModal(errors, null)
+            this.presentErrorModal(errors, errorMessage)
             reject(errors)
           } else {
             done()
           }
         },
         onError: (error) => {
-          this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusNetworkError)
+          this.presentErrorModal(error, errorMessage)
         },
         mutation: graphql`
           mutation RegistrationUpdateUserMutation($input: UpdateMyProfileInput!) {
@@ -201,7 +203,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             }
           }
         },
-        onError: (errors) => this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusNetworkError),
+        onError: (errors) => this.presentErrorModal(errors, null),
         mutation: graphql`
           mutation RegistrationCreateCreditCardMutation($input: CreditCardInput!) {
             createCreditCard(input: $input) {
@@ -235,12 +237,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   createBidder() {
     commitMutation<RegistrationCreateBidderMutation>(this.props.relay.environment, {
       onCompleted: (results, errors) =>
-        isEmpty(errors)
-          ? this.presentRegistrationSuccess(results)
-          : this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusError),
-      onError: (error) => {
-        this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusNetworkError)
-      },
+        isEmpty(errors) ? this.presentRegistrationSuccess(results) : this.presentErrorModal(errors, null),
+      onError: (error) => this.presentErrorModal(error, null),
       mutation: graphql`
         mutation RegistrationCreateBidderMutation($input: CreateBidderInput!) {
           createBidder(input: $input) {
@@ -275,12 +273,6 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     }
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  presentRegistrationError(error, status) {
-    console.error("Registration.tsx", error)
-    this.presentRegistrationResult(status)
-  }
-
   presentRegistrationResult(status: RegistrationStatus) {
     const { sale, me, navigator } = this.props
 
@@ -312,8 +304,9 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
   render() {
     const { sale, me } = this.props
-    const { live_start_at, end_at, is_preview, start_at } = sale
     const { isLoading, requiresPaymentInformation } = this.state
+
+    const saleTimeDetails = saleTime(sale)
 
     return (
       <BiddingThemeProvider>
@@ -321,85 +314,75 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }}
           keyboardDismissMode={"on-drag"}
         >
-          <View style={{ paddingTop: 20 }}>
-            <Flex alignItems="center">
-              <Timer
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                liveStartsAt={live_start_at}
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                endsAt={end_at}
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                isPreview={is_preview}
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                startsAt={start_at}
+          <Box p={20} pt={25} flex={1}>
+            <Text fontSize="4" variant="caption" mb="2">
+              {sale.name}
+            </Text>
+
+            {saleTimeDetails.absolute !== null && (
+              <Text fontSize="2" variant="subtitle" color="black60">
+                {saleTimeDetails.absolute}
+              </Text>
+            )}
+          </Box>
+
+          {!!requiresPaymentInformation && (
+            <Flex flex={1} py={20}>
+              <PaymentInfo
+                navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+                onCreditCardAdded={this.onCreditCardAdded.bind(this)}
+                onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
+                billingAddress={this.state.billingAddress}
+                creditCardFormParams={this.state.creditCardFormParams}
+                creditCardToken={this.state.creditCardToken}
               />
-              <Serif size="4t" weight="semibold" my={5} mx={6} textAlign="center">
-                {sale.name}
-              </Serif>
             </Flex>
-            {!!requiresPaymentInformation && (
-              <>
-                <PaymentInfo
-                  navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
-                  onCreditCardAdded={this.onCreditCardAdded.bind(this)}
-                  onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
-                  billingAddress={this.state.billingAddress}
-                  creditCardFormParams={this.state.creditCardFormParams}
-                  creditCardToken={this.state.creditCardToken}
-                />
-                <Hint>A valid credit card is required.</Hint>
-              </>
-            )}
-            {!!bidderNeedsIdentityVerification(
+          )}
+          <Flex px={20} flex={1}>
+            {!!requiresPaymentInformation && <Hint>A valid credit card is required.</Hint>}
+            {
               // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              { sale, user: me }
-            ) && (
-              <>
-                <Hint>This auction requires Artsy to verify your identity before bidding.</Hint>
-                <Hint mt="4">
-                  After you register, you’ll receive an email with a link to complete identity verification.
-                </Hint>
-              </>
-            )}
-            {!requiresPaymentInformation &&
-              !bidderNeedsIdentityVerification(
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                { sale, user: me }
-              ) && <Hint>To complete your registration, please confirm that you agree to the Conditions of Sale.</Hint>}
+              !!bidderNeedsIdentityVerification({ sale, user: me }) && (
+                <>
+                  <Hint>This auction requires Artsy to verify your identity before bidding.</Hint>
+                  <Hint>
+                    After you register, you’ll receive an email with a link to complete identity verification.
+                  </Hint>
+                </>
+              )
+            }
+            {
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              !requiresPaymentInformation && !bidderNeedsIdentityVerification({ sale, user: me }) && (
+                <Hint>To complete your registration, please confirm that you agree to the Conditions of Sale.</Hint>
+              )
+            }
             <Modal
               visible={this.state.errorModalVisible}
               headerText="An error occurred"
               detailText={this.state.errorModalDetailText}
               closeModal={this.closeModal.bind(this)}
             />
-          </View>
-
-          <View>
-            <Checkbox
-              mb={4}
-              justifyContent="center"
-              onPress={() => this.conditionsOfSalePressed()}
-              disabled={isLoading}
-            >
-              <Serif size="2" mt={2} color="black60">
+            <Checkbox mb={4} onPress={() => this.conditionsOfSalePressed()} disabled={isLoading}>
+              <Text variant="small" fontSize="2">
                 Agree to{" "}
                 <LinkText onPress={isLoading ? undefined : this.onPressConditionsOfSale}>Conditions of Sale</LinkText>
-              </Serif>
+              </Text>
             </Checkbox>
+          </Flex>
 
-            <Box m={4}>
-              <Button
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                onPress={this.canCreateBidder() ? this.register.bind(this) : null}
-                loading={isLoading}
-                block
-                width={100}
-                disabled={!this.canCreateBidder()}
-              >
-                Complete registration
-              </Button>
-            </Box>
-          </View>
+          <Box m={4}>
+            <Button
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              onPress={this.canCreateBidder() ? this.register.bind(this) : null}
+              loading={isLoading}
+              block
+              width={100}
+              disabled={!this.canCreateBidder()}
+            >
+              Complete registration
+            </Button>
+          </Box>
         </ScrollView>
       </BiddingThemeProvider>
     )
@@ -410,17 +393,18 @@ const RegistrationContainer = createFragmentContainer(Registration, {
   sale: graphql`
     fragment Registration_sale on Sale {
       slug
-      end_at: endAt
-      is_preview: isPreview
-      live_start_at: liveStartAt
+      endAt
+      isPreview
+      liveStartAt
       name
-      start_at: startAt
+      startAt
       requireIdentityVerification
+      timeZone
     }
   `,
   me: graphql`
     fragment Registration_me on Me {
-      has_credit_cards: hasCreditCards
+      hasCreditCards
       identityVerified
     }
   `,

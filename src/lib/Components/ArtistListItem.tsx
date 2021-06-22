@@ -1,12 +1,13 @@
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { navigate } from "lib/navigation/navigate"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { Schema, track } from "lib/utils/track"
-import { Button, color, EntityHeader, Flex, Theme } from "palette"
-import { Touchable } from "palette"
+import { Button, color, EntityHeader, Flex, Touchable } from "palette"
 import React from "react"
 import { StyleProp, TouchableWithoutFeedback, ViewStyle } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
 interface Props {
   artist: ArtistListItem_artist
@@ -15,6 +16,7 @@ interface Props {
   contextModule?: string
   withFeedback?: boolean
   containerStyle?: StyleProp<ViewStyle>
+  onFollowFinish?: () => void
 }
 
 interface State {
@@ -50,42 +52,23 @@ export class ArtistListItem extends React.Component<Props, State> {
     const {
       relay,
       artist: { slug, id, is_followed },
+      onFollowFinish,
     } = this.props
 
     this.setState(
       {
         isFollowedChanging: true,
       },
-      () => {
-        commitMutation<ArtistListItemFollowArtistMutation>(relay.environment, {
-          onCompleted: () => this.handleShowSuccessfullyUpdated(),
-          mutation: graphql`
-            mutation ArtistListItemFollowArtistMutation($input: FollowArtistInput!) {
-              followArtist(input: $input) {
-                artist {
-                  id
-                  is_followed: isFollowed
-                }
-              }
-            }
-          `,
-          variables: {
-            input: {
-              artistID: slug,
-              unfollow: is_followed,
-            },
+      async () => {
+        followArtistMutation({
+          environment: relay.environment,
+          onCompleted: () => {
+            this.handleShowSuccessfullyUpdated()
+            onFollowFinish?.()
           },
-          optimisticResponse: {
-            followArtist: {
-              artist: {
-                id,
-                is_followed: !is_followed,
-              },
-            },
-          },
-          updater: (store) => {
-            store.get(id)?.setValue(!is_followed, "is_followed")
-          },
+          artistID: id,
+          artistSlug: slug,
+          isFollowed: is_followed,
         })
       }
     )
@@ -132,44 +115,86 @@ export class ArtistListItem extends React.Component<Props, State> {
     }
 
     return (
-      <Theme>
-        <TouchableComponent
-          onPress={() => {
-            if (href) {
-              this.handleTap(href)
-            }
-          }}
-          underlayColor={color("black5")}
-          style={containerStyle}
-        >
-          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-            <Flex flex={1}>
-              <EntityHeader
-                mr={1}
-                name={name}
-                meta={formatTombstoneText(nationality, birthday, deathday) ?? undefined}
-                imageUrl={imageURl ?? undefined}
-                initials={initials ?? undefined}
-              />
-            </Flex>
-            <Flex>
-              <Button
-                variant={is_followed ? "secondaryOutline" : "primaryBlack"}
-                onPress={this.handleFollowArtist.bind(this)}
-                size="small"
-                loading={isFollowedChanging}
-                longestText="Following"
-                haptic
-              >
-                {is_followed ? "Following" : "Follow"}
-              </Button>
-            </Flex>
+      <TouchableComponent
+        onPress={() => {
+          if (href) {
+            this.handleTap(href)
+          }
+        }}
+        underlayColor={color("black5")}
+        style={containerStyle}
+      >
+        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Flex flex={1}>
+            <EntityHeader
+              mr={1}
+              name={name}
+              meta={formatTombstoneText(nationality, birthday, deathday) ?? undefined}
+              imageUrl={imageURl ?? undefined}
+              initials={initials ?? undefined}
+            />
           </Flex>
-        </TouchableComponent>
-      </Theme>
+          <Flex>
+            <Button
+              variant={is_followed ? "secondaryOutline" : "secondaryGray"}
+              onPress={this.handleFollowArtist.bind(this)}
+              size="small"
+              loading={isFollowedChanging}
+              longestText="Following"
+              haptic
+            >
+              {is_followed ? "Following" : "Follow"}
+            </Button>
+          </Flex>
+        </Flex>
+      </TouchableComponent>
     )
   }
 }
+
+export const followArtistMutation = ({
+  environment,
+  onCompleted,
+  artistSlug,
+  artistID,
+  isFollowed,
+}: {
+  environment: RelayModernEnvironment
+  onCompleted: () => void
+  artistID: string
+  artistSlug: string
+  isFollowed: boolean | null
+}) =>
+  commitMutation<ArtistListItemFollowArtistMutation>(environment, {
+    onCompleted,
+    mutation: graphql`
+      mutation ArtistListItemFollowArtistMutation($input: FollowArtistInput!) {
+        followArtist(input: $input) {
+          artist {
+            id
+            is_followed: isFollowed
+          }
+        }
+      }
+    `,
+    variables: {
+      input: {
+        artistID: artistSlug,
+        unfollow: isFollowed,
+      },
+    },
+    optimisticResponse: {
+      followArtist: {
+        artist: {
+          id: artistID,
+          is_followed: !isFollowed,
+        },
+      },
+    },
+    updater: (store) => {
+      store.get(artistID)?.setValue(!isFollowed, "is_followed")
+    },
+  })
 
 export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
   artist: graphql`
@@ -190,3 +215,16 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
     }
   `,
 })
+
+export const ArtistListItemPlaceholder = () => (
+  <Flex flexDirection="row">
+    <PlaceholderBox height={45} width={45} borderRadius={22.5} />
+    <Flex pl={1} pt={0.5} height={45}>
+      <PlaceholderText height={14} width={100 + Math.random() * 50} />
+      <PlaceholderText height={13} width={100 + Math.random() * 100} />
+    </Flex>
+    <Flex height={45} position="absolute" right={0} justifyContent="center">
+      <PlaceholderBox height={25} width={70} borderRadius={2} />
+    </Flex>
+  </Flex>
+)

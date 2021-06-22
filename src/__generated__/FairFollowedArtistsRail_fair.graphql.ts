@@ -60,8 +60,10 @@ return {
         },
         {
           "kind": "Literal",
-          "name": "includeArtworksByFollowedArtists",
-          "value": true
+          "name": "input",
+          "value": {
+            "includeArtworksByFollowedArtists": true
+          }
         }
       ],
       "concreteType": "FilterArtworksConnection",
@@ -106,12 +108,12 @@ return {
           "storageKey": null
         }
       ],
-      "storageKey": "filterArtworksConnection(first:20,includeArtworksByFollowedArtists:true)"
+      "storageKey": "filterArtworksConnection(first:20,input:{\"includeArtworksByFollowedArtists\":true})"
     }
   ],
   "type": "Fair",
   "abstractKey": null
 };
 })();
-(node as any).hash = 'ff6dc15d670ca15d8e9c1b450ac5f2da';
+(node as any).hash = 'b81993cbfa008efcc7000a2784054251';
 export default node;

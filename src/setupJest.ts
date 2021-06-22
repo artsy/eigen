@@ -40,6 +40,12 @@ const trackEvent = jest.fn()
     trackEvent,
   }
 })
+
+jest.mock("lib/utils/track/providers", () => ({
+  ...jest.requireActual("lib/utils/track/providers"),
+  postEventToProviders: jest.fn(),
+}))
+
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
   paymentRequestWithCardForm: jest.fn(),
@@ -69,6 +75,9 @@ jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
 jest.mock("./lib/NativeModules/Events.tsx", () => ({
   postEvent: jest.fn(),
   userHadMeaningfulInteraction: jest.fn(),
+  NativeAnalyticsProvider: {
+    postEvent: jest.fn(),
+  },
 }))
 
 jest.mock("react-native-share", () => ({
@@ -77,6 +86,7 @@ jest.mock("react-native-share", () => ({
 
 jest.mock("react-native-device-info", () => ({
   getBuildNumber: jest.fn(),
+  getVersion: jest.fn(),
   getModel: jest.fn(),
   getUserAgentSync: jest.fn(),
 }))
@@ -89,11 +99,33 @@ jest.mock("rn-fetch-blob", () => ({
   },
 }))
 
+jest.mock("danger", () => ({
+  danger: {},
+  markdown: (message: string) => message,
+  warn: jest.fn(),
+}))
+
 jest.mock("@react-native-cookies/cookies", () => ({ clearAll: jest.fn() }))
 
 beforeEach(() => {
   require("@react-native-cookies/cookies").clearAll.mockReset()
 })
+
+jest.mock("react-native-fbsdk-next", () => ({
+  LoginManager: {
+    logOut: jest.fn(),
+    logInWithPermissions: jest.fn(),
+  },
+  AccessToken: {
+    getCurrentAccessToken: jest.fn(),
+  },
+  GraphRequest: jest.fn(),
+  GraphRequestManager: jest.fn(() => ({
+    addRequest: jest.fn(() => ({
+      start: jest.fn(),
+    })),
+  })),
+}))
 
 // prettier-ignore
 // tslint:disable-next-line:no-empty
@@ -136,23 +168,25 @@ console.error = (message?: any) => {
   }
 }
 
-mockedModule("./lib/Components/Spinner.tsx", "ARSpinner")
 mockedModule("./lib/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueImageView")
 // mockedModule("./lib/Components/ArtworkGrids/InfiniteScrollGrid.tsx", "ArtworksGrid")
 
 // Artist tests
-mockedModule("./lib/Components/Artist/ArtistShows/ArtistShows.tsx", "ArtistShows")
 mockedModule("./lib/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "ArtistArtworks")
 
 // Gene tests
 mockedModule("./lib/Components/Gene/Header.tsx", "Header")
 
 // Native modules
+import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
 
-function getNativeModules(): typeof LegacyNativeModules {
+type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }
+
+function getNativeModules(): OurNativeModules {
   return {
     ARTakeCameraPhotoModule: {
       errorCodes: {
@@ -214,6 +248,15 @@ function getNativeModules(): typeof LegacyNativeModules {
       postEvent: jest.fn(),
       requestAppStoreRating: jest.fn(),
     },
+    ArtsyNativeModule: {
+      launchCount: 3,
+      setAppStyling: jest.fn(),
+      setNavigationBarColor: jest.fn(),
+      setAppLightContrast: jest.fn(),
+      navigationBarHeight: 11,
+      lockActivityScreenOrientation: jest.fn(),
+      gitCommitShortHash: "de4dc0de",
+    },
   }
 }
 
@@ -223,6 +266,8 @@ jest.mock("lib/navigation/navigate", () => ({
   dismissModal: jest.fn(),
   navigateToEntity: jest.fn(),
   navigateToPartner: jest.fn(),
+  switchTab: jest.fn(),
+  navigationEvents: new (require("events").EventEmitter)(),
   EntityType: { partner: "partner", fair: "fair" },
   SlugType: { partner: "partner", fair: "fair" },
 }))
@@ -285,6 +330,7 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
 
   beforeEach((done) => {
     trackEvent.mockClear()
+    ;(postEventToProviders as jest.Mock).mockClear()
     const types: Array<"error" | "warn"> = ["error", "warn"]
     types.forEach((type) => {
       // Don't spy on loggers that have been modified by the current test.
@@ -394,6 +440,8 @@ jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
 
 jest.mock("react-native-gesture-handler", () => {
   const View = require("react-native/Libraries/Components/View/View")
+  const TouchableWithoutFeedback = require("react-native/Libraries/Components/Touchable/TouchableWithoutFeedback")
+  const TouchableHighlight = require("react-native/Libraries/Components/Touchable/TouchableHighlight")
   return {
     Swipeable: View,
     DrawerLayout: View,
@@ -423,6 +471,8 @@ jest.mock("react-native-gesture-handler", () => {
     FlatList: View,
     gestureHandlerRootHOC: jest.fn(),
     Directions: {},
+    TouchableHighlight,
+    TouchableWithoutFeedback,
   }
 })
 
@@ -430,10 +480,15 @@ jest.mock("react-native-config", () => ({
   ARTSY_API_CLIENT_SECRET: "artsy_api_client_secret",
   ARTSY_API_CLIENT_KEY: "artsy_api_client_key",
   ARTSY_FACEBOOK_APP_ID: "artsy_facebook_app_id",
-  SEGMENT_PRODUCTION_WRITE_KEY: "segment_production_write_key",
-  SEGMENT_STAGING_WRITE_KEY: "segment_staging_write_key",
+  SEGMENT_PRODUCTION_WRITE_KEY_IOS: "segment_production_write_key_ios",
+  SEGMENT_PRODUCTION_WRITE_KEY_ANDROID: "segment_production_write_key_android",
+  SEGMENT_STAGING_WRITE_KEY_IOS: "segment_staging_write_key_ios",
+  SEGMENT_STAGING_WRITE_KEY_ANDROID: "segment_staging_write_key_android",
   SENTRY_DSN: "sentry_dsn",
   GOOGLE_MAPS_API_KEY: "google_maps_api_key",
   MAPBOX_API_CLIENT_KEY: "mapbox_api_client_key",
   SAILTHRU_KEY: "sailthru_key",
 }))
+
+jest.mock("react-native-view-shot", () => ({}))
+jest.mock("@segment/analytics-react-native", () => ({}))

@@ -5,7 +5,7 @@ import styled from "styled-components/native"
 import { Message_message } from "__generated__/Message_message.graphql"
 import { Messages_conversation } from "__generated__/Messages_conversation.graphql"
 import moment from "moment"
-import { Flex, Spacer } from "palette"
+import { Flex, Spacer, Text } from "palette"
 
 import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
 import { navigate } from "lib/navigation/navigate"
@@ -51,14 +51,33 @@ const IndividualMessage: React.FC<{
   return (
     <React.Fragment>
       {!!message.isFirstMessage && (
-        <SubjectContainer>
-          {subjectItem?.__typename === "Artwork" && (
-            <ArtworkPreview artwork={subjectItem} onSelected={() => navigate(subjectItem.href!)} />
-          )}
-          {subjectItem?.__typename === "Show" && (
-            <ShowPreview show={subjectItem} onSelected={() => navigate(subjectItem.href!)} />
-          )}
-        </SubjectContainer>
+        <>
+          <Flex bg="black5" p={2} m={1} mb={3}>
+            <Text color="black60" variant="mediumText">
+              Be Protected by The Artsy Guarantee
+            </Text>
+            <Text color="black60" variant="small" my={0.5}>
+              To remain eligible for our buyer protections:{" "}
+            </Text>
+            <Text color="black60" variant="small">
+              • Keep all communications on Artsy
+            </Text>
+            <Text color="black60" variant="small">
+              • Never type sensitive information into this chat
+            </Text>
+            <Text color="black60" variant="small">
+              • Complete your purchase with Artsy’s secure checkout
+            </Text>
+          </Flex>
+          <SubjectContainer>
+            {subjectItem?.__typename === "Artwork" && (
+              <ArtworkPreview artwork={subjectItem} onSelected={() => navigate(subjectItem.href!)} />
+            )}
+            {subjectItem?.__typename === "Show" && (
+              <ShowPreview show={subjectItem} onSelected={() => navigate(subjectItem.href!)} />
+            )}
+          </SubjectContainer>
+        </>
       )}
       {!!message.body && (
         <Message

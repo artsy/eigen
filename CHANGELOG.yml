@@ -1,42 +1,222 @@
 upcoming:
-  version: 6.8.4
+  version: 6.9.5
   date: TBD
   dev:
-    - Migrate environment configuration to TypeScript - david
-    - Improve bottom tabs dev state management  - david, mounir
-    - Refactor Filter Modals - mounir
-    - Update filter params change tracking type for auction results - ole
-    - Track a screen event when user lands on artist auction Results - ole
-    - Fix android hardware back button in fancy modals - david
-    - Extract useDeepLinks - mounir
-    - Add user agent to android - brian, david, thomas, jonathan, pavlos, mounir
-    - Fix android share - brian, mounir, david, pavlos
-    - Fix auction faq crash - brian, mounir, david, pavlos, jonathan
-    - Move ruby version declaration to root - roop
-    - Track notable works rail tap and view all artist series tap on artist page - ole
-    - Track filter change on artist series page - ole
-    - Add vscode launch config to debug tests in current file - ole
+    - Add facebook authentication - dzmitry
+    - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
+    - Update open simulator command in getting started docs - ole
+    - Update debugging docs - mounir
+    - Send data in the filter params format for saved search - dzmitry tratsiak
+    - Enables external flag for order history - sweir
+    - Prepare search criteria values to filter params - dzmitry tratsiak
   user_facing:
-    - Add forgot password screen in new login - brian
-    - Conversation-offer updates to CTA to allow multiple offers - erikdstock
-    - Replace "All" option on multi-select filters with upper right-hand "Clear all"
-    - Fix input text scrolling and header title spacing - pavlos, david, mounir, brian, thomas
-    - Fix infinite spinner on Android when following within an artist rail - pepopowitz
-    - Fix iOS13 modal keyboard avoidance - david
-    - Release multi-select time period filter - iskounen
-    - Refine filter header typography, spacing & copy - damon
-    - Fix renderWithLoadProgress on android - brian, mounir, pavlos
-    - Hides "Default" sort label behind feature flag - damon
-    - Fix unable to load artist screen - adam, brian, david, thomas, jonathan, mounir
-    - Fix and Release new multiselect "Colors" filter - ole
-    - Release artwork filter style updates - iskounen
-    - Restrict Android phones to portrait mode - adamb
-    - Fix palette button disabled state on iOS - mounir
-    - Fix artwork filter apply button disabled logic - iskounen
-    - Fix Filter Artwork title text breaking - mounir
-    - Combine gallery and institution artwork filters - mdole
+    - Fixed "Unable to load" error on OrderHistory page when artwork is deleted/unpublished from order
+    - Pick up should be displayed in Sold by section - Serge0n
+    - Country should be written with full name - Serge0n
+    - Name from shipping address should be displayed instead of account name - Serge0n
+    - User can see the way of delivery - Serge0n
+    - OrderDetails with SoldBy section - alexj105
+    - OrderDetails with headInfo - alexj105
+    - OrderDetails with ArtInfo and ShipsTo - alexj105
+    - fix inaccurate validators for artwork submission - yauheni
+    - Check saved search when the user applied the filter - dzmitry tratsiak
+    - Don't close filter artwork modal when "clear all" tapped - dzmitry tratsiak
+    - Continue to show the offer approved banner in an inquiry offer conversation after fulfillment - erikdstock
+    - Add link to Conditions of Sale in sign up - dzmitry
+    - Add saved search banner update banner state automatically on save/filter actions - kizito
+    - Show visual feedback when the "Sort & Filter" button is pressed - dzmitry tratsiak
+    - Don't show saved search banner when only sort filter is selected - dzmitry tratsiak
+    - Add articles (market news) screen - ole
+    - Add Filter Component to Collections Page - kizito
+    - Check push notification permissions before saving search - kizito
+    - Implement infinite scroll on android - kizito
+    - Removed native spinner component and replaced with palette spinner - gkartalis, pvinis
+    - Show a toast message for saved search mutations - dzmitry tratsiak
+    - Added "Auction lots for you" landing screen - damon
+    - Fix Aligned InfoCircleIcon - gkartalis
+    - Hide spinner when there is no more artworks to load - katsiaryna alshannikava
+    - Aligned 'Next' button in the 'Sell work' menu - katsiaryna alshannikava
+    - Fix home screen articles rail spacing - ole
+    - Decrease web view scroll deceleration rate - ole
+    - Show price with currency prefix in auction result list - ole
 
 releases:
+  - version: 6.9.4
+  - date: June 10, 2021
+  - dev:
+      - Improve admin menu - dzmitry
+      - Use app links on android - mounir
+      - obfuscate env vars on android - kizito
+      - Remove feature flag check for artist nationality filter - devon
+      - Remove feature flag check for custom size filter - devon
+      - Fix iOS app blank screen - ole, mounir
+      - Replace "color" filter with "colors" filter - dzmitry tratsiak
+      - Add Saved Search feature flag - kizito
+      - Send only changed filter params in the analytics event - dzmitry tratsiak
+      - Update PR template to not automatically attach an unrelated Jira ticket - erikdstock
+      - Add createSavedSearch mutation - dzmitry tratsiak
+      - Add deleteSavedSearch mutation - dzmitry tratsiak
+  - user_facing:
+      - Fix wrong displaying in Order History when fields are too long - Serge0n
+      - Add payment method section (behind feature flag) - irina-sid
+      - Add Order Summary section into OrderDetails page - Serge0n
+      - Add order details skeleton (behind feature flag) - Serge0n
+      - Implements custom size filter with localization (behind feature flag) - damon
+      - Adds artist nationality & ethnicity filter (behind feature flag) - damon
+      - Add order history skeleton (behind feature flag) - Serge0n
+      - Add orders to order history (behind feature flag) - Serge0n
+      - Add order details page (app registry, a route with orderID, relay container) - irina-sid
+      - Update auction registration flow UI - ole
+      - Implements custom size filter with localization - damon
+      - Adds artist nationality & ethnicity filter - damon
+      - Add artwork location filter to artwork grids - iskounen
+      - Fix back button in android onboarding is flying off in smaller screens - dzmitry
+      - Prevent multiline input placeholder on Android - ole
+      - Fix info button in conversation is hard to press - dzmitry
+      - Update order of filters - dzmitry tratsiak
+      - Fix time mismatch between auction list and individual auction page - matt
+      - Fix swiping on filter options selects them - dzmitry tratsiak
+      - User can enter auction results tab from search - dzmitry
+      - Fix double tapping on the 'Log in' button opens a blank page - dzmitry
+      - Implement auction results section in home screen (behind feature flag) - yauheni
+      - Implement auctionResultsForYou screen (behind feature flag) - yauheni
+      - Fix registration flow error handling (e.g. invalid phone number) - ole
+      - Decode html entities in markdown - ole
+      - close keyboard on message send - lily
+      - Clear applied filters after click on "clear all" button immediately - dzmitry tratsiak
+      - Release new price range filter to artwork grids - iskounen
+      - Fix padding between section titles and the artwork grids below them - stas hanchar
+      - Add saved search banner (behind feature flag) - dzmitry tratsiak
+      - Add articles rail to home screen - ole
+      - Update articles rail design on artist overview screen - ole
+      - Fix home screen placeholder changing with bug 🎉 - ole
+      - Fix android native go back from sale tab to search - yauheni
+      - Vertically aligned 'Follow/Following' artist button text - stas hanchar
+      - Fix card input on android - dzmitry
+      - Add articles rail to home screen - ole
+      - Change articles rail design in artist overview page - ole
+      - Specified a more specific error for logging in with Apple or Facebook - stas hanchar
+
+  - version: 6.9.3
+    date: June 1, 2021
+    dev:
+      -
+    user_facing:
+      - fix disabled button bug for works with only one edition - lily
+
+  - version: 6.9.2
+    date: May 26, 2021
+    dev:
+      - Convert filter queries to use a single structured input for filterArtworksConnection requests - dzmitry tratsiak
+      - Allow sticky tabs to add additional sticky content - mdole
+      - Fix url decoding in navigation infra code - kizito
+      - Update android play store metadata - brian
+      - Fix sign up validation - dzmitry
+      - Use string for user agent when debugging on Android - ole
+      - fix fastlane issue - brian
+      - Add admin menu item to clear relay cache - brian
+    user_facing:
+      - Fix wrong input font on android - dzmitry
+      - Fix android native getNavigationHeight method -  kizito
+      - Fix home screen load failure on logout - brian
+      - Add artwork Material filter - dzmitry tratsiak
+      - Prevent android dark mode forced on users - kizito
+      - Fix unusable slider on android - dzmitry
+      - Fix vanishing artist series - mounir
+      - Add search UI for material filter - dzmitry tratsiak
+      - Add order history to user profile (behind feature flag) - alexj105
+      - Enable lotsByFollowedArtists - ole
+      - Add ability to unselected "ways to buy" filter - dzmitry tratsiak
+
+  - version: 6.9.1
+    date: May 18, 2021
+    dev:
+      - lock screen orientation to portrait on android phones - mounir
+      - Fix artist follow is incorrectly firing action_name - dzmitry
+    user_facing:
+      - Correct formatted large numbers' display - kizito
+      - Fix cancel button next to search bar doesn't clear terms/results - yauheni
+      - Fix phone input misalignment on android - kizito
+      - Fix push notification pre request prompt showing up everytime - kizito
+      - Fix spaces between items in SaleList - yauheni
+      - Inquiry checkout copy additions from legal - lily
+      - Fix artwork unavailable issue on the conversation screen - starsirius
+      - Removes max-height on artwork filter modal - damon
+      - Fix push notification registration - brian
+      - Enable Inquiry Checkout - starsirius
+
+  - version: 6.9.0
+    date: May 12, 2021
+    dev:
+      - Add native modalDismissed event - lily & christina
+      - Fix beta promotion and packaging issues - brian
+      - Add analytics on android - pavlos
+      - Add staging support for deep links on android - mounir, ole
+      - Refactor filter event payloads to send JSON - roop
+      - Fix issue with ARSpinner being registered more than once - mounir, kizito
+      - Simplify react-navigation infra - david
+    user_facing:
+      - CTA for inquiry checkout phase 2 - sepans
+      - Combine gallery and institution artwork filters - mdole
+      - Remove old login from android - adam, barry, david, jonathan, mounir, pavlos
+      - Allows multi-select filters to be searchable - damon
+      - Rename artist about tab to artist overview tab - iskounen
+      - Move rails on artist artwork tab to artist overview tab - iskounen
+      - Update onboarding screens copy - mounir
+      - Support dark and light themes on android - mounir
+      - Fix billing country field text color and style - ole
+      - Show loading spinner in all infinite scroll artowrk grids - ole
+      - Fix missing bottom space on the Partner Artworks screen - ole
+      - Animate welcome screen - mounir
+      - Add fading screen transition when transitioning from sign up to login
+      - Add onboarding personalization screen - mounir
+      - Move sort & filter button to artist artworks grid header - iskounen
+      - Show live auctions in webview on Android - brian
+      - Update home screen modules (change order, remove recently saved) - ole
+      - Route artist auction results to artist insights - ole
+      - Add "Lots by artists I follow" rails to the home screen - ole
+      - Add buyer guarantee message and link to inquiry make offer button - lily
+      - Fix extra padding on home module rails - mounir, ole
+      - Implements custom price filter option (behind feature flag) - damon
+      - Remove lots by followed artists rail for now - brian
+      - Removes max-height on artwork filter modal - damon
+
+  - version: 6.8.4
+    date: Apr 29, 2021
+    dev:
+      - Migrate environment configuration to TypeScript - david
+      - Improve bottom tabs dev state management  - david, mounir
+      - Refactor Filter Modals - mounir
+      - Update filter params change tracking type for auction results - ole
+      - Track a screen event when user lands on artist auction Results - ole
+      - Fix android hardware back button in fancy modals - david
+      - Extract useDeepLinks - mounir
+      - Add user agent to android - brian, david, thomas, jonathan, pavlos, mounir
+      - Fix android share - brian, mounir, david, pavlos
+      - Fix auction faq crash - brian, mounir, david, pavlos, jonathan
+      - Move ruby version declaration to root - roop
+      - Track notable works rail tap and view all artist series tap on artist page - ole
+      - Track filter change on artist series page - ole
+      - Add vscode launch config to debug tests in current file - ole
+    user_facing:
+      - Add forgot password screen in new login - brian
+      - Conversation-offer updates to CTA to allow multiple offers - erikdstock
+      - Replace "All" option on multi-select filters with upper right-hand "Clear all"
+      - Fix input text scrolling and header title spacing - pavlos, david, mounir, brian, thomas
+      - Fix infinite spinner on Android when following within an artist rail - pepopowitz
+      - Fix iOS13 modal keyboard avoidance - david
+      - Release multi-select time period filter - iskounen
+      - Refine filter header typography, spacing & copy - damon
+      - Fix renderWithLoadProgress on android - brian, mounir, pavlos
+      - Hides "Default" sort label behind feature flag - damon
+      - Fix unable to load artist screen - adam, brian, david, thomas, jonathan, mounir
+      - Fix and Release new multiselect "Colors" filter - ole
+      - Release artwork filter style updates - iskounen
+      - Restrict Android phones to portrait mode - adamb
+      - Fix palette button disabled state on iOS - mounir
+      - Fix artwork filter apply button disabled logic - iskounen
+      - Fix Filter Artwork title text breaking - mounir
+
   - version: 6.8.3
     date: Apr 14, 2021
     dev:

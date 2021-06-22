@@ -2,7 +2,7 @@ import { useUpdadeShouldHideBackButton } from "lib/utils/hideBackButtonOnScroll"
 import { Schema } from "lib/utils/track"
 import { useGlobalState } from "lib/utils/useGlobalState"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { color } from "palette"
+import { Box } from "palette"
 import React, { EffectCallback, useEffect, useMemo, useRef, useState } from "react"
 import { View } from "react-native"
 import Animated from "react-native-reanimated"
@@ -13,7 +13,7 @@ import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
 import { StickyTabPageFlatListContext } from "./StickyTabPageFlatList"
 import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
 
-interface TabProps {
+export interface TabProps {
   initial?: boolean
   title: string
   content: JSX.Element | ((tabIndex: number) => JSX.Element)
@@ -44,7 +44,19 @@ export const StickyTabPage: React.FC<{
   )
   const activeTabIndexNative = useAnimatedValue(initialTabIndex)
   const [activeTabIndex, setActiveTabIndex] = useGlobalState(initialTabIndex)
+  const [tabSpecificStickyHeaderContent, setTabSpecificStickyHeaderContent] = useState<JSX.Element[]>([])
   const { jsx: staticHeader, nativeHeight: staticHeaderHeight } = useAutoCollapsingMeasuredView(staticHeaderContent)
+
+  const stickyRailRef = useRef<SnappyHorizontalRail>(null)
+
+  // This breaks the rules of hooks - you're not supposed to call them inside loops. We're doing it anyway because
+  // useAutoCollapsingMeasuredView is a pure function and all we're doing with tabSpecificStickyHeaderContentArray is
+  // rendering; it's not involved in any conditionals. We're reasonably confident it will be deterministic, and
+  // the alternative (making the hook take in an array of tabs) gets very complicated very quickly
+  const tabSpecificStickyHeaderContentArray = tabs.map((_, i) => {
+    return useAutoCollapsingMeasuredView(tabSpecificStickyHeaderContent[i])
+  })
+
   const { jsx: stickyHeader, nativeHeight: stickyHeaderHeight } = useAutoCollapsingMeasuredView(stickyHeaderContent)
   const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
@@ -76,6 +88,7 @@ export const StickyTabPage: React.FC<{
           setActiveTabIndex(index)
           activeTabIndexNative.setValue(index)
           railRef.current?.setOffset(index * width)
+          stickyRailRef.current?.setOffset(index * width)
           tracking.trackEvent({
             action_name: tabs[index].title,
             action_type: Schema.ActionTypes.Tap,
@@ -94,6 +107,13 @@ export const StickyTabPage: React.FC<{
                   <StickyTabPageFlatListContext.Provider
                     value={{
                       tabIsActive: Animated.eq(index, activeTabIndexNative),
+                      tabSpecificContentHeight: tabSpecificStickyHeaderContentArray[index].nativeHeight!,
+                      setJSX: (jsx) =>
+                        setTabSpecificStickyHeaderContent((prev) => {
+                          const newArray = prev.slice(0)
+                          newArray[index] = jsx
+                          return newArray
+                        }),
                     }}
                   >
                     {typeof content === "function" ? content(index) : content}
@@ -107,12 +127,26 @@ export const StickyTabPage: React.FC<{
           style={{
             width,
             position: "absolute",
-            backgroundColor: color("white100"),
             transform: [{ translateY: headerOffsetY as any }],
           }}
+          pointerEvents="box-none"
         >
-          {staticHeader}
-          {stickyHeader}
+          <Box backgroundColor="white">
+            {staticHeader}
+            {stickyHeader}
+          </Box>
+          <SnappyHorizontalRail
+            width={width * tabs.length}
+            ref={stickyRailRef}
+            initialOffset={initialTabIndex * width}
+            style={{ flex: undefined, alignItems: "flex-start" }}
+          >
+            {tabSpecificStickyHeaderContentArray.map((t, i) => (
+              <Box key={i} width={width} backgroundColor="white">
+                {t.jsx}
+              </Box>
+            ))}
+          </SnappyHorizontalRail>
         </Animated.View>
       </View>
     </StickyTabPageContext.Provider>
@@ -141,6 +175,19 @@ function useAutoCollapsingMeasuredView(content: React.ReactChild) {
     jsx: (
       <Animated.View style={{ height: nativeHeight!, overflow: "hidden" }}>
         <View
+          // on initial render this elem should dictate the parent's height
+          // afterwards the parent's height should be controlled by the nativeHeight value
+          // and this component should be able to grow and shrink freely, hence the absolute positioning.
+          style={
+            nativeHeight
+              ? {
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                }
+              : undefined
+          }
           onLayout={(e) => {
             if (nativeHeight) {
               if (animation.current) {

@@ -13,7 +13,7 @@ interface OnboardingCreateAccountPasswordProps
   extends StackScreenProps<OnboardingCreateAccountNavigationStack, "OnboardingCreateAccountPassword"> {}
 
 export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPasswordProps> = ({ navigation }) => {
-  const { values, handleSubmit, handleChange, validateForm, errors, setErrors } = useFormikContext<UserSchema>()
+  const { values, handleSubmit, handleChange, errors, setErrors } = useFormikContext<UserSchema>()
 
   return (
     <OnboardingCreateAccountScreenWrapper
@@ -32,12 +32,11 @@ export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPa
             setErrors({
               password: undefined,
             })
-            validateForm()
           }
           handleChange("password")(text)
         }}
         onSubmitEditing={handleSubmit}
-        onBlur={() => validateForm()}
+        blurOnSubmit={false}
         placeholder="Password"
         placeholderTextColor={color("black30")}
         secureTextEntry

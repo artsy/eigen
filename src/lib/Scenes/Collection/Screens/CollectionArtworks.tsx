@@ -1,12 +1,15 @@
 import { OwnerType } from "@artsy/cohesion"
 import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_collection.graphql"
-import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  filterArtworksParams,
+  prepareFilterArtworksParamsForInput,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { get } from "lib/utils/get"
 import { Schema } from "lib/utils/track"
-import { Box, Separator } from "palette"
+import { Box, Spacer } from "palette"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -27,6 +30,8 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
   const artworksTotal = artworks?.counts?.total
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
+  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((action) => action.setFiltersCountAction)
+  const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
 
@@ -43,7 +48,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
             throw new Error("Collection/CollectionArtworks sort: " + error.message)
           }
         },
-        filterParams
+        { input: prepareFilterArtworksParamsForInput(filterParams) }
       )
     }
   }, [appliedFilters])
@@ -51,6 +56,12 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
   useEffect(() => {
     setAggregationsAction(collection.collectionArtworks!.aggregations)
   }, [])
+
+  useEffect(() => {
+    // for use by CollectionArtworksFilter to keep count
+    const filterCount = { ...counts, ...artworks?.counts }
+    setFiltersCountAction(filterCount)
+  }, [artworksTotal])
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
@@ -66,7 +77,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
   if (artworksTotal === 0) {
     return (
       <Box mt={isDepartment ? "0px" : "-50px"} mb="80px">
-        <Separator mb={2} />
+        <Spacer mt={3} />
         <FilteredArtworkGridZeroState id={collection.id} slug={collection.slug} trackClear={trackClear} />
       </Box>
     )
@@ -74,9 +85,6 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
 
   return artworks ? (
     <ArtworkGridWrapper isDepartment={isDepartment}>
-      <Box mb={3} mt={1}>
-        <Separator />
-      </Box>
       <InfiniteScrollArtworksGrid
         connection={artworks}
         loadMore={relay.loadMore}
@@ -102,20 +110,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
       @argumentDefinitions(
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
-        sort: { type: "String", defaultValue: "-decayed_merch" }
-        additionalGeneIDs: { type: "[String]" }
-        priceRange: { type: "String" }
-        color: { type: "String" }
-        colors: { type: "[String]" }
-        partnerID: { type: "ID" }
-        partnerIDs: { type: "[String]" }
-        dimensionRange: { type: "String", defaultValue: "*-*" }
-        majorPeriods: { type: "[String]" }
-        acquireable: { type: "Boolean" }
-        inquireableOnly: { type: "Boolean" }
-        atAuction: { type: "Boolean" }
-        offerable: { type: "Boolean" }
-        attributionClass: { type: "[String]" }
+        input: { type: "FilterArtworksInput" }
       ) {
         isDepartment
         slug
@@ -123,21 +118,18 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         collectionArtworks: artworksConnection(
           first: $count
           after: $cursor
-          sort: $sort
-          additionalGeneIDs: $additionalGeneIDs
-          priceRange: $priceRange
-          color: $color
-          colors: $colors
-          partnerID: $partnerID
-          partnerIDs: $partnerIDs
-          dimensionRange: $dimensionRange
-          majorPeriods: $majorPeriods
-          acquireable: $acquireable
-          inquireableOnly: $inquireableOnly
-          atAuction: $atAuction
-          offerable: $offerable
-          aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE]
-          attributionClass: $attributionClass
+          aggregations: [
+            ARTIST_NATIONALITY
+            COLOR
+            DIMENSION_RANGE
+            LOCATION_CITY
+            MAJOR_PERIOD
+            MATERIALS_TERMS
+            MEDIUM
+            PARTNER
+            PRICE_RANGE
+          ]
+          input: $input
         ) @connection(key: "Collection_collectionArtworks") {
           aggregations {
             slice
@@ -166,7 +158,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
     },
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
-        ...fragmentVariables,
+        input: fragmentVariables.input,
         id: props.collection.slug,
         count,
         cursor,
@@ -177,41 +169,10 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         $id: String!
         $count: Int!
         $cursor: String
-        $sort: String
-        $additionalGeneIDs: [String]
-        $priceRange: String
-        $color: String
-        $colors: [String]
-        $partnerID: ID
-        $partnerIDs: [String]
-        $dimensionRange: String
-        $majorPeriods: [String]
-        $acquireable: Boolean
-        $inquireableOnly: Boolean
-        $atAuction: Boolean
-        $offerable: Boolean
-        $attributionClass: [String]
+        $input: FilterArtworksInput
       ) {
         marketingCollection(slug: $id) {
-          ...CollectionArtworks_collection
-            @arguments(
-              count: $count
-              cursor: $cursor
-              sort: $sort
-              additionalGeneIDs: $additionalGeneIDs
-              color: $color
-              colors: $colors
-              partnerID: $partnerID
-              partnerIDs: $partnerIDs
-              priceRange: $priceRange
-              dimensionRange: $dimensionRange
-              majorPeriods: $majorPeriods
-              acquireable: $acquireable
-              inquireableOnly: $inquireableOnly
-              atAuction: $atAuction
-              offerable: $offerable
-              attributionClass: $attributionClass
-            )
+          ...CollectionArtworks_collection @arguments(count: $count, cursor: $cursor, input: $input)
         }
       }
     `,

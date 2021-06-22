@@ -15,7 +15,7 @@ interface Props {
 export class FollowArtistButton extends React.Component<Props> {
   @track((props: Props) => {
     return {
-      action_name: props.artist.is_followed ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
+      action_name: props.artist.is_followed ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
       action_type: Schema.ActionTypes.Success,
       owner_id: props.artist.internalID,
       owner_slug: props.artist.slug,
@@ -58,7 +58,7 @@ export class FollowArtistButton extends React.Component<Props> {
     const followButtonText = this.props.artist.is_followed ? "Following" : "Follow"
     return (
       <Touchable onPress={() => this.handleFollowArtist()} haptic noFeedback>
-        <Sans color="black60" weight="medium" size="3t">
+        <Sans color="black60" weight="medium" size="3t" py="5px">
           {followButtonText}
         </Sans>
       </Touchable>

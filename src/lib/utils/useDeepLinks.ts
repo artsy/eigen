@@ -1,12 +1,15 @@
 import { navigate } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
-import { useCallback, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { Linking } from "react-native"
+import { useTracking } from "react-tracking"
 
 export function useDeepLinks() {
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const launchURL = useRef<string | null>(null)
+
+  const { trackEvent } = useTracking()
 
   useEffect(() => {
     Linking.getInitialURL().then((url) => {
@@ -17,33 +20,44 @@ export function useDeepLinks() {
   }, [])
 
   useEffect(() => {
-    Linking.addEventListener("url", ({ url }) => handleDeepLink(url))
+    Linking.addEventListener("url", ({ url }) => {
+      handleDeepLink(url)
+    })
+
     return () => {
       Linking.removeAllListeners("url")
     }
-  }, [])
+  }, [isHydrated])
 
-  const handleDeepLink = useCallback(
-    (url: string) => {
-      // If the state is hydrated and the user is logged in
-      // We navigate them to the the deep link
-      if (isHydrated && isLoggedIn) {
-        navigate(url)
-      }
+  const handleDeepLink = (url: string) => {
+    trackEvent(tracks.deepLink(url))
 
-      // Otherwise, we save the deep link url
-      // to redirect them to the login screen once they log in
-      launchURL.current = url
-    },
-    [isHydrated, isLoggedIn]
-  )
+    // If the state is hydrated and the user is logged in
+    // We navigate them to the the deep link
+    if (isHydrated && isLoggedIn) {
+      navigate(url)
+    }
+
+    // Otherwise, we save the deep link url
+    // to redirect them to the login screen once they log in
+    launchURL.current = url
+  }
 
   useEffect(() => {
     if (isLoggedIn && launchURL.current) {
+      trackEvent(tracks.deepLink(launchURL.current))
       // Navigate to the saved launch url
       navigate(launchURL.current)
       // Reset the launchURL
       launchURL.current = null
     }
-  }, [isLoggedIn, launchURL.current])
+  }, [isLoggedIn, isHydrated, launchURL.current])
+}
+
+const tracks = {
+  deepLink: (url: string) => ({
+    name: "Deep link opened",
+    link: url,
+    referrer: "unknown",
+  }),
 }

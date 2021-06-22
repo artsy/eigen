@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
+import { ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
 import { AuctionResultQuery, AuctionResultQueryResponse } from "__generated__/AuctionResultQuery.graphql"
 import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
@@ -9,6 +9,7 @@ import { PlaceholderBox } from "lib/utils/placeholders"
 import { QAInfoPanel } from "lib/utils/QAInfo"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import { useStickyScrollHeader } from "lib/utils/useStickyScrollHeader"
 import { capitalize } from "lodash"
 import moment from "moment"
@@ -154,7 +155,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   )
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema info={tracks.screen(auctionResult.internalID) as any}>
+    <ProvideScreenTrackingWithCohesionSchema info={tracks.screen(auctionResult.internalID)}>
       <Animated.ScrollView {...scrollProps}>
         <FancyModalHeader hideBottomDivider />
         <Box px={2} pb={4}>
@@ -347,11 +348,11 @@ const LoadingSkeleton = () => {
 }
 
 export const tracks = {
-  screen: (id: string) => ({
-    action: ActionType.screen,
-    context_screen_owner_type: OwnerType.auctionResult,
-    context_screen_owner_id: id,
-  }),
+  screen: (id: string) =>
+    screen({
+      context_screen_owner_type: OwnerType.auctionResult,
+      context_screen_owner_id: id,
+    }),
 
   tapMarketStatsInfo: (): TappedInfoBubbleArgs => ({
     contextModule: ContextModule.auctionResult,

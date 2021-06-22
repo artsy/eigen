@@ -1,10 +1,7 @@
-import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
-import { RelayEnvironmentProvider } from "relay-hooks"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
-import { Theme } from "palette"
 import { BidFlow } from "./Containers/BidFlow"
 import { GeneQueryRenderer } from "./Containers/Gene"
 import { InboxWrapper } from "./Containers/Inbox"
@@ -57,6 +54,8 @@ import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyProfilePushNotifications"
+import { OrderDetailsQueryRender } from "./Scenes/OrderHistory/OrderDetails/Components/OrderDetails"
+import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
@@ -69,16 +68,19 @@ import { Search } from "./Scenes/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
-import { ActionSheetProvider } from "@expo/react-native-action-sheet"
+import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
-import { ToastProvider } from "./Components/Toast/toastHook"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
+import { NativeAnalyticsProvider } from "./NativeModules/Events"
+import { ArticlesQueryRenderer } from "./Scenes/Articles/Articles"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
+import { AuctionResultForYouQueryRenderer } from "./Scenes/AuctionResultForYou/AuctionResultForYou"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
+import { LotsByArtistsYouFollowQueryRenderer } from "./Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
@@ -87,10 +89,11 @@ import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, GlobalStoreProvider, useSelectedTab } from "./store/GlobalStore"
+import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
 import { AdminMenu } from "./utils/AdminMenu"
-import { Schema, screenTrack, track } from "./utils/track"
-import { ProvideScreenDimensions, useScreenDimensions } from "./utils/useScreenDimensions"
+import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
+import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
+import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
 
 LogBox.ignoreLogs([
@@ -107,6 +110,9 @@ LogBox.ignoreLogs([
   "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
   "Picker has been extracted",
 ])
+
+addTrackingProvider("native ios analytics", NativeAnalyticsProvider)
+addTrackingProvider("console", ConsoleTrackingProvider)
 
 interface ArtworkProps {
   artworkID: string
@@ -129,10 +135,6 @@ interface PartnerLocationsProps {
   isVisible: boolean
 }
 const PartnerLocations: React.FC<PartnerLocationsProps> = (props) => <PartnerLocationsQueryRenderer {...props} />
-
-const Inbox: React.FC<{ isVisible: boolean }> = screenTrack<{}>(() => {
-  return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
-})((props) => <InboxWrapper {...props} />)
 
 interface GeneProps {
   geneID: string
@@ -222,21 +224,9 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, V
 class PageWrapper extends React.Component<PageWrapperProps> {
   render() {
     return (
-      <ProvideScreenDimensions>
-        <ActionSheetProvider>
-          <RelayEnvironmentProvider environment={defaultEnvironment}>
-            <GlobalStoreProvider>
-              <Theme>
-                <ToastProvider>
-                  <_FancyModalPageWrapper>
-                    <InnerPageWrapper {...this.props} />
-                  </_FancyModalPageWrapper>
-                </ToastProvider>
-              </Theme>
-            </GlobalStoreProvider>
-          </RelayEnvironmentProvider>
-        </ActionSheetProvider>
-      </ProvideScreenDimensions>
+      <AppProviders>
+        <InnerPageWrapper {...this.props} />
+      </AppProviders>
     )
   }
 }
@@ -294,6 +284,7 @@ export const modules = defineModules({
   Admin: nativeModule({ alwaysPresentModally: true }),
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
+  Articles: reactModule(ArticlesQueryRenderer),
   Artist: reactModule(ArtistQueryRenderer),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
@@ -306,6 +297,7 @@ export const modules = defineModules({
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
   AuctionResult: reactModule(AuctionResultQueryRenderer),
+  AuctionResultForYou: reactModule(AuctionResultForYouQueryRenderer),
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
@@ -340,7 +332,7 @@ export const modules = defineModules({
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
   Gene: reactModule(Gene),
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
-  Inbox: reactModule(Inbox, { isRootViewForTabName: "inbox" }),
+  Inbox: reactModule(InboxWrapper, { isRootViewForTabName: "inbox" }),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   LiveAuction: nativeModule({
     alwaysPresentModally: true,
@@ -370,6 +362,8 @@ export const modules = defineModules({
   MyCollectionArtworkImages: reactModule(MyCollectionArtworkImagesQueryRenderer),
   MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
+  OrderHistory: reactModule(OrderHistoryQueryRender),
+  OrderDetails: reactModule(OrderDetailsQueryRender),
   MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, { hidesBackButton: true }),
   MyProfilePushNotifications: reactModule(MyProfilePushNotificationsQueryRenderer),
   MySellingProfile: reactModule(View),
@@ -390,6 +384,7 @@ export const modules = defineModules({
     hasOwnModalCloseButton: true,
   }),
   WorksForYou: reactModule(WorksForYouQueryRenderer),
+  LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer),
 })
 
 // Register react modules with the app registry

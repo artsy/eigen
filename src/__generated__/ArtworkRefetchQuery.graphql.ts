@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 65cb8d56901bce81322fbd0c21618f26 */
+/* @relayHash 72face3d23df644d8eeaec6db816efeb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -337,7 +337,7 @@ fragment Artwork_artworkBelowTheFold on Artwork {
   artistSeriesConnection(first: 1) {
     edges {
       node {
-        filterArtworksConnection(sort: "-decayed_merch", first: 20) {
+        filterArtworksConnection(first: 20, input: {sort: "-decayed_merch"}) {
           edges {
             node {
               id
@@ -366,7 +366,7 @@ fragment ArtworksInSeriesRail_artwork on Artwork {
       node {
         slug
         internalID
-        filterArtworksConnection(sort: "-decayed_merch", first: 20) {
+        filterArtworksConnection(first: 20, input: {sort: "-decayed_merch"}) {
           edges {
             node {
               slug
@@ -2242,8 +2242,10 @@ return {
                           },
                           {
                             "kind": "Literal",
-                            "name": "sort",
-                            "value": "-decayed_merch"
+                            "name": "input",
+                            "value": {
+                              "sort": "-decayed_merch"
+                            }
                           }
                         ],
                         "concreteType": "FilterArtworksConnection",
@@ -2332,7 +2334,7 @@ return {
                           },
                           (v2/*: any*/)
                         ],
-                        "storageKey": "filterArtworksConnection(first:20,sort:\"-decayed_merch\")"
+                        "storageKey": "filterArtworksConnection(first:20,input:{\"sort\":\"-decayed_merch\"})"
                       },
                       (v4/*: any*/),
                       (v3/*: any*/)
@@ -2363,7 +2365,7 @@ return {
     ]
   },
   "params": {
-    "id": "65cb8d56901bce81322fbd0c21618f26",
+    "id": "72face3d23df644d8eeaec6db816efeb",
     "metadata": {},
     "name": "ArtworkRefetchQuery",
     "operationKind": "query",

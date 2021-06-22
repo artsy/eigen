@@ -13,13 +13,13 @@ export interface OnboardingCreateAccountNameProps
   extends StackScreenProps<OnboardingCreateAccountNavigationStack, "OnboardingCreateAccountName"> {}
 
 export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNameProps> = ({ navigation }) => {
-  const { values, handleSubmit, handleChange, validateForm, errors } = useFormikContext<UserSchema>()
+  const { values, handleSubmit, handleChange, validateForm, errors, setErrors } = useFormikContext<UserSchema>()
 
   return (
     <OnboardingCreateAccountScreenWrapper
       onBackButtonPress={navigation.goBack}
       title="What’s your full name?"
-      caption="Galleries and auction houses you contact will identity you by your full name."
+      caption="This is used to build your profile and collection on Artsy."
     >
       <Input
         autoCapitalize="words"
@@ -27,6 +27,11 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
         autoCorrect={false}
         autoFocus
         onChangeText={(text) => {
+          if (errors.name) {
+            setErrors({
+              name: undefined,
+            })
+          }
           handleChange("name")(text)
         }}
         onSubmitEditing={handleSubmit}

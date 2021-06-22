@@ -8,6 +8,7 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
+import { flushPromiseQueue } from "../../../tests/flushPromiseQueue"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "../ShowArtistsPreview"
 
 jest.unmock("react-relay")
@@ -82,7 +83,11 @@ describe("ArtistsContainer", () => {
       })
     })
 
-    tree.root.findAllByType(Button)[0].props.onPress()
+    act(() => {
+      tree.root.findAllByType(Button)[0].props.onPress()
+    })
+
+    await flushPromiseQueue()
 
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toEqual("ArtistListItemFollowArtistMutation")
     expect(env.mock.getMostRecentOperation().request.variables).toMatchInlineSnapshot(`

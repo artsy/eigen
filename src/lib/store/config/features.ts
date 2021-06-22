@@ -45,12 +45,9 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AROptionsNewFirstInquiry",
   },
-  AROptionsNewArtistInsightsPage: {
-    readyForRelease: true,
-    echoFlagKey: "AROptionsNewArtistInsightsPage",
-  },
   AROptionsInquiryCheckout: {
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "AROptionsInquiryCheckout",
     description: "Enable inquiry checkout",
     showInAdminMenu: true,
   },
@@ -86,20 +83,26 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableViewingRooms",
   },
+  ARAuctionResults: {
+    readyForRelease: false,
+    description: "Show Auction Results in Home Screen",
+    showInAdminMenu: true,
+  },
   AREnableCustomSharesheet: {
     readyForRelease: true,
     echoFlagKey: "AREnableCustomSharesheet",
     description: "Enable custom share sheet",
     showInAdminMenu: true,
   },
-  ARUseImprovedArtworkFilters: {
+  AREnableOrderHistoryOption: {
     readyForRelease: false,
-    description: "Use improved artwork filters",
+    echoFlagKey: "AREnableOrderHistoryOption",
+    description: "Enable Order History in settings",
     showInAdminMenu: true,
   },
-  ARUseNewOnboarding: {
+  AREnableSavedSearch: {
     readyForRelease: false,
-    description: "Use new onboarding",
+    description: "Enable Saved Search",
     showInAdminMenu: true,
   },
 })

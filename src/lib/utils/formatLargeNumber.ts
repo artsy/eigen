@@ -4,8 +4,8 @@ export function formatLargeNumber(number: number, decimalPlaces: number = 0) {
   } else if (number < 1000000) {
     return `${(number / 1000).toFixed(decimalPlaces)}k`
   } else if (number < 1000000000) {
-    return `${(number / 1000000).toFixed(decimalPlaces)}m`
+    return `${(number / 1000000).toFixed(decimalPlaces)}M`
   } else {
-    return `${(number / 1000000000).toFixed(decimalPlaces)}t`
+    return `${(number / 1000000000).toFixed(decimalPlaces)}B`
   }
 }

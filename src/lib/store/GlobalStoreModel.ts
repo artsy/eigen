@@ -6,6 +6,7 @@ import { BottomTabsModel, getBottomTabsModel } from "lib/Scenes/BottomTabs/Botto
 import { getMyCollectionModel, MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
 import { getSearchModel, SearchModel } from "lib/Scenes/Search/SearchModel"
 import { Platform } from "react-native"
+import { LoginManager } from "react-native-fbsdk-next"
 import { AuthModel, getAuthModel } from "./AuthModel"
 import { ConfigModel, getConfigModel } from "./ConfigModel"
 import { ConsignmentsModel, getConsignmentsModel } from "./ConsignmentModel"
@@ -63,6 +64,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
     if (Platform.OS === "ios") {
       await LegacyNativeModules.ARTemporaryAPIModule.clearUserData()
     }
+    LoginManager.logOut()
     CookieManager.clearAll()
     RelayCache.clearAll()
     actions.reset({ config })

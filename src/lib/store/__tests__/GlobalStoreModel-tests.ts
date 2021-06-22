@@ -30,61 +30,40 @@ describe("GlobalStoreModel", () => {
   })
 
   it("can be manipulated", () => {
-    GlobalStore.actions.__manipulate((store) => {
-      store.config.echo.state.killedVersions = {
-        ios: {},
-        android: {},
-      }
-    })
-    expect(__globalStoreTestUtils__?.getCurrentState().config.echo.state.killedVersions).toStrictEqual({
-      ios: {},
-      android: {},
-    })
-
-    GlobalStore.actions.rehydrate({
-      config: {
-        echo: {
-          state: {
-            killedVersions: {
-              ios: { "1.2.3": { message: "update the app" } },
-              android: {},
-            },
-          },
-        },
-      },
-    })
-    expect(__globalStoreTestUtils__?.getCurrentState().config.echo.state.killedVersions).toStrictEqual({
-      ios: { "1.2.3": { message: "update the app" } },
-      android: {},
-    })
-
-    GlobalStore.actions.rehydrate({
-      config: {
-        echo: {
-          state: {
-            killedVersions: {
-              ios: { "1.2.5": { message: "update the app" } },
-              android: { "1.2.4": { message: "update the app" } },
-            },
-          },
-        },
-      },
-    })
-    expect(__globalStoreTestUtils__?.getCurrentState().config.echo.state.killedVersions).toStrictEqual({
-      ios: { "1.2.3": { message: "update the app" }, "1.2.5": { message: "update the app" } },
-      android: { "1.2.4": { message: "update the app" } },
-    })
+    // Here we will be using `testStuff` that doesn't exist, but it is safe to test with this.
+    // We don't have any other simple thing that we can test with.
 
     GlobalStore.actions.__manipulate((store) => {
-      store.config.echo.state.killedVersions = {
-        ios: {},
-        android: {},
-      }
+      // @ts-expect-error
+      store.sessionState.testStuff = ["wow", 8]
     })
-    expect(__globalStoreTestUtils__?.getCurrentState().config.echo.state.killedVersions).toStrictEqual({
-      ios: {},
-      android: {},
+    // @ts-expect-error
+    expect(__globalStoreTestUtils__?.getCurrentState().sessionState.testStuff).toStrictEqual(["wow", 8])
+
+    GlobalStore.actions.rehydrate({
+      sessionState: {
+        // @ts-expect-error
+        testStuff: ["new stuff!"],
+      },
     })
+    // @ts-expect-error
+    expect(__globalStoreTestUtils__?.getCurrentState().sessionState.testStuff).toStrictEqual(["new stuff!"])
+
+    GlobalStore.actions.rehydrate({
+      sessionState: {
+        // @ts-expect-error
+        testStuff: ["wow", "once again"],
+      },
+    })
+    // @ts-expect-error
+    expect(__globalStoreTestUtils__?.getCurrentState().sessionState.testStuff).toStrictEqual(["wow", "once again"])
+
+    GlobalStore.actions.__manipulate((store) => {
+      // @ts-expect-error
+      store.sessionState.testStuff = []
+    })
+    // @ts-expect-error
+    expect(__globalStoreTestUtils__?.getCurrentState().sessionState.testStuff).toStrictEqual([])
   })
 
   it("has a signOut action", async () => {

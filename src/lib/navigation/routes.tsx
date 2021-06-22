@@ -3,13 +3,24 @@ import { ArtsyWebViewConfig } from "lib/Components/ArtsyReactWebView"
 import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
+import { Platform } from "react-native"
 import { parse } from "url"
 import { RouteMatcher } from "./RouteMatcher"
 
 export function matchRoute(
   url: string
 ): { type: "match"; module: AppModule; params: object } | { type: "external_url"; url: string } {
-  const parsed = parse(decodeURIComponent(url))
+  if (isProtocolEncoded(url)) {
+    // if entire url is encoded, decode!
+    // Else user will land on VanityUrlEntity for url that otherwise would have been valid
+    url = decodeUrl(url)
+  }
+  let parsed = parse(url)
+  if (parsed.host && isEncoded(url)) {
+    // likely from a deeplinked universal link as we do not pass urls with host in app
+    // special characters in paths passed as props in app must be intentional
+    parsed = parse(decodeUrl(url))
+  }
   const pathParts = parsed.pathname?.split(/\/+/).filter(Boolean) ?? []
   const queryParams: object = parsed.query ? parseQueryString(parsed.query) : {}
 
@@ -70,9 +81,33 @@ export function replaceParams(url: string, params: any) {
   return url
 }
 
+function isProtocolEncoded(url: string): boolean {
+  const regex = new RegExp("^(http%|https%|%)")
+  return regex.test(url)
+}
+
+function isEncoded(url: string): boolean {
+  return url !== decodeURIComponent(url)
+}
+
+function decodeUrl(url: string): string {
+  let maxDepth = 10
+  // allows to exit the loop in cases of weird custom encoding
+  // or for some reason url is encoded more than 10 times
+  while (isEncoded(url) && maxDepth > 0) {
+    url = decodeURIComponent(url)
+    maxDepth--
+  }
+  return url
+}
+
 function getDomainMap(): Record<string, RouteMatcher[] | null> {
   const liveDotArtsyDotNet: RouteMatcher[] = compact([
-    new RouteMatcher("/*", "LiveAuction", (params) => ({ slug: params["*"] })),
+    Platform.OS === "ios"
+      ? new RouteMatcher("/*", "LiveAuction", (params) => ({ slug: params["*"] }))
+      : new RouteMatcher("/*", "ReactWebView", (params) => ({
+          url: unsafe__getEnvironment().predictionURL + "/" + params["*"],
+        })),
   ])
 
   const artsyDotNet: RouteMatcher[] = compact([
@@ -81,14 +116,16 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/search", "Search"),
     new RouteMatcher("/inbox", "Inbox"),
     new RouteMatcher("/my-profile", "MyProfile"),
-
+    new RouteMatcher("/articles", "Articles"),
+    webViewRoute("/articles/:articleID"),
     new RouteMatcher("/artist/:artistID", "Artist"),
-    unsafe_getFeatureFlag("AROptionsNewArtistInsightsPage")
-      ? new RouteMatcher("/artist/:artistID/shows", "ArtistShows")
-      : null,
+    new RouteMatcher("/artist/:artistID/shows", "ArtistShows"),
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
     new RouteMatcher("/artwork/:artworkID/medium", "ArtworkMedium"),
-    webViewRoute("/artist/:artistID/auction-results"),
+    new RouteMatcher("/artist/:artistID/auction-results", "Artist", (params) => ({
+      ...params,
+      initialTab: "Insights",
+    })),
     new RouteMatcher("/artist/:artistID/auction-result/:auctionResultInternalID", "AuctionResult"),
     new RouteMatcher("/artist/:artistID/artist-series", "FullArtistSeriesList"),
     webViewRoute("/artist/:artistID/articles"),
@@ -109,6 +146,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     new RouteMatcher("/inquiry/:artworkID", "Inquiry"),
     new RouteMatcher("/viewing-rooms", "ViewingRooms"),
+    new RouteMatcher("/auction-result-for-you", "AuctionResultForYou"),
     new RouteMatcher("/viewing-room/:viewing_room_id", "ViewingRoom"),
     new RouteMatcher("/viewing-room/:viewing_room_id/artworks", "ViewingRoomArtworks"),
     new RouteMatcher("/viewing-room/:viewing_room_id/:artwork_id", "ViewingRoomArtwork"),
@@ -132,6 +170,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-profile/push-notifications", "MyProfilePushNotifications"),
     new RouteMatcher("/local-discovery", "LocalDiscovery"),
     new RouteMatcher("/privacy-request", "PrivacyRequest"),
+
+    new RouteMatcher("/orders", "OrderHistory"),
+
+    new RouteMatcher("/my-account", "MyAccount"),
 
     new RouteMatcher("/my-collection", "MyCollection"),
     new RouteMatcher("/my-collection/artwork/:artworkSlug", "MyCollectionArtwork"),
@@ -161,15 +203,18 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/city-fair/:citySlug", "CityFairList"),
     new RouteMatcher("/city-save/:citySlug", "CitySavedList"),
     new RouteMatcher("/auctions", "Auctions"),
+    new RouteMatcher("/lots-by-artists-you-follow", "LotsByArtistsYouFollow"),
     new RouteMatcher("/works-for-you", "WorksForYou"),
     webViewRoute("/categories"),
     webViewRoute("/privacy"),
     webViewRoute("/identity-verification-faq"),
     webViewRoute("/terms"),
     webViewRoute("/buy-now-feature-faq"),
+    webViewRoute("/buyer-guarantee"),
 
     new RouteMatcher("/city-bmw-list/:citySlug", "CityBMWList"),
     new RouteMatcher("/make-offer/:artworkID", "MakeOfferModal"),
+    new RouteMatcher("/user/purchases/:orderID", "OrderDetails"),
     unsafe_getFeatureFlag("AROptionsUseReactNativeWebView")
       ? webViewRoute("/orders/:orderID", { mimicBrowserBackButton: false })
       : new RouteMatcher("/orders/:orderID", "Checkout"),

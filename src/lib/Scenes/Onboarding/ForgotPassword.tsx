@@ -42,14 +42,12 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
     <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>
       <ScrollView
         contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top }}
-        showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
       >
-        <BackButton onPress={() => navigation.goBack()} />
         <Flex flex={1} px={1.5} paddingTop={60} justifyContent="flex-start">
-          <Text variant="largeTitle">Forgot password</Text>
+          <Text variant="largeTitle">Reset password</Text>
           <Text pt={1.5} variant="caption" color="black60">
-            Please enter the email address for your Artsy account and we’ll send you a reset link.
+            Please enter the email address associated with your Artsy account to receive a reset link.
           </Text>
           <Spacer mt={100} />
 
@@ -83,7 +81,8 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
           )}
         </Flex>
       </ScrollView>
-      <Flex alignSelf="flex-end" px={1.5} paddingBottom={1.5}>
+      <BackButton onPress={() => navigation.goBack()} />
+      <Flex px={1.5} paddingBottom={1.5}>
         {!!requestedPasswordReset ? (
           <Button
             variant="secondaryGray"

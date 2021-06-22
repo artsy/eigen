@@ -81,7 +81,7 @@ export const tappedArtworkGroupThumbnail = (contextModule: Schema.ContextModules
 
 export const ArtworkTileRail = createFragmentContainer(ArtworkTileRailContainer, {
   artworksConnection: graphql`
-    fragment ArtworkTileRail_artworksConnection on ArtworkConnection {
+    fragment ArtworkTileRail_artworksConnection on ArtworkConnectionInterface {
       edges {
         node {
           slug

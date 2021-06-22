@@ -2,7 +2,6 @@ import { tappedPromoSpace } from "@artsy/cohesion"
 import { HomeHero_homePage } from "__generated__/HomeHero_homePage.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { isPad } from "lib/utils/hardware"
-import { PlaceholderBox } from "lib/utils/placeholders"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { color, Flex, Sans } from "palette"
 import React, { useState } from "react"
@@ -14,11 +13,6 @@ const useHeroDimensions = () => {
   const { width, height: screenHeight } = useScreenDimensions()
   const height = Math.floor(Math.min(480, screenHeight * 0.6))
   return { width, height }
-}
-
-export const HomeHeroPlaceholder = () => {
-  const { width, height } = useHeroDimensions()
-  return <PlaceholderBox width={width} height={height} />
 }
 
 const HomeHero: React.FC<{ homePage: HomeHero_homePage }> = ({ homePage }) => {

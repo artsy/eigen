@@ -26,6 +26,7 @@ interface SelectProps<ValueType> {
   subTitle?: string
   enableSearch?: boolean
   maxModalHeight?: number
+  hasError?: boolean
   onSelectValue(value: ValueType, index: number): void
   renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
   renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
@@ -67,6 +68,7 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
       showTitleLabel,
       subTitle,
       maxModalHeight,
+      hasError,
     } = this.props
 
     const selectedItem = options.find((o) => o.value === value)
@@ -80,6 +82,7 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
             placeholder={placeholder}
             value={selectedItem?.label}
             onPress={this.open.bind(this)}
+            hasError={hasError}
           />
         )}
         <SelectModal
@@ -105,8 +108,9 @@ const SelectButton: React.FC<{
   showTitleLabel?: boolean
   subTitle?: string
   placeholder?: string
+  hasError?: boolean
   onPress(): void
-}> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle }) => {
+}> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle, hasError }) => {
   return (
     <Flex>
       {showTitleLabel ? <InputTitle>{title}</InputTitle> : null}
@@ -124,7 +128,7 @@ const SelectButton: React.FC<{
           flexDirection="row"
           height={INPUT_HEIGHT}
           borderWidth={1}
-          borderColor={color("black10")}
+          borderColor={hasError ? color("red100") : color("black10")}
           justifyContent="space-between"
           alignItems="center"
         >
