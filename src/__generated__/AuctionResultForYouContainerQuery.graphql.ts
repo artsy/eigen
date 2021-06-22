@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 091230c14989cf5fb93ef6ec1e16fdb4 */
+/* @relayHash a5b3bde6019edfb80293796921d06d61 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,37 +26,42 @@ query AuctionResultForYouContainerQuery {
   }
 }
 
+fragment AuctionResultForYouListItem_auctionResult on AuctionResult {
+  id
+  artistID
+  internalID
+  artist {
+    name
+    id
+  }
+  title
+  currency
+  dateText
+  mediumText
+  saleDate
+  organization
+  boughtIn
+  priceRealized {
+    cents
+    display
+  }
+  performance {
+    mid
+  }
+  images {
+    thumbnail {
+      url
+    }
+  }
+}
+
 fragment AuctionResultForYou_me on Me {
   auctionResultsByFollowedArtists(first: 10) {
     totalCount
     edges {
       node {
+        ...AuctionResultForYouListItem_auctionResult
         id
-        artistID
-        internalID
-        artist {
-          name
-          id
-        }
-        title
-        currency
-        dateText
-        mediumText
-        saleDate
-        organization
-        boughtIn
-        priceRealized {
-          cents
-          display
-        }
-        performance {
-          mid
-        }
-        images {
-          thumbnail {
-            url
-          }
-        }
         __typename
       }
       cursor
@@ -375,7 +380,7 @@ return {
     ]
   },
   "params": {
-    "id": "091230c14989cf5fb93ef6ec1e16fdb4",
+    "id": "a5b3bde6019edfb80293796921d06d61",
     "metadata": {},
     "name": "AuctionResultForYouContainerQuery",
     "operationKind": "query",

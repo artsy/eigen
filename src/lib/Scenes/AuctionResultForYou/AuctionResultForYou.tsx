@@ -18,7 +18,7 @@ import { SectionList } from "react-native"
 import { RelayPaginationProp } from "react-relay"
 import { createPaginationContainer, graphql, QueryRenderer } from "react-relay"
 import { Tab } from "../Favorites/Favorites"
-import { AuctionResultForYouListItem } from "./AuctionResultForYouListItem"
+import { AuctionResultForYouListItemContainer } from "./AuctionResultForYouListItem"
 
 interface Props {
   me: AuctionResultForYou_me | null
@@ -70,7 +70,9 @@ export const AuctionResultForYou: React.FC<Props> = ({ me, relay }) => {
           sections={groupedAuctionResultSectionData}
           onEndReachedThreshold={0.5}
           onEndReached={loadMoreArtworks}
-          renderItem={({ item }) => (item?.node ? <AuctionResultForYouListItem auctionResult={item.node} /> : <></>)}
+          renderItem={({ item }) =>
+            item?.node ? <AuctionResultForYouListItemContainer auctionResult={item.node} /> : <></>
+          }
           renderSectionHeader={({ section: { date } }) => (
             <Text
               textAlign="left"
@@ -104,31 +106,7 @@ export const AuctionResultForYouContainer = createPaginationContainer(
           totalCount
           edges {
             node {
-              id
-              artistID
-              internalID
-              artist {
-                name
-              }
-              title
-              currency
-              dateText
-              mediumText
-              saleDate
-              organization
-              boughtIn
-              priceRealized {
-                cents
-                display
-              }
-              performance {
-                mid
-              }
-              images {
-                thumbnail {
-                  url
-                }
-              }
+              ...AuctionResultForYouListItem_auctionResult
             }
           }
         }

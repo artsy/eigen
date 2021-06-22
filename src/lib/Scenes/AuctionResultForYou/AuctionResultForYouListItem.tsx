@@ -1,4 +1,4 @@
-import { AuctionResultForYouContainer_me } from "__generated__/AuctionResultForYouContainer_me.graphql"
+import { AuctionResultForYouListItem_auctionResult } from "__generated__/AuctionResultForYouListItem_auctionResult.graphql"
 import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
@@ -8,13 +8,10 @@ import { capitalize } from "lodash"
 import moment from "moment"
 import { bullet, color, Flex, NoArtworkIcon, Text, Touchable } from "palette"
 import React from "react"
+import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  auctionResult: NonNullable<
-    NonNullable<
-      NonNullable<NonNullable<AuctionResultForYouContainer_me["auctionResultsByFollowedArtists"]>["edges"]>[0]
-    >["node"]
-  >
+  auctionResult: AuctionResultForYouListItem_auctionResult
 }
 
 export const AuctionResultForYouListItem: React.FC<Props> = ({ auctionResult }) => {
@@ -105,3 +102,35 @@ export const AuctionResultForYouListItem: React.FC<Props> = ({ auctionResult }) 
     </Touchable>
   )
 }
+
+export const AuctionResultForYouListItemContainer = createFragmentContainer(AuctionResultForYouListItem, {
+  auctionResult: graphql`
+    fragment AuctionResultForYouListItem_auctionResult on AuctionResult {
+      id
+      artistID
+      internalID
+      artist {
+        name
+      }
+      title
+      currency
+      dateText
+      mediumText
+      saleDate
+      organization
+      boughtIn
+      priceRealized {
+        cents
+        display
+      }
+      performance {
+        mid
+      }
+      images {
+        thumbnail {
+          url
+        }
+      }
+    }
+  `,
+})

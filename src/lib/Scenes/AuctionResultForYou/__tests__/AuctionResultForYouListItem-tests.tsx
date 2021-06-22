@@ -5,7 +5,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { capitalize, first } from "lodash"
 import { NoArtworkIcon, Touchable } from "palette"
 import React from "react"
-import { AuctionResultForYouListItem } from "../AuctionResultForYouListItem"
+import { AuctionResultForYouListItemContainer } from "../AuctionResultForYouListItem"
 
 jest.unmock("react-relay")
 
@@ -102,9 +102,9 @@ const mockAuctionResultForYouListItemDataWithoutPrice = {
   title: "Laugh Now",
 }
 
-describe("AuctionResultForYouListItem", () => {
+describe("AuctionResultForYouListItemContainer", () => {
   const renderAuctionResult = (mockData: any = mockAuctionResultForYouListItemData) => {
-    const tree = renderWithWrappers(<AuctionResultForYouListItem auctionResult={mockData} />)
+    const tree = renderWithWrappers(<AuctionResultForYouListItemContainer auctionResult={mockData} />)
 
     return tree
   }
@@ -112,7 +112,7 @@ describe("AuctionResultForYouListItem", () => {
   it("renders without throwing an error", () => {
     const tree = renderAuctionResult()
 
-    expect(tree.root.findByType(AuctionResultForYouListItem)).toBeDefined()
+    expect(tree.root.findByType(AuctionResultForYouListItemContainer)).toBeDefined()
   })
 
   it("renders with a thumbnail", () => {
