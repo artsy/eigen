@@ -26,7 +26,7 @@ describe("ArtworkTileRailCard", () => {
       </Theme>
     )
 
-    const image = result.find("AROpaqueImageView")
+    const image = result.find("FastImage")
     expect(image.length).toBe(1)
     expect(image.prop("height")).toBe(240)
     expect(image.prop("width")).toBe(216)
@@ -73,7 +73,7 @@ describe("ArtworkTileRailCard", () => {
       </Theme>
     )
 
-    expect(result.find("AROpaqueImageView").length).toBe(0)
+    expect(result.find("FastImage").length).toBe(0)
   })
 
   it("renders without artistNames", () => {
@@ -169,7 +169,7 @@ describe("ArtworkTileRailCard", () => {
       </Theme>
     )
 
-    const image = result.find("AROpaqueImageView")
+    const image = result.find("FastImage")
     expect(image.prop("height")).toBe(240)
     expect(image.prop("width")).toBe(240)
   })
