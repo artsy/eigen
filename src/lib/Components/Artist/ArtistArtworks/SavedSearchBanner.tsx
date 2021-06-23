@@ -76,7 +76,7 @@ const getSearchCriteriaById = graphql`
 `
 
 export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = (props) => {
-  const { me, attributes, searchCriteriaId, loading, aggregations, updateFilters, relay } = props
+  const { me, artistId, attributes, searchCriteriaId, loading, aggregations, updateFilters, relay } = props
   const [saving, setSaving] = useState(false)
   const popoverMessage = usePopoverMessage()
   const enabled = !!me?.savedSearch?.internalID
@@ -265,9 +265,9 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = (props) => {
     })
   }
 
-  const trackToggledSavedSearchEvent = (modified: boolean, searchCriteriaId: string | undefined) => {
-    if (searchCriteriaId) {
-      tracking.trackEvent(tracks.toggleSavedSearch(modified, artistId, searchCriteriaId))
+  const trackToggledSavedSearchEvent = (modified: boolean, id: string | undefined) => {
+    if (id) {
+      tracking.trackEvent(tracks.toggleSavedSearch(modified, artistId, id))
     }
   }
 

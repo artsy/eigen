@@ -508,8 +508,6 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       attributionClass: ["unknown edition", "open edition"],
       colors: ["gold", "red"],
       dimensionRange: "16.0-40.0",
-      heightMax: null,
-      heightMin: null,
       inquireableOnly: null,
       locationCities: ["New York, NY, USA"],
       majorPeriods: ["2000"],
@@ -517,8 +515,6 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       offerable: true,
       partnerIDs: ["tate-ward-auctions"],
       priceRange: "10000-50000",
-      widthMax: null,
-      widthMin: null,
     }
     const result = convertSavedSearchCriteriaToFilterParams(criteria, aggregations)
 
@@ -649,8 +645,6 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       attributionClass: null,
       colors: null,
       dimensionRange: "16.0-40.0",
-      heightMax: null,
-      heightMin: null,
       inquireableOnly: null,
       locationCities: ["New York, NY, USA"],
       majorPeriods: ["2000"],
@@ -658,8 +652,6 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       offerable: true,
       partnerIDs: ["tate-ward-auctions"],
       priceRange: "10000-50000",
-      widthMax: null,
-      widthMin: null,
     }
     const result = convertSavedSearchCriteriaToFilterParams(criteria, aggregations)
 
