@@ -2,34 +2,109 @@ import { ActionType, OwnerType, ToggledSavedSearch } from "@artsy/cohesion"
 import { captureMessage } from "@sentry/react-native"
 import { SavedSearchBanner_me } from "__generated__/SavedSearchBanner_me.graphql"
 import { SavedSearchBannerCreateSavedSearchMutation } from "__generated__/SavedSearchBannerCreateSavedSearchMutation.graphql"
+import { SavedSearchBannerCriteriaByIdQuery } from "__generated__/SavedSearchBannerCriteriaByIdQuery.graphql"
 import { SavedSearchBannerDeleteSavedSearchMutation } from "__generated__/SavedSearchBannerDeleteSavedSearchMutation.graphql"
 import { SavedSearchBannerQuery } from "__generated__/SavedSearchBannerQuery.graphql"
-import { FilterParams, prepareFilterParamsForSaveSearchInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { SearchCriteriaAttributes } from 'lib/Components/ArtworkFilter/SavedSearch/types'
-import { usePopoverMessage } from 'lib/Components/PopoverMessage/popoverMessageHooks'
+import {
+  Aggregations,
+  FilterArray,
+  FilterParams,
+  prepareFilterParamsForSaveSearchInput,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
+import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
 import { Button, Flex, Text } from "palette"
 import React, { useState } from "react"
+import { useEffect } from "react"
 import { Alert, Linking, Platform } from "react-native"
-import { commitMutation, createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import {
+  commitMutation,
+  createRefetchContainer,
+  fetchQuery,
+  graphql,
+  QueryRenderer,
+  RelayRefetchProp,
+} from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface SavedSearchBannerProps {
-  me?: SavedSearchBanner_me | null
+interface SavedSearchBaseProps {
   artistId: string
-  attributes: SearchCriteriaAttributes
+  searchCriteriaId?: string
+  aggregations?: Aggregations
   loading?: boolean
+  updateFilters: (params: FilterArray) => void
+}
+
+interface SavedSearchBannerQueryRenderProps extends SavedSearchBaseProps {
+  filters: FilterParams
+}
+
+interface SavedSearchBannerProps extends SavedSearchBaseProps {
+  me?: SavedSearchBanner_me | null
+  attributes: SearchCriteriaAttributes
   relay: RelayRefetchProp
 }
 
-export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, artistId, attributes, loading, relay }) => {
+const getSearchCriteriaById = graphql`
+  query SavedSearchBannerCriteriaByIdQuery($criteriaId: ID!) {
+    me {
+      email
+      savedSearch(id: $criteriaId) {
+        acquireable
+        additionalGeneIDs
+        artistID
+        atAuction
+        attributionClass
+        colors
+        dimensionRange
+        height
+        inquireableOnly
+        locationCities
+        majorPeriods
+        materialsTerms
+        offerable
+        partnerIDs
+        priceRange
+        width
+      }
+    }
+  }
+`
+
+export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = (props) => {
+  const { me, attributes, searchCriteriaId, loading, aggregations, updateFilters, relay } = props
   const [saving, setSaving] = useState(false)
   const popoverMessage = usePopoverMessage()
   const enabled = !!me?.savedSearch?.internalID
   const inProcess = loading || saving
   const tracking = useTracking()
+
+  useEffect(() => {
+    if (searchCriteriaId && aggregations) {
+      const fetchCriteriaAndUpdateFilters = async () => {
+        const response = await fetchQuery<SavedSearchBannerCriteriaByIdQuery>(
+          relay.environment,
+          getSearchCriteriaById,
+          {
+            criteriaId: searchCriteriaId,
+          },
+          { force: true }
+        )
+        const searchCriteriaAttributes = response.me?.savedSearch as SearchCriteriaAttributes
+
+        if (searchCriteriaAttributes) {
+          const filterParams = convertSavedSearchCriteriaToFilterParams(searchCriteriaAttributes, aggregations)
+          updateFilters(filterParams)
+        }
+      }
+
+      fetchCriteriaAndUpdateFilters()
+    }
+  }, [aggregations, searchCriteriaId])
 
   // doing refetch as opposed to updating `enabled` in state with savedSearch internalID
   // because change in applied filters will update the `me` prop in the QueryRenderer
@@ -233,10 +308,8 @@ export const SavedSearchBannerRefetchContainer = createRefetchContainer(
   `
 )
 
-export const SavedSearchBannerQueryRender: React.FC<{ filters: FilterParams; artistId: string }> = ({
-  filters,
-  artistId,
-}) => {
+export const SavedSearchBannerQueryRender: React.FC<SavedSearchBannerQueryRenderProps> = (props) => {
+  const { filters, artistId, searchCriteriaId, aggregations, loading, updateFilters } = props
   const input = prepareFilterParamsForSaveSearchInput(filters)
   const attributes: SearchCriteriaAttributes = {
     artistID: artistId,
@@ -253,7 +326,7 @@ export const SavedSearchBannerQueryRender: React.FC<{ filters: FilterParams; art
           }
         }
       `}
-      render={({ props, error }) => {
+      render={({ props: relayProps, error }) => {
         if (error) {
           if (__DEV__) {
             console.error(error)
@@ -264,10 +337,13 @@ export const SavedSearchBannerQueryRender: React.FC<{ filters: FilterParams; art
 
         return (
           <SavedSearchBannerRefetchContainer
-            me={props?.me ?? null}
-            loading={props === null && error === null}
+            me={relayProps?.me ?? null}
+            loading={(relayProps === null && error === null) || !!loading}
             attributes={attributes}
             artistId={artistId}
+            searchCriteriaId={searchCriteriaId}
+            aggregations={aggregations}
+            updateFilters={updateFilters}
           />
         )
       }}

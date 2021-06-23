@@ -57,7 +57,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
       content: (
         <ArtistArtworks
           artist={artistAboveTheFold}
-          searchCriteriaAttributes={notificationPayload?.searchCriteriaAttributes}
+          searchCriteriaId={notificationPayload?.searchCriteriaID}
         />
       ),
     })

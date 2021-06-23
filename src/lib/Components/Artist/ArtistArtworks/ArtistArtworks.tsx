@@ -2,13 +2,12 @@ import { OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import {
-  Aggregations,
+  FilterArray,
   filterArtworksParams,
   FilterParamName,
   prepareFilterArtworksParamsForInput,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
@@ -21,14 +20,14 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, FilterIcon, Flex, Separator, Spacer, Text, TouchableHighlightColor } from "palette"
-import React, { useContext, useEffect, useMemo, useState } from "react"
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { SavedSearchBannerQueryRender } from "./SavedSearchBanner"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
-  searchCriteriaAttributes?: {}
+  searchCriteriaId?: string
   relay: RelayPaginationProp
 }
 
@@ -87,20 +86,30 @@ interface ArtistArtworksContainerProps {
 const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContainerProps> = ({
   artist,
   relay,
-  searchCriteriaAttributes,
+  searchCriteriaId,
   openFilterModal,
   ...props
 }) => {
   const tracking = useTracking()
   const enableSavedSearch = useFeatureFlag("AREnableSavedSearch")
+  const [isRefreshing, setIsRefreshing] = useState(false)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
   const applyFiltersAction = ArtworksFiltersStore.useStoreActions((action) => action.applyFiltersAction)
+  const updateFiltersAction = useCallback(
+    (params: FilterArray) => {
+      setInitialFilterStateAction(params)
+      applyFiltersAction()
+    },
+    [setInitialFilterStateAction, applyFiltersAction]
+  )
 
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
   const relevantFiltersForSavedSearch = appliedFilters.filter((filter) => !(filter.paramName === FilterParamName.sort))
-  const shouldShowSavedSearchBanner = enableSavedSearch && relevantFiltersForSavedSearch.length > 0
+  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
+  const shouldShowSavedSearchBanner =
+    enableSavedSearch && (searchCriteriaId || relevantFiltersForSavedSearch.length > 0)
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
 
@@ -112,9 +121,11 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 
   useEffect(() => {
     if (applyFilters) {
+      setIsRefreshing(true)
       relay.refetchConnection(
         PAGE_SIZE,
         (error) => {
+          setIsRefreshing(false)
           if (error) {
             throw new Error("ArtistArtworks/ArtistArtworks filter error: " + error.message)
           }
@@ -126,15 +137,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 
   useEffect(() => {
     setAggregationsAction(artworks?.aggregations)
-
-    if (searchCriteriaAttributes && artworks?.aggregations) {
-      const params = convertSavedSearchCriteriaToFilterParams(
-        searchCriteriaAttributes,
-        artworks.aggregations as Aggregations
-      )
-      setInitialFilterStateAction(params)
-      applyFiltersAction()
-    }
   }, [])
 
   // TODO: Convert to use cohesion
@@ -175,13 +177,29 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
         <Separator mt={2} ml={-2} width={screenWidth} />
         {!!shouldShowSavedSearchBanner && (
           <>
-            <SavedSearchBannerQueryRender artistId={artistInternalId} filters={filterParams} />
+            <SavedSearchBannerQueryRender
+              artistId={artistInternalId}
+              filters={filterParams}
+              searchCriteriaId={searchCriteriaId}
+              aggregations={aggregations}
+              loading={isRefreshing}
+              updateFilters={updateFiltersAction}
+            />
             <Separator ml={-2} width={screenWidth} />
           </>
         )}
       </Box>
     )
-  }, [artworksTotal, shouldShowSavedSearchBanner, artistInternalId, filterParams])
+  }, [
+    artworksTotal,
+    shouldShowSavedSearchBanner,
+    artistInternalId,
+    filterParams,
+    searchCriteriaId,
+    updateFiltersAction,
+    aggregations,
+    isRefreshing,
+  ])
 
   const filteredArtworks = () => {
     if (artworksCount === 0) {
