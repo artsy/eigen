@@ -197,7 +197,7 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
             onPress() {
               GlobalStore.actions.config.features.setAdminOverride({ key: flagKey, value: true })
               if (flagKey === "AREnableNewOnboardingFlow") {
-                // this is a temporary solution to log out if user switched to new onboarding flow, it will be remomed once we get rid of native onboarding (tag: AREnableNewOnboardingFlow)
+                // this is a temporary solution to log out if user switched to new onboarding flow, it will be removed once we get rid of native onboarding (tag: AREnableNewOnboardingFlow)
                 ;(async () => await GlobalStore.actions.signOut())()
               }
             },
@@ -207,7 +207,7 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
             onPress() {
               GlobalStore.actions.config.features.setAdminOverride({ key: flagKey, value: false })
               if (flagKey === "AREnableNewOnboardingFlow") {
-                // this is a temporary solution to log out if user switched to new onboarding flow, it will be remomed once we get rid of native onboarding (tag: AREnableNewOnboardingFlow)
+                // this is a temporary solution to log out if user switched to new onboarding flow, it will be removed once we get rid of native onboarding (tag: AREnableNewOnboardingFlow)
                 ;(async () => await GlobalStore.actions.signOut())()
               }
             },
@@ -217,7 +217,7 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
             onPress() {
               GlobalStore.actions.config.features.setAdminOverride({ key: flagKey, value: null })
               if (flagKey === "AREnableNewOnboardingFlow" && isAdminOverrideInEffect) {
-                // this is a temporary solution to log out if user switched to new onboarding flow, it will be remomed once we get rid of native onboarding (tag: AREnableNewOnboardingFlow)
+                // this is a temporary solution to log out if user switched to new onboarding flow, it will be removed once we get rid of native onboarding (tag: AREnableNewOnboardingFlow)
                 ;(async () => await GlobalStore.actions.signOut())()
               }
             },
