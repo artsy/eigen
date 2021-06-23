@@ -221,8 +221,14 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       for (let row = 0; row < sectionedArtworks[column].length; row++) {
         const artwork = sectionedArtworks[column][row]
         const itemIndex = row * columnCount + column
+
+        const aspectRatio = artwork.image?.aspectRatio ?? 1
+        const imgWidth = this.state.sectionDimension
+        const imgHeight = imgWidth / aspectRatio
         artworkComponents.push(
           <Artwork
+            height={imgHeight}
+            width={imgWidth}
             contextScreenOwnerType={this.props.contextScreenOwnerType}
             contextScreenOwnerId={this.props.contextScreenOwnerId}
             contextScreenOwnerSlug={this.props.contextScreenOwnerSlug}

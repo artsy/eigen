@@ -32,6 +32,8 @@ export interface ArtworkProps {
   hidePartner?: boolean
   // Show the lot number (Lot 213)
   showLotLabel?: boolean
+  height?: number
+  width?: number
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
@@ -45,6 +47,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideUrgencyTags = false,
   hidePartner = false,
   showLotLabel = false,
+  height,
+  width,
 }) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
@@ -90,7 +94,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
       <View ref={itemRef}>
         {!!artwork.image && (
           <View>
-            <OpaqueImageView aspectRatio={artwork.image?.aspectRatio ?? 1} imageURL={artwork.image?.url} />
+            <OpaqueImageView
+              height={height}
+              width={width}
+              aspectRatio={artwork.image?.aspectRatio ?? 1}
+              imageURL={artwork.image?.url}
+            />
             {Boolean(!hideUrgencyTags && urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed) && (
               <Flex
                 position="absolute"
