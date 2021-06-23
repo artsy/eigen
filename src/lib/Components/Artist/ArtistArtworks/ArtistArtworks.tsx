@@ -107,7 +107,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
   const relevantFiltersForSavedSearch = appliedFilters.filter((filter) => !(filter.paramName === FilterParamName.sort))
-  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
+  const aggregationsFromStore = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const shouldShowSavedSearchBanner =
     enableSavedSearch && (searchCriteriaId || relevantFiltersForSavedSearch.length > 0)
 
@@ -181,7 +181,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
               artistId={artistInternalId}
               filters={filterParams}
               searchCriteriaId={searchCriteriaId}
-              aggregations={aggregations}
+              aggregations={aggregationsFromStore}
               loading={isRefreshing}
               updateFilters={updateFiltersAction}
             />
@@ -197,7 +197,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     filterParams,
     searchCriteriaId,
     updateFiltersAction,
-    aggregations,
+    aggregationsFromStore,
     isRefreshing,
   ])
 
