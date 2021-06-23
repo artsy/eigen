@@ -84,7 +84,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = (props) => {
   const tracking = useTracking()
 
   useEffect(() => {
-    if (searchCriteriaId && aggregations) {
+    if (searchCriteriaId && aggregations?.length! > 0) {
       const fetchCriteriaAndUpdateFilters = async () => {
         try {
           const response = await fetchQuery<SavedSearchBannerCriteriaByIdQuery>(
