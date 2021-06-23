@@ -90,6 +90,25 @@ describe("PopoverMessage", () => {
     expect(textInstances[1].props.children).toEqual("Some message")
   })
 
+  it("renders with red title color on error", async () => {
+    const tree = renderWithWrappers(
+      <TestRenderer
+        options={{
+          title: "Some title",
+          message: "Some message",
+          placement: "top",
+          type: "error",
+        }}
+      />
+    )
+
+    const buttonInstance = tree.root.findByType(Touchable)
+    act(() => buttonInstance.props.onPress())
+
+    const textInstances = tree.root.findByType(PopoverMessage).findAllByType(Text)
+    expect(textInstances[0].props.color).toEqual("red100")
+  })
+
   it("renders at the top", async () => {
     const tree = renderWithWrappers(
       <TestRenderer

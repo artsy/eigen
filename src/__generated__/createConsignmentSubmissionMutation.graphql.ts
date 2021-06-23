@@ -12,6 +12,8 @@ export type CreateSubmissionMutationInput = {
     authenticityCertificate?: boolean | null;
     category?: ConsignmentSubmissionCategoryAggregation | null;
     clientMutationId?: string | null;
+    coaByAuthenticatingBody?: boolean | null;
+    coaByGallery?: boolean | null;
     currency?: string | null;
     depth?: string | null;
     dimensionsMetric?: string | null;

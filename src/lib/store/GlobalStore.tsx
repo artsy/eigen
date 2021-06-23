@@ -23,7 +23,7 @@ function createGlobalStore() {
     middleware.push(persistenceMiddleware)
   }
 
-  if (__DEV__) {
+  if (__DEV__ && !__TEST__) {
     const reduxInFlipper = require("redux-flipper").default
     middleware.push(reduxInFlipper())
   }
