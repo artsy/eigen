@@ -15,7 +15,7 @@ const ora = require("ora")
 const prettier = require("prettier")
 const appVersion = require("../../app.json").version
 
-const octokit = new Octokit({ auth: process.env.GH_TOKEN })
+const octokit = new Octokit({ auth: process.env.CHANGELOG_GITHUB_TOKEN_KEY})
 
 const owner = "artsy"
 const repo = "eigen"
