@@ -121,11 +121,16 @@ RCT_EXPORT_MODULE();
 
 - (void)requestNavigation:(NSString *)route
 {
+    [self requestNavigation:route withProps: @{}];
+}
+
+- (void)requestNavigation:(NSString *)route withProps:(NSDictionary *)props
+{
     __weak typeof(self) wself = self;
     [self afterBootstrap:^{
         __strong typeof(self) sself = wself;
         if (!sself) return;
-        [sself dispatch:requestNavigation data:@{@"route": route}];
+        [sself dispatch:requestNavigation data:@{@"route": route, @"props": props}];
     }];
 }
 
