@@ -7,6 +7,7 @@ const ora = require("ora")
 
 const DEFAULT_CHANGELOG_BRANCH = "update-changelog"
 
+const octokit = new Octokit({ auth: process.env.CHANGELOG_GITHUB_TOKEN_KEY})
 
 /**
  * @param {string} command
@@ -61,13 +62,36 @@ const commitAndPushChanges = () => {
  * Check if an open pull request already exists
  */
 const pullRequestAlreadyExists = async () => {
-  const octokit = new Octokit({ auth: process.env.CHANGELOG_GITHUB_TOKEN_KEY})
   const res = await octokit.pulls.list({
     repo: "eigen",
     state: "open",
     owner: "artsy"
   })
   return res.data.some((pr) => pr.head.ref === DEFAULT_CHANGELOG_BRANCH)
+}
+
+const createAndMergePullRequest = async () => {
+  const logger = ora("creating pull request").start()
+
+  // Create the PR
+  const res = await octokit.pulls.create({
+    repo: "eigen",
+    head: DEFAULT_CHANGELOG_BRANCH,
+    owner: "artsy",
+    base: "master",
+    title: "Update Changelog ✍️",
+    body: "This is an automatic PR to update the changelog ✍️",
+  })
+
+  // Add Label to the PR
+  await octokit.issues.addLabels({
+    repo: "eigen",
+    issue_number: res.data.number,
+    owner: "artsy",
+    labels: ["Changelog Updater", "Merge On Green"],
+  })
+
+  logger.succeed()
 }
 
 const main = async () => {
@@ -91,6 +115,7 @@ const main = async () => {
     return
   }
   // Otherwise, Create a pull request and merge it
+  await createAndMergePullRequest
 }
 
 main()
