@@ -42,32 +42,31 @@ describe("AuctionResultForYouContainer", () => {
   it("Renders list of auction results for you", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    const mockProps = {
-      auctionResultsByFollowedArtists: () => ({
-        counts: {
-          total: 0,
+    mockEnvironmentPayload(mockEnvironment, {
+      Me: () => ({
+        id: "test-id",
+        auctionResultsByFollowedArtists: {
+          totalCount: 1,
+          edges: [auctionResultEdge],
         },
-        edges: [auctionResultEdge, auctionResultEdge, auctionResultEdge],
       }),
-    }
-
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    })
 
     expect(tree.root.findAllByType(AuctionResultForYouContainer)).toHaveLength(1)
   })
 
   it("routes to favorites URL with passProps", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    const mockProps = {
-      auctionResultsByFollowedArtists: () => ({
-        counts: {
-          total: 0,
-        },
-        edges: [auctionResultEdge, auctionResultEdge, auctionResultEdge],
-      }),
-    }
 
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    mockEnvironmentPayload(mockEnvironment, {
+      Me: () => ({
+        id: "test-id",
+        auctionResultsByFollowedArtists: {
+          totalCount: 3,
+          edges: [auctionResultEdge, auctionResultEdge, auctionResultEdge],
+        },
+      }),
+    })
     first(tree.root.findAllByType(LinkText))?.props.onPress()
 
     expect(navigate).toHaveBeenCalledWith("/favorites", { passProps: { initialTab: Tab.artists } })
@@ -76,14 +75,13 @@ describe("AuctionResultForYouContainer", () => {
 
 const auctionResultEdge = {
   node: {
-    id: "QXVjdGlvblJlc3VsdDozMzM5NTI=",
     artistID: "4d8b92bb4eb68a1b2c000452",
     internalID: "333952",
     title: "Enso: The Sound of the Bell of Paired Sal Trees",
     currency: "HKD",
     dateText: "2015",
     mediumText: "acrylic on canvas mounted on aluminum frame",
-    saleDate: "2021-06-01T00:00:00.000Z",
+    saleDate: "2021-06-01",
     organization: "Phillips",
     boughtIn: false,
     priceRealized: {
