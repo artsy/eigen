@@ -5,6 +5,7 @@ import { stringify } from "qs"
 import { Platform } from "react-native"
 import Config from "react-native-config"
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "react-native-fbsdk-next"
+import { getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 
@@ -78,9 +79,7 @@ export const getAuthModel = (): AuthModel => ({
   xApptokenExpiresIn: null,
   onboardingState: "none",
   userEmail: computed([(_, store) => store], (store) => {
-    if (Platform.OS === "ios") {
-      return store.native.sessionState.userEmail
-    } else if (Platform.OS === "android") {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
       return store.auth.androidUserEmail
     }
     return null
@@ -101,7 +100,7 @@ export const getAuthModel = (): AuthModel => ({
     })}`
     const result = await fetch(tokenURL, {
       headers: {
-        "User-Agent": context.getStoreState().native.sessionState.userAgent,
+        "User-Agent": getCurrentEmissionState().userAgent,
       },
     })
     // TODO: check status
@@ -127,7 +126,7 @@ export const getAuthModel = (): AuthModel => ({
       headers: {
         "X-Xapp-Token": xAppToken,
         Accept: "application/json",
-        "User-Agent": context.getStoreState().native.sessionState.userAgent,
+        "User-Agent": getCurrentEmissionState().userAgent,
         ...payload.headers,
       },
       body: payload.body ? JSON.stringify(payload.body) : undefined,

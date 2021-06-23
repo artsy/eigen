@@ -105,6 +105,11 @@ export const features = defineFeatures({
     description: "Enable Saved Search",
     showInAdminMenu: true,
   },
+  AREnableNewOnboardingFlow: {
+    readyForRelease: false,
+    description: "Enable new onboarding flow",
+    showInAdminMenu: Platform.OS === "ios",
+  },
 })
 
 export interface DevToggleDescriptor {

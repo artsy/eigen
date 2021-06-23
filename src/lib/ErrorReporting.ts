@@ -3,7 +3,7 @@ import { useEffect } from "react"
 import { Platform } from "react-native"
 import Config from "react-native-config"
 import { sentryReleaseName } from "../../app.json"
-import { GlobalStore } from "./store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "./store/GlobalStore"
 
 function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
   if (Config.SENTRY_DSN) {
@@ -27,9 +27,11 @@ export function useSentryConfig() {
     setupSentry({ environment })
   }, [environment])
 
+  const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
+
   const userID =
     GlobalStore.useAppState((store) =>
-      Platform.OS === "ios" ? store.native.sessionState.userID : store.auth.userID
+      Platform.OS === "android" || showNewOnboarding ? store.auth.userID : store.native.sessionState.userID
     ) ?? "none"
   useEffect(() => {
     Sentry.setUser({

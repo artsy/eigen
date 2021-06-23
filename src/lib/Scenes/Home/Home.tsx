@@ -353,8 +353,11 @@ export const HomeQueryRenderer: React.FC = () => {
     flash_message?: string
   }
 
+  const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
   const userAccessToken = GlobalStore.useAppState((store) =>
-    Platform.OS === "ios" ? store.native.sessionState.authenticationToken : store.auth.userAccessToken
+    Platform.OS === "android" || showNewOnboarding
+      ? store.auth.userAccessToken
+      : store.native.sessionState.authenticationToken
   )
 
   useEffect(() => {

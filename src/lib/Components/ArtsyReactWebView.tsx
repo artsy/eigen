@@ -2,7 +2,7 @@ import { color } from "@artsy/palette-tokens"
 import { addBreadcrumb } from "@sentry/react-native"
 import { goBack, navigate } from "lib/navigation/navigate"
 import { matchRoute } from "lib/navigation/routes"
-import { getCurrentEmissionState, GlobalStore, useEnvironment } from "lib/store/GlobalStore"
+import { getCurrentEmissionState, GlobalStore, useEnvironment, useFeatureFlag } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { parse as parseQueryString } from "query-string"
 import React, { useEffect, useRef, useState } from "react"
@@ -150,8 +150,11 @@ const ProgressBar: React.FC<{ loadProgress: number | null }> = ({ loadProgress }
 }
 
 export function useWebViewCookies() {
+  const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
   const accesstoken = GlobalStore.useAppState((store) =>
-    Platform.OS === "ios" ? store.native.sessionState.authenticationToken : store.auth.userAccessToken
+    Platform.OS === "android" || showNewOnboarding
+      ? store.auth.userAccessToken
+      : store.native.sessionState.authenticationToken
   )
   const { webURL, predictionURL } = useEnvironment()
   useUrlCookies(webURL, accesstoken)

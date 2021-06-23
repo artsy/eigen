@@ -164,13 +164,13 @@ export function unsafe_getDevToggle(key: DevToggleName) {
 
 export function getCurrentEmissionState() {
   const state = globalStoreInstance().getState() ?? null
-  if (Platform.OS === "ios") {
+  if (Platform.OS === "ios" && !unsafe_getFeatureFlag("AREnableNewOnboardingFlow")) {
     return state?.native.sessionState ?? LegacyNativeModules.ARNotificationsManager.nativeState
   }
 
   // `getUserAgentSync` breaks the Chrome Debugger, so we use a string instead.
   const userAgent = `${
-    __DEV__ ? "Artsy-Mobile android" : getUserAgentSync()
+    __DEV__ ? "Artsy-Mobile " + Platform.OS : getUserAgentSync()
   } Artsy-Mobile/${version} Eigen/${getBuildNumber()}/${version}`
 
   const androidData: GlobalStoreModel["native"]["sessionState"] = {
