@@ -6,7 +6,14 @@ upcoming:
     - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
     - Update open simulator command in getting started docs - ole
     - Update debugging docs - mounir
+    - Send data in the filter params format for saved search - dzmitry tratsiak
+    - Enables external flag for order history - sweir
+    - Prepare search criteria values to filter params - dzmitry tratsiak
+    - Add specs for deleteSavedSearch and createSavedSearch mutations - dzmitry tratsiak
+    - add toggledSavedSearch analytics tracking  - devon blandin
   user_facing:
+    - Fixed "Unable to load" error on OrderHistory page when artwork is deleted/unpublished from order
+    - Pick up should be displayed in Sold by section - Serge0n
     - Country should be written with full name - Serge0n
     - Name from shipping address should be displayed instead of account name - Serge0n
     - User can see the way of delivery - Serge0n
@@ -32,6 +39,11 @@ upcoming:
     - Hide spinner when there is no more artworks to load - katsiaryna alshannikava
     - Aligned 'Next' button in the 'Sell work' menu - katsiaryna alshannikava
     - Fix home screen articles rail spacing - ole
+    - Fix unfollowing categories - katsiaryna alshannikava
+    - Decrease web view scroll deceleration rate - ole
+    - Show price with currency prefix in auction result list - ole
+    - Add auction house filter for auction results - ole
+
     - Fix facebook login failing after signing up for a new account - stanislau hanchar
 
 releases:

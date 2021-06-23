@@ -96,6 +96,7 @@ export const features = defineFeatures({
   },
   AREnableOrderHistoryOption: {
     readyForRelease: false,
+    echoFlagKey: "AREnableOrderHistoryOption",
     description: "Enable Order History in settings",
     showInAdminMenu: true,
   },

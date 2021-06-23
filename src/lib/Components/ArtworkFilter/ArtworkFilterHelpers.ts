@@ -1,7 +1,7 @@
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { FilterScreen } from "lib/Components/ArtworkFilter"
 import { capitalize, compact, groupBy, isEqual, pick, sortBy } from "lodash"
-import { LOCALIZED_UNIT, parseRangeByKeys } from "./Filters/helpers"
+import { LOCALIZED_UNIT } from "./Filters/helpers"
 
 export enum FilterDisplayName {
   // artist = "Artists",
@@ -16,6 +16,7 @@ export enum FilterDisplayName {
   locationCities = "Artwork location",
   materialsTerms = "Material",
   medium = "Medium",
+  organizations = "Auction house",
   partnerIDs = "Galleries and institutions",
   priceRange = "Price",
   size = "Size",
@@ -45,6 +46,7 @@ export enum FilterParamName {
   locationCities = "locationCities",
   materialsTerms = "materialsTerms",
   medium = "medium",
+  organizations = "organizations",
   partnerIDs = "partnerIDs",
   priceRange = "priceRange",
   // TODO: Delete `size` once the new size filter is deployed
@@ -101,6 +103,7 @@ export const ParamDefaultValues = {
   materialsTerms: [],
   medium: "*",
   offerable: false,
+  organizations: undefined,
   partnerIDs: [],
   priceRange: "*-*",
   sizes: undefined,
@@ -132,6 +135,7 @@ export const defaultCommonFilterOptions = {
   materialsTerms: ParamDefaultValues.materialsTerms,
   medium: ParamDefaultValues.medium,
   offerable: ParamDefaultValues.offerable,
+  organizations: ParamDefaultValues.organizations,
   partnerIDs: ParamDefaultValues.partnerIDs,
   priceRange: ParamDefaultValues.priceRange,
   sizes: ParamDefaultValues.sizes,
@@ -338,6 +342,22 @@ export const selectedOption = ({
     return "All"
   }
 
+  // selected option display text for auction house filter
+  if (filterScreen === "organizations") {
+    const selectedOrganizationsValues = selectedOptions.find(
+      (filter) => filter.paramName === FilterParamName.organizations
+    )?.paramValue as string[] | undefined
+    if (selectedOrganizationsValues?.length) {
+      const numSelectedOrganizationsToDisplay = selectedOrganizationsValues.length
+      const firstSelectedSize = capitalize(selectedOrganizationsValues[0].toLowerCase())
+      if (numSelectedOrganizationsToDisplay === 1) {
+        return firstSelectedSize
+      }
+      return `${firstSelectedSize}, ${numSelectedOrganizationsToDisplay - 1} more`
+    }
+    return "All"
+  }
+
   if (filterScreen === "year") {
     const selectedEarliestCreatedYear = selectedOptions.find(
       (filter) => filter.paramName === FilterParamName.earliestCreatedYear
@@ -539,88 +559,35 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
   ])
 }
 
-export const parseFilledRangeByKeys = (range: string, minKey: string, maxKey: string) => {
-  const filledRange: Record<string, number> = {}
-  const parsedRange = parseRangeByKeys(range, { minKey, maxKey })
+export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams) => {
+  const input: SearchCriteriaAttributes = {}
+  const allowedKeys = pick(filterParams, [
+    "artistID",
+    "locationCities",
+    "colors",
+    "partnerIDs",
+    "additionalGeneIDs",
+    "attributionClass",
+    "majorPeriods",
+    "acquireable",
+    "atAuction",
+    "inquireableOnly",
+    "offerable",
+    "materialsTerms",
+    "priceRange",
+    "dimensionRange",
+    "height",
+    "width",
+  ])
 
-  Object.entries(parsedRange).forEach((entry) => {
-    const [key, value] = entry
+  for (const key of Object.keys(allowedKeys)) {
+    const value = filterParams[key as FilterParamName]
+    const defaultValue = defaultCommonFilterOptions[key as FilterParamName]
 
-    if (value !== "*") {
-      filledRange[key] = value
-    }
-  })
-
-  return filledRange
-}
-
-export const parseFilterParamSize = (filterParams: FilterParams) => {
-  let input: SearchCriteriaAttributes = {}
-  const sizeParamValue = filterParams[FilterParamName.dimensionRange] as string
-  const widthParamValue = filterParams[FilterParamName.width] as string
-  const heightParamValue = filterParams[FilterParamName.height] as string
-
-  // Custom sizes
-  if (sizeParamValue === "0-*") {
-    if (widthParamValue) {
-      input = {
-        ...input,
-        ...parseFilledRangeByKeys(widthParamValue, "widthMin", "widthMax"),
-      }
-    }
-
-    if (heightParamValue) {
-      input = {
-        ...input,
-        ...parseFilledRangeByKeys(heightParamValue, "heightMin", "heightMax"),
-      }
-    }
-  } else {
-    input = {
-      ...input,
-      ...parseFilledRangeByKeys(sizeParamValue, "dimensionScoreMin", "dimensionScoreMax"),
+    if (!isEqual(defaultValue, value)) {
+      input[key as keyof SearchCriteriaAttributes] = value as any
     }
   }
-
-  return input
-}
-
-export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams) => {
-  let input: SearchCriteriaAttributes = {}
-  const canSendIfNotEqualByDefault = [
-    FilterParamName.waysToBuyBuy,
-    FilterParamName.waysToBuyBid,
-    FilterParamName.waysToBuyInquire,
-    FilterParamName.waysToBuyMakeOffer,
-  ]
-  const canSendWithoutChangesKeys = [
-    FilterParamName.additionalGeneIDs,
-    FilterParamName.colors,
-    FilterParamName.locationCities,
-    FilterParamName.timePeriod,
-    FilterParamName.materialsTerms,
-    FilterParamName.partnerIDs,
-  ]
-
-  Object.entries(filterParams).forEach((entry) => {
-    const [key, value] = entry
-
-    if (key === FilterParamName.priceRange) {
-      input = { ...input, ...parseFilledRangeByKeys(value as string, "priceMin", "priceMax") }
-    } else if (key === FilterParamName.attributionClass) {
-      input.attributionClasses = value as string[]
-    } else if (key === FilterParamName.dimensionRange) {
-      input = { ...input, ...parseFilterParamSize(filterParams) }
-    } else if (canSendWithoutChangesKeys.includes(key as FilterParamName)) {
-      input[key as keyof SearchCriteriaAttributes] = value as any
-    } else if (canSendIfNotEqualByDefault.includes(key as FilterParamName)) {
-      const defaultValue = defaultCommonFilterOptions[key as FilterParamName]
-
-      if (!isEqual(defaultValue, value)) {
-        input[key as keyof SearchCriteriaAttributes] = value as any
-      }
-    }
-  })
 
   return input
 }

@@ -10,7 +10,7 @@ import React from "react"
 import { ColorsSwatch } from "./ColorsSwatch"
 import { useMultiSelect } from "./useMultiSelect"
 
-const COLORS = [
+export const COLORS = [
   { value: "black-and-white", name: "Black and white", backgroundColor: "#000", foregroundColor: "#fff" },
   { value: "red", name: "Red", backgroundColor: "#FF0000", foregroundColor: "#fff" },
   { value: "yellow", name: "Yellow", backgroundColor: "#FBE854", foregroundColor: "#000" },
@@ -28,7 +28,7 @@ const COLORS = [
 
 type Color = typeof COLORS[number]
 
-const COLORS_INDEXED_BY_VALUE = COLORS.reduce(
+export const COLORS_INDEXED_BY_VALUE = COLORS.reduce(
   (acc: Record<string, Color>, color) => ({ ...acc, [color.value]: color }),
   {}
 )

@@ -29,7 +29,7 @@ const CUSTOM_SIZE_OPTION = {
 }
 
 // Parameter values for dimensions are specified in inches
-const SIZE_OPTIONS: FilterData[] = IS_USA
+export const SIZE_OPTIONS: FilterData[] = IS_USA
   ? [
       { displayText: "All", paramValue: "*-*", paramName: PARAM_NAME },
       { displayText: `Small (under 16in)`, paramValue: "*-16.0", paramName: PARAM_NAME },

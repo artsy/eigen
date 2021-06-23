@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b9e275bec133e03df208f7ffb668b101 */
+/* @relayHash 98600903e3def229941cab5b76f9284c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -24,7 +24,7 @@ export type OrderDetailsQuery = {
 query OrderDetailsQuery(
   $orderID: ID!
 ) {
-  order: commerceOrder(id: $orderID) {
+  order: commerceOrder(id: $orderID) @principalField {
     __typename
     ...OrderDetails_order
     id
@@ -124,6 +124,12 @@ fragment ShipsToSection_address on CommerceOrder {
 
 fragment SoldBySection_soldBy on CommerceOrder {
   __isCommerceOrder: __typename
+  requestedFulfillment {
+    __typename
+    ... on CommercePickup {
+      __typename
+    }
+  }
   lineItems(first: 1) {
     edges {
       node {
@@ -592,7 +598,7 @@ return {
     ]
   },
   "params": {
-    "id": "b9e275bec133e03df208f7ffb668b101",
+    "id": "98600903e3def229941cab5b76f9284c",
     "metadata": {},
     "name": "OrderDetailsQuery",
     "operationKind": "query",
@@ -600,5 +606,5 @@ return {
   }
 };
 })();
-(node as any).hash = '8066640df756aa777d763d82714ee562';
+(node as any).hash = 'c8782c3ab4aaf131a112d9274a2bc2c3';
 export default node;
