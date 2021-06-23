@@ -31,7 +31,7 @@ export function createEnvironment(
       checkAuthenticationMiddleware(),
       metaphysicsExtensionsLoggerMiddleware(),
       simpleLoggerMiddleware(),
-      __DEV__ ? errorMiddleware() : null,
+      // __DEV__ ? errorMiddleware() : null,
       timingMiddleware(),
     ],
     // `noThrow` is currently marked as "experimental" and may be deprecated in the future.

@@ -248,7 +248,7 @@ export const HomeFragmentContainer = createRefetchContainer(
       articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
         ...Home_articlesConnection
       }
-      homePage {
+      homePage @principalField {
         ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
       }
       me {
@@ -379,7 +379,7 @@ export const HomeQueryRenderer: React.FC = () => {
       environment={defaultEnvironment}
       query={graphql`
         query HomeQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
-          homePage {
+          homePage @principalField {
             ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
           }
           me {

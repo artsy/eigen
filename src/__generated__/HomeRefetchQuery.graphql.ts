@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 06bf55fd8c1a792d697286b299422a6f */
+/* @relayHash 62340342e59814d3a0ca6534bfa3f5bc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,7 +37,7 @@ query HomeRefetchQuery(
   articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
     ...Home_articlesConnection
   }
-  homePage {
+  homePage @principalField {
     ...Home_homePage_1IwJ0h
   }
   me {
@@ -1785,7 +1785,7 @@ return {
     ]
   },
   "params": {
-    "id": "06bf55fd8c1a792d697286b299422a6f",
+    "id": "62340342e59814d3a0ca6534bfa3f5bc",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",
@@ -1793,5 +1793,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'd38a7ccc847f63b99cc4d0afe1b8d18e';
+(node as any).hash = '396f79b618e0912cc64670b526d2bcb8';
 export default node;
