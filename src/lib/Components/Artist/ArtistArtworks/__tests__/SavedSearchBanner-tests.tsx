@@ -1,9 +1,11 @@
 import { ToggledSavedSearch } from "@artsy/cohesion"
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { SavedSearchBannerTestsQuery } from "__generated__/SavedSearchBannerTestsQuery.graphql"
+import { Aggregations } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { PopoverMessage } from "lib/Components/PopoverMessage/PopoverMessage"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button, Text } from "palette"
@@ -30,6 +32,23 @@ const mockFetchNotificationPermissions = LegacyNativeModules.ARTemporaryAPIModul
 
 describe("SavedSearchBanner", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const aggregations: Aggregations = [
+    {
+      slice: "MATERIALS_TERMS",
+      counts: [
+        {
+          count: 1849,
+          name: "Screen print",
+          value: "screen print",
+        },
+        {
+          count: 1289,
+          name: "Paper",
+          value: "paper",
+        },
+      ],
+    },
+  ]
   const attributes: SearchCriteriaAttributes = {
     priceRange: "300-500",
   }
@@ -48,7 +67,7 @@ describe("SavedSearchBanner", () => {
     trackEvent.mockClear()
   })
 
-  const TestRenderer = () => {
+  const TestRenderer = (props?: Record<string, any>) => {
     return (
       <QueryRenderer<SavedSearchBannerTestsQuery>
         environment={mockEnvironment}
@@ -59,12 +78,14 @@ describe("SavedSearchBanner", () => {
             }
           }
         `}
-        render={({ props }) => (
+        render={({ props: relayProps }) => (
           <SavedSearchBannerRefetchContainer
-            {...props}
-            loading={props === null}
+            {...relayProps}
+            loading={relayProps === null}
             attributes={attributes}
             artistId="banksy"
+            updateFilters={jest.fn}
+            {...props}
           />
         )}
         variables={{
@@ -191,5 +212,109 @@ describe("SavedSearchBanner", () => {
 
     const analyticsPayload = tracks.toggleSavedSearch(false, "banksy", '<mock-value-for-field-"internalID">')
     checkLogicForMutations(mockResolvers, mutation, popover, analyticsPayload)
+  })
+
+  it("renders loading state when passed loading prop", () => {
+    const tree = renderWithWrappers(<TestRenderer loading={true} />)
+    mockEnvironmentPayload(mockEnvironment, {
+      Me: () => ({
+        savedSearch: null,
+      }),
+    })
+
+    const buttonComponent = tree.root.findByType(Button)
+
+    expect(buttonComponent.props.loading).toBe(true)
+  })
+
+  it("should query the saved search criteria by id", () => {
+    renderWithWrappers(<TestRenderer searchCriteriaId="search-criteria-id" aggregations={aggregations} />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      SearchCriteria: () => ({
+        materialsTerms: ["prints"],
+      }),
+    })
+    const operation = mockEnvironment.mock.getMostRecentOperation()
+
+    expect(operation.request.node.operation.name).toEqual("SavedSearchBannerCriteriaByIdQuery")
+    expect(operation.request.variables).toEqual({
+      criteriaId: "search-criteria-id",
+    })
+  })
+
+  it("should call updateFilters after successfully getting the saved search criteria", async () => {
+    const updateFilters = jest.fn()
+
+    renderWithWrappers(
+      <TestRenderer searchCriteriaId="search-criteria-id" aggregations={aggregations} updateFilters={updateFilters} />
+    )
+
+    mockEnvironmentPayload(mockEnvironment)
+    mockEnvironmentPayload(mockEnvironment, {
+      SearchCriteria: () => ({
+        acquireable: null,
+        additionalGeneIDs: [],
+        atAuction: null,
+        attributionClass: [],
+        colors: [],
+        dimensionRange: null,
+        height: null,
+        inquireableOnly: null,
+        locationCities: [],
+        majorPeriods: [],
+        materialsTerms: ["screen print"],
+        offerable: null,
+        partnerIDs: [],
+        priceRange: null,
+        width: null,
+      }),
+    })
+
+    await flushPromiseQueue()
+    expect(updateFilters).toBeCalledWith([
+      {
+        displayText: "Screen print",
+        paramValue: ["screen print"],
+        paramName: "materialsTerms",
+      },
+    ])
+  })
+
+  it("should not call updateFilters if the fetch query returns an error", async () => {
+    console.error = jest.fn()
+    const updateFilters = jest.fn()
+
+    renderWithWrappers(
+      <TestRenderer searchCriteriaId="search-criteria-id" aggregations={aggregations} updateFilters={updateFilters} />
+    )
+
+    mockEnvironmentPayload(mockEnvironment)
+    mockEnvironment.mock.rejectMostRecentOperation(new Error("ALARM"))
+
+    await flushPromiseQueue()
+    expect(updateFilters).toBeCalledTimes(0)
+  })
+
+  it("should not call updateFilters if only aggregations passed", async () => {
+    const updateFilters = jest.fn()
+
+    renderWithWrappers(<TestRenderer aggregations={aggregations} updateFilters={updateFilters} />)
+
+    mockEnvironmentPayload(mockEnvironment)
+
+    await flushPromiseQueue()
+    expect(updateFilters).toBeCalledTimes(0)
+  })
+
+  it("should not call updateFilters if only searchCriteriaId passed", async () => {
+    const updateFilters = jest.fn()
+
+    renderWithWrappers(<TestRenderer searchCriteriaId="search-criteria-id" updateFilters={updateFilters} />)
+
+    mockEnvironmentPayload(mockEnvironment)
+
+    await flushPromiseQueue()
+    expect(updateFilters).toBeCalledTimes(0)
   })
 })
