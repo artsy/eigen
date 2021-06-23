@@ -313,7 +313,7 @@
 {
     [ARAnalytics event:ARAnalyticsNotificationTapped withProperties:notificationInfo];
 
-    [[AREmission sharedInstance] navigate:url];
+    [[AREmission sharedInstance] navigate:url payload:notificationInfo];
 }
 
 - (UIWindow *)findVisibleWindow

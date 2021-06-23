@@ -80,6 +80,11 @@ static AREmission *_sharedInstance = nil;
     [[self notificationsManagerModule] requestNavigation:route];
 }
 
+- (void)navigate:(NSString *)route payload:(NSDictionary *)payload
+{
+    [[self notificationsManagerModule] requestNavigation:route payload:payload];
+}
+
 - (void)updateState:(NSDictionary *)state
 {
     [self.notificationsManagerModule updateState:state];

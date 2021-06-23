@@ -39,6 +39,7 @@
 - (void)updateReactState:(NSDictionary *)reactState;
 
 - (void)requestNavigation:(NSString *)route;
+- (void)requestNavigation:(NSString *)route payload:(NSDictionary *)payload;
 - (void)afterBootstrap:(void (^)(void))completion;
 
 @end
