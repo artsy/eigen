@@ -86,19 +86,29 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = (props) => {
   useEffect(() => {
     if (searchCriteriaId && aggregations) {
       const fetchCriteriaAndUpdateFilters = async () => {
-        const response = await fetchQuery<SavedSearchBannerCriteriaByIdQuery>(
-          relay.environment,
-          getSearchCriteriaById,
-          {
-            criteriaId: searchCriteriaId,
-          },
-          { force: true }
-        )
-        const searchCriteriaAttributes = response.me?.savedSearch as SearchCriteriaAttributes
+        try {
+          const response = await fetchQuery<SavedSearchBannerCriteriaByIdQuery>(
+            relay.environment,
+            getSearchCriteriaById,
+            {
+              criteriaId: searchCriteriaId,
+            },
+            { force: true }
+          )
+          const searchCriteriaAttributes = response.me?.savedSearch as SearchCriteriaAttributes
 
-        if (searchCriteriaAttributes) {
-          const filterParams = convertSavedSearchCriteriaToFilterParams(searchCriteriaAttributes, aggregations)
-          updateFilters(filterParams)
+          if (searchCriteriaAttributes) {
+            const filterParams = convertSavedSearchCriteriaToFilterParams(searchCriteriaAttributes, aggregations)
+            updateFilters(filterParams)
+          }
+        } catch (error) {
+          if (error) {
+            if (__DEV__) {
+              console.error(error)
+            } else {
+              captureMessage(error.stack!)
+            }
+          }
         }
       }
 
