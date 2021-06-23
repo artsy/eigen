@@ -45,8 +45,7 @@ const SmallTileRail: React.FC<Props> = ({ artworks, listRef, contextModule }) =>
                 }
               : undefined
           }
-          imageURL={null}
-          // imageURL={item.image?.imageURL ?? null}
+          imageURL={item.image?.imageURL ?? null}
           imageSize="small"
           useSquareAspectRatio
           artistNames={item.artistNames}
