@@ -93,6 +93,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const tracking = useTracking()
   const enableSavedSearch = useFeatureFlag("AREnableSavedSearch")
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [shouldFetchCriteria, setShouldFetchCriteria] = useState(!!searchCriteriaId)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
@@ -109,7 +110,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const relevantFiltersForSavedSearch = appliedFilters.filter((filter) => !(filter.paramName === FilterParamName.sort))
   const aggregationsFromStore = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const shouldShowSavedSearchBanner =
-    enableSavedSearch && (searchCriteriaId || relevantFiltersForSavedSearch.length > 0)
+    enableSavedSearch && (shouldFetchCriteria || relevantFiltersForSavedSearch.length > 0)
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
 
@@ -122,6 +123,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   useEffect(() => {
     if (applyFilters) {
       setIsRefreshing(true)
+      setShouldFetchCriteria(false)
       relay.refetchConnection(
         PAGE_SIZE,
         (error) => {
@@ -184,6 +186,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
               aggregations={aggregationsFromStore}
               loading={isRefreshing}
               updateFilters={updateFiltersAction}
+              shouldFetchCriteria={shouldFetchCriteria}
             />
             <Separator ml={-2} width={screenWidth} />
           </>
@@ -199,6 +202,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     updateFiltersAction,
     aggregationsFromStore,
     isRefreshing,
+    shouldFetchCriteria,
   ])
 
   const filteredArtworks = () => {

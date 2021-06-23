@@ -36,6 +36,7 @@ interface SavedSearchBaseProps {
   searchCriteriaId?: string
   aggregations?: Aggregations
   loading?: boolean
+  shouldFetchCriteria?: boolean
   updateFilters: (params: FilterArray) => void
 }
 
@@ -76,7 +77,17 @@ const getSearchCriteriaById = graphql`
 `
 
 export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = (props) => {
-  const { me, artistId, attributes, searchCriteriaId, loading, aggregations, updateFilters, relay } = props
+  const {
+    me,
+    artistId,
+    attributes,
+    searchCriteriaId,
+    loading,
+    shouldFetchCriteria,
+    aggregations,
+    updateFilters,
+    relay,
+  } = props
   const [saving, setSaving] = useState(false)
   const popoverMessage = usePopoverMessage()
   const enabled = !!me?.savedSearch?.internalID
@@ -84,7 +95,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = (props) => {
   const tracking = useTracking()
 
   useEffect(() => {
-    if (searchCriteriaId && aggregations?.length! > 0) {
+    if (shouldFetchCriteria && searchCriteriaId && aggregations?.length! > 0) {
       const fetchCriteriaAndUpdateFilters = async () => {
         try {
           const response = await fetchQuery<SavedSearchBannerCriteriaByIdQuery>(
@@ -114,7 +125,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = (props) => {
 
       fetchCriteriaAndUpdateFilters()
     }
-  }, [aggregations, searchCriteriaId])
+  }, [shouldFetchCriteria, aggregations, searchCriteriaId])
 
   // doing refetch as opposed to updating `enabled` in state with savedSearch internalID
   // because change in applied filters will update the `me` prop in the QueryRenderer
@@ -319,7 +330,7 @@ export const SavedSearchBannerRefetchContainer = createRefetchContainer(
 )
 
 export const SavedSearchBannerQueryRender: React.FC<SavedSearchBannerQueryRenderProps> = (props) => {
-  const { filters, artistId, searchCriteriaId, aggregations, loading, updateFilters } = props
+  const { filters, artistId, searchCriteriaId, aggregations, loading, shouldFetchCriteria, updateFilters } = props
   const input = prepareFilterParamsForSaveSearchInput(filters)
   const attributes: SearchCriteriaAttributes = {
     artistID: artistId,
@@ -353,6 +364,7 @@ export const SavedSearchBannerQueryRender: React.FC<SavedSearchBannerQueryRender
             artistId={artistId}
             searchCriteriaId={searchCriteriaId}
             aggregations={aggregations}
+            shouldFetchCriteria={shouldFetchCriteria}
             updateFilters={updateFilters}
           />
         )

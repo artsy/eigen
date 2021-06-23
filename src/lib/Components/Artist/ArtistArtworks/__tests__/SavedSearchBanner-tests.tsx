@@ -228,7 +228,9 @@ describe("SavedSearchBanner", () => {
   })
 
   it("should query the saved search criteria by id", () => {
-    renderWithWrappers(<TestRenderer searchCriteriaId="search-criteria-id" aggregations={aggregations} />)
+    renderWithWrappers(
+      <TestRenderer searchCriteriaId="search-criteria-id" shouldFetchCriteria={true} aggregations={aggregations} />
+    )
 
     mockEnvironmentPayload(mockEnvironment, {
       SearchCriteria: () => ({
@@ -247,7 +249,12 @@ describe("SavedSearchBanner", () => {
     const updateFilters = jest.fn()
 
     renderWithWrappers(
-      <TestRenderer searchCriteriaId="search-criteria-id" aggregations={aggregations} updateFilters={updateFilters} />
+      <TestRenderer
+        searchCriteriaId="search-criteria-id"
+        shouldFetchCriteria={true}
+        aggregations={aggregations}
+        updateFilters={updateFilters}
+      />
     )
 
     mockEnvironmentPayload(mockEnvironment)
@@ -286,7 +293,12 @@ describe("SavedSearchBanner", () => {
     const updateFilters = jest.fn()
 
     renderWithWrappers(
-      <TestRenderer searchCriteriaId="search-criteria-id" aggregations={aggregations} updateFilters={updateFilters} />
+      <TestRenderer
+        searchCriteriaId="search-criteria-id"
+        shouldFetchCriteria={true}
+        aggregations={aggregations}
+        updateFilters={updateFilters}
+      />
     )
 
     mockEnvironmentPayload(mockEnvironment)
@@ -299,7 +311,9 @@ describe("SavedSearchBanner", () => {
   it("should not call updateFilters if only aggregations passed", async () => {
     const updateFilters = jest.fn()
 
-    renderWithWrappers(<TestRenderer aggregations={aggregations} updateFilters={updateFilters} />)
+    renderWithWrappers(
+      <TestRenderer aggregations={aggregations} shouldFetchCriteria={true} updateFilters={updateFilters} />
+    )
 
     mockEnvironmentPayload(mockEnvironment)
 
@@ -310,7 +324,9 @@ describe("SavedSearchBanner", () => {
   it("should not call updateFilters if only searchCriteriaId passed", async () => {
     const updateFilters = jest.fn()
 
-    renderWithWrappers(<TestRenderer searchCriteriaId="search-criteria-id" updateFilters={updateFilters} />)
+    renderWithWrappers(
+      <TestRenderer searchCriteriaId="search-criteria-id" shouldFetchCriteria={true} updateFilters={updateFilters} />
+    )
 
     mockEnvironmentPayload(mockEnvironment)
 
