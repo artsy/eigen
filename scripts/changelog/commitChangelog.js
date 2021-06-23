@@ -1,6 +1,7 @@
 // @ts-check
 "use strict"
 const { execSync } = require("child_process")
+const updatePlatfromChangeLog = require("./generatePlatformChangelog").updatePlatfromChangeLog
 const ora = require("ora")
 
 const DEFAULT_CHANGELOG_BRANCH = "update-changelog"
@@ -24,6 +25,7 @@ const main = async () => {
   // Make sure we are on a clean branch and checkout to it
   forceCheckout()
   // Run the changelog updater
+  await Promise.all([updatePlatfromChangeLog("android", "beta"), updatePlatfromChangeLog("ios", "beta")])
   // Check if we have any changes in the changelog
   // If yes, no further action neeeded, quit
   // Commit and push changes to the update changelog branch
@@ -31,3 +33,5 @@ const main = async () => {
   // If yes, no further action needed, quit
   // Create a pull request and merge it
 }
+
+main()
