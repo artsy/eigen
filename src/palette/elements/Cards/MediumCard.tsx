@@ -12,15 +12,25 @@ export interface MediumCardProps extends BoxProps {
   tag?: CardTagProps
 }
 
+const MEDIUM_CARD_HEIGHT = 370
+const MEDIUM_CARD_WIDTH = 280
+
 /**
  * `MediumCard` is a card with one image one tall image, and text for title and subtitle
  * at the bottom.
  */
 export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, tag, ...rest }) => {
   return (
-    <Box width={280} height={370} flexDirection="row" borderRadius={4} overflow="hidden" {...rest}>
+    <Box
+      width={MEDIUM_CARD_WIDTH}
+      height={MEDIUM_CARD_HEIGHT}
+      flexDirection="row"
+      borderRadius={4}
+      overflow="hidden"
+      {...rest}
+    >
       <Flex flex={2} background={color("black10")}>
-        <OpaqueImageView imageURL={image} style={{ flex: 1 }} />
+        <OpaqueImageView imageURL={image} width={MEDIUM_CARD_WIDTH} height={MEDIUM_CARD_HEIGHT} style={{ flex: 1 }} />
       </Flex>
       <LinearGradient
         colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
