@@ -6,6 +6,7 @@ import { CurrentOption } from "lib/Components/ArtworkFilter"
 import { StickyTab } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { postEventToProviders } from "lib/utils/track/providers"
 import _ from "lodash"
@@ -21,13 +22,51 @@ import { ArtistQueryRenderer, NotificationPayload } from "../Artist"
 jest.unmock("react-relay")
 jest.unmock("react-tracking")
 jest.unmock("lib/Components/Artist/ArtistArtworks/ArtistArtworks.tsx")
+jest.mock("lib/NativeModules/GraphQLQueryCache.ts")
+jest.mock("react-relay", () => ({
+  ...jest.requireActual("react-relay"),
+  fetchQuery: jest.fn(() =>
+    Promise.resolve({
+      me: {
+        savedSearch: {
+          acquireable: true,
+          additionalGeneIDs: [],
+          atAuction: null,
+          attributionClass: ["limited edition", "open edition"],
+          colors: [],
+          dimensionRange: null,
+          height: null,
+          inquireableOnly: true,
+          locationCities: [],
+          majorPeriods: [],
+          materialsTerms: [],
+          offerable: null,
+          partnerIDs: [],
+          priceRange: null,
+          width: null,
+        },
+      },
+    })
+  ),
+}))
 
 type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery"
 
 describe("availableTabs", () => {
+  const originalError = console.error
+  const originalWarn = console.warn
   let environment = createMockEnvironment()
+
   beforeEach(() => {
     environment = createMockEnvironment()
+    console.error = jest.fn()
+    console.warn = jest.fn()
+  })
+
+  afterEach(() => {
+    environment = createMockEnvironment()
+    console.error = originalError
+    console.warn = originalWarn
   })
 
   function mockMostRecentOperation(name: ArtistQueries, mockResolvers: MockResolvers = {}) {
@@ -173,6 +212,7 @@ describe("availableTabs", () => {
           }
         },
       })
+      mockMostRecentOperation("ArtistBelowTheFoldQuery")
 
       return tree
     }
@@ -182,9 +222,6 @@ describe("availableTabs", () => {
 
       const tree = getWrapper({
         searchCriteriaID: "search-criteria-id",
-        searchCriteriaAttributes: {
-          attributionClass: ["limited edition", "open edition"],
-        },
       })
 
       expect(tree.root.findAllByType(SavedSearchBanner)).toHaveLength(0)
@@ -203,25 +240,21 @@ describe("availableTabs", () => {
 
       const tree = getWrapper({
         searchCriteriaID: "search-criteria-id",
-        searchCriteriaAttributes: {
-          attributionClass: ["limited edition", "open edition"],
-        },
       })
 
       expect(tree.root.findAllByType(SavedSearchBanner)).toHaveLength(1)
     })
 
-    it("should convert the criteria attributes to the filter params format", () => {
+    it("should convert the criteria attributes to the filter params format", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: true })
+
       const tree = getWrapper({
         searchCriteriaID: "search-criteria-id",
-        searchCriteriaAttributes: {
-          attributionClass: ["limited edition", "open edition"],
-          acquireable: true,
-          inquireableOnly: true,
-        },
       })
 
       act(() => tree.root.findByType(TouchableHighlightColor).props.onPress())
+
+      await flushPromiseQueue()
 
       const filterTextValues = tree.root.findAllByType(CurrentOption).map(extractText)
 
@@ -229,15 +262,14 @@ describe("availableTabs", () => {
       expect(filterTextValues).toContain("Limited Edition, Open Edition")
     })
 
-    it("should call refetch with the passed criteria attribute variables", () => {
+    it("should call refetch with the passed criteria attribute variables", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: true })
+
       getWrapper({
         searchCriteriaID: "search-criteria-id",
-        searchCriteriaAttributes: {
-          attributionClass: ["limited edition", "open edition"],
-          acquireable: true,
-          inquireableOnly: true,
-        },
       })
+
+      await flushPromiseQueue()
 
       const operation = environment.mock.getMostRecentOperation()
 
