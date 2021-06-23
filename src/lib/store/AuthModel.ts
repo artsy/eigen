@@ -2,7 +2,6 @@ import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn,
 import { isArtsyEmail } from "lib/utils/general"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { stringify } from "qs"
-import { Platform } from "react-native"
 import Config from "react-native-config"
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "react-native-fbsdk-next"
 import { getCurrentEmissionState } from "./GlobalStore"
@@ -12,14 +11,13 @@ type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 export interface AuthModel {
   // State
   userID: string | null
-  androidUserEmail: string | null
   userAccessToken: string | null
   userAccessTokenExpiresIn: string | null
   xAppToken: string | null
   xApptokenExpiresIn: string | null
   onboardingState: "none" | "incomplete" | "complete"
+  userEmail: string | null
 
-  userEmail: Computed<this, string | null, GlobalStoreModel>
   userHasArtsyEmail: Computed<this, boolean, GlobalStoreModel>
 
   // Actions
@@ -72,18 +70,12 @@ export interface AuthModel {
 
 export const getAuthModel = (): AuthModel => ({
   userID: null,
-  androidUserEmail: null,
   userAccessToken: null,
   userAccessTokenExpiresIn: null,
   xAppToken: null,
   xApptokenExpiresIn: null,
   onboardingState: "none",
-  userEmail: computed([(_, store) => store], (store) => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
-      return store.auth.androidUserEmail
-    }
-    return null
-  }),
+  userEmail: null,
   userHasArtsyEmail: computed((state) => isArtsyEmail(state.userEmail ?? "")),
 
   setState: action((state, payload) => Object.assign(state, payload)),
@@ -206,7 +198,7 @@ export const getAuthModel = (): AuthModel => ({
         userAccessToken: access_token,
         userAccessTokenExpiresIn: expires_in,
         userID: id,
-        androidUserEmail: email,
+        userEmail: email,
       })
       actions.notifyTracking({ userId: id })
 

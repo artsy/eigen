@@ -45,6 +45,7 @@ export const artsyAppMigrations: Migrations = {
   [Versions.AddAuthAndConfigState]: (state) => {
     state.auth = {
       userID: null,
+      userEmail: null,
       userAccessToken: null,
       userAccessTokenExpiresIn: null,
       xAppToken: null,
@@ -67,7 +68,6 @@ export const artsyAppMigrations: Migrations = {
     state.config.environment.env = __TEST__ ? "staging" : "production"
   },
   [Versions.AddUserIsDev]: (state) => {
-    state.auth.androidUserEmail = null
     state.config.userIsDev = { flipValue: false }
   },
   [Versions.AddAuthOnboardingState]: (state) => {

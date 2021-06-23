@@ -29,7 +29,7 @@ describe("UserIsDevModel", () => {
   it("is true for artsy emails for android", () => {
     Platform.OS = "android"
     __globalStoreTestUtils__?.injectState({
-      auth: { androidUserEmail: "pavlos@artsymail.com" },
+      auth: { userEmail: "pavlos@artsymail.com" },
     })
     expect(getState().value).toEqual(true)
   })
@@ -37,7 +37,7 @@ describe("UserIsDevModel", () => {
   it("is true for artsy emails for ios", () => {
     Platform.OS = "ios"
     __globalStoreTestUtils__?.injectState({
-      auth: { androidUserEmail: "pavlos@artsymail.com" },
+      auth: { userEmail: "pavlos@artsymail.com" },
     })
     expect(getState().value).toEqual(true)
   })

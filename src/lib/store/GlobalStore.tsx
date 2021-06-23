@@ -164,8 +164,10 @@ export function unsafe_getDevToggle(key: DevToggleName) {
 
 export function getCurrentEmissionState() {
   const state = globalStoreInstance().getState() ?? null
-  if (Platform.OS === "ios" && !unsafe_getFeatureFlag("AREnableNewOnboardingFlow")) {
-    return state?.native.sessionState ?? LegacyNativeModules.ARNotificationsManager.nativeState
+  if (!unsafe_getFeatureFlag("AREnableNewOnboardingFlow")) {
+    if (Platform.OS === "ios") {
+      return state?.native.sessionState ?? LegacyNativeModules.ARNotificationsManager.nativeState
+    }
   }
 
   // `getUserAgentSync` breaks the Chrome Debugger, so we use a string instead.
@@ -173,7 +175,7 @@ export function getCurrentEmissionState() {
     __DEV__ ? "Artsy-Mobile " + Platform.OS : getUserAgentSync()
   } Artsy-Mobile/${version} Eigen/${getBuildNumber()}/${version}`
 
-  const androidData: GlobalStoreModel["native"]["sessionState"] = {
+  const data: GlobalStoreModel["native"]["sessionState"] = {
     authenticationToken: state?.auth.userAccessToken!,
     deviceId: `${Platform.OS} ${getModel()}`,
     launchCount: ArtsyNativeModule.launchCount,
@@ -182,7 +184,7 @@ export function getCurrentEmissionState() {
     userID: state?.auth.userID!,
     userEmail: "user@example.com", // not used on android
   }
-  return androidData
+  return data
 }
 
 /**

@@ -152,9 +152,9 @@ const ProgressBar: React.FC<{ loadProgress: number | null }> = ({ loadProgress }
 export function useWebViewCookies() {
   const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
   const accesstoken = GlobalStore.useAppState((store) =>
-    Platform.OS === "android" || showNewOnboarding
-      ? store.auth.userAccessToken
-      : store.native.sessionState.authenticationToken
+    Platform.OS === "ios" && !showNewOnboarding
+      ? store.native.sessionState.authenticationToken
+      : store.auth.userAccessToken
   )
   const { webURL, predictionURL } = useEnvironment()
   useUrlCookies(webURL, accesstoken)

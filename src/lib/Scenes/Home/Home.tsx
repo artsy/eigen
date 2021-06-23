@@ -355,9 +355,9 @@ export const HomeQueryRenderer: React.FC = () => {
 
   const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
   const userAccessToken = GlobalStore.useAppState((store) =>
-    Platform.OS === "android" || showNewOnboarding
-      ? store.auth.userAccessToken
-      : store.native.sessionState.authenticationToken
+    Platform.OS === "ios" && !showNewOnboarding
+      ? store.native.sessionState.authenticationToken
+      : store.auth.userAccessToken
   )
 
   useEffect(() => {
