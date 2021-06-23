@@ -4,7 +4,7 @@ import { SavedSearchBannerCreateSavedSearchMutation } from "__generated__/SavedS
 import { SavedSearchBannerDeleteSavedSearchMutation } from "__generated__/SavedSearchBannerDeleteSavedSearchMutation.graphql"
 import { SavedSearchBannerQuery, SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { FilterParams, prepareFilterParamsForSaveSearchInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { usePopoverMessage } from 'lib/Components/PopoverMessage/popoverMessageHooks'
+import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
@@ -40,6 +40,15 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, attrib
     )
   }
 
+  const showErrorPopover = () => {
+    popoverMessage.show({
+      title: "Sorry, an error occured.",
+      message: "Please try again.",
+      placement: "top",
+      type: "error",
+    })
+  }
+
   const createSavedSearch = () => {
     setSaving(true)
     commitMutation<SavedSearchBannerCreateSavedSearchMutation>(relay.environment, {
@@ -69,6 +78,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, attrib
       },
       onError: () => {
         setSaving(false)
+        showErrorPopover()
       },
     })
   }
@@ -102,6 +112,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, attrib
       },
       onError: () => {
         setSaving(false)
+        showErrorPopover()
       },
     })
   }
