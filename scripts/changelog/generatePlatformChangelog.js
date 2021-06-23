@@ -7,7 +7,6 @@
  * This file is used in CI to parse the list of merged pull requests
  * since the last public release per platform and get the changelogs for each one
  */
-const { ArgumentParser } = require("argparse")
 const Octokit = require("@octokit/rest")
 const compact = require("lodash/compact")
 const fs = require("fs")
@@ -21,20 +20,6 @@ const octokit = new Octokit({ auth: process.env.GH_TOKEN })
 const owner = "artsy"
 const repo = "eigen"
 
-const parser = new ArgumentParser({})
-
-parser.add_argument("-p", "--platform", {
-  help: `select destination platform ("android" or "ios")`,
-})
-
-const parsedArgs = parser.parse_args()
-
-if (parsedArgs.platform !== "android" && parsedArgs.platform !== "ios") {
-  console.error(`plaform needs to be either "android" or "ios"`)
-  process.exit(1)
-}
-
-updatePlatfromChangeLog(parsedArgs.platform)
 
 /**
  * @param {string | null} mergeDate Date when the commit was merged
@@ -234,9 +219,10 @@ async function updatePlatfromChangeLog(platform) {
 }
 
 module.exports = {
-  isMergedAfter,
-  getLastReleaseCommitDate,
-  getPRsBeforeDate,
   getCombinedChangeLog,
+  getLastReleaseCommitDate,
   getPlaformSpecificChangeLog,
+  getPRsBeforeDate,
+  isMergedAfter,
+  updatePlatfromChangeLog,
 }

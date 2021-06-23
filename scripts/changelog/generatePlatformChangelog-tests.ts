@@ -1,12 +1,6 @@
 import { getCombinedChangeLog, getPlaformSpecificChangeLog, isMergedAfter } from "./generatePlatformChangelog"
 
-jest.mock("argparse", () => ({
-  ArgumentParser: () => ({
-    add_argument: jest.fn(),
-    parse_args: () => ({ platform: "ios" }),
-  }),
-}))
-
+jest.mock("../../app.json", () => ({ version: "6.9.4" }))
 beforeEach(() => {
   jest
     .spyOn(Date.prototype, "toString")
