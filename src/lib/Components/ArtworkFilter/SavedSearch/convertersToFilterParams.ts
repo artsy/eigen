@@ -213,7 +213,7 @@ export const convertSavedSearchCriteriaToFilterParams = (
     const aggregationValue = aggregationValueByFilterParamName[filterParamName]
     const criteriaValue = criteria[filterParamName as SearchCriteriaAttributeKeys] as string[]
 
-    if (aggregationValue) {
+    if (aggregationValue && Array.isArray(criteriaValue)) {
       const filterParamItem = convertAggregationValueNamesToFilterParam(
         filterParamName,
         aggregationValue,
