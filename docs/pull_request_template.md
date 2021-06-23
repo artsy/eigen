@@ -31,19 +31,19 @@ This PR resolves [CX-]
 <!-- • Write a markdown list or just a single paragraph, but stick to plain text. -->
 <!-- 🤷‍♂️ Replace this entire block with the hashtag `#nochangelog` to avoid updating the changelog. -->
 
-#### Android user-facing changes
-
--
-
 #### Cross-platform user-facing changes
 
 -
 
-#### Dev changes
+#### iOS user-facing changes
 
 -
 
-#### iOS user-facing changes
+#### Android user-facing changes
+
+-
+
+#### Dev changes
 
 -
 

@@ -146,16 +146,16 @@ function generatePlatformChangelog(platform, changelog) {
   const changelogFilePath = `./CHANGELOG/${platform}-changelog.md`
   let fileContent = fs.readFileSync(changelogFilePath, "utf8").toString()
 
-  const regex = /## Deployed Changes/
+  const regex = /## Released Changes/
 
   if (!fileContent.match(regex)) {
     // tslint:disable-next-line
-    console.error(`Can't find 'Deployed Changes' section in the ${platform} template file`)
+    console.error(`Can't find 'Released Changes' section in the ${platform} template file`)
     spinner.fail()
     process.exit(1)
   }
 
-  const platformSpecificChanges = getPlafromSpecificChangeLog(platform, changelog)
+  const platformSpecificChanges = getPlaformSpecificChangeLog(platform, changelog)
   fileContent = fileContent.replace(regex, platformSpecificChanges)
   fileContent = prettier.format(fileContent, { parser: "markdown" })
 
@@ -178,9 +178,9 @@ function generatePlatformChangelog(platform, changelog) {
       - Fixed rerendering issues
  *
  */
-function getPlafromSpecificChangeLog(platform, changelog) {
+function getPlaformSpecificChangeLog(platform, changelog) {
   let changeLogMD = `
-## Deployed Changes
+## Released Changes
 
 ### v${appVersion}
 
@@ -238,5 +238,5 @@ module.exports = {
   getLastReleaseCommitDate,
   getPRsBeforeDate,
   getCombinedChangeLog,
-  getPlafromSpecificChangeLog,
+  getPlaformSpecificChangeLog,
 }

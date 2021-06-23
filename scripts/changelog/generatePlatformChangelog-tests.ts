@@ -1,4 +1,4 @@
-import { getCombinedChangeLog, getPlafromSpecificChangeLog, isMergedAfter } from "./generatePlatformChangelog"
+import { getCombinedChangeLog, getPlaformSpecificChangeLog, isMergedAfter } from "./generatePlatformChangelog"
 
 jest.mock("argparse", () => ({
   ArgumentParser: () => ({
@@ -26,7 +26,7 @@ describe("isMergedAfter", () => {
     expect(isMergedAfter("01 June 2021 ", new Date("02 June 2021"))).toEqual(false)
   })
 
-  it("returns false when the PR has been merged after the release commit date ", () => {
+  it("returns true when the PR has been merged after the release commit date ", () => {
     expect(isMergedAfter("02 June 2021 ", new Date("01 June 2021"))).toEqual(true)
   })
 })
@@ -50,7 +50,7 @@ describe("getCombinedChangeLog", () => {
   })
 })
 
-describe("getPlafromSpecificChangeLog", () => {
+describe("getPlaformSpecificChangeLog", () => {
   it("gets the combined changelog from all prs", () => {
     const changelog = {
       androidUserFacingChanges: [],
@@ -58,9 +58,9 @@ describe("getPlafromSpecificChangeLog", () => {
       devChanges: ["Improved changelog tooling", "Upgraded lodash"],
       iOSUserFacingChanges: ["fixed button on iOS"],
     }
-    expect(getPlafromSpecificChangeLog("ios", changelog)).toEqual(
+    expect(getPlaformSpecificChangeLog("ios", changelog)).toEqual(
       `
-## Deployed Changes
+## Released Changes
 
 ### v6.9.4
 
@@ -87,9 +87,9 @@ describe("getPlafromSpecificChangeLog", () => {
       devChanges: [],
       iOSUserFacingChanges: [],
     }
-    expect(getPlafromSpecificChangeLog("ios", emptyChangeLog)).toEqual(
+    expect(getPlaformSpecificChangeLog("ios", emptyChangeLog)).toEqual(
       `
-## Deployed Changes
+## Released Changes
 
 ### v6.9.4
 
