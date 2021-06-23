@@ -32,6 +32,7 @@ upcoming:
     - Hide spinner when there is no more artworks to load - katsiaryna alshannikava
     - Aligned 'Next' button in the 'Sell work' menu - katsiaryna alshannikava
     - Fix home screen articles rail spacing - ole
+    - Fix facebook login failing after signing up for a new account - stanislau hanchar
 
 releases:
   - version: 6.9.4
