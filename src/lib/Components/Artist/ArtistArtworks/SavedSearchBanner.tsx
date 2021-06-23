@@ -98,7 +98,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = (props) => {
           const searchCriteriaAttributes = response.me?.savedSearch as SearchCriteriaAttributes
 
           if (searchCriteriaAttributes) {
-            const filterParams = convertSavedSearchCriteriaToFilterParams(searchCriteriaAttributes, aggregations)
+            const filterParams = convertSavedSearchCriteriaToFilterParams(searchCriteriaAttributes, aggregations!)
             updateFilters(filterParams)
           }
         } catch (error) {
