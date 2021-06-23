@@ -41,6 +41,21 @@ const hasNoChanges = () => {
   return exec("git status --porcelain") === ""
 }
 
+/**
+ * Commit and push changes
+ */
+const commitAndPushChanges = () => {
+  const logger = ora("commiting and pushing changes").start()
+  exec(`git add -A`)
+  const result = spawnSync("git", ["commit", "-m", "Update Changelog"])
+  if (result.status !== 0) {
+    logger.fail()
+    process.exit(1)
+  }
+  exec(`git push origin ${DEFAULT_CHANGELOG_BRANCH} --force --no-verify`)
+  logger.succeed()
+}
+
 const main = async () => {
   // Make sure we are on a clean branch and checkout to it
   forceCheckout()
@@ -55,6 +70,7 @@ const main = async () => {
     return
   }
   // Commit and push changes to the update changelog branch
+  commitAndPushChanges()
   // Check if there is an open PR already
   // If yes, no further action needed, quit
   // Create a pull request and merge it
