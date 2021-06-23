@@ -409,6 +409,10 @@ lane :promote_beta_android do
     skip_upload_images: true,
     skip_upload_screenshots: true,
   )
+
+  vname, vcode = set_build_version_android
+  tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
+
 end
 
 lane :tag_and_push do |options|

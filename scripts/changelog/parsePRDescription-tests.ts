@@ -6,12 +6,13 @@ const NO_CHANGES: PRDescriptionParseResult = { type: "no_changes" }
 
 describe("parsePRDescription", () => {
   it("returns error for empty PR description", () => {
-    expect(parsePRDescription("")).toEqual(ERROR)
+    expect(parsePRDescription("#run_new_changelog_check")).toEqual(ERROR)
   })
 
   it("returns error for PR description that does not contain any changelog info", () => {
     expect(
       parsePRDescription(`
+#run_new_changelog_check
 # Description
 
 This pull request adds some stuff to the thing so that it can blah.
@@ -20,6 +21,19 @@ This pull request adds some stuff to the thing so that it can blah.
   })
 
   it("returns no_changes when the user includes '#nochangelog' hashtag", () => {
+    expect(
+      parsePRDescription(`
+#run_new_changelog_check
+# Description
+
+This pull request adds some stuff to the thing so that it can blah.
+
+#nochangelog
+    `)
+    ).toEqual(NO_CHANGES)
+  })
+
+  it("returns no_changes when the user does not includes '#run_new_changelog_check' hashtag", () => {
     expect(
       parsePRDescription(`
 # Description
@@ -34,6 +48,7 @@ This pull request adds some stuff to the thing so that it can blah.
   it("returns error when no changes have been declared and #nochangelog has not been included", () => {
     expect(
       parsePRDescription(`
+#run_new_changelog_check
 # Description
 
 This pull request adds some stuff to the thing so that it can blah.
@@ -62,6 +77,7 @@ This pull request adds some stuff to the thing so that it can blah.
   it("returns any changes specified by the PR author", () => {
     expect(
       parsePRDescription(`
+#run_new_changelog_check
 # Description
 
 This pull request adds some stuff to the thing so that it can blah.
@@ -108,6 +124,7 @@ blah
   it("allows sections of the changelog to be deleted", () => {
     expect(
       parsePRDescription(`
+#run_new_changelog_check
 ### Description
 blah blah
 
@@ -136,6 +153,7 @@ blah
   it("supports single-level markdown lists", () => {
     expect(
       parsePRDescription(`
+#run_new_changelog_check
 ### Changelog updates
 
 #### iOS user-facing changes
@@ -163,6 +181,7 @@ blah
   it("supports paragraphs of text", () => {
     expect(
       parsePRDescription(`
+#run_new_changelog_check
 ### Changelog updates
 
 #### iOS user-facing changes
