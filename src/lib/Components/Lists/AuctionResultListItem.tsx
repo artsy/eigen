@@ -82,7 +82,7 @@ const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress }) => {
             {auctionResultHasPrice(auctionResult) ? (
               <Flex alignItems="flex-end">
                 <Text variant="caption" fontWeight="bold" testID="price">
-                  {(auctionResult.priceRealized?.display ?? "").replace(`${auctionResult.currency} `, "")}
+                  {auctionResult.priceRealized?.display}
                 </Text>
                 {!!auctionResult.performance?.mid && (
                   <AuctionResultsMidEstimate value={auctionResult.performance.mid} shortDescription="est" />

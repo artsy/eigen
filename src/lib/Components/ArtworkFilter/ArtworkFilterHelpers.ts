@@ -16,6 +16,7 @@ export enum FilterDisplayName {
   locationCities = "Artwork location",
   materialsTerms = "Material",
   medium = "Medium",
+  organizations = "Auction house",
   partnerIDs = "Galleries and institutions",
   priceRange = "Price",
   size = "Size",
@@ -45,6 +46,7 @@ export enum FilterParamName {
   locationCities = "locationCities",
   materialsTerms = "materialsTerms",
   medium = "medium",
+  organizations = "organizations",
   partnerIDs = "partnerIDs",
   priceRange = "priceRange",
   // TODO: Delete `size` once the new size filter is deployed
@@ -101,6 +103,7 @@ export const ParamDefaultValues = {
   materialsTerms: [],
   medium: "*",
   offerable: false,
+  organizations: undefined,
   partnerIDs: [],
   priceRange: "*-*",
   sizes: undefined,
@@ -132,6 +135,7 @@ export const defaultCommonFilterOptions = {
   materialsTerms: ParamDefaultValues.materialsTerms,
   medium: ParamDefaultValues.medium,
   offerable: ParamDefaultValues.offerable,
+  organizations: ParamDefaultValues.organizations,
   partnerIDs: ParamDefaultValues.partnerIDs,
   priceRange: ParamDefaultValues.priceRange,
   sizes: ParamDefaultValues.sizes,
@@ -334,6 +338,22 @@ export const selectedOption = ({
         return firstSelectedSize
       }
       return `${firstSelectedSize}, ${numSelectedSizesToDisplay - 1} more`
+    }
+    return "All"
+  }
+
+  // selected option display text for auction house filter
+  if (filterScreen === "organizations") {
+    const selectedOrganizationsValues = selectedOptions.find(
+      (filter) => filter.paramName === FilterParamName.organizations
+    )?.paramValue as string[] | undefined
+    if (selectedOrganizationsValues?.length) {
+      const numSelectedOrganizationsToDisplay = selectedOrganizationsValues.length
+      const firstSelectedSize = capitalize(selectedOrganizationsValues[0].toLowerCase())
+      if (numSelectedOrganizationsToDisplay === 1) {
+        return firstSelectedSize
+      }
+      return `${firstSelectedSize}, ${numSelectedOrganizationsToDisplay - 1} more`
     }
     return "All"
   }

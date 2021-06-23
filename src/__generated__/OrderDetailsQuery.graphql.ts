@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e5d3e8f25b88d24839893b0cd77ca40e */
+/* @relayHash 98600903e3def229941cab5b76f9284c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -24,7 +24,7 @@ export type OrderDetailsQuery = {
 query OrderDetailsQuery(
   $orderID: ID!
 ) {
-  order: commerceOrder(id: $orderID) {
+  order: commerceOrder(id: $orderID) @principalField {
     __typename
     ...OrderDetails_order
     id
@@ -598,7 +598,7 @@ return {
     ]
   },
   "params": {
-    "id": "e5d3e8f25b88d24839893b0cd77ca40e",
+    "id": "98600903e3def229941cab5b76f9284c",
     "metadata": {},
     "name": "OrderDetailsQuery",
     "operationKind": "query",
@@ -606,5 +606,5 @@ return {
   }
 };
 })();
-(node as any).hash = '8066640df756aa777d763d82714ee562';
+(node as any).hash = 'c8782c3ab4aaf131a112d9274a2bc2c3';
 export default node;
