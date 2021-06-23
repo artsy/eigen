@@ -9,6 +9,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { Fonts } from "lib/data/fonts"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { groupBy } from "lodash"
@@ -28,10 +29,8 @@ interface Props {
 export const AuctionResultForYou: React.FC<Props> = ({ me, relay }) => {
   const { hasMore, isLoading, loadMore } = relay
   const [loadingMoreData, setLoadingMoreData] = useState(false)
-  const auctionResultData = me?.auctionResultsByFollowedArtists?.edges
-
-  const groupedAuctionResultData = groupBy(auctionResultData, (item) => moment(item!.node!.saleDate!).format("MMM"))
-
+  const auctionResultData = extractNodes(me?.auctionResultsByFollowedArtists)
+  const groupedAuctionResultData = groupBy(auctionResultData, (item) => moment(item!.saleDate!).format("MMM"))
   const groupedAuctionResultSectionData = Object.keys(groupedAuctionResultData).map((key) => {
     return { date: key, data: groupedAuctionResultData[key] }
   })
@@ -71,10 +70,10 @@ export const AuctionResultForYou: React.FC<Props> = ({ me, relay }) => {
           onEndReachedThreshold={0.5}
           onEndReached={loadMoreArtworks}
           renderItem={({ item }) =>
-            item?.node ? (
+            item ? (
               <AuctionResultFragmentContainer
-                auctionResult={item.node}
-                onPress={() => navigate(`/artist/${item.node?.artistID}/auction-result/${item.node?.internalID}`)}
+                auctionResult={item}
+                onPress={() => navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)}
               />
             ) : (
               <></>

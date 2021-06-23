@@ -3,6 +3,7 @@ import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
+import { extractNodes } from "lib/utils/extractNodes"
 import { Flex } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
@@ -11,7 +12,7 @@ import { RailScrollProps } from "./types"
 
 const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollProps> = (props) => {
   const { me, scrollRef } = props
-  const { auctionResultsByFollowedArtists } = me
+  const auctionResultsByFollowedArtists = extractNodes(me?.auctionResultsByFollowedArtists)
   const listRef = useRef<FlatList<any>>()
   const navigateToAuctionResultsForYou = () => {
     // uncomment after implementing AuctionResults query
@@ -37,19 +38,19 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
 
       <CardRailFlatList
         listRef={listRef}
-        data={auctionResultsByFollowedArtists?.edges}
+        data={auctionResultsByFollowedArtists}
         keyExtractor={(_, index) => String(index)}
         horizontal={false}
         initialNumToRender={3}
         renderItem={({ item }) => {
-          if (!item?.node) {
+          if (!item) {
             return <></>
           }
 
           return (
             <AuctionResultFragmentContainer
-              auctionResult={item?.node}
-              onPress={() => navigate(`/artist/${item.node?.artistID}/auction-result/${item.node?.internalID}`)}
+              auctionResult={item}
+              onPress={() => navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)}
             />
           )
         }}
