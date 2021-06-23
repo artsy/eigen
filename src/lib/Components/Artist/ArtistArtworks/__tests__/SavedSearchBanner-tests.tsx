@@ -1,3 +1,4 @@
+import { ToggledSavedSearch } from "@artsy/cohesion"
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { SavedSearchBannerTestsQuery } from "__generated__/SavedSearchBannerTestsQuery.graphql"
 import { PopoverMessage } from "lib/Components/PopoverMessage/PopoverMessage"
@@ -9,8 +10,9 @@ import { Button, Text } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { SavedSearchBannerRefetchContainer } from "../SavedSearchBanner"
+import { SavedSearchBannerRefetchContainer, tracks } from "../SavedSearchBanner"
 
 jest.unmock("react-relay")
 
@@ -32,8 +34,20 @@ describe("SavedSearchBanner", () => {
     priceMin: 300,
     priceMax: 500,
   }
+  const trackEvent = jest.fn()
 
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+    ;(useTracking as jest.Mock).mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
+
+  afterEach(() => {
+    trackEvent.mockClear()
+  })
 
   const TestRenderer = () => {
     return (
@@ -61,7 +75,12 @@ describe("SavedSearchBanner", () => {
     )
   }
 
-  const checkLogicForMutations = (mockResolvers = {}, mutation: Mutation, popover: Popover) => {
+  const checkLogicForMutations = (
+    mockResolvers = {},
+    mutation: Mutation,
+    popover: Popover,
+    analyticsPayload: ToggledSavedSearch
+  ) => {
     mockFetchNotificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Authorized))
 
     const tree = renderWithWrappers(<TestRenderer />)
@@ -89,6 +108,8 @@ describe("SavedSearchBanner", () => {
 
     expect(textInstances[0].props.children).toEqual(popover.title)
     expect(textInstances[1].props.children).toEqual(popover.message)
+
+    expect(trackEvent).toHaveBeenCalledWith(analyticsPayload)
   }
 
   it("renders correctly disabled state", () => {
@@ -143,7 +164,8 @@ describe("SavedSearchBanner", () => {
       message: "We will send you a push notification once new works are added.",
     }
 
-    checkLogicForMutations(mockResolvers, mutation, popover)
+    const analyticsPayload = tracks.toggleSavedSearch(true, "banksy", '<mock-value-for-field-"internalID">')
+    checkLogicForMutations(mockResolvers, mutation, popover, analyticsPayload)
   })
 
   it("deleteSavedSearch mutation is handled correctly", async () => {
@@ -168,6 +190,7 @@ describe("SavedSearchBanner", () => {
       message: "Don't worry, you can always create a new one.",
     }
 
-    checkLogicForMutations(mockResolvers, mutation, popover)
+    const analyticsPayload = tracks.toggleSavedSearch(false, "banksy", '<mock-value-for-field-"internalID">')
+    checkLogicForMutations(mockResolvers, mutation, popover, analyticsPayload)
   })
 })

@@ -1,10 +1,11 @@
+import { ActionType, OwnerType, ToggledSavedSearch } from "@artsy/cohesion"
 import { captureMessage } from "@sentry/react-native"
 import { SavedSearchBanner_me } from "__generated__/SavedSearchBanner_me.graphql"
 import { SavedSearchBannerCreateSavedSearchMutation } from "__generated__/SavedSearchBannerCreateSavedSearchMutation.graphql"
 import { SavedSearchBannerDeleteSavedSearchMutation } from "__generated__/SavedSearchBannerDeleteSavedSearchMutation.graphql"
 import { SavedSearchBannerQuery, SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { FilterParams, prepareFilterParamsForSaveSearchInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { usePopoverMessage } from 'lib/Components/PopoverMessage/popoverMessageHooks'
+import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
@@ -12,6 +13,7 @@ import { Button, Flex, Text } from "palette"
 import React, { useState } from "react"
 import { Alert, Linking, Platform } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface SavedSearchBannerProps {
   me?: SavedSearchBanner_me | null
@@ -21,11 +23,12 @@ interface SavedSearchBannerProps {
   relay: RelayRefetchProp
 }
 
-export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, attributes, loading, relay }) => {
+export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, artistId, attributes, loading, relay }) => {
   const [saving, setSaving] = useState(false)
   const popoverMessage = usePopoverMessage()
   const enabled = !!me?.savedSearch?.internalID
   const inProcess = loading || saving
+  const tracking = useTracking()
 
   // doing refetch as opposed to updating `enabled` in state with savedSearch internalID
   // because change in applied filters will update the `me` prop in the QueryRenderer
@@ -59,13 +62,14 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, attrib
           attributes,
         },
       },
-      onCompleted: () => {
+      onCompleted: (response) => {
         doRefetch()
         popoverMessage.show({
           title: "Your alert has been set.",
           message: "We will send you a push notification once new works are added.",
           placement: "top",
         })
+        trackToggledSavedSearchEvent(true, response.createSavedSearch?.savedSearchOrErrors.internalID)
       },
       onError: () => {
         setSaving(false)
@@ -92,13 +96,14 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, attrib
           searchCriteriaID: me!.savedSearch!.internalID,
         },
       },
-      onCompleted: () => {
+      onCompleted: (response) => {
         doRefetch()
         popoverMessage.show({
           title: "Your alert has been removed.",
           message: "Don't worry, you can always create a new one.",
           placement: "top",
         })
+        trackToggledSavedSearchEvent(false, response.deleteSavedSearch?.savedSearchOrErrors.internalID)
       },
       onError: () => {
         setSaving(false)
@@ -161,6 +166,12 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, attrib
           return
       }
     })
+  }
+
+  const trackToggledSavedSearchEvent = (modified: boolean, searchCriteriaId: string | undefined) => {
+    if (searchCriteriaId) {
+      tracking.trackEvent(tracks.toggleSavedSearch(modified, artistId, searchCriteriaId))
+    }
   }
 
   return (
@@ -253,4 +264,15 @@ export const SavedSearchBannerQueryRender: React.FC<{ filters: FilterParams; art
       }}
     />
   )
+}
+
+export const tracks = {
+  toggleSavedSearch: (enabled: boolean, artistId: string, searchCriteriaId: string): ToggledSavedSearch => ({
+    action: ActionType.toggledSavedSearch,
+    context_screen_owner_type: OwnerType.artist,
+    context_screen_owner_id: artistId,
+    modified: enabled,
+    original: !enabled,
+    search_criteria_id: searchCriteriaId,
+  }),
 }
