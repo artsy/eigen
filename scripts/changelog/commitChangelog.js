@@ -2,6 +2,7 @@
 "use strict"
 const { execSync, spawnSync } = require("child_process")
 const updatePlatfromChangeLog = require("./generatePlatformChangelog").updatePlatfromChangeLog
+const Octokit = require("@octokit/rest")
 const ora = require("ora")
 
 const DEFAULT_CHANGELOG_BRANCH = "update-changelog"
@@ -56,6 +57,19 @@ const commitAndPushChanges = () => {
   logger.succeed()
 }
 
+/**
+ * Check if an open pull request already exists
+ */
+const pullRequestAlreadyExists = async () => {
+  const octokit = new Octokit({ auth: process.env.CHANGELOG_GITHUB_TOKEN_KEY})
+  const res = await octokit.pulls.list({
+    repo: "eigen",
+    state: "open",
+    owner: "artsy"
+  })
+  return res.data.some((pr) => pr.head.ref === DEFAULT_CHANGELOG_BRANCH)
+}
+
 const main = async () => {
   // Make sure we are on a clean branch and checkout to it
   forceCheckout()
@@ -63,17 +77,20 @@ const main = async () => {
   await Promise.all([updatePlatfromChangeLog("android", "beta"), updatePlatfromChangeLog("ios", "beta")])
 
   // Check if we have any changes in the changelog
-  const hasChanges = hasNoChanges()
   // If no changes were found, no further action needed, quit
-  if (hasChanges) {
+  if (hasNoChanges()) {
     ora("no changes were made, no further action needed")
     return
   }
-  // Commit and push changes to the update changelog branch
+  // Otherwise, Commit and push changes to the update changelog branch
   commitAndPushChanges()
   // Check if there is an open PR already
   // If yes, no further action needed, quit
-  // Create a pull request and merge it
+  if (await pullRequestAlreadyExists()) {
+    ora("there is already an open pull request, no further action needed")
+    return
+  }
+  // Otherwise, Create a pull request and merge it
 }
 
 main()
