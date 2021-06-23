@@ -82,10 +82,9 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
   }
 
   sectionedArtworks() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const sectionedArtworks = []
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const sectionRatioSums = []
+    const sectionedArtworks: GenericGrid_artworks[] = []
+
+    const sectionRatioSums: any[] = []
     for (let i = 0; i < this.state.sectionCount; i++) {
       sectionedArtworks.push([])
       sectionRatioSums.push(0)
@@ -94,11 +93,9 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
     this.props.artworks.forEach((artwork) => {
       if (artwork.image) {
         let lowestRatioSum = Number.MAX_VALUE
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        let sectionIndex: number = null
+        let sectionIndex: number | null = null
 
         for (let j = 0; j < sectionRatioSums.length; j++) {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           const ratioSum = sectionRatioSums[j]
           if (ratioSum < lowestRatioSum) {
             sectionIndex = j
@@ -107,13 +104,12 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
         }
 
         if (sectionIndex != null) {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           const section = sectionedArtworks[sectionIndex]
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           section.push(artwork)
 
           // total section aspect ratio
           const aspectRatio = artwork.image.aspect_ratio || 1
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           sectionRatioSums[sectionIndex] += 1 / aspectRatio
         }
       }
@@ -136,10 +132,15 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
       for (let row = 0; row < artworks.length; row++) {
         const artwork = artworks[row]
         const itemIndex = row * this.state.sectionCount + column
+
+        const aspectRatio = artwork.image?.aspect_ratio ?? 1
+        const imgWidth = this.state.sectionDimension
+        const imgHeight = imgWidth / aspectRatio
         artworkComponents.push(
           <Artwork
+            height={imgHeight}
+            width={imgWidth}
             artwork={artwork}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             key={artwork.id + column + row}
             trackingFlow={trackingFlow}
             contextModule={contextModule}
