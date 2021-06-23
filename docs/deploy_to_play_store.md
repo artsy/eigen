@@ -13,7 +13,7 @@ Eigen's beta pre-submission checklist has [moved into Notion](https://www.notion
    - See [previous examples](https://github.com/artsy/eigen/commits/master/fastlane/metadata/android/en-US/changelogs/default.txt) of release notes.
    - Share the notes with the #practice-mobile channel in Slack for feedback.
    - Commit, push the changes, make a PR from your branch to master.
-1. Run `./scripts/promote-beta-to-submission-android`. This will submit the **most recent beta** for App Store review
+1. Run `./scripts/promote-beta-to-submission-android`. This will submit the **most recent beta** for Playstore Store review
 
 ## Release to Play Store
 
