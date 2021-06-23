@@ -16,6 +16,10 @@ parser.add_argument("-p", "--platform", {
   help: `select destination platform ("android" or "ios")`,
 })
 
+parser.add_argument("-variant", "--variant", {
+  help: `select destination variant ("beta" or "appstore")`,
+})
+
 const parsedArgs = parser.parse_args()
 
 if (parsedArgs.platform !== "android" && parsedArgs.platform !== "ios") {
@@ -23,4 +27,9 @@ if (parsedArgs.platform !== "android" && parsedArgs.platform !== "ios") {
   process.exit(1)
 }
 
-updatePlatfromChangeLog(parsedArgs.platform)
+if (parsedArgs.variant !== "beta" && parsedArgs.variant !== "appstore") {
+  console.error(`variant needs to be either "beta" or "appstore"`)
+  process.exit(1)
+}
+
+updatePlatfromChangeLog(parsedArgs.platform, parsedArgs.variant)

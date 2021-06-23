@@ -124,23 +124,34 @@ function getCombinedChangeLog(prs) {
 /**
  * @param {"android" | "ios"} platform
  * @param {import("./changelog-types").ParseResultChanges} changelog
+ * @param {"beta" | "appstore"} variant
  */
-function generatePlatformChangelog(platform, changelog) {
+function generatePlatformChangelog(platform, changelog, variant) {
   const spinner = ora("Generating platform specific changelog")
 
   const changelogFilePath = `./CHANGELOG/${platform}-changelog.md`
   let fileContent = fs.readFileSync(changelogFilePath, "utf8").toString()
 
-  const regex = /## Released Changes/
+  let regex
+
+  if (variant === "appstore") {
+    regex = /## Released Changes/
+  } else {
+    regex = /## Undeployed Changes[\S\s]+## Released Changes/
+  }
+
 
   if (!fileContent.match(regex)) {
-    // tslint:disable-next-line
-    console.error(`Can't find 'Released Changes' section in the ${platform} template file`)
+    if (variant === "appstore") {
+      console.log(`Can't find 'Released Changes' section in the ${platform} template file`)
+    } else {
+      console.log(`Can't find 'Undeployed Changes' section in the ${platform} template file`)
+    }
     spinner.fail()
     process.exit(1)
   }
 
-  const platformSpecificChanges = getPlaformSpecificChangeLog(platform, changelog)
+  const platformSpecificChanges = getPlaformSpecificChangeLog(platform, changelog, variant)
   fileContent = fileContent.replace(regex, platformSpecificChanges)
   fileContent = prettier.format(fileContent, { parser: "markdown" })
 
@@ -150,6 +161,7 @@ function generatePlatformChangelog(platform, changelog) {
 /**
  * @param {"android" | "ios"} platform
  * @param {import("./changelog-types").ParseResultChanges} changelog
+ * @param {"beta" | "appstore"} variant
  * @returns {string}
  * @example
  * ### 6.9.2
@@ -163,8 +175,10 @@ function generatePlatformChangelog(platform, changelog) {
       - Fixed rerendering issues
  *
  */
-function getPlaformSpecificChangeLog(platform, changelog) {
-  let changeLogMD = `
+function getPlaformSpecificChangeLog(platform, changelog, variant) {
+  let changeLogMD
+  if (variant === "appstore") {
+  changeLogMD = `
 ## Released Changes
 
 ### v${appVersion}
@@ -173,6 +187,17 @@ function getPlaformSpecificChangeLog(platform, changelog) {
 - App store submission date: **${new Date().toString()}**
 - Changelog:
 `
+  } else {
+  changeLogMD = `
+## Undeployed Changes
+
+### v${appVersion}
+
+- Status: **Beta**
+- Changelog update date: **${new Date().toString()}**
+- Changelog:
+`
+  }
   let userFacingChanges = changelog.crossPlatformUserFacingChanges
   if (platform === "android") {
     userFacingChanges = userFacingChanges.concat(changelog.androidUserFacingChanges)
@@ -188,7 +213,7 @@ function getPlaformSpecificChangeLog(platform, changelog) {
   - User facing changes:
     - ${userFacingChanges.join("\n    - ")}
 `
-  }
+}
 
   /**
    * Fill in the dev changes if any are available
@@ -200,21 +225,28 @@ function getPlaformSpecificChangeLog(platform, changelog) {
 `
   }
 
+    // For beta releases, we need to add back ## Released Changes to make sure our regex does not break
+  if (variant === "beta") {
+    changeLogMD = changeLogMD + "\n<!-- DO NOT CHANGE -->\n## Released Changes"
+  }
+
   return changeLogMD
 }
 
 /**
  * @param {"android" | "ios"} platform
+ * @param {"beta" | "appstore"} variant
  */
-async function updatePlatfromChangeLog(platform) {
+async function updatePlatfromChangeLog(platform, variant) {
   try {
     const commitDate = await getLastReleaseCommitDate(platform)
     const prs = await getPRsBeforeDate(commitDate)
     const changelog = getCombinedChangeLog(prs)
-    generatePlatformChangelog(platform, changelog)
+    generatePlatformChangelog(platform, changelog, variant)
     ora("Successfully loaded list of PRs before tag").succeed()
   } catch (error) {
-    throw new Error(error)
+    console.log(error)
+    process.exit(1)
   }
 }
 
