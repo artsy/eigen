@@ -31,7 +31,7 @@ export function useSentryConfig() {
 
   const userID =
     GlobalStore.useAppState((store) =>
-      Platform.OS === "android" || showNewOnboarding ? store.auth.userID : store.native.sessionState.userID
+      Platform.OS === "ios" && !showNewOnboarding ? store.native.sessionState.userID : store.auth.userID
     ) ?? "none"
   useEffect(() => {
     Sentry.setUser({

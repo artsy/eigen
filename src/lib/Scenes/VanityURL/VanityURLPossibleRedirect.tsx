@@ -16,9 +16,9 @@ export const VanityURLPossibleRedirect: React.FC<{ slug: string }> = ({ slug }) 
 
   const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
   const authenticationToken =
-    Platform.OS === "android" || showNewOnboarding
-      ? GlobalStore.useAppState((store) => store.auth.userAccessToken!)
-      : GlobalStore.useAppState((store) => store.native.sessionState.authenticationToken)
+    Platform.OS === "ios" && !showNewOnboarding
+      ? GlobalStore.useAppState((store) => store.native.sessionState.authenticationToken)
+      : GlobalStore.useAppState((store) => store.auth.userAccessToken!)
   const webURL = useEnvironment().webURL
   const resolvedURL = join(webURL, slug)
 
