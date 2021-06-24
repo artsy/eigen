@@ -8,7 +8,9 @@ import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { parse as parseQueryString } from "query-string"
 import React, { useEffect, useRef, useState } from "react"
-import { Platform, Share, View } from "react-native"
+import { Platform, View } from "react-native"
+// @ts-ignore
+import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
 import { parse as parseURL } from "url"
@@ -63,7 +65,7 @@ export const ArtsyReactWebViewPage: React.FC<
     const shareUrl = ref.current?.shareTitleUrl || uri
     tracking.trackEvent(tracks.share(shareUrl))
     try {
-      await Share.share({
+      await Share.open({
         url: shareUrl,
       })
     } catch (error) {
