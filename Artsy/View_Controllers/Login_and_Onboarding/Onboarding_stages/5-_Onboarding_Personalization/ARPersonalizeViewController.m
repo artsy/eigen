@@ -169,7 +169,7 @@
     // for iPhone 5
     if ([[UIScreen mainScreen] bounds].size.height == 568.0) {
         self.spaceHeaderToTop = [self.headerView alignTopEdgeWithView:self.view predicate:self.useLargeLayout ? @"80" : @"20"];
-        [self.headerView constrainHeight:@"120"];
+        [self.headerView constrainHeight:@"80"];
     } else {
         self.spaceHeaderToTop = [self.headerView alignTopEdgeWithView:self.view predicate:self.useLargeLayout ? @"80" : @"60"];
         [self.headerView constrainHeight:@"160"];
