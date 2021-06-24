@@ -10,14 +10,19 @@ import { ArtistAboutContainer } from "lib/Components/Artist/ArtistAbout/ArtistAb
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
 import { ArtistInsightsFragmentContainer } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
+import { getOnlyFilledSearchCriteriaValues } from 'lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers'
+import { SearchCriteriaAttributes } from 'lib/Components/ArtworkFilter/SavedSearch/types'
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
+import { usePopoverMessage } from 'lib/Components/PopoverMessage/popoverMessageHooks'
 import { StickyTabPage, TabProps } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { SearchCriteriaQueryRender } from "lib/Scenes/Artist/SearchCriteria"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Flex, Message } from "palette"
 import React from "react"
+import { useEffect } from 'react'
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -25,24 +30,35 @@ import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvir
 const INITIAL_TAB = "Artworks"
 export interface NotificationPayload {
   searchCriteriaID: string
-  // TODO: replace with proper searchCriteriaAttributes type when defined
-  searchCriteriaAttributes: {}
 }
 
 interface ArtistProps {
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
   artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
   initialTab?: string
-  notificationPayload?: NotificationPayload
+  searchCriteria: SearchCriteriaAttributes | null
+  fetchCriteriaError: Error | null
 }
 
 export const Artist: React.FC<ArtistProps> = (props) => {
-  const { artistAboveTheFold, artistBelowTheFold, initialTab = INITIAL_TAB, notificationPayload } = props
+  const { artistAboveTheFold, artistBelowTheFold, initialTab = INITIAL_TAB, searchCriteria, fetchCriteriaError } = props
+  const popoverMessage = usePopoverMessage()
   const tabs: TabProps[] = []
   const displayAboutSection =
     artistAboveTheFold.has_metadata ||
     (artistAboveTheFold.counts?.articles ?? 0) > 0 ||
     (artistAboveTheFold.counts?.related_artists ?? 0) > 0
+
+  useEffect(() => {
+    if (!!fetchCriteriaError) {
+      popoverMessage.show({
+        title: "Sorry, an error occured",
+        message: "Failed to get saved search criteria",
+        placement: "top",
+        type: "error",
+      })
+    }
+  }, [fetchCriteriaError])
 
   if (displayAboutSection) {
     tabs.push({
@@ -58,12 +74,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
 
     tabs.push({
       title: "Artworks",
-      content: (
-        <ArtistArtworks
-          artist={artistAboveTheFold}
-          searchCriteriaAttributes={notificationPayload?.searchCriteriaAttributes}
-        />
-      ),
+      content: <ArtistArtworks artist={artistAboveTheFold} searchCriteria={searchCriteria} />,
     })
   }
 
@@ -124,55 +135,76 @@ interface ArtistQueryRendererProps extends ArtistAboveTheFoldQueryVariables, Art
 
 export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) => {
   const { artistID, environment, initialTab, notificationPayload } = props
+
   return (
-    <AboveTheFoldQueryRenderer<ArtistAboveTheFoldQuery, ArtistBelowTheFoldQuery>
-      environment={environment || defaultEnvironment}
-      above={{
-        query: graphql`
-          query ArtistAboveTheFoldQuery($artistID: String!) {
-            artist(id: $artistID) {
-              internalID
-              slug
-              has_metadata: hasMetadata
-              counts {
-                artworks
-                partner_shows: partnerShows
-                related_artists: relatedArtists
-                articles
-              }
-              ...ArtistHeader_artist
-              ...ArtistArtworks_artist @arguments(input: { dimensionRange: "*-*", sort: "-decayed_merch" })
-              auctionResultsConnection {
-                totalCount
-              }
-            }
-          }
-        `,
-        variables: { artistID },
-      }}
-      below={{
-        query: graphql`
-          query ArtistBelowTheFoldQuery($artistID: String!) {
-            artist(id: $artistID) {
-              ...ArtistAbout_artist
-              ...ArtistInsights_artist
-            }
-          }
-        `,
-        variables: { artistID },
-      }}
+    <SearchCriteriaQueryRender
+      searchCriteriaId={notificationPayload?.searchCriteriaID}
+      environment={environment}
       render={{
         renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
-        renderComponent: ({ above, below }) => {
-          if (!above.artist) {
-            throw new Error("no artist data")
+        renderComponent: (searchCriteriaProps) => {
+          const { savedSearchCriteria, fetchCriteriaError } = searchCriteriaProps
+          const preparedSavedSearchCriteria = getOnlyFilledSearchCriteriaValues(savedSearchCriteria)
+          const initialArtworksInput = {
+            dimensionRange: "*-*",
+            sort: "-decayed_merch",
+            ...preparedSavedSearchCriteria,
           }
+
           return (
-            <Artist
-              artistAboveTheFold={above.artist}
-              artistBelowTheFold={below?.artist}
-              initialTab={initialTab}
-              notificationPayload={notificationPayload}
+            <AboveTheFoldQueryRenderer<ArtistAboveTheFoldQuery, ArtistBelowTheFoldQuery>
+              environment={environment || defaultEnvironment}
+              above={{
+                query: graphql`
+                  query ArtistAboveTheFoldQuery($artistID: String!, $input: FilterArtworksInput) {
+                    artist(id: $artistID) {
+                      internalID
+                      slug
+                      has_metadata: hasMetadata
+                      counts {
+                        artworks
+                        partner_shows: partnerShows
+                        related_artists: relatedArtists
+                        articles
+                      }
+                      ...ArtistHeader_artist
+                      ...ArtistArtworks_artist @arguments(input: $input)
+                      auctionResultsConnection {
+                        totalCount
+                      }
+                    }
+                  }
+                `,
+                variables: { artistID, input: initialArtworksInput },
+              }}
+              below={{
+                query: graphql`
+                  query ArtistBelowTheFoldQuery($artistID: String!) {
+                    artist(id: $artistID) {
+                      ...ArtistAbout_artist
+                      ...ArtistInsights_artist
+                    }
+                  }
+                `,
+                variables: { artistID },
+              }}
+              render={{
+                renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
+                renderComponent: ({ above, below }) => {
+                  if (!above.artist) {
+                    throw new Error("no artist data")
+                  }
+                  return (
+                    <Artist
+                      artistAboveTheFold={above.artist}
+                      artistBelowTheFold={below?.artist}
+                      initialTab={initialTab}
+                      searchCriteria={savedSearchCriteria}
+                      fetchCriteriaError={fetchCriteriaError}
+                    />
+                  )
+                },
+              }}
             />
           )
         },

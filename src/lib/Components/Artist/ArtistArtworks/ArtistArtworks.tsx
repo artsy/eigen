@@ -9,6 +9,7 @@ import {
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
+import { SearchCriteriaAttributes } from 'lib/Components/ArtworkFilter/SavedSearch/types'
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
@@ -28,7 +29,7 @@ import { SavedSearchBannerQueryRender } from "./SavedSearchBanner"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
-  searchCriteriaAttributes?: {}
+  searchCriteria: SearchCriteriaAttributes | null
   relay: RelayPaginationProp
 }
 
@@ -87,7 +88,7 @@ interface ArtistArtworksContainerProps {
 const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContainerProps> = ({
   artist,
   relay,
-  searchCriteriaAttributes,
+  searchCriteria,
   openFilterModal,
   ...props
 }) => {
@@ -96,7 +97,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
-  const applyFiltersAction = ArtworksFiltersStore.useStoreActions((action) => action.applyFiltersAction)
 
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
   const relevantFiltersForSavedSearch = appliedFilters.filter((filter) => !(filter.paramName === FilterParamName.sort))
@@ -127,13 +127,12 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   useEffect(() => {
     setAggregationsAction(artworks?.aggregations)
 
-    if (searchCriteriaAttributes && artworks?.aggregations) {
+    if (searchCriteria && artworks?.aggregations) {
       const params = convertSavedSearchCriteriaToFilterParams(
-        searchCriteriaAttributes,
+        searchCriteria,
         artworks.aggregations as Aggregations
       )
       setInitialFilterStateAction(params)
-      applyFiltersAction()
     }
   }, [])
 
