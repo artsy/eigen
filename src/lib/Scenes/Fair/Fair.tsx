@@ -6,6 +6,7 @@ import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/Artwor
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useHideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 
+import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "lib/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
@@ -16,7 +17,6 @@ import { Animated, FlatList, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { FairArtworksFragmentContainer } from "./Components/FairArtworks"
-import { FairArtworksFilter } from "./Components/FairArtworksFilter"
 import { FairCollectionsFragmentContainer } from "./Components/FairCollections"
 import { FairEditorialFragmentContainer } from "./Components/FairEditorial"
 import { FairEmptyStateFragmentContainer } from "./Components/FairEmptyState"
@@ -225,7 +225,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                           tabs={tabs}
                         />
                         {tabToShow?.label === "Artworks" && (
-                          <FairArtworksFilter
+                          <HeaderArtworksFilter
                             animationValue={filterComponentAnimationValue}
                             onPress={openFilterArtworksModal}
                           />
