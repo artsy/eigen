@@ -196,7 +196,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, artist
       alignItems="center"
     >
       <Text variant="small" color="black">
-        New works alert for this search
+        {enabled ? "Remove alert for this artist" : "Set alert for this artist"}
       </Text>
       <Button
         variant={enabled ? "secondaryOutline" : "primaryBlack"}
