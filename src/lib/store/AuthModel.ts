@@ -2,9 +2,10 @@ import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn,
 import { isArtsyEmail } from "lib/utils/general"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { stringify } from "qs"
+import { Platform } from "react-native"
 import Config from "react-native-config"
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "react-native-fbsdk-next"
-import { getCurrentEmissionState } from "./GlobalStore"
+import { getCurrentEmissionState, unsafe_getFeatureFlag } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 
@@ -76,7 +77,15 @@ export const getAuthModel = (): AuthModel => ({
   xApptokenExpiresIn: null,
   onboardingState: "none",
   userEmail: null,
-  userHasArtsyEmail: computed((state) => isArtsyEmail(state.userEmail ?? "")),
+  userHasArtsyEmail: computed([(_, state) => state], (state) => {
+    if (!unsafe_getFeatureFlag("AREnableNewOnboardingFlow")) {
+      if (Platform.OS === "ios") {
+        return isArtsyEmail(state.native.sessionState.userEmail ?? "")
+      }
+    }
+
+    return isArtsyEmail(state.auth.userEmail ?? "")
+  }),
 
   setState: action((state, payload) => Object.assign(state, payload)),
   getXAppToken: thunk(async (actions, _payload, context) => {
