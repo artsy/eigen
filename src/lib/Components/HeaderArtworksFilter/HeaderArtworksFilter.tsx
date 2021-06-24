@@ -6,7 +6,7 @@ import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-nativ
 
 export interface FilterProps {
   total: number
-  animationValue: Animated.Value
+  animationValue?: Animated.Value
   onPress: () => void
 }
 
@@ -43,7 +43,7 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
 
   const _onLayout = (event: LayoutChangeEvent) => {
     // because onLayout can be called multiple times on android
-    if (onLayoutCalled) {
+    if (!animationValue || onLayoutCalled) {
       return
     }
     // @ts-ignore
@@ -68,11 +68,12 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
     return (
       <Animated.View
         style={{
-          opacity: animationValue.interpolate({
-            inputRange: filterPageY > 0 ? [0, filterPageY - ANIM_START, filterPageY] : [0, 0, 0],
-            outputRange: filterPageY > 0 ? [1, 0, 0] : [1, 1, 1],
-            extrapolate: "clamp",
-          }),
+          opacity:
+            animationValue?.interpolate({
+              inputRange: filterPageY > 0 ? [0, filterPageY - ANIM_START, filterPageY] : [0, 0, 0],
+              outputRange: filterPageY > 0 ? [1, 0, 0] : [1, 1, 1],
+              extrapolate: "clamp",
+            }) ?? 0,
         }}
       >
         <Separator mt={2} width={screenWidth * 2} />
@@ -82,17 +83,18 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
 
   return (
     <Box backgroundColor="white" onLayout={(e) => _onLayout(e)}>
-      <SeparatorWithSmoothOpacity />
+      {!!animationValue && <SeparatorWithSmoothOpacity />}
       {!!total && (
         <Animated.View
           style={{
             transform: [
               {
-                translateY: animationValue.interpolate({
-                  inputRange: filterPageY > 0 ? [0, filterPageY - ANIM_START, filterPageY] : [0, 0, 0],
-                  outputRange: filterPageY > 0 ? [0, 0, TRANSLATE_Y_VALUE] : [0, 0, 0],
-                  extrapolate: "clamp",
-                }),
+                translateY:
+                  animationValue?.interpolate({
+                    inputRange: filterPageY > 0 ? [0, filterPageY - ANIM_START, filterPageY] : [0, 0, 0],
+                    outputRange: filterPageY > 0 ? [0, 0, TRANSLATE_Y_VALUE] : [0, 0, 0],
+                    extrapolate: "clamp",
+                  }) ?? 0,
               },
             ],
           }}
@@ -103,11 +105,12 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
                 style={{
                   transform: [
                     {
-                      translateX: animationValue.interpolate({
-                        inputRange: filterPageY > 0 ? [0, filterPageY - ANIM_START, filterPageY] : [0, 0, 0],
-                        outputRange: filterPageY > 0 ? [0, 0, TRANSLATE_X_VALUE] : [0, 0, 0],
-                        extrapolate: "clamp",
-                      }),
+                      translateX:
+                        animationValue?.interpolate({
+                          inputRange: filterPageY > 0 ? [0, filterPageY - ANIM_START, filterPageY] : [0, 0, 0],
+                          outputRange: filterPageY > 0 ? [0, 0, TRANSLATE_X_VALUE] : [0, 0, 0],
+                          extrapolate: "clamp",
+                        }) ?? 0,
                     },
                   ],
                 }}

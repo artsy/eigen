@@ -13,7 +13,7 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Flex, Separator, Spacer, Theme } from "palette"
 import React, { useCallback, useRef, useState } from "react"
-import { Animated, FlatList, View } from "react-native"
+import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { FairArtworksFragmentContainer } from "./Components/FairArtworks"
@@ -55,8 +55,6 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
   const flatListRef = useRef<FlatList>(null)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-
-  const filterComponentAnimationValue = new Animated.Value(0)
 
   const sections = isActive
     ? [
@@ -224,12 +222,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                           activeTab={activeTab}
                           tabs={tabs}
                         />
-                        {tabToShow?.label === "Artworks" && (
-                          <HeaderArtworksFilter
-                            animationValue={filterComponentAnimationValue}
-                            onPress={openFilterArtworksModal}
-                          />
-                        )}
+                        {tabToShow?.label === "Artworks" && <HeaderArtworksFilter onPress={openFilterArtworksModal} />}
                       </Box>
                     )
                   }

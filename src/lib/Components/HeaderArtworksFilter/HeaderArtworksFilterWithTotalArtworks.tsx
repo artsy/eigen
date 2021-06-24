@@ -4,7 +4,7 @@ import React from "react"
 import { Animated } from "react-native"
 
 interface HeaderArtworksFilterWithTotalArtworksProps {
-  animationValue: Animated.Value
+  animationValue?: Animated.Value
   onPress: () => void
 }
 
