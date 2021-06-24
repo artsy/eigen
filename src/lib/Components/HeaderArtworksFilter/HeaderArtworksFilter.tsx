@@ -23,6 +23,25 @@ const BACK_BUTTON_SIZE = {
   },
 }
 
+const ANIM_START = BACK_BUTTON_SIZE.image.height * 2
+
+export const SeparatorWithSmoothOpacity: React.FC<any> = ({ animationValue, filterPageY, screenWidth }) => {
+  return (
+    <Animated.View
+      style={{
+        opacity:
+          animationValue?.interpolate({
+            inputRange: filterPageY > 0 ? [0, filterPageY - ANIM_START, filterPageY] : [0, 0, 0],
+            outputRange: filterPageY > 0 ? [1, 0, 0] : [1, 1, 1],
+            extrapolate: "clamp",
+          }) ?? 0,
+      }}
+    >
+      <Separator mt={2} width={screenWidth * 2} />
+    </Animated.View>
+  )
+}
+
 export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationValue, onPress }) => {
   const screenWidth = useScreenDimensions().width
 
@@ -56,7 +75,6 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
   const extraOffset = 1
   const topInset = useScreenDimensions().safeAreaInsets.top
 
-  const ANIM_START = BACK_BUTTON_SIZE.image.height * 2
   const TRANSLATE_X_VALUE = BACK_BUTTON_SIZE.image.width
   const TRANSLATE_Y_VALUE =
     topInset -
@@ -64,26 +82,15 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
     BACK_BUTTON_SIZE.top -
     PixelRatio.getPixelSizeForLayoutSize(extraOffset)
 
-  const SeparatorWithSmoothOpacity = () => {
-    return (
-      <Animated.View
-        style={{
-          opacity:
-            animationValue?.interpolate({
-              inputRange: filterPageY > 0 ? [0, filterPageY - ANIM_START, filterPageY] : [0, 0, 0],
-              outputRange: filterPageY > 0 ? [1, 0, 0] : [1, 1, 1],
-              extrapolate: "clamp",
-            }) ?? 0,
-        }}
-      >
-        <Separator mt={2} width={screenWidth * 2} />
-      </Animated.View>
-    )
+  const separatorProps = {
+    animationValue,
+    filterPageY,
+    screenWidth,
   }
 
   return (
     <Box backgroundColor="white" onLayout={(e) => _onLayout(e)}>
-      {!!animationValue && <SeparatorWithSmoothOpacity />}
+      {!!animationValue && <SeparatorWithSmoothOpacity {...separatorProps} />}
       {!!total && (
         <Animated.View
           style={{
