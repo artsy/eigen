@@ -1,10 +1,12 @@
 import React from "react"
 import {
   GestureResponderEvent,
-  TouchableHighlight,
+  Platform,
+  TouchableHighlight as RNTouchableHighlight,
   TouchableHighlightProps,
-  TouchableWithoutFeedback,
+  TouchableWithoutFeedback as RNTouchableWithoutFeedback,
 } from "react-native"
+import { TouchableHighlight, TouchableWithoutFeedback } from "react-native-gesture-handler"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 
 import { color } from "../../Theme"
@@ -40,16 +42,26 @@ export const Touchable: React.FC<TouchableProps> = ({ children, flex, haptic, no
   }
 
   if (noFeedback) {
+    const NoFeedbackButton = Platform.select({
+      ios: TouchableWithoutFeedback,
+      default: RNTouchableWithoutFeedback,
+    })
+
     return (
-      <TouchableWithoutFeedback {...props} onPress={onPressWrapped}>
+      <NoFeedbackButton {...props} onPress={onPressWrapped}>
         {inner}
-      </TouchableWithoutFeedback>
+      </NoFeedbackButton>
     )
   }
 
+  const HighlightButton = Platform.select({
+    ios: TouchableHighlight,
+    default: RNTouchableHighlight,
+  })
+
   return (
-    <TouchableHighlight underlayColor={color("white100")} activeOpacity={0.8} {...props} onPress={onPressWrapped}>
+    <HighlightButton underlayColor={color("white100")} activeOpacity={0.8} {...props} onPress={onPressWrapped}>
       {inner}
-    </TouchableHighlight>
+    </HighlightButton>
   )
 }
