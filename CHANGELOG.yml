@@ -11,6 +11,7 @@ upcoming:
     - Prepare search criteria values to filter params - dzmitry tratsiak
     - Add specs for deleteSavedSearch and createSavedSearch mutations - dzmitry tratsiak
     - add toggledSavedSearch analytics tracking  - devon blandin
+    - Fix follow artist button on ios - dzmitry
   user_facing:
     - Fixed "Unable to load" error on OrderHistory page when artwork is deleted/unpublished from order
     - Pick up should be displayed in Sold by section - Serge0n
