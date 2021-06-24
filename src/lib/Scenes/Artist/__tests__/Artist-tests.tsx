@@ -1,20 +1,14 @@
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
-import { SavedSearchBanner } from "lib/Components/Artist/ArtistArtworks/SavedSearchBanner"
 import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
 import { ArtistInsights } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
-import { CurrentOption } from "lib/Components/ArtworkFilter"
-import { PopoverMessage } from 'lib/Components/PopoverMessage/PopoverMessage'
 import { StickyTab } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
-import { flushPromiseQueue } from 'lib/tests/flushPromiseQueue'
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { postEventToProviders } from "lib/utils/track/providers"
 import _ from "lodash"
-import { Text, TouchableHighlightColor } from "palette"
 import React from "react"
 import "react-native"
-import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { ArtistAboutContainer } from "../../../Components/Artist/ArtistAbout/ArtistAbout"
@@ -22,9 +16,8 @@ import { ArtistQueryRenderer } from "../Artist"
 
 jest.unmock("react-relay")
 jest.unmock("react-tracking")
-jest.unmock("lib/Components/Artist/ArtistArtworks/ArtistArtworks.tsx")
 
-type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery" | "SearchCriteriaQuery"
+type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery"
 
 describe("availableTabs", () => {
   const originalError = console.error
@@ -168,107 +161,6 @@ describe("availableTabs", () => {
       context_screen_owner_id: '<mock-value-for-field-"internalID">',
       context_screen_owner_slug: '<mock-value-for-field-"slug">',
       context_screen_owner_type: "Artist",
-    })
-  })
-
-  describe("Saved Search", () => {
-    const getWrapper = (searchCriteriaID?: string, shouldMockCriteriaQuery = false) => {
-      const tree = renderWithWrappers(<TestWrapper notificationPayload={{ searchCriteriaID }} />)
-
-      if (shouldMockCriteriaQuery) {
-        mockMostRecentOperation("SearchCriteriaQuery", {
-          Me() {
-            return {
-              savedSearch: {
-                attributionClass: ["limited edition", "open edition"],
-                acquireable: true,
-                inquireableOnly: true,
-                width: null,
-                height: null,
-              }
-            }
-          }
-        })
-      }
-
-      mockMostRecentOperation("ArtistAboveTheFoldQuery", {
-        Artist() {
-          return {
-            has_metadata: true,
-            counts: { articles: 0, related_artists: 0, artworks: 1, partner_shows: 0 },
-            auctionResultsConnection: {
-              totalCount: 0,
-            },
-          }
-        },
-      })
-
-      return tree
-    }
-
-    it("should not render banner when criteria attributes passed and AREnableSavedSearch flag set to false", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: false })
-
-      const tree = getWrapper("search-criteria-id")
-
-      expect(tree.root.findAllByType(SavedSearchBanner)).toHaveLength(0)
-    })
-
-    it("should not render banner when criteria attributes not passed and AREnableSavedSearch flag set to true", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: true })
-
-      const tree = getWrapper()
-
-      expect(tree.root.findAllByType(SavedSearchBanner)).toHaveLength(0)
-    })
-
-    it("should render banner when criteria attributes passed", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: true })
-
-      const tree = getWrapper("search-criteria-id", true)
-
-      expect(tree.root.findAllByType(SavedSearchBanner)).toHaveLength(1)
-    })
-
-    it("should convert the criteria attributes to the filter params format", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: true })
-
-      const tree = getWrapper("search-criteria-id", true)
-
-      act(() => tree.root.findByType(TouchableHighlightColor).props.onPress())
-
-      await flushPromiseQueue()
-
-      const filterTextValues = tree.root.findAllByType(CurrentOption).map(extractText)
-
-      expect(filterTextValues).toContain("Buy now, Inquire")
-      expect(filterTextValues).toContain("Limited Edition, Open Edition")
-    })
-
-    it("should an error message when something went wrong during the search criteria query", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: true })
-
-      const tree = renderWithWrappers(<TestWrapper notificationPayload={{ searchCriteriaID: "something" }} />)
-
-      environment.mock.rejectMostRecentOperation(new Error())
-      mockMostRecentOperation("ArtistAboveTheFoldQuery", {
-        Artist() {
-          return {
-            has_metadata: true,
-            counts: { articles: 0, related_artists: 0, artworks: 1, partner_shows: 0 },
-            auctionResultsConnection: {
-              totalCount: 0,
-            },
-          }
-        },
-      })
-
-
-      const popoverMessageInstance = tree.root.findByType(PopoverMessage)
-      const textInstances = popoverMessageInstance.findAllByType(Text)
-
-      expect(textInstances[0].props.children).toEqual("Sorry, an error occured")
-      expect(textInstances[1].props.children).toEqual("Failed to get saved search criteria")
     })
   })
 })
