@@ -9,6 +9,7 @@ import { useStickyScrollHeader } from "lib/utils/useStickyScrollHeader"
 import { Flex, Spacer, Spinner, Text } from "palette"
 import React, { useState } from "react"
 import { Animated, StyleSheet, View, ViewStyle } from "react-native"
+import { ImageStyle } from "react-native-fast-image"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { ArtistShows2Query } from "../../../__generated__/ArtistShows2Query.graphql"
 import { ArtistShowFragmentContainer } from "../../Components/Artist/ArtistShows/ArtistShow"
@@ -89,7 +90,7 @@ const showStyles = StyleSheet.create({
   },
 }) as {
   container: ViewStyle
-  image: ViewStyle
+  image: ImageStyle
 }
 
 export const ArtistShows2PaginationContainer = createPaginationContainer(

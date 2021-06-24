@@ -9,12 +9,13 @@ import { ArtistShow_show } from "__generated__/ArtistShow_show.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { hrefForPartialShow } from "lib/utils/router"
 import { Touchable } from "palette"
+import { ImageStyle } from "react-native-fast-image"
 
 interface Props {
   show: ArtistShow_show
   styles?: {
     container?: ViewStyle
-    image?: ViewStyle
+    image?: ImageStyle
     metadata?: ViewStyle
   }
 }
@@ -32,7 +33,7 @@ const Show: React.FC<Props> = ({ styles, show }) => {
       <View style={[styles?.container]}>
         <OpaqueImageView
           imageURL={imageURL}
-          style={[styles?.image, { overflow: "hidden", borderRadius: 2, flex: 0 }]}
+          style={[styles?.image, { overflow: "hidden", borderRadius: 2, flex: 0 }] as ImageStyle}
         />
         {/* this wrapper required to make numberOfLines work when parent is a row */}
         <View style={{ flex: 1 }}>

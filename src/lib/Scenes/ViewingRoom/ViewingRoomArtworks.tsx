@@ -10,7 +10,7 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Box, Flex, Sans, Separator, space, Spinner, Text } from "palette"
 import { Touchable } from "palette"
 import React, { useMemo, useState } from "react"
-import { FlatList } from "react-native"
+import { FlatList, useWindowDimensions } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -30,9 +30,11 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const tracking = useTracking()
   const artworks = extractNodes(viewingRoom.artworksConnection)
+  const { width } = useWindowDimensions()
 
   const sections: ArtworkSection[] = useMemo(() => {
     return artworks.map((artwork, index) => {
+      const imageHeight = width / (artwork?.image?.aspectRatio ?? 1)
       return {
         key: `${index}`,
         content: (
@@ -52,7 +54,12 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
               }}
             >
               <Box>
-                <ImageView imageURL={artwork.image?.url} aspectRatio={artwork.image!.aspectRatio} />
+                <ImageView
+                  height={imageHeight}
+                  width={width}
+                  imageURL={artwork.image?.url}
+                  aspectRatio={artwork.image!.aspectRatio}
+                />
                 <Box mt="1" mx="2">
                   <Text variant="mediumText">{artwork.artistNames}</Text>
                   <Text variant="text" color="black60" key={index}>

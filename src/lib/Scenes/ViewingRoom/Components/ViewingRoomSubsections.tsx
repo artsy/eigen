@@ -3,6 +3,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Box, Text } from "palette"
 import { _maxWidth as maxWidth } from "palette"
 import React from "react"
+import { useWindowDimensions } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ViewingRoomSubsectionProps {
@@ -11,6 +12,7 @@ interface ViewingRoomSubsectionProps {
 
 export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = (props) => {
   const subsections = props.viewingRoom.subsections! /* STRICTNESS_MIGRATION */
+  const { width } = useWindowDimensions()
   return (
     <>
       {subsections.map((subsection, index) => (
@@ -33,6 +35,8 @@ export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = (pro
             <OpaqueImageView
               imageURL={subsection.image.imageURLs.normalized}
               aspectRatio={subsection.image.width! / subsection.image.height!}
+              height={width / (subsection.image.width! / subsection.image.height!)}
+              width={width}
             />
           )}
           {!!subsection.caption && (
