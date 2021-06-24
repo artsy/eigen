@@ -25,9 +25,6 @@ export const SearchCriteriaQueryRender: React.FC<SearchCriteriaQueryRenderProps>
   const { renderComponent, renderPlaceholder } = render
   const enableSavedSearch = useFeatureFlag("AREnableSavedSearch")
 
-  console.log('enableSavedSearch', enableSavedSearch)
-  console.log('searchCriteriaId', searchCriteriaId)
-
   if (enableSavedSearch && searchCriteriaId) {
     return (
       <QueryRenderer<SearchCriteriaQuery>
