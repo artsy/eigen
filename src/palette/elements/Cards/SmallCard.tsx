@@ -30,7 +30,7 @@ export const SmallCard: React.FC<SmallCardProps> = ({ images, title, subtitle, t
         }}
       >
         <Box flex={2} bg="black10">
-          <OpaqueImageView imageURL={images[0]} style={{ flex: 1 }} />
+          <OpaqueImageView imageURL={images[0]} style={{ flex: 1, width: "100%" }} />
         </Box>
 
         <Spacer mr="2px" />
@@ -38,12 +38,12 @@ export const SmallCard: React.FC<SmallCardProps> = ({ images, title, subtitle, t
         <Box flex={1}>
           {images.length < 2 && <Box flex={1} bg="black10" />}
 
-          {!!images[1] && <OpaqueImageView imageURL={images[1]} style={{ flex: 1 }} />}
+          {!!images[1] && <OpaqueImageView imageURL={images[1]} style={{ flex: 1, width: "100%" }} />}
 
           {!!images[2] && (
             <>
               <Spacer mt="2px" />
-              <OpaqueImageView imageURL={images[2]} style={{ flex: 1 }} />
+              <OpaqueImageView imageURL={images[2]} style={{ flex: 1, width: "100%" }} />
             </>
           )}
         </Box>
