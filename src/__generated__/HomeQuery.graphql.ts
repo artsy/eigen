@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a4508436e38f20b9027531920aeab1e1 */
+/* @relayHash 4706128ee29c9cfb1ae5011d45f53360 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,7 +34,7 @@ export type HomeQuery = {
 query HomeQuery(
   $heroImageVersion: HomePageHeroUnitImageVersion
 ) {
-  homePage @principalField {
+  homePage {
     ...Home_homePage_1IwJ0h
   }
   me {
@@ -44,7 +44,7 @@ query HomeQuery(
   featured: viewingRooms(featured: true) {
     ...Home_featured
   }
-  articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
+  articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
     ...Home_articlesConnection
   }
 }
@@ -1785,7 +1785,7 @@ return {
     ]
   },
   "params": {
-    "id": "a4508436e38f20b9027531920aeab1e1",
+    "id": "4706128ee29c9cfb1ae5011d45f53360",
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
@@ -1793,5 +1793,5 @@ return {
   }
 };
 })();
-(node as any).hash = '00f88d97dab3ccb20cd5ee33c1954f6d';
+(node as any).hash = 'e4283290e59452a34e7cdc13e4710821';
 export default node;
