@@ -35,6 +35,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { FancyModal } from "../FancyModal/FancyModal"
 import { ArtworkFilterOptionsScreen, FilterModalMode as ArtworkFilterMode } from "./ArtworkFilterOptionsScreen"
+import { AuctionHouseOptionsScreen } from "./Filters/AuctionHouseOptions"
 import { LocationCitiesOptionsScreen } from "./Filters/LocationCitiesOptions"
 
 interface ArtworkFilterProps extends ViewProps {
@@ -66,6 +67,7 @@ export type ArtworkFilterNavigationStack = {
   ArtistIDsOptionsScreen: undefined
   ArtistNationalitiesOptionsScreen: undefined
   AttributionClassOptionsScreen: undefined
+  AuctionHouseOptionsScreen: undefined
   CategoriesOptionsScreen: undefined
   ColorOptionsScreen: undefined
   ColorsOptionsScreen: undefined
@@ -156,6 +158,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             <Stack.Screen name="FilterOptionsScreen" component={ArtworkFilterOptionsScreen} initialParams={props} />
             <Stack.Screen name="ArtistIDsOptionsScreen" component={ArtistIDsOptionsScreen} />
             <Stack.Screen name="AttributionClassOptionsScreen" component={AttributionClassOptionsScreen} />
+            <Stack.Screen name="AuctionHouseOptionsScreen" component={AuctionHouseOptionsScreen} />
             <Stack.Screen name="ColorsOptionsScreen" component={ColorsOptionsScreen} />
             <Stack.Screen name="EstimateRangeOptionsScreen" component={EstimateRangeOptionsScreen} />
             <Stack.Screen

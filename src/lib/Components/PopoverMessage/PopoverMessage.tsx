@@ -13,7 +13,7 @@ const FRICTION = 20
 const NAVBAR_HEIGHT = 44
 
 export type PopoverMessagePlacement = "top" | "bottom"
-export type PopoverMessageType = "info" | "success" | "default"
+export type PopoverMessageType = "info" | "success" | "error" | "default"
 export type PopoverMessageOptions = Omit<PopoverMessageProps, "id" | "positionIndex">
 
 export const getTitleColorByType = (type?: PopoverMessageType): Color => {
@@ -21,6 +21,8 @@ export const getTitleColorByType = (type?: PopoverMessageType): Color => {
     return "green100"
   } else if (type === "info") {
     return "blue100"
+  } else if (type === "error") {
+    return "red100"
   }
 
   return "black100"
@@ -113,7 +115,8 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
   const outputRange = placement === "top" ? range : range.map((item) => item * -1)
   const translateY = translateYAnim.interpolate({ inputRange: [0, 1], outputRange })
   const opacity = opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 1] })
-  const offset = EDGE_POPOVER_MESSAGE_PADDING + positionIndex * (EDGE_POPOVER_MESSAGE_HEIGHT + EDGE_POPOVER_MESSAGE_PADDING)
+  const offset =
+    EDGE_POPOVER_MESSAGE_PADDING + positionIndex * (EDGE_POPOVER_MESSAGE_HEIGHT + EDGE_POPOVER_MESSAGE_PADDING)
 
   const content = (
     <Flex p={1}>

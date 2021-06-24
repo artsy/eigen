@@ -1,11 +1,11 @@
 import { ShowTestsQuery } from "__generated__/ShowTestsQuery.graphql"
-import { AnimatedArtworkFilterButton } from "lib/Components/ArtworkFilter"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { ShowArtworksFilter } from "../Components/ShowArtworksFilter"
 import { ShowContextCard } from "../Components/ShowContextCard"
 import { Show, ShowFragmentContainer } from "../Show"
 
@@ -91,19 +91,11 @@ describe("Show", () => {
 
   it("renders the context card", () => {
     const wrapper = getWrapper()
-
     expect(wrapper.root.findAllByType(ShowContextCard)).toHaveLength(1)
   })
 
-  it("does not render the sort/filter control if there are no eligible artworks", () => {
-    const wrapper = getWrapper({
-      Show: () => ({
-        counts: {
-          eligibleArtworks: 0,
-        },
-      }),
-    })
-
-    expect(wrapper.root.findByType(AnimatedArtworkFilterButton).props.isVisible).toEqual(false)
+  it("renders show artworks filter header", () => {
+    const wrapper = getWrapper()
+    expect(wrapper.root.findAllByType(ShowArtworksFilter)).toHaveLength(1)
   })
 })

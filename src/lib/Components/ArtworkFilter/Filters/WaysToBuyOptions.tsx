@@ -8,22 +8,22 @@ import { MultiSelectOptionScreen } from "./MultiSelectOption"
 interface WaysToBuyOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "WaysToBuyOptionsScreen"> {}
 
+export const WAYS_TO_BUY_FILTER_PARAM_NAMES = [
+  FilterParamName.waysToBuyBuy,
+  FilterParamName.waysToBuyMakeOffer,
+  FilterParamName.waysToBuyBid,
+  FilterParamName.waysToBuyInquire,
+]
+
 export const WaysToBuyOptionsScreen: React.FC<WaysToBuyOptionsScreenProps> = ({ navigation }) => {
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
 
   const selectedOptions = useSelectedOptionsDisplay()
 
-  const filterNames = [
-    FilterParamName.waysToBuyBuy,
-    FilterParamName.waysToBuyMakeOffer,
-    FilterParamName.waysToBuyBid,
-    FilterParamName.waysToBuyInquire,
-  ]
-
-  const options = selectedOptions.filter((value) => filterNames.includes(value.paramName))
+  const options = selectedOptions.filter((value) => WAYS_TO_BUY_FILTER_PARAM_NAMES.includes(value.paramName))
 
   const sortedOptions = options.sort(({ paramName: left }: FilterData, { paramName: right }: FilterData): number => {
-    if (filterNames.indexOf(left) < filterNames.indexOf(right)) {
+    if (WAYS_TO_BUY_FILTER_PARAM_NAMES.indexOf(left) < WAYS_TO_BUY_FILTER_PARAM_NAMES.indexOf(right)) {
       return -1
     } else {
       return 1
