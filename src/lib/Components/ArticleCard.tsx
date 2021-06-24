@@ -3,7 +3,7 @@ import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { Flex, Spacer, Text } from "palette"
 import React from "react"
-import { GestureResponderEvent, TouchableWithoutFeedback, View, ViewProps } from "react-native"
+import { GestureResponderEvent, TouchableWithoutFeedback, useWindowDimensions, View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArticleCardProps extends ViewProps {
@@ -14,12 +14,14 @@ interface ArticleCardProps extends ViewProps {
 
 export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFluid }) => {
   const imageURL = article.thumbnailImage?.url
+  const { width } = useWindowDimensions()
 
   const onTap = (event: GestureResponderEvent) => {
     onPress?.(event)
     navigate(article.href!)
   }
 
+  const imageHeight = width / 1.33
   return (
     <Flex width={isFluid ? "100%" : 320}>
       <TouchableWithoutFeedback onPress={onTap}>
@@ -27,7 +29,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
           {!!imageURL &&
             (isFluid ? (
               <View style={{ width: "100%", aspectRatio: 1.33, flexDirection: "row" }}>
-                <ImageView imageURL={article.thumbnailImage?.url} style={{ flex: 1 }} />
+                <ImageView imageURL={article.thumbnailImage?.url} height={imageHeight} width={width} />
               </View>
             ) : (
               <ImageView imageURL={article.thumbnailImage?.url} width={295} height={230} />
