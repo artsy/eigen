@@ -18,18 +18,18 @@ const key = "ConsignmentsStoredState"
 
 it("restores when no props are provided", () => {
   // tslint:disable-next-line
-  new Overview({ setup: null })
+  new Overview({ setup: null, params: {} })
   expect(AsyncStorage.getItem).toBeCalledWith(key, expect.anything())
 })
 
 it("does not restore setup props are provided", () => {
   // tslint:disable-next-line
-  new Overview({ setup: {} })
+  new Overview({ setup: {}, params: {} })
   expect(AsyncStorage.getItem).not.toBeCalled()
 })
 
 it("updates the local state when there an update is triggered", () => {
-  const overview = new Overview({ setup: {} })
+  const overview = new Overview({ setup: {}, params: {} })
 
   overview.setState = (updated: any, callback: () => void) => {
     overview.state = Object.assign({}, overview.state, updated)
@@ -45,7 +45,7 @@ it("updates the local state when there an update is triggered", () => {
 })
 
 it("resets the cache when a final submission is made", async () => {
-  const overview = new Overview({ setup: {} })
+  const overview = new Overview({ setup: {}, params: {} })
   overview.uploadPhotosIfNeeded = () => Promise.resolve()
   overview.showConfirmationScreen = () => true
   overview.setState = jest.fn()
