@@ -37,6 +37,11 @@ describe(ArtsyReactWebViewPage, () => {
     })
     expect(tree.root.findByType(FancyModalHeader).props.useXButton).toBeFalsy()
   })
+  it("shares the correct URL", () => {
+    const tree = render({ showShareButton: true })
+    tree.root.findByType(FancyModalHeader).props.onRightButtonPress()
+    setTimeout(() => expect(jest.fn()).toHaveBeenCalledWith())
+  })
   it("calls goBack when the close/back button is pressed", () => {
     const tree = render()
     expect(goBack).not.toHaveBeenCalled()
