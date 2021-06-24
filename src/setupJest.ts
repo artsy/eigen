@@ -492,3 +492,9 @@ jest.mock("react-native-config", () => ({
 
 jest.mock("react-native-view-shot", () => ({}))
 jest.mock("@segment/analytics-react-native", () => ({}))
+
+jest.mock("lib/store/GlobalStore", () => ({
+  // we may want to delete this when we get rid of native ios onboarding (tag: AREnableNewOnboardingFlow)
+  ...jest.requireActual("lib/store/GlobalStore"),
+  unsafe_getFeatureFlag: jest.fn(() => true),
+}))
