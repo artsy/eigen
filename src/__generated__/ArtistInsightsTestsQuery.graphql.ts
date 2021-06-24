@@ -515,6 +515,7 @@ return {
               "categories",
               "earliestCreatedYear",
               "latestCreatedYear",
+              "organizations",
               "sizes",
               "sort"
             ],

@@ -105,3 +105,17 @@ export const parseRange = (range: string): Range => {
 
   return { min: enforceNumeric(min), max: enforceNumeric(max) }
 }
+
+export const parsePriceRangeLabel = (min: Numeric, max: Numeric) => {
+  let parsedMin = "$0"
+  let parsedMax = "+"
+
+  if (min !== "*") {
+    parsedMin = `$${min.toLocaleString("en-US", { maximumFractionDigits: 2 })}`
+  }
+  if (max !== "*") {
+    parsedMax = `–${max.toLocaleString("en-US", { maximumFractionDigits: 2 })}`
+  }
+
+  return `${parsedMin}${parsedMax}`
+}
