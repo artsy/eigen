@@ -8,21 +8,6 @@ upcoming:
   user_facing:
     - Fix unfollowing categories - katsiaryna alshannikava
     - Remove "Enable push notification" guard for disabling saved search - dzmitry tratsiak
-    - OrderDetails with SoldBy section - alexj105
-    - OrderDetails with headInfo - alexj105
-    - OrderDetails with ArtInfo and ShipsTo - alexj105
-    - fix inaccurate validators for artwork submission - yauheni
-    - Check saved search when the user applied the filter - dzmitry tratsiak
-    - Don't close filter artwork modal when "clear all" tapped - dzmitry tratsiak
-    - Continue to show the offer approved banner in an inquiry offer conversation after fulfillment - erikdstock
-    - Add link to Conditions of Sale in sign up - dzmitry
-    - Add saved search banner update banner state automatically on save/filter actions - kizito
-    - Show visual feedback when the "Sort & Filter" button is pressed - dzmitry tratsiak
-    - Don't show saved search banner when only sort filter is selected - dzmitry tratsiak
-    - Add articles (market news) screen - ole
-    - Add Filter Component to Collections Page - kizito
-    - Check push notification permissions before saving search - kizito
-    - Implement infinite scroll on android - kizito
     - Implement share button for articles - katsiaryna alshannikava, mounir
 
 releases:
