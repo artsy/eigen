@@ -5,6 +5,7 @@ upcoming:
     - Add specs for deleteSavedSearch and createSavedSearch mutations - dzmitry tratsiak
     - Add toggledSavedSearch analytics tracking - devon blandin
     - Allow custom attributes from a push notification payload to be passed through to React Native scenes - devon blandin
+    - Fix opening artist page after passing new onboarding on ios - dzmitry
   user_facing:
     - Fix unfollowing categories - katsiaryna alshannikava
     - Remove "Enable push notification" guard for disabling saved search - dzmitry tratsiak
