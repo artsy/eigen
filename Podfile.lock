@@ -51,32 +51,6 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.6)
   - EDColor (1.0.0)
-  - Emission (1.21.52):
-    - "Artsy+UIColors"
-    - "Artsy+UIFonts (>= 3.0.0)"
-    - DoubleConversion (= 1.1.6)
-    - Extraction (>= 1.2.1)
-    - Folly (= 2020.01.13.00)
-    - glog (= 0.3.5)
-    - INTUAnimationEngine
-    - ISO8601DateFormatter
-    - Pulley
-    - React-Core (= 0.63.3)
-    - React-cxxreact (= 0.63.3)
-    - react-native-cameraroll (= 1.3.0)
-    - react-native-geolocation (= 2.0.2)
-    - react-native-mapbox-gl (= 8.2.0-beta2)
-    - react-native-netinfo (= 4.6.1)
-    - React-RCTActionSheet (= 0.63.3)
-    - React-RCTAnimation (= 0.63.3)
-    - React-RCTImage (= 0.63.3)
-    - React-RCTLinking (= 0.63.3)
-    - React-RCTNetwork (= 0.63.3)
-    - React-RCTText (= 0.63.3)
-    - RNSentry (= 2.2.1)
-    - RNSVG (= 9.13.3)
-    - SDWebImage (< 4, >= 3.7.2)
-    - tipsi-stripe (= 7.5.0)
   - Expecta (1.0.6)
   - "Expecta+Snapshots (3.1.1)":
     - Expecta (~> 1.0)
@@ -601,7 +575,6 @@ DEPENDENCIES:
   - DHCShakeNotifier
   - DoubleConversion (from `./node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EDColor
-  - Emission (from `./emission`)
   - Expecta (= 1.0.6)
   - "Expecta+Snapshots (= 3.1.1)"
   - Extraction
@@ -635,6 +608,7 @@ DEPENDENCIES:
   - FXBlurView
   - glog (from `./node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Interstellar/Core (from `https://github.com/artsy/Interstellar.git`, branch `observable-unsubscribe`)
+  - INTUAnimationEngine
   - ISO8601DateFormatter (from `https://github.com/artsy/iso-8601-date-formatter`)
   - JLRoutes (from `https://github.com/artsy/JLRoutes.git`)
   - JSDecoupledAppDelegate
@@ -792,8 +766,6 @@ EXTERNAL SOURCES:
     :path: node_modules/react-native-linear-gradient
   DoubleConversion:
     :podspec: "./node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
-  Emission:
-    :path: "./emission"
   FBLazyVector:
     :path: "./node_modules/react-native/Libraries/FBLazyVector"
   FBReactNativeSpec:
@@ -957,7 +929,6 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 9ede96bbbc777ebfc06e0e633599c4d09f72978d
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": dcff217eef506dabd6dfdc7864ea2da321fafbb8
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
@@ -1066,6 +1037,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 6763ebad1d0a5a3043dda7f2e4cd983b8bdc5535
+PODFILE CHECKSUM: 553d1b534816d4609ee2c9d3f87ddc340a2d50d1
 
 COCOAPODS: 1.10.1
