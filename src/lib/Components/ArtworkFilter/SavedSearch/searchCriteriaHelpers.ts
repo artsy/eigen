@@ -1,12 +1,12 @@
 import { isNull } from "lodash"
-import { SearchCriteriaAttributes } from "./types"
+import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "./types"
 
 export const getOnlyFilledSearchCriteriaValues = (searchCriteria: SearchCriteriaAttributes) => {
   const prepared: Record<string, any> = {}
 
   if (searchCriteria) {
-    const filledSavedSearchCriteria = Object.entries(searchCriteria).filter((entry) => {
-      const [_, value] = entry
+    const filledSavedSearchCriteriaKeys = Object.keys(searchCriteria).filter((criteriaKey) => {
+      const value = searchCriteria[criteriaKey as SearchCriteriaAttributeKeys]
 
       if (Array.isArray(value)) {
         return value.length > 0
@@ -15,9 +15,9 @@ export const getOnlyFilledSearchCriteriaValues = (searchCriteria: SearchCriteria
       return !isNull(value)
     })
 
-    filledSavedSearchCriteria.forEach((criteria) => {
-      const [key, value] = criteria
-      prepared[key] = value
+    filledSavedSearchCriteriaKeys.forEach((criteriaKey) => {
+      const value = searchCriteria[criteriaKey as SearchCriteriaAttributeKeys]
+      prepared[criteriaKey] = value
     })
   }
 

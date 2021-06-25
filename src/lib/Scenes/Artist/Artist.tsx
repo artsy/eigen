@@ -29,7 +29,7 @@ import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvir
 
 const INITIAL_TAB = "Artworks"
 export interface NotificationPayload {
-  searchCriteriaID: string
+  searchCriteriaID?: string
 }
 
 interface ArtistProps {
