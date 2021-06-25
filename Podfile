@@ -129,6 +129,7 @@ target 'Artsy' do
   pod 'Analytics'
   pod 'ARAnalytics', subspecs: %w[Segmentio]
   pod 'SailthruMobile'
+  pod 'Appboy-iOS-SDK'
 
   # Developer Pods
   pod 'DHCShakeNotifier'
