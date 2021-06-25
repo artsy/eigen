@@ -55,7 +55,7 @@ describe("Saved search banner on artist screen", () => {
 
   const getTree = (searchCriteriaID?: string) => {
     return renderWithWrappers(
-      <ArtistQueryRenderer artistID="ignored" environment={environment} notificationPayload={{ searchCriteriaID }} />
+      <ArtistQueryRenderer artistID="ignored" environment={environment} searchCriteriaID={searchCriteriaID} />
     )
   }
 

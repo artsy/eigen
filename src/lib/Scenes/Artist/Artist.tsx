@@ -126,15 +126,15 @@ export const Artist: React.FC<ArtistProps> = (props) => {
 interface ArtistQueryRendererProps extends ArtistAboveTheFoldQueryVariables, ArtistBelowTheFoldQueryVariables {
   environment?: RelayModernEnvironment
   initialTab?: string
-  notificationPayload?: NotificationPayload
+  searchCriteriaID?: string
 }
 
 export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) => {
-  const { artistID, environment, initialTab, notificationPayload } = props
+  const { artistID, environment, initialTab, searchCriteriaID } = props
 
   return (
     <SearchCriteriaQueryRenderer
-      searchCriteriaId={notificationPayload?.searchCriteriaID}
+      searchCriteriaId={searchCriteriaID}
       environment={environment}
       render={{
         renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
