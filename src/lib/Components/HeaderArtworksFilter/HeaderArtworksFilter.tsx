@@ -10,6 +10,12 @@ export interface FilterProps {
   onPress: () => void
 }
 
+interface SeparatorWithSmoothOpacityProps {
+  animationValue: Animated.Value
+  filterPageY: number
+  screenWidth: number
+}
+
 const pixelRatio = PixelRatio.get()
 // values based on px used in <BackButton>
 const BACK_BUTTON_SIZE = {
@@ -25,7 +31,11 @@ const BACK_BUTTON_SIZE = {
 
 const ANIM_START = BACK_BUTTON_SIZE.image.height * 2
 
-export const SeparatorWithSmoothOpacity: React.FC<any> = ({ animationValue, filterPageY, screenWidth }) => {
+export const SeparatorWithSmoothOpacity: React.FC<SeparatorWithSmoothOpacityProps> = ({
+  animationValue,
+  filterPageY,
+  screenWidth,
+}) => {
   return (
     <Animated.View
       style={{
@@ -83,7 +93,7 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
     PixelRatio.getPixelSizeForLayoutSize(extraOffset)
 
   const separatorProps = {
-    animationValue,
+    animationValue: animationValue as Animated.Value,
     filterPageY,
     screenWidth,
   }
