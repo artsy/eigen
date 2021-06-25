@@ -68,10 +68,6 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   }
 
   if ((artistAboveTheFold.counts?.artworks ?? 0) > 0) {
-    if (searchCriteriaID) {
-      console.log(`TODO: Use searchCriteriaID=${searchCriteriaID} to filter artworks`)
-    }
-
     tabs.push({
       title: "Artworks",
       content: <ArtistArtworks artist={artistAboveTheFold} searchCriteria={searchCriteria} />,
