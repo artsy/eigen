@@ -16,7 +16,7 @@ export type NativeEvent =
     }
   | {
       type: "REQUEST_NAVIGATION"
-      payload: { route: string }
+      payload: { route: string; props: {} }
     }
   | {
       type: "MODAL_DISMISSED"
@@ -61,7 +61,8 @@ listenToNativeEvents((event: NativeEvent) => {
       GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
       return
     case "REQUEST_NAVIGATION":
-      navigate(event.payload.route)
+      const { route, props } = event.payload
+      navigate(route, { passProps: props })
       return
     case "MODAL_DISMISSED":
       navigationEvents.emit("modalDismissed")

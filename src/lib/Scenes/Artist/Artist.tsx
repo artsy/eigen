@@ -28,7 +28,8 @@ export const Artist: React.FC<{
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
   artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
   initialTab?: string
-}> = ({ artistAboveTheFold, artistBelowTheFold, initialTab = INITIAL_TAB }) => {
+  searchCriteriaID?: string
+}> = ({ artistAboveTheFold, artistBelowTheFold, initialTab = INITIAL_TAB, searchCriteriaID }) => {
   const tabs: TabProps[] = []
   const displayAboutSection =
     artistAboveTheFold.has_metadata ||
@@ -43,6 +44,10 @@ export const Artist: React.FC<{
   }
 
   if ((artistAboveTheFold.counts?.artworks ?? 0) > 0) {
+    if (searchCriteriaID) {
+      console.log(`TODO: Use searchCriteriaID=${searchCriteriaID} to filter artworks`)
+    }
+
     tabs.push({
       title: "Artworks",
       content: <ArtistArtworks artist={artistAboveTheFold} />,
@@ -101,9 +106,15 @@ export const Artist: React.FC<{
 interface ArtistQueryRendererProps extends ArtistAboveTheFoldQueryVariables, ArtistBelowTheFoldQueryVariables {
   environment?: RelayModernEnvironment
   initialTab?: string
+  searchCriteriaID?: string
 }
 
-export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artistID, environment, initialTab }) => {
+export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
+  artistID,
+  environment,
+  initialTab,
+  searchCriteriaID,
+}) => {
   return (
     <AboveTheFoldQueryRenderer<ArtistAboveTheFoldQuery, ArtistBelowTheFoldQuery>
       environment={environment || defaultEnvironment}
@@ -147,7 +158,14 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({ artist
           if (!above.artist) {
             throw new Error("no artist data")
           }
-          return <Artist artistAboveTheFold={above.artist} artistBelowTheFold={below?.artist} initialTab={initialTab} />
+          return (
+            <Artist
+              artistAboveTheFold={above.artist}
+              artistBelowTheFold={below?.artist}
+              initialTab={initialTab}
+              searchCriteriaID={searchCriteriaID}
+            />
+          )
         },
       }}
     />
