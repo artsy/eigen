@@ -44,11 +44,11 @@
 
 // event keys
 // These should match the values in src/lib/store/NativeModel.ts
-static const NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
-static const NSString *modalDismissed = @"MODAL_DISMISSED";
-static const NSString *stateChanged = @"STATE_CHANGED";
-static const NSString *reactStateChanged = @"STATE_CHANGED";
-static const NSString *requestNavigation = @"REQUEST_NAVIGATION";
+static NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
+static NSString *modalDismissed = @"MODAL_DISMISSED";
+static NSString *stateChanged = @"STATE_CHANGED";
+static NSString *reactStateChanged = @"STATE_CHANGED";
+static NSString *requestNavigation = @"REQUEST_NAVIGATION";
 
 
 @implementation ARNotificationsManager

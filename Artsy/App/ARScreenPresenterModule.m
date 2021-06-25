@@ -1,5 +1,5 @@
 #import "ARScreenPresenterModule.h"
-#import <Emission/ARComponentViewController.h>
+#import "ARComponentViewController.h"
 #import "UIDevice-Hardware.h"
 #import "ARAdminSettingsViewController.h"
 #import "AROptions.h"
@@ -11,7 +11,7 @@
 #import "ArtsyEcho.h"
 #import "ARAppDelegate+Echo.h"
 #import "ARRouter.h"
-#import <Emission/ARMediaPreviewController.h>
+#import "ARMediaPreviewController.h"
 #import <MessageUI/MFMailComposeViewController.h>
 
 #import <ObjectiveSugar/ObjectiveSugar.h>

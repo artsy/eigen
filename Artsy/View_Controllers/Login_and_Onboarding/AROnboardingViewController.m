@@ -32,7 +32,7 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <Extraction/UIView+ARSpinner.h>
 
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 
 
 @interface AROnboardingViewController () <UINavigationControllerDelegate, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding>

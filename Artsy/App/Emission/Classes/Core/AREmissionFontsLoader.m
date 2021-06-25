@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #if __has_include(<Artsy+UIFonts/UIFont+ArtsyFonts.h>)
 #import <Artsy+UIFonts/UIFont+ArtsyFonts.h>

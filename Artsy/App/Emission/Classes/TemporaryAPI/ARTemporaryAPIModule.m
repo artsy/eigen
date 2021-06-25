@@ -1,5 +1,6 @@
 #import "ARTemporaryAPIModule.h"
 #import <UserNotifications/UserNotifications.h>
+#import <Foundation/Foundation.h>
 
 @implementation ARTemporaryAPIModule
 

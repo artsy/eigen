@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
+#import <UIKit/UIKit.h>
 
 typedef void(^ARNotificationReadStatusAssigner)(RCTResponseSenderBlock block);
 

@@ -1,7 +1,7 @@
 #import "ARLogger.h"
 #import "ARAuctionWebViewController.h"
 #import "ARAppConstants.h"
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 #import <React/RCTRootView.h>
 #import "User.h"
 #import "Artwork.h"

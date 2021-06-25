@@ -18,9 +18,9 @@
 #import "ARAdminNetworkModel.h"
 #import "ARAppNotificationsDelegate.h"
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 #import <Sentry/SentrySDK.h>
-#import <Emission/ARGraphQLQueryCache.h>
+#import "ARGraphQLQueryCache.h"
 #import <React/RCTBridge.h>
 #import <React/RCTDevSettings.h>
 

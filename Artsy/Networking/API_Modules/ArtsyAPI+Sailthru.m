@@ -2,7 +2,7 @@
 #import "ARRouter.h"
 
 #import <AFNetworking/AFHTTPRequestOperation.h>
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 
 @implementation ArtsyAPI (Sailthru)
 

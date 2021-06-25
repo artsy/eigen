@@ -17,8 +17,8 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <ARAnalytics/ARAnalytics.h>
 
-#import <Emission/AREmission.h>
-#import <Emission/ARGraphQLQueryCache.h>
+#import "AREmission.h"
+#import "ARGraphQLQueryCache.h"
 
 NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
 {
