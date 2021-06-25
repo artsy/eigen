@@ -134,16 +134,6 @@ RCT_EXPORT_MODULE();
     }];
 }
 
-- (void)requestNavigation:(NSString *)route  payload:(NSDictionary *)payload
-{
-    __weak typeof(self) wself = self;
-    [self afterBootstrap:^{
-        __strong typeof(self) sself = wself;
-        if (!sself) return;
-        [sself dispatch:requestNavigation data:@{@"route": route, @"payload": payload}];
-    }];
-}
-
 // Will be called when this module's first listener is added.
 - (void)startObserving
 {
