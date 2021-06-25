@@ -8,6 +8,7 @@ upcoming:
   user_facing:
     - Fix unfollowing categories - katsiaryna alshannikava
     - Remove "Enable push notification" guard for disabling saved search - dzmitry tratsiak
+    - Implement share button for articles - katsiaryna alshannikava, mounir
 
 releases:
   - version: 6.9.5
