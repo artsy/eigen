@@ -144,7 +144,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
         renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
         renderComponent: (searchCriteriaProps) => {
           const { savedSearchCriteria, fetchCriteriaError } = searchCriteriaProps
-          const preparedSavedSearchCriteria = getOnlyFilledSearchCriteriaValues(savedSearchCriteria)
+          const preparedSavedSearchCriteria = getOnlyFilledSearchCriteriaValues(savedSearchCriteria ?? {})
           const initialArtworksInput = {
             dimensionRange: "*-*",
             sort: "-decayed_merch",

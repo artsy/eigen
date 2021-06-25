@@ -1,7 +1,7 @@
 import { isNull } from "lodash"
 import { SearchCriteriaAttributes } from "./types"
 
-export const getOnlyFilledSearchCriteriaValues = (searchCriteria: SearchCriteriaAttributes | null) => {
+export const getOnlyFilledSearchCriteriaValues = (searchCriteria: SearchCriteriaAttributes) => {
   const prepared: Record<string, any> = {}
 
   if (searchCriteria) {
