@@ -1,5 +1,5 @@
 upcoming:
-  version: 6.9.5
+  version: 6.10.0
   date: TBD
   dev:
     - Add facebook authentication - dzmitry
