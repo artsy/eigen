@@ -313,7 +313,22 @@
 {
     [ARAnalytics event:ARAnalyticsNotificationTapped withProperties:notificationInfo];
 
-    [[AREmission sharedInstance] navigate:url];
+    NSDictionary *props = [self filteredProps:notificationInfo];
+    [[AREmission sharedInstance] navigate:url withProps:props];
+}
+
+- (NSDictionary *)filteredProps:(NSDictionary *)props;
+{
+    const NSArray *allowedKeys = @[@"searchCriteriaID"];
+
+    NSMutableDictionary *filteredDictionary = [NSMutableDictionary dictionary];
+    for (NSString *key in [props allKeys]) {
+        id value = props[key];
+        if ([allowedKeys containsObject:key] && ![value isKindOfClass:[NSNull class]]) {
+            filteredDictionary[key] = value;
+        }
+    }
+    return filteredDictionary;
 }
 
 - (UIWindow *)findVisibleWindow
