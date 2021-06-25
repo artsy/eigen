@@ -10,10 +10,10 @@ import { ArtistAboutContainer } from "lib/Components/Artist/ArtistAbout/ArtistAb
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
 import { ArtistInsightsFragmentContainer } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
-import { getOnlyFilledSearchCriteriaValues } from 'lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers'
-import { SearchCriteriaAttributes } from 'lib/Components/ArtworkFilter/SavedSearch/types'
+import { getOnlyFilledSearchCriteriaValues } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
+import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
-import { usePopoverMessage } from 'lib/Components/PopoverMessage/popoverMessageHooks'
+import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
 import { StickyTabPage, TabProps } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -22,7 +22,7 @@ import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Flex, Message } from "palette"
 import React from "react"
-import { useEffect } from 'react'
+import { useEffect } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -143,7 +143,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
           const preparedSavedSearchCriteria = getOnlyFilledSearchCriteriaValues(savedSearchCriteria ?? {})
           const initialArtworksInput = {
             dimensionRange: "*-*",
-            sort: "-decayed_merch",
+            sort: !!savedSearchCriteria ? "-published_at" : "-decayed_merch",
             ...preparedSavedSearchCriteria,
           }
 
