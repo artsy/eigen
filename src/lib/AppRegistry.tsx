@@ -109,6 +109,9 @@ LogBox.ignoreLogs([
   // This is for the Artist page, which will likely get redone soon anyway.
   "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
   "Picker has been extracted",
+  // css-to-react-native version 3 requires units to be present for all measurements.
+  // Since it defaults to px, it's fine for now in our case to be ignoring this
+  "Expected style ",
 ])
 
 addTrackingProvider("native ios analytics", NativeAnalyticsProvider)
