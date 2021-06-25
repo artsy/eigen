@@ -26,9 +26,7 @@ describe("NativeModel", () => {
       } as NativeEvent)
 
       expect(navigate).toBeCalledWith("some-route-path", {
-        passProps: {
-          notificationPayload: undefined,
-        },
+        passProps: undefined,
       })
     })
 
@@ -37,7 +35,7 @@ describe("NativeModel", () => {
         type: "REQUEST_NAVIGATION",
         payload: {
           route: "some-route-path",
-          payload: {
+          props: {
             canRead: false,
             someAdditionalKey: "value",
           },
@@ -46,10 +44,8 @@ describe("NativeModel", () => {
 
       expect(navigate).toBeCalledWith("some-route-path", {
         passProps: {
-          notificationPayload: {
-            canRead: false,
-            someAdditionalKey: "value",
-          },
+          canRead: false,
+          someAdditionalKey: "value",
         },
       })
     })

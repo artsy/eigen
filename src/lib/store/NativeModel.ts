@@ -16,11 +16,7 @@ export type NativeEvent =
     }
   | {
       type: "REQUEST_NAVIGATION"
-<<<<<<< HEAD
       payload: { route: string; props: {} }
-=======
-      payload: { route: string; payload: {} }
->>>>>>> feat: pass full notification payload to RN navigation
     }
   | {
       type: "MODAL_DISMISSED"
