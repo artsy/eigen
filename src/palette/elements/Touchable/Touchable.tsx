@@ -16,6 +16,7 @@ interface ExtraTouchableProps {
   flex?: number
   haptic?: HapticFeedbackTypes | true
   noFeedback?: boolean
+  useReactNativeTouchable_ios: boolean
 }
 
 export type TouchableProps = TouchableHighlightProps & ExtraTouchableProps
@@ -26,7 +27,15 @@ export type TouchableProps = TouchableHighlightProps & ExtraTouchableProps
  * or
  * <Touchable haptic="impactHeavy" />
  */
-export const Touchable: React.FC<TouchableProps> = ({ children, flex, haptic, noFeedback, onPress, ...props }) => {
+export const Touchable: React.FC<TouchableProps> = ({
+  children,
+  flex,
+  haptic,
+  noFeedback,
+  useReactNativeTouchable_ios = false,
+  onPress,
+  ...props
+}) => {
   const inner = React.Children.count(children) === 1 ? children : <Flex flex={flex}>{children}</Flex>
 
   const onPressWrapped = (evt: GestureResponderEvent) => {
@@ -43,7 +52,7 @@ export const Touchable: React.FC<TouchableProps> = ({ children, flex, haptic, no
 
   if (noFeedback) {
     const NoFeedbackButton = Platform.select({
-      ios: TouchableWithoutFeedback,
+      ios: useReactNativeTouchable_ios ? RNTouchableWithoutFeedback : TouchableWithoutFeedback,
       default: RNTouchableWithoutFeedback,
     })
 
@@ -55,7 +64,7 @@ export const Touchable: React.FC<TouchableProps> = ({ children, flex, haptic, no
   }
 
   const HighlightButton = Platform.select({
-    ios: TouchableHighlight,
+    ios: useReactNativeTouchable_ios ? RNTouchableHighlight : TouchableHighlight,
     default: RNTouchableHighlight,
   })
 
