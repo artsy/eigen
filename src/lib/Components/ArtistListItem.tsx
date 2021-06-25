@@ -3,9 +3,9 @@ import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItem
 import { navigate } from "lib/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { Schema, track } from "lib/utils/track"
-import { Button, color, EntityHeader, Flex } from "palette"
+import { Button, color, EntityHeader, Flex, Touchable } from "palette"
 import React from "react"
-import { StyleProp, TouchableHighlight, TouchableWithoutFeedback, ViewStyle } from "react-native"
+import { StyleProp, TouchableWithoutFeedback, ViewStyle } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
@@ -108,7 +108,7 @@ export class ArtistListItem extends React.Component<Props, State> {
     const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
     const imageURl = image && image.url
 
-    const TouchableComponent = withFeedback ? TouchableHighlight : TouchableWithoutFeedback
+    const TouchableComponent = withFeedback ? Touchable : TouchableWithoutFeedback
 
     if (!name) {
       return null
@@ -121,9 +121,7 @@ export class ArtistListItem extends React.Component<Props, State> {
             this.handleTap(href)
           }
         }}
-        // @ts-ignore
         underlayColor={color("black5")}
-        activeOpacity={0.8}
         style={containerStyle}
       >
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">

@@ -6,9 +6,9 @@ import { OnboardingPersonalizationModal_artists } from "__generated__/Onboarding
 import { followArtistMutation } from "lib/Components/ArtistListItem"
 import { navigate } from "lib/navigation/navigate"
 import { Schema, track } from "lib/utils/track"
-import { Button, color, EntityHeader, Flex } from "palette"
+import { Button, color, EntityHeader, Flex, Touchable } from "palette"
 import React from "react"
-import { StyleProp, TouchableHighlight, TouchableWithoutFeedback, ViewStyle } from "react-native"
+import { StyleProp, TouchableWithoutFeedback, ViewStyle } from "react-native"
 import { RelayPaginationProp } from "react-relay"
 
 interface Props {
@@ -117,7 +117,7 @@ export class OnboardingPersonalizationArtistListItem extends React.Component<Pro
     const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
     const imageURl = image && image.url
 
-    const TouchableComponent = withFeedback ? TouchableHighlight : TouchableWithoutFeedback
+    const TouchableComponent = withFeedback ? Touchable : TouchableWithoutFeedback
 
     if (!name) {
       return null
@@ -130,9 +130,7 @@ export class OnboardingPersonalizationArtistListItem extends React.Component<Pro
             this.handleTap(href)
           }
         }}
-        // @ts-ignore
         underlayColor={color("black5")}
-        activeOpacity={0.8}
         style={containerStyle}
       >
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
