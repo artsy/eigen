@@ -8,7 +8,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { RelayModernEnvironment } from 'relay-runtime/lib/store/RelayModernEnvironment'
 
-export interface SearchCriteriaQueryRenderProps {
+export interface SearchCriteriaQueryRendererProps {
   environment?: RelayModernEnvironment
   searchCriteriaId?: string
   render: {
@@ -20,7 +20,7 @@ export interface SearchCriteriaQueryRenderProps {
   }
 }
 
-export const SearchCriteriaQueryRender: React.FC<SearchCriteriaQueryRenderProps> = (props) => {
+export const SearchCriteriaQueryRenderer: React.FC<SearchCriteriaQueryRendererProps> = (props) => {
   const { render, searchCriteriaId, environment = defaultEnvironment } = props
   const { renderComponent, renderPlaceholder } = render
   const enableSavedSearch = useFeatureFlag("AREnableSavedSearch")

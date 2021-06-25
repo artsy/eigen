@@ -17,7 +17,7 @@ import { usePopoverMessage } from 'lib/Components/PopoverMessage/popoverMessageH
 import { StickyTabPage, TabProps } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { SearchCriteriaQueryRender } from "lib/Scenes/Artist/SearchCriteria"
+import { SearchCriteriaQueryRenderer } from "lib/Scenes/Artist/SearchCriteria"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Flex, Message } from "palette"
@@ -133,7 +133,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
   const { artistID, environment, initialTab, notificationPayload } = props
 
   return (
-    <SearchCriteriaQueryRender
+    <SearchCriteriaQueryRenderer
       searchCriteriaId={notificationPayload?.searchCriteriaID}
       environment={environment}
       render={{

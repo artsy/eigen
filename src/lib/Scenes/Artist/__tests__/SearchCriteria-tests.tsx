@@ -3,7 +3,7 @@ import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
-import { SearchCriteriaQueryRender } from "../SearchCriteria"
+import { SearchCriteriaQueryRenderer } from "../SearchCriteria"
 
 jest.unmock("react-relay")
 
@@ -19,7 +19,7 @@ describe("SearchCriteria", () => {
     const mockRenderComponent = jest.fn(() => <></>)
 
     renderWithWrappers(
-      <SearchCriteriaQueryRender
+      <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
       />
@@ -36,7 +36,7 @@ describe("SearchCriteria", () => {
     const mockRenderComponent = jest.fn(() => <></>)
 
     renderWithWrappers(
-      <SearchCriteriaQueryRender render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }} />
+      <SearchCriteriaQueryRenderer render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }} />
     )
 
     expect(mockRenderComponent).toBeCalledWith({
@@ -50,7 +50,7 @@ describe("SearchCriteria", () => {
     const mockRenderComponent = jest.fn(() => <></>)
 
     renderWithWrappers(
-      <SearchCriteriaQueryRender
+      <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
         environment={mockEnvironment}
@@ -70,7 +70,7 @@ describe("SearchCriteria", () => {
     const mockRenderPlaceholder = jest.fn(() => <></>)
 
     renderWithWrappers(
-      <SearchCriteriaQueryRender
+      <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: jest.fn(() => <></>), renderPlaceholder: mockRenderPlaceholder }}
         environment={mockEnvironment}
@@ -85,7 +85,7 @@ describe("SearchCriteria", () => {
     const mockRenderComponent = jest.fn(() => <></>)
 
     renderWithWrappers(
-      <SearchCriteriaQueryRender
+      <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
         environment={mockEnvironment}
