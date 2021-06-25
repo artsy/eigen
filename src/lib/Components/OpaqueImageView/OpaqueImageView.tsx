@@ -1,6 +1,7 @@
 import colors from "lib/data/colors"
 import _ from "lodash"
 import React, { useCallback, useRef, useState } from "react"
+import { useEffect } from "react"
 import { Animated, PixelRatio, StyleSheet, View } from "react-native"
 import FastImage, { ImageStyle } from "react-native-fast-image"
 import { createGeminiUrl } from "./createGeminiUrl"
@@ -75,31 +76,69 @@ const useComponentSize = () => {
   return { layoutHeight, layoutWidth, onLayout }
 }
 
-export const OpaqueImageView: React.FC<Props> = ({ placeholderBackgroundColor = colors["gray-regular"], ...props }) => {
-  // Unless `aspectRatio` was not specified at all, default the ratio to 1 to prevent illegal layout calculations.
-  const aspectRatio = useState(props.aspectRatio === undefined ? undefined : props.aspectRatio ?? 1)
+export const OpaqueImageView: React.FC<Props> = ({
+  aspectRatio,
+  placeholderBackgroundColor = colors["gray-regular"],
+  ...props
+}) => {
   const { layoutHeight, layoutWidth, onLayout } = useComponentSize()
   const imageScaleValue = useRef(new Animated.Value(0)).current
-
+  const [fIHeight, setFIHeight] = useState(0)
+  const [fIWidth, setFIWidth] = useState(0)
+  const style = StyleSheet.flatten(props.style) ?? {}
   if (__DEV__) {
-    const style = StyleSheet.flatten(props.style)
     if (
       !(
-        aspectRatio ||
         (style.width && style.height) ||
         (props.width && props.height) ||
-        (style.height && style.flexGrow) ||
-        style.flex
+        (aspectRatio && (style.height || props.height)) ||
+        (aspectRatio && (style.width || props.width))
       )
     ) {
       console.error("[OpaqueImageView] Either an aspect ratio or specific dimensions or flex should be specified.")
-      return null
+      return <View style={{ height: 100, width: 100, backgroundColor: "red" }} />
     }
   }
 
+  // props.height / width
+  // style.width/height
+  // ! apo ta panw + aspectRatio
+  // ! apo ta panw use layoutHeight/layoutWidth
+
+  const getActualDimensions: () => Array<string | number> = () => {
+    if (props.height && props.width) {
+      return [props.width, props.height]
+    }
+    if (style.height && style.width) {
+      return [style.width, style.height]
+    }
+    const width = props.width ?? style.width
+    if (_.isNumber(width)) {
+      return [width, width / aspectRatio!]
+    }
+    if (_.isString(width)) {
+      return [layoutWidth, layoutWidth / aspectRatio!]
+    }
+    const height = props.height ?? style.height
+    if (_.isNumber(height)) {
+      return [height * aspectRatio!, height]
+    }
+    if (_.isString(height)) {
+      return [layoutHeight * aspectRatio!, layoutHeight]
+    }
+    return [layoutWidth, layoutHeight]
+  }
+
+  useEffect(() => {
+    const [fw, fh] = getActualDimensions()
+    // maybe we need to remove these two as number
+    setFIHeight(fh as number)
+    setFIWidth(fw as number)
+  }, [props.height, props.width, style.width, style.height, aspectRatio, layoutHeight, layoutWidth])
+
   if (React.Children.count(props.children) > 0) {
     console.error("Please don't add children to a OpaqueImageView. Doesn't work on android.")
-    return null
+    return <View style={{ height: 100, width: 100, backgroundColor: "red" }} />
   }
 
   const getImageURL = () => {
@@ -138,42 +177,26 @@ export const OpaqueImageView: React.FC<Props> = ({ placeholderBackgroundColor = 
     }
   }
 
-  if (!props.imageURL) {
-    return (
-      <View
-        style={{
-          backgroundColor: backgroundColorStyle,
-          width: props.width ?? layoutWidth,
-          height: props.height ?? layoutHeight,
-        }}
-      />
-    )
-  }
+  const fastImageStyle = [{ height: fIHeight, width: fIWidth }, props.style]
 
   return (
-    <FastImage
-      {...props}
-      onLayout={onLayout}
-      style={[
-        { height: props.height ?? layoutHeight, width: props.width ?? layoutWidth },
-        props.style,
-        { backgroundColor: backgroundColorStyle },
-      ]}
-      source={{
-        uri: getImageURL(),
-        priority: props.highPriority ? "high" : undefined,
-      }}
-      onLoadEnd={onImageLoadEnd}
-    >
+    <View onLayout={onLayout} style={fastImageStyle}>
+      <FastImage
+        {...props}
+        style={[...fastImageStyle, { position: "absolute" }, { backgroundColor: backgroundColorStyle }]}
+        source={{
+          uri: getImageURL(),
+          priority: props.highPriority ? "high" : undefined,
+        }}
+        onLoadEnd={onImageLoadEnd}
+      />
       <Animated.View
         style={[
-          { opacity: imageScaleValue },
-          { height: props.height, width: props.width },
-          props.style,
-          { backgroundColor: backgroundColorStyle },
+          { position: "absolute", opacity: imageScaleValue, backgroundColor: backgroundColorStyle },
+          ...fastImageStyle,
         ]}
       />
-    </FastImage>
+    </View>
   )
 }
 
