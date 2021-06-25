@@ -3,6 +3,8 @@
 #import "ArtsyAPI+Private.h"
 #import "MutableNSURLResponse.h"
 #import "AFHTTPRequestOperation+JSON.h"
+#import "ARGraphQLQueryCache.h"
+#import "AREmission.h"
 
 @interface ArtsyAPI (TestsPrivate)
 + (ArtsyAPI *)sharedAPI;
