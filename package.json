@@ -138,7 +138,7 @@
     "rn-fetch-blob": "0.12.0",
     "semver": "^7.3.4",
     "simple-markdown": "0.7.2",
-    "styled-components": "4.2.0",
+    "styled-components": "^5.3.0",
     "styled-system": "5.1.5",
     "supercluster": "6.0.1",
     "tipsi-stripe": "https://github.com/artsy/tipsi-stripe.git#fix-infinite-loop",
