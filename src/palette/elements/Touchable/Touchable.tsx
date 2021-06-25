@@ -16,7 +16,7 @@ interface ExtraTouchableProps {
   flex?: number
   haptic?: HapticFeedbackTypes | true
   noFeedback?: boolean
-  useReactNativeTouchable_ios: boolean
+  useReactNativeTouchable_ios?: boolean
 }
 
 export type TouchableProps = TouchableHighlightProps & ExtraTouchableProps
@@ -32,7 +32,7 @@ export const Touchable: React.FC<TouchableProps> = ({
   flex,
   haptic,
   noFeedback,
-  useReactNativeTouchable_ios = false,
+  useReactNativeTouchable_ios,
   onPress,
   ...props
 }) => {
