@@ -105,7 +105,7 @@ commands:
             - v6-metro-{{ checksum ".manifests/js_transform" }}
       - run:
           name: Bundle app js
-          command: ls emission/Pod/Assets/App.js || yarn bundle-for-native-ci
+          command: ls App.js || yarn bundle-for-native-ci
       - save_cache:
           key: v6-metro-{{ checksum ".manifests/js_transform" }}
           paths:
@@ -113,9 +113,8 @@ commands:
       - save_cache:
           key: v6-js_bundle-{{ checksum ".manifests/js_bundle" }}
           paths:
-            - emission/Pod/Assets/App.js
-            - emission/Pod/Assets/App.js.map
-            - emission/Pod/Assets/assets
+            - App.js
+            - App.js.map
   install-gems:
     steps:
       - restore_cache:
@@ -274,14 +273,13 @@ jobs:
       - bundle-js
       - run:
           name: Generate app_build manifest
-          command: ./scripts/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^emission/Pod/Assets/'
+          command: ./scripts/generate-manifest.js .manifests/app_build '^\./manifests/native_code'
       - store_artifacts:
           path: .manifests
       - persist_to_workspace:
           root: .
           paths:
             - .manifests
-            - emission/Pod/Assets
 
   build-test-app-ios:
     environment:
