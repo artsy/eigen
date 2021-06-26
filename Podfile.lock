@@ -520,9 +520,9 @@ PODS:
     - React
   - RNScreens (2.17.1):
     - React-Core
-  - RNSentry (2.2.1):
+  - RNSentry (2.5.2):
     - React-Core
-    - Sentry (= 6.1.4)
+    - Sentry (= 7.0.0)
   - RNShare (5.1.0):
     - React-Core
   - RNSVG (9.13.3):
@@ -533,9 +533,9 @@ PODS:
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
-  - Sentry (6.1.4):
-    - Sentry/Core (= 6.1.4)
-  - Sentry/Core (6.1.4)
+  - Sentry (7.0.0):
+    - Sentry/Core (= 7.0.0)
+  - Sentry/Core (7.0.0)
   - Specta (1.0.5)
   - Starscream (3.0.4)
   - Stripe (14.0.2)
@@ -1018,12 +1018,12 @@ SPEC CHECKSUMS:
   RNReactNativeHapticFeedback: 22c5ecf474428766c6b148f96f2ff6155cd7225e
   RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
   RNScreens: b6c9607e6fe47c1b6e2f1910d2acd46dd7ecea3a
-  RNSentry: 7104cdfc1072ccb86015d9c8f210d81ae76806c1
+  RNSentry: bfa1e2776c7413570e790cbbf79d2060dd0a565b
   RNShare: fed99fd743f80ca255903c1da46fc9a6430efab6
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SailthruMobile: df0a457a0be8cc9feaba16cc52deb527d89cab04
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
-  Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
+  Sentry: 89d26e036063b9cb9caa59b6951dd2f8277aa13b
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   Stripe: 25c07000e7e86ffc53da0e41a5dd1bce30470fe0
