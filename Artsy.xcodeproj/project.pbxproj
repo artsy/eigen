@@ -490,7 +490,7 @@
 		CB222A4A2686921900A74554 /* circle-exclamation@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB222A1B2686921900A74554 /* circle-exclamation@3x.png */; };
 		CB222A4C2686921900A74554 /* complete.queryMap.json in Resources */ = {isa = PBXBuildFile; fileRef = CB222A202686921900A74554 /* complete.queryMap.json */; };
 		CB222A4D2686921900A74554 /* cityDataSortedByDisplayPreference.json in Resources */ = {isa = PBXBuildFile; fileRef = CB222A212686921900A74554 /* cityDataSortedByDisplayPreference.json */; };
-		CB222A4E2686921900A74554 /* Emission.js in Resources */ = {isa = PBXBuildFile; fileRef = CB222A222686921900A74554 /* Emission.js */; };
+		CB222A4E2686921900A74554 /* App.js in Resources */ = {isa = PBXBuildFile; fileRef = CB222A222686921900A74554 /* App.js */; };
 		CB42B64F181092480069A801 /* ARCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB42B64E181092480069A801 /* ARCountdownView.m */; };
 		CB4D652717C80A9600390550 /* AROnboardingSearchField.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4D652617C80A9600390550 /* AROnboardingSearchField.m */; };
 		CB6CE8E524F424E700ED2843 /* ARInternalWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */; };
@@ -1266,7 +1266,7 @@
 		CB2228D8268683EF00A74554 /* AROpaqueImageViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROpaqueImageViewManager.m; sourceTree = "<group>"; };
 		CB2228D9268683EF00A74554 /* AROpaqueImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROpaqueImageView.m; sourceTree = "<group>"; };
 		CB2228DA268683EF00A74554 /* AROpaqueImageViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROpaqueImageViewManager.h; sourceTree = "<group>"; };
-		CB2229F02686921900A74554 /* Emission.js.map */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = Emission.js.map; sourceTree = "<group>"; };
+		CB2229F02686921900A74554 /* App.js.map */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = App.js.map; sourceTree = "<group>"; };
 		CB2229F22686921900A74554 /* app.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = app.json; sourceTree = "<group>"; };
 		CB2229F42686921900A74554 /* horizontal_chevron_white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "horizontal_chevron_white@3x.png"; sourceTree = "<group>"; };
 		CB2229F52686921900A74554 /* city-guide-bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "city-guide-bg@3x.png"; sourceTree = "<group>"; };
@@ -1310,7 +1310,7 @@
 		CB222A1E2686921900A74554 /* EchoNew.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EchoNew.json; sourceTree = "<group>"; };
 		CB222A202686921900A74554 /* complete.queryMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = complete.queryMap.json; sourceTree = "<group>"; };
 		CB222A212686921900A74554 /* cityDataSortedByDisplayPreference.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cityDataSortedByDisplayPreference.json; sourceTree = "<group>"; };
-		CB222A222686921900A74554 /* Emission.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Emission.js; sourceTree = "<group>"; };
+		CB222A222686921900A74554 /* App.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = App.js; sourceTree = "<group>"; };
 		CB355E8217CAB0B3002A798D /* ARFollowable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFollowable.h; sourceTree = "<group>"; };
 		CB42B64D181092480069A801 /* ARCountdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCountdownView.h; sourceTree = "<group>"; };
 		CB42B64E181092480069A801 /* ARCountdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCountdownView.m; sourceTree = "<group>"; };
@@ -3246,8 +3246,8 @@
 			isa = PBXGroup;
 			children = (
 				CB2229F12686921900A74554 /* assets */,
-				CB222A222686921900A74554 /* Emission.js */,
-				CB2229F02686921900A74554 /* Emission.js.map */,
+				CB222A222686921900A74554 /* App.js */,
+				CB2229F02686921900A74554 /* App.js.map */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -3700,7 +3700,7 @@
 				5E80CA862093C29500BCFD82 /* CircleXRed@2x.png in Resources */,
 				5E80CA842093C29500BCFD82 /* CircleXRed@3x.png in Resources */,
 				66A43C681CE470C400FFD6ED /* Hash@2x.png in Resources */,
-				CB222A4E2686921900A74554 /* Emission.js in Resources */,
+				CB222A4E2686921900A74554 /* App.js in Resources */,
 				604E081D2051C5B700785717 /* ARVIRRefresh@2x.png in Resources */,
 				CB222A302686921900A74554 /* bmw-logo.png in Resources */,
 			);

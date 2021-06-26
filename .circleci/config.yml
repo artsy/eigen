@@ -104,8 +104,8 @@ commands:
           keys:
             - v6-metro-{{ checksum ".manifests/js_transform" }}
       - run:
-          name: Bundle emission
-          command: ls emission/Pod/Assets/Emission.js || yarn bundle-for-native-ci
+          name: Bundle app js
+          command: ls emission/Pod/Assets/App.js || yarn bundle-for-native-ci
       - save_cache:
           key: v6-metro-{{ checksum ".manifests/js_transform" }}
           paths:
@@ -113,8 +113,8 @@ commands:
       - save_cache:
           key: v6-js_bundle-{{ checksum ".manifests/js_bundle" }}
           paths:
-            - emission/Pod/Assets/Emission.js
-            - emission/Pod/Assets/Emission.js.map
+            - emission/Pod/Assets/App.js
+            - emission/Pod/Assets/App.js.map
             - emission/Pod/Assets/assets
   install-gems:
     steps:

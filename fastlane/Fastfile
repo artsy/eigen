@@ -283,9 +283,9 @@ lane :upload_sentry_artifacts do |options|
   bundle_path = ''
   outfile = ''
   if platform == "ios"
-    source_map_path = 'emission/Pod/Assets/Emission.js.map'
-    bundle_path = 'emission/Pod/Assets/Emission.js'
-    outfile = '~/Emission.js'
+    source_map_path = 'emission/Pod/Assets/App.js.map'
+    bundle_path = 'emission/Pod/Assets/App.js'
+    outfile = '~/App.js'
   else
     source_map_path = 'android/app/build/generated/sourcemaps/react/release/index.android.bundle.map'
     bundle_path = 'android/app/build/generated/assets/react/release/index.android.bundle'
