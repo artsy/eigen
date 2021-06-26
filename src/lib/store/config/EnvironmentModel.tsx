@@ -76,7 +76,7 @@ export interface EnvironmentModel {
 }
 
 export const getEnvironmentModel = (): EnvironmentModel => ({
-  env: "production",
+  env: __DEV__ ? "staging" : "production",
   adminOverrides: {},
   strings: computed(({ env, adminOverrides }) => {
     const result: { [k in EnvironmentKey]: string } = {} as any
