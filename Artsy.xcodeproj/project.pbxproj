@@ -448,7 +448,6 @@
 		CB2228F3268683EF00A74554 /* ARCity.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2228D5268683EF00A74554 /* ARCity.m */; };
 		CB2228F4268683EF00A74554 /* AROpaqueImageViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2228D8268683EF00A74554 /* AROpaqueImageViewManager.m */; };
 		CB2228F5268683EF00A74554 /* AROpaqueImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2228D9268683EF00A74554 /* AROpaqueImageView.m */; };
-		CB222A232686921900A74554 /* app.json in Resources */ = {isa = PBXBuildFile; fileRef = CB2229F22686921900A74554 /* app.json */; };
 		CB222A242686921900A74554 /* horizontal_chevron_white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB2229F42686921900A74554 /* horizontal_chevron_white@3x.png */; };
 		CB222A252686921900A74554 /* city-guide-bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB2229F52686921900A74554 /* city-guide-bg@3x.png */; };
 		CB222A262686921900A74554 /* city-guide-bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB2229F62686921900A74554 /* city-guide-bg@2x.png */; };
@@ -490,7 +489,7 @@
 		CB222A4A2686921900A74554 /* circle-exclamation@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB222A1B2686921900A74554 /* circle-exclamation@3x.png */; };
 		CB222A4C2686921900A74554 /* complete.queryMap.json in Resources */ = {isa = PBXBuildFile; fileRef = CB222A202686921900A74554 /* complete.queryMap.json */; };
 		CB222A4D2686921900A74554 /* cityDataSortedByDisplayPreference.json in Resources */ = {isa = PBXBuildFile; fileRef = CB222A212686921900A74554 /* cityDataSortedByDisplayPreference.json */; };
-		CB222A4E2686921900A74554 /* App.js in Resources */ = {isa = PBXBuildFile; fileRef = CB222A222686921900A74554 /* App.js */; };
+		CB38B1B32688A3D300820218 /* App.js in Resources */ = {isa = PBXBuildFile; fileRef = CB38B1B12688A3D300820218 /* App.js */; };
 		CB42B64F181092480069A801 /* ARCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB42B64E181092480069A801 /* ARCountdownView.m */; };
 		CB4D652717C80A9600390550 /* AROnboardingSearchField.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4D652617C80A9600390550 /* AROnboardingSearchField.m */; };
 		CB6CE8E524F424E700ED2843 /* ARInternalWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */; };
@@ -1312,6 +1311,8 @@
 		CB222A212686921900A74554 /* cityDataSortedByDisplayPreference.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cityDataSortedByDisplayPreference.json; sourceTree = "<group>"; };
 		CB222A222686921900A74554 /* App.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = App.js; sourceTree = "<group>"; };
 		CB355E8217CAB0B3002A798D /* ARFollowable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFollowable.h; sourceTree = "<group>"; };
+		CB38B1B12688A3D300820218 /* App.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = App.js; sourceTree = "<group>"; };
+		CB38B1B22688A3D300820218 /* App.js.map */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = App.js.map; sourceTree = "<group>"; };
 		CB42B64D181092480069A801 /* ARCountdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCountdownView.h; sourceTree = "<group>"; };
 		CB42B64E181092480069A801 /* ARCountdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCountdownView.m; sourceTree = "<group>"; };
 		CB4D652517C80A9600390550 /* AROnboardingSearchField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingSearchField.h; sourceTree = "<group>"; };
@@ -1936,6 +1937,8 @@
 		49BA7E091655ABE600C06572 /* Artsy */ = {
 			isa = PBXGroup;
 			children = (
+				CB38B1B12688A3D300820218 /* App.js */,
+				CB38B1B22688A3D300820218 /* App.js.map */,
 				CB22289C26867F5500A74554 /* Emission */,
 				49A7723E165ADBF700BC6FD3 /* App */,
 				608B2F5B1657CF600046956C /* App Resources */,
@@ -3621,7 +3624,6 @@
 				E620C74819C746530064A0FF /* Images.xcassets in Resources */,
 				6016120420B7446800FD54B0 /* ARVIRModalClose.png in Resources */,
 				CB222A322686921900A74554 /* circle-x-red.png in Resources */,
-				CB222A232686921900A74554 /* app.json in Resources */,
 				1CFA4EB81E5C4B6B00D44A5A /* full_logo_black_small@2x.png in Resources */,
 				CB222A472686921900A74554 /* pay@2x.png in Resources */,
 				5EF9E1181C56D0B900CD80DB /* AuctionRefineCheck@2x.png in Resources */,
@@ -3668,6 +3670,7 @@
 				7FB8852920A3704700DE5E82 /* checkbox_unselected.png in Resources */,
 				CB6CE8EF24F9684400ED2843 /* Thumb@2x.png in Resources */,
 				3C4AE99619094F96009C0E8B /* ViewInRoom_Wall_Right@2x.png in Resources */,
+				CB38B1B32688A3D300820218 /* App.js in Resources */,
 				6037340420CF1BFF0017A4D9 /* ARVIRShadow.png in Resources */,
 				CB222A412686921900A74554 /* pdf.png in Resources */,
 				CB222A482686921900A74554 /* message@2x.png in Resources */,
@@ -3700,7 +3703,6 @@
 				5E80CA862093C29500BCFD82 /* CircleXRed@2x.png in Resources */,
 				5E80CA842093C29500BCFD82 /* CircleXRed@3x.png in Resources */,
 				66A43C681CE470C400FFD6ED /* Hash@2x.png in Resources */,
-				CB222A4E2686921900A74554 /* App.js in Resources */,
 				604E081D2051C5B700785717 /* ARVIRRefresh@2x.png in Resources */,
 				CB222A302686921900A74554 /* bmw-logo.png in Resources */,
 			);

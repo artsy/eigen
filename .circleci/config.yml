@@ -105,7 +105,7 @@ commands:
             - v6-metro-{{ checksum ".manifests/js_transform" }}
       - run:
           name: Bundle app js
-          command: ls App.js || yarn bundle-for-native-ci
+          command: ls Artsy/App.js || yarn bundle-for-native-ci
       - save_cache:
           key: v6-metro-{{ checksum ".manifests/js_transform" }}
           paths:
@@ -113,8 +113,8 @@ commands:
       - save_cache:
           key: v6-js_bundle-{{ checksum ".manifests/js_bundle" }}
           paths:
-            - App.js
-            - App.js.map
+            - Arsty/App.js
+            - Artsy/App.js.map
   install-gems:
     steps:
       - restore_cache:
