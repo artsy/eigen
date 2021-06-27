@@ -152,12 +152,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v2-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v3-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Build App
           command: ls derived_data || ./scripts/ci-ios
       - save_cache:
-          key: v2-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v3-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
