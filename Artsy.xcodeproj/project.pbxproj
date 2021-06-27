@@ -65,7 +65,6 @@
 		342F9E0892E99A2F66657964 /* Artwork+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F93309D1B60C53E2E0732 /* Artwork+Extensions.m */; };
 		342F9F54666BFDFF200E31AE /* UIView+HitTestExpansion.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9F4385F10D19BC94E456 /* UIView+HitTestExpansion.m */; };
 		342F9FBB86D02FABC8AA9339 /* ARNavigationButtonsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F965F76AA25C6C700FE1C /* ARNavigationButtonsViewControllerTests.m */; };
-		3A6EBA7F22358DE60052D0C0 /* Emission.podspec.json in Resources */ = {isa = PBXBuildFile; fileRef = 3A6EBA7E22358DE60052D0C0 /* Emission.podspec.json */; };
 		3C205B59189000A5004280E0 /* ARAppNotificationsDelegateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C205B58189000A5004280E0 /* ARAppNotificationsDelegateTests.m */; };
 		3C22227418C6487C00B7CE3A /* User_v0.data in Resources */ = {isa = PBXBuildFile; fileRef = 3C22227318C6487C00B7CE3A /* User_v0.data */; };
 		3C22227618C64B4A00B7CE3A /* User_v1.data in Resources */ = {isa = PBXBuildFile; fileRef = 3C22227518C64B4A00B7CE3A /* User_v1.data */; };
@@ -3620,7 +3619,6 @@
 				1CC9EBA21CC76CDD00A74E3C /* followButton@2x.png in Resources */,
 				608B707017D4A1C80088A56C /* BackArrow_Highlighted@2x.png in Resources */,
 				5E4E32AD1E53884E00C7F724 /* paddle.png in Resources */,
-				3A6EBA7F22358DE60052D0C0 /* Emission.podspec.json in Resources */,
 				E620C74819C746530064A0FF /* Images.xcassets in Resources */,
 				6016120420B7446800FD54B0 /* ARVIRModalClose.png in Resources */,
 				CB222A322686921900A74554 /* circle-x-red.png in Resources */,
