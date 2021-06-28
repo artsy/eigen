@@ -84,7 +84,7 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
           )}
           ItemSeparatorComponent={() => (
             <Flex px={2}>
-              <Separator />
+              <Separator borderColor={"black5"} />
             </Flex>
           )}
           ListFooterComponent={

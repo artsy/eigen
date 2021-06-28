@@ -53,7 +53,7 @@ const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress }) => {
         {/* Sale Artwork Details */}
         <Flex pl={15} flex={1} flexDirection="row" justifyContent="space-between">
           <Flex flex={3}>
-            <Flex mb={"3px"}>
+            <Flex>
               <Text variant="caption" ellipsizeMode="middle" numberOfLines={2} fontWeight="bold">
                 {auctionResult.artist?.name}
               </Text>
