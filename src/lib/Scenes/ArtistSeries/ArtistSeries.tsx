@@ -102,9 +102,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
             stickyHeaderContent={<ArtistSeriesFilterHeader onFilterArtworksPress={openFilterArtworksModal} />}
           >
             <Flex px={2}>
-              <ArtistSeriesArtworksFragmentContainer
-                artistSeries={artistSeries}
-              />
+              <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
               <ArtworkFilterNavigator
                 {...props}
                 isFilterArtworksModalVisible={isFilterArtworksModalVisible}
