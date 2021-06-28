@@ -5,7 +5,7 @@ import { stringify } from "qs"
 import { Platform } from "react-native"
 import Config from "react-native-config"
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "react-native-fbsdk-next"
-import { getCurrentEmissionState, unsafe_getFeatureFlag } from "./GlobalStore"
+import { getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 
@@ -78,7 +78,8 @@ export const getAuthModel = (): AuthModel => ({
   onboardingState: "none",
   userEmail: null,
   userHasArtsyEmail: computed([(_, state) => state], (state) => {
-    if (!unsafe_getFeatureFlag("AREnableNewOnboardingFlow")) {
+    if (state.native.sessionState.userEmail) {
+      // we can remove this when get rid of native ios onboadrding (tag: AREnableNewOnboardingFlow)
       if (Platform.OS === "ios") {
         return isArtsyEmail(state.native.sessionState.userEmail ?? "")
       }

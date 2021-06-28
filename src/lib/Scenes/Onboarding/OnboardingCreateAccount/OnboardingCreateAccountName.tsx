@@ -3,7 +3,6 @@ import { useFormikContext } from "formik"
 import { Input } from "lib/Components/Input/Input"
 import { color } from "palette"
 import React from "react"
-import { useState } from "react"
 import {
   OnboardingCreateAccountNavigationStack,
   OnboardingCreateAccountScreenWrapper,
@@ -14,8 +13,7 @@ export interface OnboardingCreateAccountNameProps
   extends StackScreenProps<OnboardingCreateAccountNavigationStack, "OnboardingCreateAccountName"> {}
 
 export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNameProps> = ({ navigation }) => {
-  const { values, handleSubmit, handleChange, validateForm, errors, setErrors } = useFormikContext<UserSchema>()
-  const [isFirstBlur, setIsFirstBlur] = useState(true)
+  const { values, handleSubmit, handleChange, errors, setErrors } = useFormikContext<UserSchema>()
 
   return (
     <OnboardingCreateAccountScreenWrapper
@@ -37,7 +35,6 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
           handleChange("name")(text)
         }}
         onSubmitEditing={handleSubmit}
-        onBlur={() => (isFirstBlur ? setIsFirstBlur(false) : validateForm())}
         blurOnSubmit={false}
         placeholder="First and Last Name"
         placeholderTextColor={color("black30")}

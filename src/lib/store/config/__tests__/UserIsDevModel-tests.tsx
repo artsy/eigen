@@ -37,7 +37,7 @@ describe("UserIsDevModel", () => {
   it("is true for artsy emails for ios", () => {
     Platform.OS = "ios"
     __globalStoreTestUtils__?.injectState({
-      auth: { userEmail: "pavlos@artsymail.com" },
+      native: { sessionState: { userEmail: "pavlos@artsymail.com" } },
     })
     expect(getState().value).toEqual(true)
   })
