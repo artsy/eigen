@@ -108,6 +108,7 @@ test-results.json
 .env
 .env.shared
 .env.ci
+.env.temp
 
 # Ignore test artefacts
 test-results.xml
