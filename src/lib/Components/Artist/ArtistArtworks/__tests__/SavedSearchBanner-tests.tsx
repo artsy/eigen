@@ -31,8 +31,7 @@ const mockFetchNotificationPermissions = LegacyNativeModules.ARTemporaryAPIModul
 describe("SavedSearchBanner", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const attributes: SearchCriteriaAttributes = {
-    priceMin: 300,
-    priceMax: 500,
+    acquireable: true,
   }
   const trackEvent = jest.fn()
 
