@@ -1,18 +1,19 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Fair_fair } from "__generated__/Fair_fair.graphql"
 import { FairQuery } from "__generated__/FairQuery.graphql"
-import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useHideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
 
+import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "lib/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Flex, Separator, Spacer, Theme } from "palette"
 import React, { useCallback, useRef, useState } from "react"
-import { FlatList, View, ViewToken } from "react-native"
+import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { FairArtworksFragmentContainer } from "./Components/FairArtworks"
@@ -30,10 +31,6 @@ interface FairQueryRendererProps {
 
 interface FairProps {
   fair: Fair_fair
-}
-
-interface ViewableItems {
-  viewableItems?: ViewToken[]
 }
 
 const tabs: TabsType = [
@@ -58,7 +55,6 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
   const flatListRef = useRef<FlatList>(null)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-  const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
 
   const sections = isActive
     ? [
@@ -66,22 +62,15 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         ...(hasArticles ? ["fairEditorial"] : []),
         ...(hasCollections ? ["fairCollections"] : []),
         ...(hasFollowedArtistArtworks ? ["fairFollowedArtistsRail"] : []),
-        ...(hasArtworks && hasExhibitors ? ["fairTabs", "fairTabChildContent"] : []),
+        ...(hasArtworks && hasExhibitors ? ["fairTabsAndFilter", "fairTabChildContent"] : []),
       ]
     : ["fairHeader", ...(hasArticles ? ["fairEditorial"] : []), "notActive"]
 
-  const tabIndex = sections.indexOf("fairTabs")
+  const stickyIndex = sections.indexOf("fairTabsAndFilter")
 
   const { safeAreaInsets } = useScreenDimensions()
 
   const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 30 })
-
-  const viewableItemsChangedRef = React.useRef(({ viewableItems }: ViewableItems) => {
-    const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
-      return viewableItem?.item === "fairTabChildContent"
-    })
-    setArtworksGridVisible(artworksItem?.isViewable ?? false)
-  })
 
   /*
   This function is necessary to achieve the effect whereby the sticky tab
@@ -99,9 +88,9 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
     let zIndex
 
     // These zIndex values are finicky/important. We found that 11 and 20 worked.
-    if (index < tabIndex) {
+    if (index < stickyIndex) {
       zIndex = 11
-    } else if (index === tabIndex) {
+    } else if (index === stickyIndex) {
       zIndex = 20
     }
     return (
@@ -110,7 +99,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         key={`${item}`}
         style={{
           zIndex,
-          marginBottom: index === tabIndex - 1 ? -safeAreaInsets.top : undefined,
+          marginBottom: index === stickyIndex - 1 ? -safeAreaInsets.top : undefined,
         }}
       >
         {children}
@@ -191,11 +180,10 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
               data={sections}
               ref={flatListRef}
               viewabilityConfig={viewConfigRef.current}
-              onViewableItemsChanged={viewableItemsChangedRef.current}
               ItemSeparatorComponent={() => <Spacer mb={3} />}
               ListFooterComponent={<Spacer mb={3} />}
               keyExtractor={(_item, index) => String(index)}
-              stickyHeaderIndices={[tabIndex]}
+              stickyHeaderIndices={[stickyIndex]}
               onScroll={hideBackButtonOnScroll}
               scrollEventThrottle={100}
               // @ts-ignore
@@ -222,7 +210,8 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                   case "fairCollections": {
                     return <FairCollectionsFragmentContainer fair={fair} />
                   }
-                  case "fairTabs": {
+                  case "fairTabsAndFilter": {
+                    const tabToShow = tabs ? tabs[activeTab] : null
                     return (
                       <Box paddingTop={safeAreaInsets.top} backgroundColor="white">
                         <Tabs
@@ -233,6 +222,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                           activeTab={activeTab}
                           tabs={tabs}
                         />
+                        {tabToShow?.label === "Artworks" && <HeaderArtworksFilter onPress={openFilterArtworksModal} />}
                       </Box>
                     )
                   }
@@ -265,10 +255,6 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                   }
                 }
               }}
-            />
-            <AnimatedArtworkFilterButton
-              isVisible={isArtworksGridVisible && tabs[activeTab] && tabs[activeTab].label === "Artworks"}
-              onPress={openFilterArtworksModal}
             />
           </>
         </Theme>
@@ -304,10 +290,7 @@ export const FairFragmentContainer = createFragmentContainer(Fair, {
       ...FairEmptyState_fair
       ...FairEditorial_fair
       ...FairCollections_fair
-      ...FairArtworks_fair @arguments(input: {
-        sort: "-decayed_merch",
-        dimensionRange: "*-*",
-      })
+      ...FairArtworks_fair @arguments(input: { sort: "-decayed_merch", dimensionRange: "*-*" })
       ...FairExhibitors_fair
       ...FairFollowedArtistsRail_fair
     }
