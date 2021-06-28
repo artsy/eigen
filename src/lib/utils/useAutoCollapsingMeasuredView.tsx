@@ -3,8 +3,8 @@ import { View } from "react-native"
 import Animated from "react-native-reanimated"
 
 export function useAutoCollapsingMeasuredView(content: React.ReactChild) {
-  const [nativeHeight, setNativeHeight] = useState<Animated.Value<number> | null>(
-    __TEST__ ? new Animated.Value(100) : null
+  const [nativeHeight, setNativeHeight] = useState<Animated.Value<number>>(
+    __TEST__ ? new Animated.Value(100) : new Animated.Value(-1)
   )
   const animation = useRef<Animated.BackwardCompatibleWrapper | null>(null)
 
@@ -17,7 +17,7 @@ export function useAutoCollapsingMeasuredView(content: React.ReactChild) {
           // afterwards the parent's height should be controlled by the nativeHeight value
           // and this component should be able to grow and shrink freely, hence the absolute positioning.
           style={
-            nativeHeight
+            Animated.neq(nativeHeight, new Animated.Value(-1))
               ? {
                   position: "absolute",
                   top: 0,
@@ -27,7 +27,7 @@ export function useAutoCollapsingMeasuredView(content: React.ReactChild) {
               : undefined
           }
           onLayout={(e) => {
-            if (nativeHeight) {
+            if (Animated.neq(nativeHeight, new Animated.Value(-1))) {
               if (animation.current) {
                 animation.current.stop()
               }
