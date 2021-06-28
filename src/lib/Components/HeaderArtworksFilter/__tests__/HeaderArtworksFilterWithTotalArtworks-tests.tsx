@@ -3,9 +3,9 @@ import { useAnimatedValue } from "lib/Scenes/Artwork/Components/ImageCarousel/us
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { ShowArtworksFilter } from "../Components/ShowArtworksFilter"
+import { HeaderArtworksFilterWithTotalArtworks } from "../HeaderArtworksFilterWithTotalArtworks"
 
-describe("Show", () => {
+describe("HeaderArtworksFilterWithTotalArtworks", () => {
   const onPress = jest.fn()
 
   const initialState: ArtworkFiltersState = {
@@ -21,21 +21,21 @@ describe("Show", () => {
     },
   }
 
-  const TestShowArtworksFilter = ({ initialData }: { initialData?: ArtworkFiltersState }) => {
+  const TestHeaderArtworksFilterWithTotalArtworks = ({ initialData }: { initialData?: ArtworkFiltersState }) => {
     const animationValue = useAnimatedValue(0)
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>
-        <ShowArtworksFilter animationValue={animationValue} onPress={onPress} />
+        <HeaderArtworksFilterWithTotalArtworks animationValue={animationValue} onPress={onPress} />
       </ArtworkFiltersStoreProvider>
     )
   }
 
   const getWrapper = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
-    const tree = renderWithWrappers(<TestShowArtworksFilter initialData={initialData} />)
+    const tree = renderWithWrappers(<TestHeaderArtworksFilterWithTotalArtworks initialData={initialData} />)
     return tree
   }
 
-  it("renders show artworks filter header with correct text", () => {
+  it("renders artworks filter header with correct text", () => {
     const wrapper = getWrapper({
       initialData: {
         ...initialState,
@@ -45,15 +45,13 @@ describe("Show", () => {
         },
       },
     })
-
     const text = extractText(wrapper.root)
     expect(text).toContain("Showing 12 works")
     expect(text).toContain("Sort & Filter")
   })
 
-  it("doesn't render show artworks filter header", () => {
+  it("doesn't render artworks filter header", () => {
     const wrapper = getWrapper({})
-
     const text = extractText(wrapper.root)
     expect(text).not.toContain("Showing")
     expect(text).not.toContain("works")

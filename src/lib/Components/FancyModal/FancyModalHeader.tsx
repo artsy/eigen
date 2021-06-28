@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, ArrowRightIcon, CloseIcon, Flex, Separator, space, Text } from "palette"
+import { ArrowLeftIcon, ArrowRightIcon, CloseIcon, Flex, Separator, ShareIcon, space, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
@@ -11,6 +11,7 @@ export interface FancyModalHeaderProps {
   rightButtonDisabled?: boolean
   rightButtonText?: string
   useXButton?: boolean
+  useShareButton?: boolean
 }
 
 export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
@@ -22,12 +23,21 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
   onRightButtonPress,
   rightButtonDisabled,
   useXButton,
+  useShareButton,
 }) => {
   const leftButton = () => {
     if (!useXButton) {
       return <ArrowLeftIcon fill="black100" />
     } else {
       return <CloseIcon fill="black100" />
+    }
+  }
+
+  const rightButton = () => {
+    if (useShareButton) {
+      return <ShareIcon fill="black100" height="25px" width="25px" />
+    } else {
+      return <ArrowRightIcon fill="black100" />
     }
   }
 
@@ -56,7 +66,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
                   {rightButtonText}
                 </Text>
               ) : (
-                <ArrowRightIcon fill="black100" />
+                rightButton()
               )}
             </RightButtonContainer>
           )}

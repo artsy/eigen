@@ -10668,14 +10668,9 @@ type SearchCriteria {
   artistID: String
   atAuction: Boolean
   attributionClass: [String!]!
-  attributionClasses: [String!]!
   colors: [String!]!
   dimensionRange: String
-  dimensionScoreMax: Float
-  dimensionScoreMin: Float
   height: String
-  heightMax: Float
-  heightMin: Float
   inquireableOnly: Boolean
   internalID: ID!
   locationCities: [String!]!
@@ -10683,12 +10678,8 @@ type SearchCriteria {
   materialsTerms: [String!]!
   offerable: Boolean
   partnerIDs: [String!]!
-  priceMax: Int
-  priceMin: Int
   priceRange: String
   width: String
-  widthMax: Float
-  widthMin: Float
 }
 
 # Attributes for a search criteria
@@ -10698,26 +10689,17 @@ input SearchCriteriaAttributes {
   artistID: String = null
   atAuction: Boolean = null
   attributionClass: [String!] = []
-  attributionClasses: [String!] = []
   colors: [String!] = []
   dimensionRange: String = null
-  dimensionScoreMax: Float = null
-  dimensionScoreMin: Float = null
   height: String = null
-  heightMax: Float = null
-  heightMin: Float = null
   inquireableOnly: Boolean = null
   locationCities: [String!] = []
   majorPeriods: [String!] = []
   materialsTerms: [String!] = []
   offerable: Boolean = null
   partnerIDs: [String!] = []
-  priceMax: Int = null
-  priceMin: Int = null
   priceRange: String = null
   width: String = null
-  widthMax: Float = null
-  widthMin: Float = null
 }
 
 # A search criteria or errors object

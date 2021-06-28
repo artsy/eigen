@@ -1,11 +1,11 @@
 import { ShowTestsQuery } from "__generated__/ShowTestsQuery.graphql"
+import { HeaderArtworksFilterWithTotalArtworks } from "lib/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ShowArtworksFilter } from "../Components/ShowArtworksFilter"
 import { ShowContextCard } from "../Components/ShowContextCard"
 import { Show, ShowFragmentContainer } from "../Show"
 
@@ -94,8 +94,8 @@ describe("Show", () => {
     expect(wrapper.root.findAllByType(ShowContextCard)).toHaveLength(1)
   })
 
-  it("renders show artworks filter header", () => {
+  it("renders artworks filter header", () => {
     const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(ShowArtworksFilter)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(HeaderArtworksFilterWithTotalArtworks)).toHaveLength(1)
   })
 })
