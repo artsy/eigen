@@ -250,7 +250,6 @@
 		60026AF21BDE3EFB0040257C /* ARWebViewCacheHost.m in Sources */ = {isa = PBXBuildFile; fileRef = 60026AF11BDE3EFB0040257C /* ARWebViewCacheHost.m */; };
 		600415C917C4ECE2003C7974 /* ArtsyAPI+RelatedModels.m in Sources */ = {isa = PBXBuildFile; fileRef = 600415C817C4ECE2003C7974 /* ArtsyAPI+RelatedModels.m */; };
 		600A734317DE3F3F00E21233 /* ArtsyAPI+DeviceTokens.m in Sources */ = {isa = PBXBuildFile; fileRef = 600A734217DE3F3F00E21233 /* ArtsyAPI+DeviceTokens.m */; };
-		600B8B451C4FCEEC00776F84 /* CHANGELOG.yml in Resources */ = {isa = PBXBuildFile; fileRef = 600B8B441C4FCEEC00776F84 /* CHANGELOG.yml */; };
 		600E73521DAD42D40007BF39 /* GeneRefineSettingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600E73511DAD42D40007BF39 /* GeneRefineSettingTests.swift */; };
 		600E73541DAD430D0007BF39 /* gene_refine_example_full.json in Resources */ = {isa = PBXBuildFile; fileRef = 6035C25E1DACF14000CC4647 /* gene_refine_example_full.json */; };
 		600E73561DAD4C120007BF39 /* gene_refine_example_short_no_prize_medium.json in Resources */ = {isa = PBXBuildFile; fileRef = 600E73551DAD4C120007BF39 /* gene_refine_example_short_no_prize_medium.json */; };
@@ -427,7 +426,6 @@
 		CB2228DF268683EF00A74554 /* AREmission.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2228A7268683EF00A74554 /* AREmission.m */; };
 		CB2228E0268683EF00A74554 /* AREmissionFontsLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2228A9268683EF00A74554 /* AREmissionFontsLoader.m */; };
 		CB2228E1268683EF00A74554 /* ARDottedLineManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2228AD268683EF00A74554 /* ARDottedLineManager.m */; };
-		CB2228E2268683EF00A74554 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = CB2228AE268683EF00A74554 /* .gitkeep */; };
 		CB2228E3268683EF00A74554 /* ARTemporaryAPIModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2228B1268683EF00A74554 /* ARTemporaryAPIModule.m */; };
 		CB2228E4268683EF00A74554 /* ARMapComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2228B4268683EF00A74554 /* ARMapComponentViewController.m */; };
 		CB2228E5268683EF00A74554 /* ARMediaPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB2228B5268683EF00A74554 /* ARMediaPreviewController.m */; };
@@ -488,7 +486,6 @@
 		CB222A4A2686921900A74554 /* circle-exclamation@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB222A1B2686921900A74554 /* circle-exclamation@3x.png */; };
 		CB222A4C2686921900A74554 /* complete.queryMap.json in Resources */ = {isa = PBXBuildFile; fileRef = CB222A202686921900A74554 /* complete.queryMap.json */; };
 		CB222A4D2686921900A74554 /* cityDataSortedByDisplayPreference.json in Resources */ = {isa = PBXBuildFile; fileRef = CB222A212686921900A74554 /* cityDataSortedByDisplayPreference.json */; };
-		CB38B1B32688A3D300820218 /* App.js in Resources */ = {isa = PBXBuildFile; fileRef = CB38B1B12688A3D300820218 /* App.js */; };
 		CB42B64F181092480069A801 /* ARCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB42B64E181092480069A801 /* ARCountdownView.m */; };
 		CB4D652717C80A9600390550 /* AROnboardingSearchField.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4D652617C80A9600390550 /* AROnboardingSearchField.m */; };
 		CB6CE8E524F424E700ED2843 /* ARInternalWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */; };
@@ -1226,7 +1223,6 @@
 		CB2228AA268683EF00A74554 /* ARScrollViewHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARScrollViewHelpers.h; sourceTree = "<group>"; };
 		CB2228AC268683EF00A74554 /* ARDottedLineManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDottedLineManager.h; sourceTree = "<group>"; };
 		CB2228AD268683EF00A74554 /* ARDottedLineManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDottedLineManager.m; sourceTree = "<group>"; };
-		CB2228AE268683EF00A74554 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		CB2228B0268683EF00A74554 /* ARTemporaryAPIModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTemporaryAPIModule.h; sourceTree = "<group>"; };
 		CB2228B1268683EF00A74554 /* ARTemporaryAPIModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTemporaryAPIModule.m; sourceTree = "<group>"; };
 		CB2228B3268683EF00A74554 /* ARCityPickerComponentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCityPickerComponentViewController.h; sourceTree = "<group>"; };
@@ -3112,7 +3108,6 @@
 				CB22289E268683EF00A74554 /* InternalWebView */,
 				CB22289F268683EF00A74554 /* Core */,
 				CB2228AB268683EF00A74554 /* DottedLineComponent */,
-				CB2228AE268683EF00A74554 /* .gitkeep */,
 				CB2228AF268683EF00A74554 /* TemporaryAPI */,
 				CB2228B2268683EF00A74554 /* ViewControllers */,
 				CB2228BF268683EF00A74554 /* GraphQL */,
@@ -3136,12 +3131,12 @@
 			children = (
 				CB2228A0268683EF00A74554 /* ARCocoaConstantsModule.m */,
 				CB2228A1268683EF00A74554 /* AREmission.h */,
+				CB2228A7268683EF00A74554 /* AREmission.m */,
 				CB2228A2268683EF00A74554 /* AREventsModule.m */,
 				CB2228A3268683EF00A74554 /* RCTScrollView+Artsy.h */,
 				CB2228A4268683EF00A74554 /* ARScrollViewHelpers.m */,
 				CB2228A5268683EF00A74554 /* RCTScrollView+Artsy.m */,
 				CB2228A6268683EF00A74554 /* AREventsModule.h */,
-				CB2228A7268683EF00A74554 /* AREmission.m */,
 				CB2228A8268683EF00A74554 /* ARCocoaConstantsModule.h */,
 				CB2228A9268683EF00A74554 /* AREmissionFontsLoader.m */,
 				CB2228AA268683EF00A74554 /* ARScrollViewHelpers.h */,
@@ -3171,16 +3166,16 @@
 			isa = PBXGroup;
 			children = (
 				CB2228B3268683EF00A74554 /* ARCityPickerComponentViewController.h */,
-				CB2228B4268683EF00A74554 /* ARMapComponentViewController.m */,
-				CB2228B5268683EF00A74554 /* ARMediaPreviewController.m */,
-				CB2228B6268683EF00A74554 /* ARCityComponentViewController.m */,
-				CB2228B7268683EF00A74554 /* ARComponentViewController.h */,
-				CB2228B8268683EF00A74554 /* ARMapContainerViewController.h */,
-				CB2228B9268683EF00A74554 /* ARMediaPreviewController.h */,
-				CB2228BA268683EF00A74554 /* ARMapComponentViewController.h */,
 				CB2228BB268683EF00A74554 /* ARCityPickerComponentViewController.m */,
-				CB2228BC268683EF00A74554 /* ARCityComponentViewController.h */,
+				CB2228B8268683EF00A74554 /* ARMapContainerViewController.h */,
+				CB2228B4268683EF00A74554 /* ARMapComponentViewController.m */,
+				CB2228B7268683EF00A74554 /* ARComponentViewController.h */,
 				CB2228BD268683EF00A74554 /* ARComponentViewController.m */,
+				CB2228B9268683EF00A74554 /* ARMediaPreviewController.h */,
+				CB2228B5268683EF00A74554 /* ARMediaPreviewController.m */,
+				CB2228BA268683EF00A74554 /* ARMapComponentViewController.h */,
+				CB2228BC268683EF00A74554 /* ARCityComponentViewController.h */,
+				CB2228B6268683EF00A74554 /* ARCityComponentViewController.m */,
 				CB2228BE268683EF00A74554 /* ARMapContainerViewController.m */,
 			);
 			path = ViewControllers;
@@ -3555,9 +3550,7 @@
 				5E80CA822093C29500BCFD82 /* CircleCheckGreen@3x.png in Resources */,
 				604E08232051E9E000785717 /* ARVIRPhone@2x.png in Resources */,
 				CB6CE8F024F9684400ED2843 /* Range@2x.png in Resources */,
-				CB2228E2268683EF00A74554 /* .gitkeep in Resources */,
 				CB222A2D2686921900A74554 /* circle-x-red@3x.png in Resources */,
-				600B8B451C4FCEEC00776F84 /* CHANGELOG.yml in Resources */,
 				1CC9EBA61CC76CDD00A74E3C /* followButtonChecked@3x.png in Resources */,
 				CB222A3E2686921900A74554 /* close-x@3x.png in Resources */,
 				608B707B17D4A1C80088A56C /* FooterBackground@2x.png in Resources */,
@@ -3668,7 +3661,6 @@
 				7FB8852920A3704700DE5E82 /* checkbox_unselected.png in Resources */,
 				CB6CE8EF24F9684400ED2843 /* Thumb@2x.png in Resources */,
 				3C4AE99619094F96009C0E8B /* ViewInRoom_Wall_Right@2x.png in Resources */,
-				CB38B1B32688A3D300820218 /* App.js in Resources */,
 				6037340420CF1BFF0017A4D9 /* ARVIRShadow.png in Resources */,
 				CB222A412686921900A74554 /* pdf.png in Resources */,
 				CB222A482686921900A74554 /* message@2x.png in Resources */,
@@ -3862,7 +3854,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if type -p clang-compilation-database-tool > /dev/null 2>&1; then\n  clang-compilation-database-tool collect \"${OBJECT_FILE_DIR_normal}\" > \"${SRCROOT}/compiler_commands.json\"\nfi";
+			shellScript = "if type -p clang-compilation-database-tool > /dev/null 2>&1; then\n  clang-compilation-database-tool collect \"${OBJECT_FILE_DIR_normal}\" > \"${SRCROOT}/compiler_commands.json\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		5A71C447DFCD4F537CFB14BA /* [CP] Embed Pods Frameworks */ = {
