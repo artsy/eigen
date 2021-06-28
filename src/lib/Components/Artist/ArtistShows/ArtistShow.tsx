@@ -33,7 +33,7 @@ const Show: React.FC<Props> = ({ styles, show }) => {
       <View style={[styles?.container]}>
         <OpaqueImageView
           imageURL={imageURL}
-          style={[styles?.image, { overflow: "hidden", borderRadius: 2, flex: 0 }] as ImageStyle}
+          style={[styles?.image ?? {}, { overflow: "hidden", borderRadius: 2, flex: 0 }]}
         />
         {/* this wrapper required to make numberOfLines work when parent is a row */}
         <View style={{ flex: 1 }}>
