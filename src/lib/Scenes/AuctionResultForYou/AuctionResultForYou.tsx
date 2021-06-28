@@ -52,13 +52,7 @@ export const AuctionResultForYou: React.FC<Props> = ({ me, relay }) => {
   return (
     <PageWithSimpleHeader title="Auction Results for You">
       <ArtworkFiltersStoreProvider>
-        <Text
-          fontSize={14}
-          lineHeight={21}
-          textAlign="left"
-          color="black60"
-          style={{ marginHorizontal: 20, marginVertical: 17 }}
-        >
+        <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
           The latest auction results for the {""}
           <LinkText onPress={() => navigate("/favorites", { passProps: { initialTab: Tab.artists } })}>
             artists you follow
