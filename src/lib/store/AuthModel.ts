@@ -268,11 +268,16 @@ export const getAuthModel = (): AuthModel => ({
 
       const responseFacebookInfoCallback = async (
         error: { message: string },
-        facebookInfo: { email: string; name: string }
+        facebookInfo: { email?: string; name: string }
       ) => {
         if (error) {
           reject(`Error fetching facebook data: ${error.message}`)
         } else {
+          if (!facebookInfo.email) {
+            reject("You are not using email on your Facebook account. Try sign up using credentials.")
+            return
+          }
+
           if (signInOrUp === "signUp") {
             const resultGravitySignUp = await actions.signUp({
               email: facebookInfo.email,
