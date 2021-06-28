@@ -37,7 +37,6 @@ export type AuctionResultForYou_me = {
                 } | null;
                 readonly saleDate: string | null;
                 readonly title: string | null;
-                readonly " $fragmentRefs": FragmentRefs<"AuctionResultListItem_auctionResult">;
             } | null;
         } | null> | null;
     } | null;
@@ -303,11 +302,6 @@ const node: ReaderFragment = {
                   "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
-                },
-                {
-                  "args": null,
-                  "kind": "FragmentSpread",
-                  "name": "AuctionResultListItem_auctionResult"
                 }
               ],
               "storageKey": null
@@ -354,5 +348,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '8b51549938e2cbecb6a922cdb9b4c345';
+(node as any).hash = '7e4b2a30ca9f459d1bd5ab91e75870b2';
 export default node;

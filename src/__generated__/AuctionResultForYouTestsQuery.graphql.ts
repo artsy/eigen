@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3f8b8c72f806f2e87a7f30d88a11922c */
+/* @relayHash 1514db1b8ad6997234b0bd26bd40eda1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,7 +37,6 @@ fragment AuctionResultForYou_me_2HEEH6 on Me {
     totalCount
     edges {
       node {
-        ...AuctionResultListItem_auctionResult
         currency
         dateText
         id
@@ -75,41 +74,6 @@ fragment AuctionResultForYou_me_2HEEH6 on Me {
       hasNextPage
     }
   }
-}
-
-fragment AuctionResultListItem_auctionResult on AuctionResult {
-  currency
-  dateText
-  id
-  internalID
-  artist {
-    name
-    slug
-    id
-  }
-  images {
-    thumbnail {
-      url(version: "square140")
-      height
-      width
-      aspectRatio
-    }
-  }
-  estimate {
-    low
-  }
-  mediumText
-  organization
-  boughtIn
-  performance {
-    mid
-  }
-  priceRealized {
-    display
-    cents
-  }
-  saleDate
-  title
 }
 */
 
@@ -151,21 +115,21 @@ v4 = {
 },
 v5 = {
   "enumValues": null,
-  "nullable": false,
+  "nullable": true,
   "plural": false,
-  "type": "ID"
+  "type": "String"
 },
 v6 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
-  "type": "String"
+  "type": "Float"
 },
 v7 = {
   "enumValues": null,
-  "nullable": true,
+  "nullable": false,
   "plural": false,
-  "type": "Float"
+  "type": "ID"
 },
 v8 = {
   "enumValues": null,
@@ -270,33 +234,14 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "internalID",
+                        "name": "artistID",
                         "storageKey": null
                       },
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "Artist",
-                        "kind": "LinkedField",
-                        "name": "artist",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "name",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "slug",
-                            "storageKey": null
-                          },
-                          (v3/*: any*/)
-                        ],
+                        "kind": "ScalarField",
+                        "name": "internalID",
                         "storageKey": null
                       },
                       {
@@ -455,13 +400,6 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "artistID",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
                         "name": "__typename",
                         "storageKey": null
                       }
@@ -522,7 +460,7 @@ return {
     ]
   },
   "params": {
-    "id": "3f8b8c72f806f2e87a7f30d88a11922c",
+    "id": "1514db1b8ad6997234b0bd26bd40eda1",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -551,15 +489,6 @@ return {
           "type": "AuctionResult"
         },
         "me.auctionResultsByFollowedArtists.edges.node.__typename": (v4/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.artist": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Artist"
-        },
-        "me.auctionResultsByFollowedArtists.edges.node.artist.id": (v5/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.artist.name": (v6/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.artist.slug": (v5/*: any*/),
         "me.auctionResultsByFollowedArtists.edges.node.artistID": (v4/*: any*/),
         "me.auctionResultsByFollowedArtists.edges.node.boughtIn": {
           "enumValues": null,
@@ -567,16 +496,16 @@ return {
           "plural": false,
           "type": "Boolean"
         },
-        "me.auctionResultsByFollowedArtists.edges.node.currency": (v6/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.dateText": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.currency": (v5/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.dateText": (v5/*: any*/),
         "me.auctionResultsByFollowedArtists.edges.node.estimate": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "AuctionLotEstimate"
         },
-        "me.auctionResultsByFollowedArtists.edges.node.estimate.low": (v7/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.id": (v5/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.estimate.low": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.id": (v7/*: any*/),
         "me.auctionResultsByFollowedArtists.edges.node.images": {
           "enumValues": null,
           "nullable": true,
@@ -596,35 +525,35 @@ return {
           "type": "Float"
         },
         "me.auctionResultsByFollowedArtists.edges.node.images.thumbnail.height": (v8/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.images.thumbnail.url": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.images.thumbnail.url": (v5/*: any*/),
         "me.auctionResultsByFollowedArtists.edges.node.images.thumbnail.width": (v8/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.internalID": (v5/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.mediumText": (v6/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.organization": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.internalID": (v7/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.mediumText": (v5/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.organization": (v5/*: any*/),
         "me.auctionResultsByFollowedArtists.edges.node.performance": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "AuctionLotPerformance"
         },
-        "me.auctionResultsByFollowedArtists.edges.node.performance.mid": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.performance.mid": (v5/*: any*/),
         "me.auctionResultsByFollowedArtists.edges.node.priceRealized": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "AuctionResultPriceRealized"
         },
-        "me.auctionResultsByFollowedArtists.edges.node.priceRealized.cents": (v7/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.priceRealized.display": (v6/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.saleDate": (v6/*: any*/),
-        "me.auctionResultsByFollowedArtists.edges.node.title": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.priceRealized.cents": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.priceRealized.display": (v5/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.saleDate": (v5/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.title": (v5/*: any*/),
         "me.auctionResultsByFollowedArtists.pageInfo": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "PageInfo"
         },
-        "me.auctionResultsByFollowedArtists.pageInfo.endCursor": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.pageInfo.endCursor": (v5/*: any*/),
         "me.auctionResultsByFollowedArtists.pageInfo.hasNextPage": {
           "enumValues": null,
           "nullable": false,
@@ -632,7 +561,7 @@ return {
           "type": "Boolean"
         },
         "me.auctionResultsByFollowedArtists.totalCount": (v8/*: any*/),
-        "me.id": (v5/*: any*/)
+        "me.id": (v7/*: any*/)
       }
     },
     "name": "AuctionResultForYouTestsQuery",

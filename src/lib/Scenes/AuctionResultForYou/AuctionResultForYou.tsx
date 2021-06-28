@@ -105,7 +105,6 @@ export const AuctionResultForYouContainer = createPaginationContainer(
           totalCount
           edges {
             node {
-              ...AuctionResultListItem_auctionResult
               currency
               dateText
               id

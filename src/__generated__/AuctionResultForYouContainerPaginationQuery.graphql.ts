@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c89d59fa7ed12e01c29e93334cadf61c */
+/* @relayHash 88d1eb59190af522ce773d73960c4880 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,7 +37,6 @@ fragment AuctionResultForYou_me_2HEEH6 on Me {
     totalCount
     edges {
       node {
-        ...AuctionResultListItem_auctionResult
         currency
         dateText
         id
@@ -75,41 +74,6 @@ fragment AuctionResultForYou_me_2HEEH6 on Me {
       hasNextPage
     }
   }
-}
-
-fragment AuctionResultListItem_auctionResult on AuctionResult {
-  currency
-  dateText
-  id
-  internalID
-  artist {
-    name
-    slug
-    id
-  }
-  images {
-    thumbnail {
-      url(version: "square140")
-      height
-      width
-      aspectRatio
-    }
-  }
-  estimate {
-    low
-  }
-  mediumText
-  organization
-  boughtIn
-  performance {
-    mid
-  }
-  priceRealized {
-    display
-    cents
-  }
-  saleDate
-  title
 }
 */
 
@@ -240,33 +204,14 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "internalID",
+                        "name": "artistID",
                         "storageKey": null
                       },
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "Artist",
-                        "kind": "LinkedField",
-                        "name": "artist",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "name",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "slug",
-                            "storageKey": null
-                          },
-                          (v3/*: any*/)
-                        ],
+                        "kind": "ScalarField",
+                        "name": "internalID",
                         "storageKey": null
                       },
                       {
@@ -425,13 +370,6 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "artistID",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
                         "name": "__typename",
                         "storageKey": null
                       }
@@ -492,7 +430,7 @@ return {
     ]
   },
   "params": {
-    "id": "c89d59fa7ed12e01c29e93334cadf61c",
+    "id": "88d1eb59190af522ce773d73960c4880",
     "metadata": {},
     "name": "AuctionResultForYouContainerPaginationQuery",
     "operationKind": "query",
