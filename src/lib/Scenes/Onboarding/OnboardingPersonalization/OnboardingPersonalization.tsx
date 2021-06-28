@@ -134,6 +134,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
                   updateListOfArtists(artist.internalID)
                   fadeRow(artist.internalID)
                 }}
+                disableNavigation
               />
             </Disappearable>
           )}

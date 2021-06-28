@@ -6,12 +6,16 @@ upcoming:
     - Add toggledSavedSearch analytics tracking - devon blandin
     - Allow custom attributes from a push notification payload to be passed through to React Native scenes - devon blandin
     - Add diagnose script - mounir
+    - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
+    - Update open simulator command in getting started docs - ole
   user_facing:
     - Fix unfollowing categories - katsiaryna alshannikava
     - Remove "Enable push notification" guard for disabling saved search - dzmitry tratsiak
     - Fix locations menu redirection - katsiaryna alshannikava
     - Implement share button for articles - katsiaryna alshannikava, mounir
     - Allow screen rotations on android tablets - kizito
+    - Connect auction results for you to metaphysics endpoint - yauheni
+    - Fix opening artist page after passing new onboarding on ios - dzmitry
 
 releases:
   - version: 6.9.5

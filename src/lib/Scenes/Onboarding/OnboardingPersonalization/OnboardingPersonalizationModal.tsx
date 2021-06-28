@@ -114,6 +114,7 @@ const OnboardingPersonalizationModal: React.FC<OnboardingPersonalizationListProp
             withFeedback
             relay={props.relay}
             containerStyle={{ paddingVertical: 10, paddingHorizontal: 20 }}
+            disableNavigation
           />
         )}
         ListEmptyComponent={

@@ -16,6 +16,7 @@ interface Props {
   contextModule?: string
   withFeedback?: boolean
   containerStyle?: StyleProp<ViewStyle>
+  disableNavigation?: boolean
   onFollowFinish?: () => void
 }
 
@@ -104,7 +105,7 @@ export class ArtistListItem extends React.Component<Props, State> {
 
   render() {
     const { isFollowedChanging } = this.state
-    const { artist, withFeedback, containerStyle } = this.props
+    const { artist, withFeedback, containerStyle, disableNavigation } = this.props
     const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
     const imageURl = image && image.url
 
@@ -117,7 +118,7 @@ export class ArtistListItem extends React.Component<Props, State> {
     return (
       <TouchableComponent
         onPress={() => {
-          if (href) {
+          if (href && !disableNavigation) {
             this.handleTap(href)
           }
         }}
