@@ -21,15 +21,15 @@
     if (!ARPerformWorkAsynchronously) {
         SDWebImageManager *manager = [SDWebImageManager sharedManager];
         NSString *key = [manager cacheKeyForURL:url];
-               [manager.imageCache containsImageForKey:key cacheType:SDImageCacheTypeAll completion:^(SDImageCacheType containsCacheType) {
-                   if (containsCacheType != SDImageCacheTypeNone) {
-                      [manager.imageCache queryImageForKey:key options:0 context:nil cacheType:containsCacheType completion:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
-                           self.image = image;
-                           completionBlock(self.image, nil, containsCacheType, url);
-                       }];
-                       return;
-                   }
-               }];
+        [manager.imageCache containsImageForKey:key cacheType:SDImageCacheTypeAll completion:^(SDImageCacheType containsCacheType) {
+            if (containsCacheType != SDImageCacheTypeNone) {
+                [manager.imageCache queryImageForKey:key options:0 context:nil cacheType:containsCacheType completion:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
+                    self.image = image;
+                    completionBlock(self.image, nil, containsCacheType, url);
+                }];
+                return;
+            }
+        }];
     }
 
     if ([ARLogger shouldLogNetworkRequests]) {
@@ -66,7 +66,7 @@
             if (completionBlock) {
                 completionBlock(image, error, cacheType, imageURL);
             }
-                       }];
+        }];
     } else {
         [self sd_setImageWithURL:url placeholderImage:placeholder completed:completionBlock];
     }
