@@ -2,14 +2,7 @@ upcoming:
   version: 6.10.0
   date: TBD
   dev:
-    - Add facebook authentication - dzmitry
     - Add new onboarding feature flag on ios - dzmitry
-    - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
-    - Update open simulator command in getting started docs - ole
-    - Update debugging docs - mounir
-    - Send data in the filter params format for saved search - dzmitry tratsiak
-    - Enables external flag for order history - sweir
-    - Prepare search criteria values to filter params - dzmitry tratsiak
     - Add specs for deleteSavedSearch and createSavedSearch mutations - dzmitry tratsiak
     - Add toggledSavedSearch analytics tracking - devon blandin
     - Allow custom attributes from a push notification payload to be passed through to React Native scenes - devon blandin
