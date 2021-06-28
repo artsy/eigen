@@ -1,5 +1,5 @@
-import { AuctionResultForYou_me } from "__generated__/AuctionResultForYou_me.graphql"
-import { AuctionResultForYouContainerQuery } from "__generated__/AuctionResultForYouContainerQuery.graphql"
+import { AuctionResultsForYou_me } from "__generated__/AuctionResultsForYou_me.graphql"
+import { AuctionResultsForYouContainerQuery } from "__generated__/AuctionResultsForYouContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
@@ -21,11 +21,11 @@ import { createPaginationContainer, graphql, QueryRenderer } from "react-relay"
 import { Tab } from "../Favorites/Favorites"
 
 interface Props {
-  me: AuctionResultForYou_me | null
+  me: AuctionResultsForYou_me | null
   relay: RelayPaginationProp
 }
 
-export const AuctionResultForYou: React.FC<Props> = ({ me, relay }) => {
+export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
   const { hasMore, isLoading, loadMore } = relay
   const [loadingMoreData, setLoadingMoreData] = useState(false)
   const auctionResultData = extractNodes(me?.auctionResultsByFollowedArtists)
@@ -62,6 +62,7 @@ export const AuctionResultForYou: React.FC<Props> = ({ me, relay }) => {
           sections={groupedAuctionResultSectionData}
           onEndReachedThreshold={0.5}
           onEndReached={loadMoreArtworks}
+          keyExtractor={(item, index) => item.internalID + index.toString()}
           renderItem={({ item }) =>
             item ? (
               <AuctionResultFragmentContainer
@@ -86,7 +87,13 @@ export const AuctionResultForYou: React.FC<Props> = ({ me, relay }) => {
               <Separator />
             </Flex>
           )}
-          ListFooterComponent={loadingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null}
+          ListFooterComponent={
+            loadingMoreData ? (
+              <Flex my={2} flexDirection="row" justifyContent="center">
+                <Spinner />
+              </Flex>
+            ) : null
+          }
           style={{ width: useScreenDimensions().width }}
         />
       </ArtworkFiltersStoreProvider>
@@ -94,45 +101,21 @@ export const AuctionResultForYou: React.FC<Props> = ({ me, relay }) => {
   )
 }
 
-export const AuctionResultForYouContainer = createPaginationContainer(
-  AuctionResultForYou,
+export const AuctionResultsForYouContainer = createPaginationContainer(
+  AuctionResultsForYou,
   {
     me: graphql`
-      fragment AuctionResultForYou_me on Me
+      fragment AuctionResultsForYou_me on Me
       @argumentDefinitions(first: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
         auctionResultsByFollowedArtists(first: $first, after: $after)
-          @connection(key: "AuctionResultForYouContainer_auctionResultsByFollowedArtists") {
+          @connection(key: "AuctionResultsForYouContainer_auctionResultsByFollowedArtists") {
           totalCount
           edges {
             node {
-              currency
-              dateText
-              id
-              artistID
-              internalID
-              images {
-                thumbnail {
-                  url(version: "square140")
-                  height
-                  width
-                  aspectRatio
-                }
-              }
-              estimate {
-                low
-              }
-              mediumText
-              organization
-              boughtIn
-              performance {
-                mid
-              }
-              priceRealized {
-                display
-                cents
-              }
               saleDate
-              title
+              internalID
+              artistID
+              ...AuctionResultListItem_auctionResult
             }
           }
         }
@@ -151,22 +134,22 @@ export const AuctionResultForYouContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query AuctionResultForYouContainerPaginationQuery($first: Int!, $after: String) {
+      query AuctionResultsForYouContainerPaginationQuery($first: Int!, $after: String) {
         me {
-          ...AuctionResultForYou_me @arguments(first: $first, after: $after)
+          ...AuctionResultsForYou_me @arguments(first: $first, after: $after)
         }
       }
     `,
   }
 )
 
-export const AuctionResultForYouQueryRenderer: React.FC = () => (
-  <QueryRenderer<AuctionResultForYouContainerQuery>
+export const AuctionResultsForYouQueryRenderer: React.FC = () => (
+  <QueryRenderer<AuctionResultsForYouContainerQuery>
     environment={defaultEnvironment}
     query={graphql`
-      query AuctionResultForYouContainerQuery {
+      query AuctionResultsForYouContainerQuery {
         me {
-          ...AuctionResultForYou_me
+          ...AuctionResultsForYou_me
         }
       }
     `}
@@ -174,6 +157,6 @@ export const AuctionResultForYouQueryRenderer: React.FC = () => (
     cacheConfig={{
       force: true,
     }}
-    render={renderWithLoadProgress(AuctionResultForYouContainer)}
+    render={renderWithLoadProgress(AuctionResultsForYouContainer)}
   />
 )

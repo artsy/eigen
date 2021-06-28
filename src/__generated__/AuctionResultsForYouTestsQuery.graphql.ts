@@ -1,70 +1,82 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 88d1eb59190af522ce773d73960c4880 */
+/* @relayHash 1f8a18e4845f6cb50276de221ca895a9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type AuctionResultForYouContainerPaginationQueryVariables = {
+export type AuctionResultsForYouTestsQueryVariables = {
     first: number;
     after?: string | null;
 };
-export type AuctionResultForYouContainerPaginationQueryResponse = {
+export type AuctionResultsForYouTestsQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"AuctionResultForYou_me">;
+        readonly " $fragmentRefs": FragmentRefs<"AuctionResultsForYou_me">;
     } | null;
 };
-export type AuctionResultForYouContainerPaginationQuery = {
-    readonly response: AuctionResultForYouContainerPaginationQueryResponse;
-    readonly variables: AuctionResultForYouContainerPaginationQueryVariables;
+export type AuctionResultsForYouTestsQuery = {
+    readonly response: AuctionResultsForYouTestsQueryResponse;
+    readonly variables: AuctionResultsForYouTestsQueryVariables;
 };
 
 
 
 /*
-query AuctionResultForYouContainerPaginationQuery(
+query AuctionResultsForYouTestsQuery(
   $first: Int!
   $after: String
 ) {
   me {
-    ...AuctionResultForYou_me_2HEEH6
+    ...AuctionResultsForYou_me_2HEEH6
     id
   }
 }
 
-fragment AuctionResultForYou_me_2HEEH6 on Me {
+fragment AuctionResultListItem_auctionResult on AuctionResult {
+  currency
+  dateText
+  id
+  internalID
+  artist {
+    name
+    slug
+    id
+  }
+  images {
+    thumbnail {
+      url(version: "square140")
+      height
+      width
+      aspectRatio
+    }
+  }
+  estimate {
+    low
+  }
+  mediumText
+  organization
+  boughtIn
+  performance {
+    mid
+  }
+  priceRealized {
+    display
+    cents
+  }
+  saleDate
+  title
+}
+
+fragment AuctionResultsForYou_me_2HEEH6 on Me {
   auctionResultsByFollowedArtists(first: $first, after: $after) {
     totalCount
     edges {
       node {
-        currency
-        dateText
-        id
-        artistID
-        internalID
-        images {
-          thumbnail {
-            url(version: "square140")
-            height
-            width
-            aspectRatio
-          }
-        }
-        estimate {
-          low
-        }
-        mediumText
-        organization
-        boughtIn
-        performance {
-          mid
-        }
-        priceRealized {
-          display
-          cents
-        }
         saleDate
-        title
+        internalID
+        artistID
+        ...AuctionResultListItem_auctionResult
+        id
         __typename
       }
       cursor
@@ -106,6 +118,36 @@ v3 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
+},
+v4 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "String"
+},
+v5 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v6 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
+},
+v7 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Float"
+},
+v8 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Int"
 };
 return {
   "fragment": {
@@ -115,7 +157,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "AuctionResultForYouContainerPaginationQuery",
+    "name": "AuctionResultsForYouTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -128,7 +170,7 @@ return {
           {
             "args": (v2/*: any*/),
             "kind": "FragmentSpread",
-            "name": "AuctionResultForYou_me"
+            "name": "AuctionResultsForYou_me"
           }
         ],
         "storageKey": null
@@ -144,7 +186,7 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "AuctionResultForYouContainerPaginationQuery",
+    "name": "AuctionResultsForYouTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -189,6 +231,27 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "saleDate",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "internalID",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "artistID",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "currency",
                         "storageKey": null
                       },
@@ -203,15 +266,27 @@ return {
                       {
                         "alias": null,
                         "args": null,
-                        "kind": "ScalarField",
-                        "name": "artistID",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "internalID",
+                        "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "artist",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "name",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "slug",
+                            "storageKey": null
+                          },
+                          (v3/*: any*/)
+                        ],
                         "storageKey": null
                       },
                       {
@@ -356,13 +431,6 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "saleDate",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
                         "name": "title",
                         "storageKey": null
                       },
@@ -419,7 +487,7 @@ return {
             "args": (v2/*: any*/),
             "filters": null,
             "handle": "connection",
-            "key": "AuctionResultForYouContainer_auctionResultsByFollowedArtists",
+            "key": "AuctionResultsForYouContainer_auctionResultsByFollowedArtists",
             "kind": "LinkedHandle",
             "name": "auctionResultsByFollowedArtists"
           },
@@ -430,13 +498,124 @@ return {
     ]
   },
   "params": {
-    "id": "88d1eb59190af522ce773d73960c4880",
-    "metadata": {},
-    "name": "AuctionResultForYouContainerPaginationQuery",
+    "id": "1f8a18e4845f6cb50276de221ca895a9",
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "me": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Me"
+        },
+        "me.auctionResultsByFollowedArtists": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "AuctionResultConnection"
+        },
+        "me.auctionResultsByFollowedArtists.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "AuctionResultEdge"
+        },
+        "me.auctionResultsByFollowedArtists.edges.cursor": (v4/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "AuctionResult"
+        },
+        "me.auctionResultsByFollowedArtists.edges.node.__typename": (v4/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.artist": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Artist"
+        },
+        "me.auctionResultsByFollowedArtists.edges.node.artist.id": (v5/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.artist.name": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.artist.slug": (v5/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.artistID": (v4/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.boughtIn": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Boolean"
+        },
+        "me.auctionResultsByFollowedArtists.edges.node.currency": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.dateText": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.estimate": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "AuctionLotEstimate"
+        },
+        "me.auctionResultsByFollowedArtists.edges.node.estimate.low": (v7/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.id": (v5/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.images": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "AuctionLotImages"
+        },
+        "me.auctionResultsByFollowedArtists.edges.node.images.thumbnail": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Image"
+        },
+        "me.auctionResultsByFollowedArtists.edges.node.images.thumbnail.aspectRatio": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "Float"
+        },
+        "me.auctionResultsByFollowedArtists.edges.node.images.thumbnail.height": (v8/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.images.thumbnail.url": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.images.thumbnail.width": (v8/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.internalID": (v5/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.mediumText": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.organization": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.performance": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "AuctionLotPerformance"
+        },
+        "me.auctionResultsByFollowedArtists.edges.node.performance.mid": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.priceRealized": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "AuctionResultPriceRealized"
+        },
+        "me.auctionResultsByFollowedArtists.edges.node.priceRealized.cents": (v7/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.priceRealized.display": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.saleDate": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.title": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.pageInfo": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "PageInfo"
+        },
+        "me.auctionResultsByFollowedArtists.pageInfo.endCursor": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.pageInfo.hasNextPage": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "Boolean"
+        },
+        "me.auctionResultsByFollowedArtists.totalCount": (v8/*: any*/),
+        "me.id": (v5/*: any*/)
+      }
+    },
+    "name": "AuctionResultsForYouTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '652340267eb08d000625a48039fcd5f8';
+(node as any).hash = 'a48a0f9bef68ef8286cf9b7418835d8b';
 export default node;

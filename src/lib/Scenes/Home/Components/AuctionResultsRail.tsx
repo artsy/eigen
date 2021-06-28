@@ -4,7 +4,7 @@ import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResu
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Flex } from "palette"
+import { Flex, Separator } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -15,15 +15,12 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
   const auctionResultsByFollowedArtists = extractNodes(me?.auctionResultsByFollowedArtists)
   const listRef = useRef<FlatList<any>>()
   const navigateToAuctionResultsForYou = () => {
-    // uncomment after implementing AuctionResults query
+    // TODO implement tracking
     // const tapEvent = HomeAnalytics.collectionThumbnailTapEvent(result?.slug, index)
     // if (tapEvent) {
     //   tracking.trackEvent(tapEvent)
     // }
-    navigate(`/auction-result-for-you`)
-    // Here the auction-highlights is mocked slug for the navigation to work
-    // ToDo: Refactor this part
-    // navigate(`/auction-result-for-you/${result.slug}`)
+    navigate(`/auction-results-for-you`)
   }
 
   useImperativeHandle(scrollRef, () => ({
@@ -42,6 +39,11 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
         keyExtractor={(_, index) => String(index)}
         horizontal={false}
         initialNumToRender={3}
+        ItemSeparatorComponent={() => (
+          <Flex px={2}>
+            <Separator />
+          </Flex>
+        )}
         renderItem={({ item }) => {
           if (!item) {
             return <></>

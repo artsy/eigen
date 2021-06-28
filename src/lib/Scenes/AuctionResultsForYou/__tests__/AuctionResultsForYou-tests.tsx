@@ -1,4 +1,4 @@
-import { AuctionResultForYouTestsQuery } from "__generated__/AuctionResultForYouTestsQuery.graphql"
+import { AuctionResultsForYouTestsQuery } from "__generated__/AuctionResultsForYouTestsQuery.graphql"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { navigate } from "lib/navigation/navigate"
 import { Tab } from "lib/Scenes/Favorites/Favorites"
@@ -8,27 +8,27 @@ import { first } from "lodash"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { AuctionResultForYouContainer } from "../AuctionResultForYou"
+import { AuctionResultsForYouContainer } from "../AuctionResultsForYou"
 
 jest.unmock("react-relay")
 
-describe("AuctionResultForYouContainer", () => {
+describe("AuctionResultsForYouContainer", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
-    <QueryRenderer<AuctionResultForYouTestsQuery>
+    <QueryRenderer<AuctionResultsForYouTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query AuctionResultForYouTestsQuery($first: Int!, $after: String) @relay_test_operation {
+        query AuctionResultsForYouTestsQuery($first: Int!, $after: String) @relay_test_operation {
           me {
-            ...AuctionResultForYou_me @arguments(first: $first, after: $after)
+            ...AuctionResultsForYou_me @arguments(first: $first, after: $after)
           }
         }
       `}
       variables={{ after: "YXJyYXljb25uZWN0aW9uOjA", first: 3 }}
       render={({ props }) => {
         if (props) {
-          return <AuctionResultForYouContainer me={props.me} />
+          return <AuctionResultsForYouContainer me={props.me} />
         }
         return null
       }}
@@ -52,7 +52,7 @@ describe("AuctionResultForYouContainer", () => {
       }),
     })
 
-    expect(tree.root.findAllByType(AuctionResultForYouContainer)).toHaveLength(1)
+    expect(tree.root.findAllByType(AuctionResultsForYouContainer)).toHaveLength(1)
   })
 
   it("routes to favorites URL with passProps", () => {

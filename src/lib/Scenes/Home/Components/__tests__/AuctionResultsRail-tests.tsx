@@ -71,7 +71,7 @@ describe("AuctionResultsRailFragmentContainer", () => {
     })
   })
 
-  it("routes to auction-result-for-you URL", () => {
+  it("routes to auction-results-for-you URL", () => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
@@ -83,7 +83,7 @@ describe("AuctionResultsRailFragmentContainer", () => {
     })
     // @ts-ignore
     first(tree.root.findAllByType(SectionTitle)).props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/auction-result-for-you")
+    expect(navigate).toHaveBeenCalledWith("/auction-results-for-you")
   })
 })
 
