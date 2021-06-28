@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfig.java b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfig.java
-index b05fce8..b94d30c 100644
+index b05fce8..cf5bef0 100644
 --- a/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfig.java
 +++ b/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfig.java
 @@ -44,7 +44,10 @@ public class ScreenStackHeaderConfig extends ViewGroup {
@@ -14,3 +14,16 @@ index b05fce8..b94d30c 100644
  
    private boolean mIsAttachedToWindow = false;
  
+@@ -96,6 +99,12 @@ public class ScreenStackHeaderConfig extends ViewGroup {
+       mToolbar.setBackgroundColor(tv.data);
+     }
+     mToolbar.setClipChildren(false);
++
++    // ARTSY FIX: If tablet, instantiate with the default screen orientation
++    boolean isTab = context.getResources().getConfiguration().smallestScreenWidthDp >= 600;
++    if (isTab) {
++      mScreenOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
++    }
+   }
+ 
+   @Override
