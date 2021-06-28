@@ -42,7 +42,7 @@ export const AuctionResultForYou: React.FC<Props> = ({ me, relay }) => {
     setLoadingMoreData(true)
     loadMore(PAGE_SIZE, (error) => {
       if (error) {
-        console.log(error.message)
+        console.error(error.message)
       }
       setLoadingMoreData(false)
     })
