@@ -78,7 +78,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   }, [navigation])
 
   return (
-    <Flex flex={1} style={{ paddingBottom: useScreenDimensions().safeAreaInsets.bottom }}>
+    <Flex flex={1}>
       <Animated.View
         style={{
           alignItems: "flex-end",
