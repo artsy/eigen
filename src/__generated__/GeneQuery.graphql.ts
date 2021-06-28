@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5aff1cb1df686c0b70175fa51c1d0cee */
+/* @relayHash 938e7cc0962dd76d289456a7d6d8241c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -135,6 +135,7 @@ fragment Biography_gene on Gene {
 fragment GeneArtworks_gene_2VV6jB on Gene {
   id
   internalID
+  slug
   artworks: filterArtworksConnection(first: 10, after: "", aggregations: [MEDIUM, PRICE_RANGE, TOTAL], forSale: true, input: $input) {
     counts {
       total
@@ -805,7 +806,7 @@ return {
     ]
   },
   "params": {
-    "id": "5aff1cb1df686c0b70175fa51c1d0cee",
+    "id": "938e7cc0962dd76d289456a7d6d8241c",
     "metadata": {},
     "name": "GeneQuery",
     "operationKind": "query",

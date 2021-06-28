@@ -42,13 +42,7 @@ export const Gene: React.FC<GeneProps> = (props) => {
   const tabs = [
     {
       title: TABS.WORKS,
-      content: (
-        <StickyTabPageScrollView disableScrollViewPanResponder>
-          <GeneArtworksPaginationContainer
-            gene={gene}
-          />
-        </StickyTabPageScrollView>
-      ),
+      content: <GeneArtworksPaginationContainer gene={gene} />,
       initial: true,
     },
     {
@@ -59,10 +53,7 @@ export const Gene: React.FC<GeneProps> = (props) => {
 
   return (
     <View style={styles.container}>
-      <StickyTabPage
-        tabs={tabs}
-        staticHeaderContent={headerContent}
-      />
+      <StickyTabPage tabs={tabs} staticHeaderContent={headerContent} />
     </View>
   )
 }
@@ -102,16 +93,18 @@ interface Styles {
 
 const styles = StyleSheet.create<Styles>({
   container: {
-    flex: 1
+    flex: 1,
   },
   header: {
     backgroundColor: "white",
     paddingLeft: commonPadding,
     paddingRight: commonPadding,
     marginBottom: 10,
-    ...isPad ? {
-      width: 330,
-      alignSelf: "center"
-    } : {},
+    ...(isPad
+      ? {
+          width: 330,
+          alignSelf: "center",
+        }
+      : {}),
   },
 })

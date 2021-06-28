@@ -8,6 +8,7 @@ export type ArtworkAggregation = "ARTIST" | "ARTIST_NATIONALITY" | "ATTRIBUTION_
 export type GeneArtworks_gene = {
     readonly id: string;
     readonly internalID: string;
+    readonly slug: string;
     readonly artworks: {
         readonly counts: {
             readonly total: number | null;
@@ -84,6 +85,13 @@ return {
       "args": null,
       "kind": "ScalarField",
       "name": "internalID",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
       "storageKey": null
     },
     {
@@ -257,5 +265,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '94df7239f063d80da36b999dcc0f6928';
+(node as any).hash = '362607332ad6bf00a18e5400d7a19f4c';
 export default node;

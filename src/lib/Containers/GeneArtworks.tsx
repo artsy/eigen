@@ -1,42 +1,46 @@
-import { GeneArtworks_gene } from '__generated__/GeneArtworks_gene.graphql'
-import { StickyTabPageFlatListContext } from 'lib/Components/StickyTabPage/StickyTabPageFlatList'
+import { GeneArtworks_gene } from "__generated__/GeneArtworks_gene.graphql"
+import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { Box, Button, Flex, Sans } from "palette"
-import React, { useContext } from "react"
-import { useEffect } from 'react'
+import React, { useContext, useState } from "react"
+import { useEffect } from "react"
 import { StyleSheet, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "../Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import Separator from "../Components/Separator"
 
-interface GeneArtworsProps {
+interface GeneArtworksContainerProps {
   gene: GeneArtworks_gene
   relay: RelayPaginationProp
 }
 
+interface GeneArtworsProps extends GeneArtworksContainerProps {
+  openFilterModal: () => void
+}
+
 export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
-  const { gene } = props
+  const { gene, openFilterModal } = props
 
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
-  useEffect(
-    () => {
-      setJSX(
-        <Box backgroundColor="white" px={2} paddingTop={15}>
-          <Separator style={{ backgroundColor: "white" }} />
-          <Flex style={styles.refineContainer}>
-            <Sans size="3t" color="black60" marginTop="2px">
-              Some example text
-            </Sans>
-            <Button variant="secondaryOutline" onPress={() => {}} size="small">
-              Refine
-            </Button>
-          </Flex>
-          <Separator style={{ backgroundColor: "white" }} />
-        </Box>
-      )
-    },
-    []
-  )
+  useEffect(() => {
+    setJSX(
+      <Box backgroundColor="white" px={2} paddingTop={15}>
+        <Separator style={{ backgroundColor: "white" }} />
+        <Flex style={styles.refineContainer}>
+          <Sans size="3t" color="black60" marginTop="2px">
+            Some example text
+          </Sans>
+          <Button variant="secondaryOutline" onPress={openFilterModal} size="small">
+            Refine
+          </Button>
+        </Flex>
+        <Separator style={{ backgroundColor: "white" }} />
+      </Box>
+    )
+  }, [openFilterModal])
 
   // TODO: Show message for empty artworks
   return (
@@ -48,8 +52,33 @@ export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
   )
 }
 
+const GeneArtworsContainer: React.FC<GeneArtworksContainerProps> = (props) => {
+  const { gene } = props
+  const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+
+  const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
+  const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
+
+  return (
+    <ArtworkFiltersStoreProvider>
+      <StickyTabPageScrollView disableScrollViewPanResponder>
+        <GeneArtwors {...props} openFilterModal={handleOpenFilterArtworksModal} />
+        <ArtworkFilterNavigator
+          {...props}
+          id={gene.internalID}
+          slug={gene.slug}
+          isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+          exitModal={handleCloseFilterArtworksModal}
+          closeModal={handleCloseFilterArtworksModal}
+          mode={FilterModalMode.Category}
+        />
+      </StickyTabPageScrollView>
+    </ArtworkFiltersStoreProvider>
+  )
+}
+
 export const GeneArtworksPaginationContainer = createPaginationContainer(
-  GeneArtwors,
+  GeneArtworsContainer,
   {
     gene: graphql`
       fragment GeneArtworks_gene on Gene
@@ -60,11 +89,12 @@ export const GeneArtworksPaginationContainer = createPaginationContainer(
       ) {
         id
         internalID
+        slug
         artworks: filterArtworksConnection(
           first: $count
           after: $cursor
-          aggregations: [MEDIUM, PRICE_RANGE, TOTAL],
-          forSale: true,
+          aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
+          forSale: true
           input: $input
         ) @connection(key: "GeneArtworksGrid_artworks") {
           counts {
@@ -102,16 +132,10 @@ export const GeneArtworksPaginationContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query GeneArtworksPaginationQuery(
-        $id: ID!
-        $count: Int!
-        $cursor: String
-        $input: FilterArtworksInput
-      ) {
+      query GeneArtworksPaginationQuery($id: ID!, $count: Int!, $cursor: String, $input: FilterArtworksInput) {
         node(id: $id) {
           ... on Gene {
-            ...GeneArtworks_gene
-              @arguments(count: $count, cursor: $cursor, input: $input)
+            ...GeneArtworks_gene @arguments(count: $count, cursor: $cursor, input: $input)
           }
         }
       }

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash dce312b1eb076edbbf58d96f2e2dec4a */
+/* @relayHash b65c387273ca3c70fd0d54041b00deb2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -128,6 +128,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment GeneArtworks_gene_YCAiB on Gene {
   id
   internalID
+  slug
   artworks: filterArtworksConnection(first: $count, after: $cursor, aggregations: [MEDIUM, PRICE_RANGE, TOTAL], forSale: true, input: $input) {
     counts {
       total
@@ -235,7 +236,14 @@ v8 = {
   "name": "internalID",
   "storageKey": null
 },
-v9 = [
+v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v10 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -262,7 +270,7 @@ v9 = [
   },
   (v5/*: any*/)
 ],
-v10 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -345,9 +353,10 @@ return {
             "kind": "InlineFragment",
             "selections": [
               (v8/*: any*/),
+              (v9/*: any*/),
               {
                 "alias": "artworks",
-                "args": (v9/*: any*/),
+                "args": (v10/*: any*/),
                 "concreteType": "FilterArtworksConnection",
                 "kind": "LinkedField",
                 "name": "filterArtworksConnection",
@@ -401,7 +410,7 @@ return {
                             "name": "value",
                             "storageKey": null
                           },
-                          (v10/*: any*/),
+                          (v11/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -510,13 +519,7 @@ return {
                             "name": "node",
                             "plural": false,
                             "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "slug",
-                                "storageKey": null
-                              },
+                              (v9/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -687,7 +690,7 @@ return {
                                 "name": "partner",
                                 "plural": false,
                                 "selections": [
-                                  (v10/*: any*/),
+                                  (v11/*: any*/),
                                   (v7/*: any*/)
                                 ],
                                 "storageKey": null
@@ -715,7 +718,7 @@ return {
               },
               {
                 "alias": "artworks",
-                "args": (v9/*: any*/),
+                "args": (v10/*: any*/),
                 "filters": [
                   "aggregations",
                   "forSale",
@@ -736,7 +739,7 @@ return {
     ]
   },
   "params": {
-    "id": "dce312b1eb076edbbf58d96f2e2dec4a",
+    "id": "b65c387273ca3c70fd0d54041b00deb2",
     "metadata": {},
     "name": "GeneArtworksPaginationQuery",
     "operationKind": "query",
