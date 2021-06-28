@@ -1,3 +1,11 @@
+/**
+ * This script runs some trivial checks to identify possible
+ * issues related to the project configuration and suggest ways to solve them.
+ * So far, this script does 2 main things.
+ * - Check if the environment variables match the ones in S3
+ * - Verify if there is a version mismath in node modules
+ */
+
 const { spawnSync } = require("child_process")
 const chalk = require("chalk")
 const checkDependencies = require("check-dependencies")
