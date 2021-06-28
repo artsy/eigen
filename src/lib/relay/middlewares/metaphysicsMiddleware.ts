@@ -14,9 +14,10 @@ export function metaphysicsExtensionsLoggerMiddleware() {
   return (next) => (req) => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     return next(req).then((res) => {
-      if (res.json.extensions && console.groupCollapsed) {
+      const requests = res.json.extensions?.requests
+
+      if (requests && console.groupCollapsed) {
         // See: https://github.com/artsy/metaphysics/blob/master/src/lib/loaders/api/extensionsLogger.ts
-        const requests = res.json.extensions.requests
 
         // Pull out the stitching logs, e.g. what graphql requests
         // did stitching do for you under the hood
