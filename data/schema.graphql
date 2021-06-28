@@ -1259,6 +1259,7 @@ type ArtistTargetSupplyMicrofunnel {
 
 type Artwork implements Node & Searchable & Sellable {
   additionalInformation(format: Format): String
+  artaShippingEnabled: Boolean
   articles(size: Int): [Article]
   artist(
     # Use whatever is in the original response instead of making a request
@@ -3943,6 +3944,15 @@ type CommerceShippingQuote {
   id: ID!
   isSelected: Boolean!
   name: String
+  price(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
   priceCents: Int!
   priceCurrency: String!
   tier: String!
