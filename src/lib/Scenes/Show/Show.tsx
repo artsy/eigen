@@ -1,6 +1,7 @@
 import { Show_show } from "__generated__/Show_show.graphql"
 import { ShowQuery } from "__generated__/ShowQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "lib/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -13,7 +14,6 @@ import { Animated } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ShowArtworksWithNavigation as ShowArtworks } from "./Components/ShowArtworks"
 import { ShowArtworksEmptyStateFragmentContainer } from "./Components/ShowArtworksEmptyState"
-import { ShowArtworksFilter } from "./Components/ShowArtworksFilter"
 import { ShowContextCardFragmentContainer as ShowContextCard } from "./Components/ShowContextCard"
 import { ShowHeaderFragmentContainer as ShowHeader } from "./Components/ShowHeader"
 import { ShowInfoFragmentContainer as ShowInfo } from "./Components/ShowInfo"
@@ -68,7 +68,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
     {
       key: "filter",
       element: (
-        <ShowArtworksFilter animationValue={filterComponentAnimationValue} onPress={toggleFilterArtworksModal} />
+        <HeaderArtworksFilter animationValue={filterComponentAnimationValue} onPress={toggleFilterArtworksModal} />
       ),
     },
 

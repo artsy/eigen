@@ -1,7 +1,6 @@
 import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_collection.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { HeaderArtworksFilter } from "lib/Components/HeaderArtworksFilter"
+import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "lib/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { Schema } from "lib/utils/track"
 import React, { useState } from "react"
 import { Animated } from "react-native"
@@ -15,8 +14,6 @@ interface FilterProps {
 
 export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection, animationValue }) => {
   const tracking = useTracking()
-
-  const artworksTotal = ArtworksFiltersStore.useStoreState((state) => state.counts.total) ?? 0
 
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
@@ -50,7 +47,7 @@ export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection, an
 
   return (
     <>
-      <HeaderArtworksFilter total={artworksTotal} animationValue={animationValue} onPress={openFilterArtworksModal} />
+      <HeaderArtworksFilter animationValue={animationValue} onPress={openFilterArtworksModal} />
       <ArtworkFilterNavigator
         id={collection.id}
         slug={collection.slug}

@@ -1265,4 +1265,11 @@ describe(webViewRoute, () => {
       url: "/user/purchases/8907",
     })
   })
+
+  it("inlines params in the original article route", () => {
+    const matcher = webViewRoute("/article/:orderID")
+    expect(matcher.match(["article", "article-article"])).toEqual({
+      url: "/article/article-article",
+    })
+  })
 })
