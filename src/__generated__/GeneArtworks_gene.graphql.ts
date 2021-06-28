@@ -5,7 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtworkAggregation = "ARTIST" | "ARTIST_NATIONALITY" | "ATTRIBUTION_CLASS" | "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "LOCATION_CITY" | "MAJOR_PERIOD" | "MATERIALS_TERMS" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
-export type Gene_gene = {
+export type GeneArtworks_gene = {
     readonly id: string;
     readonly internalID: string;
     readonly artworks: {
@@ -27,13 +27,12 @@ export type Gene_gene = {
         } | null> | null;
         readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"Header_gene" | "About_gene">;
-    readonly " $refType": "Gene_gene";
+    readonly " $refType": "GeneArtworks_gene";
 };
-export type Gene_gene$data = Gene_gene;
-export type Gene_gene$key = {
-    readonly " $data"?: Gene_gene$data;
-    readonly " $fragmentRefs": FragmentRefs<"Gene_gene">;
+export type GeneArtworks_gene$data = GeneArtworks_gene;
+export type GeneArtworks_gene$key = {
+    readonly " $data"?: GeneArtworks_gene$data;
+    readonly " $fragmentRefs": FragmentRefs<"GeneArtworks_gene">;
 };
 
 
@@ -77,7 +76,7 @@ return {
       }
     ]
   },
-  "name": "Gene_gene",
+  "name": "GeneArtworks_gene",
   "selections": [
     (v0/*: any*/),
     {
@@ -112,7 +111,7 @@ return {
       ],
       "concreteType": "FilterArtworksConnection",
       "kind": "LinkedField",
-      "name": "__Gene_artworks_connection",
+      "name": "__GeneArtworksGrid_artworks_connection",
       "plural": false,
       "selections": [
         {
@@ -252,21 +251,11 @@ return {
         }
       ],
       "storageKey": null
-    },
-    {
-      "args": null,
-      "kind": "FragmentSpread",
-      "name": "Header_gene"
-    },
-    {
-      "args": null,
-      "kind": "FragmentSpread",
-      "name": "About_gene"
     }
   ],
   "type": "Gene",
   "abstractKey": null
 };
 })();
-(node as any).hash = '5d21f435787c427fb70edb84b2903d4b';
+(node as any).hash = '94df7239f063d80da36b999dcc0f6928';
 export default node;

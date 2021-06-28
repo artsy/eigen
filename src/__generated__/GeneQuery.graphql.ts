@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 50272ee0bfab983d47df334ceacb7725 */
+/* @relayHash 5aff1cb1df686c0b70175fa51c1d0cee */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -62,7 +62,7 @@ export type GeneQueryVariables = {
 };
 export type GeneQueryResponse = {
     readonly gene: {
-        readonly " $fragmentRefs": FragmentRefs<"Gene_gene">;
+        readonly " $fragmentRefs": FragmentRefs<"Header_gene" | "About_gene" | "GeneArtworks_gene">;
     } | null;
 };
 export type GeneQuery = {
@@ -78,7 +78,9 @@ query GeneQuery(
   $input: FilterArtworksInput
 ) {
   gene(id: $geneID) {
-    ...Gene_gene_2VV6jB
+    ...Header_gene
+    ...About_gene
+    ...GeneArtworks_gene_2VV6jB
     id
   }
 }
@@ -130,11 +132,9 @@ fragment Biography_gene on Gene {
   description
 }
 
-fragment Gene_gene_2VV6jB on Gene {
+fragment GeneArtworks_gene_2VV6jB on Gene {
   id
   internalID
-  ...Header_gene
-  ...About_gene
   artworks: filterArtworksConnection(first: 10, after: "", aggregations: [MEDIUM, PRICE_RANGE, TOTAL], forSale: true, input: $input) {
     counts {
       total
@@ -242,21 +242,21 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "internalID",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "internalID",
+  "name": "slug",
   "storageKey": null
 },
 v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "id",
   "storageKey": null
 },
 v6 = {
@@ -336,11 +336,21 @@ return {
         "plural": false,
         "selections": [
           {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "Header_gene"
+          },
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "About_gene"
+          },
+          {
             "args": [
               (v2/*: any*/)
             ],
             "kind": "FragmentSpread",
-            "name": "Gene_gene"
+            "name": "GeneArtworks_gene"
           }
         ],
         "storageKey": null
@@ -389,7 +399,7 @@ return {
             "name": "trendingArtists",
             "plural": true,
             "selections": [
-              (v3/*: any*/),
+              (v5/*: any*/),
               (v7/*: any*/),
               (v6/*: any*/),
               {
@@ -518,7 +528,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v3/*: any*/),
+                      (v5/*: any*/),
                       (v10/*: any*/)
                     ],
                     "storageKey": null
@@ -558,7 +568,7 @@ return {
                 ],
                 "storageKey": null
               },
-              (v3/*: any*/),
+              (v5/*: any*/),
               {
                 "kind": "InlineFragment",
                 "selections": [
@@ -597,7 +607,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v5/*: any*/),
+                          (v4/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -638,7 +648,7 @@ return {
                             "name": "saleMessage",
                             "storageKey": null
                           },
-                          (v4/*: any*/),
+                          (v3/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -683,7 +693,7 @@ return {
                                 "name": "endAt",
                                 "storageKey": null
                               },
-                              (v3/*: any*/)
+                              (v5/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -738,7 +748,7 @@ return {
                                 "name": "lotLabel",
                                 "storageKey": null
                               },
-                              (v3/*: any*/)
+                              (v5/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -751,7 +761,7 @@ return {
                             "plural": false,
                             "selections": [
                               (v6/*: any*/),
-                              (v3/*: any*/)
+                              (v5/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -761,7 +771,7 @@ return {
                       {
                         "kind": "InlineFragment",
                         "selections": [
-                          (v3/*: any*/)
+                          (v5/*: any*/)
                         ],
                         "type": "Node",
                         "abstractKey": "__isNode"
@@ -785,7 +795,7 @@ return {
               "input"
             ],
             "handle": "connection",
-            "key": "Gene_artworks",
+            "key": "GeneArtworksGrid_artworks",
             "kind": "LinkedHandle",
             "name": "filterArtworksConnection"
           }
@@ -795,7 +805,7 @@ return {
     ]
   },
   "params": {
-    "id": "50272ee0bfab983d47df334ceacb7725",
+    "id": "5aff1cb1df686c0b70175fa51c1d0cee",
     "metadata": {},
     "name": "GeneQuery",
     "operationKind": "query",
@@ -803,5 +813,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'c992522ba0da67924426b3a72d993285';
+(node as any).hash = '11a11265ffb38e98fabcd75568c281c5';
 export default node;
