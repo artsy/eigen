@@ -7,6 +7,7 @@ upcoming:
     - Allow custom attributes from a push notification payload to be passed through to React Native scenes - devon blandin
     - Add diagnose script - mounir
   user_facing:
+    - Prevent facebook auth for users without email - dzmitry
     - Fix unfollowing categories - katsiaryna alshannikava
     - Remove "Enable push notification" guard for disabling saved search - dzmitry tratsiak
     - Fix locations menu redirection - katsiaryna alshannikava
