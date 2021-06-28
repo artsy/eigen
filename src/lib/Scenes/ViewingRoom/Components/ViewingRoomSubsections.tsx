@@ -35,7 +35,6 @@ export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = (pro
             <OpaqueImageView
               imageURL={subsection.image.imageURLs.normalized}
               aspectRatio={subsection.image.width! / subsection.image.height!}
-              height={width / (subsection.image.width! / subsection.image.height!)}
               width={width}
             />
           )}
