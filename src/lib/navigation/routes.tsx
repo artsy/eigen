@@ -118,6 +118,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-profile", "MyProfile"),
     new RouteMatcher("/articles", "Articles"),
     webViewRoute("/articles/:articleID"),
+    webViewRoute("/article/:articleID", { showShareButton: true }),
     new RouteMatcher("/artist/:artistID", "Artist"),
     new RouteMatcher("/artist/:artistID/shows", "ArtistShows"),
     new RouteMatcher("/artwork/:artworkID", "Artwork"),
