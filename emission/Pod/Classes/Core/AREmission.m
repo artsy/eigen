@@ -1,7 +1,6 @@
 #import "AREmission.h"
 #import "AREventsModule.h"
 #import "ARTemporaryAPIModule.h"
-#import "ARRefineOptionsModule.h"
 #import "ARTakeCameraPhotoModule.h"
 #import "ARPHPhotoPickerModule.h"
 #import "ARNotificationsManager.h"
@@ -39,7 +38,6 @@ static AREmission *_sharedInstance = nil;
     // to the array of modules below.
     _eventsModule = [AREventsModule new];
     _APIModule = [ARTemporaryAPIModule new];
-    _refineModule = [ARRefineOptionsModule new];
     _cameraModule = [ARTakeCameraPhotoModule new];
     _phPhotoPickerModule = [ARPHPhotoPickerModule new];
     _notificationsManagerModule = [[ARNotificationsManager alloc] initWithState:state];
@@ -49,7 +47,6 @@ static AREmission *_sharedInstance = nil;
     NSArray *modules = @[
         _APIModule,
         _eventsModule,
-        _refineModule,
         _cameraModule,
         _phPhotoPickerModule,
         _notificationsManagerModule,
