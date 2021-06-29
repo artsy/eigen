@@ -147,6 +147,9 @@ export const ArtworkFilterOptionsScreen: React.FC<
                 case "Fair":
                   trackClear(PageNames.FairPage, OwnerEntityTypes.Fair)
                   break
+                case FilterModalMode.Category:
+                  trackClear(PageNames.GenePage, OwnerEntityTypes.Gene)
+                  break
               }
 
               clearAllFilters()

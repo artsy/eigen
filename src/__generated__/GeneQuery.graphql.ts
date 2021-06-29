@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 938e7cc0962dd76d289456a7d6d8241c */
+/* @relayHash 8394745ca356475e70cfc6ac1f8a06ac */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -62,6 +62,7 @@ export type GeneQueryVariables = {
 };
 export type GeneQueryResponse = {
     readonly gene: {
+        readonly slug: string;
         readonly " $fragmentRefs": FragmentRefs<"Header_gene" | "About_gene" | "GeneArtworks_gene">;
     } | null;
 };
@@ -78,6 +79,7 @@ query GeneQuery(
   $input: FilterArtworksInput
 ) {
   gene(id: $geneID) {
+    slug
     ...Header_gene
     ...About_gene
     ...GeneArtworks_gene_2VV6jB
@@ -235,22 +237,22 @@ v1 = [
   }
 ],
 v2 = {
-  "kind": "Variable",
-  "name": "input",
-  "variableName": "input"
-},
-v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "internalID",
+  "name": "slug",
   "storageKey": null
+},
+v3 = {
+  "kind": "Variable",
+  "name": "input",
+  "variableName": "input"
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "internalID",
   "storageKey": null
 },
 v5 = {
@@ -312,7 +314,7 @@ v9 = [
     "name": "forSale",
     "value": true
   },
-  (v2/*: any*/)
+  (v3/*: any*/)
 ],
 v10 = {
   "alias": null,
@@ -336,6 +338,7 @@ return {
         "name": "gene",
         "plural": false,
         "selections": [
+          (v2/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
@@ -348,7 +351,7 @@ return {
           },
           {
             "args": [
-              (v2/*: any*/)
+              (v3/*: any*/)
             ],
             "kind": "FragmentSpread",
             "name": "GeneArtworks_gene"
@@ -374,7 +377,7 @@ return {
         "name": "gene",
         "plural": false,
         "selections": [
-          (v3/*: any*/),
+          (v2/*: any*/),
           (v4/*: any*/),
           (v5/*: any*/),
           {
@@ -608,7 +611,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v4/*: any*/),
+                          (v2/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -649,7 +652,7 @@ return {
                             "name": "saleMessage",
                             "storageKey": null
                           },
-                          (v3/*: any*/),
+                          (v4/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -806,7 +809,7 @@ return {
     ]
   },
   "params": {
-    "id": "938e7cc0962dd76d289456a7d6d8241c",
+    "id": "8394745ca356475e70cfc6ac1f8a06ac",
     "metadata": {},
     "name": "GeneQuery",
     "operationKind": "query",
@@ -814,5 +817,5 @@ return {
   }
 };
 })();
-(node as any).hash = '11a11265ffb38e98fabcd75568c281c5';
+(node as any).hash = 'bbcc5a0f9d7899d5e3b276e39440591e';
 export default node;

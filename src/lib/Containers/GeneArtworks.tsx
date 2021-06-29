@@ -6,11 +6,13 @@ import { FilteredArtworkGridZeroState } from 'lib/Components/ArtworkGrids/Filter
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from 'lib/data/constants'
+import { Schema } from 'lib/utils/track'
 import { Box, Button, Flex, Sans } from "palette"
 import React, { useContext, useState } from "react"
 import { useEffect } from "react"
 import { StyleSheet, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { useTracking } from 'react-tracking'
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "../Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import Separator from "../Components/Separator"
 
@@ -25,6 +27,7 @@ interface GeneArtworsProps extends GeneArtworksContainerProps {
 
 export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
   const { gene, relay, openFilterModal } = props
+  const tracking = useTracking()
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
@@ -32,6 +35,17 @@ export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
   const artworksTotal = gene.artworks?.counts?.total ?? 0
 
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
+
+  const trackClear = () => {
+    tracking.trackEvent({
+      action_name: "clearFilters",
+      context_screen: Schema.ContextModules.ArtworkGrid,
+      context_screen_owner_type: Schema.OwnerEntityTypes.Gene,
+      context_screen_owner_id: gene.id,
+      context_screen_owner_slug: gene.slug,
+      action_type: Schema.ActionTypes.Tap,
+    })
+  }
 
   useEffect(() => {
     if (applyFilters) {
@@ -74,7 +88,7 @@ export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
     if (artworksTotal === 0) {
       return (
         <Box mb="80px" pt={1}>
-          <FilteredArtworkGridZeroState id={gene.id} slug={gene.slug} trackClear={() => {}} />
+          <FilteredArtworkGridZeroState id={gene.id} slug={gene.slug} trackClear={trackClear} />
         </Box>
       )
     }
@@ -93,22 +107,47 @@ export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
 
 const GeneArtworsContainer: React.FC<GeneArtworksContainerProps> = (props) => {
   const { gene } = props
+  const tracking = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
   const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
   const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
 
+  const openFilterArtworksModal = () => {
+    tracking.trackEvent({
+      action_name: "filter",
+      context_screen_owner_type: Schema.OwnerEntityTypes.Gene,
+      context_screen: Schema.PageNames.GenePage,
+      context_screen_owner_id: gene.id,
+      context_screen_owner_slug: gene.slug,
+      action_type: Schema.ActionTypes.Tap,
+    })
+    handleOpenFilterArtworksModal()
+  }
+
+  const closeFilterArtworksModal = () => {
+    tracking.trackEvent({
+      action_name: "closeFilterWindow",
+      context_screen_owner_type: Schema.OwnerEntityTypes.Gene,
+      context_screen: Schema.PageNames.GenePage,
+      context_screen_owner_id: gene.id,
+      context_screen_owner_slug: gene.slug,
+      action_type: Schema.ActionTypes.Tap,
+    })
+    handleCloseFilterArtworksModal()
+  }
+
   return (
     <ArtworkFiltersStoreProvider>
       <StickyTabPageScrollView disableScrollViewPanResponder>
-        <GeneArtwors {...props} openFilterModal={handleOpenFilterArtworksModal} />
+        <GeneArtwors {...props} openFilterModal={openFilterArtworksModal} />
         <ArtworkFilterNavigator
           {...props}
           id={gene.internalID}
           slug={gene.slug}
           isFilterArtworksModalVisible={isFilterArtworksModalVisible}
           exitModal={handleCloseFilterArtworksModal}
-          closeModal={handleCloseFilterArtworksModal}
+          closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.Category}
         />
       </StickyTabPageScrollView>

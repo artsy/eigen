@@ -1,8 +1,9 @@
 import { FilterArtworksInput, GeneQuery, GeneQueryResponse } from "__generated__/GeneQuery.graphql"
-import { getParamsForInputByFilterType } from 'lib/Components/ArtworkFilter/ArtworkFilterHelpers'
+import { getParamsForInputByFilterType } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import React from "react"
 import { Dimensions, StyleSheet, View, ViewStyle } from "react-native"
 import { graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -19,6 +20,7 @@ const TABS = {
 }
 
 interface GeneProps {
+  geneID: string
   medium: string
   price_range: string
   gene: NonNullable<GeneQueryResponse["gene"]>
@@ -32,7 +34,9 @@ interface GeneQueryRendererProps {
 }
 
 export const Gene: React.FC<GeneProps> = (props) => {
-  const { gene } = props
+  const { gene, geneID } = props
+
+  console.log("[gene] geneID", geneID)
 
   const headerContent = (
     <View style={styles.header}>
@@ -52,18 +56,30 @@ export const Gene: React.FC<GeneProps> = (props) => {
   ]
 
   return (
-    <View style={styles.container}>
-      <StickyTabPage tabs={tabs} staticHeaderContent={headerContent} />
-    </View>
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.GenePage,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Gene,
+        context_screen_owner_id: geneID,
+        context_screen_owner_slug: gene.slug,
+      }}
+    >
+      <View style={styles.container}>
+        <StickyTabPage tabs={tabs} staticHeaderContent={headerContent} />
+      </View>
+    </ProvideScreenTracking>
   )
 }
 
 export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = (props) => {
   const { geneID, medium, price_range } = props
-  const input = getParamsForInputByFilterType({
-    medium,
-    priceRange: price_range,
-  }, 'categoryArtwork') as FilterArtworksInput
+  const input = getParamsForInputByFilterType(
+    {
+      medium,
+      priceRange: price_range,
+    },
+    "categoryArtwork"
+  ) as FilterArtworksInput
 
   return (
     <QueryRenderer<GeneQuery>
@@ -71,6 +87,7 @@ export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = (props) => {
       query={graphql`
         query GeneQuery($geneID: String!, $input: FilterArtworksInput) {
           gene(id: $geneID) {
+            slug
             ...Header_gene
             ...About_gene
             ...GeneArtworks_gene @arguments(input: $input)
@@ -81,7 +98,7 @@ export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = (props) => {
         geneID,
         input,
       }}
-      render={renderWithLoadProgress(Gene)}
+      render={renderWithLoadProgress(Gene, { geneID })}
     />
   )
 }

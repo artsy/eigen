@@ -144,16 +144,6 @@ interface GeneProps {
   price_range: string
 }
 
-const Gene: React.FC<GeneProps> = screenTrack<GeneProps>((props) => {
-  return {
-    context_screen: Schema.PageNames.GenePage,
-    context_screen_owner_slug: props.geneID,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Gene,
-  }
-})((props) => {
-  return <GeneQueryRenderer {...props} />
-})
-
 interface InquiryProps {
   artworkID: string
 }
@@ -332,7 +322,7 @@ export const modules = defineModules({
   Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
   FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
-  Gene: reactModule(Gene),
+  Gene: reactModule(GeneQueryRenderer),
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
   Inbox: reactModule(InboxWrapper, { isRootViewForTabName: "inbox" }),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
