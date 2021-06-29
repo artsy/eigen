@@ -17,6 +17,7 @@ upcoming:
     - Implement share button for articles - katsiaryna alshannikava, mounir
     - Connect auction results for you to metaphysics endpoint - yauheni
     - Fix opening artist page after passing new onboarding on ios - dzmitry
+    - Fix crash when opening app from background on android - brian
 
 releases:
   - version: 6.9.5
