@@ -5,7 +5,6 @@ import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResu
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { PAGE_SIZE } from "lib/data/constants"
-import { Fonts } from "lib/data/fonts"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -28,10 +27,13 @@ interface Props {
 export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
   const { hasMore, isLoading, loadMore } = relay
   const [loadingMoreData, setLoadingMoreData] = useState(false)
-  const auctionResultData = extractNodes(me?.auctionResultsByFollowedArtists)
-  const groupedAuctionResultData = groupBy(auctionResultData, (item) => moment(item!.saleDate!).format("MMM"))
-  const groupedAuctionResultSectionData = Object.keys(groupedAuctionResultData).map((key) => {
-    return { date: key, data: groupedAuctionResultData[key] }
+  const allAuctionResults = extractNodes(me?.auctionResultsByFollowedArtists)
+  const groupedAuctionResults = groupBy(allAuctionResults, (item) => moment(item!.saleDate!).format("YYYY-MM-DD"))
+
+  const groupedAuctionResultSections = Object.entries(groupedAuctionResults).map(([date, auctionResults]) => {
+    const sectionTitle = moment(date).format("MMMM")
+
+    return { sectionTitle, data: auctionResults }
   })
 
   const loadMoreArtworks = () => {
@@ -51,42 +53,47 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
   return (
     <PageWithSimpleHeader title="Auction Results for You">
       <ArtworkFiltersStoreProvider>
-        <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
-          The latest auction results for the {""}
-          <LinkText onPress={() => navigate("/favorites", { passProps: { initialTab: Tab.artists } })}>
-            artists you follow
-          </LinkText>
-          . You can also look up more auction results on the insights tab on any artist’s page.
-        </Text>
+        <Flex>
+          <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
+            The latest auction results for the {""}
+            <LinkText onPress={() => navigate("/favorites", { passProps: { initialTab: Tab.artists } })}>
+              artists you follow
+            </LinkText>
+            . You can also look up more auction results on the insights tab on any artist’s page.
+          </Text>
+        </Flex>
         <SectionList
-          sections={groupedAuctionResultSectionData}
-          onEndReachedThreshold={0.5}
+          sections={groupedAuctionResultSections}
           onEndReached={loadMoreArtworks}
-          keyExtractor={(item, index) => item.internalID + index.toString()}
-          renderItem={({ item }) =>
-            item ? (
-              <AuctionResultFragmentContainer
-                auctionResult={item}
-                onPress={() => navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)}
-              />
-            ) : (
-              <></>
-            )
-          }
-          renderSectionHeader={({ section: { date } }) => (
-            <Text
-              textAlign="left"
-              color="black"
-              style={{ fontFamily: Fonts.Unica77LLRegular, fontSize: 18, marginLeft: 20 }}
-            >
-              {date}
-            </Text>
+          keyExtractor={(item) => item.internalID}
+          renderSectionHeader={({ section: { sectionTitle } }) => (
+            <Flex bg="white" mx="2">
+              <Text my="2" variant="title">
+                {sectionTitle}
+              </Text>
+              <Separator borderColor={"black5"} />
+            </Flex>
           )}
+          renderSectionFooter={() => <Flex mt="3" />}
           ItemSeparatorComponent={() => (
             <Flex px={2}>
               <Separator borderColor={"black5"} />
             </Flex>
           )}
+          renderItem={({ item }) =>
+            item ? (
+              <Flex>
+                <Flex px={1}>
+                  <AuctionResultFragmentContainer
+                    auctionResult={item}
+                    onPress={() => navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)}
+                  />
+                </Flex>
+              </Flex>
+            ) : (
+              <></>
+            )
+          }
           ListFooterComponent={
             loadingMoreData ? (
               <Flex my={2} flexDirection="row" justifyContent="center">

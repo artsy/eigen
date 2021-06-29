@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 674a9887ff54a6786cd770039042741a */
+/* @relayHash 081595dc298d0dc9645e160d956ca12f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -194,7 +194,6 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
   internalID
   artist {
     name
-    slug
     id
   }
   images {
@@ -1734,11 +1733,7 @@ return {
                         "kind": "LinkedField",
                         "name": "artist",
                         "plural": false,
-                        "selections": [
-                          (v18/*: any*/),
-                          (v9/*: any*/),
-                          (v3/*: any*/)
-                        ],
+                        "selections": (v19/*: any*/),
                         "storageKey": null
                       },
                       {
@@ -2056,7 +2051,7 @@ return {
     ]
   },
   "params": {
-    "id": "674a9887ff54a6786cd770039042741a",
+    "id": "081595dc298d0dc9645e160d956ca12f",
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 64706ed659342fff476f77245dcdf950 */
+/* @relayHash 432b9e6c26db7e9972b9a71cfa889da0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -112,7 +112,6 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
   internalID
   artist {
     name
-    slug
     id
   }
   images {
@@ -497,7 +496,11 @@ v26 = {
   "kind": "Literal",
   "name": "first",
   "value": 3
-};
+},
+v27 = [
+  (v25/*: any*/),
+  (v14/*: any*/)
+];
 return {
   "fragment": {
     "argumentDefinitions": [
@@ -684,11 +687,7 @@ return {
                             "kind": "LinkedField",
                             "name": "artist",
                             "plural": false,
-                            "selections": [
-                              (v25/*: any*/),
-                              (v22/*: any*/),
-                              (v14/*: any*/)
-                            ],
+                            "selections": (v27/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -887,10 +886,7 @@ return {
                             "kind": "LinkedField",
                             "name": "author",
                             "plural": false,
-                            "selections": [
-                              (v25/*: any*/),
-                              (v14/*: any*/)
-                            ],
+                            "selections": (v27/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -1142,7 +1138,7 @@ return {
     ]
   },
   "params": {
-    "id": "64706ed659342fff476f77245dcdf950",
+    "id": "432b9e6c26db7e9972b9a71cfa889da0",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",

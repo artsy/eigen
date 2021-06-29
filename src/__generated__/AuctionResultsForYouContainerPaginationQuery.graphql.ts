@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6f27a42aff33b0f0a9381b25244104dc */
+/* @relayHash 56e75a004163c085c3700c8581239709 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -39,7 +39,6 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
   internalID
   artist {
     name
-    slug
     id
   }
   images {
@@ -246,13 +245,6 @@ return {
                             "args": null,
                             "kind": "ScalarField",
                             "name": "name",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "slug",
                             "storageKey": null
                           },
                           (v3/*: any*/)
@@ -468,7 +460,7 @@ return {
     ]
   },
   "params": {
-    "id": "6f27a42aff33b0f0a9381b25244104dc",
+    "id": "56e75a004163c085c3700c8581239709",
     "metadata": {},
     "name": "AuctionResultsForYouContainerPaginationQuery",
     "operationKind": "query",
