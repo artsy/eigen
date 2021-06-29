@@ -1,4 +1,4 @@
-import { GeneQuery, GeneQueryResponse } from "__generated__/GeneQuery.graphql"
+import { FilterArtworksInput, GeneQuery, GeneQueryResponse } from "__generated__/GeneQuery.graphql"
 import { getParamsForInputByFilterType } from 'lib/Components/ArtworkFilter/ArtworkFilterHelpers'
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -63,7 +63,7 @@ export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = (props) => {
   const input = getParamsForInputByFilterType({
     medium,
     priceRange: price_range,
-  }, 'categoryArtwork')
+  }, 'categoryArtwork') as FilterArtworksInput
 
   return (
     <QueryRenderer<GeneQuery>
