@@ -107,7 +107,14 @@ export const features = defineFeatures({
     // echoFlagKey: "AREnableSavedSearch",
     echoFlagKey: Platform.OS === "ios" ? "AREnableSavedSearch" : undefined,
     description: "Enable Saved Search",
-    showInAdminMenu: true,
+    ...Platform.select({
+      android: {
+        showInAdminMenu: true,
+      },
+      ios: {
+        echoFlagKey: "AREnableSavedSearch",
+      },
+    }),
   },
   AREnableNewOnboardingFlow: {
     readyForRelease: false,
