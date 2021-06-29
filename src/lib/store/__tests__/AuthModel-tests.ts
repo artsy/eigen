@@ -259,7 +259,9 @@ describe("AuthModel", () => {
 
       const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp" }).catch((e) => e)
 
-      expect(result).toBe("You are not using email on your Facebook account. Try sign up using credentials.")
+      expect(result).toBe(
+        "We can’t find an email associated with your Facebook account. Please sign up with your email and password."
+      )
     })
 
     it("fetches access token from facebook", async () => {
