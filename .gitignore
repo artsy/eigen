@@ -137,5 +137,5 @@ android/app/src/main/assets/fonts
 
 
 # Firebase files
-google-services.json
+android/app/google-services.json
 GoogleService-Info.plist
