@@ -66,6 +66,7 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
           sections={groupedAuctionResultSections}
           onEndReached={loadMoreArtworks}
           keyExtractor={(item) => item.internalID}
+          stickySectionHeadersEnabled
           renderSectionHeader={({ section: { sectionTitle } }) => (
             <Flex bg="white" mx="2">
               <Text my="2" variant="title">
