@@ -2,9 +2,8 @@ import { ActionType, ContextModule, OwnerType, ScreenOwnerType, TappedArtistSeri
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { ArtistSeriesConnectionEdge } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { ArrowRightIcon, Flex, Sans } from "palette"
+import { ArrowRightIcon, color, Flex, Sans, Touchable } from "palette"
 import React from "react"
-import { TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 
 interface ArtistSeriesListItemProps {
@@ -51,7 +50,8 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
   }
 
   return (
-    <TouchableOpacity
+    <Touchable
+      underlayColor={color("black5")}
       onPress={() => {
         trackArtworkClick()
         navigate(`/artist-series/${listItem?.node?.slug}`)
@@ -82,6 +82,6 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
           </Flex>
         </Flex>
       </Flex>
-    </TouchableOpacity>
+    </Touchable>
   )
 }
