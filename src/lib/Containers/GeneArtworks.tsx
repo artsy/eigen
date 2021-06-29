@@ -1,8 +1,10 @@
 import { GeneArtworks_gene } from "__generated__/GeneArtworks_gene.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
+import { filterArtworksParams, prepareFilterArtworksParamsForInput } from 'lib/Components/ArtworkFilter/ArtworkFilterHelpers'
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { PAGE_SIZE } from 'lib/data/constants'
 import { Box, Button, Flex, Sans } from "palette"
 import React, { useContext, useState } from "react"
 import { useEffect } from "react"
@@ -21,10 +23,27 @@ interface GeneArtworsProps extends GeneArtworksContainerProps {
 }
 
 export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
-  const { gene, openFilterModal } = props
+  const { gene, relay, openFilterModal } = props
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+  const filterParams = filterArtworksParams(appliedFilters, 'categoryArtwork')
 
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
+
+  useEffect(() => {
+    if (applyFilters) {
+      relay.refetchConnection(
+        PAGE_SIZE,
+        (error) => {
+          if (error) {
+            throw new Error("Gene/GeneArtworks filter error: " + error.message)
+          }
+        },
+        { input: prepareFilterArtworksParamsForInput(filterParams) }
+      )
+    }
+  }, [appliedFilters])
 
   useEffect(() => {
     if (gene.artworks?.aggregations) {
