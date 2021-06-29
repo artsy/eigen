@@ -33,6 +33,12 @@ const GALLERY_CURATED_ARTWORK_SORT = {
   paramValue: "partner_show_position",
 }
 
+const DEFAULT_CATEGORY_SORT = {
+  displayText: "Default",
+  paramName: FilterParamName.sort,
+  paramValue: "-partner_updated_at",
+}
+
 export const ORDERED_ARTWORK_SORTS: FilterData[] = [
   {
     displayText: "Price (high to low)",
@@ -129,6 +135,7 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation
     saleArtwork: ORDERED_SALE_ARTWORK_SORTS,
     showArtwork: [GALLERY_CURATED_ARTWORK_SORT, DEFAULT_ARTWORK_SORT, ...ORDERED_ARTWORK_SORTS],
     auctionResult: ORDERED_AUCTION_RESULTS_SORTS,
+    categoryArtwork: [DEFAULT_CATEGORY_SORT, ...ORDERED_ARTWORK_SORTS],
   }[filterType]
 
   const selectOption = (option: FilterData) => {
