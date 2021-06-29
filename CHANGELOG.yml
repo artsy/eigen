@@ -8,12 +8,6 @@ upcoming:
     - Add diagnose script - mounir
     - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
     - Update open simulator command in getting started docs - ole
-    - Update debugging docs - mounir
-    - Send data in the filter params format for saved search - dzmitry tratsiak
-    - Enables external flag for order history - sweir
-    - Prepare search criteria values to filter params - dzmitry tratsiak
-    - Add specs for deleteSavedSearch and createSavedSearch mutations - dzmitry tratsiak
-    - add toggledSavedSearch analytics tracking  - devon blandin
     - Fix follow artist button on ios - dzmitry
   user_facing:
     - Fix unfollowing categories - katsiaryna alshannikava
