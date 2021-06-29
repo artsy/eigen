@@ -49,7 +49,7 @@ export const Onboarding = () => {
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
 
   return (
-    <View style={{ flex: 1, paddingBottom: useScreenDimensions().safeAreaInsets.bottom }}>
+    <View style={{ flex: 1 }}>
       <ArtsyKeyboardAvoidingViewContext.Provider
         value={{ isVisible: true, isPresentedModally: false, bottomOffset: 0 }}
       >

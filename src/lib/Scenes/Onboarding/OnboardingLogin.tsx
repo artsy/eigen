@@ -154,6 +154,7 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
           loading={isSubmitting}
           testID="loginButton"
           variant="primaryBlack"
+          mb={useScreenDimensions().safeAreaInsets.bottom}
         >
           Log in
         </Button>

@@ -8,6 +8,7 @@ import { INPUT_HEIGHT } from "lib/Components/Input/Input"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { compact, times } from "lodash"
 import { Box, Button, color, Flex, Join, space, Spacer, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
@@ -147,6 +148,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
           variant="primaryBlack"
           block
           testID="doneButton"
+          mb={useScreenDimensions().safeAreaInsets.bottom}
           onPress={() => {
             GlobalStore.actions.auth.setState({ onboardingState: "complete" })
           }}

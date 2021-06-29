@@ -286,6 +286,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
         loading={isSubmitting}
         testID="signUpButton"
         variant="primaryBlack"
+        mb={useScreenDimensions().safeAreaInsets.bottom}
       >
         Next
       </Button>
