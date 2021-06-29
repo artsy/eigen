@@ -4,6 +4,11 @@
 <dict>
 	<key>AppIdentifierPrefix</key>
 	<string>$(AppIdentifierPrefix)</string>
+	<key>Braze</key>
+	<dict>
+		<key>Endpoint</key>
+		<string>sdk.iad-06.braze.com</string>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -77,10 +82,10 @@
 	<string>Artsy</string>
 	<key>GITCommitDate</key>
 	<string>2021-01-21T15:08:22+04:00</string>
-	<key>GITCommitShortHash</key>
-	<string>c77772ee1</string>
 	<key>GITCommitHash</key>
 	<string>c77772ee1f32093109049504f7865f9737ad8474</string>
+	<key>GITCommitShortHash</key>
+	<string>c77772ee1</string>
 	<key>GITRemoteOriginURL</key>
 	<string>https://github.com/artsy/eigen.git</string>
 	<key>ITSAppUsesNonExemptEncryption</key>

@@ -1,7 +1,7 @@
 import { Show_show } from "__generated__/Show_show.graphql"
 import { ShowQuery } from "__generated__/ShowQuery.graphql"
-import { AnimatedArtworkFilterButton } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "lib/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -10,7 +10,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { times } from "lodash"
 import { Box, Flex, Separator, Spacer } from "palette"
 import React, { useRef, useState } from "react"
-import { FlatList } from "react-native"
+import { Animated } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ShowArtworksWithNavigation as ShowArtworks } from "./Components/ShowArtworks"
 import { ShowArtworksEmptyStateFragmentContainer } from "./Components/ShowArtworksEmptyState"
@@ -47,15 +47,10 @@ interface ViewToken {
 
 export const Show: React.FC<ShowProps> = ({ show }) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-  const [isFilterButtonVisible, setisFilterButtonVisible] = useState(false)
+
+  const filterComponentAnimationValue = new Animated.Value(0)
 
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
-  const viewableItemsChangedRef = useRef(({ viewableItems }: ViewableItems) => {
-    const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
-      return viewableItem?.item?.key === "artworks"
-    })
-    setisFilterButtonVisible(artworksItem?.isViewable ?? false)
-  })
 
   const toggleFilterArtworksModal = () => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
@@ -70,18 +65,16 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
 
     { key: "info", element: <ShowInfo show={show} mx={2} /> },
 
+    {
+      key: "filter",
+      element: (
+        <HeaderArtworksFilter animationValue={filterComponentAnimationValue} onPress={toggleFilterArtworksModal} />
+      ),
+    },
+
     ...(Boolean(show.viewingRoomIDs.length)
       ? [{ key: "viewing-room", element: <ShowViewingRoom show={show} mx={2} /> }]
       : []),
-
-    {
-      key: "separator-top",
-      element: (
-        <Box mx={2}>
-          <Separator />
-        </Box>
-      ),
-    },
 
     {
       key: "artworks",
@@ -114,20 +107,19 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
       }}
     >
       <ArtworkFiltersStoreProvider>
-        <FlatList<Section>
+        <Animated.FlatList<Section>
           data={sections}
           keyExtractor={({ key }) => key}
+          stickyHeaderIndices={[sections.findIndex((section) => section.key === "filter") + 1]}
           viewabilityConfig={viewConfigRef.current}
-          onViewableItemsChanged={viewableItemsChangedRef.current}
           ListHeaderComponent={<Spacer mt={6} pt={2} />}
           ListFooterComponent={<Spacer my={2} />}
           ItemSeparatorComponent={() => <Spacer my={15} />}
           contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top, paddingBottom: 40 }}
           renderItem={({ item: { element } }) => element}
-        />
-        <AnimatedArtworkFilterButton
-          isVisible={isFilterButtonVisible && Boolean(show.counts?.eligibleArtworks)}
-          onPress={toggleFilterArtworksModal}
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: filterComponentAnimationValue } } }], {
+            useNativeDriver: true,
+          })}
         />
       </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>
@@ -144,10 +136,7 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
       ...ShowInfo_show
       ...ShowViewingRoom_show
       ...ShowContextCard_show
-      ...ShowArtworks_show @arguments(input: {
-        sort: "partner_show_position",
-        dimensionRange: "*-*"
-      })
+      ...ShowArtworks_show @arguments(input: { sort: "partner_show_position", dimensionRange: "*-*" })
       ...ShowArtworksEmptyState_show
       viewingRoomIDs
       images(default: false) {

@@ -22,6 +22,7 @@ interface Props {
   contextModule?: string
   withFeedback?: boolean
   containerStyle?: StyleProp<ViewStyle>
+  disableNavigation?: boolean
   onStart?: () => void
   onFinish?: () => void
 }
@@ -113,7 +114,7 @@ export class OnboardingPersonalizationArtistListItem extends React.Component<Pro
 
   render() {
     const { isFollowedChanging } = this.state
-    const { artist, withFeedback, containerStyle } = this.props
+    const { artist, withFeedback, containerStyle, disableNavigation } = this.props
     const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
     const imageURl = image && image.url
 
@@ -126,12 +127,13 @@ export class OnboardingPersonalizationArtistListItem extends React.Component<Pro
     return (
       <TouchableComponent
         onPress={() => {
-          if (href) {
+          if (href && !disableNavigation) {
             this.handleTap(href)
           }
         }}
         underlayColor={color("black5")}
         style={containerStyle}
+        useDefaultTouchable
       >
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
           <Flex flex={1}>

@@ -122,27 +122,17 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, artist
     })
   }
 
-  const handleSaveSearchFiltersPress = () => {
-    if (inProcess) {
-      return
-    }
-    const executeSaveSearch = () => {
-      if (enabled) {
-        deleteSavedSearch()
-      } else {
-        createSavedSearch()
-      }
-    }
+  const checkNotificationPermissionsAndCreate = () => {
     if (Platform.OS === "android") {
       // TODO:- When android Push notification setup is ready add check for permission
       // NotificationManagerCompat.from(getReactApplicationContext()).areNotificationsEnabled();
-      executeSaveSearch()
+      createSavedSearch()
       return
     }
     LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
       switch (result) {
         case PushAuthorizationStatus.Authorized:
-          return executeSaveSearch()
+          return createSavedSearch()
         case PushAuthorizationStatus.Denied:
           return Alert.alert(
             "Turn on notifications",
@@ -179,6 +169,18 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, artist
     })
   }
 
+  const handleSaveSearchFiltersPress = () => {
+    if (inProcess) {
+      return
+    }
+
+    if (enabled) {
+      deleteSavedSearch()
+    } else {
+      checkNotificationPermissionsAndCreate()
+    }
+  }
+
   const trackToggledSavedSearchEvent = (modified: boolean, searchCriteriaId: string | undefined) => {
     if (searchCriteriaId) {
       tracking.trackEvent(tracks.toggleSavedSearch(modified, artistId, searchCriteriaId))
@@ -196,7 +198,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, artist
       alignItems="center"
     >
       <Text variant="small" color="black">
-        New works alert for this search
+        {enabled ? "Remove alert for this artist" : "Set alert for this artist"}
       </Text>
       <Button
         variant={enabled ? "secondaryOutline" : "primaryBlack"}
