@@ -504,7 +504,7 @@ export const getAuthModel = (): AuthModel => ({
 
       const idToken = userInfo.identityToken
       if (!idToken) {
-        return
+        return reject("failed to authenticate using apple sign in")
       }
       const appleUID = userInfo.user
 
@@ -516,7 +516,7 @@ export const getAuthModel = (): AuthModel => ({
           userInfo.email &&
           (await actions.signUp({
             email: userInfo.email,
-            name: `${firstName} ${lastName}`,
+            name: `${firstName} ${lastName}`.trim(),
             appleUID,
             idToken,
             oauthProvider: "apple",
