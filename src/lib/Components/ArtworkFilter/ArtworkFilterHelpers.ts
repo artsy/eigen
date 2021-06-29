@@ -1,5 +1,5 @@
 import { FilterScreen } from "lib/Components/ArtworkFilter"
-import { capitalize, compact, groupBy, isEqual, pick, sortBy } from "lodash"
+import { capitalize, compact, groupBy, isEqual, isUndefined, pick, pickBy, sortBy } from "lodash"
 import { LOCALIZED_UNIT } from "./Filters/helpers"
 import { SearchCriteriaAttributes } from "./SavedSearch/types"
 
@@ -598,4 +598,18 @@ export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams
   }
 
   return input
+}
+
+export const getParamsForInputByFilterType = (
+  initialParams: Partial<FilterParams>,
+  filterType: FilterType = "artwork"
+) => {
+  const defaultInputParams = getDefaultParamsByType(filterType)
+  const filledInitialParams = pickBy(initialParams, (item) => !isUndefined(item)) as FilterParams
+  const allowedParams = prepareFilterArtworksParamsForInput({
+    ...defaultInputParams,
+    ...filledInitialParams,
+  })
+
+  return allowedParams
 }

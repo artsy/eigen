@@ -8,6 +8,7 @@ import {
   prepareFilterArtworksParamsForInput,
   prepareFilterParamsForSaveSearchInput,
   selectedOption,
+  getParamsForInputByFilterType,
 } from "../ArtworkFilterHelpers"
 
 describe("changedFiltersParams helper", () => {
@@ -1044,6 +1045,36 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
     expect(prepareFilterParamsForSaveSearchInput(filters)).toEqual({
       dimensionRange: "0-*",
       width: "10-*",
+    })
+  })
+})
+
+describe("getParamsForInputByFilterType", () => {
+  it("returns default params if nothing is passed", () => {
+    const result = getParamsForInputByFilterType({}, "categoryArtwork")
+    expect(result).toEqual({
+      sort: "-partner_updated_at",
+      priceRange: "*-*",
+      medium: "*",
+    })
+  })
+
+  it("returns the passed and default params", () => {
+    const result = getParamsForInputByFilterType({ width: "100-200" }, "categoryArtwork")
+    expect(result).toEqual({
+      sort: "-partner_updated_at",
+      priceRange: "*-*",
+      medium: "*",
+      width: "100-200",
+    })
+  })
+
+  it("should replace the default params", () => {
+    const result = getParamsForInputByFilterType({ priceRange: "100-200" }, "categoryArtwork")
+    expect(result).toEqual({
+      sort: "-partner_updated_at",
+      priceRange: "100-200",
+      medium: "*",
     })
   })
 })

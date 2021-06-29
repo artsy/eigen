@@ -1,6 +1,6 @@
 import { GeneQuery, GeneQueryResponse } from "__generated__/GeneQuery.graphql"
+import { getParamsForInputByFilterType } from 'lib/Components/ArtworkFilter/ArtworkFilterHelpers'
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
-import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
@@ -59,7 +59,11 @@ export const Gene: React.FC<GeneProps> = (props) => {
 }
 
 export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = (props) => {
-  const { geneID, medium = "*", price_range = "*-*" } = props
+  const { geneID, medium, price_range } = props
+  const input = getParamsForInputByFilterType({
+    medium,
+    priceRange: price_range,
+  }, 'categoryArtwork')
 
   return (
     <QueryRenderer<GeneQuery>
@@ -75,11 +79,7 @@ export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = (props) => {
       `}
       variables={{
         geneID,
-        input: {
-          medium,
-          priceRange: price_range,
-          sort: "-partner_updated_at",
-        },
+        input,
       }}
       render={renderWithLoadProgress(Gene)}
     />
