@@ -2,6 +2,7 @@ upcoming:
   version: 6.9.5
   date: TBD
   dev:
+    - Add apple authentication - dzmitry
     - Add google authentication - dzmitry
     - Add facebook authentication - dzmitry
     - Pass size filter parameters to a saved search criteria - dzmitry tratsiak

@@ -1,3 +1,4 @@
+import { appleAuth } from "@invertase/react-native-apple-authentication"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { isArtsyEmail } from "lib/utils/general"
@@ -28,31 +29,76 @@ export interface AuthModel {
   userExists: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel>
   signIn: Thunk<
     AuthModel,
-    {
-      email: string
-      password?: string
-      accessToken?: string
-      oauthProvider?: "facebook" | "google" | "apple"
-    },
+    | {
+        email: string
+        password: string
+
+        accessToken?: never
+        oauthProvider?: never
+        idToken?: never
+        appleUID?: never
+      }
+    | {
+        email: string
+        oauthProvider: "facebook" | "google"
+        accessToken: string
+
+        password?: never
+        idToken?: never
+        appleUID?: never
+      }
+    | {
+        email: string
+        oauthProvider: "apple"
+        idToken: string
+        appleUID: string
+
+        password?: never
+        accessToken?: never
+      },
     {},
     GlobalStoreModel,
     Promise<boolean>
   >
   signUp: Thunk<
     AuthModel,
-    {
-      email: string
-      name: string
-      password?: string
-      accessToken?: string
-      oauthProvider?: "facebook" | "google" | "apple"
-    },
+    | {
+        email: string
+        name: string
+        password: string
+
+        accessToken?: never
+        oauthProvider?: never
+        idToken?: never
+        appleUID?: never
+      }
+    | {
+        email: string
+        name: string
+        accessToken: string
+        oauthProvider: "facebook" | "google"
+
+        password?: never
+        idToken?: never
+        appleUID?: never
+      }
+    | {
+        email: string
+        name: string
+        oauthProvider: "apple"
+        idToken: string
+        appleUID: string
+
+        password?: never
+        accessToken?: never
+      },
     {},
     GlobalStoreModel,
     Promise<boolean>
   >
   authFacebook: Thunk<AuthModel, { signInOrUp: "signIn" | "signUp" }, {}, GlobalStoreModel, Promise<true>>
   authGoogle: Thunk<AuthModel, { signInOrUp: "signIn" | "signUp" }, {}, GlobalStoreModel, Promise<true>>
+  authApple: Thunk<AuthModel, { signInOrUp: "signIn" | "signUp" }, {}, GlobalStoreModel, Promise<true>>
   forgotPassword: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel, Promise<boolean>>
   gravityUnauthenticatedRequest: Thunk<
     this,
@@ -166,7 +212,7 @@ export const getAuthModel = (): AuthModel => ({
     }
     return false
   }),
-  signIn: thunk(async (actions, { email, password, accessToken, oauthProvider }) => {
+  signIn: thunk(async (actions, { email, password, accessToken, oauthProvider, idToken, appleUID }) => {
     let body
     switch (oauthProvider) {
       case "facebook":
@@ -177,6 +223,17 @@ export const getAuthModel = (): AuthModel => ({
           client_id: Config.ARTSY_API_CLIENT_KEY,
           client_secret: Config.ARTSY_API_CLIENT_SECRET,
           grant_type: "oauth_token",
+          scope: "offline_access",
+        }
+        break
+      case "apple":
+        body = {
+          oauth_provider: oauthProvider,
+          apple_uid: appleUID,
+          id_token: idToken,
+          client_id: Config.ARTSY_API_CLIENT_KEY,
+          client_secret: Config.ARTSY_API_CLIENT_SECRET,
+          grant_type: "apple_uid",
           scope: "offline_access",
         }
         break
@@ -222,7 +279,7 @@ export const getAuthModel = (): AuthModel => ({
 
     return false
   }),
-  signUp: thunk(async (actions, { email, password, name, accessToken, oauthProvider }) => {
+  signUp: thunk(async (actions, { email, password, name, accessToken, oauthProvider, idToken, appleUID }) => {
     let body
     switch (oauthProvider) {
       case "facebook":
@@ -230,6 +287,17 @@ export const getAuthModel = (): AuthModel => ({
         body = {
           provider: oauthProvider,
           oauth_token: accessToken,
+          email,
+          name,
+          agreed_to_receive_emails: true,
+          accepted_terms_of_service: true,
+        }
+        break
+      case "apple":
+        body = {
+          provider: oauthProvider,
+          apple_uid: appleUID,
+          id_token: idToken,
           email,
           name,
           agreed_to_receive_emails: true,
@@ -258,7 +326,8 @@ export const getAuthModel = (): AuthModel => ({
 
     // The user account has been successfully created
     if (result.status === 201) {
-      await actions.signIn({ email, password, accessToken, oauthProvider })
+      // @ts-ignore
+      await actions.signIn({ email, password, accessToken, oauthProvider, idToken, appleUID })
       actions.setState({
         onboardingState: "incomplete",
       })
@@ -407,6 +476,85 @@ export const getAuthModel = (): AuthModel => ({
             email,
             accessToken,
             oauthProvider: "google",
+          })
+
+          resultGravitySignIn ? resolve(true) : reject("Failed to log in.")
+        } else {
+          const res = await resultGravityAccessToken.json()
+          if (res.error_description) {
+            console.log(res) // This will get us the error on sentry because we capture console.logs there
+            reject(`Failed to get gravity token from gravity: ${res.error_description}`)
+          }
+        }
+      }
+    })
+  }),
+  authApple: thunk(async (actions, { signInOrUp }) => {
+    return await new Promise<true>(async (resolve, reject) => {
+      const userInfo = await appleAuth.performRequest(
+        signInOrUp === "signUp"
+          ? {
+              requestedOperation: appleAuth.Operation.LOGIN,
+              requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+            }
+          : {
+              requestedOperation: appleAuth.Operation.LOGIN,
+            }
+      )
+
+      const idToken = userInfo.identityToken
+      if (!idToken) {
+        return reject("failed to authenticate using apple sign in")
+      }
+      const appleUID = userInfo.user
+
+      if (signInOrUp === "signUp") {
+        const firstName = userInfo.fullName?.givenName ? userInfo.fullName.givenName : ""
+        const lastName = userInfo.fullName?.familyName ? userInfo.fullName.familyName : ""
+
+        const resultGravitySignUp =
+          userInfo.email &&
+          (await actions.signUp({
+            email: userInfo.email,
+            name: `${firstName} ${lastName}`.trim(),
+            appleUID,
+            idToken,
+            oauthProvider: "apple",
+          }))
+
+        resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
+      }
+
+      if (signInOrUp === "signIn") {
+        // we need to get X-ACCESS-TOKEN before actual sign in
+        const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
+          path: `/oauth2/access_token`,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: {
+            oauth_provider: "apple",
+            apple_uid: appleUID,
+            id_token: idToken,
+            client_id: Config.ARTSY_API_CLIENT_KEY,
+            client_secret: Config.ARTSY_API_CLIENT_SECRET,
+            grant_type: "apple_uid",
+            scope: "offline_access",
+          },
+        })
+        if (resultGravityAccessToken.status === 201) {
+          const { access_token: xAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
+          const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
+            path: `/api/v1/me`,
+            headers: { "X-ACCESS-TOKEN": xAccessToken },
+          })
+          const { email } = await resultGravityEmail.json()
+          const resultGravitySignIn = await actions.signIn({
+            email,
+            appleUID,
+            idToken,
+            oauthProvider: "apple",
           })
 
           resultGravitySignIn ? resolve(true) : reject("Failed to log in.")

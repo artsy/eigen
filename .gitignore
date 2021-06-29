@@ -133,3 +133,8 @@ android-secret.json
 
 # Fonts
 android/app/src/main/assets/fonts
+
+
+# Firebase files
+google-services.json
+GoogleService-Info.plist
