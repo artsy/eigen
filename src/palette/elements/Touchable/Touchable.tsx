@@ -16,7 +16,7 @@ interface ExtraTouchableProps {
   flex?: number
   haptic?: HapticFeedbackTypes | true
   noFeedback?: boolean
-  useReactNativeTouchable_ios?: boolean
+  useDefaultTouchable?: boolean
 }
 
 export type TouchableProps = TouchableHighlightProps & ExtraTouchableProps
@@ -32,7 +32,7 @@ export const Touchable: React.FC<TouchableProps> = ({
   flex,
   haptic,
   noFeedback,
-  useReactNativeTouchable_ios,
+  useDefaultTouchable,
   onPress,
   ...props
 }) => {
@@ -52,7 +52,7 @@ export const Touchable: React.FC<TouchableProps> = ({
 
   if (noFeedback) {
     const NoFeedbackButton = Platform.select({
-      ios: useReactNativeTouchable_ios ? RNTouchableWithoutFeedback : TouchableWithoutFeedback,
+      ios: useDefaultTouchable ? RNTouchableWithoutFeedback : TouchableWithoutFeedback,
       default: RNTouchableWithoutFeedback,
     })
 
@@ -64,7 +64,7 @@ export const Touchable: React.FC<TouchableProps> = ({
   }
 
   const HighlightButton = Platform.select({
-    ios: useReactNativeTouchable_ios ? RNTouchableHighlight : TouchableHighlight,
+    ios: useDefaultTouchable ? RNTouchableHighlight : TouchableHighlight,
     default: RNTouchableHighlight,
   })
 
