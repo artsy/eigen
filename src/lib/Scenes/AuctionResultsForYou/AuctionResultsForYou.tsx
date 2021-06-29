@@ -28,7 +28,7 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
   const { hasMore, isLoading, loadMore } = relay
   const [loadingMoreData, setLoadingMoreData] = useState(false)
   const allAuctionResults = extractNodes(me?.auctionResultsByFollowedArtists)
-  const groupedAuctionResults = groupBy(allAuctionResults, (item) => moment(item!.saleDate!).format("YYYY-MM-DD"))
+  const groupedAuctionResults = groupBy(allAuctionResults, (item) => moment(item!.saleDate!).format("YYYY-MM"))
 
   const groupedAuctionResultSections = Object.entries(groupedAuctionResults).map(([date, auctionResults]) => {
     const sectionTitle = moment(date).format("MMMM")
