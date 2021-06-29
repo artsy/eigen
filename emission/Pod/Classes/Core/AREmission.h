@@ -34,6 +34,7 @@ extern NSString *const AREnvTest;
 - (NSString *)reactStateStringForKey:(NSString *)stateKey;
 - (BOOL)reactStateBoolForKey:(NSString *)stateKey;
 - (void)navigate:(NSString *)route;
+- (void)navigate:(NSString *)route withProps:(NSDictionary *)props;
 
 - (NSURL *)liveAuctionsURL;
 - (BOOL)isStaging;

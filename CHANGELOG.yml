@@ -1,8 +1,11 @@
 upcoming:
-  version: 6.9.5
+  version: 6.10.0
   date: TBD
   dev:
-    - Add facebook authentication - dzmitry
+    - Add specs for deleteSavedSearch and createSavedSearch mutations - dzmitry tratsiak
+    - Add toggledSavedSearch analytics tracking - devon blandin
+    - Allow custom attributes from a push notification payload to be passed through to React Native scenes - devon blandin
+    - Add diagnose script - mounir
     - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
     - Update open simulator command in getting started docs - ole
     - Update debugging docs - mounir
@@ -13,40 +16,56 @@ upcoming:
     - add toggledSavedSearch analytics tracking  - devon blandin
     - Fix follow artist button on ios - dzmitry
   user_facing:
-    - Fixed "Unable to load" error on OrderHistory page when artwork is deleted/unpublished from order
-    - Pick up should be displayed in Sold by section - Serge0n
-    - Country should be written with full name - Serge0n
-    - Name from shipping address should be displayed instead of account name - Serge0n
-    - User can see the way of delivery - Serge0n
-    - OrderDetails with SoldBy section - alexj105
-    - OrderDetails with headInfo - alexj105
-    - OrderDetails with ArtInfo and ShipsTo - alexj105
-    - fix inaccurate validators for artwork submission - yauheni
-    - Check saved search when the user applied the filter - dzmitry tratsiak
-    - Don't close filter artwork modal when "clear all" tapped - dzmitry tratsiak
-    - Continue to show the offer approved banner in an inquiry offer conversation after fulfillment - erikdstock
-    - Add link to Conditions of Sale in sign up - dzmitry
-    - Add saved search banner update banner state automatically on save/filter actions - kizito
-    - Show visual feedback when the "Sort & Filter" button is pressed - dzmitry tratsiak
-    - Don't show saved search banner when only sort filter is selected - dzmitry tratsiak
-    - Add articles (market news) screen - ole
-    - Add Filter Component to Collections Page - kizito
-    - Check push notification permissions before saving search - kizito
-    - Implement infinite scroll on android - kizito
-    - Removed native spinner component and replaced with palette spinner - gkartalis, pvinis
-    - Show a toast message for saved search mutations - dzmitry tratsiak
-    - Added "Auction lots for you" landing screen - damon
-    - Fix Aligned InfoCircleIcon - gkartalis
-    - Hide spinner when there is no more artworks to load - katsiaryna alshannikava
-    - Aligned 'Next' button in the 'Sell work' menu - katsiaryna alshannikava
-    - Fix home screen articles rail spacing - ole
     - Fix unfollowing categories - katsiaryna alshannikava
-    - Decrease web view scroll deceleration rate - ole
-    - Show price with currency prefix in auction result list - ole
-    - Add auction house filter for auction results - ole
     - Remove "Enable push notification" guard for disabling saved search - dzmitry tratsiak
+    - Fix locations menu redirection - katsiaryna alshannikava
+    - Implement share button for articles - katsiaryna alshannikava, mounir
+    - Connect auction results for you to metaphysics endpoint - yauheni
+    - Fix opening artist page after passing new onboarding on ios - dzmitry
 
 releases:
+  - version: 6.9.5
+  - date: June 24, 2021
+  - dev:
+      - Add facebook authentication - dzmitry
+      - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
+      - Update open simulator command in getting started docs - ole
+      - Update debugging docs - mounir
+      - Send data in the filter params format for saved search - dzmitry tratsiak
+      - Enables external flag for order history - sweir
+      - Prepare search criteria values to filter params - dzmitry tratsiak
+  - user_facing:
+      - Fixed "Unable to load" error on OrderHistory page when artwork is deleted/unpublished from order
+      - Pick up should be displayed in Sold by section - Serge0n
+      - Country should be written with full name - Serge0n
+      - Name from shipping address should be displayed instead of account name - Serge0n
+      - User can see the way of delivery - Serge0n
+      - OrderDetails with SoldBy section - alexj105
+      - OrderDetails with headInfo - alexj105
+      - OrderDetails with ArtInfo and ShipsTo - alexj105
+      - fix inaccurate validators for artwork submission - yauheni
+      - Check saved search when the user applied the filter - dzmitry tratsiak
+      - Don't close filter artwork modal when "clear all" tapped - dzmitry tratsiak
+      - Continue to show the offer approved banner in an inquiry offer conversation after fulfillment - erikdstock
+      - Add link to Conditions of Sale in sign up - dzmitry
+      - Add saved search banner update banner state automatically on save/filter actions - kizito
+      - Show visual feedback when the "Sort & Filter" button is pressed - dzmitry tratsiak
+      - Don't show saved search banner when only sort filter is selected - dzmitry tratsiak
+      - Add articles (market news) screen - ole
+      - Add Filter Component to Collections Page - kizito
+      - Check push notification permissions before saving search - kizito
+      - Implement infinite scroll on android - kizito
+      - Removed native spinner component and replaced with palette spinner - gkartalis, pvinis
+      - Show a toast message for saved search mutations - dzmitry tratsiak
+      - Added "Auction lots for you" landing screen - damon
+      - Fix Aligned InfoCircleIcon - gkartalis
+      - Hide spinner when there is no more artworks to load - katsiaryna alshannikava
+      - Aligned 'Next' button in the 'Sell work' menu - katsiaryna alshannikava
+      - Fix home screen articles rail spacing - ole
+      - Decrease web view scroll deceleration rate - ole
+      - Show price with currency prefix in auction result list - ole
+      - Add auction house filter for auction results - ole
+
   - version: 6.9.4
   - date: June 10, 2021
   - dev:

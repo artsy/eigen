@@ -9,7 +9,7 @@ import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ARTIST_SERIES_PAGE_SIZE } from "lib/data/constants"
 import { Schema } from "lib/utils/track"
-import { Box, Separator, Spacer } from "palette"
+import { Box, Spacer } from "palette"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -23,6 +23,7 @@ const PAGE_SIZE = 20
 
 export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ artistSeries, relay }) => {
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
+  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((state) => state.setFiltersCountAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
 
@@ -30,6 +31,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
   const filterParams = filterArtworksParams(appliedFilters)
 
   const artworks = artistSeries?.artistSeriesArtworks!
+  const artworksTotal = artworks?.counts?.total ?? 0
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
@@ -60,18 +62,23 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
     setAggregationsAction(artworks?.aggregations)
   }, [])
 
-  if ((artworks?.counts?.total ?? 0) === 0) {
+  useEffect(() => {
+    setFiltersCountAction({
+      total: artworksTotal,
+      followedArtists: null,
+    })
+  }, [artworksTotal])
+
+  if (artworksTotal === 0) {
     return (
       <Box>
-        <Separator mb={2} />
         <FilteredArtworkGridZeroState id={artistSeries.internalID} slug={artistSeries.slug} trackClear={trackClear} />
-        <Spacer mb={1} />
+        <Spacer mb={2} />
       </Box>
     )
   } else {
     return (
       <Box>
-        <Separator mb={2} />
         <InfiniteScrollArtworksGridContainer
           connection={artworks}
           loadMore={relay.loadMore}

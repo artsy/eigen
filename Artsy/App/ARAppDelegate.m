@@ -4,6 +4,7 @@
 #import <AFOAuth1Client/AFOAuth1Client.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <SailthruMobile/SailthruMobile.h>
+#import "Appboy-iOS-SDK/AppboyKit.h"
 
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
@@ -178,6 +179,16 @@ static ARAppDelegate *_sharedInstance = nil;
 #endif
 
     [self setupForAppLaunch];
+
+    NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];
+
+    if (ARAppStatus.isBetaOrDev) {
+        brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_STAGING_APP_KEY_IOS"];
+    }
+
+    [Appboy startWithApiKey:brazeAppKey
+      inApplication:application
+      withLaunchOptions:launchOptions];
 
     FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
     [fbAppDelegate application:application didFinishLaunchingWithOptions:launchOptions];

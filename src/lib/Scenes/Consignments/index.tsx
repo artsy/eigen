@@ -52,6 +52,9 @@ export interface ConsignmentSetup {
     size?: string
     number?: string
   }
+  utmMedium?: string
+  utmSource?: string
+  utmTerm?: string
   signed?: boolean
   certificateOfAuth?: boolean
   location?: {

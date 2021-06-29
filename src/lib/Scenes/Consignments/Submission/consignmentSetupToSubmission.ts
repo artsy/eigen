@@ -33,6 +33,9 @@ export const consignmentSetupToMutationInput = (submission: ConsignmentSetup) =>
       title: submission.metadata && submission.metadata.title,
       width: submission.metadata && submission.metadata.width,
       year: submission.metadata && submission.metadata.year,
+      utmSource: submission.utmSource,
+      utmTerm: submission.utmTerm,
+      utmMedium: submission.utmMedium,
     },
     isNil
   ) as CreateSubmissionMutationInput & UpdateSubmissionMutationInput
