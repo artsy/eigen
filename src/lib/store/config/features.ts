@@ -103,7 +103,14 @@ export const features = defineFeatures({
   AREnableSavedSearch: {
     readyForRelease: false,
     description: "Enable Saved Search",
-    showInAdminMenu: true,
+    ...Platform.select({
+      android: {
+        showInAdminMenu: true,
+      },
+      ios: {
+        echoFlagKey: "AREnableSavedSearch",
+      },
+    }),
   },
 })
 
