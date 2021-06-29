@@ -88,7 +88,7 @@ describe(errorMiddleware, () => {
         }
       })
 
-      it.only("passes through when the optionalField is involved in the errors", async () => {
+      it("passes through when the optionalField is involved in the errors", async () => {
         // @ts-ignore
         const relayResponse: RelayNetworkLayerResponse = {
           json: {
