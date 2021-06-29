@@ -795,11 +795,8 @@ SPEC REPOS:
     - AFNetworkActivityLogger
     - AFNetworking
     - Analytics
-<<<<<<< HEAD
     - AppAuth
-=======
     - Appboy-iOS-SDK
->>>>>>> master
     - ARAnalytics
     - boost-for-react-native
     - CocoaAsyncSocket
@@ -1031,11 +1028,8 @@ SPEC CHECKSUMS:
   AFNetworking: 8dd5f9b9691e09186393069a12cc3b5ed7c8b511
   AFOAuth1Client: 155a6237e57987cac18dac2ccd17cea5d324ad1a
   Analytics: 6541ce337e99d9f7a2240a8b3953940a7be5f998
-<<<<<<< HEAD
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
-=======
   Appboy-iOS-SDK: 720819acf77bcb7bdad658d26c064278a39639d9
->>>>>>> master
   ARAnalytics: 896e530551168721fbb8852e044b8afb9baffdde
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   "Artsy+UIColors": 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
@@ -1171,10 +1165,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-<<<<<<< HEAD
 PODFILE CHECKSUM: 250b6bc3562b7eae4a91acda7fda992c5ec520f3
-=======
-PODFILE CHECKSUM: 6763ebad1d0a5a3043dda7f2e4cd983b8bdc5535
->>>>>>> master
 
 COCOAPODS: 1.10.1
