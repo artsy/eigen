@@ -101,9 +101,7 @@ NSString *const ARAnalyticsAuctionHowBiddingWorks = @"How bidding works";
 NSInteger const ARNavButtonNotificationsTag = (NSInteger)&ARNavButtonNotificationsTag;
 
 NSString *const ARAnalyticsAuctionBidButtonTapped = @"Tapped Register To Bid";
-NSString *const ARAnalyticsArtworksRefineTapped = @"Tapped Artworks Refine";
 NSString *const ARAnalyticsAuctionContactTapped = @"Tapped Auction Contact";
 NSString *const ARAnalyticsAuctionBuyersPremiumTapped = @"Tapped Auction Show Buyers Premium";
-NSString *const ARAnalyticsTappedApplyRefine = @"Tapped Apply Refine";
 
 NSString *const ARAnalyticsGraphQLResponseError = @"GraphQL Response Error";
