@@ -45,7 +45,11 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    // Following line is required to prevent a crash
+    // See HACKS.md for more context
+    // https://github.com/software-mansion/react-native-screens/issues/17
     super.onCreate(null);
+
     if (!isTablet()) {
       // prevent screen rotation on phones
       setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
