@@ -2,6 +2,7 @@ import { GeneArtworks_gene } from "__generated__/GeneArtworks_gene.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { filterArtworksParams, prepareFilterArtworksParamsForInput } from 'lib/Components/ArtworkFilter/ArtworkFilterHelpers'
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { FilteredArtworkGridZeroState } from 'lib/Components/ArtworkGrids/FilteredArtworkGridZeroState'
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from 'lib/data/constants'
@@ -68,14 +69,27 @@ export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
     )
   }, [openFilterModal])
 
-  // TODO: Show message for empty artworks
-  return (
-    <InfiniteScrollArtworksGrid
-      connection={gene.artworks!}
-      hasMore={props.relay.hasMore}
-      loadMore={props.relay.loadMore}
-    />
-  )
+  if (gene.artworks) {
+    const artworksCount = gene.artworks.edges?.length
+
+    if (artworksCount === 0) {
+      return (
+        <Box mb="80px" pt={1}>
+          <FilteredArtworkGridZeroState id={gene.id} slug={gene.slug} trackClear={() => {}} />
+        </Box>
+      )
+    }
+
+    return (
+      <InfiniteScrollArtworksGrid
+        connection={gene.artworks!}
+        hasMore={props.relay.hasMore}
+        loadMore={props.relay.loadMore}
+      />
+    )
+  }
+
+  return null
 }
 
 const GeneArtworsContainer: React.FC<GeneArtworksContainerProps> = (props) => {
