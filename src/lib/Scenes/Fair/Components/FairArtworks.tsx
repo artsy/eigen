@@ -34,12 +34,16 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
   followedArtistCount,
 }) => {
   const artworks = fair.fairArtworks!
+  const artworksTotal = artworks?.counts?.total ?? 0
+
   const tracking = useTracking()
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
+  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((state) => state.setFiltersCountAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+  const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
 
   const filterParams = filterArtworksParams(appliedFilters)
 
@@ -82,9 +86,13 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
     setAggregationsAction(dispatchAggregations)
   }, [])
 
+  useEffect(() => {
+    setFiltersCountAction({ ...counts, total: artworksTotal })
+  }, [artworksTotal])
+
   const screenWidth = useScreenDimensions().width
 
-  if ((artworks?.counts?.total ?? 0) === 0) {
+  if (artworksTotal === 0) {
     return (
       <Box mb="80px">
         <FilteredArtworkGridZeroState id={fair.internalID} slug={fair.slug} trackClear={trackClear} />

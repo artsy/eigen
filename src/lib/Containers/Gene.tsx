@@ -10,7 +10,7 @@ import { Schema, Track, track as _track } from "lib/utils/track"
 import * as _ from "lodash"
 import { Box, Button, Sans } from "palette"
 import React from "react"
-import { Dimensions, StyleSheet, View, ViewProps, ViewStyle } from "react-native"
+import { Dimensions, Platform, StyleSheet, View, ViewProps, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "../Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import About from "../Components/Gene/About"
@@ -163,7 +163,7 @@ export class Gene extends React.Component<Props, State> {
             medium: newSettings.medium,
             priceRange: newSettings.selectedPrice,
             sort: newSettings.sort,
-          }
+          },
         })
       }
     })
@@ -183,9 +183,11 @@ export class Gene extends React.Component<Props, State> {
           <Sans size="3t" color="black60" maxWidth={maxLabelWidth} marginTop="2px">
             {this.artworkQuerySummaryString()}
           </Sans>
-          <Button variant="secondaryOutline" onPress={() => this.refineTapped()} size="small">
-            Refine
-          </Button>
+          {Platform.OS === "ios" && (
+            <Button variant="secondaryOutline" onPress={() => this.refineTapped()} size="small">
+              Refine
+            </Button>
+          )}
         </View>
         <Separator style={{ backgroundColor: separatorColor }} />
       </Box>
@@ -325,8 +327,8 @@ export const GeneFragmentContainer = createPaginationContainer(
         artworks: filterArtworksConnection(
           first: $count
           after: $cursor
-          aggregations: [MEDIUM, PRICE_RANGE, TOTAL],
-          forSale: true,
+          aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
+          forSale: true
           input: $input
         ) @connection(key: "Gene_artworks") {
           counts {
@@ -364,16 +366,10 @@ export const GeneFragmentContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query GenePaginationQuery(
-        $id: ID!
-        $count: Int!
-        $cursor: String
-        $input: FilterArtworksInput
-      ) {
+      query GenePaginationQuery($id: ID!, $count: Int!, $cursor: String, $input: FilterArtworksInput) {
         node(id: $id) {
           ... on Gene {
-            ...Gene_gene
-              @arguments(count: $count, cursor: $cursor, input: $input)
+            ...Gene_gene @arguments(count: $count, cursor: $cursor, input: $input)
           }
         }
       }

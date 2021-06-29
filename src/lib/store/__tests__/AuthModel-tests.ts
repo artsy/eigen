@@ -254,6 +254,18 @@ describe("AuthModel", () => {
       expect(result).toBe("Please allow the use of email to continue.")
     })
 
+    it("throws an error if user don't have an email", async () => {
+      ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
+        callback(undefined, { name: "name from facebook" })
+      })
+
+      const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp" }).catch((e) => e)
+
+      expect(result).toBe(
+        "We can’t find an email associated with your Facebook account. Please sign up with your email and password."
+      )
+    })
+
     it("fetches access token from facebook", async () => {
       GlobalStore.actions.auth.signUp = jest.fn(() => true) as any
 

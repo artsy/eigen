@@ -39,6 +39,7 @@ export const StyledWebView: React.FC<{ body: string }> = ({ body }) => {
         const msg = decodeURIComponent(decodeURIComponent(e.nativeEvent.data))
         setWebViewHeight(parseInt(msg, 10))
       }}
+      decelerationRate="normal"
       onShouldStartLoadWithRequest={(e) => {
         if (e.navigationType === "click") {
           Linking.openURL(e.url)

@@ -192,6 +192,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         cursor: { type: "String" }
         earliestCreatedYear: { type: "Int", defaultValue: 1000 }
         latestCreatedYear: { type: "Int", defaultValue: 2050 }
+        organizations: { type: "[String]" }
         sizes: { type: "[ArtworkSizes]" }
         sort: { type: "AuctionResultSorts", defaultValue: DATE_DESC }
       ) {
@@ -206,6 +207,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
           earliestCreatedYear: $earliestCreatedYear
           first: $count
           latestCreatedYear: $latestCreatedYear
+          organizations: $organizations
           sizes: $sizes
           sort: $sort
         ) @connection(key: "artist_auctionResultsConnection") {
@@ -245,6 +247,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         $cursor: String
         $earliestCreatedYear: Int
         $latestCreatedYear: Int
+        $organizations: [String]
         $sizes: [ArtworkSizes]
         $sort: AuctionResultSorts
       ) {
@@ -257,6 +260,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
               cursor: $cursor
               earliestCreatedYear: $earliestCreatedYear
               latestCreatedYear: $latestCreatedYear
+              organizations: $organizations
               sizes: $sizes
               sort: $sort
             )

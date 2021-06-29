@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 52ecae885b0a9f2d97a4b6f1d86deb57 */
+/* @relayHash a1fe75eff9db67de872c5615e40eebb8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -15,6 +15,7 @@ export type ArtistInsightsAuctionResultsQueryVariables = {
     cursor?: string | null;
     earliestCreatedYear?: number | null;
     latestCreatedYear?: number | null;
+    organizations?: Array<string | null> | null;
     sizes?: Array<ArtworkSizes | null> | null;
     sort?: AuctionResultSorts | null;
 };
@@ -39,21 +40,22 @@ query ArtistInsightsAuctionResultsQuery(
   $cursor: String
   $earliestCreatedYear: Int
   $latestCreatedYear: Int
+  $organizations: [String]
   $sizes: [ArtworkSizes]
   $sort: AuctionResultSorts
 ) {
   artist(id: $artistID) {
-    ...ArtistInsightsAuctionResults_artist_4szhbQ
+    ...ArtistInsightsAuctionResults_artist_vnGvB
     id
   }
 }
 
-fragment ArtistInsightsAuctionResults_artist_4szhbQ on Artist {
+fragment ArtistInsightsAuctionResults_artist_vnGvB on Artist {
   birthday
   slug
   id
   internalID
-  auctionResultsConnection(after: $cursor, allowEmptyCreatedDates: $allowEmptyCreatedDates, categories: $categories, earliestCreatedYear: $earliestCreatedYear, first: $count, latestCreatedYear: $latestCreatedYear, sizes: $sizes, sort: $sort) {
+  auctionResultsConnection(after: $cursor, allowEmptyCreatedDates: $allowEmptyCreatedDates, categories: $categories, earliestCreatedYear: $earliestCreatedYear, first: $count, latestCreatedYear: $latestCreatedYear, organizations: $organizations, sizes: $sizes, sort: $sort) {
     createdYearRange {
       startAt
       endAt
@@ -80,6 +82,11 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
   dateText
   id
   internalID
+  artist {
+    name
+    slug
+    id
+  }
   images {
     thumbnail {
       url(version: "square140")
@@ -146,6 +153,11 @@ var v0 = [
   {
     "defaultValue": null,
     "kind": "LocalArgument",
+    "name": "organizations"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
     "name": "sizes"
   },
   {
@@ -183,29 +195,41 @@ v5 = {
 },
 v6 = {
   "kind": "Variable",
+  "name": "organizations",
+  "variableName": "organizations"
+},
+v7 = {
+  "kind": "Variable",
   "name": "sizes",
   "variableName": "sizes"
 },
-v7 = {
+v8 = {
   "kind": "Variable",
   "name": "sort",
   "variableName": "sort"
 },
-v8 = {
+v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "slug",
+  "storageKey": null
+},
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v9 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
   "storageKey": null
 },
-v10 = [
+v12 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -221,7 +245,8 @@ v10 = [
   },
   (v5/*: any*/),
   (v6/*: any*/),
-  (v7/*: any*/)
+  (v7/*: any*/),
+  (v8/*: any*/)
 ];
 return {
   "fragment": {
@@ -255,7 +280,8 @@ return {
               (v4/*: any*/),
               (v5/*: any*/),
               (v6/*: any*/),
-              (v7/*: any*/)
+              (v7/*: any*/),
+              (v8/*: any*/)
             ],
             "kind": "FragmentSpread",
             "name": "ArtistInsightsAuctionResults_artist"
@@ -288,18 +314,12 @@ return {
             "name": "birthday",
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "slug",
-            "storageKey": null
-          },
-          (v8/*: any*/),
           (v9/*: any*/),
+          (v10/*: any*/),
+          (v11/*: any*/),
           {
             "alias": null,
-            "args": (v10/*: any*/),
+            "args": (v12/*: any*/),
             "concreteType": "AuctionResultConnection",
             "kind": "LinkedField",
             "name": "auctionResultsConnection",
@@ -353,8 +373,8 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v8/*: any*/),
-                      (v9/*: any*/),
+                      (v10/*: any*/),
+                      (v11/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -367,6 +387,26 @@ return {
                         "args": null,
                         "kind": "ScalarField",
                         "name": "dateText",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "artist",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "name",
+                            "storageKey": null
+                          },
+                          (v9/*: any*/),
+                          (v10/*: any*/)
+                        ],
                         "storageKey": null
                       },
                       {
@@ -571,12 +611,13 @@ return {
           },
           {
             "alias": null,
-            "args": (v10/*: any*/),
+            "args": (v12/*: any*/),
             "filters": [
               "allowEmptyCreatedDates",
               "categories",
               "earliestCreatedYear",
               "latestCreatedYear",
+              "organizations",
               "sizes",
               "sort"
             ],
@@ -591,7 +632,7 @@ return {
     ]
   },
   "params": {
-    "id": "52ecae885b0a9f2d97a4b6f1d86deb57",
+    "id": "a1fe75eff9db67de872c5615e40eebb8",
     "metadata": {},
     "name": "ArtistInsightsAuctionResultsQuery",
     "operationKind": "query",
@@ -599,5 +640,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'd16fe0589c28aa3d0aee5dfb80a7a475';
+(node as any).hash = '54c8de687ee3cc658b9844d452dbf53f';
 export default node;

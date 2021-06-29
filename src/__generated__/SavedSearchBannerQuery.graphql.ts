@@ -10,22 +10,18 @@ export type SearchCriteriaAttributes = {
     additionalGeneIDs?: Array<string> | null;
     artistID?: string | null;
     atAuction?: boolean | null;
-    attributionClasses?: Array<string> | null;
+    attributionClass?: Array<string> | null;
     colors?: Array<string> | null;
-    dimensionScoreMax?: number | null;
-    dimensionScoreMin?: number | null;
-    heightMax?: number | null;
-    heightMin?: number | null;
+    dimensionRange?: string | null;
+    height?: string | null;
     inquireableOnly?: boolean | null;
     locationCities?: Array<string> | null;
     majorPeriods?: Array<string> | null;
     materialsTerms?: Array<string> | null;
     offerable?: boolean | null;
     partnerIDs?: Array<string> | null;
-    priceMax?: number | null;
-    priceMin?: number | null;
-    widthMax?: number | null;
-    widthMin?: number | null;
+    priceRange?: string | null;
+    width?: string | null;
 };
 export type SavedSearchBannerQueryVariables = {
     criteria: SearchCriteriaAttributes;

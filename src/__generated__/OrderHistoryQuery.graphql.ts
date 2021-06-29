@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2c8aaef022af5fa13dff33170a658669 */
+/* @relayHash 247798c46bd4e7caa89d17a6d82679c4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,7 +25,7 @@ export type OrderHistoryQuery = {
 query OrderHistoryQuery(
   $count: Int!
 ) {
-  me {
+  me @principalField {
     name
     ...OrderHistory_me_yu5n1
     id
@@ -477,7 +477,7 @@ return {
     ]
   },
   "params": {
-    "id": "2c8aaef022af5fa13dff33170a658669",
+    "id": "247798c46bd4e7caa89d17a6d82679c4",
     "metadata": {},
     "name": "OrderHistoryQuery",
     "operationKind": "query",
@@ -485,5 +485,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'bffedd857934d9f67d742fd5b4abacbc';
+(node as any).hash = 'e2f836c580e646eb40658acc6a40d135';
 export default node;

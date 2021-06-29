@@ -1,5 +1,5 @@
 import { ShowTestsQuery } from "__generated__/ShowTestsQuery.graphql"
-import { AnimatedArtworkFilterButton } from "lib/Components/ArtworkFilter"
+import { HeaderArtworksFilterWithTotalArtworks } from "lib/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -91,19 +91,11 @@ describe("Show", () => {
 
   it("renders the context card", () => {
     const wrapper = getWrapper()
-
     expect(wrapper.root.findAllByType(ShowContextCard)).toHaveLength(1)
   })
 
-  it("does not render the sort/filter control if there are no eligible artworks", () => {
-    const wrapper = getWrapper({
-      Show: () => ({
-        counts: {
-          eligibleArtworks: 0,
-        },
-      }),
-    })
-
-    expect(wrapper.root.findByType(AnimatedArtworkFilterButton).props.isVisible).toEqual(false)
+  it("renders artworks filter header", () => {
+    const wrapper = getWrapper()
+    expect(wrapper.root.findAllByType(HeaderArtworksFilterWithTotalArtworks)).toHaveLength(1)
   })
 })

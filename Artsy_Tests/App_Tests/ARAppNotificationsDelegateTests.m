@@ -69,7 +69,7 @@ describe(@"receiveRemoteNotification", ^{
         describe(@"with stubbed top menu VC", ^{
             it(@"navigates to the url provided", ^{
                 id mock = [OCMockObject partialMockForObject:AREmission.sharedInstance];
-                [[mock expect] navigate:@"http://artsy.net/works-for-you"];
+                [[mock expect] navigate:@"http://artsy.net/works-for-you" withProps: @{}];
                 [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
                 [mock verify];

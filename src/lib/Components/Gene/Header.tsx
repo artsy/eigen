@@ -74,6 +74,7 @@ class Header extends React.Component<Props, State> {
           variables: {
             input: {
               geneID: slug,
+              unfollow: isFollowed,
             },
           },
           optimisticResponse: {

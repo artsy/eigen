@@ -22,7 +22,6 @@ interface GlobalStoreStateModel {
   }
 
   native: NativeModel
-
   bottomTabs: BottomTabsModel
   search: SearchModel
   myCollection: MyCollectionModel

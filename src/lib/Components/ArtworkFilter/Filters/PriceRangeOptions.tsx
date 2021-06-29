@@ -10,7 +10,7 @@ import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/
 import { Input } from "lib/Components/Input/Input"
 import { Flex, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { parseRange, Range } from "./helpers"
+import { parsePriceRangeLabel, parseRange, Range } from "./helpers"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface PriceRangeOptionsScreenProps
@@ -111,11 +111,8 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   }
 
   const handleCustomPriceChange = (value: Range) => {
-    const min = value.min === "*" ? "0" : `$${value.min.toLocaleString("en-US", { maximumFractionDigits: 2 })}`
-    const max = value.max === "*" ? "+" : `–${value.max.toLocaleString("en-US", { maximumFractionDigits: 2 })}`
-
     selectFiltersAction({
-      displayText: [min, max].join(""),
+      displayText: parsePriceRangeLabel(value.min, value.max),
       paramValue: `${value.min}-${value.max}`,
       paramName: PARAM_NAME,
     })

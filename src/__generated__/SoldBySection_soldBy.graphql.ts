@@ -5,6 +5,13 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SoldBySection_soldBy = {
+    readonly requestedFulfillment: ({
+        readonly __typename: "CommercePickup";
+    } | {
+        /*This will never be '%other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    }) | null;
     readonly lineItems: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -45,6 +52,31 @@ return {
   "metadata": null,
   "name": "SoldBySection_soldBy",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": null,
+      "kind": "LinkedField",
+      "name": "requestedFulfillment",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "InlineFragment",
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "__typename",
+              "storageKey": null
+            }
+          ],
+          "type": "CommercePickup",
+          "abstractKey": null
+        }
+      ],
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": (v0/*: any*/),
@@ -141,5 +173,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = '858d48a0fb09c332db0d60297af07234';
+(node as any).hash = 'b53a929fc3601d35c2e371d3bfb21b52';
 export default node;
