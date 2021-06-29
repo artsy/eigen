@@ -148,6 +148,11 @@ SOFTWARE.
             block(@[ RCTJSErrorFromNSError(error)]);
         }];
     };
+#pragma mark - Log out
+
+    emission.APIModule.userDataClearer = ^(RCTPromiseResolveBlock completion) {
+        [ARUserManager logoutWithCompletion:completion];
+    };
 
 #pragma mark - Native Module: Events/Analytics
     emission.eventsModule.eventOccurred = ^(NSDictionary *_Nonnull info) {
