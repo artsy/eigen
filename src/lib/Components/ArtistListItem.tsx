@@ -124,6 +124,7 @@ export class ArtistListItem extends React.Component<Props, State> {
         }}
         underlayColor={color("black5")}
         style={containerStyle}
+        useDefaultTouchable
       >
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
           <Flex flex={1}>
