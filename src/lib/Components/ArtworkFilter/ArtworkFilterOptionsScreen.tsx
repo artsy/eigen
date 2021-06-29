@@ -221,6 +221,11 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
         filterOptionToDisplayConfigMap.organizations,
       ]
 
+    case FilterModalMode.Category:
+      return [
+        filterOptionToDisplayConfigMap.sort,
+      ]
+
     default:
       return [
         filterOptionToDisplayConfigMap.sort,
@@ -270,6 +275,14 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
         "artistNationalities",
         "majorPeriods",
         "colors",
+      ]
+      break
+    case FilterModalMode.Category:
+      sortOrder = [
+        "sort",
+        "medium",
+        "additionalGeneIDs",
+        "priceRange",
       ]
       break
   }

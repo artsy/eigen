@@ -1,6 +1,6 @@
 import { GeneArtworks_gene } from "__generated__/GeneArtworks_gene.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
-import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { Box, Button, Flex, Sans } from "palette"
@@ -22,8 +22,15 @@ interface GeneArtworsProps extends GeneArtworksContainerProps {
 
 export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
   const { gene, openFilterModal } = props
+  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
 
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
+
+  useEffect(() => {
+    if (gene.artworks?.aggregations) {
+      setAggregationsAction(gene.artworks.aggregations)
+    }
+  }, [])
 
   useEffect(() => {
     setJSX(
@@ -108,7 +115,6 @@ export const GeneArtworksPaginationContainer = createPaginationContainer(
               count
             }
           }
-          # TODO: Just to satisfy relay-compiler
           edges {
             node {
               id
