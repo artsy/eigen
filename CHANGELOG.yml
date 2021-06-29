@@ -17,6 +17,7 @@ upcoming:
     - Implement share button for articles - katsiaryna alshannikava, mounir
     - Connect auction results for you to metaphysics endpoint - yauheni
     - Fix opening artist page after passing new onboarding on ios - dzmitry
+    - Change error handling middleware & include optionalField graphql directive to home screen - ole
 
 releases:
   - version: 6.9.5
