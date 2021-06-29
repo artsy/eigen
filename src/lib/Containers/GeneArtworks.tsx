@@ -29,6 +29,7 @@ export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
   const filterParams = filterArtworksParams(appliedFilters, 'categoryArtwork')
+  const artworksTotal = gene.artworks?.counts?.total ?? 0
 
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
@@ -58,7 +59,7 @@ export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
         <Separator style={{ backgroundColor: "white" }} />
         <Flex style={styles.refineContainer}>
           <Sans size="3t" color="black60" marginTop="2px">
-            Some example text
+            {artworksTotal} works
           </Sans>
           <Button variant="secondaryOutline" onPress={openFilterModal} size="small">
             Refine
@@ -67,12 +68,10 @@ export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
         <Separator style={{ backgroundColor: "white" }} />
       </Box>
     )
-  }, [openFilterModal])
+  }, [artworksTotal, openFilterModal])
 
   if (gene.artworks) {
-    const artworksCount = gene.artworks.edges?.length
-
-    if (artworksCount === 0) {
+    if (artworksTotal === 0) {
       return (
         <Box mb="80px" pt={1}>
           <FilteredArtworkGridZeroState id={gene.id} slug={gene.slug} trackClear={() => {}} />
