@@ -4,7 +4,6 @@ upcoming:
   dev:
     - Add apple authentication - dzmitry
     - Add google authentication - dzmitry
-    - Add facebook authentication - dzmitry
     - Add specs for deleteSavedSearch and createSavedSearch mutations - dzmitry tratsiak
     - Add toggledSavedSearch analytics tracking - devon blandin
     - Allow custom attributes from a push notification payload to be passed through to React Native scenes - devon blandin
