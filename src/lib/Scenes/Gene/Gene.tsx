@@ -74,7 +74,7 @@ export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = (props) => {
       medium,
       priceRange: price_range,
     },
-    "categoryArtwork"
+    "geneArtwork"
   ) as FilterArtworksInput
 
   return (

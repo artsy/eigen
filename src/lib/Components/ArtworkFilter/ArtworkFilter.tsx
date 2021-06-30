@@ -270,7 +270,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
                       changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
                     })
                     break
-                  case ArtworkFilterMode.Category:
+                  case ArtworkFilterMode.Gene:
                     trackChangeFilters({
                       actionType: ActionType.commercialFilterParamsChanged,
                       screenName: PageNames.GenePage,

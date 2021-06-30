@@ -1051,7 +1051,7 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
 
 describe("getParamsForInputByFilterType", () => {
   it("returns default params if nothing is passed", () => {
-    const result = getParamsForInputByFilterType({}, "categoryArtwork")
+    const result = getParamsForInputByFilterType({}, "geneArtwork")
     expect(result).toEqual({
       sort: "-partner_updated_at",
       priceRange: "*-*",
@@ -1060,7 +1060,7 @@ describe("getParamsForInputByFilterType", () => {
   })
 
   it("returns the passed and default params", () => {
-    const result = getParamsForInputByFilterType({ width: "100-200" }, "categoryArtwork")
+    const result = getParamsForInputByFilterType({ width: "100-200" }, "geneArtwork")
     expect(result).toEqual({
       sort: "-partner_updated_at",
       priceRange: "*-*",
@@ -1070,7 +1070,7 @@ describe("getParamsForInputByFilterType", () => {
   })
 
   it("should replace the default params", () => {
-    const result = getParamsForInputByFilterType({ priceRange: "100-200" }, "categoryArtwork")
+    const result = getParamsForInputByFilterType({ priceRange: "100-200" }, "geneArtwork")
     expect(result).toEqual({
       sort: "-partner_updated_at",
       priceRange: "100-200",

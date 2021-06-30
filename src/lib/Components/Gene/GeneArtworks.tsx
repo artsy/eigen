@@ -34,7 +34,7 @@ export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
-  const filterParams = filterArtworksParams(appliedFilters, "categoryArtwork")
+  const filterParams = filterArtworksParams(appliedFilters, "geneArtwork")
   const artworksTotal = gene.artworks?.counts?.total ?? 0
 
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
@@ -151,7 +151,7 @@ const GeneArtworsContainer: React.FC<GeneArtworksContainerProps> = (props) => {
           isFilterArtworksModalVisible={isFilterArtworksModalVisible}
           exitModal={handleCloseFilterArtworksModal}
           closeModal={closeFilterArtworksModal}
-          mode={FilterModalMode.Category}
+          mode={FilterModalMode.Gene}
         />
       </StickyTabPageScrollView>
     </ArtworkFiltersStoreProvider>

@@ -278,7 +278,7 @@ export const selectedOptionsUnion = ({
       paramValue: "DATE_DESC",
       displayText: "Most recent sale date",
     },
-    categoryArtwork: {
+    geneArtwork: {
       paramName: FilterParamName.sort,
       paramValue: "-partner_updated_at",
       displayText: "Default",
