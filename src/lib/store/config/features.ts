@@ -105,6 +105,11 @@ export const features = defineFeatures({
     description: "Enable Saved Search",
     showInAdminMenu: true,
   },
+  AREnableSavedAddresses: {
+    readyForRelease: false,
+    description: "Enable Saved Addresses",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

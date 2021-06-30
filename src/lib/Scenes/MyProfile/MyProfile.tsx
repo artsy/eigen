@@ -20,6 +20,7 @@ import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 
 const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const showOrderHistory = useFeatureFlag("AREnableOrderHistoryOption")
+  const showSavedAddresses = useFeatureFlag("AREnableSavedAddresses")
   const listRef = useRef<FlatList<any>>(null)
   const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
   const shouldDisplayMyCollection = me.labFeatures?.includes("My Collection")
@@ -55,6 +56,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       {!!shouldDisplayPushNotifications && (
         <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />
       )}
+      {!!showSavedAddresses && <MenuItem title="Saved Addresses" onPress={() => null} />}
       <MenuItem
         title="Send feedback"
         onPress={() => presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")}
