@@ -53,7 +53,7 @@ export default class Artist extends React.Component<Props, State> {
       environment,
       graphql`
         query ConsignmentsArtistQuery($query: String!) {
-          searchConnection(query: $query, first: 10, entities: [ARTIST], mode: AUTOSUGGEST) {
+          searchConnection(query: $query, first: 30, entities: [ARTIST], mode: AUTOSUGGEST) {
             edges {
               node {
                 ... on Artist {

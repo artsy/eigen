@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4133749d94881b83cebe8ea11a193d0a */
+/* @relayHash 4fbc263a5806b0696189efd8ee68f0fa */
 
 import { ConcreteRequest } from "relay-runtime";
 export type ConsignmentsArtistQueryVariables = {
@@ -34,7 +34,7 @@ export type ConsignmentsArtistQuery = {
 query ConsignmentsArtistQuery(
   $query: String!
 ) {
-  searchConnection(query: $query, first: 10, entities: [ARTIST], mode: AUTOSUGGEST) {
+  searchConnection(query: $query, first: 30, entities: [ARTIST], mode: AUTOSUGGEST) {
     edges {
       node {
         __typename
@@ -77,7 +77,7 @@ v1 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10
+    "value": 30
   },
   {
     "kind": "Literal",
@@ -256,7 +256,7 @@ return {
     ]
   },
   "params": {
-    "id": "4133749d94881b83cebe8ea11a193d0a",
+    "id": "4fbc263a5806b0696189efd8ee68f0fa",
     "metadata": {},
     "name": "ConsignmentsArtistQuery",
     "operationKind": "query",
@@ -264,5 +264,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'e34b821c4f20ce6a0ab7d3407680326b';
+(node as any).hash = '982b5a6307ff6fa38a3e475d5a436294';
 export default node;
