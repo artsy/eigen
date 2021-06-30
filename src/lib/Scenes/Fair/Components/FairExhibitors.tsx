@@ -64,16 +64,11 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
       })}
       <Row>
         <Col sm={6} mx="15px">
-          <Button
-            variant="secondaryGray"
-            size="large"
-            block
-            loading={isLoading}
-            onPress={handlePress}
-            disabled={!relay.hasMore()}
-          >
-            Show more
-          </Button>
+          {!!relay.hasMore() && (
+            <Button variant="secondaryGray" size="large" block loading={isLoading} onPress={handlePress}>
+              Show more
+            </Button>
+          )}
         </Col>
       </Row>
     </>
