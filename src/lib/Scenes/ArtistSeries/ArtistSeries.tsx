@@ -85,7 +85,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
             footerContent={
               artistSeriesTotalCount !== 0 ? (
                 <>
-                  <Separator mb={2} />
+                  <Separator mb={1} />
                   <Box pb={2} px={2}>
                     <ArtistSeriesMoreSeriesFragmentContainer
                       contextScreenOwnerId={artistSeries.internalID}

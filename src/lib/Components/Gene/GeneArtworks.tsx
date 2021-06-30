@@ -1,20 +1,24 @@
 import { GeneArtworks_gene } from "__generated__/GeneArtworks_gene.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
-import { filterArtworksParams, prepareFilterArtworksParamsForInput } from 'lib/Components/ArtworkFilter/ArtworkFilterHelpers'
+import {
+  filterArtworksParams,
+  prepareFilterArtworksParamsForInput,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { FilteredArtworkGridZeroState } from 'lib/Components/ArtworkGrids/FilteredArtworkGridZeroState'
+import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
+import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import Separator from "lib/Components/Separator"
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
-import { PAGE_SIZE } from 'lib/data/constants'
-import { Schema } from 'lib/utils/track'
-import { Box, Button, Flex, Sans } from "palette"
+import { PAGE_SIZE } from "lib/data/constants"
+import { Schema } from "lib/utils/track"
+import { Box, Spacer } from "palette"
 import React, { useContext, useState } from "react"
 import { useEffect } from "react"
 import { StyleSheet, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { useTracking } from 'react-tracking'
+import { useTracking } from "react-tracking"
 
 interface GeneArtworksContainerProps {
   gene: GeneArtworks_gene
@@ -31,7 +35,7 @@ export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
-  const filterParams = filterArtworksParams(appliedFilters, 'categoryArtwork')
+  const filterParams = filterArtworksParams(appliedFilters, "categoryArtwork")
   const artworksTotal = gene.artworks?.counts?.total ?? 0
 
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
@@ -69,17 +73,9 @@ export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
 
   useEffect(() => {
     setJSX(
-      <Box backgroundColor="white" px={2} paddingTop={15}>
-        <Separator style={{ backgroundColor: "white" }} />
-        <Flex style={styles.refineContainer}>
-          <Sans size="3t" color="black60" marginTop="2px">
-            {artworksTotal} works
-          </Sans>
-          <Button variant="secondaryOutline" onPress={openFilterModal} size="small">
-            Refine
-          </Button>
-        </Flex>
-        <Separator style={{ backgroundColor: "white" }} />
+      <Box backgroundColor="white">
+        <ArtworksFilterHeader count={artworksTotal} onFilterPress={openFilterModal} />
+        <Separator />
       </Box>
     )
   }, [artworksTotal, openFilterModal])
@@ -94,11 +90,14 @@ export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
     }
 
     return (
-      <InfiniteScrollArtworksGrid
-        connection={gene.artworks!}
-        hasMore={props.relay.hasMore}
-        loadMore={props.relay.loadMore}
-      />
+      <>
+        <Spacer mb={1} />
+        <InfiniteScrollArtworksGrid
+          connection={gene.artworks!}
+          hasMore={props.relay.hasMore}
+          loadMore={props.relay.loadMore}
+        />
+      </>
     )
   }
 
