@@ -10,6 +10,13 @@ You'll need [Node](https://nodejs.org/en/), [Yarn](https://yarnpkg.com/en/) and 
 
 Currently we require developers to use Xcode 12, with the latest version (12.2.0) recommended. You can find all versions of Xcode from [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
 
+<details><summary>NOTE: After installing Xcode</summary>
+  
+  Check that Command Line Tools version is added in the Locations tab. Xcode>Preferences>Locations:
+  <img width="375" alt="" src="https://user-images.githubusercontent.com/29984068/123970729-6009cf00-d987-11eb-933a-1603ba4d6ae8.png">
+
+</details>
+
 ### Setting up Android
 
 1. Android development environment:
