@@ -10,7 +10,7 @@ import { renderWithPlaceholder } from 'lib/utils/renderWithPlaceholder'
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import React from "react"
 import { Dimensions, StyleSheet, View, ViewStyle } from "react-native"
-import { graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { graphql, QueryRenderer } from "react-relay"
 
 const isPad = Dimensions.get("window").width > 700
 const commonPadding = isPad ? 40 : 20
@@ -22,10 +22,7 @@ const TABS = {
 
 interface GeneProps {
   geneID: string
-  medium: string
-  price_range: string
   gene: NonNullable<GeneQueryResponse["gene"]>
-  relay: RelayPaginationProp
 }
 
 interface GeneQueryRendererProps {
@@ -36,8 +33,6 @@ interface GeneQueryRendererProps {
 
 export const Gene: React.FC<GeneProps> = (props) => {
   const { gene, geneID } = props
-
-  console.log("[gene] geneID", geneID)
 
   const headerContent = (
     <View style={styles.header}>

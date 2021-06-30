@@ -13,7 +13,7 @@ import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/Stick
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
 import { Schema } from "lib/utils/track"
-import { Box, Spacer } from "palette"
+import { Box, Message } from "palette"
 import React, { useContext, useState } from "react"
 import { useEffect } from "react"
 import { StyleSheet, ViewStyle } from "react-native"
@@ -83,25 +83,30 @@ export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
   if (gene.artworks) {
     if (artworksTotal === 0) {
       return (
-        <Box mb="80px" pt={1}>
+        <Box pt={1}>
           <FilteredArtworkGridZeroState id={gene.id} slug={gene.slug} trackClear={trackClear} />
         </Box>
       )
     }
 
     return (
-      <>
-        <Spacer mb={1} />
+      <Box mt={1}>
         <InfiniteScrollArtworksGrid
           connection={gene.artworks!}
           hasMore={props.relay.hasMore}
           loadMore={props.relay.loadMore}
         />
-      </>
+      </Box>
     )
   }
 
-  return null
+  return (
+    <Box mt={1}>
+      <Message>
+        There aren’t any works available by the category at this time.
+      </Message>
+    </Box>
+  )
 }
 
 const GeneArtworsContainer: React.FC<GeneArtworksContainerProps> = (props) => {
