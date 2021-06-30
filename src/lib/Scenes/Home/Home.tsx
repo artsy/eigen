@@ -43,7 +43,6 @@ const Home = (props: Props) => {
   const collectionsModule = homePage.marketingCollectionsModule
   const artistModules = (homePage.artistModules && homePage.artistModules.concat()) || []
   const fairsModule = homePage.fairsModule
-  const auctionResultsModule = {} // !!! FIX TYPE
 
   const auctionResultsEchoFlag = useFeatureFlag("ARAuctionResults")
 
@@ -92,10 +91,8 @@ const Home = (props: Props) => {
         data: collectionsModule,
       } as const),
     auctionResultsEchoFlag &&
-      auctionResultsModule &&
       ({
         type: "auction-results",
-        data: auctionResultsModule,
       } as const),
     ...flatten(zip(drop(artworkRails, 2), artistRails)),
   ])
@@ -157,12 +154,7 @@ const Home = (props: Props) => {
                   return <ViewingRoomsHomeRail featured={featured} />
 
                 case "auction-results":
-                  return (
-                    <AuctionResultsRailFragmentContainer
-                      // Pass auctionResults data after implementing query
-                      scrollRef={scrollRefs.current[index]}
-                    />
-                  )
+                  return <AuctionResultsRailFragmentContainer me={me} scrollRef={scrollRefs.current[index]} />
                 case "lotsByFollowedArtists":
                   return (
                     <SaleArtworksHomeRailContainer
@@ -230,6 +222,7 @@ export const HomeFragmentContainer = createRefetchContainer(
       fragment Home_me on Me {
         ...EmailConfirmationBanner_me
         ...SaleArtworksHomeRail_me
+        ...AuctionResultsRail_me
       }
     `,
     featured: graphql`
@@ -245,9 +238,6 @@ export const HomeFragmentContainer = createRefetchContainer(
   },
   graphql`
     query HomeRefetchQuery($heroImageVersion: HomePageHeroUnitImageVersion!) {
-      articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
-        ...Home_articlesConnection
-      }
       homePage {
         ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
       }
@@ -256,6 +246,9 @@ export const HomeFragmentContainer = createRefetchContainer(
       }
       featured: viewingRooms(featured: true) {
         ...Home_featured
+      }
+      articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
+        ...Home_articlesConnection
       }
     }
   `
@@ -384,11 +377,12 @@ export const HomeQueryRenderer: React.FC = () => {
           }
           me {
             ...Home_me
+            ...AuctionResultsRail_me
           }
           featured: viewingRooms(featured: true) {
             ...Home_featured
           }
-          articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
+          articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
             ...Home_articlesConnection
           }
         }

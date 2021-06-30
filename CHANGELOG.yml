@@ -6,7 +6,11 @@ upcoming:
     - Add toggledSavedSearch analytics tracking - devon blandin
     - Allow custom attributes from a push notification payload to be passed through to React Native scenes - devon blandin
     - Add diagnose script - mounir
+    - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
+    - Update open simulator command in getting started docs - ole
+    - Fix follow artist button on ios - dzmitry
   user_facing:
+    - Prevent facebook auth for users without email - dzmitry
     - Fix unfollowing categories - katsiaryna alshannikava
     - Decrease web view scroll deceleration rate - ole
     - Show price with currency prefix in auction result list - ole
@@ -15,6 +19,10 @@ upcoming:
     - Fix locations menu redirection - katsiaryna alshannikava
     - Implement share button for articles - katsiaryna alshannikava, mounir
     - Fix overlapping of social buttons over the 'Next' button for iOS - katsiaryna alshannikava
+    - Connect auction results for you to metaphysics endpoint - yauheni
+    - Fix opening artist page after passing new onboarding on ios - dzmitry
+    - Fix crash when opening app from background on android - brian
+    - Change error handling middleware & include optionalField graphql directive to home screen - ole
 
 releases:
   - version: 6.9.5

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1092ab014c87ba6c7bf7873d84e8d06f */
+/* @relayHash 64706ed659342fff476f77245dcdf950 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -110,6 +110,11 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
   dateText
   id
   internalID
+  artist {
+    name
+    slug
+    id
+  }
   images {
     thumbnail {
       url(version: "square140")
@@ -675,6 +680,20 @@ return {
                           {
                             "alias": null,
                             "args": null,
+                            "concreteType": "Artist",
+                            "kind": "LinkedField",
+                            "name": "artist",
+                            "plural": false,
+                            "selections": [
+                              (v25/*: any*/),
+                              (v22/*: any*/),
+                              (v14/*: any*/)
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
                             "concreteType": "AuctionLotImages",
                             "kind": "LinkedField",
                             "name": "images",
@@ -1123,7 +1142,7 @@ return {
     ]
   },
   "params": {
-    "id": "1092ab014c87ba6c7bf7873d84e8d06f",
+    "id": "64706ed659342fff476f77245dcdf950",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",

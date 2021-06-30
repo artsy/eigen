@@ -51,9 +51,14 @@ describe("AuctionResults", () => {
           edges: [
             {
               node: {
+                id: "an-id",
                 currency: "USD",
                 priceRealized: {
                   display: "$one gazillion",
+                },
+                artist: {
+                  name: "artist-name",
+                  slug: "artist-slug",
                 },
               },
             },
@@ -73,6 +78,7 @@ describe("AuctionResults", () => {
           edges: [
             {
               node: {
+                id: "an-id",
                 priceRealized: {
                   display: null,
                 },
@@ -95,6 +101,7 @@ describe("AuctionResults", () => {
           edges: [
             {
               node: {
+                id: "an-id",
                 priceRealized: {
                   display: null,
                 },
@@ -118,6 +125,7 @@ describe("AuctionResults", () => {
           edges: [
             {
               node: {
+                id: "an-id",
                 saleDate: "2021-01-11T18:00:00-06:00",
               },
             },
