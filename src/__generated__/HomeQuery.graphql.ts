@@ -2,7 +2,6 @@
 /* eslint-disable */
 // @ts-nocheck
 /* @relayHash 652a641da607d79d8cabb1bf57c1e027 */
-
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type HomePageHeroUnitImageVersion = "NARROW" | "WIDE" | "%future added value";
@@ -34,15 +33,15 @@ export type HomeQuery = {
 query HomeQuery(
   $heroImageVersion: HomePageHeroUnitImageVersion
 ) {
-  homePage {
+  homePage @optionalField {
     ...Home_homePage_1IwJ0h
   }
-  me {
+  me @optionalField {
     ...Home_me
     ...AuctionResultsRail_me
     id
   }
-  featured: viewingRooms(featured: true) {
+  featured: viewingRooms(featured: true) @optionalField {
     ...Home_featured
   }
   articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
@@ -335,21 +334,21 @@ fragment Home_featured on ViewingRoomConnection {
 }
 
 fragment Home_homePage_1IwJ0h on HomePage {
-  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES], exclude: [SAVED_WORKS, GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]) {
+  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES], exclude: [SAVED_WORKS, GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]) @optionalField {
     id
     ...ArtworkRail_rail
   }
-  artistModules {
+  artistModules @optionalField {
     id
     ...ArtistRail_rail
   }
-  fairsModule {
+  fairsModule @optionalField {
     ...FairsRail_fairsModule
   }
-  salesModule {
+  salesModule @optionalField {
     ...SalesRail_salesModule
   }
-  marketingCollectionsModule {
+  marketingCollectionsModule @optionalField {
     ...CollectionsRail_collectionsModule
   }
   ...HomeHero_homePage_1IwJ0h
@@ -2051,7 +2050,11 @@ return {
     ]
   },
   "params": {
+<<<<<<< HEAD
     "id": "652a641da607d79d8cabb1bf57c1e027",
+=======
+    "id": "58410ce575f15b2561b4545f42380830",
+>>>>>>> 86452cc97 (feat: Annotate home screen queries with optionalField directive)
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
@@ -2059,5 +2062,5 @@ return {
   }
 };
 })();
-(node as any).hash = '9399c210ae8d5fb7f156898aa24c0b22';
+(node as any).hash = '66203593a20a2b859ff66f36fbcad6a8';
 export default node;

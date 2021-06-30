@@ -38,11 +38,11 @@ interface Props extends ViewProps {
 
 const Home = (props: Props) => {
   const { articlesConnection, homePage, me, featured } = props
-  const artworkModules = homePage.artworkModules || []
-  const salesModule = homePage.salesModule
-  const collectionsModule = homePage.marketingCollectionsModule
-  const artistModules = (homePage.artistModules && homePage.artistModules.concat()) || []
-  const fairsModule = homePage.fairsModule
+  const artworkModules = homePage?.artworkModules || []
+  const salesModule = homePage?.salesModule
+  const collectionsModule = homePage?.marketingCollectionsModule
+  const artistModules = (homePage?.artistModules && homePage.artistModules.concat()) || []
+  const fairsModule = homePage?.fairsModule
 
   const auctionResultsEchoFlag = useFeatureFlag("ARAuctionResults")
 
@@ -198,21 +198,21 @@ export const HomeFragmentContainer = createRefetchContainer(
           order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES]
           # LIVE_AUCTIONS and CURRENT_FAIRS both have their own modules, below.
           exclude: [SAVED_WORKS, GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]
-        ) {
+        ) @optionalField {
           id
           ...ArtworkRail_rail
         }
-        artistModules {
+        artistModules @optionalField {
           id
           ...ArtistRail_rail
         }
-        fairsModule {
+        fairsModule @optionalField {
           ...FairsRail_fairsModule
         }
-        salesModule {
+        salesModule @optionalField {
           ...SalesRail_salesModule
         }
-        marketingCollectionsModule {
+        marketingCollectionsModule @optionalField {
           ...CollectionsRail_collectionsModule
         }
         ...HomeHero_homePage @arguments(heroImageVersion: $heroImageVersion)
@@ -238,13 +238,13 @@ export const HomeFragmentContainer = createRefetchContainer(
   },
   graphql`
     query HomeRefetchQuery($heroImageVersion: HomePageHeroUnitImageVersion!) {
-      homePage {
+      homePage @optionalField {
         ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
       }
-      me {
+      me @optionalField {
         ...Home_me
       }
-      featured: viewingRooms(featured: true) {
+      featured: viewingRooms(featured: true) @optionalField {
         ...Home_featured
       }
       articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
@@ -375,14 +375,14 @@ export const HomeQueryRenderer: React.FC = () => {
       environment={defaultEnvironment}
       query={graphql`
         query HomeQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
-          homePage {
+          homePage @optionalField {
             ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
           }
-          me {
+          me @optionalField {
             ...Home_me
             ...AuctionResultsRail_me
           }
-          featured: viewingRooms(featured: true) {
+          featured: viewingRooms(featured: true) @optionalField {
             ...Home_featured
           }
           articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {

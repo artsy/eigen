@@ -34,14 +34,14 @@ export type HomeRefetchQuery = {
 query HomeRefetchQuery(
   $heroImageVersion: HomePageHeroUnitImageVersion!
 ) {
-  homePage {
+  homePage @optionalField {
     ...Home_homePage_1IwJ0h
   }
-  me {
+  me @optionalField {
     ...Home_me
     id
   }
-  featured: viewingRooms(featured: true) {
+  featured: viewingRooms(featured: true) @optionalField {
     ...Home_featured
   }
   articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
@@ -334,21 +334,21 @@ fragment Home_featured on ViewingRoomConnection {
 }
 
 fragment Home_homePage_1IwJ0h on HomePage {
-  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES], exclude: [SAVED_WORKS, GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]) {
+  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES], exclude: [SAVED_WORKS, GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]) @optionalField {
     id
     ...ArtworkRail_rail
   }
-  artistModules {
+  artistModules @optionalField {
     id
     ...ArtistRail_rail
   }
-  fairsModule {
+  fairsModule @optionalField {
     ...FairsRail_fairsModule
   }
-  salesModule {
+  salesModule @optionalField {
     ...SalesRail_salesModule
   }
-  marketingCollectionsModule {
+  marketingCollectionsModule @optionalField {
     ...CollectionsRail_collectionsModule
   }
   ...HomeHero_homePage_1IwJ0h
@@ -2045,7 +2045,11 @@ return {
     ]
   },
   "params": {
+<<<<<<< HEAD
     "id": "a19a25ef5625d47b8b19d57990161c4f",
+=======
+    "id": "09acaa4921df6a4a419c5f1c9062a258",
+>>>>>>> 86452cc97 (feat: Annotate home screen queries with optionalField directive)
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",
@@ -2053,5 +2057,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'ce3b7362bc5cf139a17e81de59c7924f';
+(node as any).hash = '037e0fe4c72156c868d4d68687983ebb';
 export default node;

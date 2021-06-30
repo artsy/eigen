@@ -45,7 +45,7 @@ const submitMutation = async (relayEnvironment: Environment) => {
 }
 
 export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
-  const [shouldDisplayBanner, toggleVisible] = useState<boolean>(me.canRequestEmailConfirmation)
+  const [shouldDisplayBanner, toggleVisible] = useState<boolean>(me?.canRequestEmailConfirmation)
   const [isLoading, setLoading] = useState<boolean>(false)
   const [confirmed, setConfirmed] = useState<boolean>(false)
   const [message, setMessage] = useState<string>("Tap here to verify your email address")

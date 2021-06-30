@@ -18,7 +18,7 @@ const useHeroDimensions = () => {
 const HomeHero: React.FC<{ homePage: HomeHero_homePage }> = ({ homePage }) => {
   const tracking = useTracking()
   const [hasLoaded, setHasLoaded] = useState(false)
-  const unit = homePage.heroUnits?.[0]
+  const unit = homePage?.heroUnits?.[0]
   if (!unit || !unit.backgroundImageURL || !unit.href) {
     return null
   }
