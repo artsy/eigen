@@ -18,6 +18,7 @@ upcoming:
     - Connect auction results for you to metaphysics endpoint - yauheni
     - Fix opening artist page after passing new onboarding on ios - dzmitry
     - Change error handling middleware & include optionalField graphql directive to home screen - ole
+    - Refresh artwork page after purchase modal dismiss - katsiaryna alshannikava
 
 releases:
   - version: 6.9.5
