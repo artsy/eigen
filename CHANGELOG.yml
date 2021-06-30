@@ -12,9 +12,6 @@ upcoming:
   user_facing:
     - Prevent facebook auth for users without email - dzmitry
     - Fix unfollowing categories - katsiaryna alshannikava
-    - Decrease web view scroll deceleration rate - ole
-    - Show price with currency prefix in auction result list - ole
-    - Add auction house filter for auction results - ole
     - Remove "Enable push notification" guard for disabling saved search - dzmitry tratsiak
     - Fix locations menu redirection - katsiaryna alshannikava
     - Implement share button for articles - katsiaryna alshannikava, mounir
