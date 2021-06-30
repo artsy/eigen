@@ -1,68 +1,88 @@
-// Stub out these views for simplicity sake
-jest.mock("lib/Components/Gene/Header", () => "Header")
-
+import { GeneTestsQuery } from '__generated__/GeneTestsQuery.graphql'
+import { ArtworkFilterOptionsScreen } from 'lib/Components/ArtworkFilter'
+import About from 'lib/Components/Gene/About'
+import { GeneArtwors } from 'lib/Components/Gene/GeneArtworks'
+import { mockEnvironmentPayload } from 'lib/tests/mockEnvironmentPayload'
+import { renderWithWrappers } from 'lib/tests/renderWithWrappers'
+import { TouchableHighlightColor } from 'palette'
+import React from "react"
+import { graphql, QueryRenderer } from 'react-relay'
+import { act } from 'react-test-renderer'
+import { useTracking } from "react-tracking"
+import { createMockEnvironment } from 'relay-test-utils'
 import { Gene } from "../Gene"
 
-const exampleProps = {
-  input: {
-    medium: "propupines",
-    priceRange: "1000-80000",
-    sort: "-desc",
-  },
-  gene: { filtered_artworks: { aggregations: [] } },
-}
+jest.unmock("react-relay")
 
-describe("state", () => {
-  it("sets up the initial state", () => {
-    const gene = new Gene({
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      gene: null,
-      medium: "glitch",
-      price_range: "*-*",
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      relay: null,
-    })
-
-    expect(gene.state).toEqual({
-      selectedTabIndex: 0,
-      showingStickyHeader: true,
-      sort: "-partner_updated_at",
-      selectedMedium: "glitch",
-      selectedPriceRange: "*-*",
-    })
-  })
-
-  it("updates from the switch change the selectedTabIndex", () => {
-    const gene = new Gene(exampleProps as any)
-    const switchEvent = { selectedTabIndex: 1 }
-
-    gene.setState = jest.fn()
-    gene.switchSelectionDidChange(1)
-
-    expect(gene.setState).lastCalledWith(switchEvent)
-  })
-})
-
-describe("handling price ranges", () => {
-  let gene: Gene
+describe("Gene", () => {
+  const trackEvent = jest.fn()
+  const geneID = "gene-id"
+  let environment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
-    gene = new Gene(exampleProps as any)
+    environment = createMockEnvironment()
+    ;(useTracking as jest.Mock).mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
   })
 
-  it("is empty when *-*", () => {
-    expect(gene.priceRangeToHumanReadableString("*-*")).toEqual("")
+  afterEach(() => {
+    trackEvent.mockClear()
   })
 
-  it("looks right when there is only a min value", () => {
-    expect(gene.priceRangeToHumanReadableString("50.00-*")).toEqual("Above $50")
+  const TestRenderer = () => {
+    return (
+      <QueryRenderer<GeneTestsQuery>
+        environment={environment}
+        query={graphql`
+          query GeneTestsQuery($geneID: String!, $input: FilterArtworksInput) @relay_test_operation {
+          gene(id: $geneID) {
+            slug
+            ...Header_gene
+            ...About_gene
+            ...GeneArtworks_gene @arguments(input: $input)
+          }
+        }
+        `}
+        render={({ props }) => {
+          if (props?.gene) {
+            return <Gene geneID={geneID} gene={props.gene} />
+          }
+
+          return null
+        }}
+        variables={{
+          geneID,
+          input: {
+            medium: "*",
+            priceRange: "*-*",
+          },
+        }}
+      />
+    )
+  }
+
+  it("renders without throwing an error", () => {
+    renderWithWrappers(<TestRenderer />)
+    mockEnvironmentPayload(environment)
   })
 
-  it("looks right when there is only a max value", () => {
-    expect(gene.priceRangeToHumanReadableString("*-100.00")).toEqual("Below $100")
+  it("returns all tabs", async () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+    mockEnvironmentPayload(environment)
+
+    expect(tree.root.findAllByType(GeneArtwors)).toHaveLength(1)
+    expect(tree.root.findAllByType(About)).toHaveLength(1)
   })
 
-  it("looks right when there is a max and mix value", () => {
-    expect(gene.priceRangeToHumanReadableString("100.00-10000.00")).toEqual("$100 - $10,000")
+  it("renders filter modal", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+    mockEnvironmentPayload(environment)
+
+    act(() => tree.root.findByType(TouchableHighlightColor).props.onPress())
+
+    expect(tree.root.findAllByType(ArtworkFilterOptionsScreen)).toHaveLength(1)
   })
 })
