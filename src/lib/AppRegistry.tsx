@@ -138,12 +138,6 @@ interface PartnerLocationsProps {
 }
 const PartnerLocations: React.FC<PartnerLocationsProps> = (props) => <PartnerLocationsQueryRenderer {...props} />
 
-interface GeneProps {
-  geneID: string
-  medium: string
-  price_range: string
-}
-
 interface InquiryProps {
   artworkID: string
 }

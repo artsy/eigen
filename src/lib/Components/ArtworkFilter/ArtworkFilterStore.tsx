@@ -278,6 +278,11 @@ export const selectedOptionsUnion = ({
       paramValue: "DATE_DESC",
       displayText: "Most recent sale date",
     },
+    categoryArtwork: {
+      paramName: FilterParamName.sort,
+      paramValue: "-partner_updated_at",
+      displayText: "Default",
+    },
   }[filterType]
 
   const defaultFilters: FilterArray = [defaultSortFilter, ...DEFAULT_FILTERS]

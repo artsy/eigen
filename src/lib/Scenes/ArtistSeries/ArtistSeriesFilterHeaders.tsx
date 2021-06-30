@@ -1,6 +1,6 @@
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworksFilterHeader } from 'lib/Components/ArtworkGrids/FilterHeader'
-import { Box, FilterIcon, Flex, Spacer, Text, TouchableHighlightColor } from "palette"
+import { Box } from "palette"
 import React from "react"
 
 interface ArtistSeriesFilterHeaderProps {
