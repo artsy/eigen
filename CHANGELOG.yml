@@ -38,6 +38,7 @@ upcoming:
     - Fix share button on BNMO Flow - ole, mounir, sam, george
     - Fix collection home rail loading spinner issue - ole
     - Refactor category screen header and filters to match other artwork grids - dzmitry tratsiak
+    - (Featured articles) Hide 'Show more' button when there is no more data to load - katsiaryna alshannikava
 
 releases:
   - version: 6.9.5
