@@ -6,6 +6,7 @@ import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
+import { navigationEvents } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
@@ -98,6 +99,11 @@ export class Artwork extends React.Component<Props, State> {
 
   componentDidMount() {
     this.markArtworkAsRecentlyViewed()
+    navigationEvents.addListener("modalDismissed", this.handleModalDismissed)
+  }
+
+  componentWillUnmount() {
+    navigationEvents.removeListener("modalDismissed", this.handleModalDismissed)
   }
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -170,6 +176,11 @@ export class Artwork extends React.Component<Props, State> {
         force: true,
       }
     )
+  }
+
+  handleModalDismissed = () => {
+    this.onRefresh()
+    return true
   }
 
   markArtworkAsRecentlyViewed = () => {
@@ -299,18 +310,22 @@ export class Artwork extends React.Component<Props, State> {
 
     return (
       <>
-        <FlatList<ArtworkPageSection>
-          keyboardShouldPersistTaps="handled"
-          data={this.sections()}
-          ItemSeparatorComponent={() => (
-            <Box mx={2} my={3}>
-              <Separator />
-            </Box>
-          )}
-          refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
-          contentContainerStyle={{ paddingBottom: 40 }}
-          renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
-        />
+        {this.state.refreshing ? (
+          <ActivityIndicator />
+        ) : (
+          <FlatList<ArtworkPageSection>
+            keyboardShouldPersistTaps="handled"
+            data={this.sections()}
+            ItemSeparatorComponent={() => (
+              <Box mx={2} my={3}>
+                <Separator />
+              </Box>
+            )}
+            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
+            contentContainerStyle={{ paddingBottom: 40 }}
+            renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
+          />
+        )}
         <QAInfo />
       </>
     )
