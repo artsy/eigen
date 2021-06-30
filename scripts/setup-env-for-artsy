@@ -4,6 +4,8 @@ set -euxo pipefail
 
 touch .env.ci
 aws s3 cp s3://artsy-citadel/dev/.env.eigen .env.shared
+aws s3 cp s3://artsy-citadel/eigen/google-services.json android/app/google-services.json
+aws s3 cp s3://artsy-citadel/eigen/GoogleService-Info.plist GoogleService-Info.plist
 
 # Get the required fonts
 ./scripts/download-fonts
