@@ -50,6 +50,7 @@ interface Props {
 
 interface State {
   refreshing: boolean
+  fetchingData: boolean
 }
 
 @screenTrack<Props>((props) => ({
@@ -66,6 +67,7 @@ interface State {
 export class Artwork extends React.Component<Props, State> {
   state = {
     refreshing: false,
+    fetchingData: false,
   }
 
   shouldRenderDetails = () => {
@@ -111,14 +113,7 @@ export class Artwork extends React.Component<Props, State> {
   componentDidUpdate(prevProps) {
     // If we are visible, but weren't, then we are re-appearing (not called on first render).
     if (this.props.isVisible && !prevProps.isVisible) {
-      this.props.relay.refetch(
-        { artistID: this.props.artworkAboveTheFold.internalID },
-        null,
-        () => {
-          this.markArtworkAsRecentlyViewed()
-        },
-        { force: true }
-      )
+      this.refetch()
     }
   }
 
@@ -179,8 +174,21 @@ export class Artwork extends React.Component<Props, State> {
     )
   }
 
+  refetch = () => {
+    this.setState({ fetchingData: true })
+    this.props.relay.refetch(
+      { artistID: this.props.artworkAboveTheFold.internalID },
+      null,
+      () => {
+        this.markArtworkAsRecentlyViewed()
+        this.setState({ fetchingData: false })
+      },
+      { force: true }
+    )
+  }
+
   handleModalDismissed = () => {
-    this.onRefresh()
+    this.refetch()
     return true
   }
 
@@ -311,7 +319,7 @@ export class Artwork extends React.Component<Props, State> {
 
     return (
       <>
-        {this.state.refreshing ? (
+        {this.state.fetchingData ? (
           <Flex style={{ flex: 1, height: "100%" }} flexDirection="row" justifyContent="center" alignItems="center">
             <Spinner />
           </Flex>
