@@ -16,7 +16,6 @@ import { Schema } from "lib/utils/track"
 import { Box, Message } from "palette"
 import React, { useContext, useState } from "react"
 import { useEffect } from "react"
-import { StyleSheet, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -223,16 +222,3 @@ export const GeneArtworksPaginationContainer = createPaginationContainer(
     `,
   }
 )
-
-interface Styles {
-  refineContainer: ViewStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  refineContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    height: 26,
-    marginBottom: 12,
-  },
-})
