@@ -2,7 +2,8 @@ import { FilterArtworksInput, GeneQuery, GeneQueryResponse } from "__generated__
 import { getParamsForInputByFilterType } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { GenePlaceholder } from 'lib/Scenes/Gene/GenePlaceholder'
+import { renderWithPlaceholder } from 'lib/utils/renderWithPlaceholder'
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import React from "react"
 import { Dimensions, StyleSheet, View, ViewStyle } from "react-native"
@@ -98,7 +99,11 @@ export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = (props) => {
         geneID,
         input,
       }}
-      render={renderWithLoadProgress(Gene, { geneID })}
+      render={renderWithPlaceholder({
+        Container: Gene,
+        renderPlaceholder: () => <GenePlaceholder />,
+        initialProps: { geneID },
+      })}
     />
   )
 }
