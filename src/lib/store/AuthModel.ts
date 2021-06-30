@@ -98,7 +98,7 @@ export interface AuthModel {
   >
   authFacebook: Thunk<AuthModel, { signInOrUp: "signIn" | "signUp" }, {}, GlobalStoreModel, Promise<true>>
   authGoogle: Thunk<AuthModel, { signInOrUp: "signIn" | "signUp" }, {}, GlobalStoreModel, Promise<true>>
-  authApple: Thunk<AuthModel, { signInOrUp: "signIn" | "signUp" }, {}, GlobalStoreModel, Promise<true>>
+  authApple: Thunk<AuthModel, undefined, {}, GlobalStoreModel, Promise<true>>
   forgotPassword: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel, Promise<boolean>>
   gravityUnauthenticatedRequest: Thunk<
     this,
@@ -493,22 +493,20 @@ export const getAuthModel = (): AuthModel => ({
       }
     })
   }),
-  authApple: thunk(async (actions, { signInOrUp }) => {
+  authApple: thunk(async (actions) => {
     return await new Promise<true>(async (resolve, reject) => {
-      const userInfo = await appleAuth.performRequest(
-        signInOrUp === "signUp"
-          ? {
-              requestedOperation: appleAuth.Operation.LOGIN,
-              requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-            }
-          : {
-              requestedOperation: appleAuth.Operation.LOGIN,
-            }
-      )
+      // we cannot have separated logic for sign in and sign up with apple, as with google or facebook,
+      // because apple returns email only on the FIRST auth attempt, so we run sign up and sign in one by one
+      let signInOrUp: "signIn" | "signUp" = "signUp"
+
+      const userInfo = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      })
 
       const idToken = userInfo.identityToken
       if (!idToken) {
-        return reject("failed to authenticate using apple sign in")
+        return reject("Failed to authenticate using apple sign in")
       }
       const appleUID = userInfo.user
 
@@ -526,7 +524,7 @@ export const getAuthModel = (): AuthModel => ({
             oauthProvider: "apple",
           }))
 
-        resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
+        resultGravitySignUp ? resolve(true) : (signInOrUp = "signIn")
       }
 
       if (signInOrUp === "signIn") {

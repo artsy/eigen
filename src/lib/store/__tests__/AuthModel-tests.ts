@@ -418,7 +418,7 @@ describe("AuthModel", () => {
         },
       })
 
-      await GlobalStore.actions.auth.authApple({ signInOrUp: "signUp" })
+      await GlobalStore.actions.auth.authApple()
 
       expect(GlobalStore.actions.auth.signUp).toHaveBeenCalledWith({
         email: "appleEmail@mail.com",
@@ -429,20 +429,12 @@ describe("AuthModel", () => {
       })
     })
 
-    it("throws an error if sign up fails", async () => {
-      GlobalStore.actions.auth.signUp = jest.fn(() => false) as any
-
-      const result = await GlobalStore.actions.auth.authApple({ signInOrUp: "signUp" }).catch((e) => e)
-
-      expect(result).toBe("Failed to sign up.")
-    })
-
     it("fetches profile info from apple and signs in", async () => {
       mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
       mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
       GlobalStore.actions.auth.signIn = jest.fn(() => true) as any
 
-      await GlobalStore.actions.auth.authApple({ signInOrUp: "signIn" })
+      await GlobalStore.actions.auth.authApple()
 
       expect(GlobalStore.actions.auth.signIn).toHaveBeenCalledWith({
         email: "emailFromArtsy@mail.com",
@@ -455,7 +447,7 @@ describe("AuthModel", () => {
     it("throws an error if getting X-ACCESS-TOKEN fails", async () => {
       mockFetchJsonOnce({ error_description: "getting X-ACCESS-TOKEN error" })
 
-      const result = await GlobalStore.actions.auth.authApple({ signInOrUp: "signIn" }).catch((e) => e)
+      const result = await GlobalStore.actions.auth.authApple().catch((e) => e)
 
       expect(result).toBe("Failed to get gravity token from gravity: getting X-ACCESS-TOKEN error")
     })
