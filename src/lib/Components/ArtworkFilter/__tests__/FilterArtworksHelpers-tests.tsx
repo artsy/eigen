@@ -5,10 +5,10 @@ import {
   filterArtworksParams,
   FilterParamName,
   FilterParams,
+  getParamsForInputByFilterType,
   prepareFilterArtworksParamsForInput,
   prepareFilterParamsForSaveSearchInput,
   selectedOption,
-  getParamsForInputByFilterType,
 } from "../ArtworkFilterHelpers"
 
 describe("changedFiltersParams helper", () => {
