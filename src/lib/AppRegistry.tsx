@@ -3,7 +3,6 @@ import { AppRegistry, LogBox, Platform, View } from "react-native"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { BidFlow } from "./Containers/BidFlow"
-import { GeneQueryRenderer } from "./Containers/Gene"
 import { InboxWrapper } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
@@ -23,6 +22,7 @@ import { CitySavedListQueryRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
+import { GeneQueryRenderer } from "./Scenes/Gene/Gene"
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 
 // Consignments / My Collection

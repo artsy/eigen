@@ -3,6 +3,8 @@ import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkF
 import { filterArtworksParams, prepareFilterArtworksParamsForInput } from 'lib/Components/ArtworkFilter/ArtworkFilterHelpers'
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from 'lib/Components/ArtworkGrids/FilteredArtworkGridZeroState'
+import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import Separator from "lib/Components/Separator"
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from 'lib/data/constants'
@@ -13,8 +15,6 @@ import { useEffect } from "react"
 import { StyleSheet, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from 'react-tracking'
-import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "../Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import Separator from "../Components/Separator"
 
 interface GeneArtworksContainerProps {
   gene: GeneArtworks_gene

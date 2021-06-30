@@ -1,5 +1,5 @@
 // Stub out these views for simplicity sake
-jest.mock("../../Components/Gene/Header", () => "Header")
+jest.mock("lib/Components/Gene/Header", () => "Header")
 
 import { Gene } from "../Gene"
 

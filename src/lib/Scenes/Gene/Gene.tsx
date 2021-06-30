@@ -1,16 +1,16 @@
 import { FilterArtworksInput, GeneQuery, GeneQueryResponse } from "__generated__/GeneQuery.graphql"
 import { getParamsForInputByFilterType } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import About from "lib/Components/Gene/About"
+import { GeneArtworksPaginationContainer } from "lib/Components/Gene/GeneArtworks"
+import { GenePlaceholder } from 'lib/Components/Gene/GenePlaceholder'
+import Header from "lib/Components/Gene/Header"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { GenePlaceholder } from 'lib/Scenes/Gene/GenePlaceholder'
 import { renderWithPlaceholder } from 'lib/utils/renderWithPlaceholder'
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import React from "react"
 import { Dimensions, StyleSheet, View, ViewStyle } from "react-native"
 import { graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import About from "../Components/Gene/About"
-import Header from "../Components/Gene/Header"
-import { GeneArtworksPaginationContainer } from "./GeneArtworks"
 
 const isPad = Dimensions.get("window").width > 700
 const commonPadding = isPad ? 40 : 20
