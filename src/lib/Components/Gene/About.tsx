@@ -16,26 +16,29 @@ interface Props {
 }
 
 const About: React.FC<Props> = ({ gene }) => {
-  const relatedArtists = () => {
-    return (gene.trending_artists || []).length ? <RelatedArtists artists={gene.trending_artists as any} /> : null
-  }
+  const artists = gene.trending_artists
+  const relatedArtists = Array.isArray(artists) && artists.length > 0 ? <RelatedArtists artists={artists} /> : null
 
   return (
-    <StickyTabPageScrollView contentContainerStyle={{ paddingTop: 15 }}>
-      <Biography gene={gene as any} />
+    <StickyTabPageScrollView contentContainerStyle={styles.contentContainer}>
+      {!!gene && <Biography gene={gene} />}
       <Separator style={styles.sectionSeparator} />
-      {relatedArtists()}
+      {relatedArtists}
     </StickyTabPageScrollView>
   )
 }
 
 interface Styles {
   sectionSeparator: ViewStyle
+  contentContainer: ViewStyle
 }
 
 const styles = StyleSheet.create<Styles>({
   sectionSeparator: {
     marginBottom: 20,
+  },
+  contentContainer: {
+    paddingTop: 15,
   },
 })
 
