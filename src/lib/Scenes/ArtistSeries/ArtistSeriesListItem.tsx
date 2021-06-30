@@ -52,12 +52,13 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
   return (
     <Touchable
       underlayColor={color("black5")}
+      style={{ marginHorizontal: -20 }}
       onPress={() => {
         trackArtworkClick()
         navigate(`/artist-series/${listItem?.node?.slug}`)
       }}
     >
-      <Flex flexDirection="row" mb={1} justifyContent="space-between">
+      <Flex px={2} my={1} flexDirection="row" justifyContent="space-between">
         <Flex flexDirection="row" justifyContent="space-between" width="100%">
           <Flex flexDirection="row">
             <OpaqueImageView
