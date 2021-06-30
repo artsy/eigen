@@ -1,8 +1,3 @@
-let mockRefineCallbackPromise = () => Promise.resolve({})
-jest.mock("../../NativeModules/triggerRefine", () => ({
-  triggerRefine: () => mockRefineCallbackPromise(),
-}))
-
 // Stub out these views for simplicity sake
 jest.mock("../../Components/Gene/Header", () => "Header")
 
@@ -45,46 +40,6 @@ describe("state", () => {
     gene.switchSelectionDidChange(1)
 
     expect(gene.setState).lastCalledWith(switchEvent)
-  })
-
-  // OK, this is a long one, but it's important.
-
-  it("updates the state with new data from Eigen", () => {
-    const gene = new Gene({
-      medium: "glitch",
-      price_range: "*-*",
-      relay: { variables: {}, refetchConnection: jest.fn() } as any,
-      gene: { artworks: { aggregations: [] } },
-    } as any)
-    gene.setState = jest.fn()
-
-    // The data we expect back from Eigen when you've hit the refine button,
-    // this is a promise that Eigen would normally resolve (via the modal)
-    mockRefineCallbackPromise = () =>
-      Promise.resolve({
-        medium: "porcupines",
-        selectedPrice: "1000-80000",
-        sort: "-desc",
-      })
-
-    // Then when the gene has been tapped, it returns the refine data above
-    return gene.refineTapped().then(() => {
-      // This should trigger new state inside the component
-      expect(gene.setState).lastCalledWith({
-        selectedMedium: "porcupines",
-        selectedPriceRange: "1000-80000",
-        sort: "-desc",
-      })
-
-      // As well as trigger new state for Relay ( triggering a new call to metaphysics )
-      expect(gene.props.relay.refetchConnection).lastCalledWith(10, undefined, {
-        input: {
-          medium: "porcupines",
-          priceRange: "1000-80000",
-          sort: "-desc",
-        }
-      })
-    })
   })
 })
 
