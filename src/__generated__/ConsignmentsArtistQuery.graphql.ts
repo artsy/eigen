@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e18496bd98d305563035ca1ece9d4d22 */
+/* @relayHash 4133749d94881b83cebe8ea11a193d0a */
 
 import { ConcreteRequest } from "relay-runtime";
 export type ConsignmentsArtistQueryVariables = {
@@ -15,6 +15,9 @@ export type ConsignmentsArtistQueryResponse = {
                 readonly name?: string | null;
                 readonly image?: {
                     readonly url: string | null;
+                } | null;
+                readonly targetSupply?: {
+                    readonly isTargetSupply: boolean | null;
                 } | null;
             } | null;
         } | null> | null;
@@ -40,6 +43,9 @@ query ConsignmentsArtistQuery(
           name
           image {
             url
+          }
+          targetSupply {
+            isTargetSupply
           }
         }
         ... on Node {
@@ -114,6 +120,24 @@ v2 = {
           "args": null,
           "kind": "ScalarField",
           "name": "url",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "ArtistTargetSupply",
+      "kind": "LinkedField",
+      "name": "targetSupply",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "isTargetSupply",
           "storageKey": null
         }
       ],
@@ -232,7 +256,7 @@ return {
     ]
   },
   "params": {
-    "id": "e18496bd98d305563035ca1ece9d4d22",
+    "id": "4133749d94881b83cebe8ea11a193d0a",
     "metadata": {},
     "name": "ConsignmentsArtistQuery",
     "operationKind": "query",
@@ -240,5 +264,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'fb8f61fe5f1f1428024aab1c717e899c';
+(node as any).hash = 'e34b821c4f20ce6a0ab7d3407680326b';
 export default node;

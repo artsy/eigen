@@ -38,8 +38,7 @@ export default class Artist extends React.Component<Props, State> {
   }
 
   artistSelected = (result: ArtistResult) => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.updateWithArtist(result)
+    this.props.updateWithArtist?.(result)
     this.props.navigator.pop()
   }
 
@@ -63,6 +62,9 @@ export default class Artist extends React.Component<Props, State> {
                   image {
                     url
                   }
+                  targetSupply {
+                    isTargetSupply
+                  }
                 }
               }
             }
@@ -75,6 +77,11 @@ export default class Artist extends React.Component<Props, State> {
     const results = extractNodes(data.searchConnection) as ArtistResult[]
     this.setState({ results, searching: false })
   }, 1000)
+
+  filteredResults = () => {
+    // filter for artists that are marked as target supply
+    return this.state.results?.filter((artist) => artist.targetSupply?.isTargetSupply) || null
+  }
 
   render() {
     const isPad = Dimensions.get("window").width > 700
@@ -92,9 +99,8 @@ export default class Artist extends React.Component<Props, State> {
               marginRight: 20,
             }}
           >
-            <SearchResults<ArtistResult>
-              results={this.state.results}
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            <SearchResults
+              results={this.filteredResults()}
               query={this.state.query}
               placeholder="Artist/Designer Name"
               noResultsMessage="Unfortunately we are not accepting consignments for works by"

@@ -19,6 +19,7 @@ upcoming:
     - Fix opening artist page after passing new onboarding on ios - dzmitry
     - Fix crash when opening app from background on android - brian
     - Change error handling middleware & include optionalField graphql directive to home screen - ole
+    - Permit users to submit consignments for non target supply artists - ole
 
 releases:
   - version: 6.9.5
