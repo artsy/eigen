@@ -431,9 +431,6 @@ export const getAuthModel = (): AuthModel => ({
     })
   }),
   authGoogle: thunk(async (actions, { signInOrUp }) => {
-    GoogleSignin.configure({
-      webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
-    })
     return await new Promise<true>(async (resolve, reject) => {
       if (!(await GoogleSignin.hasPlayServices())) {
         reject("Play services are not available.")

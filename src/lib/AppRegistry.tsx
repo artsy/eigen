@@ -68,6 +68,7 @@ import { Search } from "./Scenes/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
+import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
@@ -398,6 +399,9 @@ for (const moduleName of Object.keys(modules)) {
 }
 
 const Main: React.FC<{}> = track()(({}) => {
+  GoogleSignin.configure({
+    webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
+  })
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.native.sessionState.userID)
   const onboardingState = GlobalStore.useAppState((state) => state.native.sessionState.onboardingState)
