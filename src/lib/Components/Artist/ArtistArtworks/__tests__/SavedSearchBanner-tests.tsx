@@ -65,6 +65,7 @@ describe("SavedSearchBanner", () => {
             loading={props === null}
             attributes={attributes}
             artistId="banksy"
+            slug="some-slug"
           />
         )}
         variables={{
@@ -163,7 +164,12 @@ describe("SavedSearchBanner", () => {
       message: "We will send you a push notification once new works are added.",
     }
 
-    const analyticsPayload = tracks.toggleSavedSearch(true, "banksy", '<mock-value-for-field-"internalID">')
+    const analyticsPayload = tracks.toggleSavedSearch(
+      true,
+      "banksy",
+      "some-slug",
+      '<mock-value-for-field-"internalID">'
+    )
     checkLogicForMutations(mockResolvers, mutation, popover, analyticsPayload)
   })
 
@@ -189,7 +195,12 @@ describe("SavedSearchBanner", () => {
       message: "Don't worry, you can always create a new one.",
     }
 
-    const analyticsPayload = tracks.toggleSavedSearch(false, "banksy", '<mock-value-for-field-"internalID">')
+    const analyticsPayload = tracks.toggleSavedSearch(
+      false,
+      "banksy",
+      "some-slug",
+      '<mock-value-for-field-"internalID">'
+    )
     checkLogicForMutations(mockResolvers, mutation, popover, analyticsPayload)
   })
 })
