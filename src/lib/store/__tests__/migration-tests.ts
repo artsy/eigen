@@ -1,4 +1,5 @@
 import _ from "lodash"
+import { Platform } from "react-native"
 import { __globalStoreTestUtils__ } from "../GlobalStore"
 import { CURRENT_APP_VERSION, migrate, Versions } from "../migration"
 import { sanitize } from "../persistence"
@@ -204,7 +205,7 @@ describe("App version Versions.RefactorConfigModel", () => {
 
 describe("App version Versions.AddUserIsDev", () => {
   const migrationToTest = Versions.AddUserIsDev
-  it("adds userIsDev", () => {
+  it("adds userEmail and userIsDev", () => {
     const previousState = migrate({
       state: { version: 0 },
       toVersion: migrationToTest - 1,
@@ -215,6 +216,7 @@ describe("App version Versions.AddUserIsDev", () => {
       toVersion: migrationToTest,
     }) as any
 
+    expect(migratedState.auth.androidUserEmail).toEqual(null)
     expect(migratedState.config.userIsDev.flipValue).toEqual(false)
   })
 })
@@ -222,6 +224,42 @@ describe("App version Versions.AddUserIsDev", () => {
 describe("App version Versions.AddAuthOnboardingState", () => {
   const migrationToTest = Versions.AddAuthOnboardingState
   it("adds onboardingState to auth model", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.auth.onboardingState).toEqual("none")
+  })
+})
+
+describe("App version Versions.RenameUserEmail", () => {
+  const migrationToTest = Versions.RenameUserEmail
+  it("moves androidUserEmail to userEmail for android", () => {
+    Platform.OS = "android"
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    previousState.auth.androidUserEmail = "user@android.com"
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.auth.androidUserEmail).toEqual(undefined)
+    expect(migratedState.auth.userEmail).toEqual("user@android.com")
+  })
+
+  xit("moves androidUserEmail to userEmail for ios", () => {
+    Platform.OS = "ios"
     const previousState = migrate({
       state: { version: 0 },
       toVersion: migrationToTest - 1,

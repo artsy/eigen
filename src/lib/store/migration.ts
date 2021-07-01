@@ -18,9 +18,10 @@ export const Versions = {
   FixEnvironmentMigrationBug: 8,
   AddUserIsDev: 9,
   AddAuthOnboardingState: 10,
+  RenameUserEmail: 11,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddAuthOnboardingState
+export const CURRENT_APP_VERSION = Versions.RenameUserEmail
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -45,7 +46,6 @@ export const artsyAppMigrations: Migrations = {
   [Versions.AddAuthAndConfigState]: (state) => {
     state.auth = {
       userID: null,
-      userEmail: null,
       userAccessToken: null,
       userAccessTokenExpiresIn: null,
       xAppToken: null,
@@ -59,7 +59,9 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.RefactorConfigModel]: (state) => {
     const newConfig = {} as any
-    newConfig.features = { adminOverrides: state.config.adminFeatureFlagOverrides }
+    newConfig.features = {
+      adminOverrides: state.config.adminFeatureFlagOverrides,
+    }
     newConfig.echo = { state: state.config.echoState }
     newConfig.environment = { adminOverrides: {}, env: "staging" }
     state.config = newConfig
@@ -68,10 +70,15 @@ export const artsyAppMigrations: Migrations = {
     state.config.environment.env = __TEST__ ? "staging" : "production"
   },
   [Versions.AddUserIsDev]: (state) => {
+    state.auth.androidUserEmail = null
     state.config.userIsDev = { flipValue: false }
   },
   [Versions.AddAuthOnboardingState]: (state) => {
     state.auth.onboardingState = "none"
+  },
+  [Versions.RenameUserEmail]: (state) => {
+    state.auth.userEmail = state.auth.androidUserEmail
+    delete state.auth.androidUserEmail
   },
 }
 
