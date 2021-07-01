@@ -24,6 +24,8 @@ upcoming:
     - Fix crash when opening app from background on android - brian
     - Change error handling middleware & include optionalField graphql directive to home screen - ole
     - Fix empty search for consignment submissions - dzmitry
+    - Release order history view - sweir
+
 releases:
   - version: 6.9.5
   - date: June 24, 2021
