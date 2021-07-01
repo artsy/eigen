@@ -258,18 +258,20 @@ describe("App version Versions.RenameUserEmail", () => {
     expect(migratedState.auth.userEmail).toEqual("user@android.com")
   })
 
-  xit("moves androidUserEmail to userEmail for ios", () => {
+  it("moves androidUserEmail to userEmail for ios", () => {
     Platform.OS = "ios"
     const previousState = migrate({
       state: { version: 0 },
       toVersion: migrationToTest - 1,
     }) as any
 
+    previousState.native.sessionState = { userEmail: "user@ios.com" }
+
     const migratedState = migrate({
       state: previousState,
       toVersion: migrationToTest,
     }) as any
 
-    expect(migratedState.auth.onboardingState).toEqual("none")
+    expect(migratedState.auth.userEmail).toEqual("user@ios.com")
   })
 })

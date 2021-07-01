@@ -78,13 +78,9 @@ export const getAuthModel = (): AuthModel => ({
   onboardingState: "none",
   userEmail: null,
   userHasArtsyEmail: computed([(_, state) => state], (state) => {
-    if (state.native.sessionState.userEmail) {
-      // we can remove this when get rid of native ios onboadrding (tag: AREnableNewOnboardingFlow)
-      if (Platform.OS === "ios") {
-        return isArtsyEmail(state.native.sessionState.userEmail ?? "")
-      }
+    if (Platform.OS === "ios" && state.config.features.flags.AREnableNewOnboardingFlow) {
+      return isArtsyEmail(state.native.sessionState.userEmail ?? "")
     }
-
     return isArtsyEmail(state.auth.userEmail ?? "")
   }),
 

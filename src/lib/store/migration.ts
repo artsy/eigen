@@ -1,6 +1,7 @@
 // easy-peasy ships with a fork of immer so let's use that instead of adding another copy of immer to our bundle.
 import { produce } from "immer-peasy"
 import { echoLaunchJson } from "lib/utils/jsonFiles"
+import { Platform } from "react-native"
 
 /**
  * IMPORTANT
@@ -59,9 +60,7 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.RefactorConfigModel]: (state) => {
     const newConfig = {} as any
-    newConfig.features = {
-      adminOverrides: state.config.adminFeatureFlagOverrides,
-    }
+    newConfig.features = { adminOverrides: state.config.adminFeatureFlagOverrides }
     newConfig.echo = { state: state.config.echoState }
     newConfig.environment = { adminOverrides: {}, env: "staging" }
     state.config = newConfig
@@ -77,7 +76,12 @@ export const artsyAppMigrations: Migrations = {
     state.auth.onboardingState = "none"
   },
   [Versions.RenameUserEmail]: (state) => {
-    state.auth.userEmail = state.auth.androidUserEmail
+    if (Platform.OS === "ios") {
+      state.auth.userEmail = state.native.sessionState.userEmail
+    }
+    if (Platform.OS === "android") {
+      state.auth.userEmail = state.auth.androidUserEmail
+    }
     delete state.auth.androidUserEmail
   },
 }
