@@ -28,9 +28,11 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 }
 
 const Main: React.FC<{}> = track()(({}) => {
-  GoogleSignin.configure({
-    webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
-  })
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
+    })
+  }, [])
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
