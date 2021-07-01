@@ -1,13 +1,13 @@
 // @ts-check
 "use strict"
-const { execSync, spawnSync } = require("child_process")
+const { spawnSync } = require("child_process")
 const updatePlatfromChangeLog = require("./generatePlatformChangelog").updatePlatfromChangeLog
 const Octokit = require("@octokit/rest")
 const ora = require("ora")
 
 const DEFAULT_CHANGELOG_BRANCH = "update-changelog"
 
-const octokit = new Octokit({ auth: process.env.CHANGELOG_GITHUB_TOKEN_KEY})
+const octokit = new Octokit({ auth: process.env.CHANGELOG_GITHUB_TOKEN_KEY })
 
 /**
  * @param {string} command
@@ -26,10 +26,10 @@ const exec = (command) => {
 const forceCheckout = () => {
   const logger = ora("force checkout").start()
   try {
-    execSync(`git checkout ${DEFAULT_CHANGELOG_BRANCH}}`)
-    execSync(`git reset master --hard`)
+    exec(`git checkout ${DEFAULT_CHANGELOG_BRANCH}}`)
+    exec(`git reset master --hard`)
   } catch (_) {
-    execSync(`git checkout -b ${DEFAULT_CHANGELOG_BRANCH}`)
+    exec(`git checkout -b ${DEFAULT_CHANGELOG_BRANCH}`)
   } finally {
     logger.succeed()
   }
@@ -48,7 +48,8 @@ const hasNoChanges = () => {
  */
 const commitAndPushChanges = () => {
   const logger = ora("commiting and pushing changes").start()
-  exec(`git add -A`)
+  exec(`git add CHANGELOG/android-changelog.md`)
+  exec(`git add CHANGELOG/ios-changelog.md`)
   const result = spawnSync("git", ["commit", "-m", "Update Changelog"])
   if (result.status !== 0) {
     logger.fail()
@@ -65,7 +66,7 @@ const pullRequestAlreadyExists = async () => {
   const res = await octokit.pulls.list({
     repo: "eigen",
     state: "open",
-    owner: "artsy"
+    owner: "artsy",
   })
   return res.data.some((pr) => pr.head.ref === DEFAULT_CHANGELOG_BRANCH)
 }
