@@ -12,15 +12,14 @@ const Image = styled.Image`
 
 export interface SearchQueryProps<T> extends TextInputProps {
   results: ReadonlyArray<T> | null
-  query: string
+  query: string | null
   placeholder: string
   noResultsMessage: string
   onChangeText?: (query: string) => void
   resultSelected?: (result: T) => void
 }
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const noResults = (props) => {
+const noResults = <T,>(props: SearchQueryProps<T>) => {
   if (!props.query || props.searching) {
     return null
   }
@@ -32,17 +31,11 @@ const noResults = (props) => {
 }
 
 function render<T>(props: SearchQueryProps<T>) {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  const rowForResult = (result) => {
+  const rowForResult = (result: any) => {
     const resultID = !!result.internalID ? result.internalID : result.id
     return (
       <Box key={resultID}>
-        <TouchableOpacity
-          onPress={
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            () => props.resultSelected(result)
-          }
-        >
+        <TouchableOpacity onPress={() => props.resultSelected?.(result)}>
           <Flex flexDirection="row" flexWrap="nowrap" alignItems="center">
             {!!result.image && (
               <>
@@ -77,15 +70,14 @@ function render<T>(props: SearchQueryProps<T>) {
         text={{
           placeholder: props.placeholder,
           returnKeyType: "search",
-          value: props.query,
+          value: props.query || "",
           onChangeText: props.onChangeText,
           autoFocus: typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
         }}
       />
       <ScrollView
         style={{ height: 182, paddingTop: 16 }}
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        scrollEnabled={props.results && !!props.results.length}
+        scrollEnabled={!!props.results && !!props.results.length}
         keyboardShouldPersistTaps="always"
       >
         {props.results && props.results.length ? props.results.map(rowForResult) : noResults(props)}
