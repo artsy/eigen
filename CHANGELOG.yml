@@ -38,6 +38,7 @@ upcoming:
     - Fix share button on BNMO Flow - ole, mounir, sam, george
     - Fix collection home rail loading spinner issue - ole
     - Refactor category screen header and filters to match other artwork grids - dzmitry tratsiak
+    - Fix overlapping of Gallery name and time remaining for Vieweing rooms - katsiaryna alshannikava
 
 releases:
   - version: 6.9.5
