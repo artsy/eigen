@@ -43,7 +43,7 @@ export default class Artist extends React.Component<Props, State> {
   }
 
   textChanged = (text: string) => {
-    this.setState({ query: text, searching: text.length > 0 })
+    this.setState({ query: text.trimLeft(), searching: text.length > 0 })
     this.searchForQuery(text)
   }
 

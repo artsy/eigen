@@ -9,7 +9,7 @@ import {
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
-import { SearchCriteriaAttributes } from 'lib/Components/ArtworkFilter/SavedSearch/types'
+import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
@@ -128,10 +128,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     setAggregationsAction(artworks?.aggregations)
 
     if (searchCriteria && artworks?.aggregations) {
-      const params = convertSavedSearchCriteriaToFilterParams(
-        searchCriteria,
-        artworks.aggregations as Aggregations
-      )
+      const params = convertSavedSearchCriteriaToFilterParams(searchCriteria, artworks.aggregations as Aggregations)
       setInitialFilterStateAction(params)
     }
   }, [])
