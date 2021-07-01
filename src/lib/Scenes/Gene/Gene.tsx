@@ -2,11 +2,11 @@ import { FilterArtworksInput, GeneQuery, GeneQueryResponse } from "__generated__
 import { getParamsForInputByFilterType } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import About from "lib/Components/Gene/About"
 import { GeneArtworksPaginationContainer } from "lib/Components/Gene/GeneArtworks"
-import { GenePlaceholder } from 'lib/Components/Gene/GenePlaceholder'
+import { GenePlaceholder } from "lib/Components/Gene/GenePlaceholder"
 import Header from "lib/Components/Gene/Header"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { renderWithPlaceholder } from 'lib/utils/renderWithPlaceholder'
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import React from "react"
 import { Dimensions, StyleSheet, View, ViewStyle } from "react-native"

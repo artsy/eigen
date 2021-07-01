@@ -1,5 +1,5 @@
-import { FilterIcon, Flex, Text, TouchableHighlightColor } from 'palette';
-import React from "react";
+import { FilterIcon, Flex, Text, TouchableHighlightColor } from "palette"
+import React from "react"
 
 interface ArtworksFilterHeaderProps {
   count: number

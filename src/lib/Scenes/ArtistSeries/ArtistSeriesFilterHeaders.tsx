@@ -1,5 +1,5 @@
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { ArtworksFilterHeader } from 'lib/Components/ArtworkGrids/FilterHeader'
+import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader"
 import { Box } from "palette"
 import React from "react"
 

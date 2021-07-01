@@ -101,9 +101,7 @@ export const GeneArtworks: React.FC<GeneArtworksProps> = (props) => {
 
   return (
     <Box mt={1}>
-      <Message>
-        There aren’t any works available by the category at this time.
-      </Message>
+      <Message>There aren’t any works available by the category at this time.</Message>
     </Box>
   )
 }

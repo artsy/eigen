@@ -57,7 +57,7 @@ export enum FilterModalMode {
   Partner = "Partner",
   SaleArtworks = "SaleArtworks",
   Show = "Show",
-  Gene = "Gene"
+  Gene = "Gene",
 }
 
 export const ArtworkFilterOptionsScreen: React.FC<
@@ -225,9 +225,7 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
       ]
 
     case FilterModalMode.Gene:
-      return [
-        filterOptionToDisplayConfigMap.sort,
-      ]
+      return [filterOptionToDisplayConfigMap.sort]
 
     default:
       return [
@@ -281,12 +279,7 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
       ]
       break
     case FilterModalMode.Gene:
-      sortOrder = [
-        "sort",
-        "medium",
-        "additionalGeneIDs",
-        "priceRange",
-      ]
+      sortOrder = ["sort", "medium", "additionalGeneIDs", "priceRange"]
       break
   }
 

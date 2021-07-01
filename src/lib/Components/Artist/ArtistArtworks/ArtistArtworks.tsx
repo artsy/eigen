@@ -11,7 +11,7 @@ import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Component
 import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { ArtworksFilterHeader } from 'lib/Components/ArtworkGrids/FilterHeader'
+import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,

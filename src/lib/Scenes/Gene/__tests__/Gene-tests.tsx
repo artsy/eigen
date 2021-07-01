@@ -1,15 +1,15 @@
-import { GeneTestsQuery } from '__generated__/GeneTestsQuery.graphql'
-import { ArtworkFilterOptionsScreen } from 'lib/Components/ArtworkFilter'
-import About from 'lib/Components/Gene/About'
-import { GeneArtworks } from 'lib/Components/Gene/GeneArtworks'
-import { mockEnvironmentPayload } from 'lib/tests/mockEnvironmentPayload'
-import { renderWithWrappers } from 'lib/tests/renderWithWrappers'
-import { TouchableHighlightColor } from 'palette'
+import { GeneTestsQuery } from "__generated__/GeneTestsQuery.graphql"
+import { ArtworkFilterOptionsScreen } from "lib/Components/ArtworkFilter"
+import About from "lib/Components/Gene/About"
+import { GeneArtworks } from "lib/Components/Gene/GeneArtworks"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { TouchableHighlightColor } from "palette"
 import React from "react"
-import { graphql, QueryRenderer } from 'react-relay'
-import { act } from 'react-test-renderer'
+import { graphql, QueryRenderer } from "react-relay"
+import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment } from 'relay-test-utils'
+import { createMockEnvironment } from "relay-test-utils"
 import { Gene } from "../Gene"
 
 jest.unmock("react-relay")
@@ -38,13 +38,13 @@ describe("Gene", () => {
         environment={environment}
         query={graphql`
           query GeneTestsQuery($geneID: String!, $input: FilterArtworksInput) @relay_test_operation {
-          gene(id: $geneID) {
-            slug
-            ...Header_gene
-            ...About_gene
-            ...GeneArtworks_gene @arguments(input: $input)
+            gene(id: $geneID) {
+              slug
+              ...Header_gene
+              ...About_gene
+              ...GeneArtworks_gene @arguments(input: $input)
+            }
           }
-        }
         `}
         render={({ props }) => {
           if (props?.gene) {
