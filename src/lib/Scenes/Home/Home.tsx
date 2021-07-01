@@ -238,9 +238,6 @@ export const HomeFragmentContainer = createRefetchContainer(
   },
   graphql`
     query HomeRefetchQuery($heroImageVersion: HomePageHeroUnitImageVersion!) {
-      articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
-        ...Home_articlesConnection
-      }
       homePage {
         ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
       }
@@ -249,6 +246,9 @@ export const HomeFragmentContainer = createRefetchContainer(
       }
       featured: viewingRooms(featured: true) {
         ...Home_featured
+      }
+      articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
+        ...Home_articlesConnection
       }
     }
   `
@@ -382,7 +382,7 @@ export const HomeQueryRenderer: React.FC = () => {
           featured: viewingRooms(featured: true) {
             ...Home_featured
           }
-          articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
+          articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
             ...Home_articlesConnection
           }
         }
