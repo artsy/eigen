@@ -121,10 +121,15 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
   const content = (
     <Flex p={1}>
       <Flex flexDirection="row" justifyContent="space-between">
-        <Flex flex={1}>
-          <Text color={titleColor} variant="subtitle">
+        <Flex flex={1} mr={!!showCloseIcon ? 1 : 0}>
+          <Text color={titleColor} variant="subtitle" numberOfLines={1}>
             {title}
           </Text>
+          {!!message && (
+            <Text numberOfLines={2} color="black60" variant="small">
+              {message}
+            </Text>
+          )}
         </Flex>
         {!!showCloseIcon && (
           <Box mt={0.25}>
@@ -134,11 +139,6 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
           </Box>
         )}
       </Flex>
-      {!!message && (
-        <Text numberOfLines={2} mt={0.5} color="black60" variant="small">
-          {message}
-        </Text>
-      )}
     </Flex>
   )
 

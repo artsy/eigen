@@ -3,8 +3,9 @@ import { captureMessage } from "@sentry/react-native"
 import { SavedSearchBanner_me } from "__generated__/SavedSearchBanner_me.graphql"
 import { SavedSearchBannerCreateSavedSearchMutation } from "__generated__/SavedSearchBannerCreateSavedSearchMutation.graphql"
 import { SavedSearchBannerDeleteSavedSearchMutation } from "__generated__/SavedSearchBannerDeleteSavedSearchMutation.graphql"
-import { SavedSearchBannerQuery, SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
+import { SavedSearchBannerQuery } from "__generated__/SavedSearchBannerQuery.graphql"
 import { FilterParams, prepareFilterParamsForSaveSearchInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -122,27 +123,17 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, artist
     })
   }
 
-  const handleSaveSearchFiltersPress = () => {
-    if (inProcess) {
-      return
-    }
-    const executeSaveSearch = () => {
-      if (enabled) {
-        deleteSavedSearch()
-      } else {
-        createSavedSearch()
-      }
-    }
+  const checkNotificationPermissionsAndCreate = () => {
     if (Platform.OS === "android") {
       // TODO:- When android Push notification setup is ready add check for permission
       // NotificationManagerCompat.from(getReactApplicationContext()).areNotificationsEnabled();
-      executeSaveSearch()
+      createSavedSearch()
       return
     }
     LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
       switch (result) {
         case PushAuthorizationStatus.Authorized:
-          return executeSaveSearch()
+          return createSavedSearch()
         case PushAuthorizationStatus.Denied:
           return Alert.alert(
             "Turn on notifications",
@@ -179,6 +170,18 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, artist
     })
   }
 
+  const handleSaveSearchFiltersPress = () => {
+    if (inProcess) {
+      return
+    }
+
+    if (enabled) {
+      deleteSavedSearch()
+    } else {
+      checkNotificationPermissionsAndCreate()
+    }
+  }
+
   const trackToggledSavedSearchEvent = (modified: boolean, searchCriteriaId: string | undefined) => {
     if (searchCriteriaId) {
       tracking.trackEvent(tracks.toggleSavedSearch(modified, artistId, searchCriteriaId))
@@ -196,7 +199,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, artist
       alignItems="center"
     >
       <Text variant="small" color="black">
-        New works alert for this search
+        {enabled ? "Remove alert for this artist" : "Set alert for this artist"}
       </Text>
       <Button
         variant={enabled ? "secondaryOutline" : "primaryBlack"}

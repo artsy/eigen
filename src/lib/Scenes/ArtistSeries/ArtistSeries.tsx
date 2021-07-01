@@ -1,49 +1,36 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistSeries_artistSeries } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
+import { StickyHeaderPage } from "lib/Components/StickyHeaderPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesArtworksFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeaderFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { Box, Separator, Spacer, Theme } from "palette"
-import React, { useRef, useState } from "react"
+import { Box, Flex, Separator, Spacer, Theme } from "palette"
+import React, { useState } from "react"
 
-import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtistSeriesFilterHeader } from "lib/Scenes/ArtistSeries/ArtistSeriesFilterHeaders"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
-import { FlatList, View, ViewToken } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
+
 interface ArtistSeriesProps {
   artistSeries: ArtistSeries_artistSeries
-}
-
-interface ViewableItems {
-  viewableItems?: ViewToken[]
 }
 
 export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
   const { artistSeries } = props
   const tracking = useTracking()
-  const flatListRef = useRef<FlatList>(null)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-  const [isArtworksGridVisible, setArtworksGridVisible] = useState(false)
 
   const artist = artistSeries.artist?.[0]
-
-  const sections = ["artistSeriesHeader", "artistSeriesMeta", "artistSeriesArtworks", "artistSeriesMoreSeries"]
-  const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 30 })
-
-  const viewableItemsChangedRef = React.useRef(({ viewableItems }: ViewableItems) => {
-    const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
-      return viewableItem?.item === "artistSeriesArtworks"
-    })
-    setArtworksGridVisible(artworksItem?.isViewable ?? false)
-  })
+  const artistSeriesTotalCount = artist?.artistSeriesConnection?.totalCount ?? 0
 
   const handleFilterArtworksModal = () => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
@@ -84,66 +71,49 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
     >
       <ArtworkFiltersStoreProvider>
         <Theme>
-          <View style={{ flex: 1 }}>
-            <FlatList
-              ref={flatListRef}
-              viewabilityConfig={viewConfigRef.current}
-              onViewableItemsChanged={viewableItemsChangedRef.current}
-              keyExtractor={(_item, index) => String(index)}
-              data={sections}
-              ItemSeparatorComponent={() => <Spacer mb={2} />}
-              renderItem={({ item }): null | any => {
-                switch (item) {
-                  case "artistSeriesHeader":
-                    return (
-                      <Box px={2}>
-                        <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
-                      </Box>
-                    )
-                  case "artistSeriesMeta":
-                    return (
-                      <Box px={2} pt={1}>
-                        <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
-                      </Box>
-                    )
-                  case "artistSeriesArtworks":
-                    return (
-                      <Box px={2}>
-                        <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
-                        <ArtworkFilterNavigator
-                          {...props}
-                          isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-                          id={artistSeries.internalID}
-                          slug={artistSeries.slug}
-                          mode={FilterModalMode.ArtistSeries}
-                          exitModal={handleFilterArtworksModal}
-                          closeModal={closeFilterArtworksModal}
-                        />
-                      </Box>
-                    )
-                  case "artistSeriesMoreSeries":
-                    return (
-                      !((artist?.artistSeriesConnection?.totalCount ?? 0) === 0) && (
-                        <>
-                          <Separator mb={2} />
-                          <Box px={2} pb={2}>
-                            <ArtistSeriesMoreSeriesFragmentContainer
-                              contextScreenOwnerId={artistSeries.internalID}
-                              contextScreenOwnerSlug={artistSeries.slug}
-                              contextScreenOwnerType={OwnerType.artistSeries}
-                              artist={artist}
-                              artistSeriesHeader="More series by this artist"
-                              currentArtistSeriesExcluded
-                            />
-                          </Box>
-                        </>
-                      )
-                    )
-                }
-              }}
-            />
-            <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
-          </View>
+          <StickyHeaderPage
+            headerContent={
+              <>
+                <Flex px={2}>
+                  <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
+                  <Spacer mt={2} mb={1} />
+                  <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
+                </Flex>
+                <Separator mt={2} mb={1} />
+              </>
+            }
+            footerContent={
+              artistSeriesTotalCount !== 0 ? (
+                <>
+                  <Separator mb={2} />
+                  <Box pb={2} px={2}>
+                    <ArtistSeriesMoreSeriesFragmentContainer
+                      contextScreenOwnerId={artistSeries.internalID}
+                      contextScreenOwnerSlug={artistSeries.slug}
+                      contextScreenOwnerType={OwnerType.artistSeries}
+                      artist={artist}
+                      artistSeriesHeader="More series by this artist"
+                      currentArtistSeriesExcluded
+                    />
+                  </Box>
+                </>
+              ) : undefined
+            }
+            stickyHeaderContent={<ArtistSeriesFilterHeader onFilterArtworksPress={openFilterArtworksModal} />}
+          >
+            <Flex px={2}>
+              <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
+              <ArtworkFilterNavigator
+                {...props}
+                isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+                id={artistSeries.internalID}
+                slug={artistSeries.slug}
+                mode={FilterModalMode.ArtistSeries}
+                exitModal={handleFilterArtworksModal}
+                closeModal={closeFilterArtworksModal}
+              />
+            </Flex>
+          </StickyHeaderPage>
         </Theme>
       </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>
@@ -160,10 +130,7 @@ export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSerie
 
       ...ArtistSeriesHeader_artistSeries
       ...ArtistSeriesMeta_artistSeries
-      ...ArtistSeriesArtworks_artistSeries @arguments(input: {
-        sort: "-decayed_merch",
-        dimensionRange: "*-*"
-      })
+      ...ArtistSeriesArtworks_artistSeries @arguments(input: { sort: "-decayed_merch", dimensionRange: "*-*" })
 
       artist: artists(size: 1) {
         ...ArtistSeriesMoreSeries_artist

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash eb299a512b3bde9ab09ed4517dc39d11 */
+/* @relayHash 27ff599ea15ab16a55f9f964c89f8e71 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -266,6 +266,11 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
   dateText
   id
   internalID
+  artist {
+    name
+    slug
+    id
+  }
   images {
     thumbnail {
       url(version: "square140")
@@ -1356,6 +1361,20 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "artist",
+                        "plural": false,
+                        "selections": [
+                          (v16/*: any*/),
+                          (v3/*: any*/),
+                          (v10/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "AuctionLotImages",
                         "kind": "LinkedField",
                         "name": "images",
@@ -1552,7 +1571,7 @@ return {
     ]
   },
   "params": {
-    "id": "eb299a512b3bde9ab09ed4517dc39d11",
+    "id": "27ff599ea15ab16a55f9f964c89f8e71",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",

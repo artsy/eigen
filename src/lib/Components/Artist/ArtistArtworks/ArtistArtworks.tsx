@@ -2,11 +2,14 @@ import { OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import {
+  Aggregations,
   filterArtworksParams,
   FilterParamName,
   prepareFilterArtworksParamsForInput,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
+import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
@@ -26,6 +29,7 @@ import { SavedSearchBannerQueryRender } from "./SavedSearchBanner"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
+  searchCriteria: SearchCriteriaAttributes | null
   relay: RelayPaginationProp
 }
 
@@ -84,16 +88,18 @@ interface ArtistArtworksContainerProps {
 const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContainerProps> = ({
   artist,
   relay,
+  searchCriteria,
   openFilterModal,
   ...props
 }) => {
   const tracking = useTracking()
   const enableSavedSearch = useFeatureFlag("AREnableSavedSearch")
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+
+  const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
+
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
-  const relevantFiltersForSavedSearch = appliedFilters.filter(
-    (filter) => !(filter.paramName === FilterParamName.sort)
-  )
+  const relevantFiltersForSavedSearch = appliedFilters.filter((filter) => !(filter.paramName === FilterParamName.sort))
   const shouldShowSavedSearchBanner = enableSavedSearch && relevantFiltersForSavedSearch.length > 0
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
@@ -120,6 +126,11 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 
   useEffect(() => {
     setAggregationsAction(artworks?.aggregations)
+
+    if (searchCriteria && artworks?.aggregations) {
+      const params = convertSavedSearchCriteriaToFilterParams(searchCriteria, artworks.aggregations as Aggregations)
+      setInitialFilterStateAction(params)
+    }
   }, [])
 
   // TODO: Convert to use cohesion
@@ -137,39 +148,36 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
   const screenWidth = useScreenDimensions().width
 
-  useEffect(
-    () => {
-      setJSX(
-        <Box backgroundColor="white" mt={2} px={2}>
-          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-            <Text variant="subtitle" color="black60">
-              Showing {artworksTotal} works
-            </Text>
-            <TouchableHighlightColor
-              haptic
-              onPress={openFilterModal}
-              render={({ color }) => (
-                <Flex flexDirection="row" alignItems="center">
-                  <FilterIcon fill={color} width="20px" height="20px" />
-                  <Text variant="subtitle" color={color}>
-                    Sort & Filter
-                  </Text>
-                </Flex>
-              )}
-            />
-          </Flex>
-          <Separator mt={2} ml={-2} width={screenWidth} />
-          {!!shouldShowSavedSearchBanner && (
-            <>
-              <SavedSearchBannerQueryRender artistId={artistInternalId} filters={filterParams} />
-              <Separator ml={-2} width={screenWidth} />
-            </>
-          )}
-        </Box>
-      )
-    },
-    [artworksTotal, shouldShowSavedSearchBanner, artistInternalId, filterParams]
-  )
+  useEffect(() => {
+    setJSX(
+      <Box backgroundColor="white" mt={2} px={2}>
+        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Text variant="subtitle" color="black60">
+            Showing {artworksTotal} works
+          </Text>
+          <TouchableHighlightColor
+            haptic
+            onPress={openFilterModal}
+            render={({ color }) => (
+              <Flex flexDirection="row" alignItems="center">
+                <FilterIcon fill={color} width="20px" height="20px" />
+                <Text variant="subtitle" color={color}>
+                  Sort & Filter
+                </Text>
+              </Flex>
+            )}
+          />
+        </Flex>
+        <Separator mt={2} ml={-2} width={screenWidth} />
+        {!!shouldShowSavedSearchBanner && (
+          <>
+            <SavedSearchBannerQueryRender artistId={artistInternalId} filters={filterParams} />
+            <Separator ml={-2} width={screenWidth} />
+          </>
+        )}
+      </Box>
+    )
+  }, [artworksTotal, shouldShowSavedSearchBanner, artistInternalId, filterParams])
 
   const filteredArtworks = () => {
     if (artworksCount === 0) {

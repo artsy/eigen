@@ -92,7 +92,7 @@ export const tappedOnMap = (
       },
     },
     (buttonIndex: number) => {
-      if (buttonIndex === 1) {
+      if (buttonIndex === 0) {
         const mapLink = mapLinkForService(
           MapServiceURLType.Apple,
           lat,
@@ -103,7 +103,7 @@ export const tappedOnMap = (
           suffix
         )
         Linking.openURL(mapLink)
-      } else if (buttonIndex === 2) {
+      } else if (buttonIndex === 1) {
         const mapLink = mapLinkForService(
           MapServiceURLType.CityMapper,
           lat,
@@ -114,7 +114,7 @@ export const tappedOnMap = (
           suffix
         )
         Linking.openURL(mapLink)
-      } else if (buttonIndex === 3) {
+      } else if (buttonIndex === 2) {
         const appLink = mapLinkForService(
           MapServiceURLType.GoogleApp,
           lat,
@@ -144,7 +144,7 @@ export const tappedOnMap = (
           .catch(() => {
             Linking.openURL(webLink)
           })
-      } else if (buttonIndex === 4) {
+      } else if (buttonIndex === 3) {
         // Copy to pasteboard
         Clipboard.setString(title)
       }

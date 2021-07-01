@@ -5,8 +5,8 @@ import { ArtistSeriesHeader } from "lib/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMeta } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Touchable } from "palette"
 import React from "react"
-import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
@@ -73,7 +73,7 @@ describe("Artist Series Rail", () => {
         slug: "yayoi-kusama-other-fruits",
       }),
     })
-    const artistSeriesButton = wrapper.root.findByType(ArtistSeriesListItem).findByType(TouchableOpacity)
+    const artistSeriesButton = wrapper.root.findByType(ArtistSeriesListItem).findByType(Touchable)
     act(() => artistSeriesButton.props.onPress())
 
     expect(trackEvent).toHaveBeenCalledWith({

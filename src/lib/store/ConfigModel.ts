@@ -5,14 +5,14 @@ import { getUserIsDev, UserIsDevModel } from "./config/UserIsDevModel"
 
 export interface ConfigModel {
   echo: EchoModel
-  features: FeaturesModel
   environment: EnvironmentModel
+  features: FeaturesModel
   userIsDev: UserIsDevModel
 }
 
 export const getConfigModel = (): ConfigModel => ({
   echo: getEchoModel(),
-  features: getFeaturesModel(),
   environment: getEnvironmentModel(),
+  features: getFeaturesModel(),
   userIsDev: getUserIsDev(),
 })
