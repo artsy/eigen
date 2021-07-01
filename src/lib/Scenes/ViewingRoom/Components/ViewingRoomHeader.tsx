@@ -130,7 +130,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
           </TouchableWithoutFeedback>
         </PartnerContainer>
         <CountdownContainer>
-          <Flex alignItems="flex-end" flexDirection="row">
+          <Flex alignItems="flex-end" flexDirection="row" flexWrap="wrap" justifyContent="flex-end">
             <Countdown startAt={startAt as string} endAt={endAt as string} status={status} />
           </Flex>
         </CountdownContainer>
