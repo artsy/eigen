@@ -5,8 +5,8 @@ import { SavedSearchBannerCreateSavedSearchMutation } from "__generated__/SavedS
 import { SavedSearchBannerDeleteSavedSearchMutation } from "__generated__/SavedSearchBannerDeleteSavedSearchMutation.graphql"
 import { SavedSearchBannerQuery } from "__generated__/SavedSearchBannerQuery.graphql"
 import { FilterParams, prepareFilterParamsForSaveSearchInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { SearchCriteriaAttributes } from 'lib/Components/ArtworkFilter/SavedSearch/types'
-import { usePopoverMessage } from 'lib/Components/PopoverMessage/popoverMessageHooks'
+import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
@@ -19,12 +19,20 @@ import { useTracking } from "react-tracking"
 interface SavedSearchBannerProps {
   me?: SavedSearchBanner_me | null
   artistId: string
+  slug: string
   attributes: SearchCriteriaAttributes
   loading?: boolean
   relay: RelayRefetchProp
 }
 
-export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, artistId, attributes, loading, relay }) => {
+export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
+  me,
+  artistId,
+  slug,
+  attributes,
+  loading,
+  relay,
+}) => {
   const [saving, setSaving] = useState(false)
   const popoverMessage = usePopoverMessage()
   const enabled = !!me?.savedSearch?.internalID
@@ -184,7 +192,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, artist
 
   const trackToggledSavedSearchEvent = (modified: boolean, searchCriteriaId: string | undefined) => {
     if (searchCriteriaId) {
-      tracking.trackEvent(tracks.toggleSavedSearch(modified, artistId, searchCriteriaId))
+      tracking.trackEvent(tracks.toggleSavedSearch(modified, artistId, slug, searchCriteriaId))
     }
   }
 
@@ -235,9 +243,10 @@ export const SavedSearchBannerRefetchContainer = createRefetchContainer(
   `
 )
 
-export const SavedSearchBannerQueryRender: React.FC<{ filters: FilterParams; artistId: string }> = ({
+export const SavedSearchBannerQueryRender: React.FC<{ filters: FilterParams; artistId: string; slug: string }> = ({
   filters,
   artistId,
+  slug,
 }) => {
   const input = prepareFilterParamsForSaveSearchInput(filters)
   const attributes: SearchCriteriaAttributes = {
@@ -270,6 +279,7 @@ export const SavedSearchBannerQueryRender: React.FC<{ filters: FilterParams; art
             loading={props === null && error === null}
             attributes={attributes}
             artistId={artistId}
+            slug={slug}
           />
         )
       }}
@@ -281,10 +291,16 @@ export const SavedSearchBannerQueryRender: React.FC<{ filters: FilterParams; art
 }
 
 export const tracks = {
-  toggleSavedSearch: (enabled: boolean, artistId: string, searchCriteriaId: string): ToggledSavedSearch => ({
+  toggleSavedSearch: (
+    enabled: boolean,
+    artistId: string,
+    slug: string,
+    searchCriteriaId: string
+  ): ToggledSavedSearch => ({
     action: ActionType.toggledSavedSearch,
     context_screen_owner_type: OwnerType.artist,
     context_screen_owner_id: artistId,
+    context_screen_owner_slug: slug,
     modified: enabled,
     original: !enabled,
     search_criteria_id: searchCriteriaId,
