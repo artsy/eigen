@@ -2,16 +2,15 @@ import { ActionType, ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbl
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, bullet, color, Flex, Separator, Spacer, Text } from "palette"
-import React, { useCallback, useEffect, useState } from "react"
-import { FlatList } from "react-native"
+import { Box, color, FilterIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import React, { useEffect, useState } from "react"
+import { FlatList } from "react-native-gesture-handler"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -22,9 +21,10 @@ interface Props {
   artist: ArtistInsightsAuctionResults_artist
   relay: RelayPaginationProp
   scrollToTop: () => void
+  openFilterModal: () => void
 }
 
-const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop }) => {
+const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop, openFilterModal }) => {
   const tracking = useTracking()
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
@@ -33,6 +33,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
 
   const filterParams = filterArtworksParams(appliedFilters, "auctionResult")
+  const auctionTotalCount = artist.auctionResultsConnection?.totalCount ?? 0
 
   useEffect(() => {
     setFilterTypeAction("auctionResult")
@@ -55,13 +56,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
 
   const auctionResults = extractNodes(artist.auctionResultsConnection)
   const [loadingMoreData, setLoadingMoreData] = useState(false)
-
-  const getSortDescription = useCallback(() => {
-    const sortMode = ORDERED_AUCTION_RESULTS_SORTS.find((sort) => sort.paramValue === filterParams?.sort)
-    if (sortMode) {
-      return sortMode.displayText
-    }
-  }, [filterParams])
 
   const loadMoreAuctionResults = () => {
     if (!relay.hasMore() || relay.isLoading()) {
@@ -125,12 +119,11 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
     )
   }
 
-  const resultsString = Number(artist.auctionResultsConnection?.totalCount) > 1 ? "results" : "result"
-
   return (
     <FlatList
       data={auctionResults}
       keyExtractor={(item) => item.id}
+      stickyHeaderIndices={[0]}
       renderItem={({ item }) => (
         <AuctionResultFragmentContainer
           auctionResult={item}
@@ -141,28 +134,36 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         />
       )}
       ListHeaderComponent={() => (
-        <Flex px={2}>
-          <Flex flexDirection="row" alignItems="center">
-            <InfoButton
-              titleElement={
-                <Text variant="title" mr={0.5}>
-                  Auction Results
+        <Flex px={2} backgroundColor="white100">
+          <Flex py={15} flexDirection="row" alignItems="flex-start" justifyContent="space-between">
+            <Flex flexDirection="column">
+              <InfoButton
+                titleElement={
+                  <Text variant="title" mr={0.5}>
+                    Auction Results
+                  </Text>
+                }
+                trackEvent={() => {
+                  tracking.trackEvent(tappedInfoBubble(tracks.tapAuctionResultsInfo()))
+                }}
+                modalTitle={"Auction Results"}
+                maxModalHeight={310}
+                modalContent={renderAuctionResultsModal()}
+              />
+              <Text variant="caption" color="black60" mt={0.3}>
+                Showing {auctionTotalCount} results
+              </Text>
+            </Flex>
+            <Touchable haptic onPress={openFilterModal}>
+              <Flex flexDirection="row">
+                <FilterIcon fill="black100" width="20px" height="20px" />
+                <Text variant="subtitle" color="black100">
+                  Sort & Filter
                 </Text>
-              }
-              trackEvent={() => {
-                tracking.trackEvent(tappedInfoBubble(tracks.tapAuctionResultsInfo()))
-              }}
-              modalTitle={"Auction Results"}
-              maxModalHeight={310}
-              modalContent={renderAuctionResultsModal()}
-            />
+              </Flex>
+            </Touchable>
           </Flex>
-          <SortMode variant="small" color="black60">
-            {!!artist.auctionResultsConnection?.totalCount &&
-              new Intl.NumberFormat().format(artist.auctionResultsConnection.totalCount)}{" "}
-            {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
-          </SortMode>
-          <Separator borderColor={color("black5")} mt="2" />
+          <Separator ml={-2} width={useScreenDimensions().width} />
         </Flex>
       )}
       ItemSeparatorComponent={() => (
