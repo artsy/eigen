@@ -10,6 +10,7 @@ upcoming:
     - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
     - Update open simulator command in getting started docs - ole
     - Fix follow artist button on ios - dzmitry
+    - Add analytics for AuctionResultsForYou and AuctionResultsRail components - yauheni
     - Add a feature flag for Saved Addresses - ozzie
   user_facing:
     - Prevent facebook auth for users without email - dzmitry
