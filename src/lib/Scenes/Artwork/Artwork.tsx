@@ -113,7 +113,7 @@ export class Artwork extends React.Component<Props, State> {
   componentDidUpdate(prevProps) {
     // If we are visible, but weren't, then we are re-appearing (not called on first render).
     if (this.props.isVisible && !prevProps.isVisible) {
-      this.refetch()
+      this.refetch(this.markArtworkAsRecentlyViewed)
     }
   }
 
@@ -174,21 +174,20 @@ export class Artwork extends React.Component<Props, State> {
     )
   }
 
-  refetch = () => {
-    this.setState({ fetchingData: true })
+  refetch = (cb?: () => any) => {
     this.props.relay.refetch(
       { artistID: this.props.artworkAboveTheFold.internalID },
       null,
       () => {
-        this.markArtworkAsRecentlyViewed()
-        this.setState({ fetchingData: false })
+        cb?.()
       },
       { force: true }
     )
   }
 
   handleModalDismissed = () => {
-    this.refetch()
+    this.setState({ fetchingData: true })
+    this.refetch(() => this.setState({ fetchingData: false }))
     return true
   }
 
