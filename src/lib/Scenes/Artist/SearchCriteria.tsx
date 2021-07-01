@@ -1,20 +1,20 @@
-import { SearchCriteriaAttributes } from '__generated__/SavedSearchBannerCreateSavedSearchMutation.graphql'
-import { SearchCriteriaQuery } from '__generated__/SearchCriteriaQuery.graphql'
+import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerCreateSavedSearchMutation.graphql"
+import { SearchCriteriaQuery } from "__generated__/SearchCriteriaQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { ProvidePlaceholderContext } from 'lib/utils/placeholders'
+import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { isNull } from "lodash"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { RelayModernEnvironment } from 'relay-runtime/lib/store/RelayModernEnvironment'
+import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
 export interface SearchCriteriaQueryRendererProps {
   environment?: RelayModernEnvironment
   searchCriteriaId?: string
   render: {
-    renderPlaceholder: () => React.ReactElement,
+    renderPlaceholder: () => React.ReactElement
     renderComponent: (args: {
-      fetchCriteriaError: Error | null,
+      fetchCriteriaError: Error | null
       savedSearchCriteria: SearchCriteriaAttributes | null
     }) => React.ReactElement
   }
@@ -57,13 +57,9 @@ export const SearchCriteriaQueryRenderer: React.FC<SearchCriteriaQueryRendererPr
         render={({ props: relayProps, error }) => {
           // Loading state
           if (isNull(error) && isNull(relayProps)) {
-            return (
-              <ProvidePlaceholderContext>
-                {renderPlaceholder()}
-              </ProvidePlaceholderContext>
-            )
+            return <ProvidePlaceholderContext>{renderPlaceholder()}</ProvidePlaceholderContext>
           }
-          const savedSearchCriteria = relayProps?.me?.savedSearch as SearchCriteriaAttributes ?? null
+          const savedSearchCriteria = (relayProps?.me?.savedSearch as SearchCriteriaAttributes) ?? null
 
           return renderComponent({
             fetchCriteriaError: error,

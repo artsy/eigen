@@ -1,5 +1,5 @@
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { extractText } from 'lib/tests/extractText'
+import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Text, TouchableHighlightColor } from "palette"
 import React from "react"
