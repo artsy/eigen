@@ -1,7 +1,7 @@
 import { GeneTestsQuery } from '__generated__/GeneTestsQuery.graphql'
 import { ArtworkFilterOptionsScreen } from 'lib/Components/ArtworkFilter'
 import About from 'lib/Components/Gene/About'
-import { GeneArtwors } from 'lib/Components/Gene/GeneArtworks'
+import { GeneArtworks } from 'lib/Components/Gene/GeneArtworks'
 import { mockEnvironmentPayload } from 'lib/tests/mockEnvironmentPayload'
 import { renderWithWrappers } from 'lib/tests/renderWithWrappers'
 import { TouchableHighlightColor } from 'palette'
@@ -73,7 +73,7 @@ describe("Gene", () => {
     const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironmentPayload(environment)
 
-    expect(tree.root.findAllByType(GeneArtwors)).toHaveLength(1)
+    expect(tree.root.findAllByType(GeneArtworks)).toHaveLength(1)
     expect(tree.root.findAllByType(About)).toHaveLength(1)
   })
 

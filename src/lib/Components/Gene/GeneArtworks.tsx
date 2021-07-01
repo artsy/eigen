@@ -24,11 +24,11 @@ interface GeneArtworksContainerProps {
   relay: RelayPaginationProp
 }
 
-interface GeneArtworsProps extends GeneArtworksContainerProps {
+interface GeneArtworksProps extends GeneArtworksContainerProps {
   openFilterModal: () => void
 }
 
-export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
+export const GeneArtworks: React.FC<GeneArtworksProps> = (props) => {
   const { gene, relay, openFilterModal } = props
   const tracking = useTracking()
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
@@ -108,7 +108,7 @@ export const GeneArtwors: React.FC<GeneArtworsProps> = (props) => {
   )
 }
 
-const GeneArtworsContainer: React.FC<GeneArtworksContainerProps> = (props) => {
+const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = (props) => {
   const { gene } = props
   const tracking = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
@@ -143,7 +143,7 @@ const GeneArtworsContainer: React.FC<GeneArtworksContainerProps> = (props) => {
   return (
     <ArtworkFiltersStoreProvider>
       <StickyTabPageScrollView disableScrollViewPanResponder>
-        <GeneArtwors {...props} openFilterModal={openFilterArtworksModal} />
+        <GeneArtworks {...props} openFilterModal={openFilterArtworksModal} />
         <ArtworkFilterNavigator
           {...props}
           id={gene.internalID}
@@ -159,7 +159,7 @@ const GeneArtworsContainer: React.FC<GeneArtworksContainerProps> = (props) => {
 }
 
 export const GeneArtworksPaginationContainer = createPaginationContainer(
-  GeneArtworsContainer,
+  GeneArtworksContainer,
   {
     gene: graphql`
       fragment GeneArtworks_gene on Gene
