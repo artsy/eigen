@@ -1,11 +1,8 @@
 import { FairExhibitorsTestsQuery } from "__generated__/FairExhibitorsTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Button } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FairExhibitorRailFragmentContainer } from "../Components/FairExhibitorRail"
 import { FairExhibitorsFragmentContainer } from "../Components/FairExhibitors"
@@ -13,7 +10,6 @@ import { FairExhibitorsFragmentContainer } from "../Components/FairExhibitors"
 jest.unmock("react-relay")
 
 describe("FairExhibitors", () => {
-  const trackEvent = useTracking().trackEvent
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
@@ -80,29 +76,5 @@ describe("FairExhibitors", () => {
   it("skips over any partners with no artworks", () => {
     const wrapper = getWrapper()
     expect(extractText(wrapper.root)).not.toContain("Partner Without Artworks")
-  })
-
-  it("renders the show more button", () => {
-    const wrapper = getWrapper()
-    expect(extractText(wrapper.root)).toContain("Show more")
-  })
-
-  it("tracks taps on the show more button", () => {
-    const wrapper = getWrapper({
-      Fair: () => ({
-        internalID: "xyz123",
-        slug: "xxx",
-      }),
-    })
-    const button = wrapper.root.findAllByType(Button)[0]
-    act(() => button.props.onPress())
-    expect(trackEvent).toHaveBeenCalledWith({
-      action: "tappedShowMore",
-      context_module: "exhibitorsTab",
-      context_screen_owner_type: "fair",
-      context_screen_owner_id: "xyz123",
-      context_screen_owner_slug: "xxx",
-      subject: "Show More",
-    })
   })
 })
