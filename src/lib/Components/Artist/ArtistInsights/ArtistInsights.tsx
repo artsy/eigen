@@ -3,15 +3,16 @@ import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graph
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { useOnTabFocusedEffect } from "lib/Components/StickyTabPage/StickyTabPage"
-import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { Schema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import React, { useCallback, useRef, useState } from "react"
-import { FlatList, View } from "react-native"
+import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ReactElement } from "simple-markdown"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
+import { ArtistInsightsFilterHeader } from "./ArtistInsightsFilterHeader"
 import { MarketStatsQueryRenderer } from "./MarketStats"
 
 interface ArtistInsightsProps {
@@ -62,26 +63,26 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     tracking.trackEvent(tracks.screen(artist.internalID, artist.slug))
   }, tabIndex)
 
+  // If we pass removeClippedSubviews=true, and stickyHeaderIndices, the StickyTabPageFlatList elements will not be displayed
   return (
     <ArtworkFiltersStoreProvider>
-      <StickyTabPageScrollView contentContainerStyle={{ paddingTop: CONTENT_TOP_OFFSET, paddingBottom: 60 }} innerRef={flatListRef}>
-        <MarketStatsQueryRenderer artistInternalID={artist.internalID} environment={relay.environment} />
-        <View
-          onLayout={({
-            nativeEvent: {
-              layout: { y },
-            },
-          }) => {
-            auctionResultsYCoordinate.current = y + CONTENT_TOP_OFFSET
-          }}
-        >
-          <ArtistInsightsAuctionResultsPaginationContainer
-            artist={artist}
-            scrollToTop={scrollToTop}
-            openFilterModal={openFilterModal}
-          />
-        </View>
-      </StickyTabPageScrollView>
+      <StickyTabPageFlatList
+        innerRef={flatListRef}
+        stickyHeaderIndices={[2]} // index 0 - offset for sticky header, ..., index 2 - artist insight auctions results
+        contentContainerStyle={{ paddingTop: CONTENT_TOP_OFFSET, paddingBottom: 60 }}
+        removeClippedSubviews={false}
+        data={[
+          {
+            key: "market-stats",
+            content: <MarketStatsQueryRenderer artistInternalID={artist.internalID} environment={relay.environment} />,
+          },
+          { key: "filter-header", content: <ArtistInsightsFilterHeader onFilterPress={openFilterModal} /> },
+          {
+            key: "content",
+            content: <ArtistInsightsAuctionResultsPaginationContainer artist={artist} scrollToTop={scrollToTop} />,
+          },
+        ]}
+      />
       <ArtworkFilterNavigator
         isFilterArtworksModalVisible={isFilterModalVisible}
         id={artist.internalID}

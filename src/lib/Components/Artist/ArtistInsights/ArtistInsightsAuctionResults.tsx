@@ -1,34 +1,33 @@
-import { ActionType, ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { InfoButton } from "lib/Components/Buttons/InfoButton"
+import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, color, FilterIcon, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Box, color, Flex, Separator, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { FlatList } from "react-native-gesture-handler"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { useScreenDimensions } from "../../../utils/useScreenDimensions"
-import { AuctionResultFragmentContainer } from "../../Lists/AuctionResultListItem"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist
   relay: RelayPaginationProp
   scrollToTop: () => void
-  openFilterModal: () => void
 }
 
-const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop, openFilterModal }) => {
+const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop }) => {
   const tracking = useTracking()
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
   const setFilterTypeAction = ArtworksFiltersStore.useStoreActions((state) => state.setFilterTypeAction)
+  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((state) => state.setFiltersCountAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
 
@@ -38,6 +37,13 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
   useEffect(() => {
     setFilterTypeAction("auctionResult")
   }, [])
+
+  useEffect(() => {
+    setFiltersCountAction({
+      total: auctionTotalCount,
+      followedArtists: null,
+    })
+  }, [auctionTotalCount])
 
   useEffect(() => {
     if (applyFilters) {
@@ -95,22 +101,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
     ])
   }, [])
 
-  const renderAuctionResultsModal = () => (
-    <>
-      <Spacer my={1} />
-      <Text>
-        These auction results bring together sale data from top auction houses around the world, including
-        Christie&rsquo;s, Sotheby&rsquo;s, Phillips and Bonhams. Results are updated daily.
-      </Text>
-      <Spacer mb={2} />
-      <Text>
-        Please note that the sale price includes the hammer price and buyer’s premium, as well as any other additional
-        fees (e.g., Artist’s Resale Rights).
-      </Text>
-      <Spacer mb={2} />
-    </>
-  )
-
   if (!auctionResults.length) {
     return (
       <Box my="80px">
@@ -123,7 +113,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
     <FlatList
       data={auctionResults}
       keyExtractor={(item) => item.id}
-      stickyHeaderIndices={[0]}
       renderItem={({ item }) => (
         <AuctionResultFragmentContainer
           auctionResult={item}
@@ -132,39 +121,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
             navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
           }}
         />
-      )}
-      ListHeaderComponent={() => (
-        <Flex px={2} backgroundColor="white100">
-          <Flex py={15} flexDirection="row" alignItems="flex-start" justifyContent="space-between">
-            <Flex flexDirection="column">
-              <InfoButton
-                titleElement={
-                  <Text variant="title" mr={0.5}>
-                    Auction Results
-                  </Text>
-                }
-                trackEvent={() => {
-                  tracking.trackEvent(tappedInfoBubble(tracks.tapAuctionResultsInfo()))
-                }}
-                modalTitle={"Auction Results"}
-                maxModalHeight={310}
-                modalContent={renderAuctionResultsModal()}
-              />
-              <Text variant="caption" color="black60" mt={0.3}>
-                Showing {auctionTotalCount} results
-              </Text>
-            </Flex>
-            <Touchable haptic onPress={openFilterModal}>
-              <Flex flexDirection="row">
-                <FilterIcon fill="black100" width="20px" height="20px" />
-                <Text variant="subtitle" color="black100">
-                  Sort & Filter
-                </Text>
-              </Flex>
-            </Touchable>
-          </Flex>
-          <Separator ml={-2} width={useScreenDimensions().width} />
-        </Flex>
       )}
       ItemSeparatorComponent={() => (
         <Flex px={2}>
@@ -280,11 +236,5 @@ export const tracks = {
     destination_screen_owner_type: OwnerType.auctionResult,
     destination_screen_owner_id: auctionId,
     type: "thumbnail",
-  }),
-
-  tapAuctionResultsInfo: (): TappedInfoBubbleArgs => ({
-    contextModule: ContextModule.auctionResults,
-    contextScreenOwnerType: OwnerType.artistAuctionResults,
-    subject: "auctionResults",
   }),
 }

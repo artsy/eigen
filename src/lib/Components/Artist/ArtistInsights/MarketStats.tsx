@@ -154,7 +154,6 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
           <Text variant="text">Sale price over estimate</Text>
         </Flex>
       </Flex>
-      <Separator ml={-2} width={useScreenDimensions().width} />
     </>
   )
 }
