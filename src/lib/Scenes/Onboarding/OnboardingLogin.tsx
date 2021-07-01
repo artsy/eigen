@@ -38,6 +38,7 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
 
   const passwordInputRef = useRef<Input>(null)
   const emailInputRef = useRef<Input>(null)
+  const { safeAreaInsets } = useScreenDimensions()
 
   /**
    * When we land on OnboardingLogin from the OnboardingCreatAccount
@@ -154,7 +155,7 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
           loading={isSubmitting}
           testID="loginButton"
           variant="primaryBlack"
-          mb={useScreenDimensions().safeAreaInsets.bottom}
+          mb={safeAreaInsets.bottom}
         >
           Log in
         </Button>

@@ -89,6 +89,7 @@ const OnboardingPersonalizationListHeader = ({ navigateToModal }: { navigateToMo
 export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationListProps> = ({ ...props }) => {
   const popularArtists = compact(props.highlights.popularArtists)
   const animatedOpacitiesRef = useRef<{ [key: string]: Disappearable | null }>({})
+  const { safeAreaInsets } = useScreenDimensions()
 
   const [excludeArtistIDs, setExcludeArtistIDs] = useState<string[]>([])
 
@@ -148,7 +149,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
           variant="primaryBlack"
           block
           testID="doneButton"
-          mb={useScreenDimensions().safeAreaInsets.bottom}
+          mb={safeAreaInsets.bottom}
           onPress={() => {
             GlobalStore.actions.auth.setState({ onboardingState: "complete" })
           }}

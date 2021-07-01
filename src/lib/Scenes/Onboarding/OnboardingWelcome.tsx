@@ -19,6 +19,7 @@ const imgProps = Image.resolveAssetSource(backgoundImage)
 
 export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation }) => {
   const { width: screenWidth } = useScreenDimensions()
+  const { safeAreaInsets } = useScreenDimensions()
   // useScreenDimensions() returns the window height instead of the screen
   // We need the entire screen height here because the background image should fill
   // the entire screen including drawing below the navigation bar
@@ -72,7 +73,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   }, [navigation])
 
   return (
-    <Flex flex={1} style={{ paddingBottom: useScreenDimensions().safeAreaInsets.bottom }}>
+    <Flex flex={1} style={{ paddingBottom: safeAreaInsets.bottom }}>
       <Animated.View
         style={{
           alignItems: "flex-end",
