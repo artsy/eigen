@@ -101,7 +101,8 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableSavedSearch: {
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: Platform.OS === "ios" ? "AREnableSavedSearch" : undefined,
     description: "Enable Saved Search",
     showInAdminMenu: true,
   },
