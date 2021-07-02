@@ -25,8 +25,8 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <MultiDelegate/AIMultiDelegate.h>
-#import <Emission/ARMapContainerViewController.h>
-#import <Emission/ARComponentViewController.h>
+#import "ARMapContainerViewController.h"
+#import "ARComponentViewController.h"
 #import <ARAnalytics/ARAnalytics.h>
 
 static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;

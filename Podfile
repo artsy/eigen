@@ -98,6 +98,7 @@ target 'Artsy' do
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
   pod 'EDColor'
+  pod 'INTUAnimationEngine'
 
   # Core owned by Artsy
   pod 'ORStackView', '2.0.3'
@@ -114,8 +115,6 @@ target 'Artsy' do
   pod 'Artsy+UIColors'
   pod 'Artsy+UILabels'
   pod 'Extraction'
-
-  pod 'Emission', path: './emission', :inhibit_warnings => false
 
   # For Stripe integration with Emission. Using a fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
   pod 'Pulley', git: 'https://github.com/artsy/Pulley.git', branch: 'master'
@@ -173,10 +172,6 @@ post_install do |installer|
   $RNMBGL.post_install(installer)
 
   remove_mapbox_creds
-
-  # So we can show some of this stuff in the Admin panel
-  emission_podspec_json = installer.pod_targets.find { |f| f.name == 'Emission' }.specs[0].to_json
-  File.write('Pods/Local Podspecs/Emission.podspec.json', emission_podspec_json)
 
   # Disable bitcode for now. Specifically needed for HockeySDK and ARAnalytics.
   installer.pods_project.targets.each do |target|

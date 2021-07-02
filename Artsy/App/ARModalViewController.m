@@ -1,7 +1,7 @@
 #import "ARModalViewController.h"
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 
 @implementation ARModalViewController
 

@@ -4,9 +4,10 @@
 #import "ARUserManager.h"
 #import "ArtsyAPI.h"
 #import "ArtsyAPI+Sailthru.h"
+#import "AREmission.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
-#import <Emission/AREmission.h>
+
 
 static  NSString *SailthruLinkDomain = @"link.artsy.net";
 

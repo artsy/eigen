@@ -4,7 +4,7 @@
 #import "ARNotificationView.h"
 #import "ARSerifNavigationViewController.h"
 #import "UIApplicationStateEnum.h"
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 
 static NSDictionary *
 DictionaryWithAppState(NSDictionary *input, UIApplicationState appState)

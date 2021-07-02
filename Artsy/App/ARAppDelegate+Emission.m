@@ -24,11 +24,11 @@
 #import "AROptions.h"
 
 #import <react-native-config/ReactNativeConfig.h>
-#import <Emission/AREmission.h>
-#import <Emission/ARTemporaryAPIModule.h>
-#import <Emission/AREventsModule.h>
-#import <Emission/ARTakeCameraPhotoModule.h>
-#import <Emission/ARRefineOptionsModule.h>
+#import "AREmission.h"
+#import "ARTemporaryAPIModule.h"
+#import "AREventsModule.h"
+#import "ARTakeCameraPhotoModule.h"
+#import "ARRefineOptionsModule.h"
 #import "AREigenMapContainerViewController.h"
 #import <SDWebImage/SDImageCache.h>
 

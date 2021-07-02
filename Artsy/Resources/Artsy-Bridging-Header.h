@@ -104,7 +104,6 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import "UIDevice-Hardware.h"
-#import <Emission/AREmission.h>
-#import <Emission/ARComponentViewController.h>
-
+#import "AREmission.h"
+#import "ARComponentViewController.h"
 #import "ARScreenPresenterModule.h"

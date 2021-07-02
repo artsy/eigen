@@ -2,7 +2,7 @@
 #import "AROnboardingViewController.h"
 #import "ARSlideshowViewController.h"
 #import "UIDevice-Hardware.h"
-#import <Emission/ARComponentViewController.h>
+#import "ARComponentViewController.h"
 #import <React/RCTRootView.h>
 #import "ARScreenPresenterModule.h"
 

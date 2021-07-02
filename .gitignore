@@ -87,8 +87,9 @@ tslint-errors.json
 # TypeScript Logs
 tsc_raw.log
 
-# Emission bundle
-emission/Pod/Assets/*
+# App js bundle
+App.js
+App.js.map
 
 # query map
 data/complete.queryMap.json
