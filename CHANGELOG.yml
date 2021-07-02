@@ -19,6 +19,7 @@ upcoming:
     - Remove "Enable push notification" guard for disabling saved search - dzmitry tratsiak
     - Fix locations menu redirection - katsiaryna alshannikava
     - Implement share button for articles - katsiaryna alshannikava, mounir
+    - Allow screen rotations on android tablets - kizito
     - Fix overlapping of social buttons over the 'Next' button for iOS - katsiaryna alshannikava
     - Connect auction results for you to metaphysics endpoint - yauheni
     - Fix opening artist page after passing new onboarding on ios - dzmitry
