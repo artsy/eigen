@@ -5,7 +5,6 @@ import { Artwork_me } from "__generated__/Artwork_me.graphql"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
-import { Flex } from "lib/Components/Bidding/Elements/Flex"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import { navigationEvents } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -21,7 +20,7 @@ import {
 import { QAInfoPanel } from "lib/utils/QAInfo"
 import { Schema, screenTrack } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Separator, space, Spacer, Spinner } from "palette"
+import { Box, Separator, space, Spacer } from "palette"
 import React from "react"
 import { ActivityIndicator, FlatList, View } from "react-native"
 import { RefreshControl } from "react-native"
@@ -319,9 +318,9 @@ export class Artwork extends React.Component<Props, State> {
     return (
       <>
         {this.state.fetchingData ? (
-          <Flex style={{ flex: 1, height: "100%" }} flexDirection="row" justifyContent="center" alignItems="center">
-            <Spinner />
-          </Flex>
+          <ProvidePlaceholderContext>
+            <AboveTheFoldPlaceholder />
+          </ProvidePlaceholderContext>
         ) : (
           <FlatList<ArtworkPageSection>
             keyboardShouldPersistTaps="handled"
