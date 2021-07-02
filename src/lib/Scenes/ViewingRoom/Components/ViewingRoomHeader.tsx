@@ -22,22 +22,17 @@ export const BackgroundImage = styled(OpaqueImageView)<{ height: number; width: 
 `
 
 const CountdownContainer = styled.View`
-  position: absolute;
-  bottom: ${space(2)};
-  right: ${space(2)};
-  width: 45%;
+  width: 100%;
   flex-direction: row;
-  justify-content: flex-end;
   align-items: center;
   height: 20;
+  justify-content: center;
 `
 
 const PartnerContainer = styled(Flex)`
-  position: absolute;
-  bottom: ${space(2)};
-  left: ${space(2)};
-  width: 45%;
+  width: 100%;
   flex-direction: row;
+  justify-content: center;
 `
 
 const Overlay = styled(LinearGradient)`
@@ -130,7 +125,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
           </TouchableWithoutFeedback>
         </PartnerContainer>
         <CountdownContainer>
-          <Flex alignItems="flex-end" flexDirection="row" flexWrap="wrap" justifyContent="flex-end">
+          <Flex alignItems="flex-end" flexDirection="row">
             <Countdown startAt={startAt as string} endAt={endAt as string} status={status} />
           </Flex>
         </CountdownContainer>
