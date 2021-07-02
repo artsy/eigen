@@ -95,15 +95,23 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableOrderHistoryOption: {
-    readyForRelease: false,
+    readyForRelease: true,
     echoFlagKey: "AREnableOrderHistoryOption",
     description: "Enable Order History in settings",
     showInAdminMenu: true,
   },
   AREnableSavedSearch: {
-    readyForRelease: false,
+    readyForRelease: true,
+    // TODO: after implementation of notifications for android we need to change the following line to
+    // echoFlagKey: "AREnableSavedSearch",
+    echoFlagKey: Platform.OS === "ios" ? "AREnableSavedSearch" : undefined,
     description: "Enable Saved Search",
     showInAdminMenu: true,
+  },
+  AREnableNewOnboardingFlow: {
+    readyForRelease: false,
+    description: "Enable new onboarding flow",
+    showInAdminMenu: Platform.OS === "ios",
   },
   AREnableSavedAddresses: {
     readyForRelease: false,

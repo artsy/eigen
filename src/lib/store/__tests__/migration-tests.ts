@@ -1,4 +1,6 @@
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import _ from "lodash"
+import { Platform } from "react-native"
 import { __globalStoreTestUtils__ } from "../GlobalStore"
 import { CURRENT_APP_VERSION, migrate, Versions } from "../migration"
 import { sanitize } from "../persistence"
@@ -234,5 +236,44 @@ describe("App version Versions.AddAuthOnboardingState", () => {
     }) as any
 
     expect(migratedState.auth.onboardingState).toEqual("none")
+  })
+})
+
+describe("App version Versions.RenameUserEmail", () => {
+  const migrationToTest = Versions.RenameUserEmail
+  it("moves androidUserEmail to userEmail for android", () => {
+    Platform.OS = "android"
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    previousState.auth.androidUserEmail = "user@android.com"
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.auth.androidUserEmail).toEqual(undefined)
+    expect(migratedState.auth.userEmail).toEqual("user@android.com")
+  })
+
+  it("moves androidUserEmail to userEmail for ios", () => {
+    Platform.OS = "ios"
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    previousState.native.sessionState = { userEmail: "user@ios.com" }
+
+    LegacyNativeModules.ARTemporaryAPIModule.getUserEmail = jest.fn(() => previousState.native.sessionState.userEmail)
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.auth.userEmail).toEqual("user@ios.com")
   })
 })

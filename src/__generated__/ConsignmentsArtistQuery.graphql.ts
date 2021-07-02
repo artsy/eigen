@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e18496bd98d305563035ca1ece9d4d22 */
+/* @relayHash 4fbc263a5806b0696189efd8ee68f0fa */
 
 import { ConcreteRequest } from "relay-runtime";
 export type ConsignmentsArtistQueryVariables = {
@@ -15,6 +15,9 @@ export type ConsignmentsArtistQueryResponse = {
                 readonly name?: string | null;
                 readonly image?: {
                     readonly url: string | null;
+                } | null;
+                readonly targetSupply?: {
+                    readonly isTargetSupply: boolean | null;
                 } | null;
             } | null;
         } | null> | null;
@@ -31,7 +34,7 @@ export type ConsignmentsArtistQuery = {
 query ConsignmentsArtistQuery(
   $query: String!
 ) {
-  searchConnection(query: $query, first: 10, entities: [ARTIST], mode: AUTOSUGGEST) {
+  searchConnection(query: $query, first: 30, entities: [ARTIST], mode: AUTOSUGGEST) {
     edges {
       node {
         __typename
@@ -40,6 +43,9 @@ query ConsignmentsArtistQuery(
           name
           image {
             url
+          }
+          targetSupply {
+            isTargetSupply
           }
         }
         ... on Node {
@@ -71,7 +77,7 @@ v1 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10
+    "value": 30
   },
   {
     "kind": "Literal",
@@ -114,6 +120,24 @@ v2 = {
           "args": null,
           "kind": "ScalarField",
           "name": "url",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "ArtistTargetSupply",
+      "kind": "LinkedField",
+      "name": "targetSupply",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "isTargetSupply",
           "storageKey": null
         }
       ],
@@ -232,7 +256,7 @@ return {
     ]
   },
   "params": {
-    "id": "e18496bd98d305563035ca1ece9d4d22",
+    "id": "4fbc263a5806b0696189efd8ee68f0fa",
     "metadata": {},
     "name": "ConsignmentsArtistQuery",
     "operationKind": "query",
@@ -240,5 +264,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'fb8f61fe5f1f1428024aab1c717e899c';
+(node as any).hash = '982b5a6307ff6fa38a3e475d5a436294';
 export default node;

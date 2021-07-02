@@ -226,6 +226,7 @@ function getNativeModules(): OurNativeModules {
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       clearUserData: jest.fn(),
+      getUserEmail: jest.fn(),
     },
     ARPHPhotoPickerModule: {
       requestPhotos: jest.fn(),

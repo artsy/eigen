@@ -13,7 +13,7 @@ export interface OnboardingCreateAccountNameProps
   extends StackScreenProps<OnboardingCreateAccountNavigationStack, "OnboardingCreateAccountName"> {}
 
 export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNameProps> = ({ navigation }) => {
-  const { values, handleSubmit, handleChange, validateForm, errors, setErrors } = useFormikContext<UserSchema>()
+  const { values, handleSubmit, handleChange, errors, setErrors } = useFormikContext<UserSchema>()
 
   return (
     <OnboardingCreateAccountScreenWrapper
@@ -35,7 +35,6 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
           handleChange("name")(text)
         }}
         onSubmitEditing={handleSubmit}
-        onBlur={() => validateForm()}
         blurOnSubmit={false}
         placeholder="First and Last Name"
         placeholderTextColor={color("black30")}
