@@ -2,6 +2,8 @@ upcoming:
   version: 6.10.0
   date: TBD
   dev:
+    - Add apple authentication - dzmitry
+    - Add google authentication - dzmitry
     - Add new onboarding feature flag on ios - dzmitry
     - Add optionalField for Order History and Order Details - Serge0n
     - Add specs for deleteSavedSearch and createSavedSearch mutations - dzmitry tratsiak

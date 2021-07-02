@@ -66,7 +66,7 @@ def remove_mapbox_creds
 end
 
 add_mapbox_creds
-     
+
 pre_install do |installer|
    $RNMBGL.pre_install(installer)
 end
@@ -124,6 +124,10 @@ target 'Artsy' do
   pod 'FBSDKCoreKit', '~> 9.3'
   pod 'FBSDKLoginKit', '~> 9.3'
   pod 'FBSDKShareKit', '~> 9.3'
+
+  # Google & Firebase
+  pod 'GoogleSignIn', '~> 5.0.2'
+  pod 'Firebase/Auth'
 
   # Analytics
   pod 'Analytics'

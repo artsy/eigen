@@ -5,7 +5,7 @@ export type ParseResult =
       type: "changes"
     } & ParseResultChanges)
 
-export type ParseResultChanges = {
+export interface ParseResultChanges {
   crossPlatformUserFacingChanges: string[]
   iOSUserFacingChanges: string[]
   androidUserFacingChanges: string[]

@@ -71,6 +71,14 @@
 				<string>applewebdata</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.673710093763-se1qs22hunrs8dql3c0nq2b2in7vou11</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>2019.05.24.09</string>
