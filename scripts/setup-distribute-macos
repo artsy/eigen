@@ -3,9 +3,18 @@ set -euxo pipefail
 
 
 ./scripts/setup-fastlane-env
-brew update
-brew tap getsentry/tools
-brew install sentry-cli
+# brew not working in docker/linux in circleci
+# brew update
+# brew tap getsentry/tools
+# brew install sentry-cli
+if ! which sentry-cli;
+then
+  echo "installing sentry-cli"
+  curl -sL https://sentry.io/get-cli/ | bash
+else
+  echo "sentry-cli already installed"
+fi
+
 bundle exec fastlane update_plugins
 
 if ! which aws;
