@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { color } from "@artsy/palette-tokens"
 import { addBreadcrumb } from "@sentry/react-native"
-import { goBack, navigate } from "lib/navigation/navigate"
+import { dismissModal, goBack, navigate } from "lib/navigation/navigate"
 import { matchRoute } from "lib/navigation/routes"
 import { getCurrentEmissionState, GlobalStore, useEnvironment, useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
@@ -79,7 +79,9 @@ export const ArtsyReactWebViewPage: React.FC<
         <FancyModalHeader
           useXButton={isPresentedModally && !canGoBack}
           onLeftButtonPress={() => {
-            if (!canGoBack) {
+            if (isPresentedModally && !canGoBack) {
+              dismissModal()
+            } else if (!canGoBack) {
               goBack()
             } else {
               ref.current?.goBack()

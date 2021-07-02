@@ -76,6 +76,29 @@ describe(navigate, () => {
     expect(Linking.openURL).toHaveBeenCalledWith("https://google.com/banana")
   })
 
+  it("passes additional props", async () => {
+    await navigate("/artist/banksy", {
+      passProps: {
+        someAdditionalKey: "value",
+      },
+    })
+    expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
+    expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any)).toMatchInlineSnapshot(`
+        Array [
+          "home",
+          Object {
+            "moduleName": "Artist",
+            "props": Object {
+              "artistID": "banksy",
+              "someAdditionalKey": "value",
+            },
+            "replace": false,
+            "type": "react",
+          },
+        ]
+      `)
+  })
+
   describe("presents modals", () => {
     it("when the screen requires it", () => {
       navigate("https://live.artsy.net/blah")

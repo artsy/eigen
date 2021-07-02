@@ -259,60 +259,67 @@ export const getAuthModel = (): AuthModel => ({
 
       const responseFacebookInfoCallback = async (
         error: { message: string },
-        facebookInfo: { email: string; name: string }
+        facebookInfo: { email?: string; name: string }
       ) => {
         if (error) {
           reject(`Error fetching facebook data: ${error.message}`)
-        } else {
-          if (signInOrUp === "signUp") {
-            const resultGravitySignUp = await actions.signUp({
-              email: facebookInfo.email,
-              name: facebookInfo.name,
+          return
+        }
+        if (!facebookInfo.email) {
+          reject(
+            "We can’t find an email associated with your Facebook account. Please sign up with your email and password."
+          )
+          return
+        }
+
+        if (signInOrUp === "signUp") {
+          const resultGravitySignUp = await actions.signUp({
+            email: facebookInfo.email,
+            name: facebookInfo.name,
+            accessToken: accessToken.accessToken,
+            oauthProvider: "facebook",
+          })
+
+          resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
+        }
+
+        if (signInOrUp === "signIn") {
+          // we need to get X-ACCESS-TOKEN before actual sign in
+          const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
+            path: `/oauth2/access_token`,
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: {
+              oauth_provider: "facebook",
+              oauth_token: accessToken.accessToken,
+              client_id: Config.ARTSY_API_CLIENT_KEY,
+              client_secret: Config.ARTSY_API_CLIENT_SECRET,
+              grant_type: "oauth_token",
+              scope: "offline_access",
+            },
+          })
+
+          if (resultGravityAccessToken.status === 201) {
+            const { access_token: xAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
+            const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
+              path: `/api/v1/me`,
+              headers: { "X-ACCESS-TOKEN": xAccessToken },
+            })
+            const { email } = await resultGravityEmail.json()
+            const resultGravitySignIn = await actions.signIn({
+              email,
               accessToken: accessToken.accessToken,
               oauthProvider: "facebook",
             })
 
-            resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
-          }
-
-          if (signInOrUp === "signIn") {
-            // we need to get X-ACCESS-TOKEN before actual sign in
-            const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
-              path: `/oauth2/access_token`,
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: {
-                oauth_provider: "facebook",
-                oauth_token: accessToken.accessToken,
-                client_id: Config.ARTSY_API_CLIENT_KEY,
-                client_secret: Config.ARTSY_API_CLIENT_SECRET,
-                grant_type: "oauth_token",
-                scope: "offline_access",
-              },
-            })
-
-            if (resultGravityAccessToken.status === 201) {
-              const { access_token: xAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
-              const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
-                path: `/api/v1/me`,
-                headers: { "X-ACCESS-TOKEN": xAccessToken },
-              })
-              const { email } = await resultGravityEmail.json()
-              const resultGravitySignIn = await actions.signIn({
-                email,
-                accessToken: accessToken.accessToken,
-                oauthProvider: "facebook",
-              })
-
-              resultGravitySignIn ? resolve(true) : reject("Failed to log in.")
-            } else {
-              const res = await resultGravityAccessToken.json()
-              if (res.error_description) {
-                console.log(res) // This will get us the error on sentry because we capture console.logs there
-                reject(`Failed to get gravity token from gravity: ${res.error_description}`)
-              }
+            resultGravitySignIn ? resolve(true) : reject("Failed to log in.")
+          } else {
+            const res = await resultGravityAccessToken.json()
+            if (res.error_description) {
+              console.log(res) // This will get us the error on sentry because we capture console.logs there
+              reject(`Failed to get gravity token from gravity: ${res.error_description}`)
             }
           }
         }

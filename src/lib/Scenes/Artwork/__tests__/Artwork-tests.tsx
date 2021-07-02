@@ -14,8 +14,9 @@ import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { merge } from "lodash"
 import _ from "lodash"
+import { Touchable } from "palette"
 import React, { Suspense } from "react"
-import { ActivityIndicator, TouchableOpacity } from "react-native"
+import { ActivityIndicator } from "react-native"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -239,7 +240,7 @@ describe("Artwork", () => {
       })
       await flushPromiseQueue()
 
-      const artistSeriesButton = tree.root.findByType(ArtistSeriesListItem).findByType(TouchableOpacity)
+      const artistSeriesButton = tree.root.findByType(ArtistSeriesListItem).findByType(Touchable)
       act(() => artistSeriesButton.props.onPress())
 
       expect(trackEvent).toHaveBeenCalledWith({

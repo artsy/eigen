@@ -95,7 +95,7 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableOrderHistoryOption: {
-    readyForRelease: false,
+    readyForRelease: true,
     echoFlagKey: "AREnableOrderHistoryOption",
     description: "Enable Order History in settings",
     showInAdminMenu: true,
@@ -109,6 +109,11 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable new onboarding flow",
     showInAdminMenu: Platform.OS === "ios",
+  },
+  AREnableSavedAddresses: {
+    readyForRelease: false,
+    description: "Enable saved addresses",
+    showInAdminMenu: true,
   },
 })
 
