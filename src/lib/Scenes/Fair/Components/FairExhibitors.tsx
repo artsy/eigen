@@ -50,8 +50,8 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
       onEndReached={loadMoreExhibitors}
       ListFooterComponent={
         isLoading ? (
-          <Box p={2} style={{ height: 50 }}>
-            <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
+          <Box p={2}>
+            <Flex flex={1} flexDirection="row" justifyContent="center">
               <Spinner />
             </Flex>
           </Box>
