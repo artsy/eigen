@@ -77,12 +77,7 @@ export const getAuthModel = (): AuthModel => ({
   xApptokenExpiresIn: null,
   onboardingState: "none",
   userEmail: null,
-  userHasArtsyEmail: computed([(_, state) => state], (state) => {
-    if (Platform.OS === "ios" && state.config.features.flags.AREnableNewOnboardingFlow) {
-      return isArtsyEmail(state.native.sessionState.userEmail ?? "")
-    }
-    return isArtsyEmail(state.auth.userEmail ?? "")
-  }),
+  userHasArtsyEmail: computed([(_, state) => state], (state) => isArtsyEmail(state.auth.userEmail ?? "")),
 
   setState: action((state, payload) => Object.assign(state, payload)),
   getXAppToken: thunk(async (actions, _payload, context) => {
