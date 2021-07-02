@@ -24,4 +24,4 @@ else
   echo "aws already installed"
 fi
 
-aws2 s3 cp s3://artsy-citadel/eigen/GoogleService-Info.plist GoogleService-Info.plist
+aws s3 cp s3://artsy-citadel/eigen/GoogleService-Info.plist GoogleService-Info.plist
