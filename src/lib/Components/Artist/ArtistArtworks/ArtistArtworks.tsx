@@ -155,7 +155,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
         <ArtworksFilterHeader count={artworksTotal} onFilterPress={openFilterModal} />
         <Separator />
         {!!shouldShowSavedSearchBanner && (
-          <>
+          <Box px={2}>
             <SavedSearchBannerQueryRender artistId={artistInternalId} filters={filterParams} artistSlug={artist.slug} />
             <Separator ml={-2} width={screenWidth} />
           </Box>
