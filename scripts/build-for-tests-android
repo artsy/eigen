@@ -2,6 +2,7 @@
 set -euxo pipefail
 
 ./scripts/setup-distribute-linux
+
 yarn jetifier
 yarn relay
 
