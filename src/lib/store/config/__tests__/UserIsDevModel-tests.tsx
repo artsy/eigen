@@ -26,7 +26,7 @@ describe("UserIsDevModel", () => {
     expect(getState().value).toEqual(true)
   })
 
-  it("is true for artsy emails for android", () => {
+  it("is true for artsy emails for new onboarding", () => {
     Platform.OS = "android"
     __globalStoreTestUtils__?.injectState({
       auth: { userEmail: "pavlos@artsymail.com" },
@@ -34,10 +34,14 @@ describe("UserIsDevModel", () => {
     expect(getState().value).toEqual(true)
   })
 
-  it("is true for artsy emails for ios", () => {
+  it("is true for artsy emails for ios with old onboarding", () => {
     Platform.OS = "ios"
     __globalStoreTestUtils__?.injectState({
       native: { sessionState: { userEmail: "pavlos@artsymail.com" } },
+    })
+    // In the app, the above would cause a notif with name `"STATE_CHANGED"` that would cause the following
+    __globalStoreTestUtils__?.injectState({
+      auth: { userEmail: "pavlos@artsymail.com" },
     })
     expect(getState().value).toEqual(true)
   })
