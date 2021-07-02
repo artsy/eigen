@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: "com.google.gms.google-services"
 project.ext.envConfigFiles = [
     debug: ".env.shared",
     release: System.getenv('CI') == "true" ? ".env.ci" : ".env.shared",
@@ -207,6 +208,9 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
+    implementation "com.google.firebase:firebase-analytics:19.0.0" // so we can see push notification reports on firebase
+    implementation 'com.google.firebase:firebase-messaging:21.1.0'
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
