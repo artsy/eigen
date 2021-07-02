@@ -11,7 +11,6 @@ export type AuctionResultListItem_auctionResult = {
     readonly internalID: string;
     readonly artist: {
         readonly name: string | null;
-        readonly slug: string;
     } | null;
     readonly images: {
         readonly thumbnail: {
@@ -93,13 +92,6 @@ const node: ReaderFragment = {
           "args": null,
           "kind": "ScalarField",
           "name": "name",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "slug",
           "storageKey": null
         }
       ],
@@ -261,5 +253,5 @@ const node: ReaderFragment = {
   "type": "AuctionResult",
   "abstractKey": null
 };
-(node as any).hash = 'dc38237725c36144055ceec3afeca5b6';
+(node as any).hash = '906af9dd4766c1b599b05ac461baeb75';
 export default node;

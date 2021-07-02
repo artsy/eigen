@@ -23,6 +23,7 @@ upcoming:
     - Fix overlapping of social buttons over the 'Next' button for iOS - katsiaryna alshannikava
     - Connect auction results for you to metaphysics endpoint - yauheni
     - Fix opening artist page after passing new onboarding on ios - dzmitry
+    - Polish Auction Results for you screen and home rail (behind feature flag) - ole
     - Fix crash when opening app from background on android - brian
     - Change error handling middleware & include optionalField graphql directive to home screen - ole
     - Refresh artwork page after purchase modal dismiss - katsiaryna alshannikava

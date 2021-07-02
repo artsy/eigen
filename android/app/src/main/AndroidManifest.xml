@@ -76,6 +76,7 @@
                 <data android:pathPrefix="/artworks" />
                 <data android:pathPrefix="/auction-faq" />
                 <data android:pathPrefix="/auction-registration" />
+                <data android:pathPrefix="/auction-results-for-you" />
                 <data android:pathPrefix="/auction" />
                 <data android:pathPrefix="/auctions" />
                 <data android:pathPrefix="/buy-now-feature-faq" />
