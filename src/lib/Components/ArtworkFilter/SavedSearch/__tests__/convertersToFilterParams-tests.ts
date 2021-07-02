@@ -1,4 +1,3 @@
-import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { Aggregation, Aggregations, FilterParamName } from "../../ArtworkFilterHelpers"
 import {
   AggregationByFilterParamName,
@@ -11,6 +10,7 @@ import {
   convertSizeToFilterParams,
   convertWaysToBuyToFilterParams,
 } from "../convertersToFilterParams"
+import { SearchCriteriaAttributes } from "../types"
 
 describe("convertPriceToFilterParam", () => {
   it("returns `$100–200` price range", () => {

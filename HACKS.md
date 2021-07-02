@@ -209,3 +209,16 @@ Once we work on [CX-1421](https://artsyproduct.atlassian.net/browse/CX-1421?atlO
 Basically these patches remove the podspecs of these two deps. They confuse and break ios, and we don't use them there yet anyway.
 
 Once we start working on replacing the native analytics with TS ones, then we remove these two patches too.
+
+# `react-native-screens` fragment crash on open from background on Android
+
+#### When can we remove this:
+
+Once https://github.com/software-mansion/react-native-screens/issues/17 is solved or we use another library for screen management.
+
+#### Explanation/Context:
+
+There is a known issue in react-native-screens that causes the app to crash on restoring from background. The react-native-screens team recommends the following workaround to be
+added to the MainActivity class on Android https://github.com/software-mansion/react-native-screens/issues/17#issuecomment-424704067.
+
+This has the UX downside of not allowing state restore from background but this is an unsolved problem for RN apps.

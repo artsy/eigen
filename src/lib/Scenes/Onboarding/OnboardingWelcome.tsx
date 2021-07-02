@@ -4,7 +4,7 @@ import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { color, Flex, space, Spacer, Text, Touchable } from "palette"
 import React, { useEffect } from "react"
-import { Dimensions, Image } from "react-native"
+import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import Animated, { Easing } from "react-native-reanimated"
 import backgoundImage from "../../../../images/WelcomeImage.png"
@@ -52,6 +52,9 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   }, [])
 
   useEffect(() => {
+    if (Platform.OS === "ios") {
+      return
+    }
     const unsubscribe = navigation.addListener("blur", () => {
       requestAnimationFrame(() => {
         ArtsyNativeModule.setNavigationBarColor("#FFFFFF")
@@ -62,6 +65,9 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   }, [navigation])
 
   useEffect(() => {
+    if (Platform.OS === "ios") {
+      return
+    }
     const unsubscribe = navigation.addListener("focus", () => {
       requestAnimationFrame(() => {
         ArtsyNativeModule.setNavigationBarColor("#000000")

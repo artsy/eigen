@@ -196,18 +196,30 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
             text: "Override with 'Yes'",
             onPress() {
               GlobalStore.actions.config.features.setAdminOverride({ key: flagKey, value: true })
+              if (flagKey === "AREnableNewOnboardingFlow") {
+                // this is a temporary solution to log out if user switched to new onboarding flow, it will be removed once we get rid of native onboarding (tag: AREnableNewOnboardingFlow)
+                ;(async () => await GlobalStore.actions.signOut())()
+              }
             },
           },
           {
             text: "Override with 'No'",
             onPress() {
               GlobalStore.actions.config.features.setAdminOverride({ key: flagKey, value: false })
+              if (flagKey === "AREnableNewOnboardingFlow") {
+                // this is a temporary solution to log out if user switched to new onboarding flow, it will be removed once we get rid of native onboarding (tag: AREnableNewOnboardingFlow)
+                ;(async () => await GlobalStore.actions.signOut())()
+              }
             },
           },
           {
             text: isAdminOverrideInEffect ? "Revert to default value" : "Keep default value",
             onPress() {
               GlobalStore.actions.config.features.setAdminOverride({ key: flagKey, value: null })
+              if (flagKey === "AREnableNewOnboardingFlow" && isAdminOverrideInEffect) {
+                // this is a temporary solution to log out if user switched to new onboarding flow, it will be removed once we get rid of native onboarding (tag: AREnableNewOnboardingFlow)
+                ;(async () => await GlobalStore.actions.signOut())()
+              }
             },
             style: "destructive",
           },

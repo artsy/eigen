@@ -163,7 +163,7 @@ export class Gene extends React.Component<Props, State> {
             medium: newSettings.medium,
             priceRange: newSettings.selectedPrice,
             sort: newSettings.sort,
-          }
+          },
         })
       }
     })
@@ -327,8 +327,8 @@ export const GeneFragmentContainer = createPaginationContainer(
         artworks: filterArtworksConnection(
           first: $count
           after: $cursor
-          aggregations: [MEDIUM, PRICE_RANGE, TOTAL],
-          forSale: true,
+          aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
+          forSale: true
           input: $input
         ) @connection(key: "Gene_artworks") {
           counts {
@@ -366,16 +366,10 @@ export const GeneFragmentContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query GenePaginationQuery(
-        $id: ID!
-        $count: Int!
-        $cursor: String
-        $input: FilterArtworksInput
-      ) {
+      query GenePaginationQuery($id: ID!, $count: Int!, $cursor: String, $input: FilterArtworksInput) {
         node(id: $id) {
           ... on Gene {
-            ...Gene_gene
-              @arguments(count: $count, cursor: $cursor, input: $input)
+            ...Gene_gene @arguments(count: $count, cursor: $cursor, input: $input)
           }
         }
       }
