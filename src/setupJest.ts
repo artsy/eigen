@@ -492,3 +492,11 @@ jest.mock("react-native-config", () => ({
 
 jest.mock("react-native-view-shot", () => ({}))
 jest.mock("@segment/analytics-react-native", () => ({}))
+
+jest.mock("react-native-push-notification", () => ({
+  configure: jest.fn(),
+  onRegister: jest.fn(),
+  onNotification: jest.fn(),
+  addEventListener: jest.fn(),
+  requestPermissions: jest.fn(),
+}))

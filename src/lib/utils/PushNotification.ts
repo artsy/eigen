@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-community/async-storage"
 import PushNotification from "react-native-push-notification"
 import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "./AdminMenu"
 
-async function configure() {
+export async function configure() {
   const canInitPushNotification = await AsyncStorage.getItem(ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY)
   if (canInitPushNotification === "true") {
     PushNotification.configure({
