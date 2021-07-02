@@ -12,7 +12,7 @@ if ! which aws;
 then
   echo "installing aws"
   # install awscli
-  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  curl "https://awscli.amazonaws.com/awscli-exe-linux-macos.zip" -o "awscliv2.zip"
   unzip -o -qq awscliv2.zip
   sudo ./aws/install
 
