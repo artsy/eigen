@@ -184,7 +184,8 @@ static ARAppDelegate *_sharedInstance = nil;
     NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];
 
     if (ARAppStatus.isBetaOrDev) {
-        brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_STAGING_APP_KEY_IOS"];
+		// comment it out for now, testing braze stuff
+        // brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_STAGING_APP_KEY_IOS"];
     }
 
     [Appboy startWithApiKey:brazeAppKey
