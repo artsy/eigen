@@ -77,7 +77,7 @@ export const getAuthModel = (): AuthModel => ({
   xApptokenExpiresIn: null,
   onboardingState: "none",
   userEmail: null,
-  userHasArtsyEmail: computed([(_, state) => state], (state) => isArtsyEmail(state.auth.userEmail ?? "")),
+  userHasArtsyEmail: computed((state) => isArtsyEmail(state.userEmail ?? "")),
 
   setState: action((state, payload) => Object.assign(state, payload)),
   getXAppToken: thunk(async (actions, _payload, context) => {
