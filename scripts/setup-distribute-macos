@@ -14,7 +14,7 @@ then
   # install awscli
   curl "https://awscli.amazonaws.com/awscli-exe-macos.zip" -o "awscliv2.zip"
   unzip -o -qq awscliv2.zip
-  sudo ./aws2/install
+  sudo ./aws/install
 
   # configure awscli
   mkdir -p ~/.aws
@@ -26,4 +26,4 @@ else
   echo "aws already installed"
 fi
 
-aws s3 cp s3://artsy-citadel/eigen/GoogleService-Info.plist GoogleService-Info.plist
+aws2 s3 cp s3://artsy-citadel/eigen/GoogleService-Info.plist GoogleService-Info.plist
