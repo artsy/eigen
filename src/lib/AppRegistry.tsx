@@ -62,6 +62,7 @@ import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { SaleQueryRenderer } from "./Scenes/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
+import { SavedAddresses } from "./Scenes/SavedAddresses/SavedAddresses"
 
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
@@ -376,6 +377,7 @@ export const modules = defineModules({
   Search: reactModule(SearchWithTracking, { isRootViewForTabName: "search" }),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
+  SavedAddresses: reactModule(SavedAddresses),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),

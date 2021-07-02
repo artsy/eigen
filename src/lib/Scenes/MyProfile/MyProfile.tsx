@@ -56,7 +56,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       {!!shouldDisplayPushNotifications && (
         <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />
       )}
-      {!!showSavedAddresses && <MenuItem title="Saved addresses" onPress={() => null} />}
+      {!!showSavedAddresses && <MenuItem title="Saved Addresses" onPress={() => navigate("/saved-addresses")} />}
       <MenuItem
         title="Send feedback"
         onPress={() => presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")}

@@ -115,7 +115,7 @@ export const features = defineFeatures({
   },
   AREnableSavedAddresses: {
     readyForRelease: false,
-    description: "Enable saved addresses",
+    description: "Enable Saved Addresses",
     showInAdminMenu: true,
   },
 })
