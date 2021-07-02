@@ -20,9 +20,20 @@ jest.unmock("react-tracking")
 type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery"
 
 describe("availableTabs", () => {
+  const originalError = console.error
+  const originalWarn = console.warn
   let environment = createMockEnvironment()
+
   beforeEach(() => {
     environment = createMockEnvironment()
+    console.error = jest.fn()
+    console.warn = jest.fn()
+  })
+
+  afterEach(() => {
+    environment = createMockEnvironment()
+    console.error = originalError
+    console.warn = originalWarn
   })
 
   function mockMostRecentOperation(name: ArtistQueries, mockResolvers: MockResolvers = {}) {
@@ -41,8 +52,8 @@ describe("availableTabs", () => {
     })
   }
 
-  const TestWrapper = () => {
-    return <ArtistQueryRenderer artistID="ignored" environment={environment} />
+  const TestWrapper = (props: Record<string, any>) => {
+    return <ArtistQueryRenderer artistID="ignored" environment={environment} {...props} />
   }
 
   it("returns an empty state if artist has no metadata, shows, insights, or works", async () => {

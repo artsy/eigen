@@ -29,7 +29,7 @@ const throwError = (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
   throw createRequestError(req, res)
 }
 
-export const principalFieldErrorMiddleware = () => {
+export const errorMiddleware = () => {
   return (next: MiddlewareNextFn) => async (req: GraphQLRequest) => {
     const res = await next(req)
     const resJson = res?.json as GraphQLResponse
@@ -40,7 +40,13 @@ export const principalFieldErrorMiddleware = () => {
       return res
     }
 
-    // at this point, we have errors
+    const allErrorsAreOptional = resJson.extensions?.optionalFields?.length === resJson.errors?.length
+
+    if (allErrorsAreOptional) {
+      return res
+    }
+
+    // at this point, we have errors that are not optional
 
     const requestHasPrincipalField = req.operation.text?.includes("@principalField")
 

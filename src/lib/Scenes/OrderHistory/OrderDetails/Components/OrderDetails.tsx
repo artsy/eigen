@@ -198,7 +198,7 @@ export const OrderDetailsQueryRender: React.FC<{ orderID: string }> = ({ orderID
       environment={defaultEnvironment}
       query={graphql`
         query OrderDetailsQuery($orderID: ID!) {
-          order: commerceOrder(id: $orderID) @principalField {
+          order: commerceOrder(id: $orderID) @optionalField {
             ...OrderDetails_order
           }
         }

@@ -44,3 +44,38 @@ describe("state", () => {
     expect(artist.searchForQuery).toHaveBeenCalledWith("Blu")
   })
 })
+
+describe("search result", () => {
+  it("shows no results message if artists are not target supply", () => {
+    const artist = new Artist(emptyProps)
+    artist.setState = jest.fn()
+    artist.searchForQuery = jest.fn() as any
+
+    const results = [
+      {
+        internalID: "test-id",
+        name: "not-target-supply-artist",
+        image: {
+          url: "test-url",
+        },
+        targetSupply: {
+          isTargetSupply: false,
+        },
+      },
+      {
+        internalID: "test-id",
+        name: "target-supply-artist",
+        image: {
+          url: "test-url",
+        },
+        targetSupply: {
+          isTargetSupply: true,
+        },
+      },
+    ]
+
+    artist.setState({ results }, () => {
+      expect(artist.filteredResults()?.map((result) => result.name)).toEqual(["target-supply"])
+    })
+  })
+})

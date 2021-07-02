@@ -3,8 +3,9 @@ import { captureMessage } from "@sentry/react-native"
 import { SavedSearchBanner_me } from "__generated__/SavedSearchBanner_me.graphql"
 import { SavedSearchBannerCreateSavedSearchMutation } from "__generated__/SavedSearchBannerCreateSavedSearchMutation.graphql"
 import { SavedSearchBannerDeleteSavedSearchMutation } from "__generated__/SavedSearchBannerDeleteSavedSearchMutation.graphql"
-import { SavedSearchBannerQuery, SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
+import { SavedSearchBannerQuery } from "__generated__/SavedSearchBannerQuery.graphql"
 import { FilterParams, prepareFilterParamsForSaveSearchInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -18,12 +19,20 @@ import { useTracking } from "react-tracking"
 interface SavedSearchBannerProps {
   me?: SavedSearchBanner_me | null
   artistId: string
+  artistSlug: string
   attributes: SearchCriteriaAttributes
   loading?: boolean
   relay: RelayRefetchProp
 }
 
-export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, artistId, attributes, loading, relay }) => {
+export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
+  me,
+  artistId,
+  artistSlug,
+  attributes,
+  loading,
+  relay,
+}) => {
   const [saving, setSaving] = useState(false)
   const popoverMessage = usePopoverMessage()
   const enabled = !!me?.savedSearch?.internalID
@@ -183,7 +192,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, artist
 
   const trackToggledSavedSearchEvent = (modified: boolean, searchCriteriaId: string | undefined) => {
     if (searchCriteriaId) {
-      tracking.trackEvent(tracks.toggleSavedSearch(modified, artistId, searchCriteriaId))
+      tracking.trackEvent(tracks.toggleSavedSearch(modified, artistId, artistSlug, searchCriteriaId))
     }
   }
 
@@ -198,7 +207,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({ me, artist
       alignItems="center"
     >
       <Text variant="small" color="black">
-        {enabled ? "Remove alert for this artist" : "Set alert for this artist"}
+        {enabled ? "Remove alert with these filters" : "Set alert with these filters"}
       </Text>
       <Button
         variant={enabled ? "secondaryOutline" : "primaryBlack"}
@@ -234,10 +243,11 @@ export const SavedSearchBannerRefetchContainer = createRefetchContainer(
   `
 )
 
-export const SavedSearchBannerQueryRender: React.FC<{ filters: FilterParams; artistId: string }> = ({
-  filters,
-  artistId,
-}) => {
+export const SavedSearchBannerQueryRender: React.FC<{
+  filters: FilterParams
+  artistId: string
+  artistSlug: string
+}> = ({ filters, artistId, artistSlug }) => {
   const input = prepareFilterParamsForSaveSearchInput(filters)
   const attributes: SearchCriteriaAttributes = {
     artistID: artistId,
@@ -269,6 +279,7 @@ export const SavedSearchBannerQueryRender: React.FC<{ filters: FilterParams; art
             loading={props === null && error === null}
             attributes={attributes}
             artistId={artistId}
+            artistSlug={artistSlug}
           />
         )
       }}
@@ -280,10 +291,16 @@ export const SavedSearchBannerQueryRender: React.FC<{ filters: FilterParams; art
 }
 
 export const tracks = {
-  toggleSavedSearch: (enabled: boolean, artistId: string, searchCriteriaId: string): ToggledSavedSearch => ({
+  toggleSavedSearch: (
+    enabled: boolean,
+    artistId: string,
+    artistSlug: string,
+    searchCriteriaId: string
+  ): ToggledSavedSearch => ({
     action: ActionType.toggledSavedSearch,
     context_screen_owner_type: OwnerType.artist,
     context_screen_owner_id: artistId,
+    context_screen_owner_slug: artistSlug,
     modified: enabled,
     original: !enabled,
     search_criteria_id: searchCriteriaId,

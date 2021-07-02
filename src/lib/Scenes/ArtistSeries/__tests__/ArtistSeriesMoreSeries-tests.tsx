@@ -9,8 +9,8 @@ import {
   ArtistSeriesMoreSeriesFragmentContainer,
 } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Touchable } from "palette"
 import React from "react"
-import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
@@ -92,7 +92,7 @@ describe("ArtistSeriesMoreSeries", () => {
 
     it("tracks an event on click", () => {
       const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
-      const artistSeriesButton = wrapper.root.findAllByType(ArtistSeriesListItem)[0].findByType(TouchableOpacity)
+      const artistSeriesButton = wrapper.root.findAllByType(ArtistSeriesListItem)[0].findByType(Touchable)
 
       act(() => artistSeriesButton.props.onPress())
 
