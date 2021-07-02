@@ -95,7 +95,7 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableOrderHistoryOption: {
-    readyForRelease: false,
+    readyForRelease: true,
     echoFlagKey: "AREnableOrderHistoryOption",
     description: "Enable Order History in settings",
     showInAdminMenu: true,
@@ -103,6 +103,11 @@ export const features = defineFeatures({
   AREnableSavedSearch: {
     readyForRelease: false,
     description: "Enable Saved Search",
+    showInAdminMenu: true,
+  },
+  AREnableSavedAddresses: {
+    readyForRelease: false,
+    description: "Enable saved addresses",
     showInAdminMenu: true,
   },
 })

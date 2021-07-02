@@ -2,6 +2,7 @@ upcoming:
   version: 6.10.0
   date: TBD
   dev:
+    - Add optionalField for Order History and Order Details - Serge0n
     - Add specs for deleteSavedSearch and createSavedSearch mutations - dzmitry tratsiak
     - Add toggledSavedSearch analytics tracking - devon blandin
     - Allow custom attributes from a push notification payload to be passed through to React Native scenes - devon blandin
@@ -9,16 +10,23 @@ upcoming:
     - Pass size filter parameters to a saved search criteria - dzmitry tratsiak
     - Update open simulator command in getting started docs - ole
     - Fix follow artist button on ios - dzmitry
+    - Add analytics for AuctionResultsForYou and AuctionResultsRail components - yauheni
+    - Add a feature flag for Saved Addresses - ozzie
   user_facing:
     - Prevent facebook auth for users without email - dzmitry
     - Fix unfollowing categories - katsiaryna alshannikava
     - Remove "Enable push notification" guard for disabling saved search - dzmitry tratsiak
     - Fix locations menu redirection - katsiaryna alshannikava
     - Implement share button for articles - katsiaryna alshannikava, mounir
+    - Fix overlapping of social buttons over the 'Next' button for iOS - katsiaryna alshannikava
     - Connect auction results for you to metaphysics endpoint - yauheni
     - Fix opening artist page after passing new onboarding on ios - dzmitry
+    - Fix crash when opening app from background on android - brian
     - Change error handling middleware & include optionalField graphql directive to home screen - ole
     - Refresh artwork page after purchase modal dismiss - katsiaryna alshannikava
+    - Prevent users from submitting consignments for non target supply artists - ole
+    - Fix empty search for consignment submissions - dzmitry
+    - Release order history view - sweir
 
 releases:
   - version: 6.9.5

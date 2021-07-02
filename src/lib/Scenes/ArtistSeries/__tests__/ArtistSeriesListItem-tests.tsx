@@ -4,8 +4,8 @@ import { navigate } from "lib/navigation/navigate"
 import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { ArtistSeriesConnectionEdge } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Touchable } from "palette"
 import React from "react"
-import { TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
 
 jest.unmock("react-relay")
@@ -20,7 +20,7 @@ describe("ArtistSeriesListItem", () => {
       />
     )
 
-    const instance = artistSeriesListItem.root.findAllByType(TouchableOpacity)[0]
+    const instance = artistSeriesListItem.root.findAllByType(Touchable)[0]
 
     act(() => instance.props.onPress())
 
@@ -36,7 +36,7 @@ describe("ArtistSeriesListItem", () => {
       />
     )
 
-    const instance = artistSeriesListItem.root.findAllByType(TouchableOpacity)[0]
+    const instance = artistSeriesListItem.root.findAllByType(Touchable)[0]
 
     expect(instance.findByType(OpaqueImageView).props.imageURL).toBe(
       "https://d32dm0rphc51dk.cloudfront.net/dL3hz4h6f_tMHQjVHsdO4w/medium.jpg"

@@ -31,6 +31,9 @@ export interface ArtistResult {
   image?: {
     url: string
   }
+  targetSupply?: {
+    isTargetSupply: boolean
+  }
 }
 
 export type SearchResult = LocationResult | ArtistResult
