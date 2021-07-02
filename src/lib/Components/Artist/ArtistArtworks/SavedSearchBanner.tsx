@@ -19,7 +19,7 @@ import { useTracking } from "react-tracking"
 interface SavedSearchBannerProps {
   me?: SavedSearchBanner_me | null
   artistId: string
-  slug: string
+  artistSlug: string
   attributes: SearchCriteriaAttributes
   loading?: boolean
   relay: RelayRefetchProp
@@ -28,7 +28,7 @@ interface SavedSearchBannerProps {
 export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
   me,
   artistId,
-  slug,
+  artistSlug,
   attributes,
   loading,
   relay,
@@ -192,7 +192,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
 
   const trackToggledSavedSearchEvent = (modified: boolean, searchCriteriaId: string | undefined) => {
     if (searchCriteriaId) {
-      tracking.trackEvent(tracks.toggleSavedSearch(modified, artistId, slug, searchCriteriaId))
+      tracking.trackEvent(tracks.toggleSavedSearch(modified, artistId, artistSlug, searchCriteriaId))
     }
   }
 
@@ -243,11 +243,11 @@ export const SavedSearchBannerRefetchContainer = createRefetchContainer(
   `
 )
 
-export const SavedSearchBannerQueryRender: React.FC<{ filters: FilterParams; artistId: string; slug: string }> = ({
-  filters,
-  artistId,
-  slug,
-}) => {
+export const SavedSearchBannerQueryRender: React.FC<{
+  filters: FilterParams
+  artistId: string
+  artistSlug: string
+}> = ({ filters, artistId, artistSlug }) => {
   const input = prepareFilterParamsForSaveSearchInput(filters)
   const attributes: SearchCriteriaAttributes = {
     artistID: artistId,
@@ -279,7 +279,7 @@ export const SavedSearchBannerQueryRender: React.FC<{ filters: FilterParams; art
             loading={props === null && error === null}
             attributes={attributes}
             artistId={artistId}
-            slug={slug}
+            artistSlug={artistSlug}
           />
         )
       }}
@@ -294,13 +294,13 @@ export const tracks = {
   toggleSavedSearch: (
     enabled: boolean,
     artistId: string,
-    slug: string,
+    artistSlug: string,
     searchCriteriaId: string
   ): ToggledSavedSearch => ({
     action: ActionType.toggledSavedSearch,
     context_screen_owner_type: OwnerType.artist,
     context_screen_owner_id: artistId,
-    context_screen_owner_slug: slug,
+    context_screen_owner_slug: artistSlug,
     modified: enabled,
     original: !enabled,
     search_criteria_id: searchCriteriaId,

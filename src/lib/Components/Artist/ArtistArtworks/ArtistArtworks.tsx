@@ -171,7 +171,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
         <Separator mt={2} ml={-2} width={screenWidth} />
         {!!shouldShowSavedSearchBanner && (
           <>
-            <SavedSearchBannerQueryRender artistId={artistInternalId} filters={filterParams} slug={artist.slug} />
+            <SavedSearchBannerQueryRender artistId={artistInternalId} filters={filterParams} artistSlug={artist.slug} />
             <Separator ml={-2} width={screenWidth} />
           </>
         )}

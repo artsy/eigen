@@ -65,7 +65,7 @@ describe("SavedSearchBanner", () => {
             loading={props === null}
             attributes={attributes}
             artistId="banksy"
-            slug="some-slug"
+            artistSlug="some-slug"
           />
         )}
         variables={{
