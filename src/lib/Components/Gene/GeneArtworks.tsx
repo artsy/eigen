@@ -40,14 +40,7 @@ export const GeneArtworks: React.FC<GeneArtworksProps> = (props) => {
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
   const trackClear = () => {
-    tracking.trackEvent({
-      action_name: "clearFilters",
-      context_screen: Schema.ContextModules.ArtworkGrid,
-      context_screen_owner_type: Schema.OwnerEntityTypes.Gene,
-      context_screen_owner_id: gene.id,
-      context_screen_owner_slug: gene.slug,
-      action_type: Schema.ActionTypes.Tap,
-    })
+    tracking.trackEvent(tracks.clearFilters(gene.id, gene.slug))
   }
 
   useEffect(() => {
@@ -115,26 +108,12 @@ const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = (props) => {
   const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
 
   const openFilterArtworksModal = () => {
-    tracking.trackEvent({
-      action_name: "filter",
-      context_screen_owner_type: Schema.OwnerEntityTypes.Gene,
-      context_screen: Schema.PageNames.GenePage,
-      context_screen_owner_id: gene.id,
-      context_screen_owner_slug: gene.slug,
-      action_type: Schema.ActionTypes.Tap,
-    })
+    tracking.trackEvent(tracks.openFilterWindow(gene.id, gene.slug))
     handleOpenFilterArtworksModal()
   }
 
   const closeFilterArtworksModal = () => {
-    tracking.trackEvent({
-      action_name: "closeFilterWindow",
-      context_screen_owner_type: Schema.OwnerEntityTypes.Gene,
-      context_screen: Schema.PageNames.GenePage,
-      context_screen_owner_id: gene.id,
-      context_screen_owner_slug: gene.slug,
-      action_type: Schema.ActionTypes.Tap,
-    })
+    tracking.trackEvent(tracks.closeFilterWindow(gene.id, gene.slug))
     handleCloseFilterArtworksModal()
   }
 
@@ -220,3 +199,30 @@ export const GeneArtworksPaginationContainer = createPaginationContainer(
     `,
   }
 )
+
+export const tracks = {
+  clearFilters: (id: string, slug: string) => ({
+    action_name: "clearFilters",
+    context_screen: Schema.ContextModules.ArtworkGrid,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Gene,
+    context_screen_owner_id: id,
+    context_screen_owner_slug: slug,
+    action_type: Schema.ActionTypes.Tap,
+  }),
+  openFilterWindow: (id: string, slug: string) => ({
+    action_name: "filter",
+    context_screen_owner_type: Schema.OwnerEntityTypes.Gene,
+    context_screen: Schema.PageNames.GenePage,
+    context_screen_owner_id: id,
+    context_screen_owner_slug: slug,
+    action_type: Schema.ActionTypes.Tap,
+  }),
+  closeFilterWindow: (id: string, slug: string) => ({
+    action_name: "closeFilterWindow",
+    context_screen_owner_type: Schema.OwnerEntityTypes.Gene,
+    context_screen: Schema.PageNames.GenePage,
+    context_screen_owner_id: id,
+    context_screen_owner_slug: slug,
+    action_type: Schema.ActionTypes.Tap,
+  }),
+}
