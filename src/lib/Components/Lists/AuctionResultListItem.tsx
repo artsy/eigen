@@ -112,7 +112,6 @@ export const AuctionResultFragmentContainer = createFragmentContainer(AuctionRes
       internalID
       artist {
         name
-        slug
       }
       images {
         thumbnail {

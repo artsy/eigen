@@ -2,9 +2,8 @@ import { ActionType, ContextModule, OwnerType, ScreenOwnerType, TappedArtistSeri
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { ArtistSeriesConnectionEdge } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { ArrowRightIcon, Flex, Sans } from "palette"
+import { ArrowRightIcon, color, Flex, Sans, Touchable } from "palette"
 import React from "react"
-import { TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 
 interface ArtistSeriesListItemProps {
@@ -51,13 +50,17 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
   }
 
   return (
-    <TouchableOpacity
+    <Touchable
+      underlayColor={color("black5")}
+      // the negative margin here is for resetting padding of 20 that all the parent components of this instance
+      // have and to avoid changing the component tree in multiple spots.
+      style={{ marginHorizontal: -20 }}
       onPress={() => {
         trackArtworkClick()
         navigate(`/artist-series/${listItem?.node?.slug}`)
       }}
     >
-      <Flex flexDirection="row" mb={1} justifyContent="space-between">
+      <Flex px={2} my={1} flexDirection="row" justifyContent="space-between">
         <Flex flexDirection="row" justifyContent="space-between" width="100%">
           <Flex flexDirection="row">
             <OpaqueImageView
@@ -82,6 +85,6 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
           </Flex>
         </Flex>
       </Flex>
-    </TouchableOpacity>
+    </Touchable>
   )
 }

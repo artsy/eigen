@@ -2,7 +2,7 @@ import { Action, action, Thunk, thunk } from "easy-peasy"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { NotificationsManager } from "lib/NativeModules/NotificationsManager"
 import { navigate, navigationEvents } from "lib/navigation/navigate"
-import { GlobalStore } from "./GlobalStore"
+import { GlobalStore, unsafe_getFeatureFlag } from "./GlobalStore"
 
 // These should match the values in emission/Pod/Classes/EigenCommunications/ARNotificationsManager.m
 export type NativeEvent =
@@ -56,6 +56,9 @@ listenToNativeEvents((event: NativeEvent) => {
   switch (event.type) {
     case "STATE_CHANGED":
       GlobalStore.actions.native.setLocalState(event.payload)
+      if (!unsafe_getFeatureFlag("AREnableNewOnboardingFlow") && event.payload.userEmail !== null) {
+        GlobalStore.actions.auth.setState({ userEmail: event.payload.userEmail })
+      }
       return
     case "NOTIFICATION_RECEIVED":
       GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()

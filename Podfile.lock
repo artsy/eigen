@@ -606,8 +606,9 @@ PODS:
     - React
   - RNReanimated (1.13.1):
     - React
-  - RNScreens (2.17.1):
+  - RNScreens (3.4.0):
     - React-Core
+    - React-RCTImage
   - RNSentry (2.2.1):
     - React-Core
     - Sentry (= 6.1.4)
@@ -1142,7 +1143,7 @@ SPEC CHECKSUMS:
   RNLocalize: 41026b7c14878f1a1b381bc79f668f1fbf841adb
   RNReactNativeHapticFeedback: 22c5ecf474428766c6b148f96f2ff6155cd7225e
   RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
-  RNScreens: b6c9607e6fe47c1b6e2f1910d2acd46dd7ecea3a
+  RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
   RNSentry: 7104cdfc1072ccb86015d9c8f210d81ae76806c1
   RNShare: fed99fd743f80ca255903c1da46fc9a6430efab6
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c

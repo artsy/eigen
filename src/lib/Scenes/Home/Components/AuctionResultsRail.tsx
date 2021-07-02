@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { AuctionResultsRail_me } from "__generated__/AuctionResultsRail_me.graphql"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
@@ -8,18 +9,16 @@ import { Flex, Separator } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import { RailScrollProps } from "./types"
 
 const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollProps> = (props) => {
   const { me, scrollRef } = props
+  const { trackEvent } = useTracking()
   const auctionResultsByFollowedArtists = extractNodes(me?.auctionResultsByFollowedArtists)
   const listRef = useRef<FlatList<any>>()
   const navigateToAuctionResultsForYou = () => {
-    // TODO implement tracking
-    // const tapEvent = HomeAnalytics.collectionThumbnailTapEvent(result?.slug, index)
-    // if (tapEvent) {
-    //   tracking.trackEvent(tapEvent)
-    // }
+    trackEvent(tracks.AuctionResultsRailHeaderTapEvent())
     navigate(`/auction-results-for-you`)
   }
 
@@ -30,7 +29,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
   return (
     <View>
       <Flex pl="2" pr="2">
-        <SectionTitle title="Auction Results for You" onPress={navigateToAuctionResultsForYou} />
+        <SectionTitle title="Auction Results for Artists You Follow" onPress={navigateToAuctionResultsForYou} />
       </Flex>
 
       <CardRailFlatList
@@ -44,7 +43,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
             <Separator borderColor={"black5"} />
           </Flex>
         )}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           if (!item) {
             return <></>
           }
@@ -52,7 +51,10 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
           return (
             <AuctionResultFragmentContainer
               auctionResult={item}
-              onPress={() => navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)}
+              onPress={() => {
+                trackEvent(tracks.AuctionResultsRailThumbnailTapEvent(index))
+                navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+              }}
             />
           )
         }}
@@ -78,3 +80,20 @@ export const AuctionResultsRailFragmentContainer = createFragmentContainer(Aucti
     }
   `,
 })
+
+export const tracks = {
+  AuctionResultsRailHeaderTapEvent: () => ({
+    contextModule: ContextModule.auctionResultsRail,
+    contextScreenOwnerType: OwnerType.home,
+    destinationScreenOwnerType: OwnerType.auctionResultsRail,
+    type: "header",
+  }),
+
+  AuctionResultsRailThumbnailTapEvent: (index?: number) => ({
+    contextModule: ContextModule.auctionResultsRail,
+    contextScreenOwnerType: OwnerType.home,
+    destinationScreenOwnerType: OwnerType.auctionResultsRail,
+    horizontalSlidePosition: index,
+    type: "thumbnail",
+  }),
+}

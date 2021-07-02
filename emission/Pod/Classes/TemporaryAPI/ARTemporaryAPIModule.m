@@ -1,5 +1,7 @@
 #import "ARTemporaryAPIModule.h"
 #import <UserNotifications/UserNotifications.h>
+#import <Emission/AREmission.h>
+
 
 @implementation ARTemporaryAPIModule
 
@@ -47,6 +49,11 @@ RCT_EXPORT_METHOD(setApplicationIconBadgeNumber:(nonnull NSNumber *)count)
 RCT_EXPORT_METHOD(clearUserData:(RCTPromiseResolveBlock)completion reject:(RCTPromiseRejectBlock) _reject)
 {
     self.userDataClearer(completion);
+}
+
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(getUserEmail)
+{
+    return [[AREmission sharedInstance] stateStringForKey:[ARStateKey userEmail]];
 }
 
 + (BOOL)requiresMainQueueSetup
