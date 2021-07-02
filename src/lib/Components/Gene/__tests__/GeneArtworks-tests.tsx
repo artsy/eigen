@@ -3,10 +3,8 @@ import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/Filter
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
-import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Message } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -112,21 +110,5 @@ describe("GeneArtworks", () => {
     })
 
     expect(tree.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
-  })
-
-  it("renders empty message when artworks is null", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironmentPayload(environment, {
-      Gene() {
-        return {
-          artworks: null,
-        }
-      },
-    })
-
-    expect(tree.root.findAllByType(Message)).toHaveLength(1)
-    expect(extractText(tree.root.findByType(Message))).toEqual(
-      "There aren’t any works available by the category at this time."
-    )
   })
 })
