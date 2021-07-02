@@ -1,5 +1,6 @@
 import { useUpdadeShouldHideBackButton } from "lib/utils/hideBackButtonOnScroll"
 import { Schema } from "lib/utils/track"
+import { useAutoCollapsingMeasuredView } from "lib/utils/useAutoCollapsingMeasuredView"
 import { useGlobalState } from "lib/utils/useGlobalState"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box } from "palette"
@@ -99,30 +100,31 @@ export const StickyTabPage: React.FC<{
       <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
         {/* put tab content first because we want the header to be absolutely positioned _above_ it */}
 
-        {staticHeaderHeight !== null && stickyHeaderHeight !== null && (
-          <SnappyHorizontalRail ref={railRef} initialOffset={initialTabIndex * width} width={width * tabs.length}>
-            {tabs.map(({ content }, index) => {
-              return (
-                <View style={{ flex: 1, width }} key={index}>
-                  <StickyTabPageFlatListContext.Provider
-                    value={{
-                      tabIsActive: Animated.eq(index, activeTabIndexNative),
-                      tabSpecificContentHeight: tabSpecificStickyHeaderContentArray[index].nativeHeight!,
-                      setJSX: (jsx) =>
-                        setTabSpecificStickyHeaderContent((prev) => {
-                          const newArray = prev.slice(0)
-                          newArray[index] = jsx
-                          return newArray
-                        }),
-                    }}
-                  >
-                    {typeof content === "function" ? content(index) : content}
-                  </StickyTabPageFlatListContext.Provider>
-                </View>
-              )
-            })}
-          </SnappyHorizontalRail>
-        )}
+        {!!Animated.neq(stickyHeaderHeight, new Animated.Value(-1)) &&
+          !!Animated.neq(staticHeaderHeight, new Animated.Value(-1)) && (
+            <SnappyHorizontalRail ref={railRef} initialOffset={initialTabIndex * width} width={width * tabs.length}>
+              {tabs.map(({ content }, index) => {
+                return (
+                  <View style={{ flex: 1, width }} key={index}>
+                    <StickyTabPageFlatListContext.Provider
+                      value={{
+                        tabIsActive: Animated.eq(index, activeTabIndexNative),
+                        tabSpecificContentHeight: tabSpecificStickyHeaderContentArray[index].nativeHeight!,
+                        setJSX: (jsx) =>
+                          setTabSpecificStickyHeaderContent((prev) => {
+                            const newArray = prev.slice(0)
+                            newArray[index] = jsx
+                            return newArray
+                          }),
+                      }}
+                    >
+                      {typeof content === "function" ? content(index) : content}
+                    </StickyTabPageFlatListContext.Provider>
+                  </View>
+                )
+              })}
+            </SnappyHorizontalRail>
+          )}
         <Animated.View
           style={{
             width,
@@ -162,54 +164,4 @@ export function useOnTabFocusedEffect(effect: EffectCallback, tabIndex: number) 
       effect()
     }
   }, [activeTabIndex.current])
-}
-
-function useAutoCollapsingMeasuredView(content: React.ReactChild) {
-  const [nativeHeight, setNativeHeight] = useState<Animated.Value<number> | null>(
-    __TEST__ ? new Animated.Value(100) : null
-  )
-  const animation = useRef<Animated.BackwardCompatibleWrapper | null>(null)
-
-  return {
-    nativeHeight,
-    jsx: (
-      <Animated.View style={{ height: nativeHeight!, overflow: "hidden" }}>
-        <View
-          // on initial render this elem should dictate the parent's height
-          // afterwards the parent's height should be controlled by the nativeHeight value
-          // and this component should be able to grow and shrink freely, hence the absolute positioning.
-          style={
-            nativeHeight
-              ? {
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                }
-              : undefined
-          }
-          onLayout={(e) => {
-            if (nativeHeight) {
-              if (animation.current) {
-                animation.current.stop()
-              }
-              animation.current = Animated.spring(nativeHeight, {
-                ...Animated.SpringUtils.makeDefaultConfig(),
-                stiffness: 600,
-                damping: 120,
-                toValue: e.nativeEvent.layout.height,
-              })
-              animation.current.start(() => {
-                animation.current = null
-              })
-            } else {
-              setNativeHeight(new Animated.Value(e.nativeEvent.layout.height))
-            }
-          }}
-        >
-          {content}
-        </View>
-      </Animated.View>
-    ),
-  }
 }

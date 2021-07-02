@@ -1,4 +1,3 @@
-import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { Dictionary, isNil, keyBy, mapValues } from "lodash"
 import {
   Aggregation,
@@ -14,8 +13,8 @@ import { COLORS_INDEXED_BY_VALUE } from "../Filters/ColorsOptions"
 import { localizeDimension, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
 import { SIZE_OPTIONS } from "../Filters/SizeOptions"
 import { WAYS_TO_BUY_FILTER_PARAM_NAMES } from "../Filters/WaysToBuyOptions"
+import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "./types"
 
-type SearchCriteriaAttributeKeys = keyof SearchCriteriaAttributes
 export type AggregationByFilterParamName = Dictionary<Aggregation[]>
 
 export const convertPriceToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {

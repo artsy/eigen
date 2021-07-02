@@ -245,7 +245,7 @@ export const AuctionResultQueryRenderer: React.FC<{
       query={graphql`
         query AuctionResultQuery($auctionResultInternalID: String!, $artistID: String!) {
           auctionResult(id: $auctionResultInternalID) {
-            ...AuctionResultListItem_auctionResult
+            id
             internalID
             artistID
             boughtIn
