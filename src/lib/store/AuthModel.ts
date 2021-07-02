@@ -2,7 +2,6 @@ import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn,
 import { isArtsyEmail } from "lib/utils/general"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { stringify } from "qs"
-import { Platform } from "react-native"
 import Config from "react-native-config"
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "react-native-fbsdk-next"
 import { getCurrentEmissionState } from "./GlobalStore"
