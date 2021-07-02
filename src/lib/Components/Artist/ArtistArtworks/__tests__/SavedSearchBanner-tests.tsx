@@ -173,7 +173,7 @@ describe("SavedSearchBanner", () => {
     checkLogicForMutations(mockResolvers, mutation, popover, analyticsPayload)
   })
 
-  it("deleteSavedSearch mutation is handled correctly", async () => {
+  it("disableSavedSearch mutation is handled correctly", async () => {
     const savedSearchCriteriaId = "some-unique-name"
     const mockResolvers = {
       Me: () => ({
@@ -183,7 +183,7 @@ describe("SavedSearchBanner", () => {
       }),
     }
     const mutation: Mutation = {
-      name: "SavedSearchBannerDeleteSavedSearchMutation",
+      name: "SavedSearchBannerDisableSavedSearchMutation",
       variables: {
         input: {
           searchCriteriaID: savedSearchCriteriaId,
