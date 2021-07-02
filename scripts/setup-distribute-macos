@@ -14,7 +14,7 @@ then
   # install awscli
   curl "https://awscli.amazonaws.com/awscli-exe-macos.zip" -o "awscliv2.zip"
   unzip -o -qq awscliv2.zip
-  sudo ./aws/install
+  sudo ./aws2/install
 
   # configure awscli
   mkdir -p ~/.aws
