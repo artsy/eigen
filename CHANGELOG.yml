@@ -2,6 +2,7 @@ upcoming:
   version: 6.10.0
   date: TBD
   dev:
+    - Add new onboarding feature flag on ios - dzmitry
     - Add optionalField for Order History and Order Details - Serge0n
     - Add specs for deleteSavedSearch and createSavedSearch mutations - dzmitry tratsiak
     - Add toggledSavedSearch analytics tracking - devon blandin

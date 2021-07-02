@@ -1,6 +1,8 @@
 // easy-peasy ships with a fork of immer so let's use that instead of adding another copy of immer to our bundle.
 import { produce } from "immer-peasy"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { echoLaunchJson } from "lib/utils/jsonFiles"
+import { Platform } from "react-native"
 
 /**
  * IMPORTANT
@@ -18,9 +20,10 @@ export const Versions = {
   FixEnvironmentMigrationBug: 8,
   AddUserIsDev: 9,
   AddAuthOnboardingState: 10,
+  RenameUserEmail: 11,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddAuthOnboardingState
+export const CURRENT_APP_VERSION = Versions.RenameUserEmail
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -72,6 +75,16 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddAuthOnboardingState]: (state) => {
     state.auth.onboardingState = "none"
+  },
+  [Versions.RenameUserEmail]: (state) => {
+    if (Platform.OS === "ios") {
+      state.auth.userEmail = LegacyNativeModules.ARTemporaryAPIModule.getUserEmail()
+    }
+    if (Platform.OS === "android") {
+      state.auth.userEmail = state.auth.androidUserEmail
+    }
+    state.auth.userEmail = state.auth.userEmail ?? null
+    delete state.auth.androidUserEmail
   },
 }
 
