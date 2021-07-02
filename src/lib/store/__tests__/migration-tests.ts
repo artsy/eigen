@@ -1,3 +1,4 @@
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import _ from "lodash"
 import { Platform } from "react-native"
 import { __globalStoreTestUtils__ } from "../GlobalStore"
@@ -267,6 +268,7 @@ describe("App version Versions.RenameUserEmail", () => {
 
     previousState.native.sessionState = { userEmail: "user@ios.com" }
 
+    LegacyNativeModules.ARTemporaryAPIModule.getUserEmail = jest.fn(() => previousState.native.sessionState.userEmail)
     const migratedState = migrate({
       state: previousState,
       toVersion: migrationToTest,

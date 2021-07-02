@@ -83,6 +83,7 @@ export const artsyAppMigrations: Migrations = {
     if (Platform.OS === "android") {
       state.auth.userEmail = state.auth.androidUserEmail
     }
+    state.auth.userEmail = state.auth.userEmail ?? null
     delete state.auth.androidUserEmail
   },
 }
