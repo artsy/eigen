@@ -97,6 +97,7 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
                 <Flex px={1}>
                   <AuctionResultFragmentContainer
                     auctionResult={item}
+                    showArtistName
                     onPress={() => {
                       trackEvent(tracks.tapAuctionGroup(item.internalID, item.artistID, index))
                       navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
