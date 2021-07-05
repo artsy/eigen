@@ -55,7 +55,7 @@ const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress, showAr
         <Flex pl={15} flex={1} flexDirection="row" justifyContent="space-between">
           <Flex flex={3}>
             <Flex>
-              {!!showArtistName && (
+              {!!showArtistName && !!auctionResult.artist?.name && (
                 <Text variant="caption" ellipsizeMode="middle" numberOfLines={2} fontWeight="bold">
                   {auctionResult.artist?.name}
                 </Text>
