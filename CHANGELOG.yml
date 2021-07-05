@@ -33,7 +33,7 @@ upcoming:
     - Fix empty search for consignment submissions - dzmitry
     - Release order history view - sweir
     - Fix visual bug on auction result list item on artist insights screen - ole
-
+    - Fix artist home rail loading spinner issue - ole
 releases:
   - version: 6.9.5
   - date: June 24, 2021
