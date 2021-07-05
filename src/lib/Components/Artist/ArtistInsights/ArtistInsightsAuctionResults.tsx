@@ -36,6 +36,10 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
   const filterParams = filterArtworksParams(appliedFilters, "auctionResult")
 
   useEffect(() => {
+    setFilterTypeAction("auctionResult")
+  }, [])
+
+  useEffect(() => {
     if (applyFilters) {
       relay.refetchConnection(
         PAGE_SIZE,
@@ -44,7 +48,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
             throw new Error("ArtistInsights/ArtistAuctionResults filter error: " + error.message)
           }
         },
-        { ...filterParams }
+        filterParams
       )
       scrollToTop()
     }
@@ -52,10 +56,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
 
   const auctionResults = extractNodes(artist.auctionResultsConnection)
   const [loadingMoreData, setLoadingMoreData] = useState(false)
-
-  useEffect(() => {
-    setFilterTypeAction("auctionResult")
-  }, [])
 
   const getSortDescription = useCallback(() => {
     const sortMode = ORDERED_AUCTION_RESULTS_SORTS.find((sort) => sort.paramValue === filterParams?.sort)
