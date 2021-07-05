@@ -1550,6 +1550,7 @@ return {
               "allowEmptyCreatedDates",
               "categories",
               "earliestCreatedYear",
+              "keyword",
               "latestCreatedYear",
               "organizations",
               "sizes",

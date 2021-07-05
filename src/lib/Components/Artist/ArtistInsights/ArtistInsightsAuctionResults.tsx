@@ -11,12 +11,13 @@ import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Box, bullet, color, Flex, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
-import { FlatList } from "react-native"
+import { FlatList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
 import { AuctionResultFragmentContainer } from "../../Lists/AuctionResultListItem"
+import { KeywordFilter } from "./KeywordFilter"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist
@@ -35,10 +36,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
   const filterParams = filterArtworksParams(appliedFilters, "auctionResult")
 
   useEffect(() => {
-    setFilterTypeAction("auctionResult")
-  }, [])
-
-  useEffect(() => {
     if (applyFilters) {
       relay.refetchConnection(
         PAGE_SIZE,
@@ -47,7 +44,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
             throw new Error("ArtistInsights/ArtistAuctionResults filter error: " + error.message)
           }
         },
-        filterParams
+        { ...filterParams }
       )
       scrollToTop()
     }
@@ -55,6 +52,10 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
 
   const auctionResults = extractNodes(artist.auctionResultsConnection)
   const [loadingMoreData, setLoadingMoreData] = useState(false)
+
+  useEffect(() => {
+    setFilterTypeAction("auctionResult")
+  }, [])
 
   const getSortDescription = useCallback(() => {
     const sortMode = ORDERED_AUCTION_RESULTS_SORTS.find((sort) => sort.paramValue === filterParams?.sort)
@@ -117,64 +118,64 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
     </>
   )
 
-  if (!auctionResults.length) {
-    return (
-      <Box my="80px">
-        <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} />
-      </Box>
-    )
-  }
-
   const resultsString = Number(artist.auctionResultsConnection?.totalCount) > 1 ? "results" : "result"
 
   return (
-    <FlatList
-      data={auctionResults}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <AuctionResultFragmentContainer
-          auctionResult={item}
-          onPress={() => {
-            tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))
-            navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
-          }}
-        />
-      )}
-      ListHeaderComponent={() => (
-        <Flex px={2}>
-          <Flex flexDirection="row" alignItems="center">
-            <InfoButton
-              titleElement={
-                <Text variant="title" mr={0.5}>
-                  Auction Results
-                </Text>
-              }
-              trackEvent={() => {
-                tracking.trackEvent(tappedInfoBubble(tracks.tapAuctionResultsInfo()))
+    <View>
+      <Flex>
+        <Flex flexDirection="row" alignItems="center">
+          <InfoButton
+            titleElement={
+              <Text variant="title" mr={0.5}>
+                Auction Results
+              </Text>
+            }
+            trackEvent={() => {
+              tracking.trackEvent(tappedInfoBubble(tracks.tapAuctionResultsInfo()))
+            }}
+            modalTitle={"Auction Results"}
+            maxModalHeight={310}
+            modalContent={renderAuctionResultsModal()}
+          />
+        </Flex>
+        <SortMode variant="small" color="black60">
+          {!!artist.auctionResultsConnection?.totalCount
+            ? new Intl.NumberFormat().format(artist.auctionResultsConnection.totalCount)
+            : 0}{" "}
+          {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
+        </SortMode>
+        <Separator borderColor={color("black5")} mt="2" />
+        <KeywordFilter />
+      </Flex>
+      {auctionResults.length ? (
+        <FlatList
+          data={auctionResults}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <AuctionResultFragmentContainer
+              auctionResult={item}
+              onPress={() => {
+                tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))
+                navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
               }}
-              modalTitle={"Auction Results"}
-              maxModalHeight={310}
-              modalContent={renderAuctionResultsModal()}
             />
-          </Flex>
-          <SortMode variant="small" color="black60">
-            {!!artist.auctionResultsConnection?.totalCount &&
-              new Intl.NumberFormat().format(artist.auctionResultsConnection.totalCount)}{" "}
-            {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
-          </SortMode>
-          <Separator borderColor={color("black5")} mt="2" />
-        </Flex>
+          )}
+          ItemSeparatorComponent={() => (
+            <Flex px={2}>
+              <Separator borderColor={color("black5")} />
+            </Flex>
+          )}
+          style={{ width: useScreenDimensions().width, left: -20 }}
+          onEndReached={loadMoreAuctionResults}
+          ListFooterComponent={loadingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null}
+          contentContainerStyle={{ paddingBottom: 20 }}
+        />
+      ) : (
+        <Box my="80px">
+          <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} />
+        </Box>
       )}
-      ItemSeparatorComponent={() => (
-        <Flex px={2}>
-          <Separator borderColor={color("black5")} />
-        </Flex>
-      )}
-      style={{ width: useScreenDimensions().width, left: -20 }}
-      onEndReached={loadMoreAuctionResults}
-      ListFooterComponent={loadingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null}
-      contentContainerStyle={{ paddingBottom: 20 }}
-    />
+    </View>
   )
 }
 
@@ -191,6 +192,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
         earliestCreatedYear: { type: "Int", defaultValue: 1000 }
+        keyword: { type: "String" }
         latestCreatedYear: { type: "Int", defaultValue: 2050 }
         organizations: { type: "[String]" }
         sizes: { type: "[ArtworkSizes]" }
@@ -206,6 +208,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
           categories: $categories
           earliestCreatedYear: $earliestCreatedYear
           first: $count
+          keyword: $keyword
           latestCreatedYear: $latestCreatedYear
           organizations: $organizations
           sizes: $sizes
@@ -246,6 +249,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         $count: Int!
         $cursor: String
         $earliestCreatedYear: Int
+        $keyword: String
         $latestCreatedYear: Int
         $organizations: [String]
         $sizes: [ArtworkSizes]
@@ -259,6 +263,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
               count: $count
               cursor: $cursor
               earliestCreatedYear: $earliestCreatedYear
+              keyword: $keyword
               latestCreatedYear: $latestCreatedYear
               organizations: $organizations
               sizes: $sizes
