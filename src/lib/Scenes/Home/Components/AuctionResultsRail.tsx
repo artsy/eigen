@@ -50,6 +50,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
 
           return (
             <AuctionResultFragmentContainer
+              showArtistName
               auctionResult={item}
               onPress={() => {
                 trackEvent(tracks.AuctionResultsRailThumbnailTapEvent(index))

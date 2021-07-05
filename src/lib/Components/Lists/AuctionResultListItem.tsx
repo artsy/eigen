@@ -12,9 +12,10 @@ import { AuctionResultsMidEstimate } from "../AuctionResult/AuctionResultMidEsti
 interface Props {
   auctionResult: AuctionResultListItem_auctionResult
   onPress: () => void
+  showArtistName?: boolean
 }
 
-const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress }) => {
+const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress, showArtistName }) => {
   const QAInfo: React.FC = () => (
     <QAInfoManualPanel position="absolute" top={0} left={95}>
       <QAInfoRow name="id" value={auctionResult.internalID} />
@@ -54,9 +55,11 @@ const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress }) => {
         <Flex pl={15} flex={1} flexDirection="row" justifyContent="space-between">
           <Flex flex={3}>
             <Flex>
-              <Text variant="caption" ellipsizeMode="middle" numberOfLines={2} fontWeight="bold">
-                {auctionResult.artist?.name}
-              </Text>
+              {!!showArtistName && (
+                <Text variant="caption" ellipsizeMode="middle" numberOfLines={2} fontWeight="bold">
+                  {auctionResult.artist?.name}
+                </Text>
+              )}
               <Text variant="caption" ellipsizeMode="middle" numberOfLines={2} style={{ flexShrink: 1 }}>
                 {auctionResult.title}
                 {!!auctionResult.dateText && auctionResult.dateText !== "" && `, ${auctionResult.dateText}`}
