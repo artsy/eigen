@@ -1,35 +1,35 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 956ec3ea65b6fb1a68dabdf45a966f9f */
+/* @relayHash 1d55cc406a47511f8cbad4f9d58adb10 */
 
 import { ConcreteRequest } from "relay-runtime";
-export type DeleteSavedSearchInput = {
+export type DisableSavedSearchInput = {
     clientMutationId?: string | null;
     searchCriteriaID: string;
 };
-export type SavedSearchBannerDeleteSavedSearchMutationVariables = {
-    input: DeleteSavedSearchInput;
+export type SavedSearchBannerDisableSavedSearchMutationVariables = {
+    input: DisableSavedSearchInput;
 };
-export type SavedSearchBannerDeleteSavedSearchMutationResponse = {
-    readonly deleteSavedSearch: {
+export type SavedSearchBannerDisableSavedSearchMutationResponse = {
+    readonly disableSavedSearch: {
         readonly savedSearchOrErrors: {
             readonly internalID?: string;
         };
     } | null;
 };
-export type SavedSearchBannerDeleteSavedSearchMutation = {
-    readonly response: SavedSearchBannerDeleteSavedSearchMutationResponse;
-    readonly variables: SavedSearchBannerDeleteSavedSearchMutationVariables;
+export type SavedSearchBannerDisableSavedSearchMutation = {
+    readonly response: SavedSearchBannerDisableSavedSearchMutationResponse;
+    readonly variables: SavedSearchBannerDisableSavedSearchMutationVariables;
 };
 
 
 
 /*
-mutation SavedSearchBannerDeleteSavedSearchMutation(
-  $input: DeleteSavedSearchInput!
+mutation SavedSearchBannerDisableSavedSearchMutation(
+  $input: DisableSavedSearchInput!
 ) {
-  deleteSavedSearch(input: $input) {
+  disableSavedSearch(input: $input) {
     savedSearchOrErrors {
       __typename
       ... on SearchCriteria {
@@ -74,14 +74,14 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "SavedSearchBannerDeleteSavedSearchMutation",
+    "name": "SavedSearchBannerDisableSavedSearchMutation",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "DeleteSavedSearchPayload",
+        "concreteType": "DisableSavedSearchPayload",
         "kind": "LinkedField",
-        "name": "deleteSavedSearch",
+        "name": "disableSavedSearch",
         "plural": false,
         "selections": [
           {
@@ -107,14 +107,14 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "SavedSearchBannerDeleteSavedSearchMutation",
+    "name": "SavedSearchBannerDisableSavedSearchMutation",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "DeleteSavedSearchPayload",
+        "concreteType": "DisableSavedSearchPayload",
         "kind": "LinkedField",
-        "name": "deleteSavedSearch",
+        "name": "disableSavedSearch",
         "plural": false,
         "selections": [
           {
@@ -142,13 +142,13 @@ return {
     ]
   },
   "params": {
-    "id": "956ec3ea65b6fb1a68dabdf45a966f9f",
+    "id": "1d55cc406a47511f8cbad4f9d58adb10",
     "metadata": {},
-    "name": "SavedSearchBannerDeleteSavedSearchMutation",
+    "name": "SavedSearchBannerDisableSavedSearchMutation",
     "operationKind": "mutation",
     "text": null
   }
 };
 })();
-(node as any).hash = '4aa47c8faec3244c12d629027d56602d';
+(node as any).hash = 'cc429474e1db5d4dab4d92df4b214c3b';
 export default node;
