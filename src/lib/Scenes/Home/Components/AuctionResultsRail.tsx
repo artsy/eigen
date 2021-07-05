@@ -29,7 +29,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
   return (
     <View>
       <Flex pl="2" pr="2">
-        <SectionTitle title="Auction Results for You" onPress={navigateToAuctionResultsForYou} />
+        <SectionTitle title="Auction Results for Artists You Follow" onPress={navigateToAuctionResultsForYou} />
       </Flex>
 
       <CardRailFlatList
@@ -50,6 +50,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
 
           return (
             <AuctionResultFragmentContainer
+              showArtistName
               auctionResult={item}
               onPress={() => {
                 trackEvent(tracks.AuctionResultsRailThumbnailTapEvent(index))

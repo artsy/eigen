@@ -7,3 +7,21 @@ brew update
 brew tap getsentry/tools
 brew install sentry-cli
 bundle exec fastlane update_plugins
+
+if ! which aws;
+then
+  echo "installing aws"
+  # install awscli
+  brew install awscli
+
+  # configure awscli
+  mkdir -p ~/.aws
+  touch ~/.aws/config
+  echo "[default]" >> ~/.aws/config
+  echo "region = us-east-1" >> ~/.aws/config
+  echo "output = json" >> ~/.aws/config
+else
+  echo "aws already installed"
+fi
+
+aws s3 cp s3://artsy-citadel/eigen/GoogleService-Info.plist GoogleService-Info.plist

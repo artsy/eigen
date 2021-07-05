@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
@@ -68,6 +68,7 @@ import { Search } from "./Scenes/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
+import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
@@ -399,8 +400,12 @@ for (const moduleName of Object.keys(modules)) {
 }
 
 const Main: React.FC<{}> = track()(({}) => {
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
+    })
+  }, [])
   const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
-
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) =>
     showNewOnboarding ? !!state.auth.userID : !!state.native.sessionState.userID

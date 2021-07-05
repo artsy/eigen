@@ -173,7 +173,7 @@ commands:
           command: ./scripts/ci-android
       - run:
           name: Download fonts from s3
-          command: ./scripts/download-fonts
+          command: ./scripts/download-assets
       - save_cache:
           key: v1-app_build_android-{{ checksum ".manifests/app_build" }}
           paths:
