@@ -2,8 +2,7 @@ import { cloneDeep, first } from "lodash"
 import React from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 import { navigate } from "lib/navigation/navigate"
 
@@ -45,14 +44,13 @@ describe("AuctionResultsRailFragmentContainer", () => {
 
   it("doesn't throw when rendered", () => {
     renderWithWrappers(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
+    env.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Query: () => ({
           me: meResponseMock,
-        },
+        }),
       })
-    })
+    )
   })
 
   it("looks correct when rendered with sales missing auctionResultsByFollowedArtists", () => {
@@ -60,29 +58,28 @@ describe("AuctionResultsRailFragmentContainer", () => {
     auctionResultsCopy.results.forEach((result) => {
       result.auctionResultsByFollowedArtists.edges = []
     })
+
     renderWithWrappers(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          me: meResponseMock,
-        },
+    env.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Query: () => ({
+          me: auctionResultsCopy,
+        }),
       })
-    })
+    )
   })
 
   it("routes to auction-results-for-you URL", () => {
     const tree = renderWithWrappers(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
+    env.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Query: () => ({
           me: meResponseMock,
-        },
+        }),
       })
-    })
-    // @ts-ignore
-    first(tree.root.findAllByType(SectionTitle)).props.onPress()
+    )
+
+    first(tree.root.findAllByType(SectionTitle))?.props.onPress()
     expect(navigate).toHaveBeenCalledWith("/auction-results-for-you")
   })
 })
