@@ -16,8 +16,8 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
+import { KeywordFilter } from "../../ArtworkFilter/Filters/KeywordFilter"
 import { AuctionResultFragmentContainer } from "../../Lists/AuctionResultListItem"
-import { KeywordFilter } from "./KeywordFilter"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist

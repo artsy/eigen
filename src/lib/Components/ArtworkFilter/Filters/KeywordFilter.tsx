@@ -10,7 +10,6 @@ export const KeywordFilter: React.FC = () => {
   const applyFiltersAction = ArtworksFiltersStore.useStoreActions((action) => action.applyFiltersAction)
 
   const updateKeywordFilter = (text: string) => {
-    console.log("YEAAAAAAH", text)
     selectFiltersAction({
       displayText: text,
       paramValue: text,
@@ -31,7 +30,8 @@ export const KeywordFilter: React.FC = () => {
   return (
     <Input
       icon={<SearchIcon width={18} height={18} />}
-      defaultValue={""}
+      defaultValue=""
+      placeholder="Search by artwork title, series, or description"
       onChangeText={handleChangeText}
       autoFocus={typeof jest === "undefined"}
       autoCorrect={false}
