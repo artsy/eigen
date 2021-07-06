@@ -5,7 +5,7 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <SailthruMobile/SailthruMobile.h>
 #import <Firebase.h>
-#import "Appboy-iOS-SDK/AppboyKit.h"
+#import <Appboy.h>
 
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
@@ -183,14 +183,12 @@ static ARAppDelegate *_sharedInstance = nil;
 
     NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];
 
-    if (ARAppStatus.isBetaOrDev) {
-		// comment it out for now, testing braze stuff
-        // brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_STAGING_APP_KEY_IOS"];
-    }
-
+    NSMutableDictionary *appboyOptions = [NSMutableDictionary dictionary];
+    appboyOptions[ABKAppboyEndpointDelegateKey] = self;
     [Appboy startWithApiKey:brazeAppKey
       inApplication:application
-      withLaunchOptions:launchOptions];
+      withLaunchOptions:launchOptions
+      withAppboyOptions:appboyOptions];
 
     FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
     [fbAppDelegate application:application didFinishLaunchingWithOptions:launchOptions];
@@ -200,6 +198,9 @@ static ARAppDelegate *_sharedInstance = nil;
     return YES;
 }
 
+- (NSString *)getApiEndpoint:(NSString *)appboyApiEndpoint {
+    return @"sdk.iad-06.braze.com";
+}
 
 - (void)registerNewSessionOpened
 {
