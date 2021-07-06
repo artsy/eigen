@@ -13,9 +13,10 @@ import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/Stick
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
 import { Schema } from "lib/utils/track"
-import { Box } from "palette"
+import { Box, Message } from "palette"
 import React, { useContext, useState } from "react"
 import { useEffect } from "react"
+import { useRef } from 'react'
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -36,6 +37,7 @@ export const GeneArtworks: React.FC<GeneArtworksProps> = (props) => {
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
   const filterParams = filterArtworksParams(appliedFilters, "geneArtwork")
   const artworksTotal = gene.artworks?.counts?.total ?? 0
+  const initialArtworksTotal = useRef(artworksTotal)
 
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
@@ -71,6 +73,14 @@ export const GeneArtworks: React.FC<GeneArtworksProps> = (props) => {
       </Box>
     )
   }, [artworksTotal, openFilterModal])
+
+  if (initialArtworksTotal.current === 0) {
+    return (
+      <Box mt={1}>
+        <Message>There aren’t any works available in the category at this time.</Message>
+      </Box>
+    )
+  }
 
   if (artworksTotal === 0) {
     return (
