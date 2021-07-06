@@ -178,7 +178,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         />
       ) : (
         <Box my="80px">
-          <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} hideButton={isKeywordFilterActive} />
+          <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} hideClearButton={isKeywordFilterActive} />
         </Box>
       )}
     </View>
