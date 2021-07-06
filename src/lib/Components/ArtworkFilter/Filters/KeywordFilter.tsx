@@ -8,6 +8,8 @@ import { debounce } from "lodash"
 import React, { useEffect, useMemo, useRef } from "react"
 import { useTracking } from "react-tracking"
 
+const DEBOUNCE_DELAY = 600
+
 interface KeywordFilterProps {
   artistId: string
   artistSlug: string
@@ -35,7 +37,7 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({ artistId, artistSl
     applyFiltersAction()
   }
 
-  const handleChangeText = useMemo(() => debounce(updateKeywordFilter, 300), [appliedFiltersParams])
+  const handleChangeText = useMemo(() => debounce(updateKeywordFilter, DEBOUNCE_DELAY), [appliedFiltersParams])
 
   // clear input text when keyword filter is reseted
   useEffect(() => {

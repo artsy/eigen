@@ -7,6 +7,7 @@ interface ZeroStateProps {
   id: string
   slug: string
   trackClear?: (id: string, slug: string) => void
+  hideButton: boolean
 }
 
 export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) => {
@@ -17,18 +18,20 @@ export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) =>
     <Flex flexDirection="column" px={4}>
       <ZeroStateMessage size="3">No results found{"\n"}Please try another search.</ZeroStateMessage>
       <Flex m="0 auto" pt={2}>
-        <Button
-          size="medium"
-          variant="secondaryGray"
-          onPress={() => {
-            if (trackClear) {
-              trackClear(id, slug)
-            }
-            clearFiltersZeroStateAction()
-          }}
-        >
-          Clear filters
-        </Button>
+        {!props.hideButton && (
+          <Button
+            size="medium"
+            variant="secondaryGray"
+            onPress={() => {
+              if (trackClear) {
+                trackClear(id, slug)
+              }
+              clearFiltersZeroStateAction()
+            }}
+          >
+            Clear filters
+          </Button>
+        )}
       </Flex>
     </Flex>
   )

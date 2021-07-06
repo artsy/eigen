@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
-import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { filterArtworksParams, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -123,6 +123,9 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
 
   const resultsString = Number(artist.auctionResultsConnection?.totalCount) > 1 ? "results" : "result"
 
+  const isKeywordFilterActive = !!appliedFilters?.find((filter) => filter.paramName === FilterParamName.keyword)
+    ?.paramValue
+
   return (
     <View>
       <Flex>
@@ -175,7 +178,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         />
       ) : (
         <Box my="80px">
-          <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} />
+          <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} hideButton={isKeywordFilterActive} />
         </Box>
       )}
     </View>
