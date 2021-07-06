@@ -1,7 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 652a641da607d79d8cabb1bf57c1e027 */
+/* @relayHash af1f6be37b2952d37ddff86e05aca3d6 */
+
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type HomePageHeroUnitImageVersion = "NARROW" | "WIDE" | "%future added value";
@@ -2050,11 +2051,7 @@ return {
     ]
   },
   "params": {
-<<<<<<< HEAD
-    "id": "652a641da607d79d8cabb1bf57c1e027",
-=======
-    "id": "58410ce575f15b2561b4545f42380830",
->>>>>>> 86452cc97 (feat: Annotate home screen queries with optionalField directive)
+    "id": "af1f6be37b2952d37ddff86e05aca3d6",
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",

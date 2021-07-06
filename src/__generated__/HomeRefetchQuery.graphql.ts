@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a19a25ef5625d47b8b19d57990161c4f */
+/* @relayHash d923ed9a26821ff1a25d3dd2f4693349 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -2045,11 +2045,7 @@ return {
     ]
   },
   "params": {
-<<<<<<< HEAD
-    "id": "a19a25ef5625d47b8b19d57990161c4f",
-=======
-    "id": "09acaa4921df6a4a419c5f1c9062a258",
->>>>>>> 86452cc97 (feat: Annotate home screen queries with optionalField directive)
+    "id": "d923ed9a26821ff1a25d3dd2f4693349",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",
