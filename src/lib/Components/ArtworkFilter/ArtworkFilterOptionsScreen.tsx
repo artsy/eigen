@@ -57,6 +57,7 @@ export enum FilterModalMode {
   Partner = "Partner",
   SaleArtworks = "SaleArtworks",
   Show = "Show",
+  Gene = "Gene",
 }
 
 export const ArtworkFilterOptionsScreen: React.FC<
@@ -146,6 +147,9 @@ export const ArtworkFilterOptionsScreen: React.FC<
                 case "Fair":
                   trackClear(PageNames.FairPage, OwnerEntityTypes.Fair)
                   break
+                case FilterModalMode.Gene:
+                  trackClear(PageNames.GenePage, OwnerEntityTypes.Gene)
+                  break
               }
 
               clearAllFilters()
@@ -220,6 +224,9 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
         filterOptionToDisplayConfigMap.organizations,
       ]
 
+    case FilterModalMode.Gene:
+      return [filterOptionToDisplayConfigMap.sort]
+
     default:
       return [
         filterOptionToDisplayConfigMap.sort,
@@ -270,6 +277,9 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
         "majorPeriods",
         "colors",
       ]
+      break
+    case FilterModalMode.Gene:
+      sortOrder = ["sort", "medium", "additionalGeneIDs", "priceRange"]
       break
   }
 
