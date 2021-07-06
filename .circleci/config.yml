@@ -445,7 +445,7 @@ jobs:
       - install-node-modules
       - run:
           name: Update Changelog
-          command: node node scripts/changelog/commitChangelog.js
+          command: node scripts/changelog/commitChangelog.js
       - store_artifacts:
           path: .manifests
 workflows:
