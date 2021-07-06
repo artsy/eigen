@@ -26,7 +26,7 @@ const exec = (command) => {
 const forceCheckout = () => {
   const logger = ora("force checkout").start()
   try {
-    exec(`git checkout ${DEFAULT_CHANGELOG_BRANCH}}`)
+    exec(`git checkout ${DEFAULT_CHANGELOG_BRANCH}`)
     exec(`git reset master --hard`)
   } catch (_) {
     exec(`git checkout -b ${DEFAULT_CHANGELOG_BRANCH}`)
