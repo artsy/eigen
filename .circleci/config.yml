@@ -434,6 +434,20 @@ jobs:
           name: Promote if play_store_submission
           command: ./scripts/promote-if-playstore-submission-branch
 
+  update-changelog:
+    executor:
+      name: node/default
+      tag: "14.13.1"
+
+    steps:
+      - checkout
+      - generate-checksums
+      - install-node-modules
+      - run:
+          name: Update Changelog
+          command: node node scripts/changelog/commitChangelog.js
+      - store_artifacts:
+          path: .manifests
 workflows:
   version: 2
   nightly:
@@ -458,6 +472,13 @@ workflows:
   #   jobs:
   #     - check-metaphysics-freshness
 
+  update-changelog-workflow:
+    jobs:
+      - update-changelog:
+          filters:
+            branches:
+              only:
+                - master
   promote:
     jobs:
       - promote-beta-to-app-store:
