@@ -2,11 +2,6 @@
 set -euxo pipefail
 
 
-if test ${CI:-} = true
-then
-  ./scripts/setup-distribute-linux
-fi
-
 # Create fonts directory
 mkdir -p android/app/src/main/assets/fonts
 

@@ -2,7 +2,7 @@ import { ActionType, OwnerType, ToggledSavedSearch } from "@artsy/cohesion"
 import { captureMessage } from "@sentry/react-native"
 import { SavedSearchBanner_me } from "__generated__/SavedSearchBanner_me.graphql"
 import { SavedSearchBannerCreateSavedSearchMutation } from "__generated__/SavedSearchBannerCreateSavedSearchMutation.graphql"
-import { SavedSearchBannerDeleteSavedSearchMutation } from "__generated__/SavedSearchBannerDeleteSavedSearchMutation.graphql"
+import { SavedSearchBannerDisableSavedSearchMutation } from "__generated__/SavedSearchBannerDisableSavedSearchMutation.graphql"
 import { SavedSearchBannerQuery } from "__generated__/SavedSearchBannerQuery.graphql"
 import { FilterParams, prepareFilterParamsForSaveSearchInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
@@ -96,12 +96,12 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
     })
   }
 
-  const deleteSavedSearch = () => {
+  const disableSavedSearch = () => {
     setSaving(true)
-    commitMutation<SavedSearchBannerDeleteSavedSearchMutation>(relay.environment, {
+    commitMutation<SavedSearchBannerDisableSavedSearchMutation>(relay.environment, {
       mutation: graphql`
-        mutation SavedSearchBannerDeleteSavedSearchMutation($input: DeleteSavedSearchInput!) {
-          deleteSavedSearch(input: $input) {
+        mutation SavedSearchBannerDisableSavedSearchMutation($input: DisableSavedSearchInput!) {
+          disableSavedSearch(input: $input) {
             savedSearchOrErrors {
               ... on SearchCriteria {
                 internalID
@@ -122,7 +122,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
           message: "Don't worry, you can always create a new one.",
           placement: "top",
         })
-        trackToggledSavedSearchEvent(false, response.deleteSavedSearch?.savedSearchOrErrors.internalID)
+        trackToggledSavedSearchEvent(false, response.disableSavedSearch?.savedSearchOrErrors.internalID)
       },
       onError: () => {
         setSaving(false)
@@ -184,7 +184,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
     }
 
     if (enabled) {
-      deleteSavedSearch()
+      disableSavedSearch()
     } else {
       checkNotificationPermissionsAndCreate()
     }

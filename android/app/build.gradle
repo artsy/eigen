@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.google.gms.google-services'
 project.ext.envConfigFiles = [
     debug: ".env.shared",
     release: System.getenv('CI') == "true" ? ".env.ci" : ".env.shared",
@@ -202,6 +203,7 @@ android {
 }
 
 dependencies {
+    implementation platform('com.google.firebase:firebase-bom:28.1.0')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules

@@ -69,7 +69,9 @@ export const ArtsyReactWebViewPage: React.FC<
         url: shareUrl,
       })
     } catch (error) {
-      console.error("ArtsyReactWebView.tsx", error)
+      if (__DEV__) {
+        console.error("ArtsyReactWebView.tsx", error)
+      }
     }
   }
 
@@ -88,7 +90,7 @@ export const ArtsyReactWebViewPage: React.FC<
             }
           }}
           useShareButton={showShareButton}
-          onRightButtonPress={handleArticleShare}
+          onRightButtonPress={showShareButton ? handleArticleShare : undefined}
         >
           {title}
         </FancyModalHeader>
