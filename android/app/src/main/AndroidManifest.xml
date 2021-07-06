@@ -99,6 +99,7 @@
                 <data android:pathPrefix="/make-offer" />
                 <data android:pathPrefix="/my-account" />
                 <data android:pathPrefix="/my-profile" />
+                <data android:pathPrefix="/my-profile/saved-addresses" />
                 <data android:pathPrefix="/orders" />
                 <data android:pathPrefix="/orders" />
                 <data android:pathPrefix="/privacy-request" />
