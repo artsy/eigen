@@ -8,6 +8,7 @@ import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
 import { navigate } from "lib/navigation/navigate"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Box, bullet, color, Flex, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
@@ -27,6 +28,8 @@ interface Props {
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop }) => {
   const tracking = useTracking()
+
+  const showKeywordFilter = useFeatureFlag("AREnableAuctionResultsKeywordFilter")
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
   const setFilterTypeAction = ArtworksFiltersStore.useStoreActions((state) => state.setFilterTypeAction)
@@ -145,7 +148,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
           {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
         </SortMode>
         <Separator borderColor={color("black5")} mt="2" />
-        <KeywordFilter artistId={artist.internalID} artistSlug={artist.slug} />
+        {!!showKeywordFilter && <KeywordFilter artistId={artist.internalID} artistSlug={artist.slug} />}
       </Flex>
       {auctionResults.length ? (
         <FlatList

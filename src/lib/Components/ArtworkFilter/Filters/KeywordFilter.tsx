@@ -51,7 +51,6 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({ artistId, artistSl
 
   // Stop the invocation of the debounced function after unmounting
   useEffect(() => {
-    // TODO clear filter when leaving
     return () => handleChangeText.cancel()
   }, [])
 

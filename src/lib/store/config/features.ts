@@ -118,6 +118,11 @@ export const features = defineFeatures({
     description: "Enable saved addresses",
     showInAdminMenu: true,
   },
+  AREnableAuctionResultsKeywordFilter: {
+    readyForRelease: false,
+    description: "Enable auction results keyword filter",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
