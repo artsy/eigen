@@ -145,7 +145,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
           {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
         </SortMode>
         <Separator borderColor={color("black5")} mt="2" />
-        <KeywordFilter />
+        <KeywordFilter artistId={artist.internalID} artistSlug={artist.slug} />
       </Flex>
       {auctionResults.length ? (
         <FlatList
