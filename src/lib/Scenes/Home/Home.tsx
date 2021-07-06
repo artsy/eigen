@@ -198,21 +198,21 @@ export const HomeFragmentContainer = createRefetchContainer(
           order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES]
           # LIVE_AUCTIONS and CURRENT_FAIRS both have their own modules, below.
           exclude: [SAVED_WORKS, GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]
-        ) @optionalField {
+        ) {
           id
           ...ArtworkRail_rail
         }
-        artistModules @optionalField {
+        artistModules {
           id
           ...ArtistRail_rail
         }
-        fairsModule @optionalField {
+        fairsModule {
           ...FairsRail_fairsModule
         }
-        salesModule @optionalField {
+        salesModule {
           ...SalesRail_salesModule
         }
-        marketingCollectionsModule @optionalField {
+        marketingCollectionsModule {
           ...CollectionsRail_collectionsModule
         }
         ...HomeHero_homePage @arguments(heroImageVersion: $heroImageVersion)

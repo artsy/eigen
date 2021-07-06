@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d923ed9a26821ff1a25d3dd2f4693349 */
+/* @relayHash 4541a8458c5cb77261e61bd203074c1e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -334,21 +334,21 @@ fragment Home_featured on ViewingRoomConnection {
 }
 
 fragment Home_homePage_1IwJ0h on HomePage {
-  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES], exclude: [SAVED_WORKS, GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]) @optionalField {
+  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES], exclude: [SAVED_WORKS, GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]) {
     id
     ...ArtworkRail_rail
   }
-  artistModules @optionalField {
+  artistModules {
     id
     ...ArtistRail_rail
   }
-  fairsModule @optionalField {
+  fairsModule {
     ...FairsRail_fairsModule
   }
-  salesModule @optionalField {
+  salesModule {
     ...SalesRail_salesModule
   }
-  marketingCollectionsModule @optionalField {
+  marketingCollectionsModule {
     ...CollectionsRail_collectionsModule
   }
   ...HomeHero_homePage_1IwJ0h
@@ -2045,7 +2045,7 @@ return {
     ]
   },
   "params": {
-    "id": "d923ed9a26821ff1a25d3dd2f4693349",
+    "id": "4541a8458c5cb77261e61bd203074c1e",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",
