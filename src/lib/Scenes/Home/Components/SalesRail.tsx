@@ -44,6 +44,10 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
+  if (!props.salesModule.results?.length) {
+    return null
+  }
+
   return (
     <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.auctions })}>
       <View>
