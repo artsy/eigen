@@ -36,6 +36,7 @@ upcoming:
     - Fix visual bug on auction result list item on artist insights screen - ole
     - Fix auction result home rail loading spinner issue - ole
     - Fix share button on BNMO Flow - ole, mounir, sam, george
+    - Fix collection home rail loading spinner issue - ole
 
 releases:
   - version: 6.9.5
