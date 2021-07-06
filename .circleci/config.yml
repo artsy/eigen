@@ -448,11 +448,6 @@ jobs:
           command: node node scripts/changelog/commitChangelog.js
       - store_artifacts:
           path: .manifests
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .manifests
-
 workflows:
   version: 2
   nightly:
