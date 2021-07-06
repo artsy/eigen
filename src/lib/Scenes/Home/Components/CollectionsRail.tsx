@@ -36,6 +36,10 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
+  // if (!props.collectionsModule.results?.length) {
+  //   return null
+  // }
+
   return (
     <View>
       <Flex pl="2" pr="2">
