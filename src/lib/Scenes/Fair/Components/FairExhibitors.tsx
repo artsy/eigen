@@ -1,6 +1,7 @@
 import { FairExhibitors_fair } from "__generated__/FairExhibitors_fair.graphql"
 import Spinner from "lib/Components/Spinner"
 import { FAIR2_EXHIBITORS_PAGE_SIZE } from "lib/data/constants"
+import { extractNodes } from "lib/utils/extractNodes"
 import { Box, Flex } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
@@ -14,6 +15,8 @@ interface FairExhibitorsProps {
 
 const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
   const [isLoading, setIsLoading] = useState(false)
+
+  const shows = extractNodes(fair?.exhibitors)
 
   const loadMoreExhibitors = () => {
     if (!relay.hasMore() || relay.isLoading()) {
@@ -32,9 +35,8 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
 
   return (
     <FlatList
-      data={fair?.exhibitors?.edges}
-      renderItem={({ item }) => {
-        const show = item?.node
+      data={shows}
+      renderItem={({ item: show }) => {
         if ((show?.counts?.artworks ?? 0) === 0 || !show?.partner) {
           // Skip rendering of booths without artworks
           return null
@@ -46,7 +48,7 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
           </Box>
         )
       }}
-      keyExtractor={(item) => String(item?.node?.id)}
+      keyExtractor={(item) => String(item?.id)}
       onEndReached={loadMoreExhibitors}
       ListFooterComponent={
         isLoading ? (
