@@ -6,6 +6,7 @@ import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
 import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
+import { navigationEvents } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
@@ -48,6 +49,7 @@ interface Props {
 
 interface State {
   refreshing: boolean
+  fetchingData: boolean
 }
 
 @screenTrack<Props>((props) => ({
@@ -64,6 +66,7 @@ interface State {
 export class Artwork extends React.Component<Props, State> {
   state = {
     refreshing: false,
+    fetchingData: false,
   }
 
   shouldRenderDetails = () => {
@@ -98,20 +101,18 @@ export class Artwork extends React.Component<Props, State> {
 
   componentDidMount() {
     this.markArtworkAsRecentlyViewed()
+    navigationEvents.addListener("modalDismissed", this.handleModalDismissed)
+  }
+
+  componentWillUnmount() {
+    navigationEvents.removeListener("modalDismissed", this.handleModalDismissed)
   }
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   componentDidUpdate(prevProps) {
     // If we are visible, but weren't, then we are re-appearing (not called on first render).
     if (this.props.isVisible && !prevProps.isVisible) {
-      this.props.relay.refetch(
-        { artistID: this.props.artworkAboveTheFold.internalID },
-        null,
-        () => {
-          this.markArtworkAsRecentlyViewed()
-        },
-        { force: true }
-      )
+      this.refetch(this.markArtworkAsRecentlyViewed)
     }
   }
 
@@ -170,6 +171,23 @@ export class Artwork extends React.Component<Props, State> {
         force: true,
       }
     )
+  }
+
+  refetch = (cb?: () => any) => {
+    this.props.relay.refetch(
+      { artistID: this.props.artworkAboveTheFold.internalID },
+      null,
+      () => {
+        cb?.()
+      },
+      { force: true }
+    )
+  }
+
+  handleModalDismissed = () => {
+    this.setState({ fetchingData: true })
+    this.refetch(() => this.setState({ fetchingData: false }))
+    return true
   }
 
   markArtworkAsRecentlyViewed = () => {
@@ -299,18 +317,24 @@ export class Artwork extends React.Component<Props, State> {
 
     return (
       <>
-        <FlatList<ArtworkPageSection>
-          keyboardShouldPersistTaps="handled"
-          data={this.sections()}
-          ItemSeparatorComponent={() => (
-            <Box mx={2} my={3}>
-              <Separator />
-            </Box>
-          )}
-          refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
-          contentContainerStyle={{ paddingBottom: 40 }}
-          renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
-        />
+        {this.state.fetchingData ? (
+          <ProvidePlaceholderContext>
+            <AboveTheFoldPlaceholder />
+          </ProvidePlaceholderContext>
+        ) : (
+          <FlatList<ArtworkPageSection>
+            keyboardShouldPersistTaps="handled"
+            data={this.sections()}
+            ItemSeparatorComponent={() => (
+              <Box mx={2} my={3}>
+                <Separator />
+              </Box>
+            )}
+            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
+            contentContainerStyle={{ paddingBottom: 40 }}
+            renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
+          />
+        )}
         <QAInfo />
       </>
     )

@@ -127,6 +127,29 @@ jest.mock("react-native-fbsdk-next", () => ({
   })),
 }))
 
+jest.mock("@react-native-google-signin/google-signin", () => ({
+  GoogleSignin: {
+    signOut: jest.fn(),
+    configure: jest.fn(),
+    hasPlayServices: jest.fn(),
+    signIn: jest.fn(),
+    getTokens: jest.fn(),
+  },
+}))
+
+jest.mock("@invertase/react-native-apple-authentication", () => ({
+  appleAuth: {
+    performRequest: jest.fn(),
+    Operation: {
+      LOGIN: 1,
+    },
+    Scope: {
+      EMAIL: 0,
+      FULL_NAME: 1,
+    },
+  },
+}))
+
 // prettier-ignore
 // tslint:disable-next-line:no-empty
 jest.mock("@sentry/react-native", () => ({ captureMessage() {},  init() {},  setUser() {},  addBreadcrumb() {},  withScope() {} }))
@@ -226,6 +249,7 @@ function getNativeModules(): OurNativeModules {
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       clearUserData: jest.fn(),
+      getUserEmail: jest.fn(),
     },
     ARPHPhotoPickerModule: {
       requestPhotos: jest.fn(),

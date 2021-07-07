@@ -4,7 +4,8 @@
 #import <AFOAuth1Client/AFOAuth1Client.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <SailthruMobile/SailthruMobile.h>
-#import "Appboy-iOS-SDK/AppboyKit.h"
+#import <Firebase.h>
+#import <Appboy.h>
 
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
@@ -182,19 +183,24 @@ static ARAppDelegate *_sharedInstance = nil;
 
     NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];
 
-    if (ARAppStatus.isBetaOrDev) {
-        brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_STAGING_APP_KEY_IOS"];
-    }
-
+    NSMutableDictionary *appboyOptions = [NSMutableDictionary dictionary];
+    appboyOptions[ABKAppboyEndpointDelegateKey] = self;
     [Appboy startWithApiKey:brazeAppKey
       inApplication:application
-      withLaunchOptions:launchOptions];
+      withLaunchOptions:launchOptions
+      withAppboyOptions:appboyOptions];
 
     FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
     [fbAppDelegate application:application didFinishLaunchingWithOptions:launchOptions];
+    if ([FIRApp defaultApp] == nil) {
+        [FIRApp configure];
+    }
     return YES;
 }
 
+- (NSString *)getApiEndpoint:(NSString *)appboyApiEndpoint {
+    return @"sdk.iad-06.braze.com";
+}
 
 - (void)registerNewSessionOpened
 {
@@ -347,7 +353,7 @@ static ARAppDelegate *_sharedInstance = nil;
     if (![[AREmission sharedInstance] reactStateBoolForKey:[ARReactStateKey userIsDev]]) {
         return;
     }
-    
+
     if (![UIDevice isPad]) {
         // For some reason the supported orientation isn’t respected when this is pushed on top
         // of a landscape VIR view.

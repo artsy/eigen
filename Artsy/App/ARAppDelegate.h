@@ -1,5 +1,6 @@
 #import <JSDecoupledAppDelegate/JSDecoupledAppDelegate.h>
 #import "AROnboardingViewController.h"
+#import <Appboy-iOS-SDK/ABKAppboyEndpointDelegate.h>
 
 @class ARWindow, SailthruMobile, ArtsyEcho;
 
@@ -10,7 +11,7 @@
 // (`[JSDecoupledAppDelegate sharedAppDelegate]`) to perform your tests on.
 
 
-@interface ARAppDelegate : UIResponder <JSApplicationStateDelegate>
+@interface ARAppDelegate : UIResponder <JSApplicationStateDelegate, ABKAppboyEndpointDelegate>
 
 + (ARAppDelegate *)sharedInstance;
 

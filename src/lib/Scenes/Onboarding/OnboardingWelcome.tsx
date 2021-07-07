@@ -4,7 +4,7 @@ import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { color, Flex, space, Spacer, Text, Touchable } from "palette"
 import React, { useEffect } from "react"
-import { Dimensions, Image } from "react-native"
+import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import Animated, { Easing } from "react-native-reanimated"
 import backgoundImage from "../../../../images/WelcomeImage.png"
@@ -19,6 +19,7 @@ const imgProps = Image.resolveAssetSource(backgoundImage)
 
 export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation }) => {
   const { width: screenWidth } = useScreenDimensions()
+  const { safeAreaInsets } = useScreenDimensions()
   // useScreenDimensions() returns the window height instead of the screen
   // We need the entire screen height here because the background image should fill
   // the entire screen including drawing below the navigation bar
@@ -52,6 +53,9 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   }, [])
 
   useEffect(() => {
+    if (Platform.OS === "ios") {
+      return
+    }
     const unsubscribe = navigation.addListener("blur", () => {
       requestAnimationFrame(() => {
         ArtsyNativeModule.setNavigationBarColor("#FFFFFF")
@@ -62,6 +66,9 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   }, [navigation])
 
   useEffect(() => {
+    if (Platform.OS === "ios") {
+      return
+    }
     const unsubscribe = navigation.addListener("focus", () => {
       requestAnimationFrame(() => {
         ArtsyNativeModule.setNavigationBarColor("#000000")
@@ -72,7 +79,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   }, [navigation])
 
   return (
-    <Flex flex={1}>
+    <Flex flex={1} style={{ paddingBottom: safeAreaInsets.bottom }}>
       <Animated.View
         style={{
           alignItems: "flex-end",

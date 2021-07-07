@@ -1,3 +1,5 @@
+import { appleAuth } from "@invertase/react-native-apple-authentication"
+import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { AccessToken, GraphRequest, LoginManager } from "react-native-fbsdk-next"
 import { __globalStoreTestUtils__, GlobalStore } from "../GlobalStore"
 
@@ -321,6 +323,131 @@ describe("AuthModel", () => {
       mockFetchJsonOnce({ error_description: "getting X-ACCESS-TOKEN error" })
 
       const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" }).catch((e) => e)
+
+      expect(result).toBe("Failed to get gravity token from gravity: getting X-ACCESS-TOKEN error")
+    })
+  })
+
+  describe("authGoogle", () => {
+    beforeEach(async () => {
+      mockFetchJsonOnce({
+        xapp_token: "my-special-token",
+        expires_in: "never",
+      })
+      await GlobalStore.actions.auth.getXAppToken()
+      mockFetch.mockClear()
+      ;(GoogleSignin.hasPlayServices as jest.Mock).mockReturnValue(true)
+      ;(GoogleSignin.signIn as jest.Mock).mockReturnValue({
+        user: { email: "googleEmail@gmail.com", name: "name from google" },
+      })
+      ;(GoogleSignin.getTokens as jest.Mock).mockReturnValue({ accessToken: "google-token" })
+    })
+
+    it("throws an error if google play services are not available", async () => {
+      ;(GoogleSignin.hasPlayServices as jest.Mock).mockReturnValue(false)
+
+      const result = await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signUp" }).catch((e) => e)
+
+      expect(result).toBe("Play services are not available.")
+    })
+
+    it("fetches profile info from google and signs up", async () => {
+      GlobalStore.actions.auth.signUp = jest.fn(() => true) as any
+
+      await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signUp" })
+
+      expect(GlobalStore.actions.auth.signUp).toHaveBeenCalledWith({
+        email: "googleEmail@gmail.com",
+        name: "name from google",
+        accessToken: "google-token",
+        oauthProvider: "google",
+      })
+    })
+
+    it("throws an error if sign up fails", async () => {
+      GlobalStore.actions.auth.signUp = jest.fn(() => false) as any
+
+      const result = await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signUp" }).catch((e) => e)
+
+      expect(result).toBe("Failed to sign up.")
+    })
+
+    it("fetches profile info from google and signs in", async () => {
+      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+      mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
+      GlobalStore.actions.auth.signIn = jest.fn(() => true) as any
+
+      await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signIn" })
+
+      expect(GlobalStore.actions.auth.signIn).toHaveBeenCalledWith({
+        email: "emailFromArtsy@mail.com",
+        accessToken: "google-token",
+        oauthProvider: "google",
+      })
+    })
+
+    it("throws an error if getting X-ACCESS-TOKEN fails", async () => {
+      mockFetchJsonOnce({ error_description: "getting X-ACCESS-TOKEN error" })
+
+      const result = await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signIn" }).catch((e) => e)
+
+      expect(result).toBe("Failed to get gravity token from gravity: getting X-ACCESS-TOKEN error")
+    })
+  })
+
+  describe("authApple", () => {
+    beforeEach(async () => {
+      mockFetchJsonOnce({
+        xapp_token: "my-special-token",
+        expires_in: "never",
+      })
+      await GlobalStore.actions.auth.getXAppToken()
+      mockFetch.mockClear()
+      ;(appleAuth.performRequest as jest.Mock).mockReturnValue({ identityToken: "apple-id-token", user: "appleUID" })
+    })
+
+    it("fetches profile info from apple and signs up", async () => {
+      GlobalStore.actions.auth.signUp = jest.fn(() => true) as any
+      ;(appleAuth.performRequest as jest.Mock).mockReturnValue({
+        identityToken: "apple-id-token",
+        user: "appleUID",
+        email: "appleEmail@mail.com",
+        fullName: {
+          givenName: "firstName",
+          familyName: "lastName",
+        },
+      })
+
+      await GlobalStore.actions.auth.authApple()
+
+      expect(GlobalStore.actions.auth.signUp).toHaveBeenCalledWith({
+        email: "appleEmail@mail.com",
+        name: "firstName lastName",
+        appleUID: "appleUID",
+        idToken: "apple-id-token",
+        oauthProvider: "apple",
+      })
+    })
+
+    it("fetches profile info from apple and signs in", async () => {
+      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+      mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
+      GlobalStore.actions.auth.signIn = jest.fn(() => true) as any
+
+      await GlobalStore.actions.auth.authApple()
+
+      expect(GlobalStore.actions.auth.signIn).toHaveBeenCalledWith({
+        email: "emailFromArtsy@mail.com",
+        appleUID: "appleUID",
+        idToken: "apple-id-token",
+        oauthProvider: "apple",
+      })
+    })
+
+    it("throws an error if getting X-ACCESS-TOKEN fails", async () => {
+      mockFetchJsonOnce({ error_description: "getting X-ACCESS-TOKEN error" })
+
+      const result = await GlobalStore.actions.auth.authApple().catch((e) => e)
 
       expect(result).toBe("Failed to get gravity token from gravity: getting X-ACCESS-TOKEN error")
     })

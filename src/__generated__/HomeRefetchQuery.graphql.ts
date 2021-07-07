@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ec0faca9165de0a3a5d094c444a297b3 */
+/* @relayHash 4541a8458c5cb77261e61bd203074c1e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,14 +34,14 @@ export type HomeRefetchQuery = {
 query HomeRefetchQuery(
   $heroImageVersion: HomePageHeroUnitImageVersion!
 ) {
-  homePage {
+  homePage @optionalField {
     ...Home_homePage_1IwJ0h
   }
-  me {
+  me @optionalField {
     ...Home_me
     id
   }
-  featured: viewingRooms(featured: true) {
+  featured: viewingRooms(featured: true) @optionalField {
     ...Home_featured
   }
   articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
@@ -193,7 +193,6 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
   internalID
   artist {
     name
-    slug
     id
   }
   images {
@@ -1728,11 +1727,7 @@ return {
                         "kind": "LinkedField",
                         "name": "artist",
                         "plural": false,
-                        "selections": [
-                          (v18/*: any*/),
-                          (v9/*: any*/),
-                          (v3/*: any*/)
-                        ],
+                        "selections": (v19/*: any*/),
                         "storageKey": null
                       },
                       {
@@ -2050,7 +2045,7 @@ return {
     ]
   },
   "params": {
-    "id": "ec0faca9165de0a3a5d094c444a297b3",
+    "id": "4541a8458c5cb77261e61bd203074c1e",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",
@@ -2058,5 +2053,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'ce3b7362bc5cf139a17e81de59c7924f';
+(node as any).hash = '037e0fe4c72156c868d4d68687983ebb';
 export default node;

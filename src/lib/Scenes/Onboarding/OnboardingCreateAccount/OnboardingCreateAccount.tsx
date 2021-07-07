@@ -209,6 +209,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
 
   const isLastStep = getCurrentRoute() === "OnboardingCreateAccountName"
   const yTranslateAnim = useRef(new Animated.Value(0))
+  const { safeAreaInsets } = useScreenDimensions()
 
   const webURL = useEnvironment().webURL
 
@@ -286,6 +287,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
         loading={isSubmitting}
         testID="signUpButton"
         variant="primaryBlack"
+        mb={safeAreaInsets.bottom}
       >
         Next
       </Button>

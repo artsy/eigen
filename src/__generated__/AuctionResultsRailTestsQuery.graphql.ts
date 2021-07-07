@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash eadc0693644d001c1cab92f9adee5f42 */
+/* @relayHash dc139ebd19a879cdac3700a74be930d4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -24,7 +24,6 @@ export type AuctionResultsRailTestsQueryRawResponse = {
                     readonly internalID: string;
                     readonly artist: ({
                         readonly name: string | null;
-                        readonly slug: string;
                         readonly id: string;
                     }) | null;
                     readonly images: ({
@@ -80,7 +79,6 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
   internalID
   artist {
     name
-    slug
     id
   }
   images {
@@ -252,13 +250,6 @@ return {
                             "args": null,
                             "kind": "ScalarField",
                             "name": "name",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "slug",
                             "storageKey": null
                           },
                           (v0/*: any*/)
@@ -440,7 +431,7 @@ return {
     ]
   },
   "params": {
-    "id": "eadc0693644d001c1cab92f9adee5f42",
+    "id": "dc139ebd19a879cdac3700a74be930d4",
     "metadata": {},
     "name": "AuctionResultsRailTestsQuery",
     "operationKind": "query",

@@ -1,4 +1,4 @@
-# :world_map:
+# :world_map: Preferred Practices
 
 As we have built our app in React Native, our understanding of how to build software has evolved. As our understanding grows, newer code uses newer techniques. Older code is often left un-updated. It can be difficult to orient oneself around what the current preferred practices are.
 
@@ -10,6 +10,21 @@ This document is a map. Not of Eigen at a specific time, but a map of how we got
 - Blog posts.
 
 Links should point to specific commits, and not a branch (in case the branch or file is deleted, these links should always work). But it's possible that a file is outdated, that our understanding has moved on since it was linked to; in that case, please update this document.
+
+## Contents
+
+- [Current Preferred Practices](#current-preferred-practices)
+  - [Use React Native for new feature development](#use-react-native-for-new-feature-development)
+  - [Leverage TypeScript to prevent runtime bugs](#leverage-typescript-to-prevent-runtime-bugs)
+  - [Keep File Structure Organized (in progress)](#keep-file-structure-organized--in-progress-)
+  - [Use Relay for Network Requests](#use-relay-for-network-requests)
+  - [Prefer Relay containers (Higher Order Components) over Hooks](#prefer-relay-containers--higher-order-components--over-hooks)
+  - [styled-system / styled-components](#styled-system---styled-components)
+  - [Write unit tests for new components](#write-unit-tests-for-new-components)
+  - [Use the Native Switchboard for Navigation (for now...)](#use-the-native-switchboard-for-navigation--for-now-)
+  - [Analytics](#analytics)
+    - [Follow the tracking docs and examples](#follow-the-tracking-docs-and-examples)
+  - [Miscellaneous](#miscellaneous)
 
 ## Current Preferred Practices
 

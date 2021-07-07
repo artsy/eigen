@@ -1,5 +1,5 @@
 import { FilterScreen } from "lib/Components/ArtworkFilter"
-import { capitalize, compact, groupBy, isEqual, pick, sortBy } from "lodash"
+import { capitalize, compact, groupBy, isEqual, isUndefined, pick, pickBy, sortBy } from "lodash"
 import { LOCALIZED_UNIT } from "./Filters/helpers"
 import { SearchCriteriaAttributes } from "./SavedSearch/types"
 
@@ -78,6 +78,7 @@ export const getSortDefaultValueByFilterType = (filterType: FilterType) => {
     saleArtwork: "position",
     showArtwork: "partner_show_position",
     auctionResult: "DATE_DESC",
+    geneArtwork: "-partner_updated_at",
   }[filterType]
 }
 
@@ -182,7 +183,7 @@ export interface FilterData {
 }
 export type FilterArray = ReadonlyArray<FilterData>
 
-export type FilterType = "artwork" | "saleArtwork" | "showArtwork" | "auctionResult"
+export type FilterType = "artwork" | "saleArtwork" | "showArtwork" | "auctionResult" | "geneArtwork"
 
 export interface FilterCounts {
   total: number | null
@@ -235,6 +236,12 @@ const DEFAULT_AUCTION_RESULT_PARAMS = {
   allowEmptyCreatedDates: true,
 } as FilterParams
 
+const DEFAULT_GENE_ARTWORK_PARAMS = {
+  sort: "-partner_updated_at",
+  priceRange: "*-*",
+  medium: "*",
+} as FilterParams
+
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams, filterType: FilterType) => {
   const groupedFilters = groupBy(appliedFilters, "paramName")
 
@@ -259,6 +266,7 @@ const getDefaultParamsByType = (filterType: FilterType) => {
     saleArtwork: DEFAULT_SALE_ARTWORKS_PARAMS,
     showArtwork: DEFAULT_SHOW_ARTWORKS_PARAMS,
     auctionResult: DEFAULT_AUCTION_RESULT_PARAMS,
+    geneArtwork: DEFAULT_GENE_ARTWORK_PARAMS,
   }[filterType]
 }
 
@@ -590,4 +598,18 @@ export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams
   }
 
   return input
+}
+
+export const getParamsForInputByFilterType = (
+  initialParams: Partial<FilterParams>,
+  filterType: FilterType = "artwork"
+) => {
+  const defaultInputParams = getDefaultParamsByType(filterType)
+  const filledInitialParams = pickBy(initialParams, (item) => !isUndefined(item)) as FilterParams
+  const allowedParams = prepareFilterArtworksParamsForInput({
+    ...defaultInputParams,
+    ...filledInitialParams,
+  })
+
+  return allowedParams
 }

@@ -1,9 +1,8 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { BidFlow } from "./Containers/BidFlow"
-import { GeneQueryRenderer } from "./Containers/Gene"
 import { InboxWrapper } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
@@ -23,6 +22,7 @@ import { CitySavedListQueryRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
+import { GeneQueryRenderer } from "./Scenes/Gene/Gene"
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 
 // Consignments / My Collection
@@ -62,12 +62,14 @@ import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { SaleQueryRenderer } from "./Scenes/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
+import { SavedAddresses } from "./Scenes/SavedAddresses/SavedAddresses"
 
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
+import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
@@ -85,11 +87,12 @@ import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { MyCollectionArtworkImagesQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkImages/MyCollectionArtworkImages"
+import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
+import { GlobalStore, useFeatureFlag, useSelectedTab } from "./store/GlobalStore"
 import { AdminMenu } from "./utils/AdminMenu"
 import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
@@ -135,22 +138,6 @@ interface PartnerLocationsProps {
   isVisible: boolean
 }
 const PartnerLocations: React.FC<PartnerLocationsProps> = (props) => <PartnerLocationsQueryRenderer {...props} />
-
-interface GeneProps {
-  geneID: string
-  medium: string
-  price_range: string
-}
-
-const Gene: React.FC<GeneProps> = screenTrack<GeneProps>((props) => {
-  return {
-    context_screen: Schema.PageNames.GenePage,
-    context_screen_owner_slug: props.geneID,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Gene,
-  }
-})((props) => {
-  return <GeneQueryRenderer {...props} />
-})
 
 interface InquiryProps {
   artworkID: string
@@ -330,7 +317,7 @@ export const modules = defineModules({
   Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
   FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
-  Gene: reactModule(Gene),
+  Gene: reactModule(GeneQueryRenderer),
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
   Inbox: reactModule(InboxWrapper, { isRootViewForTabName: "inbox" }),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
@@ -375,6 +362,7 @@ export const modules = defineModules({
   Search: reactModule(SearchWithTracking, { isRootViewForTabName: "search" }),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
+  SavedAddresses: reactModule(SavedAddresses),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),
@@ -398,9 +386,19 @@ for (const moduleName of Object.keys(modules)) {
 }
 
 const Main: React.FC<{}> = track()(({}) => {
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
+    })
+  }, [])
+  const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
-  const isLoggedIn = GlobalStore.useAppState((state) => !!state.native.sessionState.userID)
-  const onboardingState = GlobalStore.useAppState((state) => state.native.sessionState.onboardingState)
+  const isLoggedIn = GlobalStore.useAppState((state) =>
+    showNewOnboarding ? !!state.auth.userID : !!state.native.sessionState.userID
+  )
+  const onboardingState = GlobalStore.useAppState((state) =>
+    showNewOnboarding ? state.auth.onboardingState : state.native.sessionState.onboardingState
+  )
   const forceUpdateMessage = GlobalStore.useAppState((state) => state.config.echo.forceUpdateMessage)
 
   useSentryConfig()
@@ -416,7 +414,7 @@ const Main: React.FC<{}> = track()(({}) => {
   }
 
   if (!isLoggedIn || onboardingState === "incomplete") {
-    return <NativeViewController viewName="Onboarding" />
+    return showNewOnboarding ? <Onboarding /> : <NativeViewController viewName="Onboarding" />
   }
 
   return <BottomTabsNavigator />

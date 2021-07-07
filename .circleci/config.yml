@@ -154,12 +154,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v2-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v3-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Build App
           command: ls derived_data || ./scripts/ci-ios
       - save_cache:
-          key: v2-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v3-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -173,7 +173,7 @@ commands:
           command: ./scripts/ci-android
       - run:
           name: Download fonts from s3
-          command: ./scripts/download-fonts
+          command: ./scripts/download-assets
       - save_cache:
           key: v1-app_build_android-{{ checksum ".manifests/app_build" }}
           paths:
@@ -434,6 +434,20 @@ jobs:
           name: Promote if play_store_submission
           command: ./scripts/promote-if-playstore-submission-branch
 
+  update-changelog:
+    executor:
+      name: node/default
+      tag: "14.13.1"
+
+    steps:
+      - checkout
+      - generate-checksums
+      - install-node-modules
+      - run:
+          name: Update Changelog
+          command: node scripts/changelog/commitChangelog.js
+      - store_artifacts:
+          path: .manifests
 workflows:
   version: 2
   nightly:
@@ -458,6 +472,13 @@ workflows:
   #   jobs:
   #     - check-metaphysics-freshness
 
+  update-changelog-workflow:
+    jobs:
+      - update-changelog:
+          filters:
+            branches:
+              only:
+                - master
   promote:
     jobs:
       - promote-beta-to-app-store:

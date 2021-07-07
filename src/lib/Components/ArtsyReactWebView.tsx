@@ -1,9 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
 import { color } from "@artsy/palette-tokens"
 import { addBreadcrumb } from "@sentry/react-native"
-import { goBack, navigate } from "lib/navigation/navigate"
+import { dismissModal, goBack, navigate } from "lib/navigation/navigate"
 import { matchRoute } from "lib/navigation/routes"
-import { getCurrentEmissionState, GlobalStore, useEnvironment } from "lib/store/GlobalStore"
+import { getCurrentEmissionState, GlobalStore, useEnvironment, useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { parse as parseQueryString } from "query-string"
@@ -69,7 +69,9 @@ export const ArtsyReactWebViewPage: React.FC<
         url: shareUrl,
       })
     } catch (error) {
-      console.error("ArtsyReactWebView.tsx", error)
+      if (__DEV__) {
+        console.error("ArtsyReactWebView.tsx", error)
+      }
     }
   }
 
@@ -79,14 +81,16 @@ export const ArtsyReactWebViewPage: React.FC<
         <FancyModalHeader
           useXButton={isPresentedModally && !canGoBack}
           onLeftButtonPress={() => {
-            if (!canGoBack) {
+            if (isPresentedModally && !canGoBack) {
+              dismissModal()
+            } else if (!canGoBack) {
               goBack()
             } else {
               ref.current?.goBack()
             }
           }}
           useShareButton={showShareButton}
-          onRightButtonPress={handleArticleShare}
+          onRightButtonPress={showShareButton ? handleArticleShare : undefined}
         >
           {title}
         </FancyModalHeader>
@@ -192,8 +196,11 @@ const ProgressBar: React.FC<{ loadProgress: number | null }> = ({ loadProgress }
 }
 
 export function useWebViewCookies() {
+  const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
   const accesstoken = GlobalStore.useAppState((store) =>
-    Platform.OS === "ios" ? store.native.sessionState.authenticationToken : store.auth.userAccessToken
+    Platform.OS === "ios" && !showNewOnboarding
+      ? store.native.sessionState.authenticationToken
+      : store.auth.userAccessToken
   )
   const { webURL, predictionURL } = useEnvironment()
   useUrlCookies(webURL, accesstoken)

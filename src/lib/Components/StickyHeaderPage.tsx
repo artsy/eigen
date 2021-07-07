@@ -2,7 +2,7 @@ import { useAnimatedValue } from "lib/Components/StickyTabPage/reanimatedHelpers
 import { useUpdadeShouldHideBackButton } from "lib/utils/hideBackButtonOnScroll"
 import { useAutoCollapsingMeasuredView } from "lib/utils/useAutoCollapsingMeasuredView"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import React, { useRef } from "react"
+import React from "react"
 import { View } from "react-native"
 import Animated from "react-native-reanimated"
 
@@ -15,9 +15,9 @@ interface StickyHeaderPageProps {
 export const StickyHeaderPage: React.FC<StickyHeaderPageProps> = (props) => {
   const { headerContent, stickyHeaderContent, footerContent, children } = props
 
-  const footerOffsetY = useRef<Animated.Value<number>>(new Animated.Value(-1))
   const { jsx: staticHeader, nativeHeight: headerHeight } = useAutoCollapsingMeasuredView(headerContent)
   const { jsx: stickyHeader, nativeHeight: stickyHeaderHeight } = useAutoCollapsingMeasuredView(stickyHeaderContent)
+  const footerOffsetY = useAnimatedValue(-1)
   const scrollOffsetY = useAnimatedValue(0)
   const { width: screenWidth } = useScreenDimensions()
   const updateShouldHideBackButton = useUpdadeShouldHideBackButton()
@@ -35,8 +35,8 @@ export const StickyHeaderPage: React.FC<StickyHeaderPageProps> = (props) => {
   const scrollOffsetYAndStickyHeaderHeight = Animated.add(scrollOffsetY, stickyHeaderHeightRendered)
   // If we have the starting position of the footer and the user scrolled to it
   const nearToTheFooter = Animated.and(
-    Animated.greaterThan(footerOffsetY.current, 0),
-    Animated.greaterThan(scrollOffsetYAndStickyHeaderHeight, footerOffsetY.current)
+    Animated.greaterThan(footerOffsetY, 0),
+    Animated.greaterThan(scrollOffsetYAndStickyHeaderHeight, footerOffsetY)
   )
 
   const translateY = Animated.cond(
@@ -45,7 +45,7 @@ export const StickyHeaderPage: React.FC<StickyHeaderPageProps> = (props) => {
     // So we move the sticky header up by 10 on translateY until it is fully hidden
     Animated.max(
       Animated.multiply(-1, stickyHeaderHeightRendered),
-      Animated.sub(footerOffsetY.current, scrollOffsetYAndStickyHeaderHeight)
+      Animated.sub(footerOffsetY, scrollOffsetYAndStickyHeaderHeight)
     ),
     stickyHeaderOffsetY
   )
@@ -83,9 +83,9 @@ export const StickyHeaderPage: React.FC<StickyHeaderPageProps> = (props) => {
         <Animated.View style={{ width: screenWidth, height: stickyHeaderHeightRendered }} />
         {children}
         {!!footerContent && (
-          <View onLayout={(event) => (footerOffsetY.current = new Animated.Value(event.nativeEvent.layout.y))}>
+          <Animated.View onLayout={Animated.event([{ nativeEvent: { layout: { y: footerOffsetY } } }])}>
             {footerContent}
-          </View>
+          </Animated.View>
         )}
       </Animated.ScrollView>
       <Animated.View
