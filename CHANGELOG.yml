@@ -39,6 +39,7 @@ upcoming:
     - Annotate home screen queries with optionalField directive - ole
     - Fix collection home rail loading spinner issue - ole
     - Refactor category screen header and filters to match other artwork grids - dzmitry tratsiak
+    - Fix overlapping of Gallery name and time remaining for Vieweing rooms - katsiaryna alshannikava
 
 releases:
   - version: 6.9.5
