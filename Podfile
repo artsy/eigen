@@ -130,8 +130,8 @@ target 'Artsy' do
   pod 'Firebase/Auth'
 
   # Analytics
-  pod 'Analytics'
-  pod 'ARAnalytics', subspecs: %w[Segmentio]
+  # pod 'RNAnalytics', :path => './node_modules/@segment/analytics-react-native'
+  # pod 'ARAnalytics', subspecs: %w[Segmentio]
   pod 'SailthruMobile'
   pod 'Appboy-iOS-SDK'
 

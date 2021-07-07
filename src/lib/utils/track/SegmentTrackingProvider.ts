@@ -1,7 +1,9 @@
 import { Analytics } from "@segment/analytics-react-native"
-import { Platform } from "react-native"
+import { addBreadcrumb } from "@sentry/react-native"
 import Config from "react-native-config"
 import { isCohesionScreen, TrackingProvider } from "./providers"
+
+export const SEGMENT_TRACKING_PROVIDER = "SEGMENT_TRACKING_PROVIDER"
 
 let analytics: Analytics.Client
 export const SegmentTrackingProvider: TrackingProvider = {
@@ -18,19 +20,15 @@ export const SegmentTrackingProvider: TrackingProvider = {
   },
 
   identify: (userId, traits) => {
-    // temporary guard
-    if (Platform.OS !== "android") {
-      return
-    }
-
     analytics.identify(userId, traits)
   },
 
   postEvent: (info) => {
-    // temporary guard
-    if (Platform.OS !== "android") {
-      return
-    }
+    console.log("TRACKING ON IOS", info)
+    addBreadcrumb({
+      message: `${JSON.stringify(info, null, 2)}`,
+      category: "analytics",
+    })
 
     if ("action" in info) {
       const { action } = info

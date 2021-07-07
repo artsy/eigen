@@ -74,7 +74,6 @@ import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoi
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
-import { NativeAnalyticsProvider } from "./NativeModules/Events"
 import { ArticlesQueryRenderer } from "./Scenes/Articles/Articles"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { AuctionResultsForYouQueryRenderer } from "./Scenes/AuctionResultsForYou/AuctionResultsForYou"
@@ -95,6 +94,7 @@ import { GlobalStore, useFeatureFlag, useSelectedTab } from "./store/GlobalStore
 import { AdminMenu } from "./utils/AdminMenu"
 import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
+import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "./utils/track/SegmentTrackingProvider"
 import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
 
@@ -113,7 +113,7 @@ LogBox.ignoreLogs([
   "Picker has been extracted",
 ])
 
-addTrackingProvider("native ios analytics", NativeAnalyticsProvider)
+addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
 
 interface ArtworkProps {
