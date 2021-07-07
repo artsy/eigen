@@ -19,7 +19,7 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ articlesConnection }
   const articles = extractNodes(articlesConnection)
 
   if (!articles.length) {
-    return <></>
+    return null
   }
 
   const tracking = useTracking()
