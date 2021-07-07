@@ -131,9 +131,9 @@ target 'Artsy' do
 
   # Analytics
   # pod 'RNAnalytics', :path => './node_modules/@segment/analytics-react-native'
-  # pod 'ARAnalytics', subspecs: %w[Segmentio]
+  pod 'ARAnalytics', subspecs: %w[Segmentio]
   pod 'SailthruMobile'
-  pod 'Appboy-iOS-SDK'
+  # pod 'Appboy-iOS-SDK'
 
   # Developer Pods
   pod 'DHCShakeNotifier'
