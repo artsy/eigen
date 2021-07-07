@@ -61,7 +61,6 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({ artistId, artistSl
       icon={<SearchIcon width={18} height={18} />}
       placeholder="Search by artwork title, series, or description"
       onChangeText={handleChangeText}
-      autoFocus={typeof jest === "undefined"}
       autoCorrect={false}
       enableClearButton={true}
       ref={inputRef}
