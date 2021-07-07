@@ -241,7 +241,6 @@ export enum ActionNames {
   GeneFollow = "geneFollow",
   GeneUnfollow = "geneUnfollow",
   GeneWorks = "geneWorks",
-  Refine = "geneRefine",
 
   /**
    * Home page events

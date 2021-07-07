@@ -37,6 +37,8 @@ upcoming:
     - Fix auction result home rail loading spinner issue - ole
     - Fix share button on BNMO Flow - ole, mounir, sam, george
     - Annotate home screen queries with optionalField directive - ole
+    - Fix collection home rail loading spinner issue - ole
+    - Refactor category screen header and filters to match other artwork grids - dzmitry tratsiak
 
 releases:
   - version: 6.9.5

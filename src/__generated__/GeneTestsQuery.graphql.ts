@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8394745ca356475e70cfc6ac1f8a06ac */
+/* @relayHash 66e2d4b78f426fa9adb35b8389a8a7e4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -56,25 +56,25 @@ export type FilterArtworksInput = {
     tagID?: string | null;
     width?: string | null;
 };
-export type GeneQueryVariables = {
+export type GeneTestsQueryVariables = {
     geneID: string;
     input?: FilterArtworksInput | null;
 };
-export type GeneQueryResponse = {
+export type GeneTestsQueryResponse = {
     readonly gene: {
         readonly slug: string;
         readonly " $fragmentRefs": FragmentRefs<"Header_gene" | "About_gene" | "GeneArtworks_gene">;
     } | null;
 };
-export type GeneQuery = {
-    readonly response: GeneQueryResponse;
-    readonly variables: GeneQueryVariables;
+export type GeneTestsQuery = {
+    readonly response: GeneTestsQueryResponse;
+    readonly variables: GeneTestsQueryVariables;
 };
 
 
 
 /*
-query GeneQuery(
+query GeneTestsQuery(
   $geneID: String!
   $input: FilterArtworksInput
 ) {
@@ -322,13 +322,49 @@ v10 = {
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
+},
+v11 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "String"
+},
+v12 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "FormattedNumber"
+},
+v13 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v14 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
+},
+v15 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Image"
+},
+v16 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Boolean"
 };
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "GeneQuery",
+    "name": "GeneTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -367,7 +403,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "GeneQuery",
+    "name": "GeneTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -809,13 +845,195 @@ return {
     ]
   },
   "params": {
-    "id": "8394745ca356475e70cfc6ac1f8a06ac",
-    "metadata": {},
-    "name": "GeneQuery",
+    "id": "66e2d4b78f426fa9adb35b8389a8a7e4",
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "gene": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Gene"
+        },
+        "gene.artworks": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "FilterArtworksConnection"
+        },
+        "gene.artworks.__isArtworkConnectionInterface": (v11/*: any*/),
+        "gene.artworks.aggregations": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "ArtworksAggregationResults"
+        },
+        "gene.artworks.aggregations.counts": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "AggregationCount"
+        },
+        "gene.artworks.aggregations.counts.count": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "Int"
+        },
+        "gene.artworks.aggregations.counts.name": (v11/*: any*/),
+        "gene.artworks.aggregations.counts.value": (v11/*: any*/),
+        "gene.artworks.aggregations.slice": {
+          "enumValues": [
+            "ARTIST",
+            "ARTIST_NATIONALITY",
+            "ATTRIBUTION_CLASS",
+            "COLOR",
+            "DIMENSION_RANGE",
+            "FOLLOWED_ARTISTS",
+            "GALLERY",
+            "INSTITUTION",
+            "LOCATION_CITY",
+            "MAJOR_PERIOD",
+            "MATERIALS_TERMS",
+            "MEDIUM",
+            "MERCHANDISABLE_ARTISTS",
+            "PARTNER",
+            "PARTNER_CITY",
+            "PERIOD",
+            "PRICE_RANGE",
+            "TOTAL"
+          ],
+          "nullable": true,
+          "plural": false,
+          "type": "ArtworkAggregation"
+        },
+        "gene.artworks.counts": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "FilterArtworksCounts"
+        },
+        "gene.artworks.counts.total": (v12/*: any*/),
+        "gene.artworks.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "ArtworkEdgeInterface"
+        },
+        "gene.artworks.edges.__isNode": (v11/*: any*/),
+        "gene.artworks.edges.__typename": (v11/*: any*/),
+        "gene.artworks.edges.cursor": (v11/*: any*/),
+        "gene.artworks.edges.id": (v13/*: any*/),
+        "gene.artworks.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Artwork"
+        },
+        "gene.artworks.edges.node.__typename": (v11/*: any*/),
+        "gene.artworks.edges.node.artistNames": (v14/*: any*/),
+        "gene.artworks.edges.node.date": (v14/*: any*/),
+        "gene.artworks.edges.node.href": (v14/*: any*/),
+        "gene.artworks.edges.node.id": (v13/*: any*/),
+        "gene.artworks.edges.node.image": (v15/*: any*/),
+        "gene.artworks.edges.node.image.aspectRatio": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "Float"
+        },
+        "gene.artworks.edges.node.image.url": (v14/*: any*/),
+        "gene.artworks.edges.node.internalID": (v13/*: any*/),
+        "gene.artworks.edges.node.partner": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Partner"
+        },
+        "gene.artworks.edges.node.partner.id": (v13/*: any*/),
+        "gene.artworks.edges.node.partner.name": (v14/*: any*/),
+        "gene.artworks.edges.node.sale": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Sale"
+        },
+        "gene.artworks.edges.node.sale.displayTimelyAt": (v14/*: any*/),
+        "gene.artworks.edges.node.sale.endAt": (v14/*: any*/),
+        "gene.artworks.edges.node.sale.id": (v13/*: any*/),
+        "gene.artworks.edges.node.sale.isAuction": (v16/*: any*/),
+        "gene.artworks.edges.node.sale.isClosed": (v16/*: any*/),
+        "gene.artworks.edges.node.saleArtwork": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "SaleArtwork"
+        },
+        "gene.artworks.edges.node.saleArtwork.counts": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "SaleArtworkCounts"
+        },
+        "gene.artworks.edges.node.saleArtwork.counts.bidderPositions": (v12/*: any*/),
+        "gene.artworks.edges.node.saleArtwork.currentBid": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "SaleArtworkCurrentBid"
+        },
+        "gene.artworks.edges.node.saleArtwork.currentBid.display": (v14/*: any*/),
+        "gene.artworks.edges.node.saleArtwork.id": (v13/*: any*/),
+        "gene.artworks.edges.node.saleArtwork.lotLabel": (v14/*: any*/),
+        "gene.artworks.edges.node.saleMessage": (v14/*: any*/),
+        "gene.artworks.edges.node.slug": (v13/*: any*/),
+        "gene.artworks.edges.node.title": (v14/*: any*/),
+        "gene.artworks.id": (v13/*: any*/),
+        "gene.artworks.pageInfo": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "PageInfo"
+        },
+        "gene.artworks.pageInfo.endCursor": (v14/*: any*/),
+        "gene.artworks.pageInfo.hasNextPage": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "Boolean"
+        },
+        "gene.artworks.pageInfo.startCursor": (v14/*: any*/),
+        "gene.description": (v14/*: any*/),
+        "gene.id": (v13/*: any*/),
+        "gene.internalID": (v13/*: any*/),
+        "gene.isFollowed": (v16/*: any*/),
+        "gene.name": (v14/*: any*/),
+        "gene.slug": (v13/*: any*/),
+        "gene.trending_artists": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "Artist"
+        },
+        "gene.trending_artists.counts": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ArtistCounts"
+        },
+        "gene.trending_artists.counts.artworks": (v12/*: any*/),
+        "gene.trending_artists.counts.forSaleArtworks": (v12/*: any*/),
+        "gene.trending_artists.href": (v14/*: any*/),
+        "gene.trending_artists.id": (v13/*: any*/),
+        "gene.trending_artists.image": (v15/*: any*/),
+        "gene.trending_artists.image.url": (v14/*: any*/),
+        "gene.trending_artists.name": (v14/*: any*/)
+      }
+    },
+    "name": "GeneTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'bbcc5a0f9d7899d5e3b276e39440591e';
+(node as any).hash = 'ea368f1f79a32f141dc6892f2a6250d3';
 export default node;
