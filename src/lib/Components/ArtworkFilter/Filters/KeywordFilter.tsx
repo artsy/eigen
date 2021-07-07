@@ -16,7 +16,7 @@ interface KeywordFilterProps {
 }
 
 export const KeywordFilter: React.FC<KeywordFilterProps> = ({ artistId, artistSlug }) => {
-  const tracking = useTracking()
+  const { trackEvent } = useTracking()
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
@@ -32,7 +32,7 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({ artistId, artistSl
       paramValue: text,
     })
 
-    tracking.trackEvent(tracks.changeKeywordFilter(appliedFiltersParams, text, artistId, artistSlug))
+    trackEvent(tracks.changeKeywordFilter(appliedFiltersParams, text, artistId, artistSlug))
 
     applyFiltersAction()
   }
