@@ -29,7 +29,7 @@ export const OpenSettingsBanner = () => (
         Artsy would like to send you Notifications
       </Sans>
       <Sans size="3t" textAlign="center" color="black60" marginTop="1" marginBottom="2">
-        To receive push notifications from Artsy, you'll need to enable them in your iOS Settings. Tap 'Artsy' and
+        To receive push notifications from Artsy, you will need to enable them in your iOS Settings. Tap 'Artsy' and
         toggle "Allow Notifications" on.
       </Sans>
       <Button
