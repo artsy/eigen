@@ -20,7 +20,6 @@
 #import "PartnerShow.h"
 #import "Profile.h"
 #import "ARAnalyticsVisualizer.h"
-#import "ARSailthruIntegration.h"
 #import "ARAppNotificationsDelegate.h"
 
 // View Controllers
@@ -82,8 +81,6 @@
         ARAnalyticsVisualizer *visualizer = [ARAnalyticsVisualizer new];
         [ARAnalytics setupProvider:visualizer];
     }
-
-    [ARAnalytics setupProvider:[ARSailthruIntegration new]];
 
     [ARAnalytics setupProvider:[[ARSegmentProvider alloc] initWithIdentifier:segmentWriteKey integrations:nil]];
 
