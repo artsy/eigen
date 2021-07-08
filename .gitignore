@@ -123,6 +123,7 @@ build/
 .gradle
 local.properties
 *.iml
+google-services.json
 
 # BUCK
 buck-out/

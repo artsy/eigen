@@ -3,7 +3,7 @@ import { durationSections } from "lib/Components/Countdown"
 import { CountdownProps, CountdownTimer } from "lib/Components/Countdown/CountdownTimer"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
-import { Box, Flex, space, Text } from "palette"
+import { Box, Flex, Text } from "palette"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
@@ -22,22 +22,17 @@ export const BackgroundImage = styled(OpaqueImageView)<{ height: number; width: 
 `
 
 const CountdownContainer = styled.View`
-  position: absolute;
-  bottom: ${space(2)};
-  right: ${space(2)};
-  width: 45%;
+  width: 100%;
   flex-direction: row;
-  justify-content: flex-end;
   align-items: center;
   height: 20;
+  justify-content: center;
 `
 
 const PartnerContainer = styled(Flex)`
-  position: absolute;
-  bottom: ${space(2)};
-  left: ${space(2)};
-  width: 45%;
+  width: 100%;
   flex-direction: row;
+  justify-content: center;
 `
 
 const Overlay = styled(LinearGradient)`
@@ -105,7 +100,14 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
           width={screenWidth}
         />
         <Overlay colors={["rgba(255, 255, 255, 0)", "rgba(0, 0, 0, 1)"]} />
-        <Flex flexDirection="row" justifyContent="center" alignItems="flex-end" px={2} height={imageHeight - 60}>
+        <Flex
+          flexDirection="row"
+          justifyContent="center"
+          alignItems="flex-end"
+          px={2}
+          height={imageHeight - 60}
+          mb={0.5}
+        >
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
             <Text data-test-id="title" variant="largeTitle" textAlign="center" color="white100">
               {title}
@@ -114,7 +116,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
         </Flex>
         <PartnerContainer>
           <TouchableWithoutFeedback onPress={() => navigate(partner!.href!)}>
-            <Flex flexDirection="row" justifyContent="center" alignItems="center">
+            <Flex flexDirection="row" justifyContent="center" alignItems="center" mb={0.5}>
               {!!partnerIconImageURL && (
                 <Box mr={0.5}>
                   <PartnerIconImage
