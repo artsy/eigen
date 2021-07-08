@@ -17,6 +17,7 @@ upcoming:
     - Add a feature flag for Saved Addresses - ozzie
     - Initial Push Notification Setup on android - kizito
     - Replace deleteSavedSearch mutation on disableSavedSearch - dzmitry tratsiak
+    - Adjust auction results for you tracking - ole
   user_facing:
     - Prevent facebook auth for users without email - dzmitry
     - Fix unfollowing categories - katsiaryna alshannikava
@@ -41,6 +42,7 @@ upcoming:
     - Annotate home screen queries with optionalField directive - ole
     - Fix collection home rail loading spinner issue - ole
     - Refactor category screen header and filters to match other artwork grids - dzmitry tratsiak
+    - Use infinite scroll in featured fairs screen - katsiaryna alshannikava, ole
     - Fix overlapping of Gallery name and time remaining for Vieweing rooms - katsiaryna alshannikava
     - Fix auction results for you description text scroll issue - ole
 
