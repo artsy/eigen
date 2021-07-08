@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { AuctionResultsRail_me } from "__generated__/AuctionResultsRail_me.graphql"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
@@ -18,7 +18,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
   const auctionResultsByFollowedArtists = extractNodes(me?.auctionResultsByFollowedArtists)
   const listRef = useRef<FlatList<any>>()
   const navigateToAuctionResultsForYou = () => {
-    trackEvent(tracks.AuctionResultsRailHeaderTapEvent())
+    trackEvent(tracks.tappedHeader())
     navigate(`/auction-results-for-you`)
   }
 
@@ -57,7 +57,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
               showArtistName
               auctionResult={item}
               onPress={() => {
-                trackEvent(tracks.AuctionResultsRailThumbnailTapEvent(index))
+                trackEvent(tracks.tappedThumbnail(item.internalID, index))
                 navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
               }}
             />
@@ -87,18 +87,21 @@ export const AuctionResultsRailFragmentContainer = createFragmentContainer(Aucti
 })
 
 export const tracks = {
-  AuctionResultsRailHeaderTapEvent: () => ({
-    contextModule: ContextModule.auctionResultsRail,
-    contextScreenOwnerType: OwnerType.home,
-    destinationScreenOwnerType: OwnerType.auctionResultsRail,
+  tappedHeader: () => ({
+    action: ActionType.tappedAuctionResultGroup,
+    context_module: ContextModule.auctionResultsRail,
+    context_screen_owner_type: OwnerType.home,
+    destination_screen_owner_type: OwnerType.auctionResultsForArtistsYouFollow,
     type: "header",
   }),
 
-  AuctionResultsRailThumbnailTapEvent: (index?: number) => ({
-    contextModule: ContextModule.auctionResultsRail,
-    contextScreenOwnerType: OwnerType.home,
-    destinationScreenOwnerType: OwnerType.auctionResultsRail,
-    horizontalSlidePosition: index,
+  tappedThumbnail: (auctionResultId: string, position: number) => ({
+    action: ActionType.tappedAuctionResultGroup,
+    context_module: ContextModule.auctionResultsRail,
+    context_screen_owner_type: OwnerType.home,
+    destination_screen_owner_type: OwnerType.auctionResult,
+    destination_screen_owner_id: auctionResultId,
+    horizontal_slide_position: position,
     type: "thumbnail",
   }),
 }
