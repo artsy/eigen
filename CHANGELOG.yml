@@ -42,6 +42,7 @@ upcoming:
     - Fix collection home rail loading spinner issue - ole
     - Refactor category screen header and filters to match other artwork grids - dzmitry tratsiak
     - Fix overlapping of Gallery name and time remaining for Vieweing rooms - katsiaryna alshannikava
+    - Fix auction results for you description text scroll issue - ole
 
 releases:
   - version: 6.9.5
