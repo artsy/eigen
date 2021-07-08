@@ -10,7 +10,6 @@ import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { groupBy } from "lodash"
 import moment from "moment"
@@ -78,7 +77,7 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
           stickySectionHeadersEnabled
           renderSectionHeader={({ section: { sectionTitle } }) => (
             <Flex bg="white" mx="2">
-              <Text my="2" variant="title">
+              <Text mb="2" variant="title">
                 {sectionTitle}
               </Text>
               <Separator borderColor={"black5"} />
@@ -92,17 +91,15 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
           )}
           renderItem={({ item }) =>
             item ? (
-              <Flex>
-                <Flex px={1}>
-                  <AuctionResultFragmentContainer
-                    auctionResult={item}
-                    showArtistName
-                    onPress={() => {
-                      trackEvent(tracks.tapAuctionGroup(item.internalID))
-                      navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
-                    }}
-                  />
-                </Flex>
+              <Flex px={1}>
+                <AuctionResultFragmentContainer
+                  auctionResult={item}
+                  showArtistName
+                  onPress={() => {
+                    trackEvent(tracks.tapAuctionGroup(item.internalID))
+                    navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+                  }}
+                />
               </Flex>
             ) : (
               <></>
