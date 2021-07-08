@@ -68,7 +68,6 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
                 The latest auction results for the {""}
                 <LinkText
                   onPress={() => {
-                    trackEvent(tracks.tapArtistsYouFollow())
                     navigate("/favorites", { passProps: { initialTab: Tab.artists } })
                   }}
                 >
