@@ -233,7 +233,6 @@
 		5EC8C6801CA5C5FC00571B21 /* LiveActionStateReconciler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC8C67F1CA5C5FC00571B21 /* LiveActionStateReconciler.swift */; };
 		5EC929891C5FEAD10015133E /* UIViewController+Traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC929881C5FEAD10015133E /* UIViewController+Traits.swift */; };
 		5ED9EC021C458E9500C979A6 /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */; };
-		5EDA0BF924D0B00F006214C1 /* ARSailthruIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EDA0BF824D0B00F006214C1 /* ARSailthruIntegration.m */; };
 		5EE9A3DD1D11F6810014A3C9 /* BidIncrementStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EE9A3DC1D11F6810014A3C9 /* BidIncrementStrategy.m */; };
 		5EE9A3DF1D11F9F20014A3C9 /* LiveAuctionBidViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE9A3DE1D11F9F20014A3C9 /* LiveAuctionBidViewModel.swift */; };
 		5EE9A3E11D1211230014A3C9 /* BiddingIncrementSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE9A3E01D1211230014A3C9 /* BiddingIncrementSpecs.swift */; };
@@ -850,8 +849,6 @@
 		5EC8C67F1CA5C5FC00571B21 /* LiveActionStateReconciler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveActionStateReconciler.swift; path = Live_Auctions/LiveActionStateReconciler.swift; sourceTree = "<group>"; };
 		5EC929881C5FEAD10015133E /* UIViewController+Traits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Traits.swift"; sourceTree = "<group>"; };
 		5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftExtensions.swift; path = ../../App/SwiftExtensions.swift; sourceTree = "<group>"; };
-		5EDA0BF724D0B00F006214C1 /* ARSailthruIntegration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARSailthruIntegration.h; sourceTree = "<group>"; };
-		5EDA0BF824D0B00F006214C1 /* ARSailthruIntegration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARSailthruIntegration.m; sourceTree = "<group>"; };
 		5EE9A3DB1D11F6810014A3C9 /* BidIncrementStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BidIncrementStrategy.h; path = Live/BidIncrementStrategy.h; sourceTree = "<group>"; };
 		5EE9A3DC1D11F6810014A3C9 /* BidIncrementStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BidIncrementStrategy.m; path = Live/BidIncrementStrategy.m; sourceTree = "<group>"; };
 		5EE9A3DE1D11F9F20014A3C9 /* LiveAuctionBidViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionBidViewModel.swift; path = Live_Auctions/LiveAuctionBidViewModel.swift; sourceTree = "<group>"; };
@@ -2545,8 +2542,6 @@
 				6088B75317D1DBAC00E4BB67 /* ARAnalyticsConstants.m */,
 				60CC97331EC3203D00793566 /* ARSentryAnalyticsProvider.h */,
 				60CC97341EC3203D00793566 /* ARSentryAnalyticsProvider.m */,
-				5EDA0BF724D0B00F006214C1 /* ARSailthruIntegration.h */,
-				5EDA0BF824D0B00F006214C1 /* ARSailthruIntegration.m */,
 			);
 			name = Analytics;
 			sourceTree = "<group>";
@@ -3299,23 +3294,6 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_close_button@2x.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_close_button_white@2x.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_message_close_button@2x.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_refresh.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari-7@2x~ipad.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari-7@2x~iphone.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari-7@3x~iphone.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari-7~ipad.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari-7~iphone.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari@2x~ipad.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari@2x~iphone.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari@3x~iphone.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari~ipad.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari~iphone.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_share_button_white@2x.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_stream_back_button@2x.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_stream_back_button_white@2x.png",
 				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
 			);
@@ -3344,23 +3322,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/NPKeyboardLayoutGuide.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_close_button@2x.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_close_button_white@2x.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_message_close_button@2x.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_refresh.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari-7@2x~ipad.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari-7@2x~iphone.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari-7@3x~iphone.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari-7~ipad.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari-7~iphone.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari@2x~ipad.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari@2x~iphone.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari@3x~iphone.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari~ipad.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari~iphone.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_share_button_white@2x.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_stream_back_button@2x.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_stream_back_button_white@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 			);
@@ -3393,16 +3354,12 @@
 				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
 				"${BUILT_PRODUCTS_DIR}/MapboxMobileEvents/MapboxMobileEvents.framework",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobileExtension.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxMobileEvents.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SailthruMobile.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SailthruMobileExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3665,7 +3622,6 @@
 				342F9061CC93426E7F8579A2 /* ARFeedImageLoader.m in Sources */,
 				342F906FD605E75158D32876 /* ARSharingController.m in Sources */,
 				602F034B1CB291EC008A999D /* StoryboardConstants.swift in Sources */,
-				5EDA0BF924D0B00F006214C1 /* ARSailthruIntegration.m in Sources */,
 				60FC2CBF1C8F704D00ACD78F /* SaleStatusType.swift in Sources */,
 				60794B9C1D0112ED0062C3F8 /* LiveAuctionsAdminViewController.swift in Sources */,
 				60AFD9A820AC9FA50013D74B /* ARInformationView.m in Sources */,

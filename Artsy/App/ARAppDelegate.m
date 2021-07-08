@@ -3,7 +3,6 @@
 #import <ORKeyboardReactingApplication/ORKeyboardReactingApplication.h>
 #import <AFOAuth1Client/AFOAuth1Client.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
-#import <SailthruMobile/SailthruMobile.h>
 #import <Firebase.h>
 #import <Appboy.h>
 
@@ -68,7 +67,6 @@ static void InitializeFlipper(UIApplication *application) {
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readwrite) NSString *landingURLRepresentation;
 @property (strong, nonatomic, readwrite) NSDictionary *initialLaunchOptions;
-@property (strong, nonatomic, readwrite) SailthruMobile *sailThru;
 
 @end
 
@@ -130,12 +128,6 @@ static ARAppDelegate *_sharedInstance = nil;
     if (self.window) {
         return;
     }
-
-    self.sailThru = [SailthruMobile new];
-    [self.sailThru setAutoIntegrationEnabled:NO];
-    [self.sailThru setShouldClearBadgeOnLaunch:NO];
-    [self.sailThru startEngine:[ReactNativeConfig envFor:@"SAILTHRU_KEY"] withAuthorizationOption:STMPushAuthorizationOptionNoRequest];
-
 
     // Temp Fix for: https://github.com/artsy/eigen/issues/602
     [self forceCacheCustomFonts];
