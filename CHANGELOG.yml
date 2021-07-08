@@ -17,6 +17,7 @@ upcoming:
     - Add a feature flag for Saved Addresses - ozzie
     - Initial Push Notification Setup on android - kizito
     - Replace deleteSavedSearch mutation on disableSavedSearch - dzmitry tratsiak
+    - Add tracking to "Unable To Load" screen - mounir
   user_facing:
     - Prevent facebook auth for users without email - dzmitry
     - Fix unfollowing categories - katsiaryna alshannikava
