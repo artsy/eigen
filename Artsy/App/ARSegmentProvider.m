@@ -1,6 +1,7 @@
 #import "ARSegmentProvider.h"
 #import "ARAnalyticsProviders.h"
 #import "SEGAnalytics.h"
+#import "SEGAppboyIntegrationFactory.h"
 
 @interface ARSegmentProvider ()
 @property (nonatomic, copy) NSDictionary *traits;
@@ -19,6 +20,7 @@
         for (id integration in integrations) {
              [config use:integration];
         }
+        [config use:[SEGAppboyIntegrationFactory instance]];
         [SEGAnalytics setupWithConfiguration:config];
         _traits = @{};
      }

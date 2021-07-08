@@ -619,6 +619,9 @@ PODS:
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
+  - Segment-Appboy (1.0.4):
+    - Analytics (~> 3.0)
+    - Appboy-iOS-SDK
   - Sentry (6.1.4):
     - Sentry/Core (= 6.1.4)
   - Sentry/Core (6.1.4)
@@ -767,6 +770,7 @@ DEPENDENCIES:
   - RNShare (from `node_modules/react-native-share`)
   - RNSVG (from `node_modules/react-native-svg`)
   - SDWebImage (>= 3.7.2)
+  - Segment-Appboy (= 1.0.4)
   - Specta
   - Starscream
   - SwiftyJSON
@@ -837,6 +841,7 @@ SPEC REPOS:
     - PromisesObjC
     - Quick
     - SDWebImage
+    - Segment-Appboy
     - Sentry
     - Specta
     - Starscream
@@ -1143,6 +1148,7 @@ SPEC CHECKSUMS:
   RNShare: fed99fd743f80ca255903c1da46fc9a6430efab6
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
+  Segment-Appboy: 790f6f4b162e85d3df3a1d320636dfcf6210504d
   Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
@@ -1157,6 +1163,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 01b096a826c973467c7cd9b46fdd107f7d1d5f71
+PODFILE CHECKSUM: 9bab7fdbbfa89a0556262a9aaeb33361adf13e68
 
 COCOAPODS: 1.10.1
