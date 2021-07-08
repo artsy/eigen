@@ -132,7 +132,6 @@ target 'Artsy' do
   # Analytics
   pod 'Analytics'
   pod 'ARAnalytics', subspecs: %w[Segmentio]
-  pod 'SailthruMobile'
   pod 'Appboy-iOS-SDK'
 
   # Developer Pods
