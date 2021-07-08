@@ -16,7 +16,7 @@ import { groupBy } from "lodash"
 import moment from "moment"
 import { Flex, Separator, Spinner, Text } from "palette"
 import React, { useState } from "react"
-import { SectionList } from "react-native"
+import { ScrollView, SectionList } from "react-native"
 import { RelayPaginationProp } from "react-relay"
 import { createPaginationContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -58,66 +58,68 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
   return (
     <PageWithSimpleHeader title="Auction Results for You">
       <ArtworkFiltersStoreProvider>
-        <Flex>
-          <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
-            The latest auction results for the {""}
-            <LinkText
-              onPress={() => {
-                trackEvent(tracks.tapArtistsYouFollow())
-                navigate("/favorites", { passProps: { initialTab: Tab.artists } })
-              }}
-            >
-              artists you follow
-            </LinkText>
-            . You can also look up more auction results on the insights tab on any artist’s page.
-          </Text>
-        </Flex>
-        <SectionList
-          sections={groupedAuctionResultSections}
-          onEndReached={loadMoreArtworks}
-          keyExtractor={(item) => item.internalID}
-          stickySectionHeadersEnabled
-          renderSectionHeader={({ section: { sectionTitle } }) => (
-            <Flex bg="white" mx="2">
-              <Text my="2" variant="title">
-                {sectionTitle}
-              </Text>
-              <Separator borderColor={"black5"} />
-            </Flex>
-          )}
-          renderSectionFooter={() => <Flex mt="3" />}
-          ItemSeparatorComponent={() => (
-            <Flex px={2}>
-              <Separator borderColor={"black5"} />
-            </Flex>
-          )}
-          renderItem={({ item, index }) =>
-            item ? (
-              <Flex>
-                <Flex px={1}>
-                  <AuctionResultFragmentContainer
-                    auctionResult={item}
-                    showArtistName
-                    onPress={() => {
-                      trackEvent(tracks.tapAuctionGroup(item.internalID, item.artistID, index))
-                      navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
-                    }}
-                  />
+        <ScrollView>
+          <Flex>
+            <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
+              The latest auction results for the {""}
+              <LinkText
+                onPress={() => {
+                  trackEvent(tracks.tapArtistsYouFollow())
+                  navigate("/favorites", { passProps: { initialTab: Tab.artists } })
+                }}
+              >
+                artists you follow
+              </LinkText>
+              . You can also look up more auction results on the insights tab on any artist’s page.
+            </Text>
+          </Flex>
+          <SectionList
+            sections={groupedAuctionResultSections}
+            onEndReached={loadMoreArtworks}
+            keyExtractor={(item) => item.internalID}
+            stickySectionHeadersEnabled
+            renderSectionHeader={({ section: { sectionTitle } }) => (
+              <Flex bg="white" mx="2">
+                <Text my="2" variant="title">
+                  {sectionTitle}
+                </Text>
+                <Separator borderColor={"black5"} />
+              </Flex>
+            )}
+            renderSectionFooter={() => <Flex mt="3" />}
+            ItemSeparatorComponent={() => (
+              <Flex px={2}>
+                <Separator borderColor={"black5"} />
+              </Flex>
+            )}
+            renderItem={({ item, index }) =>
+              item ? (
+                <Flex>
+                  <Flex px={1}>
+                    <AuctionResultFragmentContainer
+                      auctionResult={item}
+                      showArtistName
+                      onPress={() => {
+                        trackEvent(tracks.tapAuctionGroup(item.internalID, item.artistID, index))
+                        navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+                      }}
+                    />
+                  </Flex>
                 </Flex>
-              </Flex>
-            ) : (
-              <></>
-            )
-          }
-          ListFooterComponent={
-            loadingMoreData ? (
-              <Flex my={2} flexDirection="row" justifyContent="center">
-                <Spinner />
-              </Flex>
-            ) : null
-          }
-          style={{ width: useScreenDimensions().width }}
-        />
+              ) : (
+                <></>
+              )
+            }
+            ListFooterComponent={
+              loadingMoreData ? (
+                <Flex my={2} flexDirection="row" justifyContent="center">
+                  <Spinner />
+                </Flex>
+              ) : null
+            }
+            style={{ width: useScreenDimensions().width }}
+          />
+        </ScrollView>
       </ArtworkFiltersStoreProvider>
     </PageWithSimpleHeader>
   )
