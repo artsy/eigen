@@ -44,7 +44,7 @@ const Home = (props: Props) => {
   const artistModules = (homePage?.artistModules && homePage.artistModules.concat()) || []
   const fairsModule = homePage?.fairsModule
 
-  const auctionResultsEchoFlag = useFeatureFlag("ARAuctionResults")
+  const enableAuctionResultsByFollowedArtists = useFeatureFlag("ARHomeAuctionResultsByFollowedArtists")
 
   const artworkRails = artworkModules.map(
     (module) =>
@@ -90,7 +90,7 @@ const Home = (props: Props) => {
         type: "collections",
         data: collectionsModule,
       } as const),
-    auctionResultsEchoFlag &&
+    enableAuctionResultsByFollowedArtists &&
       ({
         type: "auction-results",
       } as const),
