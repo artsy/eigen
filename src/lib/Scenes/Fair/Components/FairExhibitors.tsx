@@ -1,12 +1,11 @@
-import { ActionType, ContextModule, OwnerType, TappedShowMore } from "@artsy/cohesion"
 import { FairExhibitors_fair } from "__generated__/FairExhibitors_fair.graphql"
-import { Col } from "lib/Components/Bidding/Elements/Grid"
+import Spinner from "lib/Components/Spinner"
 import { FAIR2_EXHIBITORS_PAGE_SIZE } from "lib/data/constants"
-import { Row } from "lib/Scenes/Consignments/Components/FormElements"
-import { Box, Button } from "palette"
+import { extractNodes } from "lib/utils/extractNodes"
+import { Box, Flex } from "palette"
 import React, { useState } from "react"
+import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { useTracking } from "react-tracking"
 import { FairExhibitorRailFragmentContainer } from "./FairExhibitorRail"
 
 interface FairExhibitorsProps {
@@ -15,29 +14,16 @@ interface FairExhibitorsProps {
 }
 
 const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
-  const tracking = useTracking()
   const [isLoading, setIsLoading] = useState(false)
 
-  const trackTappedShowMore = () => {
-    const trackTappedShowMoreProps: TappedShowMore = {
-      action: ActionType.tappedShowMore,
-      context_module: ContextModule.exhibitorsTab,
-      context_screen_owner_type: OwnerType.fair,
-      context_screen_owner_id: fair.internalID,
-      context_screen_owner_slug: fair.slug,
-      subject: "Show More",
-    }
-    tracking.trackEvent(trackTappedShowMoreProps)
-  }
+  const shows = extractNodes(fair?.exhibitors)
 
-  const handlePress = () => {
-    trackTappedShowMore()
+  const loadMoreExhibitors = () => {
     if (!relay.hasMore() || relay.isLoading()) {
       return
     }
 
     setIsLoading(true)
-
     relay.loadMore(FAIR2_EXHIBITORS_PAGE_SIZE, (err) => {
       setIsLoading(false)
 
@@ -48,9 +34,9 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
   }
 
   return (
-    <>
-      {fair?.exhibitors?.edges?.map((item) => {
-        const show = item?.node
+    <FlatList
+      data={shows}
+      renderItem={({ item: show }) => {
         if ((show?.counts?.artworks ?? 0) === 0 || !show?.partner) {
           // Skip rendering of booths without artworks
           return null
@@ -61,22 +47,19 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
             <FairExhibitorRailFragmentContainer key={show.id} show={show} />
           </Box>
         )
-      })}
-      <Row>
-        <Col sm={6} mx="15px">
-          <Button
-            variant="secondaryGray"
-            size="large"
-            block
-            loading={isLoading}
-            onPress={handlePress}
-            disabled={!relay.hasMore()}
-          >
-            Show more
-          </Button>
-        </Col>
-      </Row>
-    </>
+      }}
+      keyExtractor={(item) => String(item?.id)}
+      onEndReached={loadMoreExhibitors}
+      ListFooterComponent={
+        isLoading ? (
+          <Box p={2}>
+            <Flex flex={1} flexDirection="row" justifyContent="center">
+              <Spinner />
+            </Flex>
+          </Box>
+        ) : null
+      }
+    ></FlatList>
   )
 }
 
