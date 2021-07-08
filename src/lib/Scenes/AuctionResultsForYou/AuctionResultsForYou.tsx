@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { AuctionResultsForYou_me } from "__generated__/AuctionResultsForYou_me.graphql"
 import { AuctionResultsForYouContainerQuery } from "__generated__/AuctionResultsForYouContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
@@ -63,7 +63,6 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
             The latest auction results for the {""}
             <LinkText
               onPress={() => {
-                trackEvent(tracks.tapArtistsYouFollow())
                 navigate("/favorites", { passProps: { initialTab: Tab.artists } })
               }}
             >
@@ -91,7 +90,7 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
               <Separator borderColor={"black5"} />
             </Flex>
           )}
-          renderItem={({ item, index }) =>
+          renderItem={({ item }) =>
             item ? (
               <Flex>
                 <Flex px={1}>
@@ -99,7 +98,7 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
                     auctionResult={item}
                     showArtistName
                     onPress={() => {
-                      trackEvent(tracks.tapAuctionGroup(item.internalID, item.artistID, index))
+                      trackEvent(tracks.tapAuctionGroup(item.internalID))
                       navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
                     }}
                   />
@@ -184,20 +183,12 @@ export const AuctionResultsForYouQueryRenderer: React.FC = () => (
 )
 
 export const tracks = {
-  tapAuctionGroup: (internalID: string, artistID: string, index?: number) => ({
-    contextModule: ContextModule.auctionResultsForArtistsYouFollow,
-    contextScreenOwnerType: OwnerType.auctionResultsForArtistsYouFollow,
-    contextScreenOwnerid: artistID,
-    destinationScreenOwnerId: internalID,
-    horizontalSlidePosition: index,
-    type: "thumbnail",
-  }),
-
-  tapArtistsYouFollow: () => ({
-    contextModule: ContextModule.auctionResultsForArtistsYouFollow,
-    contextScreenOwnerType: OwnerType.auctionResultsForArtistsYouFollow,
-    destinationScreenOwnerType: OwnerType.savesAndFollows,
-    actionName: Schema.ActionNames.SavesAndFollowsArtists,
+  tapAuctionGroup: (auctionResultId: string) => ({
+    action: ActionType.tappedAuctionResultGroup,
+    context_module: ContextModule.auctionResultsForArtistsYouFollow,
+    context_screen_owner_type: OwnerType.auctionResultsForArtistsYouFollow,
+    destination_screen_owner_type: OwnerType.auctionResult,
+    destination_screen_owner_id: auctionResultId,
     type: "thumbnail",
   }),
 }
