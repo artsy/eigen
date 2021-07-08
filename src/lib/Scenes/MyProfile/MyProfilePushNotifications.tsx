@@ -26,11 +26,11 @@ export const OpenSettingsBanner = () => (
   <>
     <Flex py={3} px={2} backgroundColor="black5" alignItems="center">
       <Sans size="4t" weight="medium" color="black">
-        Turn on notifications
+        Artsy would like to send you Notifications
       </Sans>
       <Sans size="3t" textAlign="center" color="black60" marginTop="1" marginBottom="2">
-        To receive push notifications from Artsy, you'll need enable them in your iOS Settings. Tap Notifications, and
-        then toggle "Allow Notifications" on.
+        To receive notifications for your alerts, you will need to enable them in your iOS Settings. Tap ‘Artsy' and
+        enable "Allow Notifications" for Artsy.
       </Sans>
       <Button
         size="large"
@@ -49,10 +49,10 @@ export const AllowPushNotificationsBanner = () => (
   <>
     <Flex py={3} px={2} backgroundColor="black5" alignItems="center">
       <Sans size="4t" weight="medium" color="black">
-        Turn on notifications
+        Artsy would like to send you Notifications
       </Sans>
       <Sans size="3t" textAlign="center" color="black60" marginTop="1" marginBottom="2">
-        Artsy needs your permission to send push notifications.
+        We need your permission to send notifications on alerts you have created.
       </Sans>
       <Button
         size="large"
