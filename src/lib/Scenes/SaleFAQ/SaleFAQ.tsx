@@ -6,7 +6,7 @@ import { View } from "react-native"
 
 export const SaleFAQ: React.FC<{}> = () => {
   const saleFAQUrl = `${useEnvironment().webURL}/auction-faq`
-  const paddingTop = useScreenDimensions().safeAreaInsets.top
+  const paddingTop = useScreenDimensions().safeAreaInsets.top * 3
 
   return (
     <View style={{ flex: 1, paddingTop }}>
