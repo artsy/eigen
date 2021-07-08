@@ -24,7 +24,6 @@ export const SegmentTrackingProvider: TrackingProvider = {
   },
 
   postEvent: (info) => {
-    console.log("TRACKING ON IOS", info)
     addBreadcrumb({
       message: `${JSON.stringify(info, null, 2)}`,
       category: "analytics",
