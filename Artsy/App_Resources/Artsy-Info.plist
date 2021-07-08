@@ -77,6 +77,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>2019.05.24.09</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>FacebookAdvertiserIDCollectionEnabled</key>
 	<false/>
 	<key>FacebookAppID</key>
