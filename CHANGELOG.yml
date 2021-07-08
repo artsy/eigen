@@ -17,6 +17,7 @@ upcoming:
     - Add a feature flag for Saved Addresses - ozzie
     - Initial Push Notification Setup on android - kizito
     - Replace deleteSavedSearch mutation on disableSavedSearch - dzmitry tratsiak
+    - Add tracking to "Unable To Load" screen - mounir
     - Adjust auction results for you tracking - ole
     - Make Home Auction Results By Followed Artists ready for release - mounir
   user_facing:
