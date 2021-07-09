@@ -24,7 +24,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
         }}
       />
     )
@@ -43,7 +42,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
         }}
       />
     )
@@ -63,7 +61,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
         }}
       />
     )
@@ -84,7 +81,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
           type: "error",
         }}
       />
@@ -103,7 +99,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
         }}
       />
     )
@@ -144,7 +139,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "bottom",
           autoHide: false,
         }}
       />
@@ -167,7 +161,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "bottom",
           hideTimeout: 5000,
         }}
       />
@@ -193,7 +186,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
         }}
       />
     )
@@ -215,7 +207,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
           onClose,
         }}
       />
@@ -234,7 +225,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
           showCloseIcon: false,
         }}
       />
@@ -253,7 +243,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
           onPress,
         }}
       />

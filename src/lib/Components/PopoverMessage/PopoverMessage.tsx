@@ -14,7 +14,7 @@ export type PopoverMessageType = "info" | "success" | "error" | "default"
 export type PopoverMessageItem = Omit<PopoverMessageProps, "translateYAnimation" | "opacityAnimation">
 
 export interface PopoverMessageProps {
-  placement: PopoverMessagePlacement
+  placement?: PopoverMessagePlacement
   title: string
   translateYAnimation: Animated.Value
   opacityAnimation: Animated.Value
@@ -42,7 +42,7 @@ export const getTitleColorByType = (type?: PopoverMessageType): Color => {
 // TODO: Remove NAVBAR_HEIGHT when a new design without a floating back button is added
 export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
   const {
-    placement,
+    placement = "top",
     title,
     message,
     showCloseIcon = true,
