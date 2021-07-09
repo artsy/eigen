@@ -2,6 +2,7 @@ import { captureMessage } from "@sentry/react-native"
 import { SavedAddresses_me } from "__generated__/SavedAddresses_me.graphql"
 import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
@@ -105,7 +106,12 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
             <Text variant="caption" textAlign="center" mb={3}>
               Please add an address for a faster checkout experience in the future.
             </Text>
-            <Button block variant="primaryBlack" width={100}>
+            <Button
+              block
+              variant="primaryBlack"
+              width={100}
+              onPress={() => navigate("/my-profile/saved-addresses/new-address")}
+            >
               Add New Address
             </Button>
           </Flex>
