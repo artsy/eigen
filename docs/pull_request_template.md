@@ -31,7 +31,7 @@ This PR resolves []
 <!-- ⓘ 'User-facing' changes will be published as release notes. -->
 <!-- ⌫ Feel free to remove sections that don't apply. -->
 <!-- • Write a markdown list or just a single paragraph, but stick to plain text. -->
-<!-- 📖 eg. `Enable lotsByFollowedArtists` or `Fix phone input misalignment`. -->
+<!-- 📖 eg. `Enable lotsByFollowedArtists - john` or `Fix phone input misalignment - mary`. -->
 <!-- 🤷‍♂️ Replace this entire block with the hashtag `#nochangelog` to avoid updating the changelog. -->
 
 #### Cross-platform user-facing changes
