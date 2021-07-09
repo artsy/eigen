@@ -1111,6 +1111,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "keyword",
+          paramValue: "",
+        },
+        {
+          displayText: "All",
           paramName: "locationCities",
           paramValue: [],
         },
@@ -1221,6 +1226,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "keyword",
+          paramValue: "",
         },
         {
           displayText: "All",
@@ -1344,6 +1354,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "keyword",
+          paramValue: "",
         },
         {
           displayText: "All",
@@ -1481,6 +1496,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "keyword",
+          paramValue: "",
+        },
+        {
+          displayText: "All",
           paramName: "locationCities",
           paramValue: [],
         },
@@ -1605,6 +1625,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "keyword",
+          paramValue: "",
+        },
+        {
+          displayText: "All",
           paramName: "locationCities",
           paramValue: [],
         },
@@ -1702,6 +1727,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "keyword",
+          paramValue: "",
         },
         {
           displayText: "All",
@@ -1815,6 +1845,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "keyword",
+          paramValue: "",
         },
         {
           displayText: "All",
@@ -1932,6 +1967,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "keyword",
+          paramValue: "",
+        },
+        {
+          displayText: "All",
           paramName: "locationCities",
           paramValue: [],
         },
@@ -2024,6 +2064,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "keyword",
+          paramValue: "",
         },
         {
           displayText: "All",

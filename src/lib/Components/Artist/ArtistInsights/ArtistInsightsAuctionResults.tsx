@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
-import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { filterArtworksParams, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -8,14 +8,16 @@ import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
 import { navigate } from "lib/navigation/navigate"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Box, bullet, color, Flex, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
-import { FlatList } from "react-native"
+import { FlatList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
+import { KeywordFilter } from "../../ArtworkFilter/Filters/KeywordFilter"
 import { AuctionResultFragmentContainer } from "../../Lists/AuctionResultListItem"
 
 interface Props {
@@ -26,6 +28,8 @@ interface Props {
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop }) => {
   const tracking = useTracking()
+
+  const showKeywordFilter = useFeatureFlag("AREnableAuctionResultsKeywordFilter")
 
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
   const setFilterTypeAction = ArtworksFiltersStore.useStoreActions((state) => state.setFilterTypeAction)
@@ -117,64 +121,67 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
     </>
   )
 
-  if (!auctionResults.length) {
-    return (
-      <Box my="80px">
-        <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} />
-      </Box>
-    )
-  }
+  const resultsString = Number(artist.auctionResultsConnection?.totalCount) === 1 ? "result" : "results"
 
-  const resultsString = Number(artist.auctionResultsConnection?.totalCount) > 1 ? "results" : "result"
+  const isKeywordFilterActive = !!appliedFilters?.find((filter) => filter.paramName === FilterParamName.keyword)
+    ?.paramValue
 
   return (
-    <FlatList
-      data={auctionResults}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <AuctionResultFragmentContainer
-          auctionResult={item}
-          onPress={() => {
-            tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))
-            navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
-          }}
-        />
-      )}
-      ListHeaderComponent={() => (
-        <Flex px={2}>
-          <Flex flexDirection="row" alignItems="center">
-            <InfoButton
-              titleElement={
-                <Text variant="title" mr={0.5}>
-                  Auction Results
-                </Text>
-              }
-              trackEvent={() => {
-                tracking.trackEvent(tappedInfoBubble(tracks.tapAuctionResultsInfo()))
+    <View>
+      <Flex>
+        <Flex flexDirection="row" alignItems="center">
+          <InfoButton
+            titleElement={
+              <Text variant="title" mr={0.5}>
+                Auction Results
+              </Text>
+            }
+            trackEvent={() => {
+              tracking.trackEvent(tappedInfoBubble(tracks.tapAuctionResultsInfo()))
+            }}
+            modalTitle={"Auction Results"}
+            maxModalHeight={310}
+            modalContent={renderAuctionResultsModal()}
+          />
+        </Flex>
+        <SortMode variant="small" color="black60">
+          {!!artist.auctionResultsConnection?.totalCount
+            ? new Intl.NumberFormat().format(artist.auctionResultsConnection.totalCount)
+            : 0}{" "}
+          {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
+        </SortMode>
+        <Separator borderColor={color("black5")} mt="2" />
+        {!!showKeywordFilter && <KeywordFilter artistId={artist.internalID} artistSlug={artist.slug} />}
+      </Flex>
+      {auctionResults.length ? (
+        <FlatList
+          data={auctionResults}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <AuctionResultFragmentContainer
+              auctionResult={item}
+              onPress={() => {
+                tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))
+                navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
               }}
-              modalTitle={"Auction Results"}
-              maxModalHeight={310}
-              modalContent={renderAuctionResultsModal()}
             />
-          </Flex>
-          <SortMode variant="small" color="black60">
-            {!!artist.auctionResultsConnection?.totalCount &&
-              new Intl.NumberFormat().format(artist.auctionResultsConnection.totalCount)}{" "}
-            {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
-          </SortMode>
-          <Separator borderColor={color("black5")} mt="2" />
-        </Flex>
+          )}
+          ItemSeparatorComponent={() => (
+            <Flex px={2}>
+              <Separator borderColor={color("black5")} />
+            </Flex>
+          )}
+          style={{ width: useScreenDimensions().width, left: -20 }}
+          onEndReached={loadMoreAuctionResults}
+          ListFooterComponent={loadingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null}
+          contentContainerStyle={{ paddingBottom: 20 }}
+        />
+      ) : (
+        <Box my="80px">
+          <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} hideClearButton={isKeywordFilterActive} />
+        </Box>
       )}
-      ItemSeparatorComponent={() => (
-        <Flex px={2}>
-          <Separator borderColor={color("black5")} />
-        </Flex>
-      )}
-      style={{ width: useScreenDimensions().width, left: -20 }}
-      onEndReached={loadMoreAuctionResults}
-      ListFooterComponent={loadingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null}
-      contentContainerStyle={{ paddingBottom: 20 }}
-    />
+    </View>
   )
 }
 
@@ -191,6 +198,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
         earliestCreatedYear: { type: "Int", defaultValue: 1000 }
+        keyword: { type: "String" }
         latestCreatedYear: { type: "Int", defaultValue: 2050 }
         organizations: { type: "[String]" }
         sizes: { type: "[ArtworkSizes]" }
@@ -206,6 +214,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
           categories: $categories
           earliestCreatedYear: $earliestCreatedYear
           first: $count
+          keyword: $keyword
           latestCreatedYear: $latestCreatedYear
           organizations: $organizations
           sizes: $sizes
@@ -246,6 +255,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         $count: Int!
         $cursor: String
         $earliestCreatedYear: Int
+        $keyword: String
         $latestCreatedYear: Int
         $organizations: [String]
         $sizes: [ArtworkSizes]
@@ -259,6 +269,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
               count: $count
               cursor: $cursor
               earliestCreatedYear: $earliestCreatedYear
+              keyword: $keyword
               latestCreatedYear: $latestCreatedYear
               organizations: $organizations
               sizes: $sizes

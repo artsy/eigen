@@ -47,8 +47,8 @@ upcoming:
     - Use infinite scroll in featured fairs screen - katsiaryna alshannikava, ole
     - Fix overlapping of Gallery name and time remaining for Vieweing rooms - katsiaryna alshannikava
     - Fix auction results for you description text scroll issue - ole
-
     - Fix facebook login failing after signing up for a new account - stanislau hanchar
+    - Add keyword search to artist auction reults - ole
 
 releases:
   - version: 6.9.5
