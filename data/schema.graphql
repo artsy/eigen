@@ -3075,6 +3075,7 @@ type CommerceLineItem {
   order: CommerceOrder!
   priceCents: Int! @deprecated(reason: "switch to use listPriceCents")
   quantity: Int!
+  shipment: CommerceShipment
   shippingQuoteOptions(
     # Returns the elements in the list that come after the specified cursor.
     after: String
@@ -3921,6 +3922,30 @@ type CommerceShipArta {
   phoneNumber: String
   postalCode: String
   region: String
+}
+
+# A shipment
+type CommerceShipment {
+  bookedAt: String
+  carrierName: String
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String!
+  id: ID!
+  priceCents: Int!
+  priceCurrency: String!
+  status: String
+  trackingNumber: String
+  trackingUrl: String
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String!
 }
 
 # Shipping information
@@ -6378,6 +6403,12 @@ input FilterArtworksInput {
   sort: String
   tagID: String
   width: String
+}
+
+type FilterPartners {
+  aggregations: [PartnersAggregationResults]
+  hits: [Partner]
+  total: Int
 }
 
 type FilterSaleArtworksCounts {
@@ -8968,6 +8999,18 @@ type PartnerMeta {
   title: String
 }
 
+enum PartnersAggregation {
+  CATEGORY
+  LOCATION
+  TOTAL
+}
+
+# The results for one of the requested aggregations
+type PartnersAggregationResults {
+  counts: [AggregationCount]
+  slice: PartnersAggregation
+}
+
 enum PartnerShowPartnerType {
   GALLERY
   MUSEUM
@@ -9325,6 +9368,7 @@ type Query {
   # A list of Articles
   articles(
     auctionID: String
+    featured: Boolean
 
     #
     #         Only return articles matching specified ids.
@@ -9695,6 +9739,40 @@ type Query {
     # The slug or ID of the Feature
     id: ID
   ): Feature
+
+  # Partners Elastic Search results
+  filterPartners(
+    aggregations: [PartnersAggregation]!
+    defaultProfilePublic: Boolean
+    eligibleForCarousel: Boolean
+
+    # Indicates an active subscription
+    eligibleForListing: Boolean
+
+    # Indicates tier 1/2 for gallery, 1 for institution
+    eligibleForPrimaryBucket: Boolean
+
+    # Indicates tier 3/4 for gallery, 2 for institution
+    eligibleForSecondaryBucket: Boolean
+    hasFullProfile: Boolean
+    ids: [String]
+
+    # Coordinates to find partners closest to
+    near: String
+    page: Int
+
+    #
+    #         Only return partners of the specified partner categories.
+    #         Accepts list of slugs.
+    #
+    partnerCategories: [String]
+    size: Int
+    sort: PartnersSortType
+
+    # term used for searching Partners
+    term: String
+    type: [PartnerClassification]
+  ): FilterPartners
   gene(
     # The slug or ID of the Gene
     id: String!
@@ -9801,6 +9879,15 @@ type Query {
     viewingRoomID: String
   ): ArtworkConnection
     @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+
+  # A list of PartnerCategories
+  partnerCategories(
+    categoryType: PartnerCategoryType
+
+    # Filter by whether category is internal
+    internal: Boolean = false
+    size: Int
+  ): [PartnerCategory]
 
   # A list of Partners
   partnersConnection(
@@ -9942,6 +10029,7 @@ type Query {
     ids: [String]
     last: Int
     sort: ShowSorts
+    status: EventStatus
   ): ShowConnection
 
   # Content for a specific page or view
@@ -11937,6 +12025,7 @@ type Viewer {
   # A list of Articles
   articles(
     auctionID: String
+    featured: Boolean
 
     #
     #         Only return articles matching specified ids.
@@ -12167,6 +12256,40 @@ type Viewer {
     # The slug or ID of the Feature
     id: ID
   ): Feature
+
+  # Partners Elastic Search results
+  filterPartners(
+    aggregations: [PartnersAggregation]!
+    defaultProfilePublic: Boolean
+    eligibleForCarousel: Boolean
+
+    # Indicates an active subscription
+    eligibleForListing: Boolean
+
+    # Indicates tier 1/2 for gallery, 1 for institution
+    eligibleForPrimaryBucket: Boolean
+
+    # Indicates tier 3/4 for gallery, 2 for institution
+    eligibleForSecondaryBucket: Boolean
+    hasFullProfile: Boolean
+    ids: [String]
+
+    # Coordinates to find partners closest to
+    near: String
+    page: Int
+
+    #
+    #         Only return partners of the specified partner categories.
+    #         Accepts list of slugs.
+    #
+    partnerCategories: [String]
+    size: Int
+    sort: PartnersSortType
+
+    # term used for searching Partners
+    term: String
+    type: [PartnerClassification]
+  ): FilterPartners
   gene(
     # The slug or ID of the Gene
     id: String!
@@ -12236,6 +12359,15 @@ type Viewer {
     viewingRoomID: String
   ): ArtworkConnection
     @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+
+  # A list of PartnerCategories
+  partnerCategories(
+    categoryType: PartnerCategoryType
+
+    # Filter by whether category is internal
+    internal: Boolean = false
+    size: Int
+  ): [PartnerCategory]
 
   # A list of Partners
   partnersConnection(
@@ -12358,6 +12490,7 @@ type Viewer {
     ids: [String]
     last: Int
     sort: ShowSorts
+    status: EventStatus
   ): ShowConnection
 
   # Content for a specific page or view

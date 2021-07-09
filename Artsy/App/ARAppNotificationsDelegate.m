@@ -19,7 +19,7 @@
 #import <Emission/ARNotificationsManager.h>
 #import <ARAnalytics/ARAnalytics.h>
 #import <UserNotifications/UserNotifications.h>
-#import <SailthruMobile/SailthruMobile.h>
+#import "Appboy-iOS-SDK/AppboyKit.h"
 
 @implementation ARAppNotificationsDelegate
 
@@ -167,8 +167,8 @@
     UNAuthorizationOptions authOptions = (UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert);
     [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
         NSString *grantedString = granted ? @"YES" : @"NO";
-        [[[ARAppDelegate sharedInstance] sailThru] syncNotificationSettings];
         [ARAnalytics event:ARAnalyticsPushNotificationsRequested withProperties:@{@"granted" : grantedString}];
+        [[Appboy sharedInstance] pushAuthorizationFromUserNotificationCenter:granted];
     }];
 
     [[UIApplication sharedApplication] registerForRemoteNotifications];
@@ -231,7 +231,7 @@
     // Save device token purely for the admin settings view.
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
 
-    [[[ARAppDelegate sharedInstance] sailThru] setDeviceTokenInBackground:deviceTokenData];
+    [[Appboy sharedInstance] registerPushToken:deviceToken];
 
 // We only record device tokens on the Artsy service in case of Beta or App Store builds.
 #ifndef DEBUG
@@ -259,7 +259,9 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
 {
     [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
-    [[[ARAppDelegate sharedInstance] sailThru] handleNotificationPayload:userInfo];
+    [[Appboy sharedInstance] registerApplication:application
+                    didReceiveRemoteNotification:userInfo
+                          fetchCompletionHandler:handler];
     handler(UIBackgroundFetchResultNoData);
 }
 

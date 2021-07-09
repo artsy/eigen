@@ -83,9 +83,10 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableViewingRooms",
   },
-  ARAuctionResults: {
-    readyForRelease: false,
-    description: "Show Auction Results in Home Screen",
+  ARHomeAuctionResultsByFollowedArtists: {
+    readyForRelease: true,
+    echoFlagKey: "ARHomeAuctionResultsByFollowedArtists",
+    description: "Enable home auction results",
     showInAdminMenu: true,
   },
   AREnableCustomSharesheet: {
@@ -115,7 +116,7 @@ export const features = defineFeatures({
   },
   AREnableSavedAddresses: {
     readyForRelease: false,
-    description: "Enable saved addresses",
+    description: "Enable Saved Addresses",
     showInAdminMenu: true,
   },
   AREnableAuctionResultsKeywordFilter: {

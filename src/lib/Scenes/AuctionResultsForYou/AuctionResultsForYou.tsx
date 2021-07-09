@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { AuctionResultsForYou_me } from "__generated__/AuctionResultsForYou_me.graphql"
 import { AuctionResultsForYouContainerQuery } from "__generated__/AuctionResultsForYouContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
@@ -10,7 +10,6 @@ import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { groupBy } from "lodash"
 import moment from "moment"
@@ -58,28 +57,29 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
   return (
     <PageWithSimpleHeader title="Auction Results for You">
       <ArtworkFiltersStoreProvider>
-        <Flex>
-          <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
-            The latest auction results for the {""}
-            <LinkText
-              onPress={() => {
-                trackEvent(tracks.tapArtistsYouFollow())
-                navigate("/favorites", { passProps: { initialTab: Tab.artists } })
-              }}
-            >
-              artists you follow
-            </LinkText>
-            . You can also look up more auction results on the insights tab on any artist’s page.
-          </Text>
-        </Flex>
         <SectionList
           sections={groupedAuctionResultSections}
           onEndReached={loadMoreArtworks}
           keyExtractor={(item) => item.internalID}
           stickySectionHeadersEnabled
+          ListHeaderComponent={() => (
+            <Flex>
+              <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
+                The latest auction results for the {""}
+                <LinkText
+                  onPress={() => {
+                    navigate("/favorites", { passProps: { initialTab: Tab.artists } })
+                  }}
+                >
+                  artists you follow
+                </LinkText>
+                . You can also look up more auction results on the insights tab on any artist’s page.
+              </Text>
+            </Flex>
+          )}
           renderSectionHeader={({ section: { sectionTitle } }) => (
             <Flex bg="white" mx="2">
-              <Text my="2" variant="title">
+              <Text mb="2" variant="title">
                 {sectionTitle}
               </Text>
               <Separator borderColor={"black5"} />
@@ -91,19 +91,17 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
               <Separator borderColor={"black5"} />
             </Flex>
           )}
-          renderItem={({ item, index }) =>
+          renderItem={({ item }) =>
             item ? (
-              <Flex>
-                <Flex px={1}>
-                  <AuctionResultFragmentContainer
-                    auctionResult={item}
-                    showArtistName
-                    onPress={() => {
-                      trackEvent(tracks.tapAuctionGroup(item.internalID, item.artistID, index))
-                      navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
-                    }}
-                  />
-                </Flex>
+              <Flex px={1}>
+                <AuctionResultFragmentContainer
+                  auctionResult={item}
+                  showArtistName
+                  onPress={() => {
+                    trackEvent(tracks.tapAuctionGroup(item.internalID))
+                    navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+                  }}
+                />
               </Flex>
             ) : (
               <></>
@@ -184,20 +182,12 @@ export const AuctionResultsForYouQueryRenderer: React.FC = () => (
 )
 
 export const tracks = {
-  tapAuctionGroup: (internalID: string, artistID: string, index?: number) => ({
-    contextModule: ContextModule.auctionResultsForArtistsYouFollow,
-    contextScreenOwnerType: OwnerType.auctionResultsForArtistsYouFollow,
-    contextScreenOwnerid: artistID,
-    destinationScreenOwnerId: internalID,
-    horizontalSlidePosition: index,
-    type: "thumbnail",
-  }),
-
-  tapArtistsYouFollow: () => ({
-    contextModule: ContextModule.auctionResultsForArtistsYouFollow,
-    contextScreenOwnerType: OwnerType.auctionResultsForArtistsYouFollow,
-    destinationScreenOwnerType: OwnerType.savesAndFollows,
-    actionName: Schema.ActionNames.SavesAndFollowsArtists,
+  tapAuctionGroup: (auctionResultId: string) => ({
+    action: ActionType.tappedAuctionResultGroup,
+    context_module: ContextModule.auctionResultsForArtistsYouFollow,
+    context_screen_owner_type: OwnerType.auctionResultsForArtistsYouFollow,
+    destination_screen_owner_type: OwnerType.auctionResult,
+    destination_screen_owner_id: auctionResultId,
     type: "thumbnail",
   }),
 }

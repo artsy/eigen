@@ -38,13 +38,13 @@ interface Props extends ViewProps {
 
 const Home = (props: Props) => {
   const { articlesConnection, homePage, me, featured } = props
-  const artworkModules = homePage.artworkModules || []
-  const salesModule = homePage.salesModule
-  const collectionsModule = homePage.marketingCollectionsModule
-  const artistModules = (homePage.artistModules && homePage.artistModules.concat()) || []
-  const fairsModule = homePage.fairsModule
+  const artworkModules = homePage?.artworkModules || []
+  const salesModule = homePage?.salesModule
+  const collectionsModule = homePage?.marketingCollectionsModule
+  const artistModules = (homePage?.artistModules && homePage.artistModules.concat()) || []
+  const fairsModule = homePage?.fairsModule
 
-  const auctionResultsEchoFlag = useFeatureFlag("ARAuctionResults")
+  const enableAuctionResultsByFollowedArtists = useFeatureFlag("ARHomeAuctionResultsByFollowedArtists")
 
   const artworkRails = artworkModules.map(
     (module) =>
@@ -90,7 +90,7 @@ const Home = (props: Props) => {
         type: "collections",
         data: collectionsModule,
       } as const),
-    auctionResultsEchoFlag &&
+    enableAuctionResultsByFollowedArtists &&
       ({
         type: "auction-results",
       } as const),
@@ -238,13 +238,13 @@ export const HomeFragmentContainer = createRefetchContainer(
   },
   graphql`
     query HomeRefetchQuery($heroImageVersion: HomePageHeroUnitImageVersion!) {
-      homePage {
+      homePage @optionalField {
         ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
       }
-      me {
+      me @optionalField {
         ...Home_me
       }
-      featured: viewingRooms(featured: true) {
+      featured: viewingRooms(featured: true) @optionalField {
         ...Home_featured
       }
       articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
@@ -375,14 +375,14 @@ export const HomeQueryRenderer: React.FC = () => {
       environment={defaultEnvironment}
       query={graphql`
         query HomeQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
-          homePage {
+          homePage @optionalField {
             ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
           }
-          me {
+          me @optionalField {
             ...Home_me
             ...AuctionResultsRail_me
           }
-          featured: viewingRooms(featured: true) {
+          featured: viewingRooms(featured: true) @optionalField {
             ...Home_featured
           }
           articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
