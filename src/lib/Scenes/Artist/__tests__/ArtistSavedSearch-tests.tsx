@@ -104,6 +104,7 @@ describe("Saved search banner on artist screen", () => {
 
     const filterTextValues = tree.root.findAllByType(CurrentOption).map(extractText)
 
+    expect(filterTextValues).toContain("Recently added")
     expect(filterTextValues).toContain("Buy now, Inquire")
     expect(filterTextValues).toContain("Limited Edition, Open Edition")
   })
