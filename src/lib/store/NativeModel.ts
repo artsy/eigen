@@ -61,12 +61,7 @@ export function listenToNativeEvents(cb: (event: NativeEvent) => void) {
 listenToNativeEvents((event: NativeEvent) => {
   switch (event.type) {
     case "EVENT_TRACKING":
-      if (
-        Object.prototype.hasOwnProperty.call(event.payload, "screen_name") ||
-        Object.prototype.hasOwnProperty.call(event.payload, "event_name")
-      ) {
-        SegmentTrackingProvider.postEvent(event.payload)
-      }
+      SegmentTrackingProvider.postEvent(event.payload)
       return
     case "STATE_CHANGED":
       const newOnboardingFlow = unsafe_getFeatureFlag("AREnableNewOnboardingFlow")
