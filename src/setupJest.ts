@@ -73,11 +73,7 @@ jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
 }))
 
 jest.mock("./lib/NativeModules/Events.tsx", () => ({
-  postEvent: jest.fn(),
   userHadMeaningfulInteraction: jest.fn(),
-  NativeAnalyticsProvider: {
-    postEvent: jest.fn(),
-  },
 }))
 
 jest.mock("react-native-share", () => ({
@@ -269,7 +265,6 @@ function getNativeModules(): OurNativeModules {
       presentModal: jest.fn(),
     },
     AREventsModule: {
-      postEvent: jest.fn(),
       requestAppStoreRating: jest.fn(),
     },
     ArtsyNativeModule: {
