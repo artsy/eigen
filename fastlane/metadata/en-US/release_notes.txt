@@ -1,3 +1,8 @@
-This update includes a number of improvements and bug fixes
+This update includes a number of improvements and bug fixes including:
+
+- New Orders History screen inside My Profile tab
+- Share articles from the app
+- See auction results from artists you follow
+- Fix "Unable to Load" bug on home screen
 
 Have feedback? Email us at support@artsy.net
