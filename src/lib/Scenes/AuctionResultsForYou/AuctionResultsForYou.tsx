@@ -79,13 +79,13 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
           )}
           renderSectionHeader={({ section: { sectionTitle } }) => (
             <Flex bg="white" mx="2">
-              <Text mb="2" variant="title">
+              <Text my="2" variant="title">
                 {sectionTitle}
               </Text>
               <Separator borderColor={"black5"} />
             </Flex>
           )}
-          renderSectionFooter={() => <Flex mt="3" />}
+          renderSectionFooter={() => <Flex mt="2" />}
           ItemSeparatorComponent={() => (
             <Flex px={2}>
               <Separator borderColor={"black5"} />
