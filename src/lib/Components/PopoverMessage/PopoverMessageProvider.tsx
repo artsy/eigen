@@ -1,55 +1,113 @@
-import React, { useCallback, useMemo, useState } from "react"
-import { PopoverMessage, PopoverMessageOptions, PopoverMessagePlacement, PopoverMessageProps } from "./PopoverMessage"
+import React, { useCallback, useState } from "react"
+import { useEffect } from "react"
+import { useRef } from "react"
+import { Animated } from "react-native"
+import { PopoverMessage, PopoverMessageItem } from "./PopoverMessage"
 
 interface PopoverMessageContextContextValue {
-  show: (options: PopoverMessageOptions) => void
-  hide: (id: string) => void
+  show: (options: PopoverMessageItem) => void
+  hide: () => void
 }
 
-// tslint:disable-next-line:no-empty
-export const PopoverMessageContext = React.createContext<PopoverMessageContextContextValue>({ show: () => {}, hide: () => {} })
+const SHOW_ANIMATION_VELOCITY = 450
+const HIDE_ANIMATION_VELOCITY = 400
+const REPLACE_ANIMATION_VELOCITY = 350
 
-const filterPopoverMessagesByPosition = (
-  popoverMessages: Array<Omit<PopoverMessageProps, "positionIndex">>,
-  placement: PopoverMessagePlacement
-): PopoverMessageProps[] => {
-  const filteredByPlacement = popoverMessages.filter((t) => t.placement === placement)
-  const formatted = filteredByPlacement.map((popoverMessage, positionIndex) => ({
-    ...popoverMessage,
-    positionIndex,
-  }))
+const delay = (time: number) => new Promise((resolve) => setTimeout(resolve, time))
 
-  return formatted
-}
+export const PopoverMessageContext = React.createContext<PopoverMessageContextContextValue>({
+  // tslint:disable-next-line:no-empty
+  show: () => {},
+  // tslint:disable-next-line:no-empty
+  hide: () => {},
+})
 
 export const PopoverMessageProvider: React.FC = ({ children }) => {
-  const [popoverMessages, setPopoverMessages] = useState<Array<Omit<PopoverMessageProps, "positionIndex">>>([])
+  const [popoverMessage, setPopoverMessage] = useState<PopoverMessageItem | null>(null)
+  const showingPopoverMessage = useRef<boolean>(false)
+  const lastStartedAt = useRef<number | null>(null)
+  const timer = useRef<NodeJS.Timeout | null>(null)
+  const [opacityAnim] = useState(new Animated.Value(0))
+  const [translateYAnim] = useState(new Animated.Value(0))
+
+  const runAnimation = useCallback((mode: "show" | "hide") => {
+    const nextAnimationValue = mode === "show" ? 1 : 0
+    const animationDuration = mode === "show" ? SHOW_ANIMATION_VELOCITY : HIDE_ANIMATION_VELOCITY
+
+    return new Promise((resolve) => {
+      if (__TEST__) {
+        return resolve(null)
+      }
+
+      Animated.parallel([
+        Animated.spring(translateYAnim, {
+          toValue: nextAnimationValue,
+          useNativeDriver: true,
+          friction: 55,
+        }),
+        Animated.timing(opacityAnim, {
+          toValue: nextAnimationValue,
+          useNativeDriver: true,
+          duration: animationDuration,
+        }),
+      ]).start(resolve)
+    })
+  }, [])
+
+  const clearStartedTimeout = useCallback(() => {
+    if (timer.current) {
+      clearTimeout(timer.current)
+      timer.current = null
+    }
+  }, [])
+
+  const hide: PopoverMessageContextContextValue["hide"] = useCallback(async () => {
+    await runAnimation("hide")
+    setPopoverMessage(null)
+    clearStartedTimeout()
+    showingPopoverMessage.current = false
+  }, [setPopoverMessage])
 
   const show: PopoverMessageContextContextValue["show"] = useCallback(
-    (options) => {
-      setPopoverMessages((prevPopoverMessage) => [...prevPopoverMessage, { id: `${Date.now()}`, ...options }])
+    async (options) => {
+      const { autoHide = true, hideTimeout = 3500 } = options
+      const now = Date.now()
+      lastStartedAt.current = now
+
+      clearStartedTimeout()
+
+      if (showingPopoverMessage.current) {
+        runAnimation("hide")
+        await delay(REPLACE_ANIMATION_VELOCITY)
+      }
+
+      // Check race condition
+      if (lastStartedAt.current === now) {
+        setPopoverMessage(options)
+        showingPopoverMessage.current = true
+
+        if (autoHide) {
+          timer.current = setTimeout(hide, hideTimeout)
+        }
+
+        lastStartedAt.current = null
+      }
     },
-    [setPopoverMessages]
+    [clearStartedTimeout, hide, setPopoverMessage]
   )
 
-  const hide: PopoverMessageContextContextValue["hide"] = useCallback(
-    (id) => {
-      setPopoverMessages((prevPopoverMessage) => prevPopoverMessage.filter((t) => t.id !== id))
-    },
-    [setPopoverMessages]
-  )
-
-  const topPopoverMessages = useMemo(() => filterPopoverMessagesByPosition(popoverMessages, "top"), [popoverMessages])
-  const bottomPopoverMessages = useMemo(() => filterPopoverMessagesByPosition(popoverMessages, "bottom"), [
-    popoverMessages,
-  ])
+  useEffect(() => {
+    if (popoverMessage) {
+      runAnimation("show")
+    }
+  }, [popoverMessage])
 
   return (
     <PopoverMessageContext.Provider value={{ show, hide }}>
       {children}
-      {[...topPopoverMessages, ...bottomPopoverMessages].map((popoverMessageProps) => (
-        <PopoverMessage key={popoverMessageProps.id} {...popoverMessageProps} />
-      ))}
+      {!!popoverMessage && (
+        <PopoverMessage {...popoverMessage} opacityAnimation={opacityAnim} translateYAnimation={translateYAnim} />
+      )}
     </PopoverMessageContext.Provider>
   )
 }
