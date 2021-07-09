@@ -121,7 +121,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
     </>
   )
 
-  const resultsString = Number(artist.auctionResultsConnection?.totalCount) > 1 ? "results" : "result"
+  const resultsString = Number(artist.auctionResultsConnection?.totalCount) === 1 ? "result" : "results"
 
   const isKeywordFilterActive = !!appliedFilters?.find((filter) => filter.paramName === FilterParamName.keyword)
     ?.paramValue
