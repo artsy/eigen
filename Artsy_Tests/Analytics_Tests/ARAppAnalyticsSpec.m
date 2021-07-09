@@ -1,7 +1,7 @@
 #import "ARAppDelegate.h"
 #import "ARAppDelegate+Analytics.h"
 #import "ARStubbedAnalyticsProvider.h"
-#import <ARAnalytics/ARAnalytics.h>
+// #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 
 /// Depending on how this spec turns out, it may be worth migrating it into it's own target
@@ -28,12 +28,12 @@ __block ARStubbedAnalyticsProvider *analytics;
 /// Kill off all existing providers, then replace with our easily introspected provider:
 
 beforeEach(^{
-    analytics = [[ARStubbedAnalyticsProvider alloc] initWithIdentifier:@""];
-    [[ARAnalytics currentProviders].copy each:^(id provider) {
-        [ARAnalytics removeProvider:provider];
-    }];
-    
-    [ARAnalytics setupProvider:analytics];
+    // analytics = [[ARStubbedAnalyticsProvider alloc] initWithIdentifier:@""];
+    // [[ARAnalytics currentProviders].copy each:^(id provider) {
+    //     [ARAnalytics removeProvider:provider];
+    // }];
+
+    // [ARAnalytics setupProvider:analytics];
 });
 
 

@@ -30,6 +30,8 @@ extern NSString *const AREnvTest;
 - (instancetype)initWithState:(NSDictionary *)state packagerURL:(nullable NSURL *)packagerURL NS_DESIGNATED_INITIALIZER;
 
 - (void)updateState:(NSDictionary *)state;
+- (void)sendEvent:(NSString *)name traits:(NSDictionary *)traits;
+- (void)sendScreenEvent:(NSString *)screenName traits:(NSDictionary *)traits;
 - (NSString *)stateStringForKey:(NSString *)stateKey;
 - (NSString *)reactStateStringForKey:(NSString *)stateKey;
 - (BOOL)reactStateBoolForKey:(NSString *)stateKey;

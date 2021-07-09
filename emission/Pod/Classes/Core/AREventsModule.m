@@ -13,11 +13,6 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(postEvent:(nonnull NSDictionary *)info)
-{
-    self.eventOccurred(info);
-}
-
 RCT_EXPORT_METHOD(requestAppStoreRating)
 {
     [SKStoreReviewController requestReview];

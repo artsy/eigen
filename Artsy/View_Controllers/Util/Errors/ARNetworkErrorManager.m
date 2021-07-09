@@ -2,7 +2,7 @@
 #import "ARCustomEigenLabels.h"
 #import "ARScreenPresenterModule.h"
 
-#import <ARAnalytics/ARAnalytics.h>
+// #import <ARAnalytics/ARAnalytics.h>
 #import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
@@ -30,7 +30,7 @@
 
 + (void)presentActiveError:(NSError *)error withMessage:(NSString *)message;
 {
-    [ARAnalytics error:error withMessage:message];
+//    [ARAnalytics error:error withMessage:message];
 
     ARNetworkErrorManager *manager = [self sharedManager];
     if (manager.activeModalView == nil) {

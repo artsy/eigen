@@ -1,5 +1,6 @@
 import { Analytics } from "@segment/analytics-react-native"
 import { addBreadcrumb } from "@sentry/react-native"
+import { Platform } from "react-native"
 import Config from "react-native-config"
 import { isCohesionScreen, TrackingProvider } from "./providers"
 
@@ -12,9 +13,16 @@ export const SegmentTrackingProvider: TrackingProvider = {
     const Braze = require("@segment/analytics-react-native-appboy").default
 
     analytics
-      .setup(__DEV__ ? Config.SEGMENT_STAGING_WRITE_KEY_ANDROID : Config.SEGMENT_PRODUCTION_WRITE_KEY_ANDROID, {
-        using: [Braze],
-      })
+      .setup(
+        Platform.select({
+          ios: __DEV__ ? Config.SEGMENT_STAGING_WRITE_KEY_IOS : Config.SEGMENT_PRODUCTION_WRITE_KEY_IOS,
+          android: __DEV__ ? Config.SEGMENT_STAGING_WRITE_KEY_ANDROID : Config.SEGMENT_PRODUCTION_WRITE_KEY_ANDROID,
+          default: "",
+        }),
+        {
+          using: [Braze],
+        }
+      )
       .then(() => console.log("Analytics is ready"))
       .catch((err) => console.error("Something went wrong", err))
   },
@@ -28,6 +36,12 @@ export const SegmentTrackingProvider: TrackingProvider = {
       message: `${JSON.stringify(info, null, 2)}`,
       category: "analytics",
     })
+    // Events bubbled up from ios native
+    if ("screen_name" in info) {
+      const { screen_name, ...rest } = info
+      analytics.screen(screen_name, rest as any)
+      return
+    }
 
     if ("action" in info) {
       const { action } = info
@@ -55,6 +69,13 @@ export const SegmentTrackingProvider: TrackingProvider = {
     if ("context_screen" in info) {
       const { context_screen, ...rest } = info
       analytics.screen(context_screen, rest as any)
+      return
+    }
+
+    // default check events from ios native
+    if ("event_name" in info) {
+      const { event_name, ...rest } = info
+      analytics.track(event_name, rest as any)
       return
     }
 

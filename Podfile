@@ -130,7 +130,6 @@ target 'Artsy' do
   pod 'Firebase/Auth'
 
   # Analytics
-  pod 'ARAnalytics', subspecs: %w[Segmentio]
   pod 'SailthruMobile'
 
   # Developer Pods

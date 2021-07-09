@@ -2,7 +2,9 @@ import { Action, action, Thunk, thunk } from "easy-peasy"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { NotificationsManager } from "lib/NativeModules/NotificationsManager"
 import { navigate, navigationEvents } from "lib/navigation/navigate"
-import { GlobalStore, unsafe_getFeatureFlag } from "./GlobalStore"
+import { InfoType } from "lib/utils/track/providers"
+import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
+import { getCurrentEmissionState, GlobalStore, unsafe_getFeatureFlag } from "./GlobalStore"
 
 // These should match the values in emission/Pod/Classes/EigenCommunications/ARNotificationsManager.m
 export type NativeEvent =
@@ -20,6 +22,10 @@ export type NativeEvent =
     }
   | {
       type: "MODAL_DISMISSED"
+    }
+  | {
+      type: "EVENT_TRACKING"
+      payload: InfoType
     }
 
 export interface NativeState {
@@ -54,9 +60,32 @@ export function listenToNativeEvents(cb: (event: NativeEvent) => void) {
 
 listenToNativeEvents((event: NativeEvent) => {
   switch (event.type) {
+    case "EVENT_TRACKING":
+      if (
+        Object.prototype.hasOwnProperty.call(event.payload, "screen_name") ||
+        Object.prototype.hasOwnProperty.call(event.payload, "event_name")
+      ) {
+        SegmentTrackingProvider.postEvent(event.payload)
+      }
+      return
     case "STATE_CHANGED":
+      const newOnboardingFlow = unsafe_getFeatureFlag("AREnableNewOnboardingFlow")
+      if (!newOnboardingFlow) {
+        const prevState = getCurrentEmissionState()
+        const onboardingChanged =
+          prevState.onboardingState !== "complete" && event.payload.onboardingState === "complete"
+        const userIdChanged = !prevState.userID && event.payload.userID
+        if (onboardingChanged || userIdChanged) {
+          // weird ts-lint no-unused-expressions lint
+          SegmentTrackingProvider.identify
+            ? SegmentTrackingProvider.identify(event.payload.userID, {
+                is_temporary_user: !event.payload.userID ? 1 : 0,
+              })
+            : (() => undefined)()
+        }
+      }
       GlobalStore.actions.native.setLocalState(event.payload)
-      if (!unsafe_getFeatureFlag("AREnableNewOnboardingFlow") && event.payload.userEmail !== null) {
+      if (!newOnboardingFlow && event.payload.userEmail !== null) {
         GlobalStore.actions.auth.setState({ userEmail: event.payload.userEmail })
       }
       return

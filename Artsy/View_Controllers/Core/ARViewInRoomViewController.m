@@ -1,6 +1,7 @@
 #import "ARViewInRoomViewController.h"
 
-#import <ARAnalytics/ARAnalytics.h>
+// #import <ARAnalytics/ARAnalytics.h>
+#import <Emission/AREmission.h>
 #import "ARAnalyticsConstants.h"
 
 #import "Artwork.h"
@@ -99,7 +100,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [ARAnalytics event:ARAnalyticsArtworkViewInRoom withProperties:@{
+    [[AREmission sharedInstance] sendEvent:ARAnalyticsArtworkViewInRoom traits:@{
         @"interaction_type": self.popOnRotation ? @"rotation" : @"button",
         @"artwork_slug": self.artwork.artworkID ?: @"",
         @"artist_slug": self.artwork.artist.artistID ?: @"",

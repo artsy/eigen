@@ -6,8 +6,6 @@
 #import <SailthruMobile/SailthruMobile.h>
 #import <Firebase.h>
 #import "Appboy-iOS-SDK/AppboyKit.h"
-
-#import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 
 #import "ARAppDelegate.h"
@@ -203,7 +201,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)registerNewSessionOpened
 {
-    [ARAnalytics startTimingEvent:ARAnalyticsTimePerSession];
+    // [ARAnalytics startTimingEvent:ARAnalyticsTimePerSession];
 }
 
 /// This happens every time we come _back_ to the app from the background
@@ -215,7 +213,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    [ARAnalytics finishTimingEvent:ARAnalyticsTimePerSession];
+    // [ARAnalytics finishTimingEvent:ARAnalyticsTimePerSession];
 }
 
 - (ARAppNotificationsDelegate *)remoteNotificationsDelegate;
@@ -236,11 +234,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)finishOnboarding:(AROnboardingViewController *)viewController animated:(BOOL)animated
 {
-    // We now have a proper Artsy user, not just a local temporary ID
-    // So we have to re-identify the analytics user
-    // to ensure we start sending the Gravity ID as well as the local temporary ID
-    [ARUserManager identifyAnalyticsUser];
-
     // And update emission's auth state
     [[AREmission sharedInstance] updateState:@{
         [ARStateKey userID]: [[[ARUserManager sharedManager] currentUser] userID],
