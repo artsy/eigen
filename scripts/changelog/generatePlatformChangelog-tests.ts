@@ -150,7 +150,6 @@ describe("getPlaformSpecificChangeLog", () => {
 const prs = [
   {
     body: `
-#run_new_changelog_check
 ### Changelog updates
 
 #### iOS user-facing changes
@@ -159,7 +158,6 @@ const prs = [
   },
   {
     body: `
-#run_new_changelog_check
 ### Changelog updates
 
 #### Cross-platform user-facing changes
@@ -168,7 +166,6 @@ const prs = [
   },
   {
     body: `
-#run_new_changelog_check
 ### Changelog updates
 
 #### Cross-platform user-facing changes
@@ -178,7 +175,6 @@ const prs = [
   },
   {
     body: `
-#run_new_changelog_check
 ### Changelog updates
 #### Dev changes
 - Improved changelog tooling
@@ -187,7 +183,6 @@ const prs = [
   },
   {
     body: `
-#run_new_changelog_check
 ### Changelog updates
 #### Dev changes
 -

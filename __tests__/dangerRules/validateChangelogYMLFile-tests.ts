@@ -22,7 +22,7 @@ describe("validatePRChangelog", () => {
 
   it("warns the author when the PR body is invalid", () => {
     dm.danger.github = {
-      pr: { body: "#run_new_changelog_check invalid body", base: { repo: { name: "eigen" } }, state: "open" },
+      pr: { body: "invalid body", base: { repo: { name: "eigen" } }, state: "open" },
     }
     validatePRChangelog()
     expect(dm.warn).toHaveBeenCalledWith(
@@ -32,7 +32,7 @@ describe("validatePRChangelog", () => {
 
   it("warns the author when no changelog changes were detected", () => {
     dm.danger.github = {
-      pr: { body: "#run_new_changelog_check #nochangelog", base: { repo: { name: "eigen" } }, state: "open" },
+      pr: { body: "#nochangelog", base: { repo: { name: "eigen" } }, state: "open" },
     }
     validatePRChangelog()
     expect(dm.warn).toHaveBeenCalledWith("✅ **No changelog changes**")
@@ -44,7 +44,6 @@ describe("validatePRChangelog", () => {
         body: `# Description
 
 This pull request adds some stuff to the thing so that it can blah.
-#run_new_changelog_check
 ### Changelog updates
 
 #### Cross-platform user-facing changes
@@ -84,7 +83,6 @@ for the checkout flow,Fixed modal close button)
         body: `# Description
 
 This pull request adds some stuff to the thing so that it can blah.
-#run_new_changelog_check
 ### Changelog updates
 
 #### Cross-platform user-facing changes
