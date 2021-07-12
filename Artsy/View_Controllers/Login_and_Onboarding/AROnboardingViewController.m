@@ -19,7 +19,6 @@
 #import "ARParallaxEffect.h"
 
 #import "ArtsyAPI+Private.h"
-// #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "ARDispatchManager.h"
 #import "ARFollowable.h"

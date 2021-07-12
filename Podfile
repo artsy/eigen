@@ -223,7 +223,6 @@ post_install do |installer|
   # * Send PRs for the rest
   %w[
     Pods/ORStackView/Classes/ios/ORStackView.h
-    Pods/ARAnalytics/ARAnalytics.h
     Pods/NAMapKit/NAMapKit/*.h
   ].flat_map { |x| Dir.glob(x) }.each do |header|
     addition = "#import <UIKit/UIKit.h>\n"
