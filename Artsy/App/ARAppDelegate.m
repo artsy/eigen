@@ -191,7 +191,7 @@ static ARAppDelegate *_sharedInstance = nil;
 }
 
 - (NSString *)getApiEndpoint:(NSString *)appboyApiEndpoint {
-    return @"sdk.iad-06.braze.com";
+    return @"https://sdk.iad-06.braze.com";
 }
 
 - (void)registerNewSessionOpened
