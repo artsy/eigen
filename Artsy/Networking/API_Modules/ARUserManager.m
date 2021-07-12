@@ -26,6 +26,7 @@
 #import <ARAnalytics/ARAnalytics.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARGraphQLQueryCache.h>
+#import <Appboy.h>
 
 #import "RNCAsyncStorage.h"
 
@@ -68,6 +69,8 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     NSString *anonymousID = self.sharedManager.localTemporaryUserUUID;
 
     [ARAnalytics setUserProperty:@"is_temporary_user" toValue:@(user == nil)];
+
+    [[Appboy sharedInstance] changeUser:user.userID];
     [ARAnalytics identifyUserWithID:user.userID anonymousID:anonymousID andEmailAddress:user.email];
 }
 
