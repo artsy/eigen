@@ -18,7 +18,6 @@
 #import <Emission/AREmission.h>
 #import <Emission/ARNotificationsManager.h>
 #import <UserNotifications/UserNotifications.h>
-#import <SailthruMobile/SailthruMobile.h>
 
 @implementation ARAppNotificationsDelegate
 
@@ -165,7 +164,6 @@
     UNAuthorizationOptions authOptions = (UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert);
     [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
         NSString *grantedString = granted ? @"YES" : @"NO";
-        [[[ARAppDelegate sharedInstance] sailThru] syncNotificationSettings];
         [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationsRequested traits:@{@"granted" : grantedString}];
     }];
 
@@ -229,8 +227,6 @@
     // Save device token purely for the admin settings view.
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
 
-    [[[ARAppDelegate sharedInstance] sailThru] setDeviceTokenInBackground:deviceTokenData];
-
 // We only record device tokens on the Artsy service in case of Beta or App Store builds.
 #ifndef DEBUG
     // [ARAnalytics setUserProperty:ARAnalyticsEnabledNotificationsProperty toValue:@"true"];
@@ -257,7 +253,6 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
 {
     [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
-    [[[ARAppDelegate sharedInstance] sailThru] handleNotificationPayload:userInfo];
     handler(UIBackgroundFetchResultNoData);
 }
 

@@ -93,16 +93,15 @@ static AREmission *_sharedInstance = nil;
 - (void)sendEvent:(NSString *)name traits:(NSDictionary *)traits
 {
     NSMutableDictionary *eventTraits = [traits mutableCopy];
-    [eventTraits addEntriesFromDictionary:@{@"event_name": name }]
+    [eventTraits addEntriesFromDictionary:@{@"event_name": name }];
     [self.notificationsManagerModule sendEvent:eventTraits];
 }
 
 - (void)sendScreenEvent:(NSString *)screenName traits:(NSDictionary *)traits
 {
     NSMutableDictionary *screenTraits = [traits mutableCopy];
-    [screenTraits addEntriesFromDictionary:@{@"screen_name": screenName }]
+    [screenTraits addEntriesFromDictionary:@{@"screen_name": screenName }];
     [self.notificationsManagerModule sendEvent:screenTraits];
-}
 }
 
 - (NSString *)stateStringForKey:(NSString *)stateKey

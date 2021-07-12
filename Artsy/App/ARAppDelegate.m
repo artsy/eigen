@@ -3,7 +3,6 @@
 #import <ORKeyboardReactingApplication/ORKeyboardReactingApplication.h>
 #import <AFOAuth1Client/AFOAuth1Client.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
-#import <SailthruMobile/SailthruMobile.h>
 #import <Firebase.h>
 #import "Appboy-iOS-SDK/AppboyKit.h"
 #import "ARAnalyticsConstants.h"
@@ -66,7 +65,6 @@ static void InitializeFlipper(UIApplication *application) {
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readwrite) NSString *landingURLRepresentation;
 @property (strong, nonatomic, readwrite) NSDictionary *initialLaunchOptions;
-@property (strong, nonatomic, readwrite) SailthruMobile *sailThru;
 
 @end
 
@@ -129,19 +127,9 @@ static ARAppDelegate *_sharedInstance = nil;
         return;
     }
 
-    self.sailThru = [SailthruMobile new];
-    [self.sailThru setAutoIntegrationEnabled:NO];
-    [self.sailThru setShouldClearBadgeOnLaunch:NO];
-    [self.sailThru startEngine:[ReactNativeConfig envFor:@"SAILTHRU_KEY"] withAuthorizationOption:STMPushAuthorizationOptionNoRequest];
-
 
     // Temp Fix for: https://github.com/artsy/eigen/issues/602
     [self forceCacheCustomFonts];
-
-    // This cannot be moved after the view setup code, as it
-    // relies on swizzling alloc on new objects, thus should be
-    // one of the first things that happen.
-    [self setupAnalytics];
 
     [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[ARAppNotificationsDelegate alloc] init];
 
@@ -201,7 +189,8 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)registerNewSessionOpened
 {
-    // [ARAnalytics startTimingEvent:ARAnalyticsTimePerSession];
+    // TODO: TRACK APPBOY Sessions
+    // appboy.openSession()
 }
 
 /// This happens every time we come _back_ to the app from the background
@@ -213,7 +202,8 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // [ARAnalytics finishTimingEvent:ARAnalyticsTimePerSession];
+    // MANUALLY track lifecycle event. Segment already does this if
+    // trackLifecycleSessions: true
 }
 
 - (ARAppNotificationsDelegate *)remoteNotificationsDelegate;

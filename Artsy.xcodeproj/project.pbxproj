@@ -136,7 +136,6 @@
 		51B4BA451C6A24490014A394 /* AuctionInformationViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B4BA441C6A24490014A394 /* AuctionInformationViewControllerTests.swift */; };
 		51B4BA481C6A2B7B0014A394 /* AuctionSaleNetworkModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517201C51C6A239E007148B7 /* AuctionSaleNetworkModelTests.swift */; };
 		51B4BA491C6A2B7F0014A394 /* AuctionBiddersNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517201C31C6A239E007148B7 /* AuctionBiddersNetworkModel.swift */; };
-		51C863151EAB81F00069E9AC /* ArtsyAPI+Sailthru.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C863141EAB81F00069E9AC /* ArtsyAPI+Sailthru.m */; };
 		51D141B71AF0F14B000091CF /* ARTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D141B61AF0F14B000091CF /* ARTestHelper.m */; };
 		51DA12251B596035001B6F2A /* RefreshIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51DA12241B596035001B6F2A /* RefreshIcon@2x.png */; };
 		51DCC6C81C60E26800455309 /* AuctionInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DCC6C71C60E26800455309 /* AuctionInformationViewController.swift */; };
@@ -732,8 +731,6 @@
 		517201C51C6A239E007148B7 /* AuctionSaleNetworkModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionSaleNetworkModelTests.swift; sourceTree = "<group>"; };
 		518B421D1B57CF7100210A02 /* AttentionIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AttentionIcon@2x.png"; sourceTree = "<group>"; };
 		51B4BA441C6A24490014A394 /* AuctionInformationViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionInformationViewControllerTests.swift; sourceTree = "<group>"; };
-		51C863131EAB81F00069E9AC /* ArtsyAPI+Sailthru.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Sailthru.h"; sourceTree = "<group>"; };
-		51C863141EAB81F00069E9AC /* ArtsyAPI+Sailthru.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Sailthru.m"; sourceTree = "<group>"; };
 		51D141B51AF0F14B000091CF /* ARTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTestHelper.h; sourceTree = "<group>"; };
 		51D141B61AF0F14B000091CF /* ARTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTestHelper.m; sourceTree = "<group>"; };
 		51DA12241B596035001B6F2A /* RefreshIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RefreshIcon@2x.png"; sourceTree = "<group>"; };
@@ -2640,8 +2637,6 @@
 				3CB37D96192246B500089A1D /* ArtsyAPI+ErrorHandlers.m */,
 				608AABDA1B3884C600855A1C /* ARKeychainable.h */,
 				608AABDB1B3884C600855A1C /* ARKeychainable.m */,
-				51C863131EAB81F00069E9AC /* ArtsyAPI+Sailthru.h */,
-				51C863141EAB81F00069E9AC /* ArtsyAPI+Sailthru.m */,
 			);
 			name = "API Modules";
 			path = API_Modules;
@@ -3309,23 +3304,6 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_close_button@2x.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_close_button_white@2x.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_message_close_button@2x.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_refresh.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari-7@2x~ipad.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari-7@2x~iphone.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari-7@3x~iphone.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari-7~ipad.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari-7~iphone.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari@2x~ipad.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari@2x~iphone.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari@3x~iphone.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari~ipad.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_safari~iphone.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_share_button_white@2x.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_stream_back_button@2x.png",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework/cp_stream_back_button_white@2x.png",
 				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
 			);
@@ -3357,23 +3335,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/NPKeyboardLayoutGuide.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_close_button@2x.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_close_button_white@2x.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_message_close_button@2x.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_refresh.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari-7@2x~ipad.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari-7@2x~iphone.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari-7@3x~iphone.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari-7~ipad.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari-7~iphone.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari@2x~ipad.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari@2x~iphone.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari@3x~iphone.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari~ipad.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_safari~iphone.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_share_button_white@2x.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_stream_back_button@2x.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cp_stream_back_button_white@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 			);
@@ -3406,16 +3367,12 @@
 				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
 				"${BUILT_PRODUCTS_DIR}/MapboxMobileEvents/MapboxMobileEvents.framework",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobile.framework",
-				"${PODS_ROOT}/SailthruMobile/SailthruMobileExtension.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxMobileEvents.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SailthruMobile.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SailthruMobileExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3491,7 +3448,6 @@
 				60B6F0F21662AADF007C9587 /* ARAppConstants.m in Sources */,
 				60C2CBEF1CC11433009B30CA /* LiveAuctionToolbarView.swift in Sources */,
 				5EF8407E1CECDFFD006248D7 /* LiveAuctionLotCollectionViewLayoutAttributes.swift in Sources */,
-				51C863151EAB81F00069E9AC /* ArtsyAPI+Sailthru.m in Sources */,
 				5EA0E74C1DCA3DD200CE9203 /* Interstellar+Artsy.swift in Sources */,
 				49EC62181778AF100020D648 /* PartnerShow.m in Sources */,
 				51DCC6C81C60E26800455309 /* AuctionInformationViewController.swift in Sources */,

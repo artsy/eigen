@@ -635,9 +635,6 @@ PODS:
     - React-Core
   - RNSVG (9.13.3):
     - React
-  - SailthruMobile (11.0.1):
-    - SailthruMobile/Extension (= 11.0.1)
-  - SailthruMobile/Extension (11.0.1)
   - SDWebImage (5.8.3):
     - SDWebImage/Core (= 5.8.3)
   - SDWebImage/Core (5.8.3)
@@ -793,7 +790,6 @@ DEPENDENCIES:
   - "RNSentry (from `node_modules/@sentry/react-native`)"
   - RNShare (from `node_modules/react-native-share`)
   - RNSVG (from `node_modules/react-native-svg`)
-  - SailthruMobile
   - SDWebImage (= 5.8.3)
   - Specta
   - Starscream
@@ -870,7 +866,6 @@ SPEC REPOS:
     - ORStackView
     - PromisesObjC
     - Quick
-    - SailthruMobile
     - SDWebImage
     - Segment-Appboy
     - Sentry
@@ -1176,7 +1171,6 @@ SPEC CHECKSUMS:
   RNSentry: 7104cdfc1072ccb86015d9c8f210d81ae76806c1
   RNShare: fed99fd743f80ca255903c1da46fc9a6430efab6
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
-  SailthruMobile: df0a457a0be8cc9feaba16cc52deb527d89cab04
   SDWebImage: 112503ec94a5a2a41869503844a15e8d8f1ead5c
   Segment-Appboy: 5688916eb8fb104b638116ba251cee5d4d8bd266
   Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
@@ -1193,6 +1187,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 1bbc2e133ae089bea4d7ff73c60b5a678b95ed39
+PODFILE CHECKSUM: 7b500ffcb364a3a4b80a5b4cdf733fa7d6f5c643
 
 COCOAPODS: 1.10.1

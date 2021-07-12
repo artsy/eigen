@@ -129,9 +129,6 @@ target 'Artsy' do
   pod 'GoogleSignIn', '~> 5.0.2'
   pod 'Firebase/Auth'
 
-  # Analytics
-  pod 'SailthruMobile'
-
   # Developer Pods
   pod 'DHCShakeNotifier'
   pod 'ORKeyboardReactingApplication'

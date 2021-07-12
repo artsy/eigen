@@ -3,7 +3,6 @@
 #import "ARAppDelegate+Analytics.h"
 #import "ARUserManager.h"
 #import "ArtsyAPI.h"
-#import "ArtsyAPI+Sailthru.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
 #import <Emission/AREmission.h>
@@ -45,11 +44,13 @@ static  NSString *SailthruLinkDomain = @"link.artsy.net";
 
 static void
 DecodeURL(NSURL *URL, void (^callback)(NSURL *URL)) {
-    if ([URL.host isEqualToString:SailthruLinkDomain]) {
-        [ArtsyAPI getDecodedURLAndRegisterClick:URL completion:callback];
-    } else {
-        callback(URL);
-    }
+    // if ([URL.host isEqualToString:SailthruLinkDomain]) {
+    //     [ArtsyAPI getDecodedURLAndRegisterClick:URL completion:callback];
+    // } else {
+    //     callback(URL);
+    // }
+    // TODO: Decode Braze url
+    callback(URL);
 }
 
 @end
