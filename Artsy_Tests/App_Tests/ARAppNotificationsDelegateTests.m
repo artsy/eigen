@@ -34,7 +34,7 @@ describe(@"receiveRemoteNotification", ^{
         app = [UIApplication sharedApplication];
         delegate = [[ARAppNotificationsDelegate alloc] init];
 
-        mockAnalytics = [OCMockObject mockForClass:[ARAnalytics class]];
+        mockAnalytics = [OCMockObject mockForClass:[AREmission class]];
     });
 
     afterEach(^{
@@ -43,8 +43,8 @@ describe(@"receiveRemoteNotification", ^{
 
     sharedExamplesFor(@"when receiving a notification", ^(id _) {
         it(@"triggers an analytics event for receiving a notification", ^{
-            [[mockAnalytics expect] event:ARAnalyticsNotificationReceived withProperties:DictionaryWithAppState(notification, appState)];
-            [[mockAnalytics reject] event:ARAnalyticsNotificationTapped withProperties:OCMOCK_ANY];
+            [[mockAnalytics expect] sendEvent:ARAnalyticsNotificationReceived traits:DictionaryWithAppState(notification, appState)];
+            [[mockAnalytics reject] sendEvent:ARAnalyticsNotificationTapped traits:OCMOCK_ANY];
 
             [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
@@ -76,8 +76,8 @@ describe(@"receiveRemoteNotification", ^{
             });
 
             it(@"triggers an analytics event when a notification has been tapped", ^{
-                [[mockAnalytics reject] event:ARAnalyticsNotificationReceived withProperties:OCMOCK_ANY];
-                [[mockAnalytics expect] event:ARAnalyticsNotificationTapped withProperties:DictionaryWithAppState(notification, appState)];
+                [[mockAnalytics reject] sendEvent:ARAnalyticsNotificationReceived traits:OCMOCK_ANY];
+                [[mockAnalytics expect] sendEvent:ARAnalyticsNotificationTapped traits:DictionaryWithAppState(notification, appState)];
 
                 [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
@@ -121,8 +121,8 @@ describe(@"receiveRemoteNotification", ^{
                                                     return YES;
                                                  }]];
 
-            [[mockAnalytics stub] event:ARAnalyticsNotificationReceived withProperties:OCMOCK_ANY];
-            [[mockAnalytics expect] event:ARAnalyticsNotificationTapped withProperties:DictionaryWithAppState(notification, appState)];
+            [[mockAnalytics stub] sendEvent:ARAnalyticsNotificationReceived traits:OCMOCK_ANY];
+            [[mockAnalytics expect] sendEvent:ARAnalyticsNotificationTapped traits:DictionaryWithAppState(notification, appState)];
 
             [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
