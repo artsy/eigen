@@ -21,7 +21,7 @@ enum ArtworkSorts {
 
 export type SortOption = keyof typeof ArtworkSorts
 
-const DEFAULT_ARTWORK_SORT = {
+export const DEFAULT_ARTWORK_SORT = {
   displayText: "Default",
   paramName: FilterParamName.sort,
   paramValue: "-decayed_merch",
