@@ -49,6 +49,7 @@ upcoming:
     - Fix auction results for you description text scroll issue - ole
     - Fix facebook login failing after signing up for a new account - stanislau hanchar
     - Add keyword search to artist auction reults - ole
+    - Add www to artsy web url (https://artsy.net -> https://www.artsy.net) / fix Auction FAQs screen - ole
 
 releases:
   - version: 6.9.5
