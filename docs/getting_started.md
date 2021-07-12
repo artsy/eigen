@@ -46,7 +46,7 @@ cd eigen
 ```sh
 gem install bundler
 
-bundle install --without development
+bundle install
 
 ./scripts/setup-env-for-oss # or ./scripts/setup-env-for-artsy
 
