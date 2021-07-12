@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c78ce3aaea2b84a8c3cf6cdf6e683799 */
+/* @relayHash cd55a7916992a5d4da71c183b8cff159 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,6 +27,7 @@ query SavedAddressesNewFormQuery {
 }
 
 fragment SavedAddressesNewForm_me on Me {
+  id
   phone
 }
 */
@@ -76,14 +77,14 @@ const node: ConcreteRequest = {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "phone",
+            "name": "id",
             "storageKey": null
           },
           {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "id",
+            "name": "phone",
             "storageKey": null
           }
         ],
@@ -92,7 +93,7 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "c78ce3aaea2b84a8c3cf6cdf6e683799",
+    "id": "cd55a7916992a5d4da71c183b8cff159",
     "metadata": {},
     "name": "SavedAddressesNewFormQuery",
     "operationKind": "query",

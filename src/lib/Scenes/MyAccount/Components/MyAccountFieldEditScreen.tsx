@@ -26,13 +26,14 @@ export interface MyAccountFieldEditScreenProps {
   title: string
   canSave: boolean
   contentContainerStyle?: ViewStyle
+  hideSave?: boolean
   onSave(dismiss: () => void, alert: AlertStatic["alert"]): Promise<any>
 }
 
 export const MyAccountFieldEditScreen = React.forwardRef<
   { scrollToEnd(): void },
   React.PropsWithChildren<MyAccountFieldEditScreenProps>
->(({ children, canSave, onSave, title, contentContainerStyle }, ref) => {
+>(({ children, canSave, onSave, hideSave, title, contentContainerStyle }, ref) => {
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const afterLoadingAlert = useRef<AlertArgs>()
   const scrollViewRef = useRef<ScrollView>(null)
@@ -84,11 +85,13 @@ export const MyAccountFieldEditScreen = React.forwardRef<
         }
         title={title}
         right={
-          <TouchableOpacity disabled={!canSave} onPress={handleSave}>
-            <Sans size="4" opacity={!canSave ? 0.3 : 1}>
-              Save
-            </Sans>
-          </TouchableOpacity>
+          hideSave ? null : (
+            <TouchableOpacity disabled={!canSave} onPress={handleSave}>
+              <Sans size="4" opacity={!canSave ? 0.3 : 1}>
+                Save
+              </Sans>
+            </TouchableOpacity>
+          )
         }
       >
         <ScrollView
@@ -121,7 +124,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
 
 export const MyAccountFieldEditScreenPlaceholder: React.FC<{ title: string }> = ({ children, title }) => {
   return (
-    <MyAccountFieldEditScreen canSave={false} title={title} onSave={async () => null}>
+    <MyAccountFieldEditScreen hideSave={false} canSave={false} title={title} onSave={async () => null}>
       {children}
     </MyAccountFieldEditScreen>
   )

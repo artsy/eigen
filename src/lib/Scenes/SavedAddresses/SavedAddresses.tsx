@@ -108,6 +108,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
             </Text>
             <Button
               block
+              borderRadius={50}
               variant="primaryBlack"
               width={100}
               onPress={() => navigate("/my-profile/saved-addresses/new-address")}

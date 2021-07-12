@@ -5,24 +5,32 @@ import { Select } from "lib/Components/Select"
 import { Stack } from "lib/Components/Stack"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React, { useEffect, useRef, useState } from "react"
-import { commitMutation, createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { commitMutation, createFragmentContainer, Environment, graphql, QueryRenderer } from "react-relay"
 // @ts-ignore
 import stripe from "tipsi-stripe"
 import { MyAccountFieldEditScreen } from "../MyAccount/Components/MyAccountFieldEditScreen"
 // import { __triggerRefresh } from "./MyProfilePayment"
 
+import { SavedAddressesNewForm_me } from "__generated__/SavedAddressesNewForm_me.graphql"
+import {
+  SavedAddressesNewFormMutation,
+  SavedAddressesNewFormMutationResponse,
+  UserAddressAttributes,
+} from "__generated__/SavedAddressesNewFormMutation.graphql"
 import { SavedAddressesNewFormQuery } from "__generated__/SavedAddressesNewFormQuery.graphql"
+import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box } from "palette"
+import { Box, Button, Text } from "palette"
+import { ConnectionHandler, RecordSourceSelectorProxy } from "relay-runtime"
 
-interface CreditCardInputParams {
-  cvc: string
-  expMonth: number
-  expYear: number
-  number: string
-}
+// interface CreditCardInputParams {
+//   cvc: string
+//   expMonth: number
+//   expYear: number
+//   number: string
+// }
 
 interface FormField<Type = string> {
   value: Type | null
@@ -48,44 +56,39 @@ const emptyFieldState: () => FormField<any> = () => ({
 })
 
 interface FormFields {
-  creditCard: FormField<{
-    valid: boolean
-    params: CreditCardInputParams
-  }>
-  fullName: FormField
   addressLine1: FormField
   addressLine2: FormField
   city: FormField
-  postCode: FormField
-  state: FormField
   country: FormField
+  name: FormField
+  postalCode: FormField
+  region: FormField
 }
 
 interface Store {
   fields: FormFields
-  allPresent: Computed<Store, boolean>
+  // allPresent: Computed<Store, boolean>
 }
 
 const useStore = createComponentStore<Store>({
   fields: {
-    creditCard: emptyFieldState(),
-    fullName: emptyFieldState(),
+    name: emptyFieldState(),
+    country: emptyFieldState(),
+    postalCode: emptyFieldState(),
     addressLine1: emptyFieldState(),
     addressLine2: { ...emptyFieldState(), required: false },
     city: emptyFieldState(),
-    postCode: emptyFieldState(),
-    state: emptyFieldState(),
-    country: emptyFieldState(),
+    region: emptyFieldState(),
   },
-  allPresent: computed((store) => {
-    return Boolean(
-      Object.keys(store.fields).every((k) => store.fields[k as keyof FormFields].isPresent) &&
-        store.fields.creditCard.value?.valid
-    )
-  }),
+  // allPresent: computed((store) => {
+  //   return Boolean(
+  //     Object.keys(store.fields).every((k) => store.fields[k as keyof FormFields].isPresent) &&
+  //       store.fields.creditCard.value?.valid
+  //   )
+  // }),
 })
 
-export const SavedAddressesNewForm: React.FC<{ me: any }> = ({ me }) => {
+export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> = ({ me }) => {
   const [state, actions] = useStore()
   const paymentInfoRef = useRef<any>(null)
   const [phoneNumber, setPhoneNumber] = useState(me?.phone)
@@ -96,7 +99,7 @@ export const SavedAddressesNewForm: React.FC<{ me: any }> = ({ me }) => {
   const stateRef = useRef<Input>(null)
   const countryRef = useRef<Select<any>>(null)
   const phoneRef = useRef<Input>(null)
-  const { width, height } = useScreenDimensions()
+  const { height } = useScreenDimensions()
 
   // focus top field on mount
   useEffect(() => {
@@ -112,17 +115,42 @@ export const SavedAddressesNewForm: React.FC<{ me: any }> = ({ me }) => {
   return (
     <MyAccountFieldEditScreen
       ref={screenRef}
-      canSave={state.allPresent}
+      canSave={true}
+      hideSave={false}
       title="Add New Address"
       onSave={async (dismiss, alert) => {
-        console.log("cry")
+        alert("суки")
+        console.log(state, "mystate")
+
+        try {
+          createUserAddress(
+            defaultEnvironment,
+            {
+              name: state.fields.name.value!,
+              country: state.fields.country.value!,
+              postalCode: state.fields.country.value,
+              addressLine1: state.fields.country.value!,
+              addressLine2: state.fields.country.value,
+              city: state.fields.country.value!,
+              region: state.fields.country.value,
+              phoneNumber,
+            },
+            me
+          )
+          console.log(state, "mystate")
+
+          dismiss()
+        } catch (e) {
+          console.error(e)
+          alert("Something went wrong while attempting to save your credit card. Please try again or contact us.")
+        }
       }}
     >
       <Stack spacing={2}>
         <Input
           title="Full name"
           placeholder="Add full name"
-          onChangeText={actions.fields.fullName.setValue}
+          onChangeText={actions.fields.name.setValue}
           returnKeyType="next"
           onSubmitEditing={() => addressLine1Ref.current?.focus()}
         />
@@ -135,7 +163,7 @@ export const SavedAddressesNewForm: React.FC<{ me: any }> = ({ me }) => {
           ref={postalCodeRef}
           title="Postal Code"
           placeholder="Add postal code"
-          onChangeText={actions.fields.postCode.setValue}
+          onChangeText={actions.fields.postalCode.setValue}
           returnKeyType="next"
           onSubmitEditing={() => stateRef.current?.focus()}
         />
@@ -168,7 +196,7 @@ export const SavedAddressesNewForm: React.FC<{ me: any }> = ({ me }) => {
           ref={stateRef}
           title="State, province, or region"
           placeholder="Add state, province, or r egion"
-          onChangeText={actions.fields.state.setValue}
+          onChangeText={actions.fields.region.setValue}
           onSubmitEditing={() => {
             stateRef.current?.blur()
             screenRef.current?.scrollToEnd()
@@ -187,6 +215,20 @@ export const SavedAddressesNewForm: React.FC<{ me: any }> = ({ me }) => {
           // onFocus={() => setIsInputFocused(true)}
           // onBlur={() => setIsInputFocused(false)}
         />
+        <Checkbox mb={40}>
+          <Text>Set as default</Text>
+        </Checkbox>
+        <Button
+          block
+          borderRadius={50}
+          variant="primaryBlack"
+          width={100}
+          onPress={() => {
+            console.log(1)
+          }}
+        >
+          Add Address
+        </Button>
       </Stack>
     </MyAccountFieldEditScreen>
   )
@@ -195,6 +237,7 @@ export const SavedAddressesNewForm: React.FC<{ me: any }> = ({ me }) => {
 const SavedAddressesNewFormContainer = createFragmentContainer(SavedAddressesNewForm, {
   me: graphql`
     fragment SavedAddressesNewForm_me on Me {
+      id
       phone
     }
   `,
@@ -220,37 +263,83 @@ export const SavedAddressesNewFormQueryRenderer: React.FC<{}> = () => {
   )
 }
 
-// const saveCreditCard = (token: string) => {
-//   return new Promise<MyProfilePaymentNewCreditCardSaveCardMutation["response"]>((resolve, reject) => {
-//     commitMutation<MyProfilePaymentNewCreditCardSaveCardMutation>(defaultEnvironment, {
-//       mutation: graphql`
-//         mutation MyProfilePaymentNewCreditCardSaveCardMutation($input: CreditCardInput!) {
-//           createCreditCard(input: $input) {
-//             creditCardOrError {
-//               ... on CreditCardMutationSuccess {
-//                 creditCard {
-//                   internalID
-//                 }
-//               }
-//               ... on CreditCardMutationFailure {
-//                 mutationError {
-//                   detail
-//                   error
-//                   message
-//                 }
-//               }
-//             }
-//           }
-//         }
-//       `,
-//       onCompleted: resolve,
-//       onError: reject,
-//       variables: {
-//         input: {
-//           oneTimeUse: false,
-//           token,
-//         },
-//       },
-//     })
-//   })
-// }
+const onAddressAdded = (
+  me: SavedAddressesNewForm_me,
+  store: RecordSourceSelectorProxy<any>,
+  data: SavedAddressesNewFormMutationResponse
+): void => {
+  const response = data?.createUserAddress?.userAddressOrErrors
+
+  if (response) {
+    const meStore = store.get(me.id)
+    const connection = ConnectionHandler.getConnection(
+      // @ts-expect-error STRICT_NULL_CHECK
+      meStore,
+      "SavedAddresses_addressConnection"
+    )
+    const mutationPayload = store.getRootField("createUserAddress")
+
+    const createUserAddressOrError = mutationPayload.getLinkedRecord("userAddressOrErrors")
+    // @ts-expect-error STRICT_NULL_CHECK
+    ConnectionHandler.insertEdgeAfter(connection, createUserAddressOrError)
+  }
+}
+
+export const createUserAddress = async (
+  environment: Environment,
+  address: UserAddressAttributes,
+  // onSuccess: (address: SavedAddressesNewFormMutationResponse | null) => void,
+  // onError: (message: string | null) => void,
+  me: SavedAddressesNewForm_me
+) => {
+  commitMutation<SavedAddressesNewFormMutation>(environment, {
+    variables: {
+      input: {
+        attributes: address,
+      },
+    },
+    mutation: graphql`
+      mutation SavedAddressesNewFormMutation($input: CreateUserAddressInput!) {
+        createUserAddress(input: $input) {
+          userAddressOrErrors {
+            ... on UserAddress {
+              id
+              internalID
+              addressLine1
+              addressLine2
+              city
+              country
+              isDefault
+              name
+              phoneNumber
+              postalCode
+              region
+            }
+            ... on Errors {
+              errors {
+                message
+              }
+            }
+          }
+        }
+      }
+    `,
+    updater: (store, data: SavedAddressesNewFormMutationResponse) => {
+      onAddressAdded(me, store, data)
+    },
+    onCompleted: (data) => {
+      // @ts-expect-error STRICT_NULL_CHECK
+      const errors = data.createUserAddress.userAddressOrErrors.errors
+      if (errors) {
+        console.log(errors)
+        // onError(errors.map((error) => error.message).join(", "))
+      } else {
+        // onSuccess(data)
+      }
+    },
+    onError: (e) => {
+      console.log(e.message)
+      // onError(e.message)
+    },
+  })
+}
