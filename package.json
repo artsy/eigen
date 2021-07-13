@@ -52,8 +52,8 @@
     "type-check:offence": "tsc --pretty false | grep -v __generated__ | grep -E",
     "type-check": "tsc",
     "update-metaphysics": "node scripts/update-metaphysics.js",
-    "storybook-ios": "npx artsy open storybook",
-    "storybook-android": "yarn open-url --android artsy:///storybook",
+    "storybook-ios": "npx artsy open -i storybook",
+    "storybook-android": "npx artsy open -a storybook",
     "storybook-server": "start-storybook -p 7007",
     "build-storybook": "build-storybook"
   },
