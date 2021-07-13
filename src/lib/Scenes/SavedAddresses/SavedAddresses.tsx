@@ -6,11 +6,18 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Button, color, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import { Button, Flex, Separator, Spacer, Text, Touchable } from "palette"
 import React, { useCallback, useState } from "react"
-import { FlatList, RefreshControl, StyleSheet } from "react-native"
+import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { graphql } from "relay-runtime"
+import styled from "styled-components"
+import { color } from "styled-system"
+
+const Card = styled(Flex)`
+  border: 1px solid ${color("black30")};
+  border-radius: 4;
+`
 
 const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -31,17 +38,6 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
 
   const onPressDeleteAddress = () => null
 
-  // formats address address to be
-  // addressLine1, addressLine2, addressline3
-  // and avoids rendering null text + extra commas
-  const addressFormatter = (addressLine1: string, addressLine2: string | null, addressLine3: string | null) => {
-    const COMMA_SEPARATOR = ", "
-    const address1 = addressLine1 + COMMA_SEPARATOR
-    const address2 = !addressLine2 ? "" : addressLine2 + COMMA_SEPARATOR
-    const address3 = !addressLine3 ? "" : addressLine3 + COMMA_SEPARATOR
-    return address1 + address2 + address3
-  }
-
   return (
     <PageWithSimpleHeader title="Saved Addresses">
       <FlatList
@@ -54,18 +50,18 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
         }}
         renderItem={({ item }) => (
           <>
-            <Flex key={item.id} mx={2} py={2} px={16} style={styles.card}>
+            <Card key={item.id} mx={2} py={2} px={16}>
               <Text fontSize={16} lineHeight={24}>
                 {item.name}
               </Text>
-              <Text fontSize={16} lineHeight={24} color={color("black60")}>
-                {addressFormatter(item.addressLine1, item.addressLine2, item.addressLine3)}
+              <Text fontSize={16} lineHeight={24} color={"black60"}>
+                {[item.addressLine1, item?.addressLine2, item?.addressLine3].filter(Boolean).join(", ")}
               </Text>
-              <Text fontSize={16} lineHeight={24} color={color("black60")}>
-                {`${item.city}, ${item.postalCode}`}
+              <Text fontSize={16} lineHeight={24} color={"black60"}>
+                {item.city}, {item.postalCode}
               </Text>
               <Spacer height={10} />
-              <Text variant="text" color={color("black60")}>
+              <Text variant="text" color={"black60"}>
                 {item?.phoneNumber}
               </Text>
               <Flex mr={14}>
@@ -91,7 +87,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
                   </Touchable>
                 </Flex>
               </Flex>
-            </Flex>
+            </Card>
             <Spacer height={40} />
           </>
         )}
@@ -112,14 +108,6 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
     </PageWithSimpleHeader>
   )
 }
-
-const styles = StyleSheet.create({
-  card: {
-    borderColor: color("black30"),
-    borderRadius: 4,
-    borderWidth: 1,
-  },
-})
 
 export const SavedAddressesPlaceholder: React.FC = () => {
   return (
