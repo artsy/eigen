@@ -46,9 +46,9 @@ describe("Sale", () => {
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
           slug: "live-sale-slug",
-          startAt: DateTime.now().minus({ day: 1 }).toISOString(),
-          liveStartAt: DateTime.now().minus({ second: 1 }).toISOString(),
-          endAt: DateTime.now().plus({ day: 1 }).toISOString(),
+          startAt: DateTime.now().minus({ day: 1 }).toISO(),
+          liveStartAt: DateTime.now().minus({ second: 1 }).toISO(),
+          endAt: DateTime.now().plus({ day: 1 }).toISO(),
           timeZone: "Europe/Berlin",
           coverImage: {
             url: "cover image url",
@@ -73,8 +73,8 @@ describe("Sale", () => {
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
           slug: "live-sale-slug",
-          startAt: DateTime.now().minus({ day: 1 }).toISOString(),
-          liveStartAt: DateTime.now().minus({ second: 1 }).toISOString(),
+          startAt: DateTime.now().minus({ day: 1 }).toISO(),
+          liveStartAt: DateTime.now().minus({ second: 1 }).toISO(),
           endAt: null,
           timeZone: "Europe/Berlin",
           coverImage: {
@@ -100,9 +100,9 @@ describe("Sale", () => {
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
           slug: "closed-sale-slug",
-          startAt: DateTime.now().minus({ days: 2 }).toISOString(),
-          liveStartAt: DateTime.now().minus({ days: 2 }).toISOString(),
-          endAt: DateTime.now().minus({ day: 1 }).toISOString(),
+          startAt: DateTime.now().minus({ days: 2 }).toISO(),
+          liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
+          endAt: DateTime.now().minus({ day: 1 }).toISO(),
           timeZone: "Europe/Berlin",
           name: "closed!",
         }),
@@ -122,10 +122,10 @@ describe("Sale", () => {
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
           slug: "regular-sale-slug",
-          startAt: DateTime.now().plus({ day: 1 }).toISOString(),
-          liveStartAt: DateTime.now().plus({ days: 2 }).toISOString(),
-          endAt: DateTime.now().plus({ days: 3 }).toISOString(),
-          registrationEndsAt: DateTime.now().plus({ hours: 3 }).toISOString(),
+          startAt: DateTime.now().plus({ day: 1 }).toISO(),
+          liveStartAt: DateTime.now().plus({ days: 2 }).toISO(),
+          endAt: DateTime.now().plus({ days: 3 }).toISO(),
+          registrationEndsAt: DateTime.now().plus({ hours: 3 }).toISO(),
           name: "regular sale!",
         }),
       })
@@ -141,10 +141,10 @@ describe("Sale", () => {
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
           slug: "reg-ended-sale-slug",
-          startAt: DateTime.now().minus({ days: 3 }).toISOString(),
-          liveStartAt: DateTime.now().minus({ days: 2 }).toISOString(),
-          endAt: DateTime.now().plus({ days: 3 }).toISOString(),
-          registrationEndsAt: DateTime.now().minus({ hours: 3 }).toISOString(),
+          startAt: DateTime.now().minus({ days: 3 }).toISO(),
+          liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
+          endAt: DateTime.now().plus({ days: 3 }).toISO(),
+          registrationEndsAt: DateTime.now().minus({ hours: 3 }).toISO(),
           name: "reg ended sale!",
         }),
       })
@@ -160,9 +160,9 @@ describe("Sale", () => {
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
           slug: "closed-sale-slug",
-          startAt: DateTime.now().minus({ days: 3 }).toISOString(),
-          liveStartAt: DateTime.now().minus({ days: 2 }).toISOString(),
-          endAt: DateTime.now().minus({ day: 1 }).toISOString(),
+          startAt: DateTime.now().minus({ days: 3 }).toISO(),
+          liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
+          endAt: DateTime.now().minus({ day: 1 }).toISO(),
           name: "closed sale!",
         }),
       })
