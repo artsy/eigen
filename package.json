@@ -51,12 +51,12 @@
     "type-check:offence-ranking": "yarn -s type-check:offence 'TS\\d+' -o | sort | uniq -c | sort -r",
     "type-check:offence": "tsc --pretty false | grep -v __generated__ | grep -E",
     "type-check": "tsc",
-    "update-metaphysics": "node scripts/update-metaphysics.js",
     "storybook-ios": "npx artsy open -i storybook",
     "storybook-android": "npx artsy open -a storybook",
     "storybook-server": "start-storybook -p 7007",
     "build-storybook": "build-storybook",
-    "storybook-standalone": "echo STORYBOOK=1 >> .env.shared && yarn start"
+    "storybook-standalone": "echo STORYBOOK=1 >> .env.shared && yarn start",
+    "update-metaphysics": "node scripts/update-metaphysics.js"
   },
   "repository": {
     "type": "git",
