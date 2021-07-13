@@ -6,13 +6,12 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Button, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import { Button, color, Flex, Separator, Spacer, Text, Touchable } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { graphql } from "relay-runtime"
 import styled from "styled-components"
-import { color } from "styled-system"
 
 const Card = styled(Flex)`
   border: 1px solid ${color("black30")};
