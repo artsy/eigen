@@ -55,7 +55,8 @@
     "storybook-ios": "npx artsy open -i storybook",
     "storybook-android": "npx artsy open -a storybook",
     "storybook-server": "start-storybook -p 7007",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "storybook-standalone": "echo STORYBOOK=1 >> .env.shared && yarn start"
   },
   "repository": {
     "type": "git",
