@@ -37,14 +37,12 @@ const meFixture: BidButtonTestsQueryRawResponse["me"] = {
 
 describe("BidButton", () => {
   beforeAll(() => {
-    // @ts-ignore
     Settings.defaultZone = "America/New_York"
     Settings.now = () => new Date("2019-08-15T12:00:00+00:00").valueOf()
   })
 
   afterAll(() => {
     Settings.now = realNow
-    // @ts-ignore
     Settings.defaultZone = realDefaultZone
   })
 
