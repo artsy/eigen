@@ -27,7 +27,7 @@ export interface MyAccountFieldEditScreenProps {
   canSave: boolean
   contentContainerStyle?: ViewStyle
   hideSave?: boolean
-  onSave(dismiss: () => void, alert: AlertStatic["alert"]): Promise<any>
+  onSave?(dismiss: () => void, alert: AlertStatic["alert"]): Promise<any> | undefined
 }
 
 export const MyAccountFieldEditScreen = React.forwardRef<
@@ -50,7 +50,9 @@ export const MyAccountFieldEditScreen = React.forwardRef<
     Keyboard.dismiss()
     try {
       setIsSaving(true)
-      await onSave(goBack, doTheAlert)
+      if (!hideSave && onSave) {
+        await onSave(goBack, doTheAlert)
+      }
     } catch (e) {
       console.error(e)
     } finally {

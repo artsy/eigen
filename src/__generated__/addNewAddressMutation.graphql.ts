@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 131fa83ab72cd5e3ae88883826e8dda9 */
+/* @relayHash 48f9985b022e04924a8464b308ce2ee4 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type CreateUserAddressInput = {
@@ -19,10 +19,10 @@ export type UserAddressAttributes = {
     postalCode?: string | null;
     region?: string | null;
 };
-export type SavedAddressesNewFormMutationVariables = {
+export type addNewAddressMutationVariables = {
     input: CreateUserAddressInput;
 };
-export type SavedAddressesNewFormMutationResponse = {
+export type addNewAddressMutationResponse = {
     readonly createUserAddress: {
         readonly userAddressOrErrors: {
             readonly id?: string;
@@ -42,15 +42,15 @@ export type SavedAddressesNewFormMutationResponse = {
         };
     } | null;
 };
-export type SavedAddressesNewFormMutation = {
-    readonly response: SavedAddressesNewFormMutationResponse;
-    readonly variables: SavedAddressesNewFormMutationVariables;
+export type addNewAddressMutation = {
+    readonly response: addNewAddressMutationResponse;
+    readonly variables: addNewAddressMutationVariables;
 };
 
 
 
 /*
-mutation SavedAddressesNewFormMutation(
+mutation addNewAddressMutation(
   $input: CreateUserAddressInput!
 ) {
   createUserAddress(input: $input) {
@@ -208,7 +208,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "SavedAddressesNewFormMutation",
+    "name": "addNewAddressMutation",
     "selections": [
       {
         "alias": null,
@@ -242,7 +242,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "SavedAddressesNewFormMutation",
+    "name": "addNewAddressMutation",
     "selections": [
       {
         "alias": null,
@@ -278,13 +278,13 @@ return {
     ]
   },
   "params": {
-    "id": "131fa83ab72cd5e3ae88883826e8dda9",
+    "id": "48f9985b022e04924a8464b308ce2ee4",
     "metadata": {},
-    "name": "SavedAddressesNewFormMutation",
+    "name": "addNewAddressMutation",
     "operationKind": "mutation",
     "text": null
   }
 };
 })();
-(node as any).hash = 'e40f455876bc56df9f250283c8281aed';
+(node as any).hash = '98ac48306b7d0e1a4ad2ecb4ea70e78b';
 export default node;
