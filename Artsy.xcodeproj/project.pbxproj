@@ -11,6 +11,360 @@
 		0CAC95391BA9E1D0008E9848 /* ARUserActivityAndSpotlightTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAC95371BA9E18B008E9848 /* ARUserActivityAndSpotlightTests.m */; };
 		0CE3C4361B8BB3630092A24F /* EXPMatcher+UINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */; };
 		1A248BDB265C282400E41409 /* ARTArtsyNativeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A248BDA265C282400E41409 /* ARTArtsyNativeModule.m */; };
+		1AC017A12698AE5A009A1CD6 /* ARSlideshowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F0C67E17B972F200721244 /* ARSlideshowView.m */; };
+		1AC017A22698AE5A009A1CD6 /* LiveAuctionStaticDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E88414D1CB3445A00A33BCE /* LiveAuctionStaticDataFetcher.swift */; };
+		1AC017A32698AE5A009A1CD6 /* ARAppDelegate+Emission.m in Sources */ = {isa = PBXBuildFile; fileRef = 51F2C5F31CEE8A7700B881BE /* ARAppDelegate+Emission.m */; };
+		1AC017A42698AE5A009A1CD6 /* ARSlideshowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49473F3217C18772004BF082 /* ARSlideshowViewController.m */; };
+		1AC017A52698AE5A009A1CD6 /* BidderPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EFC6381815B41C00F23540 /* BidderPosition.m */; };
+		1AC017A62698AE5A009A1CD6 /* ARAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BA7E131655ABE600C06572 /* ARAppDelegate.m */; };
+		1AC017A72698AE5A009A1CD6 /* Sale.m in Sources */ = {isa = PBXBuildFile; fileRef = B375E5F318121EEA005FC680 /* Sale.m */; };
+		1AC017A82698AE5A009A1CD6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 608B2F5D1657D0500046956C /* main.m */; };
+		1AC017A92698AE5A009A1CD6 /* ARKeychainable.m in Sources */ = {isa = PBXBuildFile; fileRef = 608AABDB1B3884C600855A1C /* ARKeychainable.m */; };
+		1AC017AA2698AE5A009A1CD6 /* ARDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 608B2F611657D1500046956C /* ARDefaults.m */; };
+		1AC017AB2698AE5A009A1CD6 /* ArtsyAPI+RelatedModels.m in Sources */ = {isa = PBXBuildFile; fileRef = 600415C817C4ECE2003C7974 /* ArtsyAPI+RelatedModels.m */; };
+		1AC017AC2698AE5A009A1CD6 /* SystemTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CF144A618E45F6C00B1A764 /* SystemTime.m */; };
+		1AC017AD2698AE5A009A1CD6 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 608B2F6E1657D1D10046956C /* User.m */; };
+		1AC017AE2698AE5A009A1CD6 /* UIView+ScrollToTop.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A0395B25540810002E010D /* UIView+ScrollToTop.m */; };
+		1AC017AF2698AE5A009A1CD6 /* UIViewController+Traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC929881C5FEAD10015133E /* UIViewController+Traits.swift */; };
+		1AC017B02698AE5A009A1CD6 /* UIViewController+ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 516CDA6B1BB56611001C02B2 /* UIViewController+ARUserActivity.m */; };
+		1AC017B12698AE5A009A1CD6 /* ARUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60745DE9165802D9006CE156 /* ARUserManager.m */; };
+		1AC017B22698AE5A009A1CD6 /* BidIncrementStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EE9A3DC1D11F6810014A3C9 /* BidIncrementStrategy.m */; };
+		1AC017B32698AE5A009A1CD6 /* ArtsyAPI+Sales.m in Sources */ = {isa = PBXBuildFile; fileRef = B375E5F61812207D005FC680 /* ArtsyAPI+Sales.m */; };
+		1AC017B42698AE5A009A1CD6 /* ARRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 601C317716582BA30013E061 /* ARRouter.m */; };
+		1AC017B52698AE5A009A1CD6 /* AROnboardingTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A224FB17CE040B00233CA1 /* AROnboardingTransition.m */; };
+		1AC017B62698AE5A009A1CD6 /* ARAnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6088B75317D1DBAC00E4BB67 /* ARAnalyticsConstants.m */; };
+		1AC017B72698AE5A009A1CD6 /* ArtsyAPI+SystemTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CF144AD18E460EF00B1A764 /* ArtsyAPI+SystemTime.m */; };
+		1AC017B82698AE5A009A1CD6 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
+		1AC017B92698AE5A009A1CD6 /* LiveAuctionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED312A1C8F76CB0071DD89 /* LiveAuctionViewModel.swift */; };
+		1AC017BA2698AE5A009A1CD6 /* SaleStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229364D21EC65CDC00D2045E /* SaleStatusView.swift */; };
+		1AC017BB2698AE5A009A1CD6 /* ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */; };
+		1AC017BC2698AE5A009A1CD6 /* StoryboardImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602F034A1CB291EC008A999D /* StoryboardImages.swift */; };
+		1AC017BD2698AE5A009A1CD6 /* UIViewController+BlurredStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A4A63D1D05C924005946EF /* UIViewController+BlurredStatusView.swift */; };
+		1AC017BE2698AE5A009A1CD6 /* NSString+StringBetweenStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309AC1AC9A7C8000783C1 /* NSString+StringBetweenStrings.m */; };
+		1AC017BF2698AE5A009A1CD6 /* AROnboardingFollowableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9EB991CC12B5400A74E3C /* AROnboardingFollowableTableViewCell.m */; };
+		1AC017C02698AE5A009A1CD6 /* ARAnalyticsVisualizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4191F43E1C8745D90054F823 /* ARAnalyticsVisualizer.m */; };
+		1AC017C12698AE5A009A1CD6 /* ARNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7880BB18B9081C00595E30 /* ARNotificationView.m */; };
+		1AC017C22698AE5A009A1CD6 /* ArtsyAPI+HEAD.m in Sources */ = {isa = PBXBuildFile; fileRef = 60863E461D0B49AE0053B51C /* ArtsyAPI+HEAD.m */; };
+		1AC017C32698AE5A009A1CD6 /* ARTwoWayDictionaryTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EBA3E821DFF4CCB005B4BEE /* ARTwoWayDictionaryTransformer.m */; };
+		1AC017C42698AE5A009A1CD6 /* AROnboardingPersonalizeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9EB961CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.m */; };
+		1AC017C52698AE5A009A1CD6 /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
+		1AC017C62698AE5A009A1CD6 /* ARAppConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B6F0F11662AADF007C9587 /* ARAppConstants.m */; };
+		1AC017C72698AE5A009A1CD6 /* LiveAuctionToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2CBEE1CC11433009B30CA /* LiveAuctionToolbarView.swift */; };
+		1AC017C82698AE5A009A1CD6 /* LiveAuctionLotCollectionViewLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8407D1CECDFFD006248D7 /* LiveAuctionLotCollectionViewLayoutAttributes.swift */; };
+		1AC017C92698AE5A009A1CD6 /* ArtsyAPI+Sailthru.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C863141EAB81F00069E9AC /* ArtsyAPI+Sailthru.m */; };
+		1AC017CA2698AE5A009A1CD6 /* Interstellar+Artsy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA0E74B1DCA3DD200CE9203 /* Interstellar+Artsy.swift */; };
+		1AC017CB2698AE5A009A1CD6 /* PartnerShow.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EC62171778AF100020D648 /* PartnerShow.m */; };
+		1AC017CC2698AE5A009A1CD6 /* AuctionInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DCC6C71C60E26800455309 /* AuctionInformationViewController.swift */; };
+		1AC017CD2698AE5A009A1CD6 /* UIViewController+Popovers.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E257E321ECDEB6600C62008 /* UIViewController+Popovers.m */; };
+		1AC017CE2698AE5A009A1CD6 /* ArtsyAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B6F13816638785007C9587 /* ArtsyAPI.m */; };
+		1AC017CF2698AE5A009A1CD6 /* ARScreenPresenterModule.m in Sources */ = {isa = PBXBuildFile; fileRef = B91C4D8D24F6893F00F5F177 /* ARScreenPresenterModule.m */; };
+		1AC017D02698AE5A009A1CD6 /* ARLoginButtonsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C029B041CD130A400808503 /* ARLoginButtonsView.m */; };
+		1AC017D12698AE5A009A1CD6 /* Artwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B6F13D16638815007C9587 /* Artwork.m */; };
+		1AC017D22698AE5A009A1CD6 /* SimpleProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DDF181CE22C0700DFEE2A /* SimpleProgressView.swift */; };
+		1AC017D32698AE5A009A1CD6 /* ARTextFieldWithPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 49473F3817C192AE004BF082 /* ARTextFieldWithPlaceholder.m */; };
+		1AC017D42698AE5A009A1CD6 /* LiveSale.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B6E5971C88BEF3003B1D46 /* LiveSale.m */; };
+		1AC017D52698AE5A009A1CD6 /* AREchoContentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E407DF61DF7390B00999533 /* AREchoContentsViewController.m */; };
+		1AC017D62698AE5A009A1CD6 /* BuyersPremium.m in Sources */ = {isa = PBXBuildFile; fileRef = 60647C661A8BB9AE00A45247 /* BuyersPremium.m */; };
+		1AC017D72698AE5A009A1CD6 /* FairOrganizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCCC8A41899B6F9008015DD /* FairOrganizer.m */; };
+		1AC017D82698AE5A009A1CD6 /* ARExternalWebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D90A0717C2182F0073D5B9 /* ARExternalWebBrowserViewController.m */; };
+		1AC017D92698AE5A009A1CD6 /* LiveActionStateReconciler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC8C67F1CA5C5FC00571B21 /* LiveActionStateReconciler.swift */; };
+		1AC017DA2698AE5A009A1CD6 /* NSAttributedString+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4962431CA1C7E800E77DD5 /* NSAttributedString+Additions.swift */; };
+		1AC017DB2698AE5A009A1CD6 /* AuctionLot.m in Sources */ = {isa = PBXBuildFile; fileRef = CB879D0B180746C900E2D8EC /* AuctionLot.m */; };
+		1AC017DC2698AE5A009A1CD6 /* Partner.m in Sources */ = {isa = PBXBuildFile; fileRef = 499A588D16658CAA004B0E2F /* Partner.m */; };
+		1AC017DD2698AE5A009A1CD6 /* ARAppDelegate+Analytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EFE2BE31910FC81003B5EEA /* ARAppDelegate+Analytics.m */; };
+		1AC017DE2698AE5A009A1CD6 /* SerifModalWebNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4386171D0764ED0034E671 /* SerifModalWebNavigationController.swift */; };
+		1AC017DF2698AE5A009A1CD6 /* Artist.m in Sources */ = {isa = PBXBuildFile; fileRef = 499A5893166683AB004B0E2F /* Artist.m */; };
+		1AC017E02698AE5A009A1CD6 /* ARHTTPRequestOperationLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E667F12118EC825D00503F50 /* ARHTTPRequestOperationLogger.m */; };
+		1AC017E12698AE5A009A1CD6 /* Bid.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB469CF181F1F1200B5692B /* Bid.m */; };
+		1AC017E22698AE5A009A1CD6 /* AROnboardingHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CF709B21CB803AA00C00FF4 /* AROnboardingHeaderView.m */; };
+		1AC017E32698AE5A009A1CD6 /* LiveAuctionSaleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E925EAB1E68823C00A504D6 /* LiveAuctionSaleViewController.swift */; };
+		1AC017E42698AE5A009A1CD6 /* ARAppStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 607BF5AA1C2413810034B519 /* ARAppStatus.m */; };
+		1AC017E52698AE5A009A1CD6 /* UIViewController+InnermostTopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAA412E18D88F2E000EE867 /* UIViewController+InnermostTopViewController.m */; };
+		1AC017E62698AE5A009A1CD6 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 4953E8311668021D00A09726 /* Image.m */; };
+		1AC017E72698AE5A009A1CD6 /* LiveAuctionLotListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3816F51CBECEA500477B17 /* LiveAuctionLotListViewController.swift */; };
+		1AC017E82698AE5A009A1CD6 /* AuctionBiddersNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA7BC301C612454009C52C9 /* AuctionBiddersNetworkModel.swift */; };
+		1AC017E92698AE5A009A1CD6 /* ARCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB42B64E181092480069A801 /* ARCountdownView.m */; };
+		1AC017EA2698AE5A009A1CD6 /* LiveAuctionSaleLotsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8585F81CF743D800B2B487 /* LiveAuctionSaleLotsDataSource.swift */; };
+		1AC017EB2698AE5A009A1CD6 /* ARURLItemProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = E676B2EA18D0CC330057B4E1 /* ARURLItemProvider.m */; };
+		1AC017EC2698AE5A009A1CD6 /* LotListCollectionViewCell+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E288EA81CC0219A00A974AA /* LotListCollectionViewCell+Private.swift */; };
+		1AC017ED2698AE5A009A1CD6 /* ARNetworkConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A49F5F1676559300B9B95D /* ARNetworkConstants.m */; };
+		1AC017EE2698AE5A009A1CD6 /* ARAppNotificationsDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60431FB718042A1E000118D7 /* ARAppNotificationsDelegate.m */; };
+		1AC017EF2698AE5A009A1CD6 /* ARSeparatorViews.m in Sources */ = {isa = PBXBuildFile; fileRef = E676A62A18F3421600B9AF2C /* ARSeparatorViews.m */; };
+		1AC017F02698AE5A009A1CD6 /* AuctionCircularButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E20BB661C62C00D00C6D781 /* AuctionCircularButtons.swift */; };
+		1AC017F12698AE5A009A1CD6 /* ArtsyAPI+DeviceTokens.m in Sources */ = {isa = PBXBuildFile; fileRef = 600A734217DE3F3F00E21233 /* ArtsyAPI+DeviceTokens.m */; };
+		1AC017F22698AE5A009A1CD6 /* UIView+OldSchoolSnapshots.m in Sources */ = {isa = PBXBuildFile; fileRef = 5435192D18A8E9420060F31E /* UIView+OldSchoolSnapshots.m */; };
+		1AC017F32698AE5A009A1CD6 /* ARAugmentedRealityConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BCE10C1FF2B8A500071AA6 /* ARAugmentedRealityConfig.m */; };
+		1AC017F42698AE5A009A1CD6 /* ArtsyAPI+Pages.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB7734D259148B900E5CE94 /* ArtsyAPI+Pages.m */; };
+		1AC017F52698AE5A009A1CD6 /* ARPriceRangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB206F7017C3FA8F00A4FDC4 /* ARPriceRangeViewController.m */; };
+		1AC017F62698AE5A009A1CD6 /* LotListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3816F91CBEDDF900477B17 /* LotListCollectionViewCell.swift */; };
+		1AC017F72698AE5A009A1CD6 /* Gene.m in Sources */ = {isa = PBXBuildFile; fileRef = 491A4DE1168E4343003B2246 /* Gene.m */; };
+		1AC017F82698AE5A009A1CD6 /* ARReusableLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 602BC088168E0C0D00069FDB /* ARReusableLoadingView.m */; };
+		1AC017F92698AE5A009A1CD6 /* ARSegmentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8FE24FEAC7500ED2843 /* ARSegmentProvider.m */; };
+		1AC017FA2698AE5A009A1CD6 /* ArtsyEcho.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E830A511E969B1800A56C75 /* ArtsyEcho.m */; };
+		1AC017FB2698AE5A009A1CD6 /* ARDefaultNavigationTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6099F906178F24750004EF04 /* ARDefaultNavigationTransition.m */; };
+		1AC017FC2698AE5A009A1CD6 /* LiveAuctionLotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED31241C8F76800071DD89 /* LiveAuctionLotViewModel.swift */; };
+		1AC017FD2698AE5A009A1CD6 /* ArtsyAPI+ErrorHandlers.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB37D96192246B500089A1D /* ArtsyAPI+ErrorHandlers.m */; };
+		1AC017FE2698AE5A009A1CD6 /* Stringify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E26AF7F1CE66A7E00C67B7C /* Stringify.swift */; };
+		1AC017FF2698AE5A009A1CD6 /* ARImageItemProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = E676B2ED18D11A9B0057B4E1 /* ARImageItemProvider.m */; };
+		1AC018002698AE5A009A1CD6 /* LiveBidder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E4F17471CD80FD800AEB6BD /* LiveBidder.m */; };
+		1AC018012698AE5A009A1CD6 /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */; };
+		1AC018022698AE5A009A1CD6 /* ArtsyAPI+Following.m in Sources */ = {isa = PBXBuildFile; fileRef = 607D754917C239E700CA1D41 /* ArtsyAPI+Following.m */; };
+		1AC018032698AE5A009A1CD6 /* ARWhitespaceGobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = E67655251900660500F9A704 /* ARWhitespaceGobbler.m */; };
+		1AC018042698AE5A009A1CD6 /* ARAuthProviders.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9E244017CBC36F00773A9A /* ARAuthProviders.m */; };
+		1AC018052698AE5A009A1CD6 /* StarscreamExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E956E561CD24700005C2332 /* StarscreamExtensions.swift */; };
+		1AC018062698AE5A009A1CD6 /* ARAdminTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 601EC3281FAA6C6E00DD0CC4 /* ARAdminTableViewController.m */; };
+		1AC018072698AE5A009A1CD6 /* ARNavigationTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 609A82FA17A1147800AFDF13 /* ARNavigationTransition.m */; };
+		1AC018082698AE5A009A1CD6 /* ARInternalWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */; };
+		1AC018092698AE5A009A1CD6 /* ARNvagiationButton+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCB91C768108003D5D65 /* ARNvagiationButton+Swift.swift */; };
+		1AC0180A2698AE5A009A1CD6 /* ARNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 600EE29C16B3003F002E9F9A /* ARNavigationButton.m */; };
+		1AC0180B2698AE5A009A1CD6 /* ARModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A039452553FE47002E010D /* ARModalViewController.m */; };
+		1AC0180C2698AE5A009A1CD6 /* LiveAuctionBidButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F242F11CB3AA7300387AA1 /* LiveAuctionBidButton.swift */; };
+		1AC0180D2698AE5A009A1CD6 /* ARSecureTextFieldWithPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CFB078A18EB417F00792024 /* ARSecureTextFieldWithPlaceholder.m */; };
+		1AC0180E2698AE5A009A1CD6 /* ARPersonalizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB206F7317C569E800A4FDC4 /* ARPersonalizeViewController.m */; };
+		1AC0180F2698AE5A009A1CD6 /* ARSystemTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CF144B318E47F9F00B1A764 /* ARSystemTime.m */; };
+		1AC018102698AE5A009A1CD6 /* LiveAuctionFancyLotCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFEF1C51CEB6CC000E3AAB2 /* LiveAuctionFancyLotCollectionViewLayout.swift */; };
+		1AC018112698AE5A009A1CD6 /* ARTermsAndConditionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 605B11B417CFE7CC00334196 /* ARTermsAndConditionsView.m */; };
+		1AC018122698AE5A009A1CD6 /* RefinementOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A03B41C52B60900EAF18B /* RefinementOptionsViewController.swift */; };
+		1AC018132698AE5A009A1CD6 /* ArtsyAPI+CurrentUserFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 604166B016C1D47000CFBD2F /* ArtsyAPI+CurrentUserFunctions.m */; };
+		1AC018142698AE5A009A1CD6 /* ARNativeViewControllerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B9FD91AB24DD4ADA001F9598 /* ARNativeViewControllerManager.m */; };
+		1AC018152698AE5A009A1CD6 /* LiveAuctionLotBidHistoryGestureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E55CAB21D9D8014005D0D73 /* LiveAuctionLotBidHistoryGestureController.swift */; };
+		1AC018162698AE5A009A1CD6 /* ARNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 603B3AEA1774A0FA00BA5BD3 /* ARNavigationController.m */; };
+		1AC018172698AE5A009A1CD6 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EF164616C568EA00460BD7 /* Profile.m */; };
+		1AC018182698AE5A009A1CD6 /* PanDirectionGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8585F61CF61E8F00B2B487 /* PanDirectionGestureRecognizer.swift */; };
+		1AC018192698AE5A009A1CD6 /* UIViewController+WithLoadedData.m in Sources */ = {isa = PBXBuildFile; fileRef = 516CDA681BB55B54001C02B2 /* UIViewController+WithLoadedData.m */; };
+		1AC0181A2698AE5A009A1CD6 /* ARInternalShareValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A71AC999DE000783C1 /* ARInternalShareValidator.m */; };
+		1AC0181B2698AE5A009A1CD6 /* SaleArtwork.m in Sources */ = {isa = PBXBuildFile; fileRef = B316E2F318170DF40086CCDB /* SaleArtwork.m */; };
+		1AC0181C2698AE5A009A1CD6 /* ARAugmentedFloorBasedVIRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BCE10E1FF2B8A500071AA6 /* ARAugmentedFloorBasedVIRViewController.m */; };
+		1AC0181D2698AE5A009A1CD6 /* SCNArtworkNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BF0C4E204737110017D9BA /* SCNArtworkNode.m */; };
+		1AC0181E2698AE5A009A1CD6 /* SaleAuctionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAD26591D09E038003826C9 /* SaleAuctionStatus.swift */; };
+		1AC0181F2698AE5A009A1CD6 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3816F71CBED2E100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift */; };
+		1AC018202698AE5A009A1CD6 /* NSKeyedUnarchiver+ErrorLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A3500418AAEBFF0075398F /* NSKeyedUnarchiver+ErrorLogging.m */; };
+		1AC018212698AE5A009A1CD6 /* ARAppDelegate+Echo.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF74084250ACDC5004048D3 /* ARAppDelegate+Echo.m */; };
+		1AC018222698AE5A009A1CD6 /* ARAcceptConditionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC37D0920A1F0FA0029296A /* ARAcceptConditionsView.m */; };
+		1AC018232698AE5A009A1CD6 /* AuctionColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E20BB641C62BF8300C6D781 /* AuctionColors.swift */; };
+		1AC018242698AE5A009A1CD6 /* LiveAuctionBidHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA0128A1CAC3B55009D9AFE /* LiveAuctionBidHistoryViewController.swift */; };
+		1AC018252698AE5A009A1CD6 /* ARCustomEigenLabels.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C48E20F1965AC640077A80B /* ARCustomEigenLabels.m */; };
+		1AC018262698AE5A009A1CD6 /* SaleOnHoldOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1BF7451EEB0B2900A9ED63 /* SaleOnHoldOverlayView.swift */; };
+		1AC018272698AE5A009A1CD6 /* ARSignUpSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4938742717BD512700724795 /* ARSignUpSplashViewController.m */; };
+		1AC018282698AE5A009A1CD6 /* ARDispatchManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60327DCC1987AD240075B399 /* ARDispatchManager.m */; };
+		1AC018292698AE5A009A1CD6 /* ARCrossfadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4938743517BDB2CD00724795 /* ARCrossfadingImageView.m */; };
+		1AC0182A2698AE5A009A1CD6 /* LiveEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FC2CBA1C8DF29900ACD78F /* LiveEvent.m */; };
+		1AC0182B2698AE5A009A1CD6 /* ARInternalMobileWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D90A0A17C218930073D5B9 /* ARInternalMobileWebViewController.m */; };
+		1AC0182C2698AE5A009A1CD6 /* ARNavigationTransitionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609A82EF17A10C5C00AFDF13 /* ARNavigationTransitionController.m */; };
+		1AC0182D2698AE5A009A1CD6 /* LiveAuctionLotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA012881CAC3B0C009D9AFE /* LiveAuctionLotViewController.swift */; };
+		1AC0182E2698AE5A009A1CD6 /* LiveAuctionPlainLotCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5F495F1D00BF3D00E7CD6E /* LiveAuctionPlainLotCollectionViewLayout.swift */; };
+		1AC0182F2698AE5A009A1CD6 /* LiveAuctionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FBAA501CC688F7005ED890 /* LiveAuctionViewController.swift */; };
+		1AC018302698AE5A009A1CD6 /* LiveAuctionLotSetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6019A9051C7E64B700E292FA /* LiveAuctionLotSetViewController.swift */; };
+		1AC018312698AE5A009A1CD6 /* AROnboardingSearchField.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4D652617C80A9600390550 /* AROnboardingSearchField.m */; };
+		1AC018322698AE5A009A1CD6 /* ArtsyAPI+Profiles.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CEE0B5E18A16EA200FEA6E6 /* ArtsyAPI+Profiles.m */; };
+		1AC018332698AE5A009A1CD6 /* ArtsyAPI+Search.m in Sources */ = {isa = PBXBuildFile; fileRef = 60438F891782F8CC00C1B63B /* ArtsyAPI+Search.m */; };
+		1AC018342698AE5A009A1CD6 /* ARInternalWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E424F424E700ED2843 /* ARInternalWebView.m */; };
+		1AC018352698AE5A009A1CD6 /* ARAuctionWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5102616E1BBE8324002AB8BB /* ARAuctionWebViewController.m */; };
+		1AC018362698AE5A009A1CD6 /* UITableViewController+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBD44DF1D07325300C60F9F /* UITableViewController+Animations.swift */; };
+		1AC018372698AE5A009A1CD6 /* AROnboardingNavigationItemsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C717EC41CB439F7002CCF2D /* AROnboardingNavigationItemsView.m */; };
+		1AC018382698AE5A009A1CD6 /* LiveAuctionBiddingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DDF1C1CE24FBF00DFEE2A /* LiveAuctionBiddingViewModel.swift */; };
+		1AC018392698AE5A009A1CD6 /* NSArray+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA250651C4EE95B001E4950 /* NSArray+Additions.m */; };
+		1AC0183A2698AE5A009A1CD6 /* LiveAuctionLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE9A3E41D131F6C0014A3C9 /* LiveAuctionLoadingView.swift */; };
+		1AC0183B2698AE5A009A1CD6 /* ARTArtsyNativeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A248BDA265C282400E41409 /* ARTArtsyNativeModule.m */; };
+		1AC0183C2698AE5A009A1CD6 /* LiveAuctionCurrentLotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DDF1A1CE2340900DFEE2A /* LiveAuctionCurrentLotView.swift */; };
+		1AC0183D2698AE5A009A1CD6 /* AROnboardingPersonalizationGeneImageStateReconciler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E6CBB001DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.m */; };
+		1AC0183E2698AE5A009A1CD6 /* AREigenMapContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9C7EF12221FE2900F6967E /* AREigenMapContainerViewController.m */; };
+		1AC0183F2698AE5A009A1CD6 /* AROptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CC3175CE21A002AB800 /* AROptions.m */; };
+		1AC018402698AE5A009A1CD6 /* ARAdminSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CCA175CE766002AB800 /* ARAdminSettingsViewController.m */; };
+		1AC018412698AE5A009A1CD6 /* AuctionTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F3551C4435C100EC0751 /* AuctionTitleView.swift */; };
+		1AC018422698AE5A009A1CD6 /* AROnboardingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F0C67A17B9706000721244 /* AROnboardingViewController.m */; };
+		1AC018432698AE5A009A1CD6 /* AuctionSaleNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA7BC281C600144009C52C9 /* AuctionSaleNetworkModel.swift */; };
+		1AC018442698AE5A009A1CD6 /* ARRouter+GraphQL.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E55295C1F1FC7A500455F8F /* ARRouter+GraphQL.m */; };
+		1AC018452698AE5A009A1CD6 /* LiveBidProgressOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608AFFF01CB681AD00534754 /* LiveBidProgressOverlayView.swift */; };
+		1AC018462698AE5A009A1CD6 /* ARAnimatedTickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CD1175CF095002AB800 /* ARAnimatedTickView.m */; };
+		1AC018472698AE5A009A1CD6 /* AROfflineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E50987C18F82FCF001AC704 /* AROfflineView.m */; };
+		1AC018482698AE5A009A1CD6 /* LiveAuctionLotImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF840791CEB7DAA006248D7 /* LiveAuctionLotImageCollectionViewCell.swift */; };
+		1AC018492698AE5A009A1CD6 /* LiveAuctionBidViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE9A3DE1D11F9F20014A3C9 /* LiveAuctionBidViewModel.swift */; };
+		1AC0184A2698AE5A009A1CD6 /* ARVIRHorizontalPlaneInteractionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6065B3292097598D004215DA /* ARVIRHorizontalPlaneInteractionController.m */; };
+		1AC0184B2698AE5A009A1CD6 /* AuctionLotMetadataStackScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021D1B91CB7D2E800C475C1 /* AuctionLotMetadataStackScrollView.swift */; };
+		1AC0184C2698AE5A009A1CD6 /* ARTickedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CD4175CF23F002AB800 /* ARTickedTableViewCell.m */; };
+		1AC0184D2698AE5A009A1CD6 /* ARAdminTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CD7175CF27D002AB800 /* ARAdminTableViewCell.m */; };
+		1AC0184E2698AE5A009A1CD6 /* ARViewInRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60289228176BE98C00512977 /* ARViewInRoomViewController.m */; };
+		1AC0184F2698AE5A009A1CD6 /* LiveAuctionStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0DD14A1C9764420037F9E4 /* LiveAuctionStateManager.swift */; };
+		1AC018502698AE5A009A1CD6 /* Bidder.m in Sources */ = {isa = PBXBuildFile; fileRef = B316E2F6181713110086CCDB /* Bidder.m */; };
+		1AC018512698AE5A009A1CD6 /* LiveAuctionEventViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED31261C8F76AB0071DD89 /* LiveAuctionEventViewModel.swift */; };
+		1AC018522698AE5A009A1CD6 /* RefinableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF73B31CB87A74002B53FA /* RefinableType.swift */; };
+		1AC018532698AE5A009A1CD6 /* AFHTTPRequestOperation+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 602C09B91B5E5CE6003681D3 /* AFHTTPRequestOperation+JSON.m */; };
+		1AC018542698AE5A009A1CD6 /* LiveAuctionLotCollectionViewLayoutType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5F495D1D00BC7700E7CD6E /* LiveAuctionLotCollectionViewLayoutType.swift */; };
+		1AC018552698AE5A009A1CD6 /* UILabel+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBD44E11D074A7300C60F9F /* UILabel+Styling.swift */; };
+		1AC018562698AE5A009A1CD6 /* TextStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021D1B71CB7C6F800C475C1 /* TextStack.swift */; };
+		1AC018572698AE5A009A1CD6 /* ARWebViewCacheHost.m in Sources */ = {isa = PBXBuildFile; fileRef = 60026AF11BDE3EFB0040257C /* ARWebViewCacheHost.m */; };
+		1AC018582698AE5A009A1CD6 /* LiveAuctionSalesPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED312C1C8F776B0071DD89 /* LiveAuctionSalesPerson.swift */; };
+		1AC018592698AE5A009A1CD6 /* ARBackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D50B9512450CF6800A6DCD0 /* ARBackButton.m */; };
+		1AC0185A2698AE5A009A1CD6 /* SaleArtworkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EACFAC81C750E2F004112FF /* SaleArtworkViewModel.swift */; };
+		1AC0185B2698AE5A009A1CD6 /* Fair.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9860A7DDF0C11DC56572 /* Fair.m */; };
+		1AC0185C2698AE5A009A1CD6 /* LiveAuctionLot.m in Sources */ = {isa = PBXBuildFile; fileRef = 601E31AF1C80E35600D09F73 /* LiveAuctionLot.m */; };
+		1AC0185D2698AE5A009A1CD6 /* ARNavigationButtonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9C3811C6F12C261F04D4 /* ARNavigationButtonsViewController.m */; };
+		1AC0185E2698AE5A009A1CD6 /* ARAugmentedVIRSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036B1DD20337EC700763E10 /* ARAugmentedVIRSetupViewController.m */; };
+		1AC0185F2698AE5A009A1CD6 /* ARSerifNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C1C3171C5FA34400EC98EE /* ARSerifNavigationViewController.m */; };
+		1AC018602698AE5A009A1CD6 /* LiveAuctionLotCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFEF1C71CEB7C5800E3AAB2 /* LiveAuctionLotCollectionViewDataSource.swift */; };
+		1AC018612698AE5A009A1CD6 /* ARAdminNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F9B08E1D83255800DBAC8C /* ARAdminNetworkModel.m */; };
+		1AC018622698AE5A009A1CD6 /* NSDate+DateRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9175329F0389E644C194 /* NSDate+DateRange.m */; };
+		1AC018632698AE5A009A1CD6 /* ARSentryAnalyticsProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CC97341EC3203D00793566 /* ARSentryAnalyticsProvider.m */; };
+		1AC018642698AE5A009A1CD6 /* SaleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F35A1C4444A900EC0751 /* SaleViewModel.swift */; };
+		1AC018652698AE5A009A1CD6 /* ARApplicationShortcutItemDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BC92F21BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m */; };
+		1AC018662698AE5A009A1CD6 /* ARLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = E667F12B18EC889F00503F50 /* ARLogFormatter.m */; };
+		1AC018672698AE5A009A1CD6 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F97B49335330C4FD569B4 /* UIDevice-Hardware.m */; };
+		1AC018682698AE5A009A1CD6 /* Int+Metrification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCB01C7612D8003D5D65 /* Int+Metrification.swift */; };
+		1AC018692698AE5A009A1CD6 /* ARSCNWallNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 6065B32C209776EA004215DA /* ARSCNWallNode.m */; };
+		1AC0186A2698AE5A009A1CD6 /* ArtsyAPI+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */; };
+		1AC0186B2698AE5A009A1CD6 /* LiveAuctionCurrentLotCTAPositionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E70AA8D1DF5C7B1002847E9 /* LiveAuctionCurrentLotCTAPositionManager.swift */; };
+		1AC0186C2698AE5A009A1CD6 /* UIViewController+SimpleChildren.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9331632309600346BD90 /* UIViewController+SimpleChildren.m */; };
+		1AC0186D2698AE5A009A1CD6 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F97C153D8524B132D0927 /* NSDate+Util.m */; };
+		1AC0186E2698AE5A009A1CD6 /* UIImage+ImageFromColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F987C1CACE95AAD292717 /* UIImage+ImageFromColor.m */; };
+		1AC0186F2698AE5A009A1CD6 /* UIViewController+FullScreenLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F924737155CB0C5A439F9 /* UIViewController+FullScreenLoading.m */; };
+		1AC018702698AE5A009A1CD6 /* UIImageView+AsyncImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9DA91638895F6A6A432C /* UIImageView+AsyncImageLoading.m */; };
+		1AC018712698AE5A009A1CD6 /* ARLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E667F12718EC82AB00503F50 /* ARLogger.m */; };
+		1AC018722698AE5A009A1CD6 /* Article.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A11AC98BF3000783C1 /* Article.m */; };
+		1AC018732698AE5A009A1CD6 /* UIView+HitTestExpansion.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9F4385F10D19BC94E456 /* UIView+HitTestExpansion.m */; };
+		1AC018742698AE5A009A1CD6 /* ARAppActivityContinuationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 514E56481BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.m */; };
+		1AC018752698AE5A009A1CD6 /* LiveAuctionSocketCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E31524E1C90C97300C544D5 /* LiveAuctionSocketCommunicator.swift */; };
+		1AC018762698AE5A009A1CD6 /* ORStackView+ArtsyViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9F32AB53EF2503473315 /* ORStackView+ArtsyViews.m */; };
+		1AC018772698AE5A009A1CD6 /* UIApplicationStateEnum.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9CDCE3E3D1674CA080AD /* UIApplicationStateEnum.m */; };
+		1AC018782698AE5A009A1CD6 /* ARNetworkErrorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F97A9F6D9D371703C2B19 /* ARNetworkErrorManager.m */; };
+		1AC018792698AE5A009A1CD6 /* ARLoginFieldsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C029B011CCF7FE700808503 /* ARLoginFieldsView.m */; };
+		1AC0187A2698AE5A009A1CD6 /* ARParallaxEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9A7210CFDD1C15CFBE3C /* ARParallaxEffect.m */; };
+		1AC0187B2698AE5A009A1CD6 /* ARScrollNavigationChief.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F98A73E2E1162514B5A24 /* ARScrollNavigationChief.m */; };
+		1AC0187C2698AE5A009A1CD6 /* ARFileUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9FEFF4A1B56EE307467B /* ARFileUtils.m */; };
+		1AC0187D2698AE5A009A1CD6 /* ARValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F90BFE6268BEBC0E7BB2E /* ARValueTransformer.m */; };
+		1AC0187E2698AE5A009A1CD6 /* ARMessageItemProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = E676B2F118D224000057B4E1 /* ARMessageItemProvider.m */; };
+		1AC0187F2698AE5A009A1CD6 /* ARStandardDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9F3E8A0C15DD0DB437D1 /* ARStandardDateFormatter.m */; };
+		1AC018802698AE5A009A1CD6 /* ARFeedImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F966C989CF0BE97711FB6 /* ARFeedImageLoader.m */; };
+		1AC018812698AE5A009A1CD6 /* ARSharingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9DC4018D17E7378DA607 /* ARSharingController.m */; settings = {COMPILER_FLAGS = "-Wno-deprecated-declarations"; }; };
+		1AC018822698AE5A009A1CD6 /* StoryboardConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602F03491CB291EC008A999D /* StoryboardConstants.swift */; };
+		1AC018832698AE5A009A1CD6 /* SaleStatusType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FC2CBE1C8F704D00ACD78F /* SaleStatusType.swift */; };
+		1AC018842698AE5A009A1CD6 /* LiveAuctionsAdminViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60794B9B1D0112ED0062C3F8 /* LiveAuctionsAdminViewController.swift */; };
+		1AC018852698AE5A009A1CD6 /* ARInformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AFD9A720AC9FA50013D74B /* ARInformationView.m */; };
+		1AC018862698AE5A009A1CD6 /* ARBidButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9629B03A1BEB6888BD4B /* ARBidButton.m */; };
+		1AC018872698AE5A009A1CD6 /* LiveAuctionStaticDataFetcher+Stubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E925EAD1E6882D400A504D6 /* LiveAuctionStaticDataFetcher+Stubs.swift */; };
+		1AC018882698AE5A009A1CD6 /* ARTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F969D222D3AAD67B93FCE /* ARTextView.m */; };
+		1AC018892698AE5A009A1CD6 /* MTLModel+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F92D1AEEE18F719695548 /* MTLModel+JSON.m */; };
+		1AC0188A2698AE5A009A1CD6 /* MTLModel+Dictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F98950528061D8AE370EA /* MTLModel+Dictionary.m */; };
+		1AC0188B2698AE5A009A1CD6 /* LiveAuctionPlaceMaxBidViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AF60C81CB2D8BD0041B430 /* LiveAuctionPlaceMaxBidViewController.swift */; };
+		1AC0188C2698AE5A009A1CD6 /* RefinementOptionsViewController+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E088DAD1C58072B00C448D7 /* RefinementOptionsViewController+Private.swift */; };
+		1AC0188D2698AE5A009A1CD6 /* Follow.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F92FE487AC8FCA43F5C74 /* Follow.m */; };
+		1AC0188F2698AE5A009A1CD6 /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60A22B241FF308C000443BC3 /* ARKit.framework */; };
+		1AC018902698AE5A009A1CD6 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60D312461EA6CFD000B13E59 /* ReplayKit.framework */; };
+		1AC018912698AE5A009A1CD6 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06E44EB8170235D8001B2EBF /* MessageUI.framework */; };
+		1AC018922698AE5A009A1CD6 /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 512AB35A1BD7C7A100F92B9A /* CoreSpotlight.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		1AC018932698AE5A009A1CD6 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60935A451A69CFEE00129CE1 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		1AC018942698AE5A009A1CD6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 601C3183165838590013E061 /* MobileCoreServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		1AC018952698AE5A009A1CD6 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA8D5507586C1A8D7D25B02D /* libPods-Artsy.a */; };
+		1AC018982698AE5A009A1CD6 /* CircleCheckGreen@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E80CA7C2093C29300BCFD82 /* CircleCheckGreen@3x.png */; };
+		1AC018992698AE5A009A1CD6 /* ARVIRPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E08212051E9DF00785717 /* ARVIRPhone@2x.png */; };
+		1AC0189A2698AE5A009A1CD6 /* Range@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EC24F9684400ED2843 /* Range@2x.png */; };
+		1AC0189B2698AE5A009A1CD6 /* CHANGELOG.yml in Resources */ = {isa = PBXBuildFile; fileRef = 600B8B441C4FCEEC00776F84 /* CHANGELOG.yml */; };
+		1AC0189C2698AE5A009A1CD6 /* followButtonChecked@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CC9EBA01CC76CDD00A74E3C /* followButtonChecked@3x.png */; };
+		1AC0189D2698AE5A009A1CD6 /* FooterBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608B704917D4A1C70088A56C /* FooterBackground@2x.png */; };
+		1AC0189E2698AE5A009A1CD6 /* ViewInRoom_BaseNoBench@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C4AE98D19094F96009C0E8B /* ViewInRoom_BaseNoBench@2x.png */; };
+		1AC0189F2698AE5A009A1CD6 /* BackChevron.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D50B9542450CFB600A6DCD0 /* BackChevron.png */; };
+		1AC018A02698AE5A009A1CD6 /* onboard_1@2x~iphone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6FFEAA019C7925600A0D7DE /* onboard_1@2x~iphone.jpg */; };
+		1AC018A12698AE5A009A1CD6 /* CircleCheckGreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E80CA812093C29500BCFD82 /* CircleCheckGreen@2x.png */; };
+		1AC018A22698AE5A009A1CD6 /* Thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8ED24F9684400ED2843 /* Thumb.png */; };
+		1AC018A32698AE5A009A1CD6 /* Chevron_White_Left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6082C5B22044A90B00F00635 /* Chevron_White_Left@2x.png */; };
+		1AC018A42698AE5A009A1CD6 /* followButtonChecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CC9EB9E1CC76CDD00A74E3C /* followButtonChecked.png */; };
+		1AC018A52698AE5A009A1CD6 /* full_logo_black_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CFA4EB41E5C4B6B00D44A5A /* full_logo_black_medium@2x.png */; };
+		1AC018A62698AE5A009A1CD6 /* onboardingspinner.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C09DFA51E53BAAD003F7BA7 /* onboardingspinner.png */; };
+		1AC018A72698AE5A009A1CD6 /* full_logo_black_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CFA4EB31E5C4B6B00D44A5A /* full_logo_black_large@2x.png */; };
+		1AC018A82698AE5A009A1CD6 /* splash_3@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6FFEAA919C7925600A0D7DE /* splash_3@2x~ipad.jpg */; };
+		1AC018A92698AE5A009A1CD6 /* CloseButtonLargeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E6F84CFE1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png */; };
+		1AC018AA2698AE5A009A1CD6 /* ARVIRBack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E08172051C5B200785717 /* ARVIRBack@2x.png */; };
+		1AC018AB2698AE5A009A1CD6 /* splash_4@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6FFEAAB19C7925600A0D7DE /* splash_4@2x~ipad.jpg */; };
+		1AC018AC2698AE5A009A1CD6 /* MapAnnotation_Artsy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C4AE96D19094DAA009C0E8B /* MapAnnotation_Artsy@2x.png */; };
+		1AC018AD2698AE5A009A1CD6 /* EchoNew.json in Resources */ = {isa = PBXBuildFile; fileRef = 1AC7920F251A42CF00F50228 /* EchoNew.json */; };
+		1AC018AE2698AE5A009A1CD6 /* Chevron_White_Left@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6082C5B32044A90C00F00635 /* Chevron_White_Left@3x.png */; };
+		1AC018AF2698AE5A009A1CD6 /* live_auctions_static.json in Resources */ = {isa = PBXBuildFile; fileRef = 601E31AA1C80A55F00D09F73 /* live_auctions_static.json */; };
+		1AC018B02698AE5A009A1CD6 /* splash_3@2x~iphone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6FFEAAA19C7925600A0D7DE /* splash_3@2x~iphone.jpg */; };
+		1AC018B12698AE5A009A1CD6 /* paddle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E4E32AB1E53884E00C7F724 /* paddle@2x.png */; };
+		1AC018B22698AE5A009A1CD6 /* Artsy_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 60E71A001B4C60AC008948FA /* Artsy_Logo.png */; };
+		1AC018B32698AE5A009A1CD6 /* checkbox_unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8852520A3704600DE5E82 /* checkbox_unselected@2x.png */; };
+		1AC018B42698AE5A009A1CD6 /* splash_5@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6FFEAAD19C7925600A0D7DE /* splash_5@2x~ipad.jpg */; };
+		1AC018B52698AE5A009A1CD6 /* CircleXRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E80CA7D2093C29300BCFD82 /* CircleXRed.png */; };
+		1AC018B62698AE5A009A1CD6 /* full_logo_white_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E66A0A8219C2125400ECEB1A /* full_logo_white_large@2x.png */; };
+		1AC018B72698AE5A009A1CD6 /* BackChevron@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D50B9532450CFB500A6DCD0 /* BackChevron@3x.png */; };
+		1AC018B82698AE5A009A1CD6 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60E719FD1B4C6032008948FA /* Launch Screen.xib */; };
+		1AC018B92698AE5A009A1CD6 /* splash_1@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6FFEAA519C7925600A0D7DE /* splash_1@2x~ipad.jpg */; };
+		1AC018BA2698AE5A009A1CD6 /* SearchButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C5AAEB41CD87D9B00515B73 /* SearchButton@3x.png */; };
+		1AC018BB2698AE5A009A1CD6 /* CircularInfoButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E20BB691C62C81600C6D781 /* CircularInfoButton.png */; };
+		1AC018BC2698AE5A009A1CD6 /* LiveAuctions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 602F03461CB2912D008A999D /* LiveAuctions.storyboard */; };
+		1AC018BD2698AE5A009A1CD6 /* ARVIRPhone@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E08222051E9E000785717 /* ARVIRPhone@3x.png */; };
+		1AC018BE2698AE5A009A1CD6 /* CircularCancelButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6BA6E81C56B5D700B942C1 /* CircularCancelButton.png */; };
+		1AC018BF2698AE5A009A1CD6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49BA7E0C1655ABE600C06572 /* InfoPlist.strings */; };
+		1AC018C02698AE5A009A1CD6 /* ViewInRoom_Bench@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C4AE98E19094F96009C0E8B /* ViewInRoom_Bench@2x.png */; };
+		1AC018C12698AE5A009A1CD6 /* ViewInRoom_Base@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C4AE98C19094F96009C0E8B /* ViewInRoom_Base@2x.png */; };
+		1AC018C22698AE5A009A1CD6 /* ARVIRTick@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 609A42BA20C1D3F100B1B933 /* ARVIRTick@2x.png */; };
+		1AC018C32698AE5A009A1CD6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 219967EB267B4B1C00ECA8E1 /* GoogleService-Info.plist */; };
+		1AC018C42698AE5A009A1CD6 /* ARVIRTick.png in Resources */ = {isa = PBXBuildFile; fileRef = 609A42B920C1D3F000B1B933 /* ARVIRTick.png */; };
+		1AC018C52698AE5A009A1CD6 /* Hash@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C661CE470C400FFD6ED /* Hash@3x.png */; };
+		1AC018C62698AE5A009A1CD6 /* serif_modal_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605191921C7525AF0002E11A /* serif_modal_close@2x.png */; };
+		1AC018C72698AE5A009A1CD6 /* SearchButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C5AAEB31CD87D9B00515B73 /* SearchButton@2x.png */; };
+		1AC018C82698AE5A009A1CD6 /* SearchButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C5AAEB21CD87D9B00515B73 /* SearchButton.png */; };
+		1AC018C92698AE5A009A1CD6 /* full_logo_white_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E60673B119BE4E8C00EF05EB /* full_logo_white_small@2x.png */; };
+		1AC018CA2698AE5A009A1CD6 /* followButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CC9EB9C1CC76CDD00A74E3C /* followButton@2x.png */; };
+		1AC018CB2698AE5A009A1CD6 /* BackArrow_Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608B703E17D4A1C70088A56C /* BackArrow_Highlighted@2x.png */; };
+		1AC018CC2698AE5A009A1CD6 /* paddle.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E4E32AA1E53884E00C7F724 /* paddle.png */; };
+		1AC018CD2698AE5A009A1CD6 /* Emission.podspec.json in Resources */ = {isa = PBXBuildFile; fileRef = 3A6EBA7E22358DE60052D0C0 /* Emission.podspec.json */; };
+		1AC018CE2698AE5A009A1CD6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E620C74719C746530064A0FF /* Images.xcassets */; };
+		1AC018CF2698AE5A009A1CD6 /* ARVIRModalClose.png in Resources */ = {isa = PBXBuildFile; fileRef = 6016120120B7446700FD54B0 /* ARVIRModalClose.png */; };
+		1AC018D02698AE5A009A1CD6 /* full_logo_black_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CFA4EB51E5C4B6B00D44A5A /* full_logo_black_small@2x.png */; };
+		1AC018D12698AE5A009A1CD6 /* AuctionRefineCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */; };
+		1AC018D22698AE5A009A1CD6 /* LiveAuctionsAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6019A9071C7E76EF00E292FA /* LiveAuctionsAssets.xcassets */; };
+		1AC018D32698AE5A009A1CD6 /* apple-login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFCA0552427ABBB00B2822D /* apple-login@2x.png */; };
+		1AC018D42698AE5A009A1CD6 /* AttentionIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 518B421D1B57CF7100210A02 /* AttentionIcon@2x.png */; };
+		1AC018D52698AE5A009A1CD6 /* facebook-login@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFCA0582427ABC500B2822D /* facebook-login@3x.png */; };
+		1AC018D62698AE5A009A1CD6 /* ARVIRModalClose@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6016120320B7446800FD54B0 /* ARVIRModalClose@3x.png */; };
+		1AC018D72698AE5A009A1CD6 /* followButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CC9EB9B1CC76CDD00A74E3C /* followButton.png */; };
+		1AC018D82698AE5A009A1CD6 /* checkbox_unselected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8852420A3704600DE5E82 /* checkbox_unselected@3x.png */; };
+		1AC018D92698AE5A009A1CD6 /* ViewInRoom_Wall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C4AE99119094F96009C0E8B /* ViewInRoom_Wall@2x.png */; };
+		1AC018DA2698AE5A009A1CD6 /* Artsy.Store.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 51E576081BFFA16C00A146C1 /* Artsy.Store.entitlements */; };
+		1AC018DB2698AE5A009A1CD6 /* ARVIRBack@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E08182051C5B200785717 /* ARVIRBack@3x.png */; };
+		1AC018DC2698AE5A009A1CD6 /* facebook-login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFCA0592427ABC600B2822D /* facebook-login@2x.png */; };
+		1AC018DD2698AE5A009A1CD6 /* ViewInRoom_Man_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C4AE98F19094F96009C0E8B /* ViewInRoom_Man_3@2x.png */; };
+		1AC018DE2698AE5A009A1CD6 /* CircleCheckGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E80CA7F2093C29400BCFD82 /* CircleCheckGreen.png */; };
+		1AC018DF2698AE5A009A1CD6 /* navigation_more_arrow_vertical@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605191961C7526200002E11A /* navigation_more_arrow_vertical@2x.png */; };
+		1AC018E02698AE5A009A1CD6 /* navigation_more_arrow_horizontal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605191941C7525D50002E11A /* navigation_more_arrow_horizontal@2x.png */; };
+		1AC018E12698AE5A009A1CD6 /* AuctionRefineCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */; };
+		1AC018E22698AE5A009A1CD6 /* RefreshIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51DA12241B596035001B6F2A /* RefreshIcon@2x.png */; };
+		1AC018E32698AE5A009A1CD6 /* ARVIRModalClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6016120220B7446800FD54B0 /* ARVIRModalClose@2x.png */; };
+		1AC018E42698AE5A009A1CD6 /* splash_1@2x~iphone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6FFEAA619C7925600A0D7DE /* splash_1@2x~iphone.jpg */; };
+		1AC018E52698AE5A009A1CD6 /* BackChevron@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D50B9552450CFB600A6DCD0 /* BackChevron@2x.png */; };
+		1AC018E62698AE5A009A1CD6 /* CircularInfoButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E20BB681C62C81600C6D781 /* CircularInfoButton@2x.png */; };
+		1AC018E72698AE5A009A1CD6 /* paddle@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E4E32AC1E53884E00C7F724 /* paddle@3x.png */; };
+		1AC018E82698AE5A009A1CD6 /* SmallMoreVerticalArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E717D9F5DC00C090B8 /* SmallMoreVerticalArrow.png */; };
+		1AC018E92698AE5A009A1CD6 /* SmallMoreVerticalArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E817D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png */; };
+		1AC018EA2698AE5A009A1CD6 /* full_logo_white_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C02A2091CADA80D008B4F6C /* full_logo_white_medium@2x.png */; };
+		1AC018EB2698AE5A009A1CD6 /* static_sale_data.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 5EFB45731F22830F00328A6B /* static_sale_data.graphql */; };
+		1AC018EC2698AE5A009A1CD6 /* splash_2@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6FFEAA719C7925600A0D7DE /* splash_2@2x~ipad.jpg */; };
+		1AC018ED2698AE5A009A1CD6 /* followButtonChecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CC9EB9F1CC76CDD00A74E3C /* followButtonChecked@2x.png */; };
+		1AC018EE2698AE5A009A1CD6 /* splash_4@2x~iphone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6FFEAAC19C7925600A0D7DE /* splash_4@2x~iphone.jpg */; };
+		1AC018EF2698AE5A009A1CD6 /* checkbox_unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8852620A3704700DE5E82 /* checkbox_unselected.png */; };
+		1AC018F02698AE5A009A1CD6 /* Thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EB24F9684400ED2843 /* Thumb@2x.png */; };
+		1AC018F12698AE5A009A1CD6 /* ViewInRoom_Wall_Right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C4AE99019094F96009C0E8B /* ViewInRoom_Wall_Right@2x.png */; };
+		1AC018F22698AE5A009A1CD6 /* ARVIRShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6037340320CF1BFF0017A4D9 /* ARVIRShadow.png */; };
+		1AC018F32698AE5A009A1CD6 /* followButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CC9EB9D1CC76CDD00A74E3C /* followButton@3x.png */; };
+		1AC018F42698AE5A009A1CD6 /* Track@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EE24F9684400ED2843 /* Track@2x.png */; };
+		1AC018F52698AE5A009A1CD6 /* CloseButtonLarge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608B706217D4A1C80088A56C /* CloseButtonLarge@2x.png */; };
+		1AC018F62698AE5A009A1CD6 /* CircularCancelButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6BA6E71C56B5D700B942C1 /* CircularCancelButton@2x.png */; };
+		1AC018F72698AE5A009A1CD6 /* Hash.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C641CE470C400FFD6ED /* Hash.png */; };
+		1AC018F82698AE5A009A1CD6 /* splash_2@2x~iphone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6FFEAA819C7925600A0D7DE /* splash_2@2x~iphone.jpg */; };
+		1AC018F92698AE5A009A1CD6 /* onboardingspinner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C09DFA61E53BAAD003F7BA7 /* onboardingspinner@2x.png */; };
+		1AC018FA2698AE5A009A1CD6 /* MoreArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608B705117D4A1C70088A56C /* MoreArrow@2x.png */; };
+		1AC018FB2698AE5A009A1CD6 /* ARVIRRefresh@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E081A2051C5B400785717 /* ARVIRRefresh@3x.png */; };
+		1AC018FC2698AE5A009A1CD6 /* apple-login@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFCA0542427ABBB00B2822D /* apple-login@3x.png */; };
+		1AC018FD2698AE5A009A1CD6 /* live_auctions_socket.json in Resources */ = {isa = PBXBuildFile; fileRef = 5E956E581CD2AD6E005C2332 /* live_auctions_socket.json */; };
+		1AC018FE2698AE5A009A1CD6 /* ARVIRTick@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 609A42BB20C1D3F100B1B933 /* ARVIRTick@3x.png */; };
+		1AC018FF2698AE5A009A1CD6 /* onboard_1@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6FFEA9F19C7925600A0D7DE /* onboard_1@2x~ipad.jpg */; };
+		1AC019002698AE5A009A1CD6 /* ar_vir_opening_frame.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 60A168CE20647965008A086C /* ar_vir_opening_frame.jpg */; };
+		1AC019012698AE5A009A1CD6 /* CircleXRed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E80CA802093C29400BCFD82 /* CircleXRed@2x.png */; };
+		1AC019022698AE5A009A1CD6 /* CircleXRed@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E80CA7E2093C29300BCFD82 /* CircleXRed@3x.png */; };
+		1AC019032698AE5A009A1CD6 /* Hash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C651CE470C400FFD6ED /* Hash@2x.png */; };
+		1AC019042698AE5A009A1CD6 /* ARVIRRefresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E08192051C5B300785717 /* ARVIRRefresh@2x.png */; };
+		1AC019082698AE5A009A1CD6 /* Artsy Stickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1AD4F89B25FBBA85007FDB71 /* Artsy Stickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1AC79210251A42D000F50228 /* EchoNew.json in Resources */ = {isa = PBXBuildFile; fileRef = 1AC7920F251A42CF00F50228 /* EchoNew.json */; };
 		1AD4F89E25FBBA89007FDB71 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AD4F89D25FBBA89007FDB71 /* Stickers.xcassets */; };
 		1AD4F8A225FBBA89007FDB71 /* Artsy Stickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1AD4F89B25FBBA85007FDB71 /* Artsy Stickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -476,6 +830,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1AC0179E2698AE5A009A1CD6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1AD4F89A25FBBA85007FDB71;
+			remoteInfo = "Artsy Stickers";
+		};
 		1AD4F8A025FBBA89007FDB71 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
@@ -493,6 +854,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		1AC019072698AE5A009A1CD6 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				1AC019082698AE5A009A1CD6 /* Artsy Stickers.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1AD4F8A325FBBA89007FDB71 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -515,6 +887,8 @@
 		0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatcher+UINavigationController.m"; sourceTree = "<group>"; };
 		1A248BD9265C282400E41409 /* ARTArtsyNativeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTArtsyNativeModule.h; sourceTree = "<group>"; };
 		1A248BDA265C282400E41409 /* ARTArtsyNativeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTArtsyNativeModule.m; sourceTree = "<group>"; };
+		1AC0190C2698AE5A009A1CD6 /* Devartsy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Devartsy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AC0190D2698AE5D009A1CD6 /* Artsy copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Artsy copy-Info.plist"; path = "/Users/pavlos/Source/artsy/eigen/Artsy copy-Info.plist"; sourceTree = "<absolute>"; };
 		1AC7920F251A42CF00F50228 /* EchoNew.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EchoNew.json; sourceTree = "<group>"; };
 		1AD4F89B25FBBA85007FDB71 /* Artsy Stickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Artsy Stickers.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AD4F89D25FBBA89007FDB71 /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
@@ -1096,7 +1470,7 @@
 		83F9D57F1AD6FDE0000BCC77 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		83FF73B31CB87A74002B53FA /* RefinableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefinableType.swift; path = ../Views/RefinableType.swift; sourceTree = "<group>"; };
 		9434A9843098609F9F092F0D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		97983D93644ACC6409190A08 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
+		97983D93644ACC6409190A08 /* Pods-Artsy.devel.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.devel.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.devel.xcconfig"; sourceTree = "<group>"; };
 		9D50B9502450CF6800A6DCD0 /* ARBackButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARBackButton.h; sourceTree = "<group>"; };
 		9D50B9512450CF6800A6DCD0 /* ARBackButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARBackButton.m; sourceTree = "<group>"; };
 		9D50B9532450CFB500A6DCD0 /* BackChevron@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackChevron@3x.png"; sourceTree = "<group>"; };
@@ -1212,10 +1586,24 @@
 		E6FFEAAB19C7925600A0D7DE /* splash_4@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_4@2x~ipad.jpg"; sourceTree = "<group>"; };
 		E6FFEAAC19C7925600A0D7DE /* splash_4@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_4@2x~iphone.jpg"; sourceTree = "<group>"; };
 		E6FFEAAD19C7925600A0D7DE /* splash_5@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_5@2x~ipad.jpg"; sourceTree = "<group>"; };
-		F5228136EBA7C3D968C3D845 /* Pods-Artsy Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		F5228136EBA7C3D968C3D845 /* Pods-Artsy Tests.devel.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.devel.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.devel.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1AC0188E2698AE5A009A1CD6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1AC0188F2698AE5A009A1CD6 /* ARKit.framework in Frameworks */,
+				1AC018902698AE5A009A1CD6 /* ReplayKit.framework in Frameworks */,
+				1AC018912698AE5A009A1CD6 /* MessageUI.framework in Frameworks */,
+				1AC018922698AE5A009A1CD6 /* CoreSpotlight.framework in Frameworks */,
+				1AC018932698AE5A009A1CD6 /* WebKit.framework in Frameworks */,
+				1AC018942698AE5A009A1CD6 /* MobileCoreServices.framework in Frameworks */,
+				1AC018952698AE5A009A1CD6 /* libPods-Artsy.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		27C58CCF38FF0D3E62C41E10 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1287,9 +1675,9 @@
 			isa = PBXGroup;
 			children = (
 				3A6EBA7E22358DE60052D0C0 /* Emission.podspec.json */,
-				97983D93644ACC6409190A08 /* Pods-Artsy.debug.xcconfig */,
+				97983D93644ACC6409190A08 /* Pods-Artsy.devel.xcconfig */,
 				E46CDB9EB7EB81BF77D63EF5 /* Pods-Artsy.store.xcconfig */,
-				F5228136EBA7C3D968C3D845 /* Pods-Artsy Tests.debug.xcconfig */,
+				F5228136EBA7C3D968C3D845 /* Pods-Artsy Tests.devel.xcconfig */,
 				5E6C92F936EA71609C245323 /* Pods-Artsy Tests.store.xcconfig */,
 			);
 			name = Pods;
@@ -1697,6 +2085,7 @@
 				49BA7E021655ABE600C06572 /* Frameworks */,
 				49BA7E001655ABE600C06572 /* Products */,
 				33C6886033769A61A3E99B18 /* Pods */,
+				1AC0190D2698AE5D009A1CD6 /* Artsy copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1706,6 +2095,7 @@
 				49BA7DFF1655ABE600C06572 /* Artsy.app */,
 				B3ECE8261819D1E6009F5C5B /* Artsy Tests.xctest */,
 				1AD4F89B25FBBA85007FDB71 /* Artsy Stickers.appex */,
+				1AC0190C2698AE5A009A1CD6 /* Devartsy.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2966,6 +3356,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1AC0179C2698AE5A009A1CD6 /* Devartsy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1AC019092698AE5A009A1CD6 /* Build configuration list for PBXNativeTarget "Devartsy" */;
+			buildPhases = (
+				1AC0179F2698AE5A009A1CD6 /* [CP] Check Pods Manifest.lock */,
+				1AC017A02698AE5A009A1CD6 /* Sources */,
+				1AC0188E2698AE5A009A1CD6 /* Frameworks */,
+				1AC018962698AE5A009A1CD6 /* Generate Compilation DB */,
+				1AC018972698AE5A009A1CD6 /* Resources */,
+				1AC019052698AE5A009A1CD6 /* [CP] Embed Pods Frameworks */,
+				1AC019062698AE5A009A1CD6 /* [CP] Copy Pods Resources */,
+				1AC019072698AE5A009A1CD6 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1AC0179D2698AE5A009A1CD6 /* PBXTargetDependency */,
+			);
+			name = Devartsy;
+			productName = Artsy;
+			productReference = 1AC0190C2698AE5A009A1CD6 /* Devartsy.app */;
+			productType = "com.apple.product-type.application";
+		};
 		1AD4F89A25FBBA85007FDB71 /* Artsy Stickers */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1AD4F8A725FBBA89007FDB71 /* Build configuration list for PBXNativeTarget "Artsy Stickers" */;
@@ -3035,6 +3448,9 @@
 				LastUpgradeCheck = 1210;
 				ORGANIZATIONNAME = Artsy;
 				TargetAttributes = {
+					1AC0179C2698AE5A009A1CD6 = {
+						DevelopmentTeam = 23KMWZ572J;
+					};
 					1AD4F89A25FBBA85007FDB71 = {
 						CreatedOnToolsVersion = 12.4;
 						DevelopmentTeam = 23KMWZ572J;
@@ -3088,11 +3504,128 @@
 				49BA7DFE1655ABE600C06572 /* Artsy */,
 				B3ECE8251819D1E6009F5C5B /* Artsy Tests */,
 				1AD4F89A25FBBA85007FDB71 /* Artsy Stickers */,
+				1AC0179C2698AE5A009A1CD6 /* Devartsy */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1AC018972698AE5A009A1CD6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1AC018982698AE5A009A1CD6 /* CircleCheckGreen@3x.png in Resources */,
+				1AC018992698AE5A009A1CD6 /* ARVIRPhone@2x.png in Resources */,
+				1AC0189A2698AE5A009A1CD6 /* Range@2x.png in Resources */,
+				1AC0189B2698AE5A009A1CD6 /* CHANGELOG.yml in Resources */,
+				1AC0189C2698AE5A009A1CD6 /* followButtonChecked@3x.png in Resources */,
+				1AC0189D2698AE5A009A1CD6 /* FooterBackground@2x.png in Resources */,
+				1AC0189E2698AE5A009A1CD6 /* ViewInRoom_BaseNoBench@2x.png in Resources */,
+				1AC0189F2698AE5A009A1CD6 /* BackChevron.png in Resources */,
+				1AC018A02698AE5A009A1CD6 /* onboard_1@2x~iphone.jpg in Resources */,
+				1AC018A12698AE5A009A1CD6 /* CircleCheckGreen@2x.png in Resources */,
+				1AC018A22698AE5A009A1CD6 /* Thumb.png in Resources */,
+				1AC018A32698AE5A009A1CD6 /* Chevron_White_Left@2x.png in Resources */,
+				1AC018A42698AE5A009A1CD6 /* followButtonChecked.png in Resources */,
+				1AC018A52698AE5A009A1CD6 /* full_logo_black_medium@2x.png in Resources */,
+				1AC018A62698AE5A009A1CD6 /* onboardingspinner.png in Resources */,
+				1AC018A72698AE5A009A1CD6 /* full_logo_black_large@2x.png in Resources */,
+				1AC018A82698AE5A009A1CD6 /* splash_3@2x~ipad.jpg in Resources */,
+				1AC018A92698AE5A009A1CD6 /* CloseButtonLargeHighlighted@2x.png in Resources */,
+				1AC018AA2698AE5A009A1CD6 /* ARVIRBack@2x.png in Resources */,
+				1AC018AB2698AE5A009A1CD6 /* splash_4@2x~ipad.jpg in Resources */,
+				1AC018AC2698AE5A009A1CD6 /* MapAnnotation_Artsy@2x.png in Resources */,
+				1AC018AD2698AE5A009A1CD6 /* EchoNew.json in Resources */,
+				1AC018AE2698AE5A009A1CD6 /* Chevron_White_Left@3x.png in Resources */,
+				1AC018AF2698AE5A009A1CD6 /* live_auctions_static.json in Resources */,
+				1AC018B02698AE5A009A1CD6 /* splash_3@2x~iphone.jpg in Resources */,
+				1AC018B12698AE5A009A1CD6 /* paddle@2x.png in Resources */,
+				1AC018B22698AE5A009A1CD6 /* Artsy_Logo.png in Resources */,
+				1AC018B32698AE5A009A1CD6 /* checkbox_unselected@2x.png in Resources */,
+				1AC018B42698AE5A009A1CD6 /* splash_5@2x~ipad.jpg in Resources */,
+				1AC018B52698AE5A009A1CD6 /* CircleXRed.png in Resources */,
+				1AC018B62698AE5A009A1CD6 /* full_logo_white_large@2x.png in Resources */,
+				1AC018B72698AE5A009A1CD6 /* BackChevron@3x.png in Resources */,
+				1AC018B82698AE5A009A1CD6 /* Launch Screen.xib in Resources */,
+				1AC018B92698AE5A009A1CD6 /* splash_1@2x~ipad.jpg in Resources */,
+				1AC018BA2698AE5A009A1CD6 /* SearchButton@3x.png in Resources */,
+				1AC018BB2698AE5A009A1CD6 /* CircularInfoButton.png in Resources */,
+				1AC018BC2698AE5A009A1CD6 /* LiveAuctions.storyboard in Resources */,
+				1AC018BD2698AE5A009A1CD6 /* ARVIRPhone@3x.png in Resources */,
+				1AC018BE2698AE5A009A1CD6 /* CircularCancelButton.png in Resources */,
+				1AC018BF2698AE5A009A1CD6 /* InfoPlist.strings in Resources */,
+				1AC018C02698AE5A009A1CD6 /* ViewInRoom_Bench@2x.png in Resources */,
+				1AC018C12698AE5A009A1CD6 /* ViewInRoom_Base@2x.png in Resources */,
+				1AC018C22698AE5A009A1CD6 /* ARVIRTick@2x.png in Resources */,
+				1AC018C32698AE5A009A1CD6 /* GoogleService-Info.plist in Resources */,
+				1AC018C42698AE5A009A1CD6 /* ARVIRTick.png in Resources */,
+				1AC018C52698AE5A009A1CD6 /* Hash@3x.png in Resources */,
+				1AC018C62698AE5A009A1CD6 /* serif_modal_close@2x.png in Resources */,
+				1AC018C72698AE5A009A1CD6 /* SearchButton@2x.png in Resources */,
+				1AC018C82698AE5A009A1CD6 /* SearchButton.png in Resources */,
+				1AC018C92698AE5A009A1CD6 /* full_logo_white_small@2x.png in Resources */,
+				1AC018CA2698AE5A009A1CD6 /* followButton@2x.png in Resources */,
+				1AC018CB2698AE5A009A1CD6 /* BackArrow_Highlighted@2x.png in Resources */,
+				1AC018CC2698AE5A009A1CD6 /* paddle.png in Resources */,
+				1AC018CD2698AE5A009A1CD6 /* Emission.podspec.json in Resources */,
+				1AC018CE2698AE5A009A1CD6 /* Images.xcassets in Resources */,
+				1AC018CF2698AE5A009A1CD6 /* ARVIRModalClose.png in Resources */,
+				1AC018D02698AE5A009A1CD6 /* full_logo_black_small@2x.png in Resources */,
+				1AC018D12698AE5A009A1CD6 /* AuctionRefineCheck@2x.png in Resources */,
+				1AC018D22698AE5A009A1CD6 /* LiveAuctionsAssets.xcassets in Resources */,
+				1AC018D32698AE5A009A1CD6 /* apple-login@2x.png in Resources */,
+				1AC018D42698AE5A009A1CD6 /* AttentionIcon@2x.png in Resources */,
+				1AC018D52698AE5A009A1CD6 /* facebook-login@3x.png in Resources */,
+				1AC018D62698AE5A009A1CD6 /* ARVIRModalClose@3x.png in Resources */,
+				1AC018D72698AE5A009A1CD6 /* followButton.png in Resources */,
+				1AC018D82698AE5A009A1CD6 /* checkbox_unselected@3x.png in Resources */,
+				1AC018D92698AE5A009A1CD6 /* ViewInRoom_Wall@2x.png in Resources */,
+				1AC018DA2698AE5A009A1CD6 /* Artsy.Store.entitlements in Resources */,
+				1AC018DB2698AE5A009A1CD6 /* ARVIRBack@3x.png in Resources */,
+				1AC018DC2698AE5A009A1CD6 /* facebook-login@2x.png in Resources */,
+				1AC018DD2698AE5A009A1CD6 /* ViewInRoom_Man_3@2x.png in Resources */,
+				1AC018DE2698AE5A009A1CD6 /* CircleCheckGreen.png in Resources */,
+				1AC018DF2698AE5A009A1CD6 /* navigation_more_arrow_vertical@2x.png in Resources */,
+				1AC018E02698AE5A009A1CD6 /* navigation_more_arrow_horizontal@2x.png in Resources */,
+				1AC018E12698AE5A009A1CD6 /* AuctionRefineCheck.png in Resources */,
+				1AC018E22698AE5A009A1CD6 /* RefreshIcon@2x.png in Resources */,
+				1AC018E32698AE5A009A1CD6 /* ARVIRModalClose@2x.png in Resources */,
+				1AC018E42698AE5A009A1CD6 /* splash_1@2x~iphone.jpg in Resources */,
+				1AC018E52698AE5A009A1CD6 /* BackChevron@2x.png in Resources */,
+				1AC018E62698AE5A009A1CD6 /* CircularInfoButton@2x.png in Resources */,
+				1AC018E72698AE5A009A1CD6 /* paddle@3x.png in Resources */,
+				1AC018E82698AE5A009A1CD6 /* SmallMoreVerticalArrow.png in Resources */,
+				1AC018E92698AE5A009A1CD6 /* SmallMoreVerticalArrow@2x.png in Resources */,
+				1AC018EA2698AE5A009A1CD6 /* full_logo_white_medium@2x.png in Resources */,
+				1AC018EB2698AE5A009A1CD6 /* static_sale_data.graphql in Resources */,
+				1AC018EC2698AE5A009A1CD6 /* splash_2@2x~ipad.jpg in Resources */,
+				1AC018ED2698AE5A009A1CD6 /* followButtonChecked@2x.png in Resources */,
+				1AC018EE2698AE5A009A1CD6 /* splash_4@2x~iphone.jpg in Resources */,
+				1AC018EF2698AE5A009A1CD6 /* checkbox_unselected.png in Resources */,
+				1AC018F02698AE5A009A1CD6 /* Thumb@2x.png in Resources */,
+				1AC018F12698AE5A009A1CD6 /* ViewInRoom_Wall_Right@2x.png in Resources */,
+				1AC018F22698AE5A009A1CD6 /* ARVIRShadow.png in Resources */,
+				1AC018F32698AE5A009A1CD6 /* followButton@3x.png in Resources */,
+				1AC018F42698AE5A009A1CD6 /* Track@2x.png in Resources */,
+				1AC018F52698AE5A009A1CD6 /* CloseButtonLarge@2x.png in Resources */,
+				1AC018F62698AE5A009A1CD6 /* CircularCancelButton@2x.png in Resources */,
+				1AC018F72698AE5A009A1CD6 /* Hash.png in Resources */,
+				1AC018F82698AE5A009A1CD6 /* splash_2@2x~iphone.jpg in Resources */,
+				1AC018F92698AE5A009A1CD6 /* onboardingspinner@2x.png in Resources */,
+				1AC018FA2698AE5A009A1CD6 /* MoreArrow@2x.png in Resources */,
+				1AC018FB2698AE5A009A1CD6 /* ARVIRRefresh@3x.png in Resources */,
+				1AC018FC2698AE5A009A1CD6 /* apple-login@3x.png in Resources */,
+				1AC018FD2698AE5A009A1CD6 /* live_auctions_socket.json in Resources */,
+				1AC018FE2698AE5A009A1CD6 /* ARVIRTick@3x.png in Resources */,
+				1AC018FF2698AE5A009A1CD6 /* onboard_1@2x~ipad.jpg in Resources */,
+				1AC019002698AE5A009A1CD6 /* ar_vir_opening_frame.jpg in Resources */,
+				1AC019012698AE5A009A1CD6 /* CircleXRed@2x.png in Resources */,
+				1AC019022698AE5A009A1CD6 /* CircleXRed@3x.png in Resources */,
+				1AC019032698AE5A009A1CD6 /* Hash@2x.png in Resources */,
+				1AC019042698AE5A009A1CD6 /* ARVIRRefresh@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1AD4F89925FBBA85007FDB71 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3238,6 +3771,131 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1AC0179F2698AE5A009A1CD6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Artsy-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1AC018962698AE5A009A1CD6 /* Generate Compilation DB */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate Compilation DB";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if type -p clang-compilation-database-tool > /dev/null 2>&1; then\n  clang-compilation-database-tool collect \"${OBJECT_FILE_DIR_normal}\" > \"${SRCROOT}/compiler_commands.json\"\nfi";
+			showEnvVarsInLog = 0;
+		};
+		1AC019052698AE5A009A1CD6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh",
+				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
+				"${BUILT_PRODUCTS_DIR}/MapboxMobileEvents/MapboxMobileEvents.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxMobileEvents.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1AC019062698AE5A009A1CD6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources.sh",
+				"${PODS_ROOT}/Appboy-iOS-SDK/AppboyKit/Appboy.bundle",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Bold.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-BoldItalic.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Italic.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Regular.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Semibold.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AVG65lig.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/ReactNativeAGaramondPro-Italic.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/ReactNativeAGaramondPro-Regular.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/ReactNativeAGaramondPro-Semibold.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-Italic.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-Medium.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-MediumItalic.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-Regular.otf",
+				"${PODS_ROOT}/Artsy+UILabels/Pod/Assets/Chevron_Black.png",
+				"${PODS_ROOT}/Artsy+UILabels/Pod/Assets/Chevron_Black@2x.png",
+				"${PODS_ROOT}/Extraction/Extraction/Assets/ARLoadFailureRetryIcon@2x.png",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FBSDKCoreKit/FacebookSDKStrings.bundle",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/MARKRangeSlider/MARKRangeSlider.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Appboy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Bold.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-BoldItalic.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Italic.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Regular.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Semibold.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AVG65lig.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ReactNativeAGaramondPro-Italic.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ReactNativeAGaramondPro-Regular.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ReactNativeAGaramondPro-Semibold.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-Italic.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-Medium.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-MediumItalic.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-Regular.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Chevron_Black.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Chevron_Black@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ARLoadFailureRetryIcon@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MARKRangeSlider.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/NPKeyboardLayoutGuide.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		271FD00586DDEF4925626060 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3388,6 +4046,250 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1AC017A02698AE5A009A1CD6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1AC017A12698AE5A009A1CD6 /* ARSlideshowView.m in Sources */,
+				1AC017A22698AE5A009A1CD6 /* LiveAuctionStaticDataFetcher.swift in Sources */,
+				1AC017A32698AE5A009A1CD6 /* ARAppDelegate+Emission.m in Sources */,
+				1AC017A42698AE5A009A1CD6 /* ARSlideshowViewController.m in Sources */,
+				1AC017A52698AE5A009A1CD6 /* BidderPosition.m in Sources */,
+				1AC017A62698AE5A009A1CD6 /* ARAppDelegate.m in Sources */,
+				1AC017A72698AE5A009A1CD6 /* Sale.m in Sources */,
+				1AC017A82698AE5A009A1CD6 /* main.m in Sources */,
+				1AC017A92698AE5A009A1CD6 /* ARKeychainable.m in Sources */,
+				1AC017AA2698AE5A009A1CD6 /* ARDefaults.m in Sources */,
+				1AC017AB2698AE5A009A1CD6 /* ArtsyAPI+RelatedModels.m in Sources */,
+				1AC017AC2698AE5A009A1CD6 /* SystemTime.m in Sources */,
+				1AC017AD2698AE5A009A1CD6 /* User.m in Sources */,
+				1AC017AE2698AE5A009A1CD6 /* UIView+ScrollToTop.m in Sources */,
+				1AC017AF2698AE5A009A1CD6 /* UIViewController+Traits.swift in Sources */,
+				1AC017B02698AE5A009A1CD6 /* UIViewController+ARUserActivity.m in Sources */,
+				1AC017B12698AE5A009A1CD6 /* ARUserManager.m in Sources */,
+				1AC017B22698AE5A009A1CD6 /* BidIncrementStrategy.m in Sources */,
+				1AC017B32698AE5A009A1CD6 /* ArtsyAPI+Sales.m in Sources */,
+				1AC017B42698AE5A009A1CD6 /* ARRouter.m in Sources */,
+				1AC017B52698AE5A009A1CD6 /* AROnboardingTransition.m in Sources */,
+				1AC017B62698AE5A009A1CD6 /* ARAnalyticsConstants.m in Sources */,
+				1AC017B72698AE5A009A1CD6 /* ArtsyAPI+SystemTime.m in Sources */,
+				1AC017B82698AE5A009A1CD6 /* Location.m in Sources */,
+				1AC017B92698AE5A009A1CD6 /* LiveAuctionViewModel.swift in Sources */,
+				1AC017BA2698AE5A009A1CD6 /* SaleStatusView.swift in Sources */,
+				1AC017BB2698AE5A009A1CD6 /* ARUserActivity.m in Sources */,
+				1AC017BC2698AE5A009A1CD6 /* StoryboardImages.swift in Sources */,
+				1AC017BD2698AE5A009A1CD6 /* UIViewController+BlurredStatusView.swift in Sources */,
+				1AC017BE2698AE5A009A1CD6 /* NSString+StringBetweenStrings.m in Sources */,
+				1AC017BF2698AE5A009A1CD6 /* AROnboardingFollowableTableViewCell.m in Sources */,
+				1AC017C02698AE5A009A1CD6 /* ARAnalyticsVisualizer.m in Sources */,
+				1AC017C12698AE5A009A1CD6 /* ARNotificationView.m in Sources */,
+				1AC017C22698AE5A009A1CD6 /* ArtsyAPI+HEAD.m in Sources */,
+				1AC017C32698AE5A009A1CD6 /* ARTwoWayDictionaryTransformer.m in Sources */,
+				1AC017C42698AE5A009A1CD6 /* AROnboardingPersonalizeTableViewController.m in Sources */,
+				1AC017C52698AE5A009A1CD6 /* ARReactPackagerHost.m in Sources */,
+				1AC017C62698AE5A009A1CD6 /* ARAppConstants.m in Sources */,
+				1AC017C72698AE5A009A1CD6 /* LiveAuctionToolbarView.swift in Sources */,
+				1AC017C82698AE5A009A1CD6 /* LiveAuctionLotCollectionViewLayoutAttributes.swift in Sources */,
+				1AC017C92698AE5A009A1CD6 /* ArtsyAPI+Sailthru.m in Sources */,
+				1AC017CA2698AE5A009A1CD6 /* Interstellar+Artsy.swift in Sources */,
+				1AC017CB2698AE5A009A1CD6 /* PartnerShow.m in Sources */,
+				1AC017CC2698AE5A009A1CD6 /* AuctionInformationViewController.swift in Sources */,
+				1AC017CD2698AE5A009A1CD6 /* UIViewController+Popovers.m in Sources */,
+				1AC017CE2698AE5A009A1CD6 /* ArtsyAPI.m in Sources */,
+				1AC017CF2698AE5A009A1CD6 /* ARScreenPresenterModule.m in Sources */,
+				1AC017D02698AE5A009A1CD6 /* ARLoginButtonsView.m in Sources */,
+				1AC017D12698AE5A009A1CD6 /* Artwork.m in Sources */,
+				1AC017D22698AE5A009A1CD6 /* SimpleProgressView.swift in Sources */,
+				1AC017D32698AE5A009A1CD6 /* ARTextFieldWithPlaceholder.m in Sources */,
+				1AC017D42698AE5A009A1CD6 /* LiveSale.m in Sources */,
+				1AC017D52698AE5A009A1CD6 /* AREchoContentsViewController.m in Sources */,
+				1AC017D62698AE5A009A1CD6 /* BuyersPremium.m in Sources */,
+				1AC017D72698AE5A009A1CD6 /* FairOrganizer.m in Sources */,
+				1AC017D82698AE5A009A1CD6 /* ARExternalWebBrowserViewController.m in Sources */,
+				1AC017D92698AE5A009A1CD6 /* LiveActionStateReconciler.swift in Sources */,
+				1AC017DA2698AE5A009A1CD6 /* NSAttributedString+Additions.swift in Sources */,
+				1AC017DB2698AE5A009A1CD6 /* AuctionLot.m in Sources */,
+				1AC017DC2698AE5A009A1CD6 /* Partner.m in Sources */,
+				1AC017DD2698AE5A009A1CD6 /* ARAppDelegate+Analytics.m in Sources */,
+				1AC017DE2698AE5A009A1CD6 /* SerifModalWebNavigationController.swift in Sources */,
+				1AC017DF2698AE5A009A1CD6 /* Artist.m in Sources */,
+				1AC017E02698AE5A009A1CD6 /* ARHTTPRequestOperationLogger.m in Sources */,
+				1AC017E12698AE5A009A1CD6 /* Bid.m in Sources */,
+				1AC017E22698AE5A009A1CD6 /* AROnboardingHeaderView.m in Sources */,
+				1AC017E32698AE5A009A1CD6 /* LiveAuctionSaleViewController.swift in Sources */,
+				1AC017E42698AE5A009A1CD6 /* ARAppStatus.m in Sources */,
+				1AC017E52698AE5A009A1CD6 /* UIViewController+InnermostTopViewController.m in Sources */,
+				1AC017E62698AE5A009A1CD6 /* Image.m in Sources */,
+				1AC017E72698AE5A009A1CD6 /* LiveAuctionLotListViewController.swift in Sources */,
+				1AC017E82698AE5A009A1CD6 /* AuctionBiddersNetworkModel.swift in Sources */,
+				1AC017E92698AE5A009A1CD6 /* ARCountdownView.m in Sources */,
+				1AC017EA2698AE5A009A1CD6 /* LiveAuctionSaleLotsDataSource.swift in Sources */,
+				1AC017EB2698AE5A009A1CD6 /* ARURLItemProvider.m in Sources */,
+				1AC017EC2698AE5A009A1CD6 /* LotListCollectionViewCell+Private.swift in Sources */,
+				1AC017ED2698AE5A009A1CD6 /* ARNetworkConstants.m in Sources */,
+				1AC017EE2698AE5A009A1CD6 /* ARAppNotificationsDelegate.m in Sources */,
+				1AC017EF2698AE5A009A1CD6 /* ARSeparatorViews.m in Sources */,
+				1AC017F02698AE5A009A1CD6 /* AuctionCircularButtons.swift in Sources */,
+				1AC017F12698AE5A009A1CD6 /* ArtsyAPI+DeviceTokens.m in Sources */,
+				1AC017F22698AE5A009A1CD6 /* UIView+OldSchoolSnapshots.m in Sources */,
+				1AC017F32698AE5A009A1CD6 /* ARAugmentedRealityConfig.m in Sources */,
+				1AC017F42698AE5A009A1CD6 /* ArtsyAPI+Pages.m in Sources */,
+				1AC017F52698AE5A009A1CD6 /* ARPriceRangeViewController.m in Sources */,
+				1AC017F62698AE5A009A1CD6 /* LotListCollectionViewCell.swift in Sources */,
+				1AC017F72698AE5A009A1CD6 /* Gene.m in Sources */,
+				1AC017F82698AE5A009A1CD6 /* ARReusableLoadingView.m in Sources */,
+				1AC017F92698AE5A009A1CD6 /* ARSegmentProvider.m in Sources */,
+				1AC017FA2698AE5A009A1CD6 /* ArtsyEcho.m in Sources */,
+				1AC017FB2698AE5A009A1CD6 /* ARDefaultNavigationTransition.m in Sources */,
+				1AC017FC2698AE5A009A1CD6 /* LiveAuctionLotViewModel.swift in Sources */,
+				1AC017FD2698AE5A009A1CD6 /* ArtsyAPI+ErrorHandlers.m in Sources */,
+				1AC017FE2698AE5A009A1CD6 /* Stringify.swift in Sources */,
+				1AC017FF2698AE5A009A1CD6 /* ARImageItemProvider.m in Sources */,
+				1AC018002698AE5A009A1CD6 /* LiveBidder.m in Sources */,
+				1AC018012698AE5A009A1CD6 /* SwiftExtensions.swift in Sources */,
+				1AC018022698AE5A009A1CD6 /* ArtsyAPI+Following.m in Sources */,
+				1AC018032698AE5A009A1CD6 /* ARWhitespaceGobbler.m in Sources */,
+				1AC018042698AE5A009A1CD6 /* ARAuthProviders.m in Sources */,
+				1AC018052698AE5A009A1CD6 /* StarscreamExtensions.swift in Sources */,
+				1AC018062698AE5A009A1CD6 /* ARAdminTableViewController.m in Sources */,
+				1AC018072698AE5A009A1CD6 /* ARNavigationTransition.m in Sources */,
+				1AC018082698AE5A009A1CD6 /* ARInternalWebViewManager.m in Sources */,
+				1AC018092698AE5A009A1CD6 /* ARNvagiationButton+Swift.swift in Sources */,
+				1AC0180A2698AE5A009A1CD6 /* ARNavigationButton.m in Sources */,
+				1AC0180B2698AE5A009A1CD6 /* ARModalViewController.m in Sources */,
+				1AC0180C2698AE5A009A1CD6 /* LiveAuctionBidButton.swift in Sources */,
+				1AC0180D2698AE5A009A1CD6 /* ARSecureTextFieldWithPlaceholder.m in Sources */,
+				1AC0180E2698AE5A009A1CD6 /* ARPersonalizeViewController.m in Sources */,
+				1AC0180F2698AE5A009A1CD6 /* ARSystemTime.m in Sources */,
+				1AC018102698AE5A009A1CD6 /* LiveAuctionFancyLotCollectionViewLayout.swift in Sources */,
+				1AC018112698AE5A009A1CD6 /* ARTermsAndConditionsView.m in Sources */,
+				1AC018122698AE5A009A1CD6 /* RefinementOptionsViewController.swift in Sources */,
+				1AC018132698AE5A009A1CD6 /* ArtsyAPI+CurrentUserFunctions.m in Sources */,
+				1AC018142698AE5A009A1CD6 /* ARNativeViewControllerManager.m in Sources */,
+				1AC018152698AE5A009A1CD6 /* LiveAuctionLotBidHistoryGestureController.swift in Sources */,
+				1AC018162698AE5A009A1CD6 /* ARNavigationController.m in Sources */,
+				1AC018172698AE5A009A1CD6 /* Profile.m in Sources */,
+				1AC018182698AE5A009A1CD6 /* PanDirectionGestureRecognizer.swift in Sources */,
+				1AC018192698AE5A009A1CD6 /* UIViewController+WithLoadedData.m in Sources */,
+				1AC0181A2698AE5A009A1CD6 /* ARInternalShareValidator.m in Sources */,
+				1AC0181B2698AE5A009A1CD6 /* SaleArtwork.m in Sources */,
+				1AC0181C2698AE5A009A1CD6 /* ARAugmentedFloorBasedVIRViewController.m in Sources */,
+				1AC0181D2698AE5A009A1CD6 /* SCNArtworkNode.m in Sources */,
+				1AC0181E2698AE5A009A1CD6 /* SaleAuctionStatus.swift in Sources */,
+				1AC0181F2698AE5A009A1CD6 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift in Sources */,
+				1AC018202698AE5A009A1CD6 /* NSKeyedUnarchiver+ErrorLogging.m in Sources */,
+				1AC018212698AE5A009A1CD6 /* ARAppDelegate+Echo.m in Sources */,
+				1AC018222698AE5A009A1CD6 /* ARAcceptConditionsView.m in Sources */,
+				1AC018232698AE5A009A1CD6 /* AuctionColors.swift in Sources */,
+				1AC018242698AE5A009A1CD6 /* LiveAuctionBidHistoryViewController.swift in Sources */,
+				1AC018252698AE5A009A1CD6 /* ARCustomEigenLabels.m in Sources */,
+				1AC018262698AE5A009A1CD6 /* SaleOnHoldOverlayView.swift in Sources */,
+				1AC018272698AE5A009A1CD6 /* ARSignUpSplashViewController.m in Sources */,
+				1AC018282698AE5A009A1CD6 /* ARDispatchManager.m in Sources */,
+				1AC018292698AE5A009A1CD6 /* ARCrossfadingImageView.m in Sources */,
+				1AC0182A2698AE5A009A1CD6 /* LiveEvent.m in Sources */,
+				1AC0182B2698AE5A009A1CD6 /* ARInternalMobileWebViewController.m in Sources */,
+				1AC0182C2698AE5A009A1CD6 /* ARNavigationTransitionController.m in Sources */,
+				1AC0182D2698AE5A009A1CD6 /* LiveAuctionLotViewController.swift in Sources */,
+				1AC0182E2698AE5A009A1CD6 /* LiveAuctionPlainLotCollectionViewLayout.swift in Sources */,
+				1AC0182F2698AE5A009A1CD6 /* LiveAuctionViewController.swift in Sources */,
+				1AC018302698AE5A009A1CD6 /* LiveAuctionLotSetViewController.swift in Sources */,
+				1AC018312698AE5A009A1CD6 /* AROnboardingSearchField.m in Sources */,
+				1AC018322698AE5A009A1CD6 /* ArtsyAPI+Profiles.m in Sources */,
+				1AC018332698AE5A009A1CD6 /* ArtsyAPI+Search.m in Sources */,
+				1AC018342698AE5A009A1CD6 /* ARInternalWebView.m in Sources */,
+				1AC018352698AE5A009A1CD6 /* ARAuctionWebViewController.m in Sources */,
+				1AC018362698AE5A009A1CD6 /* UITableViewController+Animations.swift in Sources */,
+				1AC018372698AE5A009A1CD6 /* AROnboardingNavigationItemsView.m in Sources */,
+				1AC018382698AE5A009A1CD6 /* LiveAuctionBiddingViewModel.swift in Sources */,
+				1AC018392698AE5A009A1CD6 /* NSArray+Additions.m in Sources */,
+				1AC0183A2698AE5A009A1CD6 /* LiveAuctionLoadingView.swift in Sources */,
+				1AC0183B2698AE5A009A1CD6 /* ARTArtsyNativeModule.m in Sources */,
+				1AC0183C2698AE5A009A1CD6 /* LiveAuctionCurrentLotView.swift in Sources */,
+				1AC0183D2698AE5A009A1CD6 /* AROnboardingPersonalizationGeneImageStateReconciler.m in Sources */,
+				1AC0183E2698AE5A009A1CD6 /* AREigenMapContainerViewController.m in Sources */,
+				1AC0183F2698AE5A009A1CD6 /* AROptions.m in Sources */,
+				1AC018402698AE5A009A1CD6 /* ARAdminSettingsViewController.m in Sources */,
+				1AC018412698AE5A009A1CD6 /* AuctionTitleView.swift in Sources */,
+				1AC018422698AE5A009A1CD6 /* AROnboardingViewController.m in Sources */,
+				1AC018432698AE5A009A1CD6 /* AuctionSaleNetworkModel.swift in Sources */,
+				1AC018442698AE5A009A1CD6 /* ARRouter+GraphQL.m in Sources */,
+				1AC018452698AE5A009A1CD6 /* LiveBidProgressOverlayView.swift in Sources */,
+				1AC018462698AE5A009A1CD6 /* ARAnimatedTickView.m in Sources */,
+				1AC018472698AE5A009A1CD6 /* AROfflineView.m in Sources */,
+				1AC018482698AE5A009A1CD6 /* LiveAuctionLotImageCollectionViewCell.swift in Sources */,
+				1AC018492698AE5A009A1CD6 /* LiveAuctionBidViewModel.swift in Sources */,
+				1AC0184A2698AE5A009A1CD6 /* ARVIRHorizontalPlaneInteractionController.m in Sources */,
+				1AC0184B2698AE5A009A1CD6 /* AuctionLotMetadataStackScrollView.swift in Sources */,
+				1AC0184C2698AE5A009A1CD6 /* ARTickedTableViewCell.m in Sources */,
+				1AC0184D2698AE5A009A1CD6 /* ARAdminTableViewCell.m in Sources */,
+				1AC0184E2698AE5A009A1CD6 /* ARViewInRoomViewController.m in Sources */,
+				1AC0184F2698AE5A009A1CD6 /* LiveAuctionStateManager.swift in Sources */,
+				1AC018502698AE5A009A1CD6 /* Bidder.m in Sources */,
+				1AC018512698AE5A009A1CD6 /* LiveAuctionEventViewModel.swift in Sources */,
+				1AC018522698AE5A009A1CD6 /* RefinableType.swift in Sources */,
+				1AC018532698AE5A009A1CD6 /* AFHTTPRequestOperation+JSON.m in Sources */,
+				1AC018542698AE5A009A1CD6 /* LiveAuctionLotCollectionViewLayoutType.swift in Sources */,
+				1AC018552698AE5A009A1CD6 /* UILabel+Styling.swift in Sources */,
+				1AC018562698AE5A009A1CD6 /* TextStack.swift in Sources */,
+				1AC018572698AE5A009A1CD6 /* ARWebViewCacheHost.m in Sources */,
+				1AC018582698AE5A009A1CD6 /* LiveAuctionSalesPerson.swift in Sources */,
+				1AC018592698AE5A009A1CD6 /* ARBackButton.m in Sources */,
+				1AC0185A2698AE5A009A1CD6 /* SaleArtworkViewModel.swift in Sources */,
+				1AC0185B2698AE5A009A1CD6 /* Fair.m in Sources */,
+				1AC0185C2698AE5A009A1CD6 /* LiveAuctionLot.m in Sources */,
+				1AC0185D2698AE5A009A1CD6 /* ARNavigationButtonsViewController.m in Sources */,
+				1AC0185E2698AE5A009A1CD6 /* ARAugmentedVIRSetupViewController.m in Sources */,
+				1AC0185F2698AE5A009A1CD6 /* ARSerifNavigationViewController.m in Sources */,
+				1AC018602698AE5A009A1CD6 /* LiveAuctionLotCollectionViewDataSource.swift in Sources */,
+				1AC018612698AE5A009A1CD6 /* ARAdminNetworkModel.m in Sources */,
+				1AC018622698AE5A009A1CD6 /* NSDate+DateRange.m in Sources */,
+				1AC018632698AE5A009A1CD6 /* ARSentryAnalyticsProvider.m in Sources */,
+				1AC018642698AE5A009A1CD6 /* SaleViewModel.swift in Sources */,
+				1AC018652698AE5A009A1CD6 /* ARApplicationShortcutItemDelegate.m in Sources */,
+				1AC018662698AE5A009A1CD6 /* ARLogFormatter.m in Sources */,
+				1AC018672698AE5A009A1CD6 /* UIDevice-Hardware.m in Sources */,
+				1AC018682698AE5A009A1CD6 /* Int+Metrification.swift in Sources */,
+				1AC018692698AE5A009A1CD6 /* ARSCNWallNode.m in Sources */,
+				1AC0186A2698AE5A009A1CD6 /* ArtsyAPI+Notifications.m in Sources */,
+				1AC0186B2698AE5A009A1CD6 /* LiveAuctionCurrentLotCTAPositionManager.swift in Sources */,
+				1AC0186C2698AE5A009A1CD6 /* UIViewController+SimpleChildren.m in Sources */,
+				1AC0186D2698AE5A009A1CD6 /* NSDate+Util.m in Sources */,
+				1AC0186E2698AE5A009A1CD6 /* UIImage+ImageFromColor.m in Sources */,
+				1AC0186F2698AE5A009A1CD6 /* UIViewController+FullScreenLoading.m in Sources */,
+				1AC018702698AE5A009A1CD6 /* UIImageView+AsyncImageLoading.m in Sources */,
+				1AC018712698AE5A009A1CD6 /* ARLogger.m in Sources */,
+				1AC018722698AE5A009A1CD6 /* Article.m in Sources */,
+				1AC018732698AE5A009A1CD6 /* UIView+HitTestExpansion.m in Sources */,
+				1AC018742698AE5A009A1CD6 /* ARAppActivityContinuationDelegate.m in Sources */,
+				1AC018752698AE5A009A1CD6 /* LiveAuctionSocketCommunicator.swift in Sources */,
+				1AC018762698AE5A009A1CD6 /* ORStackView+ArtsyViews.m in Sources */,
+				1AC018772698AE5A009A1CD6 /* UIApplicationStateEnum.m in Sources */,
+				1AC018782698AE5A009A1CD6 /* ARNetworkErrorManager.m in Sources */,
+				1AC018792698AE5A009A1CD6 /* ARLoginFieldsView.m in Sources */,
+				1AC0187A2698AE5A009A1CD6 /* ARParallaxEffect.m in Sources */,
+				1AC0187B2698AE5A009A1CD6 /* ARScrollNavigationChief.m in Sources */,
+				1AC0187C2698AE5A009A1CD6 /* ARFileUtils.m in Sources */,
+				1AC0187D2698AE5A009A1CD6 /* ARValueTransformer.m in Sources */,
+				1AC0187E2698AE5A009A1CD6 /* ARMessageItemProvider.m in Sources */,
+				1AC0187F2698AE5A009A1CD6 /* ARStandardDateFormatter.m in Sources */,
+				1AC018802698AE5A009A1CD6 /* ARFeedImageLoader.m in Sources */,
+				1AC018812698AE5A009A1CD6 /* ARSharingController.m in Sources */,
+				1AC018822698AE5A009A1CD6 /* StoryboardConstants.swift in Sources */,
+				1AC018832698AE5A009A1CD6 /* SaleStatusType.swift in Sources */,
+				1AC018842698AE5A009A1CD6 /* LiveAuctionsAdminViewController.swift in Sources */,
+				1AC018852698AE5A009A1CD6 /* ARInformationView.m in Sources */,
+				1AC018862698AE5A009A1CD6 /* ARBidButton.m in Sources */,
+				1AC018872698AE5A009A1CD6 /* LiveAuctionStaticDataFetcher+Stubs.swift in Sources */,
+				1AC018882698AE5A009A1CD6 /* ARTextView.m in Sources */,
+				1AC018892698AE5A009A1CD6 /* MTLModel+JSON.m in Sources */,
+				1AC0188A2698AE5A009A1CD6 /* MTLModel+Dictionary.m in Sources */,
+				1AC0188B2698AE5A009A1CD6 /* LiveAuctionPlaceMaxBidViewController.swift in Sources */,
+				1AC0188C2698AE5A009A1CD6 /* RefinementOptionsViewController+Private.swift in Sources */,
+				1AC0188D2698AE5A009A1CD6 /* Follow.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49BA7DFB1655ABE600C06572 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3739,6 +4641,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1AC0179D2698AE5A009A1CD6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1AD4F89A25FBBA85007FDB71 /* Artsy Stickers */;
+			targetProxy = 1AC0179E2698AE5A009A1CD6 /* PBXContainerItemProxy */;
+		};
 		1AD4F8A125FBBA89007FDB71 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 1AD4F89A25FBBA85007FDB71 /* Artsy Stickers */;
@@ -3773,6 +4680,120 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		1AC0190A2698AE5A009A1CD6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 97983D93644ACC6409190A08 /* Pods-Artsy.devel.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_WARNINGS = NO;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = NO;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = NO;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.entitlements;
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				ENABLE_BITCODE = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+				);
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
+				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_SHADOW = NO;
+				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = NO;
+				INFOPLIST_FILE = "Artsy copy-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER).devel";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
+				SPRINGBOARD_DISPLAY_NAME = "Δrtsynn";
+				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WARNING_CFLAGS = (
+					"-Wobjc-missing-super-calls",
+					"-Wno-unknown-warning-option",
+				);
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		1AC0190B2698AE5A009A1CD6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E46CDB9EB7EB81BF77D63EF5 /* Pods-Artsy.store.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_WARNINGS = NO;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = NO;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = NO;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.Store.entitlements;
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				ENABLE_BITCODE = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"STORE=1",
+				);
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
+				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_SHADOW = NO;
+				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = NO;
+				INFOPLIST_FILE = "Artsy copy-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
+				SPRINGBOARD_DISPLAY_NAME = Artsy;
+				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WARNING_CFLAGS = (
+					"-Wobjc-missing-super-calls",
+					"-Wno-unknown-warning-option",
+				);
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		1AD4F8A425FBBA89007FDB71 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3799,14 +4820,14 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Stickers";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.devel.Artsy-Stickers";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		1AD4F8A525FBBA89007FDB71 /* Store */ = {
+		1AD4F8A525FBBA89007FDB71 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -3865,7 +4886,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = Store;
+			name = Release;
 		};
 		49BA7E211655ABE600C06572 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -3928,7 +4949,7 @@
 		};
 		49BA7E241655ABE600C06572 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 97983D93644ACC6409190A08 /* Pods-Artsy.debug.xcconfig */;
+			baseConfigurationReference = 97983D93644ACC6409190A08 /* Pods-Artsy.devel.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_WARNINGS = NO;
@@ -3965,11 +4986,11 @@
 				INFOPLIST_FILE = "Artsy/App_Resources/Artsy-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER).devel";
 				PRODUCT_NAME = Artsy;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
-				SPRINGBOARD_DISPLAY_NAME = "Δrtsy";
+				SPRINGBOARD_DISPLAY_NAME = "Δrtsynn";
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
@@ -3983,7 +5004,7 @@
 			};
 			name = Debug;
 		};
-		B34D39FE17DFD99600308CAB /* Store */ = {
+		B34D39FE17DFD99600308CAB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -4029,9 +5050,9 @@
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
-			name = Store;
+			name = Release;
 		};
-		B34D39FF17DFD99600308CAB /* Store */ = {
+		B34D39FF17DFD99600308CAB /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E46CDB9EB7EB81BF77D63EF5 /* Pods-Artsy.store.xcconfig */;
 			buildSettings = {
@@ -4086,11 +5107,11 @@
 				);
 				WRAPPER_EXTENSION = app;
 			};
-			name = Store;
+			name = Release;
 		};
 		B3ECE8371819D1E7009F5C5B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F5228136EBA7C3D968C3D845 /* Pods-Artsy Tests.debug.xcconfig */;
+			baseConfigurationReference = F5228136EBA7C3D968C3D845 /* Pods-Artsy Tests.devel.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
@@ -4128,7 +5149,7 @@
 			};
 			name = Debug;
 		};
-		B3ECE83A1819D1E7009F5C5B /* Store */ = {
+		B3ECE83A1819D1E7009F5C5B /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5E6C92F936EA71609C245323 /* Pods-Artsy Tests.store.xcconfig */;
 			buildSettings = {
@@ -4169,16 +5190,25 @@
 				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = xctest;
 			};
-			name = Store;
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1AC019092698AE5A009A1CD6 /* Build configuration list for PBXNativeTarget "Devartsy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AC0190A2698AE5A009A1CD6 /* Debug */,
+				1AC0190B2698AE5A009A1CD6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		1AD4F8A725FBBA89007FDB71 /* Build configuration list for PBXNativeTarget "Artsy Stickers" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1AD4F8A425FBBA89007FDB71 /* Debug */,
-				1AD4F8A525FBBA89007FDB71 /* Store */,
+				1AD4F8A525FBBA89007FDB71 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -4187,7 +5217,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				49BA7E211655ABE600C06572 /* Debug */,
-				B34D39FE17DFD99600308CAB /* Store */,
+				B34D39FE17DFD99600308CAB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -4196,7 +5226,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				49BA7E241655ABE600C06572 /* Debug */,
-				B34D39FF17DFD99600308CAB /* Store */,
+				B34D39FF17DFD99600308CAB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -4205,7 +5235,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B3ECE8371819D1E7009F5C5B /* Debug */,
-				B3ECE83A1819D1E7009F5C5B /* Store */,
+				B3ECE83A1819D1E7009F5C5B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

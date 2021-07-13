@@ -71,7 +71,7 @@ lane :ship_beta_ios do
   sentry_release_name = "ios-#{latest_version}+#{bundle_version}"
   update_sentry_release_name(sentry_release_name: sentry_release_name)
 
-  build_ios_app(configuration: 'Store', silent: true)
+  build_ios_app(configuration: 'Release', silent: true)
 
   upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: bundle_version, platform: "ios")
 

@@ -84,6 +84,8 @@ target 'Artsy' do
   pod 'AFNetworkActivityLogger'
   pod 'SDWebImage', '>= 3.7.2' # 3.7.2 contains a fix that allows you to not force decoding each image, which uses lots of memory
 
+  #   xcconfigs
+
   # Core
   pod 'ARGenericTableViewController', git: 'https://github.com/artsy/ARGenericTableViewController.git'
   pod 'CocoaLumberjack', '2.4.0'
