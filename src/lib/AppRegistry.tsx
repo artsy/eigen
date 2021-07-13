@@ -70,6 +70,7 @@ import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import StorybookUI from "../storybook"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
@@ -363,6 +364,7 @@ export const modules = defineModules({
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SavedAddresses: reactModule(SavedAddressesQueryRenderer),
+  Storybook: reactModule(StorybookUI),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),
