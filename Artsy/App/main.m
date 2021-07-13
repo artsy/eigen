@@ -8,4 +8,11 @@ int main(int argc, char *argv[])
         NSString *appDelegate = @"JSDecoupledAppDelegate";
 #ifdef DEBUG
         if (NSClassFromString(@"XCTestCase")) {
-            appDelegate = @
+            appDelegate = @"ARTestHelper";
+        }
+#endif
+            return UIApplicationMain(argc, argv, @"ORKeyboardReactingApplication", appDelegate);
+    }
+}
+    
+ 
