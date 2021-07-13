@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7f6d4b1bdf86e3c4ac94110579448304 */
+/* @relayHash 4bd30d9d1cbd59daf65fbe033e8bf414 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,6 +31,7 @@ fragment SavedAddresses_me on Me {
   addressConnection(first: 3) {
     edges {
       node {
+        id
         internalID
         name
         addressLine1
@@ -39,7 +40,7 @@ fragment SavedAddresses_me on Me {
         city
         region
         postalCode
-        id
+        phoneNumber
       }
     }
   }
@@ -133,6 +134,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
+                      (v1/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -183,7 +185,13 @@ return {
                         "name": "postalCode",
                         "storageKey": null
                       },
-                      (v1/*: any*/)
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "phoneNumber",
+                        "storageKey": null
+                      }
                     ],
                     "storageKey": null
                   }
@@ -200,7 +208,7 @@ return {
     ]
   },
   "params": {
-    "id": "7f6d4b1bdf86e3c4ac94110579448304",
+    "id": "4bd30d9d1cbd59daf65fbe033e8bf414",
     "metadata": {},
     "name": "SavedAddressesTestsQuery",
     "operationKind": "query",
