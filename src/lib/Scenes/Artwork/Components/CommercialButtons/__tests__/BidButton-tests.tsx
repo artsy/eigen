@@ -28,7 +28,7 @@ jest.unmock("react-relay")
 const merge: (...args: object[]) => any = _merge
 
 const realNow = Settings.now
-const realDefaultZone = Settings.defaultZoneName
+const realDefaultZone = Settings.defaultZone
 
 const meFixture: BidButtonTestsQueryRawResponse["me"] = {
   id: "id",
