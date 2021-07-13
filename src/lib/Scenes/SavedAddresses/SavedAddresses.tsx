@@ -11,7 +11,7 @@ import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { graphql } from "relay-runtime"
-import styled from "styled-components"
+import styled from "styled-components/native"
 
 const Card = styled(Flex)`
   border: 1px solid ${color("black30")};
@@ -53,14 +53,14 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
               <Text fontSize={16} lineHeight={24}>
                 {item.name}
               </Text>
-              <Text fontSize={16} lineHeight={24} color={"black60"}>
+              <Text fontSize={16} lineHeight={24} color="black60">
                 {[item.addressLine1, item?.addressLine2, item?.addressLine3].filter(Boolean).join(", ")}
               </Text>
-              <Text fontSize={16} lineHeight={24} color={"black60"}>
+              <Text fontSize={16} lineHeight={24} color="black60">
                 {item.city}, {item.postalCode}
               </Text>
               <Spacer height={10} />
-              <Text variant="text" color={"black60"}>
+              <Text variant="text" color="black60">
                 {item?.phoneNumber}
               </Text>
               <Flex mr={14}>
