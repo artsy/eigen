@@ -1,4 +1,5 @@
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <SDImageCache.h>
 #import <objc/runtime.h>
 
 #import "ARAppConstants.h"
@@ -19,13 +20,15 @@
 
     // In testing provide the ability to do a synchronous fast image cache call
     if (!ARPerformWorkAsynchronously) {
-        SDWebImageManager *manager = [SDWebImageManager sharedManager];
-        NSString *key = [manager cacheKeyForURL:url];
-        [manager.imageCache containsImageForKey:key cacheType:SDImageCacheTypeAll completion:^(SDImageCacheType containsCacheType) {
+        SDImageCache *imageCache = [SDImageCache sharedImageCache];
+        NSString *key = url.absoluteString;
+        [imageCache containsImageForKey:key cacheType:SDImageCacheTypeAll completion:^(SDImageCacheType containsCacheType) {
             if (containsCacheType != SDImageCacheTypeNone) {
-                [manager.imageCache queryImageForKey:key options:0 context:nil cacheType:containsCacheType completion:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
+                [imageCache queryImageForKey:key options:0 context:nil cacheType:containsCacheType completion:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
                     self.image = image;
-                    completionBlock(self.image, nil, containsCacheType, url);
+                    if (completionBlock != nil) {
+                        completionBlock(self.image, nil, containsCacheType, url);
+                    }
                 }];
                 return;
             }

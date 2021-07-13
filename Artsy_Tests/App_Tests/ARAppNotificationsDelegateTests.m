@@ -28,27 +28,27 @@ describe(@"receiveRemoteNotification", ^{
     __block UIApplication *app = nil;
     __block ARAppNotificationsDelegate *delegate = nil;
     __block UIApplicationState appState = -1;
-    __block id mockAnalytics = nil;
+    __block id mockEmissionSharedInstance = nil;
 
     beforeEach(^{
         app = [UIApplication sharedApplication];
         delegate = [[ARAppNotificationsDelegate alloc] init];
 
-        mockAnalytics = [OCMockObject mockForClass:[AREmission class]];
+        mockEmissionSharedInstance = [OCMockObject partialMockForObject:AREmission.sharedInstance];;
     });
 
     afterEach(^{
-        [mockAnalytics stopMocking];
+        [mockEmissionSharedInstance stopMocking];
     });
 
     sharedExamplesFor(@"when receiving a notification", ^(id _) {
         it(@"triggers an analytics event for receiving a notification", ^{
-            [[mockAnalytics expect] sendEvent:ARAnalyticsNotificationReceived traits:DictionaryWithAppState(notification, appState)];
-            [[mockAnalytics reject] sendEvent:ARAnalyticsNotificationTapped traits:OCMOCK_ANY];
+            [[mockEmissionSharedInstance expect] sendEvent:ARAnalyticsNotificationReceived traits:DictionaryWithAppState(notification, appState)];
+            [[mockEmissionSharedInstance reject] sendEvent:ARAnalyticsNotificationTapped traits:OCMOCK_ANY];
 
             [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
-            [mockAnalytics verify];
+            [mockEmissionSharedInstance verify];
         });
     });
 
@@ -67,21 +67,19 @@ describe(@"receiveRemoteNotification", ^{
 
         describe(@"with stubbed top menu VC", ^{
             it(@"navigates to the url provided", ^{
-                id mock = [OCMockObject partialMockForObject:AREmission.sharedInstance];
-                [[mock expect] navigate:@"http://artsy.net/works-for-you" withProps: @{}];
+                [[mockEmissionSharedInstance expect] navigate:@"http://artsy.net/works-for-you" withProps: @{}];
                 [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
-                [mock verify];
-                [mock stopMocking];
+                [mockEmissionSharedInstance verify];
             });
 
             it(@"triggers an analytics event when a notification has been tapped", ^{
-                [[mockAnalytics reject] sendEvent:ARAnalyticsNotificationReceived traits:OCMOCK_ANY];
-                [[mockAnalytics expect] sendEvent:ARAnalyticsNotificationTapped traits:DictionaryWithAppState(notification, appState)];
+                [[mockEmissionSharedInstance reject] sendEvent:ARAnalyticsNotificationReceived traits:OCMOCK_ANY];
+                [[mockEmissionSharedInstance expect] sendEvent:ARAnalyticsNotificationTapped traits:DictionaryWithAppState(notification, appState)];
 
                 [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
-                [mockAnalytics verify];
+                [mockEmissionSharedInstance verify];
             });
 
             it(@"does not display the message in aps/alert", ^{
@@ -121,12 +119,12 @@ describe(@"receiveRemoteNotification", ^{
                                                     return YES;
                                                  }]];
 
-            [[mockAnalytics stub] sendEvent:ARAnalyticsNotificationReceived traits:OCMOCK_ANY];
-            [[mockAnalytics expect] sendEvent:ARAnalyticsNotificationTapped traits:DictionaryWithAppState(notification, appState)];
+            [[mockEmissionSharedInstance stub] sendEvent:ARAnalyticsNotificationReceived traits:OCMOCK_ANY];
+            [[mockEmissionSharedInstance expect] sendEvent:ARAnalyticsNotificationTapped traits:DictionaryWithAppState(notification, appState)];
 
             [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
-            [mockAnalytics verify];
+            [mockEmissionSharedInstance verify];
             [mockNotificationView stopMocking];
         });
 

@@ -510,4 +510,23 @@ jest.mock("react-native-config", () => ({
 }))
 
 jest.mock("react-native-view-shot", () => ({}))
-jest.mock("@segment/analytics-react-native", () => ({}))
+
+// MOCKS FOR TRACKING
+jest.mock("@segment/analytics-react-native", () => ({
+  setup: () => null,
+  identify: () => null,
+  reset: () => null,
+}))
+
+jest.mock("@segment/analytics-react-native-appboy", () => ({}))
+
+jest.mock("lib/utils/track/SegmentTrackingProvider", () => ({
+  setup: () => null,
+  identify: () => null,
+  postEvent: () => null,
+}))
+
+jest.mock("lib/utils/track/providers.tsx", () => ({
+  postEventToProviders: jest.fn(),
+  _addTrackingProvider: jest.fn(),
+}))

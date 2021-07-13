@@ -300,6 +300,8 @@
 - (void)receivedNotification:(NSDictionary *)notificationInfo;
 {
     [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationReceived traits:notificationInfo];
+    // TODO: Replace with Segment notification tracking
+    // [[SEGAnalytics sharedAnalytics] receivedRemoteNotification:notificationInfo];
 }
 
 - (void)tappedNotification:(NSDictionary *)notificationInfo url:(NSString *)url;

@@ -83,3 +83,5 @@ export const SegmentTrackingProvider: TrackingProvider = {
     assertNever(info)
   },
 }
+
+export default SegmentTrackingProvider
