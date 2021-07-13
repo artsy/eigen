@@ -9,6 +9,7 @@ export type SavedAddresses_me = {
     readonly addressConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
+                readonly id: string;
                 readonly internalID: string;
                 readonly name: string | null;
                 readonly addressLine1: string;
@@ -17,6 +18,7 @@ export type SavedAddresses_me = {
                 readonly city: string;
                 readonly region: string | null;
                 readonly postalCode: string | null;
+                readonly phoneNumber: string | null;
             } | null;
         } | null> | null;
     } | null;
@@ -79,6 +81,13 @@ return {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
+                  "name": "id",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "internalID",
                   "storageKey": null
                 },
@@ -124,6 +133,13 @@ return {
                   "kind": "ScalarField",
                   "name": "postalCode",
                   "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "phoneNumber",
+                  "storageKey": null
                 }
               ],
               "storageKey": null
@@ -139,5 +155,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'e94b0eeebba5f97af4e7e3e7f566178c';
+(node as any).hash = '30a29267ac711583ee688cb2cfc22a60';
 export default node;
