@@ -1,5 +1,3 @@
-const { Platform } = require("react-native")
-
 global.__TEST__ = false
 
 // start storybook depending on content of storybook.json

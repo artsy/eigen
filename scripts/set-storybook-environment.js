@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+// Create or change `storybook.json` depending on STORYBOOK env variable
+// to read the file content later in `index.ios.js` and `index.android.js`
+// and either start the app or Storybook.
+
 const fs = require("fs")
 
 const startStorybook = process.env.STORYBOOK === "1"
