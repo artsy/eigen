@@ -185,10 +185,6 @@ static ARAppDelegate *_sharedInstance = nil;
     return YES;
 }
 
-- (NSString *)getApiEndpoint:(NSString *)appboyApiEndpoint {
-    return @"sdk.iad-06.braze.com";
-}
-
 - (void)registerNewSessionOpened
 {
     // TODO: Customise APPBOY Sessions
