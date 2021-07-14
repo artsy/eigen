@@ -4,13 +4,16 @@ import { Action, action, computed, Computed, createComponentStore } from "easy-p
 import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { CountrySelect } from "lib/Components/CountrySelect"
 import { Input } from "lib/Components/Input/Input"
+import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { Stack } from "lib/Components/Stack"
 import { goBack } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Button, Text } from "palette"
+import { times } from "lodash"
+import { Button, Flex, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -25,6 +28,7 @@ interface FormField<Type = string> {
   isPresent: Computed<this, boolean>
   setValue: Action<this, Type>
 }
+
 const emptyFieldState: () => FormField<any> = () => ({
   value: null,
   touched: false,
@@ -72,6 +76,7 @@ export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> =
   const [phoneNumber, setPhoneNumber] = useState(me?.phone)
   const [isDefaultAddress, setIsDefaultAddress] = useState(false)
   const { height } = useScreenDimensions()
+  const offSetTop = 0.75
 
   useEffect(() => {
     setPhoneNumber(me?.phone)
@@ -81,7 +86,6 @@ export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> =
 
   const submitAddAddress = async () => {
     try {
-      // response from mutation
       const creatingResponse = await createUserAddress({
         name: state.fields.name.value!,
         country: state.fields.country.value!,
@@ -103,7 +107,7 @@ export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> =
   }
 
   return (
-    <MyAccountFieldEditScreen ref={screenRef} canSave={true} hideSave={true} title="Add New Address">
+    <MyAccountFieldEditScreen ref={screenRef} canSave={true} isSaveButtonVisible={true} title="Add New Address">
       <Stack spacing={2}>
         <Input title="Full name" placeholder="Add full name" onChangeText={actions.fields.name.setValue} />
         <CountrySelect onSelectValue={actions.fields.country.setValue} value={state.fields.country.value} />
@@ -115,16 +119,15 @@ export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> =
           onChangeText={actions.fields.addressLine2.setValue}
         />
         <Input title="City" placeholder="Add city" onChangeText={actions.fields.city.setValue} />
-
         <Input
           title="State, province, or region"
-          placeholder="Add state, province, or r egion"
+          placeholder="Add state, province, or region"
           onChangeText={actions.fields.region.setValue}
         />
         <PhoneInput
           title="Phone number"
           value={phoneNumber ?? ""}
-          maxModalHeight={height * 0.75}
+          maxModalHeight={height * offSetTop}
           onChangeText={setPhoneNumber}
         />
         <Checkbox
@@ -132,7 +135,7 @@ export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> =
             setIsDefaultAddress(!isDefaultAddress)
           }}
           checked={isDefaultAddress}
-          mb={40}
+          mb={4}
         >
           <Text>Set as default</Text>
         </Checkbox>
@@ -157,26 +160,59 @@ const SavedAddressesNewFormContainer = createFragmentContainer(SavedAddressesNew
     fragment SavedAddressesNewForm_me on Me {
       id
       phone
+      addressConnection(first: 3) {
+        edges {
+          node {
+            internalID
+            name
+            addressLine1
+            addressLine2
+            addressLine3
+            city
+            region
+            postalCode
+          }
+        }
+      }
     }
   `,
 })
 
-export const SavedAddressesNewFormQueryRenderer: React.FC<{}> = () => {
+export const SavedAddressesFormPlaceholder: React.FC = () => {
   return (
-    <QueryRenderer<SavedAddressesNewFormQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query SavedAddressesNewFormQuery {
-          me {
-            ...SavedAddressesNewForm_me
-          }
-        }
-      `}
-      render={renderWithPlaceholder({
-        Container: SavedAddressesNewFormContainer,
-        renderPlaceholder: () => <Box></Box>,
-      })}
-      variables={{}}
-    />
+    <PageWithSimpleHeader title="Add New Address">
+      <Flex px={2} py={15}>
+        {times(2).map((index: number) => (
+          <Flex key={index} py={1}>
+            <PlaceholderText height={10} width={40 + Math.random() * 100} />
+            <PlaceholderText height={30} width={150 + Math.random() * 100} />
+            <PlaceholderText height={10} width={40 + Math.random() * 100} />
+            <PlaceholderText height={30} width={150 + Math.random() * 100} />
+            <PlaceholderText height={10} width={45 + Math.random() * 100} />
+            <PlaceholderText height={30} width={150 + Math.random() * 100} />
+            <PlaceholderText height={10} width={45 + Math.random() * 100} />
+            <PlaceholderText height={30} width={150 + Math.random() * 100} />
+          </Flex>
+        ))}
+      </Flex>
+    </PageWithSimpleHeader>
   )
 }
+
+export const SavedAddressesNewFormQueryRenderer: React.FC<{}> = () => (
+  <QueryRenderer<SavedAddressesNewFormQuery>
+    environment={defaultEnvironment}
+    query={graphql`
+      query SavedAddressesNewFormQuery {
+        me {
+          ...SavedAddressesNewForm_me
+        }
+      }
+    `}
+    render={renderWithPlaceholder({
+      Container: SavedAddressesNewFormContainer,
+      renderPlaceholder: () => <SavedAddressesFormPlaceholder />,
+    })}
+    variables={{}}
+  />
+)

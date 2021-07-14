@@ -40,12 +40,9 @@ export const setAsDefaultAddress = (id: UpdateUserDefaultAddressInput["userAddre
         } else {
           resolve(response)
         }
-        console.log(response, "point MyResponceData")
       },
       onError: (e) => {
-        console.log(e.message, " point myerrors")
         reject(e.message)
-        // onError(e.message)
       },
     })
   })
