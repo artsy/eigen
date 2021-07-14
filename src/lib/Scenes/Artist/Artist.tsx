@@ -10,6 +10,7 @@ import { ArtistAboutContainer } from "lib/Components/Artist/ArtistAbout/ArtistAb
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
 import { ArtistInsightsFragmentContainer } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
+import { DEFAULT_ARTWORK_SORT } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { getOnlyFilledSearchCriteriaValues } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
@@ -143,7 +144,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
           const preparedSavedSearchCriteria = getOnlyFilledSearchCriteriaValues(savedSearchCriteria ?? {})
           const initialArtworksInput = {
             dimensionRange: "*-*",
-            sort: !!savedSearchCriteria ? "-published_at" : "-decayed_merch",
+            sort: !!savedSearchCriteria ? "-published_at" : DEFAULT_ARTWORK_SORT.paramValue,
             ...preparedSavedSearchCriteria,
           }
 

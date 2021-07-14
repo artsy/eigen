@@ -105,10 +105,8 @@ test-results.json
 .i-am-helping-out-with-the-strictness-migration
 
 # Ignore env files
-.env
-.env.shared
-.env.ci
-.env.temp
+**/.env*
+!.env.example
 
 # Ignore test artefacts
 test-results.xml
@@ -123,6 +121,7 @@ build/
 .gradle
 local.properties
 *.iml
+google-services.json
 
 # BUCK
 buck-out/

@@ -21,7 +21,7 @@ enum ArtworkSorts {
 
 export type SortOption = keyof typeof ArtworkSorts
 
-const DEFAULT_ARTWORK_SORT = {
+export const DEFAULT_ARTWORK_SORT = {
   displayText: "Default",
   paramName: FilterParamName.sort,
   paramValue: "-decayed_merch",
@@ -31,6 +31,12 @@ const GALLERY_CURATED_ARTWORK_SORT = {
   displayText: "Gallery Curated",
   paramName: FilterParamName.sort,
   paramValue: "partner_show_position",
+}
+
+const DEFAULT_GENE_SORT = {
+  displayText: "Default",
+  paramName: FilterParamName.sort,
+  paramValue: "-partner_updated_at",
 }
 
 export const ORDERED_ARTWORK_SORTS: FilterData[] = [
@@ -129,6 +135,7 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation
     saleArtwork: ORDERED_SALE_ARTWORK_SORTS,
     showArtwork: [GALLERY_CURATED_ARTWORK_SORT, DEFAULT_ARTWORK_SORT, ...ORDERED_ARTWORK_SORTS],
     auctionResult: ORDERED_AUCTION_RESULTS_SORTS,
+    geneArtwork: [DEFAULT_GENE_SORT, ...ORDERED_ARTWORK_SORTS],
   }[filterType]
 
   const selectOption = (option: FilterData) => {

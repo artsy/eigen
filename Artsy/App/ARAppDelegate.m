@@ -4,7 +4,8 @@
 #import <AFOAuth1Client/AFOAuth1Client.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <Firebase.h>
-#import "Appboy-iOS-SDK/AppboyKit.h"
+#import <Appboy.h>
+
 #import "ARAnalyticsConstants.h"
 
 #import "ARAppDelegate.h"
@@ -127,7 +128,6 @@ static ARAppDelegate *_sharedInstance = nil;
         return;
     }
 
-
     // Temp Fix for: https://github.com/artsy/eigen/issues/602
     [self forceCacheCustomFonts];
 
@@ -168,15 +168,14 @@ static ARAppDelegate *_sharedInstance = nil;
     [self setupForAppLaunch];
 
     NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];
+    NSString *brazeSDKEndPoint = @"sdk.iad-06.braze.com";
 
-    if (ARAppStatus.isBetaOrDev) {
-		// comment it out for now, testing braze stuff
-        // brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_STAGING_APP_KEY_IOS"];
-    }
-
+    NSMutableDictionary *appboyOptions = [NSMutableDictionary dictionary];
+    appboyOptions[ABKEndpointKey] = brazeSDKEndPoint;
     [Appboy startWithApiKey:brazeAppKey
       inApplication:application
-      withLaunchOptions:launchOptions];
+      withLaunchOptions:launchOptions
+      withAppboyOptions:appboyOptions];
 
     FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
     [fbAppDelegate application:application didFinishLaunchingWithOptions:launchOptions];
@@ -186,11 +185,14 @@ static ARAppDelegate *_sharedInstance = nil;
     return YES;
 }
 
+- (NSString *)getApiEndpoint:(NSString *)appboyApiEndpoint {
+    return @"sdk.iad-06.braze.com";
+}
 
 - (void)registerNewSessionOpened
 {
-    // TODO: TRACK APPBOY Sessions
-    // appboy.openSession()
+    // TODO: Customise APPBOY Sessions
+    //A session is started when you call [[Appboy sharedInstance] startWithApiKey:inApplication:withLaunchOptions:withAppboyOptions]
 }
 
 /// This happens every time we come _back_ to the app from the background

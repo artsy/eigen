@@ -622,6 +622,7 @@
 {
     __weak typeof(self) wself = self;
     if (email && ![email isEqualToString:@""]) {
+        [wself deleteGravitySecureSessionCookieToken];
         [[ARUserManager sharedManager] createUserViaFacebookWithToken:token
                                                                 email:email
                                                                  name:name
@@ -693,6 +694,15 @@
                                            }];
 }
 
+- (void)deleteGravitySecureSessionCookieToken
+{
+    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for(NSHTTPCookie *cookie in cookieStorage.cookies) {
+        if ([cookie.name isEqualToString:@"_gravity_secure_session"]) {
+            [cookieStorage deleteCookie:cookie];
+        }
+    }
+}
 
 #pragma mark -
 #pragma mark Apple Dance

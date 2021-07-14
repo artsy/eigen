@@ -28,7 +28,6 @@
 #import <Emission/ARTemporaryAPIModule.h>
 #import <Emission/AREventsModule.h>
 #import <Emission/ARTakeCameraPhotoModule.h>
-#import <Emission/ARRefineOptionsModule.h>
 #import "AREigenMapContainerViewController.h"
 #import <SDWebImage/SDImageCache.h>
 
@@ -148,22 +147,11 @@ SOFTWARE.
             block(@[ RCTJSErrorFromNSError(error)]);
         }];
     };
-
-#pragma mark - Native Module: Refine filter
-
-    emission.refineModule.triggerRefine = ^(NSDictionary *_Nonnull initial, NSDictionary *_Nonnull current, UIViewController *_Nonnull controller, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
-        [RefineSwiftCoordinator showRefineSettingForGeneSettings:controller
-                                                         initial:initial
-                                                         current:current
-                                                      completion:^(NSDictionary<NSString *,id> * _Nullable newRefineSettings) {
-            resolve(newRefineSettings);
-        }];
-    };
+#pragma mark - Log out
 
     emission.APIModule.userDataClearer = ^(RCTPromiseResolveBlock completion) {
         [ARUserManager logoutWithCompletion:completion];
     };
-
 
 #pragma mark - Native Module: Events/Analytics
     emission.eventsModule.eventOccurred = ^(NSDictionary *_Nonnull info) {

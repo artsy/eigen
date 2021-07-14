@@ -4,11 +4,6 @@
 <dict>
 	<key>AppIdentifierPrefix</key>
 	<string>$(AppIdentifierPrefix)</string>
-	<key>Braze</key>
-	<dict>
-		<key>Endpoint</key>
-		<string>sdk.iad-06.braze.com</string>
-	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -82,6 +77,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>2019.05.24.09</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>FacebookAdvertiserIDCollectionEnabled</key>
 	<false/>
 	<key>FacebookAppID</key>

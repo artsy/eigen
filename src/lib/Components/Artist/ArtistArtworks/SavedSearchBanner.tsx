@@ -144,8 +144,8 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
           return createSavedSearch()
         case PushAuthorizationStatus.Denied:
           return Alert.alert(
-            "Turn on notifications",
-            'To receive push notification alerts from Artsy on new works by this artist, you\'ll need to enable them in your iOS Settings. Tap Notifications, and then toggle "Allow Notifications" on.',
+            "Artsy would like to send you notifications",
+            `To receive notifications for your alerts, you will need to enable them in your iOS Settings. Tap 'Artsy' and enable "Allow Notifications" for Artsy.`,
             [
               {
                 text: "Settings",
@@ -159,8 +159,8 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
           )
         case PushAuthorizationStatus.NotDetermined:
           return Alert.alert(
-            "Turn on notifications",
-            "Artsy needs your permission to send push notification alerts on new works by this artist.",
+            "Artsy would like to send you notifications",
+            "We need your permission to send notifications on alerts you have created.",
             [
               {
                 text: "Proceed",

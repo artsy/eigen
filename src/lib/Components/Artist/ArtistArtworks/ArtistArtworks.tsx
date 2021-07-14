@@ -8,9 +8,11 @@ import {
   prepareFilterArtworksParamsForInput,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ORDERED_ARTWORK_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
+import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
@@ -21,7 +23,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, FilterIcon, Flex, Separator, Spacer, Text, TouchableHighlightColor } from "palette"
+import { Box, Separator, Spacer } from "palette"
 import React, { useContext, useEffect, useMemo, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -107,7 +109,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const filterParams = useMemo(() => filterArtworksParams(appliedFilters), [appliedFilters])
   const artworks = artist.artworks
   const artworksCount = artworks?.edges?.length
-  const artworksTotal = artworks?.counts?.total
+  const artworksTotal = artworks?.counts?.total ?? 0
   const artistInternalId = artist.internalID
 
   useEffect(() => {
@@ -129,7 +131,9 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 
     if (searchCriteria && artworks?.aggregations) {
       const params = convertSavedSearchCriteriaToFilterParams(searchCriteria, artworks.aggregations as Aggregations)
-      setInitialFilterStateAction(params)
+      const sortFilterItem = ORDERED_ARTWORK_SORTS.find((sortEntity) => sortEntity.paramValue === "-published_at")
+
+      setInitialFilterStateAction([...params, sortFilterItem!])
     }
   }, [])
 
@@ -150,30 +154,14 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 
   useEffect(() => {
     setJSX(
-      <Box backgroundColor="white" mt={2} px={2}>
-        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-          <Text variant="subtitle" color="black60">
-            Showing {artworksTotal} works
-          </Text>
-          <TouchableHighlightColor
-            haptic
-            onPress={openFilterModal}
-            render={({ color }) => (
-              <Flex flexDirection="row" alignItems="center">
-                <FilterIcon fill={color} width="20px" height="20px" />
-                <Text variant="subtitle" color={color}>
-                  Sort & Filter
-                </Text>
-              </Flex>
-            )}
-          />
-        </Flex>
-        <Separator mt={2} ml={-2} width={screenWidth} />
+      <Box backgroundColor="white">
+        <ArtworksFilterHeader count={artworksTotal} onFilterPress={openFilterModal} />
+        <Separator />
         {!!shouldShowSavedSearchBanner && (
-          <>
+          <Box px={2}>
             <SavedSearchBannerQueryRender artistId={artistInternalId} filters={filterParams} artistSlug={artist.slug} />
             <Separator ml={-2} width={screenWidth} />
-          </>
+          </Box>
         )}
       </Box>
     )

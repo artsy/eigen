@@ -3,7 +3,6 @@ import { Appearance, AppRegistry, LogBox, Platform, View } from "react-native"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { BidFlow } from "./Containers/BidFlow"
-import { GeneQueryRenderer } from "./Containers/Gene"
 import { InboxWrapper } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
@@ -23,6 +22,7 @@ import { CitySavedListQueryRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
+import { GeneQueryRenderer } from "./Scenes/Gene/Gene"
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 
 // Consignments / My Collection
@@ -62,6 +62,7 @@ import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { SaleQueryRenderer } from "./Scenes/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
+import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddresses"
 
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
@@ -138,22 +139,6 @@ interface PartnerLocationsProps {
   isVisible: boolean
 }
 const PartnerLocations: React.FC<PartnerLocationsProps> = (props) => <PartnerLocationsQueryRenderer {...props} />
-
-interface GeneProps {
-  geneID: string
-  medium: string
-  price_range: string
-}
-
-const Gene: React.FC<GeneProps> = screenTrack<GeneProps>((props) => {
-  return {
-    context_screen: Schema.PageNames.GenePage,
-    context_screen_owner_slug: props.geneID,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Gene,
-  }
-})((props) => {
-  return <GeneQueryRenderer {...props} />
-})
 
 interface InquiryProps {
   artworkID: string
@@ -333,7 +318,7 @@ export const modules = defineModules({
   Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
   FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
-  Gene: reactModule(Gene),
+  Gene: reactModule(GeneQueryRenderer),
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
   Inbox: reactModule(InboxWrapper, { isRootViewForTabName: "inbox" }),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
@@ -378,6 +363,7 @@ export const modules = defineModules({
   Search: reactModule(SearchWithTracking, { isRootViewForTabName: "search" }),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
+  SavedAddresses: reactModule(SavedAddressesQueryRenderer),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),

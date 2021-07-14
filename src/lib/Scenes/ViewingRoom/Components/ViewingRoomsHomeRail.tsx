@@ -30,7 +30,7 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = (props)
     <View>
       <Flex mx="2">
         <SectionTitle
-          title="Viewing rooms"
+          title="Viewing Rooms"
           onPress={() => {
             trackEvent(tracks.tappedViewingRoomsHeader())
             navigate("/viewing-rooms")

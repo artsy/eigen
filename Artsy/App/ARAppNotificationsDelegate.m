@@ -18,6 +18,7 @@
 #import <Emission/AREmission.h>
 #import <Emission/ARNotificationsManager.h>
 #import <UserNotifications/UserNotifications.h>
+#import "Appboy-iOS-SDK/AppboyKit.h"
 
 @implementation ARAppNotificationsDelegate
 
@@ -165,6 +166,7 @@
     [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
         NSString *grantedString = granted ? @"YES" : @"NO";
         [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationsRequested traits:@{@"granted" : grantedString}];
+        [[Appboy sharedInstance] pushAuthorizationFromUserNotificationCenter:granted];
     }];
 
     [[UIApplication sharedApplication] registerForRemoteNotifications];
@@ -228,6 +230,8 @@
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
 
     [[AREmission sharedInstance] sendIdentifyEvent:@{ARAnalyticsEnabledNotificationsProperty: @1}];
+    [[Appboy sharedInstance] registerDeviceToken:deviceTokenData];
+
 // We only record device tokens on the Artsy service in case of Beta or App Store builds.
 #ifndef DEBUG
     // Apple says to always save the device token, as it may change. In addition, since we allow a device to register
@@ -252,6 +256,9 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
 {
     [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
+    [[Appboy sharedInstance] registerApplication:application
+                    didReceiveRemoteNotification:userInfo
+                          fetchCompletionHandler:handler];
     handler(UIBackgroundFetchResultNoData);
 }
 
