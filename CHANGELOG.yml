@@ -23,6 +23,7 @@ upcoming:
     - Make Home Auction Results By Followed Artists ready for release - mounir
     - Replace ios native analytics with segment analytics - kizito
     -
+    - Add storybook - mounir, ole
   user_facing:
     - Add keyword search to artist auction reults - ole
 
