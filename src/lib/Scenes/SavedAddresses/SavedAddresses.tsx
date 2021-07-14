@@ -13,8 +13,12 @@ import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-r
 import { graphql } from "relay-runtime"
 import styled from "styled-components/native"
 
+interface CardProps {
+  isDefault: boolean
+}
+
 const Card = styled(Flex)`
-  border: 1px solid ${color("black30")};
+  border: 1px solid ${(props: CardProps) => (props.isDefault ? color("black30") : color("black100"))};
   border-radius: 4;
 `
 
@@ -41,7 +45,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
     <PageWithSimpleHeader title="Saved Addresses">
       <FlatList
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-        data={addresses}
+        data={addresses.sort((a, b) => Number(a?.isDefault) - Number(b?.isDefault))}
         keyExtractor={(address) => address.internalID}
         contentContainerStyle={{
           paddingTop: addresses.length === 0 ? 10 : 40,
@@ -49,7 +53,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
         }}
         renderItem={({ item }) => (
           <>
-            <Card key={item.id} mx={2} py={2} px={16}>
+            <Card key={item.id} mx={2} py={2} px={16} isDefault={item.isDefault}>
               <Text fontSize={16} lineHeight={24}>
                 {item.name}
               </Text>
@@ -70,8 +74,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
               </Flex>
               <Flex flexDirection="row">
                 <Flex flex={1} justifyContent="center">
-                  {/* TODO next task add default address label here */}
-                  {/* <Text variant="small">Default Address</Text> */}
+                  {!!item?.isDefault && <Text variant="small">Default Address</Text>}
                 </Flex>
                 <Flex flex={1} flexDirection="row" justifyContent="space-between">
                   <Touchable onPress={onPressEditAddress}>
@@ -141,6 +144,7 @@ export const SavedAddressesContainer = createRefetchContainer(
               region
               postalCode
               phoneNumber
+              isDefault
             }
           }
         }
