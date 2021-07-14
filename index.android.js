@@ -9,7 +9,6 @@ try {
 } catch {}
 
 if (startStorybook) {
-  console.log("Starting storybook...")
   require("./src/storybook")
 } else {
   require("react-native-gesture-handler")

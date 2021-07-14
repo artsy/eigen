@@ -16,6 +16,8 @@ try {
   fileContent = {}
 }
 
+if (startStorybook) console.log("Starting storybook...")
+
 fileContent.startStorybook = !!startStorybook
 
 fs.writeFileSync("./storybook.json", JSON.stringify(fileContent, undefined, 2))
