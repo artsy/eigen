@@ -155,7 +155,7 @@ export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> =
   )
 }
 
-const SavedAddressesNewFormContainer = createFragmentContainer(SavedAddressesNewForm, {
+export const SavedAddressesNewFormContainer = createFragmentContainer(SavedAddressesNewForm, {
   me: graphql`
     fragment SavedAddressesNewForm_me on Me {
       id
