@@ -67,11 +67,9 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
               <Text variant="text" color="black60">
                 {item?.phoneNumber}
               </Text>
-              <Flex mr={14}>
-                <Spacer height={20} />
-                <Separator />
-                <Spacer height={20} />
-              </Flex>
+              <Spacer height={20} />
+              <Separator />
+              <Spacer height={20} />
               <Flex flexDirection="row">
                 <Flex flex={1} justifyContent="center">
                   {!!item?.isDefault && <Text variant="small">Default Address</Text>}
