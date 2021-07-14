@@ -18,7 +18,7 @@ interface CardProps {
 }
 
 const Card = styled(Flex)`
-  border: 1px solid ${(props: CardProps) => (props.isDefault ? color("black30") : color("black100"))};
+  border: 1px solid ${(props: CardProps) => (props.isDefault ? color("black100") : color("black30"))};
   border-radius: 4;
 `
 
@@ -45,7 +45,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
     <PageWithSimpleHeader title="Saved Addresses">
       <FlatList
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-        data={addresses.sort((a, b) => Number(a?.isDefault) - Number(b?.isDefault))}
+        data={addresses.sort((a, b) => Number(b?.isDefault) - Number(a?.isDefault))}
         keyExtractor={(address) => address.internalID}
         contentContainerStyle={{
           paddingTop: addresses.length === 0 ? 10 : 40,
@@ -74,7 +74,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
               </Flex>
               <Flex flexDirection="row">
                 <Flex flex={1} justifyContent="center">
-                  {!item?.isDefault && <Text variant="small">Default Address</Text>}
+                  {!!item?.isDefault && <Text variant="small">Default Address</Text>}
                 </Flex>
                 <Flex flex={1} flexDirection="row" justifyContent="space-between">
                   <Touchable onPress={onPressEditAddress}>
