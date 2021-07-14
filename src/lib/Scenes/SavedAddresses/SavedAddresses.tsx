@@ -1,4 +1,6 @@
+import { captureMessage } from "@sentry/react-native"
 import { SavedAddresses_me } from "__generated__/SavedAddresses_me.graphql"
+import { SavedAddressesDeleteUserAddressMutation } from "__generated__/SavedAddressesDeleteUserAddressMutation.graphql"
 import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -10,7 +12,7 @@ import { Button, color, Flex, Separator, Spacer, Text, Touchable } from "palette
 import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
-import { graphql } from "relay-runtime"
+import { commitMutation, graphql } from "relay-runtime"
 import styled from "styled-components/native"
 
 interface CardProps {
@@ -39,7 +41,16 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
 
   const onPressEditAddress = () => null
 
-  const onPressDeleteAddress = () => null
+  const onPressDeleteAddress = (addressId: string) => {
+    deleteUserAddress(
+      addressId,
+      () =>
+        relay.refetch({
+          first: 3,
+        }),
+      (message: string) => captureMessage(message)
+    )
+  }
 
   return (
     <PageWithSimpleHeader title="Saved Addresses">
@@ -78,7 +89,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
                       Edit
                     </Text>
                   </Touchable>
-                  <Touchable onPress={onPressDeleteAddress}>
+                  <Touchable onPress={() => onPressDeleteAddress(item.internalID)}>
                     <Text variant="text" color="red100" style={{ textDecorationLine: "underline" }}>
                       Delete
                     </Text>
@@ -155,6 +166,54 @@ export const SavedAddressesContainer = createRefetchContainer(
     }
   `
 )
+
+const deleteUserAddress = (userAddressID: string, onSuccess: () => void, onError: (message: string) => void) => {
+  commitMutation<SavedAddressesDeleteUserAddressMutation>(defaultEnvironment, {
+    variables: {
+      input: {
+        userAddressID,
+      },
+    },
+    mutation: graphql`
+      mutation SavedAddressesDeleteUserAddressMutation($input: DeleteUserAddressInput!) {
+        deleteUserAddress(input: $input) {
+          userAddressOrErrors {
+            ... on UserAddress {
+              id
+              internalID
+              name
+              addressLine1
+              addressLine2
+              addressLine3
+              city
+              region
+              postalCode
+              phoneNumber
+              isDefault
+            }
+            ... on Errors {
+              errors {
+                code
+                message
+              }
+            }
+          }
+        }
+      }
+    `,
+    onError: (e) => {
+      onError(e.message)
+    },
+    onCompleted: (data) => {
+      const errors = data?.deleteUserAddress?.userAddressOrErrors.errors
+      if (errors) {
+        onError(errors.map((error) => error.message).join(", "))
+      } else {
+        onSuccess()
+      }
+    },
+  })
+}
 
 export const SavedAddressesQueryRenderer: React.FC<{}> = ({}) => {
   return (
