@@ -8,7 +8,7 @@
     "npm": "6.1.x",
     "yarn": "1.x"
   },
-  "main": "index.ios.js",
+  "main": "index.js",
   "scripts": {
     "bundle-for-native-ci": "yarn generate-graphql-query-map && react-native bundle --platform=ios --dev=false --entry-file=index.tests.ios.js --bundle-output emission/Pod/Assets/Emission.js --sourcemap-output emission/Pod/Assets/Emission.js.map --assets-dest emission/Pod/Assets",
     "bundle": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output emission/Pod/Assets/Emission.js --sourcemap-output emission/Pod/Assets/Emission.js.map --assets-dest emission/Pod/Assets",
@@ -55,7 +55,7 @@
     "storybook-android": "npx artsy open -a storybook",
     "storybook-server": "start-storybook -p 7007",
     "build-storybook": "build-storybook",
-    "storybook-standalone": "echo STORYBOOK=1 >> .env.shared && yarn start",
+    "start-storybook": "STORYBOOK=1 yarn start",
     "update-metaphysics": "node scripts/update-metaphysics.js"
   },
   "repository": {

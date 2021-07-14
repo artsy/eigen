@@ -146,7 +146,7 @@ static ARAppDelegate *_sharedInstance = nil;
     [[ARLogger sharedLogger] startLogging];
 
     [self setupEmission];
-    self.viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Main" initialProperties:@{}];
+    self.viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Artsy" initialProperties:@{}];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
 
