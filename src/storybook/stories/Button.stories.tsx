@@ -5,6 +5,7 @@ import { Text } from "react-native"
 import { CenterView, List } from "./storybookHelper"
 
 const sizes: ButtonSize[] = ["small", "medium", "large"]
+
 const variants: ButtonVariant[] = [
   "primaryBlack",
   "primaryWhite",
