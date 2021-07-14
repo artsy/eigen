@@ -20,6 +20,7 @@ upcoming:
     - Add tracking to "Unable To Load" screen - mounir
     - Adjust auction results for you tracking - ole
     - Make Home Auction Results By Followed Artists ready for release - mounir
+    - Replace ios native analytics with segment analytics - kizito
   user_facing:
     - Prevent facebook auth for users without email - dzmitry
     - Fix unfollowing categories - katsiaryna alshannikava
