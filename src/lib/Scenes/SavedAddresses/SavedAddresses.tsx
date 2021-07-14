@@ -53,7 +53,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
         }}
         renderItem={({ item }) => (
           <>
-            <Card key={item.id} mx={2} py={2} px={16} isDefault={item.isDefault}>
+            <Card mx={2} py={2} px={16} isDefault={item.isDefault}>
               <Text fontSize={16} lineHeight={24}>
                 {item.name}
               </Text>
@@ -67,9 +67,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
               <Text variant="text" color="black60">
                 {item?.phoneNumber}
               </Text>
-              <Spacer height={20} />
-              <Separator />
-              <Spacer height={20} />
+              <Separator my={2} />
               <Flex flexDirection="row">
                 <Flex flex={1} justifyContent="center">
                   {!!item?.isDefault && <Text variant="small">Default Address</Text>}
