@@ -22,9 +22,9 @@
     if (!ARPerformWorkAsynchronously) {
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         NSString *key = url.absoluteString;
-        [imageCache containsImageForKey:key cacheType:SDImageCacheTypeAll completion:^(SDImageCacheType containsCacheType) {
+        [imageCache containsImageForKey:key cacheType:SDImageCacheTypeMemory completion:^(SDImageCacheType containsCacheType) {
             if (containsCacheType != SDImageCacheTypeNone) {
-                [imageCache queryImageForKey:key options:0 context:nil cacheType:containsCacheType completion:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
+                [imageCache queryImageForKey:key options:SDWebImageQueryMemoryDataSync context:nil cacheType:containsCacheType completion:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
                     self.image = image;
                     if (completionBlock != nil) {
                         completionBlock(self.image, nil, containsCacheType, url);
