@@ -74,7 +74,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
               </Flex>
               <Flex flexDirection="row">
                 <Flex flex={1} justifyContent="center">
-                  {!!item?.isDefault && <Text variant="small">Default Address</Text>}
+                  {!item?.isDefault && <Text variant="small">Default Address</Text>}
                 </Flex>
                 <Flex flex={1} flexDirection="row" justifyContent="space-between">
                   <Touchable onPress={onPressEditAddress}>
