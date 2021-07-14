@@ -172,6 +172,8 @@
     "@storybook/addon-actions": "^5.3",
     "@storybook/react-native": "^5.3.25",
     "@storybook/react-native-server": "^5.3.23",
+    "@testing-library/jest-native": "^4.0.1",
+    "@testing-library/react-native": "^7.2.0",
     "@types/argparse": "^2.0.8",
     "@types/chalk": "2.2.0",
     "@types/dedent": "0.7.0",
