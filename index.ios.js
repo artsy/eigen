@@ -3,10 +3,12 @@ global.__TEST__ = false
 // start storybook depending on content of storybook.json
 let startStorybook = false
 
-try {
-  const fileContent = require("./storybook.json")
-  startStorybook = fileContent.startStorybook
-} catch {}
+if (__DEV__) {
+  try {
+    const fileContent = require("./storybook.json")
+    startStorybook = fileContent.startStorybook
+  } catch {}
+}
 
 if (startStorybook) {
   require("./src/storybook")
