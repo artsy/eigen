@@ -1,6 +1,6 @@
 #import "ARSharingController.h"
 
-#import <ARAnalytics/ARAnalytics.h>
+#import <Emission/AREmission.h>
 #import "ARAnalyticsConstants.h"
 
 #import "Artist.h"
@@ -80,7 +80,7 @@
 - (void)handleActivityCompletion:(NSString *)activityType completed:(BOOL)completed
 {
     if (completed) {
-        [ARAnalytics event:ARAnalyticsShare withProperties:@{
+        [[AREmission sharedInstance] sendEvent:ARAnalyticsShare traits:@{
             @"object_type" : NSStringFromClass(self.object.class) ?: @"",
             @"service" : activityType ?: @""
         }];

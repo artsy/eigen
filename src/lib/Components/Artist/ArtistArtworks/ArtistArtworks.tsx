@@ -8,7 +8,7 @@ import {
   prepareFilterArtworksParamsForInput,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { ORDERED_ARTWORK_SORTS } from 'lib/Components/ArtworkFilter/Filters/SortOptions'
+import { ORDERED_ARTWORK_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -131,12 +131,9 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 
     if (searchCriteria && artworks?.aggregations) {
       const params = convertSavedSearchCriteriaToFilterParams(searchCriteria, artworks.aggregations as Aggregations)
-      const sortFilterItem = ORDERED_ARTWORK_SORTS.find(sortEntity => sortEntity.paramValue === "-published_at")
+      const sortFilterItem = ORDERED_ARTWORK_SORTS.find((sortEntity) => sortEntity.paramValue === "-published_at")
 
-      setInitialFilterStateAction([
-        ...params,
-        sortFilterItem!,
-      ])
+      setInitialFilterStateAction([...params, sortFilterItem!])
     }
   }, [])
 

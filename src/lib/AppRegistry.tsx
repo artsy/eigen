@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { AppRegistry, LogBox, Platform, View } from "react-native"
+import { Appearance, AppRegistry, LogBox, Platform, View } from "react-native"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { BidFlow } from "./Containers/BidFlow"
@@ -75,7 +75,6 @@ import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoi
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
-import { NativeAnalyticsProvider } from "./NativeModules/Events"
 import { ArticlesQueryRenderer } from "./Scenes/Articles/Articles"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { AuctionResultsForYouQueryRenderer } from "./Scenes/AuctionResultsForYou/AuctionResultsForYou"
@@ -96,6 +95,8 @@ import { GlobalStore, useFeatureFlag, useSelectedTab } from "./store/GlobalStore
 import { AdminMenu } from "./utils/AdminMenu"
 import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
+import { AnalyticsConstants } from "./utils/track/constants"
+import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "./utils/track/SegmentTrackingProvider"
 import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
 
@@ -114,7 +115,7 @@ LogBox.ignoreLogs([
   "Picker has been extracted",
 ])
 
-addTrackingProvider("native ios analytics", NativeAnalyticsProvider)
+addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
 
 interface ArtworkProps {
@@ -390,6 +391,20 @@ const Main: React.FC<{}> = track()(({}) => {
     GoogleSignin.configure({
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
     })
+    if (Platform.OS === "ios") {
+      const scheme = Appearance.getColorScheme()
+      SegmentTrackingProvider.identify?.(null, {
+        [AnalyticsConstants.UserInterfaceStyle.key]: (() => {
+          switch (scheme) {
+            case "light":
+              return AnalyticsConstants.UserInterfaceStyle.value.Light
+            case "dark":
+              return AnalyticsConstants.UserInterfaceStyle.value.Dark
+          }
+          return AnalyticsConstants.UserInterfaceStyle.value.Unspecified
+        })(),
+      })
+    }
   }, [])
   const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)

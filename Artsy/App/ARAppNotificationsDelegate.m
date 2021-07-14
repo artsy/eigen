@@ -17,7 +17,6 @@
 
 #import <Emission/AREmission.h>
 #import <Emission/ARNotificationsManager.h>
-#import <ARAnalytics/ARAnalytics.h>
 #import <UserNotifications/UserNotifications.h>
 #import "Appboy-iOS-SDK/AppboyKit.h"
 
@@ -93,7 +92,7 @@
 
     analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
 
-    [ARAnalytics event:ARAnalyticsPushNotificationLocal withProperties:@{
+    [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationLocal traits:@{
         @"action_type" : @"Tap",
         @"action_name" : @"Yes",
         @"context_screen" : analyticsContext,
@@ -117,12 +116,11 @@
 
     analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
 
-    [ARAnalytics event:ARAnalyticsPushNotificationLocal withProperties:@{
+    [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationLocal traits:@{
         @"action_type" : @"Tap",
         @"action_name" : @"Cancel",
         @"context_screen"  : analyticsContext
     }];
-
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ARPushNotificationsDialogueLastSeenDate];
 }
 
@@ -167,7 +165,7 @@
     UNAuthorizationOptions authOptions = (UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert);
     [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
         NSString *grantedString = granted ? @"YES" : @"NO";
-        [ARAnalytics event:ARAnalyticsPushNotificationsRequested withProperties:@{@"granted" : grantedString}];
+        [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationsRequested traits:@{@"granted" : grantedString}];
         [[Appboy sharedInstance] pushAuthorizationFromUserNotificationCenter:granted];
     }];
 
@@ -189,7 +187,7 @@
         analyticsContext = @"Launch";
     }
     analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
-    [ARAnalytics event:ARAnalyticsPushNotificationApple withProperties:@{
+    [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationApple traits:@{
         @"action_type" : @"Tap",
         @"action_name" : @"Cancel",
         @"context_screen"  : analyticsContext
@@ -212,7 +210,7 @@
     }
     analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
 
-    [ARAnalytics event:ARAnalyticsPushNotificationApple withProperties:@{
+    [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationApple traits:@{
         @"action_type" : @"Tap",
         @"action_name" : @"Yes",
         @"context_screen"  : analyticsContext
@@ -231,12 +229,11 @@
     // Save device token purely for the admin settings view.
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
 
-    [[Appboy sharedInstance] registerPushToken:deviceToken];
+    [[AREmission sharedInstance] sendIdentifyEvent:@{ARAnalyticsEnabledNotificationsProperty: @1}];
+    [[Appboy sharedInstance] registerDeviceToken:deviceTokenData];
 
 // We only record device tokens on the Artsy service in case of Beta or App Store builds.
 #ifndef DEBUG
-    [ARAnalytics setUserProperty:ARAnalyticsEnabledNotificationsProperty toValue:@"true"];
-
     // Apple says to always save the device token, as it may change. In addition, since we allow a device to register
     // for notifications even if the user has not signed-in, we must be sure to always update this to ensure the Artsy
     // service always has an up-to-date record of devices and associated users.
@@ -308,12 +305,14 @@
 
 - (void)receivedNotification:(NSDictionary *)notificationInfo;
 {
-    [ARAnalytics event:ARAnalyticsNotificationReceived withProperties:notificationInfo];
+    [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationReceived traits:notificationInfo];
+    // TODO: Replace with Segment notification tracking
+    // [[SEGAnalytics sharedAnalytics] receivedRemoteNotification:notificationInfo];
 }
 
 - (void)tappedNotification:(NSDictionary *)notificationInfo url:(NSString *)url;
 {
-    [ARAnalytics event:ARAnalyticsNotificationTapped withProperties:notificationInfo];
+    [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationTapped traits:notificationInfo];
 
     NSDictionary *props = [self filteredProps:notificationInfo];
     [[AREmission sharedInstance] navigate:url withProps:props];

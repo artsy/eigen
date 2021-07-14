@@ -1,17 +1,17 @@
 import { GeneArtworksTestsQuery } from "__generated__/GeneArtworksTestsQuery.graphql"
-import { ApplyButton } from 'lib/Components/ArtworkFilter'
+import { ApplyButton } from "lib/Components/ArtworkFilter"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
-import { TouchableRow } from 'lib/Components/TouchableRow'
-import { extractText } from 'lib/tests/extractText'
+import { TouchableRow } from "lib/Components/TouchableRow"
+import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Message, TouchableHighlightColor } from 'palette'
+import { Message, TouchableHighlightColor } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from 'react-test-renderer'
+import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { GeneArtworksPaginationContainer } from "../GeneArtworks"
@@ -142,7 +142,7 @@ describe("GeneArtworks", () => {
           artworks: {
             counts: {
               total: 0,
-            }
+            },
           },
         }
       },

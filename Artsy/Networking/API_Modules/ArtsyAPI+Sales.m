@@ -7,7 +7,6 @@
 #import "MTLModel+JSON.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <ARAnalytics/ARAnalytics.h>
 
 @implementation ArtsyAPI (Sales)
 

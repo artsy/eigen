@@ -746,9 +746,4 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"HEAD" URLString:fullPath parameters:nil];
 }
 
-+ (NSURLRequest *)newSailthruRegisterClickAndDecodeURLRequest:(NSURL *)encodedURL;
-{
-    return [self requestWithMethod:@"HEAD" URLString:encodedURL.absoluteString parameters:nil];
-}
-
 @end

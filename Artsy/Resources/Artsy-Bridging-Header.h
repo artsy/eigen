@@ -90,7 +90,6 @@
 #import <Artsy+UILabels/UIView+ARDrawing.h>
 #import <Artsy-UIButtons/ARButtonSubclasses.h>
 #import <Artsy+UIColors/UIColor+ArtsyColors.h>
-#import <ARAnalytics/ARAnalytics.h>
 #import <EDColor/EDColor.h>
 #import <Extraction/ARSpinner.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>

@@ -82,7 +82,7 @@ target 'Artsy' do
   pod 'AFNetworking', '~> 2.5', subspecs: %w[Reachability Serialization Security NSURLSession NSURLConnection]
   pod 'AFOAuth1Client', git: 'https://github.com/artsy/AFOAuth1Client.git', tag: '0.4.0-subspec-fix'
   pod 'AFNetworkActivityLogger'
-  pod 'SDWebImage', '>= 3.7.2' # 3.7.2 contains a fix that allows you to not force decoding each image, which uses lots of memory
+  pod 'SDWebImage', '5.8.3'
 
   # Core
   pod 'ARGenericTableViewController', git: 'https://github.com/artsy/ARGenericTableViewController.git'
@@ -128,11 +128,6 @@ target 'Artsy' do
   # Google & Firebase
   pod 'GoogleSignIn', '~> 5.0.2'
   pod 'Firebase/Auth'
-
-  # Analytics
-  pod 'Analytics'
-  pod 'ARAnalytics', subspecs: %w[Segmentio]
-  pod 'Appboy-iOS-SDK'
 
   # Developer Pods
   pod 'DHCShakeNotifier'
@@ -228,7 +223,6 @@ post_install do |installer|
   # * Send PRs for the rest
   %w[
     Pods/ORStackView/Classes/ios/ORStackView.h
-    Pods/ARAnalytics/ARAnalytics.h
     Pods/NAMapKit/NAMapKit/*.h
   ].flat_map { |x| Dir.glob(x) }.each do |header|
     addition = "#import <UIKit/UIKit.h>\n"

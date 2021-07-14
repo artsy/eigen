@@ -1,7 +1,10 @@
 import { Analytics } from "@segment/analytics-react-native"
+import { addBreadcrumb } from "@sentry/react-native"
 import { Platform } from "react-native"
 import Config from "react-native-config"
 import { isCohesionScreen, TrackingProvider } from "./providers"
+
+export const SEGMENT_TRACKING_PROVIDER = "SEGMENT_TRACKING_PROVIDER"
 
 let analytics: Analytics.Client
 export const SegmentTrackingProvider: TrackingProvider = {
@@ -10,25 +13,33 @@ export const SegmentTrackingProvider: TrackingProvider = {
     const Braze = require("@segment/analytics-react-native-appboy").default
 
     analytics
-      .setup(__DEV__ ? Config.SEGMENT_STAGING_WRITE_KEY_ANDROID : Config.SEGMENT_PRODUCTION_WRITE_KEY_ANDROID, {
-        using: [Braze],
-      })
+      .setup(
+        Platform.select({
+          ios: __DEV__ ? Config.SEGMENT_STAGING_WRITE_KEY_IOS : Config.SEGMENT_PRODUCTION_WRITE_KEY_IOS,
+          android: __DEV__ ? Config.SEGMENT_STAGING_WRITE_KEY_ANDROID : Config.SEGMENT_PRODUCTION_WRITE_KEY_ANDROID,
+          default: "",
+        }),
+        {
+          using: [Braze],
+        }
+      )
       .then(() => console.log("Analytics is ready"))
       .catch((err) => console.error("Something went wrong", err))
   },
 
   identify: (userId, traits) => {
-    // temporary guard
-    if (Platform.OS !== "android") {
-      return
-    }
-
     analytics.identify(userId, traits)
   },
 
   postEvent: (info) => {
-    // temporary guard
-    if (Platform.OS !== "android") {
+    addBreadcrumb({
+      message: `${JSON.stringify(info, null, 2)}`,
+      category: "analytics",
+    })
+    // Events bubbled up from ios native
+    if ("screen_name" in info) {
+      const { screen_name, ...rest } = info
+      analytics.screen(screen_name, rest as any)
       return
     }
 
@@ -61,7 +72,16 @@ export const SegmentTrackingProvider: TrackingProvider = {
       return
     }
 
+    // default check events from ios native
+    if ("event_name" in info) {
+      const { event_name, ...rest } = info
+      analytics.track(event_name, rest as any)
+      return
+    }
+
     console.warn("oh wow, we are not tracking this event!! we should!", { info })
     assertNever(info)
   },
 }
+
+export default SegmentTrackingProvider

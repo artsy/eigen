@@ -6,7 +6,6 @@
 #import <Firebase.h>
 #import <Appboy.h>
 
-#import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 
 #import "ARAppDelegate.h"
@@ -132,11 +131,6 @@ static ARAppDelegate *_sharedInstance = nil;
     // Temp Fix for: https://github.com/artsy/eigen/issues/602
     [self forceCacheCustomFonts];
 
-    // This cannot be moved after the view setup code, as it
-    // relies on swizzling alloc on new objects, thus should be
-    // one of the first things that happen.
-    [self setupAnalytics];
-
     [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[ARAppNotificationsDelegate alloc] init];
 
     self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -174,9 +168,10 @@ static ARAppDelegate *_sharedInstance = nil;
     [self setupForAppLaunch];
 
     NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];
+    NSString *brazeSDKEndPoint = @"sdk.iad-06.braze.com";
 
     NSMutableDictionary *appboyOptions = [NSMutableDictionary dictionary];
-    appboyOptions[ABKAppboyEndpointDelegateKey] = self;
+    appboyOptions[ABKEndpointKey] = brazeSDKEndPoint;
     [Appboy startWithApiKey:brazeAppKey
       inApplication:application
       withLaunchOptions:launchOptions
@@ -190,13 +185,10 @@ static ARAppDelegate *_sharedInstance = nil;
     return YES;
 }
 
-- (NSString *)getApiEndpoint:(NSString *)appboyApiEndpoint {
-    return @"sdk.iad-06.braze.com";
-}
-
 - (void)registerNewSessionOpened
 {
-    [ARAnalytics startTimingEvent:ARAnalyticsTimePerSession];
+    // TODO: Customise APPBOY Sessions
+    //A session is started when you call [[Appboy sharedInstance] startWithApiKey:inApplication:withLaunchOptions:withAppboyOptions]
 }
 
 /// This happens every time we come _back_ to the app from the background
@@ -208,7 +200,8 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    [ARAnalytics finishTimingEvent:ARAnalyticsTimePerSession];
+    // MANUALLY track lifecycle event. Segment already does this if
+    // trackLifecycleSessions: true
 }
 
 - (ARAppNotificationsDelegate *)remoteNotificationsDelegate;
@@ -229,11 +222,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)finishOnboarding:(AROnboardingViewController *)viewController animated:(BOOL)animated
 {
-    // We now have a proper Artsy user, not just a local temporary ID
-    // So we have to re-identify the analytics user
-    // to ensure we start sending the Gravity ID as well as the local temporary ID
-    [ARUserManager identifyAnalyticsUser];
-
     // And update emission's auth state
     [[AREmission sharedInstance] updateState:@{
         [ARStateKey userID]: [[[ARUserManager sharedManager] currentUser] userID],

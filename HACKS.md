@@ -198,18 +198,6 @@ As you can see in the PR and issue, android doesn't use ellipsis on the placehol
 
 We added a workaround on Input, to accept an array of placeholders, from longest to shortest, so that android can measure which one fits in the TextInput as placeholder, and it uses that. When android can handle a long placeholder and use ellipsis or if we don't use long placeholders anymore, this can go.
 
-# `@segment/analytics-react-native` and `@segment/analytics-react-native-appboy` patch
-
-#### When can we remove this:
-
-Once we work on [CX-1421](https://artsyproduct.atlassian.net/browse/CX-1421?atlOrigin=eyJpIjoiYjJiMWY4MThlOTY2NDc3ZGJiMTljZTJjM2FmMmVkZjQiLCJwIjoiaiJ9) to replace the native ios analytics with the TS analytics we use for android already.
-
-#### Explanation/Context:
-
-Basically these patches remove the podspecs of these two deps. They confuse and break ios, and we don't use them there yet anyway.
-
-Once we start working on replacing the native analytics with TS ones, then we remove these two patches too.
-
 # `react-native-screens` fragment crash on open from background on Android
 
 #### When can we remove this:
