@@ -227,10 +227,9 @@
     // Save device token purely for the admin settings view.
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
 
+    [[AREmission sharedInstance] sendIdentifyEvent:@{ARAnalyticsEnabledNotificationsProperty: @1}];
 // We only record device tokens on the Artsy service in case of Beta or App Store builds.
 #ifndef DEBUG
-    // [ARAnalytics setUserProperty:ARAnalyticsEnabledNotificationsProperty toValue:@"true"];
-
     // Apple says to always save the device token, as it may change. In addition, since we allow a device to register
     // for notifications even if the user has not signed-in, we must be sure to always update this to ensure the Artsy
     // service always has an up-to-date record of devices and associated users.

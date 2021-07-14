@@ -29,6 +29,7 @@
 - (instancetype)initWithState:(NSDictionary *)state;
 - (void)updateState:(NSDictionary *)state;
 - (void)sendEvent:(NSDictionary *)traits;
+- (void)sendIdentifyEvent:(NSDictionary *)traits;
 - (NSDictionary *)state;
 - (NSDictionary *)reactState;
 

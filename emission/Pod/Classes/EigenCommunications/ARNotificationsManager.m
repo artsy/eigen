@@ -50,6 +50,7 @@ static const NSString *stateChanged = @"STATE_CHANGED";
 static const NSString *reactStateChanged = @"STATE_CHANGED";
 static const NSString *requestNavigation = @"REQUEST_NAVIGATION";
 static const NSString *eventTracking = @"EVENT_TRACKING";
+static const NSString *identifyTracking = @"IDENTIFY_TRACKING";
 
 
 @implementation ARNotificationsManager
@@ -115,6 +116,14 @@ RCT_EXPORT_MODULE();
     @synchronized(self)
     {
         [self dispatch:eventTracking data:traits];
+    }
+}
+
+- (void)sendIdentifyEvent:(NSDictionary *)traits
+{
+    @synchronized(self)
+    {
+        [self dispatch:identifyTracking data:traits];
     }
 }
 

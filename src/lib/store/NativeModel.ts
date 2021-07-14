@@ -27,6 +27,10 @@ export type NativeEvent =
       type: "EVENT_TRACKING"
       payload: InfoType
     }
+  | {
+      type: "IDENTIFY_TRACKING"
+      payload: InfoType
+    }
 
 export interface NativeState {
   userID: string
@@ -60,6 +64,10 @@ export function listenToNativeEvents(cb: (event: NativeEvent) => void) {
 
 listenToNativeEvents((event: NativeEvent) => {
   switch (event.type) {
+    case "IDENTIFY_TRACKING":
+      // Segment should automatically stitch identify calls to existing user even if userid is null
+      SegmentTrackingProvider.identify ? SegmentTrackingProvider.identify(null, event.payload) : (() => undefined)()
+      return
     case "EVENT_TRACKING":
       SegmentTrackingProvider.postEvent(event.payload)
       return

@@ -565,7 +565,7 @@
 {
     if (self.budgetRange && self.followedItemsDuringOnboarding) {
         NSString *stringRange = [NSString stringWithFormat:@"%@", @(self.budgetRange)];
-        // [ARAnalytics setUserProperty:ARAnalyticsPriceRangeProperty toValue:stringRange];
+        [[AREmission sharedInstance] sendIdentifyEvent:@{ARAnalyticsPriceRangeProperty: stringRange}];
 
         User *user = [User currentUser];
         user.priceRange = stringRange;

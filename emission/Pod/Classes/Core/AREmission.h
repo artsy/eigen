@@ -32,6 +32,7 @@ extern NSString *const AREnvTest;
 - (void)updateState:(NSDictionary *)state;
 - (void)sendEvent:(NSString *)name traits:(NSDictionary *)traits;
 - (void)sendScreenEvent:(NSString *)screenName traits:(NSDictionary *)traits;
+- (void)sendIdentifyEvent:(NSDictionary *)traits;
 - (NSString *)stateStringForKey:(NSString *)stateKey;
 - (NSString *)reactStateStringForKey:(NSString *)stateKey;
 - (BOOL)reactStateBoolForKey:(NSString *)stateKey;
