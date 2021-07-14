@@ -178,7 +178,7 @@
     "@types/chalk": "2.2.0",
     "@types/dedent": "0.7.0",
     "@types/jest": "25.1.5",
-    "@types/lodash": "4.14.170",
+    "@types/lodash": "4.14.149",
     "@types/luxon": "1.15.2",
     "@types/moment-timezone": "0.5.4",
     "@types/node": "12.7.5",
