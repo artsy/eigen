@@ -50,7 +50,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
     Keyboard.dismiss()
     try {
       setIsSaving(true)
-      if (!isSaveButtonVisible && onSave) {
+      if (!(isSaveButtonVisible === false) && onSave) {
         await onSave(goBack, doTheAlert)
       }
     } catch (e) {
@@ -87,7 +87,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
         }
         title={title}
         right={
-          isSaveButtonVisible && (
+          !(isSaveButtonVisible === false) && (
             <TouchableOpacity disabled={!canSave} onPress={handleSave}>
               <Sans size="4" opacity={!canSave ? 1 : 0.3}>
                 Save

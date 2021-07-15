@@ -9,17 +9,19 @@ import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { Stack } from "lib/Components/Stack"
 import { goBack } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { PlaceholderText } from "lib/utils/placeholders"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { times } from "lodash"
-import { Button, Flex, Text } from "palette"
+import { Flex, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { MyAccountFieldEditScreen } from "../MyAccount/Components/MyAccountFieldEditScreen"
-import { createUserAddress } from "./addNewAddress"
-import { setAsDefaultAddress } from "./setAsDefaultAddress"
+import { AddAddressButton } from "./Components/AddAddressButton"
+import { createUserAddress } from "./mutations/addNewAddress"
+import { setAsDefaultAddress } from "./mutations/setAsDefaultAddress"
+import { __triggerRefresh } from "./SavedAddresses"
 
 interface FormField<Type = string> {
   value: Type | null
@@ -57,6 +59,7 @@ interface FormFields {
 
 interface Store {
   fields: FormFields
+  allPresent: Computed<Store, boolean>
 }
 
 const useStore = createComponentStore<Store>({
@@ -69,6 +72,9 @@ const useStore = createComponentStore<Store>({
     city: emptyFieldState(),
     region: emptyFieldState(),
   },
+  allPresent: computed((store) => {
+    return Boolean(Object.keys(store.fields).every((k) => store.fields[k as keyof FormFields].isPresent))
+  }),
 })
 
 export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> = ({ me }) => {
@@ -89,13 +95,22 @@ export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> =
       const creatingResponse = await createUserAddress({
         name: state.fields.name.value!,
         country: state.fields.country.value!,
-        postalCode: state.fields.country.value,
-        addressLine1: state.fields.country.value!,
-        addressLine2: state.fields.country.value,
-        city: state.fields.country.value!,
-        region: state.fields.country.value,
+        postalCode: state.fields.postalCode.value,
+        addressLine1: state.fields.addressLine1.value!,
+        addressLine2: state.fields.addressLine2.value,
+        city: state.fields.city.value!,
+        region: state.fields.region.value,
         phoneNumber,
       })
+      if (creatingResponse.createUserAddress?.userAddressOrErrors.internalID) {
+        await __triggerRefresh?.()
+      } else {
+        throw new Error(
+          `Error trying to save address ${JSON.stringify(
+            creatingResponse.createUserAddress?.userAddressOrErrors.errors
+          )}`
+        )
+      }
       if (isDefaultAddress) {
         await setAsDefaultAddress(creatingResponse.createUserAddress?.userAddressOrErrors.internalID!)
       }
@@ -107,7 +122,7 @@ export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> =
   }
 
   return (
-    <MyAccountFieldEditScreen ref={screenRef} canSave={true} isSaveButtonVisible={true} title="Add New Address">
+    <MyAccountFieldEditScreen ref={screenRef} canSave={true} isSaveButtonVisible={false} title="Add New Address">
       <Stack spacing={2}>
         <Input title="Full name" placeholder="Add full name" onChangeText={actions.fields.name.setValue} />
         <CountrySelect onSelectValue={actions.fields.country.setValue} value={state.fields.country.value} />
@@ -139,17 +154,8 @@ export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> =
         >
           <Text>Set as default</Text>
         </Checkbox>
-        <Button
-          block
-          borderRadius={50}
-          variant="primaryBlack"
-          width={100}
-          onPress={() => {
-            submitAddAddress()
-          }}
-        >
-          Add Address
-        </Button>
+
+        <AddAddressButton handleOnPress={submitAddAddress} title="Add Address" disabled={!state.allPresent} />
       </Stack>
     </MyAccountFieldEditScreen>
   )
@@ -182,16 +188,10 @@ export const SavedAddressesFormPlaceholder: React.FC = () => {
   return (
     <PageWithSimpleHeader title="Add New Address">
       <Flex px={2} py={15}>
-        {times(2).map((index: number) => (
+        {times(5).map((index: number) => (
           <Flex key={index} py={1}>
-            <PlaceholderText height={10} width={40 + Math.random() * 100} />
-            <PlaceholderText height={30} width={150 + Math.random() * 100} />
-            <PlaceholderText height={10} width={40 + Math.random() * 100} />
-            <PlaceholderText height={30} width={150 + Math.random() * 100} />
-            <PlaceholderText height={10} width={45 + Math.random() * 100} />
-            <PlaceholderText height={30} width={150 + Math.random() * 100} />
-            <PlaceholderText height={10} width={45 + Math.random() * 100} />
-            <PlaceholderText height={30} width={150 + Math.random() * 100} />
+            <PlaceholderText height={15} width={50 + Math.random() * 100} />
+            <PlaceholderBox height={45} width={"100%"} />
           </Flex>
         ))}
       </Flex>
