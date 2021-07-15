@@ -5,9 +5,9 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <Firebase.h>
 #import <Appboy.h>
+#import <Analytics/SEGAnalytics.h>
 
 #import "ARAnalyticsConstants.h"
-
 #import "ARAppDelegate.h"
 #import "ARAppDelegate+Analytics.h"
 #import "ARAppDelegate+Emission.h"
@@ -167,6 +167,19 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [self setupForAppLaunch];
 
+    [self setupAnalytics:application withLaunchOptions:launchOptions];
+
+    FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
+    [fbAppDelegate application:application didFinishLaunchingWithOptions:launchOptions];
+    if ([FIRApp defaultApp] == nil) {
+        [FIRApp configure];
+    }
+    return YES;
+}
+
+- (void)setupAnalytics:(UIApplication *)application withLaunchOptions:(NSDictionary *)launchOptions
+{
+    // TODO: Do we still need this?
     NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];
     NSString *brazeSDKEndPoint = @"sdk.iad-06.braze.com";
 
@@ -177,12 +190,17 @@ static ARAppDelegate *_sharedInstance = nil;
       withLaunchOptions:launchOptions
       withAppboyOptions:appboyOptions];
 
-    FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
-    [fbAppDelegate application:application didFinishLaunchingWithOptions:launchOptions];
-    if ([FIRApp defaultApp] == nil) {
-        [FIRApp configure];
+    NSString *segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_STAGING_WRITE_KEY_IOS"];
+    if (![ARAppStatus isDev]) {
+        segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_PRODUCTION_WRITE_KEY_IOS"];
     }
-    return YES;
+
+    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:segmentWriteKey];
+    configuration.trackApplicationLifecycleEvents = YES;
+    configuration.recordScreenViews = YES;
+    configuration.trackPushNotifications = YES;
+    configuration.trackDeepLinks = YES;
+    [SEGAnalytics setupWithConfiguration:configuration];
 }
 
 - (void)registerNewSessionOpened
