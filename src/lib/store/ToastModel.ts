@@ -1,4 +1,4 @@
-import { action, Action, thunk, Thunk } from "easy-peasy"
+import { action, Action } from "easy-peasy"
 import { ToastDetails, ToastOptions, ToastPlacement } from "lib/Components/Toast/types"
 
 export interface ToastModel {
