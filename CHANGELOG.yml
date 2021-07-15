@@ -24,6 +24,7 @@ upcoming:
     -
   user_facing:
     - Add keyword search to artist auction reults - ole
+    - Prompt users to switch allow push notification in android settings - kizito
 
 releases:
   - version: 6.10.0
