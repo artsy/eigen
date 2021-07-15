@@ -70,6 +70,7 @@ import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import StorybookUI from "../storybook/storybook-ui"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
@@ -364,6 +365,7 @@ export const modules = defineModules({
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SavedAddresses: reactModule(SavedAddressesQueryRenderer),
+  Storybook: reactModule(StorybookUI, { fullBleed: true, hidesBackButton: true }),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),
@@ -436,5 +438,5 @@ const Main: React.FC<{}> = track()(({}) => {
 })
 
 if (Platform.OS === "ios") {
-  register("Main", Main, { fullBleed: true, isMainView: true })
+  register("Artsy", Main, { fullBleed: true, isMainView: true })
 }
