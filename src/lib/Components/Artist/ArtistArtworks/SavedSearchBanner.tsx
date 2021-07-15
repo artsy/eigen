@@ -12,7 +12,8 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
 import { Button, Flex, Text } from "palette"
 import React, { useState } from "react"
-import { Alert, Linking, Platform } from "react-native"
+import { Alert, AlertButton, Linking, Platform } from "react-native"
+import PushNotification from "react-native-push-notification"
 import { commitMutation, createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -131,47 +132,68 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
     })
   }
 
+  const showAlert = (permissionsDenied: boolean) => {
+    if (permissionsDenied) {
+      const buttons: AlertButton[] = [
+        {
+          text: "Settings",
+          onPress: () =>
+            Platform.OS === "android" ? Linking.openSettings() : Linking.openURL("App-prefs:NOTIFICATIONS_ID"),
+        },
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ]
+      Alert.alert(
+        "Artsy would like to send you notifications",
+        `To receive notifications for your alerts, you will need to enable them in your ${Platform.select({
+          ios: "iOS",
+          android: "android",
+          default: "device",
+        })} Settings. ${Platform.select({
+          ios: `Tap 'Artsy' and enable "Allow Notifications" for Artsy.`,
+          default: "",
+        })} `,
+        Platform.OS === "ios" ? buttons : buttons.reverse()
+      )
+    } else {
+      // permissions not determined: Android should never need this
+      Alert.alert(
+        "Artsy would like to send you notifications",
+        "We need your permission to send notifications on alerts you have created.",
+        [
+          {
+            text: "Proceed",
+            onPress: () => LegacyNativeModules.ARTemporaryAPIModule.requestNotificationPermissions(),
+          },
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+        ]
+      )
+    }
+  }
+
   const checkNotificationPermissionsAndCreate = () => {
     if (Platform.OS === "android") {
-      // TODO:- When android Push notification setup is ready add check for permission
-      // NotificationManagerCompat.from(getReactApplicationContext()).areNotificationsEnabled();
-      createSavedSearch()
-      return
+      PushNotification.checkPermissions((permissions) => {
+        if (!permissions.alert) {
+          return showAlert(true)
+        }
+        createSavedSearch()
+        return
+      })
     }
     LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
       switch (result) {
         case PushAuthorizationStatus.Authorized:
           return createSavedSearch()
         case PushAuthorizationStatus.Denied:
-          return Alert.alert(
-            "Artsy would like to send you notifications",
-            `To receive notifications for your alerts, you will need to enable them in your iOS Settings. Tap 'Artsy' and enable "Allow Notifications" for Artsy.`,
-            [
-              {
-                text: "Settings",
-                onPress: () => Linking.openURL("App-prefs:NOTIFICATIONS_ID"),
-              },
-              {
-                text: "Cancel",
-                style: "cancel",
-              },
-            ]
-          )
+          return showAlert(true)
         case PushAuthorizationStatus.NotDetermined:
-          return Alert.alert(
-            "Artsy would like to send you notifications",
-            "We need your permission to send notifications on alerts you have created.",
-            [
-              {
-                text: "Proceed",
-                onPress: () => LegacyNativeModules.ARTemporaryAPIModule.requestNotificationPermissions(),
-              },
-              {
-                text: "Cancel",
-                style: "cancel",
-              },
-            ]
-          )
+          return showAlert(false)
         default:
           return
       }
