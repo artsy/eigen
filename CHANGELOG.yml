@@ -2,6 +2,7 @@ upcoming:
   version: 6.10.1
   date: TBD
   dev:
+    - Add new adress form
     - Add apple authentication - dzmitry
     - Add google authentication - dzmitry
     - Add new onboarding feature flag on ios - dzmitry
@@ -23,34 +24,6 @@ upcoming:
     - Replace ios native analytics with segment analytics - kizito
     -
   user_facing:
-    - Add "add new address" from with as default option
-    - Prevent facebook auth for users without email - dzmitry
-    - Fix unfollowing categories - katsiaryna alshannikava
-    - Remove "Enable push notification" guard for disabling saved search - dzmitry tratsiak
-    - Fix locations menu redirection - katsiaryna alshannikava
-    - Implement share button for articles - katsiaryna alshannikava, mounir
-    - Allow screen rotations on android tablets - kizito
-    - Fix overlapping of social buttons over the 'Next' button for iOS - katsiaryna alshannikava
-    - Connect auction results for you to metaphysics endpoint - yauheni
-    - Fix opening artist page after passing new onboarding on ios - dzmitry
-    - Polish Auction Results for you screen and home rail (behind feature flag) - ole
-    - Fix crash when opening app from background on android - brian
-    - Change error handling middleware & include optionalField graphql directive to home screen - ole
-    - Refresh artwork page after purchase modal dismiss - katsiaryna alshannikava
-    - Prevent users from submitting consignments for non target supply artists - ole
-    - Fix empty search for consignment submissions - dzmitry
-    - Release order history view - sweir
-    - Add Saved Addresses screen (behind feature flag) - ozzie
-    - Fix visual bug on auction result list item on artist insights screen - ole
-    - Fix auction result home rail loading spinner issue - ole
-    - Fix share button on BNMO Flow - ole, mounir, sam, george
-    - Annotate home screen queries with optionalField directive - ole
-    - Fix collection home rail loading spinner issue - ole
-    - Refactor category screen header and filters to match other artwork grids - dzmitry tratsiak
-    - Use infinite scroll in featured fairs screen - katsiaryna alshannikava, ole
-    - Fix overlapping of Gallery name and time remaining for Vieweing rooms - katsiaryna alshannikava
-    - Fix auction results for you description text scroll issue - ole
-    - Fix facebook login failing after signing up for a new account - stanislau hanchar
     - Add keyword search to artist auction reults - ole
 
 releases:

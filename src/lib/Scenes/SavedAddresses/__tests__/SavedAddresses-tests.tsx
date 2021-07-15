@@ -110,7 +110,7 @@ describe(SavedAddressesQueryRenderer, () => {
     expect(text).toContain("Edit")
     expect(text).toContain("Delete")
   })
-  it("renders SaveAddressNewForm component", () => {
+  it("testing add new address navigation", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
