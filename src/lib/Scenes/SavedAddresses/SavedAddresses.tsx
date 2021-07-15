@@ -1,3 +1,4 @@
+import { captureMessage } from "@sentry/react-native"
 import { SavedAddresses_me } from "__generated__/SavedAddresses_me.graphql"
 import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
@@ -12,6 +13,7 @@ import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { graphql } from "relay-runtime"
 import styled from "styled-components/native"
+import { deleteSavedAddress } from "./mutations/deleteSavedAddress"
 
 interface CardProps {
   isDefault: boolean
@@ -39,7 +41,13 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
 
   const onPressEditAddress = () => null
 
-  const onPressDeleteAddress = () => null
+  const onPressDeleteAddress = (addressId: string) => {
+    deleteSavedAddress(
+      addressId,
+      () => relay.refetch({}),
+      (message: string) => captureMessage(message)
+    )
+  }
 
   return (
     <PageWithSimpleHeader title="Saved Addresses">
@@ -78,7 +86,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
                       Edit
                     </Text>
                   </Touchable>
-                  <Touchable onPress={onPressDeleteAddress}>
+                  <Touchable onPress={() => onPressDeleteAddress(item.internalID)}>
                     <Text variant="text" color="red100" style={{ textDecorationLine: "underline" }}>
                       Delete
                     </Text>
