@@ -159,8 +159,8 @@ export const devToggles = defineDevToggles({
       }
     },
   },
-  DTDEnableOnscreenVisualiser: {
-    description: "Enable Onscreen Visualiser",
+  DTDShowAnalyticsVisualiser: {
+    description: "Show analytics visualiser",
   },
 })
 
