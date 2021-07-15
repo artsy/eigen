@@ -206,7 +206,6 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { postEventToProviders } from "lib/utils/track/providers"
 import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
-import { createMockEnvironment } from "relay-test-utils"
 
 type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }
 
