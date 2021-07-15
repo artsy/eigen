@@ -159,6 +159,9 @@ export const devToggles = defineDevToggles({
       }
     },
   },
+  DTDEnableOnscreenVisualiser: {
+    description: "Enable Onscreen Visualiser",
+  },
 })
 
 export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {
