@@ -7,22 +7,7 @@ export interface ToastModel {
     toasts: Array<Omit<ToastDetails, "positionIndex">>
   }
 
-  add: Thunk<
-    this,
-    {
-      message: string
-      placement: ToastPlacement
-      options?: ToastOptions
-    },
-    any,
-    {},
-    void
-  >
-  remove: Action<this, this["sessionState"]["nextId"]>
-  removeOldest: Action<this>
-
-  _incrementNextId: Action<this>
-  _add: Action<
+  add: Action<
     this,
     {
       message: string
@@ -30,6 +15,8 @@ export interface ToastModel {
       options?: ToastOptions
     }
   >
+  remove: Action<this, this["sessionState"]["nextId"]>
+  removeOldest: Action<this>
 }
 
 export const getToastModel = (): ToastModel => ({
@@ -38,27 +25,20 @@ export const getToastModel = (): ToastModel => ({
     toasts: [],
   },
 
-  add: thunk((actions, newToast) => {
-    actions._add(newToast)
-    actions._incrementNextId()
-  }),
-  remove: action((state, toastId) => {
-    state.sessionState.toasts = state.sessionState.toasts.filter((toast) => toast.id !== toastId)
-  }),
-  removeOldest: action((state) => {
-    state.sessionState.toasts.shift()
-  }),
-
-  _add: action((state, newToast) => {
+  add: action((state, newToast) => {
     state.sessionState.toasts.push({
       id: state.sessionState.nextId,
       message: newToast.message,
       placement: newToast.placement,
       ...newToast.options,
     })
-    console.log(state.sessionState.toasts)
-  }),
-  _incrementNextId: action((state) => {
+
     state.sessionState.nextId += 1
+  }),
+  remove: action((state, toastId) => {
+    state.sessionState.toasts = state.sessionState.toasts.filter((toast) => toast.id !== toastId)
+  }),
+  removeOldest: action((state) => {
+    state.sessionState.toasts.shift()
   }),
 })
