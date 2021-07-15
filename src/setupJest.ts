@@ -206,6 +206,7 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { postEventToProviders } from "lib/utils/track/providers"
 import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
+import { createMockEnvironment } from "relay-test-utils"
 
 type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }
 
@@ -281,6 +282,10 @@ function getNativeModules(): OurNativeModules {
       lockActivityScreenOrientation: jest.fn(),
       gitCommitShortHash: "de4dc0de",
     },
+    // ARGraphQLQueryCache: {
+    //   _setResponseForQueryIDWithVariables: jest.fn(() => ({ wow: 1 })),
+    //   _responseForQueryIDWithVariables: jest.fn(() => ({ wow: 5 })),
+    // },
   }
 }
 
@@ -295,6 +300,18 @@ jest.mock("lib/navigation/navigate", () => ({
   EntityType: { partner: "partner", fair: "fair" },
   SlugType: { partner: "partner", fair: "fair" },
 }))
+
+// let mockDefaultEnvironment: ReturnType<typeof createMockEnvironment>
+
+// jest.mock("lib/relay/createEnvironment", () => {
+//   return {
+//     defaultEnvironment: mockDefaultEnvironment,
+//   }
+// })
+
+// beforeEach(() => {
+//   mockDefaultEnvironment = createMockEnvironment()
+// })
 
 Object.assign(NativeModules, getNativeModules())
 
