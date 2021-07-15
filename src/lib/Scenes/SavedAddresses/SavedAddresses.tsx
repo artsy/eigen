@@ -8,12 +8,13 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Button, color, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import { color, Flex, Separator, Spacer, Text, Touchable } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { graphql } from "relay-runtime"
 import styled from "styled-components/native"
+import { AddAddressButton } from "./Components/AddAddressButton"
 import { deleteSavedAddress } from "./mutations/deleteSavedAddress"
 
 interface CardProps {
@@ -125,15 +126,10 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
             <Text variant="caption" textAlign="center" mb={3}>
               Please add an address for a faster checkout experience in the future.
             </Text>
-            <Button
-              block
-              borderRadius={50}
-              variant="primaryBlack"
-              width={100}
-              onPress={() => navigate("/my-profile/saved-addresses/new-address")}
-            >
-              Add New Address
-            </Button>
+            <AddAddressButton
+              handleOnPress={() => navigate("/my-profile/saved-addresses/new-address")}
+              title="Add New Address"
+            />
           </Flex>
         }
       />

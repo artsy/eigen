@@ -2,7 +2,7 @@ import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingV
 import LoadingModal from "lib/Components/Modals/LoadingModal"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { goBack } from "lib/navigation/navigate"
-import { Sans } from "palette"
+import { Text } from "palette"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import {
   Alert,
@@ -80,18 +80,18 @@ export const MyAccountFieldEditScreen = React.forwardRef<
       <PageWithSimpleHeader
         left={
           <TouchableOpacity onPress={goBack}>
-            <Sans size="4" textAlign="left">
+            <Text variant="text" textAlign="left">
               Cancel
-            </Sans>
+            </Text>
           </TouchableOpacity>
         }
         title={title}
         right={
           !(isSaveButtonVisible === false) && (
             <TouchableOpacity disabled={!canSave} onPress={handleSave}>
-              <Sans size="4" opacity={!canSave ? 1 : 0.3}>
+              <Text variant="text" opacity={!canSave ? 1 : 0.3}>
                 Save
-              </Sans>
+              </Text>
             </TouchableOpacity>
           )
         }
