@@ -521,9 +521,11 @@ jest.mock("@segment/analytics-react-native", () => ({
 jest.mock("@segment/analytics-react-native-appboy", () => ({}))
 
 jest.mock("lib/utils/track/SegmentTrackingProvider", () => ({
-  setup: () => null,
-  identify: () => null,
-  postEvent: () => null,
+  SegmentTrackingProvider: {
+    setup: () => null,
+    identify: () => null,
+    postEvent: () => null,
+  },
 }))
 
 jest.mock("lib/utils/track/providers.tsx", () => ({
