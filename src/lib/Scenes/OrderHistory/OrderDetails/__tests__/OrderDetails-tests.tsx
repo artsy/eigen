@@ -1,5 +1,4 @@
 import { OrderDetailsTestsQuery } from "__generated__/OrderDetailsTestsQuery.graphql"
-import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
