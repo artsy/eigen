@@ -1,16 +1,20 @@
-import { SavedAddressesDeleteUserAddressMutation } from "__generated__/SavedAddressesDeleteUserAddressMutation.graphql"
+import { deleteSavedAddressDeleteUserAddressMutation } from "__generated__/deleteSavedAddressDeleteUserAddressMutation.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
-export const deleteUserAddress = (userAddressID: string, onSuccess: () => void, onError: (message: string) => void) => {
-  commitMutation<SavedAddressesDeleteUserAddressMutation>(defaultEnvironment, {
+export const deleteSavedAddress = (
+  userAddressID: string,
+  onSuccess: () => void,
+  onError: (message: string) => void
+) => {
+  commitMutation<deleteSavedAddressDeleteUserAddressMutation>(defaultEnvironment, {
     variables: {
       input: {
         userAddressID,
       },
     },
     mutation: graphql`
-      mutation SavedAddressesDeleteUserAddressMutation($input: DeleteUserAddressInput!) {
+      mutation deleteSavedAddressDeleteUserAddressMutation($input: DeleteUserAddressInput!) {
         deleteUserAddress(input: $input) {
           userAddressOrErrors {
             ... on UserAddress {

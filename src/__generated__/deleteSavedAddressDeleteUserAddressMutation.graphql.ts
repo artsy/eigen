@@ -1,17 +1,17 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash cd43cbafa52116f2660a57a720e2d98c */
+/* @relayHash c575d1e45a866f470dcf45a28beeb522 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type DeleteUserAddressInput = {
     clientMutationId?: string | null;
     userAddressID: string;
 };
-export type SavedAddressesDeleteUserAddressMutationVariables = {
+export type deleteSavedAddressDeleteUserAddressMutationVariables = {
     input: DeleteUserAddressInput;
 };
-export type SavedAddressesDeleteUserAddressMutationResponse = {
+export type deleteSavedAddressDeleteUserAddressMutationResponse = {
     readonly deleteUserAddress: {
         readonly userAddressOrErrors: {
             readonly id?: string;
@@ -32,15 +32,15 @@ export type SavedAddressesDeleteUserAddressMutationResponse = {
         };
     } | null;
 };
-export type SavedAddressesDeleteUserAddressMutation = {
-    readonly response: SavedAddressesDeleteUserAddressMutationResponse;
-    readonly variables: SavedAddressesDeleteUserAddressMutationVariables;
+export type deleteSavedAddressDeleteUserAddressMutation = {
+    readonly response: deleteSavedAddressDeleteUserAddressMutationResponse;
+    readonly variables: deleteSavedAddressDeleteUserAddressMutationVariables;
 };
 
 
 
 /*
-mutation SavedAddressesDeleteUserAddressMutation(
+mutation deleteSavedAddressDeleteUserAddressMutation(
   $input: DeleteUserAddressInput!
 ) {
   deleteUserAddress(input: $input) {
@@ -206,7 +206,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "SavedAddressesDeleteUserAddressMutation",
+    "name": "deleteSavedAddressDeleteUserAddressMutation",
     "selections": [
       {
         "alias": null,
@@ -240,7 +240,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "SavedAddressesDeleteUserAddressMutation",
+    "name": "deleteSavedAddressDeleteUserAddressMutation",
     "selections": [
       {
         "alias": null,
@@ -276,13 +276,13 @@ return {
     ]
   },
   "params": {
-    "id": "cd43cbafa52116f2660a57a720e2d98c",
+    "id": "c575d1e45a866f470dcf45a28beeb522",
     "metadata": {},
-    "name": "SavedAddressesDeleteUserAddressMutation",
+    "name": "deleteSavedAddressDeleteUserAddressMutation",
     "operationKind": "mutation",
     "text": null
   }
 };
 })();
-(node as any).hash = 'aaff65e0d1a214a864dd31a72dd07f6a';
+(node as any).hash = '919ab63c8176f0ebdd4002b0055c6826';
 export default node;

@@ -13,7 +13,7 @@ import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { graphql } from "relay-runtime"
 import styled from "styled-components/native"
-import { deleteUserAddress } from "./mutations/deleteSavedAddress"
+import { deleteSavedAddress } from "./mutations/deleteSavedAddress"
 
 interface CardProps {
   isDefault: boolean
@@ -42,12 +42,9 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
   const onPressEditAddress = () => null
 
   const onPressDeleteAddress = (addressId: string) => {
-    deleteUserAddress(
+    deleteSavedAddress(
       addressId,
-      () =>
-        relay.refetch({
-          first: 3,
-        }),
+      () => relay.refetch({}),
       (message: string) => captureMessage(message)
     )
   }
