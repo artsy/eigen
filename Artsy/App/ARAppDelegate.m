@@ -5,7 +5,9 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <Firebase.h>
 #import <Appboy.h>
+#import "AppboyReactUtils.h"
 #import <Analytics/SEGAnalytics.h>
+#import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
 
 #import "ARAnalyticsConstants.h"
 #import "ARAppDelegate.h"
@@ -179,10 +181,14 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)setupAnalytics:(UIApplication *)application withLaunchOptions:(NSDictionary *)launchOptions
 {
-    // TODO: Do we still need this?
-    NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];
-    NSString *brazeSDKEndPoint = @"sdk.iad-06.braze.com";
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    center.delegate = self;
+    NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_STAGING_APP_KEY_IOS"];
+    if (![ARAppStatus isDev]) {
+        brazeAppKey = [ReactNativeConfig envFor:@"SEGMENT_PRODUCTION_WRITE_KEY_IOS"];
+    }
 
+    NSString *brazeSDKEndPoint = @"sdk.iad-06.braze.com";
     NSMutableDictionary *appboyOptions = [NSMutableDictionary dictionary];
     appboyOptions[ABKEndpointKey] = brazeSDKEndPoint;
     [Appboy startWithApiKey:brazeAppKey
@@ -197,10 +203,11 @@ static ARAppDelegate *_sharedInstance = nil;
 
     SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:segmentWriteKey];
     configuration.trackApplicationLifecycleEvents = YES;
-    configuration.recordScreenViews = YES;
     configuration.trackPushNotifications = YES;
     configuration.trackDeepLinks = YES;
     [SEGAnalytics setupWithConfiguration:configuration];
+    [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:launchOptions];
+    [[AppboyReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
 }
 
 - (void)registerNewSessionOpened
@@ -214,6 +221,12 @@ static ARAppDelegate *_sharedInstance = nil;
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     [self registerNewSessionOpened];
+
+
+    NSString *currentUserId = [[[ARUserManager sharedManager] currentUser] userID];
+    if (currentUserId) {
+        [[Appboy sharedInstance] changeUser: currentUserId];
+    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -246,6 +259,9 @@ static ARAppDelegate *_sharedInstance = nil;
         [ARStateKey userEmail]: [[[ARUserManager sharedManager] currentUser] email],
         [ARStateKey authenticationToken]: [[ARUserManager sharedManager] userAuthenticationToken],
     }];
+
+    NSString *currentUserId = [[[ARUserManager sharedManager] currentUser] userID];
+    [[Appboy sharedInstance] changeUser: currentUserId];
 
     ar_dispatch_main_queue(^{
         if ([User currentUser]) {

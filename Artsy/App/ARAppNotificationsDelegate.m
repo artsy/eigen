@@ -3,6 +3,8 @@
 #import "ArtsyAPI+Notifications.h"
 #import "ArtsyAPI+DeviceTokens.h"
 #import "ArtsyAPI+CurrentUserFunctions.h"
+#import <Analytics/SEGAnalytics.h>
+#import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
 
 #import "ARAppDelegate.h"
 #import "ARAppConstants.h"
@@ -259,6 +261,11 @@
     [[Appboy sharedInstance] registerApplication:application
                     didReceiveRemoteNotification:userInfo
                           fetchCompletionHandler:handler];
+
+    if ([Appboy sharedInstance] == nil) {
+        [[SEGAppboyIntegrationFactory instance] saveRemoteNotification:userInfo];
+    }
+
     handler(UIBackgroundFetchResultNoData);
 }
 
@@ -266,6 +273,8 @@
 {
     NSString *uiApplicationState = [UIApplicationStateEnum toString:applicationState];
     ARActionLog(@"Incoming notification in the %@ application state: %@", uiApplicationState, userInfo);
+
+    [[SEGAnalytics sharedAnalytics] receivedRemoteNotification:userInfo];
 
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
     [notificationInfo setObject:uiApplicationState forKey:@"UIApplicationState"];

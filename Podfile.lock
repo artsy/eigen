@@ -19,7 +19,7 @@ PODS:
     - AFNetworking/NSURLConnection (~> 2.5)
     - AFNetworking/NSURLSession (~> 2.5)
     - AFNetworking/Serialization (~> 2.5)
-  - Analytics (4.1.4)
+  - Analytics (4.1.5)
   - AppAuth (1.4.0):
     - AppAuth/Core (= 1.4.0)
     - AppAuth/ExternalUserAgent (= 1.4.0)
@@ -676,7 +676,6 @@ DEPENDENCIES:
   - AFNetworking/Security (~> 2.5)
   - AFNetworking/Serialization (~> 2.5)
   - AFOAuth1Client (from `https://github.com/artsy/AFOAuth1Client.git`, tag `0.4.0-subspec-fix`)
-  - Analytics (~> 4.1)
   - ARGenericTableViewController (from `https://github.com/artsy/ARGenericTableViewController.git`)
   - "Artsy+UIColors"
   - "Artsy+UIFonts"
@@ -796,6 +795,7 @@ DEPENDENCIES:
   - RNShare (from `node_modules/react-native-share`)
   - RNSVG (from `node_modules/react-native-svg`)
   - SDWebImage (= 5.8.3)
+  - Segment-Appboy
   - Specta
   - Starscream
   - SwiftyJSON
@@ -1055,7 +1055,7 @@ SPEC CHECKSUMS:
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 8dd5f9b9691e09186393069a12cc3b5ed7c8b511
   AFOAuth1Client: 155a6237e57987cac18dac2ccd17cea5d324ad1a
-  Analytics: 7bdc735c456434b4eaa2eacdcf122bb03d51ede7
+  Analytics: 084a3edda6517e308007c1a7810b8f1e8f2925aa
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   Appboy-iOS-SDK: 33b31d5ade91a7d0718534798f4ab1146e7b0681
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
@@ -1195,6 +1195,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: d2cac271b5ae96066a942d7e321ca7f853f08788
+PODFILE CHECKSUM: ef691105e5ed0ec972b7d4c66f909dcf36f0d798
 
 COCOAPODS: 1.10.1
