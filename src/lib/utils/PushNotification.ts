@@ -1,47 +1,81 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
+import { Platform } from "react-native"
 import { getDeviceName } from "react-native-device-info"
 import PushNotification from "react-native-push-notification"
 import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "./AdminMenu"
 
 export const IOS_PUSH_NOTIFICATION_TOKEN = "IOS_PUSH_NOTIFICATION_TOKEN"
 export const ANDROID_PUSH_NOTIFICATION_TOKEN = "ANDRROID_PUSH_NOTIFICATION_TOKEN"
+export const PENDING_IOS_PUSH_NOTIFICATION_TOKEN = "PENDING_IOS_PUSH_NOTIFICATION_TOKEN"
+export const PENDING_ANDROID_PUSH_NOTIFICATION_TOKEN = "PENDING_ANDRROID_PUSH_NOTIFICATION_TOKEN"
 
-const saveToken = async (tokenObject: { os: string; token: string }) => {
-  const { token, os } = tokenObject
-  const storageKey = os === "android" ? ANDROID_PUSH_NOTIFICATION_TOKEN : IOS_PUSH_NOTIFICATION_TOKEN
-  const previousToken = await AsyncStorage.getItem(storageKey)
-
-  if (token !== previousToken) {
-    const { authenticationToken, userAgent } = getCurrentEmissionState()
-    const gravityURL = unsafe__getEnvironment().gravityURL
-    const url = gravityURL + "/api/v1/device"
-    const name = await getDeviceName()
-    const body = JSON.stringify({
-      name,
-      token,
-      app_id: "net.artsy.artsy",
-      // "production" : ARAppStatus.isBetaOrDev ? @"false" : @"true"
+export const savePendingToken = async () => {
+  const pendingStorageKey =
+    Platform.OS === "android" ? PENDING_ANDROID_PUSH_NOTIFICATION_TOKEN : PENDING_IOS_PUSH_NOTIFICATION_TOKEN
+  const token = await AsyncStorage.getItem(pendingStorageKey)
+  if (token) {
+    saveToken({ os: Platform.OS, token }).then((res) => {
+      if (res) {
+        AsyncStorage.removeItem(pendingStorageKey)
+      }
     })
-    const headers = {
-      "Content-Type": "application/json",
-      "X-ACCESS-TOKEN": authenticationToken,
-      "User-Agent": userAgent,
-    }
-    const request = new Request(url, { method: "POST", body, headers })
-    fetch(request)
-      .then((res) => res.json())
-      .then((response) => {
-        if (response.status < 200 || response.status > 299 || response.error) {
-          if (__DEV__) {
-            console.warn(`New Push Token ${token} was not saved`, response?.error)
-          }
-          // TODO: Batch this request for retrial
-          return
-        }
-        AsyncStorage.setItem(storageKey, token)
-      })
   }
+}
+
+export const saveToken = (tokenObject: { os: string; token: string }) => {
+  return new Promise(async (resolve, reject) => {
+    const { token, os } = tokenObject
+    const storageKey = os === "android" ? ANDROID_PUSH_NOTIFICATION_TOKEN : IOS_PUSH_NOTIFICATION_TOKEN
+    const pendingStorageKey =
+      os === "android" ? PENDING_ANDROID_PUSH_NOTIFICATION_TOKEN : PENDING_IOS_PUSH_NOTIFICATION_TOKEN
+
+    const previousToken = await AsyncStorage.getItem(storageKey)
+
+    if (token !== previousToken) {
+      const { authenticationToken, userAgent } = getCurrentEmissionState()
+
+      if (!authenticationToken) {
+        // user is not logged in. The first time a user opens the app, expect token to be gotten before the global store is initialised
+        // save the token and send to gravity when they log in
+        AsyncStorage.setItem(pendingStorageKey, token)
+        reject("No authentication token")
+      } else {
+        const gravityURL = unsafe__getEnvironment().gravityURL
+        const url = gravityURL + "/api/v1/device"
+        const name = await getDeviceName()
+        const body = JSON.stringify({
+          name,
+          token,
+          app_id: "net.artsy.artsy",
+          platform: os,
+          production: !__DEV__, // TODO: Fix this asap when we can determine beta on android. production should be false for beta builds
+        })
+        const headers = {
+          "Content-Type": "application/json",
+          "X-ACCESS-TOKEN": authenticationToken,
+          "User-Agent": userAgent,
+        }
+        const request = new Request(url, { method: "POST", body, headers })
+        fetch(request)
+          .then((res) => res.json())
+          .then((response) => {
+            if (response.status < 200 || response.status > 299 || response.error) {
+              if (__DEV__) {
+                console.warn(`New Push Token ${token} was not saved`, response?.error)
+              }
+              // TODO: Batch this request for retrial
+              reject("Failed to save new push token")
+            }
+            if (__DEV__) {
+              console.log(`New Push Token ${token} saved!`)
+            }
+            AsyncStorage.setItem(storageKey, token)
+            resolve(true)
+          })
+      }
+    }
+  })
 }
 
 export async function configure() {
