@@ -5168,6 +5168,9 @@ type ConversationInitiator {
 
 type ConversationItem {
   item: ConversationItemType
+
+  # The actual, non-snapshotted artwork
+  liveArtwork: ConversationItemType
   permalink: String
   title: String
 }
