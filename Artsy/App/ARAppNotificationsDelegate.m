@@ -3,6 +3,8 @@
 #import "ArtsyAPI+Notifications.h"
 #import "ArtsyAPI+DeviceTokens.h"
 #import "ArtsyAPI+CurrentUserFunctions.h"
+#import <Analytics/SEGAnalytics.h>
+#import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
 
 #import "ARAppDelegate.h"
 #import "ARAppConstants.h"
@@ -259,6 +261,11 @@
     [[Appboy sharedInstance] registerApplication:application
                     didReceiveRemoteNotification:userInfo
                           fetchCompletionHandler:handler];
+
+    if ([Appboy sharedInstance] == nil) {
+        [[SEGAppboyIntegrationFactory instance] saveRemoteNotification:userInfo];
+    }
+
     handler(UIBackgroundFetchResultNoData);
 }
 
@@ -306,8 +313,7 @@
 - (void)receivedNotification:(NSDictionary *)notificationInfo;
 {
     [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationReceived traits:notificationInfo];
-    // TODO: Replace with Segment notification tracking
-    // [[SEGAnalytics sharedAnalytics] receivedRemoteNotification:notificationInfo];
+    [[SEGAnalytics sharedAnalytics] receivedRemoteNotification:notificationInfo];
 }
 
 - (void)tappedNotification:(NSDictionary *)notificationInfo url:(NSString *)url;

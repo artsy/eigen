@@ -2708,15 +2708,15 @@
     lodash "^4.17.15"
     lodash-es "^4.17.15"
 
-"@segment/analytics-react-native-appboy@^1.4.8":
-  version "1.4.8"
-  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-appboy/-/analytics-react-native-appboy-1.4.8.tgz#ecbbeb658036975352d84d197d7fc099e02b871e"
-  integrity sha512-czX4H1/cfDhWeLL9I4MlbqxXT/xqaNpVw5uo70GgHD5ZZOEB1Y3hC5g81oBwgh6G/y/cn7ZS/XXCmJhG4EV8Gw==
+"@segment/analytics-react-native-appboy@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-appboy/-/analytics-react-native-appboy-1.5.0.tgz#0aa635710cf6d8198990f9cf5d27112af1f9ed82"
+  integrity sha512-de4NCfopobxziH/sDmGEsZ7VWevNObkFMtDsqhmrbYrjRMs4LGJ/GWo2TX0GhzYqPJurBrNPIoiQlrTaX7rIfg==
 
-"@segment/analytics-react-native@^1.4.4":
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native/-/analytics-react-native-1.4.4.tgz#1c5e4f18ac46dd899947c758f104004fc7d5ffce"
-  integrity sha512-zSgoGvw3VNqam0QoumOGiNr97ar3tutSwuMJPj2Da6mcJBVohMYHQcpShyufWfsiDeX8oMnu+UJx5eo+cxskrw==
+"@segment/analytics-react-native@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native/-/analytics-react-native-1.5.0.tgz#14538b8c018202ef62daf8c5b3898312a057fbde"
+  integrity sha512-hW93MKffFfkqNec615jQUB5wJHb5KyIcZitIVF5L7cZZxBCM7rQjVdwV9Jdk3KGFwjnWGRkAjDD2DkJZYqz7KQ==
 
 "@sentry/browser@6.2.0":
   version "6.2.0"
@@ -11868,10 +11868,10 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
 
-react-native-appboy-sdk@^1.29.1:
-  version "1.29.1"
-  resolved "https://registry.yarnpkg.com/react-native-appboy-sdk/-/react-native-appboy-sdk-1.29.1.tgz#ff38f7e02e3928fa804e55c6ec5034384cf63dd3"
-  integrity sha512-FwnbOqxWwivJyXL/XcWpfXIqb72/d0DVgpRDTSDJk5shze24EujvoYV9m7HNHl8rvKYLEu9QQ5Xzn7X34Fgsag==
+react-native-appboy-sdk@^1.30.0:
+  version "1.30.0"
+  resolved "https://registry.yarnpkg.com/react-native-appboy-sdk/-/react-native-appboy-sdk-1.30.0.tgz#ccebdcb297c887d30bd7fb75afab88022e243884"
+  integrity sha512-IP6QgYZsgGkk7EyTuEzIgr/b/GyHWP2YSmcOcB06S6PTF6tUPyHobHDT1+MyC85UZpwVHkdXJ9k6GvMxHiJo3w==
 
 react-native-bootsplash@^3.2.0:
   version "3.2.0"
