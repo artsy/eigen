@@ -26,7 +26,7 @@ export interface MyAccountFieldEditScreenProps {
   title: string
   canSave: boolean
   contentContainerStyle?: ViewStyle
-  isSaveButtonVisible?: boolean
+  isSaveButtonVisible: boolean
   onSave?(dismiss: () => void, alert: AlertStatic["alert"]): Promise<any> | undefined
 }
 
@@ -87,7 +87,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
         }
         title={title}
         right={
-          !(isSaveButtonVisible === false) && (
+          isSaveButtonVisible && (
             <TouchableOpacity disabled={!canSave} onPress={handleSave}>
               <Text variant="text" opacity={!canSave ? 1 : 0.3}>
                 Save

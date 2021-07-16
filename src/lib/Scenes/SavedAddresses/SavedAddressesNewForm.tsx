@@ -21,7 +21,6 @@ import { MyAccountFieldEditScreen } from "../MyAccount/Components/MyAccountField
 import { AddAddressButton } from "./Components/AddAddressButton"
 import { createUserAddress } from "./mutations/addNewAddress"
 import { setAsDefaultAddress } from "./mutations/setAsDefaultAddress"
-import { __triggerRefresh } from "./SavedAddresses"
 
 interface FormField<Type = string> {
   value: Type | null
@@ -102,15 +101,7 @@ export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> =
         region: state.fields.region.value,
         phoneNumber,
       })
-      if (creatingResponse.createUserAddress?.userAddressOrErrors.internalID) {
-        await __triggerRefresh?.()
-      } else {
-        throw new Error(
-          `Error trying to save address ${JSON.stringify(
-            creatingResponse.createUserAddress?.userAddressOrErrors.errors
-          )}`
-        )
-      }
+
       if (isDefaultAddress) {
         await setAsDefaultAddress(creatingResponse.createUserAddress?.userAddressOrErrors.internalID!)
       }

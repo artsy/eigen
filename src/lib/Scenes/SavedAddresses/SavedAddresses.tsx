@@ -9,7 +9,7 @@ import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { color, Flex, Separator, Spacer, Text, Touchable } from "palette"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -27,26 +27,11 @@ const Card = styled(Flex)`
 `
 
 // tslint:disable-next-line:variable-name
-export let __triggerRefresh: null | (() => Promise<void>) = null
 const NUM_ADDRESSES_TO_FETCH = 10
 
 const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const addresses = extractNodes(me.addressConnection)
-
-  useEffect(() => {
-    const triggerRefresh = async () => {
-      await new Promise((resolve) => {
-        relay.refetch({}, { first: NUM_ADDRESSES_TO_FETCH }, resolve, { force: true })
-      })
-    }
-    __triggerRefresh = triggerRefresh
-    return () => {
-      if (__triggerRefresh === triggerRefresh) {
-        __triggerRefresh = null
-      }
-    }
-  }, [])
 
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)

@@ -21,6 +21,7 @@ const MyAccountEditName: React.FC<{ me: MyAccountEditName_me; relay: RelayProp }
   return (
     <MyAccountFieldEditScreen
       title={"Full Name"}
+      isSaveButtonVisible={true}
       canSave={!!name.trim() && name.trim() !== me.name}
       onSave={async (dismiss) => {
         try {
