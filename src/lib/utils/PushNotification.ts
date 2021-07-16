@@ -1,6 +1,48 @@
 import AsyncStorage from "@react-native-community/async-storage"
+import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
+import { getDeviceName } from "react-native-device-info"
 import PushNotification from "react-native-push-notification"
 import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "./AdminMenu"
+
+export const IOS_PUSH_NOTIFICATION_TOKEN = "IOS_PUSH_NOTIFICATION_TOKEN"
+export const ANDROID_PUSH_NOTIFICATION_TOKEN = "ANDRROID_PUSH_NOTIFICATION_TOKEN"
+
+const saveToken = async (tokenObject: { os: string; token: string }) => {
+  const { token, os } = tokenObject
+  const storageKey = os === "android" ? ANDROID_PUSH_NOTIFICATION_TOKEN : IOS_PUSH_NOTIFICATION_TOKEN
+  const previousToken = await AsyncStorage.getItem(storageKey)
+
+  if (token !== previousToken) {
+    const { authenticationToken, userAgent } = getCurrentEmissionState()
+    const gravityURL = unsafe__getEnvironment().gravityURL
+    const url = gravityURL + "/api/v1/device"
+    const name = await getDeviceName()
+    const body = JSON.stringify({
+      name,
+      token,
+      app_id: "net.artsy.artsy",
+      // "production" : ARAppStatus.isBetaOrDev ? @"false" : @"true"
+    })
+    const headers = {
+      "Content-Type": "application/json",
+      "X-ACCESS-TOKEN": authenticationToken,
+      "User-Agent": userAgent,
+    }
+    const request = new Request(url, { method: "POST", body, headers })
+    fetch(request)
+      .then((res) => res.json())
+      .then((response) => {
+        if (response.status < 200 || response.status > 299 || response.error) {
+          if (__DEV__) {
+            console.warn(`New Push Token ${token} was not saved`, response?.error)
+          }
+          // TODO: Batch this request for retrial
+          return
+        }
+        AsyncStorage.setItem(storageKey, token)
+      })
+  }
+}
 
 export async function configure() {
   const canInitPushNotification = await AsyncStorage.getItem(ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY)
@@ -11,7 +53,7 @@ export async function configure() {
         if (__DEV__) {
           console.log("TOKEN:", token)
         }
-        // TODO: Send the token to Gravity
+        saveToken(token)
       },
 
       // (required) Called when a remote is received or opened, or local notification is opened
