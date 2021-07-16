@@ -4,8 +4,7 @@ import { StyleProp, ViewStyle } from "react-native"
 import { PositionProps } from "styled-system"
 
 import { Sans } from ".."
-import { color } from "../../Theme"
-import { Color } from "../../Theme"
+import { Color, color } from "../../Theme"
 
 export interface CardTagProps extends PositionProps {
   text: string

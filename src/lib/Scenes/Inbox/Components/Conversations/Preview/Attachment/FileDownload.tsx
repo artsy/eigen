@@ -10,10 +10,11 @@ import { DownloadIcon } from "palette"
 import styled from "styled-components/native"
 import { AttachmentContainer, AttachmentTextContainer } from "./PDFPreview"
 
-export const NoBorderContainer = styled.View`
-  flex: 1;
-  flex-direction: row;
-`
+export const NoBorderContainer = styled.View({
+  flex: 1,
+  flexDirection: "row",
+})
+
 interface Props extends AttachmentProps {
   attachment: FileDownload_attachment
   tiny?: boolean
