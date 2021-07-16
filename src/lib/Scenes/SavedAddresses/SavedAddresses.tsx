@@ -8,7 +8,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { color, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import { Box, color, Flex, Separator, Spacer, Text, Touchable } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -54,6 +54,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
       (message: string) => captureMessage(message)
     )
   }
+  console.log(addresses, "point addresses ")
 
   return (
     <PageWithSimpleHeader title="Saved Addresses">
@@ -67,42 +68,57 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
         }}
         renderItem={({ item }) => (
           <>
-            <Card mx={2} py={2} px={16} isDefault={item.isDefault}>
-              <Text fontSize={16} lineHeight={24}>
-                {item.name}
-              </Text>
-              <Text fontSize={16} lineHeight={24} color="black60">
-                {[item.addressLine1, item?.addressLine2, item?.addressLine3].filter(Boolean).join(", ")}
-              </Text>
-              <Text fontSize={16} lineHeight={24} color="black60">
-                {item.city}, {item.postalCode}
-              </Text>
-              <Spacer height={10} />
-              <Text variant="text" color="black60">
-                {item?.phoneNumber}
-              </Text>
-              <Separator my={2} />
-              <Flex flexDirection="row">
-                <Flex flex={1} justifyContent="center">
-                  {!!item?.isDefault && <Text variant="small">Default Address</Text>}
+            <Flex mx={2}>
+              <Card py={2} px={16} isDefault={item.isDefault}>
+                <Text fontSize={16} lineHeight={24}>
+                  {item.name}
+                </Text>
+                <Text fontSize={16} lineHeight={24} color="black60">
+                  {[item.addressLine1, item?.addressLine2, item?.addressLine3].filter(Boolean).join(", ")}
+                </Text>
+                <Text fontSize={16} lineHeight={24} color="black60">
+                  {item.city}, {item.postalCode}
+                </Text>
+                <Spacer height={10} />
+                <Text variant="text" color="black60">
+                  {item?.phoneNumber}
+                </Text>
+                <Separator my={2} />
+                <Flex flexDirection="row">
+                  <Flex flex={1} justifyContent="center">
+                    {!!item?.isDefault && <Text variant="small">Default Address</Text>}
+                  </Flex>
+                  <Flex flex={1} flexDirection="row" justifyContent="space-between">
+                    <Touchable onPress={onPressEditAddress}>
+                      <Text variant="text" color="black100" style={{ textDecorationLine: "underline" }}>
+                        Edit
+                      </Text>
+                    </Touchable>
+                    <Touchable onPress={() => onPressDeleteAddress(item.internalID)}>
+                      <Text variant="text" color="red100" style={{ textDecorationLine: "underline" }}>
+                        Delete
+                      </Text>
+                    </Touchable>
+                  </Flex>
                 </Flex>
-                <Flex flex={1} flexDirection="row" justifyContent="space-between">
-                  <Touchable onPress={onPressEditAddress}>
-                    <Text variant="text" color="black100" style={{ textDecorationLine: "underline" }}>
-                      Edit
-                    </Text>
-                  </Touchable>
-                  <Touchable onPress={() => onPressDeleteAddress(item.internalID)}>
-                    <Text variant="text" color="red100" style={{ textDecorationLine: "underline" }}>
-                      Delete
-                    </Text>
-                  </Touchable>
-                </Flex>
-              </Flex>
-            </Card>
+              </Card>
+            </Flex>
+
             <Spacer height={40} />
           </>
         )}
+        ListFooterComponent={
+          addresses.length ? (
+            <Box mx={2} mb={2}>
+              <AddAddressButton
+                handleOnPress={() => navigate("/my-profile/saved-addresses/new-address")}
+                title="Add New Address"
+              />
+            </Box>
+          ) : (
+            <></>
+          )
+        }
         ListEmptyComponent={
           <Flex py={3} px={2} alignItems="center" height="100%" justifyContent="center">
             <Text variant="title" mb={2}>
