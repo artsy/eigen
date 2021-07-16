@@ -141,7 +141,7 @@
     "rn-fetch-blob": "0.12.0",
     "semver": "^7.3.4",
     "simple-markdown": "0.7.2",
-    "styled-components": "4.2.0",
+    "styled-components": "4.2.1",
     "styled-system": "5.1.5",
     "supercluster": "6.0.1",
     "tipsi-stripe": "https://github.com/artsy/tipsi-stripe.git#fix-infinite-loop",
@@ -149,7 +149,6 @@
     "yup": "0.29.1"
   },
   "devDependencies": {
-    "@artsy/auto-config": "1.0.2",
     "@artsy/update-repo": "0.2.0",
     "@babel/core": "^7.12.9",
     "@babel/plugin-proposal-class-properties": "7.10.4",
@@ -182,8 +181,8 @@
     "@types/relay-test-utils": "6.0.1",
     "@types/remove-markdown": "0.1.1",
     "@types/semver": "^7.3.4",
-    "@types/styled-components": "4.0.2",
-    "@types/styled-system": "5.1.9",
+    "@types/styled-components": "4.0.3",
+    "@types/styled-system": "5.1.12",
     "@types/supercluster": "5.0.0",
     "@types/yup": "0.29.3",
     "argparse": "^2.0.1",
@@ -209,7 +208,7 @@
     "jest": "25.2.7",
     "jest-fetch-mock": "^3.0.3",
     "jest-raw-loader": "1.0.1",
-    "jest-styled-components": "7.0.0-2",
+    "jest-styled-components": "7.0.5",
     "jest-watch-typeahead": "^0.6.1",
     "jetifier": "^1.6.6",
     "json5": "2.1.0",
@@ -243,7 +242,7 @@
     "tslint-config-prettier": "1.18.0",
     "tslint-plugin-relay": "0.0.2",
     "typescript": "^4.1.2",
-    "typescript-styled-plugin": "0.13.0",
+    "typescript-styled-plugin": "0.18.0",
     "vscode-apollo-relay": "1.5.0"
   },
   "lint-staged": {
