@@ -75,6 +75,5 @@ const Logo = styled(Image)`
   height: 100;
   background-color: transparent;
   margin-bottom: ${space(1)};
-  /* stylelint-disable */
   tint-color: white;
 `
