@@ -1,8 +1,8 @@
 import tokens from "@artsy/palette-tokens"
 import React from "react"
+import { ThemeContext, ThemeProvider } from "styled-components/native"
 import { TEXT_FONTS } from "./elements/Text/tokens"
 import { fontFamily } from "./platform/fonts/fontFamily"
-import { ThemeProvider } from "./platform/primitives"
 
 /**
  * All of the config for the Artsy theming system, based on the

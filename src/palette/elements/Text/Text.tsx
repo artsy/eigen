@@ -1,6 +1,7 @@
 import { TEXT_LINE_HEIGHTS } from "@artsy/palette-tokens/dist/text"
 import React from "react"
 import { TextProps as RNTextProps } from "react-native"
+import styled from "styled-components/native"
 import {
   color,
   ColorProps,
@@ -12,7 +13,6 @@ import {
   TypographyProps,
   variant as systemVariant,
 } from "styled-system"
-import { styled as primitives } from "../../platform/primitives"
 import {
   calculateLetterSpacing,
   calculateLineHeight,
@@ -43,7 +43,7 @@ export const textMixin = compose(typography, color, textColor, space)
 /** TextProps */
 export type TextProps = BaseTextProps & RNTextProps
 
-const InnerText = primitives.Text<TextProps>`
+const InnerText = styled.Text<TextProps>`
   ${systemVariant({ variants: TEXT_VARIANTS })}
   ${textMixin}
 `

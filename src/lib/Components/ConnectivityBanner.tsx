@@ -4,12 +4,12 @@ import styled from "styled-components/native"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 
-const Container = styled.View`
-  height: 30;
-  background-color: ${colors["yellow-regular"]};
-  justify-content: center;
-  align-items: center;
-`
+const Container = styled.View({
+  height: 30,
+  backgroundColor: colors["yellow-regular"],
+  justifyContent: "center",
+  alignItems: "center",
+})
 
 const ConnectivityMessage = styled.Text`
   color: ${colors["yellow-bold"]};
