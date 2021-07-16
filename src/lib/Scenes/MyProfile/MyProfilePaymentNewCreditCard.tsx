@@ -106,7 +106,6 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
       ref={screenRef}
       canSave={state.allPresent}
       title="Add new card"
-      isSaveButtonVisible={true}
       onSave={async (dismiss, alert) => {
         try {
           const stripeResult = await stripe.createTokenWithCard({

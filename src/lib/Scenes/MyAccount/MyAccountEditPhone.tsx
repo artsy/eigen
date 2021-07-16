@@ -19,7 +19,6 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me }> = ({ me }) => 
 
   return (
     <MyAccountFieldEditScreen
-      isSaveButtonVisible={true}
       title={"Phone"}
       canSave={!!phone.trim()}
       onSave={async (dismiss) => {

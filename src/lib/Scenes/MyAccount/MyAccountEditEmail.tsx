@@ -26,7 +26,6 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
     <MyAccountFieldEditScreen
       ref={editScreenRef}
       title={"Email"}
-      isSaveButtonVisible={true}
       canSave={isEmailValid}
       onSave={async (dismiss) => {
         try {
