@@ -274,8 +274,6 @@
     NSString *uiApplicationState = [UIApplicationStateEnum toString:applicationState];
     ARActionLog(@"Incoming notification in the %@ application state: %@", uiApplicationState, userInfo);
 
-    [[SEGAnalytics sharedAnalytics] receivedRemoteNotification:userInfo];
-
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
     [notificationInfo setObject:uiApplicationState forKey:@"UIApplicationState"];
 
@@ -315,8 +313,7 @@
 - (void)receivedNotification:(NSDictionary *)notificationInfo;
 {
     [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationReceived traits:notificationInfo];
-    // TODO: Replace with Segment notification tracking
-    // [[SEGAnalytics sharedAnalytics] receivedRemoteNotification:notificationInfo];
+    [[SEGAnalytics sharedAnalytics] receivedRemoteNotification:notificationInfo];
 }
 
 - (void)tappedNotification:(NSDictionary *)notificationInfo url:(NSString *)url;
