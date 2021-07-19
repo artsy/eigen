@@ -24,14 +24,12 @@ beforeEach(() => {
 describe("Push Notification Tests", () => {
   beforeEach(async () => {
     jest.clearAllMocks()
-    await AsyncStorage.removeItem(ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY)
-    await AsyncStorage.removeItem(Push.PENDING_ANDROID_PUSH_NOTIFICATION_TOKEN)
+    await AsyncStorage.clear()
   })
 
   afterAll(async () => {
     jest.clearAllMocks()
-    await AsyncStorage.removeItem(ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY)
-    await AsyncStorage.removeItem(Push.PENDING_ANDROID_PUSH_NOTIFICATION_TOKEN)
+    await AsyncStorage.clear()
   })
 
   it("Initialises when feature flag is true", async () => {

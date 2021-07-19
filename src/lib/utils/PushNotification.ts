@@ -15,11 +15,10 @@ export const savePendingToken = async () => {
     Platform.OS === "android" ? PENDING_ANDROID_PUSH_NOTIFICATION_TOKEN : PENDING_IOS_PUSH_NOTIFICATION_TOKEN
   const token = await AsyncStorage.getItem(pendingStorageKey)
   if (token) {
-    saveToken({ os: Platform.OS, token }).then((res) => {
-      if (res) {
-        AsyncStorage.removeItem(pendingStorageKey)
-      }
-    })
+    const saved = await saveToken({ os: Platform.OS, token })
+    if (saved) {
+      AsyncStorage.removeItem(pendingStorageKey)
+    }
   }
 }
 
@@ -68,8 +67,6 @@ export const saveToken = (tokenObject: { os: string; token: string }) => {
           console.log(`New Push Token ${token} saved!`)
         }
         await AsyncStorage.setItem(storageKey, token)
-        // clear whatever pending token that may have been saved
-        await AsyncStorage.removeItem(pendingStorageKey)
         resolve(true)
       }
     }
