@@ -3,7 +3,6 @@
 // All the options as consts
 extern NSString *const AROptionsDebugARVIR;
 extern NSString *const AROptionsDisableNativeLiveAuctions;
-extern NSString *const AROptionsShowAnalyticsOnScreen;
 extern NSString *const AROptionsShowMartsyOnScreen;
 
 @interface AROptions : NSObject

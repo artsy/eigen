@@ -15,13 +15,11 @@ export const AppProviders = ({ children }: { children: ReactNode }) => (
       <Theme>
         <ActionSheetProvider>
           <GlobalStoreProvider>
-            <ToastProvider>
-              <PopoverMessageProvider>
-                <_FancyModalPageWrapper>
-                  {children}
-                </_FancyModalPageWrapper>
-              </PopoverMessageProvider>
-            </ToastProvider>
+            <PopoverMessageProvider>
+              <_FancyModalPageWrapper>
+                <ToastProvider>{children}</ToastProvider>
+              </_FancyModalPageWrapper>
+            </PopoverMessageProvider>
           </GlobalStoreProvider>
         </ActionSheetProvider>
       </Theme>

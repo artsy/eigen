@@ -1,7 +1,8 @@
 import { SavedAddressesTestsQuery } from "__generated__/SavedAddressesTestsQuery.graphql"
+import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Flex } from "palette"
+import { Button, Flex } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -108,5 +109,21 @@ describe(SavedAddressesQueryRenderer, () => {
 
     expect(text).toContain("Edit")
     expect(text).toContain("Delete")
+  })
+  it("testing add new address navigation", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+      const result = MockPayloadGenerator.generate(operation, {
+        Me: () => ({
+          name: "saver",
+          addressConnection: {
+            edges: [],
+          },
+        }),
+      })
+      return result
+    })
+    tree.findByType(Button).props.onPress()
+    expect(navigate).toHaveBeenCalledWith("/my-profile/saved-addresses/new-address")
   })
 })
