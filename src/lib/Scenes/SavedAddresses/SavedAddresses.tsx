@@ -54,7 +54,6 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
       (message: string) => captureMessage(message)
     )
   }
-  console.log(addresses, "point addresses ")
 
   return (
     <PageWithSimpleHeader title="Saved Addresses">
