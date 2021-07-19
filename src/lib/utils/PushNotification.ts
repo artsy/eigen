@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
 import { Platform } from "react-native"
-import { getDeviceName } from "react-native-device-info"
+import { getDeviceId } from "react-native-device-info"
 import PushNotification from "react-native-push-notification"
 import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "./AdminMenu"
 
@@ -24,26 +24,24 @@ export const savePendingToken = async () => {
 }
 
 export const saveToken = (tokenObject: { os: string; token: string }) => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise<boolean>(async (resolve, reject) => {
     const { token, os } = tokenObject
     const storageKey = os === "android" ? ANDROID_PUSH_NOTIFICATION_TOKEN : IOS_PUSH_NOTIFICATION_TOKEN
     const pendingStorageKey =
       os === "android" ? PENDING_ANDROID_PUSH_NOTIFICATION_TOKEN : PENDING_IOS_PUSH_NOTIFICATION_TOKEN
 
     const previousToken = await AsyncStorage.getItem(storageKey)
-
     if (token !== previousToken) {
       const { authenticationToken, userAgent } = getCurrentEmissionState()
-
       if (!authenticationToken) {
         // user is not logged in. The first time a user opens the app, expect token to be gotten before the global store is initialised
         // save the token and send to gravity when they log in
-        AsyncStorage.setItem(pendingStorageKey, token)
-        reject("No authentication token")
+        await AsyncStorage.setItem(pendingStorageKey, token)
+        reject("Push Notification: No access token")
       } else {
         const gravityURL = unsafe__getEnvironment().gravityURL
         const url = gravityURL + "/api/v1/device"
-        const name = await getDeviceName()
+        const name = __TEST__ ? "my-device-name" : getDeviceId()
         const body = JSON.stringify({
           name,
           token,
@@ -57,22 +55,22 @@ export const saveToken = (tokenObject: { os: string; token: string }) => {
           "User-Agent": userAgent,
         }
         const request = new Request(url, { method: "POST", body, headers })
-        fetch(request)
-          .then((res) => res.json())
-          .then((response) => {
-            if (response.status < 200 || response.status > 299 || response.error) {
-              if (__DEV__) {
-                console.warn(`New Push Token ${token} was not saved`, response?.error)
-              }
-              // TODO: Batch this request for retrial
-              reject("Failed to save new push token")
-            }
-            if (__DEV__) {
-              console.log(`New Push Token ${token} saved!`)
-            }
-            AsyncStorage.setItem(storageKey, token)
-            resolve(true)
-          })
+        const res = await fetch(request)
+        const response = await res.json()
+        if (response.status < 200 || response.status > 299 || response.error) {
+          if (__DEV__) {
+            console.warn(`New Push Token ${token} was NOT saved`, response?.error)
+          }
+          reject("Push Notification: Failed to save new push notification token")
+          return
+        }
+        if (__DEV__) {
+          console.log(`New Push Token ${token} saved!`)
+        }
+        await AsyncStorage.setItem(storageKey, token)
+        // clear whatever pending token that may have been saved
+        await AsyncStorage.removeItem(pendingStorageKey)
+        resolve(true)
       }
     }
   })
@@ -145,4 +143,6 @@ export async function configure() {
 
 module.exports = {
   configure,
+  saveToken,
+  savePendingToken,
 }
