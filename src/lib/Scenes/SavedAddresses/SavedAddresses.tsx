@@ -170,7 +170,7 @@ export const SavedAddressesContainer = createRefetchContainer(
     me: graphql`
       fragment SavedAddresses_me on Me {
         name
-        addressConnection(first: NUM_ADDRESSES_TO_FETCH) {
+        addressConnection(first: 10) {
           edges {
             node {
               id
