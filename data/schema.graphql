@@ -6152,7 +6152,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     before: String
     first: Int
     last: Int
-    page: Int = 1
+    page: Int
 
     # Number of artworks to return
     section: String
