@@ -20,6 +20,7 @@ import {
   isControlledLetterSpacing,
   isControlledLineHeight,
   TEXT_VARIANTS,
+  TextLineHeight,
   TextVariant,
   TREATMENTS,
 } from "./tokens"
@@ -74,7 +75,7 @@ export const Text: React.FC<TextProps> = ({ children, variant, fontSize, letterS
     ...(variant && fontSize && typeof fontSize === "number" && !lineHeight
       ? // Possibly convert the lineHeight
         {
-          lineHeight: fontSize * TEXT_LINE_HEIGHTS[TREATMENTS[variant].lineHeight],
+          lineHeight: fontSize * TEXT_LINE_HEIGHTS[TREATMENTS[variant].lineHeight as TextLineHeight],
         }
       : {}),
     ...rest,
