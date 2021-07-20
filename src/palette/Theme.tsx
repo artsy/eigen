@@ -1,11 +1,4 @@
-import {
-  Theme as ThemeType,
-  THEME_V2,
-  THEME_V3,
-  ThemeV2 as ThemeV2Type,
-  ThemeV3 as ThemeV3Type,
-} from "@artsy/palette-tokens"
-import { breakpoints, themeProps as tokens } from "@artsy/palette-tokens/dist/themes/v2"
+import { THEME_V2, THEME_V3 } from "@artsy/palette-tokens"
 import _ from "lodash"
 import React, { useContext } from "react"
 import { ThemeContext, ThemeProvider } from "styled-components/native"
@@ -17,33 +10,67 @@ import { fontFamily } from "./platform/fonts/fontFamily"
  * design system from our design team:
  * https://www.notion.so/artsy/Master-Library-810612339f474d0997fe359af4285c56
  */
-export { space, color } from "@artsy/palette-tokens/dist/helpers"
-export { Color, SansSize, SpacingUnit, SerifSize, TypeSizes } from "@artsy/palette-tokens/dist/themes/v2"
-export { Color as ColorV3 } from "@artsy/palette-tokens/dist/themes/v3"
+export { SansSize, SerifSize, TypeSizes } from "@artsy/palette-tokens/dist/themes/v2"
+
+import { Color as ColorV2, SpacingUnit as SpacingUnitV2 } from "@artsy/palette-tokens/dist/themes/v2"
+import { Color as ColorV3, SpacingUnit as SpacingUnitV3Numbers } from "@artsy/palette-tokens/dist/themes/v3"
+
+type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
+type Color = ColorV2 | ColorV3
+type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
+export { ColorV2, ColorV3, SpacingUnitV2, SpacingUnitV3, Color, SpacingUnit }
 
 const {
   breakpoints: _eigenDoesntCareAboutBreakpoints,
   mediaQueries: _eigenDoesntCareAboutMediaQueries,
   grid: _eigenDoesntCareAboutGrid,
+  space: spaceNumbers,
   ...eigenUsefulTHEME_V3
 } = THEME_V3
 
-const THEMES = {
-  v2: { ...THEME_V2, fontFamily, fonts: TEXT_FONTS_V2 },
-  v3: { ...eigenUsefulTHEME_V3, fonts: TEXT_FONTS_V3 }, // v3 removed `fontFamily`, `fontSizes`, `letterSpacings`, `lineHeights`, `typeSizes`
+const fixSpaceUnits = (
+  units: typeof spaceNumbers
+): {
+  "0.5": number
+  "1": number
+  "2": number
+  "4": number
+  "6": number
+  "12": number
+} => {
+  let fixed = units
+
+  fixed = _.mapKeys(fixed, (_value, numberKey) => `${numberKey}`) as any
+
+  fixed = _.mapValues(fixed, (stringValueWithPx) => {
+    const justStringValue = _.split(stringValueWithPx, "px")[0]
+    const numberValue = parseInt(justStringValue, 10)
+    return numberValue
+  }) as any
+
+  return fixed as any
 }
 
-// stop using this!! use the hook instead.
+export const THEMES = {
+  v2: { ...THEME_V2, fontFamily, fonts: TEXT_FONTS_V2 },
+  v3: {
+    ...eigenUsefulTHEME_V3,
+    fonts: TEXT_FONTS_V3,
+    space: fixSpaceUnits(spaceNumbers),
+  }, // v3 removed `fontFamily`, `fontSizes`, `letterSpacings`, `lineHeights`, `typeSizes`
+}
+
+type ThemeV2Type = typeof THEMES.v2
+type ThemeV3Type = typeof THEMES.v3
+type ThemeType = ThemeV2Type | ThemeV3Type
+
+// stop using this!! use any of the hooks in this file instead.
 export const themeProps = THEMES.v2
 
-// /**
-//  * A wrapper component for passing down the Artsy theme context
-//  */
-export const Theme: React.FC<{ theme?: keyof typeof THEMES | ThemeType; override?: Partial<ThemeType> }> = ({
-  children,
-  theme: themeNameOrThemeObj = "v2",
-  override = {},
-}) => {
+export const Theme: React.FC<{
+  theme?: keyof typeof THEMES | ThemeType
+  override?: DeepPartial<ThemeV2Type> | DeepPartial<ThemeV3Type>
+}> = ({ children, theme: themeNameOrThemeObj = "v2", override = {} }) => {
   const theme = _.isString(themeNameOrThemeObj) ? THEMES[themeNameOrThemeObj] : themeNameOrThemeObj
 
   return <ThemeProvider theme={{ ...theme, ...override }}>{children}</ThemeProvider>
@@ -52,11 +79,19 @@ export const Theme: React.FC<{ theme?: keyof typeof THEMES | ThemeType; override
 export const ThemeV2: React.FC = ({ children }) => <ThemeProvider theme="v2">{children}</ThemeProvider>
 export const ThemeV3: React.FC = ({ children }) => <ThemeProvider theme="v3">{children}</ThemeProvider>
 
-/** Returns the current theme */
 export const useTheme = <T extends ThemeType>() => {
   const theme: T = useContext(ThemeContext)
-  return { theme }
+  const color = isThemeV3(theme)
+    ? (colorKey: ColorV3) => theme.colors[colorKey]
+    : (colorKey: ColorV2) => theme.colors[colorKey]
+  const space = isThemeV3(theme)
+    ? (spaceKey: SpacingUnitV3) => theme.space[spaceKey]
+    : (spaceKey: SpacingUnitV2) => theme.space[spaceKey]
+  return { theme, color, space }
 }
+
+export const useColor = () => useTheme().color
+export const useSpace = () => useTheme().space
 
 /** Returns a config specific to the current theme. For use in React components */
 export const useThemeConfig = <T, U>({ v2, v3 }: { v2: T; v3: U }): U | T => {
