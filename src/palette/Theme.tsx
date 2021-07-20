@@ -21,13 +21,10 @@ export { space, color } from "@artsy/palette-tokens/dist/helpers"
 export { Color, SansSize, SpacingUnit, SerifSize, TypeSizes } from "@artsy/palette-tokens/dist/themes/v2"
 export { Color as ColorV3 } from "@artsy/palette-tokens/dist/themes/v3"
 
-const THEMES = { v2: THEME_V2, v3: THEME_V3 }
+const THEMES = { v2: { ...THEME_V2, fontFamily, fonts: TEXT_FONTS }, v3: THEME_V3 }
 
-export const themeProps = {
-  ...tokens,
-  fontFamily,
-  fonts: TEXT_FONTS,
-}
+// stop using this!! use the hook instead.
+export const themeProps = THEMES.v2
 
 // /**
 //  * A wrapper component for passing down the Artsy theme context
