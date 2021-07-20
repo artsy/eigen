@@ -16,10 +16,14 @@ export type TextLineHeight = keyof typeof TEXT_LINE_HEIGHTS
 /**
  * font-families
  */
-export const TEXT_FONTS = {
+export const TEXT_FONTS_V2 = {
   sans: "Unica77LL-Regular",
   serif: "ReactNativeAGaramondPro-Regular",
 }
+export const TEXT_FONTS_V3 = {
+  sans: "Unica77LL-Regular",
+}
+export const TEXT_FONTS = TEXT_FONTS_V2
 
 /**
  * em-units don't exist on React Native so we convert it to a number
