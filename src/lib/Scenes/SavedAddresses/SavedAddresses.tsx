@@ -2,14 +2,14 @@ import { captureMessage } from "@sentry/react-native"
 import { SavedAddresses_me } from "__generated__/SavedAddresses_me.graphql"
 import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import { navigate } from "lib/navigation/navigate"
+import { navigate, navigationEvents } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { Box, color, Flex, Separator, Spacer, Text, Touchable } from "palette"
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -32,6 +32,17 @@ const NUM_ADDRESSES_TO_FETCH = 10
 const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const addresses = extractNodes(me.addressConnection)
+
+  useEffect(() => {
+    navigationEvents.addListener("goBack", handleModalDismissed)
+    return () => {
+      navigationEvents.removeListener("goBack", handleModalDismissed)
+    }
+  }, [])
+
+  const handleModalDismissed = (): void => {
+    onRefresh()
+  }
 
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
@@ -127,7 +138,9 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
               Please add an address for a faster checkout experience in the future.
             </Text>
             <AddAddressButton
-              handleOnPress={() => navigate("/my-profile/saved-addresses/new-address")}
+              handleOnPress={() =>
+                navigate("/my-profile/saved-addresses/new-address", { passProps: { handleModalDismissed } })
+              }
               title="Add New Address"
             />
           </Flex>
@@ -157,7 +170,7 @@ export const SavedAddressesContainer = createRefetchContainer(
     me: graphql`
       fragment SavedAddresses_me on Me {
         name
-        addressConnection(first: 3) {
+        addressConnection(first: NUM_ADDRESSES_TO_FETCH) {
           edges {
             node {
               id
