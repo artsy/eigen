@@ -138,9 +138,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
               Please add an address for a faster checkout experience in the future.
             </Text>
             <AddAddressButton
-              handleOnPress={() =>
-                navigate("/my-profile/saved-addresses/new-address", { passProps: { handleModalDismissed } })
-              }
+              handleOnPress={() => navigate("/my-profile/saved-addresses/new-address")}
               title="Add New Address"
             />
           </Flex>
