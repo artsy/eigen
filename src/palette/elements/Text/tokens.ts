@@ -2,16 +2,16 @@ import {
   TEXT_FONT_SIZES,
   TEXT_LETTER_SPACING,
   TEXT_LINE_HEIGHTS,
-  TEXT_TREATMENTS,
+  TEXT_VARIANT_NAMES as TEXT_TREATMENTS,
   TEXT_VARIANTS as WEB_TEXT_VARIANTS,
-  TextFontSize,
-  TextLetterSpacing,
-  TextLineHeight,
   TextTreatment as WebTextTreatment,
-} from "@artsy/palette-tokens/dist/text"
+} from "@artsy/palette-tokens/dist/typography/v2"
 import { ResponsiveValue, Theme, TLengthStyledSystem } from "styled-system"
 
-export { TextFontSize } from "@artsy/palette-tokens/dist/text"
+// get rid of these three
+export type TextFontSize = keyof typeof TEXT_FONT_SIZES
+type TextLetterSpacing = keyof typeof TEXT_LETTER_SPACING
+export type TextLineHeight = keyof typeof TEXT_LINE_HEIGHTS
 
 /**
  * font-families
@@ -75,14 +75,14 @@ export const TEXT_VARIANTS = (Object.keys(TREATMENTS) as Array<keyof typeof TREA
       // Convert `letterSpacing`
       ...(letterSpacing
         ? {
-            letterSpacing: calculateLetterSpacing(fontSize, letterSpacing),
+            letterSpacing: calculateLetterSpacing(fontSize as TextFontSize, letterSpacing as TextLetterSpacing),
           }
         : {}),
 
       // Convert `lineHeight`
       ...(lineHeight
         ? {
-            lineHeight: calculateLineHeight(fontSize, lineHeight),
+            lineHeight: calculateLineHeight(fontSize as TextFontSize, lineHeight as TextLineHeight),
           }
         : {}),
     },

@@ -1,6 +1,6 @@
-import { color } from "@artsy/palette-tokens"
 import React from "react"
 import styled, { css } from "styled-components/native"
+import { color } from "../../Theme"
 import { Box } from "../Box"
 
 const RADIO_DOT_MODES = {

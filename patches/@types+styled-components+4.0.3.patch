@@ -1,0 +1,30 @@
+diff --git a/node_modules/@types/styled-components/index.d.ts b/node_modules/@types/styled-components/index.d.ts
+index f436b8d..a20ec0b 100644
+--- a/node_modules/@types/styled-components/index.d.ts
++++ b/node_modules/@types/styled-components/index.d.ts
+@@ -145,6 +145,7 @@ type DiffBetween<T, U> = Pick<T, Diff<keyof T, keyof U>> &
+ type WithOptionalTheme<P extends { theme?: T }, T> = Omit<P, 'theme'> & {
+     theme?: T;
+ };
++type AnyIfEmpty<T extends object> = keyof T extends never ? any : T;
+ 
+ export interface ThemedStyledComponentsModule<T> {
+     default: ThemedStyledInterface<T>;
+@@ -164,6 +165,7 @@ export interface ThemedStyledComponentsModule<T> {
+ 
+     ThemeProvider: ThemeProviderComponent<T>;
+     ThemeConsumer: ThemeConsumerComponent<T>;
++    ThemeContext: React.Context<T>;
+ }
+ 
+ declare const styled: StyledInterface;
+@@ -181,7 +183,8 @@ export interface ThemeConsumerProps<T> {
+ }
+ export type BaseThemeConsumerComponent<T> = React.ComponentClass<ThemeConsumerProps<T>>;
+ export type ThemeConsumerComponent<T> = BaseThemeConsumerComponent<Extract<keyof T, string> extends never ? any : T>;
+-export const ThemeConsumer: ThemeConsumerComponent<object>;
++export const ThemeContext: React.Context<AnyIfEmpty<DefaultTheme>>;
++export const ThemeConsumer: typeof ThemeContext['Consumer'];
+ 
+ export interface Keyframes {
+     getName(): string;
