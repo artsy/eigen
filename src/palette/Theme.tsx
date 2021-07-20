@@ -5,11 +5,11 @@ import {
   ThemeV2 as ThemeV2Type,
   ThemeV3 as ThemeV3Type,
 } from "@artsy/palette-tokens"
-import { themeProps as tokens } from "@artsy/palette-tokens/dist/themes/v2"
+import { breakpoints, themeProps as tokens } from "@artsy/palette-tokens/dist/themes/v2"
 import _ from "lodash"
 import React, { useContext } from "react"
 import { ThemeContext, ThemeProvider } from "styled-components/native"
-import { TEXT_FONTS } from "./elements/Text/tokens"
+import { TEXT_FONTS_V2, TEXT_FONTS_V3 } from "./elements/Text/tokens"
 import { fontFamily } from "./platform/fonts/fontFamily"
 
 /**
@@ -21,7 +21,17 @@ export { space, color } from "@artsy/palette-tokens/dist/helpers"
 export { Color, SansSize, SpacingUnit, SerifSize, TypeSizes } from "@artsy/palette-tokens/dist/themes/v2"
 export { Color as ColorV3 } from "@artsy/palette-tokens/dist/themes/v3"
 
-const THEMES = { v2: { ...THEME_V2, fontFamily, fonts: TEXT_FONTS }, v3: THEME_V3 }
+const {
+  breakpoints: _eigenDoesntCareAboutBreakpoints,
+  mediaQueries: _eigenDoesntCareAboutMediaQueries,
+  grid: _eigenDoesntCareAboutGrid,
+  ...eigenUsefulTHEME_V3
+} = THEME_V3
+
+const THEMES = {
+  v2: { ...THEME_V2, fontFamily, fonts: TEXT_FONTS_V2 },
+  v3: { ...eigenUsefulTHEME_V3, fonts: TEXT_FONTS_V3 }, // v3 removed `fontFamily`, `fontSizes`, `letterSpacings`, `lineHeights`, `typeSizes`
+}
 
 // stop using this!! use the hook instead.
 export const themeProps = THEMES.v2
