@@ -185,7 +185,7 @@ static ARAppDelegate *_sharedInstance = nil;
     center.delegate = self;
     NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_STAGING_APP_KEY_IOS"];
     if (![ARAppStatus isDev]) {
-        brazeAppKey = [ReactNativeConfig envFor:@"SEGMENT_PRODUCTION_WRITE_KEY_IOS"];
+        brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];
     }
 
     NSString *brazeSDKEndPoint = @"sdk.iad-06.braze.com";
