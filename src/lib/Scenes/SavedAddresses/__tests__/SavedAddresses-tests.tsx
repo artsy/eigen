@@ -110,6 +110,7 @@ describe(SavedAddressesQueryRenderer, () => {
     expect(text).toContain("Edit")
     expect(text).toContain("Delete")
   })
+
   it("testing add new address navigation", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
@@ -125,5 +126,56 @@ describe(SavedAddressesQueryRenderer, () => {
     })
     tree.findByType(Button).props.onPress()
     expect(navigate).toHaveBeenCalledWith("/my-profile/saved-addresses/new-address")
+  })
+
+  it("should navigate to edit address screen", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+      const result = MockPayloadGenerator.generate(operation, {
+        Me: () => ({
+          name: "saver",
+          addressConnection: {
+            edges: [
+              {
+                node: {
+                  id: "VXNlckFkZHJlc3M6NTg0MA==",
+                  internalID: "5840",
+                  name: "George Tester",
+                  addressLine1: "Stallschreiberstr 21",
+                  addressLine2: "apt 61, 1st Floor",
+                  addressLine3: null,
+                  city: "Berlin",
+                  region: "Mitte",
+                  postalCode: "10179",
+                  phoneNumber: "015904832846",
+                },
+              },
+              {
+                node: {
+                  id: "VXNlckFkZHJlc3M6NTg2MQ==",
+                  internalID: "5861",
+                  name: "George Testing",
+                  addressLine1: "401 Brodway",
+                  addressLine2: "26th Floor",
+                  addressLine3: null,
+                  city: "New York",
+                  region: "New York",
+                  postalCode: "NY 10013",
+                  phoneNumber: "1293581028945",
+                },
+              },
+            ],
+          },
+        }),
+      })
+      return result
+    })
+
+    const EditButton = tree.findByProps({ testID: "EditAddress-5861" })
+
+    EditButton.props.onPress()
+    expect(navigate).toHaveBeenCalledWith("/my-profile/saved-addresses/edit-address", {
+      passProps: { addressId: "5861" },
+    })
   })
 })
