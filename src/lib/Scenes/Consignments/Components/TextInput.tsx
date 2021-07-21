@@ -1,5 +1,6 @@
 import { Fonts } from "lib/data/fonts"
-import { Box, color } from "palette"
+import { Box } from "palette"
+import { themeGet } from "@styled-system/theme-get"
 import React, { FunctionComponent } from "react"
 import {
   ActivityIndicator,

@@ -34,3 +34,21 @@ const TheComp = (props) => {
   )
 }
 ```
+
+- Use `ClassTheme` for class components.
+`ClassTheme` exposes the hooks of the theme, so you can use it like:
+```tsx
+import { ClassTheme } from "palette"
+
+class TheComp extends React.Component {
+  render() {
+    return (
+      <ClassTheme theme="v2">
+      {({color, space, theme}) => (
+        <View style={{ backgroundColor: color("white100") }}>
+      )}
+      </ClassTheme>
+    )
+  }
+}
+```
