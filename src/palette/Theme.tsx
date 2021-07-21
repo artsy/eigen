@@ -145,3 +145,14 @@ export const getThemeConfig = <T, U>(props: Record<string, any>, { v2, v3 }: { v
 
 export const isThemeV2 = (theme: ThemeType): theme is ThemeV2Type => theme.id === "v2"
 export const isThemeV3 = (theme: ThemeType): theme is ThemeV3Type => theme.id === "v3"
+
+export const ClassTheme = ({
+  theme = "v2",
+  children,
+}: {
+  theme?: "v2" | "v3"
+  children: React.ReactNode | ((helpers: ReturnType<typeof useTheme>) => React.ReactNode)
+}) => {
+  const hookStuff = useTheme()
+  return <Theme theme={theme}>{typeof children === "function" ? children(hookStuff) : children}</Theme>
+}

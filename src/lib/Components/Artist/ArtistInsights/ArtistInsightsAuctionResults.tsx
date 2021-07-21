@@ -10,7 +10,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, bullet, Flex, Separator, Spacer, Text } from "palette"
+import { Box, bullet, Flex, Separator, Spacer, Text, useColor } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import { FlatList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -27,6 +27,7 @@ interface Props {
 }
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop }) => {
+  const color = useColor()
   const tracking = useTracking()
 
   const showKeywordFilter = useFeatureFlag("AREnableAuctionResultsKeywordFilter")

@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Spacer } from "palette"
+import { Box, Flex, Sans, Spacer, useColor } from "palette"
 import React from "react"
 import { ScrollView, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
@@ -20,6 +20,7 @@ export interface SearchQueryProps<T> extends TextInputProps {
 }
 
 const noResults = <T,>(props: SearchQueryProps<T>) => {
+  const color = useColor()
   if (!props.query || props.searching) {
     return null
   }
