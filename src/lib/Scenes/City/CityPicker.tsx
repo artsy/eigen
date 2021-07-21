@@ -1,9 +1,10 @@
+import { themeGet } from "@styled-system/theme-get"
 import { dimensions, screen } from "lib/data/ScreenSizes/screenSizes"
 import { CircleWhiteCheckIcon } from "lib/Icons/CircleWhiteCheckIcon"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, color, Flex, Sans, Separator, Serif, space } from "palette"
+import { Box, Flex, Sans, Separator, Serif } from "palette"
 import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
@@ -90,10 +91,10 @@ export const CityPicker: React.FC<Props> = (props) => {
 
 const Overlay = styled.ScrollView`
   flex: 1;
-  background-color: ${color("white100")};
-  margin-top: ${space(2)};
-  margin-left: ${space(2)};
-  margin-right: ${space(2)};
+  background-color: ${themeGet("colors.white100")};
+  margin-top: ${themeGet("space.2")};
+  margin-left: ${themeGet("space.2")};
+  margin-right: ${themeGet("space.2")};
   flex-direction: column;
 `
 const LogoContainer = styled(Flex)`

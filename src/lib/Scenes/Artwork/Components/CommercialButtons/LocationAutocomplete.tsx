@@ -135,7 +135,7 @@ export const LocationPredictions = ({
 
 const Dropdown = styled(View)`
   background-color: white;
-  border: solid 1px ${color("black10")};
+  border: solid 1px ${themeGet("colors.black10")};
   z-index: 1;
   position: absolute;
   width: 100%;

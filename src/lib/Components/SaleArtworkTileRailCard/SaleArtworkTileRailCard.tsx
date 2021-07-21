@@ -1,6 +1,6 @@
 import { ContextModule, OwnerType, ScreenOwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
 import { SaleArtworkTileRailCard_saleArtwork } from "__generated__/SaleArtworkTileRailCard_saleArtwork.graphql"
-import { Box, color, Flex, Sans } from "palette"
+import { Box, Flex, Sans, useColor } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -27,6 +27,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   useSquareAspectRatio = false,
   contextScreenOwnerType,
 }) => {
+  const color = useColor()
   const tracking = useTracking()
   const artwork = saleArtwork.artwork!
 

@@ -1,10 +1,11 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import MapboxGL from "@react-native-mapbox-gl/maps"
+import { themeGet } from "@styled-system/theme-get"
 import { PartnerMap_location } from "__generated__/PartnerMap_location.graphql"
 import { cityAndPostalCode, tappedOnMap } from "lib/Components/LocationMap"
 import { Pin } from "lib/Icons/Pin"
 import { ArtsyMapStyleURL } from "lib/Scenes/Map/GlobalMap"
-import { Box, color, Flex, Sans, Serif, Spacer } from "palette"
+import { Box, Flex, Sans, Serif, Spacer } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import Config from "react-native-config"
@@ -93,5 +94,5 @@ export const PartnerMapContainer = createFragmentContainer(PartnerMap, {
 
 const MapWrapper = styled(Flex)`
   border-width: 1px;
-  border-color: ${color("black10")};
+  border-color: ${themeGet("colors.black10")};
 `

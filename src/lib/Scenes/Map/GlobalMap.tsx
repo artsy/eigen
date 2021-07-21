@@ -10,7 +10,7 @@ import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "li
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { get, isEqual, uniq } from "lodash"
-import { Box, color, Flex, Sans, Theme } from "palette"
+import { Box, Flex, Sans, Theme } from "palette"
 import React from "react"
 import { Animated, Dimensions, Easing, Image, View } from "react-native"
 import Config from "react-native-config"

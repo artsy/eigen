@@ -1,5 +1,5 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, IconProps, Text, Touchable } from "palette"
+import { Flex, IconProps, Text, Touchable, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
@@ -25,6 +25,7 @@ export interface ToastProps {
 }
 
 export const Toast: React.FC<ToastProps> = ({ id, positionIndex, placement, message, onPress, Icon }) => {
+  const color = useColor()
   const { width, height } = useScreenDimensions()
   const { hide } = useToast()
   const { top: topSafeAreaInset } = useScreenDimensions().safeAreaInsets

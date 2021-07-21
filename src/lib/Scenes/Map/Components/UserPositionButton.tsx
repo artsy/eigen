@@ -1,5 +1,5 @@
 import Crosshair from "lib/Icons/Crosshair"
-import { Box, color, Flex } from "palette"
+import { Box, Flex } from "palette"
 import React, { Component } from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"

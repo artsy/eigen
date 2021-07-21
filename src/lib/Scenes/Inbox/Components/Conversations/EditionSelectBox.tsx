@@ -9,7 +9,7 @@ const UnavailableIndicator = styled(View)`
   height: 8px;
   width: 8px;
   border-radius: 4px;
-  background-color: ${color("red100")};
+  background-color: ${themeGet("colors.red100")};
   margin-right: 6px;
 `
 

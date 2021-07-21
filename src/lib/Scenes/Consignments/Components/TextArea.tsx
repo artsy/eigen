@@ -7,7 +7,7 @@ import styled from "styled-components/native"
 
 const Input = styled.TextInput`
   height: 100%;
-  color: ${color("black100")};
+  color: ${themeGet("colors.black100")};
   font-family: "${fonts["unica77ll-regular"]}";
   font-size: 16;
 `

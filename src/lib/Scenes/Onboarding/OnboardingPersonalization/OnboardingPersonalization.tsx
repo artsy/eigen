@@ -10,7 +10,7 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { compact, times } from "lodash"
-import { Box, Button, Flex, Join, Spacer, Text } from "palette"
+import { Box, Button, Flex, Join, Spacer, Text, useColor, useSpace } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -57,36 +57,40 @@ interface OnboardingPersonalizationListProps extends OnboardingPersonalizationLi
   relay: RelayRefetchProp
 }
 
-const OnboardingPersonalizationListHeader = ({ navigateToModal }: { navigateToModal: () => void }) => (
-  <>
-    <Box px={2}>
-      <Text variant="largeTitle">What artists do you collect?</Text>
-      <Spacer mt={1.5} />
-      <Text variant="caption" color={color("black60")}>
-        Follow at least three artists you’re looking to collect or track so we can personalize your experience.
-      </Text>
-    </Box>
-    <Spacer mt={20} />
+const OnboardingPersonalizationListHeader = ({ navigateToModal }: { navigateToModal: () => void }) => {
+  const color = useColor()
+  return (
+    <>
+      <Box px={2}>
+        <Text variant="largeTitle">What artists do you collect?</Text>
+        <Spacer mt={1.5} />
+        <Text variant="caption" color={color("black60")}>
+          Follow at least three artists you’re looking to collect or track so we can personalize your experience.
+        </Text>
+      </Box>
+      <Spacer mt={20} />
 
-    {/* Fake search Input */}
-    <Flex px={2}>
-      <TouchableWithoutFeedback onPress={navigateToModal} testID="searchArtistButton">
-        <Flex flexDirection="row" borderWidth={1} borderColor={color("black10")} height={INPUT_HEIGHT}>
-          <Flex pl="1" justifyContent="center" flexGrow={0}>
-            <SearchIcon width={18} height={18} />
+      {/* Fake search Input */}
+      <Flex px={2}>
+        <TouchableWithoutFeedback onPress={navigateToModal} testID="searchArtistButton">
+          <Flex flexDirection="row" borderWidth={1} borderColor={color("black10")} height={INPUT_HEIGHT}>
+            <Flex pl="1" justifyContent="center" flexGrow={0}>
+              <SearchIcon width={18} height={18} />
+            </Flex>
+            <Flex flexGrow={1} justifyContent="center" pl={1}>
+              <Text color={color("black60")} fontSize={15}>
+                Search artists
+              </Text>
+            </Flex>
           </Flex>
-          <Flex flexGrow={1} justifyContent="center" pl={1}>
-            <Text color={color("black60")} fontSize={15}>
-              Search artists
-            </Text>
-          </Flex>
-        </Flex>
-      </TouchableWithoutFeedback>
-    </Flex>
-  </>
-)
+        </TouchableWithoutFeedback>
+      </Flex>
+    </>
+  )
+}
 
 export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationListProps> = ({ ...props }) => {
+  const space = useSpace()
   const popularArtists = compact(props.highlights.popularArtists)
   const animatedOpacitiesRef = useRef<{ [key: string]: Disappearable | null }>({})
   const { safeAreaInsets } = useScreenDimensions()

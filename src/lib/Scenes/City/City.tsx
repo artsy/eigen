@@ -1,8 +1,9 @@
+import { themeGet } from "@styled-system/theme-get"
 import { ScrollableTab } from "lib/Components/ScrollableTabBar"
 import TabBar from "lib/Components/TabBar"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { Schema, screenTrack, track } from "lib/utils/track"
-import { Box, Button, color, Flex, Sans, Theme } from "palette"
+import { Box, Button, Flex, Sans, Theme } from "palette"
 import React, { Component } from "react"
 import { View } from "react-native"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -239,7 +240,7 @@ const Handle = styled.View`
   width: 40px;
   height: 5px;
   border-radius: 2.5px;
-  background-color: ${color("black30")};
+  background-color: ${themeGet("colors.black30")};
 `
 
 // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562

@@ -8,7 +8,7 @@ import GenericGrid from "../ArtworkGrids/GenericGrid"
 import { Notification_notification } from "__generated__/Notification_notification.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
-import { color, Sans } from "palette"
+import { Sans } from "palette"
 
 interface Props {
   // Special notifications will pass down an artistHref. Otherwise, grab it from the artworks.

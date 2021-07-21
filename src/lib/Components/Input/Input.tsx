@@ -1,5 +1,5 @@
 import _ from "lodash"
-import { Color, EyeOpenedIcon, Flex, Sans, TEXT_FONTS, XCircleIcon } from "palette"
+import { Color, EyeOpenedIcon, Flex, Sans, TEXT_FONTS, useTheme, XCircleIcon } from "palette"
 import { fontFamily } from "palette/platform/fonts/fontFamily"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
@@ -81,6 +81,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     },
     ref
   ) => {
+    const { color } = useTheme()
     const [focused, setFocused] = useState(false)
     const [showPassword, setShowPassword] = useState(!secureTextEntry)
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")

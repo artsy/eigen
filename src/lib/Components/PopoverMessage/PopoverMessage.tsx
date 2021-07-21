@@ -1,5 +1,5 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, CloseIcon, Color, color, Flex, Text, Touchable } from "palette"
+import { Box, CloseIcon, Color, Flex, Text, Touchable, useColor } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Platform } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
@@ -44,6 +44,7 @@ export interface PopoverMessageProps {
 
 // TODO: Remove NAVBAR_HEIGHT when a new design without a floating back button is added
 export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
+  const color = useColor()
   const {
     id,
     positionIndex,

@@ -31,7 +31,7 @@ interface State {
 
 const Input = styled.TextInput`
   height: 40;
-  color: ${color("black100")};
+  color: ${themeGet("colors.black100")};
   font-family: "${Fonts.Unica77LLRegular}";
   font-size: 16;
   flex: 1;

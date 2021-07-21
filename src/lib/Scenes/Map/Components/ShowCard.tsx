@@ -1,8 +1,9 @@
+import { themeGet } from "@styled-system/theme-get"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import { navigate } from "lib/navigation/navigate"
 import { TabFairItemRow } from "lib/Scenes/City/Components/TabFairItemRow"
 import { isEqual } from "lodash"
-import { Box, color, Sans, space } from "palette"
+import { Box, Sans } from "palette"
 import React, { Component } from "react"
 import { Dimensions, FlatList, TouchableOpacity } from "react-native"
 import { RelayProp } from "react-relay"
@@ -17,7 +18,7 @@ const shadowDetails: any = {
 }
 
 const Background = styled(Box)`
-  background: ${color("white100")};
+  background: ${themeGet("colors.white100")};
   height: 82;
   border-radius: 2px;
 `
@@ -35,9 +36,9 @@ interface ShowCardState {
 }
 
 const PageIndicator = styled(Box)`
-  height: ${space(2)}px;
-  border-radius: ${space(1)}px;
-  background: ${color("white100")};
+  height: ${themeGet("space.2")}px;
+  border-radius: ${themeGet("space.1")}px;
+  background: ${themeGet("colors.white100")};
   margin-left: 15px;
   margin-right: auto;
   margin-top: -15px;

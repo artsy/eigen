@@ -1,9 +1,10 @@
+import { themeGet } from "@styled-system/theme-get"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import PinSavedOff from "lib/Icons/PinSavedOff"
 import PinSavedOn from "lib/Icons/PinSavedOn"
 import { navigate } from "lib/navigation/navigate"
 import { Track, track as _track } from "lib/utils/track"
-import { Box, color, Flex, Sans } from "palette"
+import { Box, Flex, Sans } from "palette"
 import React, { Component } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -73,5 +74,5 @@ export class SavedEventSection extends Component<any> {
 const SavedBox = styled(Box)`
   border-radius: 2px;
   border-width: 1px;
-  border-color: ${color("black30")};
+  border-color: ${themeGet("colors.black30")};
 `

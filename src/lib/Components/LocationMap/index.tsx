@@ -4,18 +4,19 @@ import MapboxGL from "@react-native-mapbox-gl/maps"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import { Pin } from "lib/Icons/Pin"
 import { ArtsyMapStyleURL } from "lib/Scenes/Map/GlobalMap"
-import { Box, color, Flex, Text } from "palette"
+import { Box, Flex, Text } from "palette"
 import React from "react"
 import { Linking, TouchableOpacity } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql } from "react-relay"
+import { themeGet } from "@styled-system/theme-get"
 import styled from "styled-components/native"
 
 MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
 const MapWrapper = styled(Flex)`
   border-width: 1px;
-  border-color: ${themeGet("color.black10")};
+  border-color: ${themeGet("colors.black10")};
 `
 
 interface Props {

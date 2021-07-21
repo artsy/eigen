@@ -39,6 +39,6 @@ export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) =>
 }
 
 const ZeroStateMessage = styled(Sans)`
-  color: ${themeGet("color.black100")};
+  color: ${themeGet("colors.black100")};
   text-align: center;
 `
