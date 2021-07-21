@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a786a15a953172748ad3d756956074ad */
+/* @relayHash babd05d4526c44e902982cd6c59f5790 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,7 +28,7 @@ query SavedAddressesQuery {
 
 fragment SavedAddresses_me on Me {
   name
-  addressConnection(first: 3) {
+  addressConnection(first: 10) {
     edges {
       node {
         id
@@ -111,7 +111,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "first",
-                "value": 3
+                "value": 10
               }
             ],
             "concreteType": "UserAddressConnection",
@@ -207,7 +207,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "addressConnection(first:3)"
+            "storageKey": "addressConnection(first:10)"
           },
           (v1/*: any*/)
         ],
@@ -216,7 +216,7 @@ return {
     ]
   },
   "params": {
-    "id": "a786a15a953172748ad3d756956074ad",
+    "id": "babd05d4526c44e902982cd6c59f5790",
     "metadata": {},
     "name": "SavedAddressesQuery",
     "operationKind": "query",
