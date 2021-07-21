@@ -127,6 +127,12 @@ export const features = defineFeatures({
     description: "Enable auction results keyword filter",
     showInAdminMenu: true,
   },
+  AREnableOnlyTargetSupplyConsignments: {
+    readyForRelease: true,
+    description: "Enable filtering for 'target supply' artists in consignment flow",
+    showInAdminMenu: false,
+    echoFlagKey: "AREnableOnlyTargetSupplyConsignments",
+  },
 })
 
 export interface DevToggleDescriptor {

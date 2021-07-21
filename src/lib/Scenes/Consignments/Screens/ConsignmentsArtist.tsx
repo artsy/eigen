@@ -1,6 +1,7 @@
 import { ConsignmentsArtistQuery } from "__generated__/ConsignmentsArtistQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { defaultEnvironment as environment } from "lib/relay/createEnvironment"
+import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { extractNodes } from "lib/utils/extractNodes"
 import { throttle } from "lodash"
@@ -79,6 +80,12 @@ export default class Artist extends React.Component<Props, State> {
   }, 1000)
 
   filteredResults = () => {
+    const enableFiltering = unsafe_getFeatureFlag("AREnableOnlyTargetSupplyConsignments")
+
+    if (!enableFiltering) {
+      return this.state.results
+    }
+
     // filter for artists that are marked as target supply
     return this.state.results?.filter((artist) => artist.targetSupply?.isTargetSupply) || null
   }
