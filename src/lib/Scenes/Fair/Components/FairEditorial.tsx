@@ -91,7 +91,7 @@ export const FairEditorialFragmentContainer = createFragmentContainer(FairEditor
     fragment FairEditorial_fair on Fair {
       internalID
       slug
-      articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
+      articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
         totalCount
         edges {
           node {
