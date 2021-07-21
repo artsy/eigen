@@ -25,6 +25,7 @@ import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Separator, Spacer } from "palette"
 import React, { useContext, useEffect, useMemo, useState } from "react"
+import { Platform } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { SavedSearchBannerQueryRender } from "./SavedSearchBanner"
@@ -95,7 +96,8 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   ...props
 }) => {
   const tracking = useTracking()
-  const enableSavedSearch = useFeatureFlag("AREnableSavedSearch")
+  const enableSavedSearch =
+    Platform.OS === "ios" ? useFeatureFlag("AREnableSavedSearch") : useFeatureFlag("AREnableSavedSearchAndroid")
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
