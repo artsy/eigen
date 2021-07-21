@@ -15,14 +15,13 @@ import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { times } from "lodash"
-import { Button, Flex, Text } from "palette"
+import { Flex, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { MyAccountFieldEditScreen } from "../MyAccount/Components/MyAccountFieldEditScreen"
 import { AddAddressButton } from "./Components/AddAddressButton"
 import { createUserAddress } from "./mutations/addNewAddress"
-import { deleteSavedAddress } from "./mutations/deleteSavedAddress"
 import { setAsDefaultAddress } from "./mutations/setAsDefaultAddress"
 import { updateUserAddress } from "./mutations/updateUserAddress"
 
@@ -93,7 +92,6 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
     setPhoneNumber(me?.phone)
   }, [me?.phone])
 
-  // if addressId then fill the fields
   useEffect(() => {
     if (isEditForm) {
       const addresses = extractNodes(me.addressConnection)
@@ -157,10 +155,6 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
     }
   }
 
-  const deleteUserAddress = (userAddressID: string) => {
-    deleteSavedAddress(userAddressID, goBack, (message: string) => captureMessage(message))
-  }
-
   return (
     <MyAccountFieldEditScreen
       ref={screenRef}
@@ -208,7 +202,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
         />
         <PhoneInput
           title="Phone number"
-          // add description?
+          description="Required for shipping logistics"
           value={phoneNumber ?? ""}
           maxModalHeight={height * offSetTop}
           onChangeText={setPhoneNumber}
@@ -223,13 +217,6 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
           <Text>Set as default</Text>
         </Checkbox>
 
-        {!!isEditForm && (
-          <Button variant="noOutline" block onPress={() => deleteUserAddress(addressId!)}>
-            <Text variant="text" color="red100">
-              Delete address
-            </Text>
-          </Button>
-        )}
         <AddAddressButton
           handleOnPress={isEditForm ? () => editUserAddress(addressId!) : submitAddAddress}
           title="Add Address"
