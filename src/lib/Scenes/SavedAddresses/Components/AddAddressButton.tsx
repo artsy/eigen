@@ -15,7 +15,6 @@ export const AddAddressButton: React.FC<Props> = (props) => {
       borderRadius={50}
       variant="primaryBlack"
       width={100}
-      // disabled={!state.allPresent}
       disabled={disabled}
       onPress={() => {
         handleOnPress()
