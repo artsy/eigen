@@ -1,4 +1,5 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { useSpace } from "palette/Theme"
 import React from "react"
 import { Box, BoxProps } from "../Box"
 import { Spacer } from "../Spacer"
@@ -18,6 +19,7 @@ export interface SmallCardProps extends BoxProps {
  * at the bottom.
  */
 export const SmallCard: React.FC<SmallCardProps> = ({ images, title, subtitle, tag, ...rest }) => {
+  const space = useSpace()
   return (
     <Box {...rest}>
       <Box

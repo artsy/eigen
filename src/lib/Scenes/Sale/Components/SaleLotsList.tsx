@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { themeGet } from "@styled-system/theme-get"
 import { SaleLotsList_saleArtworksConnection } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
 import { SaleLotsList_unfilteredSaleArtworksConnection } from "__generated__/SaleLotsList_unfilteredSaleArtworksConnection.graphql"
 import {
@@ -12,7 +13,7 @@ import { ORDERED_SALE_ARTWORK_SORTS } from "lib/Components/ArtworkFilter/Filters
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Schema } from "lib/utils/track"
-import { Box,  Flex, Sans } from "palette"
+import { Box, Flex, Sans } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
