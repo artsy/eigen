@@ -118,6 +118,8 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
           addresses.length ? (
             <Box mx={2} mb={2}>
               <AddAddressButton
+                block={false}
+                variant="secondaryOutline"
                 handleOnPress={() => navigate("/my-profile/saved-addresses/new-address")}
                 title="Add New Address"
               />

@@ -1,25 +1,18 @@
-import { Button } from "palette"
+import { Button, ButtonVariant } from "palette"
 import React from "react"
 
 interface Props {
   title: string
   handleOnPress: () => void
   disabled?: boolean
+  variant?: ButtonVariant
+  block?: boolean
 }
 
 export const AddAddressButton: React.FC<Props> = (props) => {
-  const { handleOnPress, disabled, title } = props
+  const { handleOnPress, disabled, title, variant = "primaryBlack", block = true } = props
   return (
-    <Button
-      block
-      borderRadius={50}
-      variant="primaryBlack"
-      width={100}
-      disabled={disabled}
-      onPress={() => {
-        handleOnPress()
-      }}
-    >
+    <Button block={block} variant={variant} disabled={disabled} onPress={handleOnPress}>
       {title}
     </Button>
   )
