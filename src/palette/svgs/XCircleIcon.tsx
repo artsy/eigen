@@ -1,9 +1,10 @@
 import React from "react"
-import { color } from "../Theme"
+import { useColor } from "palette/Theme"
 import { Circle, Icon, IconProps, Path } from "./Icon"
 
 /** XCircleIcon */
 export const XCircleIcon: React.FC<IconProps> = (props) => {
+  const color = useColor()
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <Circle cx={9} cy={9} r={9} fill="white" />

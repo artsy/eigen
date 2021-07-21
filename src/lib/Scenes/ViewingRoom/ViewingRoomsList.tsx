@@ -9,7 +9,7 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
-import { Flex, Sans, Separator, space, Spacer } from "palette"
+import { Flex, Sans, Separator, Spacer } from "palette"
 import React, { useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { ConnectionConfig } from "react-relay"

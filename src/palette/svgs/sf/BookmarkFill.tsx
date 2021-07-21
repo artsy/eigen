@@ -1,9 +1,10 @@
 import React from "react"
-import { color } from "../../Theme"
+import { useColor } from "palette/Theme"
 import { Icon, IconProps, Path } from "../Icon"
 
 /** BookmarkFill */
 export const BookmarkFill: React.FC<IconProps> = (props) => {
+  const color = useColor()
   return (
     <Icon {...props} viewBox="0 0 18 21">
       <Path

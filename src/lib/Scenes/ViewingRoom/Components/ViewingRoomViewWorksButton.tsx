@@ -1,8 +1,9 @@
+import { themeGet } from "@styled-system/theme-get"
 import { ViewingRoomViewWorksButton_viewingRoom } from "__generated__/ViewingRoomViewWorksButton_viewingRoom.graphql"
 import { AnimatedBottomButton } from "lib/Components/AnimatedBottomButton"
 import { navigate } from "lib/navigation/navigate"
 import { Schema } from "lib/utils/track"
-import { color, Flex, Sans } from "palette"
+import { Flex, Sans } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -49,7 +50,7 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
 
 const ViewWorksButton = styled(Flex)`
   border-radius: 20;
-  background-color: ${color("black100")};
+  background-color: ${themeGet("colors.black100")};
   align-items: center;
   justify-content: center;
   flex-direction: row;

@@ -1,4 +1,4 @@
-import { color } from "palette"
+import { useColor } from "palette/Theme"
 import React from "react"
 import Svg, { Circle, G, Path } from "react-native-svg"
 

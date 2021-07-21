@@ -1,4 +1,4 @@
-import { color } from "palette"
+import { useColor } from "palette/Theme"
 import React, { ReactNode, useState } from "react"
 import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
@@ -183,6 +183,7 @@ enum DisplayState {
 
 /** A button with various size and color settings */
 export const Button: React.FC<ButtonProps> = (props) => {
+  const color = useColor()
   const size = props.size ?? defaultSize
   const variant = props.variant ?? defaultVariant
 

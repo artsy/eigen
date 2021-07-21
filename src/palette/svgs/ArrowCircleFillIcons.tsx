@@ -1,5 +1,5 @@
 import React from "react"
-import { color } from "../Theme"
+import { useColor } from "palette/Theme"
 import { Icon, IconProps, Path } from "./Icon"
 
 const FilledArrowCircle = ({ rotate, ...props }: IconProps & { rotate?: string }) => (
@@ -13,9 +13,11 @@ const FilledArrowCircle = ({ rotate, ...props }: IconProps & { rotate?: string }
 
 /** ArrowUpCircleFillIcon */
 export const ArrowUpCircleFillIcon: React.FC<IconProps> = (props) => {
+  const color = useColor()
   return <FilledArrowCircle {...props} />
 }
 /** ArrowDownCircleFillIcon */
 export const ArrowDownCircleFillIcon: React.FC<IconProps> = (props) => {
+  const color = useColor()
   return <FilledArrowCircle rotate="180deg" {...props} />
 }

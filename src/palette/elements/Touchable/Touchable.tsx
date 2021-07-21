@@ -9,7 +9,7 @@ import {
 import { TouchableHighlight, TouchableWithoutFeedback } from "react-native-gesture-handler"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 
-import { color } from "../../Theme"
+import { useColor } from "palette/Theme"
 import { Flex } from "../Flex"
 
 interface ExtraTouchableProps {
@@ -36,6 +36,7 @@ export const Touchable: React.FC<TouchableProps> = ({
   onPress,
   ...props
 }) => {
+  const color = useColor()
   const inner = React.Children.count(children) === 1 ? children : <Flex flex={flex}>{children}</Flex>
 
   const onPressWrapped = (evt: GestureResponderEvent) => {

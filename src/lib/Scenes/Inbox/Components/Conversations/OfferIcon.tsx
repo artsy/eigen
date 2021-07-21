@@ -1,4 +1,4 @@
-import { color, IconProps } from "palette"
+import { IconProps } from "palette"
 import React from "react"
 import Svg, { Path } from "react-native-svg"
 

@@ -81,12 +81,10 @@ export const ThemeV3: React.FC = ({ children }) => <ThemeProvider theme="v3">{ch
 
 export const useTheme = <T extends ThemeType>() => {
   const theme: T = useContext(ThemeContext)
-  const color = isThemeV3(theme)
-    ? (colorKey: ColorV3) => theme.colors[colorKey]
-    : (colorKey: ColorV2) => theme.colors[colorKey]
-  const space = isThemeV3(theme)
-    ? (spaceKey: SpacingUnitV3) => theme.space[spaceKey]
-    : (spaceKey: SpacingUnitV2) => theme.space[spaceKey]
+  const color = (colorName: ColorV2 | ColorV3) =>
+    isThemeV2(theme) ? theme.colors[colorName as ColorV2] : theme.colors[colorName as ColorV3]
+  const space = (spaceName: SpacingUnitV2 | SpacingUnitV3) =>
+    isThemeV2(theme) ? theme.space[spaceName as SpacingUnitV2] : theme.space[spaceName as SpacingUnitV3]
   return { theme, color, space }
 }
 

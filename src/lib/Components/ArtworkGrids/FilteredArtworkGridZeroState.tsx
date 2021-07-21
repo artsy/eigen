@@ -1,5 +1,5 @@
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { Button, color, Flex, Sans } from "palette"
+import { Button, Flex, Sans } from "palette"
 import React from "react"
 import styled from "styled-components/native"
 

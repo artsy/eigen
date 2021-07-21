@@ -3,6 +3,7 @@ import { G, Icon, IconProps, Path } from "./Icon"
 
 /** ArtsyLogoWhiteIcon */
 export const ArtsyLogoWhiteIcon: React.FC<IconProps> = (props) => {
+  const color = useColor()
   return (
     <Icon {...props} viewBox="0 0 94 32">
       <G fill="none" fillRule="evenodd">

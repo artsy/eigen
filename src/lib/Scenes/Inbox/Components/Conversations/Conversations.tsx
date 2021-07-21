@@ -16,7 +16,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import { ActionNames, ActionTypes } from "lib/utils/track/schema"
-import { color, Flex, Sans, Separator } from "palette"
+import { Flex, Sans, Separator } from "palette"
 import { useTracking } from "react-tracking"
 
 interface Props {

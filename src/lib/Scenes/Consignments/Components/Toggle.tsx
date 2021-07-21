@@ -1,5 +1,5 @@
 import fonts from "lib/data/fonts"
-import { color } from "palette"
+import { useColor } from "palette/Theme"
 import React from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
@@ -54,6 +54,7 @@ interface ToggleProps {
 }
 
 const render = (props: ToggleProps) => {
+  const color = useColor()
   const { selected } = props
   const mainBGColor = "white"
   const leftTextColor = "black"

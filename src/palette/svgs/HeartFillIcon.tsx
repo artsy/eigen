@@ -1,9 +1,10 @@
 import React from "react"
-import { color } from "../Theme"
+import { useColor } from "palette/Theme"
 import { Icon, IconProps, Path } from "./Icon"
 
 /** HeartFillIcon */
 export const HeartFillIcon: React.FC<IconProps> = (props) => {
+  const color = useColor()
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <Path

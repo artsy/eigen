@@ -12,7 +12,7 @@ import {
   top,
   TopProps,
 } from "styled-system"
-import { Color } from "../Theme"
+import { useColor } from "palette/Theme"
 
 // tslint:disable-next-line:no-empty-interface
 export interface IconProps extends SvgProps, SpaceProps, PositionProps, TopProps, RightProps, LeftProps {

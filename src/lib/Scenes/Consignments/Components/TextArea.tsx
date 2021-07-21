@@ -1,6 +1,6 @@
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
-import { color } from "palette"
+import { useColor } from "palette/Theme"
 import React from "react"
 import { Platform, TextInputProps, View, ViewProps } from "react-native"
 import styled from "styled-components/native"

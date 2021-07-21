@@ -1,4 +1,4 @@
-import { color, space, Text } from "palette"
+import { Text, useColor } from "palette"
 import React, { useState } from "react"
 import { TextInput, TextInputProps } from "react-native"
 import styled from "styled-components/native"
@@ -13,6 +13,7 @@ interface TextAreaProps extends TextInputProps {
   title: string
 }
 export const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => {
+  const color = useColor()
   const [borderColor, setBorderColor] = useState(color("black10"))
 
   return (

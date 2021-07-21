@@ -8,7 +8,7 @@ import {
 import { TabEmptyState } from "lib/Components/TabEmptyState"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, color, Flex, Sans, space, Spacer } from "palette"
+import { Box, Flex, Sans, Spacer } from "palette"
 import React, { useContext, useState } from "react"
 import { ActivityIndicator, ImageBackground, TouchableWithoutFeedback, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
