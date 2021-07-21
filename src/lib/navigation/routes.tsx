@@ -170,7 +170,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-profile/payment/new-card", "MyProfilePaymentNewCreditCard"),
     new RouteMatcher("/my-profile/push-notifications", "MyProfilePushNotifications"),
     new RouteMatcher("/my-profile/saved-addresses", "SavedAddresses"),
-    new RouteMatcher("/my-profile/saved-addresses/new-address", "SavedAddressesNewForm"),
+    new RouteMatcher("/my-profile/saved-addresses/new-address", "SavedAddressesForm"),
+    new RouteMatcher("/my-profile/saved-addresses/edit-address", "SavedAddressesForm"),
     new RouteMatcher("/local-discovery", "LocalDiscovery"),
     new RouteMatcher("/privacy-request", "PrivacyRequest"),
 
