@@ -29,22 +29,13 @@ const Card = styled(Flex)`
 // tslint:disable-next-line:variable-name
 const NUM_ADDRESSES_TO_FETCH = 10
 
+// tslint:disable-next-line:no-empty
+export const util = { onRefresh: () => {} }
+
 const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const addresses = extractNodes(me.addressConnection)
-
-  useEffect(() => {
-    navigationEvents.addListener("goBack", handleModalDismissed)
-    return () => {
-      navigationEvents.removeListener("goBack", handleModalDismissed)
-    }
-  }, [])
-
-  const handleModalDismissed = (): void => {
-    onRefresh()
-  }
-
-  const onRefresh = useCallback(() => {
+  util.onRefresh = useCallback(() => {
     setIsRefreshing(true)
     relay.refetch(
       {},
@@ -54,6 +45,13 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
       },
       { force: true }
     )
+  }, [])
+
+  useEffect(() => {
+    navigationEvents.addListener("goBack", util.onRefresh)
+    return () => {
+      navigationEvents.removeListener("goBack", util.onRefresh)
+    }
   }, [])
 
   const onPressEditAddress = () => null
@@ -69,7 +67,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
   return (
     <PageWithSimpleHeader title="Saved Addresses">
       <FlatList
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={util.onRefresh} />}
         data={addresses.sort((a, b) => Number(b?.isDefault) - Number(a?.isDefault))}
         keyExtractor={(address) => address.internalID}
         contentContainerStyle={{
