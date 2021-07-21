@@ -1,14 +1,15 @@
 import { captureMessage } from "@sentry/react-native"
+import { SavedSearchButton_me } from "__generated__/SavedSearchButton_me.graphql"
 import { SavedSearchButtonQuery } from "__generated__/SavedSearchButtonQuery.graphql"
 import { FilterParams, prepareFilterParamsForSaveSearchInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { BellIcon, Button } from "palette"
 import React from "react"
-import { graphql, QueryRenderer } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface SavedSearchButtonProps {
-  isSavedSearch: boolean
+  me?: SavedSearchButton_me | null
   loading?: boolean
   attributes: SearchCriteriaAttributes
 }
@@ -18,19 +19,12 @@ interface SavedSearchButtonQueryRenderProps {
   artistId: string
 }
 
-export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
-  isSavedSearch,
-  loading,
-  attributes,
-}) => {
-  console.log('[debug] attributes', attributes)
-  console.log('[debug] isSavedSearch', isSavedSearch)
-  console.log('[debug] loading', loading)
-
+export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({ me, loading, attributes }) => {
+  const isSavedSearch = !!me?.savedSearch?.internalID ?? false
   const emptyAttributes = Object.keys(attributes).length === 0
 
   const handlePress = () => {
-    console.log('saved search button pressed')
+    console.log("saved search button pressed")
   }
 
   return (
@@ -48,6 +42,16 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   )
 }
 
+export const SavedSeearchButtonFragmentContainer = createFragmentContainer(SavedSearchButton, {
+  me: graphql`
+    fragment SavedSearchButton_me on Me @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
+      savedSearch(criteria: $criteria) {
+        internalID
+      }
+    }
+  `,
+})
+
 export const SavedSearchButtonQueryRender: React.FC<SavedSearchButtonQueryRenderProps> = (props) => {
   const { filters, artistId } = props
   const input = prepareFilterParamsForSaveSearchInput(filters)
@@ -62,9 +66,7 @@ export const SavedSearchButtonQueryRender: React.FC<SavedSearchButtonQueryRender
       query={graphql`
         query SavedSearchButtonQuery($criteria: SearchCriteriaAttributes!) {
           me {
-            savedSearch(criteria: $criteria) {
-              internalID
-            }
+            ...SavedSearchButton_me @arguments(criteria: $criteria)
           }
         }
       `}
@@ -78,8 +80,8 @@ export const SavedSearchButtonQueryRender: React.FC<SavedSearchButtonQueryRender
         }
 
         return (
-          <SavedSearchButton
-            isSavedSearch={!!relayProps?.me?.savedSearch?.internalID ?? false}
+          <SavedSeearchButtonFragmentContainer
+            me={relayProps?.me ?? null}
             loading={relayProps === null && error === null}
             attributes={input}
           />
@@ -91,4 +93,3 @@ export const SavedSearchButtonQueryRender: React.FC<SavedSearchButtonQueryRender
     />
   )
 }
-
