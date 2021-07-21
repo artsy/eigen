@@ -8,6 +8,8 @@ upcoming:
     - Add new onboarding feature flag on ios - dzmitry
     - Add optionalField for Order History and Order Details - Serge0n
     - Add specs for deleteSavedSearch and createSavedSearch mutations - dzmitry tratsiak
+    - add toggledSavedSearch analytics tracking  - devon blandin
+    - Upgrade styled-components to v5  - mounir
     - Add toggledSavedSearch analytics tracking - devon blandin
     - Allow custom attributes from a push notification payload to be passed through to React Native scenes - devon blandin
     - Add diagnose script - mounir
