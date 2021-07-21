@@ -1,9 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0e4f0773764f0453f181d81d21ed4882 */
+/* @relayHash 28d5a3a40691a84f69881d0cf92d2132 */
 
 import { ConcreteRequest } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type SearchCriteriaAttributes = {
     acquireable?: boolean | null;
     additionalGeneIDs?: Array<string> | null;
@@ -27,9 +28,7 @@ export type SavedSearchButtonQueryVariables = {
 };
 export type SavedSearchButtonQueryResponse = {
     readonly me: {
-        readonly savedSearch: {
-            readonly internalID: string;
-        } | null;
+        readonly " $fragmentRefs": FragmentRefs<"SavedSearchButton_me">;
     } | null;
 };
 export type SavedSearchButtonQuery = {
@@ -44,10 +43,14 @@ query SavedSearchButtonQuery(
   $criteria: SearchCriteriaAttributes!
 ) {
   me {
-    savedSearch(criteria: $criteria) {
-      internalID
-    }
+    ...SavedSearchButton_me_1ff8oJ
     id
+  }
+}
+
+fragment SavedSearchButton_me_1ff8oJ on Me {
+  savedSearch(criteria: $criteria) {
+    internalID
   }
 }
 */
@@ -60,30 +63,13 @@ var v0 = [
     "name": "criteria"
   }
 ],
-v1 = {
-  "alias": null,
-  "args": [
-    {
-      "kind": "Variable",
-      "name": "criteria",
-      "variableName": "criteria"
-    }
-  ],
-  "concreteType": "SearchCriteria",
-  "kind": "LinkedField",
-  "name": "savedSearch",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "internalID",
-      "storageKey": null
-    }
-  ],
-  "storageKey": null
-};
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "criteria",
+    "variableName": "criteria"
+  }
+];
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -99,7 +85,11 @@ return {
         "name": "me",
         "plural": false,
         "selections": [
-          (v1/*: any*/)
+          {
+            "args": (v1/*: any*/),
+            "kind": "FragmentSpread",
+            "name": "SavedSearchButton_me"
+          }
         ],
         "storageKey": null
       }
@@ -121,7 +111,24 @@ return {
         "name": "me",
         "plural": false,
         "selections": [
-          (v1/*: any*/),
+          {
+            "alias": null,
+            "args": (v1/*: any*/),
+            "concreteType": "SearchCriteria",
+            "kind": "LinkedField",
+            "name": "savedSearch",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "internalID",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": null,
@@ -135,7 +142,7 @@ return {
     ]
   },
   "params": {
-    "id": "0e4f0773764f0453f181d81d21ed4882",
+    "id": "28d5a3a40691a84f69881d0cf92d2132",
     "metadata": {},
     "name": "SavedSearchButtonQuery",
     "operationKind": "query",
@@ -143,5 +150,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'f0dd7ec6b20568c11ae92595c1350cf3';
+(node as any).hash = '449e4412d84929d7c547ad86d3657c1b';
 export default node;
