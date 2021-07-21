@@ -9,7 +9,7 @@ import { Colors } from "lib/data/colors"
 import styled from "styled-components/native"
 
 import { ConversationSnippet_conversation } from "__generated__/ConversationSnippet_conversation.graphql"
-import { color, Flex, Sans, Touchable } from "palette"
+import { ClassTheme, Flex, Sans, Touchable } from "palette"
 
 const Unread = styled(Flex)`
   height: 14;
@@ -89,58 +89,62 @@ export class ConversationSnippet extends React.Component<Props> {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const date = moment(conversation.lastMessageAt).fromNow(true) + " ago"
     return (
-      <Touchable onPress={() => this.conversationSelected()} underlayColor={color("black5")}>
-        <Flex py={2} px={2}>
-          <Flex flexDirection="row">
-            <Flex>
-              {!!conversation.unread && (
-                <Unread>
-                  <Indicator />
-                </Unread>
-              )}
-              <ImageView
-                imageURL={
-                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                  imageURL
-                }
-              />
-            </Flex>
-            <Flex ml={1} style={{ flex: 1 }}>
-              <Flex flexDirection="row" mb="2px" style={{ flex: 0, alignItems: "center" }}>
-                <Flex style={{ flexShrink: 1 }}>
-                  <Sans
-                    size="3t"
-                    weight="medium"
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
-                    mr="5px"
-                    color={conversation.unread ? "black" : "black60"}
-                  >
-                    {partnerName}
-                  </Sans>
-                </Flex>
-                <Flex flex={1} />
+      <ClassTheme>
+        {({ color }) => (
+          <Touchable onPress={() => this.conversationSelected()} underlayColor={color("black5")}>
+            <Flex py={2} px={2}>
+              <Flex flexDirection="row">
                 <Flex>
-                  <Sans textAlign="right" size="3t" color="black30">
-                    {date}
-                  </Sans>
+                  {!!conversation.unread && (
+                    <Unread>
+                      <Indicator />
+                    </Unread>
+                  )}
+                  <ImageView
+                    imageURL={
+                      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                      imageURL
+                    }
+                  />
+                </Flex>
+                <Flex ml={1} style={{ flex: 1 }}>
+                  <Flex flexDirection="row" mb="2px" style={{ flex: 0, alignItems: "center" }}>
+                    <Flex style={{ flexShrink: 1 }}>
+                      <Sans
+                        size="3t"
+                        weight="medium"
+                        ellipsizeMode="tail"
+                        numberOfLines={1}
+                        mr="5px"
+                        color={conversation.unread ? "black" : "black60"}
+                      >
+                        {partnerName}
+                      </Sans>
+                    </Flex>
+                    <Flex flex={1} />
+                    <Flex>
+                      <Sans textAlign="right" size="3t" color="black30">
+                        {date}
+                      </Sans>
+                    </Flex>
+                  </Flex>
+                  {!!conversationText && (
+                    <Sans
+                      size="3t"
+                      mr="15px"
+                      ellipsizeMode="tail"
+                      numberOfLines={3}
+                      color={conversation.unread ? "black" : "black60"}
+                    >
+                      {conversationText}
+                    </Sans>
+                  )}
                 </Flex>
               </Flex>
-              {!!conversationText && (
-                <Sans
-                  size="3t"
-                  mr="15px"
-                  ellipsizeMode="tail"
-                  numberOfLines={3}
-                  color={conversation.unread ? "black" : "black60"}
-                >
-                  {conversationText}
-                </Sans>
-              )}
             </Flex>
-          </Flex>
-        </Flex>
-      </Touchable>
+          </Touchable>
+        )}
+      </ClassTheme>
     )
   }
 }

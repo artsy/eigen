@@ -8,7 +8,7 @@ import { isPad } from "lib/utils/hardware"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { chunk } from "lodash"
-import { AddIcon, BorderBox, Box, color, Flex, XCircleIcon } from "palette"
+import { AddIcon, BorderBox, Box, Flex, useColor, XCircleIcon } from "palette"
 import React from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { ArtworkFormModalScreen } from "../MyCollectionArtworkFormModal"
@@ -57,6 +57,7 @@ export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormModalSc
 }
 
 const AddPhotosButton: React.FC<{ imageSize: number }> = ({ imageSize }) => {
+  const color = useColor()
   const artworkActions = GlobalStore.actions.myCollection.artwork
   const { showActionSheetWithOptions } = useActionSheet()
 

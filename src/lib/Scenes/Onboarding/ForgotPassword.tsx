@@ -4,7 +4,7 @@ import { Input } from "lib/Components/Input/Input"
 import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Button, color, Flex, Spacer, Text } from "palette"
+import { Button, Flex, Spacer, Text, useColor } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView, View } from "react-native"
 import * as Yup from "yup"
@@ -37,6 +37,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
     dirty,
     isSubmitting,
   } = useFormikContext<ForgotPasswordValuesSchema>()
+  const color = useColor()
 
   return (
     <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>
