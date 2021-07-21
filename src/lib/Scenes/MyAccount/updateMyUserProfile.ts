@@ -5,7 +5,12 @@ import { commitMutation, graphql } from "react-relay"
 export const updateMyUserProfile = async (input: updateMyUserProfileMutation["variables"]["input"]) => {
   await new Promise((resolve, reject) =>
     commitMutation<updateMyUserProfileMutation>(defaultEnvironment, {
-      onCompleted: resolve,
+      onCompleted: (response, _) => {
+        if (response.updateMyUserProfile?.userOrError?.mutationError) {
+          reject(response.updateMyUserProfile?.userOrError?.mutationError)
+        }
+        resolve(response)
+      },
       mutation: graphql`
         mutation updateMyUserProfileMutation($input: UpdateMyProfileInput!) {
           updateMyUserProfile(input: $input) {
@@ -20,6 +25,21 @@ export const updateMyUserProfile = async (input: updateMyUserProfileMutation["va
               receivePromotionNotification
               receivePurchaseNotification
               receiveSaleOpeningClosingNotification
+              internalID
+            }
+            userOrError {
+              ... on UpdateMyProfileMutationFailure {
+                mutationError {
+                  type
+                  message
+                  detail
+                  error
+                  fieldErrors {
+                    name
+                    message
+                  }
+                }
+              }
             }
           }
         }
