@@ -1,4 +1,5 @@
-import { BorderBox, color, Flex, Text, Touchable } from "palette"
+import { themeGet } from "@styled-system/theme-get"
+import { BorderBox, Flex, Text, Touchable, useColor } from "palette"
 import React from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
@@ -14,6 +15,7 @@ const UnavailableIndicator = styled(View)`
 `
 
 export const RadioButton: React.FC<{ selected: boolean }> = (props) => {
+  const color = useColor()
   const { selected } = props
   return (
     <View
