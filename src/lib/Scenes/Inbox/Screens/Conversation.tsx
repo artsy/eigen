@@ -108,6 +108,8 @@ export class Conversation extends React.Component<Props, State> {
       },
       { force: true }
     )
+    navigationEvents.emit("refetchConversation")
+    console.warn("called refetch 2")
   }
 
   maybeMarkLastMessageAsRead() {
@@ -234,6 +236,7 @@ export class Conversation extends React.Component<Props, State> {
                 },
                 { force: true }
               )
+              navigationEvents.emit("refetchConversation")
             }}
           />
         </Container>
