@@ -6,7 +6,7 @@
 // declare var babelHelpers: any
 // Object.assign(babelHelpers, { applyDecoratedDescriptor, initializerDefineProperty })
 // import "@babel/runtime"
-
+import "@testing-library/jest-native/extend-expect"
 import chalk from "chalk"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Enzyme from "enzyme"
@@ -276,6 +276,10 @@ function getNativeModules(): OurNativeModules {
       lockActivityScreenOrientation: jest.fn(),
       gitCommitShortHash: "de4dc0de",
     },
+    // ARGraphQLQueryCache: {
+    //   _setResponseForQueryIDWithVariables: jest.fn(() => ({ wow: 1 })),
+    //   _responseForQueryIDWithVariables: jest.fn(() => ({ wow: 5 })),
+    // },
   }
 }
 
@@ -290,6 +294,18 @@ jest.mock("lib/navigation/navigate", () => ({
   EntityType: { partner: "partner", fair: "fair" },
   SlugType: { partner: "partner", fair: "fair" },
 }))
+
+// let mockDefaultEnvironment: ReturnType<typeof createMockEnvironment>
+
+// jest.mock("lib/relay/createEnvironment", () => {
+//   return {
+//     defaultEnvironment: mockDefaultEnvironment,
+//   }
+// })
+
+// beforeEach(() => {
+//   mockDefaultEnvironment = createMockEnvironment()
+// })
 
 Object.assign(NativeModules, getNativeModules())
 

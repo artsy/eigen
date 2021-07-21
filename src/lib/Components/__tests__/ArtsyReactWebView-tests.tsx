@@ -1,3 +1,4 @@
+import { waitFor } from "@testing-library/react-native"
 import mockFetch from "jest-fetch-mock"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { goBack, navigate } from "lib/navigation/navigate"
@@ -40,7 +41,7 @@ describe(ArtsyReactWebViewPage, () => {
   it("shares the correct URL", () => {
     const tree = render({ showShareButton: true })
     tree.root.findByType(FancyModalHeader).props.onRightButtonPress()
-    setTimeout(() => expect(jest.fn()).toHaveBeenCalledWith())
+    waitFor(() => expect(jest.fn()).toHaveBeenCalledTimes(1))
   })
   it("calls goBack when the close/back button is pressed", () => {
     const tree = render()
@@ -164,12 +165,6 @@ describe(ArtsyReactWebViewPage, () => {
 })
 
 describe(useWebViewCookies, () => {
-  beforeAll(() => {
-    jest.useFakeTimers()
-  })
-  afterAll(() => {
-    jest.useRealTimers()
-  })
   beforeEach(() => {
     mockFetch.mockClear()
   })
@@ -182,13 +177,15 @@ describe(useWebViewCookies, () => {
     act(() => {
       renderWithWrappers(<Wrapper />)
     })
-    expect(mockFetch).toHaveBeenCalledWith("https://staging.artsy.net", {
-      method: "HEAD",
-      headers: { "X-Access-Token": "userAccessToken" },
-    })
-    expect(mockFetch).toHaveBeenCalledWith("https://live-staging.artsy.net/login", {
-      method: "HEAD",
-      headers: { "X-Access-Token": "userAccessToken" },
+    waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith("https://staging.artsy.net", {
+        method: "HEAD",
+        headers: { "X-Access-Token": "userAccessToken" },
+      })
+      expect(mockFetch).toHaveBeenCalledWith("https://live-staging.artsy.net/login", {
+        method: "HEAD",
+        headers: { "X-Access-Token": "userAccessToken" },
+      })
     })
   })
   it("retries if it fails", async () => {
@@ -196,32 +193,26 @@ describe(useWebViewCookies, () => {
     mockFetch.mockReturnValue(Promise.resolve({ ok: false, status: 500 } as any))
     const tree = renderWithWrappers(<Wrapper />)
     await act(() => undefined)
-    expect(mockFetch).toHaveBeenCalledTimes(2)
+    waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(2))
 
-    jest.runOnlyPendingTimers()
-    expect(mockFetch).toHaveBeenCalledTimes(4)
-
-    await act(() => undefined)
-    jest.runOnlyPendingTimers()
-    expect(mockFetch).toHaveBeenCalledTimes(6)
+    waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(4))
 
     await act(() => undefined)
-    jest.runOnlyPendingTimers()
-    expect(mockFetch).toHaveBeenCalledTimes(8)
+    waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(6))
 
     await act(() => undefined)
-    jest.runOnlyPendingTimers()
-    expect(mockFetch).toHaveBeenCalledTimes(10)
+    waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(8))
+
+    await act(() => undefined)
+    waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(10))
 
     tree.unmount()
 
     await act(() => undefined)
-    jest.runOnlyPendingTimers()
-    expect(mockFetch).toHaveBeenCalledTimes(10)
+    waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(10))
 
     await act(() => undefined)
-    jest.runOnlyPendingTimers()
-    expect(mockFetch).toHaveBeenCalledTimes(10)
+    waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(10))
   })
 })
 
