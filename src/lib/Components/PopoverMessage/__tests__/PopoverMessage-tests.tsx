@@ -1,4 +1,4 @@
-import { flushPromiseQueue } from 'lib/tests/flushPromiseQueue'
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import React from "react"
