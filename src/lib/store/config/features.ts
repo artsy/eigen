@@ -101,17 +101,16 @@ export const features = defineFeatures({
     description: "Enable Order History in settings",
     showInAdminMenu: true,
   },
+  // TODO: after implementation of notifications for android we need to change the following line to
   AREnableSavedSearch: {
-    readyForRelease: true,
-    // TODO: after implementation of notifications for android we need to change the following line to
-    // echoFlagKey: "AREnableSavedSearch",
-    echoFlagKey: Platform.OS === "ios" ? "AREnableSavedSearch" : undefined,
+    readyForRelease: false,
     description: "Enable Saved Search",
     ...Platform.select({
       android: {
         showInAdminMenu: true,
       },
       ios: {
+        readyForRelease: true,
         echoFlagKey: "AREnableSavedSearch",
       },
     }),
