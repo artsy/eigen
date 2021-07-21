@@ -23,7 +23,7 @@ const Button = styled.TouchableWithoutFeedback`
 const Tabs = styled.ScrollView`
   height: 50px;
   border-bottom-width: 1px;
-  border-color: ${color("black10")};
+  border-color: ${themeGet("color.black10")};
 `
 
 const TabButton = styled(View)<{ active: boolean }>`
@@ -36,7 +36,7 @@ const TabButton = styled(View)<{ active: boolean }>`
   ${(p) =>
     p.active &&
     `
-    border-color: ${color("black100")};
+    border-color: ${themeGet("color.black100")};
     border-bottom-width: 2px;
   `};
 `

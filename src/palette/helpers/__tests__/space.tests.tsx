@@ -39,6 +39,7 @@ describe("space", () => {
     const TestComponent = () => (
       <Theme theme="v3">
         <>
+          {/* @ts-ignore */}
           <SpaceView name="0.3" />
           <SpaceView name="2" />
         </>

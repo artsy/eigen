@@ -1,6 +1,6 @@
+import { useColor } from "palette/Theme"
 import React from "react"
 import { EMaskUnits } from "react-native-svg"
-import { useColor } from "palette/Theme"
 import { Icon, IconProps, Mask, Path, Rect } from "../Icon"
 
 /** BoltCircleFill */

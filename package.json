@@ -184,6 +184,7 @@
     "@types/semver": "^7.3.4",
     "@types/styled-components": "4.0.3",
     "@types/styled-system": "5.1.12",
+    "@types/styled-system__theme-get": "^5.0.1",
     "@types/supercluster": "5.0.0",
     "@types/yup": "0.29.3",
     "argparse": "^2.0.1",

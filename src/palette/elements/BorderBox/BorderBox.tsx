@@ -14,9 +14,9 @@ export interface BorderBoxProps extends FlexProps, BorderProps, SpaceProps {
  * and padding set by default
  */
 export const BorderBox = styledWrapper(Flex)<BorderBoxProps>`
-  border: 1px solid ${color("black10")};
+  border: 1px solid ${(props) => props.theme.colors.black10};
   border-radius: 2px;
-  padding: ${space(2)}px;
+  padding: ${(props) => props.theme.space["2"]};
   ${border}
   ${styledSpace}
 `

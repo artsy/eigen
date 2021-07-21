@@ -28,7 +28,34 @@ const {
   ...eigenUsefulTHEME_V3
 } = THEME_V3
 
-const fixSpaceUnits = (
+const fixSpaceUnitsV2 = (
+  units: typeof THEME_V2.space
+): {
+  0.3: number
+  0.5: number
+  1: number
+  1.5: number
+  2: number
+  3: number
+  4: number
+  5: number
+  6: number
+  9: number
+  12: number
+  18: number
+} => {
+  let fixed = units
+
+  fixed = _.mapValues(fixed, (stringValueWithPx) => {
+    const justStringValue = _.split(stringValueWithPx, "px")[0]
+    const numberValue = parseInt(justStringValue, 10)
+    return numberValue
+  }) as any
+
+  return fixed as any
+}
+
+const fixSpaceUnitsV3 = (
   units: typeof spaceNumbers
 ): {
   "0.5": number
@@ -52,11 +79,11 @@ const fixSpaceUnits = (
 }
 
 export const THEMES = {
-  v2: { ...THEME_V2, fontFamily, fonts: TEXT_FONTS_V2 },
+  v2: { ...THEME_V2, fontFamily, fonts: TEXT_FONTS_V2, space: fixSpaceUnitsV2(THEME_V2.space) },
   v3: {
     ...eigenUsefulTHEME_V3,
     fonts: TEXT_FONTS_V3,
-    space: fixSpaceUnits(spaceNumbers),
+    space: fixSpaceUnitsV3(spaceNumbers),
   }, // v3 removed `fontFamily`, `fontSizes`, `letterSpacings`, `lineHeights`, `typeSizes`
 }
 
@@ -81,10 +108,23 @@ export const ThemeV3: React.FC = ({ children }) => <ThemeProvider theme="v3">{ch
 
 export const useTheme = <T extends ThemeType>() => {
   const theme: T = useContext(ThemeContext)
-  const color = (colorName: ColorV2 | ColorV3) =>
-    isThemeV2(theme) ? theme.colors[colorName as ColorV2] : theme.colors[colorName as ColorV3]
-  const space = (spaceName: SpacingUnitV2 | SpacingUnitV3) =>
-    isThemeV2(theme) ? theme.space[spaceName as SpacingUnitV2] : theme.space[spaceName as SpacingUnitV3]
+
+  interface ColorFuncOverload {
+    (colorNumber: undefined): undefined
+    (colorNumber: Color): string
+    (colorNumber: Color | undefined): string | undefined
+  }
+  const color: ColorFuncOverload = (colorName: any): any =>
+    colorName === undefined
+      ? undefined
+      : isThemeV2(theme)
+      ? theme.colors[colorName as ColorV2]
+      : theme.colors[colorName as ColorV3]
+
+  const space = (spaceName: SpacingUnitV2 | SpacingUnitV3): number =>
+    isThemeV2(theme)
+      ? ((theme.space[spaceName as SpacingUnitV2] as unknown) as number)
+      : theme.space[spaceName as SpacingUnitV3]
   return { theme, color, space }
 }
 

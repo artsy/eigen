@@ -1,6 +1,5 @@
 import React from "react"
 import { styledWrapper } from "../../platform/primitives"
-import { color } from "../../Theme"
 import { SansSize } from "../../Theme"
 import { Flex, FlexProps } from "../Flex"
 import { Sans } from "../Typography"
@@ -14,7 +13,7 @@ interface MessageProps extends FlexProps {
 }
 
 const StyledFlex = styledWrapper(Flex)`
-  background-color: ${color("black5")};
+  background-color: ${themeGet("colors.black5")};
   border-radius: 2px;
 `
 

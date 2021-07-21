@@ -1,5 +1,5 @@
 import _ from "lodash"
-import { color, Color, EyeOpenedIcon, Flex, Sans, TEXT_FONTS, XCircleIcon } from "palette"
+import { Color, EyeOpenedIcon, Flex, Sans, TEXT_FONTS, XCircleIcon } from "palette"
 import { fontFamily } from "palette/platform/fonts/fontFamily"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {

@@ -1,3 +1,4 @@
+import { themeGet } from "@styled-system/theme-get"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { Button, Flex, Sans } from "palette"
 import React from "react"
@@ -38,6 +39,6 @@ export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) =>
 }
 
 const ZeroStateMessage = styled(Sans)`
-  color: ${color("black100")};
+  color: ${themeGet("color.black100")};
   text-align: center;
 `

@@ -1,3 +1,4 @@
+import { themeGet } from "@styled-system/theme-get"
 import { Text, useColor } from "palette"
 import React, { useState } from "react"
 import { TextInput, TextInputProps } from "react-native"
@@ -5,7 +6,7 @@ import styled from "styled-components/native"
 
 const StyledTextArea = styled(TextInput)`
   border: solid 1px;
-  padding: ${space(1)}px;
+  padding: ${themeGet("space.1")}px;
   height: 88px;
 `
 

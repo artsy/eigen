@@ -3273,6 +3273,11 @@
   dependencies:
     csstype "^3.0.2"
 
+"@types/styled-system__theme-get@^5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@types/styled-system__theme-get/-/styled-system__theme-get-5.0.1.tgz#c3884e8f15641603503dc1d49f9d282dce11e5fb"
+  integrity sha512-+i4VZ5wuYKMU8oKPmUlzc9r2RhpSNOK061Khtrr7X0sOQEcIyhUtrDusuMkp5ZR3D05Xopn3zybTPyUSQkKGAA==
+
 "@types/supercluster@5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@types/supercluster/-/supercluster-5.0.0.tgz#5ec6054d1e11ae2dece35d9973c57cd6ffd0b764"

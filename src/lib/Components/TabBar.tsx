@@ -45,7 +45,7 @@ const TabButton = styled.View<{ spaceEvenly?: boolean; active?: boolean }>`
     !p.spaceEvenly &&
     p.active &&
     `
-    border-color: ${color("black100")};
+    border-color: ${themeGet("color.black100")};
     border-bottom-width: 1px;
     margin-bottom: -1px;
   `};
@@ -127,5 +127,5 @@ export default class TabBar extends React.Component<TabBarProps> {
 
 const Wrapper = styled(Box)`
   border-bottom-width: 1px;
-  border-bottom-color: ${color("black30")};
+  border-bottom-color: ${themeGet("color.black30")};
 `

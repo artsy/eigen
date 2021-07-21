@@ -1,4 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { themeGet } from "@styled-system/theme-get"
 import {
   FilterDisplayName,
   filterKeyFromAggregation,
@@ -293,7 +294,7 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
 }
 
 export const FilterArtworkButton = styled(Flex)`
-  background-color: ${color("black100")};
+  background-color: ${themeGet("colors.black100")};
   align-items: center;
   justify-content: center;
   flex-direction: row;
@@ -370,11 +371,11 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
 }
 
 export const CloseIconContainer = styled(TouchableOpacity)`
-  padding: ${space(2)}px;
+  padding: ${themeGet("space.2")}px;
 `
 
 export const ClearAllButton = styled(TouchableOpacity)`
-  padding: ${space(2)}px;
+  padding: ${themeGet("space.2")}px;
 `
 
 export const OptionListItem = styled(Flex)`

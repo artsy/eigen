@@ -3,7 +3,6 @@ import { Defs, LinearGradient, Path, Stop } from "react-native-svg"
 import { Icon, IconProps } from "./Icon"
 
 export const MessagesAppIcon: React.FC<IconProps> = (props) => {
-  const color = useColor()
   return (
     <Icon {...props} viewBox="0 0 23 23">
       <Path
