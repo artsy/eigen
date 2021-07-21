@@ -1,6 +1,6 @@
 import { RelatedArtist_artist } from "__generated__/RelatedArtist_artist.graphql"
 import { navigate } from "lib/navigation/navigate"
-import { Sans, Spacer } from "palette"
+import { ClassTheme, Sans, Spacer } from "palette"
 import React, { Component } from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -31,9 +31,13 @@ class RelatedArtist extends Component<Props> {
           <Sans size="3t" weight="medium">
             {artist.name}
           </Sans>
-          <Sans size="3t" color={color("black60")}>
-            {this.artworksString(artist.counts)}
-          </Sans>
+          <ClassTheme>
+            {({ color }) => (
+              <Sans size="3t" color={color("black60")}>
+                {this.artworksString(artist.counts)}
+              </Sans>
+            )}
+          </ClassTheme>
         </View>
       </TouchableWithoutFeedback>
     )

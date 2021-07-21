@@ -119,7 +119,8 @@ export const useTheme = <T extends ThemeType>() => {
       ? undefined
       : isThemeV2(theme)
       ? theme.colors[colorName as ColorV2]
-      : theme.colors[colorName as ColorV3]
+      : //  @ts-ignore
+        theme.colors[colorName as ColorV3]
 
   const space = (spaceName: SpacingUnitV2 | SpacingUnitV3): number =>
     isThemeV2(theme)

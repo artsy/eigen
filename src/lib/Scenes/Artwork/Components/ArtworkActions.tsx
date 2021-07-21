@@ -120,9 +120,13 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
             <Touchable haptic onPress={() => this.handleArtworkSave()}>
               <UtilButton pr={3}>
                 <Box mr={0.5}>{is_saved ? <HeartFillIcon fill="purple100" /> : <HeartIcon />}</Box>
-                <Sans size="3" color={is_saved ? color("purple100") : color("black100")}>
-                  {is_saved ? "Saved" : "Save"}
-                </Sans>
+                <ClassTheme>
+                  {({ color }) => (
+                    <Sans size="3" color={is_saved ? color("purple100") : color("black100")}>
+                      {is_saved ? "Saved" : "Save"}
+                    </Sans>
+                  )}
+                </ClassTheme>
               </UtilButton>
             </Touchable>
           )}

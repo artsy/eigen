@@ -3,7 +3,7 @@ import React from "react"
 import { Animated, View } from "react-native"
 import styled from "styled-components/native"
 
-import { Box, Sans } from "palette"
+import { Box, ClassTheme, Sans } from "palette"
 
 /**
  * Nearly all props are given by the ScrollableTabView,
@@ -70,15 +70,19 @@ export default class TabBar extends React.Component<TabBarProps> {
         onPress={() => onPressHandler(page)}
       >
         <TabButton spaceEvenly={this.props.spaceEvenly} active={isTabActive}>
-          <Sans
-            numberOfLines={1}
-            ellipsizeMode="tail"
-            weight="medium"
-            size="3"
-            color={isTabActive ? "black" : color("black30")}
-          >
-            {name}
-          </Sans>
+          <ClassTheme>
+            {({ color }) => (
+              <Sans
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                weight="medium"
+                size="3"
+                color={isTabActive ? "black" : color("black30")}
+              >
+                {name}
+              </Sans>
+            )}
+          </ClassTheme>
         </TabButton>
       </Button>
     )
