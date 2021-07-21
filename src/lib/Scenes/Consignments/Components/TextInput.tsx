@@ -1,6 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
 import { Fonts } from "lib/data/fonts"
-import { Box } from "palette"
+import { Box, ClassTheme, useColor } from "palette"
 import React, { FunctionComponent } from "react"
 import {
   ActivityIndicator,
@@ -39,6 +39,7 @@ const Input = styled.TextInput`
 `
 
 const Separator = (focused: boolean) => {
+  const color = useColor()
   return (
     <View
       style={{
@@ -49,18 +50,21 @@ const Separator = (focused: boolean) => {
   )
 }
 
-const ReadOnlyInput = (props: TextInputProps) => (
-  <Text
-    style={{
-      color: color("black100"),
-      fontFamily: Fonts.Unica77LLRegular,
-      fontSize: 16,
-      paddingTop: 8,
-    }}
-  >
-    {props.text! /* STRICTNESS_MIGRATION */.value || props.text! /* STRICTNESS_MIGRATION */.placeholder}
-  </Text>
-)
+const ReadOnlyInput = (props: TextInputProps) => {
+  const color = useColor()
+  return (
+    <Text
+      style={{
+        color: color("black100"),
+        fontFamily: Fonts.Unica77LLRegular,
+        fontSize: 16,
+        paddingTop: 8,
+      }}
+    >
+      {props.text! /* STRICTNESS_MIGRATION */.value || props.text! /* STRICTNESS_MIGRATION */.placeholder}
+    </Text>
+  )
+}
 
 export default class TextInputField extends React.Component<TextInputProps, State> {
   inputRef: TextInput | null = null
@@ -86,49 +90,55 @@ export default class TextInputField extends React.Component<TextInputProps, Stat
   render() {
     const LocationIcon = this.props.LocationIcon
     return (
-      <View style={[this.props.style, { flex: 1, maxHeight: 40 }]}>
-        <View style={{ flexDirection: "row", height: 40 }}>
-          {
-            // LocationIcon needs offset because the pin icon from pallete
-            // is centered on the pin's tip
-          }
-          {!!LocationIcon && (
-            <Box style={{ top: 11 }}>
-              <LocationIcon />
-            </Box>
-          )}
-          {!!this.props.preImage && <Image source={this.props.preImage} style={{ marginRight: 6, marginTop: 12 }} />}
-          {this.props.readonly ? (
-            ReadOnlyInput(this.props)
-          ) : (
-            <Input
-              ref={(ref) => (this.inputRef = ref as any) /* STRICTNESS_MIGRATION */}
-              autoCorrect={false}
-              clearButtonMode="while-editing"
-              keyboardAppearance="dark"
-              placeholderTextColor={color("black60")}
-              selectionColor={color("black60")}
-              {...this.props.text}
-              autoFocus={false}
-              onFocus={(e) =>
-                this.setState(
-                  { focused: true },
-                  () => this.props.text && this.props.text.onFocus && this.props.text.onFocus(e)
-                )
+      <ClassTheme>
+        {({ color }) => (
+          <View style={[this.props.style, { flex: 1, maxHeight: 40 }]}>
+            <View style={{ flexDirection: "row", height: 40 }}>
+              {
+                // LocationIcon needs offset because the pin icon from pallete
+                // is centered on the pin's tip
               }
-              onBlur={(e) =>
-                this.setState(
-                  { focused: false },
-                  () => this.props.text && this.props.text.onBlur && this.props.text.onBlur(e)
-                )
-              }
-            />
-          )}
+              {!!LocationIcon && (
+                <Box style={{ top: 11 }}>
+                  <LocationIcon />
+                </Box>
+              )}
+              {!!this.props.preImage && (
+                <Image source={this.props.preImage} style={{ marginRight: 6, marginTop: 12 }} />
+              )}
+              {this.props.readonly ? (
+                ReadOnlyInput(this.props)
+              ) : (
+                <Input
+                  ref={(ref) => (this.inputRef = ref as any) /* STRICTNESS_MIGRATION */}
+                  autoCorrect={false}
+                  clearButtonMode="while-editing"
+                  keyboardAppearance="dark"
+                  placeholderTextColor={color("black60")}
+                  selectionColor={color("black60")}
+                  {...this.props.text}
+                  autoFocus={false}
+                  onFocus={(e) =>
+                    this.setState(
+                      { focused: true },
+                      () => this.props.text && this.props.text.onFocus && this.props.text.onFocus(e)
+                    )
+                  }
+                  onBlur={(e) =>
+                    this.setState(
+                      { focused: false },
+                      () => this.props.text && this.props.text.onBlur && this.props.text.onBlur(e)
+                    )
+                  }
+                />
+              )}
 
-          {this.props.searching ? <ActivityIndicator animating={this.props.searching} /> : null}
-        </View>
-        {Separator(this.state.focused)}
-      </View>
+              {this.props.searching ? <ActivityIndicator animating={this.props.searching} /> : null}
+            </View>
+            {Separator(this.state.focused)}
+          </View>
+        )}
+      </ClassTheme>
     )
   }
 }

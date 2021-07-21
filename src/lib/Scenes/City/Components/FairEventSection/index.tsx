@@ -1,6 +1,7 @@
+import { themeGet } from "@styled-system/theme-get"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { navigate } from "lib/navigation/navigate"
-import { Box, Serif, space } from "palette"
+import { Box, Serif } from "palette"
 import { Component } from "react"
 import React from "react"
 import { FlatList } from "react-native"
@@ -9,7 +10,7 @@ import { FairEventSectionCard } from "./Components/FairEventSectionCard"
 
 const FairSectionBackground = styled(Box)`
   background: black;
-  margin-bottom: ${space(1)};
+  margin-bottom: ${themeGet("space.1")};
 `
 
 interface Props {

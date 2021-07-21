@@ -4,7 +4,7 @@ import PinSavedOff from "lib/Icons/PinSavedOff"
 import PinSavedOn from "lib/Icons/PinSavedOn"
 import { navigate } from "lib/navigation/navigate"
 import { Track, track as _track } from "lib/utils/track"
-import { Box, Flex, Sans } from "palette"
+import { Box, ClassTheme, Flex, Sans } from "palette"
 import React, { Component } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -37,7 +37,7 @@ export class SavedEventSection extends Component<any> {
               {data.length > 1 ? data.length + " saved events" : data.length + " saved event"}
             </Sans>
           </Flex>
-          <ChevronIcon color="black" />
+          <ChevronIcon color="black100" />
         </Flex>
       </TouchableWithoutFeedback>
     )

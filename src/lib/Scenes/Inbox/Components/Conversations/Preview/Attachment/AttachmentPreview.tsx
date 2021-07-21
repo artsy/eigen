@@ -4,7 +4,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import { AttachmentPreview_attachment } from "__generated__/AttachmentPreview_attachment.graphql"
-import { color, Touchable } from "palette"
+import { ClassTheme, Touchable } from "palette"
 
 const Container = styled.View`
   flex-direction: column;
@@ -26,12 +26,16 @@ export class AttachmentPreview extends React.Component<Props> {
   render() {
     const { attachment, children, onSelected } = this.props
     return (
-      <Touchable
-        underlayColor={color("black5")}
-        onPress={() => onSelected?.(findNodeHandle(this)!, attachment.internalID)}
-      >
-        <Container>{children}</Container>
-      </Touchable>
+      <ClassTheme>
+        {({ color }) => (
+          <Touchable
+            underlayColor={color("black5")}
+            onPress={() => onSelected?.(findNodeHandle(this)!, attachment.internalID)}
+          >
+            <Container>{children}</Container>
+          </Touchable>
+        )}
+      </ClassTheme>
     )
   }
 }

@@ -16,9 +16,9 @@ import { Color as ColorV2, SpacingUnit as SpacingUnitV2 } from "@artsy/palette-t
 import { Color as ColorV3, SpacingUnit as SpacingUnitV3Numbers } from "@artsy/palette-tokens/dist/themes/v3"
 
 type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
-type Color = ColorV2 | ColorV3
-type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
-export { ColorV2, ColorV3, SpacingUnitV2, SpacingUnitV3, Color, SpacingUnit }
+export type Color = ColorV2 | ColorV3
+export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
+export { ColorV2, ColorV3, SpacingUnitV2, SpacingUnitV3 }
 
 const {
   breakpoints: _eigenDoesntCareAboutBreakpoints,

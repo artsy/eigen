@@ -111,6 +111,7 @@ const SelectButton: React.FC<{
   hasError?: boolean
   onPress(): void
 }> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle, hasError }) => {
+  const color = useColor()
   return (
     <Flex>
       {showTitleLabel ? <InputTitle>{title}</InputTitle> : null}

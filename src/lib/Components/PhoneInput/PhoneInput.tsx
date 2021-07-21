@@ -1,5 +1,5 @@
 import { TriangleDown } from "lib/Icons/TriangleDown"
-import { Flex, Sans, Spacer, Touchable } from "palette"
+import { Flex, Sans, Spacer, Touchable, useColor } from "palette"
 import { useEffect, useRef, useState } from "react"
 import React from "react"
 import { Platform } from "react-native"
@@ -19,6 +19,7 @@ export const PhoneInput = React.forwardRef<
     maxModalHeight?: number
   } & Omit<InputProps, "onChange">
 >(({ value, onChange, onChangeText, maxModalHeight, ...rest }, outerRef) => {
+  const color = useColor()
   const innerRef = useRef<Input | null>()
   const initialValues = cleanUserPhoneNumber(value ?? "")
 

@@ -3,7 +3,7 @@ import { Composer_conversation } from "__generated__/Composer_conversation.graph
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import colors from "lib/data/colors"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { Button, Flex, themeProps } from "palette"
+import { Button, ClassTheme, Flex, themeProps } from "palette"
 import React from "react"
 import { Keyboard, TextInput, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -74,6 +74,10 @@ export default class Composer extends React.Component<Props, State> {
   render() {
     const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
 
+
+    return (
+      <ClassTheme>
+        {({color})=>{
     // The TextInput loses its isFocused() callback as a styled component
     const inputStyles = {
       flex: 1,
@@ -86,8 +90,8 @@ export default class Composer extends React.Component<Props, State> {
       borderWidth: 1,
       fontFamily: themeProps.fontFamily.sans.regular.normal,
     }
+          return (
 
-    return (
       <ArtsyKeyboardAvoidingView>
         {this.props.children}
         <Flex flexDirection="column">
@@ -113,6 +117,9 @@ export default class Composer extends React.Component<Props, State> {
           </Container>
         </Flex>
       </ArtsyKeyboardAvoidingView>
+          )
+        }
+      </ClassTheme>
     )
   }
 }

@@ -1,3 +1,4 @@
+import { themeGet } from "@styled-system/theme-get"
 import { Input } from "lib/Components/Input/Input"
 import { getLocationPredictions, SimpleLocation } from "lib/utils/googleMaps"
 import { Flex, LocationIcon, Text, Touchable } from "palette"

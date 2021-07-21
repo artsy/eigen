@@ -1,5 +1,6 @@
+import { themeGet } from "@styled-system/theme-get"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { color, Touchable } from "palette"
+import { Touchable, useColor } from "palette"
 import React from "react"
 import { Dimensions, FlatList, Image, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
@@ -65,6 +66,7 @@ const TakePhotoImage = (props: TakePhotoImageProps) => {
 }
 
 const ImageForURI = (props: ImagePreviewProps) => {
+  const color = useColor()
   const { width } = useScreenDimensions()
   const imageSize = (width - 60) / 2
 
