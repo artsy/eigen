@@ -1,4 +1,4 @@
-import { SavedAddressesNewFormTestsQuery } from "__generated__/SavedAddressesNewFormTestsQuery.graphql"
+import { SavedAddressesFormTestsQuery } from "__generated__/SavedAddressesFormTestsQuery.graphql"
 import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { Input } from "lib/Components/Input/Input"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
@@ -7,25 +7,25 @@ import { Button } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { SavedAddressesNewFormContainer, SavedAddressesNewFormQueryRenderer } from "../SavedAddressesNewForm"
+import { SavedAddressesFormContainer, SavedAddressesFormQueryRenderer } from "../SavedAddressesForm"
 
 jest.unmock("react-relay")
 
-describe(SavedAddressesNewFormQueryRenderer, () => {
+describe(SavedAddressesFormQueryRenderer, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <QueryRenderer<SavedAddressesNewFormTestsQuery>
+    <QueryRenderer<SavedAddressesFormTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query SavedAddressesNewFormTestsQuery {
+        query SavedAddressesFormTestsQuery {
           me {
-            ...SavedAddressesNewForm_me
+            ...SavedAddressesForm_me
           }
         }
       `}
       render={({ props, error }) => {
         if (props?.me) {
-          return <SavedAddressesNewFormContainer me={props.me} />
+          return <SavedAddressesFormContainer me={props.me} />
         } else if (error) {
           console.log(error)
         }

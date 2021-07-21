@@ -1,5 +1,5 @@
-import { SavedAddressesNewForm_me } from "__generated__/SavedAddressesNewForm_me.graphql"
-import { SavedAddressesNewFormQuery } from "__generated__/SavedAddressesNewFormQuery.graphql"
+import { SavedAddressesForm_me } from "__generated__/SavedAddressesForm_me.graphql"
+import { SavedAddressesFormQuery } from "__generated__/SavedAddressesFormQuery.graphql"
 import { Action, action, computed, Computed, createComponentStore } from "easy-peasy"
 import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { CountrySelect } from "lib/Components/CountrySelect"
@@ -9,11 +9,12 @@ import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { Stack } from "lib/Components/Stack"
 import { goBack } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { times } from "lodash"
-import { Flex, Text } from "palette"
+import { Button, Flex, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -21,6 +22,7 @@ import { MyAccountFieldEditScreen } from "../MyAccount/Components/MyAccountField
 import { AddAddressButton } from "./Components/AddAddressButton"
 import { createUserAddress } from "./mutations/addNewAddress"
 import { setAsDefaultAddress } from "./mutations/setAsDefaultAddress"
+import { updateUserAddress } from "./mutations/updateUserAddress"
 
 interface FormField<Type = string> {
   value: Type | null
@@ -76,7 +78,9 @@ const useStore = createComponentStore<Store>({
   }),
 })
 
-export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> = ({ me }) => {
+export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId?: string }> = ({ me, addressId }) => {
+  const isEditForm = !!addressId
+
   const [state, actions] = useStore()
   const [phoneNumber, setPhoneNumber] = useState(me?.phone)
   const [isDefaultAddress, setIsDefaultAddress] = useState(false)
@@ -86,6 +90,22 @@ export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> =
   useEffect(() => {
     setPhoneNumber(me?.phone)
   }, [me?.phone])
+
+  // if addressId then fill the fields
+  useEffect(() => {
+    if (isEditForm) {
+      const addresses = extractNodes(me.addressConnection)
+      const selectedAddress = addresses!.find((address) => address.internalID === addressId)
+      actions.fields.name.setValue(selectedAddress?.name ?? "")
+      actions.fields.postalCode.setValue(selectedAddress?.postalCode ?? "")
+      actions.fields.country.setValue(selectedAddress?.country ?? "")
+      actions.fields.region.setValue(selectedAddress?.region ?? "")
+      actions.fields.addressLine1.setValue(selectedAddress?.addressLine1 ?? "")
+      actions.fields.addressLine2.setValue(selectedAddress?.addressLine2 ?? "")
+      actions.fields.city.setValue(selectedAddress?.city ?? "")
+      setIsDefaultAddress(!!selectedAddress?.isDefault)
+    }
+  }, [])
 
   const screenRef = useRef<MyAccountFieldEditScreen>(null)
 
@@ -112,26 +132,76 @@ export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> =
     }
   }
 
+  const editUserAddress = async (userAddressID: string) => {
+    try {
+      const response = await updateUserAddress(userAddressID, {
+        name: state.fields.name.value!,
+        country: state.fields.country.value!,
+        postalCode: state.fields.postalCode.value,
+        addressLine1: state.fields.addressLine1.value!,
+        addressLine2: state.fields.addressLine2.value,
+        city: state.fields.city.value!,
+        region: state.fields.region.value,
+        phoneNumber,
+      })
+
+      if (isDefaultAddress) {
+        await setAsDefaultAddress(response.updateUserAddress?.userAddressOrErrors.internalID!)
+      }
+      goBack()
+    } catch (e) {
+      Alert.alert("Something went wrong while attempting to save your address. Please try again or contact us.")
+    }
+  }
+
   return (
-    <MyAccountFieldEditScreen ref={screenRef} canSave={true} isSaveButtonVisible={false} title="Add New Address">
+    <MyAccountFieldEditScreen
+      ref={screenRef}
+      canSave={true}
+      isSaveButtonVisible={false}
+      title={isEditForm ? "Edit Address" : "Add New Address"}
+    >
       <Stack spacing={2}>
-        <Input title="Full name" placeholder="Add full name" onChangeText={actions.fields.name.setValue} />
+        <Input
+          title="Full name"
+          placeholder="Add full name"
+          value={state.fields.name.value ?? ""}
+          onChangeText={actions.fields.name.setValue}
+        />
         <CountrySelect onSelectValue={actions.fields.country.setValue} value={state.fields.country.value} />
-        <Input title="Postal Code" placeholder="Add postal code" onChangeText={actions.fields.postalCode.setValue} />
-        <Input title="Address line 1" placeholder="Add address" onChangeText={actions.fields.addressLine1.setValue} />
+        <Input
+          title="Postal Code"
+          placeholder="Add postal code"
+          value={state.fields.postalCode.value ?? ""}
+          onChangeText={actions.fields.postalCode.setValue}
+        />
+        <Input
+          title="Address line 1"
+          placeholder="Add address"
+          value={state.fields.addressLine1.value ?? ""}
+          onChangeText={actions.fields.addressLine1.setValue}
+        />
         <Input
           title="Address line 2 (optional)"
           placeholder="Add address line 2"
+          value={state.fields.addressLine2.value ?? ""}
           onChangeText={actions.fields.addressLine2.setValue}
         />
-        <Input title="City" placeholder="Add city" onChangeText={actions.fields.city.setValue} />
+        <Input
+          title="City"
+          placeholder="Add city"
+          value={state.fields.city.value ?? ""}
+          onChangeText={actions.fields.city.setValue}
+        />
         <Input
           title="State, province, or region"
           placeholder="Add state, province, or region"
+          value={state.fields.region.value ?? ""}
           onChangeText={actions.fields.region.setValue}
         />
         <PhoneInput
           title="Phone number"
+          // add description?
           value={phoneNumber ?? ""}
           maxModalHeight={height * offSetTop}
           onChangeText={setPhoneNumber}
@@ -146,15 +216,26 @@ export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> =
           <Text>Set as default</Text>
         </Checkbox>
 
-        <AddAddressButton handleOnPress={submitAddAddress} title="Add Address" disabled={!state.allPresent} />
+        {!!isEditForm && (
+          <Button variant="noOutline" block onPress={() => console.warn("pressed")}>
+            <Text variant="text" color="red100">
+              Delete address
+            </Text>
+          </Button>
+        )}
+        <AddAddressButton
+          handleOnPress={isEditForm ? () => editUserAddress(addressId!) : submitAddAddress}
+          title="Add Address"
+          disabled={!state.allPresent}
+        />
       </Stack>
     </MyAccountFieldEditScreen>
   )
 }
 
-export const SavedAddressesNewFormContainer = createFragmentContainer(SavedAddressesNewForm, {
+export const SavedAddressesFormContainer = createFragmentContainer(SavedAddressesForm, {
   me: graphql`
-    fragment SavedAddressesNewForm_me on Me {
+    fragment SavedAddressesForm_me on Me {
       id
       phone
       addressConnection(first: 3) {
@@ -165,9 +246,11 @@ export const SavedAddressesNewFormContainer = createFragmentContainer(SavedAddre
             addressLine1
             addressLine2
             addressLine3
+            country
             city
             region
             postalCode
+            isDefault
           }
         }
       }
@@ -190,18 +273,19 @@ export const SavedAddressesFormPlaceholder: React.FC = () => {
   )
 }
 
-export const SavedAddressesNewFormQueryRenderer: React.FC<{}> = () => (
-  <QueryRenderer<SavedAddressesNewFormQuery>
+export const SavedAddressesFormQueryRenderer: React.FC<{}> = (props) => (
+  <QueryRenderer<SavedAddressesFormQuery>
     environment={defaultEnvironment}
     query={graphql`
-      query SavedAddressesNewFormQuery {
+      query SavedAddressesFormQuery {
         me {
-          ...SavedAddressesNewForm_me
+          ...SavedAddressesForm_me
         }
       }
     `}
     render={renderWithPlaceholder({
-      Container: SavedAddressesNewFormContainer,
+      initialProps: props,
+      Container: SavedAddressesFormContainer,
       renderPlaceholder: () => <SavedAddressesFormPlaceholder />,
     })}
     variables={{}}
