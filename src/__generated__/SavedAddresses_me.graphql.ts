@@ -15,6 +15,7 @@ export type SavedAddresses_me = {
                 readonly addressLine1: string;
                 readonly addressLine2: string | null;
                 readonly addressLine3: string | null;
+                readonly country: string;
                 readonly city: string;
                 readonly region: string | null;
                 readonly postalCode: string | null;
@@ -118,6 +119,13 @@ return {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
+                  "name": "country",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "city",
                   "storageKey": null
                 },
@@ -163,5 +171,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'fb847792c64b62f6720e3b7106972e2f';
+(node as any).hash = '1cc82a0e12160d16093f80d0e236bb84';
 export default node;

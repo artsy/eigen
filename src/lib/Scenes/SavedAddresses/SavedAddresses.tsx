@@ -45,7 +45,12 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
     )
   }, [])
 
-  const onPressEditAddress = () => null
+  const onPressEditAddress = (addressId: string) =>
+    navigate("/my-profile/saved-addresses/edit-address", {
+      passProps: {
+        addressId,
+      },
+    })
 
   const onPressDeleteAddress = (addressId: string) => {
     deleteSavedAddress(
@@ -88,7 +93,10 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
                     {!!item?.isDefault && <Text variant="small">Default Address</Text>}
                   </Flex>
                   <Flex flex={1} flexDirection="row" justifyContent="space-between">
-                    <Touchable onPress={onPressEditAddress}>
+                    <Touchable
+                      testID={`EditAddress-${item.internalID}`}
+                      onPress={() => onPressEditAddress(item.internalID)}
+                    >
                       <Text variant="text" color="black100" style={{ textDecorationLine: "underline" }}>
                         Edit
                       </Text>
@@ -166,6 +174,7 @@ export const SavedAddressesContainer = createRefetchContainer(
               addressLine1
               addressLine2
               addressLine3
+              country
               city
               region
               postalCode
