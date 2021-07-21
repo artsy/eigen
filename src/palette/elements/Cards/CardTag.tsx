@@ -1,10 +1,9 @@
+import { Color, useColor } from "palette/Theme"
 import React from "react"
 import { View } from "react-native"
 import { StyleProp, ViewStyle } from "react-native"
 import { PositionProps } from "styled-system"
-
-import { Sans } from ".."
-import { Color, color } from "../../Theme"
+import { Sans } from "../Typography"
 
 export interface CardTagProps extends PositionProps {
   text: string
@@ -18,6 +17,7 @@ export interface CardTagProps extends PositionProps {
  * `CardTag` is used for the Cards, and is controlled by their `tag` prop.
  */
 export const CardTag: React.FC<CardTagProps> = ({ text, textColor, color: bgColor, borderColor, style }) => {
+  const color = useColor()
   return (
     <View
       style={[

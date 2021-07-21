@@ -7,7 +7,7 @@ import {
 } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 
-import { color } from "../../Theme"
+import { useColor } from "palette/Theme"
 import { Flex } from "../Flex"
 
 interface ExtraTouchableProps {

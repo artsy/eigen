@@ -1,5 +1,5 @@
 import React from "react"
-import { color } from "../Theme"
+import { useColor } from "palette/Theme"
 import { G, Icon, IconProps, Path } from "./Icon"
 
 interface ArtsyLogoBlackIconProps extends Omit<IconProps, "width" | "height"> {

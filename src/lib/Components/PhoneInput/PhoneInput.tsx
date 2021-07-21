@@ -1,5 +1,5 @@
 import { TriangleDown } from "lib/Icons/TriangleDown"
-import { color, Flex, Sans, Spacer, Touchable } from "palette"
+import { Flex, Sans, Spacer, Touchable } from "palette"
 import { useEffect, useRef, useState } from "react"
 import React from "react"
 import { Platform } from "react-native"

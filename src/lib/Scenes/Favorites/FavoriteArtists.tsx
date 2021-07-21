@@ -15,7 +15,7 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { space, Spacer } from "palette"
+import { Spacer } from "palette"
 
 interface Props {
   me: FavoriteArtists_me

@@ -1,9 +1,9 @@
-import { color } from "palette"
+import { useColor } from "palette/Theme"
 import React from "react"
 import { Icon, IconProps, Path } from "./Icon"
 
-/** AlertCircleFillIcon */
 export const AlertCircleFillIcon: React.FC<IconProps> = ({ title = "AlertCircleFillIcon", ...props }) => {
+  const color = useColor()
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <Path

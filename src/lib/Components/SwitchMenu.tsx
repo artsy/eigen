@@ -1,4 +1,4 @@
-import { color, Flex, Sans } from "palette"
+import { Flex, Sans } from "palette"
 import React from "react"
 import { Switch } from "react-native"
 

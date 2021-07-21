@@ -1,5 +1,5 @@
 import { ArtworkTileRailCard_artwork } from "__generated__/ArtworkTileRailCard_artwork.graphql"
-import { Box, color, Flex, Sans } from "palette"
+import { Box, Flex, Sans, useColor } from "palette"
 import React from "react"
 import { GestureResponderEvent, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -43,6 +43,7 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
   useSquareAspectRatio = false,
   lotLabel,
 }) => {
+  const color = useColor()
   if (!!imageURL && !imageAspectRatio && !useSquareAspectRatio) {
     throw new Error("imageAspectRatio is required for non-square images")
   }

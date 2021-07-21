@@ -1,4 +1,3 @@
-import { color } from "palette"
 import React from "react"
 import Svg, { G, Path } from "react-native-svg"
 

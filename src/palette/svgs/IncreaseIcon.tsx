@@ -1,5 +1,5 @@
 import React, { FC } from "react"
-import { color } from "../Theme"
+import { useColor } from "palette/Theme"
 import { Icon, IconProps, Path } from "./Icon"
 
 export const IncreaseIcon: FC<IconProps> = (props) => {

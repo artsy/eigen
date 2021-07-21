@@ -20,7 +20,7 @@ import {
 import { QAInfoPanel } from "lib/utils/QAInfo"
 import { Schema, screenTrack } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Separator, space, Spacer } from "palette"
+import { Box, Separator, Spacer } from "palette"
 import React from "react"
 import { ActivityIndicator, FlatList, View } from "react-native"
 import { RefreshControl } from "react-native"

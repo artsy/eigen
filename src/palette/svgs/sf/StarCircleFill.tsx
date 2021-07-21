@@ -1,10 +1,10 @@
+import { useColor } from "palette/Theme"
 import React from "react"
 import { Circle, EMaskUnits } from "react-native-svg"
-import { color } from "../../Theme"
 import { Icon, IconProps, Mask, Path, Rect } from "../Icon"
 
-/** StarCircleFill */
 export const StarCircleFill: React.FC<IconProps> = (props) => {
+  const color = useColor()
   return (
     <Icon {...props} viewBox="0 0 20 20">
       <Mask

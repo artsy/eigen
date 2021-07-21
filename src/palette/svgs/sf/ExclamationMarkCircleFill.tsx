@@ -1,9 +1,9 @@
+import { useColor } from "palette/Theme"
 import React from "react"
-import { color } from "../../Theme"
 import { Icon, IconProps, Path } from "../Icon"
 
-/** ExclamationMarkCircleFill */
 export const ExclamationMarkCircleFill: React.FC<IconProps> = (props) => {
+  const color = useColor()
   return (
     <Icon {...props} viewBox="0 0 18 19">
       <Path

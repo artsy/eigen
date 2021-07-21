@@ -1,7 +1,7 @@
 import React from "react"
 
 import { navigate } from "lib/navigation/navigate"
-import { color, Flex, Sans, Spacer, Touchable } from "palette"
+import { Flex, Sans, Spacer, Touchable } from "palette"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
 interface SavedItemRowProps {

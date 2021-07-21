@@ -1,8 +1,8 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
-import { Box, Spacer, Text } from ".."
-import { space } from "../../Theme"
-import { BoxProps } from "../Box"
+import { Box, BoxProps } from "../Box"
+import { Spacer } from "../Spacer"
+import { Text } from "../Text"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface SmallCardProps extends BoxProps {
