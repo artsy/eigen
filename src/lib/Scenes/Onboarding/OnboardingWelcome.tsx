@@ -127,7 +127,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
         </Text>
         <Spacer mt={2} />
         <Touchable
-          onPress={() => navigation.navigate("OnboardingCreateAccount")}
+          onPress={() => navigation.navigate("OnboardingCreateAccountWith")}
           underlayColor={color("black5")}
           haptic="impactMedium"
           style={{
@@ -144,7 +144,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
         </Touchable>
 
         <Touchable
-          onPress={() => navigation.navigate("OnboardingLogin")}
+          onPress={() => navigation.navigate("OnboardingLoginWith")}
           underlayColor="transparent"
           haptic="impactMedium"
           style={{ justifyContent: "center", alignItems: "center", height: BUTTON_HEIGHT }}
