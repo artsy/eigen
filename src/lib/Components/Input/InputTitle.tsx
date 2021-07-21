@@ -1,7 +1,8 @@
-import { color, Text } from "palette"
+import { Text, useColor } from "palette"
 import React from "react"
 
 export const InputTitle: React.FC<{ required?: boolean }> = ({ children: title, required }) => {
+  const color = useColor()
   if (!title) {
     return null
   }

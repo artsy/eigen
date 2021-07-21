@@ -1,8 +1,9 @@
+import { themeGet } from "@styled-system/theme-get"
 import React from "react"
 import { Animated, View } from "react-native"
 import styled from "styled-components/native"
 
-import { Box, color, Sans, space } from "palette"
+import { Box, Sans } from "palette"
 
 /**
  * Nearly all props are given by the ScrollableTabView,
@@ -45,7 +46,7 @@ const TabButton = styled.View<{ spaceEvenly?: boolean; active?: boolean }>`
     !p.spaceEvenly &&
     p.active &&
     `
-    border-color: ${themeGet("color.black100")};
+    border-color: ${themeGet("colors.black100")};
     border-bottom-width: 1px;
     margin-bottom: -1px;
   `};
@@ -127,5 +128,5 @@ export default class TabBar extends React.Component<TabBarProps> {
 
 const Wrapper = styled(Box)`
   border-bottom-width: 1px;
-  border-bottom-color: ${themeGet("color.black30")};
+  border-bottom-color: ${themeGet("colors.black30")};
 `

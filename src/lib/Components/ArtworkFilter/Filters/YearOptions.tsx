@@ -7,7 +7,7 @@ import { CircleWithBorder } from "lib/Components/CircleWithBorder/CircleWithBord
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, CheckIcon, color, Flex, Separator, Text } from "palette"
+import { Box, CheckIcon, Flex, Separator, Text, useColor } from "palette"
 import React, { useState } from "react"
 import Haptic from "react-native-haptic-feedback"
 import styled from "styled-components/native"
@@ -21,6 +21,7 @@ export const ALLOW_EMPTY_CREATED_DATES_FILTER: FilterData = {
 }
 
 export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation }) => {
+  const color = useColor()
   const screenWidth = useScreenDimensions().width
 
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)

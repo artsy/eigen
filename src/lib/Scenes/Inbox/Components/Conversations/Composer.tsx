@@ -2,7 +2,8 @@ import { Composer_conversation } from "__generated__/Composer_conversation.graph
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import colors from "lib/data/colors"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { Button, color, Flex, themeProps } from "palette"
+import { Button, Flex, themeProps } from "palette"
+import { themeGet } from "@styled-system/theme-get"
 import React from "react"
 import { Keyboard, TextInput, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -18,7 +19,7 @@ const Container = styled.View`
   justify-content: space-between;
   align-items: flex-start;
   border-top-width: 1;
-  border-top-color: ${color("black10")};
+  border-top-color: ${themeGet("colors.black10")};
   padding: 10px;
   background-color: ${(p: ContainerProps) => (p.active ? "white" : colors["gray-light"])};
 `

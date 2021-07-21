@@ -107,7 +107,7 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
 }
 
 export const ImageWrapper = styled(Flex)`
-  border: solid 1px ${color("black10")};
+  border: solid 1px ${themeGet("colors.black10")};
   height: 385px;
   width: 260px;
   border-radius: 5px;

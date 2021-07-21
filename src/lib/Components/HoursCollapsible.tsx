@@ -2,7 +2,7 @@ import { HoursCollapsible_location } from "__generated__/HoursCollapsible_locati
 import { Markdown } from "lib/Components/Markdown"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { defaultRules } from "lib/utils/renderMarkdown"
-import { Box, Collapse as _Collapse, color, Flex, Sans, Spacer } from "palette"
+import { Box, Collapse as _Collapse, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

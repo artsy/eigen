@@ -1,3 +1,4 @@
+import { themeGet } from "@styled-system/theme-get"
 import React from "react"
 import { styledWrapper } from "../../platform/primitives"
 import { SansSize } from "../../Theme"

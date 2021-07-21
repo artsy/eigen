@@ -3,7 +3,7 @@ import { navigate } from "lib/navigation/navigate"
 import { Event } from "lib/Scenes/City/Components/Event"
 import { Show } from "lib/Scenes/Map/types"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { Box, color, Sans, Serif } from "palette"
+import { Box, Sans, Serif } from "palette"
 import React from "react"
 import { RelayProp } from "react-relay"
 

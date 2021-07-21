@@ -1,5 +1,4 @@
-import { Spinner as PaletteSpinner } from "palette"
-import { useColor } from "palette/Theme"
+import { Color, Spinner as PaletteSpinner } from "palette"
 import React from "react"
 import { StyleSheet, View, ViewProps } from "react-native"
 

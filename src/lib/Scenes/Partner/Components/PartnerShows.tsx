@@ -1,3 +1,4 @@
+import { themeGet } from "@styled-system/theme-get"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
 import { useNativeValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
 import {
@@ -216,7 +217,7 @@ const GridItem = styled(Box)`
 
 const EmptyImage = styled(Box)`
   height: 120;
-  background-color: ${color("black10")};
+  background-color: ${themeGet("colors.black10")};
 `
 
 GridItem.displayName = "GridItem"

@@ -1,4 +1,5 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
+import { themeGet } from "@styled-system/theme-get"
 import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
@@ -120,7 +121,7 @@ export const MyCollectionArtworkListItemFragmentContainer = createFragmentContai
 })
 
 const TouchElement = styled.TouchableHighlight.attrs({
-  underlayColor: color("white100"),
+  underlayColor: themeGet("colors.white100"),
   activeOpacity: 0.8,
 })``
 

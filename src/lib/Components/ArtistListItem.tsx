@@ -3,7 +3,7 @@ import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItem
 import { navigate } from "lib/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { Schema, track } from "lib/utils/track"
-import { Button, color, EntityHeader, Flex, Touchable } from "palette"
+import { Button, EntityHeader, Flex, Touchable } from "palette"
 import React from "react"
 import { StyleProp, TouchableWithoutFeedback, ViewStyle } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"

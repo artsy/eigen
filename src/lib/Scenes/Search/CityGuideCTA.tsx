@@ -1,6 +1,6 @@
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
-import { color, Flex, Sans, Spacer } from "palette"
+import { Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { BMWSponsorship } from "../City/CityBMWSponsorship"

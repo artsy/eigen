@@ -1,5 +1,5 @@
 import { navigate } from "lib/navigation/navigate"
-import { Box, color, Flex, Serif } from "palette"
+import { Box, Flex, Serif } from "palette"
 import React from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"
 

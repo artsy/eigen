@@ -12,7 +12,7 @@ import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
-import { Sans, Spacer } from "palette"
+import { Sans, Spacer, useColor } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { useTracking } from "react-tracking"
@@ -31,6 +31,7 @@ type GenericArtistSeriesItem =
   | ArtistCollectionsRail_collections[0]
 
 export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (props) => {
+  const color = useColor()
   const { collections, contextScreenOwnerType, contextScreenOwnerId, contextScreenOwnerSlug } = props
 
   const tracking = useTracking()
