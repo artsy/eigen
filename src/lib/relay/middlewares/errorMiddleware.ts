@@ -14,7 +14,7 @@ const isErrorStatus = (status: number | undefined) => {
 }
 
 const throwError = (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
-  // const formattedError = formatGraphQLErrors(req, res.errors!)
+  const resJson = res?.json as GraphQLResponse
   Sentry.withScope((scope) => {
     scope.setExtra("kind", req.operation.operationKind)
     scope.setExtra("query-name", req.operation.name)
@@ -24,7 +24,7 @@ const throwError = (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
       scope.setExtra("variables", req.variables as any)
     }
     console.log(createRequestError(req, res))
-    Sentry.captureException(req.operation.name)
+    Sentry.captureException(resJson.errors && resJson.errors[0].message)
   })
   throw createRequestError(req, res)
 }
