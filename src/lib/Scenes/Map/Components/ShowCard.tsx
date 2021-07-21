@@ -3,7 +3,7 @@ import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import { navigate } from "lib/navigation/navigate"
 import { TabFairItemRow } from "lib/Scenes/City/Components/TabFairItemRow"
 import { isEqual } from "lodash"
-import { Box, Sans } from "palette"
+import { Box, ClassTheme, Sans } from "palette"
 import React, { Component } from "react"
 import { Dimensions, FlatList, TouchableOpacity } from "react-native"
 import { RelayProp } from "react-relay"
@@ -148,28 +148,32 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     return hasOne ? (
       show && this.renderItem({ item: show }, true)
     ) : (
-      <>
-        <PageIndicator style={shadowDetails} mx={1} py={0.3} px={0.5} my={0.5}>
-          <Sans size="1" weight="medium" px={0.5}>{`${currentPage} of ${shows.length}`}</Sans>
-        </PageIndicator>
-        <FlatList
-          ref={(c) => (this.list = c as any)}
-          data={shows}
-          style={{ marginHorizontal: "auto" }}
-          renderItem={this.renderItem}
-          keyExtractor={(item) => item.id}
-          onScroll={this.onScroll}
-          showsHorizontalScrollIndicator={false}
-          snapToInterval={this.cardWidth + space(1)}
-          contentContainerStyle={{ paddingLeft: space(0.5), paddingRight: space(2) + space(0.3) }}
-          scrollEventThrottle={299}
-          directionalLockEnabled={true}
-          overScrollMode="always"
-          snapToAlignment="start"
-          decelerationRate="fast"
-          horizontal
-        />
-      </>
+      <ClassTheme>
+        {({ space }) => (
+          <>
+            <PageIndicator style={shadowDetails} mx={1} py={0.3} px={0.5} my={0.5}>
+              <Sans size="1" weight="medium" px={0.5}>{`${currentPage} of ${shows.length}`}</Sans>
+            </PageIndicator>
+            <FlatList
+              ref={(c) => (this.list = c as any)}
+              data={shows}
+              style={{ marginHorizontal: "auto" }}
+              renderItem={this.renderItem}
+              keyExtractor={(item) => item.id}
+              onScroll={this.onScroll}
+              showsHorizontalScrollIndicator={false}
+              snapToInterval={this.cardWidth + space(1)}
+              contentContainerStyle={{ paddingLeft: space(0.5), paddingRight: space(2) + space(0.3) }}
+              scrollEventThrottle={299}
+              directionalLockEnabled={true}
+              overScrollMode="always"
+              snapToAlignment="start"
+              decelerationRate="fast"
+              horizontal
+            />
+          </>
+        )}
+      </ClassTheme>
     )
   }
 }
