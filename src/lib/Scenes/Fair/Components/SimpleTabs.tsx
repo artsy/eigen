@@ -1,4 +1,4 @@
-import { Box, color, Flex, Text } from "palette"
+import { Box, Flex, Text, useColor } from "palette"
 import React, { Dispatch, SetStateAction } from "react"
 import { TouchableOpacity, View } from "react-native"
 
@@ -43,6 +43,7 @@ interface TabsProps {
  * Renders a list of tabs. Evenly-spaces them across the screen.
  */
 export const Tabs: React.FC<TabsProps> = ({ setActiveTab, activeTab, tabs }) => {
+  const color = useColor()
   const tabWidth = 100 / tabs.length
   return (
     <Flex

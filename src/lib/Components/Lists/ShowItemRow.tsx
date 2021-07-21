@@ -1,3 +1,4 @@
+import { themeGet } from "@styled-system/theme-get"
 import { ShowItemRow_show } from "__generated__/ShowItemRow_show.graphql"
 import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -13,7 +14,6 @@ import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
-import { themeGet } from "@styled-system/theme-get"
 
 interface Props {
   show: ShowItemRow_show

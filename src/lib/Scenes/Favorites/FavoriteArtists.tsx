@@ -15,7 +15,7 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Spacer } from "palette"
+import { ClassTheme, Spacer } from "palette"
 
 interface Props {
   me: FavoriteArtists_me
@@ -83,18 +83,24 @@ class Artists extends React.Component<Props, State> {
     }
 
     return (
-      <StickyTabPageFlatList
-        data={rows}
-        onEndReached={this.loadMore}
-        contentContainerStyle={{ paddingVertical: space(2) }}
-        onEndReachedThreshold={0.2}
-        refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
-        style={{ paddingHorizontal: 0 }}
-        ItemSeparatorComponent={() => <Spacer mb="10px" />}
-        ListFooterComponent={
-          this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
-        }
-      />
+      <ClassTheme>
+        {({ space }) => (
+          <StickyTabPageFlatList
+            data={rows}
+            onEndReached={this.loadMore}
+            contentContainerStyle={{ paddingVertical: space(2) }}
+            onEndReachedThreshold={0.2}
+            refreshControl={
+              <RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />
+            }
+            style={{ paddingHorizontal: 0 }}
+            ItemSeparatorComponent={() => <Spacer mb="10px" />}
+            ListFooterComponent={
+              this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
+            }
+          />
+        )}
+      </ClassTheme>
     )
   }
 }

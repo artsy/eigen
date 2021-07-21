@@ -2,7 +2,7 @@ import { HoursCollapsible_location } from "__generated__/HoursCollapsible_locati
 import { Markdown } from "lib/Components/Markdown"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { defaultRules } from "lib/utils/renderMarkdown"
-import { Box, Collapse as _Collapse, Flex, Sans, Spacer } from "palette"
+import { Box, ClassTheme, Collapse as _Collapse, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -81,21 +81,25 @@ export class HoursCollapsible extends React.Component<Props, State> {
   render() {
     const { isExpanded } = this.state
     return (
-      <Box>
-        <TouchableWithoutFeedback onPress={this.handleToggleIsExpanded}>
-          <Flex alignItems="center" flexDirection="row">
-            <Sans size="3t" weight="medium" color={isExpanded ? color("black60") : color("black100")}>
-              Opening hours
-            </Sans>
-            <Box ml={1}>
-              <ChevronIcon initialDirection="down" expanded={isExpanded} />
-            </Box>
-          </Flex>
-        </TouchableWithoutFeedback>
-        <Collapse open={isExpanded}>
-          <Box mt={2}>{this.renderHours()}</Box>
-        </Collapse>
-      </Box>
+      <ClassTheme>
+        {({ color }) => (
+          <Box>
+            <TouchableWithoutFeedback onPress={this.handleToggleIsExpanded}>
+              <Flex alignItems="center" flexDirection="row">
+                <Sans size="3t" weight="medium" color={isExpanded ? color("black60") : color("black100")}>
+                  Opening hours
+                </Sans>
+                <Box ml={1}>
+                  <ChevronIcon initialDirection="down" expanded={isExpanded} />
+                </Box>
+              </Flex>
+            </TouchableWithoutFeedback>
+            <Collapse open={isExpanded}>
+              <Box mt={2}>{this.renderHours()}</Box>
+            </Collapse>
+          </Box>
+        )}
+      </ClassTheme>
     )
   }
 }

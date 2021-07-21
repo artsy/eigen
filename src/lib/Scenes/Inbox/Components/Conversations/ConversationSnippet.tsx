@@ -100,12 +100,7 @@ export class ConversationSnippet extends React.Component<Props> {
                       <Indicator />
                     </Unread>
                   )}
-                  <ImageView
-                    imageURL={
-                      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                      imageURL
-                    }
-                  />
+                  <ImageView imageURL={imageURL} />
                 </Flex>
                 <Flex ml={1} style={{ flex: 1 }}>
                   <Flex flexDirection="row" mb="2px" style={{ flex: 0, alignItems: "center" }}>

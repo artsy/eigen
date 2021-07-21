@@ -34,17 +34,13 @@ export class UserPositionButton extends Component<Props> {
   render() {
     const { highlight, onPress } = this.props
     return (
-      <ClassTheme>
-        {({ color }) => (
-          <TouchableOpacity onPress={onPress}>
-            <Background flexDirection="row" alignItems="center" style={shadowDetails}>
-              <Box style={{ marginLeft: "auto", marginRight: "auto" }}>
-                <Crosshair color={highlight ? color("purple100") : color("black100")} />
-              </Box>
-            </Background>
-          </TouchableOpacity>
-        )}
-      </ClassTheme>
+      <TouchableOpacity onPress={onPress}>
+        <Background flexDirection="row" alignItems="center" style={shadowDetails}>
+          <Box style={{ marginLeft: "auto", marginRight: "auto" }}>
+            <Crosshair color={highlight ? "purple100" : "black100"} />
+          </Box>
+        </Background>
+      </TouchableOpacity>
     )
   }
 }

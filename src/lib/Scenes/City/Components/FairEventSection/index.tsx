@@ -1,7 +1,7 @@
 import { themeGet } from "@styled-system/theme-get"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { navigate } from "lib/navigation/navigate"
-import { Box, Serif } from "palette"
+import { Box, ClassTheme, Serif } from "palette"
 import { Component } from "react"
 import React from "react"
 import { FlatList } from "react-native"
@@ -38,29 +38,33 @@ export class FairEventSection extends Component<Props> {
   render() {
     const { data } = this.props
     return (
-      <FairSectionBackground>
-        <Box mx={2} mt={3}>
-          <Serif size="8" color="white">
-            Fairs
-          </Serif>
-        </Box>
-        <FlatList
-          data={data.filter((fair) => Boolean(fair.image))}
-          renderItem={this.renderItem}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={{ padding: space(2) }}
-          horizontal
-        />
-        {data.length > 2 && (
-          <Box mx={2} mb={3}>
-            <CaretButton
-              onPress={() => this.viewAllPressed()}
-              text={`View all ${data.length} fairs`}
-              textColor="white"
+      <ClassTheme>
+        {({ space }) => (
+          <FairSectionBackground>
+            <Box mx={2} mt={3}>
+              <Serif size="8" color="white">
+                Fairs
+              </Serif>
+            </Box>
+            <FlatList
+              data={data.filter((fair) => Boolean(fair.image))}
+              renderItem={this.renderItem}
+              keyExtractor={(item) => item.id}
+              contentContainerStyle={{ padding: space(2) }}
+              horizontal
             />
-          </Box>
+            {data.length > 2 && (
+              <Box mx={2} mb={3}>
+                <CaretButton
+                  onPress={() => this.viewAllPressed()}
+                  text={`View all ${data.length} fairs`}
+                  textColor="white"
+                />
+              </Box>
+            )}
+          </FairSectionBackground>
         )}
-      </FairSectionBackground>
+      </ClassTheme>
     )
   }
 }
