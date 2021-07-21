@@ -20,7 +20,7 @@ describe(VanityURLPossibleRedirect, () => {
   it("shows a loading spinner before anything has happened", () => {
     fetchMock.mockResolvedValueOnce({
       ok: true,
-      url: "https://artsy.net/test",
+      url: "https://www.artsy.net/test",
     })
     const tree = renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
     expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
@@ -29,13 +29,13 @@ describe(VanityURLPossibleRedirect, () => {
   it("sends a fetch request", () => {
     fetchMock.mockResolvedValueOnce({
       ok: true,
-      url: "https://artsy.net/test",
+      url: "https://www.artsy.net/test",
     })
     renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(fetchMock.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
-        "https://artsy.net/test",
+        "https://www.artsy.net/test",
         Object {
           "headers": Object {
             "X-Access-Token": "authenticationToken",
@@ -59,11 +59,11 @@ describe(VanityURLPossibleRedirect, () => {
   it("calls `navigate` when the redirect points to a native view", async () => {
     fetchMock.mockResolvedValueOnce({
       ok: true,
-      url: "https://artsy.net/artist/banksy",
+      url: "https://www.artsy.net/artist/banksy",
     })
     renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
     await flushPromiseQueue()
-    expect(navigate).toHaveBeenCalledWith("https://artsy.net/artist/banksy")
+    expect(navigate).toHaveBeenCalledWith("https://www.artsy.net/artist/banksy")
   })
 
   describe("the error page", () => {
@@ -86,7 +86,7 @@ describe(VanityURLPossibleRedirect, () => {
       expect(extractText(tree.root)).toContain("We can't find that page")
       expect(openURLMock).not.toHaveBeenCalled()
       tree.root.findByType(Button).props.onPress()
-      expect(openURLMock).toHaveBeenCalledWith("https://artsy.net/test-fail")
+      expect(openURLMock).toHaveBeenCalledWith("https://www.artsy.net/test-fail")
     })
 
     it("shows the error page if the response is not `ok`", async () => {
@@ -96,19 +96,19 @@ describe(VanityURLPossibleRedirect, () => {
       expect(extractText(tree.root)).toContain("We can't find that page")
       expect(openURLMock).not.toHaveBeenCalled()
       tree.root.findByType(Button).props.onPress()
-      expect(openURLMock).toHaveBeenCalledWith("https://artsy.net/test-not-ok")
+      expect(openURLMock).toHaveBeenCalledWith("https://www.artsy.net/test-not-ok")
     })
   })
 
   it("shows an internal web view when there is no redirect", async () => {
-    fetchMock.mockResolvedValueOnce({ ok: true, url: "https://artsy.net/no-redirect" })
+    fetchMock.mockResolvedValueOnce({ ok: true, url: "https://www.artsy.net/no-redirect" })
     const tree = renderWithWrappers(<VanityURLPossibleRedirect slug="no-redirect" />)
     await flushPromiseQueue()
     expect(tree.root.findAllByType(ArtsyWebView)).toHaveLength(1)
   })
 
   it("shows an internal web view when there is a redirect to a page that is supposed to be shown in a web view", async () => {
-    fetchMock.mockResolvedValueOnce({ ok: true, url: "https://artsy.net/categories" })
+    fetchMock.mockResolvedValueOnce({ ok: true, url: "https://www.artsy.net/categories" })
     const tree = renderWithWrappers(<VanityURLPossibleRedirect slug="genes" />)
     await flushPromiseQueue()
     expect(tree.root.findAllByType(ArtsyWebView)).toHaveLength(1)

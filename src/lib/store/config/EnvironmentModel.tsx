@@ -49,7 +49,7 @@ export const environment = defineEnvironmentOptions({
     presets: {
       local: "http://localhost:5000",
       staging: "https://staging.artsy.net",
-      production: "https://artsy.net",
+      production: "https://www.artsy.net",
     },
   },
   causalityURL: {

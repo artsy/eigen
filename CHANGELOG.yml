@@ -25,6 +25,7 @@ upcoming:
     -
   user_facing:
     - Add keyword search to artist auction reults - ole
+    - Add www to artsy web url (https://artsy.net -> https://www.artsy.net) / fix Auction FAQs screen - ole
 
 releases:
   - version: 6.10.0
