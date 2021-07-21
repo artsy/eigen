@@ -1,3 +1,4 @@
+import { captureMessage } from "@sentry/react-native"
 import { SavedAddressesForm_me } from "__generated__/SavedAddressesForm_me.graphql"
 import { SavedAddressesFormQuery } from "__generated__/SavedAddressesFormQuery.graphql"
 import { Action, action, computed, Computed, createComponentStore } from "easy-peasy"
@@ -21,6 +22,7 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { MyAccountFieldEditScreen } from "../MyAccount/Components/MyAccountFieldEditScreen"
 import { AddAddressButton } from "./Components/AddAddressButton"
 import { createUserAddress } from "./mutations/addNewAddress"
+import { deleteSavedAddress } from "./mutations/deleteSavedAddress"
 import { setAsDefaultAddress } from "./mutations/setAsDefaultAddress"
 import { updateUserAddress } from "./mutations/updateUserAddress"
 
@@ -127,7 +129,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       }
       goBack()
     } catch (e) {
-      console.error(e)
+      captureMessage(e.stack)
       Alert.alert("Something went wrong while attempting to save your address. Please try again or contact us.")
     }
   }
@@ -151,7 +153,12 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       goBack()
     } catch (e) {
       Alert.alert("Something went wrong while attempting to save your address. Please try again or contact us.")
+      captureMessage(e.stack)
     }
+  }
+
+  const deleteUserAddress = (userAddressID: string) => {
+    deleteSavedAddress(userAddressID, goBack, (message: string) => captureMessage(message))
   }
 
   return (
@@ -217,7 +224,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
         </Checkbox>
 
         {!!isEditForm && (
-          <Button variant="noOutline" block onPress={() => console.warn("pressed")}>
+          <Button variant="noOutline" block onPress={() => deleteUserAddress(addressId!)}>
             <Text variant="text" color="red100">
               Delete address
             </Text>
