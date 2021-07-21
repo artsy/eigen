@@ -269,7 +269,7 @@ export const FairFragmentContainer = createFragmentContainer(Fair, {
       internalID
       slug
       isActive
-      articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
+      articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
         edges {
           __typename
         }
