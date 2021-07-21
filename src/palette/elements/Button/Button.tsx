@@ -25,11 +25,21 @@ export const defaultVariant: ButtonVariant = "primaryBlack"
 /** The size of the button */
 export type ButtonSize = "small" | "medium" | "large"
 
+/** Icon position */
+export type ButtonIconPosition = "left" | "right"
+
 /** Default button size */
 export const defaultSize: ButtonSize = "medium"
 
+/** Default icon position */
+export const defaultIconPosition: ButtonIconPosition = "left"
+
 export interface ButtonProps extends ButtonBaseProps {
   children: ReactNode
+  /** The icon component */
+  icon?: ReactNode
+  /** Icon position */
+  iconPosition?: ButtonIconPosition
   /** The size of the button */
   size?: ButtonSize
   /** The theme of the button */
@@ -185,6 +195,7 @@ enum DisplayState {
 export const Button: React.FC<ButtonProps> = (props) => {
   const size = props.size ?? defaultSize
   const variant = props.variant ?? defaultVariant
+  const iconPosition = props.iconPosition ?? defaultIconPosition
 
   const [previous, setPrevious] = useState(DisplayState.Enabled)
   const [current, setCurrent] = useState(DisplayState.Enabled)
@@ -257,12 +268,13 @@ export const Button: React.FC<ButtonProps> = (props) => {
     props.onPress(event)
   }
 
-  const { children, loading, disabled, inline, longestText, ...rest } = props
+  const { children, loading, disabled, inline, longestText, style, icon, ...rest } = props
   const s = getSize()
   const variantColors = getColorsForVariant(variant, disabled)
 
   const from = variantColors[previous]
   const to = variantColors[current]
+  const iconBox = <Box opacity={loading ? 0 : 1}>{icon}</Box>
 
   return (
     <Spring native from={from} to={to}>
@@ -290,13 +302,18 @@ export const Button: React.FC<ButtonProps> = (props) => {
                 px={s.px}
               >
                 <VisibleTextContainer>
+                  {iconPosition === "left" && iconBox}
                   <Sans weight="medium" color={loadingStyles.textColor || to.textColor} size={s.size}>
                     {children}
                   </Sans>
+                  {iconPosition === "right" && iconBox}
                 </VisibleTextContainer>
-                <HiddenText role="presentation" weight="medium" size={s.size}>
-                  {longestText ? longestText : children}
-                </HiddenText>
+                <HiddenContainer>
+                  {icon}
+                  <LongestText role="presentation" weight="medium" size={s.size}>
+                    {longestText ? longestText : children}
+                  </LongestText>
+                </HiddenContainer>
 
                 {!!loading && <Spinner size={size} color={spinnerColor} />}
               </AnimatedContainer>
@@ -320,9 +337,13 @@ const VisibleTextContainer = styled(Box)`
   height: 100%;
 `
 
-const HiddenText = styled(Sans)`
+const HiddenContainer = styled(Box)<ButtonProps>`
+  display: flex;
+  flex-direction: row;
   opacity: 0;
 `
+
+const LongestText = styled(Sans)``
 
 const Container = styled(Box)<ButtonProps>`
   align-items: center;
