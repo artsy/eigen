@@ -4,6 +4,7 @@ import styled from "styled-components/native"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 
+// @ts-ignore
 const Container = styled.View`
   height: 30;
   background-color: ${colors["yellow-regular"]};

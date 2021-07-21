@@ -1,7 +1,7 @@
-import { color } from "@artsy/palette-tokens"
 import React from "react"
 import styled, { css } from "styled-components/native"
 import { CheckIcon } from "../../svgs"
+import { color } from "../../Theme"
 import { Box } from "../Box"
 
 const CHECK_MODES = {

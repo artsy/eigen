@@ -1,5 +1,6 @@
 import React from "react"
-import { styled as primitives, styledWrapper } from "../../platform/primitives"
+import styled from "styled-components/native"
+import { styledWrapper } from "../../platform/primitives"
 
 import { SansSize, SerifSize, themeProps, TypeSizes } from "../../Theme"
 
@@ -41,7 +42,7 @@ interface FullTextProps
     VerticalAlignProps {}
 
 /** Base Text component for typography */
-export const BaseText = primitives.Text<FullTextProps>`
+export const BaseText = styled.Text<FullTextProps>`
   ${fontSize};
   ${lineHeight};
   ${color};
