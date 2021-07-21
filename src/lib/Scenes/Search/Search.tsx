@@ -2,7 +2,7 @@ import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingV
 import { SearchInput } from "lib/Components/SearchInput"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
-import { color, Flex, Spacer } from "palette"
+import { Flex, Spacer } from "palette"
 import React, { useState } from "react"
 import { Platform, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"

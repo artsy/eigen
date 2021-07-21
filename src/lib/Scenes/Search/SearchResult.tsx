@@ -150,7 +150,7 @@ const QuickNavigationButton = styled(Flex)`
   justify-content: center;
   align-items: center;
   padding: 2px 10px;
-  border: 1px solid ${color("black30")};
+  border: 1px solid ${themeGet("colors.black30")};
 `
 const splitter = new GraphemeSplitter()
 

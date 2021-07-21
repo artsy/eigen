@@ -2,7 +2,6 @@ import React from "react"
 import { Icon, IconProps, Path } from "./Icon"
 
 export const LinkIcon: React.FC<IconProps> = (props) => {
-  const color = useColor()
   return (
     <Icon {...props} viewBox="0 0 23 23">
       <Path

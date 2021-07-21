@@ -1,8 +1,7 @@
-import React from "react"
 import { useColor } from "palette/Theme"
+import React from "react"
 import { Icon, IconProps, Path } from "./Icon"
 
-/** FacebookIcon */
 export const FacebookIcon: React.FC<IconProps> = (props) => {
   const color = useColor()
   return (

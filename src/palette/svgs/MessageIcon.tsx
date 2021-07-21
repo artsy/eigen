@@ -1,6 +1,6 @@
+import { useColor } from "palette/Theme"
 import React from "react"
 import { Path } from "react-native-svg"
-import { useColor } from "palette/Theme"
 import { Icon, IconProps } from "./Icon"
 
 export const MessageIcon: React.FC<IconProps> = (props) => {

@@ -1,61 +1,60 @@
 import React from "react"
 import styled, { css } from "styled-components/native"
-import { color } from "../../Theme"
 import { Box } from "../Box"
 
 const RADIO_DOT_MODES = {
   default: {
     resting: css`
       border: 2px solid;
-      color: ${color("white100")};
-      border-color: ${color("black10")};
+      color: ${themeGet("colors.white100")};
+      border-color: ${themeGet("colors.black10")};
     `,
     selected: css`
       border: 2px solid;
-      color: ${color("white100")};
-      border-color: ${color("black100")};
-      background-color: ${color("black100")};
+      color: ${themeGet("colors.white100")};
+      border-color: ${themeGet("colors.black100")};
+      background-color: ${themeGet("colors.black100")};
     `,
   },
   disabled: {
     resting: css`
       border: 2px solid;
       color: transparent;
-      border-color: ${color("black10")};
-      background-color: ${color("black10")};
+      border-color: ${themeGet("colors.black10")};
+      background-color: ${themeGet("colors.black10")};
     `,
     selected: css`
       border: 2px solid;
-      color: ${color("white100")};
-      border-color: ${color("black10")};
-      background-color: ${color("black10")};
+      color: ${themeGet("colors.white100")};
+      border-color: ${themeGet("colors.black10")};
+      background-color: ${themeGet("colors.black10")};
     `,
   },
   error: {
     resting: css`
       border: 2px solid;
-      color: ${color("white100")};
-      border-color: ${color("red100")};
+      color: ${themeGet("colors.white100")};
+      border-color: ${themeGet("colors.red100")};
     `,
     selected: css`
       border: 2px solid;
-      color: ${color("white100")};
-      border-color: ${color("black100")};
-      background-color: ${color("black100")};
+      color: ${themeGet("colors.white100")};
+      border-color: ${themeGet("colors.black100")};
+      background-color: ${themeGet("colors.black100")};
     `,
   },
   hover: {
     resting: css`
       border: 2px solid;
-      color: ${color("white100")};
-      border-color: ${color("black10")};
-      background-color: ${color("black10")};
+      color: ${themeGet("colors.white100")};
+      border-color: ${themeGet("colors.black10")};
+      background-color: ${themeGet("colors.black10")};
     `,
     selected: css`
       border: 2px solid;
-      color: ${color("white100")};
-      border-color: ${color("black100")};
-      background-color: ${color("black100")};
+      color: ${themeGet("colors.white100")};
+      border-color: ${themeGet("colors.black100")};
+      background-color: ${themeGet("colors.black100")};
     `,
   },
 }
@@ -119,7 +118,7 @@ const Dot = styled(Box)<RadioDotProps>`
     }
 
     return css`
-      background-color: ${color("white100")};
+      background-color: ${themeGet("colors.white100")};
     `
   }};
 `

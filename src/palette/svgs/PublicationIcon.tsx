@@ -1,5 +1,5 @@
-import React from "react"
 import { useColor } from "palette/Theme"
+import React from "react"
 import { Icon, IconProps, Path } from "./Icon"
 
 export const PublicationIcon: React.FC<IconProps> = (props) => {
@@ -14,7 +14,3 @@ export const PublicationIcon: React.FC<IconProps> = (props) => {
     </Icon>
   )
 }
-
-// TODO: remove this alias once clients have been updated
-/** BookIcon */
-export const BookIcon = PublicationIcon

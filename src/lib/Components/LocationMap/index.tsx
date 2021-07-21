@@ -15,7 +15,7 @@ MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
 const MapWrapper = styled(Flex)`
   border-width: 1px;
-  border-color: ${color("black10")};
+  border-color: ${themeGet("color.black10")};
 `
 
 interface Props {

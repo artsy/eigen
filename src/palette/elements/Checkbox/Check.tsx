@@ -1,38 +1,37 @@
 import React from "react"
 import styled, { css } from "styled-components/native"
-import { CheckIcon } from "../../svgs"
-import { color } from "../../Theme"
+import { CheckIcon } from "../../svgs/CheckIcon"
 import { Box } from "../Box"
 
 const CHECK_MODES = {
   default: {
     resting: css`
-      background-color: ${color("white100")};
-      border-color: ${color("black10")};
+      background-color: ${themeGet("colors.white100")};
+      border-color: ${themeGet("colors.black10")};
     `,
     selected: css`
-      background-color: ${color("black100")};
-      border-color: ${color("black100")};
+      background-color: ${themeGet("colors.black100")};
+      border-color: ${themeGet("colors.black100")};
     `,
   },
   disabled: {
     resting: css`
-      background-color: ${color("black5")};
-      border-color: ${color("black10")};
+      background-color: ${themeGet("colors.black5")};
+      border-color: ${themeGet("colors.black10")};
     `,
     selected: css`
-      background-color: ${color("black30")};
-      border-color: ${color("black30")};
+      background-color: ${themeGet("colors.black30")};
+      border-color: ${themeGet("colors.black30")};
     `,
   },
   error: {
     resting: css`
-      background-color: ${color("white100")};
-      border-color: ${color("red100")};
+      background-color: ${themeGet("colors.white100")};
+      border-color: ${themeGet("colors.red100")};
     `,
     selected: css`
-      background-color: ${color("black100")};
-      border-color: ${color("black100")};
+      background-color: ${themeGet("colors.black100")};
+      border-color: ${themeGet("colors.black100")};
     `,
   },
 } as const

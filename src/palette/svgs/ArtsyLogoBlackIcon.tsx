@@ -1,13 +1,13 @@
-import React from "react"
 import { useColor } from "palette/Theme"
+import React from "react"
 import { G, Icon, IconProps, Path } from "./Icon"
 
 interface ArtsyLogoBlackIconProps extends Omit<IconProps, "width" | "height"> {
   scale?: number
 }
 
-/** ArtsyLogoBlackIcon */
 export const ArtsyLogoBlackIcon: React.FC<ArtsyLogoBlackIconProps> = ({ scale = 1, title = "Artsy", ...props }) => {
+  const color = useColor()
   return (
     <Icon {...props} viewBox="0 0 94 32" width={`${scale * 94}px`} height={`${scale * 32}px`}>
       <G fill={color(props.fill)} fillRule="evenodd">
