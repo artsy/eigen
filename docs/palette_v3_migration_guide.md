@@ -40,6 +40,21 @@ const TheComp = (props) => {
 }
 ```
 
+- Use `useThemeConfig` to make components behave correctly in both palette versions.
+  When a component has to be presented in both palette versions but use different styling in the two versions, we can use `useThemeConfig`.
+  For example, if we have a view that needs to have a `red` border in `v2` and a `blue` border in `v3`, we do:
+
+```tsx
+const TheView = () => {
+  const theBorderColor = useThemeConfig({
+    v2: "red",
+    v3: "blue",
+  })
+
+  return <View style={{ borderColor: theBorderColor, borderWidth: 1 }} />
+}
+```
+
 - Use `ClassTheme` for class components.
   `ClassTheme` exposes the hooks of the theme, so you can use it like:
 
