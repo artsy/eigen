@@ -54,6 +54,9 @@ describe("ArtistInsightsAuctionResults", () => {
                 scrollToTop={() => {
                   console.log("do nothing")
                 }}
+                scrollTo={() => {
+                  console.log("do nothing")
+                }}
               />
             </ArtworkFiltersStoreProvider>
           )

@@ -19,6 +19,7 @@ import styled from "styled-components/native"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
 import { KeywordFilter } from "../../ArtworkFilter/Filters/KeywordFilter"
 import { AuctionResultFragmentContainer } from "../../Lists/AuctionResultListItem"
+import { ARTIST_HEADER_HEIGHT } from "../ArtistHeader"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist
@@ -140,6 +141,8 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
       onLayout={({ nativeEvent }) => {
         setkeyboardFilterYCoordinate(nativeEvent.layout.y)
       }}
+      // Setting min height to keep scroll position when user searches with the keyword filter.
+      style={{ minHeight: useScreenDimensions().height - ARTIST_HEADER_HEIGHT }}
     >
       <Flex>
         <Flex flexDirection="row" alignItems="center">
@@ -165,9 +168,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         </SortMode>
         <Separator borderColor={color("black5")} mt="2" />
         {!!showKeywordFilter && (
-          <Box mx={2} mb={4}>
-            <KeywordFilter artistId={artist.internalID} artistSlug={artist.slug} onFocus={scrollToKeywordFilter} />
-          </Box>
+          <KeywordFilter artistId={artist.internalID} artistSlug={artist.slug} onFocus={scrollToKeywordFilter} />
         )}
       </Flex>
       {auctionResults.length ? (

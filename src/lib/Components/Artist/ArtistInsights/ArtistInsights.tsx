@@ -4,13 +4,15 @@ import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } 
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { useOnTabFocusedEffect } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { SCROLL_UP_TO_SHOW_THRESHOLD } from "lib/utils/hideBackButtonOnScroll"
 import { Schema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import React, { useCallback, useRef, useState } from "react"
-import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
+import { FlatList, NativeScrollEvent, NativeSyntheticEvent, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ReactElement } from "simple-markdown"
+import { ARTIST_HEADER_HEIGHT } from "../ArtistHeader"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 import { MarketStatsQueryRenderer } from "./MarketStats"
 
@@ -42,6 +44,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
   const auctionResultsYCoordinate = useRef<number>(0)
+  const contentYScrollOffset = useRef<number>(0)
 
   const openFilterModal = () => {
     tracking.trackEvent(tracks.openFilter(artist.internalID, artist.slug))
@@ -53,14 +56,15 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     setIsFilterModalVisible(false)
   }
 
-  const scrollToTop = useCallback(() => {
-    flatListRef.current?.getNode().scrollToOffset({ animated: true, offset: auctionResultsYCoordinate.current })
-  }, [auctionResultsYCoordinate])
+  const scrollToTop = useCallback(() => scrollTo(0), [auctionResultsYCoordinate, contentYScrollOffset])
 
   const scrollTo = (yCoordinate: number) => {
-    flatListRef.current
-      ?.getNode()
-      .scrollToOffset({ animated: true, offset: auctionResultsYCoordinate.current + yCoordinate })
+    // if we scroll up less than SCROLL_UP_TO_SHOW_THRESHOLD, the header won't expand and we
+    // need to scroll up more
+    const headerOffset = contentYScrollOffset.current <= SCROLL_UP_TO_SHOW_THRESHOLD ? ARTIST_HEADER_HEIGHT : 0
+
+    const offset = headerOffset + auctionResultsYCoordinate.current + yCoordinate
+    flatListRef.current?.getNode().scrollToOffset({ animated: true, offset })
   }
 
   // Show or hide floating filter button depending on the scroll position
@@ -85,7 +89,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         innerRef={flatListRef}
       >
         <MarketStatsQueryRenderer artistInternalID={artist.internalID} environment={relay.environment} />
-        <View
+        <ScrollView
           onLayout={({
             nativeEvent: {
               layout: { y },
@@ -93,13 +97,16 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
           }) => {
             auctionResultsYCoordinate.current = y
           }}
+          onScroll={(event) => {
+            contentYScrollOffset.current = event.nativeEvent.contentOffset.y
+          }}
         >
           <ArtistInsightsAuctionResultsPaginationContainer
             artist={artist}
             scrollToTop={scrollToTop}
             scrollTo={scrollTo}
           />
-        </View>
+        </ScrollView>
       </StickyTabPageScrollView>
       <ArtworkFilterNavigator
         isFilterArtworksModalVisible={isFilterModalVisible}

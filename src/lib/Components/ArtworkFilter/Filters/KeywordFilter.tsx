@@ -13,7 +13,7 @@ const DEBOUNCE_DELAY = 600
 interface KeywordFilterProps {
   artistId: string
   artistSlug: string
-  onFocus: () => void
+  onFocus?: () => void
 }
 
 export const KeywordFilter: React.FC<KeywordFilterProps> = ({ artistId, artistSlug, onFocus }) => {
