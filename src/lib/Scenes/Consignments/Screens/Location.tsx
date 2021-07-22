@@ -2,14 +2,13 @@ import React from "react"
 import { SearchResults } from "../Components/SearchResults"
 
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
-import { ClassTheme, LocationIcon } from "palette"
+import { LocationIcon } from "palette"
 import { View, ViewProps } from "react-native"
 import { ConsignmentSetup, LocationResult } from "../index"
 
 import { stringify } from "qs"
 
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { Theme } from "palette"
 import { Dimensions } from "react-native"
 import Config from "react-native-config"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
