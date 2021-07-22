@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType, ScreenOwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
+import { themeGet } from "@styled-system/theme-get"
 import { SaleArtworkTileRailCard_saleArtwork } from "__generated__/SaleArtworkTileRailCard_saleArtwork.graphql"
 import { Box, Flex, Sans, useColor } from "palette"
 import React from "react"
@@ -7,7 +8,6 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { saleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
-import { themeGet } from "@styled-system/theme-get"
 
 export const CONTAINER_HEIGHT = 120
 

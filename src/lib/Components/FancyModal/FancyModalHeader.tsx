@@ -90,7 +90,7 @@ export const Container = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: ${themeGet("space.6")};
+  height: ${themeGet("space.6")}px;
 `
 
 export const LeftButtonContainer = styled(TouchableOpacity)`

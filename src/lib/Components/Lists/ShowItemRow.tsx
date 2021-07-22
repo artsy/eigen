@@ -237,6 +237,6 @@ export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
 const DefaultImageContainer = styled(Box)`
   align-items: center;
   background-color: ${colors["gray-regular"]};
-  height: ${themeGet("space.6")};
-  width: ${themeGet("space.6")};
+  height: ${themeGet("space.6")}px;
+  width: ${themeGet("space.6")}px;
 `

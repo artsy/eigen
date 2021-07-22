@@ -10,7 +10,7 @@ import { FairEventSectionCard } from "./Components/FairEventSectionCard"
 
 const FairSectionBackground = styled(Box)`
   background: black;
-  margin-bottom: ${themeGet("space.1")};
+  margin-bottom: ${themeGet("space.1")}px;
 `
 
 interface Props {
