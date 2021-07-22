@@ -2,7 +2,7 @@ import React from "react"
 import { SearchResults } from "../Components/SearchResults"
 
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
-import { LocationIcon } from "palette"
+import { ClassTheme, LocationIcon } from "palette"
 import { View, ViewProps } from "react-native"
 import { ConsignmentSetup, LocationResult } from "../index"
 
@@ -105,31 +105,29 @@ export default class Location extends React.Component<Props, State> {
     const isPad = Dimensions.get("window").width > 700
 
     return (
-      <Theme>
-        <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
-          <FancyModalHeader onLeftButtonPress={this.doneTapped}>Location</FancyModalHeader>
-          <View
-            style={{
-              alignContent: "center",
-              justifyContent: isPad ? "center" : "flex-end",
-              flexGrow: 1,
-              marginLeft: 20,
-              marginRight: 20,
-            }}
-          >
-            <SearchResults<LocationResult>
-              results={this.state.results}
-              query={this.state.query}
-              onChangeText={this.textChanged}
-              searching={this.state.searching}
-              resultSelected={this.locationSelected}
-              LocationIcon={LocationIcon}
-              placeholder="City, Country"
-              noResultsMessage="Could not find"
-            />
-          </View>
-        </BottomAlignedButton>
-      </Theme>
+      <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
+        <FancyModalHeader onLeftButtonPress={this.doneTapped}>Location</FancyModalHeader>
+        <View
+          style={{
+            alignContent: "center",
+            justifyContent: isPad ? "center" : "flex-end",
+            flexGrow: 1,
+            marginLeft: 20,
+            marginRight: 20,
+          }}
+        >
+          <SearchResults<LocationResult>
+            results={this.state.results}
+            query={this.state.query}
+            onChangeText={this.textChanged}
+            searching={this.state.searching}
+            resultSelected={this.locationSelected}
+            LocationIcon={LocationIcon}
+            placeholder="City, Country"
+            noResultsMessage="Could not find"
+          />
+        </View>
+      </BottomAlignedButton>
     )
   }
 }
