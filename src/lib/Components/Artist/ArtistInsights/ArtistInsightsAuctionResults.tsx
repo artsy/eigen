@@ -19,16 +19,14 @@ import styled from "styled-components/native"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
 import { KeywordFilter } from "../../ArtworkFilter/Filters/KeywordFilter"
 import { AuctionResultFragmentContainer } from "../../Lists/AuctionResultListItem"
-import { ARTIST_HEADER_HEIGHT } from "../ArtistHeader"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist
   relay: RelayPaginationProp
   scrollTo: (yCoordinate: number) => void
-  scrollToTop: () => void
 }
 
-const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo, scrollToTop }) => {
+const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo }) => {
   const tracking = useTracking()
 
   const scrollViewRef = useRef<ScrollView>(null)
@@ -63,7 +61,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         },
         filterParams
       )
-      scrollToTop()
+      scrollTo(0)
     }
   }, [appliedFilters])
 
@@ -142,7 +140,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         setkeyboardFilterYCoordinate(nativeEvent.layout.y)
       }}
       // Setting min height to keep scroll position when user searches with the keyword filter.
-      style={{ minHeight: useScreenDimensions().height - ARTIST_HEADER_HEIGHT }}
+      style={{ minHeight: useScreenDimensions().height }}
     >
       <Flex>
         <Flex flexDirection="row" alignItems="center">

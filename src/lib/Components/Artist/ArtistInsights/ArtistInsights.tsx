@@ -56,16 +56,17 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     setIsFilterModalVisible(false)
   }
 
-  const scrollTo = (yCoordinate: number) => {
-    // if we scroll up less than SCROLL_UP_TO_SHOW_THRESHOLD, the header won't expand and we
-    // need to scroll up more
-    const headerOffset = contentYScrollOffset.current <= SCROLL_UP_TO_SHOW_THRESHOLD ? ARTIST_HEADER_HEIGHT : 0
+  const scrollTo = useCallback(
+    (yCoordinate: number) => {
+      // if we scroll up less than SCROLL_UP_TO_SHOW_THRESHOLD, the header won't expand and we
+      // need to scroll up more
+      const headerOffset = contentYScrollOffset.current <= SCROLL_UP_TO_SHOW_THRESHOLD ? ARTIST_HEADER_HEIGHT : 0
 
-    const offset = headerOffset + auctionResultsYCoordinate.current + yCoordinate
-    flatListRef.current?.getNode().scrollToOffset({ animated: true, offset })
-  }
-
-  const scrollToTop = useCallback(() => scrollTo(0), [auctionResultsYCoordinate, contentYScrollOffset])
+      const offset = headerOffset + auctionResultsYCoordinate.current + yCoordinate
+      flatListRef.current?.getNode().scrollToOffset({ animated: true, offset })
+    },
+    [auctionResultsYCoordinate, contentYScrollOffset]
+  )
 
   // Show or hide floating filter button depending on the scroll position
   const onScrollEndDrag = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -101,11 +102,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
             contentYScrollOffset.current = event.nativeEvent.contentOffset.y
           }}
         >
-          <ArtistInsightsAuctionResultsPaginationContainer
-            artist={artist}
-            scrollToTop={scrollToTop}
-            scrollTo={scrollTo}
-          />
+          <ArtistInsightsAuctionResultsPaginationContainer artist={artist} scrollTo={scrollTo} />
         </ScrollView>
       </StickyTabPageScrollView>
       <ArtworkFilterNavigator
