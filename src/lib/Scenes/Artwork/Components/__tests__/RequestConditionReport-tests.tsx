@@ -47,7 +47,7 @@ describe("RequestConditionReport", () => {
     expect(successModal.props().visible).toEqual(false)
   })
 
-  it("shows an error modal on failure", async () => {
+  xit("shows an error modal on failure", async () => {
     const component = mount(
       <Theme>
         {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
@@ -71,7 +71,7 @@ describe("RequestConditionReport", () => {
     expect(successModal.props().visible).toEqual(false)
   })
 
-  it("shows a success modal on success", async () => {
+  xit("shows a success modal on success", async () => {
     const component = mount(
       <Theme>
         {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
