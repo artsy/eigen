@@ -47,6 +47,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
 
   const onPressEditAddress = (addressId: string) =>
     navigate("/my-profile/saved-addresses/edit-address", {
+      modal: true,
       passProps: {
         addressId,
       },
@@ -120,7 +121,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
               <AddAddressButton
                 block={false}
                 variant="secondaryOutline"
-                handleOnPress={() => navigate("/my-profile/saved-addresses/new-address")}
+                handleOnPress={() => navigate("/my-profile/saved-addresses/new-address", { modal: true })}
                 title="Add New Address"
               />
             </Box>
@@ -137,7 +138,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
               Please add an address for a faster checkout experience in the future.
             </Text>
             <AddAddressButton
-              handleOnPress={() => navigate("/my-profile/saved-addresses/new-address")}
+              handleOnPress={() => navigate("/my-profile/saved-addresses/new-address", { modal: true })}
               title="Add New Address"
             />
           </Flex>

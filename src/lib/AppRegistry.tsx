@@ -365,7 +365,10 @@ export const modules = defineModules({
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SavedAddresses: reactModule(SavedAddressesQueryRenderer),
-  SavedAddressesForm: reactModule(SavedAddressesFormQueryRenderer, { hidesBackButton: true }),
+  SavedAddressesForm: reactModule(SavedAddressesFormQueryRenderer, {
+    alwaysPresentModally: true,
+    hasOwnModalCloseButton: false,
+  }),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),
