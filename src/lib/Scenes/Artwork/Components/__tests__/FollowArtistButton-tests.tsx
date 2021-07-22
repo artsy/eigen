@@ -2,6 +2,7 @@ import { FollowArtistButtonTestsErrorQueryRawResponse } from "__generated__/Foll
 import { FollowArtistButtonTestsQueryRawResponse } from "__generated__/FollowArtistButtonTestsQuery.graphql"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { Theme } from "palette"
@@ -15,13 +16,15 @@ jest.unmock("react-relay")
 describe("FollowArtistButton", () => {
   it("renders button text correctly", () => {
     const component = mount(
-      <Theme>
-        <FollowArtistButton
-          relay={{ environment: {} } as RelayProp}
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          artist={followArtistButtonArtist}
-        />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <FollowArtistButton
+            relay={{ environment: {} } as RelayProp}
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            artist={followArtistButtonArtist}
+          />
+        </Theme>
+      </GlobalStoreProvider>
     )
     expect(component.find(TouchableWithoutFeedback).length).toEqual(1)
 
@@ -33,9 +36,11 @@ describe("FollowArtistButton", () => {
     const getWrapper = async ({ mockArtistData, mockFollowResults }) => {
       return await renderRelayTree({
         Component: (props: any) => (
-          <Theme>
-            <FollowArtistButtonFragmentContainer {...props} />
-          </Theme>
+          <GlobalStoreProvider>
+            <Theme>
+              <FollowArtistButtonFragmentContainer {...props} />
+            </Theme>
+          </GlobalStoreProvider>
         ),
         query: graphql`
           query FollowArtistButtonTestsQuery @raw_response_type {

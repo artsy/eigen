@@ -51,13 +51,15 @@ export const componentWithWrappers = (component: ReactElement) => {
   return (
     <TrackProvider>
       <GlobalStoreProvider>
-        <Theme>
-          <ToastProvider>
-            <PopoverMessageProvider>
-              <ProvideScreenDimensions>{component}</ProvideScreenDimensions>
-            </PopoverMessageProvider>
-          </ToastProvider>
-        </Theme>
+        <GlobalStoreProvider>
+          <Theme>
+            <ToastProvider>
+              <PopoverMessageProvider>
+                <ProvideScreenDimensions>{component}</ProvideScreenDimensions>
+              </PopoverMessageProvider>
+            </ToastProvider>
+          </Theme>
+        </GlobalStoreProvider>
       </GlobalStoreProvider>
     </TrackProvider>
   )

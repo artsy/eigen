@@ -7,6 +7,7 @@ import { defaultRules, renderMarkdown } from "../renderMarkdown"
 
 import { readFileSync } from "fs"
 import { navigate } from "lib/navigation/navigate"
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { join } from "path"
 
 describe("renderMarkdown", () => {
@@ -110,9 +111,11 @@ describe("renderMarkdown", () => {
     ) as any
 
     const renderedComponent = mount(
-      <Theme>
-        <Flex>{componentList}</Flex>
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <Flex>{componentList}</Flex>
+        </Theme>
+      </GlobalStoreProvider>
     )
     expect(renderedComponent.find(LinkText).length).toEqual(2)
 
@@ -143,9 +146,11 @@ describe("renderMarkdown", () => {
     ) as any
 
     const renderedComponent = mount(
-      <Theme>
-        <Flex>{componentList}</Flex>
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <Flex>{componentList}</Flex>
+        </Theme>
+      </GlobalStoreProvider>
     )
     expect(renderedComponent.find(LinkText).length).toEqual(2)
 

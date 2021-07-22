@@ -1,3 +1,4 @@
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { View } from "react-native"
@@ -11,9 +12,11 @@ describe("color", () => {
 
   it("returns the correct color with a Theme provider", () => {
     const TestComponent = () => (
-      <Theme>
-        <ColorView name="black10" />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <ColorView name="black10" />
+        </Theme>
+      </GlobalStoreProvider>
     )
 
     const tree = renderWithWrappers(<TestComponent />).root
@@ -22,12 +25,14 @@ describe("color", () => {
 
   it("returns the correct color with a Theme provider in v2", () => {
     const TestComponent = () => (
-      <Theme theme="v2">
-        <>
-          <ColorView name="yellow30" />
-          <ColorView name="copper100" />
-        </>
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme theme="v2">
+          <>
+            <ColorView name="yellow30" />
+            <ColorView name="copper100" />
+          </>
+        </Theme>
+      </GlobalStoreProvider>
     )
     const tree = renderWithWrappers(<TestComponent />).root
     const bgColors = tree.findAllByType(View).map((view) => view.props.style.backgroundColor)
@@ -37,12 +42,14 @@ describe("color", () => {
 
   it("returns the correct color with a Theme provider in v3", () => {
     const TestComponent = () => (
-      <Theme theme="v3">
-        <>
-          <ColorView name="yellow30" />
-          <ColorView name="copper100" />
-        </>
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme theme="v3">
+          <>
+            <ColorView name="yellow30" />
+            <ColorView name="copper100" />
+          </>
+        </Theme>
+      </GlobalStoreProvider>
     )
     const tree = renderWithWrappers(<TestComponent />).root
     const bgColors = tree.findAllByType(View).map((view) => view.props.style.backgroundColor)
@@ -52,12 +59,14 @@ describe("color", () => {
 
   it("returns the correct color with a Theme provider with override", () => {
     const TestComponent = () => (
-      <Theme theme="v3" override={{ colors: { yellow30: "red", copper100: "blue" } }}>
-        <>
-          <ColorView name="yellow30" />
-          <ColorView name="copper100" />
-        </>
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme theme="v3" override={{ colors: { yellow30: "red", copper100: "blue" } }}>
+          <>
+            <ColorView name="yellow30" />
+            <ColorView name="copper100" />
+          </>
+        </Theme>
+      </GlobalStoreProvider>
     )
     const tree = renderWithWrappers(<TestComponent />).root
     const bgColors = tree.findAllByType(View).map((view) => view.props.style.backgroundColor)
@@ -67,18 +76,20 @@ describe("color", () => {
 
   it("returns the correct color with nested Theme providers", () => {
     const TestComponent = () => (
-      <Theme theme="v3" override={{ colors: { yellow30: "red", copper100: "blue" } }}>
-        <>
-          <ColorView name="yellow30" />
-          <ColorView name="copper100" />
-          <Theme theme="v3" override={{ colors: { yellow30: "green", copper100: "purple" } }}>
-            <>
-              <ColorView name="yellow30" />
-              <ColorView name="copper100" />
-            </>
-          </Theme>
-        </>
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme theme="v3" override={{ colors: { yellow30: "red", copper100: "blue" } }}>
+          <>
+            <ColorView name="yellow30" />
+            <ColorView name="copper100" />
+            <Theme theme="v3" override={{ colors: { yellow30: "green", copper100: "purple" } }}>
+              <>
+                <ColorView name="yellow30" />
+                <ColorView name="copper100" />
+              </>
+            </Theme>
+          </>
+        </Theme>
+      </GlobalStoreProvider>
     )
     const tree = renderWithWrappers(<TestComponent />).root
     const bgColors = tree.findAllByType(View).map((view) => view.props.style.backgroundColor)

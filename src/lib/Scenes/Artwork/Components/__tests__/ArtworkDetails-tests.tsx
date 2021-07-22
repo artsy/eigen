@@ -12,9 +12,11 @@ describe("Artwork Details", () => {
   const mountArtworkDetails = (artwork: ArtworkDetails_artwork) =>
     mount(
       <GlobalStoreProvider>
-        <Theme>
-          <ArtworkDetails artwork={artwork} />
-        </Theme>
+        <GlobalStoreProvider>
+          <Theme>
+            <ArtworkDetails artwork={artwork} />
+          </Theme>
+        </GlobalStoreProvider>
       </GlobalStoreProvider>
     )
 

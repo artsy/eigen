@@ -16,9 +16,11 @@ import { CommercialInformationTimerWrapper } from "../CommercialInformation"
 
 const Wrapper: React.FC<{}> = ({ children }) => {
   return (
-    <Theme>
-      <GlobalStoreProvider>{children}</GlobalStoreProvider>
-    </Theme>
+    <GlobalStoreProvider>
+      <Theme>
+        <GlobalStoreProvider>{children}</GlobalStoreProvider>
+      </Theme>
+    </GlobalStoreProvider>
   )
 }
 

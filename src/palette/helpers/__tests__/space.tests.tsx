@@ -1,3 +1,4 @@
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { View } from "react-native"
@@ -11,9 +12,11 @@ describe("space", () => {
 
   it("returns the correct space with a Theme provider", () => {
     const TestComponent = () => (
-      <Theme>
-        <SpaceView name={1} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <SpaceView name={1} />
+        </Theme>
+      </GlobalStoreProvider>
     )
 
     const tree = renderWithWrappers(<TestComponent />).root
@@ -22,12 +25,14 @@ describe("space", () => {
 
   it("returns the correct space with a Theme provider in v2", () => {
     const TestComponent = () => (
-      <Theme theme="v2">
-        <>
-          <SpaceView name={0.3} />
-          <SpaceView name={6} />
-        </>
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme theme="v2">
+          <>
+            <SpaceView name={0.3} />
+            <SpaceView name={6} />
+          </>
+        </Theme>
+      </GlobalStoreProvider>
     )
     const tree = renderWithWrappers(<TestComponent />).root
     const margins = tree.findAllByType(View).map((view) => view.props.style.marginLeft)
@@ -37,13 +42,15 @@ describe("space", () => {
 
   it("returns the correct space with a Theme provider in v3", () => {
     const TestComponent = () => (
-      <Theme theme="v3">
-        <>
-          {/* @ts-ignore */}
-          <SpaceView name="0.3" />
-          <SpaceView name="2" />
-        </>
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme theme="v3">
+          <>
+            {/* @ts-ignore */}
+            <SpaceView name="0.3" />
+            <SpaceView name="2" />
+          </>
+        </Theme>
+      </GlobalStoreProvider>
     )
     const tree = renderWithWrappers(<TestComponent />).root
     const margins = tree.findAllByType(View).map((view) => view.props.style.marginLeft)
@@ -53,11 +60,13 @@ describe("space", () => {
 
   it("returns the correct space with a Theme provider with override", () => {
     const TestComponent = () => (
-      <Theme theme="v3" override={{ space: { "1": 12 } }}>
-        <>
-          <SpaceView name="1" />
-        </>
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme theme="v3" override={{ space: { "1": 12 } }}>
+          <>
+            <SpaceView name="1" />
+          </>
+        </Theme>
+      </GlobalStoreProvider>
     )
     const tree = renderWithWrappers(<TestComponent />).root
     const margins = tree.findAllByType(View).map((view) => view.props.style.marginLeft)

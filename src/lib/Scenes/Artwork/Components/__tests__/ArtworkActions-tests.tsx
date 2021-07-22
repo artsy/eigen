@@ -2,7 +2,7 @@ import { ArtworkActionsTestsQueryRawResponse } from "__generated__/ArtworkAction
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { BellIcon, Sans, Theme } from "palette"
@@ -63,10 +63,12 @@ describe("ArtworkActions", () => {
   describe("with AR enabled", () => {
     it("renders buttons correctly", () => {
       const component = mount(
-        <Theme>
-          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-          <ArtworkActions artwork={artworkActionsArtwork} />
-        </Theme>
+        <GlobalStoreProvider>
+          <Theme>
+            {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
+            <ArtworkActions artwork={artworkActionsArtwork} />
+          </Theme>
+        </GlobalStoreProvider>
       )
       expect(component.find(Sans).length).toEqual(3)
 
@@ -83,10 +85,12 @@ describe("ArtworkActions", () => {
         is_hangable: false,
       }
       const component = mount(
-        <Theme>
-          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-          <ArtworkActions artwork={artworkActionsArtworkNotHangable} />
-        </Theme>
+        <GlobalStoreProvider>
+          <Theme>
+            {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
+            <ArtworkActions artwork={artworkActionsArtworkNotHangable} />
+          </Theme>
+        </GlobalStoreProvider>
       )
       expect(component.find(Sans).length).toEqual(2)
 
@@ -105,10 +109,12 @@ describe("ArtworkActions", () => {
       },
     }
     const component = mount(
-      <Theme>
-        {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-        <ArtworkActions artwork={artworkActionsArtworkInAuction} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
+          <ArtworkActions artwork={artworkActionsArtworkInAuction} />
+        </Theme>
+      </GlobalStoreProvider>
     )
     expect(component.find(Sans).length).toEqual(3)
 
@@ -121,10 +127,12 @@ describe("ArtworkActions", () => {
     it("does not show the View in Room option if the phone does not have AREnabled", () => {
       LegacyNativeModules.ARCocoaConstantsModule.AREnabled = false
       const component = mount(
-        <Theme>
-          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-          <ArtworkActions artwork={artworkActionsArtwork} />
-        </Theme>
+        <GlobalStoreProvider>
+          <Theme>
+            {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
+            <ArtworkActions artwork={artworkActionsArtwork} />
+          </Theme>
+        </GlobalStoreProvider>
       )
       expect(component.find(Sans).length).toEqual(2)
 

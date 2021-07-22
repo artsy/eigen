@@ -6,6 +6,7 @@ import { Header } from "../OtherWorks/Header"
 import { OtherWorksFragmentContainer as OtherWorks } from "../OtherWorks/OtherWorks"
 
 import { navigate } from "lib/navigation/navigate"
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { TouchableWithoutFeedback } from "react-native"
 
 describe("OtherWorks", () => {
@@ -15,10 +16,12 @@ describe("OtherWorks", () => {
       " $fragmentRefs": null,
     }
     const component = shallow(
-      <Theme>
-        {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-        <OtherWorks artwork={noGridsArtworkProps} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
+          <OtherWorks artwork={noGridsArtworkProps} />
+        </Theme>
+      </GlobalStoreProvider>
     )
     expect(component.find(Header).length).toEqual(0)
   })
@@ -26,10 +29,12 @@ describe("OtherWorks", () => {
   it("renders no grids if an empty array is provided", () => {
     const noGridsArtworkProps = { contextGrids: [], " $fragmentRefs": null }
     const component = shallow(
-      <Theme>
-        {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-        <OtherWorks artwork={noGridsArtworkProps} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
+          <OtherWorks artwork={noGridsArtworkProps} />
+        </Theme>
+      </GlobalStoreProvider>
     )
     expect(component.find(Header).length).toEqual(0)
   })
@@ -55,10 +60,12 @@ describe("OtherWorks", () => {
       " $fragmentRefs": null,
     }
     const component = mount(
-      <Theme>
-        {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-        <OtherWorks artwork={oneGridArtworkProps} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
+          <OtherWorks artwork={oneGridArtworkProps} />
+        </Theme>
+      </GlobalStoreProvider>
     )
     expect(component.find(Header).length).toEqual(1)
     expect(component.find(Sans).first().text()).toEqual("Other works by Andy Warhol")
@@ -85,10 +92,12 @@ describe("OtherWorks", () => {
       " $fragmentRefs": null,
     }
     const component = mount(
-      <Theme>
-        {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-        <OtherWorks artwork={oneGridArtworkProps} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
+          <OtherWorks artwork={oneGridArtworkProps} />
+        </Theme>
+      </GlobalStoreProvider>
     )
     expect(component.find(Header).length).toEqual(2)
     expect(component.find(Sans).first().text()).toEqual("Other works by Andy Warhol")
@@ -126,10 +135,12 @@ describe("OtherWorks", () => {
       " $fragmentRefs": null,
     }
     const component = mount(
-      <Theme>
-        {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-        <OtherWorks artwork={oneGridArtworkProps} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
+          <OtherWorks artwork={oneGridArtworkProps} />
+        </Theme>
+      </GlobalStoreProvider>
     )
     expect(component.find(Header).length).toEqual(1)
     expect(component.find(Sans).first().text()).toEqual("Other works by Andy Warhol")
