@@ -1,22 +1,10 @@
-import { captureException } from "@sentry/react-native"
 import { MiddlewareNextFn, RelayNetworkLayerResponse } from "react-relay-network-modern/node8"
 import { errorMiddleware } from "../errorMiddleware"
 import { GraphQLRequest } from "../types"
 
-jest.mock("react-native-screens/native-stack", () => {
-  return {
-    createNativeStackNavigator: require("@react-navigation/stack").createStackNavigator,
-  }
-})
-jest.mock("@sentry/react-native", () => ({
-  ...jest.requireActual("@sentry/react-native"),
-  captureException: jest.fn(),
-}))
 describe(errorMiddleware, () => {
   const middleware = errorMiddleware()
-  beforeEach(() => {
-    ;(captureException as jest.Mock).mockClear()
-  })
+
   describe("without princialField", () => {
     const request: GraphQLRequest = {
       // @ts-ignore
@@ -49,12 +37,11 @@ describe(errorMiddleware, () => {
       const next: MiddlewareNextFn = () => Promise.resolve(relayResponse)
 
       it("throws error if there is no principalField in the query", async () => {
-        expect.assertions(2)
+        expect.assertions(1)
         try {
           await middleware(next)(request)
         } catch (err) {
           expect(err.message).toContain("Relay request for `xxx` failed")
-          expect(captureException).toHaveBeenCalledWith("test error")
         }
       })
     })
