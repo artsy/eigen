@@ -125,7 +125,7 @@ describe(SavedAddressesQueryRenderer, () => {
       return result
     })
     tree.findByType(Button).props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/my-profile/saved-addresses/new-address")
+    expect(navigate).toHaveBeenCalledWith("/my-profile/saved-addresses/new-address", { modal: true })
   })
 
   it("should navigate to edit address screen", () => {
@@ -175,6 +175,7 @@ describe(SavedAddressesQueryRenderer, () => {
 
     EditButton.props.onPress()
     expect(navigate).toHaveBeenCalledWith("/my-profile/saved-addresses/edit-address", {
+      modal: true,
       passProps: { addressId: "5861" },
     })
   })
