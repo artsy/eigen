@@ -41,12 +41,9 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
 
   const onPressEditAddress = () => null
 
-  const onPressDeleteAddress = (addressId: string) => {
-    deleteSavedAddress(
-      addressId,
-      () => relay.refetch({}),
-      (message: string) => captureMessage(message)
-    )
+  const onPressDeleteAddress = async (addressId: string) => {
+    await deleteSavedAddress(addressId)
+    relay.refetch({})
   }
 
   return (

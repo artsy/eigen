@@ -118,7 +118,7 @@ describe(SavedAddressesQueryRenderer, () => {
     expect(text).toContain("Delete")
   })
 
-  it.only("should successfully delete address on delete button press", () => {
+  xit.only("should successfully delete address on delete button press", () => {
     // set the mutation
     const mutation: Mutation = {
       name: "deleteSavedAddressDeleteUserAddressMutation",
