@@ -59,7 +59,7 @@ describe(SavedAddressesFormQueryRenderer, () => {
     expect(tree.findAllByType(Button).length).toEqual(1)
   })
 
-  it.only("should display correct address data if it is Edit Address modal", () => {
+  it("should display correct address data if it is Edit Address modal", () => {
     const tree = renderWithWrappers(<TestRenderer addressId="5861" />).root
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
