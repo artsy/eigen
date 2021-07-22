@@ -160,7 +160,7 @@ export const FairArticlesPaginationContainer = createPaginationContainer(
     fair: graphql`
       fragment FairArticles_fair on Fair @argumentDefinitions(first: { type: "Int" }, after: { type: "String" }) {
         slug
-        articlesConnection(first: $first, after: $after) @connection(key: "FairArticlesQuery_articlesConnection") {
+        articlesConnection(first: $first, after: $after, inEditorialFeed: true) @connection(key: "FairArticlesQuery_articlesConnection") {
           totalCount
           edges {
             node {
