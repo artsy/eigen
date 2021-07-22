@@ -17,7 +17,7 @@ describe("space", () => {
     )
 
     const tree = renderWithWrappers(<TestComponent />).root
-    expect(tree.findByType(View).props.style.marginLeft).toBe("10px")
+    expect(tree.findByType(View).props.style.marginLeft).toBe(10)
   })
 
   it("returns the correct space with a Theme provider in v2", () => {
@@ -31,8 +31,8 @@ describe("space", () => {
     )
     const tree = renderWithWrappers(<TestComponent />).root
     const margins = tree.findAllByType(View).map((view) => view.props.style.marginLeft)
-    expect(margins[0]).toBe("3px")
-    expect(margins[1]).toBe("60px")
+    expect(margins[0]).toBe(3)
+    expect(margins[1]).toBe(60)
   })
 
   it("returns the correct space with a Theme provider in v3", () => {

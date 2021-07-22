@@ -106,27 +106,41 @@ export const Theme: React.FC<{
 export const ThemeV2: React.FC = ({ children }) => <ThemeProvider theme="v2">{children}</ThemeProvider>
 export const ThemeV3: React.FC = ({ children }) => <ThemeProvider theme="v3">{children}</ThemeProvider>
 
-export const useTheme = <T extends ThemeType>() => {
-  const theme: T = useContext(ThemeContext)
+interface ColorFuncOverload {
+  (colorNumber: undefined): undefined
+  (colorNumber: Color): string
+  (colorNumber: Color | undefined): string | undefined
+}
+const color = (theme: ThemeType): ColorFuncOverload => (colorName: any): any =>
+  colorName === undefined
+    ? undefined
+    : isThemeV2(theme)
+    ? theme.colors[colorName as ColorV2]
+    : //  @ts-ignore
+      theme.colors[colorName as ColorV3]
 
-  interface ColorFuncOverload {
-    (colorNumber: undefined): undefined
-    (colorNumber: Color): string
-    (colorNumber: Color | undefined): string | undefined
+const space = (theme: ThemeType) => (spaceName: SpacingUnitV2 | SpacingUnitV3): number =>
+  isThemeV2(theme)
+    ? ((theme.space[spaceName as SpacingUnitV2] as unknown) as number)
+    : theme.space[spaceName as SpacingUnitV3]
+
+export const useTheme = () => {
+  const theme: ThemeType = useContext(ThemeContext)
+
+  // if we are not wrapped in `<Theme>`, if we dev, throw error. if we are in prod, just default to v2 to avoid a crash.
+  if (theme === undefined) {
+    if (__DEV__ || __TEST__) {
+      console.error(
+        "You are trying to use the `Theme` but you have not wrapped your component/screen with `<Theme>`. Please wrap and try again."
+      )
+      throw new Error("ThemeContext is not defined. Wrap your component with `<Theme>` and try again.")
+    } else {
+      return { theme: THEMES.v2, color: color(THEMES.v2), space: space(THEMES.v2) }
+    }
   }
-  const color: ColorFuncOverload = (colorName: any): any =>
-    colorName === undefined
-      ? undefined
-      : isThemeV2(theme)
-      ? theme.colors[colorName as ColorV2]
-      : //  @ts-ignore
-        theme.colors[colorName as ColorV3]
 
-  const space = (spaceName: SpacingUnitV2 | SpacingUnitV3): number =>
-    isThemeV2(theme)
-      ? ((theme.space[spaceName as SpacingUnitV2] as unknown) as number)
-      : theme.space[spaceName as SpacingUnitV3]
-  return { theme, color, space }
+  // if we are wrapped, then all good.
+  return { theme, color: color(theme), space: space(theme) }
 }
 
 export const useColor = () => useTheme().color
