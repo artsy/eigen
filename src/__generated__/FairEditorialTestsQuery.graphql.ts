@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a4c687c8474c93af12b5b7a720ca053f */
+/* @relayHash 614002b1fde84c246282a59cd05691c5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,7 +33,7 @@ query FairEditorialTestsQuery(
 fragment FairEditorial_fair on Fair {
   internalID
   slug
-  articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
+  articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
     totalCount
     edges {
       node {
@@ -153,6 +153,11 @@ return {
               },
               {
                 "kind": "Literal",
+                "name": "inEditorialFeed",
+                "value": true
+              },
+              {
+                "kind": "Literal",
                 "name": "sort",
                 "value": "PUBLISHED_AT_DESC"
               }
@@ -240,7 +245,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "articlesConnection(first:5,sort:\"PUBLISHED_AT_DESC\")"
+            "storageKey": "articlesConnection(first:5,inEditorialFeed:true,sort:\"PUBLISHED_AT_DESC\")"
           },
           (v4/*: any*/)
         ],
@@ -249,7 +254,7 @@ return {
     ]
   },
   "params": {
-    "id": "a4c687c8474c93af12b5b7a720ca053f",
+    "id": "614002b1fde84c246282a59cd05691c5",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": {
