@@ -219,7 +219,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
 
         <AddAddressButton
           handleOnPress={isEditForm ? () => editUserAddress(addressId!) : submitAddAddress}
-          title="Add Address"
+          title={isEditForm ? "Add" : "Add Address"}
           disabled={!state.allPresent}
         />
       </Stack>
