@@ -56,8 +56,6 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     setIsFilterModalVisible(false)
   }
 
-  const scrollToTop = useCallback(() => scrollTo(0), [auctionResultsYCoordinate, contentYScrollOffset])
-
   const scrollTo = (yCoordinate: number) => {
     // if we scroll up less than SCROLL_UP_TO_SHOW_THRESHOLD, the header won't expand and we
     // need to scroll up more
@@ -66,6 +64,8 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     const offset = headerOffset + auctionResultsYCoordinate.current + yCoordinate
     flatListRef.current?.getNode().scrollToOffset({ animated: true, offset })
   }
+
+  const scrollToTop = useCallback(() => scrollTo(0), [auctionResultsYCoordinate, contentYScrollOffset])
 
   // Show or hide floating filter button depending on the scroll position
   const onScrollEndDrag = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
