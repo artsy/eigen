@@ -1,4 +1,5 @@
 import { THEME_V2, THEME_V3 } from "@artsy/palette-tokens"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import _ from "lodash"
 import React, { useContext } from "react"
 import { ThemeContext, ThemeProvider } from "styled-components/native"
@@ -14,7 +15,6 @@ export { SansSize, SerifSize, TypeSizes } from "@artsy/palette-tokens/dist/theme
 
 import { Color as ColorV2, SpacingUnit as SpacingUnitV2 } from "@artsy/palette-tokens/dist/themes/v2"
 import { Color as ColorV3, SpacingUnit as SpacingUnitV3Numbers } from "@artsy/palette-tokens/dist/themes/v3"
-import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 
 type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
 export type Color = ColorV2 | ColorV3
@@ -79,15 +79,13 @@ const fixSpaceUnitsV3 = (
   return fixed as any
 }
 
-export const THEMES = {
+const THEMES = {
   v2: { ...THEME_V2, fontFamily, fonts: TEXT_FONTS_V2, space: fixSpaceUnitsV2(THEME_V2.space) },
-  v3: unsafe_getFeatureFlag("ARAllowPaletteV3")
-    ? {
-        ...eigenUsefulTHEME_V3,
-        fonts: TEXT_FONTS_V3,
-        space: fixSpaceUnitsV3(spaceNumbers),
-      } // v3 removed `fontFamily`, `fontSizes`, `letterSpacings`, `lineHeights`, `typeSizes`
-    : { ...THEME_V2, fontFamily, fonts: TEXT_FONTS_V2, space: fixSpaceUnitsV2(THEME_V2.space) },
+  v3: {
+    ...eigenUsefulTHEME_V3,
+    fonts: TEXT_FONTS_V3,
+    space: fixSpaceUnitsV3(spaceNumbers),
+  }, // v3 removed `fontFamily`, `fontSizes`, `letterSpacings`, `lineHeights`, `typeSizes`
 }
 
 type ThemeV2Type = typeof THEMES.v2
@@ -100,10 +98,21 @@ export const themeProps = THEMES.v2
 export const Theme: React.FC<{
   theme?: keyof typeof THEMES | ThemeType
   override?: DeepPartial<ThemeV2Type> | DeepPartial<ThemeV3Type>
-}> = ({ children, theme: themeNameOrThemeObj = "v2", override = {} }) => {
-  const theme = _.isString(themeNameOrThemeObj) ? THEMES[themeNameOrThemeObj] : themeNameOrThemeObj
+}> = ({ children, theme = "v2", override = {} }) => {
+  const allowV3 = useFeatureFlag("ARAllowPaletteV3")
 
-  return <ThemeProvider theme={{ ...theme, ...override }}>{children}</ThemeProvider>
+  let actualTheme: ThemeType
+  if (_.isString(theme)) {
+    if (allowV3) {
+      actualTheme = THEMES[theme]
+    } else {
+      actualTheme = THEMES.v2
+    }
+  } else {
+    actualTheme = theme
+  }
+
+  return <ThemeProvider theme={{ ...actualTheme, ...override }}>{children}</ThemeProvider>
 }
 
 export const ThemeV2: React.FC = ({ children }) => <Theme theme="v2">{children}</Theme>
@@ -152,7 +161,8 @@ export const useSpace = () => useTheme().space
 /** Returns a config specific to the current theme. For use in React components */
 export const useThemeConfig = <T, U>({ v2, v3 }: { v2: T; v3: U }): U | T => {
   const { theme = { id: "v2" } } = useTheme()
-  return theme.id === "v2" ? v2 : unsafe_getFeatureFlag("ARAllowPaletteV3") ? v3 : v2
+  const allowV3 = useFeatureFlag("ARAllowPaletteV3")
+  return theme.id === "v2" ? v2 : allowV3 ? v3 : v2
 }
 
 export const isThemeV2 = (theme: ThemeType): theme is ThemeV2Type => theme.id === "v2"
