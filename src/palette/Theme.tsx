@@ -14,6 +14,7 @@ export { SansSize, SerifSize, TypeSizes } from "@artsy/palette-tokens/dist/theme
 
 import { Color as ColorV2, SpacingUnit as SpacingUnitV2 } from "@artsy/palette-tokens/dist/themes/v2"
 import { Color as ColorV3, SpacingUnit as SpacingUnitV3Numbers } from "@artsy/palette-tokens/dist/themes/v3"
+import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 
 type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
 export type Color = ColorV2 | ColorV3
@@ -80,11 +81,13 @@ const fixSpaceUnitsV3 = (
 
 export const THEMES = {
   v2: { ...THEME_V2, fontFamily, fonts: TEXT_FONTS_V2, space: fixSpaceUnitsV2(THEME_V2.space) },
-  v3: {
-    ...eigenUsefulTHEME_V3,
-    fonts: TEXT_FONTS_V3,
-    space: fixSpaceUnitsV3(spaceNumbers),
-  }, // v3 removed `fontFamily`, `fontSizes`, `letterSpacings`, `lineHeights`, `typeSizes`
+  v3: unsafe_getFeatureFlag("ARAllowPaletteV3")
+    ? {
+        ...eigenUsefulTHEME_V3,
+        fonts: TEXT_FONTS_V3,
+        space: fixSpaceUnitsV3(spaceNumbers),
+      } // v3 removed `fontFamily`, `fontSizes`, `letterSpacings`, `lineHeights`, `typeSizes`
+    : { ...THEME_V2, fontFamily, fonts: TEXT_FONTS_V2, space: fixSpaceUnitsV2(THEME_V2.space) },
 }
 
 type ThemeV2Type = typeof THEMES.v2
@@ -103,8 +106,8 @@ export const Theme: React.FC<{
   return <ThemeProvider theme={{ ...theme, ...override }}>{children}</ThemeProvider>
 }
 
-export const ThemeV2: React.FC = ({ children }) => <ThemeProvider theme="v2">{children}</ThemeProvider>
-export const ThemeV3: React.FC = ({ children }) => <ThemeProvider theme="v3">{children}</ThemeProvider>
+export const ThemeV2: React.FC = ({ children }) => <Theme theme="v2">{children}</Theme>
+export const ThemeV3: React.FC = ({ children }) => <Theme theme="v3">{children}</Theme>
 
 interface ColorFuncOverload {
   (colorNumber: undefined): undefined
@@ -149,13 +152,7 @@ export const useSpace = () => useTheme().space
 /** Returns a config specific to the current theme. For use in React components */
 export const useThemeConfig = <T, U>({ v2, v3 }: { v2: T; v3: U }): U | T => {
   const { theme = { id: "v2" } } = useTheme()
-  return theme.id === "v2" ? v2 : v3
-}
-
-/** Returns a config specific to the current theme. For use in styled-components */
-export const getThemeConfig = <T, U>(props: Record<string, any>, { v2, v3 }: { v2: T; v3: U }): U | T => {
-  const { theme = { id: "v2" } } = props
-  return theme.id === "v2" ? v2 : v3
+  return theme.id === "v2" ? v2 : unsafe_getFeatureFlag("ARAllowPaletteV3") ? v3 : v2
 }
 
 export const isThemeV2 = (theme: ThemeType): theme is ThemeV2Type => theme.id === "v2"
