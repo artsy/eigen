@@ -1,4 +1,3 @@
-import { captureMessage } from "@sentry/react-native"
 import { SavedAddresses_me } from "__generated__/SavedAddresses_me.graphql"
 import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
