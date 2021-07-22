@@ -57,6 +57,12 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     flatListRef.current?.getNode().scrollToOffset({ animated: true, offset: auctionResultsYCoordinate.current })
   }, [auctionResultsYCoordinate])
 
+  const scrollTo = (yCoordinate: number) => {
+    flatListRef.current
+      ?.getNode()
+      .scrollToOffset({ animated: true, offset: auctionResultsYCoordinate.current + yCoordinate })
+  }
+
   // Show or hide floating filter button depending on the scroll position
   const onScrollEndDrag = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (event.nativeEvent.contentOffset.y > FILTER_BUTTON_OFFSET) {
@@ -88,7 +94,11 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
             auctionResultsYCoordinate.current = y
           }}
         >
-          <ArtistInsightsAuctionResultsPaginationContainer artist={artist} scrollToTop={scrollToTop} />
+          <ArtistInsightsAuctionResultsPaginationContainer
+            artist={artist}
+            scrollToTop={scrollToTop}
+            scrollTo={scrollTo}
+          />
         </View>
       </StickyTabPageScrollView>
       <ArtworkFilterNavigator

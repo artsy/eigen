@@ -23,16 +23,18 @@ import { AuctionResultFragmentContainer } from "../../Lists/AuctionResultListIte
 interface Props {
   artist: ArtistInsightsAuctionResults_artist
   relay: RelayPaginationProp
+  scrollTo: (yCoordinate: number) => void
   scrollToTop: () => void
 }
 
-const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop }) => {
+const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo, scrollToTop }) => {
   const tracking = useTracking()
 
   const scrollViewRef = useRef<ScrollView>(null)
   const [keyboardFilterYCoordinate, setkeyboardFilterYCoordinate] = useState<number>(0)
 
   const scrollToKeywordFilter = useCallback(() => {
+    scrollTo(keyboardFilterYCoordinate)
     scrollViewRef.current?.scrollTo({ y: keyboardFilterYCoordinate })
   }, [keyboardFilterYCoordinate])
 
@@ -134,7 +136,11 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
     ?.paramValue
 
   return (
-    <ScrollView ref={scrollViewRef}>
+    <View
+      onLayout={({ nativeEvent }) => {
+        setkeyboardFilterYCoordinate(nativeEvent.layout.y)
+      }}
+    >
       <Flex>
         <Flex flexDirection="row" alignItems="center">
           <InfoButton
@@ -159,13 +165,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         </SortMode>
         <Separator borderColor={color("black5")} mt="2" />
         {!!showKeywordFilter && (
-          <Box
-            mx={2}
-            mb={4}
-            onLayout={({ nativeEvent }) => {
-              setkeyboardFilterYCoordinate(nativeEvent.layout.y)
-            }}
-          >
+          <Box mx={2} mb={4}>
             <KeywordFilter artistId={artist.internalID} artistSlug={artist.slug} onFocus={scrollToKeywordFilter} />
           </Box>
         )}
@@ -198,7 +198,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
           <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} hideClearButton={isKeywordFilterActive} />
         </Box>
       )}
-    </ScrollView>
+    </View>
   )
 }
 
