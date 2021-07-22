@@ -11,8 +11,8 @@ import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Box, bullet, color, Flex, Separator, Spacer, Text } from "palette"
-import React, { useCallback, useEffect, useState } from "react"
-import { FlatList, View } from "react-native"
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import { FlatList, ScrollView, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -28,6 +28,13 @@ interface Props {
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop }) => {
   const tracking = useTracking()
+
+  const scrollViewRef = useRef<ScrollView>(null)
+  const [keyboardFilterYCoordinate, setkeyboardFilterYCoordinate] = useState<number>(0)
+
+  const scrollToKeywordFilter = useCallback(() => {
+    scrollViewRef.current?.scrollTo({ y: keyboardFilterYCoordinate })
+  }, [keyboardFilterYCoordinate])
 
   const showKeywordFilter = useFeatureFlag("AREnableAuctionResultsKeywordFilter")
 
@@ -127,7 +134,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
     ?.paramValue
 
   return (
-    <View>
+    <ScrollView ref={scrollViewRef}>
       <Flex>
         <Flex flexDirection="row" alignItems="center">
           <InfoButton
@@ -151,7 +158,17 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
           {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
         </SortMode>
         <Separator borderColor={color("black5")} mt="2" />
-        {!!showKeywordFilter && <KeywordFilter artistId={artist.internalID} artistSlug={artist.slug} />}
+        {!!showKeywordFilter && (
+          <Box
+            mx={2}
+            mb={4}
+            onLayout={({ nativeEvent }) => {
+              setkeyboardFilterYCoordinate(nativeEvent.layout.y)
+            }}
+          >
+            <KeywordFilter artistId={artist.internalID} artistSlug={artist.slug} onFocus={scrollToKeywordFilter} />
+          </Box>
+        )}
       </Flex>
       {auctionResults.length ? (
         <FlatList
@@ -181,7 +198,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
           <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} hideClearButton={isKeywordFilterActive} />
         </Box>
       )}
-    </View>
+    </ScrollView>
   )
 }
 
