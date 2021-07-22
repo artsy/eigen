@@ -89,43 +89,48 @@ export default class TabBar extends React.Component<TabBarProps> {
   }
 
   render() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const containerWidth = this.props.containerWidth - space(4)
-    const numberOfTabs = this.props.tabs.length
-
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const translateX = this.props.scrollValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, containerWidth / numberOfTabs],
-    })
-
     return (
-      <Wrapper px={2}>
-        <Tabs>
-          {this.props.tabs.map((name, page) => {
-            const isTabActive = this.props.activeTab === page
-            return this.renderTab(name, page, isTabActive, this.props.goToPage)
-          })}
-          {this.props.spaceEvenly ? (
-            <Underline
-              style={[
-                {
-                  position: "absolute",
-                  width: containerWidth / numberOfTabs,
-                  height: 1,
-                  backgroundColor: "black",
-                  bottom: -1,
-                  left: 0,
-                  right: 0,
-                },
-                {
-                  transform: [{ translateX }],
-                },
-              ]}
-            />
-          ) : null}
-        </Tabs>
-      </Wrapper>
+      <ClassTheme>
+        {({ space }) => {
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          const containerWidth = this.props.containerWidth - space(4)
+          const numberOfTabs = this.props.tabs.length
+
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          const translateX = this.props.scrollValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, containerWidth / numberOfTabs],
+          })
+          return (
+            <Wrapper px={2}>
+              <Tabs>
+                {this.props.tabs.map((name, page) => {
+                  const isTabActive = this.props.activeTab === page
+                  return this.renderTab(name, page, isTabActive, this.props.goToPage)
+                })}
+                {this.props.spaceEvenly ? (
+                  <Underline
+                    style={[
+                      {
+                        position: "absolute",
+                        width: containerWidth / numberOfTabs,
+                        height: 1,
+                        backgroundColor: "black",
+                        bottom: -1,
+                        left: 0,
+                        right: 0,
+                      },
+                      {
+                        transform: [{ translateX }],
+                      },
+                    ]}
+                  />
+                ) : null}
+              </Tabs>
+            </Wrapper>
+          )
+        }}
+      </ClassTheme>
     )
   }
 }
