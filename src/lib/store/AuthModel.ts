@@ -2,7 +2,6 @@ import { appleAuth } from "@invertase/react-native-apple-authentication"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { isArtsyEmail } from "lib/utils/general"
-import { savePendingToken } from "lib/utils/PushNotification"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { stringify } from "qs"
 import Config from "react-native-config"
@@ -265,7 +264,6 @@ export const getAuthModel = (): AuthModel => ({
         userEmail: email,
       })
       actions.notifyTracking({ userId: id })
-      savePendingToken()
       return true
     }
 
@@ -323,7 +321,6 @@ export const getAuthModel = (): AuthModel => ({
       actions.setState({
         onboardingState: "incomplete",
       })
-      savePendingToken()
       return true
     }
     return false
@@ -361,7 +358,6 @@ export const getAuthModel = (): AuthModel => ({
             accessToken: accessToken.accessToken,
             oauthProvider: "facebook",
           })
-          await savePendingToken()
           resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
         }
 
@@ -395,7 +391,6 @@ export const getAuthModel = (): AuthModel => ({
               accessToken: accessToken.accessToken,
               oauthProvider: "facebook",
             })
-            await savePendingToken()
             resultGravitySignIn ? resolve(true) : reject("Failed to log in.")
           } else {
             const res = await resultGravityAccessToken.json()
@@ -440,7 +435,6 @@ export const getAuthModel = (): AuthModel => ({
             accessToken,
             oauthProvider: "google",
           }))
-        await savePendingToken()
         resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
       }
 
@@ -474,7 +468,6 @@ export const getAuthModel = (): AuthModel => ({
             accessToken,
             oauthProvider: "google",
           })
-          await savePendingToken()
           resultGravitySignIn ? resolve(true) : reject("Failed to log in.")
         } else {
           const res = await resultGravityAccessToken.json()
@@ -516,7 +509,6 @@ export const getAuthModel = (): AuthModel => ({
             idToken,
             oauthProvider: "apple",
           }))
-        await savePendingToken()
         resultGravitySignUp ? resolve(true) : (signInOrUp = "signIn")
       }
 
@@ -551,7 +543,6 @@ export const getAuthModel = (): AuthModel => ({
             idToken,
             oauthProvider: "apple",
           })
-          await savePendingToken()
           resultGravitySignIn ? resolve(true) : reject("Failed to log in.")
         } else {
           const res = await resultGravityAccessToken.json()
