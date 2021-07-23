@@ -24,7 +24,7 @@ const throwError = (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
       scope.setExtra("variables", req.variables as any)
     }
     console.log(createRequestError(req, res))
-    Sentry.captureException(resJson.errors && resJson.errors[0].message)
+    Sentry.captureException(resJson.errors && resJson.errors[0]?.message)
   })
   throw createRequestError(req, res)
 }
