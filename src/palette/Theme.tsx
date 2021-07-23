@@ -160,26 +160,5 @@ export const useTheme = () => {
   return { theme, color: color(theme), space: space(theme) }
 }
 
-export const useColor = () => useTheme().color
-export const useSpace = () => useTheme().space
-
-/** Returns a config specific to the current theme. For use in React components */
-export const useThemeConfig = <T, U>({ v2, v3 }: { v2: T; v3: U }): U | T => {
-  const { theme = { id: "v2" } } = useTheme()
-  const allowV3 = useFeatureFlag("ARAllowPaletteV3")
-  return theme.id === "v2" ? v2 : allowV3 ? v3 : v2
-}
-
 export const isThemeV2 = (theme: ThemeType): theme is ThemeV2Type => theme.id === "v2"
 export const isThemeV3 = (theme: ThemeType): theme is ThemeV3Type => theme.id === "v3"
-
-export const ClassTheme = ({
-  theme = "v2",
-  children,
-}: {
-  theme?: "v2" | "v3"
-  children: React.ReactNode | ((helpers: ReturnType<typeof useTheme>) => React.ReactNode)
-}) => {
-  const hookStuff = useTheme()
-  return <Theme theme={theme}>{typeof children === "function" ? children(hookStuff) : children}</Theme>
-}
