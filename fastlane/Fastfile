@@ -104,9 +104,9 @@ end
 date_str = DateTime.now.strftime("%Y.%m.%d.%H")
 lane :set_build_version_ios do
   system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" #{app_plist}")
-  system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" #{sticker_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" \"#{sticker_plist}\"")
   system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" #{app_plist}")
-  system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" #{sticker_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" \"#{sticker_plist}\"")
 end
 
 build_gradle = "../android/app/build.gradle"
