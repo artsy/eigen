@@ -1,4 +1,4 @@
-import { useColor } from "palette/Theme"
+import { useColor } from "palette/hooks"
 import React, { FC } from "react"
 import { G, Icon, IconProps, Path } from "./Icon"
 

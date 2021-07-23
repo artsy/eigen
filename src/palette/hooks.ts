@@ -1,5 +1,4 @@
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import React from "react"
 import { useTheme } from "./Theme"
 
 export const useColor = () => useTheme().color

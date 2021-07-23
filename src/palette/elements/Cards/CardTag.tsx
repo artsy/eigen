@@ -1,8 +1,9 @@
-import { Color, useColor } from "palette/Theme"
 import React from "react"
 import { View } from "react-native"
 import { StyleProp, ViewStyle } from "react-native"
 import { PositionProps } from "styled-system"
+import { useColor } from "../../hooks"
+import { Color } from "../../Theme"
 import { Sans } from "../Typography"
 
 export interface CardTagProps extends PositionProps {

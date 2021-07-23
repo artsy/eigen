@@ -1,4 +1,4 @@
-import { useColor } from "palette/Theme"
+import { useColor } from "palette/hooks"
 import React, { ReactNode, useState } from "react"
 import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"

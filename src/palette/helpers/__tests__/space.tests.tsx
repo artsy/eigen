@@ -2,7 +2,8 @@ import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { View } from "react-native"
-import { SpacingUnit, Theme, useSpace } from "../../Theme"
+import { useSpace } from "../../hooks"
+import { SpacingUnit, Theme } from "../../Theme"
 
 describe("space", () => {
   const SpaceView = ({ name }: { name: SpacingUnit }) => {

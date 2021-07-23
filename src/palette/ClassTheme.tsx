@@ -1,6 +1,5 @@
 import React from "react"
-import { useTheme } from "./hooks"
-import { Theme } from "./Theme"
+import { Theme, useTheme } from "./Theme"
 
 export const ClassTheme = ({
   theme = "v2",

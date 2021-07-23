@@ -2,7 +2,8 @@ import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { View } from "react-native"
-import { Color, Theme, useColor } from "../../Theme"
+import { useColor } from "../../hooks"
+import { Color, Theme } from "../../Theme"
 
 describe("color", () => {
   const ColorView = ({ name }: { name: Color }) => {

@@ -1,5 +1,5 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { useSpace } from "palette/Theme"
+import { useSpace } from "palette/hooks"
 import React from "react"
 import { Box, BoxProps } from "../Box"
 import { Spacer } from "../Spacer"

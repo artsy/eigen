@@ -1,7 +1,8 @@
 import { themeGet } from "@styled-system/theme-get"
 import React from "react"
+import { useColor } from "../../hooks"
 import { styledWrapper } from "../../platform/primitives"
-import { SansSize, useColor } from "../../Theme"
+import { SansSize } from "../../Theme"
 import { Flex, FlexProps } from "../Flex"
 import { Sans } from "../Typography"
 

@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
 import { Input } from "lib/Components/Input/Input"
-import { useColor } from "palette/Theme"
+import { useColor } from "palette/hooks"
 import React from "react"
 import {
   OnboardingCreateAccountNavigationStack,

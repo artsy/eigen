@@ -1,5 +1,5 @@
 import fonts from "lib/data/fonts"
-import { ClassTheme } from "palette/Theme"
+import { ClassTheme } from "palette"
 import React from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
