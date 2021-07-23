@@ -15,6 +15,7 @@ configure(() => {
 // To find allowed options for getStorybookUI
 const StorybookUIRoot = getStorybookUI({
   onDeviceUI: false,
+  asyncStorage: null,
 })
 
 export default StorybookUIRoot
