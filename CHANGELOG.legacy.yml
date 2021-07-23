@@ -1,3 +1,5 @@
+# We are no longer using this changelog, see this RFC: https://github.com/artsy/eigen/issues/4499
+
 upcoming:
   version: 6.10.1
   date: TBD
