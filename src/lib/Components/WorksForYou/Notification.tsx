@@ -57,7 +57,7 @@ export class Notification extends React.Component<Props> {
               <GenericGrid width={this.props.width - HORIZONTAL_PADDING * 2} artworks={artworks} />
             </View>
           </View>
-        )}{" "}
+        )}
       </ClassTheme>
     )
   }

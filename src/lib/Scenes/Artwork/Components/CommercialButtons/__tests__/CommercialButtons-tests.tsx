@@ -171,7 +171,7 @@ describe("CommercialButtons", () => {
     expect(commercialButtons.find(Button).at(1).text()).toContain("Make offer")
   })
 
-  xit("commits the Buy Now mutation", async () => {
+  it("commits the Buy Now mutation", async () => {
     const artwork = {
       ...ArtworkFixture,
       isForSale: true,
@@ -198,7 +198,7 @@ describe("CommercialButtons", () => {
     expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", { modal: true, passProps: { title: "Buy Now" } })
   })
 
-  xit("commits the Make Offer mutation", async () => {
+  it("commits the Make Offer mutation", async () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: true,
