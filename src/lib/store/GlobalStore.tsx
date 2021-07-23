@@ -183,6 +183,7 @@ export function getCurrentEmissionState() {
     userAgent,
     userID: state?.auth.userID!,
     userEmail: "user@example.com", // not used on android
+    hidesTabBar: "false", // not used on android
   }
   return data
 }

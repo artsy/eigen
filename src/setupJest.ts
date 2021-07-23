@@ -233,6 +233,7 @@ function getNativeModules(): OurNativeModules {
         deviceId: "testDevice",
         userID: "userID",
         userEmail: "user@example.com",
+        hidesTabBar: "false",
       },
       postNotificationName: jest.fn(),
       didFinishBootstrapping: jest.fn(),
