@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-community/async-storage"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { State } from "easy-peasy"
 import { isArray, isBoolean, isNull, isNumber, isPlainObject, isString, throttle } from "lodash"
 import { Middleware } from "redux"

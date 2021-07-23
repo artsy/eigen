@@ -1,4 +1,4 @@
-module.exports = function(api) {
+module.exports = function (api) {
   api.cache.forever()
   return {
     plugins: [
@@ -22,6 +22,14 @@ module.exports = function(api) {
       ["@babel/plugin-proposal-class-properties", { loose: true }],
       "relay",
       ["import-graphql"],
+      [
+        "babel-plugin-rewrite-require",
+        {
+          aliases: {
+            os: "react-native-os",
+          },
+        },
+      ],
     ],
     presets: ["module:metro-react-native-babel-preset", "@babel/preset-typescript"],
   }

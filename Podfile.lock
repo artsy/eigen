@@ -520,6 +520,8 @@ PODS:
     - React
   - react-native-safe-area-context (3.1.9):
     - React-Core
+  - react-native-slider (3.0.3):
+    - React
   - react-native-view-shot (3.1.2):
     - React
   - react-native-viewpager (4.2.2):
@@ -600,12 +602,14 @@ PODS:
     - React-Core
   - RNBootSplash (3.2.0):
     - React-Core
-  - RNCAsyncStorage (1.6.3):
-    - React
+  - RNCAsyncStorage (1.15.5):
+    - React-Core
   - RNCClipboard (1.5.1):
     - React-Core
   - RNCMaskedView (0.1.10):
     - React
+  - RNDateTimePicker (3.5.2):
+    - React-Core
   - RNDeviceInfo (8.1.2):
     - React-Core
   - RNGestureHandler (1.8.0):
@@ -624,6 +628,8 @@ PODS:
     - TOCropViewController
   - RNLocalize (2.0.1):
     - React-Core
+  - RNOS (1.2.6):
+    - React
   - RNReactNativeHapticFeedback (1.10.0):
     - React
   - RNReanimated (1.13.1):
@@ -762,6 +768,7 @@ DEPENDENCIES:
   - "react-native-mapbox-gl (from `node_modules/@react-native-mapbox-gl/maps`)"
   - "react-native-netinfo (from `node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `node_modules/react-native-safe-area-context`)
+  - "react-native-slider (from `node_modules/@react-native-community/slider`)"
   - react-native-view-shot (from `node_modules/react-native-view-shot`)
   - "react-native-viewpager (from `node_modules/@react-native-community/viewpager`)"
   - react-native-webview (from `node_modules/react-native-webview`)
@@ -780,14 +787,16 @@ DEPENDENCIES:
   - "RNAnalyticsIntegration-Appboy (from `node_modules/@segment/analytics-react-native-appboy`)"
   - "RNAppleAuthentication (from `node_modules/@invertase/react-native-apple-authentication`)"
   - RNBootSplash (from `node_modules/react-native-bootsplash`)
-  - "RNCAsyncStorage (from `node_modules/@react-native-community/async-storage`)"
+  - "RNCAsyncStorage (from `node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `node_modules/@react-native-community/clipboard`)"
   - "RNCMaskedView (from `node_modules/@react-native-community/masked-view`)"
+  - "RNDateTimePicker (from `node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `node_modules/react-native-device-info`)
   - RNGestureHandler (from `node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `node_modules/@react-native-google-signin/google-signin`)"
   - RNImageCropPicker (from `node_modules/react-native-image-crop-picker`)
   - RNLocalize (from `node_modules/react-native-localize`)
+  - RNOS (from `node_modules/react-native-os`)
   - RNReactNativeHapticFeedback (from `node_modules/react-native-haptic-feedback`)
   - RNReanimated (from `node_modules/react-native-reanimated`)
   - RNScreens (from `node_modules/react-native-screens`)
@@ -958,6 +967,8 @@ EXTERNAL SOURCES:
     :path: "node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
     :path: node_modules/react-native-safe-area-context
+  react-native-slider:
+    :path: "node_modules/@react-native-community/slider"
   react-native-view-shot:
     :path: node_modules/react-native-view-shot
   react-native-viewpager:
@@ -995,11 +1006,13 @@ EXTERNAL SOURCES:
   RNBootSplash:
     :path: node_modules/react-native-bootsplash
   RNCAsyncStorage:
-    :path: "node_modules/@react-native-community/async-storage"
+    :path: "node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
     :path: "node_modules/@react-native-community/clipboard"
   RNCMaskedView:
     :path: "node_modules/@react-native-community/masked-view"
+  RNDateTimePicker:
+    :path: "node_modules/@react-native-community/datetimepicker"
   RNDeviceInfo:
     :path: node_modules/react-native-device-info
   RNGestureHandler:
@@ -1010,6 +1023,8 @@ EXTERNAL SOURCES:
     :path: node_modules/react-native-image-crop-picker
   RNLocalize:
     :path: node_modules/react-native-localize
+  RNOS:
+    :path: node_modules/react-native-os
   RNReactNativeHapticFeedback:
     :path: node_modules/react-native-haptic-feedback
   RNReanimated:
@@ -1147,6 +1162,7 @@ SPEC CHECKSUMS:
   react-native-mapbox-gl: 28350f5f43df85fdb6b85398821a96db1fab0c76
   react-native-netinfo: a59d8426a8484f739fe3a95dd6ad5af1435db05f
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
+  react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
   react-native-view-shot: 4475fde003fe8a210053d1f98fb9e06c1d834e1c
   react-native-viewpager: ea945e2881ce9a4a8bcdc84de4ec65ff23c90f6e
   react-native-webview: 07fca3f4378bd6ea26254bf63119bfd70f4fabeb
@@ -1165,14 +1181,16 @@ SPEC CHECKSUMS:
   RNAnalyticsIntegration-Appboy: 6940f54ff28e6be80f1e3b78c996b1f0945b4113
   RNAppleAuthentication: e95bcfbd044013667f35c5ca20ae17d39500c009
   RNBootSplash: 24175aa28fe203b10c48dc34e78d946fd33c77af
-  RNCAsyncStorage: 3c304d1adfaea02ec732ac218801cb13897aa8c0
+  RNCAsyncStorage: 56a3355a10b5d660c48c6e37325ac85ebfd09885
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
+  RNDateTimePicker: 7658208086d86d09e1627b5c34ba0cf237c60140
   RNDeviceInfo: 3266783bcb6aa4b0c785d6080a407f8a5fc68326
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNGoogleSignin: 111fd4792913208f338fe3178005f7a22e490ff9
   RNImageCropPicker: 16951bc02411f50c4d197488ed6406a23dc3b5f1
   RNLocalize: 41026b7c14878f1a1b381bc79f668f1fbf841adb
+  RNOS: 6f2f9a70895bbbfbdad7196abd952e7b01d45027
   RNReactNativeHapticFeedback: 22c5ecf474428766c6b148f96f2ff6155cd7225e
   RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
