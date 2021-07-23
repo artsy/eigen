@@ -21,6 +21,7 @@ import { MyAccountFieldEditScreen } from "../MyAccount/Components/MyAccountField
 import { AddAddressButton } from "./Components/AddAddressButton"
 import { createUserAddress } from "./mutations/addNewAddress"
 import { setAsDefaultAddress } from "./mutations/setAsDefaultAddress"
+import { SavedAddressNotification } from "./SavedAddressNotification"
 
 interface FormField<Type = string> {
   value: Type | null
@@ -80,6 +81,7 @@ export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> =
   const [state, actions] = useStore()
   const [phoneNumber, setPhoneNumber] = useState(me?.phone)
   const [isDefaultAddress, setIsDefaultAddress] = useState(false)
+  const [notificationState, setNotificationState] = useState({ notificationVisible: false, action: "" })
   const { height } = useScreenDimensions()
   const offSetTop = 0.75
 
@@ -102,6 +104,10 @@ export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> =
         phoneNumber,
       })
 
+      if (!creatingResponse.createUserAddress?.userAddressOrErrors.errors) {
+        await setNotificationState({ notificationVisible: true, action: "Added" })
+      }
+
       if (isDefaultAddress) {
         await setAsDefaultAddress(creatingResponse.createUserAddress?.userAddressOrErrors.internalID!)
       }
@@ -113,42 +119,50 @@ export const SavedAddressesNewForm: React.FC<{ me: SavedAddressesNewForm_me }> =
   }
 
   return (
-    <MyAccountFieldEditScreen ref={screenRef} canSave={true} isSaveButtonVisible={false} title="Add New Address">
-      <Stack spacing={2}>
-        <Input title="Full name" placeholder="Add full name" onChangeText={actions.fields.name.setValue} />
-        <CountrySelect onSelectValue={actions.fields.country.setValue} value={state.fields.country.value} />
-        <Input title="Postal Code" placeholder="Add postal code" onChangeText={actions.fields.postalCode.setValue} />
-        <Input title="Address line 1" placeholder="Add address" onChangeText={actions.fields.addressLine1.setValue} />
-        <Input
-          title="Address line 2 (optional)"
-          placeholder="Add address line 2"
-          onChangeText={actions.fields.addressLine2.setValue}
-        />
-        <Input title="City" placeholder="Add city" onChangeText={actions.fields.city.setValue} />
-        <Input
-          title="State, province, or region"
-          placeholder="Add state, province, or region"
-          onChangeText={actions.fields.region.setValue}
-        />
-        <PhoneInput
-          title="Phone number"
-          value={phoneNumber ?? ""}
-          maxModalHeight={height * offSetTop}
-          onChangeText={setPhoneNumber}
-        />
-        <Checkbox
-          onPress={() => {
-            setIsDefaultAddress(!isDefaultAddress)
-          }}
-          checked={isDefaultAddress}
-          mb={4}
-        >
-          <Text>Set as default</Text>
-        </Checkbox>
+    <>
+      <SavedAddressNotification
+        setNotificationState={(modalState) => setNotificationState(modalState)}
+        showNotification={notificationState.notificationVisible}
+        notificationAction={notificationState.action}
+        duration={6000}
+      />
+      <MyAccountFieldEditScreen ref={screenRef} canSave={true} isSaveButtonVisible={false} title="Add New Address">
+        <Stack spacing={2}>
+          <Input title="Full name" placeholder="Add full name" onChangeText={actions.fields.name.setValue} />
+          <CountrySelect onSelectValue={actions.fields.country.setValue} value={state.fields.country.value} />
+          <Input title="Postal Code" placeholder="Add postal code" onChangeText={actions.fields.postalCode.setValue} />
+          <Input title="Address line 1" placeholder="Add address" onChangeText={actions.fields.addressLine1.setValue} />
+          <Input
+            title="Address line 2 (optional)"
+            placeholder="Add address line 2"
+            onChangeText={actions.fields.addressLine2.setValue}
+          />
+          <Input title="City" placeholder="Add city" onChangeText={actions.fields.city.setValue} />
+          <Input
+            title="State, province, or region"
+            placeholder="Add state, province, or region"
+            onChangeText={actions.fields.region.setValue}
+          />
+          <PhoneInput
+            title="Phone number"
+            value={phoneNumber ?? ""}
+            maxModalHeight={height * offSetTop}
+            onChangeText={setPhoneNumber}
+          />
+          <Checkbox
+            onPress={() => {
+              setIsDefaultAddress(!isDefaultAddress)
+            }}
+            checked={isDefaultAddress}
+            mb={4}
+          >
+            <Text>Set as default</Text>
+          </Checkbox>
 
-        <AddAddressButton handleOnPress={submitAddAddress} title="Add Address" disabled={!state.allPresent} />
-      </Stack>
-    </MyAccountFieldEditScreen>
+          <AddAddressButton handleOnPress={submitAddAddress} title="Add Address" disabled={!state.allPresent} />
+        </Stack>
+      </MyAccountFieldEditScreen>
+    </>
   )
 }
 

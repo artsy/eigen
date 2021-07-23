@@ -4,6 +4,7 @@ import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { SavedAddressNotification } from "lib/Scenes/SavedAddresses/SavedAddressNotification"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -16,7 +17,6 @@ import { graphql } from "relay-runtime"
 import styled from "styled-components/native"
 import { AddAddressButton } from "./Components/AddAddressButton"
 import { deleteSavedAddress } from "./mutations/deleteSavedAddress"
-
 interface CardProps {
   isDefault: boolean
 }
@@ -32,6 +32,7 @@ const NUM_ADDRESSES_TO_FETCH = 10
 const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const addresses = extractNodes(me.addressConnection)
+  const [notificationState, setNotificationState] = useState({ notificationVisible: false, action: "" })
 
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
@@ -50,13 +51,22 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
   const onPressDeleteAddress = (addressId: string) => {
     deleteSavedAddress(
       addressId,
-      () => relay.refetch({}),
+      () => {
+        relay.refetch({})
+        setNotificationState({ notificationVisible: true, action: "Deleted" })
+      },
       (message: string) => captureMessage(message)
     )
   }
 
   return (
     <PageWithSimpleHeader title="Saved Addresses">
+      <SavedAddressNotification
+        setNotificationState={(modalState) => setNotificationState(modalState)}
+        showNotification={notificationState.notificationVisible}
+        notificationAction={notificationState.action}
+        duration={6000}
+      />
       <FlatList
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
         data={addresses.sort((a, b) => Number(b?.isDefault) - Number(a?.isDefault))}
