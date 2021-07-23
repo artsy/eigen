@@ -7,6 +7,8 @@ declare module "styled-components/native" {
     DefaultTheme,
     isStyledComponent,
     ThemeConsumer,
+    // @ts-ignore
+    ThemeContext,
     ThemeProps,
     ThemeProvider,
     withTheme,
