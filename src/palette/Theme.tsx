@@ -29,6 +29,8 @@ const {
   ...eigenUsefulTHEME_V3
 } = THEME_V3
 
+// this function is converting the space values that come from palette-tokens
+// from a string `"120px"` to a number `120`.
 const fixSpaceUnitsV2 = (
   units: typeof THEME_V2.space
 ): {
@@ -56,6 +58,9 @@ const fixSpaceUnitsV2 = (
   return fixed as any
 }
 
+// this function is converting the space values that come from palette-tokens
+// from a string `"120px"` to a number `120`, and the key values
+// from a number `0.5` to a string `"0.5"`.
 const fixSpaceUnitsV3 = (
   units: typeof spaceNumbers
 ): {

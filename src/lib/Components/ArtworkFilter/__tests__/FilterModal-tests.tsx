@@ -159,22 +159,20 @@ afterEach(() => {
 const MockFilterModalNavigator = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
   return (
     <GlobalStoreProvider>
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkFiltersStoreProvider initialData={initialData}>
-            <ArtworkFilterNavigator
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              collection={CollectionFixture}
-              exitModal={exitModalMock}
-              closeModal={closeModalMock}
-              mode={FilterModalMode.ArtistArtworks}
-              id="abc123"
-              slug="some-artist"
-              isFilterArtworksModalVisible
-            />
-          </ArtworkFiltersStoreProvider>
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <ArtworkFiltersStoreProvider initialData={initialData}>
+          <ArtworkFilterNavigator
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            collection={CollectionFixture}
+            exitModal={exitModalMock}
+            closeModal={closeModalMock}
+            mode={FilterModalMode.ArtistArtworks}
+            id="abc123"
+            slug="some-artist"
+            isFilterArtworksModalVisible
+          />
+        </ArtworkFiltersStoreProvider>
+      </Theme>
     </GlobalStoreProvider>
   )
 }

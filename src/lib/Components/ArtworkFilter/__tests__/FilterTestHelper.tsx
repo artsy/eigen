@@ -32,13 +32,11 @@ export const getEssentialProps = (params: {} = {}) =>
 export const MockFilterScreen = ({ initialState }: { initialState?: ArtworkFiltersState }) => {
   return (
     <GlobalStoreProvider>
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkFiltersStoreProvider initialData={initialState}>
-            <ArtworkFilterOptionsScreen {...getEssentialProps()} />
-          </ArtworkFiltersStoreProvider>
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <ArtworkFiltersStoreProvider initialData={initialState}>
+          <ArtworkFilterOptionsScreen {...getEssentialProps()} />
+        </ArtworkFiltersStoreProvider>
+      </Theme>
     </GlobalStoreProvider>
   )
 }
