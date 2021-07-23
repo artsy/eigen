@@ -15751,6 +15751,11 @@ prepend-http@^1.0.1:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
   integrity sha1-1PRWKwzjaW5BrFLQ4ALlemNdxtw=
 
+prettier@^2.0.5:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.3.2.tgz#ef280a05ec253712e486233db5c6f23441e7342d"
+  integrity sha512-lnJzDfJ66zkMy58OL5/NY5zp70S7Nz6KqcKkXYzn2tMVrNxvbqaBpg7H3qHaLxCJ5lNMsGuM8+ohS7cZrthdLQ==
+
 prettier@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.2.0.tgz#8a03c7777883b29b37fb2c4348c66a78e980418b"
@@ -16563,6 +16568,17 @@ react-native-share@5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-5.1.0.tgz#6431f0aa6952e13fc74afbc756c2b37f06cb7feb"
   integrity sha512-QGMWOPlwboAGd/5uUh2l0jXIDhZ2q8J4CIa063NDE7ihsZRQlF/w6kd90i3bi6GF6aedvhynqZPmezwqjiyU7g==
+
+react-native-storybook-loader@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-storybook-loader/-/react-native-storybook-loader-2.0.4.tgz#37bf37193e69b42a0b2aa0daeed4de8dbfeeae28"
+  integrity sha512-MmBdO7ugBkHEZa4F1qXFgjB7ejURmKGTZ/3o6zXPgUpaoMdh8tT5LLliJH9uOFzh7oY13TfTMZ9HyCa3E/dqLg==
+  dependencies:
+    colors "^1.1.2"
+    find-up "^4.1.0"
+    glob "^7.1.1"
+    prettier "^2.0.5"
+    yargs "^15.4.1"
 
 react-native-svg@9.13.3:
   version "9.13.3"
@@ -20581,7 +20597,7 @@ yargs@^14.2.0:
     y18n "^4.0.0"
     yargs-parser "^15.0.0"
 
-yargs@^15.1.0:
+yargs@^15.1.0, yargs@^15.4.1:
   version "15.4.1"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-15.4.1.tgz#0d87a16de01aee9d8bec2bfbf74f67851730f4f8"
   integrity sha512-aePbxDmcYW++PaqBsJ+HYUFwCdv4LVvdnhBy78E57PIor8/OVvhMrADFFEDh8DHDFRv/O9i3lPhsENjO7QX0+A==
