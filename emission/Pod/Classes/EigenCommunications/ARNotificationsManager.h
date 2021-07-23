@@ -11,6 +11,7 @@
 + (NSString *)userEmail;
 + (NSString *)userAgent;
 + (NSString *)deviceId;
++ (NSString *)hidesTabBar;
 @end
 
 // these state values are sent to obj-c from react

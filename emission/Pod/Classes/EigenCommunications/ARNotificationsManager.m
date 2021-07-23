@@ -20,6 +20,7 @@
 
 + (NSString *)env { return @"env"; }
 + (NSString *)deviceId { return @"deviceId"; }
++ (NSString *)hidesTabBar { return @"hidesTabBar"; }
 @end
 
 @implementation ARReactStateKey

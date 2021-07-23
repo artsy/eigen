@@ -236,6 +236,7 @@ export interface ViewOptions {
   hasOwnModalCloseButton?: boolean
   alwaysPresentModally?: boolean
   hidesBackButton?: boolean
+  hidesTabBar?: boolean
   fullBleed?: boolean
   // If this module is the root view of a particular tab, name it here
   isRootViewForTabName?: BottomTabType
@@ -272,7 +273,7 @@ export type AppModule = keyof typeof modules
 export const modules = defineModules({
   Admin: nativeModule({ alwaysPresentModally: true }),
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
-  About: reactModule(About),
+  About: reactModule(About, { hidesTabBar: true }),
   Articles: reactModule(ArticlesQueryRenderer),
   Artist: reactModule(ArtistQueryRenderer),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),

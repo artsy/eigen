@@ -25,6 +25,7 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <MultiDelegate/AIMultiDelegate.h>
+#import <Emission/AREmission.h>
 #import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARComponentViewController.h>
 
@@ -409,6 +410,8 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
 - (IBAction)back:(id)sender
 {
     if (self.isAnimatingTransition) return;
+
+    [[AREmission sharedInstance] updateState:@{[ARStateKey hidesTabBar]: @"false"}];
 
     UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;
     if (navigationController.viewControllers.count > 1) {

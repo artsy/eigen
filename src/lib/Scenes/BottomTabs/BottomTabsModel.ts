@@ -14,12 +14,14 @@ export interface BottomTabsModel {
     unreadConversationCount: number
     tabProps: Partial<{ [k in BottomTabType]: object }>
     selectedTab: BottomTabType
+    hideTabBar: boolean
   }
   unreadConversationCountChanged: Action<BottomTabsModel, number>
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
 
   switchTab: Action<BottomTabsModel, BottomTabType>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
+  setHideTabBar: Action<BottomTabsModel, boolean>
 }
 
 export const getBottomTabsModel = (): BottomTabsModel => ({
@@ -27,6 +29,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     unreadConversationCount: 0,
     tabProps: {},
     selectedTab: "home",
+    hideTabBar: false,
   },
   unreadConversationCountChanged: action((state, unreadConversationCount) => {
     state.sessionState.unreadConversationCount = unreadConversationCount
@@ -66,5 +69,8 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   switchTab: action((state, tabType) => {
     state.sessionState.selectedTab = tabType
     saveDevNavigationStateSelectedTab(tabType)
+  }),
+  setHideTabBar: action((state, value) => {
+    state.sessionState.hideTabBar = value
   }),
 })

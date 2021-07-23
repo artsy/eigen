@@ -40,6 +40,7 @@ export interface NativeState {
   onboardingState: "none" | "incomplete" | "complete"
   userAgent: string
   deviceId: string
+  hidesTabBar: "true" | "false"
 }
 
 export interface NativeModel {
@@ -73,8 +74,8 @@ listenToNativeEvents((event: NativeEvent) => {
       return
     case "STATE_CHANGED":
       const newOnboardingFlow = unsafe_getFeatureFlag("AREnableNewOnboardingFlow")
+      const prevState = getCurrentEmissionState()
       if (!newOnboardingFlow) {
-        const prevState = getCurrentEmissionState()
         const onboardingChanged =
           prevState.onboardingState !== "complete" && event.payload.onboardingState === "complete"
         const userIdChanged = !prevState.userID && event.payload.userID
@@ -89,8 +90,13 @@ listenToNativeEvents((event: NativeEvent) => {
       }
       GlobalStore.actions.native.setLocalState(event.payload)
       if (!newOnboardingFlow && event.payload.userEmail !== null) {
-        GlobalStore.actions.auth.setState({ userEmail: event.payload.userEmail })
+        const userEmailChanged = prevState.userEmail !== event.payload.userEmail
+        if (userEmailChanged) {
+          GlobalStore.actions.auth.setState({ userEmail: event.payload.userEmail })
+        }
       }
+
+      GlobalStore.actions.bottomTabs.setHideTabBar(event.payload.hidesTabBar === "true")
       return
     case "NOTIFICATION_RECEIVED":
       GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()

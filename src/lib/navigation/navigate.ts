@@ -40,6 +40,7 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
 
   const module = modules[result.module]
   const presentModally = options.modal ?? module.options.alwaysPresentModally ?? false
+  const hidesTabBar = module.options.hidesTabBar ?? false
   const { replace = false } = options
 
   const screenDescriptor: ViewDescriptor = {
@@ -65,6 +66,7 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
     if (module.options.onlyShowInTabName) {
       GlobalStore.actions.bottomTabs.switchTab(module.options.onlyShowInTabName)
     }
+    GlobalStore.actions.bottomTabs.setHideTabBar(hidesTabBar)
 
     LegacyNativeModules.ARScreenPresenterModule.pushView(
       module.options.onlyShowInTabName ?? selectedTab,
@@ -94,11 +96,13 @@ export function dismissModal() {
 }
 
 export function goBack() {
+  GlobalStore.actions.bottomTabs.setHideTabBar(false)
   LegacyNativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
   navigationEvents.emit("goBack")
 }
 
 export function popParentViewController() {
+  GlobalStore.actions.bottomTabs.setHideTabBar(false)
   LegacyNativeModules.ARScreenPresenterModule.popStack(unsafe__getSelectedTab())
 }
 

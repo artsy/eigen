@@ -1,3 +1,4 @@
+import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { ChevronIcon, CloseIcon } from "palette"
 import React, { useEffect, useRef } from "react"
@@ -36,7 +37,10 @@ export const BackButton: React.FC<{ show?: boolean; showCloseIcon?: boolean; onP
       }}
     >
       <TouchableOpacity
-        onPress={onPress}
+        onPress={() => {
+          GlobalStore.actions.bottomTabs.setHideTabBar(false)
+          onPress()
+        }}
         style={{ width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}
       >
         {showCloseIcon ? <CloseIcon fill="black100" width={26} height={26} /> : <ChevronIcon direction="left" />}

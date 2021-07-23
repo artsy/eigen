@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { AppModule } from "lib/AppRegistry"
 import { NativeViewController } from "lib/Components/NativeViewController"
 import { NavStack } from "lib/navigation/NavStack"
-import { useSelectedTab } from "lib/store/GlobalStore"
+import { GlobalStore, useSelectedTab } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useEffect, useRef } from "react"
 import { Animated, Platform, View } from "react-native"
@@ -22,7 +22,10 @@ const TabContent = ({ route }: { route: { params: { tabName: BottomTabType; root
 
 export const BottomTabsNavigator = () => {
   const selectedTab = useSelectedTab()
+  const hide = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.hideTabBar)
+
   const { bottom } = useScreenDimensions().safeAreaInsets
+
   if (Platform.OS === "ios") {
     return (
       <View style={{ flex: 1, paddingBottom: bottom }}>
@@ -36,13 +39,13 @@ export const BottomTabsNavigator = () => {
           ]}
           activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(selectedTab)}
         />
-        <BottomTabs />
+        {hide ? null : <BottomTabs />}
       </View>
     )
   }
 
   return (
-    <Tab.Navigator tabBar={() => <BottomTabs />} backBehavior="firstRoute">
+    <Tab.Navigator tabBar={() => (hide ? null : <BottomTabs />)} backBehavior="firstRoute">
       <Tab.Screen name="home" component={TabContent} initialParams={{ tabName: "home", rootModuleName: "Home" }} />
       <Tab.Screen
         name="search"
