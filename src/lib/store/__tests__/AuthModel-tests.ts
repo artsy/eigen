@@ -210,6 +210,7 @@ describe("AuthModel", () => {
         email: "user@example.com",
         password: "validpassword",
         name: "full name",
+        agreedToReceiveEmails: false,
       })
 
       expect(result).toBe(true)
@@ -225,6 +226,7 @@ describe("AuthModel", () => {
         email: "user@example.com",
         password: "validpassword",
         name: "full name",
+        agreedToReceiveEmails: false,
       })
       expect(result).toBe(false)
     })

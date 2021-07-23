@@ -72,6 +72,8 @@ export interface AuthModel {
         oauthProvider?: never
         idToken?: never
         appleUID?: never
+
+        agreedToReceiveEmails: boolean
       }
     | {
         email: string
@@ -82,6 +84,8 @@ export interface AuthModel {
         password?: never
         idToken?: never
         appleUID?: never
+
+        agreedToReceiveEmails: boolean
       }
     | {
         email: string
@@ -92,6 +96,8 @@ export interface AuthModel {
 
         password?: never
         accessToken?: never
+
+        agreedToReceiveEmails: boolean
       },
     {},
     GlobalStoreModel,
@@ -295,62 +301,67 @@ export const getAuthModel = (): AuthModel => ({
 
     return false
   }),
-  signUp: thunk(async (actions, { email, password, name, accessToken, oauthProvider, idToken, appleUID }) => {
-    let body
-    switch (oauthProvider) {
-      case "facebook":
-      case "google":
-        body = {
-          provider: oauthProvider,
-          oauth_token: accessToken,
-          email,
-          name,
-          agreed_to_receive_emails: true,
-          accepted_terms_of_service: true,
-        }
-        break
-      case "apple":
-        body = {
-          provider: oauthProvider,
-          apple_uid: appleUID,
-          id_token: idToken,
-          email,
-          name,
-          agreed_to_receive_emails: true,
-          accepted_terms_of_service: true,
-        }
-        break
-      default:
-        body = {
-          email,
-          password,
-          name,
-          agreed_to_receive_emails: true,
-          accepted_terms_of_service: true,
-        }
-        break
-    }
+  signUp: thunk(
+    async (
+      actions,
+      { email, password, name, accessToken, oauthProvider, idToken, appleUID, agreedToReceiveEmails }
+    ) => {
+      let body
+      switch (oauthProvider) {
+        case "facebook":
+        case "google":
+          body = {
+            provider: oauthProvider,
+            oauth_token: accessToken,
+            email,
+            name,
+            agreed_to_receive_emails: agreedToReceiveEmails,
+            accepted_terms_of_service: true,
+          }
+          break
+        case "apple":
+          body = {
+            provider: oauthProvider,
+            apple_uid: appleUID,
+            id_token: idToken,
+            email,
+            name,
+            agreed_to_receive_emails: agreedToReceiveEmails,
+            accepted_terms_of_service: true,
+          }
+          break
+        default:
+          body = {
+            email,
+            password,
+            name,
+            agreed_to_receive_emails: agreedToReceiveEmails,
+            accepted_terms_of_service: true,
+          }
+          break
+      }
 
-    const result = await actions.gravityUnauthenticatedRequest({
-      path: `/api/v1/user`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body,
-    })
-
-    // The user account has been successfully created
-    if (result.status === 201) {
-      // @ts-ignore
-      await actions.signIn({ email, password, accessToken, oauthProvider, idToken, appleUID })
-      actions.setState({
-        onboardingState: "incomplete",
+      const result = await actions.gravityUnauthenticatedRequest({
+        path: `/api/v1/user`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body,
       })
-      return true
+
+      // The user account has been successfully created
+      if (result.status === 201) {
+        // @ts-ignore
+        await actions.signIn({ email, password, accessToken, oauthProvider, idToken, appleUID })
+        actions.setState({
+          onboardingState: "incomplete",
+        })
+        return true
+      }
+      return false
     }
-    return false
-  }),
+  ),
   authFacebook: thunk(async (actions, { signInOrUp }) => {
     return await new Promise<true>(async (resolve, reject) => {
       const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions(["public_profile", "email"])
@@ -383,6 +394,7 @@ export const getAuthModel = (): AuthModel => ({
             name: facebookInfo.name,
             accessToken: accessToken.accessToken,
             oauthProvider: "facebook",
+            agreedToReceiveEmails: false,
           })
 
           resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
@@ -462,6 +474,7 @@ export const getAuthModel = (): AuthModel => ({
             name: userInfo.user.name,
             accessToken,
             oauthProvider: "google",
+            agreedToReceiveEmails: false,
           }))
 
         resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
@@ -538,6 +551,7 @@ export const getAuthModel = (): AuthModel => ({
             appleUID,
             idToken,
             oauthProvider: "apple",
+            agreedToReceiveEmails: false,
           }))
 
         resultGravitySignUp ? resolve(true) : (signInOrUp = "signIn")
