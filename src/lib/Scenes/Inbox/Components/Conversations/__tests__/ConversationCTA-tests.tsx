@@ -91,7 +91,19 @@ describe("ConversationCTA", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsInquiryCheckout: true })
     })
     const artworkItem = {
-      items: [{ item: { __typename: "Artwork", isOfferableFromInquiry: true } }],
+      items: [
+        {
+          item: {
+            __typename: "Artwork",
+            //  isOfferableFromInquiry: true
+          },
+          liveArtwork: {
+            isOfferableFromInquiry: true,
+            __typename: "Artwork",
+            internalID: "123",
+          },
+        },
+      ],
     }
     const getWrapperWithOrders = (...orders: any[]) => {
       return getWrapper({
