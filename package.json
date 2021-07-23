@@ -53,6 +53,7 @@
     "type-check": "tsc",
     "storybook-ios": "npx artsy open -i storybook",
     "storybook-android": "npx artsy open -a storybook",
+    "prestorybook-server": "rnstl",
     "storybook-server": "start-storybook -p 7007",
     "build-storybook": "build-storybook",
     "start-storybook": "STORYBOOK=1 yarn start",
@@ -170,8 +171,6 @@
     "@storybook/addon-actions": "^5.3",
     "@storybook/addon-knobs": "^5.3",
     "@storybook/addon-links": "^5.3",
-    "@storybook/addon-ondevice-actions": "^5.3.23",
-    "@storybook/addon-ondevice-knobs": "^5.3.25",
     "@storybook/react-native": "^5.3.25",
     "@storybook/react-native-server": "^5.3.23",
     "@types/argparse": "^2.0.8",
@@ -240,6 +239,7 @@
     "puppeteer": "^7.1.0",
     "react-dom": "16.8.3",
     "react-native-flipper": "^0.94.1",
+    "react-native-storybook-loader": "^2.0.4",
     "react-relay-network-modern": "^6.0.0",
     "react-test-renderer": "16.13.1",
     "recursive-readdir-sync": "1.0.6",
@@ -265,6 +265,13 @@
     "vscode-apollo-relay": "1.5.0",
     "yaml": "1.9.2",
     "yaml-lint": "^1.2.4"
+  },
+  "config": {
+    "react-native-storybook-loader": {
+      "searchDir": ["./src"],
+      "pattern": "**/*.stories.tsx",
+      "outputFile": "./src/storybook/storyLoader.js"
+    }
   },
   "lint-staged": {
     "*.@(ts|tsx)": [

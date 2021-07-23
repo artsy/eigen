@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react-native"
 import { Button, ButtonSize, ButtonVariant } from "palette"
 import React from "react"
 import { Text } from "react-native"
-import { CenterView, List } from "./storybookHelper"
+import { CenterView, List } from "storybook/helpers"
 
 const sizes: ButtonSize[] = ["small", "medium", "large"]
 
