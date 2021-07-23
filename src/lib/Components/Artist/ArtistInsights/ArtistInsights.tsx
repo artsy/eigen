@@ -58,11 +58,12 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
 
   const scrollTo = useCallback(
     (yCoordinate: number) => {
-      // if we scroll up less than SCROLL_UP_TO_SHOW_THRESHOLD, the header won't expand and we
-      // need to scroll up more
-      const headerOffset = contentYScrollOffset.current <= SCROLL_UP_TO_SHOW_THRESHOLD ? ARTIST_HEADER_HEIGHT : 0
+      let offset = auctionResultsYCoordinate.current + yCoordinate
 
-      const offset = headerOffset + auctionResultsYCoordinate.current + yCoordinate
+      // if we scroll up less than SCROLL_UP_TO_SHOW_THRESHOLD the header won't expand and we need another offset
+      if (contentYScrollOffset.current - offset <= SCROLL_UP_TO_SHOW_THRESHOLD) {
+        offset += ARTIST_HEADER_HEIGHT
+      }
       flatListRef.current?.getNode().scrollToOffset({ animated: true, offset })
     },
     [auctionResultsYCoordinate, contentYScrollOffset]
