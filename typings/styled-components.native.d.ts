@@ -7,7 +7,6 @@ declare module "styled-components/native" {
     DefaultTheme,
     isStyledComponent,
     ThemeConsumer,
-    ThemeContext,
     ThemeProps,
     ThemeProvider,
     withTheme,
