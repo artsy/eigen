@@ -3,7 +3,6 @@ import { danger, fail, markdown, warn } from "danger"
 // so the node API gives us errors:
 import * as fs from "fs"
 import { pickBy } from "lodash"
-import * as yaml from "yaml"
 import { ParseResult } from "./scripts/changelog/changelog-types"
 import { changelogTemplateSections } from "./scripts/changelog/generateChangelogSectionTemplate"
 import { parsePRDescription } from "./scripts/changelog/parsePRDescription"
@@ -89,32 +88,6 @@ const verifyRemainingDevWork = () => {
   }
 }
 
-// Ensure the CHANGELOG is set up like we need
-const validateChangelogYMLFile = async () => {
-  try {
-    // Ensure it is valid yaml
-    const changelogYML = fs.readFileSync("CHANGELOG.yml").toString()
-    const loadedDictionary = yaml.parse(changelogYML)
-
-    // So that we don't accidentally copy & paste oour upcoming section wrong
-    const upcoming = loadedDictionary?.upcoming
-    if (upcoming) {
-      if (Array.isArray(upcoming)) {
-        fail("Upcoming an array in the CHANGELOG")
-      }
-
-      // Deployments rely on this to send info to reviewers
-      else if (typeof upcoming === "object") {
-        if (!upcoming.user_facing) {
-          fail("There must be a `user_facing` section in the upcoming section of the CHANGELOG")
-        }
-      }
-    }
-  } catch (e) {
-    fail("The CHANGELOG is not valid YML:\n" + e.stack)
-  }
-}
-
 // Require changelog on Eigen PRs to be valid
 // See Eigen RFC: https://github.com/artsy/eigen/issues/4499
 export const validatePRChangelog = () => {
@@ -162,6 +135,5 @@ export const validatePRChangelog = () => {
   preventUsingEnzyme()
   preventUsingRenderRelayTree()
   verifyRemainingDevWork()
-  await validateChangelogYMLFile()
   validatePRChangelog()
 })()
