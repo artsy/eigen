@@ -60,6 +60,10 @@ export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRend
     ...input,
   }
 
+  if (Object.keys(input).length === 0) {
+    return <SavedSearchButton loading={false} attributes={input} />
+  }
+
   return (
     <QueryRenderer<SavedSearchButtonQuery>
       environment={defaultEnvironment}
