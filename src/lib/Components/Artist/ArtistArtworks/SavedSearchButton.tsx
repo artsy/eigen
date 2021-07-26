@@ -20,7 +20,7 @@ interface SavedSearchButtonQueryRendererProps {
 }
 
 export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({ me, loading, attributes }) => {
-  const isSavedSearch = !!me?.savedSearch?.internalID ?? false
+  const isSavedSearch = !!me?.savedSearch?.internalID
   const emptyAttributes = Object.keys(attributes).length === 0
 
   const handlePress = () => {
