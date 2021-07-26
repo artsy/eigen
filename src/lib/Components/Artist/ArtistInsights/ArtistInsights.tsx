@@ -57,14 +57,13 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
   }
 
   const scrollToTop = useCallback(() => {
-    let offset = auctionResultsYCoordinate.current
+    let auctionResultYOffset = auctionResultsYCoordinate.current
 
     // if we scroll up less than SCROLL_UP_TO_SHOW_THRESHOLD the header won't expand and we need another offset
-    console.log(contentYScrollOffset.current, offset)
-    if (contentYScrollOffset.current - 2 * offset <= SCROLL_UP_TO_SHOW_THRESHOLD) {
-      offset += ARTIST_HEADER_HEIGHT
+    if (contentYScrollOffset.current - 2 * auctionResultYOffset <= SCROLL_UP_TO_SHOW_THRESHOLD) {
+      auctionResultYOffset += ARTIST_HEADER_HEIGHT
     }
-    flatListRef.current?.getNode().scrollToOffset({ animated: true, offset })
+    flatListRef.current?.getNode().scrollToOffset({ animated: true, offset: auctionResultYOffset })
   }, [auctionResultsYCoordinate, contentYScrollOffset])
 
   // Show or hide floating filter button depending on the scroll position
