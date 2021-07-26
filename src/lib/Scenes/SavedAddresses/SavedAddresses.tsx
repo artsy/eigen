@@ -53,8 +53,14 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
       navigationEvents.removeListener("goBack", util.onRefresh)
     }
   }, [])
-
-  const onPressEditAddress = () => null
+  
+  const onPressEditAddress = (addressId: string) =>
+    navigate("/my-profile/saved-addresses/edit-address", {
+      modal: true,
+      passProps: {
+        addressId,
+      },
+    })
 
   const onPressDeleteAddress = (addressId: string) => {
     deleteSavedAddress(
@@ -97,7 +103,10 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
                     {!!item?.isDefault && <Text variant="small">Default Address</Text>}
                   </Flex>
                   <Flex flex={1} flexDirection="row" justifyContent="space-between">
-                    <Touchable onPress={onPressEditAddress}>
+                    <Touchable
+                      testID={`EditAddress-${item.internalID}`}
+                      onPress={() => onPressEditAddress(item.internalID)}
+                    >
                       <Text variant="text" color="black100" style={{ textDecorationLine: "underline" }}>
                         Edit
                       </Text>
@@ -119,7 +128,9 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
           addresses.length ? (
             <Box mx={2} mb={2}>
               <AddAddressButton
-                handleOnPress={() => navigate("/my-profile/saved-addresses/new-address")}
+                block={false}
+                variant="secondaryOutline"
+                handleOnPress={() => navigate("/my-profile/saved-addresses/new-address", { modal: true })}
                 title="Add New Address"
               />
             </Box>
@@ -136,7 +147,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
               Please add an address for a faster checkout experience in the future.
             </Text>
             <AddAddressButton
-              handleOnPress={() => navigate("/my-profile/saved-addresses/new-address")}
+              handleOnPress={() => navigate("/my-profile/saved-addresses/new-address", { modal: true })}
               title="Add New Address"
             />
           </Flex>
@@ -175,6 +186,7 @@ export const SavedAddressesContainer = createRefetchContainer(
               addressLine1
               addressLine2
               addressLine3
+              country
               city
               region
               postalCode

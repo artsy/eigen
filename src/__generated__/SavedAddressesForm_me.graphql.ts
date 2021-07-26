@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SavedAddressesNewForm_me = {
+export type SavedAddressesForm_me = {
     readonly id: string;
     readonly phone: string | null;
     readonly addressConnection: {
@@ -15,18 +15,20 @@ export type SavedAddressesNewForm_me = {
                 readonly addressLine1: string;
                 readonly addressLine2: string | null;
                 readonly addressLine3: string | null;
+                readonly country: string;
                 readonly city: string;
                 readonly region: string | null;
                 readonly postalCode: string | null;
+                readonly isDefault: boolean;
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "SavedAddressesNewForm_me";
+    readonly " $refType": "SavedAddressesForm_me";
 };
-export type SavedAddressesNewForm_me$data = SavedAddressesNewForm_me;
-export type SavedAddressesNewForm_me$key = {
-    readonly " $data"?: SavedAddressesNewForm_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"SavedAddressesNewForm_me">;
+export type SavedAddressesForm_me$data = SavedAddressesForm_me;
+export type SavedAddressesForm_me$key = {
+    readonly " $data"?: SavedAddressesForm_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"SavedAddressesForm_me">;
 };
 
 
@@ -35,7 +37,7 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "SavedAddressesNewForm_me",
+  "name": "SavedAddressesForm_me",
   "selections": [
     {
       "alias": null,
@@ -120,6 +122,13 @@ const node: ReaderFragment = {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
+                  "name": "country",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "city",
                   "storageKey": null
                 },
@@ -136,6 +145,13 @@ const node: ReaderFragment = {
                   "kind": "ScalarField",
                   "name": "postalCode",
                   "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "isDefault",
+                  "storageKey": null
                 }
               ],
               "storageKey": null
@@ -150,5 +166,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '1ddde8ced047ecf9c95e1251999931b6';
+(node as any).hash = 'b8dc20f08a969820d3a2cd8dc6b674ba';
 export default node;

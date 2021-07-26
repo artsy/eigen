@@ -1,32 +1,32 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash acd1bb4ebcb09f68b1593524344aa10a */
+/* @relayHash 4882c50bcdba5ef0707c728f8c12da46 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SavedAddressesNewFormQueryVariables = {};
-export type SavedAddressesNewFormQueryResponse = {
+export type SavedAddressesFormQueryVariables = {};
+export type SavedAddressesFormQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"SavedAddressesNewForm_me">;
+        readonly " $fragmentRefs": FragmentRefs<"SavedAddressesForm_me">;
     } | null;
 };
-export type SavedAddressesNewFormQuery = {
-    readonly response: SavedAddressesNewFormQueryResponse;
-    readonly variables: SavedAddressesNewFormQueryVariables;
+export type SavedAddressesFormQuery = {
+    readonly response: SavedAddressesFormQueryResponse;
+    readonly variables: SavedAddressesFormQueryVariables;
 };
 
 
 
 /*
-query SavedAddressesNewFormQuery {
+query SavedAddressesFormQuery {
   me {
-    ...SavedAddressesNewForm_me
+    ...SavedAddressesForm_me
     id
   }
 }
 
-fragment SavedAddressesNewForm_me on Me {
+fragment SavedAddressesForm_me on Me {
   id
   phone
   addressConnection(first: 3) {
@@ -37,9 +37,11 @@ fragment SavedAddressesNewForm_me on Me {
         addressLine1
         addressLine2
         addressLine3
+        country
         city
         region
         postalCode
+        isDefault
         id
       }
     }
@@ -60,7 +62,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "SavedAddressesNewFormQuery",
+    "name": "SavedAddressesFormQuery",
     "selections": [
       {
         "alias": null,
@@ -73,7 +75,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "SavedAddressesNewForm_me"
+            "name": "SavedAddressesForm_me"
           }
         ],
         "storageKey": null
@@ -86,7 +88,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "SavedAddressesNewFormQuery",
+    "name": "SavedAddressesFormQuery",
     "selections": [
       {
         "alias": null,
@@ -173,6 +175,13 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "country",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "city",
                         "storageKey": null
                       },
@@ -188,6 +197,13 @@ return {
                         "args": null,
                         "kind": "ScalarField",
                         "name": "postalCode",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "isDefault",
                         "storageKey": null
                       },
                       (v0/*: any*/)
@@ -206,13 +222,13 @@ return {
     ]
   },
   "params": {
-    "id": "acd1bb4ebcb09f68b1593524344aa10a",
+    "id": "4882c50bcdba5ef0707c728f8c12da46",
     "metadata": {},
-    "name": "SavedAddressesNewFormQuery",
+    "name": "SavedAddressesFormQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '567f6f34e4471f91202f165267128345';
+(node as any).hash = 'b7e7515520a71dc3fbc77471605aae6b';
 export default node;
