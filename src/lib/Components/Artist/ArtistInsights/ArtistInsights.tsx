@@ -8,7 +8,7 @@ import { SCROLL_UP_TO_SHOW_THRESHOLD } from "lib/utils/hideBackButtonOnScroll"
 import { Schema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import React, { useCallback, useRef, useState } from "react"
-import { FlatList, NativeScrollEvent, NativeSyntheticEvent, ScrollView } from "react-native"
+import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ReactElement } from "simple-markdown"
@@ -56,21 +56,21 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     setIsFilterModalVisible(false)
   }
 
-  const scrollTo = useCallback(
-    (yCoordinate: number) => {
-      let offset = auctionResultsYCoordinate.current + yCoordinate
+  const scrollToTop = useCallback(() => {
+    let offset = auctionResultsYCoordinate.current
 
-      // if we scroll up less than SCROLL_UP_TO_SHOW_THRESHOLD the header won't expand and we need another offset
-      if (contentYScrollOffset.current - offset <= SCROLL_UP_TO_SHOW_THRESHOLD) {
-        offset += ARTIST_HEADER_HEIGHT
-      }
-      flatListRef.current?.getNode().scrollToOffset({ animated: true, offset })
-    },
-    [auctionResultsYCoordinate, contentYScrollOffset]
-  )
+    // if we scroll up less than SCROLL_UP_TO_SHOW_THRESHOLD the header won't expand and we need another offset
+    console.log(contentYScrollOffset.current, offset)
+    if (contentYScrollOffset.current - 2 * offset <= SCROLL_UP_TO_SHOW_THRESHOLD) {
+      offset += ARTIST_HEADER_HEIGHT
+    }
+    flatListRef.current?.getNode().scrollToOffset({ animated: true, offset })
+  }, [auctionResultsYCoordinate, contentYScrollOffset])
 
   // Show or hide floating filter button depending on the scroll position
   const onScrollEndDrag = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    contentYScrollOffset.current = event.nativeEvent.contentOffset.y
+
     if (event.nativeEvent.contentOffset.y > FILTER_BUTTON_OFFSET) {
       setIsFilterButtonVisible(true)
       return
@@ -91,7 +91,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         innerRef={flatListRef}
       >
         <MarketStatsQueryRenderer artistInternalID={artist.internalID} environment={relay.environment} />
-        <ScrollView
+        <View
           onLayout={({
             nativeEvent: {
               layout: { y },
@@ -99,12 +99,9 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
           }) => {
             auctionResultsYCoordinate.current = y
           }}
-          onScroll={(event) => {
-            contentYScrollOffset.current = event.nativeEvent.contentOffset.y
-          }}
         >
-          <ArtistInsightsAuctionResultsPaginationContainer artist={artist} scrollTo={scrollTo} />
-        </ScrollView>
+          <ArtistInsightsAuctionResultsPaginationContainer artist={artist} scrollToTop={scrollToTop} />
+        </View>
       </StickyTabPageScrollView>
       <ArtworkFilterNavigator
         isFilterArtworksModalVisible={isFilterModalVisible}

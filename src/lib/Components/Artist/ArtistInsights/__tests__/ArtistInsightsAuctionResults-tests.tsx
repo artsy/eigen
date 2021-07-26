@@ -51,7 +51,7 @@ describe("ArtistInsightsAuctionResults", () => {
             <ArtworkFiltersStoreProvider initialData={initialData}>
               <ArtistInsightsAuctionResultsPaginationContainer
                 artist={props.artist}
-                scrollTo={() => {
+                scrollToTop={() => {
                   console.log("do nothing")
                 }}
               />

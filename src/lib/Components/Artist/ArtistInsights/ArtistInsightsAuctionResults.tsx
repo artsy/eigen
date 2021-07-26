@@ -11,8 +11,8 @@ import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Box, bullet, color, Flex, Separator, Spacer, Text } from "palette"
-import React, { useCallback, useEffect, useRef, useState } from "react"
-import { FlatList, ScrollView, View } from "react-native"
+import React, { useCallback, useEffect, useState } from "react"
+import { FlatList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -23,19 +23,11 @@ import { AuctionResultFragmentContainer } from "../../Lists/AuctionResultListIte
 interface Props {
   artist: ArtistInsightsAuctionResults_artist
   relay: RelayPaginationProp
-  scrollTo: (yCoordinate: number) => void
+  scrollToTop: () => void
 }
 
-const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo }) => {
+const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop }) => {
   const tracking = useTracking()
-
-  const scrollViewRef = useRef<ScrollView>(null)
-  const [keyboardFilterYCoordinate, setkeyboardFilterYCoordinate] = useState<number>(0)
-
-  const scrollToKeywordFilter = useCallback(() => {
-    scrollTo(keyboardFilterYCoordinate)
-    scrollViewRef.current?.scrollTo({ y: keyboardFilterYCoordinate })
-  }, [keyboardFilterYCoordinate])
 
   const showKeywordFilter = useFeatureFlag("AREnableAuctionResultsKeywordFilter")
 
@@ -61,7 +53,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         },
         filterParams
       )
-      scrollTo(0)
+      scrollToTop()
     }
   }, [appliedFilters])
 
@@ -136,9 +128,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
 
   return (
     <View
-      onLayout={({ nativeEvent }) => {
-        setkeyboardFilterYCoordinate(nativeEvent.layout.y)
-      }}
       // Setting min height to keep scroll position when user searches with the keyword filter.
       style={{ minHeight: useScreenDimensions().height }}
     >
@@ -166,7 +155,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         </SortMode>
         <Separator borderColor={color("black5")} mt="2" />
         {!!showKeywordFilter && (
-          <KeywordFilter artistId={artist.internalID} artistSlug={artist.slug} onFocus={scrollToKeywordFilter} />
+          <KeywordFilter artistId={artist.internalID} artistSlug={artist.slug} onFocus={scrollToTop} />
         )}
       </Flex>
       {auctionResults.length ? (
