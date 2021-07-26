@@ -417,11 +417,13 @@ describe("Applying filters on Artworks", () => {
       render={({ props, error }) => {
         if (props?.marketingCollection) {
           return (
-            <Theme>
-              <ArtworkFiltersStoreProvider initialData={initialData}>
-                <CollectionArtworksFragmentContainer collection={props.marketingCollection} scrollToTop={jest.fn()} />
-              </ArtworkFiltersStoreProvider>
-            </Theme>
+            <GlobalStoreProvider>
+              <Theme>
+                <ArtworkFiltersStoreProvider initialData={initialData}>
+                  <CollectionArtworksFragmentContainer collection={props.marketingCollection} scrollToTop={jest.fn()} />
+                </ArtworkFiltersStoreProvider>
+              </Theme>
+            </GlobalStoreProvider>
           )
         } else if (error) {
           console.log(error)

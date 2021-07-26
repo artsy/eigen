@@ -2,6 +2,7 @@ import { ArtistNotableWorksRailTestsQueryRawResponse } from "__generated__/Artis
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { Theme } from "palette"
 import React from "react"
@@ -14,9 +15,11 @@ describe("Notable Works Rail", () => {
     return renderRelayTree({
       Component: (props: any) => {
         return (
-          <Theme>
-            <ArtistNotableWorksRailFragmentContainer artist={props.artist} {...props} />
-          </Theme>
+          <GlobalStoreProvider>
+            <Theme>
+              <ArtistNotableWorksRailFragmentContainer artist={props.artist} {...props} />
+            </Theme>
+          </GlobalStoreProvider>
         )
       },
       query: graphql`

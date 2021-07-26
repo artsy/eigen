@@ -1,4 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
+import { themeGet } from "@styled-system/theme-get"
 import { SavedAddresses_me } from "__generated__/SavedAddresses_me.graphql"
 import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
@@ -8,7 +9,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, color, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import { Box, Flex, Separator, Spacer, Text, Touchable } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -22,7 +23,8 @@ interface CardProps {
 }
 
 const Card = styled(Flex)`
-  border: 1px solid ${(props: CardProps) => (props.isDefault ? color("black100") : color("black30"))};
+  border: 1px solid
+    ${(props: CardProps) => (props.isDefault ? themeGet("colors.black100") : themeGet("colors.black30"))};
   border-radius: 4;
 `
 
@@ -53,7 +55,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
       navigationEvents.removeListener("goBack", util.onRefresh)
     }
   }, [])
-  
+
   const onPressEditAddress = (addressId: string) =>
     navigate("/my-profile/saved-addresses/edit-address", {
       modal: true,

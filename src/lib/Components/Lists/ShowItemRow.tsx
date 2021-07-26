@@ -1,3 +1,4 @@
+import { themeGet } from "@styled-system/theme-get"
 import { ShowItemRow_show } from "__generated__/ShowItemRow_show.graphql"
 import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -8,7 +9,7 @@ import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { hrefForPartialShow } from "lib/utils/router"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { debounce } from "lodash"
-import { Box, Button, color, Flex, Sans, space, Touchable } from "palette"
+import { Box, Button, ClassTheme, Flex, Sans, Touchable } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -124,51 +125,55 @@ export class ShowItemRow extends React.Component<Props, State> {
 
     const imageURL = mainCoverImageURL || galleryProfileIcon
     return (
-      <Flex flexDirection="row" alignItems="center">
-        {!imageURL ? (
-          <DefaultImageContainer p={15}>
-            <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
-          </DefaultImageContainer>
-        ) : (
-          <DefaultImageContainer>
-            <OpaqueImageView width={58} height={58} imageURL={imageURL} />
-          </DefaultImageContainer>
+      <ClassTheme>
+        {({ color }) => (
+          <Flex flexDirection="row" alignItems="center">
+            {!imageURL ? (
+              <DefaultImageContainer p={15}>
+                <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
+              </DefaultImageContainer>
+            ) : (
+              <DefaultImageContainer>
+                <OpaqueImageView width={58} height={58} imageURL={imageURL} />
+              </DefaultImageContainer>
+            )}
+            <Flex flexDirection="column" flexGrow={1} width={165} mr={10}>
+              {!!(show.partner && show.partner.name) && (
+                <Sans size="3t" color="black" weight="medium" numberOfLines={1} ml={15}>
+                  {show.partner.name}
+                </Sans>
+              )}
+              {!!show.name && (
+                <Sans size="3t" color={color("black60")} ml={15} numberOfLines={1}>
+                  {show.name}
+                </Sans>
+              )}
+              {!!(show.exhibition_period && show.status) && (
+                <Sans size="3t" color={color("black60")} ml={15}>
+                  {show.status.includes("closed")
+                    ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
+                    : exhibitionDates(
+                        show.exhibition_period,
+                        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                        show.end_at
+                      )}
+                </Sans>
+              )}
+            </Flex>
+            {!shouldHideSaveButton && (
+              <Button
+                variant={show.is_followed ? "secondaryOutline" : "primaryBlack"}
+                size="small"
+                onPress={() => this.handleSave()}
+                loading={this.state.isFollowedSaving}
+                longestText="Saved"
+              >
+                {show.is_followed ? "Saved" : "Save"}
+              </Button>
+            )}
+          </Flex>
         )}
-        <Flex flexDirection="column" flexGrow={1} width={165} mr={10}>
-          {!!(show.partner && show.partner.name) && (
-            <Sans size="3t" color="black" weight="medium" numberOfLines={1} ml={15}>
-              {show.partner.name}
-            </Sans>
-          )}
-          {!!show.name && (
-            <Sans size="3t" color={color("black60")} ml={15} numberOfLines={1}>
-              {show.name}
-            </Sans>
-          )}
-          {!!(show.exhibition_period && show.status) && (
-            <Sans size="3t" color={color("black60")} ml={15}>
-              {show.status.includes("closed")
-                ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
-                : exhibitionDates(
-                    show.exhibition_period,
-                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                    show.end_at
-                  )}
-            </Sans>
-          )}
-        </Flex>
-        {!shouldHideSaveButton && (
-          <Button
-            variant={show.is_followed ? "secondaryOutline" : "primaryBlack"}
-            size="small"
-            onPress={() => this.handleSave()}
-            loading={this.state.isFollowedSaving}
-            longestText="Saved"
-          >
-            {show.is_followed ? "Saved" : "Save"}
-          </Button>
-        )}
-      </Flex>
+      </ClassTheme>
     )
   }
 
@@ -176,13 +181,17 @@ export class ShowItemRow extends React.Component<Props, State> {
     const { show, isListItem } = this.props
 
     return isListItem ? (
-      <Touchable
-        underlayColor={color("black5")}
-        onPress={() => this.handleTap(show.slug, show.internalID)}
-        style={{ paddingHorizontal: 20, paddingVertical: 5 }}
-      >
-        {this.renderItemDetails()}
-      </Touchable>
+      <ClassTheme>
+        {({ color }) => (
+          <Touchable
+            underlayColor={color("black5")}
+            onPress={() => this.handleTap(show.slug, show.internalID)}
+            style={{ paddingHorizontal: 20, paddingVertical: 5 }}
+          >
+            {this.renderItemDetails()}
+          </Touchable>
+        )}
+      </ClassTheme>
     ) : (
       <TouchableWithoutFeedback onPress={() => this.handleTap(show.slug, show.internalID)}>
         {this.renderItemDetails()}
@@ -228,6 +237,6 @@ export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
 const DefaultImageContainer = styled(Box)`
   align-items: center;
   background-color: ${colors["gray-regular"]};
-  height: ${space(6)};
-  width: ${space(6)};
+  height: ${themeGet("space.6")}px;
+  width: ${themeGet("space.6")}px;
 `

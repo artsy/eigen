@@ -1,25 +1,24 @@
+import { Schema, Track, track as _track } from "lib/utils/track"
+import { Flex, Text, Touchable } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-
-import { Schema, Track, track as _track } from "lib/utils/track"
-
-import { color, Flex, Text, Touchable } from "palette"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import colors from "lib/data/colors"
 import styled from "styled-components/native"
 
+import { themeGet } from "@styled-system/theme-get"
 import { ShowPreview_show } from "__generated__/ShowPreview_show.graphql"
 
 const Container = styled.View`
-  background-color: ${color("black100")};
+  background-color: ${themeGet("colors.black100")};
   border-radius: 15;
   overflow: hidden;
   margin-bottom: 5;
 `
 
 const ImageContainer = styled(Flex)`
-  background-color: ${color("black10")};
+  background-color: ${themeGet("colors.black10")};
   padding: 10px;
   flex: 1;
 `

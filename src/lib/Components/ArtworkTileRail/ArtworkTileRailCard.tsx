@@ -1,5 +1,6 @@
+import { themeGet } from "@styled-system/theme-get"
 import { ArtworkTileRailCard_artwork } from "__generated__/ArtworkTileRailCard_artwork.graphql"
-import { Box, color, Flex, Sans } from "palette"
+import { Box, Flex, Sans, useColor } from "palette"
 import React from "react"
 import { GestureResponderEvent, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -12,7 +13,10 @@ const IMAGE_SIZES = {
   large: 240,
 }
 
-const ArtworkCard = styled.TouchableHighlight.attrs({ underlayColor: color("white100"), activeOpacity: 0.8 })``
+const ArtworkCard = styled.TouchableHighlight.attrs({
+  underlayColor: themeGet("colors.white100"),
+  activeOpacity: 0.8,
+})``
 
 export interface ArtworkTileRailCardProps {
   onPress: ((event: GestureResponderEvent) => void) | null | undefined
@@ -43,6 +47,7 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
   useSquareAspectRatio = false,
   lotLabel,
 }) => {
+  const color = useColor()
   if (!!imageURL && !imageAspectRatio && !useSquareAspectRatio) {
     throw new Error("imageAspectRatio is required for non-square images")
   }

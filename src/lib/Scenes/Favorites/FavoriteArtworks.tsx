@@ -14,7 +14,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Button, space } from "palette"
+import { Button, ClassTheme } from "palette"
 
 interface Props {
   me: FavoriteArtworks_me
@@ -96,13 +96,19 @@ export class SavedWorks extends Component<Props, State> {
     }
 
     return (
-      <StickyTabPageScrollView
-        contentContainerStyle={{ paddingVertical: space(2) }}
-        onEndReached={this.loadMore}
-        refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
-      >
-        <GenericGrid artworks={artworks} isLoading={this.state.fetchingMoreData} />
-      </StickyTabPageScrollView>
+      <ClassTheme>
+        {({ space }) => (
+          <StickyTabPageScrollView
+            contentContainerStyle={{ paddingVertical: space(2) }}
+            onEndReached={this.loadMore}
+            refreshControl={
+              <RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />
+            }
+          >
+            <GenericGrid artworks={artworks} isLoading={this.state.fetchingMoreData} />
+          </StickyTabPageScrollView>
+        )}
+      </ClassTheme>
     )
   }
 }

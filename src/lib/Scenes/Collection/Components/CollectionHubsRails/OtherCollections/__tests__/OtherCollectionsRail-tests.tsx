@@ -15,7 +15,7 @@ describe("Other Collections Rail", () => {
     const { root } = renderWithWrappers(<TestRenderer />)
     const {
       props: { children },
-    } = root.findByType(Sans)
+    } = root.findAllByType(Sans)[0]
 
     expect(children).toContain("Browse by Movement")
   })
