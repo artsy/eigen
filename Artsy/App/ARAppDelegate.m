@@ -290,6 +290,7 @@ static ARAppDelegate *_sharedInstance = nil;
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation
 {
+    NSLog(@"Open url called with url %@, pre iOS 10 method", url);
     return [self application:application openURL:url options: @{
         UIApplicationOpenURLOptionsSourceApplicationKey: sourceApplication ?: @"",
         UIApplicationOpenURLOptionsAnnotationKey: annotation  ?: @""
@@ -299,6 +300,7 @@ static ARAppDelegate *_sharedInstance = nil;
 // For iOS 10
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
 {
+    NSLog(@"Open url called with url %@, post iOS 10 method", url);
     NSString *sourceApplication = options[UIApplicationOpenURLOptionsSourceApplicationKey];
     id annotation = options[UIApplicationOpenURLOptionsAnnotationKey];
 
