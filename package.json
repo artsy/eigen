@@ -255,13 +255,15 @@
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
-      "detect-secrets-launcher",
       "tslint -c tslint.json -p tsconfig.json --fix",
       "yarn prettier-write",
       "node scripts/strictness-migration.js check-staged"
     ],
     "*.@(json|md)": [
       "yarn prettier-write"
+    ],
+    "**/!(package.json)": [
+      "detect-secrets-launcher --baseline .secrets.baseline"
     ]
   },
   "prettier": {
