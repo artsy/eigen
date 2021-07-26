@@ -169,8 +169,6 @@
     "@omakase/cli": "0.0.10",
     "@react-native-community/cli-platform-ios": "3.0.0",
     "@storybook/addon-actions": "^5.3",
-    "@storybook/addon-knobs": "^5.3",
-    "@storybook/addon-links": "^5.3",
     "@storybook/react-native": "^5.3.25",
     "@storybook/react-native-server": "^5.3.23",
     "@types/argparse": "^2.0.8",

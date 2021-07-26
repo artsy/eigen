@@ -1,19 +1,36 @@
 import { Spacer } from "palette"
-import React, { ReactNode } from "react"
-import { ScrollView, View } from "react-native"
+import React from "react"
+import { FlatList, ScrollView } from "react-native"
 
-export const List = ({ children }: { children: ReactNode[] }) => (
-  <>
-    {children.map((item, index) => (
-      <View key={index}>
-        {item}
-        <Spacer mb={4} />
-      </View>
-    ))}
-  </>
+export const DList = <ItemT,>({
+  data,
+  keyExtractor,
+  renderItem,
+}: {
+  data: ItemT[]
+  keyExtractor?: (item: ItemT, index: number) => string
+  renderItem: (info: { item: ItemT; index: number }) => React.ReactElement | null
+}) => (
+  <FlatList
+    data={data}
+    keyExtractor={keyExtractor ?? ((item) => `${item}`)}
+    renderItem={renderItem}
+    ItemSeparatorComponent={() => <Spacer mb="4" />}
+    contentContainerStyle={{ flexGrow: 1, alignItems: "center", justifyContent: "center" }}
+  />
 )
 
-export const CenterView = ({ children }: { children: ReactNode }) => {
+export const List = ({ children }: { children: React.ReactElement[] }) => (
+  <FlatList
+    data={children}
+    keyExtractor={(_, index) => `${index}`}
+    renderItem={({ item: child }) => child}
+    ItemSeparatorComponent={() => <Spacer mb="4" />}
+    contentContainerStyle={{ flexGrow: 1, alignItems: "center", justifyContent: "center" }}
+  />
+)
+
+export const CenterView = ({ children }: { children: React.ReactNode }) => {
   return (
     <ScrollView
       contentContainerStyle={{

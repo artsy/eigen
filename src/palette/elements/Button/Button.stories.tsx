@@ -1,8 +1,9 @@
+import { action } from "@storybook/addon-actions"
+import { withNotes } from "@storybook/addon-notes"
 import { storiesOf } from "@storybook/react-native"
 import { Button, ButtonSize, ButtonVariant } from "palette"
 import React from "react"
-import { Text } from "react-native"
-import { CenterView, List } from "storybook/helpers"
+import { DList, List } from "storybook/helpers"
 
 const sizes: ButtonSize[] = ["small", "medium", "large"]
 
@@ -16,35 +17,31 @@ const variants: ButtonVariant[] = [
 ]
 
 storiesOf("Button", module)
-  .addDecorator((getStory) => <CenterView>{getStory()}</CenterView>)
+  .addDecorator(withNotes)
   .add("Sizes", () => (
-    <List>
-      {sizes.map((size) => (
-        <Button size={size}>
-          <Text>{size}</Text>
+    <DList
+      data={sizes}
+      renderItem={({ item: size }) => (
+        <Button size={size} onPress={() => action(`tapped ${size}`)}>
+          {size}
         </Button>
-      ))}
-    </List>
+      )}
+    />
   ))
   .add("Variants", () => (
-    <List>
-      {variants.map((variant) => (
-        <Button variant={variant}>
-          <Text>{variant}</Text>
+    <DList
+      data={variants}
+      renderItem={({ item: variant }) => (
+        <Button variant={variant} onPress={() => action(`tapped ${variant}`)}>
+          {variant}
         </Button>
-      ))}
-    </List>
+      )}
+    />
   ))
   .add("States", () => (
     <List>
-      <Button loading>
-        <Text>{"loading"}</Text>
-      </Button>
-      <Button disabled>
-        <Text>{"disabled"}</Text>
-      </Button>
-      <Button block>
-        <Text>{"block"}</Text>
-      </Button>
+      <Button loading>loading</Button>
+      <Button disabled>disabled</Button>
+      <Button block>block</Button>
     </List>
   ))
