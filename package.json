@@ -150,7 +150,7 @@
     "yup": "0.29.1"
   },
   "devDependencies": {
-    "@artsy/update-repo": "0.2.0",
+    "@artsy/update-repo": "0.2.1",
     "@babel/core": "^7.12.9",
     "@babel/plugin-proposal-class-properties": "7.10.4",
     "@babel/plugin-proposal-decorators": "7.10.5",
