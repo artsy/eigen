@@ -42,7 +42,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({ me, loadin
   )
 }
 
-export const SavedSeearchButtonFragmentContainer = createFragmentContainer(SavedSearchButton, {
+export const SavedSearchButtonFragmentContainer = createFragmentContainer(SavedSearchButton, {
   me: graphql`
     fragment SavedSearchButton_me on Me @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
       savedSearch(criteria: $criteria) {
@@ -80,7 +80,7 @@ export const SavedSearchButtonQueryRender: React.FC<SavedSearchButtonQueryRender
         }
 
         return (
-          <SavedSeearchButtonFragmentContainer
+          <SavedSearchButtonFragmentContainer
             me={relayProps?.me ?? null}
             loading={relayProps === null && error === null}
             attributes={input}

@@ -6,7 +6,7 @@ import { Button } from 'palette'
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { SavedSeearchButtonFragmentContainer as SavedSearchButton } from "../SavedSearchButton"
+import { SavedSearchButtonFragmentContainer as SavedSearchButton } from "../SavedSearchButton"
 
 jest.unmock("react-relay")
 
