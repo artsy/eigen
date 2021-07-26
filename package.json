@@ -51,7 +51,8 @@
     "type-check:offence-ranking": "yarn -s type-check:offence 'TS\\d+' -o | sort | uniq -c | sort -r",
     "type-check:offence": "tsc --pretty false | grep -v __generated__ | grep -E",
     "type-check": "tsc",
-    "update-metaphysics": "node scripts/update-metaphysics.js"
+    "update-metaphysics": "node scripts/update-metaphysics.js",
+    "detect-secrets": "detect-secrets-launcher"
   },
   "repository": {
     "type": "git",
@@ -200,6 +201,7 @@
     "danger": "^10.6.4",
     "danger-plugin-jest": "^1.3.0",
     "dedent": "0.7.0",
+    "detect-secrets": "^1.0.6",
     "dotenv": "8.2.0",
     "enzyme": "3.9.0",
     "enzyme-adapter-react-16": "1.13.0",
@@ -253,6 +255,7 @@
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
+      "detect-secrets-launcher",
       "tslint -c tslint.json -p tsconfig.json --fix",
       "yarn prettier-write",
       "node scripts/strictness-migration.js check-staged"
