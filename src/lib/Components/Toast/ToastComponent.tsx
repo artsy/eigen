@@ -1,7 +1,7 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, IconProps, Text, Touchable, useColor } from "palette"
+import { Flex, Text, Touchable, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
@@ -16,7 +16,7 @@ const NAVBAR_HEIGHT = 44
 
 type ToastProps = ToastDetails
 
-export const Toast: React.FC<ToastProps> = ({ id, positionIndex, placement, message, onPress, Icon }) => {
+export const ToastComponent: React.FC<ToastProps> = ({ id, positionIndex, placement, message, onPress, Icon }) => {
   const color = useColor()
   const { width, height } = useScreenDimensions()
   const { top: topSafeAreaInset } = useScreenDimensions().safeAreaInsets
