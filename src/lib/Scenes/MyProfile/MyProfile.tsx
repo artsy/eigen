@@ -45,6 +45,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
         <MenuItem isBeta={true} title="My Collection" onPress={() => navigate("my-collection")} />
       )}
       <MenuItem title="Saves and follows" onPress={() => navigate("favorites")} />
+      <MenuItem title="Saved Alerts" onPress={() => navigate("saved-search-alerts-list")} />
       {!!recentlySavedArtworks.length && (
         <SmallTileRailContainer artworks={recentlySavedArtworks} listRef={listRef} contextModule={null as any} />
       )}
