@@ -1,12 +1,12 @@
 import { SavedAddressesTestsQuery } from "__generated__/SavedAddressesTestsQuery.graphql"
-import { navigate } from "lib/navigation/navigate"
+import { navigate, navigationEvents } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button, Flex } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { SavedAddressesContainer, SavedAddressesQueryRenderer } from "../SavedAddresses"
+import { SavedAddressesContainer, SavedAddressesQueryRenderer, util } from "../SavedAddresses"
 
 jest.unmock("react-relay")
 
@@ -178,5 +178,12 @@ describe(SavedAddressesQueryRenderer, () => {
       modal: true,
       passProps: { addressId: "5861" },
     })
+  })
+
+  it("handles return to prev view with goBack event", () => {
+    const mockCallback = jest.fn(util.onRefresh)
+    navigationEvents.addListener("goBack", mockCallback)
+    navigationEvents.emit("goBack")
+    expect(mockCallback.mock.calls.length).toBe(1)
   })
 })

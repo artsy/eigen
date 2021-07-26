@@ -55,7 +55,7 @@ return {
         {
           "kind": "Literal",
           "name": "first",
-          "value": 3
+          "value": 10
         }
       ],
       "concreteType": "UserAddressConnection",
@@ -164,7 +164,7 @@ return {
           "storageKey": null
         }
       ],
-      "storageKey": "addressConnection(first:3)"
+      "storageKey": "addressConnection(first:10)"
     }
   ],
   "type": "Me",

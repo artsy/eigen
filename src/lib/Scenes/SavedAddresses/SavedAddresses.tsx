@@ -2,14 +2,14 @@ import { captureMessage } from "@sentry/react-native"
 import { SavedAddresses_me } from "__generated__/SavedAddresses_me.graphql"
 import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import { navigate } from "lib/navigation/navigate"
+import { navigate, navigationEvents } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { Box, color, Flex, Separator, Spacer, Text, Touchable } from "palette"
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -29,11 +29,13 @@ const Card = styled(Flex)`
 // tslint:disable-next-line:variable-name
 const NUM_ADDRESSES_TO_FETCH = 10
 
+// tslint:disable-next-line:no-empty
+export const util = { onRefresh: () => {} }
+
 const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const addresses = extractNodes(me.addressConnection)
-
-  const onRefresh = useCallback(() => {
+  util.onRefresh = useCallback(() => {
     setIsRefreshing(true)
     relay.refetch(
       {},
@@ -45,6 +47,13 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
     )
   }, [])
 
+  useEffect(() => {
+    navigationEvents.addListener("goBack", util.onRefresh)
+    return () => {
+      navigationEvents.removeListener("goBack", util.onRefresh)
+    }
+  }, [])
+  
   const onPressEditAddress = (addressId: string) =>
     navigate("/my-profile/saved-addresses/edit-address", {
       modal: true,
@@ -64,7 +73,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
   return (
     <PageWithSimpleHeader title="Saved Addresses">
       <FlatList
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={util.onRefresh} />}
         data={addresses.sort((a, b) => Number(b?.isDefault) - Number(a?.isDefault))}
         keyExtractor={(address) => address.internalID}
         contentContainerStyle={{
@@ -168,7 +177,7 @@ export const SavedAddressesContainer = createRefetchContainer(
     me: graphql`
       fragment SavedAddresses_me on Me {
         name
-        addressConnection(first: 3) {
+        addressConnection(first: 10) {
           edges {
             node {
               id
