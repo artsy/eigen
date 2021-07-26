@@ -96,13 +96,10 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
     if (isEditForm) {
       const addresses = extractNodes(me.addressConnection)
       const selectedAddress = addresses!.find((address) => address.internalID === addressId)
-      actions.fields.name.setValue(selectedAddress?.name ?? "")
-      actions.fields.postalCode.setValue(selectedAddress?.postalCode ?? "")
-      actions.fields.country.setValue(selectedAddress?.country ?? "")
-      actions.fields.region.setValue(selectedAddress?.region ?? "")
-      actions.fields.addressLine1.setValue(selectedAddress?.addressLine1 ?? "")
-      actions.fields.addressLine2.setValue(selectedAddress?.addressLine2 ?? "")
-      actions.fields.city.setValue(selectedAddress?.city ?? "")
+      Object.keys(actions.fields).forEach((field) => {
+        const fieldValue = selectedAddress?.[field as keyof FormFields] ?? ""
+        actions.fields[field as keyof FormFields].setValue(fieldValue)
+      })
       setIsDefaultAddress(!!selectedAddress?.isDefault)
     }
   }, [])
