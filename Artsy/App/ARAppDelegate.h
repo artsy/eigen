@@ -11,7 +11,7 @@
 // (`[JSDecoupledAppDelegate sharedAppDelegate]`) to perform your tests on.
 
 
-@interface ARAppDelegate : UIResponder <JSApplicationStateDelegate, UNUserNotificationCenterDelegate>
+@interface ARAppDelegate : UIResponder <JSApplicationStateDelegate>
 
 + (ARAppDelegate *)sharedInstance;
 

@@ -164,11 +164,8 @@
 - (void)registerForDeviceNotificationsWithApple
 {
     ARActionLog(@"Registering with Apple for remote notifications.");
-
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-     center.delegate = self;
     UNAuthorizationOptions authOptions = (UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert);
-    [center requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
+    [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
         NSString *grantedString = granted ? @"YES" : @"NO";
         [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationsRequested traits:@{@"granted" : grantedString}];
         [[Appboy sharedInstance] pushAuthorizationFromUserNotificationCenter:granted];
