@@ -257,7 +257,7 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
 {
-    [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
+
     [[Appboy sharedInstance] registerApplication:application
                     didReceiveRemoteNotification:userInfo
                           fetchCompletionHandler:handler];
@@ -265,6 +265,8 @@
     if ([Appboy sharedInstance] == nil) {
         [[SEGAppboyIntegrationFactory instance] saveRemoteNotification:userInfo];
     }
+
+    [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
 
     handler(UIBackgroundFetchResultNoData);
 }
