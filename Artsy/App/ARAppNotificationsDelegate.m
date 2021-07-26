@@ -164,8 +164,11 @@
 - (void)registerForDeviceNotificationsWithApple
 {
     ARActionLog(@"Registering with Apple for remote notifications.");
+
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+     center.delegate = self;
     UNAuthorizationOptions authOptions = (UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert);
-    [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
+    [center requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
         NSString *grantedString = granted ? @"YES" : @"NO";
         [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationsRequested traits:@{@"granted" : grantedString}];
         [[Appboy sharedInstance] pushAuthorizationFromUserNotificationCenter:granted];
@@ -269,6 +272,22 @@
     handler(UIBackgroundFetchResultNoData);
 }
 
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+       willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
+  if (@available(iOS 14.0, *)) {
+    completionHandler(UNNotificationPresentationOptionList | UNNotificationPresentationOptionBanner);
+  } else {
+    completionHandler(UNNotificationPresentationOptionAlert);
+  }
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
+    [[Appboy sharedInstance] userNotificationCenter:center
+                     didReceiveNotificationResponse:response
+                              withCompletionHandler:completionHandler];
+}
+
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo inApplicationState:(UIApplicationState)applicationState;
 {
     NSString *uiApplicationState = [UIApplicationStateEnum toString:applicationState];
@@ -309,6 +328,8 @@
         }
     }
 }
+
+#pragma mark - UNUserNotificationCenterDelegate
 
 - (void)receivedNotification:(NSDictionary *)notificationInfo;
 {
