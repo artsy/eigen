@@ -14,7 +14,7 @@ interface SavedSearchButtonProps {
   attributes: SearchCriteriaAttributes
 }
 
-interface SavedSearchButtonQueryRenderProps {
+interface SavedSearchButtonQueryRendererProps {
   filters: FilterParams
   artistId: string
 }
@@ -52,7 +52,7 @@ export const SavedSearchButtonFragmentContainer = createFragmentContainer(SavedS
   `,
 })
 
-export const SavedSearchButtonQueryRender: React.FC<SavedSearchButtonQueryRenderProps> = (props) => {
+export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRendererProps> = (props) => {
   const { filters, artistId } = props
   const input = prepareFilterParamsForSaveSearchInput(filters)
   const attributes: SearchCriteriaAttributes = {

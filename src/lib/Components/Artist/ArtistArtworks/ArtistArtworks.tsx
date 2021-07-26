@@ -29,7 +29,7 @@ import { Platform } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { SavedSearchBannerQueryRender } from "./SavedSearchBanner"
-import { SavedSearchButtonQueryRender } from './SavedSearchButton'
+import { SavedSearchButtonQueryRenderer } from "./SavedSearchButton"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
@@ -174,7 +174,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
                   </Flex>
                 )}
               />
-              <SavedSearchButtonQueryRender artistId={artistInternalId} filters={filterParams} />
+              <SavedSearchButtonQueryRenderer artistId={artistInternalId} filters={filterParams} />
             </Flex>
             <Separator />
           </>

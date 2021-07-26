@@ -1,5 +1,5 @@
 import { SavedSearchBanner } from "lib/Components/Artist/ArtistArtworks/SavedSearchBanner"
-import { SavedSearchButtonQueryRender } from 'lib/Components/Artist/ArtistArtworks/SavedSearchButton'
+import { SavedSearchButtonQueryRenderer } from 'lib/Components/Artist/ArtistArtworks/SavedSearchButton'
 import { CurrentOption } from "lib/Components/ArtworkFilter"
 import { PopoverMessage } from "lib/Components/PopoverMessage/PopoverMessage"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
@@ -134,7 +134,7 @@ describe("Saved search banner on artist screen", () => {
 
     await flushPromiseQueue()
 
-    expect(tree.root.findAllByType(SavedSearchButtonQueryRender)).toHaveLength(1)
+    expect(tree.root.findAllByType(SavedSearchButtonQueryRenderer)).toHaveLength(1)
     expect(tree.root.findAllByType(SavedSearchBanner)).toHaveLength(0)
   })
 })
