@@ -36,6 +36,7 @@ export const FancyModalCard = React.forwardRef<
     level: number
     height: number
     backgroundShouldShrink: boolean
+    fullScreen?: boolean
     onBackgroundPressed(): void
   }>
 >((props, ref) => {
@@ -44,14 +45,21 @@ export const FancyModalCard = React.forwardRef<
   const backdropOpacity = useRef(new Animated.Value(0)).current
   const scale = useRef(new Animated.Value(1)).current
   const translateY = useRef(new Animated.Value(isRootCard ? 0 : props.height)).current
-  const borderRadius = useRef(new Animated.Value(isRootCard ? 0 : 10)).current
+  const borderRadius = useRef(new Animated.Value(isRootCard || props.fullScreen ? 0 : 10)).current
 
   useImperativeHandle(
     ref,
     () => ({
       height: props.height,
+      fullScreen: props.fullScreen,
       backgroundShouldShrink: props.backgroundShouldShrink,
       getPopAnimations(createAnimation) {
+        if (props.fullScreen) {
+          return [
+            createAnimation(translateY, props.height)
+          ]
+        }
+
         return [
           createAnimation(backdropOpacity, 0),
           createAnimation(borderRadius, BORDER_RADIUS),
@@ -60,6 +68,12 @@ export const FancyModalCard = React.forwardRef<
         ]
       },
       getStackAnimations(createAnimation, stack) {
+        if (props.fullScreen) {
+          return [
+            createAnimation(translateY, 0)
+          ]
+        }
+
         if (isRootCard && stack.length === 1) {
           // There are no fancy modals showing, so reset the background.
           return [
@@ -134,13 +148,13 @@ export const FancyModalCard = React.forwardRef<
         ])
       },
     }),
-    [props.height]
+    [props.height, props.fullScreen]
   )
 
   return (
     <View style={{ flex: 1 }}>
       {/* This view both darkens the backdrop and provides a touch target for dismissing the modal */}
-      {!isRootCard && (
+      {!isRootCard && !props.fullScreen && (
         <TouchableWithoutFeedback
           style={{ position: "absolute", left: 0, right: 0, bottom: 0, top: 0 }}
           onPress={props.onBackgroundPressed}
@@ -176,7 +190,7 @@ export const FancyModalCard = React.forwardRef<
       >
         {/* We need to apply background color in this extra inner view otherwise there is some glitchy
             tearing sometimes when hiding the modal */}
-        <View style={{ flex: 1, backgroundColor: "white" }}>{props.children}</View>
+        <View style={{ flex: 1, backgroundColor: "white", paddingTop: props.fullScreen ? screen.safeAreaInsets.top : 0 }}>{props.children}</View>
       </Animated.View>
     </View>
   )

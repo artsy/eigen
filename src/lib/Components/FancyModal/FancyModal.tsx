@@ -8,17 +8,25 @@ import { FancyModalContext } from "./FancyModalContext"
 export const FancyModal: React.FC<{
   visible: boolean
   maxHeight?: number
+  fullScreen?: boolean
   onBackgroundPressed(): void
   onModalFinishedClosing?(): void
-}> = ({ visible, children, onBackgroundPressed, maxHeight, onModalFinishedClosing }) => {
+}> = ({ visible, children, onBackgroundPressed, maxHeight, fullScreen, onModalFinishedClosing }) => {
   const {
     height: screenHeight,
     safeAreaInsets: { top },
   } = useScreenDimensions()
 
   const actualMaxHeight = screenHeight - (top + CARD_STACK_OVERLAY_HEIGHT + CARD_STACK_OVERLAY_Y_OFFSET)
+  let height
 
-  const height = maxHeight ? Math.min(maxHeight, actualMaxHeight) : actualMaxHeight
+  if (fullScreen) {
+    height = screenHeight
+  } else if (maxHeight) {
+    height = Math.min(maxHeight, actualMaxHeight)
+  } else {
+    height = actualMaxHeight
+  }
 
   const firstMount = useRef(true)
 
@@ -27,8 +35,9 @@ export const FancyModal: React.FC<{
   const context = useContext(FancyModalContext)
   const card = context.useCard({
     height,
+    fullScreen,
     // background never shrinks on android
-    backgroundShouldShrink: Platform.OS === "ios" && !maxHeight,
+    backgroundShouldShrink: Platform.OS === "ios" && !maxHeight && !fullScreen,
     content: showingUnderlyingModal ? (
       /* Keyboard Avoiding
         This works fine for full-screen fancy modals but a couple of caveats for the future:
