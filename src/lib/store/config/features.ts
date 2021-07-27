@@ -117,6 +117,11 @@ export const features = defineFeatures({
     description: "Enable Saved Search: Android",
     showInAdminMenu: true,
   },
+  AREnableSavedSearchV2: {
+    readyForRelease: false,
+    description: "Enable Saved Search V2",
+    showInAdminMenu: true,
+  },
   AREnableNewOnboardingFlow: {
     readyForRelease: false,
     description: "Enable new onboarding flow",
