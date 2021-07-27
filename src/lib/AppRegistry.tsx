@@ -63,7 +63,7 @@ import { SaleQueryRenderer } from "./Scenes/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
 import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddresses"
-import { SavedAddressesNewFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAddressesNewForm"
+import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAddressesForm"
 
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
@@ -366,8 +366,10 @@ export const modules = defineModules({
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SavedAddresses: reactModule(SavedAddressesQueryRenderer),
-  SavedAddressesNewForm: reactModule(SavedAddressesNewFormQueryRenderer, { hidesBackButton: true }),
-  Storybook: reactModule(StorybookUI, { fullBleed: true, hidesBackButton: true }),
+  SavedAddressesForm: reactModule(SavedAddressesFormQueryRenderer, {
+    alwaysPresentModally: true,
+    hasOwnModalCloseButton: false,
+  }),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),
@@ -378,6 +380,7 @@ export const modules = defineModules({
   }),
   WorksForYou: reactModule(WorksForYouQueryRenderer),
   LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer),
+  Storybook: reactModule(StorybookUI, { fullBleed: true, hidesBackButton: true }),
 })
 
 // Register react modules with the app registry

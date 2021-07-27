@@ -148,6 +148,7 @@ RCT_EXPORT_MODULE();
     [self afterBootstrap:^{
         __strong typeof(self) sself = wself;
         if (!sself) return;
+        if (!route) return;
         [sself dispatch:requestNavigation data:@{@"route": route, @"props": props}];
     }];
 }

@@ -1,6 +1,7 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount, shallow } from "enzyme"
 import { navigate } from "lib/navigation/navigate"
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Sans, Serif, Text, Theme } from "palette"
 import React from "react"
 import { ReadMore } from "../ReadMore"
@@ -31,9 +32,11 @@ describe("ReadMore", () => {
 
   it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
     const component = mount(
-      <Theme>
-        <ReadMore maxChars={7} textStyle="new" content={"This text is slightly longer than is allowed."} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <ReadMore maxChars={7} textStyle="new" content={"This text is slightly longer than is allowed."} />
+        </Theme>
+      </GlobalStoreProvider>
     )
 
     expect(component.find(Text).length).toEqual(2)
@@ -51,13 +54,15 @@ describe("ReadMore", () => {
 
   it("truncates correctly if there are links within the text", () => {
     const component = mount(
-      <Theme>
-        <ReadMore
-          maxChars={7}
-          textStyle="new"
-          content={"This [text](/artist/text) is slightly longer than is [allowed](/gene/allowed)."}
-        />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <ReadMore
+            maxChars={7}
+            textStyle="new"
+            content={"This [text](/artist/text) is slightly longer than is [allowed](/gene/allowed)."}
+          />
+        </Theme>
+      </GlobalStoreProvider>
     )
 
     expect(component.find(Text).length).toEqual(2)
@@ -77,9 +82,11 @@ describe("ReadMore", () => {
 
   it("opens links modally when specified", () => {
     const component = mount(
-      <Theme>
-        <ReadMore maxChars={7} content={"Small [text](/artist/andy-warhol)."} presentLinksModally={true} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <ReadMore maxChars={7} content={"Small [text](/artist/andy-warhol)."} presentLinksModally={true} />
+        </Theme>
+      </GlobalStoreProvider>
     )
     // Clicking "Read more" expands the text
     component.find(LinkText).at(0).props().onPress()
@@ -89,9 +96,11 @@ describe("ReadMore", () => {
 
   it("doesn't open links modally when not specified", () => {
     const component = mount(
-      <Theme>
-        <ReadMore maxChars={7} content={"Small [text](/artist/andy-warhol)."} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <ReadMore maxChars={7} content={"Small [text](/artist/andy-warhol)."} />
+        </Theme>
+      </GlobalStoreProvider>
     )
     // Clicking "Read more" expands the text
     component.find(LinkText).at(0).props().onPress()

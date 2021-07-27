@@ -1,5 +1,5 @@
 import Crosshair from "lib/Icons/Crosshair"
-import { Box, color, Flex } from "palette"
+import { Box, Flex } from "palette"
 import React, { Component } from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
@@ -37,7 +37,7 @@ export class UserPositionButton extends Component<Props> {
       <TouchableOpacity onPress={onPress}>
         <Background flexDirection="row" alignItems="center" style={shadowDetails}>
           <Box style={{ marginLeft: "auto", marginRight: "auto" }}>
-            <Crosshair color={highlight ? color("purple100") : color("black100")} />
+            <Crosshair color={highlight ? "purple100" : "black100"} />
           </Box>
         </Background>
       </TouchableOpacity>

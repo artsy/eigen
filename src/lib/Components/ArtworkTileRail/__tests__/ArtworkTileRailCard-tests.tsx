@@ -1,5 +1,6 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { ArtworkTileRailCard, ArtworkTileRailCardProps } from "../ArtworkTileRailCard"
@@ -21,9 +22,11 @@ describe("ArtworkTileRailCard", () => {
     const props = defaultProps
 
     const result = mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <ArtworkTileRailCard {...props} />
+        </Theme>
+      </GlobalStoreProvider>
     )
 
     const image = result.find("AROpaqueImageView")
@@ -36,9 +39,11 @@ describe("ArtworkTileRailCard", () => {
     const props = defaultProps
 
     const result = mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <ArtworkTileRailCard {...props} />
+        </Theme>
+      </GlobalStoreProvider>
     )
 
     const sans = result.find("Sans")
@@ -52,9 +57,11 @@ describe("ArtworkTileRailCard", () => {
     }
 
     const result = mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <ArtworkTileRailCard {...props} />
+        </Theme>
+      </GlobalStoreProvider>
     )
 
     const sans = result.find("Sans")
@@ -68,9 +75,11 @@ describe("ArtworkTileRailCard", () => {
     }
 
     const result = mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <ArtworkTileRailCard {...props} />
+        </Theme>
+      </GlobalStoreProvider>
     )
 
     expect(result.find("AROpaqueImageView").length).toBe(0)
@@ -83,9 +92,11 @@ describe("ArtworkTileRailCard", () => {
     }
 
     mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <ArtworkTileRailCard {...props} />
+        </Theme>
+      </GlobalStoreProvider>
     )
   })
 
@@ -96,9 +107,11 @@ describe("ArtworkTileRailCard", () => {
     }
 
     mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <ArtworkTileRailCard {...props} />
+        </Theme>
+      </GlobalStoreProvider>
     )
   })
 
@@ -109,9 +122,11 @@ describe("ArtworkTileRailCard", () => {
     }
 
     mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <ArtworkTileRailCard {...props} />
+        </Theme>
+      </GlobalStoreProvider>
     )
   })
 
@@ -122,9 +137,11 @@ describe("ArtworkTileRailCard", () => {
     }
 
     mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <ArtworkTileRailCard {...props} />
+        </Theme>
+      </GlobalStoreProvider>
     )
   })
 
@@ -135,9 +152,11 @@ describe("ArtworkTileRailCard", () => {
     }
 
     mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <ArtworkTileRailCard {...props} />
+        </Theme>
+      </GlobalStoreProvider>
     )
   })
 
@@ -150,9 +169,11 @@ describe("ArtworkTileRailCard", () => {
 
     expect(() =>
       mount(
-        <Theme>
-          <ArtworkTileRailCard {...props} />
-        </Theme>
+        <GlobalStoreProvider>
+          <Theme>
+            <ArtworkTileRailCard {...props} />
+          </Theme>
+        </GlobalStoreProvider>
       )
     ).toThrowError(error)
   })
@@ -164,9 +185,11 @@ describe("ArtworkTileRailCard", () => {
     }
 
     const result = mount(
-      <Theme>
-        <ArtworkTileRailCard {...props} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <ArtworkTileRailCard {...props} />
+        </Theme>
+      </GlobalStoreProvider>
     )
 
     const image = result.find("AROpaqueImageView")

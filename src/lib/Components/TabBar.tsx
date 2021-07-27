@@ -1,8 +1,9 @@
+import { themeGet } from "@styled-system/theme-get"
 import React from "react"
 import { Animated, View } from "react-native"
 import styled from "styled-components/native"
 
-import { Box, color, Sans, space } from "palette"
+import { Box, ClassTheme, Sans } from "palette"
 
 /**
  * Nearly all props are given by the ScrollableTabView,
@@ -45,7 +46,7 @@ const TabButton = styled.View<{ spaceEvenly?: boolean; active?: boolean }>`
     !p.spaceEvenly &&
     p.active &&
     `
-    border-color: ${color("black100")};
+    border-color: ${themeGet("colors.black100")};
     border-bottom-width: 1px;
     margin-bottom: -1px;
   `};
@@ -69,63 +70,72 @@ export default class TabBar extends React.Component<TabBarProps> {
         onPress={() => onPressHandler(page)}
       >
         <TabButton spaceEvenly={this.props.spaceEvenly} active={isTabActive}>
-          <Sans
-            numberOfLines={1}
-            ellipsizeMode="tail"
-            weight="medium"
-            size="3"
-            color={isTabActive ? "black" : color("black30")}
-          >
-            {name}
-          </Sans>
+          <ClassTheme>
+            {({ color }) => (
+              <Sans
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                weight="medium"
+                size="3"
+                color={isTabActive ? "black" : color("black30")}
+              >
+                {name}
+              </Sans>
+            )}
+          </ClassTheme>
         </TabButton>
       </Button>
     )
   }
 
   render() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const containerWidth = this.props.containerWidth - space(4)
-    const numberOfTabs = this.props.tabs.length
-
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const translateX = this.props.scrollValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, containerWidth / numberOfTabs],
-    })
-
     return (
-      <Wrapper px={2}>
-        <Tabs>
-          {this.props.tabs.map((name, page) => {
-            const isTabActive = this.props.activeTab === page
-            return this.renderTab(name, page, isTabActive, this.props.goToPage)
-          })}
-          {this.props.spaceEvenly ? (
-            <Underline
-              style={[
-                {
-                  position: "absolute",
-                  width: containerWidth / numberOfTabs,
-                  height: 1,
-                  backgroundColor: "black",
-                  bottom: -1,
-                  left: 0,
-                  right: 0,
-                },
-                {
-                  transform: [{ translateX }],
-                },
-              ]}
-            />
-          ) : null}
-        </Tabs>
-      </Wrapper>
+      <ClassTheme>
+        {({ space }) => {
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          const containerWidth = this.props.containerWidth - space(4)
+          const numberOfTabs = this.props.tabs.length
+
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          const translateX = this.props.scrollValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, containerWidth / numberOfTabs],
+          })
+          return (
+            <Wrapper px={2}>
+              <Tabs>
+                {this.props.tabs.map((name, page) => {
+                  const isTabActive = this.props.activeTab === page
+                  return this.renderTab(name, page, isTabActive, this.props.goToPage)
+                })}
+                {this.props.spaceEvenly ? (
+                  <Underline
+                    style={[
+                      {
+                        position: "absolute",
+                        width: containerWidth / numberOfTabs,
+                        height: 1,
+                        backgroundColor: "black",
+                        bottom: -1,
+                        left: 0,
+                        right: 0,
+                      },
+                      {
+                        transform: [{ translateX }],
+                      },
+                    ]}
+                  />
+                ) : null}
+              </Tabs>
+            </Wrapper>
+          )
+        }}
+      </ClassTheme>
     )
   }
 }
 
 const Wrapper = styled(Box)`
   border-bottom-width: 1px;
-  border-bottom-color: ${color("black30")};
+  border-bottom-color: ${themeGet("colors.black30")};
 `

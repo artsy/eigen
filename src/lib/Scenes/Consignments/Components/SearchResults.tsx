@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Spacer } from "palette"
+import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { ScrollView, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
@@ -24,9 +24,13 @@ const noResults = <T,>(props: SearchQueryProps<T>) => {
     return null
   }
   return (
-    <Sans size="3t" color={color("black60")}>
-      {props.noResultsMessage} {props.query}
-    </Sans>
+    <ClassTheme>
+      {({ color }) => (
+        <Sans size="3t" color={color("black60")}>
+          {props.noResultsMessage} {props.query}
+        </Sans>
+      )}
+    </ClassTheme>
   )
 }
 

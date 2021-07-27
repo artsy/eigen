@@ -2,7 +2,7 @@ import { ActionType, ContextModule, OwnerType, TappedArticleGroup } from "@artsy
 import { FairEditorial_fair } from "__generated__/FairEditorial_fair.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
-import { Box, BoxProps, color, Text, Touchable } from "palette"
+import { Box, BoxProps, Text, Touchable, useColor } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -12,6 +12,7 @@ interface FairEditorialProps extends BoxProps {
 }
 
 export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) => {
+  const color = useColor()
   const tracking = useTracking()
 
   const trackTappedArticle = (articleID: string, articleSlug: string) => {

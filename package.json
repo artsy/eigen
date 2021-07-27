@@ -41,7 +41,6 @@
     "start-packager-after-relay": "yarn relay && yarn start-packager",
     "start-servers": "concurrently --kill-others 'yarn start-packager-after-relay' 'yarn relay --watch'",
     "start": "yarn start-servers",
-    "stylelint-project": " stylelint -- 'src/**/*.{ts,tsx}'",
     "sync-cities": "curl https://raw.githubusercontent.com/artsy/metaphysics/master/src/schema/city/cityDataSortedByDisplayPreference.json -o data/cityDataSortedByDisplayPreference.json",
     "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/master/_schemaV2.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
     "sync-schema:localhost": "cd ../metaphysics && yarn dump-schema v2 ../eigen/data/",
@@ -57,6 +56,7 @@
     "storybook-server": "start-storybook -p 7007",
     "build-storybook": "build-storybook",
     "start-storybook": "STORYBOOK=1 yarn start",
+    "detect-secrets": "detect-secrets-launcher",
     "update-metaphysics": "node scripts/update-metaphysics.js"
   },
   "repository": {
@@ -84,8 +84,8 @@
     "cheerio": "0.22.0"
   },
   "dependencies": {
-    "@artsy/cohesion": "2.7.0",
-    "@artsy/palette-tokens": "^1.3.1",
+    "@artsy/cohesion": "2.13.0",
+    "@artsy/palette-tokens": "2.1.2",
     "@expo/react-native-action-sheet": "^3.8.0",
     "@invertase/react-native-apple-authentication": "^2.1.2",
     "@ptomasroos/react-native-multi-slider": "^2.2.2",
@@ -105,6 +105,7 @@
     "@segment/analytics-react-native": "^1.5.0",
     "@segment/analytics-react-native-appboy": "^1.5.0",
     "@sentry/react-native": "2.2.1",
+    "@styled-system/theme-get": "^5.1.2",
     "easy-peasy": "3.3.0",
     "events": "3.1.0",
     "formik": "2.1.4",
@@ -148,7 +149,7 @@
     "rn-fetch-blob": "0.12.0",
     "semver": "^7.3.4",
     "simple-markdown": "0.7.2",
-    "styled-components": "4.2.0",
+    "styled-components": "4.2.1",
     "styled-system": "5.1.5",
     "supercluster": "6.0.1",
     "tipsi-stripe": "https://github.com/artsy/tipsi-stripe.git#fix-infinite-loop",
@@ -156,8 +157,7 @@
     "yup": "0.29.1"
   },
   "devDependencies": {
-    "@artsy/auto-config": "1.0.2",
-    "@artsy/update-repo": "0.2.0",
+    "@artsy/update-repo": "0.2.1",
     "@babel/core": "^7.12.9",
     "@babel/plugin-proposal-class-properties": "7.10.4",
     "@babel/plugin-proposal-decorators": "7.10.5",
@@ -192,8 +192,9 @@
     "@types/relay-test-utils": "6.0.1",
     "@types/remove-markdown": "0.1.1",
     "@types/semver": "^7.3.4",
-    "@types/styled-components": "4.0.2",
-    "@types/styled-system": "5.1.9",
+    "@types/styled-components": "4.0.3",
+    "@types/styled-system": "5.1.12",
+    "@types/styled-system__theme-get": "^5.0.1",
     "@types/supercluster": "5.0.0",
     "@types/yup": "0.29.3",
     "argparse": "^2.0.1",
@@ -210,6 +211,7 @@
     "danger": "^10.6.4",
     "danger-plugin-jest": "^1.3.0",
     "dedent": "0.7.0",
+    "detect-secrets": "^1.0.6",
     "dotenv": "8.2.0",
     "enzyme": "3.9.0",
     "enzyme-adapter-react-16": "1.13.0",
@@ -220,7 +222,6 @@
     "jest": "25.2.7",
     "jest-fetch-mock": "^3.0.3",
     "jest-raw-loader": "1.0.1",
-    "jest-styled-components": "7.0.0-2",
     "jest-watch-typeahead": "^0.6.1",
     "jetifier": "^1.6.6",
     "json5": "2.1.0",
@@ -249,20 +250,14 @@
     "relay-test-utils": "^10.0.1",
     "rimraf": "^3.0.2",
     "snapshot-diff": "0.2.2",
-    "stylelint": "9.8.0",
-    "stylelint-config-standard": "18.2.0",
-    "stylelint-config-styled-components": "0.1.1",
-    "stylelint-processor-styled-components": "1.5.1",
     "tmp": "0.1.0",
     "ts-node": "8.4.1",
     "tslint": "5.14.0",
     "tslint-config-prettier": "1.18.0",
     "tslint-plugin-relay": "0.0.2",
     "typescript": "^4.1.2",
-    "typescript-styled-plugin": "0.13.0",
-    "vscode-apollo-relay": "1.5.0",
-    "yaml": "1.9.2",
-    "yaml-lint": "^1.2.4"
+    "typescript-styled-plugin": "0.18.0",
+    "vscode-apollo-relay": "1.5.1"
   },
   "config": {
     "react-native-storybook-loader": {
@@ -280,8 +275,8 @@
     "*.@(json|md)": [
       "yarn prettier-write"
     ],
-    "*.@(yml)": [
-      "yarn yamllint"
+    "**/!(package.json)": [
+      "detect-secrets-launcher --baseline .secrets.baseline"
     ]
   },
   "prettier": {

@@ -1,4 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
+import { themeGet } from "@styled-system/theme-get"
 import { SavedAddresses_me } from "__generated__/SavedAddresses_me.graphql"
 import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
@@ -8,7 +9,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, color, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import { Box, Flex, Separator, Spacer, Text, Touchable } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -22,7 +23,8 @@ interface CardProps {
 }
 
 const Card = styled(Flex)`
-  border: 1px solid ${(props: CardProps) => (props.isDefault ? color("black100") : color("black30"))};
+  border: 1px solid
+    ${(props: CardProps) => (props.isDefault ? themeGet("colors.black100") : themeGet("colors.black30"))};
   border-radius: 4;
 `
 
@@ -54,7 +56,13 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
     }
   }, [])
 
-  const onPressEditAddress = () => null
+  const onPressEditAddress = (addressId: string) =>
+    navigate("/my-profile/saved-addresses/edit-address", {
+      modal: true,
+      passProps: {
+        addressId,
+      },
+    })
 
   const onPressDeleteAddress = (addressId: string) => {
     deleteSavedAddress(
@@ -97,7 +105,10 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
                     {!!item?.isDefault && <Text variant="small">Default Address</Text>}
                   </Flex>
                   <Flex flex={1} flexDirection="row" justifyContent="space-between">
-                    <Touchable onPress={onPressEditAddress}>
+                    <Touchable
+                      testID={`EditAddress-${item.internalID}`}
+                      onPress={() => onPressEditAddress(item.internalID)}
+                    >
                       <Text variant="text" color="black100" style={{ textDecorationLine: "underline" }}>
                         Edit
                       </Text>
@@ -119,7 +130,9 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
           addresses.length ? (
             <Box mx={2} mb={2}>
               <AddAddressButton
-                handleOnPress={() => navigate("/my-profile/saved-addresses/new-address")}
+                block={false}
+                variant="secondaryOutline"
+                handleOnPress={() => navigate("/my-profile/saved-addresses/new-address", { modal: true })}
                 title="Add New Address"
               />
             </Box>
@@ -136,7 +149,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
               Please add an address for a faster checkout experience in the future.
             </Text>
             <AddAddressButton
-              handleOnPress={() => navigate("/my-profile/saved-addresses/new-address")}
+              handleOnPress={() => navigate("/my-profile/saved-addresses/new-address", { modal: true })}
               title="Add New Address"
             />
           </Flex>
@@ -175,6 +188,7 @@ export const SavedAddressesContainer = createRefetchContainer(
               addressLine1
               addressLine2
               addressLine3
+              country
               city
               region
               postalCode

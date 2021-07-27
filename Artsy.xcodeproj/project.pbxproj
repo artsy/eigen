@@ -248,7 +248,6 @@
 		60026AF21BDE3EFB0040257C /* ARWebViewCacheHost.m in Sources */ = {isa = PBXBuildFile; fileRef = 60026AF11BDE3EFB0040257C /* ARWebViewCacheHost.m */; };
 		600415C917C4ECE2003C7974 /* ArtsyAPI+RelatedModels.m in Sources */ = {isa = PBXBuildFile; fileRef = 600415C817C4ECE2003C7974 /* ArtsyAPI+RelatedModels.m */; };
 		600A734317DE3F3F00E21233 /* ArtsyAPI+DeviceTokens.m in Sources */ = {isa = PBXBuildFile; fileRef = 600A734217DE3F3F00E21233 /* ArtsyAPI+DeviceTokens.m */; };
-		600B8B451C4FCEEC00776F84 /* CHANGELOG.yml in Resources */ = {isa = PBXBuildFile; fileRef = 600B8B441C4FCEEC00776F84 /* CHANGELOG.yml */; };
 		600EE29E16B3003F002E9F9A /* ARNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 600EE29C16B3003F002E9F9A /* ARNavigationButton.m */; };
 		60107F161CC7DC1D002F772E /* ARTestImageCachingFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60107F151CC7DC1D002F772E /* ARTestImageCachingFunctions.swift */; };
 		6016120420B7446800FD54B0 /* ARVIRModalClose.png in Resources */ = {isa = PBXBuildFile; fileRef = 6016120120B7446700FD54B0 /* ARVIRModalClose.png */; };
@@ -3084,7 +3083,6 @@
 				5E80CA822093C29500BCFD82 /* CircleCheckGreen@3x.png in Resources */,
 				604E08232051E9E000785717 /* ARVIRPhone@2x.png in Resources */,
 				CB6CE8F024F9684400ED2843 /* Range@2x.png in Resources */,
-				600B8B451C4FCEEC00776F84 /* CHANGELOG.yml in Resources */,
 				1CC9EBA61CC76CDD00A74E3C /* followButtonChecked@3x.png in Resources */,
 				608B707B17D4A1C80088A56C /* FooterBackground@2x.png in Resources */,
 				3C4AE99319094F96009C0E8B /* ViewInRoom_BaseNoBench@2x.png in Resources */,
