@@ -24,6 +24,7 @@ const Card = styled(Flex)`
 `
 
 const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
+  console.log("SavedAddresses defaultEnv", defaultEnvironment)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const addresses = extractNodes(me.addressConnection)
   const onRefresh = useCallback(() => {
@@ -33,15 +34,17 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
       null,
       () => {
         setIsRefreshing(false)
-      },
-      { force: true }
+      }
+      // { force: true }
     )
   }, [])
 
   const onPressEditAddress = () => null
 
   const onPressDeleteAddress = async (addressId: string) => {
+    console.log("onPressDeleteAddress")
     await deleteSavedAddress(addressId)
+    console.log("AFTERonPressDeleteAddress")
     relay.refetch({})
   }
 
@@ -55,44 +58,50 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
           paddingTop: addresses.length === 0 ? 10 : 40,
           flexGrow: 0.8,
         }}
-        renderItem={({ item }) => (
-          <>
-            <Card mx={2} py={2} px={16} isDefault={item.isDefault}>
-              <Text fontSize={16} lineHeight={24}>
-                {item.name}
-              </Text>
-              <Text fontSize={16} lineHeight={24} color="black60">
-                {[item.addressLine1, item?.addressLine2, item?.addressLine3].filter(Boolean).join(", ")}
-              </Text>
-              <Text fontSize={16} lineHeight={24} color="black60">
-                {item.city}, {item.postalCode}
-              </Text>
-              <Spacer height={10} />
-              <Text variant="text" color="black60">
-                {item?.phoneNumber}
-              </Text>
-              <Separator my={2} />
-              <Flex flexDirection="row">
-                <Flex flex={1} justifyContent="center">
-                  {!!item?.isDefault && <Text variant="small">Default Address</Text>}
+        renderItem={({ item }) => {
+          console.log({ item })
+          return (
+            <>
+              <Card mx={2} py={2} px={16} isDefault={item.isDefault}>
+                <Text fontSize={16} lineHeight={24}>
+                  {item.name}
+                </Text>
+                <Text fontSize={16} lineHeight={24} color="black60">
+                  {[item.addressLine1, item?.addressLine2, item?.addressLine3].filter(Boolean).join(", ")}
+                </Text>
+                <Text fontSize={16} lineHeight={24} color="black60">
+                  {item.city}, {item.postalCode}
+                </Text>
+                <Spacer height={10} />
+                <Text variant="text" color="black60">
+                  {item?.phoneNumber}
+                </Text>
+                <Separator my={2} />
+                <Flex flexDirection="row">
+                  <Flex flex={1} justifyContent="center">
+                    {!!item?.isDefault && <Text variant="small">Default Address</Text>}
+                  </Flex>
+                  <Flex flex={1} flexDirection="row" justifyContent="space-between">
+                    <Touchable onPress={onPressEditAddress}>
+                      <Text variant="text" color="black100" style={{ textDecorationLine: "underline" }}>
+                        Edit
+                      </Text>
+                    </Touchable>
+                    <Touchable
+                      testID={`Delete-${item.internalID}`}
+                      onPress={() => onPressDeleteAddress(item.internalID)}
+                    >
+                      <Text variant="text" color="red100" style={{ textDecorationLine: "underline" }}>
+                        Delete
+                      </Text>
+                    </Touchable>
+                  </Flex>
                 </Flex>
-                <Flex flex={1} flexDirection="row" justifyContent="space-between">
-                  <Touchable onPress={onPressEditAddress}>
-                    <Text variant="text" color="black100" style={{ textDecorationLine: "underline" }}>
-                      Edit
-                    </Text>
-                  </Touchable>
-                  <Touchable onPress={() => onPressDeleteAddress(item.internalID)}>
-                    <Text variant="text" color="red100" style={{ textDecorationLine: "underline" }}>
-                      Delete
-                    </Text>
-                  </Touchable>
-                </Flex>
-              </Flex>
-            </Card>
-            <Spacer height={40} />
-          </>
-        )}
+              </Card>
+              <Spacer height={40} />
+            </>
+          )
+        }}
         ListEmptyComponent={
           <Flex py={3} px={2} alignItems="center" height="100%" justifyContent="center">
             <Text variant="title" mb={2}>
@@ -161,6 +170,7 @@ export const SavedAddressesContainer = createRefetchContainer(
 )
 
 export const SavedAddressesQueryRenderer: React.FC<{}> = ({}) => {
+  console.log("SavedAddressesQueryRenderer defaultEnvironment", defaultEnvironment)
   return (
     <QueryRenderer<SavedAddressesQuery>
       environment={defaultEnvironment}
@@ -176,7 +186,7 @@ export const SavedAddressesQueryRenderer: React.FC<{}> = ({}) => {
         renderPlaceholder: () => <SavedAddressesPlaceholder />,
       })}
       variables={{}}
-      cacheConfig={{ force: true }}
+      // cacheConfig={{ force: true }}
     />
   )
 }

@@ -1,8 +1,10 @@
 import { SavedAddressesTestsQuery } from "__generated__/SavedAddressesTestsQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Flex, Touchable } from "palette"
 import React from "react"
+import { Platform } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -28,6 +30,7 @@ describe(SavedAddressesQueryRenderer, () => {
         }
       `}
       render={({ props, error }) => {
+        console.log("mesa renderer mockEnvironment", mockEnvironment)
         if (props?.me) {
           return <SavedAddressesContainer me={props.me} />
         } else if (error) {
@@ -39,6 +42,7 @@ describe(SavedAddressesQueryRenderer, () => {
   )
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    Platform.OS = "android"
   })
 
   it("renders no saved addresses screen", () => {
@@ -119,7 +123,8 @@ describe(SavedAddressesQueryRenderer, () => {
   })
 
   // the test that is breaking
-  xit("should successfully delete address on delete button press", () => {
+  it("should successfully delete address on delete button press", async () => {
+    console.log({ mockEnvironment })
     // set the mutation
     const mutation: Mutation = {
       name: "deleteSavedAddressDeleteUserAddressMutation",
@@ -175,17 +180,19 @@ describe(SavedAddressesQueryRenderer, () => {
     })
 
     // track the button
-    const buttons = tree.root.findAllByType(Touchable)
-    const firstDeleteButton = buttons[1]
+    const deleteButton = tree.root
+      .findAllByType(Touchable)
+      .filter((touchable) => touchable.props.testID === "Delete-5861")[0]
 
-    act(() => firstDeleteButton.props.onPress())
-    // this breaks
+    await act(async () => deleteButton.props.onPress())
+    // // this breaks
+    console.log("About to call most recent op")
     const createOperation = mockEnvironment.mock.getMostRecentOperation()
 
-    expect(createOperation.request.node.operation.name).toEqual(mutation.name)
-    expect(createOperation.request.variables).toEqual(mutation.variables)
+    // expect(createOperation.request.node.operation.name).toEqual(mutation.name)
+    // expect(createOperation.request.variables).toEqual(mutation.variables)
 
-    act(() => mockEnvironment.mock.resolve(createOperation, MockPayloadGenerator.generate(createOperation)))
+    // act(() => mockEnvironment.mock.resolve(createOperation, MockPayloadGenerator.generate(createOperation)))
     // // lsls
 
     // const refetchOperation = mockEnvironment.mock.getMostRecentOperation()

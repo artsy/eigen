@@ -20,7 +20,7 @@ export function createEnvironment(
     [
       // The top middlewares run first, i.e. they are the furtherst from the fetch
       // @ts-ignore
-      cacheMiddleware(),
+      // cacheMiddleware(),
       persistedQueryMiddleware(),
       metaphysicsURLMiddleware(),
       rateLimitMiddleware(),

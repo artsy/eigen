@@ -68,6 +68,33 @@ jest.mock("@react-native-community/netinfo", () => {
   }
 })
 
+let mockDefaultEnvironment: ReturnType<typeof createMockEnvironment>
+// mockDefaultEnvironment = createMockEnvironment()
+
+// savedAddresses defaultenvironment logs undefined we expected create mock inside b4 each to be called first
+
+console.log("[setupJest] outside everything")
+
+jest.mock("lib/relay/createEnvironment", () => {
+  console.log("[setupJest] mock createEnv")
+  return {
+    defaultEnvironment: mockDefaultEnvironment,
+  }
+})
+
+beforeEach(() => {
+  console.log("[setupJest] b4each")
+  mockDefaultEnvironment = createMockEnvironment({
+    missingFieldHandlers: [
+      {
+        kind: "scalar",
+        handle: () => "wow",
+        wow: "string",
+      },
+    ],
+  })
+})
+
 jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
   NotificationsManager: new (require("events").EventEmitter)(),
 }))
@@ -202,6 +229,7 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { postEventToProviders } from "lib/utils/track/providers"
 import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
+import { createMockEnvironment } from "relay-test-utils"
 
 type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }
 
