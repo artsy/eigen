@@ -19,6 +19,7 @@ export type ButtonVariant =
   | "secondaryOutline"
   | "secondaryOutlineWarning"
   | "noOutline"
+
 /** Default button color variant */
 export const defaultVariant: ButtonVariant = "primaryBlack"
 
