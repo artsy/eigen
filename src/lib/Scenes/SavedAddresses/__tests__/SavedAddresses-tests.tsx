@@ -1,5 +1,5 @@
 import { SavedAddressesTestsQuery } from "__generated__/SavedAddressesTestsQuery.graphql"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
+// import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Flex, Touchable } from "palette"
@@ -126,14 +126,14 @@ describe(SavedAddressesQueryRenderer, () => {
   it("should successfully delete address on delete button press", async () => {
     console.log({ mockEnvironment })
     // set the mutation
-    const mutation: Mutation = {
-      name: "deleteSavedAddressDeleteUserAddressMutation",
-      variables: {
-        input: {
-          userAddressID: "5861",
-        },
-      },
-    }
+    // const mutation: Mutation = {
+    //   name: "deleteSavedAddressDeleteUserAddressMutation",
+    //   variables: {
+    //     input: {
+    //       userAddressID: "5861",
+    //     },
+    //   },
+    // }
     // Do we actually need this? (took the idea from savedSearchBanner-tests)
     // const mockResolvers = {
     //   Me: () => ({
@@ -187,7 +187,7 @@ describe(SavedAddressesQueryRenderer, () => {
     await act(async () => deleteButton.props.onPress())
     // // this breaks
     console.log("About to call most recent op")
-    const createOperation = mockEnvironment.mock.getMostRecentOperation()
+    // const createOperation = mockEnvironment.mock.getMostRecentOperation()
 
     // expect(createOperation.request.node.operation.name).toEqual(mutation.name)
     // expect(createOperation.request.variables).toEqual(mutation.variables)

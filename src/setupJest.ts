@@ -89,6 +89,7 @@ beforeEach(() => {
       {
         kind: "scalar",
         handle: () => "wow",
+        // @ts-ignore
         wow: "string",
       },
     ],
