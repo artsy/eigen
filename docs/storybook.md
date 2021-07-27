@@ -28,3 +28,15 @@ Opens storybook as a screen in the app.
 yarn storybook-ios
 yarn storybook-android
 ```
+
+**Adding new storybook stories**
+
+Make a file next to the file you want to make stories for, for example, if you want to make stories for `Checkbox.tsx`, make a file called `Checkbox.stories.tsx` next to it.
+
+You can look for other stories files for reference, but the main structure is:
+
+```tsx
+storiesOf("Checkbox", module)
+  .add("A Story Name", () => <Checkbox someProp="wow" />)
+  .add("Another Story Name", () => <Checkbox otherProps="NICE" />)
+```

@@ -1,5 +1,4 @@
 import { action } from "@storybook/addon-actions"
-import { withNotes } from "@storybook/addon-notes"
 import { storiesOf } from "@storybook/react-native"
 import { Button, ButtonSize, ButtonVariant } from "palette"
 import React from "react"
@@ -17,7 +16,6 @@ const variants: ButtonVariant[] = [
 ]
 
 storiesOf("Button", module)
-  .addDecorator(withNotes)
   .add("Sizes", () => (
     <DList
       data={sizes}
