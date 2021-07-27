@@ -187,7 +187,11 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
                   </Flex>
                 )}
               />
-              <SavedSearchButtonQueryRenderer artistId={artistInternalId} filters={filterParams} />
+              <SavedSearchButtonQueryRenderer
+                artistId={artistInternalId}
+                filters={filterParams}
+                onCreateAlertPress={openCreateSavedSearchAlertModal}
+              />
             </Flex>
             <Separator />
           </>
@@ -209,7 +213,14 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
         )}
       </Box>
     )
-  }, [artworksTotal, shouldShowSavedSearchBanner, artistInternalId, filterParams, enableSavedSearchV2])
+  }, [
+    artworksTotal,
+    shouldShowSavedSearchBanner,
+    artistInternalId,
+    filterParams,
+    enableSavedSearchV2,
+    openCreateSavedSearchAlertModal,
+  ])
 
   const filteredArtworks = () => {
     if (artworksCount === 0) {
