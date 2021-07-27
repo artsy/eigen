@@ -20,6 +20,7 @@ import {
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
+import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -40,9 +41,12 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
   const tracking = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const [isCreateSavedSearchModalVisible, setCreateSavedSearchModalVisible] = useState(false)
 
   const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
   const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
+  const handleOpenSavedSearchModal = () => setCreateSavedSearchModalVisible(true)
+  const handleCloseSavedSearchModal = () => setCreateSavedSearchModalVisible(false)
 
   const openFilterArtworksModal = () => {
     tracking.trackEvent({
@@ -71,7 +75,13 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   return (
     <ArtworkFiltersStoreProvider>
       <StickyTabPageScrollView>
-        <ArtistArtworksContainer {...props} artist={artist} relay={relay} openFilterModal={openFilterArtworksModal} />
+        <ArtistArtworksContainer
+          {...props}
+          artist={artist}
+          relay={relay}
+          openFilterModal={openFilterArtworksModal}
+          openCreateSavedSearchAlertModal={handleOpenSavedSearchModal}
+        />
         <ArtworkFilterNavigator
           {...props}
           id={artist.internalID}
@@ -81,12 +91,14 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
           closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.ArtistArtworks}
         />
+        <CreateSavedSearchAlert visible={isCreateSavedSearchModalVisible} onClosePress={handleCloseSavedSearchModal} />
       </StickyTabPageScrollView>
     </ArtworkFiltersStoreProvider>
   )
 }
 interface ArtistArtworksContainerProps {
   openFilterModal: () => void
+  openCreateSavedSearchAlertModal: () => void
 }
 
 const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContainerProps> = ({
@@ -94,6 +106,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   relay,
   searchCriteria,
   openFilterModal,
+  openCreateSavedSearchAlertModal,
   ...props
 }) => {
   const tracking = useTracking()
