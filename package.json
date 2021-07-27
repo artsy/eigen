@@ -56,7 +56,7 @@
     "storybook-server": "start-storybook -p 7007",
     "build-storybook": "build-storybook",
     "start-storybook": "STORYBOOK=1 yarn start",
-    "detect-secrets": "detect-secrets-launcher",
+    "detect-secrets": "detect-secrets-launcher --baseline .secrets.baseline",
     "update-metaphysics": "node scripts/update-metaphysics.js"
   },
   "repository": {
@@ -276,7 +276,7 @@
       "yarn prettier-write"
     ],
     "**/!(package.json)": [
-      "detect-secrets-launcher --baseline .secrets.baseline"
+      "yarn detect-secrets"
     ]
   },
   "prettier": {
