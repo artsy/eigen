@@ -15,6 +15,7 @@ import React, { useCallback, useEffect, useState } from "react"
 import { FlatList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import usePrevious from "react-use/lib/usePrevious"
 import styled from "styled-components/native"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
 import { KeywordFilter } from "../../ArtworkFilter/Filters/KeywordFilter"
@@ -39,15 +40,29 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
 
   const filterParams = filterArtworksParams(appliedFilters, "auctionResult")
 
+  const [refetching, setRefetching] = useState(false)
+
+  const keywordFilterValue = appliedFilters?.find((filter) => filter.paramName === FilterParamName.keyword)?.paramValue
+  const lastKeywordFilterValue = usePrevious(keywordFilterValue)
+
+  const hasKeywordFilterChanged = keywordFilterValue !== lastKeywordFilterValue
+  const isKeywordFilterActive = !!keywordFilterValue
+
   useEffect(() => {
     setFilterTypeAction("auctionResult")
   }, [])
 
   useEffect(() => {
     if (applyFilters) {
+      if (hasKeywordFilterChanged) {
+        setRefetching(true)
+      }
+
       relay.refetchConnection(
         PAGE_SIZE,
         (error) => {
+          setRefetching(false)
+
           if (error) {
             throw new Error("ArtistInsights/ArtistAuctionResults filter error: " + error.message)
           }
@@ -124,9 +139,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
 
   const resultsString = Number(artist.auctionResultsConnection?.totalCount) === 1 ? "result" : "results"
 
-  const isKeywordFilterActive = !!appliedFilters?.find((filter) => filter.paramName === FilterParamName.keyword)
-    ?.paramValue
-
   return (
     <View
       // Setting min height to keep scroll position when user searches with the keyword filter.
@@ -156,7 +168,12 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         </SortMode>
         <Separator borderColor={color("black5")} mt="2" />
         {!!showKeywordFilter && (
-          <KeywordFilter artistId={artist.internalID} artistSlug={artist.slug} onFocus={scrollToTop} />
+          <KeywordFilter
+            artistId={artist.internalID}
+            artistSlug={artist.slug}
+            loading={refetching}
+            onFocus={scrollToTop}
+          />
         )}
       </Flex>
       {auctionResults.length ? (

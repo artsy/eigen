@@ -17,6 +17,8 @@ import styled from "styled-components/native"
 import { EyeClosedIcon } from "../../../palette/svgs/EyeClosedIcon"
 import { InputTitle } from "./InputTitle"
 
+const LoadingIndicator = styled.ActivityIndicator``
+
 export const INPUT_HEIGHT = 43
 
 export interface InputProps extends Omit<TextInputProps, "placeholder"> {
@@ -24,6 +26,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   description?: string
   error?: string
   icon?: JSX.Element
+  loading?: boolean
   disabled?: boolean
   required?: boolean
   title?: string
@@ -68,6 +71,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       disabled,
       error,
       icon,
+      loading,
       required,
       enableClearButton,
       title,
@@ -252,17 +256,24 @@ export const Input = React.forwardRef<TextInput, InputProps>(
               />
             </Flex>
             {renderShowPasswordIcon()}
-            {!!(value !== undefined && value !== "" && enableClearButton) && (
+            {loading ? (
               <Flex pr="1" justifyContent="center" flexGrow={0}>
-                <TouchableOpacity
-                  onPress={() => {
-                    localClear()
-                  }}
-                  hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
-                >
-                  <XCircleIcon fill="black30" />
-                </TouchableOpacity>
+                <LoadingIndicator animating={true} hidesWhenStopped />
+                {/* <LoaderIcon fill="black30" animated /> */}
               </Flex>
+            ) : (
+              !!(value !== undefined && value !== "" && enableClearButton) && (
+                <Flex pr="1" justifyContent="center" flexGrow={0}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      localClear()
+                    }}
+                    hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
+                  >
+                    <XCircleIcon fill="black30" />
+                  </TouchableOpacity>
+                </Flex>
+              )
             )}
           </View>
         </TouchableWithoutFeedback>
