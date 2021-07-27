@@ -12,10 +12,10 @@ import { SavedAddressesContainer, SavedAddressesQueryRenderer } from "../SavedAd
 
 jest.unmock("react-relay")
 
-interface Mutation {
-  name: string
-  variables: Record<string, any>
-}
+// interface Mutation {
+//   name: string
+//   variables: Record<string, any>
+// }
 
 describe(SavedAddressesQueryRenderer, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
