@@ -222,7 +222,9 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     unsafe_getFeatureFlag("AROptionsUseReactNativeWebView")
       ? webViewRoute("/orders/:orderID", { mimicBrowserBackButton: false })
       : new RouteMatcher("/orders/:orderID", "Checkout"),
+    __DEV__ && new RouteMatcher("/storybook", "Storybook"),
 
+    // Every other route needs to go above
     new RouteMatcher("/:slug", "VanityURLEntity"),
     webViewRoute("/*"),
   ])
