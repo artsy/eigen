@@ -9,9 +9,9 @@ export const FancyModal: React.FC<{
   visible: boolean
   maxHeight?: number
   fullScreen?: boolean
-  onBackgroundPressed(): void
+  onBackgroundPressed?(): void
   onModalFinishedClosing?(): void
-}> = ({ visible, children, onBackgroundPressed, maxHeight, fullScreen, onModalFinishedClosing }) => {
+}> = ({ visible, children, onBackgroundPressed = () => null, maxHeight, fullScreen, onModalFinishedClosing }) => {
   const {
     height: screenHeight,
     safeAreaInsets: { top },
