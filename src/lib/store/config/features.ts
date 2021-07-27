@@ -162,7 +162,7 @@ export const devToggles = defineDevToggles({
       }
     },
   },
-  DTDShowAnalyticsVisualiser: {
+  DTShowAnalyticsVisualiser: {
     description: "Show analytics visualiser",
   },
 })

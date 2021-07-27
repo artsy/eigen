@@ -1,6 +1,6 @@
 import { screen } from "lib/utils/track/helpers"
 import { debounce } from "lodash"
-import { color, Flex, Text, Touchable } from "palette"
+import { Flex, Text, Touchable, useColor } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
 import { useTracking } from "react-tracking"
@@ -12,6 +12,7 @@ interface LoadFailureViewProps {
 }
 
 export const LoadFailureView: React.FC<LoadFailureViewProps> = (props) => {
+  const color = useColor()
   const spinAnimation = useRef(new Animated.Value(0)).current
   const [isAnimating, setIsAnimating] = useState(false)
 

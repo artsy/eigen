@@ -9,7 +9,8 @@ import { environment, EnvironmentKey } from "lib/store/config/EnvironmentModel"
 import { DevToggleName, devToggles, FeatureName, features } from "lib/store/config/features"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { capitalize, compact, sortBy } from "lodash"
-import { ChevronIcon, CloseIcon, color, Flex, ReloadIcon, Separator, Spacer, Text } from "palette"
+import { ChevronIcon, CloseIcon, Flex, ReloadIcon, Separator, Spacer, Text, useColor } from "palette"
+import { DevTogglePaletteFlag } from "palette/PaletteFlag"
 import React, { useEffect, useState } from "react"
 import {
   Alert,
@@ -116,6 +117,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         {configurableDevToggleKeys.map((devToggleKey) => {
           return <DevToggleItem key={devToggleKey} toggleKey={devToggleKey} />
         })}
+        <DevTogglePaletteFlag />
         <MenuItem
           title="Clear AsyncStorage"
           chevron={null}
@@ -370,6 +372,7 @@ function envMenuOption(
 }
 
 const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const color = useColor()
   const { env, adminOverrides, strings } = GlobalStore.useAppState((store) => store.config.environment)
   // show custom url options if there are already admin overrides in effect, or if the user has tapped the option
   // to set custom overrides during the lifetime of this component

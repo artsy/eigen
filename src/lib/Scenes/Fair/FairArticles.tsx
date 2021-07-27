@@ -6,7 +6,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useEnvironment } from "lib/store/GlobalStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { compact } from "lodash"
-import { Box, Button, Join, Message, space, Spacer, Text, Theme, Touchable } from "palette"
+import { Box, Button, Join, Message, Spacer, Text, Theme, Touchable, useSpace } from "palette"
 import React, { useState } from "react"
 import { Dimensions, FlatList, ScrollView } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -24,6 +24,7 @@ interface FairArticlesProps {
 }
 
 export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
+  const space = useSpace()
   const articles = fair.articlesConnection?.edges
   const totalCount = fair.articlesConnection?.totalCount ?? 0
   const [isLoading, setIsLoading] = useState(false)
@@ -160,7 +161,8 @@ export const FairArticlesPaginationContainer = createPaginationContainer(
     fair: graphql`
       fragment FairArticles_fair on Fair @argumentDefinitions(first: { type: "Int" }, after: { type: "String" }) {
         slug
-        articlesConnection(first: $first, after: $after, inEditorialFeed: true) @connection(key: "FairArticlesQuery_articlesConnection") {
+        articlesConnection(first: $first, after: $after, inEditorialFeed: true)
+          @connection(key: "FairArticlesQuery_articlesConnection") {
           totalCount
           edges {
             node {

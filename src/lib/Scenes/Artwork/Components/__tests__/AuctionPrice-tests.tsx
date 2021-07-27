@@ -14,6 +14,7 @@ import {
   OpenAuctionReserveNotMetWithBids,
 } from "lib/__fixtures__/ArtworkBidInfo"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { CheckCircleIcon, CloseCircleIcon, Sans, Theme } from "palette"
 import React from "react"
@@ -27,9 +28,11 @@ describe("AuctionPrice", () => {
   const getWrapper = async (response, auctionState: AuctionTimerState) => {
     return await renderRelayTree({
       Component: (props: any) => (
-        <Theme>
-          <AuctionPrice {...props} auctionState={auctionState} />
-        </Theme>
+        <GlobalStoreProvider>
+          <Theme>
+            <AuctionPrice {...props} auctionState={auctionState} />
+          </Theme>
+        </GlobalStoreProvider>
       ),
       query: graphql`
         query AuctionPriceTestsQuery @raw_response_type {

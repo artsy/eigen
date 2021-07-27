@@ -1,3 +1,4 @@
+import { themeGet } from "@styled-system/theme-get"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
 import { useNativeValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
 import {
@@ -8,7 +9,7 @@ import {
 import { TabEmptyState } from "lib/Components/TabEmptyState"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, color, Flex, Sans, space, Spacer } from "palette"
+import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
 import React, { useContext, useState } from "react"
 import { ActivityIndicator, ImageBackground, TouchableWithoutFeedback, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -31,26 +32,32 @@ class ShowGridItem extends React.Component<ShowGridItemProps> {
   render() {
     const { show, itemIndex } = this.props
     const showImageURL = show.coverImage && show.coverImage.url
-    const styles = itemIndex % 2 === 0 ? { paddingRight: space(1) } : { paddingLeft: space(1) }
 
     return (
-      <GridItem key={show.id}>
-        <TouchableWithoutFeedback onPress={this.onPress}>
-          <Box style={styles}>
-            {showImageURL ? (
-              <BackgroundImage key={show.id} resizeMode="cover" source={{ uri: showImageURL }} />
-            ) : (
-              <EmptyImage />
-            )}
-            <Spacer mb={0.5} />
-            <Sans size="3t">{show.name}</Sans>
-            <Sans size="3t" color="black60">
-              {show.exhibitionPeriod}
-            </Sans>
-          </Box>
-        </TouchableWithoutFeedback>
-        <Spacer mb={2} />
-      </GridItem>
+      <ClassTheme>
+        {({ space }) => {
+          const styles = itemIndex % 2 === 0 ? { paddingRight: space(1) } : { paddingLeft: space(1) }
+          return (
+            <GridItem key={show.id}>
+              <TouchableWithoutFeedback onPress={this.onPress}>
+                <Box style={styles}>
+                  {showImageURL ? (
+                    <BackgroundImage key={show.id} resizeMode="cover" source={{ uri: showImageURL }} />
+                  ) : (
+                    <EmptyImage />
+                  )}
+                  <Spacer mb={0.5} />
+                  <Sans size="3t">{show.name}</Sans>
+                  <Sans size="3t" color="black60">
+                    {show.exhibitionPeriod}
+                  </Sans>
+                </Box>
+              </TouchableWithoutFeedback>
+              <Spacer mb={2} />
+            </GridItem>
+          )
+        }}
+      </ClassTheme>
     )
   }
 }
@@ -107,37 +114,41 @@ export const PartnerShows: React.FC<{
   const tabIsActive = Boolean(useNativeValue(tabContext.tabIsActive, 0))
 
   return (
-    <View style={{ flex: 1 }}>
-      <StickyTabPageFlatList
-        data={sections}
-        // using tabIsActive here to render only the minimal UI on this tab before the user actually switches to it
-        onEndReachedThreshold={tabIsActive ? 1 : 0}
-        // render up to the first chunk on initial mount
-        initialNumToRender={sections.findIndex((section) => section.key.startsWith("chunk")) + 1}
-        windowSize={tabIsActive ? 5 : 1}
-        onEndReached={() => {
-          if (isLoadingMore || !relay.hasMore()) {
-            return
-          }
-          setIsLoadingMore(true)
-          relay.loadMore(PAGE_SIZE, (error) => {
-            if (error) {
-              // FIXME: Handle error
-              console.error("PartnerShows.tsx", error.message)
+    <ClassTheme>
+      {({ space }) => (
+        <View style={{ flex: 1 }}>
+          <StickyTabPageFlatList
+            data={sections}
+            // using tabIsActive here to render only the minimal UI on this tab before the user actually switches to it
+            onEndReachedThreshold={tabIsActive ? 1 : 0}
+            // render up to the first chunk on initial mount
+            initialNumToRender={sections.findIndex((section) => section.key.startsWith("chunk")) + 1}
+            windowSize={tabIsActive ? 5 : 1}
+            onEndReached={() => {
+              if (isLoadingMore || !relay.hasMore()) {
+                return
+              }
+              setIsLoadingMore(true)
+              relay.loadMore(PAGE_SIZE, (error) => {
+                if (error) {
+                  // FIXME: Handle error
+                  console.error("PartnerShows.tsx", error.message)
+                }
+                setIsLoadingMore(false)
+              })
+            }}
+            refreshing={isLoadingMore}
+            contentContainerStyle={{ paddingTop: 20 }}
+            ListEmptyComponent={<TabEmptyState text="There are no shows from this gallery yet" />}
+            ListFooterComponent={
+              <Flex alignItems="center" justifyContent="center" height={space(6)}>
+                {isLoadingMore ? <ActivityIndicator /> : null}
+              </Flex>
             }
-            setIsLoadingMore(false)
-          })
-        }}
-        refreshing={isLoadingMore}
-        contentContainerStyle={{ paddingTop: 20 }}
-        ListEmptyComponent={<TabEmptyState text="There are no shows from this gallery yet" />}
-        ListFooterComponent={
-          <Flex alignItems="center" justifyContent="center" height={space(6)}>
-            {isLoadingMore ? <ActivityIndicator /> : null}
-          </Flex>
-        }
-      />
-    </View>
+          />
+        </View>
+      )}
+    </ClassTheme>
   )
 }
 
@@ -216,7 +227,7 @@ const GridItem = styled(Box)`
 
 const EmptyImage = styled(Box)`
   height: 120;
-  background-color: ${color("black10")};
+  background-color: ${themeGet("colors.black10")};
 `
 
 GridItem.displayName = "GridItem"

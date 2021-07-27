@@ -2,6 +2,7 @@ import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardTestsQueryRawResponse } from "__generated__/PartnerCardTestsQuery.graphql"
 // @ts-ignore
 import { mount } from "enzyme"
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { Button, Sans, Theme } from "palette"
@@ -15,9 +16,11 @@ jest.unmock("react-relay")
 describe("PartnerCard", () => {
   it("renders partner name correctly", () => {
     const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
+        </Theme>
+      </GlobalStoreProvider>
     )
     expect(component.find(Button).length).toEqual(1)
 
@@ -26,9 +29,11 @@ describe("PartnerCard", () => {
 
   it("renders partner image", () => {
     const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
+        </Theme>
+      </GlobalStoreProvider>
     )
 
     expect(component.find(Image)).toHaveLength(1)
@@ -36,9 +41,11 @@ describe("PartnerCard", () => {
 
   it("renders partner type", () => {
     const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
+        </Theme>
+      </GlobalStoreProvider>
     )
 
     expect(component.find(Sans).at(0).text()).toMatchInlineSnapshot(`"At gallery"`)
@@ -53,9 +60,11 @@ describe("PartnerCard", () => {
       },
     }
     const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkInstitutionalSeller} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkInstitutionalSeller} />
+        </Theme>
+      </GlobalStoreProvider>
     )
 
     expect(component.find(Sans).at(0).text()).toMatchInlineSnapshot(`"At institution"`)
@@ -70,9 +79,11 @@ describe("PartnerCard", () => {
       },
     }
     const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkOtherType} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkOtherType} />
+        </Theme>
+      </GlobalStoreProvider>
     )
 
     expect(component.find(Sans).at(0).text()).not.toEqual("At institution")
@@ -88,9 +99,11 @@ describe("PartnerCard", () => {
       },
     }
     const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkWithoutImage} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkWithoutImage} />
+        </Theme>
+      </GlobalStoreProvider>
     )
 
     expect(component.find(Image)).toHaveLength(0)
@@ -98,9 +111,11 @@ describe("PartnerCard", () => {
   })
   it("truncates partner locations correctly", () => {
     const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
+        </Theme>
+      </GlobalStoreProvider>
     )
     expect(component.find(Button).length).toEqual(1)
 
@@ -109,9 +124,11 @@ describe("PartnerCard", () => {
 
   it("renders button text correctly", () => {
     const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
+        </Theme>
+      </GlobalStoreProvider>
     )
     expect(component.find(Button)).toHaveLength(1)
 
@@ -127,9 +144,11 @@ describe("PartnerCard", () => {
       },
     }
     const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkAuctionHouse} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkAuctionHouse} />
+        </Theme>
+      </GlobalStoreProvider>
     )
     expect(component.html()).toBe(null)
   })
@@ -143,9 +162,11 @@ describe("PartnerCard", () => {
       },
     }
     const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkAuction} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkAuction} />
+        </Theme>
+      </GlobalStoreProvider>
     )
     expect(component.html()).toBe(null)
   })
@@ -159,9 +180,11 @@ describe("PartnerCard", () => {
       },
     }
     const component = mount(
-      <Theme>
-        <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkNoProfile} />
-      </Theme>
+      <GlobalStoreProvider>
+        <Theme>
+          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkNoProfile} />
+        </Theme>
+      </GlobalStoreProvider>
     )
     expect(component.find(Button)).toHaveLength(0)
   })
@@ -170,9 +193,11 @@ describe("PartnerCard", () => {
     const getWrapper = async ({ mockArtworkData, mockFollowResults }: any) => {
       return await renderRelayTree({
         Component: (props: any) => (
-          <Theme>
-            <PartnerCardFragmentContainer {...props} />
-          </Theme>
+          <GlobalStoreProvider>
+            <Theme>
+              <PartnerCardFragmentContainer {...props} />
+            </Theme>
+          </GlobalStoreProvider>
         ),
         query: graphql`
           query PartnerCardTestsQuery @raw_response_type {

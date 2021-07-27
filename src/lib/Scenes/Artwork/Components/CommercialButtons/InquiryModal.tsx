@@ -9,7 +9,7 @@ import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquirySt
 import { InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { LocationWithDetails } from "lib/utils/googleMaps"
 import { Schema } from "lib/utils/track"
-import { Box, color, Flex, Separator, space, Text } from "palette"
+import { Box, Flex, Separator, Text, useTheme } from "palette"
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -42,6 +42,7 @@ const InquiryQuestionOption: React.FC<{
   question: string
   setShippingModalVisibility?: (isVisible: boolean) => void
 }> = ({ id, question, setShippingModalVisibility }) => {
+  const { color, space } = useTheme()
   const { state, dispatch } = useContext(ArtworkInquiryContext)
   const isShipping = id === InquiryQuestionIDs.Shipping
 

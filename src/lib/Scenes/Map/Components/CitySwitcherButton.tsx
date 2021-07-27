@@ -1,7 +1,7 @@
 import Spinner from "lib/Components/Spinner"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { Box, color, Flex, Sans } from "palette"
+import { Box, ClassTheme, Flex, Sans } from "palette"
 import React, { Component } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -32,42 +32,47 @@ export class CitySwitcherButton extends Component<Props> {
   render() {
     const { city, isLoading, sponsoredContentUrl } = this.props
     return isLoading || city ? (
-      <TouchableWithoutFeedback
-        onPress={() => {
-          if (this.props.onPress) {
-            this.props.onPress()
-          }
-          LegacyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryOpenCityPicker", {
-            ...(sponsoredContentUrl && { sponsoredContentUrl }),
-          })
-        }}
-      >
-        <Background
-          flexDirection="row"
-          alignItems="center"
-          style={
-            {
-              shadowOffset: { height: 0, width: 0 },
-              width: city ? "auto" : 40,
-            } as any
-          }
-        >
-          {city ? (
-            <>
-              <Sans size="3t" weight="medium" ml={3}>
-                {city.name}
-              </Sans>
-              <Box ml={2} mr={3}>
-                <ChevronIcon initialDirection="down" color={color("black100")} width={20} height={20} />
-              </Box>
-            </>
-          ) : (
-            <Flex alignItems="center" justifyContent="center" flexGrow={1}>
-              <Spinner spinnerColor="black60" style={{ backgroundColor: "transparent" }} size="medium" />
-            </Flex>
-          )}
-        </Background>
-      </TouchableWithoutFeedback>
+      <ClassTheme>
+        {({ color }) => (
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (this.props.onPress) {
+                this.props.onPress()
+              }
+              LegacyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryOpenCityPicker", {
+                ...(sponsoredContentUrl && { sponsoredContentUrl }),
+              })
+            }}
+          >
+            <Background
+              flexDirection="row"
+              alignItems="center"
+              style={
+                {
+                  shadowOffset: { height: 0, width: 0 },
+                  width: city ? "auto" : 40,
+                } as any
+              }
+            >
+              {city ? (
+                <>
+                  <Sans size="3t" weight="medium" ml={3}>
+                    {city.name}
+                  </Sans>
+                  <Box ml={2} mr={3}>
+                    {/* @ts-ignore */}
+                    <ChevronIcon initialDirection="down" color={color("black100")} width={20} height={20} />
+                  </Box>
+                </>
+              ) : (
+                <Flex alignItems="center" justifyContent="center" flexGrow={1}>
+                  <Spinner spinnerColor="black60" style={{ backgroundColor: "transparent" }} size="medium" />
+                </Flex>
+              )}
+            </Background>
+          </TouchableWithoutFeedback>
+        )}
+      </ClassTheme>
     ) : null
   }
 }

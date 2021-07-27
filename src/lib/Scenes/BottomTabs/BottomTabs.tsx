@@ -1,11 +1,12 @@
 import { GlobalStore, useIsStaging } from "lib/store/GlobalStore"
-import { color, Flex, Separator } from "palette"
+import { Flex, Separator, useColor } from "palette"
 import React, { useEffect } from "react"
 import useInterval from "react-use/lib/useInterval"
 import { BottomTabsButton } from "./BottomTabsButton"
 import { ICON_HEIGHT } from "./BottomTabsIcon"
 
 export const BottomTabs: React.FC = () => {
+  const color = useColor()
   const unreadConversationCount = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.unreadConversationCount
   )

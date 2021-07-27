@@ -96,7 +96,7 @@ export const SegmentTrackingProvider: TrackingProvider = {
 }
 
 const visualize = (type: string, name: string, info: { [key: string]: any }) => {
-  if (!unsafe_getDevToggle("DTDShowAnalyticsVisualiser")) {
+  if (!unsafe_getDevToggle("DTShowAnalyticsVisualiser")) {
     return
   }
 

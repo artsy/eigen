@@ -7,7 +7,7 @@ import { isPad } from "lib/utils/hardware"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { chunk } from "lodash"
-import { AddIcon, BorderBox, Box, Button, color, Flex, Spacer, XCircleIcon } from "palette"
+import { AddIcon, BorderBox, Box, Button, Flex, Spacer, useColor, XCircleIcon } from "palette"
 import React, { useState } from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
@@ -87,6 +87,7 @@ const AddPhotosButton: React.FC<{ imageSize: number; addPhotos: (addedImages: RN
   imageSize,
   addPhotos,
 }) => {
+  const color = useColor()
   const { showActionSheetWithOptions } = useActionSheet()
 
   return (
