@@ -1,5 +1,6 @@
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
+import { LinkIcon } from "palette"
 import { ButtonSize, ButtonV2 as Button, ButtonVariant } from "palette/elements/Button/ButtonV2"
 import React from "react"
 import { DList, List } from "storybook/helpers"
@@ -36,10 +37,14 @@ storiesOf("ButtonV2", module)
       )}
     />
   ))
-  .add("States", () => (
+  .add("Miscellaneous", () => (
     <List>
       <Button loading>loading</Button>
       <Button disabled>disabled</Button>
       <Button block>block</Button>
+      <Button icon={<LinkIcon />}>with icon</Button>
+      <Button icon={<LinkIcon />} iconPosition="right">
+        with icon
+      </Button>
     </List>
   ))
