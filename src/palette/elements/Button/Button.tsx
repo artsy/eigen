@@ -5,7 +5,7 @@ import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
-import { ColorFuncOverload, SansSize } from "../../Theme"
+import { ColorFuncOverload, SansSize, ThemeV3 } from "../../Theme"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
@@ -166,7 +166,7 @@ enum DisplayState {
 }
 
 /** A button with various size and color settings */
-export const Button: React.FC<ButtonProps> = (props) => {
+const PureButton: React.FC<ButtonProps> = (props) => {
   const color = useColor()
   const size = props.size ?? defaultSize
   const variant = props.variant ?? defaultVariant
@@ -272,6 +272,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
                   <Text
                     color={loadingStyles.textColor || to.textColor}
                     variant={size === "small" ? "small" : "mediumText"}
+                    fontSize={size === "small" ? "1" : "3"}
                     style={{ textDecorationLine: current === "hover" ? "underline" : "none" }}
                   >
                     {children}
@@ -283,6 +284,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
                   <Text
                     color={loadingStyles.textColor || to.textColor}
                     variant={size === "small" ? "small" : "mediumText"}
+                    fontSize={size === "small" ? "1" : "3"}
                     style={{ textDecorationLine: current === "hover" ? "underline" : "none" }}
                   >
                     {children}
@@ -298,6 +300,12 @@ export const Button: React.FC<ButtonProps> = (props) => {
     </Spring>
   )
 }
+
+export const Button: React.FC<ButtonProps> = (props) => (
+  <ThemeV3>
+    <PureButton {...props} />
+  </ThemeV3>
+)
 
 /** Base props that construct button */
 
