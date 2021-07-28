@@ -7,8 +7,8 @@ export const withThemeV2: DecoratorFunction<React.ReactNode> = (story) => <Theme
 
 export const withThemeV3: DecoratorFunction<React.ReactNode> = (story) => <ThemeV3>{story()}</ThemeV3>
 
-export const withThemeAndSwitcher = (defaultTheme: "v2" | "v3"): DecoratorFunction<React.ReactNode> => (story) => {
-  const [theme, setTheme] = useState<"v2" | "v3">(defaultTheme)
+export const withThemeV2AndSwitcher: DecoratorFunction<React.ReactNode> = (story) => {
+  const [theme, setTheme] = useState<"v2" | "v3">("v2")
   return (
     <Theme theme={theme}>
       <>
@@ -17,7 +17,7 @@ export const withThemeAndSwitcher = (defaultTheme: "v2" | "v3"): DecoratorFuncti
             <Button title="v2" onPress={() => setTheme("v2")} />
           </View>
           <View style={theme === "v3" && { borderColor: "black", borderWidth: 1 }}>
-            <Button title={`v3${defaultTheme === "v2" ? "(merged)" : ""}`} onPress={() => setTheme("v3")} />
+            <Button title="v3(merged)" onPress={() => setTheme("v3")} />
           </View>
         </Flex>
         {story()}

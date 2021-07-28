@@ -127,13 +127,8 @@ const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
     return THEMES.v2
   }
 
-  if (theme === "v3") {
-    return THEMES.v3
-  }
-
   // forcing v3 colors, unless specifically requiring v2, in which case we use `colorV2`
-  // if (config?.mergeV3OnTop) {
-  const colorDict = {
+  const mergedColorsV2WithV3OnTop = {
     ...THEMES.v2.colors, // get the base v2
     ...THEMES.v3.colors, // get the base v3 on top of that
     // now add the rest of the mappings
@@ -142,7 +137,12 @@ const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
     purple30: THEMES.v3.colors.blue10,
     purple5: THEMES.v3.colors.blue10,
   }
-  return { ...THEMES.v2, colors: colorDict }
+
+  if (theme === "v3") {
+    return { ...THEMES.v3, colors: mergedColorsV2WithV3OnTop }
+  }
+
+  return { ...THEMES.v2, colors: mergedColorsV2WithV3OnTop }
 }
 
 export const Theme: React.FC<{

@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react-native"
 import { Flex, Text } from "palette"
 import React from "react"
 import { View } from "react-native"
-import { withHooks, withThemeAndSwitcher } from "storybook/decorators"
+import { withHooks, withThemeV2AndSwitcher } from "storybook/decorators"
 import { List } from "storybook/helpers"
 import { ColorV2, isThemeV2, useTheme } from "./Theme"
 
@@ -39,7 +39,7 @@ const Row = ({ children }: { children: React.ReactNode }) => (
 )
 
 storiesOf("Color V2", module)
-  .addDecorator(withThemeAndSwitcher("v2"))
+  .addDecorator(withThemeV2AndSwitcher)
   .addDecorator(withHooks)
   .add("colors", () => (
     <List>
