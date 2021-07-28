@@ -35,7 +35,7 @@ index dde3aec..aec1f45 100644
                s.baseInputStyle,
                inputStyle,
 diff --git a/node_modules/react-native-credit-card-input/src/LiteCreditCardInput.js b/node_modules/react-native-credit-card-input/src/LiteCreditCardInput.js
-index a5f166b..4a58bef 100644
+index a5f166b..2fb3b72 100644
 --- a/node_modules/react-native-credit-card-input/src/LiteCreditCardInput.js
 +++ b/node_modules/react-native-credit-card-input/src/LiteCreditCardInput.js
 @@ -5,11 +5,14 @@ import {
@@ -191,7 +191,6 @@ index a5f166b..4a58bef 100644
 +function animate() {
 +  ANIMATION_REF.current.animateNextTransition();
 +}
-\ No newline at end of file
 diff --git a/node_modules/react-native-credit-card-input/src/connectToState.js b/node_modules/react-native-credit-card-input/src/connectToState.js
 index cda7fc6..d12a1de 100644
 --- a/node_modules/react-native-credit-card-input/src/connectToState.js
