@@ -396,6 +396,18 @@ jest.mock("./lib/utils/useScreenDimensions", () => {
   }
 })
 
+jest.mock("react-native-safe-area-context", () => {
+  return {
+    ...jest.requireActual("react-native-safe-area-context"),
+    useSafeAreaFrame: () => ({
+      width: 380,
+      height: 550,
+      x: 0,
+      y: 0,
+    }),
+  }
+})
+
 jest.mock("@react-native-community/async-storage", () => {
   let state: any = {}
   return {

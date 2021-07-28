@@ -1,10 +1,11 @@
+import { ICON_HEIGHT } from "lib/Scenes/BottomTabs/BottomTabsIcon"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { Modal, Platform } from "react-native"
+import { useSafeAreaFrame } from "react-native-safe-area-context"
 import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "../ArtsyKeyboardAvoidingView"
 import { CARD_STACK_OVERLAY_HEIGHT, CARD_STACK_OVERLAY_Y_OFFSET } from "./FancyModalCard"
 import { FancyModalContext } from "./FancyModalContext"
-import { hasNotch } from "react-native-device-info"
 
 export const FancyModal: React.FC<{
   visible: boolean
@@ -17,6 +18,7 @@ export const FancyModal: React.FC<{
     height: screenHeight,
     safeAreaInsets: { top },
   } = useScreenDimensions()
+  const frame = useSafeAreaFrame()
 
   const actualMaxHeight = screenHeight - (top + CARD_STACK_OVERLAY_HEIGHT + CARD_STACK_OVERLAY_Y_OFFSET)
   let height: number
@@ -24,7 +26,14 @@ export const FancyModal: React.FC<{
   if (fullScreen) {
     height = Platform.select({
       ios: screenHeight,
-      default: screenHeight + (hasNotch() ? top : 0),
+      /**
+       * Android has a problem when getting window height
+       * https://github.com/facebook/react-native/issues/23693
+       *
+       * Getting the full height taking into account the notch
+       * Based on Frame height + bottom tabs height + bottom tabs spacer height
+       */
+      default: frame.height + ICON_HEIGHT + 1,
     })
   } else if (maxHeight) {
     height = Math.min(maxHeight, actualMaxHeight)
