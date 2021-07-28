@@ -256,7 +256,10 @@ export const Input = React.forwardRef<TextInput, InputProps>(
             {renderShowPasswordIcon()}
             {loading ? (
               <Flex pr="3" justifyContent="center" flexGrow={0}>
-                <Spinner size="medium" style={{ width: 18, height: 4, backgroundColor: color("black60") }} />
+                <Spinner
+                  size="medium"
+                  style={{ marginLeft: 3, width: 15, height: 4, backgroundColor: color("black60") }}
+                />
               </Flex>
             ) : (
               !!(value !== undefined && value !== "" && enableClearButton) && (
