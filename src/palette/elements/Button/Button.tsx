@@ -281,13 +281,8 @@ const PureButton: React.FC<ButtonProps> = (props) => {
                 </VisibleTextContainer>
                 <HiddenContainer>
                   {icon}
-                  <Text
-                    color={loadingStyles.textColor || to.textColor}
-                    variant={size === "small" ? "small" : "mediumText"}
-                    fontSize={size === "small" ? "1" : "3"}
-                    style={{ textDecorationLine: current === "hover" ? "underline" : "none" }}
-                  >
-                    {children}
+                  <Text variant={size === "small" ? "small" : "mediumText"} fontSize={size === "small" ? "1" : "3"}>
+                    {longestText ? longestText : children}
                   </Text>
                 </HiddenContainer>
 
