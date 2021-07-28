@@ -116,24 +116,40 @@ type ThemeType = ThemeV2Type | ThemeV3Type
  */
 export const themeProps = THEMES.v2
 
-export const Theme: React.FC<{
-  theme?: keyof typeof THEMES | ThemeType
-  override?: DeepPartial<ThemeV2Type> | DeepPartial<ThemeV3Type>
-}> = ({ children, theme = "v2", override = {} }) => {
+const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
   const allowV3 = usePaletteFlagStore((state) => state.allowV3)
 
-  let actualTheme: ThemeType
-  if (_.isString(theme)) {
-    if (allowV3) {
-      actualTheme = THEMES[theme]
-    } else {
-      actualTheme = THEMES.v2
-    }
-  } else {
-    actualTheme = theme
+  if (!_.isString(theme)) {
+    return theme
   }
 
-  return <ThemeProvider theme={{ ...actualTheme, ...override }}>{children}</ThemeProvider>
+  if (!allowV3) {
+    return THEMES.v2
+  }
+
+  if (theme === "v3") {
+    return THEMES.v3
+  }
+
+  // forcing v3 colors, unless specifically requiring v2, in which case we use `colorV2`
+  // if (config?.mergeV3OnTop) {
+  const colorDict = {
+    ...THEMES.v2.colors, // get the base v2
+    ...THEMES.v3.colors, // get the base v3 on top of that
+    // now add the rest of the mappings
+    black80: THEMES.v3.colors.black60,
+    purple100: THEMES.v3.colors.blue100,
+    purple30: THEMES.v3.colors.blue10,
+    purple5: THEMES.v3.colors.blue10,
+  }
+  return { ...THEMES.v2, colors: colorDict }
+}
+
+export const Theme: React.FC<{
+  theme?: keyof typeof THEMES | ThemeType
+}> = ({ children, theme = "v2" }) => {
+  const actualTheme = figureOutTheme(theme)
+  return <ThemeProvider theme={actualTheme}>{children}</ThemeProvider>
 }
 
 export const ThemeV2: React.FC = ({ children }) => <Theme theme="v2">{children}</Theme>
@@ -144,28 +160,11 @@ interface ColorFuncOverload {
   (colorNumber: Color): string
   (colorNumber: Color | undefined): string | undefined
 }
-const color = (theme: ThemeType, config?: { mergeV3OnTop: boolean }): ColorFuncOverload => (colorName: any): any => {
+const color = (theme: ThemeType): ColorFuncOverload => (colorName: any): any => {
   if (colorName === undefined) {
     return undefined
   }
-
-  if (isThemeV2(theme)) {
-    let colorDict = theme.colors
-    if (config?.mergeV3OnTop) {
-      colorDict = {
-        ...colorDict, // get the base v2
-        ...THEMES.v3.colors, // get the base v3 on top of that
-        // now to the rest of the mappings
-        black80: THEMES.v3.colors.black60,
-        purple100: THEMES.v3.colors.blue100,
-        purple30: THEMES.v3.colors.blue10,
-        purple5: THEMES.v3.colors.blue10,
-      }
-    }
-    return (colorDict as { [key: string]: string })[colorName as Color]
-  }
-
-  return theme.colors[colorName as ColorV3]
+  return (theme.colors as { [key: string]: string })[colorName as Color]
 }
 
 const space = (theme: ThemeType) => (spaceName: SpacingUnitV2 | SpacingUnitV3): number =>
@@ -176,29 +175,21 @@ const space = (theme: ThemeType) => (spaceName: SpacingUnitV2 | SpacingUnitV3): 
 export const useTheme = () => {
   const theme: ThemeType = useContext(ThemeContext)
 
-  // if we are not wrapped in `<Theme>`, if we dev, throw error. if we are in prod, just default to v2 to avoid a crash.
-  if (theme === undefined) {
-    if (__DEV__ || __TEST__) {
-      console.error(
-        "You are trying to use the `Theme` but you have not wrapped your component/screen with `<Theme>`. Please wrap and try again."
-      )
-      throw new Error("ThemeContext is not defined. Wrap your component with `<Theme>` and try again.")
-    } else {
-      return {
-        theme: THEMES.v2,
-        color: color(THEMES.v2, { mergeV3OnTop: true }), // forcing v3 colors, unless specifically requiring v2, in which case we use `colorV2`
-        space: space(THEMES.v2),
-        colorV2: color(THEMES.v2),
-        colorV3: color(THEMES.v3),
-      }
-    }
-  }
-
+  // if we are not wrapped in `<Theme>`, if we dev, throw error.
+  // if we are in prod, we will default to v2 to avoid a crash.
   // if we are wrapped, then all good.
+  if ((__DEV__ || __TEST__) && theme === undefined) {
+    console.error(
+      "You are trying to use the `Theme` but you have not wrapped your component/screen with `<Theme>`. Please wrap and try again."
+    )
+    throw new Error("ThemeContext is not defined. Wrap your component with `<Theme>` and try again.")
+  }
+  const themeIfUnwrapped = THEMES.v2
+
   return {
-    theme,
-    color: color(THEMES.v2, { mergeV3OnTop: true }), // forcing v3 colors, unless specifically requiring v2, in which case we use `colorV2`
-    space: space(theme),
+    theme: theme ?? themeIfUnwrapped,
+    color: color(theme ?? themeIfUnwrapped),
+    space: space(theme ?? themeIfUnwrapped),
     colorV2: color(THEMES.v2),
     colorV3: color(THEMES.v3),
   }
@@ -208,12 +199,18 @@ export const isThemeV2 = (theme: ThemeType): theme is ThemeV2Type => theme.id ==
 export const isThemeV3 = (theme: ThemeType): theme is ThemeV3Type => theme.id === "v3"
 
 /**
- * Only use this if it's are absolutely neccessary.
+ * Only use this if it's are absolutely neccessary, and only in tests.
  */
 // tslint:disable-next-line:variable-name
 export const _test_colorV2 = color(THEMES.v2)
 /**
- * Only use this if it's are absolutely neccessary.
+ * Only use this if it's are absolutely neccessary, and only in tests.
  */
 // tslint:disable-next-line:variable-name
 export const _test_colorV3 = color(THEMES.v3)
+
+/**
+ * Only use this if it's are absolutely neccessary, and only in tests.
+ */
+// tslint:disable-next-line:variable-name
+export const _test_THEMES = THEMES

@@ -274,7 +274,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="telephoneNumber"
               />
 
-              <Theme override={serifOnly}>
+              <Theme>
                 <ScreenDimensionsContext.Consumer>
                   {({ height }) => (
                     <Flex mb={4}>
@@ -336,41 +336,4 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
     return isPhoneX ? 15 : 0
   }
-}
-
-const serifOnly = {
-  fontFamily: {
-    sans: {
-      regular: {
-        normal: "ReactNativeAGaramondPro-Regular",
-        italic: "ReactNativeAGaramondPro-Italic",
-      },
-      medium: {
-        normal: "ReactNativeAGaramondPro-Regular",
-        italic: "ReactNativeAGaramondPro-Italic",
-      },
-      semibold: {
-        normal: "ReactNativeAGaramondPro-Regular",
-        italic: "ReactNativeAGaramondPro-Regular",
-      },
-    },
-    serif: {
-      regular: {
-        normal: "ReactNativeAGaramondPro-Regular",
-        italic: "ReactNativeAGaramondPro-Italic",
-      },
-      medium: {
-        normal: null,
-        italic: null,
-      },
-      semibold: {
-        normal: "ReactNativeAGaramondPro-Semibold",
-        italic: null,
-      },
-    },
-  },
-  fonts: {
-    sans: "ReactNativeAGaramondPro-Regular",
-    serif: "ReactNativeAGaramondPro-Regular",
-  },
 }
