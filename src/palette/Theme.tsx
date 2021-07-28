@@ -3,7 +3,7 @@ import _ from "lodash"
 import React, { useContext } from "react"
 import { ThemeContext, ThemeProvider } from "styled-components/native"
 import { TEXT_FONTS_V2, TEXT_FONTS_V3 } from "./elements/Text/tokens"
-import { usePaletteFlagStore } from "./PaletteFlag"
+import { usePaletteFlagStore } from "./PaletteFlagStore"
 import { fontFamily } from "./platform/fonts/fontFamily"
 
 /**

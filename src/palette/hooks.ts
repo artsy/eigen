@@ -1,4 +1,4 @@
-import { usePaletteFlagStore } from "./PaletteFlag"
+import { usePaletteFlagStore } from "./PaletteFlagStore"
 import { useTheme } from "./Theme"
 
 export const useColor = () => useTheme().color
