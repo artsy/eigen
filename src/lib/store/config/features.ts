@@ -75,11 +75,6 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AROptionsLotConditionReport",
   },
-  ARAllowPaletteV3: {
-    readyForRelease: __DEV__ || __TEST__,
-    description: "Allow for palette v3 to appear",
-    showInAdminMenu: true,
-  },
   AROptionsNewSalePage: {
     readyForRelease: true,
     echoFlagKey: "AROptionsNewSalePage",
