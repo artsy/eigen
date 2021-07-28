@@ -1,5 +1,5 @@
 import _ from "lodash"
-import { Color, EyeOpenedIcon, Flex, Sans, TEXT_FONTS, useTheme, XCircleIcon } from "palette"
+import { Color, EyeOpenedIcon, Flex, Sans, Spinner, TEXT_FONTS, useTheme, XCircleIcon } from "palette"
 import { fontFamily } from "palette/platform/fonts/fontFamily"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
@@ -257,9 +257,8 @@ export const Input = React.forwardRef<TextInput, InputProps>(
             </Flex>
             {renderShowPasswordIcon()}
             {loading ? (
-              <Flex pr="1" justifyContent="center" flexGrow={0}>
-                <LoadingIndicator animating={true} hidesWhenStopped />
-                {/* <LoaderIcon fill="black30" animated /> */}
+              <Flex pr="3" justifyContent="center" flexGrow={0}>
+                <Spinner size="medium" style={{ width: 18, height: 4, backgroundColor: color("black60") }} />
               </Flex>
             ) : (
               !!(value !== undefined && value !== "" && enableClearButton) && (
