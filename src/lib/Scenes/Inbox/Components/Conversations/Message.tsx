@@ -98,7 +98,7 @@ export class Message extends React.Component<Props> {
         {({ color }) => {
           const backgroundColor = color(isFromUser ? "black100" : "black10")
           const linkStyle = {
-            color: color("purple100"),
+            color: color("purple100" /* TODO-PALETTE-V3 "blue100" */),
             textDecorationLine: "underline",
           }
           return (

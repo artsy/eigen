@@ -131,9 +131,9 @@ index a5f166b..4a58bef 100644
 +    const { focused, isInputFocused, valid, values: { number }, inputStyle, status: { number: numberStatus } } = this.props;
      const showRightPart = focused && focused !== "number";
  
-+    const borderColor = "#E5E5E5" // black10
-+    const borderColorFocused = "#6E1EFF" // purple100
-+    const borderColorError = "#E82F1D" // red100
++    const borderColor = "#E7E7E7" // black10
++    const borderColorFocused = "#1023D7" // blue100
++    const borderColorError = "#C82400" // red100
 +
 +    const showWarningState = !isInputFocused && !valid && number?.length
 +

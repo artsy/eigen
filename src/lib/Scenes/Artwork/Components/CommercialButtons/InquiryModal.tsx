@@ -121,7 +121,7 @@ const InquiryQuestionOption: React.FC<{
                       <Text variant="text" color="black100" style={{ width: "70%" }}>
                         {state.shippingLocation.name}
                       </Text>
-                      <Text variant="text" color="purple100">
+                      <Text variant="text" color="purple100" /* TODO-PALETTE-V3 "blue100" */>
                         Edit
                       </Text>
                     </>

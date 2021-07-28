@@ -15,7 +15,6 @@ const ColorSquare = ({ color: theColor, bright, dark }: { color: ColorV2; bright
     <View
       style={[
         {
-          // @ts-ignore
           backgroundColor: colorFunc(theColor),
           width: 80,
           height: 80,

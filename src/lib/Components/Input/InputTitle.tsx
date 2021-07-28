@@ -11,7 +11,7 @@ export const InputTitle: React.FC<{ required?: boolean }> = ({ children: title, 
     <Text variant="text" mb={0.5}>
       {title}
       {!!required && (
-        <Text variant="mediumText" color={color("purple100")}>
+        <Text variant="mediumText" color={color("purple100" /* TODO-PALETTE-V3 "blue100" */)}>
           *
         </Text>
       )}

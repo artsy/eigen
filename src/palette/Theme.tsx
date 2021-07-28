@@ -162,10 +162,9 @@ const color = (theme: ThemeType, config?: { mergeV3OnTop: boolean }): ColorFuncO
         purple5: THEMES.v3.colors.blue10,
       }
     }
-    return colorDict[colorName as any]
+    return (colorDict as { [key: string]: string })[colorName as Color]
   }
 
-  //  @ts-ignore
   return theme.colors[colorName as ColorV3]
 }
 
@@ -185,7 +184,13 @@ export const useTheme = () => {
       )
       throw new Error("ThemeContext is not defined. Wrap your component with `<Theme>` and try again.")
     } else {
-      return { theme: THEMES.v2, color: color(THEMES.v2), space: space(THEMES.v2) }
+      return {
+        theme: THEMES.v2,
+        color: color(THEMES.v2, { mergeV3OnTop: true }), // forcing v3 colors, unless specifically requiring v2, in which case we use `colorV2`
+        space: space(THEMES.v2),
+        colorV2: color(THEMES.v2),
+        colorV3: color(THEMES.v3),
+      }
     }
   }
 
