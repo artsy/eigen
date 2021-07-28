@@ -128,7 +128,10 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
     ?.paramValue
 
   return (
-    <View>
+    <View
+      // Setting min height to keep scroll position when user searches with the keyword filter.
+      style={{ minHeight: useScreenDimensions().height }}
+    >
       <Flex>
         <Flex flexDirection="row" alignItems="center">
           <InfoButton
@@ -152,7 +155,9 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
           {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
         </SortMode>
         <Separator borderColor={color("black5")} mt="2" />
-        {!!showKeywordFilter && <KeywordFilter artistId={artist.internalID} artistSlug={artist.slug} />}
+        {!!showKeywordFilter && (
+          <KeywordFilter artistId={artist.internalID} artistSlug={artist.slug} onFocus={scrollToTop} />
+        )}
       </Flex>
       {auctionResults.length ? (
         <FlatList
