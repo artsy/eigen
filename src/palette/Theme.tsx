@@ -144,13 +144,30 @@ interface ColorFuncOverload {
   (colorNumber: Color): string
   (colorNumber: Color | undefined): string | undefined
 }
-const color = (theme: ThemeType): ColorFuncOverload => (colorName: any): any =>
-  colorName === undefined
-    ? undefined
-    : isThemeV2(theme)
-    ? theme.colors[colorName as ColorV2]
-    : //  @ts-ignore
-      theme.colors[colorName as ColorV3]
+const color = (theme: ThemeType, config?: { mergeV3OnTop: boolean }): ColorFuncOverload => (colorName: any): any => {
+  if (colorName === undefined) {
+    return undefined
+  }
+
+  if (isThemeV2(theme)) {
+    let colorDict = theme.colors
+    if (config?.mergeV3OnTop) {
+      colorDict = {
+        ...colorDict, // get the base v2
+        ...THEMES.v3.colors, // get the base v3 on top of that
+        // now to the rest of the mappings
+        black80: THEMES.v3.colors.black60,
+        purple100: THEMES.v3.colors.blue100,
+        purple30: THEMES.v3.colors.blue10,
+        purple5: THEMES.v3.colors.blue10,
+      }
+    }
+    return colorDict[colorName as any]
+  }
+
+  //  @ts-ignore
+  return theme.colors[colorName as ColorV3]
+}
 
 const space = (theme: ThemeType) => (spaceName: SpacingUnitV2 | SpacingUnitV3): number =>
   isThemeV2(theme)
@@ -173,7 +190,13 @@ export const useTheme = () => {
   }
 
   // if we are wrapped, then all good.
-  return { theme, color: color(theme), space: space(theme) }
+  return {
+    theme,
+    color: color(THEMES.v2, { mergeV3OnTop: true }), // forcing v3 colors, unless specifically requiring v2, in which case we use `colorV2`
+    space: space(theme),
+    colorV2: color(THEMES.v2),
+    colorV3: color(THEMES.v3),
+  }
 }
 
 export const isThemeV2 = (theme: ThemeType): theme is ThemeV2Type => theme.id === "v2"

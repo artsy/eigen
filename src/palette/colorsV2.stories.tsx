@@ -2,18 +2,21 @@ import { storiesOf } from "@storybook/react-native"
 import { Flex, Text } from "palette"
 import React from "react"
 import { View } from "react-native"
-import { withThemeV2 } from "storybook/decorators"
+import { withHooks, withThemeAndSwitcher } from "storybook/decorators"
 import { List } from "storybook/helpers"
-import { useColor } from "./hooks"
-import { ColorV2 } from "./Theme"
+import { ColorV2, isThemeV2, useTheme } from "./Theme"
 
 const ColorSquare = ({ color: theColor, bright, dark }: { color: ColorV2; bright?: boolean; dark?: boolean }) => {
-  const color = useColor()
+  const { theme, color, colorV2 } = useTheme()
+
+  const colorFunc = isThemeV2(theme) ? colorV2 : color
+
   return (
     <View
       style={[
         {
-          backgroundColor: color(theColor),
+          // @ts-ignore
+          backgroundColor: colorFunc(theColor),
           width: 80,
           height: 80,
           alignItems: "center",
@@ -37,7 +40,8 @@ const Row = ({ children }: { children: React.ReactNode }) => (
 )
 
 storiesOf("Color V2", module)
-  .addDecorator(withThemeV2)
+  .addDecorator(withThemeAndSwitcher("v2"))
+  .addDecorator(withHooks)
   .add("colors", () => (
     <List>
       <Row>
