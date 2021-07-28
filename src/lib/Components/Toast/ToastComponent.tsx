@@ -1,10 +1,10 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Text, Touchable, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
+import { useToastsStore } from "./ToastStore"
 import { ToastDetails } from "./types"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
@@ -21,6 +21,7 @@ export const ToastComponent: React.FC<ToastProps> = ({ id, positionIndex, placem
   const { width, height } = useScreenDimensions()
   const { top: topSafeAreaInset } = useScreenDimensions().safeAreaInsets
   const [opacityAnim] = useState(new Animated.Value(0))
+  const removeToast = useToastsStore((state) => state.remove)
 
   const { showActionSheetWithOptions } = useActionSheet()
 
@@ -37,7 +38,7 @@ export const ToastComponent: React.FC<ToastProps> = ({ id, positionIndex, placem
       toValue: 0,
       useNativeDriver: true,
       duration: 450,
-    }).start(() => GlobalStore.actions.toast.remove(id))
+    }).start(() => removeToast(id))
   }, 2500)
 
   if (placement === "middle") {

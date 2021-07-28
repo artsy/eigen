@@ -1,27 +1,15 @@
-import { GlobalStore } from "lib/store/GlobalStore"
-import React, { useContext, useMemo } from "react"
-import { Toast } from "./Toast"
+import React, { useMemo } from "react"
 import { ToastComponent } from "./ToastComponent"
-import { ToastDetails, ToastPlacement } from "./types"
+import { useToastsStore } from "./ToastStore"
+import { ToastDetails, ToastOptions, ToastPlacement } from "./types"
 
-type ToastContextValue = typeof Toast
-
-// tslint:disable-next-line:no-empty
-const ToastContext = React.createContext<ToastContextValue>({ show: () => {}, hide: () => {}, hideOldest: () => {} })
-const useToastContext = () => useContext(ToastContext)
-
-export const useToast = () => {
-  const contextValue = useToastContext()
-
-  return useMemo(
-    () => ({
-      show: contextValue.show,
-      hide: contextValue.hide,
-      hideOldest: contextValue.hideOldest,
-    }),
-    [contextValue]
-  )
-}
+export const useToast = () =>
+  useToastsStore((state) => ({
+    show: (message: string, placement: ToastPlacement, options?: ToastOptions) =>
+      state.add({ message, placement, options }),
+    hide: state.remove,
+    hideOldest: state.removeOldest,
+  }))
 
 const filterToastsAndPosition = (
   toasts: Array<Omit<ToastDetails, "positionIndex">>,
@@ -35,18 +23,18 @@ const filterToastsAndPosition = (
     ).arr
 
 export const ToastProvider: React.FC = ({ children }) => {
-  const toasts = GlobalStore.useAppState((store) => store.toast.sessionState.toasts)
+  const toasts = useToastsStore((state) => state.toasts)
 
   const topToasts = useMemo(() => filterToastsAndPosition(toasts, "top"), [toasts])
   const bottomToasts = useMemo(() => filterToastsAndPosition(toasts, "bottom"), [toasts])
   const middleToasts = useMemo(() => filterToastsAndPosition(toasts, "middle"), [toasts])
 
   return (
-    <ToastContext.Provider value={{ ...Toast }}>
+    <>
       {children}
       {[...topToasts, ...bottomToasts, ...middleToasts].map((toastProps) => (
         <ToastComponent key={`${toastProps.id}`} {...toastProps} />
       ))}
-    </ToastContext.Provider>
+    </>
   )
 }

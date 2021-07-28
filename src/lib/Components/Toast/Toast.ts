@@ -1,9 +1,9 @@
-import { GlobalStore } from "lib/store/GlobalStore"
+import { useToastsStore } from "./ToastStore"
 import { ToastOptions, ToastPlacement } from "./types"
 
 export const Toast = {
   show: (message: string, placement: ToastPlacement, options?: ToastOptions) =>
-    GlobalStore.actions.toast.add({ message, placement, options }),
-  hide: (id: number) => GlobalStore.actions.toast.remove(id),
-  hideOldest: () => GlobalStore.actions.toast.removeOldest(),
+    useToastsStore.getState().add({ message, placement, options }),
+  hide: (id: number) => useToastsStore.getState().remove(id),
+  hideOldest: () => useToastsStore.getState().removeOldest(),
 }

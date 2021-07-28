@@ -294,3 +294,20 @@ describe("App version Versions.AddToastModel", () => {
     expect(migratedState.toast).toEqual({})
   })
 })
+
+describe("App version Versions.RemoveToastModel", () => {
+  const migrationToTest = Versions.RemoveToastModel
+  it("adds session toast storage", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.toast).toEqual(undefined)
+  })
+})

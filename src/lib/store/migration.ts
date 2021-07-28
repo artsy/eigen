@@ -22,9 +22,10 @@ export const Versions = {
   AddAuthOnboardingState: 10,
   RenameUserEmail: 11,
   AddToastModel: 12,
+  RemoveToastModel: 13,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddToastModel
+export const CURRENT_APP_VERSION = Versions.RemoveToastModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -89,6 +90,9 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddToastModel]: (state) => {
     state.toast = {}
+  },
+  [Versions.RemoveToastModel]: (state) => {
+    delete state.toast
   },
 }
 
