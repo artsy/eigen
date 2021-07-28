@@ -4,6 +4,7 @@ require 'yaml'
 require 'spaceship'
 require 'fileutils'
 require 'json'
+require 'terminal-table/import'
 
 skip_docs
 
@@ -170,6 +171,47 @@ lane :ship_beta_android do
     skip_upload_images: true,
     skip_upload_screenshots: true,
   )
+end
+
+lane :promote_specific_beta_ios do |options|
+  build_number = options[:build_number]
+  puts("Got build number #{build_number}")
+end
+
+lane :list_ios_beta_versions do
+  token = Spaceship::ConnectAPI::Token.create(
+    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
+    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
+    key: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
+    is_key_content_base64: true,
+    in_house: false
+  )
+
+  Spaceship::ConnectAPI.token = token
+
+  app = Spaceship::ConnectAPI::App.find('net.artsy.artsy')
+  next_app_store_version = app.get_edit_app_store_version.version_string
+
+  builds = app.get_builds(sort: "-version", includes: "preReleaseVersion")
+  builds = builds.select { |build| build.app_version == next_app_store_version }
+
+  rows = []
+  builds.each { |build| rows << [build.version, build.uploaded_date] }
+  print_build_table(next_app_store_version, ['build version', 'uploaded at'], rows)
+end
+
+def print_build_table(app_version, headings, rows)
+  table = Terminal::Table.new(
+    title: "Builds for version #{app_version}".yellow,
+    headings: headings,
+    rows: FastlaneCore::PrintTable.transform_output(rows)
+  )
+  # by default it prints on line with timestamp
+  # and the alignment is all screwed up
+  puts("\n" + table.to_s)
+end
+
+lane :list_android_beta_versions do
 end
 
 lane :promote_beta_ios do
