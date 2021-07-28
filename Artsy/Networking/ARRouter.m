@@ -48,7 +48,7 @@ static NSString *hostFromString(NSString *string)
 
     NSString *stagingWeb = @"staging.artsy.net";
     NSString *stagingDeprecatedMobileWeb = hostFromString(ARStagingBaseDeprecatedMobileWebURL);
-    NSString *stagingAPI = @"api-staging.artsy.net";
+    NSString *stagingAPI = @"stagingapi.artsy.net";
 
     artsyHosts = [NSSet setWithArray:@[
         @"artsy.net",
