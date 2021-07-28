@@ -14,11 +14,15 @@ import { fontFamily } from "./platform/fonts/fontFamily"
 export { SansSize, SerifSize, TypeSizes } from "@artsy/palette-tokens/dist/themes/v2"
 
 import { Color as ColorV2, SpacingUnit as SpacingUnitV2 } from "@artsy/palette-tokens/dist/themes/v2"
-import { Color as ColorV3, SpacingUnit as SpacingUnitV3Numbers } from "@artsy/palette-tokens/dist/themes/v3"
+import {
+  Color as ColorV3BeforeDevPurple,
+  SpacingUnit as SpacingUnitV3Numbers,
+} from "@artsy/palette-tokens/dist/themes/v3"
 
 type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
 export type Color = ColorV2 | ColorV3
 export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
+type ColorV3 = ColorV3BeforeDevPurple | "devpurple"
 export { ColorV2, ColorV3, SpacingUnitV2, SpacingUnitV3 }
 
 const {
@@ -84,12 +88,22 @@ const fixSpaceUnitsV3 = (
   return fixed as any
 }
 
+// this function is just adding a dev color, `devpurple`
+const fixColorV3 = (
+  colors: typeof eigenUsefulTHEME_V3.colors
+): typeof eigenUsefulTHEME_V3.colors & { devpurple: string } => {
+  const ourColors = colors as any
+  ourColors.devpurple = "#6E1EFF"
+  return colors as any
+}
+
 const THEMES = {
   v2: { ...THEME_V2, fontFamily, fonts: TEXT_FONTS_V2, space: fixSpaceUnitsV2(THEME_V2.space) },
   v3: {
     ...eigenUsefulTHEME_V3,
     fonts: TEXT_FONTS_V3,
     space: fixSpaceUnitsV3(spaceNumbers),
+    colors: fixColorV3(eigenUsefulTHEME_V3.colors),
   }, // v3 removed `fontFamily`, `fontSizes`, `letterSpacings`, `lineHeights`, `typeSizes`
 }
 
