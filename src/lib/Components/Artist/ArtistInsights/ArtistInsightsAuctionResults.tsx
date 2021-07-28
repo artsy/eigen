@@ -55,7 +55,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         PAGE_SIZE,
         (error) => {
           requestAnimationFrame(() => setKeywordFilterRefetching(false))
-          // setTimeout(() => setKeywordFilterRefetching(false), 5000)
 
           if (error) {
             throw new Error("ArtistInsights/ArtistAuctionResults filter error: " + error.message)
