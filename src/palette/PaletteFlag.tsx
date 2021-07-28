@@ -14,7 +14,7 @@ interface PaletteFlagState {
 export const usePaletteFlagStore = create<PaletteFlagState>(
   persist(
     (set) => ({
-      allowV3: false,
+      allowV3: __TEST__,
       setAllowV3: (value) => set((_state) => ({ allowV3: value })),
     }),
     { name: "z-devtoggle-palette", getStorage: () => AsyncStorage }
