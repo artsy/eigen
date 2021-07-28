@@ -55,9 +55,7 @@ export const FancyModalCard = React.forwardRef<
       backgroundShouldShrink: props.backgroundShouldShrink,
       getPopAnimations(createAnimation) {
         if (props.fullScreen) {
-          return [
-            createAnimation(translateY, props.height)
-          ]
+          return [createAnimation(translateY, props.height)]
         }
 
         return [
@@ -69,9 +67,7 @@ export const FancyModalCard = React.forwardRef<
       },
       getStackAnimations(createAnimation, stack) {
         if (props.fullScreen) {
-          return [
-            createAnimation(translateY, 0)
-          ]
+          return [createAnimation(translateY, 0)]
         }
 
         if (isRootCard && stack.length === 1) {
@@ -190,7 +186,11 @@ export const FancyModalCard = React.forwardRef<
       >
         {/* We need to apply background color in this extra inner view otherwise there is some glitchy
             tearing sometimes when hiding the modal */}
-        <View style={{ flex: 1, backgroundColor: "white", paddingTop: props.fullScreen ? screen.safeAreaInsets.top : 0 }}>{props.children}</View>
+        <View
+          style={{ flex: 1, backgroundColor: "white", paddingTop: props.fullScreen ? screen.safeAreaInsets.top : 0 }}
+        >
+          {props.children}
+        </View>
       </Animated.View>
     </View>
   )

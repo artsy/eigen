@@ -4,6 +4,7 @@ import { Modal, Platform } from "react-native"
 import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "../ArtsyKeyboardAvoidingView"
 import { CARD_STACK_OVERLAY_HEIGHT, CARD_STACK_OVERLAY_Y_OFFSET } from "./FancyModalCard"
 import { FancyModalContext } from "./FancyModalContext"
+import { hasNotch } from "react-native-device-info"
 
 export const FancyModal: React.FC<{
   visible: boolean
@@ -18,10 +19,13 @@ export const FancyModal: React.FC<{
   } = useScreenDimensions()
 
   const actualMaxHeight = screenHeight - (top + CARD_STACK_OVERLAY_HEIGHT + CARD_STACK_OVERLAY_Y_OFFSET)
-  let height
+  let height: number
 
   if (fullScreen) {
-    height = screenHeight
+    height = Platform.select({
+      ios: screenHeight,
+      default: screenHeight + (hasNotch() ? top : 0),
+    })
   } else if (maxHeight) {
     height = Math.min(maxHeight, actualMaxHeight)
   } else {
