@@ -39,6 +39,12 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
 
   const filterParams = filterArtworksParams(appliedFilters, "auctionResult")
 
+  const [keywordFilterRefetching, setKeywordFilterRefetching] = useState(false)
+
+  const keywordFilterValue = appliedFilters?.find((filter) => filter.paramName === FilterParamName.keyword)?.paramValue
+
+  const isKeywordFilterActive = !!keywordFilterValue
+
   useEffect(() => {
     setFilterTypeAction("auctionResult")
   }, [])
@@ -48,6 +54,8 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
       relay.refetchConnection(
         PAGE_SIZE,
         (error) => {
+          requestAnimationFrame(() => setKeywordFilterRefetching(false))
+
           if (error) {
             throw new Error("ArtistInsights/ArtistAuctionResults filter error: " + error.message)
           }
@@ -124,9 +132,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
 
   const resultsString = Number(artist.auctionResultsConnection?.totalCount) === 1 ? "result" : "results"
 
-  const isKeywordFilterActive = !!appliedFilters?.find((filter) => filter.paramName === FilterParamName.keyword)
-    ?.paramValue
-
   return (
     <View
       // Setting min height to keep scroll position when user searches with the keyword filter.
@@ -156,7 +161,13 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         </SortMode>
         <Separator borderColor={color("black5")} mt="2" />
         {!!showKeywordFilter && (
-          <KeywordFilter artistId={artist.internalID} artistSlug={artist.slug} onFocus={scrollToTop} />
+          <KeywordFilter
+            artistId={artist.internalID}
+            artistSlug={artist.slug}
+            loading={keywordFilterRefetching}
+            onFocus={scrollToTop}
+            onTypingStart={() => setKeywordFilterRefetching(true)}
+          />
         )}
       </Flex>
       {auctionResults.length ? (
