@@ -1,14 +1,21 @@
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
-import { Button, ButtonSize, ButtonVariant } from "palette"
+import { ButtonSize, ButtonV2 as Button, ButtonVariant } from "palette/elements/Button/ButtonV2"
 import React from "react"
 import { DList, List } from "storybook/helpers"
 
-const sizes: ButtonSize[] = ["small", "large"]
+const sizes: ButtonSize[] = ["small", "medium", "large"]
 
-const variants: ButtonVariant[] = ["primaryBlack", "primaryWhite", "secondaryGray", "secondaryOutline", "text"]
+const variants: ButtonVariant[] = [
+  "primaryBlack",
+  "primaryWhite",
+  "secondaryGray",
+  "secondaryOutline",
+  "secondaryOutlineWarning",
+  "noOutline",
+]
 
-storiesOf("ButtonV3", module)
+storiesOf("ButtonV2", module)
   .add("Sizes", () => (
     <DList
       data={sizes}
@@ -24,26 +31,6 @@ storiesOf("ButtonV3", module)
       data={variants}
       renderItem={({ item: variant }) => (
         <Button variant={variant} onPress={() => action(`tapped ${variant}`)}>
-          {variant}
-        </Button>
-      )}
-    />
-  ))
-  .add("Variants (loading)", () => (
-    <DList
-      data={variants}
-      renderItem={({ item: variant }) => (
-        <Button variant={variant} loading onPress={() => action(`tapped ${variant}`)}>
-          {variant}
-        </Button>
-      )}
-    />
-  ))
-  .add("Variants (disabled)", () => (
-    <DList
-      data={variants}
-      renderItem={({ item: variant }) => (
-        <Button variant={variant} disabled onPress={() => action(`tapped ${variant}`)}>
           {variant}
         </Button>
       )}

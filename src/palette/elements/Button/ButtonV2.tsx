@@ -85,7 +85,7 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
   } = themeProps
 
   const opacity = disabled ? "0.1" : "1"
-  const black100WithOpacity = `rgba(100, 0, 0, ${opacity})`
+  const black100WithOpacity = `rgba(0, 0, 0, ${opacity})`
   const black10WithOpacity = `rgba(229, 229, 229, ${opacity})`
   const whiteWithOpacity = `rgba(255, 255, 255, ${opacity})`
   const purple100WithOpacity = `rgba(110, 30, 255, ${opacity})`
@@ -327,7 +327,7 @@ const PureButton: React.FC<ButtonProps> = (props) => {
   )
 }
 
-export const Button: React.FC<ButtonProps> = (props) => (
+export const ButtonV2: React.FC<ButtonProps> = (props) => (
   <ThemeV2>
     <PureButton {...props} />
   </ThemeV2>

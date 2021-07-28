@@ -2,7 +2,7 @@ import { mount } from "enzyme"
 import React from "react"
 import styled from "styled-components"
 import { Theme } from "../../Theme"
-import { Button } from "../Button"
+import { ButtonV2 as Button } from "./ButtonV2"
 
 describe("Button", () => {
   it("returns variants and sizes", () => {

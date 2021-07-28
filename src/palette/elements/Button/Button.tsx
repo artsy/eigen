@@ -5,32 +5,26 @@ import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
-import { SansSize, themeProps } from "../../Theme"
+import { ColorFuncOverload, SansSize } from "../../Theme"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
-import { Sans } from "../Typography"
+import { Text } from "../Text"
 
 /** Different theme variations */
-export type ButtonVariant =
-  | "primaryBlack"
-  | "primaryWhite"
-  | "secondaryGray"
-  | "secondaryOutline"
-  | "secondaryOutlineWarning"
-  | "noOutline"
+export type ButtonVariant = "primaryBlack" | "primaryWhite" | "secondaryGray" | "secondaryOutline" | "text"
 
 /** Default button color variant */
 export const defaultVariant: ButtonVariant = "primaryBlack"
 
 /** The size of the button */
-export type ButtonSize = "small" | "medium" | "large"
+export type ButtonSize = "small" | "large"
 
 /** Icon position */
 export type ButtonIconPosition = "left" | "right"
 
 /** Default button size */
-export const defaultSize: ButtonSize = "medium"
+export const defaultSize: ButtonSize = "large"
 
 /** Default icon position */
 export const defaultIconPosition: ButtonIconPosition = "left"
@@ -79,18 +73,12 @@ export interface ButtonBaseProps extends BoxProps {
  * Returns various colors for each state given a button variant
  * @param variant
  */
-export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = false) {
-  const {
-    colors: { black100, white100, red100 },
-  } = themeProps
-
-  const opacity = disabled ? "0.1" : "1"
-  const black100WithOpacity = `rgba(0, 0, 0, ${opacity})`
-  const black10WithOpacity = `rgba(229, 229, 229, ${opacity})`
-  const whiteWithOpacity = `rgba(255, 255, 255, ${opacity})`
-  const purple100WithOpacity = `rgba(110, 30, 255, ${opacity})`
-  const black30WithOpacity = `rgba(194, 194, 194, ${opacity})`
-  const red100WithOpacity = `rgba(232, 46, 29, ${opacity})`
+export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = false, color: ColorFuncOverload) {
+  const black100WithOpacity = disabled ? color("black30") : color("black100")
+  const black10WithOpacity = disabled ? color("black30") : color("black10")
+  const white100 = color("white100")
+  const whiteWithOpacity = disabled ? color("black30") : color("white100")
+  const blue100WithOpacity = disabled ? color("black30") : color("blue100")
 
   switch (variant) {
     case "primaryBlack":
@@ -98,14 +86,14 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
         default: {
           backgroundColor: black100WithOpacity,
           borderColor: black100WithOpacity,
-          color: whiteWithOpacity,
+          color: white100,
           textColor: white100,
         },
         hover: {
-          backgroundColor: purple100WithOpacity,
-          borderColor: purple100WithOpacity,
+          backgroundColor: blue100WithOpacity,
+          borderColor: blue100WithOpacity,
           color: whiteWithOpacity,
-          textColor: white100,
+          textColor: whiteWithOpacity,
         },
       }
     case "primaryWhite":
@@ -113,14 +101,14 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
         default: {
           backgroundColor: whiteWithOpacity,
           borderColor: whiteWithOpacity,
-          color: black100WithOpacity,
-          textColor: black100,
+          color: disabled ? color("white100") : color("black100"),
+          textColor: disabled ? color("white100") : color("black100"),
         },
         hover: {
-          backgroundColor: purple100WithOpacity,
-          borderColor: purple100WithOpacity,
-          color: whiteWithOpacity,
-          textColor: white100,
+          backgroundColor: blue100WithOpacity,
+          borderColor: blue100WithOpacity,
+          color: color("white100"),
+          textColor: color("white100"),
         },
       }
     case "secondaryGray":
@@ -128,59 +116,44 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
         default: {
           backgroundColor: black10WithOpacity,
           borderColor: black10WithOpacity,
-          color: black100WithOpacity,
-          textColor: black100,
+          color: disabled ? color("white100") : color("black100"),
+          textColor: disabled ? color("white100") : color("black100"),
         },
         hover: {
-          backgroundColor: black30WithOpacity,
-          borderColor: black30WithOpacity,
-          color: black100WithOpacity,
-          textColor: black100,
+          backgroundColor: blue100WithOpacity,
+          borderColor: blue100WithOpacity,
+          color: color("white100"),
+          textColor: color("white100"),
         },
       }
     case "secondaryOutline":
       return {
         default: {
-          backgroundColor: whiteWithOpacity,
-          borderColor: black10WithOpacity,
-          color: black100WithOpacity,
-          textColor: black100,
-        },
-        hover: {
-          backgroundColor: whiteWithOpacity,
+          backgroundColor: white100,
           borderColor: black100WithOpacity,
           color: black100WithOpacity,
-          textColor: black100,
+          textColor: black100WithOpacity,
+        },
+        hover: {
+          backgroundColor: blue100WithOpacity,
+          borderColor: blue100WithOpacity,
+          color: color("white100"),
+          textColor: color("white100"),
         },
       }
-    case "secondaryOutlineWarning":
+    case "text":
       return {
         default: {
-          backgroundColor: whiteWithOpacity,
-          borderColor: black10WithOpacity,
-          color: red100WithOpacity,
-          textColor: red100,
+          backgroundColor: white100,
+          borderColor: white100,
+          color: black100WithOpacity,
+          textColor: black100WithOpacity,
         },
         hover: {
-          backgroundColor: whiteWithOpacity,
-          borderColor: black100WithOpacity,
-          color: black100WithOpacity,
-          textColor: black100,
-        },
-      }
-    case "noOutline":
-      return {
-        default: {
-          backgroundColor: "rgba(0, 0, 0, 0)",
-          borderColor: "rgba(0, 0, 0, 0)",
-          color: black100WithOpacity,
-          textColor: black100,
-        },
-        hover: {
-          backgroundColor: whiteWithOpacity,
-          borderColor: black100WithOpacity,
-          color: black100WithOpacity,
-          textColor: black100,
+          backgroundColor: color("black10"),
+          borderColor: color("black10"),
+          color: blue100WithOpacity,
+          textColor: blue100WithOpacity,
         },
       }
   }
@@ -205,24 +178,20 @@ export const Button: React.FC<ButtonProps> = (props) => {
   const getSize = (): { height: number; size: SansSize; px: number } => {
     switch (size) {
       case "small":
-        return { height: props.inline ? 17 : 26, size: "2", px: props.inline ? 0 : 1 }
-      case "medium":
-        return { height: props.inline ? 21 : 41, size: "3t", px: props.inline ? 0 : 2 }
+        return { height: props.inline ? 17 : 30, size: "2", px: props.inline ? 0 : 1 }
       case "large":
         return { height: props.inline ? 21 : 50, size: "3t", px: props.inline ? 0 : 3 }
     }
   }
 
   const loadingStyles = (() => {
-    const opacity = props.disabled ? "0.1" : "1"
-
     if (!props.loading) {
       return {}
     }
 
     if (props.inline) {
       return {
-        backgroundColor: `rgba(0, 0, 0, ${opacity})`,
+        backgroundColor: variant === "text" ? color("black10") : props.disabled ? color("black30") : color("blue100"),
         color: color("white100"),
         borderWidth: 0,
         textColor: "transparent",
@@ -230,20 +199,15 @@ export const Button: React.FC<ButtonProps> = (props) => {
     }
 
     return {
-      backgroundColor: `rgba(0, 0, 0, ${opacity})`,
-      borderColor: `rgba(0, 0, 0, 0)`,
+      backgroundColor: variant === "text" ? color("black10") : props.disabled ? color("black30") : color("blue100"),
+      borderColor: color("blue100"),
       color: color("white100"),
+      borderWidth: 0,
       textColor: "transparent",
     }
   })()
 
-  const spinnerColor = (() => {
-    if (props.inline) {
-      return variant === "primaryWhite" ? "white100" : "black100"
-    }
-
-    return "white100"
-  })()
+  const spinnerColor = variant === "text" ? "blue100" : "white100"
 
   const onPress = (event: GestureResponderEvent) => {
     if (props.onPress === undefined) {
@@ -272,7 +236,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
 
   const { children, loading, disabled, inline, longestText, style, icon, ...rest } = props
   const s = getSize()
-  const variantColors = getColorsForVariant(variant, disabled)
+  const variantColors = getColorsForVariant(variant, disabled, color)
 
   const from = variantColors[previous]
   const to = variantColors[current]
@@ -305,16 +269,24 @@ export const Button: React.FC<ButtonProps> = (props) => {
               >
                 <VisibleTextContainer>
                   {iconPosition === "left" && iconBox}
-                  <Sans weight="medium" color={loadingStyles.textColor || to.textColor} size={s.size}>
+                  <Text
+                    color={loadingStyles.textColor || to.textColor}
+                    variant={size === "small" ? "small" : "mediumText"}
+                    style={{ textDecorationLine: current === "hover" ? "underline" : "none" }}
+                  >
                     {children}
-                  </Sans>
+                  </Text>
                   {iconPosition === "right" && iconBox}
                 </VisibleTextContainer>
                 <HiddenContainer>
                   {icon}
-                  <LongestText role="presentation" weight="medium" size={s.size}>
-                    {longestText ? longestText : children}
-                  </LongestText>
+                  <Text
+                    color={loadingStyles.textColor || to.textColor}
+                    variant={size === "small" ? "small" : "mediumText"}
+                    style={{ textDecorationLine: current === "hover" ? "underline" : "none" }}
+                  >
+                    {children}
+                  </Text>
                 </HiddenContainer>
 
                 {!!loading && <Spinner size={size} color={spinnerColor} />}
@@ -345,14 +317,12 @@ const HiddenContainer = styled(Box)<ButtonProps>`
   opacity: 0;
 `
 
-const LongestText = styled(Sans)``
-
 const Container = styled(Box)<ButtonProps>`
   align-items: center;
   justify-content: center;
   position: relative;
   border-width: 1;
-  border-radius: 3;
+  border-radius: 50;
   width: ${(p) => (p.block ? "100%" : "auto")};
 `
 
