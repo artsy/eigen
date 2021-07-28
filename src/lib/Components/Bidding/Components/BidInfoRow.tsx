@@ -1,9 +1,7 @@
-import { Text } from "palette"
+import { Flex, FlexProps, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
-
-import { Flex, FlexProps } from "../Elements/Flex"
 
 interface BidInfoRowProps extends FlexProps {
   label: string
