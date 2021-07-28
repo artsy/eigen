@@ -1,9 +1,9 @@
 import { Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
+import styled from "styled-components/native"
 
-import { FlexProps } from "../Elements/Flex"
-import { Col, Row } from "../Elements/Grid"
+import { Flex, FlexProps } from "../Elements/Flex"
 
 interface BidInfoRowProps extends FlexProps {
   label: string
@@ -36,3 +36,13 @@ export class BidInfoRow extends React.Component<BidInfoRowProps> {
     )
   }
 }
+
+const Col = styled(Flex)`
+  flex: 1;
+`
+
+const Row = styled(Flex)`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`
