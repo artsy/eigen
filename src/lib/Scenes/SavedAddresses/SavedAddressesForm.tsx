@@ -8,7 +8,7 @@ import { Input } from "lib/Components/Input/Input"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { Stack } from "lib/Components/Stack"
-import { goBack } from "lib/navigation/navigate"
+import { goBack, navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
@@ -22,6 +22,7 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { MyAccountFieldEditScreen } from "../MyAccount/Components/MyAccountFieldEditScreen"
 import { AddAddressButton } from "./Components/AddAddressButton"
 import { createUserAddress } from "./mutations/addNewAddress"
+import { deleteSavedAddress } from "./mutations/deleteSavedAddress"
 import { setAsDefaultAddress } from "./mutations/setAsDefaultAddress"
 import { updateUserAddress } from "./mutations/updateUserAddress"
 
@@ -152,6 +153,16 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
     }
   }
 
+  const deleteUserAddress = async (userAddressID: string) => {
+    deleteSavedAddress(
+      userAddressID,
+      () => {
+        navigate("my-profile/saved-addresses")
+      },
+      (message: string) => captureMessage(message)
+    )
+  }
+
   return (
     <MyAccountFieldEditScreen
       ref={screenRef}
@@ -209,10 +220,16 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
             setIsDefaultAddress(!isDefaultAddress)
           }}
           checked={isDefaultAddress}
-          mb={4}
+          mb={1}
         >
           <Text>Set as default</Text>
         </Checkbox>
+
+        {!!isEditForm && (
+          <Text onPress={() => deleteUserAddress(addressId!)} variant="caption" textAlign="center" mb={2} color="red">
+            Delete address
+          </Text>
+        )}
 
         <AddAddressButton
           handleOnPress={isEditForm ? () => editUserAddress(addressId!) : submitAddAddress}
