@@ -1,9 +1,9 @@
 import { THEME_V2, THEME_V3 } from "@artsy/palette-tokens"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import _ from "lodash"
 import React, { useContext } from "react"
 import { ThemeContext, ThemeProvider } from "styled-components/native"
 import { TEXT_FONTS_V2, TEXT_FONTS_V3 } from "./elements/Text/tokens"
+import { usePaletteFlagStore } from "./PaletteFlag"
 import { fontFamily } from "./platform/fonts/fontFamily"
 
 /**
@@ -97,14 +97,16 @@ type ThemeV2Type = typeof THEMES.v2
 type ThemeV3Type = typeof THEMES.v3
 type ThemeType = ThemeV2Type | ThemeV3Type
 
-// stop using this!! use any of the hooks in this file instead.
+/**
+ * Do not use this!! Use any the hooks instead!
+ */
 export const themeProps = THEMES.v2
 
 export const Theme: React.FC<{
   theme?: keyof typeof THEMES | ThemeType
   override?: DeepPartial<ThemeV2Type> | DeepPartial<ThemeV3Type>
 }> = ({ children, theme = "v2", override = {} }) => {
-  const allowV3 = useFeatureFlag("ARAllowPaletteV3")
+  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
 
   let actualTheme: ThemeType
   if (_.isString(theme)) {

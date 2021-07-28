@@ -1,7 +1,7 @@
 import { themeGet } from "@styled-system/theme-get"
 import React from "react"
+import styled from "styled-components/native"
 import { useColor } from "../../hooks"
-import { styledWrapper } from "../../platform/primitives"
 import { SansSize } from "../../Theme"
 import { Flex, FlexProps } from "../Flex"
 import { Sans } from "../Typography"
@@ -14,7 +14,7 @@ interface MessageProps extends FlexProps {
   textSize?: SansSize
 }
 
-const StyledFlex = styledWrapper(Flex)`
+const StyledFlex = styled(Flex)`
   background-color: ${themeGet("colors.black5")};
   border-radius: 2px;
 `

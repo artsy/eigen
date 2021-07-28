@@ -1,9 +1,8 @@
 import { ArtistListItemTestsQuery } from "__generated__/ArtistListItemTestsQuery.graphql"
+import { Touchable } from "palette"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { Touchable } from "../../../palette/elements/Touchable"
 import { mockEnvironmentPayload } from "../../tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "../../tests/renderWithWrappers"
 import { ArtistListItemContainer, formatTombstoneText } from "../ArtistListItem"
@@ -38,15 +37,15 @@ describe("ArtistListItem", () => {
   })
 
   it("renders without feedback without throwing an error", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />).root
     mockEnvironmentPayload(mockEnvironment)
-    expect(tree.root.findAllByType(TouchableWithoutFeedback)).toHaveLength(2)
+    expect(tree.findByType(Touchable).props.noFeedback).toBe(true)
   })
 
   it("renders with feedback without throwing an error", () => {
-    const tree = renderWithWrappers(<TestRenderer withFeedback />)
+    const tree = renderWithWrappers(<TestRenderer withFeedback />).root
     mockEnvironmentPayload(mockEnvironment)
-    expect(tree.root.findAllByType(Touchable)).toHaveLength(1)
+    expect(tree.findByType(Touchable).props.noFeedback).toBe(false)
   })
 })
 
