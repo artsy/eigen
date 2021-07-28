@@ -17,8 +17,6 @@ import styled from "styled-components/native"
 import { EyeClosedIcon } from "../../../palette/svgs/EyeClosedIcon"
 import { InputTitle } from "./InputTitle"
 
-const LoadingIndicator = styled.ActivityIndicator``
-
 export const INPUT_HEIGHT = 43
 
 export interface InputProps extends Omit<TextInputProps, "placeholder"> {
