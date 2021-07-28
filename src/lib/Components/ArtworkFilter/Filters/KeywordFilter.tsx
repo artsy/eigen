@@ -35,7 +35,6 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
   const inputRef = useRef(null)
 
   const updateKeywordFilter = (text: string) => {
-    // setTypingToFalse()
     selectFiltersAction({
       paramName: FilterParamName.keyword,
       displayText: text,
