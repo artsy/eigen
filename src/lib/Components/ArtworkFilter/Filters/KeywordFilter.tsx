@@ -73,7 +73,6 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
       placeholder="Search by artwork title, series, or description"
       onChangeText={(e) => {
         handleTypingStart()
-
         handleChangeText(e)
       }}
       autoCorrect={false}
