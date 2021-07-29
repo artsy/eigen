@@ -263,6 +263,7 @@ static NSString *hostFromString(NSString *string)
 + (NSMutableURLRequest *)requestWithMethod:(NSString *)method URLString:(NSString *)urlString parameters:(NSDictionary *)params
 {
     NSMutableURLRequest *request = [staticHTTPClient.requestSerializer requestWithMethod:method URLString:urlString parameters:params error:nil];
+    [request setValue:@"" forHTTPHeaderField:@"Cookie"];
     return request;
 }
 
