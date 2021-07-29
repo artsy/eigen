@@ -6,28 +6,30 @@ import { withHooks, withThemeV2AndSwitcher } from "storybook/decorators"
 import { List } from "storybook/helpers"
 import { ColorV2, isThemeV2, useTheme } from "./Theme"
 
-const ColorSquare = ({ color: theColor, bright, dark }: { color: ColorV2; bright?: boolean; dark?: boolean }) => {
+const ColorSquare = ({ color: theColor, bright }: { color: ColorV2; bright?: boolean }) => {
   const { theme, color, colorV2 } = useTheme()
 
   const colorFunc = isThemeV2(theme) ? colorV2 : color
 
   return (
-    <View
-      style={[
-        {
-          backgroundColor: colorFunc(theColor),
-          width: 80,
-          height: 80,
-          alignItems: "center",
-          justifyContent: "center",
-        },
-        bright && {
-          borderWidth: 0.5,
-          borderColor: "grey",
-        },
-      ]}
-    >
-      <Text color={dark ? "white" : "black"}>{theColor}</Text>
+    <View>
+      <View
+        style={[
+          {
+            backgroundColor: colorFunc(theColor),
+            width: 80,
+            height: 80,
+            alignItems: "center",
+            justifyContent: "center",
+          },
+          bright && {
+            borderWidth: 0.5,
+            borderColor: "grey",
+          },
+        ]}
+      />
+      <Text color="black">{theColor}</Text>
+      <Text color="lightgrey">{colorFunc(theColor)}</Text>
     </View>
   )
 }
@@ -38,15 +40,15 @@ const Row = ({ children }: { children: React.ReactNode }) => (
   </Flex>
 )
 
-storiesOf("Color V2", module)
+storiesOf("Theme/Color V2", module)
   .addDecorator(withThemeV2AndSwitcher)
   .addDecorator(withHooks)
   .add("colors", () => (
     <List>
       <Row>
-        <ColorSquare color="black100" dark />
-        <ColorSquare color="black80" dark />
-        <ColorSquare color="black60" dark />
+        <ColorSquare color="black100" />
+        <ColorSquare color="black80" />
+        <ColorSquare color="black60" />
         <ColorSquare color="black30" />
       </Row>
       <Row>
@@ -55,29 +57,29 @@ storiesOf("Color V2", module)
         <ColorSquare color="white100" bright />
       </Row>
       <Row>
-        <ColorSquare color="blue100" dark />
+        <ColorSquare color="blue100" />
         <ColorSquare color="blue10" />
       </Row>
       <Row>
-        <ColorSquare color="green100" dark />
+        <ColorSquare color="green100" />
         <ColorSquare color="green10" />
       </Row>
       <Row>
-        <ColorSquare color="brand" dark />
-        <ColorSquare color="purple100" dark />
+        <ColorSquare color="brand" />
+        <ColorSquare color="purple100" />
         <ColorSquare color="purple30" />
         <ColorSquare color="purple5" />
       </Row>
       <Row>
-        <ColorSquare color="red100" dark />
+        <ColorSquare color="red100" />
         <ColorSquare color="red10" />
       </Row>
       <Row>
-        <ColorSquare color="copper100" dark />
+        <ColorSquare color="copper100" />
         <ColorSquare color="copper10" />
       </Row>
       <Row>
-        <ColorSquare color="yellow100" dark />
+        <ColorSquare color="yellow100" />
         <ColorSquare color="yellow30" />
         <ColorSquare color="yellow10" />
       </Row>
