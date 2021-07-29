@@ -150,22 +150,22 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
     expect(tree.root.findAllByType(AllowPushNotificationsBanner)).toHaveLength(0)
   })
 
-  it("should show the open settings banner on iOS if the user did not allow push notifications", () => {
+  it("should show the open settings banner on iOS if the user did not allow push notifications", async () => {
     mockFetchNotificationPermissions(false).mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Denied))
     Platform.OS = "ios"
     const tree = renderWithWrappers(<MyProfilePushNotificationsQueryRenderer />)
 
-    flushPromiseQueue()
+    await flushPromiseQueue()
     tree.update(<MyProfilePushNotificationsQueryRenderer />)
     expect(tree.root.findAllByType(OpenSettingsBanner)).toHaveLength(1)
   })
 })
 
-it("should show the open settings banner on Android if the user did not allow push notifications", () => {
+it("should show the open settings banner on Android if the user did not allow push notifications", async () => {
   mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: false }))
   Platform.OS = "android"
   const tree = renderWithWrappers(<MyProfilePushNotificationsQueryRenderer />)
-  flushPromiseQueue()
+  await flushPromiseQueue()
   tree.update(<MyProfilePushNotificationsQueryRenderer />)
   expect(tree.root.findAllByType(OpenSettingsBanner)).toHaveLength(1)
 })
