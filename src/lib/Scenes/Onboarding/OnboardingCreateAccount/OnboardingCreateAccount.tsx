@@ -10,9 +10,14 @@ import React, { useEffect, useRef, useState } from "react"
 import { Alert, Animated, Linking, ScrollView } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
+import { OnboardingSocialPick } from "../OnboardingSocialPick"
 import { OnboardingCreateAccountEmail, OnboardingCreateAccountEmailParams } from "./OnboardingCreateAccountEmail"
 import { OnboardingCreateAccountName } from "./OnboardingCreateAccountName"
 import { OnboardingCreateAccountPassword } from "./OnboardingCreateAccountPassword"
+
+export const OnboardingCreateAccount: React.FC = () => {
+  return <OnboardingSocialPick mode="signup" />
+}
 
 export interface OnboardingCreateAccountProps
   extends StackScreenProps<OnboardingNavigationStack, "OnboardingCreateAccount"> {}
@@ -59,7 +64,7 @@ const getCurrentRoute = () =>
 
 const EMAIL_EXISTS_ERROR_MESSAGE = "We found an account with this email"
 
-export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = ({ navigation }) => {
+export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountProps> = ({ navigation }) => {
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [higlightTerms, setHighlightTerms] = useState(false)
 
@@ -137,8 +142,8 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
           <StackNavigator.Screen name="OnboardingCreateAccountName" component={OnboardingCreateAccountName} />
         </StackNavigator.Navigator>
         <OnboardingCreateAccountButton
-          navigateToLogin={() => {
-            navigation.replace("OnboardingLogin", { withFadeAnimation: true, email: formik.values.email })
+          navigateToLoginWithEmail={() => {
+            navigation.replace("OnboardingLoginWithEmail", { withFadeAnimation: true, email: formik.values.email })
           }}
           acceptedTerms={acceptedTerms}
           setAcceptedTerms={setAcceptedTerms}
@@ -194,14 +199,14 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
 }
 
 export interface OnboardingCreateAccountButtonProps {
-  navigateToLogin: () => void
+  navigateToLoginWithEmail: () => void
   acceptedTerms: boolean
   setAcceptedTerms: React.Dispatch<React.SetStateAction<boolean>>
   highlightTerms: boolean
 }
 
 export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButtonProps> = ({
-  navigateToLogin,
+  navigateToLoginWithEmail,
   acceptedTerms,
   setAcceptedTerms,
   highlightTerms,
@@ -231,7 +236,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
       {errors.email === EMAIL_EXISTS_ERROR_MESSAGE && (
         <Animated.View style={{ bottom: -50, transform: [{ translateY: yTranslateAnim.current }] }}>
           <Button
-            onPress={navigateToLogin}
+            onPress={navigateToLoginWithEmail}
             block
             haptic="impactMedium"
             mb={1}

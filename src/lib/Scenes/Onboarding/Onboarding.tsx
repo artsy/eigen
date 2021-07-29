@@ -5,16 +5,21 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import React from "react"
 import { View } from "react-native"
 import { ForgotPassword } from "./ForgotPassword"
-import { OnboardingCreateAccount } from "./OnboardingCreateAccount/OnboardingCreateAccount"
-import { OnboardingLogin } from "./OnboardingLogin"
+import {
+  OnboardingCreateAccount,
+  OnboardingCreateAccountWithEmail,
+} from "./OnboardingCreateAccount/OnboardingCreateAccount"
+import { OnboardingLogin, OnboardingLoginWithEmail } from "./OnboardingLogin"
 import { OnboardingPersonalization } from "./OnboardingPersonalization/OnboardingPersonalization"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
 // tslint:disable-next-line:interface-over-type-literal
 export type OnboardingNavigationStack = {
   OnboardingWelcome: undefined
-  OnboardingLogin: { withFadeAnimation: boolean; email: string } | undefined
+  OnboardingLogin: undefined
+  OnboardingLoginWithEmail: { withFadeAnimation: boolean; email: string } | undefined
   OnboardingCreateAccount: undefined
+  OnboardingCreateAccountWithEmail: undefined
   ForgotPassword: undefined
 }
 
@@ -30,9 +35,10 @@ export const OnboardingWelcomeScreens = () => (
       }}
     >
       <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
+      <StackNavigator.Screen name="OnboardingLogin" component={OnboardingLogin} />
       <StackNavigator.Screen
-        name="OnboardingLogin"
-        component={OnboardingLogin}
+        name="OnboardingLoginWithEmail"
+        component={OnboardingLoginWithEmail}
         options={({ route: { params } }) => ({
           cardStyleInterpolator: params?.withFadeAnimation
             ? CardStyleInterpolators.forFadeFromBottomAndroid
@@ -40,6 +46,7 @@ export const OnboardingWelcomeScreens = () => (
         })}
       />
       <StackNavigator.Screen name="OnboardingCreateAccount" component={OnboardingCreateAccount} />
+      <StackNavigator.Screen name="OnboardingCreateAccountWithEmail" component={OnboardingCreateAccountWithEmail} />
       <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
     </StackNavigator.Navigator>
   </NavigationContainer>

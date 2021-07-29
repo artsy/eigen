@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
+import { BackButton } from "lib/navigation/BackButton"
 import { useEnvironment } from "lib/store/GlobalStore"
 import { Button, Flex, Join, Spacer, Text } from "palette"
 import React from "react"
@@ -15,13 +16,22 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
 
   return (
     <Flex justifyContent="center" alignItems="center" flex={1} px={1.5} backgroundColor="white">
+      <BackButton
+        onPress={() => {
+          navigation.goBack()
+        }}
+      />
       <Join separator={<Spacer height={60} />}>
         <Text variant="largeTitle">{mode === "login" ? "Log in" : "Create account"}</Text>
 
         <>
           <Button
             onPress={() => {
-              // Do nothing
+              if (mode === "login") {
+                navigation.navigate("OnboardingLoginWithEmail")
+              } else {
+                navigation.navigate("OnboardingCreateAccountWithEmail")
+              }
             }}
             block
             haptic="impactMedium"
@@ -61,7 +71,8 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
         </>
 
         <Text variant="small" color="black60" textAlign="center">
-          I agree to Artsy’s{" "}
+          By tapping Next, {mode === "login" ? "Continue with Facebook" : "Sign up with Facebook"} or Apple, you agree
+          to Artsy's{" "}
           <Text
             onPress={() => {
               Linking.openURL(`${webURL}/terms`)
@@ -69,8 +80,8 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             style={{ textDecorationLine: "underline" }}
           >
             Terms of Use
-          </Text>
-          ,{" "}
+          </Text>{" "}
+          and{" "}
           <Text
             onPress={() => {
               Linking.openURL(`${webURL}/privacy`)
@@ -79,16 +90,6 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
           >
             Privacy Policy
           </Text>
-          , and{" "}
-          <Text
-            onPress={() => {
-              Linking.openURL(`${webURL}/conditions-of-sale`)
-            }}
-            style={{ textDecorationLine: "underline" }}
-          >
-            Conditions of Sale
-          </Text>
-          .
         </Text>
       </Join>
       <Flex position="absolute" bottom={40}>

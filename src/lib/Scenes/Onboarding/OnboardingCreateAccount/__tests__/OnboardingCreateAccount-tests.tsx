@@ -3,7 +3,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { __globalStoreTestUtils__ } from "../../../../store/GlobalStore"
 import { flushPromiseQueue } from "../../../../tests/flushPromiseQueue"
-import { OnboardingCreateAccount } from "../OnboardingCreateAccount"
+import { OnboardingCreateAccountWithEmail } from "../OnboardingCreateAccount"
 
 const goBackMock = jest.fn()
 const replaceMock = jest.fn()
@@ -33,7 +33,9 @@ describe("OnboardingCreateAccount", () => {
   })
 
   it("form validation works properly", async () => {
-    const tree = renderWithWrappers(<OnboardingCreateAccount navigation={navigationMock as any} route={null as any} />)
+    const tree = renderWithWrappers(
+      <OnboardingCreateAccountWithEmail navigation={navigationMock as any} route={null as any} />
+    )
 
     const signUpButton = tree.root.findByProps({ testID: "signUpButton" })
 
@@ -118,7 +120,9 @@ describe("OnboardingCreateAccount", () => {
   })
 
   it("shows go to login button when the email is already used", async () => {
-    const tree = renderWithWrappers(<OnboardingCreateAccount navigation={navigationMock as any} route={null as any} />)
+    const tree = renderWithWrappers(
+      <OnboardingCreateAccountWithEmail navigation={navigationMock as any} route={null as any} />
+    )
 
     const signUpButton = tree.root.findByProps({ testID: "signUpButton" })
 
