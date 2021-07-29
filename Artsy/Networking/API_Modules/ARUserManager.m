@@ -549,9 +549,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 {
     NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     for (NSHTTPCookie *cookie in cookieStorage.cookies) {
-        if ([ARRouter.artsyHosts containsObject:cookie.domain]) {
-            [cookieStorage deleteCookie:cookie];
-        }
+       [cookieStorage deleteCookie:cookie];
     }
 }
 
