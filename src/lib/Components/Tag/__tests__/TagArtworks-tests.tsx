@@ -3,6 +3,7 @@ import { ApplyButton } from "lib/Components/ArtworkFilter"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
@@ -48,16 +49,27 @@ describe("TagArtworks", () => {
         `}
         render={({ props }) => {
           if (props?.tag) {
-            return <TagArtworksPaginationContainer tag={props.tag} />
+            return (
+              <StickyTabPage
+                staticHeaderContent={<></>}
+                tabs={[
+                  {
+                    title: "TagArtworks",
+                    content: <TagArtworksPaginationContainer tag={props.tag} />,
+                  },
+                ]}
+              />
+            )
           }
+
           return null
         }}
         variables={{
           tagID,
-          input: {
-            medium: "*",
-            priceRange: "*-*",
-          },
+          // input: {
+          //   medium: "*",
+          //   priceRange: "*-*",
+          // },
         }}
       />
     )

@@ -4,7 +4,7 @@ import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PAGE_SIZE } from "lib/data/constants"
 import { Schema } from "lib/utils/track"
-import { Box, Separator } from "palette"
+import { Box, Message, Separator } from "palette"
 import React, { useContext, useRef, useState } from "react"
 import { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -71,6 +71,14 @@ export const TagArtworks: React.FC<TagArtworksProps> = (props) => {
   }, [artworksTotal, openFilterModal])
 
   if (initialArtworksTotal.current === 0) {
+    return (
+      <Box mt={1}>
+        <Message>There aren’t any works available in the tag at this time.</Message>
+      </Box>
+    )
+  }
+
+  if (artworksTotal === 0) {
     return (
       <Box pt={1}>
         <FilteredArtworkGridZeroState id={tag.id} slug={tag.slug} trackClear={trackClear} />
