@@ -128,8 +128,6 @@ static ARAppDelegate *_sharedInstance = nil;
         return;
     }
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cookiesChanged) name: NSHTTPCookieManagerCookiesChangedNotification object:nil];
-
     // Temp Fix for: https://github.com/artsy/eigen/issues/602
     [self forceCacheCustomFonts];
 
@@ -157,16 +155,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];
-}
-
-- (void)cookiesChanged
-{
-    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    for (NSHTTPCookie *cookie in cookieStorage.cookies) {
-        if ([ARRouter.artsyHosts containsObject:cookie.domain]) {
-            NSLog(@"Found artsy cookie for domain %@ with name %@", cookie.domain, cookie.name);
-        }
-    }
 }
 
 /// This is called when the app is almost done launching
