@@ -210,3 +210,15 @@ There is a known issue in react-native-screens that causes the app to crash on r
 added to the MainActivity class on Android https://github.com/software-mansion/react-native-screens/issues/17#issuecomment-424704067.
 
 This has the UX downside of not allowing state restore from background but this is an unsolved problem for RN apps.
+
+# `react-native-push-notification` Requiring unknown module on ios
+
+#### When can we remove this:
+
+Once we want to use react-native-push-notification on iOS
+
+#### Explanation/Context:
+
+This is happening because react-native-push-notification requires @react-native-community/push-notification-ios. We are not
+adding this dependency at this time because it is unnecessary and we do not use react-native-push-notification on iOS. Also,
+we do not want unnecessary conflicts between our native push notification implementation and @react-native-community/push-notification-ios's.
