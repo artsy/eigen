@@ -1,5 +1,7 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount, RenderUntilPredicate } from "enzyme"
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { Theme } from "palette"
 import React from "react"
 import { Variables } from "relay-runtime"
 import { LoadingTestID } from "../utils/renderWithLoadProgress"
@@ -109,15 +111,19 @@ export function renderRelayTree<P = {}, S = {}, C extends React.Component = Reac
   } = params
 
   const renderer = (
-    <MockRelayRenderer
-      Component={Component}
-      mockResolvers={mockResolvers}
-      query={query}
-      variables={variables}
-      mockData={mockData}
-      mockMutationResults={mockMutationResults}
-      componentProps={componentProps}
-    />
+    <GlobalStoreProvider>
+      <Theme>
+        <MockRelayRenderer
+          Component={Component}
+          mockResolvers={mockResolvers}
+          query={query}
+          variables={variables}
+          mockData={mockData}
+          mockMutationResults={mockMutationResults}
+          componentProps={componentProps}
+        />
+      </Theme>
+    </GlobalStoreProvider>
   )
   return mount<C, P, S>(wrapper ? wrapper(renderer) : renderer).renderUntil(
     renderUntilPredicate || RelayFinishedLoading

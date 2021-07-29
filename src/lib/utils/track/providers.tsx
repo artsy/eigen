@@ -6,6 +6,14 @@ interface CohesionAction {
   // TODO: This can be removed once cohesion provides a global `Action` type.
   action: string
 }
+
+type NativeIOSTrackingEventID =
+  | {
+      // identifier for native ios events for tracking
+      screen_name: string
+    }
+  | { event_name: string }
+
 export const isCohesionScreen = (info: CohesionAction | Screen): info is Screen => info.action === ActionType.screen
 
 interface LegacyNameAction {
@@ -13,7 +21,13 @@ interface LegacyNameAction {
   name: string
 }
 
-type InfoType = Schema.PageView | Schema.Entity | CohesionAction | Screen | LegacyNameAction
+export type InfoType =
+  | Schema.PageView
+  | Schema.Entity
+  | CohesionAction
+  | Screen
+  | LegacyNameAction
+  | NativeIOSTrackingEventID
 
 export interface TrackingProvider {
   setup?: () => void

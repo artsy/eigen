@@ -2,7 +2,7 @@ import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingV
 import { SearchInput } from "lib/Components/SearchInput"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
-import { color, Flex, Spacer } from "palette"
+import { Flex, Spacer, useColor } from "palette"
 import React, { useState } from "react"
 import { Platform, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
@@ -20,6 +20,7 @@ const placeholders = [
 ]
 
 export const Search: React.FC = () => {
+  const color = useColor()
   const [query, setQuery] = useState("")
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(query)

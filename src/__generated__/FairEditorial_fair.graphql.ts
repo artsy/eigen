@@ -66,6 +66,11 @@ return {
         },
         {
           "kind": "Literal",
+          "name": "inEditorialFeed",
+          "value": true
+        },
+        {
+          "kind": "Literal",
           "name": "sort",
           "value": "PUBLISHED_AT_DESC"
         }
@@ -159,12 +164,12 @@ return {
           "storageKey": null
         }
       ],
-      "storageKey": "articlesConnection(first:5,sort:\"PUBLISHED_AT_DESC\")"
+      "storageKey": "articlesConnection(first:5,inEditorialFeed:true,sort:\"PUBLISHED_AT_DESC\")"
     }
   ],
   "type": "Fair",
   "abstractKey": null
 };
 })();
-(node as any).hash = 'c0894b9c1c2e69bc13dde5f5bca3b311';
+(node as any).hash = 'dcc9e4ac75c08f9729d5731f13fc97fe';
 export default node;

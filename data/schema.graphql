@@ -3935,7 +3935,33 @@ type CommerceShipment {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String!
+  deliveryEnd(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  deliveryStart(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  deliveryWindowModifier: String
   id: ID!
+  pickupEnd(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  pickupStart(
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  pickupWindowModifier: String
   priceCents: Int!
   priceCurrency: String!
   status: String
@@ -5168,6 +5194,9 @@ type ConversationInitiator {
 
 type ConversationItem {
   item: ConversationItemType
+
+  # The actual, non-snapshotted artwork
+  liveArtwork: ConversationItemType
   permalink: String
   title: String
 }
@@ -6001,7 +6030,16 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
-  articlesConnection(after: String, before: String, first: Int, last: Int, sort: ArticleSorts): ArticleConnection
+  articlesConnection(
+    after: String
+    before: String
+    first: Int
+
+    # Articles that are ready to be publicly viewed in the feed by everyone.
+    inEditorialFeed: Boolean
+    last: Int
+    sort: ArticleSorts
+  ): ArticleConnection
   artistsConnection(
     after: String
     before: String
@@ -6123,6 +6161,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     before: String
     first: Int
     last: Int
+    page: Int
 
     # Number of artworks to return
     section: String
@@ -8568,6 +8607,9 @@ type Partner implements Node {
     after: String
     before: String
     first: Int
+
+    # Articles that are ready to be publicly viewed in the feed by everyone.
+    inEditorialFeed: Boolean
     last: Int
     page: Int
     sort: ArticleSorts

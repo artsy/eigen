@@ -1,5 +1,5 @@
 import { OrderDetailsPayment_order } from "__generated__/OrderDetailsPayment_order.graphql"
-import { Box, CreditCardIcon, Flex, space, Text } from "palette"
+import { Box, CreditCardIcon, Flex, Text, useSpace } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -8,6 +8,7 @@ interface OrderDetailsPaymentProps {
 }
 
 const CreditCardDetails: React.FC<OrderDetailsPaymentProps> = ({ order }) => {
+  const space = useSpace()
   const creditCard = order.creditCard || null
   return (
     <Flex alignItems="center" flexDirection="row">

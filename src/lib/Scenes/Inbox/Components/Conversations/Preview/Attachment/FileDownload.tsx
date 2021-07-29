@@ -14,6 +14,7 @@ export const NoBorderContainer = styled.View`
   flex: 1;
   flex-direction: row;
 `
+
 interface Props extends AttachmentProps {
   attachment: FileDownload_attachment
   tiny?: boolean

@@ -39,7 +39,7 @@ describe("AuctionResultsForYouContainer", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("Renders list of auction results for you", () => {
+  it("Renders list of auction results for artists you follow", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
     mockEnvironmentPayload(mockEnvironment, {

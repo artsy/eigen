@@ -1,7 +1,8 @@
+import { themeGet } from "@styled-system/theme-get"
 import React, { useEffect, useMemo } from "react"
 import { Animated, Easing, ViewProps } from "react-native"
 import styled from "styled-components/native"
-import { Color, color as colorResolve } from "../../Theme"
+import { Color } from "../../Theme"
 
 export interface SpinnerProps extends ViewProps {
   /** Delay before spinner appears */
@@ -95,9 +96,10 @@ const Bar = styled(Animated.View)<SpinnerProps>`
 
   ${(props) => {
     const { width, height } = getSize(props)
+    const propColorString = `colors.${props.color}`
 
     return `
-      background: ${colorResolve(props.color)};
+      background: ${themeGet(propColorString)};
       width: ${width}px;
       height: ${height}px;
     `

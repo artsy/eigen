@@ -2,9 +2,9 @@
 #import "ARCustomEigenLabels.h"
 #import "ARScreenPresenterModule.h"
 
-#import <ARAnalytics/ARAnalytics.h>
 #import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <Sentry/Sentry.h>
 
 @interface ARNetworkErrorManager ()
 @property (nonatomic, strong) UILabel *activeModalView;
@@ -30,7 +30,7 @@
 
 + (void)presentActiveError:(NSError *)error withMessage:(NSString *)message;
 {
-    [ARAnalytics error:error withMessage:message];
+    [SentrySDK captureError:error];
 
     ARNetworkErrorManager *manager = [self sharedManager];
     if (manager.activeModalView == nil) {

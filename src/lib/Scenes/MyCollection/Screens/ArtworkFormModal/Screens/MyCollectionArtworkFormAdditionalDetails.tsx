@@ -4,7 +4,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Input } from "lib/Components/Input/Input"
 import { Select } from "lib/Components/Select"
 import { TextArea } from "lib/Components/TextArea"
-import { Flex, Join, Sans, space, Spacer } from "palette"
+import { Flex, Join, Sans, Spacer, useSpace } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native-gesture-handler"
 import { useArtworkForm } from "../Form/useArtworkForm"
@@ -13,6 +13,7 @@ import { ArtworkFormModalScreen } from "../MyCollectionArtworkFormModal"
 export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: NavigationProp<ArtworkFormModalScreen> }> = ({
   navigation,
 }) => {
+  const space = useSpace()
   const { formik } = useArtworkForm()
   const formikValues = formik?.values
   const [isEdition, setIsEdition] = useState(formikValues?.isEdition)

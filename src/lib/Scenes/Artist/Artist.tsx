@@ -10,7 +10,7 @@ import { ArtistAboutContainer } from "lib/Components/Artist/ArtistAbout/ArtistAb
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
 import { ArtistInsightsFragmentContainer } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
-import { DEFAULT_ARTWORK_SORT } from 'lib/Components/ArtworkFilter/Filters/SortOptions'
+import { DEFAULT_ARTWORK_SORT } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { getOnlyFilledSearchCriteriaValues } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"

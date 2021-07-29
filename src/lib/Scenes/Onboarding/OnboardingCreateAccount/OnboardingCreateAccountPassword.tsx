@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
 import { Input } from "lib/Components/Input/Input"
-import { color } from "palette"
+import { useColor } from "palette/hooks"
 import React from "react"
 import {
   OnboardingCreateAccountNavigationStack,
@@ -13,6 +13,7 @@ interface OnboardingCreateAccountPasswordProps
   extends StackScreenProps<OnboardingCreateAccountNavigationStack, "OnboardingCreateAccountPassword"> {}
 
 export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPasswordProps> = ({ navigation }) => {
+  const color = useColor()
   const { values, handleSubmit, handleChange, errors, setErrors } = useFormikContext<UserSchema>()
 
   return (

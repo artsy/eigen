@@ -1,7 +1,8 @@
+import { themeGet } from "@styled-system/theme-get"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { Fair } from "lib/Scenes/Map/types"
-import { Box, color, Flex, Sans, space } from "palette"
+import { Box, Flex, Sans } from "palette"
 import React, { Component } from "react"
 import { Dimensions, Image, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -48,7 +49,7 @@ export class FairEventSectionCard extends Component<Props> {
 }
 
 const BackgroundImage = styled(OpaqueImageView)`
-  background: ${color("black60")};
+  background: ${themeGet("colors.black60")};
   position: absolute;
   height: 100%;
   width: 100%;
@@ -59,7 +60,7 @@ const Container = styled(Box)`
   height: 310;
   position: relative;
   overflow: hidden;
-  background: ${color("black60")};
+  background: ${themeGet("colors.black60")};
 `
 
 // Set background color of overlay based on logo color
@@ -74,7 +75,6 @@ const Logo = styled(Image)`
   width: 100;
   height: 100;
   background-color: transparent;
-  margin-bottom: ${space(1)};
-  /* stylelint-disable */
+  margin-bottom: ${themeGet("space.1")}px;
   tint-color: white;
 `

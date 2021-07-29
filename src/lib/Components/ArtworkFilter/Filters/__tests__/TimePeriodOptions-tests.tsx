@@ -60,7 +60,7 @@ describe("TimePeriodOptions Screen", () => {
       const tree = renderWithWrappers(<MockFilterScreen initialState={initialState} />)
 
       const items = tree.root.findAllByType(FilterModalOptionListItem)
-      const item = items.find((i) => extractText(i).startsWith("Time period"))
+      const item = items.find((i) => extractText(i).startsWith("Time Period"))
 
       expect(item).not.toBeUndefined()
 
@@ -95,7 +95,7 @@ describe("TimePeriodOptions Screen", () => {
       const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
 
       const items = tree.root.findAllByType(FilterModalOptionListItem)
-      const item = items.find((i) => extractText(i).startsWith("Time period"))
+      const item = items.find((i) => extractText(i).startsWith("Time Period"))
 
       expect(item).not.toBeUndefined()
       if (item) {

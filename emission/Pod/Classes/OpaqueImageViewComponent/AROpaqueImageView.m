@@ -88,17 +88,19 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *
     return;
   }
 
-  // TODO: Setting decompress to NO, because Eigen sets it to YES.
-  //      We need to send a PR to SDWebImage to disable decoding
-  //      with an option to the download method.
-  //
   SDWebImageManager *manager = [SDWebImageManager sharedManager];
-
-  manager.imageCache.shouldDecompressImages = NO;
-  manager.imageDownloader.shouldDecompressImages = NO;
-
+  SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    
+  // Applying a global disabling of the decode feature
+  manager.optionsProcessor = [SDWebImageOptionsProcessor optionsProcessorWithBlock:^SDWebImageOptionsResult * _Nullable(NSURL * _Nullable url, SDWebImageOptions options, SDWebImageContext * _Nullable context) {
+     // Global disable force decode feature
+     options |= SDWebImageAvoidDecodeImage;
+ 
+     return [[SDWebImageOptionsResult alloc] initWithOptions:options context:context];
+  }];
+    
   __weak typeof(self) weakSelf = self;
-  [manager cachedImageExistsForURL:self.imageURL completion:^(BOOL isInCache) {
+  [imageCache diskImageExistsWithKey:self.imageURL.absoluteString completion:^(BOOL isInCache) {
     if (!isInCache) {
       self.backgroundColor = self.placeholderBackgroundColor;
     }
@@ -108,10 +110,11 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *
     options = options | (self.retryFailedURLs ? SDWebImageRetryFailed : 0);
     options = options | (self.highPriority ? SDWebImageHighPriority : 0);
 
-    self.downloadOperation = [manager downloadImageWithURL:self.imageURL
+    self.downloadOperation = [manager loadImageWithURL:self.imageURL
                                                    options:options
                                                   progress:nil
                                                  completed:^(UIImage *image,
+                                                             NSData* _Nullable _,
                                                              NSError *error,
                                                              SDImageCacheType __,
                                                              BOOL completed,

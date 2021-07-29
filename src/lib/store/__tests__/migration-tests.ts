@@ -277,3 +277,20 @@ describe("App version Versions.RenameUserEmail", () => {
     expect(migratedState.auth.userEmail).toEqual("user@ios.com")
   })
 })
+
+describe("App version Versions.AddToastModel", () => {
+  const migrationToTest = Versions.AddToastModel
+  it("adds session toast storage", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.toast).toEqual({})
+  })
+})

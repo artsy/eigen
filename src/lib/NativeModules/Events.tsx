@@ -1,16 +1,5 @@
-import { addBreadcrumb } from "@sentry/react-native"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
-import { TrackingProvider } from "lib/utils/track/providers"
-
-function postEvent(info: any) {
-  addBreadcrumb({
-    message: `${JSON.stringify(info, null, 2)}`,
-    category: "analytics",
-  })
-
-  LegacyNativeModules.AREventsModule.postEvent(info)
-}
 
 // Whether we have requested during the current session or not.
 let hasRequested = false
@@ -31,8 +20,4 @@ export function userHadMeaningfulInteraction() {
       LegacyNativeModules.AREventsModule.requestAppStoreRating()
     }
   }
-}
-
-export const NativeAnalyticsProvider: TrackingProvider = {
-  postEvent,
 }

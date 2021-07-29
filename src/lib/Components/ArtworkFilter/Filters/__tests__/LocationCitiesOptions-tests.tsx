@@ -81,7 +81,7 @@ describe(LocationCitiesOptionsScreen, () => {
       const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
 
       const items = tree.root.findAllByType(FilterModalOptionListItem)
-      const item = items.find((i) => extractText(i).startsWith("Artwork location"))
+      const item = items.find((i) => extractText(i).startsWith("Artwork Location"))
 
       expect(item).not.toBeUndefined()
       if (item) {

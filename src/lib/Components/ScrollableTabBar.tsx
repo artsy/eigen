@@ -1,4 +1,5 @@
-import { color, Sans } from "palette"
+import { themeGet } from "@styled-system/theme-get"
+import { Sans } from "palette"
 import React from "react"
 import { Animated, Dimensions, LayoutRectangle, ScrollView, View } from "react-native"
 import styled from "styled-components/native"
@@ -23,7 +24,7 @@ const Button = styled.TouchableWithoutFeedback`
 const Tabs = styled.ScrollView`
   height: 50px;
   border-bottom-width: 1px;
-  border-color: ${color("black10")};
+  border-color: ${themeGet("colors.black10")};
 `
 
 const TabButton = styled(View)<{ active: boolean }>`
@@ -36,7 +37,7 @@ const TabButton = styled(View)<{ active: boolean }>`
   ${(p) =>
     p.active &&
     `
-    border-color: ${color("black100")};
+    border-color: ${themeGet("colors.black100")};
     border-bottom-width: 2px;
   `};
 `
@@ -46,7 +47,7 @@ interface ScrollableTabProps {
 }
 
 const TabLabel = styled(Sans)<{ isActive: boolean }>`
-  color: ${(p) => (p.isActive ? color("black100") : color("black30"))};
+  color: ${(p) => (p.isActive ? themeGet("colors.black100") : themeGet("colors.black30"))};
 `
 
 export const ScrollableTab: React.FC<ScrollableTabProps> = ({ children }) => (

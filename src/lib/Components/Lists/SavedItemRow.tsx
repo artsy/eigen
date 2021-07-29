@@ -1,7 +1,7 @@
 import React from "react"
 
 import { navigate } from "lib/navigation/navigate"
-import { color, Flex, Sans, Spacer, Touchable } from "palette"
+import { Flex, Sans, Spacer, Touchable, useColor } from "palette"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
 interface SavedItemRowProps {
@@ -15,6 +15,7 @@ interface SavedItemRowProps {
 }
 
 export const SavedItemRow: React.FC<SavedItemRowProps> = ({ href, name, image, square_image, size = 60 }) => {
+  const color = useColor()
   const imageURL = image?.url
   return (
     <Flex>
