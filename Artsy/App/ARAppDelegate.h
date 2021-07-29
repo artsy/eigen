@@ -1,5 +1,6 @@
 #import <JSDecoupledAppDelegate/JSDecoupledAppDelegate.h>
 #import "AROnboardingViewController.h"
+#import <UserNotifications/UNUserNotificationCenter.h>
 
 @class ARWindow, ArtsyEcho;
 

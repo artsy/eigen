@@ -1,4 +1,4 @@
-import { color, Flex, Sans, SansProps, Spinner } from "palette"
+import { Flex, Sans, SansProps, Spinner, useColor } from "palette"
 import React, { FC, useState } from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -45,6 +45,7 @@ const submitMutation = async (relayEnvironment: Environment) => {
 }
 
 export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
+  const color = useColor()
   const [shouldDisplayBanner, toggleVisible] = useState<boolean>(me?.canRequestEmailConfirmation)
   const [isLoading, setLoading] = useState<boolean>(false)
   const [confirmed, setConfirmed] = useState<boolean>(false)

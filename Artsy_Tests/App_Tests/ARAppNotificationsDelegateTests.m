@@ -4,6 +4,7 @@
 #import "ARSerifNavigationViewController.h"
 #import "UIApplicationStateEnum.h"
 #import <Emission/AREmission.h>
+#import <Analytics/SEGAnalytics.h>
 
 static NSDictionary *
 DictionaryWithAppState(NSDictionary *input, UIApplicationState appState)
@@ -29,16 +30,22 @@ describe(@"receiveRemoteNotification", ^{
     __block ARAppNotificationsDelegate *delegate = nil;
     __block UIApplicationState appState = -1;
     __block id mockEmissionSharedInstance = nil;
+    __block id mockSegmentSharedInstance = nil;
 
     beforeEach(^{
         app = [UIApplication sharedApplication];
         delegate = [[ARAppNotificationsDelegate alloc] init];
 
         mockEmissionSharedInstance = [OCMockObject partialMockForObject:AREmission.sharedInstance];;
+
+        // Setup a segment shared instance otherwise the tests will crash
+        SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"GARBAGE"];
+        [SEGAnalytics setupWithConfiguration:configuration];
     });
 
     afterEach(^{
         [mockEmissionSharedInstance stopMocking];
+        [mockSegmentSharedInstance stopMocking];
     });
 
     sharedExamplesFor(@"when receiving a notification", ^(id _) {

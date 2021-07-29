@@ -1,5 +1,5 @@
 import fonts from "lib/data/fonts"
-import { color } from "palette"
+import { ClassTheme } from "palette"
 import React from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
@@ -63,17 +63,21 @@ const render = (props: ToggleProps) => {
   const Circle = WhiteCircle
 
   return (
-    <Background style={{ backgroundColor: mainBGColor }} onPress={props.onPress} underlayColor={color("white100")}>
-      <View>
-        <TextBackground>
-          <Title style={{ color: leftTextColor }}>{selected ? props.left : ""}</Title>
-          <Title style={{ color: rightTextColor }}>{selected ? "" : props.right}</Title>
-        </TextBackground>
-        <CircleSpacer style={{ flexDirection: dotDirection }}>
-          <Circle style={{ borderColor: dotBorder }} />
-        </CircleSpacer>
-      </View>
-    </Background>
+    <ClassTheme>
+      {({ color }) => (
+        <Background style={{ backgroundColor: mainBGColor }} onPress={props.onPress} underlayColor={color("white100")}>
+          <View>
+            <TextBackground>
+              <Title style={{ color: leftTextColor }}>{selected ? props.left : ""}</Title>
+              <Title style={{ color: rightTextColor }}>{selected ? "" : props.right}</Title>
+            </TextBackground>
+            <CircleSpacer style={{ flexDirection: dotDirection }}>
+              <Circle style={{ borderColor: dotBorder }} />
+            </CircleSpacer>
+          </View>
+        </Background>
+      )}
+    </ClassTheme>
   )
 }
 

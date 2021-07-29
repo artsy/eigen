@@ -95,9 +95,7 @@ export function dismissModal() {
 
 export function goBack() {
   LegacyNativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
-  if (Platform.OS === "android") {
-    navigationEvents.emit("goBack")
-  }
+  navigationEvents.emit("goBack")
 }
 
 export function popParentViewController() {

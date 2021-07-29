@@ -57,7 +57,6 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
     popoverMessage.show({
       title: "Sorry, an error occured.",
       message: "Please try again.",
-      placement: "top",
       type: "error",
     })
   }
@@ -86,7 +85,6 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
         popoverMessage.show({
           title: "Your alert has been set.",
           message: "We will send you a push notification once new works are added.",
-          placement: "top",
         })
         trackToggledSavedSearchEvent(true, response.createSavedSearch?.savedSearchOrErrors.internalID)
       },
@@ -121,7 +119,6 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
         popoverMessage.show({
           title: "Your alert has been removed.",
           message: "Don't worry, you can always create a new one.",
-          placement: "top",
         })
         trackToggledSavedSearchEvent(false, response.disableSavedSearch?.savedSearchOrErrors.internalID)
       },

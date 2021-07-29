@@ -1,4 +1,5 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
+import { themeGet } from "@styled-system/theme-get"
 import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
@@ -6,7 +7,7 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { artworkMediumCategories } from "lib/utils/artworkMediumCategories"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { capitalize } from "lodash"
-import { Box, color, Flex, Sans } from "palette"
+import { Box, Flex, Sans, useColor } from "palette"
 import React from "react"
 import { Image as RNImage } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -18,6 +19,7 @@ interface MyCollectionArtworkListItemProps {
 }
 
 const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = ({ artwork }) => {
+  const color = useColor()
   const { trackEvent } = useTracking()
   const imageURL = artwork.images?.find((i: any) => i?.isDefault)?.url || (artwork.images && artwork.images[0]?.url)
   const { width } = useScreenDimensions()
@@ -120,7 +122,7 @@ export const MyCollectionArtworkListItemFragmentContainer = createFragmentContai
 })
 
 const TouchElement = styled.TouchableHighlight.attrs({
-  underlayColor: color("white100"),
+  underlayColor: themeGet("colors.white100"),
   activeOpacity: 0.8,
 })``
 

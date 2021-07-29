@@ -68,7 +68,7 @@ describe("SizeOptionsNew", () => {
 
     expect(text).toContain("All")
     expect(text).toContain("Small (under 16in)")
-    expect(text).toContain("Medium (under 16in – 40in)")
+    expect(text).toContain("Medium (16in – 40in)")
     expect(text).toContain("Large (over 40in)")
     expect(text).toContain("Custom size")
   })

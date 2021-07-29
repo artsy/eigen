@@ -3,6 +3,8 @@
 #import "ArtsyAPI+Notifications.h"
 #import "ArtsyAPI+DeviceTokens.h"
 #import "ArtsyAPI+CurrentUserFunctions.h"
+#import <Analytics/SEGAnalytics.h>
+#import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
 
 #import "ARAppDelegate.h"
 #import "ARAppConstants.h"
@@ -255,10 +257,17 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
 {
-    [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
+
     [[Appboy sharedInstance] registerApplication:application
                     didReceiveRemoteNotification:userInfo
                           fetchCompletionHandler:handler];
+
+    if ([Appboy sharedInstance] == nil) {
+        [[SEGAppboyIntegrationFactory instance] saveRemoteNotification:userInfo];
+    }
+
+    [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
+
     handler(UIBackgroundFetchResultNoData);
 }
 
@@ -306,8 +315,7 @@
 - (void)receivedNotification:(NSDictionary *)notificationInfo;
 {
     [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationReceived traits:notificationInfo];
-    // TODO: Replace with Segment notification tracking
-    // [[SEGAnalytics sharedAnalytics] receivedRemoteNotification:notificationInfo];
+    [[SEGAnalytics sharedAnalytics] receivedRemoteNotification:notificationInfo];
 }
 
 - (void)tappedNotification:(NSDictionary *)notificationInfo url:(NSString *)url;
@@ -350,6 +358,24 @@
     } else {
         return [newToken isEqualToString:previousToken];
     }
+}
+
+#pragma mark - UNUserNotificationCenterDelegate
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+       willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
+  if (@available(iOS 14.0, *)) {
+    completionHandler(UNNotificationPresentationOptionList | UNNotificationPresentationOptionBanner);
+  } else {
+    completionHandler(UNNotificationPresentationOptionAlert);
+  }
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
+    [[Appboy sharedInstance] userNotificationCenter:center
+                     didReceiveNotificationResponse:response
+                              withCompletionHandler:completionHandler];
 }
 
 @end

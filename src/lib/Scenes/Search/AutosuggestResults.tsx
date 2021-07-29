@@ -8,7 +8,7 @@ import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
-import { Flex, space, Text } from "palette"
+import { Flex, Text, useSpace } from "palette"
 import { useCallback, useEffect, useMemo, useRef } from "react"
 import React from "react"
 import { FlatList } from "react-native"
@@ -31,6 +31,7 @@ const AutosuggestResultsFlatList: React.FC<{
   showResultType?: boolean
   onResultPress?: OnResultPress
 }> = ({ query, results: latestResults, relay, showResultType, onResultPress }) => {
+  const space = useSpace()
   const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
 
   // We only want to load more results after the user has started scrolling, and unfortunately

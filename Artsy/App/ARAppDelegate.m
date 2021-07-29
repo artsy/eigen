@@ -5,9 +5,11 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <Firebase.h>
 #import <Appboy.h>
+#import "AppboyReactUtils.h"
+#import <Analytics/SEGAnalytics.h>
+#import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
 
 #import "ARAnalyticsConstants.h"
-
 #import "ARAppDelegate.h"
 #import "ARAppDelegate+Analytics.h"
 #import "ARAppDelegate+Emission.h"
@@ -84,8 +86,6 @@ static ARAppDelegate *_sharedInstance = nil;
     // protocol, as it means we would have to implement `application:openURL:options:` which seems tricky if we still
     // have to implement `application:openURL:sourceApplication:annotation:` as well.
     [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = (id)_sharedInstance;
-
-
 }
 
 + (ARAppDelegate *)sharedInstance
@@ -144,7 +144,7 @@ static ARAppDelegate *_sharedInstance = nil;
     [[ARLogger sharedLogger] startLogging];
 
     [self setupEmission];
-    self.viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Main" initialProperties:@{}];
+    self.viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Artsy" initialProperties:@{}];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
 
@@ -152,7 +152,6 @@ static ARAppDelegate *_sharedInstance = nil;
       // prevent dark mode
       self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
     }
-
 
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];
@@ -167,15 +166,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [self setupForAppLaunch];
 
-    NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];
-    NSString *brazeSDKEndPoint = @"sdk.iad-06.braze.com";
-
-    NSMutableDictionary *appboyOptions = [NSMutableDictionary dictionary];
-    appboyOptions[ABKEndpointKey] = brazeSDKEndPoint;
-    [Appboy startWithApiKey:brazeAppKey
-      inApplication:application
-      withLaunchOptions:launchOptions
-      withAppboyOptions:appboyOptions];
+    [self setupAnalytics:application withLaunchOptions:launchOptions];
 
     FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
     [fbAppDelegate application:application didFinishLaunchingWithOptions:launchOptions];
@@ -183,6 +174,37 @@ static ARAppDelegate *_sharedInstance = nil;
         [FIRApp configure];
     }
     return YES;
+}
+
+- (void)setupAnalytics:(UIApplication *)application withLaunchOptions:(NSDictionary *)launchOptions
+{
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    center.delegate = [self remoteNotificationsDelegate];
+    NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_STAGING_APP_KEY_IOS"];
+    if (![ARAppStatus isDev]) {
+        brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];
+    }
+
+    NSString *brazeSDKEndPoint = @"sdk.iad-06.braze.com";
+    NSMutableDictionary *appboyOptions = [NSMutableDictionary dictionary];
+    appboyOptions[ABKEndpointKey] = brazeSDKEndPoint;
+    [Appboy startWithApiKey:brazeAppKey
+      inApplication:application
+      withLaunchOptions:launchOptions
+      withAppboyOptions:appboyOptions];
+
+    NSString *segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_STAGING_WRITE_KEY_IOS"];
+    if (![ARAppStatus isDev]) {
+        segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_PRODUCTION_WRITE_KEY_IOS"];
+    }
+
+    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:segmentWriteKey];
+    configuration.trackApplicationLifecycleEvents = YES;
+    configuration.trackPushNotifications = YES;
+    configuration.trackDeepLinks = YES;
+    [SEGAnalytics setupWithConfiguration:configuration];
+    [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:launchOptions];
+    [[AppboyReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
 }
 
 - (void)registerNewSessionOpened
@@ -196,6 +218,11 @@ static ARAppDelegate *_sharedInstance = nil;
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     [self registerNewSessionOpened];
+
+    NSString *currentUserId = [[[ARUserManager sharedManager] currentUser] userID];
+    if (currentUserId) {
+        [[Appboy sharedInstance] changeUser: currentUserId];
+    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -206,7 +233,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (ARAppNotificationsDelegate *)remoteNotificationsDelegate;
 {
-    return [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+    return (ARAppNotificationsDelegate *)[[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
 }
 
 - (void)forceCacheCustomFonts
@@ -229,13 +256,16 @@ static ARAppDelegate *_sharedInstance = nil;
         [ARStateKey authenticationToken]: [[ARUserManager sharedManager] userAuthenticationToken],
     }];
 
+    NSString *currentUserId = [[[ARUserManager sharedManager] currentUser] userID];
+    [[Appboy sharedInstance] changeUser: currentUserId];
+
     ar_dispatch_main_queue(^{
         if ([User currentUser]) {
             [self setupAdminTools];
         }
 
         if (!([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding)) {
-            ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+            ARAppNotificationsDelegate *remoteNotificationsDelegate = [self remoteNotificationsDelegate];
             [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
         }
     });

@@ -23,11 +23,13 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Separator, Spacer } from "palette"
+import { Box, FilterIcon, Flex, Separator, Spacer, Text, TouchableHighlightColor } from "palette"
 import React, { useContext, useEffect, useMemo, useState } from "react"
+import { Platform } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { SavedSearchBannerQueryRender } from "./SavedSearchBanner"
+import { SavedSearchButtonQueryRenderer } from "./SavedSearchButton"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
@@ -95,7 +97,9 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   ...props
 }) => {
   const tracking = useTracking()
-  const enableSavedSearch = useFeatureFlag("AREnableSavedSearch")
+  const enableSavedSearch =
+    Platform.OS === "ios" ? useFeatureFlag("AREnableSavedSearch") : useFeatureFlag("AREnableSavedSearchAndroid")
+  const enableSavedSearchV2 = useFeatureFlag("AREnableSavedSearchV2")
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
@@ -155,17 +159,44 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   useEffect(() => {
     setJSX(
       <Box backgroundColor="white">
-        <ArtworksFilterHeader count={artworksTotal} onFilterPress={openFilterModal} />
-        <Separator />
-        {!!shouldShowSavedSearchBanner && (
-          <Box px={2}>
-            <SavedSearchBannerQueryRender artistId={artistInternalId} filters={filterParams} artistSlug={artist.slug} />
-            <Separator ml={-2} width={screenWidth} />
-          </Box>
+        {enableSavedSearchV2 ? (
+          <>
+            <Flex flexDirection="row" my={1} px={2} justifyContent="space-between" alignItems="center">
+              <TouchableHighlightColor
+                haptic
+                onPress={openFilterModal}
+                render={({ color }) => (
+                  <Flex flexDirection="row" alignItems="center">
+                    <FilterIcon fill={color} width="20px" height="20px" />
+                    <Text variant="small" color={color} ml={0.5}>
+                      Sort & Filter
+                    </Text>
+                  </Flex>
+                )}
+              />
+              <SavedSearchButtonQueryRenderer artistId={artistInternalId} filters={filterParams} />
+            </Flex>
+            <Separator />
+          </>
+        ) : (
+          <>
+            <ArtworksFilterHeader count={artworksTotal} onFilterPress={openFilterModal} />
+            <Separator />
+            {!!shouldShowSavedSearchBanner && (
+              <Box px={2}>
+                <SavedSearchBannerQueryRender
+                  artistId={artistInternalId}
+                  filters={filterParams}
+                  artistSlug={artist.slug}
+                />
+                <Separator ml={-2} width={screenWidth} />
+              </Box>
+            )}
+          </>
         )}
       </Box>
     )
-  }, [artworksTotal, shouldShowSavedSearchBanner, artistInternalId, filterParams])
+  }, [artworksTotal, shouldShowSavedSearchBanner, artistInternalId, filterParams, enableSavedSearchV2])
 
   const filteredArtworks = () => {
     if (artworksCount === 0) {
