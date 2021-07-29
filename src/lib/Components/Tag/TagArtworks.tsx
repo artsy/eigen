@@ -171,17 +171,15 @@ export const TagArtworksPaginationContainer = createPaginationContainer(
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
         input: fragmentVariables.input,
-        id: props.tag.id,
+        id: props.tag.slug,
         count,
         cursor,
       }
     },
     query: graphql`
-      query TagArtworksPaginationQuery($id: ID!, $count: Int!, $cursor: String, $input: FilterArtworksInput) {
-        node(id: $id) {
-          ... on Tag {
-            ...TagArtworks_tag @arguments(count: $count, cursor: $cursor, input: $input)
-          }
+      query TagArtworksPaginationQuery($id: String!, $count: Int!, $cursor: String, $input: FilterArtworksInput) {
+        tag(id: $id) {
+          ...TagArtworks_tag @arguments(count: $count, cursor: $cursor, input: $input)
         }
       }
     `,
