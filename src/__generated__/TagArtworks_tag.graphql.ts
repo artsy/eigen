@@ -102,7 +102,13 @@ return {
           "name": "aggregations",
           "value": [
             "MEDIUM",
+            "LOCATION_CITY",
             "PRICE_RANGE",
+            "MATERIALS_TERMS",
+            "PARTNER",
+            "ARTIST_NATIONALITY",
+            "MAJOR_PERIOD",
+            "ARTIST",
             "TOTAL"
           ]
         },
@@ -265,5 +271,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'd800d835f3bd00d1d23b912f08f66d6e';
+(node as any).hash = '0d200731d87be4021011b1c57d15fd86';
 export default node;
