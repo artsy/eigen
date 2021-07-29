@@ -132,11 +132,12 @@ const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
     ...THEMES.v2.colors, // get the base v2
     ...THEMES.v3.colors, // get the base v3 on top of that
     // now add the rest of the mappings
-    black80: THEMES.v3.colors.black60,
-    purple100: THEMES.v3.colors.blue100,
-    purple30: THEMES.v3.colors.blue10,
-    purple5: THEMES.v3.colors.blue10,
+    black80: THEMES.v3.colors.black60, // TODO-PALETTE-V3 replace all black80 with black60
+    purple100: THEMES.v3.colors.blue100, // TODO-PALETTE-V3 replace all purple100 with blue100
+    purple30: THEMES.v3.colors.blue10, // TODO-PALETTE-V3 replace all purple30 with blue10
+    purple5: THEMES.v3.colors.blue10, // TODO-PALETTE-V3 replace all purple5 with blue10
   }
+  // TODO-PALETTE-V3 remove the mapping as the last TODO-PALETTE-V3 to be done
 
   if (theme === "v3") {
     return { ...THEMES.v3, colors: mergedColorsV2WithV3OnTop }
