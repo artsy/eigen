@@ -5,15 +5,16 @@ import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids
 import { PAGE_SIZE } from "lib/data/constants"
 import { Schema } from "lib/utils/track"
 import { Box, Separator } from "palette"
-import React, { useRef, useState } from "react"
+import React, { useContext, useRef, useState } from "react"
 import { useEffect } from "react"
-import { ScrollView } from "react-native-gesture-handler"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtworkFilterNavigator } from "../ArtworkFilter/ArtworkFilter"
 import { filterArtworksParams, prepareFilterArtworksParamsForInput } from "../ArtworkFilter/ArtworkFilterHelpers"
 import { FilterModalMode } from "../ArtworkFilter/ArtworkFilterOptionsScreen"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "../ArtworkFilter/ArtworkFilterStore"
+import { StickyTabPageFlatListContext } from "../StickyTabPage/StickyTabPageFlatList"
+import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
 
 interface TagArtworksContainerProps {
   tag: TagArtworks_tag
@@ -33,6 +34,8 @@ export const TagArtworks: React.FC<TagArtworksProps> = (props) => {
   const filterParams = filterArtworksParams(appliedFilters, "tagArtwork")
   const artworksTotal = tag.artworks?.counts?.total ?? 0
   const initialArtworksTotal = useRef(artworksTotal)
+
+  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
   const trackClear = () => {
     tracking.trackEvent(tracks.clearFilters(tag.id, tag.slug))
@@ -58,6 +61,15 @@ export const TagArtworks: React.FC<TagArtworksProps> = (props) => {
     }
   }, [])
 
+  useEffect(() => {
+    setJSX(
+      <Box backgroundColor="white">
+        <ArtworksFilterHeader count={artworksTotal} onFilterPress={openFilterModal} />
+        <Separator />
+      </Box>
+    )
+  }, [artworksTotal, openFilterModal])
+
   if (initialArtworksTotal.current === 0) {
     return (
       <Box pt={1}>
@@ -66,25 +78,15 @@ export const TagArtworks: React.FC<TagArtworksProps> = (props) => {
     )
   }
 
-  const filterHeader = (
-    <Box backgroundColor="white">
-      <ArtworksFilterHeader count={artworksTotal} onFilterPress={openFilterModal} />
-      <Separator />
-    </Box>
-  )
-
   return (
     <Box>
-      <ScrollView stickyHeaderIndices={[0]}>
-        {filterHeader}
-        <Box mt={1} mx={1}>
-          <InfiniteScrollArtworksGridContainer
-            connection={tag.artworks!}
-            hasMore={props.relay.hasMore}
-            loadMore={props.relay.loadMore}
-          />
-        </Box>
-      </ScrollView>
+      <Box mt={1} mx={1}>
+        <InfiniteScrollArtworksGridContainer
+          connection={tag.artworks!}
+          hasMore={props.relay.hasMore}
+          loadMore={props.relay.loadMore}
+        />
+      </Box>
     </Box>
   )
 }
@@ -109,16 +111,18 @@ const TagArtworksContainer: React.FC<TagArtworksContainerProps> = (props) => {
 
   return (
     <ArtworkFiltersStoreProvider>
-      <TagArtworks {...props} openFilterModal={openFilterArtworksModal} />
-      <ArtworkFilterNavigator
-        {...props}
-        id={tag.internalID}
-        slug={tag.slug}
-        isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-        exitModal={handleCloseFilterArtworksModal}
-        closeModal={closeFilterArtworksModal}
-        mode={FilterModalMode.Tag}
-      />
+      <StickyTabPageScrollView>
+        <TagArtworks {...props} openFilterModal={openFilterArtworksModal} />
+        <ArtworkFilterNavigator
+          {...props}
+          id={tag.internalID}
+          slug={tag.slug}
+          isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+          exitModal={handleCloseFilterArtworksModal}
+          closeModal={closeFilterArtworksModal}
+          mode={FilterModalMode.Tag}
+        />
+      </StickyTabPageScrollView>
     </ArtworkFiltersStoreProvider>
   )
 }
@@ -139,7 +143,17 @@ export const TagArtworksPaginationContainer = createPaginationContainer(
         artworks: filterArtworksConnection(
           first: $count
           after: $cursor
-          aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
+          aggregations: [
+            MEDIUM
+            LOCATION_CITY
+            PRICE_RANGE
+            MATERIALS_TERMS
+            PARTNER
+            ARTIST_NATIONALITY
+            MAJOR_PERIOD
+            ARTIST
+            TOTAL
+          ]
           forSale: true
           input: $input
         ) @connection(key: "TagArtworksGrid_artworks") {

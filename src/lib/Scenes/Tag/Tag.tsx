@@ -1,5 +1,6 @@
 import { FilterArtworksInput, TagQuery, TagQueryResponse } from "__generated__/TagQuery.graphql"
 import { getParamsForInputByFilterType } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { StickyTabPage, TabProps } from "lib/Components/StickyTabPage/StickyTabPage"
 import Header from "lib/Components/Tag/Header"
 import { TagArtworksPaginationContainer } from "lib/Components/Tag/TagArtworks"
 import { TagPlaceholder } from "lib/Components/Tag/TagPlaceholder"
@@ -27,6 +28,19 @@ interface TagQueryRendererProps {
 export const Tag: React.FC<TagProps> = (props) => {
   const { tag, tagID } = props
 
+  const tabs: TabProps[] = [
+    {
+      title: "Artworks",
+      content: <TagArtworksPaginationContainer tag={tag} />,
+    },
+  ]
+
+  const headerContent = (
+    <View style={styles.header}>
+      <Header tag={tag} />
+    </View>
+  )
+
   return (
     <ProvideScreenTracking
       info={{
@@ -37,10 +51,7 @@ export const Tag: React.FC<TagProps> = (props) => {
       }}
     >
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Header tag={tag} />
-        </View>
-        <TagArtworksPaginationContainer tag={tag} />
+        <StickyTabPage staticHeaderContent={headerContent} stickyHeaderContent={<></>} tabs={tabs} />
       </View>
     </ProvideScreenTracking>
   )
