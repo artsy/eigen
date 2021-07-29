@@ -77,11 +77,7 @@ jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
 }))
 
 jest.mock("./lib/NativeModules/Events.tsx", () => ({
-  postEvent: jest.fn(),
   userHadMeaningfulInteraction: jest.fn(),
-  NativeAnalyticsProvider: {
-    postEvent: jest.fn(),
-  },
 }))
 
 jest.mock("react-native-share", () => ({
@@ -273,7 +269,6 @@ function getNativeModules(): OurNativeModules {
       presentModal: jest.fn(),
     },
     AREventsModule: {
-      postEvent: jest.fn(),
       requestAppStoreRating: jest.fn(),
     },
     ArtsyNativeModule: {
@@ -519,7 +514,28 @@ jest.mock("react-native-config", () => ({
 }))
 
 jest.mock("react-native-view-shot", () => ({}))
-jest.mock("@segment/analytics-react-native", () => ({}))
+
+// MOCKS FOR TRACKING
+jest.mock("@segment/analytics-react-native", () => ({
+  setup: () => null,
+  identify: () => null,
+  reset: () => null,
+}))
+
+jest.mock("@segment/analytics-react-native-appboy", () => ({}))
+
+jest.mock("lib/utils/track/SegmentTrackingProvider", () => ({
+  SegmentTrackingProvider: {
+    setup: () => null,
+    identify: () => null,
+    postEvent: () => null,
+  },
+}))
+
+jest.mock("lib/utils/track/providers.tsx", () => ({
+  postEventToProviders: jest.fn(),
+  _addTrackingProvider: jest.fn(),
+}))
 
 jest.mock("react-native-push-notification", () => ({
   configure: jest.fn(),

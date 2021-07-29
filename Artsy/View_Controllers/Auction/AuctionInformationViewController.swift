@@ -49,7 +49,7 @@ class AuctionInformationViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if navigationController?.topViewController == self {
-          ARAnalytics.pageView("Sale Information", withProperties: [
+          AREmission.sharedInstance().sendScreenEvent("Sale Information", traits: [
               "auction_slug": saleViewModel.saleID,
               "slug": NSString(format: "/auction/%@/info", saleViewModel.saleID)
           ])
@@ -178,7 +178,7 @@ class AuctionInformationViewController: UIViewController {
     }
 
     func showContact(_ animated: Bool) {
-        ARAnalytics.event(ARAnalyticsAuctionContactTapped, withProperties: [
+        AREmission.sharedInstance().sendEvent(ARAnalyticsAuctionContactTapped, traits: [
             "auction_slug": saleViewModel.saleID,
             "auction_state": saleViewModel.saleAvailabilityString,
             "context_type": navigationController?.topViewController == self ? "sale" : "sale information"
@@ -199,7 +199,7 @@ class AuctionInformationViewController: UIViewController {
 
     func showBuyersPremium(_ animated: Bool) {
         let saleID = saleViewModel.saleID
-        ARAnalytics.event(ARAnalyticsAuctionContactTapped, withProperties: [
+        AREmission.sharedInstance().sendEvent(ARAnalyticsAuctionContactTapped, traits: [
             "auction_slug": saleID,
             "auction_state": saleViewModel.saleAvailabilityString,
             "context_type": navigationController?.topViewController == self ? "sale" : "sale information"

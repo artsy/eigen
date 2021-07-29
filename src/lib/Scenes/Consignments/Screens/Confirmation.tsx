@@ -3,7 +3,7 @@ import Spinner from "lib/Components/Spinner"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack } from "lib/utils/track"
-import { Box, Button, color, Flex, Sans, Spacer } from "palette"
+import { Box, Button, ClassTheme, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { Alert, BackHandler, NativeEventSubscription, View, ViewProps } from "react-native"
 import styled from "styled-components/native"
@@ -98,57 +98,66 @@ export default class Confirmation extends React.Component<Props, State> {
   )
 
   successContent = () => (
-    <View>
-      <Box px={2}>
-        <Sans size="6" style={{ textAlign: "center" }}>
-          Thank you for submitting your consignment
-        </Sans>
-        <Spacer mb={3} />
-        <Sans size="4" color={color("black60")} style={{ textAlign: "center" }}>
-          Our team of specialists are reviewing your work. You'll receive an email update once the status of your
-          submission changes.
-        </Sans>
-        <Spacer mb={3} />
-        <Sans size="4" color={color("black60")} style={{ textAlign: "center" }}>
-          If your work is accepted, Artsy will gather competitive offers and guide you through the selling process.
-        </Sans>
-        <Spacer mb={3} />
-        <Flex alignItems="stretch" flexDirection="column" width="100%">
-          <Button block width={100} onPress={this.exitModal}>
-            Done
-          </Button>
-          <Spacer mb={2} />
-          <Button block width={100} onPress={this.exitModalAndGoHome} variant="secondaryOutline">
-            Browse new works for sale
-          </Button>
-        </Flex>
-      </Box>
-    </View>
+    <ClassTheme>
+      {({ color }) => (
+        <View>
+          <Box px={2}>
+            <Sans size="6" style={{ textAlign: "center" }}>
+              Thank you for submitting your consignment
+            </Sans>
+            <Spacer mb={3} />
+            <Sans size="4" color={color("black60")} style={{ textAlign: "center" }}>
+              Our team of specialists are reviewing your work. You'll receive an email update once the status of your
+              submission changes.
+            </Sans>
+            <Spacer mb={3} />
+            <Sans size="4" color={color("black60")} style={{ textAlign: "center" }}>
+              If your work is accepted, Artsy will gather competitive offers and guide you through the selling process.
+            </Sans>
+            <Spacer mb={3} />
+            <Flex alignItems="stretch" flexDirection="column" width="100%">
+              <Button block width={100} onPress={this.exitModal}>
+                Done
+              </Button>
+              <Spacer mb={2} />
+              <Button block width={100} onPress={this.exitModalAndGoHome} variant="secondaryOutline">
+                Browse new works for sale
+              </Button>
+            </Flex>
+          </Box>
+        </View>
+      )}
+    </ClassTheme>
   )
+
   failedContent = () => (
-    <View>
-      <Box px={2}>
-        <Sans size="6" style={{ textAlign: "center" }}>
-          Submission failed
-        </Sans>
-        <Spacer mb={2} />
-        <Sans size="4" color={color("black60")} style={{ textAlign: "center" }}>
-          We’re sorry, something went wrong. Please try submitting your consignment again.
-        </Sans>
-        <Spacer mb={3} />
-        <Flex flexDirection="row" justifyContent="center">
-          <Button block width={100} onPress={this.restart}>
-            Try again
-          </Button>
-        </Flex>
-        <Spacer mb={2} />
-        <Flex flexDirection="row" justifyContent="center">
-          <Button variant="secondaryOutline" block width={100} onPress={this.exitModal}>
-            Quit
-          </Button>
-        </Flex>
-      </Box>
-    </View>
+    <ClassTheme>
+      {({ color }) => (
+        <View>
+          <Box px={2}>
+            <Sans size="6" style={{ textAlign: "center" }}>
+              Submission failed
+            </Sans>
+            <Spacer mb={2} />
+            <Sans size="4" color={color("black60")} style={{ textAlign: "center" }}>
+              We’re sorry, something went wrong. Please try submitting your consignment again.
+            </Sans>
+            <Spacer mb={3} />
+            <Flex flexDirection="row" justifyContent="center">
+              <Button block width={100} onPress={this.restart}>
+                Try again
+              </Button>
+            </Flex>
+            <Spacer mb={2} />
+            <Flex flexDirection="row" justifyContent="center">
+              <Button variant="secondaryOutline" block width={100} onPress={this.exitModal}>
+                Quit
+              </Button>
+            </Flex>
+          </Box>
+        </View>
+      )}
+    </ClassTheme>
   )
 
   confirmationContent() {

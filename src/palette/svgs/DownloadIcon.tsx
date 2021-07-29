@@ -1,9 +1,10 @@
+import { useColor } from "palette/hooks"
 import React from "react"
-import { color } from "../Theme"
 import { Icon, IconProps, Path } from "./Icon"
 
 /** DownloadIcon */
 export const DownloadIcon: React.FC<IconProps> = (props) => {
+  const color = useColor()
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <Path

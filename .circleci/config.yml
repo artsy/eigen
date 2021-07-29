@@ -154,12 +154,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v4-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v5-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Build App
-          command: ls derived_data || ./scripts/ci-ios
+          command: ./scripts/ci-ios
       - save_cache:
-          key: v4-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v5-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -503,12 +503,14 @@ workflows:
                 - beta-android
                 - app_store_submission
                 - play_store_submission
+                - update-changelog
       - build-test-js:
           filters:
             branches:
               ignore:
                 - app_store_submission
                 - play_store_submission
+                - update-changelog
       - horizon/block:
           context: horizon
           project_id: 37
@@ -524,6 +526,7 @@ workflows:
                 - app_store_submission
                 - play_store_submission
                 - beta-android
+                - update-changelog
           requires:
             - build-test-js
             - horizon/block
@@ -534,6 +537,7 @@ workflows:
                 - app_store_submission
                 - play_store_submission
                 - beta-ios
+                - update-changelog
           requires:
             - build-test-js
             - horizon/block
@@ -543,6 +547,8 @@ workflows:
               only:
                 - beta-ios
                 - beta-android
+              ignore:
+                - update-changelog
           requires:
             - build-test-app-ios
             - build-test-app-android

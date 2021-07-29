@@ -14,8 +14,6 @@ extern NSString *const ARUserSessionStartedNotification;
 
 + (BOOL)didCreateAccountThisSession;
 
-+ (void)identifyAnalyticsUser;
-
 - (User *)currentUser;
 - (void)storeUserData;
 

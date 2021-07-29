@@ -71,7 +71,13 @@ const node: ReaderFragment = {
     },
     {
       "alias": "articlesConnection",
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "inEditorialFeed",
+          "value": true
+        }
+      ],
       "concreteType": "ArticleConnection",
       "kind": "LinkedField",
       "name": "__FairArticlesQuery_articlesConnection_connection",
@@ -223,11 +229,11 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
-      "storageKey": null
+      "storageKey": "__FairArticlesQuery_articlesConnection_connection(inEditorialFeed:true)"
     }
   ],
   "type": "Fair",
   "abstractKey": null
 };
-(node as any).hash = '3617b56cd5e1da3507007fb0522a6f3d';
+(node as any).hash = '105ebb5748a1592e87cc71d635c7f7bd';
 export default node;

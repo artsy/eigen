@@ -48,7 +48,7 @@ describe("SaleArtworksHomeRail", () => {
     await flushPromiseQueue()
     expect(onShowMock).toHaveBeenCalled()
 
-    expect(tree.root.findAllByType(SectionTitle)[0].props.title).toEqual("Auction lots for you ending soon")
+    expect(tree.root.findAllByType(SectionTitle)[0].props.title).toEqual("Auction Lots for You Ending Soon")
     expect(tree.root.findAllByType(SaleArtworkTileRailCardContainer)).toHaveLength(PAGE_SIZE)
   })
 

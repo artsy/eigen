@@ -103,10 +103,18 @@ export const features = defineFeatures({
   },
   AREnableSavedSearch: {
     readyForRelease: true,
-    // TODO: after implementation of notifications for android we need to change the following line to
-    // echoFlagKey: "AREnableSavedSearch",
-    echoFlagKey: Platform.OS === "ios" ? "AREnableSavedSearch" : undefined,
-    description: "Enable Saved Search",
+    echoFlagKey: "AREnableSavedSearch",
+    description: "Enable Saved Search: iOS",
+  },
+  AREnableSavedSearchAndroid: {
+    readyForRelease: false,
+    echoFlagKey: "AREnableSavedSearchAndroid",
+    description: "Enable Saved Search: Android",
+    showInAdminMenu: true,
+  },
+  AREnableSavedSearchV2: {
+    readyForRelease: false,
+    description: "Enable Saved Search V2",
     showInAdminMenu: true,
   },
   AREnableNewOnboardingFlow: {
@@ -158,6 +166,9 @@ export const devToggles = defineDevToggles({
         toast.show("Fetched remote echo config", "middle")
       }
     },
+  },
+  DTShowAnalyticsVisualiser: {
+    description: "Show analytics visualiser",
   },
 })
 

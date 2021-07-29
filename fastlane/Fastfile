@@ -27,24 +27,17 @@ lane :ship_beta_ios do
   api_key = app_store_connect_api_key(
     key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
     issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
-    key_content: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT'],
+    key_content: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
+    is_key_content_base64: true,
     in_house: false,
   )
 
   set_build_version_ios
 
-  changelog_yaml = File.read('../CHANGELOG.yml')
-  changelog_data = YAML.safe_load(changelog_yaml)
+  latest_version = app_json['version']
 
-  latest_version = changelog_data['upcoming']['version']
-
-  upcoming = changelog_data['upcoming']
-  commit = `git log -n1 --format='%h'`.strip
-  notes = upcoming['user_facing'] || []
-  beta_readme = "## #{upcoming['version']} - #{commit} \n\n - #{notes.join "\n - "} \n\n"
-
-  # Make sure the stickers app is up to date in it's plist
-  `/usr/libexec/PlistBuddy -c "Set CFBundleVersion #{latest_version}" Artsy\ Stickers/Info.plist`
+  # TODO: Once changelog infra is nailed down we should get release notes from there
+  beta_readme = "Thanks for using the Artsy beta!"
 
   # Builds the app
   sync_code_signing(app_identifier: ['net.artsy.artsy', 'net.artsy.artsy.Artsy-Stickers'], type: 'appstore')
@@ -103,9 +96,9 @@ end
 date_str = DateTime.now.strftime("%Y.%m.%d.%H")
 lane :set_build_version_ios do
   system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" #{app_plist}")
-  system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" #{sticker_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" \"#{sticker_plist}\"")
   system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" #{app_plist}")
-  system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" #{sticker_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" \"#{sticker_plist}\"")
 end
 
 build_gradle = "../android/app/build.gradle"
@@ -159,7 +152,6 @@ lane :ship_beta_android do
 
   vname, vcode = set_build_version_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
-
 
   sentry_release_name = "android-#{vname}-#{vcode}"
   update_sentry_release_name(sentry_release_name: sentry_release_name)

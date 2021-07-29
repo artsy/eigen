@@ -33,14 +33,14 @@ export const SIZE_OPTIONS: FilterData[] = IS_USA
   ? [
       { displayText: "All", paramValue: "*-*", paramName: PARAM_NAME },
       { displayText: `Small (under 16in)`, paramValue: "*-16.0", paramName: PARAM_NAME },
-      { displayText: `Medium (under 16in – 40in)`, paramValue: "16.0-40.0", paramName: PARAM_NAME },
+      { displayText: `Medium (16in – 40in)`, paramValue: "16.0-40.0", paramName: PARAM_NAME },
       { displayText: `Large (over 40in)`, paramValue: "40.0-*", paramName: PARAM_NAME },
       CUSTOM_SIZE_OPTION,
     ]
   : [
       { displayText: "All", paramValue: "*-*", paramName: PARAM_NAME },
       { displayText: `Small (under 40cm)`, paramValue: "*-16.0", paramName: PARAM_NAME },
-      { displayText: `Medium (under 40cm – 100cm)`, paramValue: "16.0-40.0", paramName: PARAM_NAME },
+      { displayText: `Medium (40cm – 100cm)`, paramValue: "16.0-40.0", paramName: PARAM_NAME },
       { displayText: `Large (over 100cm)`, paramValue: "40.0-*", paramName: PARAM_NAME },
       CUSTOM_SIZE_OPTION,
     ]
@@ -195,6 +195,7 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
       filterHeaderText={FilterDisplayName.size}
       selectedOption={selectedOption}
       navigation={navigation}
+      useScrollView={true}
       filterOptions={[
         ...SIZE_OPTIONS,
         ...(shouldShowCustomSize

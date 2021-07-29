@@ -1,9 +1,9 @@
+import { useColor } from "palette/hooks"
 import React from "react"
-import { color } from "../Theme"
 import { G, Icon, IconProps, Path } from "./Icon"
 
-/** LogoutIcon */
 export const LogoutIcon: React.FC<IconProps> = (props) => {
+  const color = useColor()
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <G>
@@ -16,7 +16,3 @@ export const LogoutIcon: React.FC<IconProps> = (props) => {
     </Icon>
   )
 }
-
-// TODO: remove this alias once clients have been updated
-/** PowerIcon */
-export const PowerIcon = LogoutIcon

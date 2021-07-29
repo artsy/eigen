@@ -19,7 +19,6 @@
 #import "ARParallaxEffect.h"
 
 #import "ArtsyAPI+Private.h"
-#import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "ARDispatchManager.h"
 #import "ARFollowable.h"
@@ -95,7 +94,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.view.backgroundColor = [UIColor whiteColor];
     self.view.tintColor = [UIColor artsyPurpleRegular];
 
@@ -395,7 +394,7 @@
 - (void)personalizeLoginWithPasswordDone:(NSString *)password
 {
     [self loginUserWithEmail:self.email password:password withSuccess:^{
-        [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"email"}];
+        [[AREmission sharedInstance] sendEvent:ARAnalyticsLoggedIn traits:@{@"context_type" : @"email"}];
         [self finishAccountCreation];
     }];
 }
@@ -477,7 +476,7 @@
 - (void)setPriceRangeDone:(NSInteger)range
 {
     NSString *stringRange = [NSString stringWithFormat:@"%@", @(range)];
-    [ARAnalytics event:ARAnalyticsOnboardingBudgetSelected withProperties:@{ @"budget" : stringRange }];
+    [[AREmission sharedInstance] sendEvent:ARAnalyticsOnboardingBudgetSelected traits:@{ @"budget" : stringRange }];
     self.budgetRange = range;
 }
 
@@ -557,7 +556,7 @@
     } failure:^(NSError *error) {
         ARErrorLog(@"Password reset failed for %@. Error: %@", email, error.localizedDescription);
         [(ARPersonalizeViewController *)sender passwordResetError:@"Couldn’t send reset password link. Please try again, or contact support@artsy.net"];
-        [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : @"Couldn’t send reset password link."}];
+        [[AREmission sharedInstance] sendEvent:ARAnalyticsAuthError traits:@{@"error_message" : @"Couldn’t send reset password link."}];
 
     }];
 }
@@ -566,7 +565,7 @@
 {
     if (self.budgetRange && self.followedItemsDuringOnboarding) {
         NSString *stringRange = [NSString stringWithFormat:@"%@", @(self.budgetRange)];
-        [ARAnalytics setUserProperty:ARAnalyticsPriceRangeProperty toValue:stringRange];
+        [[AREmission sharedInstance] sendIdentifyEvent:@{ARAnalyticsPriceRangeProperty: stringRange}];
 
         User *user = [User currentUser];
         user.priceRange = stringRange;
@@ -676,8 +675,8 @@
                                                       // we've logged them in, let's wrap up
                                                       [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
                                                       if (sself.state == AROnboardingStagePersonalizeEmail || sself.state == AROnboardingStateAcceptConditions) {
-                                                          [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"facebook"}];
-                                                          [sself finishAccountCreation];
+                                                        [[AREmission sharedInstance] sendEvent:ARAnalyticsLoggedIn traits:@{@"context_type" : @"facebook"}];
+                                                        [sself finishAccountCreation];
                                                       } else if (sself.state == AROnboardingStagePersonalizeName) {
                                                           [sself presentPersonalizationQuestionnaires];
                                                       }
@@ -817,7 +816,7 @@
                                                           // we've logged them in, let's wrap up
                                                           [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
                                                           if (sself.state == AROnboardingStagePersonalizeEmail || sself.state == AROnboardingStateAcceptConditions) {
-                                                              [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"apple"}];
+                                                              [[AREmission sharedInstance] sendEvent:ARAnalyticsLoggedIn traits:@{@"context_type" : @"apple"}];
                                                               [sself finishAccountCreation];
                                                           } else if (sself.state == AROnboardingStagePersonalizeName) {
                                                               [sself presentPersonalizationQuestionnaires];
@@ -855,7 +854,7 @@
         }
     }
     [(ARPersonalizeViewController *)self.topViewController showErrorWithMessage:errorMessage];
-    [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : errorMessage}];
+    [[AREmission sharedInstance] sendEvent:ARAnalyticsAuthError traits:@{@"error_message" : errorMessage}];
 }
 
 - (void)displayNetworkFailureError

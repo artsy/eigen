@@ -23,7 +23,6 @@
 #import "ARDispatchManager.h"
 #import "ARScreenPresenterModule.h"
 
-#import <ARAnalytics/ARAnalytics.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARGraphQLQueryCache.h>
 
@@ -60,15 +59,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 + (BOOL)didCreateAccountThisSession
 {
     return self.sharedManager.didCreateAccountThisSession;
-}
-
-+ (void)identifyAnalyticsUser
-{
-    User *user = [User currentUser];
-    NSString *anonymousID = self.sharedManager.localTemporaryUserUUID;
-
-    [ARAnalytics setUserProperty:@"is_temporary_user" toValue:@(user == nil)];
-    [ARAnalytics identifyUserWithID:user.userID anonymousID:anonymousID andEmailAddress:user.email];
 }
 
 - (instancetype)init
@@ -338,7 +328,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
              if (success) success(user);
 
-             [ARAnalytics event:ARAnalyticsAccountCreated withProperties:@{@"context_type" : @"email"}];
+            [[AREmission sharedInstance] sendEvent:ARAnalyticsAccountCreated traits:@{@"context_type" : @"email"}];
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              ARActionLog(@"Creating a new user account failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
              failure(error, JSON);
@@ -369,7 +359,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
              if (success) { success(user); }
 
-             [ARAnalytics event:ARAnalyticsAccountCreated withProperties:@{@"context_type" : @"facebook"}];
+            [[AREmission sharedInstance] sendEvent:ARAnalyticsAccountCreated traits:@{@"context_type" : @"facebook"}];
 
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              failure(error, JSON);
@@ -403,7 +393,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
              if (success) { success(user); }
 
-             [ARAnalytics event:ARAnalyticsAccountCreated withProperties:@{@"context_type" : @"apple"}];
+             [[AREmission sharedInstance] sendEvent:ARAnalyticsAccountCreated traits:@{@"context_type" : @"apple"}];
 
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              failure(error, JSON);
@@ -480,7 +470,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
          success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
              if (success) {
-                 [ARAnalytics event:ARAnalyticsOnboardingForgotPasswordSent];
+                [[AREmission sharedInstance] sendEvent:ARAnalyticsOnboardingForgotPasswordSent traits:@{}];
                  success();
              }
          }
@@ -502,8 +492,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         #pragma clang diagnostic ignored "-Wdeprecated-declarations"
         [NSKeyedArchiver archiveRootObject:self.currentUser toFile:userDataPath];
         #pragma clang diagnostic pop
-
-        [ARUserManager identifyAnalyticsUser];
 
         [[NSUserDefaults standardUserDefaults] setObject:self.currentUser.userID forKey:ARUserIdentifierDefault];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -736,7 +724,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         } else {
             NSDictionary *account = [(__bridge NSArray *)credentials firstObject];
             if (account) {
-                [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"safari keychain"}];
+                [[AREmission sharedInstance] sendEvent:ARAnalyticsLoggedIn traits:@{@"context_type" : @"safari keychain"}];
 
                 [[ARUserManager sharedManager] loginWithUsername:account[(__bridge NSString *)kSecAttrAccount]
                                                         password:account[(__bridge NSString *)kSecSharedPassword]

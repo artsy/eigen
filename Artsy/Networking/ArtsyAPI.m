@@ -15,7 +15,6 @@
 #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <ARAnalytics/ARAnalytics.h>
 
 #import <Emission/AREmission.h>
 #import <Emission/ARGraphQLQueryCache.h>
@@ -50,7 +49,7 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
         if (errors) {
             // GraphQL queries that fail will return 200s but indicate failures with the "errors" key. We need to check them.
             NSLog(@"Failure fetching GraphQL query: %@", errors);
-            [ARAnalytics event:ARAnalyticsGraphQLResponseError withProperties:json];
+            [[AREmission sharedInstance] sendEvent:ARAnalyticsGraphQLResponseError traits:json];
             if (failure) {
                 failure([NSError errorWithDomain:@"GraphQL" code:0 userInfo:json]);
             }
@@ -270,7 +269,7 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
         id object = nil;
         if (key && [jsonDictionary valueForKeyPath:key]) {
             object = [klass modelWithJSON:[jsonDictionary valueForKeyPath:key] error:nil];
-            
+
         } else {
             object = [klass modelWithJSON:jsonDictionary error:nil];
         }
@@ -343,7 +342,7 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
 
             if (key && [dictionary valueForKeyPath:key]) {
                 object = [klass modelWithJSON:[dictionary valueForKeyPath:key] error:nil];
-                
+
             } else {
                 object = [klass modelWithJSON:dictionary error:nil];
             }
@@ -352,7 +351,7 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
                 [returnArray addObject:object];
             }
         }
-        
+
         ar_dispatch_main_queue(^{
             success(returnArray);
         });

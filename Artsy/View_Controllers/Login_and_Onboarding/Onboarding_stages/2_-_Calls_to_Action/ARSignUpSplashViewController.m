@@ -19,7 +19,7 @@
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <ARAnalytics/ARAnalytics.h>
+#import <Emission/AREmission.h>
 
 
 @interface ARSignUpSplashTextViewController : UIViewController
@@ -88,7 +88,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [ARAnalytics pageView:@"Onboarding start"];
+    [[AREmission sharedInstance] sendScreenEvent:@"Onboarding start" traits:@{}];
     void(^removeSpinners)(void) = ^ {
         if (!self.spinnerView) {
             return;
@@ -191,7 +191,7 @@
         // Business as usual
         [self.spinnerView alignToView:self.view];
     }
-    
+
     [self.spinnerView startAnimating];
 
     NSArray *images = [self.pages map:^id(NSDictionary *object) {
@@ -215,7 +215,7 @@
         [self.getStartedButton setBackgroundColor:[UIColor blackColor] forState:UIControlStateHighlighted];
         [self.getStartedButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     }
-    
+
     self.descriptionLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:6];
     self.descriptionLabel.backgroundColor = [UIColor clearColor];
     self.descriptionLabel.opaque = NO;
@@ -224,10 +224,10 @@
     self.descriptionLabel.textAlignment = NSTextAlignmentCenter;
     self.descriptionLabel.numberOfLines = 0;
     self.descriptionLabel.text = self.pages[0][@"copy"];
-    
+
     ARTermsAndConditionsView *label = [[ARTermsAndConditionsView alloc] init];
     label.hidden = YES;
-    
+
     [self.view addSubview:self.descriptionLabel];
     [self.view addSubview:self.getStartedButton];
     [self.view addSubview:label];
@@ -235,11 +235,11 @@
     [self.descriptionLabel constrainWidth:self.useLargeLayout ? @"500" : @"280" height:self.useLargeLayout ? @"160" : @"120"];
     [self.descriptionLabel alignCenterXWithView:self.view predicate:@"0"];
     self.spaceDescription = [self.descriptionLabel constrainBottomSpaceToView:self.getStartedButton predicate:self.useLargeLayout ? @"-190" : @"-25"];
-    
+
     [self.getStartedButton alignBottomEdgeWithView:label predicate:self.useLargeLayout ? @"-170" : @"-80"];
     [self.getStartedButton alignCenterXWithView:self.view predicate:@"0"];
     [self.getStartedButton constrainWidth:self.useLargeLayout ? @"340" : @"300" height:@"50"];
-    
+
     [label constrainWidth:@"280" height:@"40"];
     [label alignCenterXWithView:self.view predicate:@"0"];
 
@@ -288,7 +288,7 @@
 
 - (void)startOnboarding:(id)sender
 {
-    [ARAnalytics event:ARAnalyticsOnboardingGetStarted];
+    [[AREmission sharedInstance] sendEvent:ARAnalyticsOnboardingGetStarted traits:@{}];
     [self.delegate splashDone:self];
 }
 

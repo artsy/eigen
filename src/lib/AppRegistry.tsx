@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { AppRegistry, LogBox, Platform, View } from "react-native"
+import { Appearance, AppRegistry, LogBox, Platform, View } from "react-native"
 
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { BidFlow } from "./Containers/BidFlow"
@@ -63,6 +63,7 @@ import { SaleQueryRenderer } from "./Scenes/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
 import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddresses"
+import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAddressesForm"
 
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
@@ -70,12 +71,12 @@ import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import StorybookUI from "../storybook/storybook-ui"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
-import { NativeAnalyticsProvider } from "./NativeModules/Events"
 import { ArticlesQueryRenderer } from "./Scenes/Articles/Articles"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { AuctionResultsForYouQueryRenderer } from "./Scenes/AuctionResultsForYou/AuctionResultsForYou"
@@ -96,6 +97,8 @@ import { GlobalStore, useFeatureFlag, useSelectedTab } from "./store/GlobalStore
 import { AdminMenu } from "./utils/AdminMenu"
 import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
+import { AnalyticsConstants } from "./utils/track/constants"
+import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "./utils/track/SegmentTrackingProvider"
 import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
 
@@ -114,7 +117,7 @@ LogBox.ignoreLogs([
   "Picker has been extracted",
 ])
 
-addTrackingProvider("native ios analytics", NativeAnalyticsProvider)
+addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
 
 interface ArtworkProps {
@@ -363,6 +366,10 @@ export const modules = defineModules({
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SavedAddresses: reactModule(SavedAddressesQueryRenderer),
+  SavedAddressesForm: reactModule(SavedAddressesFormQueryRenderer, {
+    alwaysPresentModally: true,
+    hasOwnModalCloseButton: false,
+  }),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),
@@ -373,6 +380,7 @@ export const modules = defineModules({
   }),
   WorksForYou: reactModule(WorksForYouQueryRenderer),
   LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer),
+  Storybook: reactModule(StorybookUI, { fullBleed: true, hidesBackButton: true }),
 })
 
 // Register react modules with the app registry
@@ -390,6 +398,20 @@ const Main: React.FC<{}> = track()(({}) => {
     GoogleSignin.configure({
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
     })
+    if (Platform.OS === "ios") {
+      const scheme = Appearance.getColorScheme()
+      SegmentTrackingProvider.identify?.(null, {
+        [AnalyticsConstants.UserInterfaceStyle.key]: (() => {
+          switch (scheme) {
+            case "light":
+              return AnalyticsConstants.UserInterfaceStyle.value.Light
+            case "dark":
+              return AnalyticsConstants.UserInterfaceStyle.value.Dark
+          }
+          return AnalyticsConstants.UserInterfaceStyle.value.Unspecified
+        })(),
+      })
+    }
   }, [])
   const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
@@ -421,5 +443,5 @@ const Main: React.FC<{}> = track()(({}) => {
 })
 
 if (Platform.OS === "ios") {
-  register("Main", Main, { fullBleed: true, isMainView: true })
+  register("Artsy", Main, { fullBleed: true, isMainView: true })
 }

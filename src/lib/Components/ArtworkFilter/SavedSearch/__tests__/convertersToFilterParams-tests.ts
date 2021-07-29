@@ -76,7 +76,7 @@ describe("convertSizeToFilterParams", () => {
   it("returns the medium size filter value", () => {
     expect(convertSizeToFilterParams({ dimensionRange: "16.0-40.0" })).toEqual([
       {
-        displayText: "Medium (under 16in – 40in)",
+        displayText: "Medium (16in – 40in)",
         paramValue: "16.0-40.0",
         paramName: FilterParamName.dimensionRange,
       },
@@ -524,17 +524,7 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       paramName: FilterParamName.priceRange,
     })
     expect(result).toContainEqual({
-      displayText: `Medium (under 16in – 40in)`,
-      paramValue: "16.0-40.0",
-      paramName: FilterParamName.dimensionRange,
-    })
-    expect(result).toContainEqual({
-      displayText: `Medium (under 16in – 40in)`,
-      paramValue: "16.0-40.0",
-      paramName: FilterParamName.dimensionRange,
-    })
-    expect(result).toContainEqual({
-      displayText: `Medium (under 16in – 40in)`,
+      displayText: `Medium (16in – 40in)`,
       paramValue: "16.0-40.0",
       paramName: FilterParamName.dimensionRange,
     })

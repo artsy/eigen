@@ -1,12 +1,13 @@
+import { flushPromiseQueue } from 'lib/tests/flushPromiseQueue'
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import { act } from "react-test-renderer"
-import { AnimatedFlex, PopoverMessage, PopoverMessageOptions } from "../PopoverMessage"
+import { AnimatedFlex, PopoverMessage, PopoverMessageItem } from "../PopoverMessage"
 import { usePopoverMessage } from "../popoverMessageHooks"
 
-const TestRenderer: React.FC<{ options: PopoverMessageOptions }> = (props) => {
+const TestRenderer: React.FC<{ options: PopoverMessageItem }> = (props) => {
   const popoverMessage = usePopoverMessage()
 
   return (
@@ -17,22 +18,12 @@ const TestRenderer: React.FC<{ options: PopoverMessageOptions }> = (props) => {
 }
 
 describe("PopoverMessage", () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-    jest.useFakeTimers()
-  })
-
-  afterEach(() => {
-    jest.useRealTimers()
-  })
-
   it("renders when `show` is called", async () => {
     const tree = renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
         }}
       />
     )
@@ -43,19 +34,14 @@ describe("PopoverMessage", () => {
     act(() => buttonInstance.props.onPress())
 
     expect(tree.root.findAllByType(PopoverMessage)).toHaveLength(1)
-
-    jest.advanceTimersByTime(3500)
-
-    expect(tree.root.findAllByType(PopoverMessage)).toHaveLength(0)
   })
 
-  it("renders 2 popover messages when `show` is called twice", async () => {
+  it("renders 1 popover message when `show` is called twice", async () => {
     const tree = renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
         }}
       />
     )
@@ -66,7 +52,7 @@ describe("PopoverMessage", () => {
     act(() => buttonInstance.props.onPress())
     act(() => buttonInstance.props.onPress())
 
-    expect(tree.root.findAllByType(PopoverMessage)).toHaveLength(2)
+    expect(tree.root.findAllByType(PopoverMessage)).toHaveLength(1)
   })
 
   it("renders with title and message", async () => {
@@ -75,7 +61,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
         }}
       />
     )
@@ -96,7 +81,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
           type: "error",
         }}
       />
@@ -115,7 +99,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
         }}
       />
     )
@@ -150,12 +133,12 @@ describe("PopoverMessage", () => {
   })
 
   it("does not hide after timeout if autoHide is set to false", async () => {
+    jest.useFakeTimers()
     const tree = renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "bottom",
           autoHide: false,
         }}
       />
@@ -172,12 +155,12 @@ describe("PopoverMessage", () => {
   })
 
   it("should hide after `hideTimeout` time", async () => {
+    jest.useFakeTimers()
     const tree = renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "bottom",
           hideTimeout: 5000,
         }}
       />
@@ -189,7 +172,11 @@ describe("PopoverMessage", () => {
     jest.advanceTimersByTime(3500)
     expect(tree.root.findAllByType(PopoverMessage)).toHaveLength(1)
 
-    jest.advanceTimersByTime(5000)
+    jest.advanceTimersByTime(2000)
+    jest.useRealTimers()
+
+    await flushPromiseQueue()
+
     expect(tree.root.findAllByType(PopoverMessage)).toHaveLength(0)
   })
 
@@ -199,7 +186,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
         }}
       />
     )
@@ -208,7 +194,8 @@ describe("PopoverMessage", () => {
     act(() => buttonInstance.props.onPress())
     act(() => tree.root.findByType(PopoverMessage).findByType(Touchable).props.onPress())
 
-    jest.advanceTimersByTime(1000)
+    jest.useRealTimers()
+    await flushPromiseQueue()
 
     expect(tree.root.findAllByType(PopoverMessage)).toHaveLength(0)
   })
@@ -220,7 +207,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
           onClose,
         }}
       />
@@ -239,7 +225,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
           showCloseIcon: false,
         }}
       />
@@ -258,7 +243,6 @@ describe("PopoverMessage", () => {
         options={{
           title: "Some title",
           message: "Some message",
-          placement: "top",
           onPress,
         }}
       />
