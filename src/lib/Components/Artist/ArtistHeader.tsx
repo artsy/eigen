@@ -10,7 +10,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { Schema } from "../../utils/track"
 
-export const ARTIST_HEADER_HEIGHT = 160
+export const ARTIST_HEADER_HEIGHT = 156
 
 interface Props {
   artist: ArtistHeader_artist

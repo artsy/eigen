@@ -8,7 +8,7 @@ import { debounce, throttle } from "lodash"
 import React, { useEffect, useMemo, useRef } from "react"
 import { useTracking } from "react-tracking"
 
-const DEBOUNCE_DELAY = 400
+export const DEBOUNCE_DELAY = 400
 
 interface KeywordFilterProps {
   artistId: string
