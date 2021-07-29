@@ -280,10 +280,6 @@ function getNativeModules(): OurNativeModules {
       lockActivityScreenOrientation: jest.fn(),
       gitCommitShortHash: "de4dc0de",
     },
-    // ARGraphQLQueryCache: {
-    //   _setResponseForQueryIDWithVariables: jest.fn(() => ({ wow: 1 })),
-    //   _responseForQueryIDWithVariables: jest.fn(() => ({ wow: 5 })),
-    // },
   }
 }
 
@@ -298,18 +294,6 @@ jest.mock("lib/navigation/navigate", () => ({
   EntityType: { partner: "partner", fair: "fair" },
   SlugType: { partner: "partner", fair: "fair" },
 }))
-
-// let mockDefaultEnvironment: ReturnType<typeof createMockEnvironment>
-
-// jest.mock("lib/relay/createEnvironment", () => {
-//   return {
-//     defaultEnvironment: mockDefaultEnvironment,
-//   }
-// })
-
-// beforeEach(() => {
-//   mockDefaultEnvironment = createMockEnvironment()
-// })
 
 Object.assign(NativeModules, getNativeModules())
 
