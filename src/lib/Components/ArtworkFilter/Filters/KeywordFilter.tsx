@@ -6,6 +6,7 @@ import SearchIcon from "lib/Icons/SearchIcon"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import { debounce, throttle } from "lodash"
 import React, { useEffect, useMemo, useRef } from "react"
+import { Platform } from "react-native"
 import { useTracking } from "react-tracking"
 
 export const DEBOUNCE_DELAY = 400
@@ -66,11 +67,15 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
     return () => handleChangeText.cancel()
   }, [])
 
+  const placeholder =
+    Platform.OS === "android" && loading
+      ? "Search by artwork title, series..."
+      : "Search by artwork title, series, or description"
   return (
     <Input
       loading={loading}
       icon={<SearchIcon width={18} height={18} />}
-      placeholder="Search by artwork title, series, or description"
+      placeholder={placeholder}
       onChangeText={(e) => {
         handleTypingStart()
         handleChangeText(e)
