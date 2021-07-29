@@ -1,10 +1,6 @@
 import { persistedQueryMiddleware } from "../metaphysicsMiddleware"
 import { GraphQLRequest } from "../types"
 
-jest.mock("lib/relay/createEnvironment", () => ({
-  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-}))
-
 jest.mock("../../../../../data/complete.queryMap.json", () => ({
   "query-id": "persisted-query-text",
 }))
