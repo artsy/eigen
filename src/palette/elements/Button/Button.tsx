@@ -5,7 +5,7 @@ import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
-import { ColorFuncOverload, SansSize, ThemeV3 } from "../../Theme"
+import { ColorFuncOverload, SansSize, Theme, ThemeV3 } from "../../Theme"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
@@ -291,9 +291,11 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
 }
 
 export const Button: React.FC<ButtonProps> = (props) => (
-  <ThemeV3>
-    <PureButton {...props} />
-  </ThemeV3>
+  <Theme>
+    <ThemeV3>
+      <PureButton {...props} />
+    </ThemeV3>
+  </Theme>
 )
 
 /** Base props that construct button */
