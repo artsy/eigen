@@ -67,6 +67,7 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
     return () => handleChangeText.cancel()
   }, [])
 
+  // Truncate placeholder for Android to prevent new line.
   const placeholder =
     Platform.OS === "android" && loading
       ? "Search by artwork title, series..."
