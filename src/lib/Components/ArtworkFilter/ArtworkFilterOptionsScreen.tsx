@@ -58,6 +58,7 @@ export enum FilterModalMode {
   SaleArtworks = "SaleArtworks",
   Show = "Show",
   Gene = "Gene",
+  Tag = "Tag",
 }
 
 export const ArtworkFilterOptionsScreen: React.FC<
