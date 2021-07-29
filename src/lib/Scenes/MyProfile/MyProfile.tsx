@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import AsyncStorage from "@react-native-community/async-storage"
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
@@ -6,6 +7,7 @@ import { presentEmailComposer } from "lib/NativeModules/presentEmailComposer"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
+import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "lib/utils/AdminMenu"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -13,7 +15,7 @@ import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import { times } from "lodash"
 import { Flex, Join, Sans, Separator, Spacer } from "palette"
-import React, { useCallback, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Alert, FlatList, Platform, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
@@ -24,13 +26,26 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
   const listRef = useRef<FlatList<any>>(null)
   const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
   const shouldDisplayMyCollection = me.labFeatures?.includes("My Collection")
-  const shouldDisplayPushNotifications = Platform.OS === "ios"
+  const [shouldDisplayPushNotifications, setShouldDisplayPushNotifications] = useState(Platform.OS === "ios")
   const [isRefreshing, setIsRefreshing] = useState(false)
+
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
     relay.refetch(() => {
       setIsRefreshing(false)
       listRef.current?.scrollToOffset({ offset: 0, animated: false })
+    })
+  }, [])
+
+  useEffect(() => {
+    AsyncStorage.getItem(ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY).then((canDisplay) => {
+      setShouldDisplayPushNotifications(
+        Platform.select({
+          ios: true,
+          android: canDisplay === "true",
+          default: shouldDisplayPushNotifications,
+        })
+      )
     })
   }, [])
 
