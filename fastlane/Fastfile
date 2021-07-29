@@ -178,6 +178,14 @@ lane :promote_specific_beta_ios do |options|
   puts("Got build number #{build_number}")
 end
 
+lane :list_android_beta_versions do
+  version_codes = google_play_track_version_codes(json_key: "./android-secret.json", track: "alpha")
+  release_names = google_play_track_release_names(json_key: "./android-secret.json", track: "alpha")
+  rows = []
+  version_codes.each { |version| rows << [version, "?"] }
+  print_build_table(release_names.first, ['build version', 'uploaded at'], rows)
+end
+
 lane :list_ios_beta_versions do
   token = Spaceship::ConnectAPI::Token.create(
     key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
@@ -209,9 +217,6 @@ def print_build_table(app_version, headings, rows)
   # by default it prints on line with timestamp
   # and the alignment is all screwed up
   puts("\n" + table.to_s)
-end
-
-lane :list_android_beta_versions do
 end
 
 lane :promote_beta_ios do
@@ -446,7 +451,6 @@ lane :promote_beta_android do
 
   vname, vcode = set_build_version_android
   tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
-
 end
 
 lane :tag_and_push do |options|
