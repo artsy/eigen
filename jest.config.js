@@ -5,8 +5,6 @@ module.exports = {
     "^lib/(.*)": "<rootDir>/src/lib/$1",
     "^palette$": "<rootDir>/src/palette",
     "^palette/(.*)": "<rootDir>/src/palette/$1",
-    "^storybook$": "<rootDir>/src/storybook",
-    "^storybook/(.*)": "<rootDir>/src/storybook/$1",
     "@images/(.*)": "<rootDir>/images/$1",
     "@relay/(.*)": "<rootDir>/src/lib/relay/$1",
   },

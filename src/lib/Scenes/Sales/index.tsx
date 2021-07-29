@@ -1,4 +1,3 @@
-import { OwnerType } from "@artsy/cohesion"
 import { Sales_me } from "__generated__/Sales_me.graphql"
 import { Sales_sales } from "__generated__/Sales_sales.graphql"
 import { SalesQueryRendererQuery } from "__generated__/SalesQueryRendererQuery.graphql"
@@ -7,8 +6,6 @@ import { Stack } from "lib/Components/Stack"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
-import { screen } from "lib/utils/track/helpers"
 import React from "react"
 import { RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -57,19 +54,17 @@ class Sales extends React.Component<Props, State> {
     const timedAuctions = sales.filter((a) => !a.live_start_at)
 
     return (
-      <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.auctions })}>
-        <PageWithSimpleHeader title="Auctions">
-          <ScrollView
-            refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
-          >
-            <Stack py={2} spacing={3}>
-              <LotsByFollowedArtists title="Lots by Artists You Follow" me={this.props.me} />
-              <SaleList title="Current Live Auctions" sales={liveAuctions} />
-              <SaleList title="Current Timed Auctions" sales={timedAuctions} />
-            </Stack>
-          </ScrollView>
-        </PageWithSimpleHeader>
-      </ProvideScreenTrackingWithCohesionSchema>
+      <PageWithSimpleHeader title="Auctions">
+        <ScrollView
+          refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
+        >
+          <Stack py={2} spacing={3}>
+            <LotsByFollowedArtists title="Lots by Artists You Follow" me={this.props.me} />
+            <SaleList title="Current Live Auctions" sales={liveAuctions} />
+            <SaleList title="Current Timed Auctions" sales={timedAuctions} />
+          </Stack>
+        </ScrollView>
+      </PageWithSimpleHeader>
     )
   }
 }

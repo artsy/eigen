@@ -1,6 +1,5 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { ArtworkTileRailCard, ArtworkTileRailCardProps } from "../ArtworkTileRailCard"
@@ -22,11 +21,9 @@ describe("ArtworkTileRailCard", () => {
     const props = defaultProps
 
     const result = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTileRailCard {...props} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <ArtworkTileRailCard {...props} />
+      </Theme>
     )
 
     const image = result.find("AROpaqueImageView")
@@ -39,11 +36,9 @@ describe("ArtworkTileRailCard", () => {
     const props = defaultProps
 
     const result = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTileRailCard {...props} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <ArtworkTileRailCard {...props} />
+      </Theme>
     )
 
     const sans = result.find("Sans")
@@ -57,11 +52,9 @@ describe("ArtworkTileRailCard", () => {
     }
 
     const result = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTileRailCard {...props} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <ArtworkTileRailCard {...props} />
+      </Theme>
     )
 
     const sans = result.find("Sans")
@@ -75,11 +68,9 @@ describe("ArtworkTileRailCard", () => {
     }
 
     const result = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTileRailCard {...props} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <ArtworkTileRailCard {...props} />
+      </Theme>
     )
 
     expect(result.find("AROpaqueImageView").length).toBe(0)
@@ -92,11 +83,9 @@ describe("ArtworkTileRailCard", () => {
     }
 
     mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTileRailCard {...props} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <ArtworkTileRailCard {...props} />
+      </Theme>
     )
   })
 
@@ -107,11 +96,9 @@ describe("ArtworkTileRailCard", () => {
     }
 
     mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTileRailCard {...props} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <ArtworkTileRailCard {...props} />
+      </Theme>
     )
   })
 
@@ -122,11 +109,9 @@ describe("ArtworkTileRailCard", () => {
     }
 
     mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTileRailCard {...props} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <ArtworkTileRailCard {...props} />
+      </Theme>
     )
   })
 
@@ -137,11 +122,9 @@ describe("ArtworkTileRailCard", () => {
     }
 
     mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTileRailCard {...props} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <ArtworkTileRailCard {...props} />
+      </Theme>
     )
   })
 
@@ -152,11 +135,9 @@ describe("ArtworkTileRailCard", () => {
     }
 
     mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTileRailCard {...props} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <ArtworkTileRailCard {...props} />
+      </Theme>
     )
   })
 
@@ -169,11 +150,9 @@ describe("ArtworkTileRailCard", () => {
 
     expect(() =>
       mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTileRailCard {...props} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ArtworkTileRailCard {...props} />
+        </Theme>
       )
     ).toThrowError(error)
   })
@@ -185,11 +164,9 @@ describe("ArtworkTileRailCard", () => {
     }
 
     const result = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTileRailCard {...props} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <ArtworkTileRailCard {...props} />
+      </Theme>
     )
 
     const image = result.find("AROpaqueImageView")

@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
 import { Input } from "lib/Components/Input/Input"
-import { useColor } from "palette/hooks"
+import { color } from "palette"
 import React from "react"
 import { Platform } from "react-native"
 import {
@@ -18,7 +18,6 @@ interface OnboardingCreateAccountEmailProps
   extends StackScreenProps<OnboardingCreateAccountNavigationStack, "OnboardingCreateAccountEmail"> {}
 
 export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmailProps> = ({ route }) => {
-  const color = useColor()
   const { values, handleChange, errors, setErrors, handleSubmit } = useFormikContext<UserSchema>()
 
   return (

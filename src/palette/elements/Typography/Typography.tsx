@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components/native"
+import { styled as primitives, styledWrapper } from "../../platform/primitives"
 
 import { SansSize, SerifSize, themeProps, TypeSizes } from "../../Theme"
 
@@ -41,7 +41,7 @@ interface FullTextProps
     VerticalAlignProps {}
 
 /** Base Text component for typography */
-export const BaseText = styled.Text<FullTextProps>`
+export const BaseText = primitives.Text<FullTextProps>`
   ${fontSize};
   ${lineHeight};
   ${color};
@@ -87,22 +87,24 @@ interface StyledTextProps extends Partial<FullTextProps> {
  *        An optional function that maps weight+italic to a font-family.
  */
 function createStyledText<P extends StyledTextProps>(fontType: keyof FontFamily) {
-  return styled<React.ComponentType<P>>(({ size, weight, italic, style: _style, ...textProps }: StyledTextProps) => {
-    const fontFamilyString = fontFamily[fontType][weight ?? "regular"][italic ? "italic" : "normal"]
-    if (fontFamilyString === null) {
-      throw new Error(
-        `Incompatible text style combination: {type: ${fontType}, weight: ${weight}, italic: ${!!italic}}`
-      )
+  return styledWrapper<React.ComponentType<P>>(
+    ({ size, weight, italic, style: _style, ...textProps }: StyledTextProps) => {
+      const fontFamilyString = fontFamily[fontType][weight ?? "regular"][italic ? "italic" : "normal"]
+      if (fontFamilyString === null) {
+        throw new Error(
+          `Incompatible text style combination: {type: ${fontType}, weight: ${weight}, italic: ${!!italic}}`
+        )
+      }
+
+      const fontMetrics = themeProps.typeSizes[fontType as "sans"][size as "4"]
+
+      if (fontMetrics == null) {
+        throw new Error(`"${size}" is not a valid size for ${fontType}`)
+      }
+
+      return <BaseText style={[_style, { fontFamily: fontFamilyString, ...stripPx(fontMetrics) }]} {...textProps} />
     }
-
-    const fontMetrics = themeProps.typeSizes[fontType as "sans"][size as "4"]
-
-    if (fontMetrics == null) {
-      throw new Error(`"${size}" is not a valid size for ${fontType}`)
-    }
-
-    return <BaseText style={[_style, { fontFamily: fontFamilyString, ...stripPx(fontMetrics) }]} {...textProps} />
-  })``
+  )``
 }
 
 function stripPx(fontMetrics: { fontSize: string; lineHeight: string }): { fontSize: number; lineHeight: number } {

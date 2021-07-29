@@ -1,4 +1,4 @@
-import { ArtsyLogoIcon, Button, Flex, Text, useColor } from "palette"
+import { ArtsyLogoIcon, Button, color, Flex, Text } from "palette"
 import React from "react"
 import { Linking, Platform } from "react-native"
 
@@ -10,7 +10,6 @@ const PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=net.artsy.a
 const APP_STORE_URL = "https://apps.apple.com/us/app/artsy-buy-sell-original-art/id703796080"
 
 export const ForceUpdate: React.FC<ForceUpdateProps> = ({ forceUpdateMessage }) => {
-  const color = useColor()
   const handleUpdate = () => {
     const storeURL = Platform.OS === "android" ? PLAYSTORE_URL : APP_STORE_URL
     Linking.canOpenURL(storeURL).then(

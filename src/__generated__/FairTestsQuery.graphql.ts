@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7c2b278a37c9553cf44bbe2b1b21d68d */
+/* @relayHash 7f0e66ce05b6fcc822099c410bcdc410 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -133,7 +133,7 @@ fragment FairCollections_fair on Fair {
 fragment FairEditorial_fair on Fair {
   internalID
   slug
-  articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
+  articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
     totalCount
     edges {
       node {
@@ -319,7 +319,7 @@ fragment Fair_fair on Fair {
   internalID
   slug
   isActive
-  articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
+  articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
     edges {
       __typename
     }
@@ -807,11 +807,6 @@ return {
               },
               {
                 "kind": "Literal",
-                "name": "inEditorialFeed",
-                "value": true
-              },
-              {
-                "kind": "Literal",
                 "name": "sort",
                 "value": "PUBLISHED_AT_DESC"
               }
@@ -888,7 +883,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "articlesConnection(first:5,inEditorialFeed:true,sort:\"PUBLISHED_AT_DESC\")"
+            "storageKey": "articlesConnection(first:5,sort:\"PUBLISHED_AT_DESC\")"
           },
           {
             "alias": null,
@@ -1729,7 +1724,7 @@ return {
     ]
   },
   "params": {
-    "id": "7c2b278a37c9553cf44bbe2b1b21d68d",
+    "id": "7f0e66ce05b6fcc822099c410bcdc410",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": (v30/*: any*/),

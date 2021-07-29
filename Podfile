@@ -53,8 +53,11 @@ end
 def remove_mapbox_creds
   if $user_already_had_netrc_file
     contents = File.read($netrc_path)
-    cleaned = contents.gsub(/machine api\.mapbox\.com\nlogin mapbox\npassword #{ENV['MAPBOX_DOWNLOAD_TOKEN']}\n/, "")
+    matches = contents.to_enum(:scan, /machine api\.mapbox\.com.*\n.*\n.*\n/).map { Regexp.last_match }
+    return if matches == nil or matches.length == 0
+    last_match = matches.last
     File.open($netrc_path, 'w') { |f|
+      cleaned = last_match.pre_match + last_match.post_match
       f.write(cleaned)
     }
   else
@@ -79,7 +82,7 @@ target 'Artsy' do
   pod 'AFNetworking', '~> 2.5', subspecs: %w[Reachability Serialization Security NSURLSession NSURLConnection]
   pod 'AFOAuth1Client', git: 'https://github.com/artsy/AFOAuth1Client.git', tag: '0.4.0-subspec-fix'
   pod 'AFNetworkActivityLogger'
-  pod 'SDWebImage', '5.8.3'
+  pod 'SDWebImage', '>= 3.7.2' # 3.7.2 contains a fix that allows you to not force decoding each image, which uses lots of memory
 
   # Core
   pod 'ARGenericTableViewController', git: 'https://github.com/artsy/ARGenericTableViewController.git'
@@ -127,7 +130,9 @@ target 'Artsy' do
   pod 'Firebase/Auth'
 
   # Analytics
-  pod 'Segment-Appboy'
+  pod 'Analytics'
+  pod 'ARAnalytics', subspecs: %w[Segmentio]
+  pod 'Appboy-iOS-SDK'
 
   # Developer Pods
   pod 'DHCShakeNotifier'
@@ -223,6 +228,7 @@ post_install do |installer|
   # * Send PRs for the rest
   %w[
     Pods/ORStackView/Classes/ios/ORStackView.h
+    Pods/ARAnalytics/ARAnalytics.h
     Pods/NAMapKit/NAMapKit/*.h
   ].flat_map { |x| Dir.glob(x) }.each do |header|
     addition = "#import <UIKit/UIKit.h>\n"

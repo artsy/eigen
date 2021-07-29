@@ -1,7 +1,7 @@
 import Clipboard from "@react-native-community/clipboard"
 import { useToast } from "lib/Components/Toast/toastHook"
 import { useDevToggle } from "lib/store/GlobalStore"
-import { Flex, FlexProps, Text, Touchable, useColor } from "palette"
+import { color, Flex, FlexProps, Text, Touchable } from "palette"
 import React from "react"
 
 export const QAInfoPanel: React.FC<Omit<FlexProps, "children"> & { info: Array<[string, string]> }> = (props) => (
@@ -22,7 +22,6 @@ export const QAInfoManualPanel: React.FC<FlexProps> = (props) => {
 }
 
 export const QAInfoRow: React.FC<{ name: string; value: string }> = ({ name, value }) => {
-  const color = useColor()
   const toast = useToast()
 
   return (

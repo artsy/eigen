@@ -4,7 +4,7 @@ import { navigate } from "lib/navigation/navigate"
 import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { Show } from "lib/Scenes/Map/types"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { Box, Button, ClassTheme, Flex, Sans, Serif } from "palette"
+import { Box, Button, color, Flex, Sans, Serif } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, graphql, RelayProp } from "react-relay"
@@ -137,43 +137,39 @@ export class Event extends React.Component<Props, State> {
     const { isFollowedSaving } = this.state
     const url = cover_image ? cover_image.url : null
     return (
-      <ClassTheme>
-        {({ color }) => (
-          <TouchableWithoutFeedback onPress={() => this.handleTap()}>
-            <Box mb={2} px={2}>
-              {!!url && (
-                <Box mb={2}>
-                  <OpaqueImageView imageURL={url} height={145} />
-                </Box>
-              )}
-              <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
-                <TextContainer mb={2}>
-                  <Sans size="3" weight="medium" numberOfLines={1} ellipsizeMode="tail">
-                    {partnerName}
-                  </Sans>
-                  <Serif size="3t" numberOfLines={1} ellipsizeMode="tail">
-                    {name}
-                  </Serif>
-                  {!!exhibition_period && (
-                    <Sans size="2" color={color("black60")}>
-                      {exhibitionDates(exhibition_period, end_at! /* STRICTNESS_MIGRATION */)}
-                    </Sans>
-                  )}
-                </TextContainer>
-                <Button
-                  variant={is_followed ? "secondaryOutline" : "primaryBlack"}
-                  loading={isFollowedSaving}
-                  onPress={() => this.handleSaveChange()}
-                  longestText="Saved"
-                  size="small"
-                >
-                  {is_followed ? "Saved" : "Save"}
-                </Button>
-              </Flex>
+      <TouchableWithoutFeedback onPress={() => this.handleTap()}>
+        <Box mb={2} px={2}>
+          {!!url && (
+            <Box mb={2}>
+              <OpaqueImageView imageURL={url} height={145} />
             </Box>
-          </TouchableWithoutFeedback>
-        )}
-      </ClassTheme>
+          )}
+          <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
+            <TextContainer mb={2}>
+              <Sans size="3" weight="medium" numberOfLines={1} ellipsizeMode="tail">
+                {partnerName}
+              </Sans>
+              <Serif size="3t" numberOfLines={1} ellipsizeMode="tail">
+                {name}
+              </Serif>
+              {!!exhibition_period && (
+                <Sans size="2" color={color("black60")}>
+                  {exhibitionDates(exhibition_period, end_at! /* STRICTNESS_MIGRATION */)}
+                </Sans>
+              )}
+            </TextContainer>
+            <Button
+              variant={is_followed ? "secondaryOutline" : "primaryBlack"}
+              loading={isFollowedSaving}
+              onPress={() => this.handleSaveChange()}
+              longestText="Saved"
+              size="small"
+            >
+              {is_followed ? "Saved" : "Save"}
+            </Button>
+          </Flex>
+        </Box>
+      </TouchableWithoutFeedback>
     )
   }
 }

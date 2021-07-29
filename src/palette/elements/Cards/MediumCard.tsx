@@ -1,11 +1,8 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { useTheme } from "palette/Theme"
+import { color, Flex, Sans, space, Spacer } from "palette"
 import React from "react"
 import LinearGradient from "react-native-linear-gradient"
 import { Box, BoxProps } from "../Box"
-import { Flex } from "../Flex"
-import { Spacer } from "../Spacer"
-import { Sans } from "../Typography"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface MediumCardProps extends BoxProps {
@@ -20,7 +17,6 @@ export interface MediumCardProps extends BoxProps {
  * at the bottom.
  */
 export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, tag, ...rest }) => {
-  const { color, space } = useTheme()
   return (
     <Box width={280} height={370} flexDirection="row" borderRadius={4} overflow="hidden" {...rest}>
       <Flex flex={2} background={color("black10")}>

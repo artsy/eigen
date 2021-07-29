@@ -3,14 +3,13 @@ import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { useToast } from "lib/Components/Toast/toastHook"
 import { navigate } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
-import { useColor } from "palette/hooks"
+import { color } from "palette"
 import React, { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
 import { getVersion } from "react-native-device-info"
 import useDebounce from "react-use/lib/useDebounce"
 
 export const About: React.FC = () => {
-  const color = useColor()
   const appVersion = getVersion()
   const toast = useToast()
   const [tapCount, updateTapCount] = useState(0)

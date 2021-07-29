@@ -4,7 +4,7 @@ import { unsafe__getSelectedTab } from "lib/store/GlobalStore"
 import { useContext, useMemo } from "react"
 import { FlatListProps, Platform } from "react-native"
 
-export const SCROLL_UP_TO_SHOW_THRESHOLD = 150
+const SCROLL_UP_TO_SHOW_THRESHOLD = 150
 const SCROLL_DOWN_TO_HIDE_THRESHOLD = 50
 
 type Direction = "up" | "down" | null

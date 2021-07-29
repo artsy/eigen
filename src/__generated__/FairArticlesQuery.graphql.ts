@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 87d2388264c700fee7dfa6e461a57302 */
+/* @relayHash a2c7eaafc326ca86ccb365fc75f03310 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -36,7 +36,7 @@ query FairArticlesQuery(
 
 fragment FairArticles_fair_2HEEH6 on Fair {
   slug
-  articlesConnection(first: $first, after: $after, inEditorialFeed: true) {
+  articlesConnection(first: $first, after: $after) {
     totalCount
     edges {
       node {
@@ -88,26 +88,19 @@ v3 = [
     "variableName": "id"
   }
 ],
-v4 = {
-  "kind": "Variable",
-  "name": "after",
-  "variableName": "after"
-},
-v5 = {
-  "kind": "Variable",
-  "name": "first",
-  "variableName": "first"
-},
-v6 = [
-  (v4/*: any*/),
-  (v5/*: any*/),
+v4 = [
   {
-    "kind": "Literal",
-    "name": "inEditorialFeed",
-    "value": true
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "after"
+  },
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "first"
   }
 ],
-v7 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -134,10 +127,7 @@ return {
         "plural": false,
         "selections": [
           {
-            "args": [
-              (v4/*: any*/),
-              (v5/*: any*/)
-            ],
+            "args": (v4/*: any*/),
             "kind": "FragmentSpread",
             "name": "FairArticles_fair"
           }
@@ -175,7 +165,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v6/*: any*/),
+            "args": (v4/*: any*/),
             "concreteType": "ArticleConnection",
             "kind": "LinkedField",
             "name": "articlesConnection",
@@ -240,7 +230,7 @@ return {
                             "name": "name",
                             "storageKey": null
                           },
-                          (v7/*: any*/)
+                          (v5/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -282,7 +272,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v7/*: any*/),
+                      (v5/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -333,23 +323,21 @@ return {
           },
           {
             "alias": null,
-            "args": (v6/*: any*/),
-            "filters": [
-              "inEditorialFeed"
-            ],
+            "args": (v4/*: any*/),
+            "filters": null,
             "handle": "connection",
             "key": "FairArticlesQuery_articlesConnection",
             "kind": "LinkedHandle",
             "name": "articlesConnection"
           },
-          (v7/*: any*/)
+          (v5/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "87d2388264c700fee7dfa6e461a57302",
+    "id": "a2c7eaafc326ca86ccb365fc75f03310",
     "metadata": {},
     "name": "FairArticlesQuery",
     "operationKind": "query",

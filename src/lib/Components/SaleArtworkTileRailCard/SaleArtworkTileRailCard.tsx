@@ -1,7 +1,6 @@
 import { ContextModule, OwnerType, ScreenOwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
-import { themeGet } from "@styled-system/theme-get"
 import { SaleArtworkTileRailCard_saleArtwork } from "__generated__/SaleArtworkTileRailCard_saleArtwork.graphql"
-import { Box, Flex, Sans, useColor } from "palette"
+import { Box, color, Flex, Sans } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -11,10 +10,7 @@ import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
 export const CONTAINER_HEIGHT = 120
 
-const SaleArtworkCard = styled.TouchableHighlight.attrs({
-  underlayColor: themeGet("colors.white100"),
-  activeOpacity: 0.8,
-})``
+const SaleArtworkCard = styled.TouchableHighlight.attrs({ underlayColor: color("white100"), activeOpacity: 0.8 })``
 
 export interface SaleArtworkTileRailCardProps {
   onPress: () => void
@@ -31,7 +27,6 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   useSquareAspectRatio = false,
   contextScreenOwnerType,
 }) => {
-  const color = useColor()
   const tracking = useTracking()
   const artwork = saleArtwork.artwork!
 

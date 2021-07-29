@@ -8,7 +8,7 @@ import GenericGrid from "../ArtworkGrids/GenericGrid"
 import { Notification_notification } from "__generated__/Notification_notification.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
-import { ClassTheme, Sans } from "palette"
+import { color, Sans } from "palette"
 
 interface Props {
   // Special notifications will pass down an artistHref. Otherwise, grab it from the artworks.
@@ -37,28 +37,24 @@ export class Notification extends React.Component<Props> {
     }
 
     return (
-      <ClassTheme>
-        {({ color }) => (
-          <View style={styles.container}>
-            <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this)}>
-              <View style={styles.header}>
-                {!!notification.image && (
-                  <Image source={{ uri: notification.image.resized?.url! }} style={styles.artistAvatar} />
-                )}
-                <View style={styles.metadataContainer}>
-                  <Sans size="3t">{notification.artists}</Sans>
-                  <Sans size="2" color={color("black60")}>
-                    {notification.summary}
-                  </Sans>
-                </View>
-              </View>
-            </TouchableWithoutFeedback>
-            <View style={styles.gridContainer}>
-              <GenericGrid width={this.props.width - HORIZONTAL_PADDING * 2} artworks={artworks} />
+      <View style={styles.container}>
+        <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this)}>
+          <View style={styles.header}>
+            {!!notification.image && (
+              <Image source={{ uri: notification.image.resized?.url! }} style={styles.artistAvatar} />
+            )}
+            <View style={styles.metadataContainer}>
+              <Sans size="3t">{notification.artists}</Sans>
+              <Sans size="2" color={color("black60")}>
+                {notification.summary}
+              </Sans>
             </View>
           </View>
-        )}
-      </ClassTheme>
+        </TouchableWithoutFeedback>
+        <View style={styles.gridContainer}>
+          <GenericGrid width={this.props.width - HORIZONTAL_PADDING * 2} artworks={artworks} />
+        </View>
+      </View>
     )
   }
 }

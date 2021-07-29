@@ -2,7 +2,7 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { getCurrentEmissionState, GlobalStore } from "lib/store/GlobalStore"
 import { AdminMenuWrapper } from "lib/utils/AdminMenuWrapper"
 import { addTrackingProvider, track } from "lib/utils/track"
-import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
+import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { useDeepLinks } from "lib/utils/useDeepLinks"
 import { useStripeConfig } from "lib/utils/useStripeConfig"
 import React, { useEffect } from "react"
@@ -20,7 +20,7 @@ import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { AnalyticsConstants } from "./utils/track/constants"
 
-addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
+addTrackingProvider("segment rn android", SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
 
 if (UIManager.setLayoutAnimationEnabledExperimental) {

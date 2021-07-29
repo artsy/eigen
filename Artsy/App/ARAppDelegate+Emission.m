@@ -34,6 +34,7 @@
 #import <React/RCTUtils.h>
 #import <React/RCTDevSettings.h>
 #import <objc/runtime.h>
+#import <ARAnalytics/ARAnalytics.h>
 #import "ARAdminNetworkModel.h"
 #import "Artsy-Swift.h"
 
@@ -115,7 +116,7 @@ SOFTWARE.
         [ARRouter setup];
 
         if (launchCount == 1) {
-            [[AREmission sharedInstance] sendEvent:ARAnalyticsFreshInstall traits:@{}];
+            [ARAnalytics event:ARAnalyticsFreshInstall];
         }
 
         if (launchCount == 3) {
@@ -159,18 +160,19 @@ SOFTWARE.
         if (info[@"action_type"]) {
             // Track event
             [properties removeObjectForKey:@"action_type"];
-            [[AREmission sharedInstance] sendEvent:info[@"action_type"] traits:[properties copy]];
+            [ARAnalytics event:info[@"action_type"] withProperties:[properties copy]];
         } else if (info[@"action"]) {
             if ([info[@"action"] isEqualToString:@"screen"]) {
                 // Screen event from cohesion
-                [[AREmission sharedInstance] sendScreenEvent:info[@"context_screen_owner_type"] traits:[properties copy]];
+                [ARAnalytics pageView:info[@"context_screen_owner_type"] withProperties:[properties copy]];
             } else {
                 // Track event
-                [[AREmission sharedInstance] sendEvent:info[@"action"] traits:[properties copy]];
+                [ARAnalytics event:info[@"action"] withProperties:[properties copy]];
             }
         } else {
             // Screen event
-            [[AREmission sharedInstance] sendScreenEvent:info[@"context_screen"]  traits:[properties copy]];
+            [properties removeObjectForKey:@"context_screen"];
+            [ARAnalytics pageView:info[@"context_screen"]  withProperties:[properties copy]];
         }
     };
 }

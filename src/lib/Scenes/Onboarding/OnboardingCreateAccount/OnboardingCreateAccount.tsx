@@ -5,7 +5,7 @@ import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore, useEnvironment } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Button, Flex, Spacer, Text, Touchable, useColor } from "palette"
+import { Box, Button, color, Flex, Spacer, Text, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert, Animated, Linking, ScrollView } from "react-native"
 import * as Yup from "yup"
@@ -161,7 +161,6 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
   caption,
   children,
 }) => {
-  const color = useColor()
   return (
     <Flex backgroundColor="white" flexGrow={1}>
       <ScrollView

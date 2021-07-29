@@ -1,19 +1,25 @@
 import { OtherCollectionsRail_collectionGroup } from "__generated__/OtherCollectionsRail_collectionGroup.graphql"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { navigate } from "lib/navigation/navigate"
-import { Sans, SansProps, Spacer } from "palette"
+import { Sans, Spacer } from "palette"
 import React, { useRef } from "react"
 import { TouchableOpacity, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
 
 export interface OtherCollectionsRailProps {
   collectionGroup: OtherCollectionsRail_collectionGroup
 }
 
-export const CollectionGroupMemberPill: React.FC<Partial<SansProps>> = (props) => (
-  // @ts-ignore
-  <Sans px={3} py={2} size="3t" bg="black10" style={{ overflow: "hidden", borderRadius: "6px" }} {...props} />
-)
+export const CollectionGroupMemberPill = styled(Sans).attrs({
+  px: 3,
+  py: 2,
+  size: "3t",
+  bg: "black10",
+})`
+  overflow: hidden;
+  border-radius: 6px;
+`
 
 export const OtherCollectionsRail: React.FC<OtherCollectionsRailProps> = ({ collectionGroup: { name, members } }) => {
   const ref = useRef<View | null>(null)

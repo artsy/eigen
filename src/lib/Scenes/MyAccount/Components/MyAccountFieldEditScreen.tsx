@@ -2,7 +2,7 @@ import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingV
 import LoadingModal from "lib/Components/Modals/LoadingModal"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { goBack } from "lib/navigation/navigate"
-import { Text } from "palette"
+import { Sans } from "palette"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import {
   Alert,
@@ -26,14 +26,13 @@ export interface MyAccountFieldEditScreenProps {
   title: string
   canSave: boolean
   contentContainerStyle?: ViewStyle
-  isSaveButtonVisible?: boolean
-  onSave?(dismiss: () => void, alert: AlertStatic["alert"]): Promise<any> | undefined
+  onSave(dismiss: () => void, alert: AlertStatic["alert"]): Promise<any>
 }
 
 export const MyAccountFieldEditScreen = React.forwardRef<
   { scrollToEnd(): void },
   React.PropsWithChildren<MyAccountFieldEditScreenProps>
->(({ children, canSave, onSave, isSaveButtonVisible, title, contentContainerStyle }, ref) => {
+>(({ children, canSave, onSave, title, contentContainerStyle }, ref) => {
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const afterLoadingAlert = useRef<AlertArgs>()
   const scrollViewRef = useRef<ScrollView>(null)
@@ -50,9 +49,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
     Keyboard.dismiss()
     try {
       setIsSaving(true)
-      if (!(isSaveButtonVisible === false) && onSave) {
-        await onSave(goBack, doTheAlert)
-      }
+      await onSave(goBack, doTheAlert)
     } catch (e) {
       console.error(e)
     } finally {
@@ -80,20 +77,18 @@ export const MyAccountFieldEditScreen = React.forwardRef<
       <PageWithSimpleHeader
         left={
           <TouchableOpacity onPress={goBack}>
-            <Text variant="text" textAlign="left">
+            <Sans size="4" textAlign="left">
               Cancel
-            </Text>
+            </Sans>
           </TouchableOpacity>
         }
         title={title}
         right={
-          !(isSaveButtonVisible === false) && (
-            <TouchableOpacity disabled={!canSave} onPress={handleSave}>
-              <Text variant="text" opacity={canSave ? 1 : 0.3}>
-                Save
-              </Text>
-            </TouchableOpacity>
-          )
+          <TouchableOpacity disabled={!canSave} onPress={handleSave}>
+            <Sans size="4" opacity={!canSave ? 0.3 : 1}>
+              Save
+            </Sans>
+          </TouchableOpacity>
         }
       >
         <ScrollView
@@ -124,8 +119,10 @@ export const MyAccountFieldEditScreen = React.forwardRef<
   )
 })
 
-export const MyAccountFieldEditScreenPlaceholder: React.FC<{ title: string }> = ({ children, title }) => (
-  <MyAccountFieldEditScreen isSaveButtonVisible={false} canSave={false} title={title}>
-    {children}
-  </MyAccountFieldEditScreen>
-)
+export const MyAccountFieldEditScreenPlaceholder: React.FC<{ title: string }> = ({ children, title }) => {
+  return (
+    <MyAccountFieldEditScreen canSave={false} title={title} onSave={async () => null}>
+      {children}
+    </MyAccountFieldEditScreen>
+  )
+}

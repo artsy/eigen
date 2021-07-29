@@ -1,6 +1,7 @@
 #import "ARAppActivityContinuationDelegate.h"
 #import "ARUserManager.h"
 #import "ARAppDelegate+Analytics.h"
+#import "ArtsyAPI+Sailthru.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
 #import <Emission/AREmission.h>
@@ -86,6 +87,21 @@ describe(@"concerning loading a VC from a URL and reporting analytics", ^{
         expect([delegate application:app
                 continueUserActivity:activity
                   restorationHandler:^(NSArray *_) {}]).to.beTruthy();
+    });
+
+    it(@"requests a decoded URL from Sailthru and then routes the WebBrowsing link to the appropriate view controller and shows it", ^{
+        NSURL *sailthruURL = [NSURL URLWithString:@"https://link.artsy.net/click/some-opaque-ID"];
+
+        NSUserActivity *activity = [[NSUserActivity alloc] initWithActivityType:NSUserActivityTypeBrowsingWeb];
+        activity.webpageURL = sailthruURL;
+
+        [[apiMock expect] getDecodedURLAndRegisterClick:sailthruURL
+                                             completion:[OCMArg checkWithBlock:^(void (^callback)(NSURL *URL)) {
+            callback(URL);
+            return YES;
+        }]];
+        [delegate application:app continueUserActivity:activity restorationHandler:^(NSArray *_) {}];
+        [apiMock verify];
     });
 });
 

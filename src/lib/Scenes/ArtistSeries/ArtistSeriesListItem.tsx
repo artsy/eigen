@@ -2,7 +2,7 @@ import { ActionType, ContextModule, OwnerType, ScreenOwnerType, TappedArtistSeri
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { ArtistSeriesConnectionEdge } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { ArrowRightIcon, Flex, Sans, Touchable, useColor } from "palette"
+import { ArrowRightIcon, color, Flex, Sans, Touchable } from "palette"
 import React from "react"
 import { useTracking } from "react-tracking"
 
@@ -24,7 +24,6 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
   horizontalSlidePosition,
   listItem,
 }) => {
-  const color = useColor()
   const { trackEvent } = useTracking()
 
   const artworksCountMessage = listItem?.node?.artworksCountMessage

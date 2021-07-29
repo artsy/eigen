@@ -1,6 +1,5 @@
 import { FeaturedArtistsTestsQueryRawResponse } from "__generated__/FeaturedArtistsTestsQuery.graphql"
 import { navigate } from "lib/navigation/navigate"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { mockTracking } from "lib/tests/mockTracking"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { postEventToProviders } from "lib/utils/track/providers"
@@ -105,11 +104,9 @@ describe("FeaturedArtists", () => {
   const render = (collection: FeaturedArtistsTestsQueryRawResponse["marketingCollection"]) =>
     renderRelayTree({
       Component: mockTracking(({ marketingCollection }) => (
-        <GlobalStoreProvider>
-          <Theme>
-            <FeaturedArtists collection={marketingCollection} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <FeaturedArtists collection={marketingCollection} />
+        </Theme>
       )),
       query: graphql`
         query FeaturedArtistsTestsQuery @raw_response_type {

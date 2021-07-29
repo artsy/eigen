@@ -5,7 +5,6 @@ import "react-native"
 
 import { renderWithLayout } from "lib/tests/renderWithLayout"
 
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import { SalesFragmentContainer } from "../index"
 
@@ -20,11 +19,9 @@ it("renders the ZeroState when there are no sales", () => {
 it("doesn't throw when rendered", () => {
   expect(() =>
     renderWithLayout(
-      <GlobalStoreProvider>
-        <Theme>
-          <SalesFragmentContainer {...(props as any)} />
-        </Theme>
-      </GlobalStoreProvider>,
+      <Theme>
+        <SalesFragmentContainer {...(props as any)} />
+      </Theme>,
       { width: 1000 }
     )
   ).not.toThrow()

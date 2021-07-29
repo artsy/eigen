@@ -3,7 +3,7 @@ import { PopIn } from "lib/Components/PopIn"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { switchTab } from "lib/navigation/navigate"
 import { unsafe__getSelectedTab, useSelectedTab } from "lib/store/GlobalStore"
-import { Sans, useColor } from "palette"
+import { color, Sans } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Easing, TouchableWithoutFeedback, View } from "react-native"
 import { useTracking } from "react-tracking"
@@ -106,7 +106,6 @@ export const BottomTabsButton: React.FC<{
 }
 
 const Badge: React.FC<{ count: number }> = ({ count }) => {
-  const color = useColor()
   const badgeSize = 18
   const borderWidth = 2
   return (

@@ -7,7 +7,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { Box, Flex, Sans, Separator, Spinner, Text, useSpace } from "palette"
+import { Box, Flex, Sans, Separator, space, Spinner, Text } from "palette"
 import { Touchable } from "palette"
 import React, { useMemo, useState } from "react"
 import { FlatList } from "react-native"
@@ -26,7 +26,6 @@ interface ArtworkSection {
 }
 
 export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) => {
-  const space = useSpace()
   const { viewingRoom, relay } = props
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const tracking = useTracking()

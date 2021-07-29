@@ -21,7 +21,7 @@ This PR resolves []
 - [ ] I have added a feature flag, or my changes don't require a feature flag. ([How do I add one?](https://github.com/artsy/eigen/blob/master/docs/developing_a_feature.md))
 - [ ] I have documented any follow-up work that this PR will require, or it does not require any.
 - [ ] I have added an app state migration, or my changes do not require one. ([What are migrations?](https://github.com/artsy/eigen/blob/master/docs/adding_state_migrations.md))
-- [ ] I have added a changelog entry below or my changes do not require one.
+- [ ] I have added a CHANGELOG.yml entry below or my changes do not require one.
 
 <details><summary>Changelog updates</summary>
 

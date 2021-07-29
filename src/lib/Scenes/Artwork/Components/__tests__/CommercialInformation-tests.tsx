@@ -4,7 +4,7 @@ import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Countdown } from "lib/Components/Bidding/Components/Timer"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import "moment-timezone"
-import { _test_colorV2, Sans, Theme } from "palette"
+import { color, Sans, Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
@@ -16,11 +16,9 @@ import { CommercialInformationTimerWrapper, SaleAvailability } from "../Commerci
 
 const Wrapper: React.FC<{}> = ({ children }) => {
   return (
-    <GlobalStoreProvider>
-      <Theme>
-        <GlobalStoreProvider>{children}</GlobalStoreProvider>
-      </Theme>
-    </GlobalStoreProvider>
+    <Theme>
+      <GlobalStoreProvider>{children}</GlobalStoreProvider>
+    </Theme>
   )
 }
 
@@ -57,7 +55,7 @@ describe("CommercialInformation", () => {
     )
 
     expect(component.text()).toContain("On hold")
-    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(_test_colorV2("yellow100"))
+    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(color("yellow100"))
   })
 
   it("renders red indicator and correct message when artwork is sold", () => {
@@ -74,7 +72,7 @@ describe("CommercialInformation", () => {
     )
 
     expect(component.text()).toContain("Sold")
-    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(_test_colorV2("red100"))
+    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(color("red100"))
   })
 
   it("renders green indicator and correct message when artwork is for sale", () => {
@@ -91,7 +89,7 @@ describe("CommercialInformation", () => {
     )
 
     expect(component.text()).toContain("For sale")
-    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(_test_colorV2("green100"))
+    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(color("green100"))
   })
 
   it("renders Bidding Closed and no CommercialButtons for auction works when the auction has ended", () => {

@@ -10,15 +10,14 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
-import { debounce } from "lodash"
-import { Box, bullet, Flex, Separator, Spacer, Text, useColor } from "palette"
-import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { Box, bullet, color, Flex, Separator, Spacer, Text } from "palette"
+import React, { useCallback, useEffect, useState } from "react"
 import { FlatList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
-import { DEBOUNCE_DELAY, KeywordFilter } from "../../ArtworkFilter/Filters/KeywordFilter"
+import { KeywordFilter } from "../../ArtworkFilter/Filters/KeywordFilter"
 import { AuctionResultFragmentContainer } from "../../Lists/AuctionResultListItem"
 
 interface Props {
@@ -28,7 +27,6 @@ interface Props {
 }
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop }) => {
-  const color = useColor()
   const tracking = useTracking()
 
   const showKeywordFilter = useFeatureFlag("AREnableAuctionResultsKeywordFilter")
@@ -37,16 +35,8 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
   const setFilterTypeAction = ArtworksFiltersStore.useStoreActions((state) => state.setFilterTypeAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+
   const filterParams = filterArtworksParams(appliedFilters, "auctionResult")
-
-  const keywordFilterValue = appliedFilters?.find((filter) => filter.paramName === FilterParamName.keyword)?.paramValue
-  const isKeywordFilterActive = !!keywordFilterValue
-
-  const [keywordFilterRefetching, setKeywordFilterRefetching] = useState(false)
-  const endKeywordFilterRefetching = useMemo(
-    () => debounce(() => setKeywordFilterRefetching(false), DEBOUNCE_DELAY),
-    []
-  )
 
   useEffect(() => {
     setFilterTypeAction("auctionResult")
@@ -57,8 +47,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
       relay.refetchConnection(
         PAGE_SIZE,
         (error) => {
-          endKeywordFilterRefetching()
-
           if (error) {
             throw new Error("ArtistInsights/ArtistAuctionResults filter error: " + error.message)
           }
@@ -135,11 +123,11 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
 
   const resultsString = Number(artist.auctionResultsConnection?.totalCount) === 1 ? "result" : "results"
 
+  const isKeywordFilterActive = !!appliedFilters?.find((filter) => filter.paramName === FilterParamName.keyword)
+    ?.paramValue
+
   return (
-    <View
-      // Setting min height to keep scroll position when user searches with the keyword filter.
-      style={{ minHeight: useScreenDimensions().height }}
-    >
+    <View>
       <Flex>
         <Flex flexDirection="row" alignItems="center">
           <InfoButton
@@ -163,15 +151,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
           {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
         </SortMode>
         <Separator borderColor={color("black5")} mt="2" />
-        {!!showKeywordFilter && (
-          <KeywordFilter
-            artistId={artist.internalID}
-            artistSlug={artist.slug}
-            loading={keywordFilterRefetching}
-            onFocus={scrollToTop}
-            onTypingStart={() => setKeywordFilterRefetching(true)}
-          />
-        )}
+        {!!showKeywordFilter && <KeywordFilter artistId={artist.internalID} artistSlug={artist.slug} />}
       </Flex>
       {auctionResults.length ? (
         <FlatList

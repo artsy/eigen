@@ -4,6 +4,8 @@
     "Podfile": "ruby",
     "*.h": "objective-c",
     "*.js": "javascriptreact",
+    "*.snap": "javascriptreact",
+    ".stylelintrc": "json",
     "yarn.lock": "text"
   },
   "eslint.enable": false,

@@ -3,7 +3,7 @@ import { navigate } from "lib/navigation/navigate"
 import { Event } from "lib/Scenes/City/Components/Event"
 import { Show } from "lib/Scenes/Map/types"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { Box, ClassTheme, Sans, Serif } from "palette"
+import { Box, color, Sans, Serif } from "palette"
 import React from "react"
 import { RelayProp } from "react-relay"
 
@@ -72,37 +72,30 @@ export class BMWEventSection extends React.Component<Props> {
     } = this.props
 
     return (
-      <ClassTheme>
-        {({ color }) => (
-          <>
-            <Box my={2} px={2}>
-              <Serif size="8">{title}</Serif>
-            </Box>
-            <Box mb={2} px={2}>
-              <Sans weight="medium" size="3">
-                Presented by BMW
-              </Sans>
-              <Box mt={1}>
-                <Serif size="3" color={color("black60")}>
-                  {introText}
-                </Serif>
-              </Box>
-            </Box>
-            <Box mb={3} px={2}>
-              <CaretButton
-                onPress={() => this.getArtGuidePressed(artGuideUrl, citySlug)}
-                text="Get the BMW Art Guide"
-              />
-            </Box>
-            {this.renderEvents()}
-            {totalCount > 2 && (
-              <Box px={2} mb={2}>
-                <CaretButton onPress={() => this.viewAllBmwShows()} text={`View all ${totalCount} shows`} />
-              </Box>
-            )}
-          </>
+      <>
+        <Box my={2} px={2}>
+          <Serif size="8">{title}</Serif>
+        </Box>
+        <Box mb={2} px={2}>
+          <Sans weight="medium" size="3">
+            Presented by BMW
+          </Sans>
+          <Box mt={1}>
+            <Serif size="3" color={color("black60")}>
+              {introText}
+            </Serif>
+          </Box>
+        </Box>
+        <Box mb={3} px={2}>
+          <CaretButton onPress={() => this.getArtGuidePressed(artGuideUrl, citySlug)} text="Get the BMW Art Guide" />
+        </Box>
+        {this.renderEvents()}
+        {totalCount > 2 && (
+          <Box px={2} mb={2}>
+            <CaretButton onPress={() => this.viewAllBmwShows()} text={`View all ${totalCount} shows`} />
+          </Box>
         )}
-      </ClassTheme>
+      </>
     )
   }
 }

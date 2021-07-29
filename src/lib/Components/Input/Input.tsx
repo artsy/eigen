@@ -1,5 +1,5 @@
 import _ from "lodash"
-import { Color, EyeOpenedIcon, Flex, Sans, Spinner, TEXT_FONTS, useTheme, XCircleIcon } from "palette"
+import { color, Color, EyeOpenedIcon, Flex, Sans, TEXT_FONTS, XCircleIcon } from "palette"
 import { fontFamily } from "palette/platform/fonts/fontFamily"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
@@ -24,7 +24,6 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   description?: string
   error?: string
   icon?: JSX.Element
-  loading?: boolean
   disabled?: boolean
   required?: boolean
   title?: string
@@ -69,7 +68,6 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       disabled,
       error,
       icon,
-      loading,
       required,
       enableClearButton,
       title,
@@ -83,7 +81,6 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     },
     ref
   ) => {
-    const { color } = useTheme()
     const [focused, setFocused] = useState(false)
     const [showPassword, setShowPassword] = useState(!secureTextEntry)
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
@@ -254,26 +251,17 @@ export const Input = React.forwardRef<TextInput, InputProps>(
               />
             </Flex>
             {renderShowPasswordIcon()}
-            {loading ? (
-              <Flex pr="3" justifyContent="center" flexGrow={0}>
-                <Spinner
-                  size="medium"
-                  style={{ marginLeft: 3, width: 15, height: 4, backgroundColor: color("black60") }}
-                />
+            {!!(value !== undefined && value !== "" && enableClearButton) && (
+              <Flex pr="1" justifyContent="center" flexGrow={0}>
+                <TouchableOpacity
+                  onPress={() => {
+                    localClear()
+                  }}
+                  hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
+                >
+                  <XCircleIcon fill="black30" />
+                </TouchableOpacity>
               </Flex>
-            ) : (
-              !!(value !== undefined && value !== "" && enableClearButton) && (
-                <Flex pr="1" justifyContent="center" flexGrow={0}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      localClear()
-                    }}
-                    hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
-                  >
-                    <XCircleIcon fill="black30" />
-                  </TouchableOpacity>
-                </Flex>
-              )
             )}
           </View>
         </TouchableWithoutFeedback>

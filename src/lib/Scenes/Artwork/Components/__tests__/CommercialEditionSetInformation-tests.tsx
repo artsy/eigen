@@ -1,6 +1,5 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
@@ -38,11 +37,9 @@ const artwork = {
 describe("CommercialEditionSetInformation", () => {
   it("changes displays first edition price", () => {
     const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CommercialEditionSetInformation setEditionSetId={() => null} artwork={artwork as any} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <CommercialEditionSetInformation setEditionSetId={() => null} artwork={artwork as any} />
+      </Theme>
     )
 
     expect(component.html()).toContain("$1")
@@ -50,11 +47,9 @@ describe("CommercialEditionSetInformation", () => {
 
   it("changes display price to selected edition set", () => {
     const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CommercialEditionSetInformation setEditionSetId={() => null} artwork={artwork as any} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <CommercialEditionSetInformation setEditionSetId={() => null} artwork={artwork as any} />
+      </Theme>
     )
 
     const secondEditionSelect = component.find(TouchableWithoutFeedback).at(1)

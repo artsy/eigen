@@ -12,7 +12,7 @@ import { StateManager as CountdownStateManager } from "lib/Components/Countdown"
 import { Schema, track } from "lib/utils/track"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
+import { Box, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp } from "react-tracking"
@@ -139,35 +139,28 @@ export class CommercialInformation extends React.Component<CommercialInformation
           // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           artwork.availability
         )
+    let indicatorColor
+    let newSaleMessage
+
+    if (artwork.availability?.toLowerCase() === "on loan" || artwork.availability?.toLowerCase() === "on hold") {
+      indicatorColor = color("yellow100")
+    } else if (
+      artwork.availability?.toLowerCase() === "sold" ||
+      artwork.availability?.toLowerCase() === "not for sale"
+    ) {
+      indicatorColor = color("red100")
+    } else if (artworkIsInClosedAuction) {
+      newSaleMessage = "Bidding closed"
+    } else if (artwork.saleMessage?.toLowerCase() === "contact for price" && artwork.isForSale) {
+      newSaleMessage = "For sale"
+      indicatorColor = color("green100")
+    }
 
     return (
-      <ClassTheme>
-        {({ color }) => {
-          let indicatorColor
-          let newSaleMessage
-
-          if (artwork.availability?.toLowerCase() === "on loan" || artwork.availability?.toLowerCase() === "on hold") {
-            indicatorColor = color("yellow100")
-          } else if (
-            artwork.availability?.toLowerCase() === "sold" ||
-            artwork.availability?.toLowerCase() === "not for sale"
-          ) {
-            indicatorColor = color("red100")
-          } else if (artworkIsInClosedAuction) {
-            newSaleMessage = "Bidding closed"
-          } else if (artwork.saleMessage?.toLowerCase() === "contact for price" && artwork.isForSale) {
-            newSaleMessage = "For sale"
-            indicatorColor = color("green100")
-          }
-
-          return (
-            <>
-              <SaleAvailability dotColor={indicatorColor} saleMessage={newSaleMessage ? newSaleMessage : saleMessage} />
-              {!artworkIsInClosedAuction && <CommercialPartnerInformation artwork={artwork} />}
-            </>
-          )
-        }}
-      </ClassTheme>
+      <>
+        <SaleAvailability dotColor={indicatorColor} saleMessage={newSaleMessage ? newSaleMessage : saleMessage} />
+        {!artworkIsInClosedAuction && <CommercialPartnerInformation artwork={artwork} />}
+      </>
     )
   }
 

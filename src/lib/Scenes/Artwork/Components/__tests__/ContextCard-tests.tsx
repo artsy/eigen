@@ -1,6 +1,5 @@
 // @ts-ignore
 import { mount } from "enzyme"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Box, Button, EntityHeader, Sans, Theme } from "palette"
 import React from "react"
 import { Image } from "react-native"
@@ -13,11 +12,9 @@ describe("ContextCard", () => {
   describe("Fair context", () => {
     it("renders fair name correctly", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={fairContextArtwork as any} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ContextCard relay={{ environment: {} } as RelayProp} artwork={fairContextArtwork as any} />
+        </Theme>
       )
       expect(component.find(EntityHeader).length).toEqual(1)
 
@@ -26,11 +23,9 @@ describe("ContextCard", () => {
 
     it("renders fair image", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={fairContextArtwork as any} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ContextCard relay={{ environment: {} } as RelayProp} artwork={fairContextArtwork as any} />
+        </Theme>
       )
 
       expect(component.find(Image)).toHaveLength(1)
@@ -40,11 +35,9 @@ describe("ContextCard", () => {
   describe("Show context", () => {
     it("renders show name correctly", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={showContextArtwork as any} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ContextCard relay={{ environment: {} } as RelayProp} artwork={showContextArtwork as any} />
+        </Theme>
       )
       expect(component.find(EntityHeader).length).toEqual(1)
 
@@ -53,11 +46,9 @@ describe("ContextCard", () => {
 
     it("renders show image", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={showContextArtwork as any} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ContextCard relay={{ environment: {} } as RelayProp} artwork={showContextArtwork as any} />
+        </Theme>
       )
 
       expect(component.find(Image)).toHaveLength(1)
@@ -65,11 +56,9 @@ describe("ContextCard", () => {
 
     it("renders show button text correctly", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={showContextArtwork as any} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ContextCard relay={{ environment: {} } as RelayProp} artwork={showContextArtwork as any} />
+        </Theme>
       )
       expect(component.find(Button)).toHaveLength(1)
 
@@ -80,11 +69,9 @@ describe("ContextCard", () => {
   describe("Sale context", () => {
     it("renders sale name correctly", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
+        </Theme>
       )
       expect(component.find(EntityHeader).length).toEqual(1)
 
@@ -93,11 +80,9 @@ describe("ContextCard", () => {
 
     it("renders formatted sale start/end date correctly", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
+        </Theme>
       )
       expect(component.find(EntityHeader).length).toEqual(1)
 
@@ -113,11 +98,9 @@ describe("ContextCard", () => {
         },
       }
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={saleContextArtwork as any} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ContextCard relay={{ environment: {} } as RelayProp} artwork={saleContextArtwork as any} />
+        </Theme>
       )
       expect(component.find(EntityHeader).length).toEqual(1)
 
@@ -126,11 +109,9 @@ describe("ContextCard", () => {
 
     it("renders sale image", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
+        </Theme>
       )
 
       expect(component.find(Image)).toHaveLength(1)
@@ -138,11 +119,9 @@ describe("ContextCard", () => {
 
     it("renders 'In Auction' if the sale is an auction", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
+        </Theme>
       )
 
       expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"In auction"`)

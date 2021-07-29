@@ -1,7 +1,6 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { Markdown } from "lib/Components/Markdown"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
@@ -14,11 +13,9 @@ describe("HoursCollapsible", () => {
 
   it("renders properly", () => {
     const comp = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <HoursCollapsible openingHours={hours} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <HoursCollapsible openingHours={hours} />
+      </Theme>
     )
 
     expect(comp.text()).toContain("Opening hours")
@@ -26,11 +23,9 @@ describe("HoursCollapsible", () => {
 
   it("expands when pressed", () => {
     const comp = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <HoursCollapsible openingHours={hours} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <HoursCollapsible openingHours={hours} />
+      </Theme>
     )
 
     comp.find(TouchableWithoutFeedback).props().onPress()
@@ -44,11 +39,9 @@ describe("HoursCollapsible", () => {
     }
 
     const comp = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <HoursCollapsible openingHours={markdownHours} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <HoursCollapsible openingHours={markdownHours} />
+      </Theme>
     )
 
     comp.find(TouchableWithoutFeedback).props().onPress()

@@ -6,7 +6,7 @@
 #import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
-#import <Emission/AREmission.h>
+#import <ARAnalytics/ARAnalytics.h>
 
 #import "ARAppConstants.h"
 #import "ARDefaults.h"
@@ -199,7 +199,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[AREmission sharedInstance] sendEvent:@"AR Allow Camera Access" traits:@{}];
+    [ARAnalytics pageView:@"AR Allow Camera Access"];
 }
 
 - (void)restartVideo:(NSNotification *)notification

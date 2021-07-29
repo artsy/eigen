@@ -1,5 +1,4 @@
-import { themeGet } from "@styled-system/theme-get"
-import { ArrowLeftIcon, ArrowRightIcon, CloseIcon, Flex, Separator, ShareIcon, Text, useTheme } from "palette"
+import { ArrowLeftIcon, ArrowRightIcon, CloseIcon, Flex, Separator, ShareIcon, space, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
@@ -26,7 +25,6 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
   useXButton,
   useShareButton,
 }) => {
-  const { space } = useTheme()
   const leftButton = () => {
     if (!useXButton) {
       return <ArrowLeftIcon fill="black100" />
@@ -90,13 +88,13 @@ export const Container = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: ${themeGet("space.6")}px;
+  height: ${space(6)};
 `
 
 export const LeftButtonContainer = styled(TouchableOpacity)`
-  padding: ${themeGet("space.2")}px;
+  padding: ${space(2)}px;
 `
 
 export const RightButtonContainer = styled(TouchableOpacity)`
-  padding: ${themeGet("space.2")}px;
+  padding: ${space(2)}px;
 `

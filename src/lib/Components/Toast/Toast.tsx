@@ -1,11 +1,9 @@
-import { useActionSheet } from "@expo/react-native-action-sheet"
-import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Text, Touchable, useColor } from "palette"
+import { color, Flex, IconProps, Text, Touchable } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
-import { ToastDetails } from "./types"
+import { useToast } from "./toastHook"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
@@ -14,15 +12,23 @@ const EDGE_TOAST_HEIGHT = 60
 const EDGE_TOAST_PADDING = 10
 const NAVBAR_HEIGHT = 44
 
-type ToastProps = ToastDetails
+export type ToastPlacement = "middle" | "top" | "bottom"
+export interface ToastProps {
+  id: string
+  positionIndex: number
 
-export const ToastComponent: React.FC<ToastProps> = ({ id, positionIndex, placement, message, onPress, Icon }) => {
-  const color = useColor()
+  placement: ToastPlacement
+  message: string
+
+  onPress?: (id: string) => void
+  Icon?: React.FC<IconProps>
+}
+
+export const Toast: React.FC<ToastProps> = ({ id, positionIndex, placement, message, onPress, Icon }) => {
   const { width, height } = useScreenDimensions()
+  const { hide } = useToast()
   const { top: topSafeAreaInset } = useScreenDimensions().safeAreaInsets
   const [opacityAnim] = useState(new Animated.Value(0))
-
-  const { showActionSheetWithOptions } = useActionSheet()
 
   useEffect(() => {
     Animated.timing(opacityAnim, {
@@ -37,7 +43,7 @@ export const ToastComponent: React.FC<ToastProps> = ({ id, positionIndex, placem
       toValue: 0,
       useNativeDriver: true,
       duration: 450,
-    }).start(() => GlobalStore.actions.toast.remove(id))
+    }).start(() => hide(id))
   }, 2500)
 
   if (placement === "middle") {
@@ -63,11 +69,7 @@ export const ToastComponent: React.FC<ToastProps> = ({ id, positionIndex, placem
         overflow="hidden"
       >
         {onPress !== undefined ? (
-          <Touchable
-            style={{ flex: 1 }}
-            onPress={() => onPress({ id, showActionSheetWithOptions })}
-            underlayColor={color("black60")}
-          >
+          <Touchable style={{ flex: 1 }} onPress={() => onPress(id)} underlayColor={color("black60")}>
             {innerMiddle}
           </Touchable>
         ) : (
@@ -111,11 +113,7 @@ export const ToastComponent: React.FC<ToastProps> = ({ id, positionIndex, placem
       overflow="hidden"
     >
       {onPress !== undefined ? (
-        <Touchable
-          style={{ flex: 1 }}
-          onPress={() => onPress({ id, showActionSheetWithOptions })}
-          underlayColor={color("black60")}
-        >
+        <Touchable style={{ flex: 1 }} onPress={() => onPress(id)} underlayColor={color("black60")}>
           {innerTopBottom}
         </Touchable>
       ) : (

@@ -1,4 +1,4 @@
-import { ChevronIcon, Flex, Sans, SansProps, Touchable, useColor } from "palette"
+import { ChevronIcon, color, Flex, Sans, SansProps, Touchable } from "palette"
 import React from "react"
 import { StyleProp, ViewStyle } from "react-native"
 
@@ -23,7 +23,6 @@ export const MenuItem: React.FC<{
   ellipsizeMode,
   style,
 }) => {
-  const color = useColor()
   return (
     <Touchable onPress={onPress} underlayColor={color("black5")} disabled={disabled}>
       <Flex

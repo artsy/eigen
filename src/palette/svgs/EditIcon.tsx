@@ -1,10 +1,9 @@
-import { useColor } from "palette/hooks"
 import React from "react"
+import { color } from "../Theme"
 import { G, Icon, IconProps, Path } from "./Icon"
 
 /** EditIcon */
 export const EditIcon: React.FC<IconProps> = (props) => {
-  const color = useColor()
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <G fill={color(props.fill)} fillRule="evenodd">

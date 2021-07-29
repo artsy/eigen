@@ -15,12 +15,10 @@ export type SavedAddresses_me = {
                 readonly addressLine1: string;
                 readonly addressLine2: string | null;
                 readonly addressLine3: string | null;
-                readonly country: string;
                 readonly city: string;
                 readonly region: string | null;
                 readonly postalCode: string | null;
                 readonly phoneNumber: string | null;
-                readonly isDefault: boolean;
             } | null;
         } | null> | null;
     } | null;
@@ -55,7 +53,7 @@ return {
         {
           "kind": "Literal",
           "name": "first",
-          "value": 10
+          "value": 3
         }
       ],
       "concreteType": "UserAddressConnection",
@@ -119,13 +117,6 @@ return {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
-                  "name": "country",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
                   "name": "city",
                   "storageKey": null
                 },
@@ -149,13 +140,6 @@ return {
                   "kind": "ScalarField",
                   "name": "phoneNumber",
                   "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "isDefault",
-                  "storageKey": null
                 }
               ],
               "storageKey": null
@@ -164,12 +148,12 @@ return {
           "storageKey": null
         }
       ],
-      "storageKey": "addressConnection(first:10)"
+      "storageKey": "addressConnection(first:3)"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
 })();
-(node as any).hash = 'f043741b2994f3b2d418f14b69de0cb2';
+(node as any).hash = '30a29267ac711583ee688cb2cfc22a60';
 export default node;

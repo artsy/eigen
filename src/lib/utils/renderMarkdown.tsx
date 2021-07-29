@@ -2,7 +2,7 @@ import { decode } from "html-entities"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { navigate } from "lib/navigation/navigate"
 import _ from "lodash"
-import { ClassTheme, Sans, Separator, Serif, Text } from "palette"
+import { color, Sans, Separator, Serif, space, Text } from "palette"
 import React from "react"
 import { Text as RNText, View } from "react-native"
 import SimpleMarkdown, { ParserRule, ParserRules, ReactNodeOutput } from "simple-markdown"
@@ -242,13 +242,9 @@ export function defaultRules({
     },
     blockQuote: {
       react: (node, output, state) => (
-        <ClassTheme>
-          {({ color, space }) => (
-            <View style={{ borderLeftColor: color("black10"), borderLeftWidth: 2, paddingLeft: space(1) }}>
-              {output(node.content, state)}
-            </View>
-          )}
-        </ClassTheme>
+        <View style={{ borderLeftColor: color("black10"), borderLeftWidth: 2, paddingLeft: space(1) }}>
+          {output(node.content, state)}
+        </View>
       ),
     },
     hr: {

@@ -5,7 +5,6 @@
 #import "ARUserManager.h"
 
 #import <SDWebImage/SDWebImageManager.h>
-#import <SDWebImage/SDImageCache.h>
 #import "ARFonts.h"
 #import <Emission/AREmission.h>
 

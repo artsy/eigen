@@ -10,7 +10,7 @@ import {
   BellFillIcon,
   BellIcon,
   Box,
-  ClassTheme,
+  color,
   EyeOpenedIcon,
   Flex,
   HeartFillIcon,
@@ -107,26 +107,18 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
             <Touchable haptic onPress={() => this.handleArtworkSave()}>
               <UtilButton pr={3}>
                 <Box mr={0.5}>{is_saved ? <BellFillIcon fill="purple100" /> : <BellIcon />}</Box>
-                <ClassTheme>
-                  {({ color }) => (
-                    <Sans size="3" color={is_saved ? color("purple100") : color("black100")}>
-                      Watch lot
-                    </Sans>
-                  )}
-                </ClassTheme>
+                <Sans size="3" color={is_saved ? color("purple100") : color("black100")}>
+                  Watch lot
+                </Sans>
               </UtilButton>
             </Touchable>
           ) : (
             <Touchable haptic onPress={() => this.handleArtworkSave()}>
               <UtilButton pr={3}>
                 <Box mr={0.5}>{is_saved ? <HeartFillIcon fill="purple100" /> : <HeartIcon />}</Box>
-                <ClassTheme>
-                  {({ color }) => (
-                    <Sans size="3" color={is_saved ? color("purple100") : color("black100")}>
-                      {is_saved ? "Saved" : "Save"}
-                    </Sans>
-                  )}
-                </ClassTheme>
+                <Sans size="3" color={is_saved ? color("purple100") : color("black100")}>
+                  {is_saved ? "Saved" : "Save"}
+                </Sans>
               </UtilButton>
             </Touchable>
           )}

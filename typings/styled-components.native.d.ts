@@ -1,14 +1,12 @@
 declare module "styled-components/native" {
-  import * as React from "react"
   import * as ReactNative from "react-native"
+  import * as React from "react"
 
   export {
     css,
     DefaultTheme,
     isStyledComponent,
     ThemeConsumer,
-    // @ts-ignore
-    ThemeContext,
     ThemeProps,
     ThemeProvider,
     withTheme,
@@ -19,7 +17,6 @@ declare module "styled-components/native" {
     isStyledComponent,
     ThemedCssFunction,
     ThemedStyledFunction,
-    ThemedStyledInterface,
     ThemeProviderComponent,
     WithThemeFnInterface,
   } from "styled-components"
@@ -32,11 +29,13 @@ declare module "styled-components/native" {
   > = ThemedStyledFunction<ExtractProps<C>, T>
 
   // Copied over from "ThemedBaseStyledInterface" in index.d.ts in order to remove DOM element typings
-  type ReactNativeThemedBaseStyledInterface<T extends object> = <C extends React.ComponentType<any>>(
-    // unfortunately using a conditional type to validate that it can receive a `theme?: Theme`
-    // causes tests to fail in TS 3.1
-    component: C
-  ) => ThemedStyledFunction<ExtractProps<C>, T>
+  interface ReactNativeThemedBaseStyledInterface<T extends object> {
+    <C extends React.ComponentType<any>>(
+      // unfortunately using a conditional type to validate that it can receive a `theme?: Theme`
+      // causes tests to fail in TS 3.1
+      component: C
+    ): ThemedStyledFunction<ExtractProps<C>, T>
+  }
 
   type ReactNativeThemedStyledInterface<T extends object> = ReactNativeThemedBaseStyledInterface<AnyIfEmpty<T>>
 
@@ -87,11 +86,6 @@ declare module "styled-components/native" {
     default: ReactNativeStyledInterface<T>
 
     css: ThemedCssFunction<T>
-
-    withTheme: WithThemeFnInterface<T>
-    ThemeProvider: ThemeProviderComponent<T>
-    ThemeConsumer: React.Consumer<T>
-    ThemeContext: React.Context<T>
 
     // This could be made to assert `target is StyledComponent<any, T>` instead, but that feels not type safe
     isStyledComponent: typeof isStyledComponent

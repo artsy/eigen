@@ -8,7 +8,7 @@ import {
   prepareFilterArtworksParamsForInput,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { ORDERED_ARTWORK_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
+import { ORDERED_ARTWORK_SORTS } from 'lib/Components/ArtworkFilter/Filters/SortOptions'
 import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -23,13 +23,11 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, FilterIcon, Flex, Separator, Spacer, Text, TouchableHighlightColor } from "palette"
+import { Box, Separator, Spacer } from "palette"
 import React, { useContext, useEffect, useMemo, useState } from "react"
-import { Platform } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { SavedSearchBannerQueryRender } from "./SavedSearchBanner"
-import { SavedSearchButtonQueryRenderer } from "./SavedSearchButton"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
@@ -97,9 +95,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   ...props
 }) => {
   const tracking = useTracking()
-  const enableSavedSearch =
-    Platform.OS === "ios" ? useFeatureFlag("AREnableSavedSearch") : useFeatureFlag("AREnableSavedSearchAndroid")
-  const enableSavedSearchV2 = useFeatureFlag("AREnableSavedSearchV2")
+  const enableSavedSearch = useFeatureFlag("AREnableSavedSearch")
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
@@ -135,9 +131,12 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 
     if (searchCriteria && artworks?.aggregations) {
       const params = convertSavedSearchCriteriaToFilterParams(searchCriteria, artworks.aggregations as Aggregations)
-      const sortFilterItem = ORDERED_ARTWORK_SORTS.find((sortEntity) => sortEntity.paramValue === "-published_at")
+      const sortFilterItem = ORDERED_ARTWORK_SORTS.find(sortEntity => sortEntity.paramValue === "-published_at")
 
-      setInitialFilterStateAction([...params, sortFilterItem!])
+      setInitialFilterStateAction([
+        ...params,
+        sortFilterItem!,
+      ])
     }
   }, [])
 
@@ -159,44 +158,17 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   useEffect(() => {
     setJSX(
       <Box backgroundColor="white">
-        {enableSavedSearchV2 ? (
-          <>
-            <Flex flexDirection="row" my={1} px={2} justifyContent="space-between" alignItems="center">
-              <TouchableHighlightColor
-                haptic
-                onPress={openFilterModal}
-                render={({ color }) => (
-                  <Flex flexDirection="row" alignItems="center">
-                    <FilterIcon fill={color} width="20px" height="20px" />
-                    <Text variant="small" color={color} ml={0.5}>
-                      Sort & Filter
-                    </Text>
-                  </Flex>
-                )}
-              />
-              <SavedSearchButtonQueryRenderer artistId={artistInternalId} filters={filterParams} />
-            </Flex>
-            <Separator />
-          </>
-        ) : (
-          <>
-            <ArtworksFilterHeader count={artworksTotal} onFilterPress={openFilterModal} />
-            <Separator />
-            {!!shouldShowSavedSearchBanner && (
-              <Box px={2}>
-                <SavedSearchBannerQueryRender
-                  artistId={artistInternalId}
-                  filters={filterParams}
-                  artistSlug={artist.slug}
-                />
-                <Separator ml={-2} width={screenWidth} />
-              </Box>
-            )}
-          </>
+        <ArtworksFilterHeader count={artworksTotal} onFilterPress={openFilterModal} />
+        <Separator />
+        {!!shouldShowSavedSearchBanner && (
+          <Box px={2}>
+            <SavedSearchBannerQueryRender artistId={artistInternalId} filters={filterParams} artistSlug={artist.slug} />
+            <Separator ml={-2} width={screenWidth} />
+          </Box>
         )}
       </Box>
     )
-  }, [artworksTotal, shouldShowSavedSearchBanner, artistInternalId, filterParams, enableSavedSearchV2])
+  }, [artworksTotal, shouldShowSavedSearchBanner, artistInternalId, filterParams])
 
   const filteredArtworks = () => {
     if (artworksCount === 0) {

@@ -5,11 +5,10 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <Firebase.h>
 #import <Appboy.h>
-#import "AppboyReactUtils.h"
-#import <Analytics/SEGAnalytics.h>
-#import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
 
+#import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
+
 #import "ARAppDelegate.h"
 #import "ARAppDelegate+Analytics.h"
 #import "ARAppDelegate+Emission.h"
@@ -86,6 +85,8 @@ static ARAppDelegate *_sharedInstance = nil;
     // protocol, as it means we would have to implement `application:openURL:options:` which seems tricky if we still
     // have to implement `application:openURL:sourceApplication:annotation:` as well.
     [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = (id)_sharedInstance;
+
+
 }
 
 + (ARAppDelegate *)sharedInstance
@@ -131,6 +132,11 @@ static ARAppDelegate *_sharedInstance = nil;
     // Temp Fix for: https://github.com/artsy/eigen/issues/602
     [self forceCacheCustomFonts];
 
+    // This cannot be moved after the view setup code, as it
+    // relies on swizzling alloc on new objects, thus should be
+    // one of the first things that happen.
+    [self setupAnalytics];
+
     [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[ARAppNotificationsDelegate alloc] init];
 
     self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -144,7 +150,7 @@ static ARAppDelegate *_sharedInstance = nil;
     [[ARLogger sharedLogger] startLogging];
 
     [self setupEmission];
-    self.viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Artsy" initialProperties:@{}];
+    self.viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Main" initialProperties:@{}];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
 
@@ -152,6 +158,7 @@ static ARAppDelegate *_sharedInstance = nil;
       // prevent dark mode
       self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
     }
+
 
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];
@@ -166,7 +173,14 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [self setupForAppLaunch];
 
-    [self setupAnalytics:application withLaunchOptions:launchOptions];
+    NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];
+
+    NSMutableDictionary *appboyOptions = [NSMutableDictionary dictionary];
+    appboyOptions[ABKAppboyEndpointDelegateKey] = self;
+    [Appboy startWithApiKey:brazeAppKey
+      inApplication:application
+      withLaunchOptions:launchOptions
+      withAppboyOptions:appboyOptions];
 
     FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
     [fbAppDelegate application:application didFinishLaunchingWithOptions:launchOptions];
@@ -176,41 +190,13 @@ static ARAppDelegate *_sharedInstance = nil;
     return YES;
 }
 
-- (void)setupAnalytics:(UIApplication *)application withLaunchOptions:(NSDictionary *)launchOptions
-{
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    center.delegate = [self remoteNotificationsDelegate];
-    NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_STAGING_APP_KEY_IOS"];
-    if (![ARAppStatus isDev]) {
-        brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];
-    }
-
-    NSString *brazeSDKEndPoint = @"sdk.iad-06.braze.com";
-    NSMutableDictionary *appboyOptions = [NSMutableDictionary dictionary];
-    appboyOptions[ABKEndpointKey] = brazeSDKEndPoint;
-    [Appboy startWithApiKey:brazeAppKey
-      inApplication:application
-      withLaunchOptions:launchOptions
-      withAppboyOptions:appboyOptions];
-
-    NSString *segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_STAGING_WRITE_KEY_IOS"];
-    if (![ARAppStatus isDev]) {
-        segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_PRODUCTION_WRITE_KEY_IOS"];
-    }
-
-    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:segmentWriteKey];
-    configuration.trackApplicationLifecycleEvents = YES;
-    configuration.trackPushNotifications = YES;
-    configuration.trackDeepLinks = YES;
-    [SEGAnalytics setupWithConfiguration:configuration];
-    [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:launchOptions];
-    [[AppboyReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
+- (NSString *)getApiEndpoint:(NSString *)appboyApiEndpoint {
+    return @"sdk.iad-06.braze.com";
 }
 
 - (void)registerNewSessionOpened
 {
-    // TODO: Customise APPBOY Sessions
-    //A session is started when you call [[Appboy sharedInstance] startWithApiKey:inApplication:withLaunchOptions:withAppboyOptions]
+    [ARAnalytics startTimingEvent:ARAnalyticsTimePerSession];
 }
 
 /// This happens every time we come _back_ to the app from the background
@@ -218,22 +204,16 @@ static ARAppDelegate *_sharedInstance = nil;
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     [self registerNewSessionOpened];
-
-    NSString *currentUserId = [[[ARUserManager sharedManager] currentUser] userID];
-    if (currentUserId) {
-        [[Appboy sharedInstance] changeUser: currentUserId];
-    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // MANUALLY track lifecycle event. Segment already does this if
-    // trackLifecycleSessions: true
+    [ARAnalytics finishTimingEvent:ARAnalyticsTimePerSession];
 }
 
 - (ARAppNotificationsDelegate *)remoteNotificationsDelegate;
 {
-    return (ARAppNotificationsDelegate *)[[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+    return [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
 }
 
 - (void)forceCacheCustomFonts
@@ -249,6 +229,11 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)finishOnboarding:(AROnboardingViewController *)viewController animated:(BOOL)animated
 {
+    // We now have a proper Artsy user, not just a local temporary ID
+    // So we have to re-identify the analytics user
+    // to ensure we start sending the Gravity ID as well as the local temporary ID
+    [ARUserManager identifyAnalyticsUser];
+
     // And update emission's auth state
     [[AREmission sharedInstance] updateState:@{
         [ARStateKey userID]: [[[ARUserManager sharedManager] currentUser] userID],
@@ -256,16 +241,13 @@ static ARAppDelegate *_sharedInstance = nil;
         [ARStateKey authenticationToken]: [[ARUserManager sharedManager] userAuthenticationToken],
     }];
 
-    NSString *currentUserId = [[[ARUserManager sharedManager] currentUser] userID];
-    [[Appboy sharedInstance] changeUser: currentUserId];
-
     ar_dispatch_main_queue(^{
         if ([User currentUser]) {
             [self setupAdminTools];
         }
 
         if (!([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding)) {
-            ARAppNotificationsDelegate *remoteNotificationsDelegate = [self remoteNotificationsDelegate];
+            ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
             [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
         }
     });

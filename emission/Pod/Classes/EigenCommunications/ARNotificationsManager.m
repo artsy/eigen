@@ -49,8 +49,6 @@ static const NSString *modalDismissed = @"MODAL_DISMISSED";
 static const NSString *stateChanged = @"STATE_CHANGED";
 static const NSString *reactStateChanged = @"STATE_CHANGED";
 static const NSString *requestNavigation = @"REQUEST_NAVIGATION";
-static const NSString *eventTracking = @"EVENT_TRACKING";
-static const NSString *identifyTracking = @"IDENTIFY_TRACKING";
 
 
 @implementation ARNotificationsManager
@@ -111,22 +109,6 @@ RCT_EXPORT_MODULE();
     }
 }
 
-- (void)sendEvent:(NSDictionary *)traits
-{
-    @synchronized(self)
-    {
-        [self dispatch:eventTracking data:traits];
-    }
-}
-
-- (void)sendIdentifyEvent:(NSDictionary *)traits
-{
-    @synchronized(self)
-    {
-        [self dispatch:identifyTracking data:traits];
-    }
-}
-
 - (void)notificationReceived
 {
     [self dispatch:notificationReceived data:@{}];
@@ -148,7 +130,6 @@ RCT_EXPORT_MODULE();
     [self afterBootstrap:^{
         __strong typeof(self) sself = wself;
         if (!sself) return;
-        if (!route) return;
         [sself dispatch:requestNavigation data:@{@"route": route, @"props": props}];
     }];
 }

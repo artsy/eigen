@@ -12,17 +12,19 @@ import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
 export const AppProviders = ({ children }: { children: ReactNode }) => (
   <RelayEnvironmentProvider environment={defaultEnvironment}>
     <ProvideScreenDimensions>
-      <GlobalStoreProvider>
-        <Theme>
-          <ActionSheetProvider>
-            <PopoverMessageProvider>
-              <_FancyModalPageWrapper>
-                <ToastProvider>{children}</ToastProvider>
-              </_FancyModalPageWrapper>
-            </PopoverMessageProvider>
-          </ActionSheetProvider>
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <ActionSheetProvider>
+          <GlobalStoreProvider>
+            <ToastProvider>
+              <PopoverMessageProvider>
+                <_FancyModalPageWrapper>
+                  {children}
+                </_FancyModalPageWrapper>
+              </PopoverMessageProvider>
+            </ToastProvider>
+          </GlobalStoreProvider>
+        </ActionSheetProvider>
+      </Theme>
     </ProvideScreenDimensions>
   </RelayEnvironmentProvider>
 )

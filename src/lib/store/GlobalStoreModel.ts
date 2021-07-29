@@ -14,7 +14,6 @@ import { unsafe__getEnvironment } from "./GlobalStore"
 import { CURRENT_APP_VERSION } from "./migration"
 import { getNativeModel, NativeModel } from "./NativeModel"
 import { assignDeep, sanitize } from "./persistence"
-import { getToastModel, ToastModel } from "./ToastModel"
 
 interface GlobalStoreStateModel {
   version: number
@@ -28,7 +27,6 @@ interface GlobalStoreStateModel {
   myCollection: MyCollectionModel
   config: ConfigModel
   auth: AuthModel
-  toast: ToastModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
@@ -92,7 +90,6 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   myCollection: getMyCollectionModel(),
   config: getConfigModel(),
   auth: getAuthModel(),
-  toast: getToastModel(),
 
   // for testing only. noop otherwise.
   __inject: __TEST__

@@ -1,7 +1,6 @@
-import { themeGet } from "@styled-system/theme-get"
 import { CommercialEditionSetInformation_artwork } from "__generated__/CommercialEditionSetInformation_artwork.graphql"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { Box, Flex, Sans, Spacer } from "palette"
+import { Box, color, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -144,5 +143,5 @@ const EditionSelector = styled(Box)<EditionSelectorProps>`
   align-items: center;
   justify-content: center;
   border: ${(props: any /* STRICTNESS_MIGRATION */) =>
-    props.selected ? `2px solid ${themeGet("colors.black100")}` : `2px solid ${themeGet("colors.black30")}`};
+    props.selected ? `2px solid ${color("black100")}` : `2px solid ${color("black30")}`};
 `

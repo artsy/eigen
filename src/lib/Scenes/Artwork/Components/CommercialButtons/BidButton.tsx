@@ -4,7 +4,7 @@ import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
 import { navigate } from "lib/navigation/navigate"
 import { bidderNeedsIdentityVerification } from "lib/utils/auction"
 import { Schema } from "lib/utils/track"
-import { Button, ClassTheme, Sans } from "palette"
+import { Button, color, Sans } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -129,13 +129,9 @@ export class BidButton extends React.Component<BidButtonProps> {
     return (
       <>
         {isWatchOnly && (
-          <ClassTheme>
-            {({ color }) => (
-              <Sans size="2" color={color("black60")} pb={1} textAlign="center">
-                Registration closed
-              </Sans>
-            )}
-          </ClassTheme>
+          <Sans size="2" color={color("black60")} pb={1} textAlign="center">
+            Registration closed
+          </Sans>
         )}
         <Button width={100} block size="large" onPress={() => this.redirectToLiveBidding()}>
           {isWatchOnly ? "Watch live bidding" : "Enter live bidding"}

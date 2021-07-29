@@ -1,6 +1,6 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { compact } from "lodash"
-import { Sans, useSpace, useTheme } from "palette"
+import { color, Sans, space } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, LayoutRectangle, ScrollView, TouchableOpacity, View, ViewProps } from "react-native"
 import { useStickyTabPageContext } from "./SitckyTabPageContext"
@@ -10,7 +10,6 @@ export const TAB_BAR_HEIGHT = 48
 export const StickyTabPageTabBar: React.FC<{ onTabPress?(tab: { label: string; index: number }): void }> = ({
   onTabPress,
 }) => {
-  const { color, space } = useTheme()
   const screen = useScreenDimensions()
   const { tabLabels, activeTabIndex, setActiveTabIndex } = useStickyTabPageContext()
   activeTabIndex.useUpdates()
@@ -127,8 +126,6 @@ const ActiveTabBorder: React.FC<{ tabLayouts: LayoutRectangle[]; activeTabIndex:
   tabLayouts,
   activeTabIndex,
 }) => {
-  const space = useSpace()
-
   // We resize this border using the `scaleX` transform property rather than the `width` property, to avoid running
   // animations on the JS thread, so we need to set an initial, pre-transform span for the border.
   const preTransformSpan = 100

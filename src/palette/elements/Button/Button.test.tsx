@@ -8,11 +8,9 @@ describe("Button", () => {
   it("returns variants and sizes", () => {
     const getWrapper = (props) => {
       return mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <Button {...props}>Hi</Button>
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <Button {...props}>Hi</Button>
+        </Theme>
       )
     }
 
@@ -45,11 +43,9 @@ describe("Button", () => {
 
   it("shows spinner if loading is true", () => {
     const wrapper = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <Button loading>Hi</Button>
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <Button loading>Hi</Button>
+      </Theme>
     )
     expect(wrapper.find("Spinner").length).toBe(1)
     expect(wrapper.html()).toContain('class="loading')
@@ -59,13 +55,11 @@ describe("Button", () => {
     const onClickMock = jest.fn()
 
     const wrapper = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <Button onClick={onClickMock} loading>
-            Hi
-          </Button>
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <Button onClick={onClickMock} loading>
+          Hi
+        </Button>
+      </Theme>
     )
 
     wrapper.find("Button").simulate("click")
@@ -75,14 +69,12 @@ describe("Button", () => {
 
   it("passes the `disabled` prop down to the DOM element", () => {
     const wrapper = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <>
-            <Button>Good</Button>
-            <Button disabled>No good</Button>
-          </>
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <>
+          <Button>Good</Button>
+          <Button disabled>No good</Button>
+        </>
+      </Theme>
     )
 
     expect(wrapper.find("button[disabled]")).toHaveLength(1)

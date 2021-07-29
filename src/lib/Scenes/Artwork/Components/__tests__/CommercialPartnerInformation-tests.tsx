@@ -1,6 +1,5 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Sans, Theme } from "palette"
 import React from "react"
 import { CommercialPartnerInformation } from "../CommercialPartnerInformation"
@@ -8,14 +7,12 @@ import { CommercialPartnerInformation } from "../CommercialPartnerInformation"
 describe("CommercialPartnerInformation", () => {
   it("renders all seller information when work is for sale and is not in a closed auction", () => {
     const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CommercialPartnerInformation
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            artwork={CommercialPartnerInformationArtwork}
-          />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <CommercialPartnerInformation
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          artwork={CommercialPartnerInformationArtwork}
+        />
+      </Theme>
     )
     expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"From Bob's Gallery"`)
     expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(`"Ships from Brooklyn"`)
@@ -32,14 +29,12 @@ describe("CommercialPartnerInformation", () => {
       isAcquireable: false,
     }
     const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CommercialPartnerInformation
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            artwork={CommercialPartnerInformationArtworkClosedAuction}
-          />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <CommercialPartnerInformation
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          artwork={CommercialPartnerInformationArtworkClosedAuction}
+        />
+      </Theme>
     )
     expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"At Bob's Gallery"`)
     expect(component.find(Sans).length).toEqual(1)
@@ -54,14 +49,12 @@ describe("CommercialPartnerInformation", () => {
       isAcquireable: false,
     }
     const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CommercialPartnerInformation
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            artwork={CommercialPartnerInformationArtworkClosedAuction}
-          />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <CommercialPartnerInformation
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          artwork={CommercialPartnerInformationArtworkClosedAuction}
+        />
+      </Theme>
     )
     expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"From Bob's Gallery"`)
     expect(component.find(Sans).length).toEqual(1)
@@ -75,14 +68,12 @@ describe("CommercialPartnerInformation", () => {
     }
 
     const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CommercialPartnerInformation
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            artwork={CommercialPartnerInformationNoEcommerce}
-          />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <CommercialPartnerInformation
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          artwork={CommercialPartnerInformationNoEcommerce}
+        />
+      </Theme>
     )
 
     expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"From Bob's Gallery"`)
@@ -98,14 +89,12 @@ describe("CommercialPartnerInformation", () => {
       isAcquireable: false,
     }
     const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CommercialPartnerInformation
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            artwork={CommercialPartnerInformationArtworkClosedAuction}
-          />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <CommercialPartnerInformation
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          artwork={CommercialPartnerInformationArtworkClosedAuction}
+        />
+      </Theme>
     )
     expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"At Bob's Gallery"`)
     expect(component.find(Sans).length).toEqual(1)

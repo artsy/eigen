@@ -4,7 +4,6 @@ import { mount } from "enzyme"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
@@ -13,11 +12,9 @@ import { ArtworkTombstone } from "../ArtworkTombstone"
 describe("ArtworkTombstone", () => {
   it("renders fields correctly", () => {
     const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+      </Theme>
     )
     expect(component.text()).toContain("Hello im a title, 1992")
     expect(component.text()).toContain("Painting")
@@ -30,11 +27,9 @@ describe("ArtworkTombstone", () => {
 
   it("renders auction fields correctly", () => {
     const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneAuctionArtwork} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <ArtworkTombstone artwork={artworkTombstoneAuctionArtwork} />
+      </Theme>
     )
     expect(component.text()).toContain("Lot 8")
     expect(component.text()).toContain("Cool Auction")
@@ -43,11 +38,9 @@ describe("ArtworkTombstone", () => {
 
   it("redirects to artist page when artist name is clicked", () => {
     const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+      </Theme>
     )
     const artistName = component.find(TouchableWithoutFeedback).at(0)
     expect(artistName.text()).toContain("Andy Warhol")
@@ -57,11 +50,9 @@ describe("ArtworkTombstone", () => {
 
   it("redirects to attribution class faq page when attribution class is clicked", () => {
     const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+      </Theme>
     )
     const attributionClass = component.find(TouchableWithoutFeedback).at(4)
     expect(attributionClass.text()).toContain("This is an edition of something")
@@ -73,11 +64,9 @@ describe("ArtworkTombstone", () => {
     it("renders dimensions in centimeters", () => {
       LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale = "fr_FR"
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
       )
       expect(component.text()).toContain("38.1 × 50.8 cm")
     })
@@ -87,11 +76,9 @@ describe("ArtworkTombstone", () => {
     it("renders dimensions in inches", () => {
       LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale = "en_US"
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
       )
       expect(component.text()).toContain("15 × 20 in")
     })
@@ -100,11 +87,9 @@ describe("ArtworkTombstone", () => {
   describe("for an artwork with more than 3 artists", () => {
     it("truncates artist names", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
       )
       expect(component.text()).toContain("Andy Warhol")
       expect(component.text()).toContain("Alex Katz")
@@ -116,22 +101,18 @@ describe("ArtworkTombstone", () => {
 
     it("doesn't show follow button", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
       )
       expect(component.text()).not.toContain("Follow")
     })
 
     it("shows truncated artist names when 'x more' is clicked", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
       )
       const showMore = component.find(TouchableWithoutFeedback).at(3)
       expect(showMore.text()).toContain("2 more")
@@ -151,22 +132,18 @@ describe("ArtworkTombstone", () => {
 
     it("doesn't show follow button", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
       )
       expect(component.text()).not.toContain("Follow")
     })
 
     it("doesn't truncate artist names", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
       )
       expect(component.text()).toContain("Andy Warhol")
       expect(component.text()).toContain("Alex Katz")
@@ -185,22 +162,18 @@ describe("ArtworkTombstone", () => {
 
     it("renders artist name", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
       )
       expect(component.text()).toContain("Andy Warhol")
     })
 
     it("shows follow button", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
       )
       expect(component.text()).toContain("Follow")
     })
@@ -216,22 +189,18 @@ describe("ArtworkTombstone", () => {
 
     it("renders artist name", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
       )
       expect(component.text()).toContain("18th century American")
     })
 
     it("shows follow button", () => {
       const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
       )
       expect(component.text()).not.toContain("Follow")
     })

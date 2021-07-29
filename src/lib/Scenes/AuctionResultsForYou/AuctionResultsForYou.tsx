@@ -55,7 +55,7 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
   }
 
   return (
-    <PageWithSimpleHeader title="Auction Results for Artists You Follow">
+    <PageWithSimpleHeader title="Auction Results for You">
       <ArtworkFiltersStoreProvider>
         <SectionList
           sections={groupedAuctionResultSections}

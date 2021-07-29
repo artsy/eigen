@@ -1,4 +1,3 @@
-import { themeGet } from "@styled-system/theme-get"
 import { FeaturedCollectionsRail_collection } from "__generated__/FeaturedCollectionsRail_collection.graphql"
 import { FeaturedCollectionsRail_collectionGroup } from "__generated__/FeaturedCollectionsRail_collectionGroup.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
@@ -7,7 +6,7 @@ import { navigate } from "lib/navigation/navigate"
 import { defaultRules } from "lib/utils/renderMarkdown"
 import { renderMarkdown } from "lib/utils/renderMarkdown"
 import { Schema } from "lib/utils/track"
-import { Flex, Sans, Spacer, Touchable, useColor } from "palette"
+import { color, Flex, Sans, Spacer, Touchable } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -21,7 +20,6 @@ interface FeaturedCollectionsRailProps {
 type FeaturedCollection = FeaturedCollectionsRail_collectionGroup["members"][0]
 
 export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (props) => {
-  const color = useColor()
   const tracking = useTracking()
   const { collection, collectionGroup } = props
   const collections = collectionGroup?.members ?? []
@@ -109,7 +107,7 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
 }
 
 export const ImageWrapper = styled(Flex)`
-  border: solid 1px ${themeGet("colors.black10")};
+  border: solid 1px ${color("black10")};
   height: 385px;
   width: 260px;
   border-radius: 5px;

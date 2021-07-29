@@ -114,9 +114,9 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
   //   mockFetchNotificationPermissions.mockImplementationOnce(cb => cb(null, PushAuthorizationStatus.Denied))
 
   //   const tree = create(
-  //     <GlobalStoreProvider><Theme>
+  //     <Theme>
   //       <MyProfilePushNotificationsQueryRenderer />
-  //     </Theme></GlobalStoreProvider>
+  //     </Theme>
   //   )
 
   //   expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("MyProfilePushNotificationsQuery")

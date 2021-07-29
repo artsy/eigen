@@ -1,31 +1,20 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, CloseIcon, Color, Flex, Text, Touchable, useColor } from "palette"
-import React from "react"
-import { Animated } from "react-native"
+import { Box, CloseIcon, Color, color, Flex, Text, Touchable } from "palette"
+import React, { useEffect, useRef, useState } from "react"
+import { Animated, Platform } from "react-native"
+import useTimeoutFn from "react-use/lib/useTimeoutFn"
 import { usePopoverMessage } from "./popoverMessageHooks"
 
 export const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
+const EDGE_POPOVER_MESSAGE_HEIGHT = Platform.OS === "ios" ? 80 : 90
 const EDGE_POPOVER_MESSAGE_PADDING = 10
+const FRICTION = 20
 const NAVBAR_HEIGHT = 44
 
 export type PopoverMessagePlacement = "top" | "bottom"
 export type PopoverMessageType = "info" | "success" | "error" | "default"
-export type PopoverMessageItem = Omit<PopoverMessageProps, "translateYAnimation" | "opacityAnimation">
-
-export interface PopoverMessageProps {
-  placement?: PopoverMessagePlacement
-  title: string
-  translateYAnimation: Animated.Value
-  opacityAnimation: Animated.Value
-  message?: string
-  autoHide?: boolean
-  hideTimeout?: number
-  showCloseIcon?: boolean
-  type?: PopoverMessageType
-  onPress?: () => void
-  onClose?: () => void
-}
+export type PopoverMessageOptions = Omit<PopoverMessageProps, "id" | "positionIndex">
 
 export const getTitleColorByType = (type?: PopoverMessageType): Color => {
   if (type === "success") {
@@ -39,38 +28,95 @@ export const getTitleColorByType = (type?: PopoverMessageType): Color => {
   return "black100"
 }
 
+export interface PopoverMessageProps {
+  id: string
+  positionIndex: number
+  placement: PopoverMessagePlacement
+  title: string
+  message?: string
+  autoHide?: boolean
+  hideTimeout?: number
+  showCloseIcon?: boolean
+  type?: PopoverMessageType
+  onPress?: () => void
+  onClose?: () => void
+}
+
 // TODO: Remove NAVBAR_HEIGHT when a new design without a floating back button is added
 export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
-  const color = useColor()
   const {
-    placement = "top",
+    id,
+    positionIndex,
+    placement,
     title,
     message,
+    autoHide = true,
+    hideTimeout = 3500,
     showCloseIcon = true,
     type,
-    translateYAnimation,
-    opacityAnimation,
     onPress,
     onClose,
   } = props
   const { safeAreaInsets } = useScreenDimensions()
   const { hide } = usePopoverMessage()
+  const [opacityAnim] = useState(new Animated.Value(0))
+  const [translateYAnim] = useState(new Animated.Value(0))
+  const isClosed = useRef<boolean>(false)
   const titleColor = getTitleColorByType(type)
 
+  useEffect(() => {
+    Animated.parallel([
+      Animated.spring(translateYAnim, {
+        toValue: 1,
+        useNativeDriver: true,
+        friction: FRICTION,
+      }),
+      Animated.timing(opacityAnim, {
+        toValue: 1,
+        useNativeDriver: true,
+        duration: 450,
+      }),
+    ]).start()
+  }, [])
+
+  const hideAnimation = () => {
+    isClosed.current = true
+    Animated.parallel([
+      Animated.spring(translateYAnim, {
+        toValue: 0,
+        useNativeDriver: true,
+        friction: FRICTION,
+      }),
+      Animated.timing(opacityAnim, {
+        toValue: 0,
+        useNativeDriver: true,
+        duration: 250,
+      }),
+    ]).start(() => hide(id))
+  }
+
   const handlePopoverMessagePress = () => {
-    hide()
+    hideAnimation()
     onPress?.()
   }
 
   const handlePopoverMessageClosePress = () => {
-    hide()
+    hideAnimation()
     onClose?.()
   }
 
-  const range = [-150, 0]
+  useTimeoutFn(() => {
+    if (autoHide && !isClosed.current) {
+      hideAnimation()
+    }
+  }, hideTimeout)
+
+  const range = [-EDGE_POPOVER_MESSAGE_HEIGHT, 0]
   const outputRange = placement === "top" ? range : range.map((item) => item * -1)
-  const translateY = translateYAnimation.interpolate({ inputRange: [0, 1], outputRange })
-  const opacity = opacityAnimation.interpolate({ inputRange: [0, 1], outputRange: [0, 1] })
+  const translateY = translateYAnim.interpolate({ inputRange: [0, 1], outputRange })
+  const opacity = opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 1] })
+  const offset =
+    EDGE_POPOVER_MESSAGE_PADDING + positionIndex * (EDGE_POPOVER_MESSAGE_HEIGHT + EDGE_POPOVER_MESSAGE_PADDING)
 
   const content = (
     <Flex p={1}>
@@ -80,7 +126,7 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
             {title}
           </Text>
           {!!message && (
-            <Text color="black60" variant="small">
+            <Text numberOfLines={2} color="black60" variant="small">
               {message}
             </Text>
           )}
@@ -101,8 +147,9 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
       position="absolute"
       left="1"
       right="1"
-      bottom={placement === "bottom" ? safeAreaInsets.bottom + EDGE_POPOVER_MESSAGE_PADDING : undefined}
-      top={placement === "top" ? safeAreaInsets.top + EDGE_POPOVER_MESSAGE_PADDING + NAVBAR_HEIGHT : undefined}
+      height={EDGE_POPOVER_MESSAGE_HEIGHT}
+      bottom={placement === "bottom" ? safeAreaInsets.bottom + offset : undefined}
+      top={placement === "top" ? safeAreaInsets.top + offset + NAVBAR_HEIGHT : undefined}
       style={{
         opacity,
         transform: [{ translateY }],

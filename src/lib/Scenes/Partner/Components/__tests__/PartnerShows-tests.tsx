@@ -1,6 +1,5 @@
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
 import { PartnerShowsTestsQueryRawResponse } from "__generated__/PartnerShowsTestsQuery.graphql"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { cloneDeep } from "lodash"
 import { Theme } from "palette"
@@ -16,11 +15,9 @@ describe("PartnerShows", () => {
     await renderRelayTree({
       Component: (props: any) => {
         return (
-          <GlobalStoreProvider>
-            <Theme>
-              <PartnerShows {...props} />
-            </Theme>
-          </GlobalStoreProvider>
+          <Theme>
+            <PartnerShows {...props} />
+          </Theme>
         )
       },
       query: graphql`

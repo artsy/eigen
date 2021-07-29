@@ -7,7 +7,7 @@ import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { compact, floor } from "lodash"
-import { Button, ClassTheme, CloseIcon, Flex, Join, Sans, Touchable } from "palette"
+import { Button, CloseIcon, color, Flex, Join, Sans, Touchable } from "palette"
 import styled from "styled-components/native"
 import { CARD_WIDTH, CardRailCard } from "../CardRailCard"
 
@@ -132,33 +132,29 @@ export class ArtistCard extends React.Component<Props, State> {
           </Flex>
         ) : null}
         {!!this.props.onDismiss && (
-          <ClassTheme>
-            {({ color }) => (
-              <Touchable
-                hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-                activeOpacity={0.2}
-                style={{
-                  backgroundColor: color("white100"),
-                  position: "absolute",
-                  top: 6,
-                  right: 6,
-                  overflow: "hidden",
-                  borderRadius: 12,
-                  width: 24,
-                  height: 24,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                onPress={this.handleDismiss}
-              >
-                {this.state.isDismissing ? (
-                  <ActivityIndicator style={{ transform: [{ scale: 0.8 }] }} />
-                ) : (
-                  <CloseIcon fill="black60" width={16} height={16} />
-                )}
-              </Touchable>
+          <Touchable
+            hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+            activeOpacity={0.2}
+            style={{
+              backgroundColor: color("white100"),
+              position: "absolute",
+              top: 6,
+              right: 6,
+              overflow: "hidden",
+              borderRadius: 12,
+              width: 24,
+              height: 24,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={this.handleDismiss}
+          >
+            {this.state.isDismissing ? (
+              <ActivityIndicator style={{ transform: [{ scale: 0.8 }] }} />
+            ) : (
+              <CloseIcon fill="black60" width={16} height={16} />
             )}
-          </ClassTheme>
+          </Touchable>
         )}
       </View>
     )

@@ -226,7 +226,7 @@ describe(__webViewTestUtils__?.expandGoogleAdLink!, () => {
   })
 
   it("expands google ad links with url params", () => {
-    const targetURL = "https://www.artsy.net/search?" + stringify({ query: "Hello World &hello=world" })
+    const targetURL = "https://artsy.net/search?" + stringify({ query: "Hello World &hello=world" })
     const googleURL = "https://googleads.g.doubleclick.net/pcs/click?" + stringify({ adurl: targetURL })
 
     const expanded = __webViewTestUtils__?.expandGoogleAdLink(googleURL)

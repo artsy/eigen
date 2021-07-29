@@ -1,5 +1,4 @@
 import { FullFeaturedArtistListTestsQueryRawResponse } from "__generated__/FullFeaturedArtistListTestsQuery.graphql"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { mockTracking } from "lib/tests/mockTracking"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { Theme } from "palette"
@@ -13,11 +12,9 @@ describe("FullFeaturedArtistList", () => {
   const render = (collection: FullFeaturedArtistListTestsQueryRawResponse["marketingCollection"]) =>
     renderRelayTree({
       Component: mockTracking(({ marketingCollection }) => (
-        <GlobalStoreProvider>
-          <Theme>
-            <CollectionFeaturedArtists collection={marketingCollection} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <CollectionFeaturedArtists collection={marketingCollection} />
+        </Theme>
       )),
       query: graphql`
         query FullFeaturedArtistListTestsQuery @raw_response_type {

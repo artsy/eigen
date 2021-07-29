@@ -3,10 +3,8 @@ import { View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { useTheme } from "palette/Theme"
-import { Flex } from "../Flex"
-import { Spacer } from "../Spacer"
-import { Sans } from "../Typography"
+import { Flex, Sans, Spacer } from ".."
+import { color, space } from "../../Theme"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface LargeCardProps {
@@ -21,7 +19,6 @@ export interface LargeCardProps {
  * at the bottom.
  */
 export const LargeCard: React.FC<LargeCardProps> = ({ image, title, subtitle, tag }) => {
-  const { color, space } = useTheme()
   return (
     <View style={{ width: "100%", aspectRatio: 1.0 / 1.33, flexDirection: "row" }}>
       <Flex flex={2} background={color("black10")}>

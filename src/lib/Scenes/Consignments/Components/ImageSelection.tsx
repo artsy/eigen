@@ -1,6 +1,5 @@
-import { themeGet } from "@styled-system/theme-get"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Touchable, useColor } from "palette"
+import { color, Touchable } from "palette"
 import React from "react"
 import { Dimensions, FlatList, Image, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
@@ -17,7 +16,7 @@ const SelectedIndicator = styled.View`
 `
 
 const Overlay = styled.View`
-  ${(p: { selected: boolean }) => p.selected && `border-width: 1; border-color: ${themeGet("colors.black80")}`};
+  ${(p: { selected: boolean }) => p.selected && `border-width: 1; border-color: ${color("black80")}`};
 `
 
 export interface ImageData {
@@ -66,7 +65,6 @@ const TakePhotoImage = (props: TakePhotoImageProps) => {
 }
 
 const ImageForURI = (props: ImagePreviewProps) => {
-  const color = useColor()
   const { width } = useScreenDimensions()
   const imageSize = (width - 60) / 2
 

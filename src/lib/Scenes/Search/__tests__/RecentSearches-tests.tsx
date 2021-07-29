@@ -76,15 +76,13 @@ const anniAlbers: RecentSearch = {
 
 const TestPage = () => {
   return (
-    <GlobalStoreProvider>
-      <Theme>
-        <GlobalStoreProvider>
-          <SearchContext.Provider value={{ inputRef: { current: null }, queryRef: { current: null } }}>
-            <RecentSearches />
-          </SearchContext.Provider>
-        </GlobalStoreProvider>
-      </Theme>
-    </GlobalStoreProvider>
+    <Theme>
+      <GlobalStoreProvider>
+        <SearchContext.Provider value={{ inputRef: { current: null }, queryRef: { current: null } }}>
+          <RecentSearches />
+        </SearchContext.Provider>
+      </GlobalStoreProvider>
+    </Theme>
   )
 }
 

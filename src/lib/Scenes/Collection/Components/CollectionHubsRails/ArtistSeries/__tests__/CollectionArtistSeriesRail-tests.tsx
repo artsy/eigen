@@ -21,7 +21,6 @@ import {
   CollectionArtistSeriesRail,
   CollectionArtistSeriesRailContainer,
 } from "lib/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Sans, Theme } from "palette"
 import { useTracking } from "react-tracking"
@@ -124,11 +123,9 @@ describe("Artist Series Rail", () => {
 
     it("renders the Trending Artists Series rail component", () => {
       const wrapper = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <CollectionArtistSeriesRail {...props} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <CollectionArtistSeriesRail {...props} />
+        </Theme>
       )
 
       expect(wrapper.find(GenericArtistSeriesRail)).toHaveLength(1)
@@ -136,11 +133,9 @@ describe("Artist Series Rail", () => {
 
     it("renders three artist series in the Trending Artists Series", () => {
       const wrapper = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <CollectionArtistSeriesRail {...props} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <CollectionArtistSeriesRail {...props} />
+        </Theme>
       )
 
       expect(wrapper.find(ArtworkImageContainer)).toHaveLength(3)
@@ -148,11 +143,9 @@ describe("Artist Series Rail", () => {
 
     it("renders three images of the correct size in an artist series", () => {
       const wrapper = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <CollectionArtistSeriesRail {...props} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <CollectionArtistSeriesRail {...props} />
+        </Theme>
       )
 
       expect(wrapper.find(ImageView).at(0).props().imageURL).toBe(
@@ -182,11 +175,9 @@ describe("Artist Series Rail", () => {
 
     it("renders the collection hub rail title", () => {
       const wrapper = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <CollectionArtistSeriesRail {...props} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <CollectionArtistSeriesRail {...props} />
+        </Theme>
       )
 
       expect(wrapper.find(Sans).text()).toBe("Trending Artist Series")
@@ -194,11 +185,9 @@ describe("Artist Series Rail", () => {
 
     it("renders each artist series' title", () => {
       const wrapper = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <CollectionArtistSeriesRail {...props} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <CollectionArtistSeriesRail {...props} />
+        </Theme>
       )
 
       expect(wrapper.find(GenericArtistSeriesTitle).at(0).text()).toBe("Cindy Sherman: Untitled Film Stills")
@@ -210,11 +199,9 @@ describe("Artist Series Rail", () => {
 
     it("renders each artist series' metadata", () => {
       const wrapper = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <CollectionArtistSeriesRail {...props} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <CollectionArtistSeriesRail {...props} />
+        </Theme>
       )
 
       expect(wrapper.find(GenericArtistSeriesMeta).at(0).text()).toBe("From $20,000")
@@ -226,11 +213,9 @@ describe("Artist Series Rail", () => {
 
     it("navigates to a new collection when a series is tapped", () => {
       const wrapper = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <CollectionArtistSeriesRail {...props} />
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <CollectionArtistSeriesRail {...props} />
+        </Theme>
       )
 
       wrapper.find(CardRailCard).at(0).props().onPress()

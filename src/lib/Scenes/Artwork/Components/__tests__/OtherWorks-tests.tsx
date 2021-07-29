@@ -1,12 +1,11 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount, shallow } from "enzyme"
-import { Sans, Theme } from "palette"
+import { Sans } from "palette"
 import React from "react"
 import { Header } from "../OtherWorks/Header"
 import { OtherWorksFragmentContainer as OtherWorks } from "../OtherWorks/OtherWorks"
 
 import { navigate } from "lib/navigation/navigate"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { TouchableWithoutFeedback } from "react-native"
 
 describe("OtherWorks", () => {
@@ -15,27 +14,15 @@ describe("OtherWorks", () => {
       contextGrids: null,
       " $fragmentRefs": null,
     }
-    const component = shallow(
-      <GlobalStoreProvider>
-        <Theme>
-          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-          <OtherWorks artwork={noGridsArtworkProps} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    const component = shallow(<OtherWorks artwork={noGridsArtworkProps} />)
     expect(component.find(Header).length).toEqual(0)
   })
 
   it("renders no grids if an empty array is provided", () => {
     const noGridsArtworkProps = { contextGrids: [], " $fragmentRefs": null }
-    const component = shallow(
-      <GlobalStoreProvider>
-        <Theme>
-          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-          <OtherWorks artwork={noGridsArtworkProps} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    const component = shallow(<OtherWorks artwork={noGridsArtworkProps} />)
     expect(component.find(Header).length).toEqual(0)
   })
 
@@ -59,14 +46,8 @@ describe("OtherWorks", () => {
       ],
       " $fragmentRefs": null,
     }
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-          <OtherWorks artwork={oneGridArtworkProps} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    const component = mount(<OtherWorks artwork={oneGridArtworkProps} />)
     expect(component.find(Header).length).toEqual(1)
     expect(component.find(Sans).first().text()).toEqual("Other works by Andy Warhol")
     component.find(TouchableWithoutFeedback).props().onPress()
@@ -91,14 +72,8 @@ describe("OtherWorks", () => {
       ],
       " $fragmentRefs": null,
     }
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-          <OtherWorks artwork={oneGridArtworkProps} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    const component = mount(<OtherWorks artwork={oneGridArtworkProps} />)
     expect(component.find(Header).length).toEqual(2)
     expect(component.find(Sans).first().text()).toEqual("Other works by Andy Warhol")
     expect(component.find(Sans).last().text()).toEqual("View all works from Gagosian Gallery")
@@ -134,14 +109,8 @@ describe("OtherWorks", () => {
       ],
       " $fragmentRefs": null,
     }
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-          <OtherWorks artwork={oneGridArtworkProps} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    const component = mount(<OtherWorks artwork={oneGridArtworkProps} />)
     expect(component.find(Header).length).toEqual(1)
     expect(component.find(Sans).first().text()).toEqual("Other works by Andy Warhol")
   })

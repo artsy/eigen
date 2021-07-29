@@ -1,7 +1,6 @@
 import { ArtistCollectionsRailTestsQueryRawResponse } from "__generated__/ArtistCollectionsRailTestsQuery.graphql"
 import { GenericArtistSeriesRail } from "lib/Components/GenericArtistSeriesRail"
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { Theme } from "palette"
 import React from "react"
@@ -18,11 +17,9 @@ describe("Artist Series Rail", () => {
     return renderRelayTree({
       Component: (props: any) => {
         return (
-          <GlobalStoreProvider>
-            <Theme>
-              <ArtistCollectionsRailFragmentContainer collections={props.marketingCollections} {...props} />
-            </Theme>
-          </GlobalStoreProvider>
+          <Theme>
+            <ArtistCollectionsRailFragmentContainer collections={props.marketingCollections} {...props} />
+          </Theme>
         )
       },
       query: graphql`

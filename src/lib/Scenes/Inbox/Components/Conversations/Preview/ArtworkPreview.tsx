@@ -5,20 +5,19 @@ import styled from "styled-components/native"
 import { ArtworkPreview_artwork } from "__generated__/ArtworkPreview_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Colors } from "lib/data/colors"
-import { Flex, Text, Touchable } from "palette"
+import { color, Flex, Text, Touchable } from "palette"
 
-import { themeGet } from "@styled-system/theme-get"
 import { Schema, Track, track as _track } from "lib/utils/track"
 
 const Container = styled.View`
-  background-color: ${themeGet("colors.black100")};
+  background-color: ${color("black100")};
   border-radius: 15;
   overflow: hidden;
   margin-bottom: 5;
 `
 
 const ImageContainer = styled(Flex)`
-  background-color: ${themeGet("colors.black10")};
+  background-color: ${color("black10")};
   padding: 10px;
   flex: 1;
 `

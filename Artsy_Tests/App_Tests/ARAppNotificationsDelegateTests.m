@@ -1,10 +1,10 @@
 #import "ARAppNotificationsDelegate.h"
+#import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "ARNotificationView.h"
 #import "ARSerifNavigationViewController.h"
 #import "UIApplicationStateEnum.h"
 #import <Emission/AREmission.h>
-#import <Analytics/SEGAnalytics.h>
 
 static NSDictionary *
 DictionaryWithAppState(NSDictionary *input, UIApplicationState appState)
@@ -29,33 +29,27 @@ describe(@"receiveRemoteNotification", ^{
     __block UIApplication *app = nil;
     __block ARAppNotificationsDelegate *delegate = nil;
     __block UIApplicationState appState = -1;
-    __block id mockEmissionSharedInstance = nil;
-    __block id mockSegmentSharedInstance = nil;
+    __block id mockAnalytics = nil;
 
     beforeEach(^{
         app = [UIApplication sharedApplication];
         delegate = [[ARAppNotificationsDelegate alloc] init];
 
-        mockEmissionSharedInstance = [OCMockObject partialMockForObject:AREmission.sharedInstance];;
-
-        // Setup a segment shared instance otherwise the tests will crash
-        SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"GARBAGE"];
-        [SEGAnalytics setupWithConfiguration:configuration];
+        mockAnalytics = [OCMockObject mockForClass:[ARAnalytics class]];
     });
 
     afterEach(^{
-        [mockEmissionSharedInstance stopMocking];
-        [mockSegmentSharedInstance stopMocking];
+        [mockAnalytics stopMocking];
     });
 
     sharedExamplesFor(@"when receiving a notification", ^(id _) {
         it(@"triggers an analytics event for receiving a notification", ^{
-            [[mockEmissionSharedInstance expect] sendEvent:ARAnalyticsNotificationReceived traits:DictionaryWithAppState(notification, appState)];
-            [[mockEmissionSharedInstance reject] sendEvent:ARAnalyticsNotificationTapped traits:OCMOCK_ANY];
+            [[mockAnalytics expect] event:ARAnalyticsNotificationReceived withProperties:DictionaryWithAppState(notification, appState)];
+            [[mockAnalytics reject] event:ARAnalyticsNotificationTapped withProperties:OCMOCK_ANY];
 
             [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
-            [mockEmissionSharedInstance verify];
+            [mockAnalytics verify];
         });
     });
 
@@ -74,19 +68,21 @@ describe(@"receiveRemoteNotification", ^{
 
         describe(@"with stubbed top menu VC", ^{
             it(@"navigates to the url provided", ^{
-                [[mockEmissionSharedInstance expect] navigate:@"http://artsy.net/works-for-you" withProps: @{}];
+                id mock = [OCMockObject partialMockForObject:AREmission.sharedInstance];
+                [[mock expect] navigate:@"http://artsy.net/works-for-you" withProps: @{}];
                 [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
-                [mockEmissionSharedInstance verify];
+                [mock verify];
+                [mock stopMocking];
             });
 
             it(@"triggers an analytics event when a notification has been tapped", ^{
-                [[mockEmissionSharedInstance reject] sendEvent:ARAnalyticsNotificationReceived traits:OCMOCK_ANY];
-                [[mockEmissionSharedInstance expect] sendEvent:ARAnalyticsNotificationTapped traits:DictionaryWithAppState(notification, appState)];
+                [[mockAnalytics reject] event:ARAnalyticsNotificationReceived withProperties:OCMOCK_ANY];
+                [[mockAnalytics expect] event:ARAnalyticsNotificationTapped withProperties:DictionaryWithAppState(notification, appState)];
 
                 [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
-                [mockEmissionSharedInstance verify];
+                [mockAnalytics verify];
             });
 
             it(@"does not display the message in aps/alert", ^{
@@ -126,12 +122,12 @@ describe(@"receiveRemoteNotification", ^{
                                                     return YES;
                                                  }]];
 
-            [[mockEmissionSharedInstance stub] sendEvent:ARAnalyticsNotificationReceived traits:OCMOCK_ANY];
-            [[mockEmissionSharedInstance expect] sendEvent:ARAnalyticsNotificationTapped traits:DictionaryWithAppState(notification, appState)];
+            [[mockAnalytics stub] event:ARAnalyticsNotificationReceived withProperties:OCMOCK_ANY];
+            [[mockAnalytics expect] event:ARAnalyticsNotificationTapped withProperties:DictionaryWithAppState(notification, appState)];
 
             [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
-            [mockEmissionSharedInstance verify];
+            [mockAnalytics verify];
             [mockNotificationView stopMocking];
         });
 

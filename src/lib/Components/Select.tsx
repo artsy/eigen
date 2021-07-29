@@ -1,6 +1,6 @@
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import { Autocomplete } from "lib/utils/Autocomplete"
-import { CheckIcon, CloseIcon, Flex, Sans, Separator, Spacer, Touchable, useColor } from "palette"
+import { CheckIcon, CloseIcon, color, Flex, Sans, Separator, Spacer, Touchable } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
 import { FancyModal } from "./FancyModal/FancyModal"
@@ -111,7 +111,6 @@ const SelectButton: React.FC<{
   hasError?: boolean
   onPress(): void
 }> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle, hasError }) => {
-  const color = useColor()
   return (
     <Flex>
       {showTitleLabel ? <InputTitle>{title}</InputTitle> : null}
@@ -161,8 +160,6 @@ const SelectModal: React.FC<{
   renderItemLabel?(value: SelectOption<unknown>): JSX.Element
   onModalFinishedClosing?(): void
 }> = (props) => {
-  const color = useColor()
-
   // we need to be able to have a local version of the value state so we can show the updated
   // state between the moment the user taps a selection and the moment we automatically
   // close the modal. We don't want to tell the consuming component about the user's selection until the

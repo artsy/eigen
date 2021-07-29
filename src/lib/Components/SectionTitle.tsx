@@ -1,4 +1,4 @@
-import { ArrowRightIcon, Flex, Text, useSpace } from "palette"
+import { ArrowRightIcon, Flex, space, Text } from "palette"
 import React from "react"
 import { TouchableOpacity, View } from "react-native"
 
@@ -20,7 +20,6 @@ export const SectionTitle: React.FC<{
   onPress?: () => any
   RightButtonContent?: React.ComponentType<any> | null
 }> = ({ title, subtitle, onPress, RightButtonContent }) => {
-  const space = useSpace()
   return (
     <Wrapper onPress={onPress}>
       <Flex mb="1" flexDirection="row" alignItems="center">

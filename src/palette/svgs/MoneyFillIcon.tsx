@@ -1,9 +1,9 @@
-import { useColor } from "palette/hooks"
+import { color } from "palette"
 import React from "react"
 import { Icon, IconProps, Path } from "./Icon"
 
-export const MoneyFillIcon: React.FC<IconProps> = ({ ...props }) => {
-  const color = useColor()
+/** MoneyFillIcon */
+export const MoneyFillIcon: React.SFC<IconProps> = ({ ...props }) => {
   return (
     <Icon {...props} viewBox="0 0 19 19">
       <Path

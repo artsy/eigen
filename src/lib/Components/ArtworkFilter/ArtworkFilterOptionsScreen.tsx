@@ -1,5 +1,4 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { themeGet } from "@styled-system/theme-get"
 import {
   FilterDisplayName,
   filterKeyFromAggregation,
@@ -11,7 +10,7 @@ import { TouchableRow } from "lib/Components/TouchableRow"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
-import { ArrowRightIcon, CloseIcon, FilterIcon, Flex, Sans, Separator, Text, useSpace } from "palette"
+import { ArrowRightIcon, CloseIcon, color, FilterIcon, Flex, Sans, Separator, space, Text } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
@@ -64,7 +63,6 @@ export enum FilterModalMode {
 export const ArtworkFilterOptionsScreen: React.FC<
   StackScreenProps<ArtworkFilterNavigationStack, "FilterOptionsScreen">
 > = ({ navigation, route }) => {
-  const space = useSpace()
   const tracking = useTracking()
   const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
@@ -295,7 +293,7 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
 }
 
 export const FilterArtworkButton = styled(Flex)`
-  background-color: ${themeGet("colors.black100")};
+  background-color: ${color("black100")};
   align-items: center;
   justify-content: center;
   flex-direction: row;
@@ -372,11 +370,11 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
 }
 
 export const CloseIconContainer = styled(TouchableOpacity)`
-  padding: ${themeGet("space.2")}px;
+  padding: ${space(2)}px;
 `
 
 export const ClearAllButton = styled(TouchableOpacity)`
-  padding: ${themeGet("space.2")}px;
+  padding: ${space(2)}px;
 `
 
 export const OptionListItem = styled(Flex)`

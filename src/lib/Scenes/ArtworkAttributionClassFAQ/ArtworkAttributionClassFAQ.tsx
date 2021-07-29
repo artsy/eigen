@@ -70,7 +70,7 @@ export const ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY = graphql`
   }
 `
 
-export const ArtworkAttributionClassFAQQueryRenderer: React.FC = (props) => {
+export const ArtworkAttributionClassFAQQueryRenderer: React.SFC = (props) => {
   return (
     <QueryRenderer<ArtworkAttributionClassFAQQuery>
       environment={defaultEnvironment}

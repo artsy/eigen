@@ -1,8 +1,8 @@
-import { themeGet } from "@styled-system/theme-get"
 import React, { FunctionComponent, ImgHTMLAttributes } from "react"
 import { Image } from "react-native"
-import styled from "styled-components/native"
 import { borderRadius } from "styled-system"
+import { styledWrapper } from "../../platform/primitives"
+import { color } from "../../Theme"
 import { Flex } from "../Flex"
 import { Text, TextFontSize } from "../Text"
 
@@ -92,8 +92,8 @@ export const BaseAvatar = ({ src, initials, size = "md", renderAvatar }: BaseAva
 }
 
 /** InitialsHolder */
-export const InitialsHolder = styled(Flex)`
-  background-color: ${themeGet("colors.black10")};
+export const InitialsHolder = styledWrapper(Flex)`
+  background-color: ${color("black10")};
   text-align: center;
   overflow: hidden;
   ${borderRadius}
