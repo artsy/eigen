@@ -46,6 +46,10 @@ jest.mock("lib/utils/track/providers", () => ({
   postEventToProviders: jest.fn(),
 }))
 
+jest.mock("lib/relay/createEnvironment", () => ({
+  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
+}))
+
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
   paymentRequestWithCardForm: jest.fn(),

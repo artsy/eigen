@@ -8,10 +8,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { UserProfileQueryRenderer } from "../LoggedInUserInfo"
 
-jest.mock("lib/relay/createEnvironment", () => ({
-  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-}))
-
 jest.unmock("react-relay")
 const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironment>
 
