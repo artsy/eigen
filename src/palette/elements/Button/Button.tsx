@@ -1,6 +1,6 @@
 import { useColor } from "palette/hooks"
 import React, { ReactNode, useState } from "react"
-import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
+import { GestureResponderEvent, TouchableWithoutFeedback, ViewStyle } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
@@ -85,6 +85,7 @@ const PureButton: React.FC<ButtonProps> = ({
   inline,
   loading,
   longestText,
+  onPress,
   size = defaultSize,
   style,
   variant = defaultVariant,
@@ -115,9 +116,12 @@ const PureButton: React.FC<ButtonProps> = ({
 
   const spinnerColor = variant === "text" ? "blue100" : "white100"
 
-  const onPress = (event: GestureResponderEvent) => {
-    debugger
+  const handlePress = (event: GestureResponderEvent) => {
     if (onPress === undefined) {
+      return
+    }
+
+    if (loading || disabled) {
       return
     }
 
@@ -150,53 +154,48 @@ const PureButton: React.FC<ButtonProps> = ({
 
   return (
     <Spring native from={from} to={to}>
-      {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        (springProps) => (
-          <TouchableWithoutFeedback
-            onPress={onPress}
-            onPressIn={() => {
-              setPrevious(DisplayState.Enabled)
-              setCurrent(DisplayState.Highlighted)
-            }}
-            onPressOut={() => {
-              setPrevious(DisplayState.Highlighted)
-              setCurrent(DisplayState.Enabled)
-            }}
-            disabled={disabled}
-          >
-            <Flex flexDirection="row">
-              <AnimatedContainer
-                {...rest}
-                loading={loading}
-                disabled={disabled}
-                style={{ ...springProps, ...loadingStyles, height: containerSize.height }}
-                px={containerSize.px}
-              >
-                <VisibleTextContainer>
-                  {iconPosition === "left" && iconBox}
-                  <Text
-                    color={loading ? "transparent" : to.textColor}
-                    variant={size === "small" ? "small" : "mediumText"}
-                    style={{ textDecorationLine: current === "hover" ? "underline" : "none" }}
-                  >
-                    {children}
-                  </Text>
-                  {iconPosition === "right" && iconBox}
-                </VisibleTextContainer>
-                <HiddenContainer>
-                  {icon}
-                  <Text variant={size === "small" ? "small" : "mediumText"}>
-                    {longestText ? longestText : children}
-                  </Text>
-                </HiddenContainer>
+      {(springProps: ViewStyle) => (
+        <TouchableWithoutFeedback
+          onPress={handlePress}
+          onPressIn={() => {
+            setPrevious(DisplayState.Enabled)
+            setCurrent(DisplayState.Highlighted)
+          }}
+          onPressOut={() => {
+            setPrevious(DisplayState.Highlighted)
+            setCurrent(DisplayState.Enabled)
+          }}
+          disabled={disabled}
+        >
+          <Flex flexDirection="row">
+            <AnimatedContainer
+              {...rest}
+              loading={loading}
+              disabled={disabled}
+              style={{ ...springProps, ...loadingStyles, height: containerSize.height }}
+              px={containerSize.px}
+            >
+              <VisibleTextContainer>
+                {iconPosition === "left" && iconBox}
+                <Text
+                  color={loading ? "transparent" : to.textColor}
+                  variant={size === "small" ? "small" : "mediumText"}
+                  style={{ textDecorationLine: current === "hover" ? "underline" : "none" }}
+                >
+                  {children}
+                </Text>
+                {iconPosition === "right" && iconBox}
+              </VisibleTextContainer>
+              <HiddenContainer>
+                {icon}
+                <Text variant={size === "small" ? "small" : "mediumText"}>{longestText ? longestText : children}</Text>
+              </HiddenContainer>
 
-                {!!loading && <Spinner size={size} color={spinnerColor} />}
-              </AnimatedContainer>
-            </Flex>
-          </TouchableWithoutFeedback>
-        )
-      }
+              {!!loading && <Spinner size={size} color={spinnerColor} />}
+            </AnimatedContainer>
+          </Flex>
+        </TouchableWithoutFeedback>
+      )}
     </Spring>
   )
 }
