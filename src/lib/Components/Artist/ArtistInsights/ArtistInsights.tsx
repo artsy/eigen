@@ -4,7 +4,6 @@ import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } 
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { useOnTabFocusedEffect } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
-import { SCROLL_UP_TO_SHOW_THRESHOLD } from "lib/utils/hideBackButtonOnScroll"
 import { Schema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import React, { useCallback, useRef, useState } from "react"
@@ -12,7 +11,6 @@ import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-n
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ReactElement } from "simple-markdown"
-import { ARTIST_HEADER_HEIGHT } from "../ArtistHeader"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 import { MarketStatsQueryRenderer } from "./MarketStats"
 
@@ -44,7 +42,6 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
   const auctionResultsYCoordinate = useRef<number>(0)
-  const contentYScrollOffset = useRef<number>(0)
 
   const openFilterModal = () => {
     tracking.trackEvent(tracks.openFilter(artist.internalID, artist.slug))
@@ -57,19 +54,11 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
   }
 
   const scrollToTop = useCallback(() => {
-    let auctionResultYOffset = auctionResultsYCoordinate.current
-
-    // if we scroll up less than SCROLL_UP_TO_SHOW_THRESHOLD the header won't expand and we need another offset
-    if (contentYScrollOffset.current - 2 * auctionResultYOffset <= SCROLL_UP_TO_SHOW_THRESHOLD) {
-      auctionResultYOffset += ARTIST_HEADER_HEIGHT
-    }
-    flatListRef.current?.getNode().scrollToOffset({ animated: true, offset: auctionResultYOffset })
-  }, [auctionResultsYCoordinate, contentYScrollOffset])
+    flatListRef.current?.getNode().scrollToOffset({ animated: true, offset: auctionResultsYCoordinate.current })
+  }, [auctionResultsYCoordinate])
 
   // Show or hide floating filter button depending on the scroll position
   const onScrollEndDrag = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    contentYScrollOffset.current = event.nativeEvent.contentOffset.y
-
     if (event.nativeEvent.contentOffset.y > FILTER_BUTTON_OFFSET) {
       setIsFilterButtonVisible(true)
       return

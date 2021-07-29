@@ -1,4 +1,4 @@
-import styled from "styled-components/native"
+import { styledWrapper } from "../../platform/primitives"
 import { Box, BoxProps } from "../Box"
 
 /**
@@ -9,7 +9,7 @@ export type FlexProps = BoxProps
 /**
  * Flex is Box with display: flex
  */
-export const Flex = styled(Box)<FlexProps>``
+export const Flex = styledWrapper(Box)<FlexProps>``
 
 Flex.defaultProps = {
   display: "flex",

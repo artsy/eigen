@@ -53,7 +53,7 @@ export const SaleArtworksHomeRail: React.FC<Props> = ({ me, relay, onShow, onHid
     <Flex>
       <Flex mx={2}>
         <SectionTitle
-          title="Auction Lots for You Ending Soon"
+          title="Auction lots for you ending soon"
           onPress={() => navigate("/lots-by-artists-you-follow")}
         />
       </Flex>

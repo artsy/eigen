@@ -10,7 +10,7 @@ import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "li
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { get, isEqual, uniq } from "lodash"
-import { Box, ClassTheme, Flex, Sans, Theme } from "palette"
+import { Box, color, Flex, Sans, Theme } from "palette"
 import React from "react"
 import { Animated, Dimensions, Easing, Image, View } from "react-native"
 import Config from "react-native-config"
@@ -376,22 +376,18 @@ export class GlobalMap extends React.Component<Props, State> {
         clusterLat &&
         clusterLng &&
         pointCount && (
-          <ClassTheme>
-            {({ color }) => (
-              <MapboxGL.PointAnnotation
-                key={clusterId}
-                id={clusterId}
-                selected={true}
-                coordinate={[clusterLat, clusterLng]}
-              >
-                <SelectedCluster width={radius} height={radius}>
-                  <Sans size="3" weight="medium" color={color("white100")}>
-                    {pointCount}
-                  </Sans>
-                </SelectedCluster>
-              </MapboxGL.PointAnnotation>
-            )}
-          </ClassTheme>
+          <MapboxGL.PointAnnotation
+            key={clusterId}
+            id={clusterId}
+            selected={true}
+            coordinate={[clusterLat, clusterLng]}
+          >
+            <SelectedCluster width={radius} height={radius}>
+              <Sans size="3" weight="medium" color={color("white100")}>
+                {pointCount}
+              </Sans>
+            </SelectedCluster>
+          </MapboxGL.PointAnnotation>
         )
       )
     }

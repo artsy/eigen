@@ -1,6 +1,5 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { ArtworkHistory } from "../ArtworkHistory"
@@ -19,16 +18,14 @@ describe("Artwork History", () => {
     }
 
     const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <div>
-            <ArtworkHistory
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              artwork={artworkHistoryInfo.artwork}
-            />
-          </div>
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <div>
+          <ArtworkHistory
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            artwork={artworkHistoryInfo.artwork}
+          />
+        </div>
+      </Theme>
     )
 
     expect(component.text()).toContain("Provenance")
@@ -47,16 +44,14 @@ describe("Artwork History", () => {
     }
 
     const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <div>
-            <ArtworkHistory
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              artwork={artworkHistoryInfo.artwork}
-            />
-          </div>
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <div>
+          <ArtworkHistory
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            artwork={artworkHistoryInfo.artwork}
+          />
+        </div>
+      </Theme>
     )
     expect(component.text()).toContain("Provenance")
     expect(component.text()).not.toContain("Exhibition History")
@@ -74,16 +69,14 @@ describe("Artwork History", () => {
     }
 
     const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <div>
-            <ArtworkHistory
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              artwork={artworkHistoryInfo.artwork}
-            />
-          </div>
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <div>
+          <ArtworkHistory
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            artwork={artworkHistoryInfo.artwork}
+          />
+        </div>
+      </Theme>
     )
     expect(component.text()).not.toContain("Provenance")
     expect(component.text()).not.toContain("Exhibition History")

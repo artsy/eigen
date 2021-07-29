@@ -6,7 +6,7 @@ import { OnboardingPersonalizationModal_artists } from "__generated__/Onboarding
 import { followArtistMutation } from "lib/Components/ArtistListItem"
 import { navigate } from "lib/navigation/navigate"
 import { Schema, track } from "lib/utils/track"
-import { Button, ClassTheme, EntityHeader, Flex, Touchable } from "palette"
+import { Button, color, EntityHeader, Flex, Touchable } from "palette"
 import React from "react"
 import { StyleProp, TouchableWithoutFeedback, ViewStyle } from "react-native"
 import { RelayPaginationProp } from "react-relay"
@@ -125,43 +125,40 @@ export class OnboardingPersonalizationArtistListItem extends React.Component<Pro
     }
 
     return (
-      <ClassTheme>
-        {({ color }) => (
-          <TouchableComponent
-            onPress={() => {
-              if (href && !disableNavigation) {
-                this.handleTap(href)
-              }
-            }}
-            underlayColor={color("black5")}
-            style={containerStyle}
-          >
-            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-              <Flex flex={1}>
-                <EntityHeader
-                  mr={1}
-                  name={name}
-                  meta={formatTombstoneText(nationality!, birthday!, deathday!) ?? undefined}
-                  imageUrl={imageURl ?? undefined}
-                  initials={initials ?? undefined}
-                />
-              </Flex>
-              <Flex>
-                <Button
-                  variant={is_followed ? "secondaryOutline" : "secondaryGray"}
-                  onPress={this.handleFollowArtist.bind(this)}
-                  size="small"
-                  loading={isFollowedChanging}
-                  longestText="Following"
-                  haptic
-                >
-                  {is_followed ? "Following" : "Follow"}
-                </Button>
-              </Flex>
-            </Flex>
-          </TouchableComponent>
-        )}
-      </ClassTheme>
+      <TouchableComponent
+        onPress={() => {
+          if (href && !disableNavigation) {
+            this.handleTap(href)
+          }
+        }}
+        underlayColor={color("black5")}
+        style={containerStyle}
+        useDefaultTouchable
+      >
+        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Flex flex={1}>
+            <EntityHeader
+              mr={1}
+              name={name}
+              meta={formatTombstoneText(nationality!, birthday!, deathday!) ?? undefined}
+              imageUrl={imageURl ?? undefined}
+              initials={initials ?? undefined}
+            />
+          </Flex>
+          <Flex>
+            <Button
+              variant={is_followed ? "secondaryOutline" : "secondaryGray"}
+              onPress={this.handleFollowArtist.bind(this)}
+              size="small"
+              loading={isFollowedChanging}
+              longestText="Following"
+              haptic
+            >
+              {is_followed ? "Following" : "Follow"}
+            </Button>
+          </Flex>
+        </Flex>
+      </TouchableComponent>
     )
   }
 }

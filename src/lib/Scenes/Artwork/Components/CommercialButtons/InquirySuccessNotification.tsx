@@ -1,7 +1,6 @@
-import { themeGet } from "@styled-system/theme-get"
 import { navigate } from "lib/navigation/navigate"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Text, Theme } from "palette"
+import { color, Flex, Text, Theme } from "palette"
 import React, { useEffect } from "react"
 import { Animated, Modal, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
@@ -80,6 +79,6 @@ const SuccessfulInquirySentContainer = styled(Flex)`
   height: 65px;
   margin: 10px;
   flex-direction: column;
-  background-color: ${themeGet("colors.white100")};
+  background-color: ${color("white100")};
   padding: 0.5px;
 `

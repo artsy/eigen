@@ -128,10 +128,10 @@ class RefinementAnalyticsOption: NSObject {
     }
 
     func sendAsEvent() {
-        AREmission.sharedInstance().sendEvent(name, traits: properties)
+        ARAnalytics.event(name, withProperties: properties)
     }
 
     func sendAsPageView() {
-        AREmission.sharedInstance().sendScreenEvent(name, traits: properties)
+        ARAnalytics.pageView(name, withProperties: properties)
     }
 }

@@ -1,11 +1,11 @@
 import { OwnerType } from "@artsy/cohesion"
+import { color } from "@artsy/palette-tokens"
 import { addBreadcrumb } from "@sentry/react-native"
 import { dismissModal, goBack, navigate } from "lib/navigation/navigate"
 import { matchRoute } from "lib/navigation/routes"
 import { getCurrentEmissionState, GlobalStore, useEnvironment, useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { useColor } from "palette/hooks"
 import { parse as parseQueryString } from "query-string"
 import React, { useEffect, useRef, useState } from "react"
 import { Platform, View } from "react-native"
@@ -176,12 +176,9 @@ export const ArtsyReactWebView = React.forwardRef<
 })
 
 const ProgressBar: React.FC<{ loadProgress: number | null }> = ({ loadProgress }) => {
-  const color = useColor()
-
   if (loadProgress === null) {
     return null
   }
-
   const progressPercent = Math.max(loadProgress * 100, 2)
   return (
     <View

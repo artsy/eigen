@@ -1,7 +1,6 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { Show } from "lib/Scenes/Map/types"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { RelayProp } from "react-relay"
@@ -27,11 +26,9 @@ const eventData = ({
 describe("CityEvent", () => {
   it("renders properly", () => {
     const comp = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <Event event={eventData} relay={{ environment: {} } as RelayProp} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <Event event={eventData} relay={{ environment: {} } as RelayProp} />
+      </Theme>
     )
 
     expect(comp.text()).toContain("Pacita Abad Art Estate")

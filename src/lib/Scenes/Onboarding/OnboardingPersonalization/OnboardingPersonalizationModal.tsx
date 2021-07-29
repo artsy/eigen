@@ -6,7 +6,7 @@ import { SearchInput } from "lib/Components/SearchInput"
 import { BackButton } from "lib/navigation/BackButton"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { isEqual } from "lodash"
-import { Flex, Spinner, Text, useSpace } from "palette"
+import { Flex, space, Spinner, Text } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -26,7 +26,6 @@ interface OnboardingPersonalizationListProps extends OnboardingPersonalizationMo
 }
 
 const OnboardingPersonalizationModal: React.FC<OnboardingPersonalizationListProps> = (props) => {
-  const space = useSpace()
   const [query, setQuery] = useState("")
   const flatListRef = useRef<FlatList<any>>(null)
   const [fetchingMoreData, setFetchingMoreData] = useState(false)

@@ -7,7 +7,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 
-#import <Emission/AREmission.h>
+#import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import <react-native-config/ReactNativeConfig.h>
 
@@ -29,7 +29,7 @@
 
         } else if (!error && !result.token) {
           NSString *description = error ? [error description] : @"token was nil";
-          [[AREmission sharedInstance] sendEvent:ARAnalyticsErrorFailedToGetFacebookCredentials traits:@{ @"error" : description }];
+          [ARAnalytics event:ARAnalyticsErrorFailedToGetFacebookCredentials withProperties:@{ @"error" : description }];
           ARErrorLog(@"Couldn't get Facebook credentials");
           failure(error);
 

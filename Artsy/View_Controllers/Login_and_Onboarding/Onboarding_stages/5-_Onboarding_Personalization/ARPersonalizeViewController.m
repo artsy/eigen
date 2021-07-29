@@ -24,7 +24,6 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AFNetworking/AFHTTPRequestOperation.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <Emission/AREmission.h>
 
 // maxim's sneaky last comment in Eigen (for a dummy commit). This can be removed when you find it ;).
 
@@ -102,19 +101,19 @@
 {
     [super viewDidAppear:animated];
     if (self.state == AROnboardingStagePersonalizeEmail) {
-        [[AREmission sharedInstance] sendScreenEvent:@"Onboarding enter your email" traits:@{}];
+        [ARAnalytics pageView:@"Onboarding enter your email"];
     } else if (self.state == AROnboardingStagePersonalizeLogin) {
-        [[AREmission sharedInstance] sendScreenEvent:@"Onboarding enter your password" traits:@{}];
+        [ARAnalytics pageView:@"Onboarding enter your password"];
     } else if (self.state == AROnboardingStagePersonalizePassword) {
-        [[AREmission sharedInstance] sendScreenEvent:@"Onboarding create a password" traits:@{}];
+        [ARAnalytics pageView:@"Onboarding create a password"];
     } else if (self.state == AROnboardingStagePersonalizeName) {
-        [[AREmission sharedInstance] sendScreenEvent:@"Onboarding enter your full name" traits:@{}];
+        [ARAnalytics pageView:@"Onboarding enter your full name"];
     } else if (self.state == AROnboardingStagePersonalizeArtists) {
-        [[AREmission sharedInstance] sendScreenEvent:@"Onboarding follow artists" traits:@{}];
+        [ARAnalytics pageView:@"Onboarding follow artists"];
     } else if (self.state == AROnboardingStagePersonalizeCategories) {
-        [[AREmission sharedInstance] sendScreenEvent:@"Onboarding follow categories" traits:@{}];
+        [ARAnalytics pageView:@"Onboarding follow categories"];
     } else if (self.state == AROnboardingStagePersonalizeBudget) {
-        [[AREmission sharedInstance] sendScreenEvent:@"Onboarding select budget" traits:@{}];
+        [ARAnalytics pageView:@"Onboarding select budget"];
     }
 }
 
@@ -643,7 +642,7 @@
 - (void)forgotPassword:(id)sender
 {
     if (self.state == AROnboardingStagePersonalizeEmail) {
-        [[AREmission sharedInstance] sendEvent:ARAnalyticsOnboardingForgotPassword traits:@{}];
+        [ARAnalytics event:ARAnalyticsOnboardingForgotPassword];
     }
     UIAlertController *forgotPasswordAlert = [UIAlertController alertControllerWithTitle:@"Forgot Password"
                                                                                  message:@"Please enter your email address and we’ll send you a reset link."
@@ -760,7 +759,7 @@
             };
         }
 
-        [[AREmission sharedInstance] sendEvent:ARAnalyticsOnboardingTappedSearch traits:context];
+        [ARAnalytics event:ARAnalyticsOnboardingTappedSearch withProperties:context];
     }
     [self.headerView searchStarted];
 }
@@ -831,7 +830,7 @@
             sourceScreen = @"onboarding recommended";
         }
 
-        [[AREmission sharedInstance] sendEvent:ARAnalyticsArtistFollow traits:@{
+        [ARAnalytics event:ARAnalyticsArtistFollow withProperties:@{
             @"artist_slug" : artist.artistID ?: @"",
             @"artist_id" : artist.artistID ?: @"",
             @"source_screen" : sourceScreen
@@ -880,7 +879,7 @@
         } else if (self.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeRelatedResults) {
             sourceScreen = @"onboarding recommended";
         }
-        [[AREmission sharedInstance] sendEvent:ARAnalyticsGeneFollow traits:@{
+        [ARAnalytics event:ARAnalyticsGeneFollow withProperties:@{
             @"gene_id" : category.geneID ?: @"",
             @"source_screen" : sourceScreen
         }];
@@ -990,7 +989,7 @@
 - (void)backTapped:(id)sender
 {
     if (self.state == AROnboardingStagePersonalizeEmail) {
-        [[AREmission sharedInstance] sendEvent:ARAnalyticsOnboardingAlreadyAccountBack traits:@{}];
+        [ARAnalytics event:ARAnalyticsOnboardingAlreadyAccountBack];
     }
     self.comingBack = YES;
     [self.delegate backTapped];
@@ -999,7 +998,7 @@
 - (void)facebookSignInTapped:(id)sender
 {
     if (self.state == AROnboardingStagePersonalizeEmail) {
-        [[AREmission sharedInstance] sendEvent:ARAnalyticsOnboardingConnectWithFacebook traits:@{}];
+        [ARAnalytics event:ARAnalyticsOnboardingConnectWithFacebook];
     }
     self.comingBack = YES;
     [self.delegate personalizeFacebookSignInTapped];
@@ -1008,7 +1007,7 @@
 - (void)appleSignInTapped:(id)sender
 {
     if (self.state == AROnboardingStagePersonalizeEmail) {
-        [[AREmission sharedInstance] sendEvent:ARAnalyticsOnboardingConnectWithApple traits:@{}];
+        [ARAnalytics event:ARAnalyticsOnboardingConnectWithApple];
     }
     self.comingBack = YES;
     [self.delegate personalizeAppleSignInTapped];

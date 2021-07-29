@@ -16,7 +16,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import { ActionNames, ActionTypes } from "lib/utils/track/schema"
-import { Flex, Sans, Separator, useColor } from "palette"
+import { color, Flex, Sans, Separator } from "palette"
 import { useTracking } from "react-tracking"
 
 interface Props {
@@ -31,7 +31,6 @@ type Item = NonNullable<NonNullable<NonNullable<Conversations_me["conversations"
 
 // @track()
 export const Conversations: React.FC<Props> = (props) => {
-  const color = useColor()
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isFetching, setIsFetching] = React.useState<boolean>(false)
   const { trackEvent } = useTracking()

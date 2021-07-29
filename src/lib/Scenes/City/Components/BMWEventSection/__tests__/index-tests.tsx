@@ -1,6 +1,5 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { RelayProp } from "react-relay"
@@ -23,23 +22,21 @@ const show = {
 describe("CityEvent", () => {
   it("renders properly", () => {
     const comp = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <BMWEventSection
-            title="BMW Art Guide"
-            sponsoredContent={{
-              introText: "Cras justo odio, dapibus ac facilisis in, egestas eget quam.",
-              artGuideUrl: "http://www.example.com",
-              shows: {
-                totalCount: 2,
-              },
-              featuredShows: [show as any],
-            }}
-            relay={{ environment: {} } as RelayProp}
-            citySlug={"new-york-us"}
-          />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <BMWEventSection
+          title="BMW Art Guide"
+          sponsoredContent={{
+            introText: "Cras justo odio, dapibus ac facilisis in, egestas eget quam.",
+            artGuideUrl: "http://www.example.com",
+            shows: {
+              totalCount: 2,
+            },
+            featuredShows: [show as any],
+          }}
+          relay={{ environment: {} } as RelayProp}
+          citySlug={"new-york-us"}
+        />
+      </Theme>
     )
 
     expect(comp.text()).toContain("BMW Art Guide")

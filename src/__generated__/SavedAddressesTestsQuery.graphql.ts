@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 236ca6785dec6683afd20e3dc47b6819 */
+/* @relayHash 4bd30d9d1cbd59daf65fbe033e8bf414 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,7 +28,7 @@ query SavedAddressesTestsQuery {
 
 fragment SavedAddresses_me on Me {
   name
-  addressConnection(first: 10) {
+  addressConnection(first: 3) {
     edges {
       node {
         id
@@ -37,12 +37,10 @@ fragment SavedAddresses_me on Me {
         addressLine1
         addressLine2
         addressLine3
-        country
         city
         region
         postalCode
         phoneNumber
-        isDefault
       }
     }
   }
@@ -112,7 +110,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "first",
-                "value": 10
+                "value": 3
               }
             ],
             "concreteType": "UserAddressConnection",
@@ -170,13 +168,6 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "country",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
                         "name": "city",
                         "storageKey": null
                       },
@@ -200,13 +191,6 @@ return {
                         "kind": "ScalarField",
                         "name": "phoneNumber",
                         "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "isDefault",
-                        "storageKey": null
                       }
                     ],
                     "storageKey": null
@@ -215,7 +199,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "addressConnection(first:10)"
+            "storageKey": "addressConnection(first:3)"
           },
           (v1/*: any*/)
         ],
@@ -224,7 +208,7 @@ return {
     ]
   },
   "params": {
-    "id": "236ca6785dec6683afd20e3dc47b6819",
+    "id": "4bd30d9d1cbd59daf65fbe033e8bf414",
     "metadata": {},
     "name": "SavedAddressesTestsQuery",
     "operationKind": "query",

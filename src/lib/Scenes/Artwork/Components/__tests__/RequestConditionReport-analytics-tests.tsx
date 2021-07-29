@@ -2,11 +2,10 @@ import { RequestConditionReport_artwork } from "__generated__/RequestConditionRe
 import { RequestConditionReport_me } from "__generated__/RequestConditionReport_me.graphql"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockTracking } from "lib/tests/mockTracking"
 import { postEventToProviders } from "lib/utils/track/providers"
-import { Button, Theme } from "palette"
+import { Button } from "palette"
 import React from "react"
 import { RequestConditionReport } from "../RequestConditionReport"
 
@@ -35,13 +34,7 @@ it("tracks request condition report tapped", () => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     <RequestConditionReport artwork={artwork} me={me} relay={null} />
   ))
-  const requestConditionReportComponent = mount(
-    <GlobalStoreProvider>
-      <Theme>
-        <RequestConditionReportTracking />
-      </Theme>
-    </GlobalStoreProvider>
-  )
+  const requestConditionReportComponent = mount(<RequestConditionReportTracking />)
 
   const requestReportButton = requestConditionReportComponent.find(Button).at(0)
   requestReportButton.props().onPress()
@@ -57,13 +50,7 @@ it("tracks request condition report success", async () => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     <RequestConditionReport artwork={artwork} me={me} relay={null} />
   ))
-  const trackingComponent = mount(
-    <GlobalStoreProvider>
-      <Theme>
-        <RequestConditionReportTracking />
-      </Theme>
-    </GlobalStoreProvider>
-  )
+  const trackingComponent = mount(<RequestConditionReportTracking />)
 
   const requestConditionReportComponent = trackingComponent.find("RequestConditionReport")
   requestConditionReportComponent.instance().requestConditionReport = jest
@@ -87,13 +74,7 @@ it("tracks request condition report failure", async () => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     <RequestConditionReport artwork={artwork} me={me} relay={null} />
   ))
-  const trackingComponent = mount(
-    <GlobalStoreProvider>
-      <Theme>
-        <RequestConditionReportTracking />
-      </Theme>
-    </GlobalStoreProvider>
-  )
+  const trackingComponent = mount(<RequestConditionReportTracking />)
 
   const requestConditionReportComponent = trackingComponent.find("RequestConditionReport")
   requestConditionReportComponent.instance().requestConditionReport = jest.fn().mockReturnValue(Promise.reject())

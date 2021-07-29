@@ -5,7 +5,6 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { isNull } from "lodash"
 import React from "react"
-import { Platform } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
@@ -24,8 +23,7 @@ export interface SearchCriteriaQueryRendererProps {
 export const SearchCriteriaQueryRenderer: React.FC<SearchCriteriaQueryRendererProps> = (props) => {
   const { render, searchCriteriaId, environment = defaultEnvironment } = props
   const { renderComponent, renderPlaceholder } = render
-  const enableSavedSearch =
-    Platform.OS === "ios" ? useFeatureFlag("AREnableSavedSearch") : useFeatureFlag("AREnableSavedSearchAndroid")
+  const enableSavedSearch = useFeatureFlag("AREnableSavedSearch")
 
   if (enableSavedSearch && searchCriteriaId) {
     return (

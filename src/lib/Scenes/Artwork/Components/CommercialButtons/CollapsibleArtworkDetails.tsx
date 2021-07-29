@@ -64,7 +64,7 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
               {artwork.title}, {artwork.date}
             </Text>
           </Flex>
-          <ChevronIcon color="black100" expanded={isExpanded} initialDirection="down" />
+          <ChevronIcon color="black" expanded={isExpanded} initialDirection="down" />
         </Flex>
       </TouchableOpacity>
       <Collapse open={isExpanded}>

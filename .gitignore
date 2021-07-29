@@ -138,5 +138,3 @@ android/app/src/main/assets/fonts
 # Firebase files
 android/app/google-services.json
 GoogleService-Info.plist
-
-storybook.json

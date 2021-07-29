@@ -1,9 +1,8 @@
-import { themeGet } from "@styled-system/theme-get"
 import { Composer_conversation } from "__generated__/Composer_conversation.graphql"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import colors from "lib/data/colors"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { Button, ClassTheme, Flex, themeProps } from "palette"
+import { Button, color, Flex, themeProps } from "palette"
 import React from "react"
 import { Keyboard, TextInput, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -19,7 +18,7 @@ const Container = styled.View`
   justify-content: space-between;
   align-items: flex-start;
   border-top-width: 1;
-  border-top-color: ${themeGet("colors.black10")};
+  border-top-color: ${color("black10")};
   padding: 10px;
   background-color: ${(p: ContainerProps) => (p.active ? "white" : colors["gray-light"])};
 `
@@ -74,50 +73,45 @@ export default class Composer extends React.Component<Props, State> {
   render() {
     const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
 
+    // The TextInput loses its isFocused() callback as a styled component
+    const inputStyles = {
+      flex: 1,
+      fontSize: 13,
+      paddingLeft: 10,
+      paddingTop: 13,
+      paddingBottom: 10,
+      paddingRight: 10,
+      borderColor: this.state.active ? color("purple100") : "transparent",
+      borderWidth: 1,
+      fontFamily: themeProps.fontFamily.sans.regular.normal,
+    }
+
     return (
-      <ClassTheme>
-        {({ color }) => {
-          // The TextInput loses its isFocused() callback as a styled component
-          const inputStyles = {
-            flex: 1,
-            fontSize: 13,
-            paddingLeft: 10,
-            paddingTop: 13,
-            paddingBottom: 10,
-            paddingRight: 10,
-            borderColor: this.state.active ? color("purple100") : "transparent",
-            borderWidth: 1,
-            fontFamily: themeProps.fontFamily.sans.regular.normal,
-          }
-          return (
-            <ArtsyKeyboardAvoidingView>
-              {this.props.children}
-              <Flex flexDirection="column">
-                <ConversationCTAFragmentContainer show={!this.state.active} conversation={this.props.conversation} />
-                <Container active={this.state.active}>
-                  <TextInput
-                    placeholder={"Type your message"}
-                    placeholderTextColor={colors["gray-semibold"]}
-                    keyboardAppearance={"dark"}
-                    onEndEditing={() => this.setState({ active: false })}
-                    onFocus={() => this.setState({ active: this.input.isFocused() })}
-                    onChangeText={(text) => this.setState({ text })}
-                    ref={(input) => (this.input = input)}
-                    style={inputStyles}
-                    multiline={true}
-                    value={this.state.text || undefined}
-                  />
-                  <TouchableWithoutFeedback disabled={disableSendButton} onPress={this.submitText.bind(this)}>
-                    <Button ml={1} disabled={!!disableSendButton}>
-                      Send
-                    </Button>
-                  </TouchableWithoutFeedback>
-                </Container>
-              </Flex>
-            </ArtsyKeyboardAvoidingView>
-          )
-        }}
-      </ClassTheme>
+      <ArtsyKeyboardAvoidingView>
+        {this.props.children}
+        <Flex flexDirection="column">
+          <ConversationCTAFragmentContainer show={!this.state.active} conversation={this.props.conversation} />
+          <Container active={this.state.active}>
+            <TextInput
+              placeholder={"Type your message"}
+              placeholderTextColor={colors["gray-semibold"]}
+              keyboardAppearance={"dark"}
+              onEndEditing={() => this.setState({ active: false })}
+              onFocus={() => this.setState({ active: this.input.isFocused() })}
+              onChangeText={(text) => this.setState({ text })}
+              ref={(input) => (this.input = input)}
+              style={inputStyles}
+              multiline={true}
+              value={this.state.text || undefined}
+            />
+            <TouchableWithoutFeedback disabled={disableSendButton} onPress={this.submitText.bind(this)}>
+              <Button ml={1} disabled={!!disableSendButton}>
+                Send
+              </Button>
+            </TouchableWithoutFeedback>
+          </Container>
+        </Flex>
+      </ArtsyKeyboardAvoidingView>
     )
   }
 }

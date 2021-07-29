@@ -3,7 +3,7 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { compact } from "lodash"
-import { BoxProps, ClassTheme, Flex, Spacer, Text } from "palette"
+import { BoxProps, color, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { View } from "react-native"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -20,6 +20,11 @@ const AttachmentContainer = styled(View)`
   border-radius: 15px;
   padding: 10px;
 `
+
+const linkStyle = {
+  color: color("purple100"),
+  textDecorationLine: "underline",
+}
 
 interface Props extends Omit<BoxProps, "color"> {
   message: Message_message
@@ -90,39 +95,25 @@ export class Message extends React.Component<Props> {
   render() {
     const { message, showTimeSince } = this.props
     const { isFromUser, body } = message
+    const backgroundColor = color(isFromUser ? "black100" : "black10")
     const textColor = isFromUser ? "white100" : "black100"
     const alignSelf = isFromUser ? "flex-end" : undefined
     const alignAttachments = isFromUser ? "flex-end" : "flex-start"
     return (
-      <ClassTheme>
-        {({ color }) => {
-          const backgroundColor = color(isFromUser ? "black100" : "black10")
-          const linkStyle = {
-            color: color("purple100"),
-            textDecorationLine: "underline",
-          }
-          return (
-            <>
-              <Flex maxWidth="66.67%" alignItems={alignAttachments} flexDirection="column" style={{ alignSelf }}>
-                <AttachmentContainer
-                  style={{
-                    backgroundColor: color(isFromUser ? "black100" : "black10"),
-                  }}
-                >
-                  <Hyperlink onPress={this.onLinkPress.bind(this)} linkStyle={linkStyle}>
-                    <Text variant="text" color={textColor}>
-                      {body}
-                    </Text>
-                  </Hyperlink>
-                </AttachmentContainer>
-                {!!message.attachments?.length && <Spacer mb={0.5} />}
-                {this.renderAttachmentPreviews(message.attachments, backgroundColor)}
-              </Flex>
-              {!!showTimeSince && <TimeSince time={message.createdAt} style={{ alignSelf }} mt={0.5} />}
-            </>
-          )
-        }}
-      </ClassTheme>
+      <>
+        <Flex maxWidth="66.67%" alignItems={alignAttachments} flexDirection="column" style={{ alignSelf }}>
+          <AttachmentContainer style={{ backgroundColor }}>
+            <Hyperlink onPress={this.onLinkPress.bind(this)} linkStyle={linkStyle}>
+              <Text variant="text" color={textColor}>
+                {body}
+              </Text>
+            </Hyperlink>
+          </AttachmentContainer>
+          {!!message.attachments?.length && <Spacer mb={0.5} />}
+          {this.renderAttachmentPreviews(message.attachments, backgroundColor)}
+        </Flex>
+        {showTimeSince && <TimeSince time={message.createdAt} style={{ alignSelf }} mt={0.5} />}
+      </>
     )
   }
 }

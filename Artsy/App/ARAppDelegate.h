@@ -1,8 +1,8 @@
 #import <JSDecoupledAppDelegate/JSDecoupledAppDelegate.h>
 #import "AROnboardingViewController.h"
-#import <UserNotifications/UNUserNotificationCenter.h>
+#import <Appboy-iOS-SDK/ABKAppboyEndpointDelegate.h>
 
-@class ARWindow, ArtsyEcho;
+@class ARWindow, SailthruMobile, ArtsyEcho;
 
 // This class, and infact the complete JSDecoupledAppDelegate class, is not used during testing.
 // The test app delegate class is ARTestHelper and is responsible for seting up the test env.
@@ -11,7 +11,7 @@
 // (`[JSDecoupledAppDelegate sharedAppDelegate]`) to perform your tests on.
 
 
-@interface ARAppDelegate : UIResponder <JSApplicationStateDelegate>
+@interface ARAppDelegate : UIResponder <JSApplicationStateDelegate, ABKAppboyEndpointDelegate>
 
 + (ARAppDelegate *)sharedInstance;
 
@@ -20,6 +20,9 @@
 
 @property (strong, nonatomic, readonly) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readonly) NSString *landingURLRepresentation;
+
+/// Shared Sailthru instance.
+@property (strong, readonly) SailthruMobile *sailThru;
 
 /// The Artsy echo instance for feature flags, and url routing etc
 @property (nonatomic, readwrite, strong) ArtsyEcho *echo;

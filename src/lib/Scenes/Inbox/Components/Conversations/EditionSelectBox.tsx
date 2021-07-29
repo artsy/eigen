@@ -1,5 +1,4 @@
-import { themeGet } from "@styled-system/theme-get"
-import { BorderBox, Flex, Text, Touchable, useColor } from "palette"
+import { BorderBox, color, Flex, Text, Touchable } from "palette"
 import React from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
@@ -10,12 +9,11 @@ const UnavailableIndicator = styled(View)`
   height: 8px;
   width: 8px;
   border-radius: 4px;
-  background-color: ${themeGet("colors.red100")};
+  background-color: ${color("red100")};
   margin-right: 6px;
 `
 
 export const RadioButton: React.FC<{ selected: boolean }> = (props) => {
-  const color = useColor()
   const { selected } = props
   return (
     <View

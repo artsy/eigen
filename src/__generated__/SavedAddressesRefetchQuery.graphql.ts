@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c60103022967beb3a553190cabbfaf38 */
+/* @relayHash 7740bab0af31b45dd30e299ce12294a9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,7 +28,7 @@ query SavedAddressesRefetchQuery {
 
 fragment SavedAddresses_me on Me {
   name
-  addressConnection(first: 10) {
+  addressConnection(first: 3) {
     edges {
       node {
         id
@@ -37,12 +37,10 @@ fragment SavedAddresses_me on Me {
         addressLine1
         addressLine2
         addressLine3
-        country
         city
         region
         postalCode
         phoneNumber
-        isDefault
       }
     }
   }
@@ -112,7 +110,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "first",
-                "value": 10
+                "value": 3
               }
             ],
             "concreteType": "UserAddressConnection",
@@ -170,13 +168,6 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "country",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
                         "name": "city",
                         "storageKey": null
                       },
@@ -200,13 +191,6 @@ return {
                         "kind": "ScalarField",
                         "name": "phoneNumber",
                         "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "isDefault",
-                        "storageKey": null
                       }
                     ],
                     "storageKey": null
@@ -215,7 +199,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "addressConnection(first:10)"
+            "storageKey": "addressConnection(first:3)"
           },
           (v1/*: any*/)
         ],
@@ -224,7 +208,7 @@ return {
     ]
   },
   "params": {
-    "id": "c60103022967beb3a553190cabbfaf38",
+    "id": "7740bab0af31b45dd30e299ce12294a9",
     "metadata": {},
     "name": "SavedAddressesRefetchQuery",
     "operationKind": "query",

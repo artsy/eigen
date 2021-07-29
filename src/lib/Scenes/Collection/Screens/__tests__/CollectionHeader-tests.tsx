@@ -3,7 +3,6 @@ import { CollectionHeaderTestsQueryRawResponse } from "__generated__/CollectionH
 import { mount } from "enzyme"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "lib/Components/ReadMore"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { Sans, Theme } from "palette"
 import React from "react"
@@ -16,11 +15,9 @@ jest.unmock("react-relay")
 it("renders without throwing an error", async () => {
   await renderRelayTree({
     Component: (props: any) => (
-      <GlobalStoreProvider>
-        <Theme>
-          <CollectionHeaderContainer collection={props.marketingCollection} {...props} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <CollectionHeaderContainer collection={props.marketingCollection} {...props} />
+      </Theme>
     ),
     query: graphql`
       query CollectionHeaderTestsQuery @raw_response_type {
@@ -43,22 +40,18 @@ describe("collection header", () => {
 
   it("passes the collection header image url to collection header", () => {
     const wrapper = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CollectionHeader {...props} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <CollectionHeader {...props} />
+      </Theme>
     )
     expect(wrapper.find(OpaqueImageView).html()).toContain("http://imageuploadedbymarketingteam.jpg")
   })
 
   it("passes the collection header title to collection header", () => {
     const wrapper = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CollectionHeader {...props} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <CollectionHeader {...props} />
+      </Theme>
     )
 
     expect(wrapper.find(Sans).at(0).html()).toContain("Street Art Now")
@@ -67,11 +60,9 @@ describe("collection header", () => {
   it("passes the url of the most marketable artwork in the collection to the collection header when there is no headerImage value present", () => {
     props.collection.headerImage = null
     const wrapper = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CollectionHeader {...props} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <CollectionHeader {...props} />
+      </Theme>
     )
     expect(wrapper.find(OpaqueImageView).html()).toContain("https://defaultmostmarketableartworkincollectionimage.jpg")
   })
@@ -79,22 +70,18 @@ describe("collection header", () => {
   it("does not render the Read More component when there is no description", () => {
     props.collection.descriptionMarkdown = null
     const wrapper = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CollectionHeader {...props} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <CollectionHeader {...props} />
+      </Theme>
     )
     expect(wrapper.find(ReadMore).exists()).toBe(false)
   })
 
   it("passes the collection header description to collection header", () => {
     const wrapper = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CollectionHeader {...props} />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <CollectionHeader {...props} />
+      </Theme>
     )
 
     expect(wrapper.find(ReadMore).exists()).toBe(true)

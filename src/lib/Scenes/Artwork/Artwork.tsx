@@ -20,7 +20,7 @@ import {
 import { QAInfoPanel } from "lib/utils/QAInfo"
 import { Schema, screenTrack } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Separator, Spacer, useSpace } from "palette"
+import { Box, Separator, space, Spacer } from "palette"
 import React from "react"
 import { ActivityIndicator, FlatList, View } from "react-native"
 import { RefreshControl } from "react-native"
@@ -525,7 +525,6 @@ export const ArtworkQueryRenderer: React.FC<{
 }
 
 const AboveTheFoldPlaceholder: React.FC<{}> = ({}) => {
-  const space = useSpace()
   const screenDimensions = useScreenDimensions()
   // The logic for artworkHeight comes from the zeplin spec https://zpl.io/25JLX0Q
   const artworkHeight = screenDimensions.width >= 375 ? 340 : 290

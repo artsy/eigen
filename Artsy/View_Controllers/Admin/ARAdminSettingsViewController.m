@@ -69,6 +69,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     [tableViewData addSectionData:labsSection];
 
     ARSectionData *toggleSections = [[ARSectionData alloc] initWithCellDataArray:@[
+       [self generateOnScreenAnalytics],
        [self generateOnScreenMartsy]
     ]];
     toggleSections.headerTitle = @"Options";
@@ -164,6 +165,18 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 {
     return [self tappableCellDataWithTitle:@"→ Consignments Flow" selection:^{
         [[AREmission sharedInstance] navigate:@"/consign/submission"];
+    }];
+}
+
+- (ARCellData *)generateOnScreenAnalytics
+{
+    NSString *message = [AROptions boolForOption:AROptionsShowAnalyticsOnScreen] ? @"Stop" : @"Start";
+    NSString * title = NSStringWithFormat(@"%@ on Screen Analytics", message);
+
+    return [self tappableCellDataWithTitle:title selection:^{
+        BOOL current = [AROptions boolForOption:AROptionsShowAnalyticsOnScreen];
+        [AROptions setBool:!current forOption:AROptionsShowAnalyticsOnScreen];
+        exit(YES);
     }];
 }
 

@@ -1,5 +1,4 @@
 #import <SDWebImage/UIImageView+WebCache.h>
-#import <SDImageCache.h>
 #import <objc/runtime.h>
 
 #import "ARAppConstants.h"
@@ -12,7 +11,7 @@
 
 - (void)ar_setImageWithURL:(NSURL *)url
           placeholderImage:(UIImage *)placeholder
-                 completed:(SDExternalCompletionBlock)completionBlock
+                 completed:(SDWebImageCompletionBlock)completionBlock
 {
     if (!placeholder) {
         placeholder = [UIImage imageFromColor:[UIColor artsyGrayRegular]];
@@ -20,19 +19,13 @@
 
     // In testing provide the ability to do a synchronous fast image cache call
     if (!ARPerformWorkAsynchronously) {
-        SDImageCache *imageCache = [SDImageCache sharedImageCache];
-        NSString *key = url.absoluteString;
-        [imageCache containsImageForKey:key cacheType:SDImageCacheTypeMemory completion:^(SDImageCacheType containsCacheType) {
-            if (containsCacheType != SDImageCacheTypeNone) {
-                [imageCache queryImageForKey:key options:SDWebImageQueryMemoryDataSync context:nil cacheType:containsCacheType completion:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
-                    self.image = image;
-                    if (completionBlock != nil) {
-                        completionBlock(self.image, nil, containsCacheType, url);
-                    }
-                }];
-                return;
-            }
-        }];
+        SDWebImageManager *manager = [SDWebImageManager sharedManager];
+        if ([manager cachedImageExistsForURL:url]) {
+            NSString *key = [manager cacheKeyForURL:url];
+            self.image = [manager.imageCache imageFromDiskCacheForKey:key];
+            if (completionBlock) { completionBlock(self.image, nil, SDImageCacheTypeDisk, url); }
+            return;
+        }
     }
 
     if ([ARLogger shouldLogNetworkRequests]) {
@@ -69,7 +62,7 @@
             if (completionBlock) {
                 completionBlock(image, error, cacheType, imageURL);
             }
-        }];
+                       }];
     } else {
         [self sd_setImageWithURL:url placeholderImage:placeholder completed:completionBlock];
     }
@@ -85,7 +78,8 @@
     [self ar_setImageWithURL:url placeholderImage:placeholder completed:nil];
 }
 
-- (void)ar_setImageWithURL:(NSURL *)url completed:(SDExternalCompletionBlock)completionBlock{
+- (void)ar_setImageWithURL:(NSURL *)url completed:(SDWebImageCompletionBlock)completionBlock
+{
     [self ar_setImageWithURL:url placeholderImage:nil completed:completionBlock];
 }
 

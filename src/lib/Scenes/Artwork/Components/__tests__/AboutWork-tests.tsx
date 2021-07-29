@@ -10,7 +10,6 @@ jest.mock("lib/utils/hardware", () => ({
   truncatedTextLimit: jest.fn(),
 }))
 
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { truncatedTextLimit } from "lib/utils/hardware"
 
 describe("AboutWork", () => {
@@ -70,14 +69,12 @@ describe("AboutWork", () => {
   it("truncates the reaad more component properly for phones", () => {
     ;(truncatedTextLimit as jest.Mock).mockReturnValueOnce(140)
     const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <AboutWork
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            artwork={aboutWorkArtwork}
-          />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <AboutWork
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          artwork={aboutWorkArtwork}
+        />
+      </Theme>
     )
 
     // The ellipses and "Read more" text adds an additional 13 characters to the limit of 140
@@ -87,14 +84,12 @@ describe("AboutWork", () => {
   it("truncates the reaad more component properly for tablets", () => {
     ;(truncatedTextLimit as jest.Mock).mockReturnValueOnce(320)
     const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <AboutWork
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            artwork={aboutWorkArtwork}
-          />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <AboutWork
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          artwork={aboutWorkArtwork}
+        />
+      </Theme>
     )
 
     // The ellipses and "Read more" text adds an additional 13 characters to the limit of 320

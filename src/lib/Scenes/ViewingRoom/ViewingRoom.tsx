@@ -70,7 +70,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
       await Share.share({
         title: viewingRoom.title,
         message: `${viewingRoom.title} by ${viewingRoom?.partner?.name} on Artsy`,
-        url: `https://www.artsy.net/viewing-room/${viewingRoom.slug}?utm_content=viewing-room-share`,
+        url: `https://artsy.net/viewing-room/${viewingRoom.slug}?utm_content=viewing-room-share`,
       })
     } catch (error) {
       console.error("ViewingRoom.tsx", error)

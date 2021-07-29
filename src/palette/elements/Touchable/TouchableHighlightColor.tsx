@@ -1,6 +1,5 @@
-import { Color } from "palette/Theme"
+import { Color, Touchable, TouchableProps } from "palette"
 import React, { useState } from "react"
-import { Touchable, TouchableProps } from "./Touchable"
 
 interface TouchableHighlightState {
   color: Color
@@ -10,7 +9,7 @@ interface TouchableHighlightState {
 interface TouchableHighlightColorProps extends TouchableProps {
   activeColor?: Color
   normalColor?: Color
-  render: (state: TouchableHighlightState) => React.ReactNode
+  render: (state: TouchableHighlightState) => React.ReactNode;
 }
 
 export const TouchableHighlightColor: React.FC<TouchableHighlightColorProps> = (props) => {

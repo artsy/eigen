@@ -2,7 +2,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { useAnimatedValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Spacer, Text, Touchable, useTheme } from "palette"
+import { color, Flex, space, Spacer, Text, Touchable } from "palette"
 import React, { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
@@ -18,7 +18,6 @@ const BUTTON_HEIGHT = 41
 const imgProps = Image.resolveAssetSource(backgoundImage)
 
 export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation }) => {
-  const { color, space } = useTheme()
   const { width: screenWidth } = useScreenDimensions()
   const { safeAreaInsets } = useScreenDimensions()
   // useScreenDimensions() returns the window height instead of the screen

@@ -40,15 +40,13 @@ jest.mock("../RecentSearches", () => ({
 
 const TestWrapper: typeof Search = (props) => {
   return (
-    <GlobalStoreProvider>
-      <Theme>
-        <CatchErrors>
-          <GlobalStoreProvider>
-            <Search {...props} />
-          </GlobalStoreProvider>
-        </CatchErrors>
-      </Theme>
-    </GlobalStoreProvider>
+    <Theme>
+      <CatchErrors>
+        <GlobalStoreProvider>
+          <Search {...props} />
+        </GlobalStoreProvider>
+      </CatchErrors>
+    </Theme>
   )
 }
 

@@ -2,8 +2,6 @@ export * from "./elements"
 export * from "./helpers"
 export * from "./svgs"
 export * from "./Theme"
-export * from "./hooks"
-export * from "./ClassTheme"
 
 // Helpers
 import * as _AllIcons from "./svgs"

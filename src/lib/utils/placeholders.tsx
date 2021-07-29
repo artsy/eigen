@@ -1,5 +1,5 @@
 import { GenericGridPlaceholder } from "lib/Components/ArtworkGrids/GenericGrid"
-import { Flex, useColor } from "palette"
+import { color, Flex } from "palette"
 import React, { useContext, useEffect, useMemo, useRef } from "react"
 import { View, ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"
@@ -34,7 +34,6 @@ export const ProvidePlaceholderContext: React.FC<{}> = ({ children }) => {
 }
 
 export const PlaceholderBox: React.FC<ViewStyle> = ({ children, ...styles }) => {
-  const color = useColor()
   const ctx = useContext(PlaceholderContext)
   if (!ctx) {
     throw new Error("You're using a Placeholder outside of a PlaceholderContext")

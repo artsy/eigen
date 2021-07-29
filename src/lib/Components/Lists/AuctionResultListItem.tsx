@@ -4,7 +4,7 @@ import { auctionResultHasPrice, auctionResultText } from "lib/Scenes/AuctionResu
 import { QAInfoManualPanel, QAInfoRow } from "lib/utils/QAInfo"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { bullet, Flex, NoArtworkIcon, Text, Touchable, useColor } from "palette"
+import { bullet, color, Flex, NoArtworkIcon, Text, Touchable } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { AuctionResultsMidEstimate } from "../AuctionResult/AuctionResultMidEstimate"
@@ -16,7 +16,6 @@ interface Props {
 }
 
 const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress, showArtistName }) => {
-  const color = useColor()
   const QAInfo: React.FC = () => (
     <QAInfoManualPanel position="absolute" top={0} left={95}>
       <QAInfoRow name="id" value={auctionResult.internalID} />

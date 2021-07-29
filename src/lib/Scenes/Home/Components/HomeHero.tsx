@@ -3,7 +3,7 @@ import { HomeHero_homePage } from "__generated__/HomeHero_homePage.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Sans, useColor } from "palette"
+import { color, Flex, Sans } from "palette"
 import React, { useState } from "react"
 import { Image, TouchableOpacity, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -16,7 +16,6 @@ const useHeroDimensions = () => {
 }
 
 const HomeHero: React.FC<{ homePage: HomeHero_homePage }> = ({ homePage }) => {
-  const color = useColor()
   const tracking = useTracking()
   const [hasLoaded, setHasLoaded] = useState(false)
   const unit = homePage?.heroUnits?.[0]

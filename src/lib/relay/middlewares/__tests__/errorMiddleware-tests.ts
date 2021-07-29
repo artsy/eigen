@@ -74,7 +74,7 @@ describe(errorMiddleware, () => {
         // @ts-ignore
         const relayResponse: RelayNetworkLayerResponse = {
           json: {
-            errors: [{ message: "Tests error" }],
+            errors: [{}],
           },
         }
 

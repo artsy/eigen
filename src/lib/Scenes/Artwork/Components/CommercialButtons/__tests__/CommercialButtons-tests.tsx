@@ -2,12 +2,12 @@ import { CommercialButtonsTestsMutationQueryRawResponse } from "__generated__/Co
 import { CommercialButtonsTestsRenderQueryRawResponse } from "__generated__/CommercialButtonsTestsRenderQuery.graphql"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { navigate } from "lib/navigation/navigate"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { ArtworkInquiryContextState } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import { Button, Theme } from "palette"
+import { Button } from "palette"
 import React from "react"
 import { _FragmentRefs, graphql } from "react-relay"
 import { CommercialButtonsFragmentContainer } from "../CommercialButtons"
@@ -41,19 +41,15 @@ const state: ArtworkInquiryContextState = {
 }
 
 const wrapper = (mockArtwork: _FragmentRefs<"CommercialButtons_artwork">): JSX.Element => (
-  <GlobalStoreProvider>
-    <Theme>
-      <ArtworkInquiryContext.Provider
-        value={{
-          state,
-          dispatch: jest.fn(),
-        }}
-      >
-        {/* @ts-ignore */}
-        <CommercialButtonsFragmentContainer artwork={mockArtwork} />
-      </ArtworkInquiryContext.Provider>
-    </Theme>
-  </GlobalStoreProvider>
+  <ArtworkInquiryContext.Provider
+    value={{
+      state,
+      dispatch: jest.fn(),
+    }}
+  >
+    {/* @ts-ignore */}
+    <CommercialButtonsFragmentContainer artwork={mockArtwork} />
+  </ArtworkInquiryContext.Provider>
 )
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

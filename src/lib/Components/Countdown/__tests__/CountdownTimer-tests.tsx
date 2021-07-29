@@ -1,7 +1,7 @@
 // Mock moment to always give back a formatted time string
-jest.mock("moment-timezone", () => {
+jest.mock("moment", () => {
   const momentMock: any = jest.fn(() => ({ format: (format: string) => (format.length > 3 ? "Mon" : "7pm") }))
-  momentMock.duration = jest.requireActual("moment-timezone").duration
+  momentMock.duration = jest.requireActual("moment").duration
   return momentMock
 })
 

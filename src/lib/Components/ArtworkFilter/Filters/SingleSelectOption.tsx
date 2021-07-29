@@ -4,8 +4,8 @@ import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { Flex, RadioDot, Text } from "palette"
-import React, { Fragment } from "react"
-import { FlatList, ScrollView } from "react-native"
+import React from "react"
+import { FlatList } from "react-native"
 import styled from "styled-components/native"
 
 interface SingleSelectOptionScreenProps {
@@ -16,7 +16,6 @@ interface SingleSelectOptionScreenProps {
   filterOptions: Array<FilterData | JSX.Element>
   ListHeaderComponent?: JSX.Element
   withExtraPadding?: boolean
-  useScrollView?: boolean
 }
 
 const isFilterData = (item: any): item is FilterData => {
@@ -31,21 +30,9 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
   navigation,
   ListHeaderComponent,
   withExtraPadding = false,
-  useScrollView = false,
 }) => {
   const handleBackNavigation = () => {
     navigation.goBack()
-  }
-  const keyExtractor = (_item: FilterData | JSX.Element, index: number) => String(index)
-  const renderItem = (item: FilterData | JSX.Element) => {
-    if (isFilterData(item)) {
-      return (
-        <ListItem item={item} selectedOption={selectedOption} onSelect={onSelect} withExtraPadding={withExtraPadding} />
-      )
-    }
-
-    // Otherwise just return JSX.Element
-    return item
   }
 
   return (
@@ -53,24 +40,29 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
       <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
 
       <Flex flexGrow={1}>
-        {useScrollView ? (
-          <ScrollView style={{ flex: 1 }}>
-            {ListHeaderComponent}
-            {filterOptions.map((item, index) => {
-              return <Fragment key={keyExtractor(item, index)}>{renderItem(item)}</Fragment>
-            })}
-          </ScrollView>
-        ) : (
-          <FlatList
-            style={{ flex: 1 }}
-            initialNumToRender={100}
-            ListHeaderComponent={ListHeaderComponent}
-            keyExtractor={keyExtractor}
-            data={filterOptions}
-            ItemSeparatorComponent={null}
-            renderItem={({ item }) => renderItem(item)}
-          />
-        )}
+        <FlatList
+          style={{ flex: 1 }}
+          initialNumToRender={100}
+          ListHeaderComponent={ListHeaderComponent}
+          keyExtractor={(_item, index) => String(index)}
+          data={filterOptions}
+          ItemSeparatorComponent={null}
+          renderItem={({ item }) => {
+            if (isFilterData(item)) {
+              return (
+                <ListItem
+                  item={item}
+                  selectedOption={selectedOption}
+                  onSelect={onSelect}
+                  withExtraPadding={withExtraPadding}
+                />
+              )
+            }
+
+            // Otherwise just return JSX.Element
+            return item
+          }}
+        />
       </Flex>
     </Flex>
   )

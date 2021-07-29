@@ -1,18 +1,30 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Box, CheckIcon } from "palette"
+import { Box, CheckIcon, color } from "palette"
 import React from "react"
 import { ColorsSwatch } from "../ColorsSwatch"
 
 describe("Colors swatch", () => {
   it("adds a check icon when selected", () => {
     const selectedTree = renderWithWrappers(
-      <ColorsSwatch width={30} backgroundColor="black" foregroundColor="#fff" name="darkblue" selected={true} />
+      <ColorsSwatch
+        width={30}
+        backgroundColor={color("black100")}
+        foregroundColor="#fff"
+        name="darkblue"
+        selected={true}
+      />
     )
     const selectedCheckIcon = selectedTree.root.findByType(CheckIcon)
     expect(selectedCheckIcon.props.fill).toMatch("#fff")
 
     const unselectedTree = renderWithWrappers(
-      <ColorsSwatch width={30} backgroundColor="black" foregroundColor="#fff" name="darkblue" selected={false} />
+      <ColorsSwatch
+        width={30}
+        backgroundColor={color("black10")}
+        foregroundColor="#fff"
+        name="darkblue"
+        selected={false}
+      />
     )
     const unselectedCheckIcon = unselectedTree.root.findAllByType(CheckIcon)
     expect(unselectedCheckIcon.length).toEqual(0)

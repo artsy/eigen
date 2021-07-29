@@ -1,11 +1,10 @@
-import { useColor } from "palette/hooks"
 import React from "react"
 import { EMaskUnits } from "react-native-svg"
+import { color } from "../../Theme"
 import { Icon, IconProps, Mask, Path, Rect } from "../Icon"
 
 /** BoltCircleFill */
 export const BoltCircleFill: React.FC<IconProps> = (props) => {
-  const color = useColor()
   console.warn(EMaskUnits)
   return (
     <Icon {...props} viewBox="0 0 20 20">

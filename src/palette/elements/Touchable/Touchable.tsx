@@ -1,19 +1,22 @@
 import React from "react"
 import {
   GestureResponderEvent,
-  TouchableHighlight,
+  Platform,
+  TouchableHighlight as RNTouchableHighlight,
   TouchableHighlightProps,
-  TouchableWithoutFeedback,
+  TouchableWithoutFeedback as RNTouchableWithoutFeedback,
 } from "react-native"
+import { TouchableHighlight, TouchableWithoutFeedback } from "react-native-gesture-handler"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 
-import { useColor } from "../../hooks"
+import { color } from "../../Theme"
 import { Flex } from "../Flex"
 
 interface ExtraTouchableProps {
   flex?: number
   haptic?: HapticFeedbackTypes | true
   noFeedback?: boolean
+  useDefaultTouchable?: boolean
 }
 
 export type TouchableProps = TouchableHighlightProps & ExtraTouchableProps
@@ -24,8 +27,15 @@ export type TouchableProps = TouchableHighlightProps & ExtraTouchableProps
  * or
  * <Touchable haptic="impactHeavy" />
  */
-export const Touchable: React.FC<TouchableProps> = ({ children, flex, haptic, noFeedback, onPress, ...props }) => {
-  const color = useColor()
+export const Touchable: React.FC<TouchableProps> = ({
+  children,
+  flex,
+  haptic,
+  noFeedback,
+  useDefaultTouchable,
+  onPress,
+  ...props
+}) => {
   const inner = React.Children.count(children) === 1 ? children : <Flex flex={flex}>{children}</Flex>
 
   const onPressWrapped = (evt: GestureResponderEvent) => {
@@ -40,13 +50,27 @@ export const Touchable: React.FC<TouchableProps> = ({ children, flex, haptic, no
     onPress(evt)
   }
 
-  return noFeedback ? (
-    <TouchableWithoutFeedback {...props} onPress={onPressWrapped}>
+  if (noFeedback) {
+    const NoFeedbackButton = Platform.select({
+      ios: useDefaultTouchable ? RNTouchableWithoutFeedback : TouchableWithoutFeedback,
+      default: RNTouchableWithoutFeedback,
+    })
+
+    return (
+      <NoFeedbackButton {...props} onPress={onPressWrapped}>
+        {inner}
+      </NoFeedbackButton>
+    )
+  }
+
+  const HighlightButton = Platform.select({
+    ios: useDefaultTouchable ? RNTouchableHighlight : TouchableHighlight,
+    default: RNTouchableHighlight,
+  })
+
+  return (
+    <HighlightButton underlayColor={color("white100")} activeOpacity={0.8} {...props} onPress={onPressWrapped}>
       {inner}
-    </TouchableWithoutFeedback>
-  ) : (
-    <TouchableHighlight underlayColor={color("white100")} activeOpacity={0.8} {...props} onPress={onPressWrapped}>
-      {inner}
-    </TouchableHighlight>
+    </HighlightButton>
   )
 }

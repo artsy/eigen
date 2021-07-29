@@ -2,9 +2,8 @@
 
 #import <React/RCTUtils.h>
 #import <React/RCTDevSettings.h>
-#import <UserNotifications/UNUserNotificationCenter.h>
 
-@interface ARAppNotificationsDelegate : NSObject <JSApplicationRemoteNotificationsDelegate, UNUserNotificationCenterDelegate>
+@interface ARAppNotificationsDelegate : NSObject <JSApplicationRemoteNotificationsDelegate>
 
 typedef NS_ENUM(NSInteger, ARAppNotificationsRequestContext) {
     ARAppNotificationsRequestContextLaunch,

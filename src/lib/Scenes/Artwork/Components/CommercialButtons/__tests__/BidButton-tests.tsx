@@ -20,7 +20,6 @@ import React from "react"
 import { View } from "react-native"
 import { graphql } from "react-relay"
 
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { BidButtonFragmentContainer as BidButton } from "../BidButton"
 
 jest.unmock("react-relay")
@@ -50,13 +49,11 @@ describe("BidButton", () => {
   const getWrapper = async (artwork, me, auctionState) => {
     return await renderRelayTree({
       Component: (props: any) => (
-        <GlobalStoreProvider>
-          <Theme>
-            <View>
-              <BidButton {...props} auctionState={auctionState} />
-            </View>
-          </Theme>
-        </GlobalStoreProvider>
+        <Theme>
+          <View>
+            <BidButton {...props} auctionState={auctionState} />
+          </View>
+        </Theme>
       ),
       query: graphql`
         query BidButtonTestsQuery @raw_response_type {

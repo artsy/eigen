@@ -1,7 +1,6 @@
-import { themeGet } from "@styled-system/theme-get"
 import { Input } from "lib/Components/Input/Input"
 import { getLocationPredictions, SimpleLocation } from "lib/utils/googleMaps"
-import { Flex, LocationIcon, Text, Touchable } from "palette"
+import { color, Flex, LocationIcon, Text, Touchable } from "palette"
 import React, { useEffect, useState } from "react"
 import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
 import styled from "styled-components/native"
@@ -136,7 +135,7 @@ export const LocationPredictions = ({
 
 const Dropdown = styled(View)`
   background-color: white;
-  border: solid 1px ${themeGet("colors.black10")};
+  border: solid 1px ${color("black10")};
   z-index: 1;
   position: absolute;
   width: 100%;

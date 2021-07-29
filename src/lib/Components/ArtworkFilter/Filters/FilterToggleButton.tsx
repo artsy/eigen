@@ -1,4 +1,4 @@
-import { useColor } from "palette/hooks"
+import { color } from "palette"
 import React from "react"
 import { Switch, View } from "react-native"
 
@@ -10,7 +10,6 @@ interface FilterToggleButtonProps {
 
 export const FilterToggleButton: React.FC<FilterToggleButtonProps> = (props) => {
   const { onChange, value, disabled } = props
-  const color = useColor()
 
   return (
     <View>

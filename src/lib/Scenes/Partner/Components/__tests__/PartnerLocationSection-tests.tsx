@@ -1,5 +1,4 @@
 import { PartnerLocationSection_partner } from "__generated__/PartnerLocationSection_partner.graphql"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { Theme } from "palette"
 import React from "react"
@@ -24,11 +23,9 @@ describe("PartnerLoationSection", () => {
     await renderRelayTree({
       Component: (props: any) => {
         return (
-          <GlobalStoreProvider>
-            <Theme>
-              <PartnerLocationSection partner={{ ...partner }} {...props} />
-            </Theme>
-          </GlobalStoreProvider>
+          <Theme>
+            <PartnerLocationSection partner={{ ...partner }} {...props} />
+          </Theme>
         )
       },
       query: graphql`

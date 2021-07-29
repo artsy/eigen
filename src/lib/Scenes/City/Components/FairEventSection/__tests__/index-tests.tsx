@@ -1,6 +1,5 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { FairEventSection } from "../index"
@@ -22,11 +21,9 @@ const data = [
 describe("FairEventSection", () => {
   it("renders properly", () => {
     const comp = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <FairEventSection data={data} citySlug="tefaf-new-york-fall-2019" />
-        </Theme>
-      </GlobalStoreProvider>
+      <Theme>
+        <FairEventSection data={data} citySlug="tefaf-new-york-fall-2019" />
+      </Theme>
     )
 
     expect(comp.text()).toContain("TEFAF New York Fall 2019")
