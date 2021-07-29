@@ -1,8 +1,9 @@
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
-import { Button, ButtonSize, ButtonVariant, LinkIcon } from "palette"
+import { LinkIcon } from "palette"
 import React from "react"
 import { DList, List } from "storybook/helpers"
+import { Button, ButtonSize, ButtonVariant } from "./Button"
 
 const sizes: ButtonSize[] = ["small", "large"]
 
