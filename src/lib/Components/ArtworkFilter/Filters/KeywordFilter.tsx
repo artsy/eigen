@@ -72,6 +72,7 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
     Platform.OS === "android" && loading
       ? "Search by artwork title, series..."
       : "Search by artwork title, series, or description"
+
   return (
     <Input
       loading={loading}
