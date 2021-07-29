@@ -40,6 +40,7 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
 
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
   const tracking = useTracking()
+  const enableSavedSearchV2 = useFeatureFlag("AREnableSavedSearchV2")
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const [isCreateSavedSearchModalVisible, setCreateSavedSearchModalVisible] = useState(false)
 
@@ -91,7 +92,12 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
           closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.ArtistArtworks}
         />
-        <CreateSavedSearchAlert visible={isCreateSavedSearchModalVisible} onClosePress={handleCloseSavedSearchModal} />
+        {!!enableSavedSearchV2 && (
+          <CreateSavedSearchAlert
+            visible={isCreateSavedSearchModalVisible}
+            onClosePress={handleCloseSavedSearchModal}
+          />
+        )}
       </StickyTabPageScrollView>
     </ArtworkFiltersStoreProvider>
   )
