@@ -511,6 +511,16 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [self clearUserData:[self sharedManager]];
 }
 
++ (void)clearAccessToken
+{
+    [self clearAccessToken:[self sharedManager]];
+}
+
++ (void)clearAccessToken:(ARUserManager *)manager
+{
+    [manager.keychain removeKeychainStringForKey:AROAuthTokenDefault];
+}
+
 + (void)clearUserData:(ARUserManager *)manager
 {
     [manager deleteUserData];
