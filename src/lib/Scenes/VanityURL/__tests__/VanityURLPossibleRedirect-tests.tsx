@@ -27,12 +27,13 @@ describe(VanityURLPossibleRedirect, () => {
     expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
   })
 
-  it("sends a fetch request", () => {
+  it("sends a fetch request", async () => {
     fetchMockResponseOnce({
       status: 200,
       url: "https://www.artsy.net/test",
     })
     renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
+    await flushPromiseQueue()
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(fetchMock.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
