@@ -570,39 +570,6 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
   ])
 }
 
-export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams) => {
-  const input: SearchCriteriaAttributes = {}
-  const allowedKeys = pick(filterParams, [
-    "artistID",
-    "locationCities",
-    "colors",
-    "partnerIDs",
-    "additionalGeneIDs",
-    "attributionClass",
-    "majorPeriods",
-    "acquireable",
-    "atAuction",
-    "inquireableOnly",
-    "offerable",
-    "materialsTerms",
-    "priceRange",
-    "dimensionRange",
-    "height",
-    "width",
-  ])
-
-  for (const key of Object.keys(allowedKeys)) {
-    const value = filterParams[key as FilterParamName]
-    const defaultValue = defaultCommonFilterOptions[key as FilterParamName]
-
-    if (!isEqual(defaultValue, value)) {
-      input[key as keyof SearchCriteriaAttributes] = value as any
-    }
-  }
-
-  return input
-}
-
 export const getParamsForInputByFilterType = (
   initialParams: Partial<FilterParams>,
   filterType: FilterType = "artwork"

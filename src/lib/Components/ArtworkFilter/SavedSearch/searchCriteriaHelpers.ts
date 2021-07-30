@@ -1,4 +1,6 @@
-import { isNull } from "lodash"
+import { isEqual, isNull, pick } from "lodash"
+import { defaultCommonFilterOptions, FilterParamName, FilterParams } from "../ArtworkFilterHelpers"
+import { allowedSearchCriteriaKeys } from "./constants"
 import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "./types"
 
 export const getOnlyFilledSearchCriteriaValues = (searchCriteria: SearchCriteriaAttributes) => {
@@ -22,4 +24,21 @@ export const getOnlyFilledSearchCriteriaValues = (searchCriteria: SearchCriteria
   }
 
   return prepared
+}
+
+// TODO: Remove when Saved Search M2 released
+export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams) => {
+  const input: SearchCriteriaAttributes = {}
+  const allowedKeys = pick(filterParams, allowedSearchCriteriaKeys)
+
+  for (const key of Object.keys(allowedKeys)) {
+    const value = filterParams[key as FilterParamName]
+    const defaultValue = defaultCommonFilterOptions[key as FilterParamName]
+
+    if (!isEqual(defaultValue, value)) {
+      input[key as keyof SearchCriteriaAttributes] = value as any
+    }
+  }
+
+  return input
 }
