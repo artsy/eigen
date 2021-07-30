@@ -223,3 +223,15 @@ When we upgrade styled-components to a version with types that don't complain wh
 I wasn't the one to add this file, so I don't have all the context, but I do know that styled-component types are missing and/or causing problems when we don't have that file.
 
 The latest change I did was add the `ThemeContext` in there, because the version of styled-components we use has that, but the types are not exposing that, so I had to manually add it there.
+
+# `react-native-push-notification` Requiring unknown module on ios
+
+#### When can we remove this:
+
+Once we want to use react-native-push-notification on iOS
+
+#### Explanation/Context:
+
+This is happening because react-native-push-notification requires @react-native-community/push-notification-ios. We are not
+adding this dependency at this time because it is unnecessary and we do not use react-native-push-notification on iOS. Also,
+we do not want unnecessary conflicts between our native push notification implementation and @react-native-community/push-notification-ios's.
