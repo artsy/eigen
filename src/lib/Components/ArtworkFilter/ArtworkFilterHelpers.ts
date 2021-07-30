@@ -460,6 +460,7 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   majorPeriods: "MAJOR_PERIOD",
   materialsTerms: "MATERIALS_TERMS",
   medium: "MEDIUM",
+  additionalGeneIDs: "MEDIUM",
   partnerIDs: "PARTNER",
   priceRange: "PRICE_RANGE",
 }
