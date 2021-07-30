@@ -26,7 +26,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
       <ScrollView contentContainerStyle={{ paddingHorizontal: space(2) }}>
         <Sans size="8" mb={4}>Create an Alert</Sans>
         <SavedSearchAlertForm aggregations={aggregations} filters={allowedFilters} onSaved={onClosePress} {...other} />
-        <Text variant="text" color="black60" textAlign="center" mt={2}>
+        <Text variant="text" color="black60" textAlign="center" my={2}>
           You will be able to access all your Artist Alerts in your Profile.
         </Text>
       </ScrollView>
