@@ -6152,7 +6152,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   marketingCollections(size: Int): [MarketingCollection]!
   mobileImage: Image
   name: String
-  organizer: organizer
+  organizer: FairOrganizer
   profile: Profile
 
   # This connection only supports forward pagination. We're replacing Relay's default cursor with one from Gravity.
@@ -6254,6 +6254,24 @@ type FairExhibitorsGroup {
 
   # Letter exhibitors group belongs to
   letter: String
+}
+
+type FairOrganizer {
+  about: String
+  fairsConnection(after: String, before: String, first: Int, last: Int): FairConnection
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  name: String
+  profile: Profile
+  profileID: ID
+
+  # A slug ID.
+  slug: ID!
+  website: String
 }
 
 enum FairSorts {
@@ -8541,20 +8559,6 @@ enum OrderedSetSorts {
 
 union OrderParty = Partner | User
 
-type organizer {
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-  profile: Profile
-  profileID: ID
-
-  # A slug ID.
-  slug: ID!
-  website: String
-}
-
 type PageCursor {
   # first cursor on the page
   cursor: String!
@@ -9746,6 +9750,12 @@ type Query {
     # The slug or ID of the Fair
     id: String!
   ): Fair
+
+  # A fair organizer, e.g. The Armory Show
+  fairOrganizer(
+    # The slug or ID of the Fair organizer
+    id: String!
+  ): FairOrganizer
 
   # A list of Fairs
   fairs(
@@ -12263,6 +12273,12 @@ type Viewer {
     # The slug or ID of the Fair
     id: String!
   ): Fair
+
+  # A fair organizer, e.g. The Armory Show
+  fairOrganizer(
+    # The slug or ID of the Fair organizer
+    id: String!
+  ): FairOrganizer
 
   # A list of Fairs
   fairs(
