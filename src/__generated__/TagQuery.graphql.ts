@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8fe2b762d31d3b09abc6dfb026cf16d5 */
+/* @relayHash 3379f268709878a5ac6445212ec1baa2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -127,9 +127,6 @@ fragment ArtworkGridItem_artwork on Artwork {
 }
 
 fragment Header_tag on Tag {
-  internalID
-  slug
-  id
   name
 }
 
@@ -161,7 +158,7 @@ fragment TagArtworks_tag_2VV6jB on Tag {
   id
   internalID
   slug
-  artworks: filterArtworksConnection(first: 10, after: "", aggregations: [MEDIUM, LOCATION_CITY, PRICE_RANGE, MATERIALS_TERMS, PARTNER, ARTIST_NATIONALITY, MAJOR_PERIOD, ARTIST, TOTAL], forSale: true, input: $input) {
+  artworks: filterArtworksConnection(first: 10, after: "", aggregations: [MEDIUM, LOCATION_CITY, PRICE_RANGE, MATERIALS_TERMS, PARTNER, ARTIST_NATIONALITY, MAJOR_PERIOD, ARTIST, TOTAL], input: $input) {
     counts {
       total
     }
@@ -224,7 +221,7 @@ v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "internalID",
+  "name": "name",
   "storageKey": null
 },
 v6 = {
@@ -238,7 +235,7 @@ v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "internalID",
   "storageKey": null
 },
 v8 = [
@@ -266,11 +263,6 @@ v8 = [
     "kind": "Literal",
     "name": "first",
     "value": 10
-  },
-  {
-    "kind": "Literal",
-    "name": "forSale",
-    "value": true
   },
   (v4/*: any*/)
 ],
@@ -343,8 +335,6 @@ return {
         "selections": [
           (v3/*: any*/),
           (v5/*: any*/),
-          (v6/*: any*/),
-          (v7/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -352,6 +342,8 @@ return {
             "name": "description",
             "storageKey": null
           },
+          (v6/*: any*/),
+          (v7/*: any*/),
           {
             "alias": "artworks",
             "args": (v8/*: any*/),
@@ -408,7 +400,7 @@ return {
                         "name": "value",
                         "storageKey": null
                       },
-                      (v7/*: any*/),
+                      (v5/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -570,7 +562,7 @@ return {
                             "name": "saleMessage",
                             "storageKey": null
                           },
-                          (v5/*: any*/),
+                          (v7/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -688,7 +680,7 @@ return {
                             "name": "partner",
                             "plural": false,
                             "selections": [
-                              (v7/*: any*/),
+                              (v5/*: any*/),
                               (v6/*: any*/)
                             ],
                             "storageKey": null
@@ -719,7 +711,6 @@ return {
             "args": (v8/*: any*/),
             "filters": [
               "aggregations",
-              "forSale",
               "input"
             ],
             "handle": "connection",
@@ -733,7 +724,7 @@ return {
     ]
   },
   "params": {
-    "id": "8fe2b762d31d3b09abc6dfb026cf16d5",
+    "id": "3379f268709878a5ac6445212ec1baa2",
     "metadata": {},
     "name": "TagQuery",
     "operationKind": "query",
