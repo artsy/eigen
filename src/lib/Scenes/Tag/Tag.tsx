@@ -1,18 +1,34 @@
-import { FilterArtworksInput, TagQuery, TagQueryResponse } from "__generated__/TagQuery.graphql"
-import { getParamsForInputByFilterType } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { TagQuery, TagQueryResponse } from "__generated__/TagQuery.graphql"
 import { StickyTabPage, TabProps } from "lib/Components/StickyTabPage/StickyTabPage"
-import Header from "lib/Components/Tag/Header"
+import About from "lib/Components/Tag/About"
 import { TagArtworksPaginationContainer } from "lib/Components/Tag/TagArtworks"
 import { TagPlaceholder } from "lib/Components/Tag/TagPlaceholder"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import Header from "lib/Scenes/Tag/TagHeader"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { color } from "palette"
 import React from "react"
-import { Dimensions, StyleSheet, View, ViewStyle } from "react-native"
+import DeviceInfo from "react-native-device-info"
 import { graphql, QueryRenderer } from "react-relay"
+import styled from "styled-components/native"
 
-const isPad = Dimensions.get("window").width > 700
-const commonPadding = isPad ? 40 : 20
+const isHandset = DeviceInfo.getDeviceType() === "Handset"
+const commonPadding = isHandset ? 20 : 40
+
+console.log("getDeviceType()", DeviceInfo.getDeviceType())
+
+const HeaderView = styled.View<{ isHandset: boolean }>`
+  padding-left: ${commonPadding};
+  background-color: ${color("white100")};
+  padding-right: ${commonPadding};
+  justify-content: center;
+  align-self: ${isHandset ? "auto" : "center"};
+`
+
+const ContentView = styled.View`
+  flex: 1;
+`
 
 interface TagProps {
   tagID?: string
@@ -21,8 +37,6 @@ interface TagProps {
 
 interface TagQueryRendererProps {
   tagID: string
-  medium?: string
-  price_range?: string
 }
 
 export const Tag: React.FC<TagProps> = (props) => {
@@ -36,9 +50,9 @@ export const Tag: React.FC<TagProps> = (props) => {
   ]
 
   const headerContent = (
-    <View style={styles.header}>
+    <HeaderView isHandset={isHandset}>
       <Header tag={tag} />
-    </View>
+    </HeaderView>
   )
 
   return (
@@ -50,22 +64,16 @@ export const Tag: React.FC<TagProps> = (props) => {
         context_screen_owner_slug: tag.slug,
       }}
     >
-      <View style={styles.container}>
+      <ContentView>
         <StickyTabPage staticHeaderContent={headerContent} stickyHeaderContent={<></>} tabs={tabs} />
-      </View>
+        <About tag={tag} />
+      </ContentView>
     </ProvideScreenTracking>
   )
 }
 
 export const TagQueryRenderer: React.FC<TagQueryRendererProps> = (props) => {
-  const { tagID, medium, price_range } = props
-  const input = getParamsForInputByFilterType(
-    {
-      medium,
-      priceRange: price_range,
-    },
-    "tagArtwork"
-  ) as FilterArtworksInput
+  const { tagID } = props
 
   return (
     <QueryRenderer<TagQuery>
@@ -80,7 +88,7 @@ export const TagQueryRenderer: React.FC<TagQueryRendererProps> = (props) => {
           }
         }
       `}
-      variables={{ tagID, input }}
+      variables={{ tagID }}
       render={renderWithPlaceholder({
         Container: Tag,
         renderPlaceholder: () => <TagPlaceholder />,
@@ -89,25 +97,3 @@ export const TagQueryRenderer: React.FC<TagQueryRendererProps> = (props) => {
     />
   )
 }
-
-interface Styles {
-  container: ViewStyle
-  header: ViewStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  container: {
-    flex: 1,
-  },
-  header: {
-    backgroundColor: "white",
-    paddingLeft: commonPadding,
-    paddingRight: commonPadding,
-    ...(isPad
-      ? {
-          width: 330,
-          alignSelf: "center",
-        }
-      : {}),
-  },
-})

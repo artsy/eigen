@@ -1,7 +1,8 @@
 import { About_tag } from "__generated__/About_tag.graphql"
 import { Sans } from "palette"
 import React from "react"
-import { Dimensions, View } from "react-native"
+import { View } from "react-native"
+import DeviceInfo from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
 import removeMarkdown from "remove-markdown"
 
@@ -9,7 +10,7 @@ interface AboutProps {
   tag: About_tag
 }
 
-const sideMargin = Dimensions.get("window").width > 700 ? 50 : 0
+const sideMargin = DeviceInfo.getDeviceType() === "Handset" ? 0 : 50
 
 const About: React.FC<AboutProps> = ({ tag }) => {
   if (!tag.description) {
