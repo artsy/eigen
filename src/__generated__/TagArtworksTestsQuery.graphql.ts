@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 76aa358630b3178a317c29b66abdebf3 */
+/* @relayHash ec4d0270d56525cb3a3334e16d533c4a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -146,7 +146,7 @@ fragment TagArtworks_tag_2VV6jB on Tag {
   id
   internalID
   slug
-  artworks: filterArtworksConnection(first: 10, after: "", aggregations: [MEDIUM, LOCATION_CITY, PRICE_RANGE, MATERIALS_TERMS, PARTNER, ARTIST_NATIONALITY, MAJOR_PERIOD, ARTIST, TOTAL], forSale: true, input: $input) {
+  artworks: filterArtworksConnection(first: 10, after: "", aggregations: [MEDIUM, LOCATION_CITY, PRICE_RANGE, MATERIALS_TERMS, PARTNER, ARTIST_NATIONALITY, MAJOR_PERIOD, ARTIST, TOTAL], input: $input) {
     counts {
       total
     }
@@ -244,11 +244,6 @@ v7 = [
     "kind": "Literal",
     "name": "first",
     "value": 10
-  },
-  {
-    "kind": "Literal",
-    "name": "forSale",
-    "value": true
   },
   (v3/*: any*/)
 ],
@@ -715,7 +710,6 @@ return {
             "args": (v7/*: any*/),
             "filters": [
               "aggregations",
-              "forSale",
               "input"
             ],
             "handle": "connection",
@@ -729,7 +723,7 @@ return {
     ]
   },
   "params": {
-    "id": "76aa358630b3178a317c29b66abdebf3",
+    "id": "ec4d0270d56525cb3a3334e16d533c4a",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "tag": {

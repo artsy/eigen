@@ -162,7 +162,6 @@ export const TagArtworksPaginationContainer = createPaginationContainer(
             ARTIST
             TOTAL
           ]
-          forSale: true
           input: $input
         ) @connection(key: "TagArtworksGrid_artworks") {
           counts {

@@ -1,5 +1,5 @@
 import { Header_tag } from "__generated__/Header_tag.graphql"
-import { Box, Sans } from "palette"
+import { Box, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
@@ -11,19 +11,14 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ tag }) => {
   return (
     <Box marginTop={60} justifyContent="center">
-      <Sans size="8" numberOfLines={2}>
-        {tag.name || ""}
-      </Sans>
+      <Text variant="largeTitle">{tag.name}</Text>
     </Box>
   )
 }
 
 export default createFragmentContainer(Header, {
   tag: graphql`
-    fragment Header_tag on Tag {
-      internalID
-      slug
-      id
+    fragment TagHeader_tag on Tag {
       name
     }
   `,

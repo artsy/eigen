@@ -113,11 +113,6 @@ return {
           ]
         },
         {
-          "kind": "Literal",
-          "name": "forSale",
-          "value": true
-        },
-        {
           "kind": "Variable",
           "name": "input",
           "variableName": "input"
@@ -271,5 +266,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '0d200731d87be4021011b1c57d15fd86';
+(node as any).hash = '300547add8b51f5e2a96f5aed466a178';
 export default node;

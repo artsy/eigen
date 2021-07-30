@@ -66,10 +66,6 @@ describe("TagArtworks", () => {
         }}
         variables={{
           tagID,
-          // input: {
-          //   medium: "*",
-          //   priceRange: "*-*",
-          // },
         }}
       />
     )

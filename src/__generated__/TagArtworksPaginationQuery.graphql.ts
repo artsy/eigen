@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e4c033080baddf0ea659494a9f71e508 */
+/* @relayHash 7eac0bb68aa8cfd05b4e290d2f6b6252 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -150,7 +150,7 @@ fragment TagArtworks_tag_YCAiB on Tag {
   id
   internalID
   slug
-  artworks: filterArtworksConnection(first: $count, after: $cursor, aggregations: [MEDIUM, LOCATION_CITY, PRICE_RANGE, MATERIALS_TERMS, PARTNER, ARTIST_NATIONALITY, MAJOR_PERIOD, ARTIST, TOTAL], forSale: true, input: $input) {
+  artworks: filterArtworksConnection(first: $count, after: $cursor, aggregations: [MEDIUM, LOCATION_CITY, PRICE_RANGE, MATERIALS_TERMS, PARTNER, ARTIST_NATIONALITY, MAJOR_PERIOD, ARTIST, TOTAL], input: $input) {
     counts {
       total
     }
@@ -258,11 +258,6 @@ v9 = [
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
-  },
-  {
-    "kind": "Literal",
-    "name": "forSale",
-    "value": true
   },
   (v5/*: any*/)
 ],
@@ -713,7 +708,6 @@ return {
             "args": (v9/*: any*/),
             "filters": [
               "aggregations",
-              "forSale",
               "input"
             ],
             "handle": "connection",
@@ -727,7 +721,7 @@ return {
     ]
   },
   "params": {
-    "id": "e4c033080baddf0ea659494a9f71e508",
+    "id": "7eac0bb68aa8cfd05b4e290d2f6b6252",
     "metadata": {},
     "name": "TagArtworksPaginationQuery",
     "operationKind": "query",
