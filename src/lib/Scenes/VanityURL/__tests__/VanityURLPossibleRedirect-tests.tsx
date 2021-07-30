@@ -13,18 +13,18 @@ import { VanityURLPossibleRedirect } from "../VanityURLPossibleRedirect"
 
 beforeEach(() => {
   __globalStoreTestUtils__?.setProductionMode()
-  fetchMock.mockReset()
+  fetchMock.resetMocks()
 })
 
 describe(VanityURLPossibleRedirect, () => {
-  it("shows a loading spinner before anything has happened", () => {
+  it("shows a loading spinner before anything has happened", async () => {
     fetchMockResponseOnce({
       status: 200,
       url: "https://artsy.net/test",
     })
-
     const tree = renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
     expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
+    await flushPromiseQueue()
   })
 
   it("sends a fetch request", async () => {
