@@ -1,9 +1,9 @@
 import { storiesOf } from "@storybook/react-native"
-import { Flex, Text } from "palette"
+import { Text } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { withHooks, withThemeV2AndSwitcher } from "storybook/decorators"
-import { List } from "storybook/helpers"
+import { List, Row } from "storybook/helpers"
 import { ColorV2, isThemeV2, useTheme } from "./Theme"
 
 const ColorSquare = ({ color: theColor, bright }: { color: ColorV2; bright?: boolean }) => {
@@ -33,12 +33,6 @@ const ColorSquare = ({ color: theColor, bright }: { color: ColorV2; bright?: boo
     </View>
   )
 }
-
-const Row = ({ children }: { children: React.ReactNode }) => (
-  <Flex width="100%" flexDirection="row" justifyContent="space-evenly">
-    {children}
-  </Flex>
-)
 
 storiesOf("Theme/Color V2", module)
   .addDecorator(withThemeV2AndSwitcher)
