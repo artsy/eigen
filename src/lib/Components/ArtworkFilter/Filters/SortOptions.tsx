@@ -39,12 +39,6 @@ const DEFAULT_GENE_SORT = {
   paramValue: "-partner_updated_at",
 }
 
-const DEFAULT_TAG_SORT = {
-  displayText: "Default",
-  paramName: FilterParamName.sort,
-  paramValue: "-partner_updated_at",
-}
-
 export const ORDERED_ARTWORK_SORTS: FilterData[] = [
   {
     displayText: "Price (high to low)",
@@ -142,7 +136,6 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation
     showArtwork: [GALLERY_CURATED_ARTWORK_SORT, DEFAULT_ARTWORK_SORT, ...ORDERED_ARTWORK_SORTS],
     auctionResult: ORDERED_AUCTION_RESULTS_SORTS,
     geneArtwork: [DEFAULT_GENE_SORT, ...ORDERED_ARTWORK_SORTS],
-    tagArtwork: [DEFAULT_TAG_SORT, ...ORDERED_ARTWORK_SORTS],
   }[filterType]
 
   const selectOption = (option: FilterData) => {
