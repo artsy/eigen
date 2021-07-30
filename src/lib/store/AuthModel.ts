@@ -103,9 +103,21 @@ export interface AuthModel {
     GlobalStoreModel,
     Promise<boolean>
   >
-  authFacebook: Thunk<AuthModel, { signInOrUp: "signIn" | "signUp" }, {}, GlobalStoreModel, Promise<true>>
-  authGoogle: Thunk<AuthModel, { signInOrUp: "signIn" | "signUp" }, {}, GlobalStoreModel, Promise<true>>
-  authApple: Thunk<AuthModel, undefined, {}, GlobalStoreModel, Promise<true>>
+  authFacebook: Thunk<
+    AuthModel,
+    { signInOrUp: "signIn" } | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
+    {},
+    GlobalStoreModel,
+    Promise<true>
+  >
+  authGoogle: Thunk<
+    AuthModel,
+    { signInOrUp: "signIn" } | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
+    {},
+    GlobalStoreModel,
+    Promise<true>
+  >
+  authApple: Thunk<AuthModel, { agreedToReceiveEmails?: boolean }, {}, GlobalStoreModel, Promise<true>>
   forgotPassword: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel, Promise<boolean>>
   gravityUnauthenticatedRequest: Thunk<
     this,
@@ -362,7 +374,7 @@ export const getAuthModel = (): AuthModel => ({
       return false
     }
   ),
-  authFacebook: thunk(async (actions, { signInOrUp }) => {
+  authFacebook: thunk(async (actions, options) => {
     return await new Promise<true>(async (resolve, reject) => {
       const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions(["public_profile", "email"])
       if (declinedPermissions?.includes("email")) {
@@ -388,19 +400,19 @@ export const getAuthModel = (): AuthModel => ({
           return
         }
 
-        if (signInOrUp === "signUp") {
+        if (options.signInOrUp === "signUp") {
           const resultGravitySignUp = await actions.signUp({
             email: facebookInfo.email,
             name: facebookInfo.name,
             accessToken: accessToken.accessToken,
             oauthProvider: "facebook",
-            agreedToReceiveEmails: false,
+            agreedToReceiveEmails: options.agreedToReceiveEmails,
           })
 
           resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
         }
 
-        if (signInOrUp === "signIn") {
+        if (options.signInOrUp === "signIn") {
           // we need to get X-ACCESS-TOKEN before actual sign in
           const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
             path: `/oauth2/access_token`,
@@ -458,7 +470,7 @@ export const getAuthModel = (): AuthModel => ({
       new GraphRequestManager().addRequest(infoRequest).start()
     })
   }),
-  authGoogle: thunk(async (actions, { signInOrUp }) => {
+  authGoogle: thunk(async (actions, options) => {
     return await new Promise<true>(async (resolve, reject) => {
       if (!(await GoogleSignin.hasPlayServices())) {
         reject("Play services are not available.")
@@ -466,7 +478,7 @@ export const getAuthModel = (): AuthModel => ({
       const userInfo = await GoogleSignin.signIn()
       const accessToken = (await GoogleSignin.getTokens()).accessToken
 
-      if (signInOrUp === "signUp") {
+      if (options.signInOrUp === "signUp") {
         const resultGravitySignUp =
           userInfo.user.name &&
           (await actions.signUp({
@@ -474,13 +486,13 @@ export const getAuthModel = (): AuthModel => ({
             name: userInfo.user.name,
             accessToken,
             oauthProvider: "google",
-            agreedToReceiveEmails: false,
+            agreedToReceiveEmails: options.agreedToReceiveEmails,
           }))
 
         resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
       }
 
-      if (signInOrUp === "signIn") {
+      if (options.signInOrUp === "signIn") {
         // we need to get X-ACCESS-TOKEN before actual sign in
         const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
           path: `/oauth2/access_token`,
@@ -522,7 +534,7 @@ export const getAuthModel = (): AuthModel => ({
       }
     })
   }),
-  authApple: thunk(async (actions) => {
+  authApple: thunk(async (actions, { agreedToReceiveEmails }) => {
     return await new Promise<true>(async (resolve, reject) => {
       // we cannot have separated logic for sign in and sign up with apple, as with google or facebook,
       // because apple returns email only on the FIRST auth attempt, so we run sign up and sign in one by one
@@ -551,7 +563,7 @@ export const getAuthModel = (): AuthModel => ({
             appleUID,
             idToken,
             oauthProvider: "apple",
-            agreedToReceiveEmails: false,
+            agreedToReceiveEmails: !!agreedToReceiveEmails,
           }))
 
         resultGravitySignUp ? resolve(true) : (signInOrUp = "signIn")
