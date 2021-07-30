@@ -30,7 +30,7 @@ describe(VanityURLPossibleRedirect, () => {
   it("sends a fetch request", () => {
     fetchMockResponseOnce({
       status: 200,
-      url: "https://artsy.net/test",
+      url: "https://www.artsy.net/test",
     })
     renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
     expect(fetchMock).toHaveBeenCalledTimes(1)
@@ -61,7 +61,7 @@ describe(VanityURLPossibleRedirect, () => {
   it("calls `navigate` when the redirect points to a native view", async () => {
     fetchMockResponseOnce({
       status: 200,
-      url: "https://artsy.net/artist/banksy",
+      url: "https://www.artsy.net/artist/banksy",
     })
     renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
     await flushPromiseQueue()
