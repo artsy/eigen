@@ -205,14 +205,17 @@ export function useWebViewCookies() {
       ? store.native.sessionState.authenticationToken
       : store.auth.userAccessToken
   )
+  const isLoggedIn = GlobalStore.useAppState((state) =>
+    showNewOnboarding ? !!state.auth.userID : !!state.native.sessionState.userID
+  )
   const { webURL, predictionURL } = useEnvironment()
-  useUrlCookies(webURL, accesstoken)
-  useUrlCookies(predictionURL + "/login", accesstoken)
+  useUrlCookies(webURL, accesstoken, isLoggedIn)
+  useUrlCookies(predictionURL + "/login", accesstoken, isLoggedIn)
 }
 
-function useUrlCookies(url: string, accessToken: string | null) {
+function useUrlCookies(url: string, accessToken: string | null, isLoggedIn: boolean) {
   useEffect(() => {
-    if (accessToken) {
+    if (accessToken && isLoggedIn) {
       const attempt = new CookieRequestAttempt(url, accessToken)
       attempt.makeAttempt()
       return () => {
