@@ -122,7 +122,7 @@ describe(SavedAddressesQueryRenderer, () => {
   })
 
   // the test that is breaking
-  fit("should successfully delete address on delete button press", () => {
+  it("should successfully delete address on delete button press", () => {
     // set the mutation
     const mutation: Mutation = {
       name: "deleteSavedAddressDeleteUserAddressMutation",
