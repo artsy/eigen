@@ -128,9 +128,10 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableAuctionResultsKeywordFilter: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable auction results keyword filter",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableAuctionResultsKeywordFilter",
   },
 })
 
