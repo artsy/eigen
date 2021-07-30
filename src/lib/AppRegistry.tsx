@@ -425,7 +425,10 @@ const Main: React.FC<{}> = track()(({}) => {
 
   useSentryConfig()
   useStripeConfig()
-  useWebViewCookies()
+
+  if (isLoggedIn) {
+    useWebViewCookies()
+  }
 
   if (!isHydrated) {
     return <View />

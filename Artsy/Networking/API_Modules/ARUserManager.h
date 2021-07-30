@@ -11,6 +11,7 @@ extern NSString *const ARUserSessionStartedNotification;
 
 + (void)logoutWithCompletion:(RCTPromiseResolveBlock)completion;
 + (void)clearUserData;
++ (void)clearAccessToken;
 
 + (BOOL)didCreateAccountThisSession;
 
