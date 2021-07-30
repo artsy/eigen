@@ -1,7 +1,7 @@
 import { errorMiddleware as relayErrorMiddleware, RelayNetworkLayer } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
 
-// import { cacheMiddleware } from "./middlewares/cacheMiddleware"
+import { cacheMiddleware } from "./middlewares/cacheMiddleware"
 import { checkAuthenticationMiddleware } from "./middlewares/checkAuthenticationMiddleware"
 import { errorMiddleware } from "./middlewares/errorMiddleware"
 import {
@@ -20,7 +20,7 @@ export function createEnvironment(
     [
       // The top middlewares run first, i.e. they are the furtherst from the fetch
       // @ts-ignore
-      // cacheMiddleware(),
+      cacheMiddleware(),
       persistedQueryMiddleware(),
       metaphysicsURLMiddleware(),
       rateLimitMiddleware(),

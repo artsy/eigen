@@ -1,13 +1,11 @@
 import { PopoverMessageProvider } from "lib/Components/PopoverMessage/PopoverMessageProvider"
 import { ToastProvider } from "lib/Components/Toast/toastHook"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { track } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Theme } from "palette"
 import React from "react"
 import ReactTestRenderer from "react-test-renderer"
-import { RelayEnvironmentProvider } from "relay-hooks"
 import { ReactElement } from "simple-markdown"
 
 /**
@@ -51,18 +49,16 @@ export const TrackProvider = track()(({ children }: { children?: React.ReactNode
  */
 export const componentWithWrappers = (component: ReactElement) => {
   return (
-    <RelayEnvironmentProvider environment={defaultEnvironment}>
-      <TrackProvider>
-        <GlobalStoreProvider>
-          <Theme>
-            <ToastProvider>
-              <PopoverMessageProvider>
-                <ProvideScreenDimensions>{component}</ProvideScreenDimensions>
-              </PopoverMessageProvider>
-            </ToastProvider>
-          </Theme>
-        </GlobalStoreProvider>
-      </TrackProvider>
-    </RelayEnvironmentProvider>
+    <TrackProvider>
+      <GlobalStoreProvider>
+        <Theme>
+          <ToastProvider>
+            <PopoverMessageProvider>
+              <ProvideScreenDimensions>{component}</ProvideScreenDimensions>
+            </PopoverMessageProvider>
+          </ToastProvider>
+        </Theme>
+      </GlobalStoreProvider>
+    </TrackProvider>
   )
 }
