@@ -38,7 +38,7 @@ describe("Tag", () => {
           query TagTestsQuery($tagID: String!, $input: FilterArtworksInput) @relay_test_operation {
             tag(id: $tagID) {
               slug
-              ...Header_tag
+              ...TagHeader_tag
               ...About_tag
               ...TagArtworks_tag @arguments(input: $input)
             }
