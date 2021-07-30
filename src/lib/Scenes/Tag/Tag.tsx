@@ -82,7 +82,7 @@ export const TagQueryRenderer: React.FC<TagQueryRendererProps> = (props) => {
         query TagQuery($tagID: String!, $input: FilterArtworksInput) {
           tag(id: $tagID) {
             slug
-            ...Header_tag
+            ...TagHeader_tag
             ...About_tag
             ...TagArtworks_tag @arguments(input: $input)
           }

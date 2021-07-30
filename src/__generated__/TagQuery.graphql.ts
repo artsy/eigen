@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3379f268709878a5ac6445212ec1baa2 */
+/* @relayHash ab611692ce7a643e20cb78e53971803c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -63,7 +63,7 @@ export type TagQueryVariables = {
 export type TagQueryResponse = {
     readonly tag: {
         readonly slug: string;
-        readonly " $fragmentRefs": FragmentRefs<"Header_tag" | "About_tag" | "TagArtworks_tag">;
+        readonly " $fragmentRefs": FragmentRefs<"TagHeader_tag" | "About_tag" | "TagArtworks_tag">;
     } | null;
 };
 export type TagQuery = {
@@ -80,7 +80,7 @@ query TagQuery(
 ) {
   tag(id: $tagID) {
     slug
-    ...Header_tag
+    ...TagHeader_tag
     ...About_tag
     ...TagArtworks_tag_2VV6jB
     id
@@ -124,10 +124,6 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
-}
-
-fragment Header_tag on Tag {
-  name
 }
 
 fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
@@ -184,6 +180,10 @@ fragment TagArtworks_tag_2VV6jB on Tag {
     }
     id
   }
+}
+
+fragment TagHeader_tag on Tag {
+  name
 }
 */
 
@@ -295,7 +295,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "Header_tag"
+            "name": "TagHeader_tag"
           },
           {
             "args": null,
@@ -724,7 +724,7 @@ return {
     ]
   },
   "params": {
-    "id": "3379f268709878a5ac6445212ec1baa2",
+    "id": "ab611692ce7a643e20cb78e53971803c",
     "metadata": {},
     "name": "TagQuery",
     "operationKind": "query",
@@ -732,5 +732,5 @@ return {
   }
 };
 })();
-(node as any).hash = '024892637c7bdfc9cb450068a19b13fe';
+(node as any).hash = 'b9d5eb42baa2e6bbf1c2b437093664e0';
 export default node;

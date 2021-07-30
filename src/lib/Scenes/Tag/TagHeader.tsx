@@ -1,10 +1,10 @@
-import { Header_tag } from "__generated__/Header_tag.graphql"
+import { TagHeader_tag } from "__generated__/TagHeader_tag.graphql"
 import { Box, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface HeaderProps {
-  tag: Header_tag
+  tag: TagHeader_tag
   relay: RelayProp
 }
 
