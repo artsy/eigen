@@ -1,4 +1,3 @@
-import fetchMock from "jest-fetch-mock"
 import { MockResponseInit } from "jest-fetch-mock/types"
 
 export const fetchMockResponseOnce = (response: MockResponseInit | string) =>
