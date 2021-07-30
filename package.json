@@ -84,7 +84,7 @@
     "cheerio": "0.22.0"
   },
   "dependencies": {
-    "@artsy/cohesion": "2.13.0",
+    "@artsy/cohesion": "2.14.0",
     "@artsy/palette-tokens": "2.1.2",
     "@expo/react-native-action-sheet": "^3.8.0",
     "@invertase/react-native-apple-authentication": "^2.1.2",
