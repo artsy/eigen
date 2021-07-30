@@ -19,7 +19,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, Button, Flex, getColorsForVariant, space, Theme } from "palette"
+import { Box, Button, Flex, getColorsForVariant, Theme } from "palette"
 import { graphql } from "relay-runtime"
 import ParentAwareScrollView from "../ParentAwareScrollView"
 
@@ -153,7 +153,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       // This is the sum of all margins in between sections, so do not count to the right of last column.
       const sectionMargins = this.props.sectionMargin! * (this.props.sectionCount! - 1)
       const { shouldAddPadding } = this.props
-      const artworkPadding = shouldAddPadding ? space(4) : 0
+      const artworkPadding = shouldAddPadding ? 40 : 0
 
       return (width - sectionMargins) / (this.props.sectionCount! - artworkPadding)
     }

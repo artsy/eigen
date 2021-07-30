@@ -4,8 +4,10 @@ import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn,
 import { isArtsyEmail } from "lib/utils/general"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { stringify } from "qs"
+import { Alert, Linking, Platform } from "react-native"
 import Config from "react-native-config"
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "react-native-fbsdk-next"
+import PushNotification from "react-native-push-notification"
 import { getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
@@ -264,6 +266,30 @@ export const getAuthModel = (): AuthModel => ({
         userEmail: email,
       })
       actions.notifyTracking({ userId: id })
+
+      if (Platform.OS === "android") {
+        PushNotification.checkPermissions((permissions) => {
+          if (!permissions.alert) {
+            // settimeout so alerts show when/immediately after page loads not before.
+            setTimeout(() => {
+              Alert.alert(
+                "Artsy Would Like to Send You Notifications",
+                "Turn on notifications to get important updates about artists you follow.",
+                [
+                  {
+                    text: "Dismiss",
+                    style: "cancel",
+                  },
+                  {
+                    text: "Settings",
+                    onPress: () => Linking.openSettings(),
+                  },
+                ]
+              )
+            }, 3000)
+          }
+        })
+      }
       return true
     }
 

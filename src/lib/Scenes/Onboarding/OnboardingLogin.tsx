@@ -4,7 +4,7 @@ import { Input } from "lib/Components/Input/Input"
 import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Button, color, Flex, Spacer, Text } from "palette"
+import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useRef } from "react"
 import { ScrollView, View } from "react-native"
 import * as Yup from "yup"
@@ -24,6 +24,7 @@ export const loginSchema = Yup.object().shape({
 })
 
 export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation, route }) => {
+  const color = useColor()
   const {
     values,
     handleSubmit,

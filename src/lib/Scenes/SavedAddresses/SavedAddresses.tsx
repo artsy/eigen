@@ -1,15 +1,16 @@
 import { captureMessage } from "@sentry/react-native"
+import { themeGet } from "@styled-system/theme-get"
 import { SavedAddresses_me } from "__generated__/SavedAddresses_me.graphql"
 import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import { navigate } from "lib/navigation/navigate"
+import { navigate, navigationEvents } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, color, Flex, Separator, Spacer, Text, Touchable } from "palette"
-import React, { useCallback, useState } from "react"
+import { Box, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import React, { useCallback, useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -22,18 +23,21 @@ interface CardProps {
 }
 
 const Card = styled(Flex)`
-  border: 1px solid ${(props: CardProps) => (props.isDefault ? color("black100") : color("black30"))};
+  border: 1px solid
+    ${(props: CardProps) => (props.isDefault ? themeGet("colors.black100") : themeGet("colors.black30"))};
   border-radius: 4;
 `
 
 // tslint:disable-next-line:variable-name
 const NUM_ADDRESSES_TO_FETCH = 10
 
+// tslint:disable-next-line:no-empty
+export const util = { onRefresh: () => {} }
+
 const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const addresses = extractNodes(me.addressConnection)
-
-  const onRefresh = useCallback(() => {
+  util.onRefresh = useCallback(() => {
     setIsRefreshing(true)
     relay.refetch(
       {},
@@ -45,7 +49,20 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
     )
   }, [])
 
-  const onPressEditAddress = () => null
+  useEffect(() => {
+    navigationEvents.addListener("goBack", util.onRefresh)
+    return () => {
+      navigationEvents.removeListener("goBack", util.onRefresh)
+    }
+  }, [])
+
+  const onPressEditAddress = (addressId: string) =>
+    navigate("/my-profile/saved-addresses/edit-address", {
+      modal: true,
+      passProps: {
+        addressId,
+      },
+    })
 
   const onPressDeleteAddress = (addressId: string) => {
     deleteSavedAddress(
@@ -58,7 +75,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
   return (
     <PageWithSimpleHeader title="Saved Addresses">
       <FlatList
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={util.onRefresh} />}
         data={addresses.sort((a, b) => Number(b?.isDefault) - Number(a?.isDefault))}
         keyExtractor={(address) => address.internalID}
         contentContainerStyle={{
@@ -88,7 +105,10 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
                     {!!item?.isDefault && <Text variant="small">Default Address</Text>}
                   </Flex>
                   <Flex flex={1} flexDirection="row" justifyContent="space-between">
-                    <Touchable onPress={onPressEditAddress}>
+                    <Touchable
+                      testID={`EditAddress-${item.internalID}`}
+                      onPress={() => onPressEditAddress(item.internalID)}
+                    >
                       <Text variant="text" color="black100" style={{ textDecorationLine: "underline" }}>
                         Edit
                       </Text>
@@ -110,7 +130,9 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
           addresses.length ? (
             <Box mx={2} mb={2}>
               <AddAddressButton
-                handleOnPress={() => navigate("/my-profile/saved-addresses/new-address")}
+                block={false}
+                variant="secondaryOutline"
+                handleOnPress={() => navigate("/my-profile/saved-addresses/new-address", { modal: true })}
                 title="Add New Address"
               />
             </Box>
@@ -127,7 +149,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
               Please add an address for a faster checkout experience in the future.
             </Text>
             <AddAddressButton
-              handleOnPress={() => navigate("/my-profile/saved-addresses/new-address")}
+              handleOnPress={() => navigate("/my-profile/saved-addresses/new-address", { modal: true })}
               title="Add New Address"
             />
           </Flex>
@@ -157,7 +179,7 @@ export const SavedAddressesContainer = createRefetchContainer(
     me: graphql`
       fragment SavedAddresses_me on Me {
         name
-        addressConnection(first: 3) {
+        addressConnection(first: 10) {
           edges {
             node {
               id
@@ -166,6 +188,7 @@ export const SavedAddressesContainer = createRefetchContainer(
               addressLine1
               addressLine2
               addressLine3
+              country
               city
               region
               postalCode

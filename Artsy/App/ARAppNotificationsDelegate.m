@@ -257,7 +257,7 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
 {
-    [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
+
     [[Appboy sharedInstance] registerApplication:application
                     didReceiveRemoteNotification:userInfo
                           fetchCompletionHandler:handler];
@@ -265,6 +265,8 @@
     if ([Appboy sharedInstance] == nil) {
         [[SEGAppboyIntegrationFactory instance] saveRemoteNotification:userInfo];
     }
+
+    [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
 
     handler(UIBackgroundFetchResultNoData);
 }
@@ -356,6 +358,24 @@
     } else {
         return [newToken isEqualToString:previousToken];
     }
+}
+
+#pragma mark - UNUserNotificationCenterDelegate
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+       willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
+  if (@available(iOS 14.0, *)) {
+    completionHandler(UNNotificationPresentationOptionList | UNNotificationPresentationOptionBanner);
+  } else {
+    completionHandler(UNNotificationPresentationOptionAlert);
+  }
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
+    [[Appboy sharedInstance] userNotificationCenter:center
+                     didReceiveNotificationResponse:response
+                              withCompletionHandler:completionHandler];
 }
 
 @end

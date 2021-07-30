@@ -5,7 +5,7 @@ import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useAr
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { useLayout } from "lib/utils/useLayout"
 import { sortBy } from "lodash"
-import { Flex, space } from "palette"
+import { Flex, useSpace } from "palette"
 import React from "react"
 import { ColorsSwatch } from "./ColorsSwatch"
 import { useMultiSelect } from "./useMultiSelect"
@@ -38,6 +38,7 @@ const SWATCHES_PER_ROW = 4
 interface ColorsOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "ColorsOptionsScreen"> {}
 
 export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ navigation }) => {
+  const space = useSpace()
   const { layout, handleLayout } = useLayout()
 
   const { aggregation } = useArtworkFiltersAggregation({

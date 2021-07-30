@@ -47,18 +47,16 @@ export const TrackProvider = track()(({ children }: { children?: React.ReactNode
  * Returns given component wrapped with our page wrappers
  * @param component
  */
-export const componentWithWrappers = (component: ReactElement) => {
-  return (
-    <TrackProvider>
-      <GlobalStoreProvider>
-        <Theme>
-          <ToastProvider>
-            <PopoverMessageProvider>
-              <ProvideScreenDimensions>{component}</ProvideScreenDimensions>
-            </PopoverMessageProvider>
-          </ToastProvider>
-        </Theme>
-      </GlobalStoreProvider>
-    </TrackProvider>
-  )
-}
+export const componentWithWrappers = (component: ReactElement) => (
+  <TrackProvider>
+    <GlobalStoreProvider>
+      <Theme>
+        <ToastProvider>
+          <PopoverMessageProvider>
+            <ProvideScreenDimensions>{component}</ProvideScreenDimensions>
+          </PopoverMessageProvider>
+        </ToastProvider>
+      </Theme>
+    </GlobalStoreProvider>
+  </TrackProvider>
+)

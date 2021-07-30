@@ -5,7 +5,7 @@ import { navigate } from "lib/navigation/navigate"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Image } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { ArtworkIcon, color, Flex, Spacer, Text } from "palette"
+import { ArtworkIcon, Flex, Spacer, Text, useColor } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -18,6 +18,7 @@ interface MyCollectionArtworkHeaderProps {
 }
 
 export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (props) => {
+  const color = useColor()
   const {
     artwork: { artistNames, date, images, internalID, title, slug },
     relay,

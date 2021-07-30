@@ -86,8 +86,6 @@ static ARAppDelegate *_sharedInstance = nil;
     // protocol, as it means we would have to implement `application:openURL:options:` which seems tricky if we still
     // have to implement `application:openURL:sourceApplication:annotation:` as well.
     [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = (id)_sharedInstance;
-
-
 }
 
 + (ARAppDelegate *)sharedInstance
@@ -146,7 +144,7 @@ static ARAppDelegate *_sharedInstance = nil;
     [[ARLogger sharedLogger] startLogging];
 
     [self setupEmission];
-    self.viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Main" initialProperties:@{}];
+    self.viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Artsy" initialProperties:@{}];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
 
@@ -154,7 +152,6 @@ static ARAppDelegate *_sharedInstance = nil;
       // prevent dark mode
       self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
     }
-
 
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];
@@ -182,7 +179,7 @@ static ARAppDelegate *_sharedInstance = nil;
 - (void)setupAnalytics:(UIApplication *)application withLaunchOptions:(NSDictionary *)launchOptions
 {
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    center.delegate = self;
+    center.delegate = [self remoteNotificationsDelegate];
     NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_STAGING_APP_KEY_IOS"];
     if (![ARAppStatus isDev]) {
         brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];
@@ -222,7 +219,6 @@ static ARAppDelegate *_sharedInstance = nil;
 {
     [self registerNewSessionOpened];
 
-
     NSString *currentUserId = [[[ARUserManager sharedManager] currentUser] userID];
     if (currentUserId) {
         [[Appboy sharedInstance] changeUser: currentUserId];
@@ -237,7 +233,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (ARAppNotificationsDelegate *)remoteNotificationsDelegate;
 {
-    return [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+    return (ARAppNotificationsDelegate *)[[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
 }
 
 - (void)forceCacheCustomFonts
@@ -269,7 +265,7 @@ static ARAppDelegate *_sharedInstance = nil;
         }
 
         if (!([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding)) {
-            ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+            ARAppNotificationsDelegate *remoteNotificationsDelegate = [self remoteNotificationsDelegate];
             [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
         }
     });
