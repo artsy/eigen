@@ -1,3 +1,12 @@
+import { FilterParamName } from "../ArtworkFilterHelpers"
+
+export const shouldExtractValueNamesFromAggregation = [
+  FilterParamName.locationCities,
+  FilterParamName.materialsTerms,
+  FilterParamName.additionalGeneIDs,
+  FilterParamName.partnerIDs,
+]
+
 export const allowedSearchCriteriaKeys = [
   "artistID",
   "locationCities",

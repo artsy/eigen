@@ -1,5 +1,11 @@
 import { isEqual, isNull, pick } from "lodash"
-import { defaultCommonFilterOptions, FilterParamName, FilterParams } from "../ArtworkFilterHelpers"
+import {
+  defaultCommonFilterOptions,
+  FilterArray,
+  FilterData,
+  FilterParamName,
+  FilterParams,
+} from "../ArtworkFilterHelpers"
 import { allowedSearchCriteriaKeys } from "./constants"
 import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "./types"
 
@@ -37,6 +43,26 @@ export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams
 
     if (!isEqual(defaultValue, value)) {
       input[key as keyof SearchCriteriaAttributes] = value as any
+    }
+  }
+
+  return input
+}
+
+export const getAllowedFiltersForSavedSearchInput = (filters: FilterArray) => {
+  return filters.filter((filter) => allowedSearchCriteriaKeys.includes(filter.paramName))
+}
+
+export const prepareFilterDataForSaveSearchInput = (filters: FilterData[]) => {
+  const input: SearchCriteriaAttributes = {}
+  const allowedFilters = getAllowedFiltersForSavedSearchInput(filters)
+
+  for (const filter of allowedFilters) {
+    const value = filter.paramValue
+    const defaultValue = defaultCommonFilterOptions[filter.paramName]
+
+    if (!isEqual(defaultValue, value)) {
+      input[filter.paramName as keyof SearchCriteriaAttributes] = value as any
     }
   }
 
