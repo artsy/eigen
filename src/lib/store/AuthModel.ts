@@ -384,6 +384,7 @@ export const getAuthModel = (): AuthModel => ({
             accessToken: accessToken.accessToken,
             oauthProvider: "facebook",
           })
+
           resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
         }
 
@@ -417,6 +418,7 @@ export const getAuthModel = (): AuthModel => ({
               accessToken: accessToken.accessToken,
               oauthProvider: "facebook",
             })
+
             resultGravitySignIn ? resolve(true) : reject("Failed to log in.")
           } else {
             const res = await resultGravityAccessToken.json()
@@ -461,6 +463,7 @@ export const getAuthModel = (): AuthModel => ({
             accessToken,
             oauthProvider: "google",
           }))
+
         resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
       }
 
@@ -494,6 +497,7 @@ export const getAuthModel = (): AuthModel => ({
             accessToken,
             oauthProvider: "google",
           })
+
           resultGravitySignIn ? resolve(true) : reject("Failed to log in.")
         } else {
           const res = await resultGravityAccessToken.json()
@@ -535,6 +539,7 @@ export const getAuthModel = (): AuthModel => ({
             idToken,
             oauthProvider: "apple",
           }))
+
         resultGravitySignUp ? resolve(true) : (signInOrUp = "signIn")
       }
 
@@ -569,6 +574,7 @@ export const getAuthModel = (): AuthModel => ({
             idToken,
             oauthProvider: "apple",
           })
+
           resultGravitySignIn ? resolve(true) : reject("Failed to log in.")
         } else {
           const res = await resultGravityAccessToken.json()
