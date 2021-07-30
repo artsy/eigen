@@ -22,6 +22,6 @@ describe("Saved search alert form", () => {
   })
 
   it("renders without throwing an error", () => {
-    renderWithWrappers(<Form />)
+    renderWithWrappers(<Form artist={{ name: "artistName", id: "artistId" }} filters={[]} pills={[]} />)
   })
 })

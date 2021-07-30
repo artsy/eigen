@@ -8,6 +8,7 @@ export type ArtworkAggregation = "ARTIST" | "ARTIST_NATIONALITY" | "ATTRIBUTION_
 export type ArtistArtworks_artist = {
     readonly id: string;
     readonly slug: string;
+    readonly name: string | null;
     readonly internalID: string;
     readonly artworks: {
         readonly aggregations: ReadonlyArray<{
@@ -44,6 +45,13 @@ var v0 = {
   "args": null,
   "kind": "ScalarField",
   "name": "id",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 };
 return {
@@ -87,6 +95,7 @@ return {
       "name": "slug",
       "storageKey": null
     },
+    (v1/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -152,13 +161,7 @@ return {
                   "name": "count",
                   "storageKey": null
                 },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "name",
-                  "storageKey": null
-                },
+                (v1/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -265,5 +268,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '772ab02113ce651f7426a24951d3cf6b';
+(node as any).hash = 'c1c6bedae2f8f85aeeca5518db4a4fdb';
 export default node;
