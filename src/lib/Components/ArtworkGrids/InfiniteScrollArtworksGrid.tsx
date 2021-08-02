@@ -19,7 +19,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, Button, Flex, getColorsForVariant, Theme } from "palette"
+import { Box, Button, Flex, Theme } from "palette"
 import { graphql } from "relay-runtime"
 import ParentAwareScrollView from "../ParentAwareScrollView"
 
@@ -314,13 +314,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             pb="9"
             style={{ opacity: this.state.isLoading && hasMore() ? 1 : 0 }}
           >
-            {!!this.props.autoFetch && (
-              <ActivityIndicator
-                color={
-                  Platform.OS === "android" ? getColorsForVariant("primaryBlack").default.backgroundColor : undefined
-                }
-              />
-            )}
+            {!!this.props.autoFetch && <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />}
           </Flex>
         </>
       </Theme>
