@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { Platform } from "react-native"
 import PushNotification from "react-native-push-notification"
 import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "../AdminMenu"
@@ -46,7 +47,7 @@ describe("Push Notification Tests", () => {
   })
 
   describe("saveToken", () => {
-    it("sends token to gravity if user is logged in", async (done) => {
+    it("sends token to gravity if user is logged in", async () => {
       mockFetchJsonOnce({
         xapp_token: "xapp-token",
         expires_in: "never",
@@ -72,14 +73,9 @@ describe("Push Notification Tests", () => {
       mockFetch.mockClear()
       mockFetchJsonOnce({}, 201)
 
-      Push.saveToken({ os: Platform.OS, token: "pushnotificationtoken" })
-        .then((called) => {
-          expect(mockFetch).toHaveBeenCalledTimes(1)
-          expect(called).toBe(true)
-          done()
-        })
-        .catch((e) => done(e))
-        .finally(() => done())
+      await Push.saveToken({ os: Platform.OS, token: "pushnotificationtoken" })
+      await flushPromiseQueue()
+      expect(mockFetch).toHaveBeenCalledTimes(1)
     })
 
     it("does not try to save token to gravity when user is Not logged in", async () => {
