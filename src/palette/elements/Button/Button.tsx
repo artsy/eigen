@@ -1,10 +1,10 @@
 import { useColor } from "palette/hooks"
-import React, { ReactNode, useState } from "react"
-import { GestureResponderEvent, TextStyle, TouchableWithoutFeedback, ViewStyle } from "react-native"
+import React, { DependencyList, Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react"
+import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
-import { animated, useSpring } from "react-spring"
+import { animated, config, useSpring } from "react-spring"
 import styled from "styled-components/native"
-import { SansSize, ThemeV3 } from "../../Theme"
+import { Color, SansSize, ThemeV3 } from "../../Theme"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
@@ -49,6 +49,9 @@ export interface ButtonProps extends ButtonBaseProps {
    * to add haptic feedback on the button.
    */
   haptic?: HapticFeedbackTypes | true
+
+  /** Used only for tests and stories */
+  _state?: DisplayState
 }
 
 export interface ButtonBaseProps extends BoxProps {
@@ -60,16 +63,15 @@ export interface ButtonBaseProps extends BoxProps {
   disabled?: boolean
   /** Makes button full width */
   block?: boolean
-  /** Additional styles to apply to the variant */
-  variantStyles?: any // FIXME
   /** Pass the longest text to the button for the button to keep longest text width */
   longestText?: string
 }
 
 enum DisplayState {
-  Enabled = "default",
-  Highlighted = "hover",
-  Disabled = "default",
+  Enabled = "enabled",
+  Pressed = "pressed",
+  Loading = "loading",
+  Disabled = "disabled",
 }
 
 /** A button with various size and color settings */
@@ -80,6 +82,7 @@ const PureButton: React.FC<ButtonProps> = ({
   icon,
   iconPosition = defaultIconPosition,
   loading,
+  _state,
   longestText,
   onPress,
   size = defaultSize,
@@ -89,8 +92,30 @@ const PureButton: React.FC<ButtonProps> = ({
 }) => {
   const color = useColor()
 
-  const [previous, setPrevious] = useState(DisplayState.Enabled)
-  const [current, setCurrent] = useState(DisplayState.Enabled)
+  const [buttonState, setButtonState] = useStateWithEffect(
+    _state ?? DisplayState.Enabled,
+    (s, [_s, dis, loa]) => {
+      if (_s !== undefined) {
+        return _s
+      }
+      if (dis) {
+        return DisplayState.Disabled
+      }
+      if (loa) {
+        return DisplayState.Loading
+      }
+      return s
+    },
+    [_state, disabled, loading]
+  )
+
+  // const [current, setCurrent] = useState(disabled ? DisplayState.Disabled : DisplayState.Enabled)
+  // useEffect(() => {
+
+  //   if(disabled) {
+  //     return
+
+  // }, [disabled, loading])
 
   const getSize = (): { height: number; size: SansSize; px: number } => {
     switch (size) {
@@ -101,14 +126,13 @@ const PureButton: React.FC<ButtonProps> = ({
     }
   }
 
-  const loadingStyles = loading
-    ? {
-        backgroundColor: variant === "text" ? color("black10") : disabled ? color("black30") : color("blue100"),
-        color: color("white100"),
-        borderWidth: 0,
-        textColor: "transparent",
-      }
-    : {}
+  const to = useStyleForVariantAndState({ variant, state: buttonState })
+  const animProps = useSpring({
+    to,
+    // config: config.stiff,
+    // extract this to a helper
+    config: { ...config.stiff, duration: 3000 },
+  })
 
   const spinnerColor = variant === "text" ? "blue100" : "white100"
 
@@ -117,22 +141,20 @@ const PureButton: React.FC<ButtonProps> = ({
       return
     }
 
-    if (loading || disabled) {
+    if (buttonState === DisplayState.Loading || buttonState === DisplayState.Disabled) {
       return
     }
 
     // Did someone tap really fast? Flick the highlighted state
-    if (current === DisplayState.Enabled) {
-      setPrevious(current)
-      setCurrent(DisplayState.Highlighted)
-      setTimeout(() => {
-        setPrevious(current)
-        setCurrent(DisplayState.Enabled)
-      }, 0.3)
-    } else {
-      // Was already selected
-      setCurrent(DisplayState.Enabled)
-    }
+    // if (buttonState === DisplayState.Enabled) {
+    //   setButtonState(DisplayState.Pressed)
+    //   setTimeout(() => {
+    //     setButtonState(DisplayState.Enabled)
+    //   }, 0.3)
+    // } else {
+    //   // Was already selected
+    //   setButtonState(DisplayState.Enabled)
+    // }
 
     if (haptic !== undefined) {
       Haptic.trigger(haptic === true ? "impactLight" : haptic)
@@ -142,71 +164,117 @@ const PureButton: React.FC<ButtonProps> = ({
   }
 
   const containerSize = getSize()
-  const variantColors = getColorsForVariant(variant, disabled)
-
-  const from = variantColors[previous]
-  const to = variantColors[current]
   const iconBox = <Box opacity={loading ? 0 : 1}>{icon}</Box>
 
   return (
-    <Spring native from={from} to={to}>
-      {(springProps: ViewStyle & TextStyle) => (
-        <TouchableWithoutFeedback
-          onPress={handlePress}
-          onPressIn={() => {
-            setPrevious(DisplayState.Enabled)
-            setCurrent(DisplayState.Highlighted)
+    <TouchableWithoutFeedback
+      onPress={handlePress}
+      onPressIn={() => {
+        setButtonState(DisplayState.Pressed)
+      }}
+      onPressOut={() => {
+        setButtonState(DisplayState.Enabled)
+      }}
+      disabled={disabled}
+    >
+      <Flex flexDirection="row">
+        <AnimatedContainer
+          {...rest}
+          loading={buttonState === DisplayState.Loading}
+          disabled={buttonState === DisplayState.Disabled}
+          style={{
+            ...animProps,
           }}
-          onPressOut={() => {
-            setPrevious(DisplayState.Highlighted)
-            setCurrent(DisplayState.Enabled)
-          }}
-          disabled={disabled}
+          height={containerSize.height}
+          px={containerSize.px}
         >
-          <Flex flexDirection="row">
-            <AnimatedContainer
-              {...rest}
-              loading={loading}
-              disabled={disabled}
-              style={{ ...springProps, ...loadingStyles, height: containerSize.height }}
-              px={containerSize.px}
+          <VisibleTextContainer>
+            {iconPosition === "left" && iconBox}
+            <Text
+              variant={size === "small" ? "small" : "mediumText"}
+              fontSize={size === "small" ? "13" : "16"}
+              style={{
+                // color: animProps.textColor,
+                textDecorationLine: "underline",
+                // textDecorationColor: animProps.textDecorationColor,
+              }}
             >
-              <VisibleTextContainer>
-                {iconPosition === "left" && iconBox}
-                <Text
-                  variant={size === "small" ? "small" : "mediumText"}
-                  fontSize={size === "small" ? "13" : "16"}
-                  style={{
-                    color: loading ? "transparent" : springProps.color,
-                    textDecorationLine: current === "hover" ? "underline" : "none",
-                  }}
-                >
-                  {children}
-                </Text>
-                {iconPosition === "right" && iconBox}
-              </VisibleTextContainer>
-              <HiddenContainer>
-                {icon}
-                <Text fontSize={size === "small" ? "13" : "16"} variant={size === "small" ? "small" : "mediumText"}>
-                  {longestText ? longestText : children}
-                </Text>
-              </HiddenContainer>
-
-              {!!loading && <Spinner size={size} color={spinnerColor} />}
-            </AnimatedContainer>
-          </Flex>
-        </TouchableWithoutFeedback>
-      )}
-    </Spring>
+              {children}
+            </Text>
+            {iconPosition === "right" && iconBox}
+          </VisibleTextContainer>
+          <HiddenContainer>
+            {icon}
+            <Text fontSize={size === "small" ? "13" : "16"} variant={size === "small" ? "small" : "mediumText"}>
+              {longestText ? longestText : children}
+            </Text>
+          </HiddenContainer>
+          {buttonState === DisplayState.Loading ? <Spinner size={size} color={spinnerColor} /> : null}
+        </AnimatedContainer>
+      </Flex>
+    </TouchableWithoutFeedback>
   )
 }
 
-/**
- * Returns various colors for each state given a button variant
- * @param variant
- */
-export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = false) {
+const useStyleForVariantAndState = ({
+  variant,
+  state,
+}: {
+  variant: ButtonVariant
+  state: DisplayState
+}): {
+  backgroundColor: string
+  borderColor: string
+  textColor: string
+  textDecorationColor: string
+} => {
   const color = useColor()
+
+  switch (variant) {
+    // case "fillDark":
+    case "fillLight":
+      switch (state) {
+        case DisplayState.Enabled:
+          return {
+            backgroundColor: color("white100"),
+            borderColor: color("white100"),
+            textColor: color("black100"),
+            textDecorationColor: "transparent",
+          }
+        case DisplayState.Pressed:
+          return {
+            backgroundColor: color("blue100"),
+            borderColor: color("blue100"),
+            textColor: color("white100"),
+            textDecorationColor: color("white100"),
+          }
+        case DisplayState.Loading:
+          // loading
+          // backgroundColor: variant === "text" ? color("black10") : disabled ? color("black30") : color("blue100"),
+          return {
+            backgroundColor: color("blue100"),
+            borderColor: "transparent",
+            textColor: "transparent",
+            textDecorationColor: "transparent",
+          }
+        case DisplayState.Disabled:
+          return {
+            backgroundColor: color("black30"),
+            borderColor: color("black30"),
+            textColor: color("white100"),
+            textDecorationColor: "transparent",
+          }
+        default:
+          assertNever(state)
+      }
+      assertNever(state)
+
+    default:
+      return {
+        backgroundColor: "orange",
+        color: "purple",
+      }
+  }
 
   const blackWithOpacity = disabled ? color("black30") : color("black100")
   const blackWithFullOpacity = disabled ? color("white100") : color("black100")
@@ -230,21 +298,7 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
           textColor: whiteWithOpacity,
         },
       }
-    case "fillLight":
-      return {
-        default: {
-          backgroundColor: whiteWithOpacity,
-          borderColor: whiteWithOpacity,
-          color: blackWithFullOpacity,
-          textColor: blackWithFullOpacity,
-        },
-        hover: {
-          backgroundColor: blueWithOpacity,
-          borderColor: blueWithOpacity,
-          color: color("white100"),
-          textColor: color("white100"),
-        },
-      }
+
     case "fillGray":
       return {
         default: {
@@ -327,3 +381,20 @@ const Container = styled(Box)<ButtonProps>`
 `
 
 const AnimatedContainer = animated(Container)
+
+export { DisplayState as _DisplayState }
+
+export const useStateWithEffect = <ValueType, DepList extends any[]>(
+  initialValue: ValueType,
+  func: (v: ValueType, d: DepList) => ValueType,
+  deps: [...DepList]
+): [ValueType, Dispatch<SetStateAction<ValueType>>] => {
+  const [internalValue, setInternalValue] = useState(initialValue)
+  const [combinedValue, setCombinedValue] = useState(initialValue)
+
+  useEffect(() => {
+    setCombinedValue(func(internalValue, deps))
+  }, [...deps, internalValue])
+
+  return [combinedValue, setInternalValue]
+}

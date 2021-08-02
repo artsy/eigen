@@ -3,11 +3,17 @@ import { storiesOf } from "@storybook/react-native"
 import { LinkIcon } from "palette"
 import React from "react"
 import { DList, List } from "storybook/helpers"
-import { Button, ButtonSize, ButtonVariant } from "./Button"
+import { _DisplayState, Button, ButtonSize, ButtonVariant } from "./Button"
 
 const sizes: ButtonSize[] = ["small", "large"]
-
 const variants: ButtonVariant[] = ["fillDark", "fillLight", "fillGray", "outline", "text"]
+const states: Array<_DisplayState | undefined> = [
+  undefined,
+  _DisplayState.Enabled,
+  _DisplayState.Pressed,
+  _DisplayState.Loading,
+  _DisplayState.Disabled,
+]
 
 storiesOf("ButtonV3", module)
   .add("Sizes", () => (
@@ -46,6 +52,16 @@ storiesOf("ButtonV3", module)
       renderItem={({ item: variant }) => (
         <Button variant={variant} disabled onPress={() => action(`tapped ${variant}`)}>
           {variant}
+        </Button>
+      )}
+    />
+  ))
+  .add("States", () => (
+    <DList
+      data={states}
+      renderItem={({ item: state }) => (
+        <Button variant="fillLight" _state={state} onPress={() => action(`tapped ${state}`)}>
+          {state ?? "regular button"}
         </Button>
       )}
     />
