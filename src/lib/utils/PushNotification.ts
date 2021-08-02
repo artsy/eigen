@@ -10,23 +10,22 @@ const MAX_ELAPSED_TAPPED_NOTIFICATION_TIME = 90 // seconds
 export const handlePendingNotification = (notification: PendingPushNotification) => {
   const elapsedTimeInSecs = Math.floor((Date.now() - notification.tappedAt) / 1000)
   if (elapsedTimeInSecs <= MAX_ELAPSED_TAPPED_NOTIFICATION_TIME && !!notification.data.url) {
-    navigate(notification.data.url)
+    navigate(notification.data.url, { passProps: { ...notification.data, url: undefined } })
   }
   globalStoreInstance()
     .getActions()
     .pendingPushNotification.setPendingPushNotification({ platform: "android", notification: null })
 }
 
-const handleReceivedNotification = (notification: Omit<ReceivedNotification, "userInfo">) => {
-  if (__DEV__) {
+export const handleReceivedNotification = (notification: Omit<ReceivedNotification, "userInfo">) => {
+  if (__DEV__ && !__TEST__) {
     console.log("RECIEVED NOTIFICATION", notification)
   }
   const isLoggedIn = !!globalStoreInstance().getState().auth.userAccessToken
   if (notification.userInteraction) {
     const hasUrl = !!notification.data.url
     if (isLoggedIn && hasUrl) {
-      // navigate
-      navigate(notification.data.url as string)
+      navigate(notification.data.url as string, { passProps: { ...notification.data, url: undefined } })
       return
     }
     if (!isLoggedIn) {
@@ -130,4 +129,5 @@ export async function configure() {
 module.exports = {
   configure,
   handlePendingNotification,
+  handleReceivedNotification,
 }
