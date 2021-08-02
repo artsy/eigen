@@ -294,6 +294,21 @@ export const filterArtworksParams = (appliedFilters: FilterArray, filterType: Fi
   return paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams }, filterType)
 }
 
+export const extractCustomSizeLabel = (selectedOptions: FilterArray) => {
+  const selectedDimensionRange = selectedOptions.find(({ paramName }) => paramName === FilterParamName.dimensionRange)
+
+  // Handle custom range
+  if (selectedDimensionRange?.displayText === "Custom size") {
+    const selectedCustomWidth = selectedOptions.find(({ paramName }) => paramName === FilterParamName.width)
+    const selectedCustomHeight = selectedOptions.find(({ paramName }) => paramName === FilterParamName.height)
+    return (
+      [selectedCustomWidth?.displayText, selectedCustomHeight?.displayText].filter(Boolean).join(" × ") + LOCALIZED_UNIT
+    )
+  }
+
+  // Intentionally doesn't return anything
+}
+
 /**
  * Formats the display for the Filter Modal "home" screen.
  */
@@ -309,19 +324,11 @@ export const selectedOption = ({
   aggregations: Aggregations
 }) => {
   if (filterScreen === "dimensionRange") {
-    const selectedDimensionRange = selectedOptions.find(({ paramName }) => paramName === FilterParamName.dimensionRange)
+    const label = extractCustomSizeLabel(selectedOptions)
 
-    // Handle custom range
-    if (selectedDimensionRange?.displayText === "Custom size") {
-      const selectedCustomWidth = selectedOptions.find(({ paramName }) => paramName === FilterParamName.width)
-      const selectedCustomHeight = selectedOptions.find(({ paramName }) => paramName === FilterParamName.height)
-      return (
-        [selectedCustomWidth?.displayText, selectedCustomHeight?.displayText].filter(Boolean).join(" × ") +
-        LOCALIZED_UNIT
-      )
+    if (label) {
+      return label
     }
-
-    // Intentionally doesn't return anything
   }
 
   if (filterScreen === "categories") {

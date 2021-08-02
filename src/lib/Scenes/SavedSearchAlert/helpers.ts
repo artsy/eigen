@@ -1,11 +1,19 @@
 import {
   aggregationForFilter,
   Aggregations,
+  extractCustomSizeLabel,
   FilterArray,
   FilterData,
+  FilterParamName,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
 import { compact, flatten, keyBy } from "lodash"
+
+const applyCustomExtractorForFilterParams: FilterParamName[] = [
+  FilterParamName.dimensionRange,
+  FilterParamName.width,
+  FilterParamName.height,
+]
 
 export const extractPillFromAggregation = (filter: FilterData, aggregations: Aggregations) => {
   const { paramName, paramValue } = filter
@@ -22,12 +30,25 @@ export const extractPillFromAggregation = (filter: FilterData, aggregations: Agg
   return []
 }
 
+export const extractSizePill = (filters: FilterArray) => {
+  const label = extractCustomSizeLabel(filters)
+
+  if (label) {
+    return label
+  }
+
+  return filters.find((filter) => filter.paramName === FilterParamName.dimensionRange)?.displayText
+}
+
 export const extractPills = (filters: FilterArray, aggregations: Aggregations) => {
-  const pillLabels = filters.map((filter) => {
+  const commonFilters = filters.filter((filter) => !applyCustomExtractorForFilterParams.includes(filter.paramName))
+
+  const sizePill = extractSizePill(filters)
+  const pills = commonFilters.map((filter) => {
     const { displayText, paramValue, paramName } = filter
 
     if (!paramValue) {
-      return null
+      return
     }
 
     // Extract label from aggregations
@@ -43,5 +64,5 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations) =
     return displayText
   })
 
-  return compact(flatten(pillLabels))
+  return compact([...flatten(pills), sizePill])
 }
