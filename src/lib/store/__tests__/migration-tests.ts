@@ -294,3 +294,20 @@ describe("App version Versions.AddToastModel", () => {
     expect(migratedState.toast).toEqual({})
   })
 })
+
+describe("PendingPushNotification migration", () => {
+  const migrationToTest = Versions.PendingPushNotification
+  it("adds pendingPushNotification to store", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.pendingPushNotification).toEqual({ ios: null, android: null })
+  })
+})

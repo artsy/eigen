@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { navigate } from "lib/navigation/navigate"
-import { globalStoreInstance } from "lib/store/GlobalStore"
+import { GlobalStore, globalStoreInstance } from "lib/store/GlobalStore"
 import { PendingPushNotification } from "lib/store/PendingPushNotificationModel"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
 import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "./AdminMenu"
@@ -12,9 +12,7 @@ export const handlePendingNotification = (notification: PendingPushNotification)
   if (elapsedTimeInSecs <= MAX_ELAPSED_TAPPED_NOTIFICATION_TIME && !!notification.data.url) {
     navigate(notification.data.url, { passProps: { ...notification.data, url: undefined } })
   }
-  globalStoreInstance()
-    .getActions()
-    .pendingPushNotification.setPendingPushNotification({ platform: "android", notification: null })
+  GlobalStore.actions.pendingPushNotification.setPendingPushNotification({ platform: "android", notification: null })
 }
 
 export const handleReceivedNotification = (notification: Omit<ReceivedNotification, "userInfo">) => {
@@ -32,9 +30,10 @@ export const handleReceivedNotification = (notification: Omit<ReceivedNotificati
       // removing finish because we do not use it on android and we don't want to serialise functions at this time
       const newNotification = { ...notification, finish: undefined, tappedAt: Date.now() }
       delete newNotification.finish
-      globalStoreInstance()
-        .getActions()
-        .pendingPushNotification.setPendingPushNotification({ platform: "android", notification: newNotification })
+      GlobalStore.actions.pendingPushNotification.setPendingPushNotification({
+        platform: "android",
+        notification: newNotification,
+      })
       return
     }
     return
