@@ -5,17 +5,17 @@ import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
-import { ColorFuncOverload, SansSize, Theme, ThemeV3 } from "../../Theme"
+import { SansSize, ThemeV3 } from "../../Theme"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
 import { Text } from "../Text"
 
 /** Different theme variations */
-export type ButtonVariant = "primaryBlack" | "primaryWhite" | "secondaryGray" | "secondaryOutline" | "text"
+export type ButtonVariant = "fillDark" | "fillLight" | "fillGray" | "outline" | "text"
 
 /** Default button color variant */
-export const defaultVariant: ButtonVariant = "primaryBlack"
+export const defaultVariant: ButtonVariant = "fillDark"
 
 /** The size of the button */
 export type ButtonSize = "small" | "large"
@@ -59,8 +59,6 @@ export interface ButtonBaseProps extends BoxProps {
   loading?: boolean
   /** Disabled interactions */
   disabled?: boolean
-  /** Uses inline style for button */
-  inline?: boolean
   /** Makes button full width */
   block?: boolean
   /** Additional styles to apply to the variant */
@@ -82,7 +80,6 @@ const PureButton: React.FC<ButtonProps> = ({
   haptic,
   icon,
   iconPosition = defaultIconPosition,
-  inline,
   loading,
   longestText,
   onPress,
@@ -99,9 +96,9 @@ const PureButton: React.FC<ButtonProps> = ({
   const getSize = (): { height: number; size: SansSize; px: number } => {
     switch (size) {
       case "small":
-        return { height: inline ? 17 : 30, size: "2", px: inline ? 0 : 15 }
+        return { height: 30, size: "2", px: 15 }
       case "large":
-        return { height: inline ? 21 : 50, size: "3t", px: inline ? 0 : 30 }
+        return { height: 50, size: "3t", px: 30 }
     }
   }
 
@@ -146,7 +143,7 @@ const PureButton: React.FC<ButtonProps> = ({
   }
 
   const containerSize = getSize()
-  const variantColors = getColorsForVariant(variant, disabled, color)
+  const variantColors = getColorsForVariant(variant, disabled)
 
   const from = variantColors[previous]
   const to = variantColors[current]
@@ -177,13 +174,13 @@ const PureButton: React.FC<ButtonProps> = ({
             >
               <VisibleTextContainer>
                 {iconPosition === "left" && iconBox}
-                <Text
+                <AnimatedText
                   color={loading ? "transparent" : to.textColor}
                   variant={size === "small" ? "small" : "mediumText"}
                   style={{ textDecorationLine: current === "hover" ? "underline" : "none" }}
                 >
                   {children}
-                </Text>
+                </AnimatedText>
                 {iconPosition === "right" && iconBox}
               </VisibleTextContainer>
               <HiddenContainer>
@@ -204,7 +201,9 @@ const PureButton: React.FC<ButtonProps> = ({
  * Returns various colors for each state given a button variant
  * @param variant
  */
-export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = false, color: ColorFuncOverload) {
+export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = false) {
+  const color = useColor()
+
   const blackWithOpacity = disabled ? color("black30") : color("black100")
   const blackWithFullOpacity = disabled ? color("white100") : color("black100")
   const black10WithOpacity = disabled ? color("black30") : color("black10")
@@ -212,7 +211,7 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
   const blueWithOpacity = disabled ? color("black30") : color("blue100")
 
   switch (variant) {
-    case "primaryBlack":
+    case "fillDark":
       return {
         default: {
           backgroundColor: blackWithOpacity,
@@ -227,7 +226,7 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
           textColor: whiteWithOpacity,
         },
       }
-    case "primaryWhite":
+    case "fillLight":
       return {
         default: {
           backgroundColor: whiteWithOpacity,
@@ -242,7 +241,7 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
           textColor: color("white100"),
         },
       }
-    case "secondaryGray":
+    case "fillGray":
       return {
         default: {
           backgroundColor: black10WithOpacity,
@@ -257,7 +256,7 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
           textColor: color("white100"),
         },
       }
-    case "secondaryOutline":
+    case "outline":
       return {
         default: {
           backgroundColor: color("white100"),
@@ -291,11 +290,9 @@ export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = 
 }
 
 export const Button: React.FC<ButtonProps> = (props) => (
-  <Theme>
-    <ThemeV3>
-      <PureButton {...props} />
-    </ThemeV3>
-  </Theme>
+  <ThemeV3>
+    <PureButton {...props} />
+  </ThemeV3>
 )
 
 /** Base props that construct button */
@@ -326,3 +323,4 @@ const Container = styled(Box)<ButtonProps>`
 `
 
 const AnimatedContainer = animated(Container)
+const AnimatedText = animated(Text)

@@ -61,7 +61,7 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
           <Button
             variant={"secondaryGray"}
             onPress={() => navigate(`/artist/${artist?.slug!}/shows`)}
-            size="small"
+            size="medium"
             block
           >
             See all past shows

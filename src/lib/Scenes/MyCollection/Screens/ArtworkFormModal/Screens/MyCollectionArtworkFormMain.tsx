@@ -99,7 +99,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
           {modalType === "edit" && (
             <Button
               mt={1}
-              variant="secondaryOutline"
+              variant="secondaryOutlineWarning"
               block
               onPress={() => {
                 showActionSheetWithOptions(
