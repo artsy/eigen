@@ -17,7 +17,7 @@ const SelectedIndicator = styled.View`
 `
 
 const Overlay = styled.View`
-  ${(p: { selected: boolean }) => p.selected && `border-width: 1; border-color: ${themeGet("colors.black80")}`};
+  ${(p: { selected: boolean }) => p.selected && `border-width: 1; border-color: ${themeGet("colors.black60")}`};
 `
 
 export interface ImageData {
