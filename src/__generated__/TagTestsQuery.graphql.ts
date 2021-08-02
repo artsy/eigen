@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a33dad9a2763543cb9489efb2ccc0651 */
+/* @relayHash 21e9796f6e999feca696d9feb8a5532b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -63,6 +63,7 @@ export type TagTestsQueryVariables = {
 export type TagTestsQueryResponse = {
     readonly tag: {
         readonly slug: string;
+        readonly description: string | null;
         readonly " $fragmentRefs": FragmentRefs<"TagHeader_tag" | "About_tag" | "TagArtworks_tag">;
     } | null;
 };
@@ -80,6 +81,7 @@ query TagTestsQuery(
 ) {
   tag(id: $tagID) {
     slug
+    description
     ...TagHeader_tag
     ...About_tag
     ...TagArtworks_tag_2VV6jB
@@ -213,32 +215,39 @@ v3 = {
   "storageKey": null
 },
 v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "description",
+  "storageKey": null
+},
+v5 = {
   "kind": "Variable",
   "name": "input",
   "variableName": "input"
 },
-v5 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v6 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v7 = {
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
   "storageKey": null
 },
-v8 = [
+v9 = [
   {
     "kind": "Literal",
     "name": "after",
@@ -264,40 +273,40 @@ v8 = [
     "name": "first",
     "value": 10
   },
-  (v4/*: any*/)
+  (v5/*: any*/)
 ],
-v9 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v10 = {
+v11 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "String"
 },
-v11 = {
+v12 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "FormattedNumber"
 },
-v12 = {
+v13 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v13 = {
+v14 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v14 = {
+v15 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -322,6 +331,7 @@ return {
         "plural": false,
         "selections": [
           (v3/*: any*/),
+          (v4/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
@@ -334,7 +344,7 @@ return {
           },
           {
             "args": [
-              (v4/*: any*/)
+              (v5/*: any*/)
             ],
             "kind": "FragmentSpread",
             "name": "TagArtworks_tag"
@@ -364,19 +374,13 @@ return {
         "plural": false,
         "selections": [
           (v3/*: any*/),
-          (v5/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "description",
-            "storageKey": null
-          },
+          (v4/*: any*/),
           (v6/*: any*/),
           (v7/*: any*/),
+          (v8/*: any*/),
           {
             "alias": "artworks",
-            "args": (v8/*: any*/),
+            "args": (v9/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "kind": "LinkedField",
             "name": "filterArtworksConnection",
@@ -430,7 +434,7 @@ return {
                         "name": "value",
                         "storageKey": null
                       },
-                      (v5/*: any*/),
+                      (v6/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -460,8 +464,8 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v6/*: any*/),
-                      (v9/*: any*/)
+                      (v7/*: any*/),
+                      (v10/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -500,7 +504,7 @@ return {
                 ],
                 "storageKey": null
               },
-              (v6/*: any*/),
+              (v7/*: any*/),
               {
                 "kind": "InlineFragment",
                 "selections": [
@@ -530,7 +534,7 @@ return {
                     "name": "edges",
                     "plural": true,
                     "selections": [
-                      (v9/*: any*/),
+                      (v10/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -592,7 +596,7 @@ return {
                             "name": "saleMessage",
                             "storageKey": null
                           },
-                          (v7/*: any*/),
+                          (v8/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -643,7 +647,7 @@ return {
                                 "name": "endAt",
                                 "storageKey": null
                               },
-                              (v6/*: any*/)
+                              (v7/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -698,7 +702,7 @@ return {
                                 "name": "lotLabel",
                                 "storageKey": null
                               },
-                              (v6/*: any*/)
+                              (v7/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -710,8 +714,8 @@ return {
                             "name": "partner",
                             "plural": false,
                             "selections": [
-                              (v5/*: any*/),
-                              (v6/*: any*/)
+                              (v6/*: any*/),
+                              (v7/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -721,7 +725,7 @@ return {
                       {
                         "kind": "InlineFragment",
                         "selections": [
-                          (v6/*: any*/)
+                          (v7/*: any*/)
                         ],
                         "type": "Node",
                         "abstractKey": "__isNode"
@@ -738,7 +742,7 @@ return {
           },
           {
             "alias": "artworks",
-            "args": (v8/*: any*/),
+            "args": (v9/*: any*/),
             "filters": [
               "aggregations",
               "input"
@@ -754,7 +758,7 @@ return {
     ]
   },
   "params": {
-    "id": "a33dad9a2763543cb9489efb2ccc0651",
+    "id": "21e9796f6e999feca696d9feb8a5532b",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "tag": {
@@ -769,7 +773,7 @@ return {
           "plural": false,
           "type": "FilterArtworksConnection"
         },
-        "tag.artworks.__isArtworkConnectionInterface": (v10/*: any*/),
+        "tag.artworks.__isArtworkConnectionInterface": (v11/*: any*/),
         "tag.artworks.aggregations": {
           "enumValues": null,
           "nullable": true,
@@ -788,8 +792,8 @@ return {
           "plural": false,
           "type": "Int"
         },
-        "tag.artworks.aggregations.counts.name": (v10/*: any*/),
-        "tag.artworks.aggregations.counts.value": (v10/*: any*/),
+        "tag.artworks.aggregations.counts.name": (v11/*: any*/),
+        "tag.artworks.aggregations.counts.value": (v11/*: any*/),
         "tag.artworks.aggregations.slice": {
           "enumValues": [
             "ARTIST",
@@ -821,28 +825,28 @@ return {
           "plural": false,
           "type": "FilterArtworksCounts"
         },
-        "tag.artworks.counts.total": (v11/*: any*/),
+        "tag.artworks.counts.total": (v12/*: any*/),
         "tag.artworks.edges": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "ArtworkEdgeInterface"
         },
-        "tag.artworks.edges.__isNode": (v10/*: any*/),
-        "tag.artworks.edges.__typename": (v10/*: any*/),
-        "tag.artworks.edges.cursor": (v10/*: any*/),
-        "tag.artworks.edges.id": (v12/*: any*/),
+        "tag.artworks.edges.__isNode": (v11/*: any*/),
+        "tag.artworks.edges.__typename": (v11/*: any*/),
+        "tag.artworks.edges.cursor": (v11/*: any*/),
+        "tag.artworks.edges.id": (v13/*: any*/),
         "tag.artworks.edges.node": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Artwork"
         },
-        "tag.artworks.edges.node.__typename": (v10/*: any*/),
-        "tag.artworks.edges.node.artistNames": (v13/*: any*/),
-        "tag.artworks.edges.node.date": (v13/*: any*/),
-        "tag.artworks.edges.node.href": (v13/*: any*/),
-        "tag.artworks.edges.node.id": (v12/*: any*/),
+        "tag.artworks.edges.node.__typename": (v11/*: any*/),
+        "tag.artworks.edges.node.artistNames": (v14/*: any*/),
+        "tag.artworks.edges.node.date": (v14/*: any*/),
+        "tag.artworks.edges.node.href": (v14/*: any*/),
+        "tag.artworks.edges.node.id": (v13/*: any*/),
         "tag.artworks.edges.node.image": {
           "enumValues": null,
           "nullable": true,
@@ -855,27 +859,27 @@ return {
           "plural": false,
           "type": "Float"
         },
-        "tag.artworks.edges.node.image.url": (v13/*: any*/),
-        "tag.artworks.edges.node.internalID": (v12/*: any*/),
+        "tag.artworks.edges.node.image.url": (v14/*: any*/),
+        "tag.artworks.edges.node.internalID": (v13/*: any*/),
         "tag.artworks.edges.node.partner": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Partner"
         },
-        "tag.artworks.edges.node.partner.id": (v12/*: any*/),
-        "tag.artworks.edges.node.partner.name": (v13/*: any*/),
+        "tag.artworks.edges.node.partner.id": (v13/*: any*/),
+        "tag.artworks.edges.node.partner.name": (v14/*: any*/),
         "tag.artworks.edges.node.sale": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Sale"
         },
-        "tag.artworks.edges.node.sale.displayTimelyAt": (v13/*: any*/),
-        "tag.artworks.edges.node.sale.endAt": (v13/*: any*/),
-        "tag.artworks.edges.node.sale.id": (v12/*: any*/),
-        "tag.artworks.edges.node.sale.isAuction": (v14/*: any*/),
-        "tag.artworks.edges.node.sale.isClosed": (v14/*: any*/),
+        "tag.artworks.edges.node.sale.displayTimelyAt": (v14/*: any*/),
+        "tag.artworks.edges.node.sale.endAt": (v14/*: any*/),
+        "tag.artworks.edges.node.sale.id": (v13/*: any*/),
+        "tag.artworks.edges.node.sale.isAuction": (v15/*: any*/),
+        "tag.artworks.edges.node.sale.isClosed": (v15/*: any*/),
         "tag.artworks.edges.node.saleArtwork": {
           "enumValues": null,
           "nullable": true,
@@ -888,39 +892,39 @@ return {
           "plural": false,
           "type": "SaleArtworkCounts"
         },
-        "tag.artworks.edges.node.saleArtwork.counts.bidderPositions": (v11/*: any*/),
+        "tag.artworks.edges.node.saleArtwork.counts.bidderPositions": (v12/*: any*/),
         "tag.artworks.edges.node.saleArtwork.currentBid": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "SaleArtworkCurrentBid"
         },
-        "tag.artworks.edges.node.saleArtwork.currentBid.display": (v13/*: any*/),
-        "tag.artworks.edges.node.saleArtwork.id": (v12/*: any*/),
-        "tag.artworks.edges.node.saleArtwork.lotLabel": (v13/*: any*/),
-        "tag.artworks.edges.node.saleMessage": (v13/*: any*/),
-        "tag.artworks.edges.node.slug": (v12/*: any*/),
-        "tag.artworks.edges.node.title": (v13/*: any*/),
-        "tag.artworks.id": (v12/*: any*/),
+        "tag.artworks.edges.node.saleArtwork.currentBid.display": (v14/*: any*/),
+        "tag.artworks.edges.node.saleArtwork.id": (v13/*: any*/),
+        "tag.artworks.edges.node.saleArtwork.lotLabel": (v14/*: any*/),
+        "tag.artworks.edges.node.saleMessage": (v14/*: any*/),
+        "tag.artworks.edges.node.slug": (v13/*: any*/),
+        "tag.artworks.edges.node.title": (v14/*: any*/),
+        "tag.artworks.id": (v13/*: any*/),
         "tag.artworks.pageInfo": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "PageInfo"
         },
-        "tag.artworks.pageInfo.endCursor": (v13/*: any*/),
+        "tag.artworks.pageInfo.endCursor": (v14/*: any*/),
         "tag.artworks.pageInfo.hasNextPage": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "Boolean"
         },
-        "tag.artworks.pageInfo.startCursor": (v13/*: any*/),
-        "tag.description": (v13/*: any*/),
-        "tag.id": (v12/*: any*/),
-        "tag.internalID": (v12/*: any*/),
-        "tag.name": (v13/*: any*/),
-        "tag.slug": (v12/*: any*/)
+        "tag.artworks.pageInfo.startCursor": (v14/*: any*/),
+        "tag.description": (v14/*: any*/),
+        "tag.id": (v13/*: any*/),
+        "tag.internalID": (v13/*: any*/),
+        "tag.name": (v14/*: any*/),
+        "tag.slug": (v13/*: any*/)
       }
     },
     "name": "TagTestsQuery",
@@ -929,5 +933,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'a6b866df1d916b50715cee607738d585';
+(node as any).hash = 'd26a8877ebe6addf125d3eee4084ac06';
 export default node;

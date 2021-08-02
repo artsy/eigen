@@ -7,27 +7,29 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import Header from "lib/Scenes/Tag/TagHeader"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { color } from "palette"
+import { Flex, useTheme } from "palette"
 import React from "react"
 import DeviceInfo from "react-native-device-info"
 import { graphql, QueryRenderer } from "react-relay"
-import styled from "styled-components/native"
+import styled, { css } from "styled-components/native"
 
 const isHandset = DeviceInfo.getDeviceType() === "Handset"
 const commonPadding = isHandset ? 20 : 40
 
-console.log("getDeviceType()", DeviceInfo.getDeviceType())
+const TABS = {
+  ARTWORKS: "Artworks",
+  ABOUT: "About",
+}
 
-const HeaderView = styled.View<{ isHandset: boolean }>`
+const HeaderView = styled.View<{ backgroundColor: string }>`
   padding-left: ${commonPadding};
-  background-color: ${color("white100")};
   padding-right: ${commonPadding};
   justify-content: center;
   align-self: ${isHandset ? "auto" : "center"};
-`
-
-const ContentView = styled.View`
-  flex: 1;
+  ${(props) =>
+    css`
+      background-color: ${props.backgroundColor};
+    `}
 `
 
 interface TagProps {
@@ -41,19 +43,29 @@ interface TagQueryRendererProps {
 
 export const Tag: React.FC<TagProps> = (props) => {
   const { tag, tagID } = props
+  const { color } = useTheme()
 
   const tabs: TabProps[] = [
     {
-      title: "Artworks",
+      title: TABS.ARTWORKS,
       content: <TagArtworksPaginationContainer tag={tag} />,
     },
   ]
 
+  if (tag.description) {
+    tabs.push({
+      title: TABS.ABOUT,
+      content: <About tag={tag} />,
+    })
+  }
+
   const headerContent = (
-    <HeaderView isHandset={isHandset}>
+    <HeaderView backgroundColor={color("white100")}>
       <Header tag={tag} />
     </HeaderView>
   )
+
+  const stickyHeaderContentProp = tabs.length === 1 ? { stickyHeaderContent: <></> } : {}
 
   return (
     <ProvideScreenTracking
@@ -64,10 +76,9 @@ export const Tag: React.FC<TagProps> = (props) => {
         context_screen_owner_slug: tag.slug,
       }}
     >
-      <ContentView>
-        <StickyTabPage staticHeaderContent={headerContent} stickyHeaderContent={<></>} tabs={tabs} />
-        <About tag={tag} />
-      </ContentView>
+      <Flex flex={1}>
+        <StickyTabPage staticHeaderContent={headerContent} {...stickyHeaderContentProp} tabs={tabs} />
+      </Flex>
     </ProvideScreenTracking>
   )
 }
@@ -82,8 +93,9 @@ export const TagQueryRenderer: React.FC<TagQueryRendererProps> = (props) => {
         query TagQuery($tagID: String!, $input: FilterArtworksInput) {
           tag(id: $tagID) {
             slug
-            ...TagHeader_tag
+            description
             ...About_tag
+            ...TagHeader_tag
             ...TagArtworks_tag @arguments(input: $input)
           }
         }

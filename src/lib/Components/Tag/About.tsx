@@ -1,10 +1,11 @@
 import { About_tag } from "__generated__/About_tag.graphql"
-import { Sans } from "palette"
+import { Text } from "palette"
 import React from "react"
 import { View } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
 import removeMarkdown from "remove-markdown"
+import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
 
 interface AboutProps {
   tag: About_tag
@@ -18,11 +19,13 @@ const About: React.FC<AboutProps> = ({ tag }) => {
   }
 
   return (
-    <View style={{ marginLeft: sideMargin, marginRight: sideMargin }}>
-      <Sans size="3" color="black" mb={2}>
-        {removeMarkdown(tag.description)}
-      </Sans>
-    </View>
+    <StickyTabPageScrollView contentContainerStyle={{ paddingTop: 15 }}>
+      <View style={{ marginLeft: sideMargin, marginRight: sideMargin }}>
+        <Text variant="text" mb={2}>
+          {removeMarkdown(tag.description)}
+        </Text>
+      </View>
+    </StickyTabPageScrollView>
   )
 }
 

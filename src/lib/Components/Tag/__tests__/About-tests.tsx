@@ -6,7 +6,7 @@ import About from "../About"
 
 it("renders without throwing a error", () => {
   const tag = {
-    description: `Handmade Paper is so cool`,
+    description: `Handmade Paper is very nice`,
   }
 
   renderWithWrappers(<About tag={tag as any} />)

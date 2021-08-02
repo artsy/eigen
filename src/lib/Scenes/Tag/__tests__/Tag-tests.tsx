@@ -1,5 +1,7 @@
 import { TagTestsQuery } from "__generated__/TagTestsQuery.graphql"
 import { ArtworkFilterOptionsScreen } from "lib/Components/ArtworkFilter"
+import About from "lib/Components/Tag/About"
+import { TagArtworks } from "lib/Components/Tag/TagArtworks"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { TouchableHighlightColor } from "palette"
@@ -14,7 +16,7 @@ jest.unmock("react-relay")
 
 describe("Tag", () => {
   const trackEvent = jest.fn()
-  const tagID = "tag-id"
+  const tagID = "skull"
   let environment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
@@ -38,6 +40,7 @@ describe("Tag", () => {
           query TagTestsQuery($tagID: String!, $input: FilterArtworksInput) @relay_test_operation {
             tag(id: $tagID) {
               slug
+              description
               ...TagHeader_tag
               ...About_tag
               ...TagArtworks_tag @arguments(input: $input)
@@ -51,13 +54,7 @@ describe("Tag", () => {
 
           return null
         }}
-        variables={{
-          tagID,
-          input: {
-            medium: "*",
-            priceRange: "*-*",
-          },
-        }}
+        variables={{ tagID }}
       />
     )
   }
@@ -65,6 +62,14 @@ describe("Tag", () => {
   it("renders without throwing an error", () => {
     renderWithWrappers(<TestRenderer />)
     mockEnvironmentPayload(environment)
+  })
+
+  it("returns all tabs", async () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+    mockEnvironmentPayload(environment)
+
+    expect(tree.root.findAllByType(TagArtworks)).toHaveLength(1)
+    expect(tree.root.findAllByType(About)).toHaveLength(1)
   })
 
   it("renders filter modal", () => {

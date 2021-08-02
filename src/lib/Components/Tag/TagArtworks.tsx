@@ -4,7 +4,7 @@ import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PAGE_SIZE } from "lib/data/constants"
 import { Schema } from "lib/utils/track"
-import { Box, Message, Separator } from "palette"
+import { Box, Message, Separator, Spacer } from "palette"
 import React, { useContext, useRef, useState } from "react"
 import { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -87,15 +87,14 @@ export const TagArtworks: React.FC<TagArtworksProps> = (props) => {
   }
 
   return (
-    <Box>
-      <Box mt={1} mx={1}>
-        <InfiniteScrollArtworksGridContainer
-          connection={tag.artworks!}
-          hasMore={props.relay.hasMore}
-          loadMore={props.relay.loadMore}
-        />
-      </Box>
-    </Box>
+    <>
+      <Spacer mb={1} />
+      <InfiniteScrollArtworksGridContainer
+        connection={tag.artworks!}
+        hasMore={props.relay.hasMore}
+        loadMore={props.relay.loadMore}
+      />
+    </>
   )
 }
 

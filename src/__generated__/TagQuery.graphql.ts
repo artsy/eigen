@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ab611692ce7a643e20cb78e53971803c */
+/* @relayHash 1c2156d4688bf3399905025ef3ac0c48 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -63,7 +63,8 @@ export type TagQueryVariables = {
 export type TagQueryResponse = {
     readonly tag: {
         readonly slug: string;
-        readonly " $fragmentRefs": FragmentRefs<"TagHeader_tag" | "About_tag" | "TagArtworks_tag">;
+        readonly description: string | null;
+        readonly " $fragmentRefs": FragmentRefs<"About_tag" | "TagHeader_tag" | "TagArtworks_tag">;
     } | null;
 };
 export type TagQuery = {
@@ -80,8 +81,9 @@ query TagQuery(
 ) {
   tag(id: $tagID) {
     slug
-    ...TagHeader_tag
+    description
     ...About_tag
+    ...TagHeader_tag
     ...TagArtworks_tag_2VV6jB
     id
   }
@@ -213,32 +215,39 @@ v3 = {
   "storageKey": null
 },
 v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "description",
+  "storageKey": null
+},
+v5 = {
   "kind": "Variable",
   "name": "input",
   "variableName": "input"
 },
-v5 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v6 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v7 = {
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
   "storageKey": null
 },
-v8 = [
+v9 = [
   {
     "kind": "Literal",
     "name": "after",
@@ -264,9 +273,9 @@ v8 = [
     "name": "first",
     "value": 10
   },
-  (v4/*: any*/)
+  (v5/*: any*/)
 ],
-v9 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -292,19 +301,20 @@ return {
         "plural": false,
         "selections": [
           (v3/*: any*/),
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "TagHeader_tag"
-          },
+          (v4/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
             "name": "About_tag"
           },
           {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "TagHeader_tag"
+          },
+          {
             "args": [
-              (v4/*: any*/)
+              (v5/*: any*/)
             ],
             "kind": "FragmentSpread",
             "name": "TagArtworks_tag"
@@ -334,19 +344,13 @@ return {
         "plural": false,
         "selections": [
           (v3/*: any*/),
-          (v5/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "description",
-            "storageKey": null
-          },
+          (v4/*: any*/),
           (v6/*: any*/),
           (v7/*: any*/),
+          (v8/*: any*/),
           {
             "alias": "artworks",
-            "args": (v8/*: any*/),
+            "args": (v9/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "kind": "LinkedField",
             "name": "filterArtworksConnection",
@@ -400,7 +404,7 @@ return {
                         "name": "value",
                         "storageKey": null
                       },
-                      (v5/*: any*/),
+                      (v6/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -430,8 +434,8 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v6/*: any*/),
-                      (v9/*: any*/)
+                      (v7/*: any*/),
+                      (v10/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -470,7 +474,7 @@ return {
                 ],
                 "storageKey": null
               },
-              (v6/*: any*/),
+              (v7/*: any*/),
               {
                 "kind": "InlineFragment",
                 "selections": [
@@ -500,7 +504,7 @@ return {
                     "name": "edges",
                     "plural": true,
                     "selections": [
-                      (v9/*: any*/),
+                      (v10/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -562,7 +566,7 @@ return {
                             "name": "saleMessage",
                             "storageKey": null
                           },
-                          (v7/*: any*/),
+                          (v8/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -613,7 +617,7 @@ return {
                                 "name": "endAt",
                                 "storageKey": null
                               },
-                              (v6/*: any*/)
+                              (v7/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -668,7 +672,7 @@ return {
                                 "name": "lotLabel",
                                 "storageKey": null
                               },
-                              (v6/*: any*/)
+                              (v7/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -680,8 +684,8 @@ return {
                             "name": "partner",
                             "plural": false,
                             "selections": [
-                              (v5/*: any*/),
-                              (v6/*: any*/)
+                              (v6/*: any*/),
+                              (v7/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -691,7 +695,7 @@ return {
                       {
                         "kind": "InlineFragment",
                         "selections": [
-                          (v6/*: any*/)
+                          (v7/*: any*/)
                         ],
                         "type": "Node",
                         "abstractKey": "__isNode"
@@ -708,7 +712,7 @@ return {
           },
           {
             "alias": "artworks",
-            "args": (v8/*: any*/),
+            "args": (v9/*: any*/),
             "filters": [
               "aggregations",
               "input"
@@ -724,7 +728,7 @@ return {
     ]
   },
   "params": {
-    "id": "ab611692ce7a643e20cb78e53971803c",
+    "id": "1c2156d4688bf3399905025ef3ac0c48",
     "metadata": {},
     "name": "TagQuery",
     "operationKind": "query",
@@ -732,5 +736,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'b9d5eb42baa2e6bbf1c2b437093664e0';
+(node as any).hash = '9c8afd3bb376197e01ce4fed94570883';
 export default node;
