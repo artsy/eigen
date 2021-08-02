@@ -120,7 +120,7 @@ export function useSelectedTab(): BottomTabType {
 }
 
 let _globalStoreInstance: ReturnType<typeof createGlobalStore> | undefined
-const globalStoreInstance = (): ReturnType<typeof createGlobalStore> => {
+export const globalStoreInstance = (): ReturnType<typeof createGlobalStore> => {
   if (_globalStoreInstance === undefined) {
     _globalStoreInstance = createGlobalStore()
   }

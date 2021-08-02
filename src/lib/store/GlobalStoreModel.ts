@@ -13,6 +13,7 @@ import { ConfigModel, getConfigModel } from "./ConfigModel"
 import { unsafe__getEnvironment } from "./GlobalStore"
 import { CURRENT_APP_VERSION } from "./migration"
 import { getNativeModel, NativeModel } from "./NativeModel"
+import { getPendingPushNotificationModel, PendingPushNotificationModel } from "./PendingPushNotificationModel"
 import { assignDeep, sanitize } from "./persistence"
 import { getToastModel, ToastModel } from "./ToastModel"
 
@@ -29,6 +30,7 @@ interface GlobalStoreStateModel {
   config: ConfigModel
   auth: AuthModel
   toast: ToastModel
+  pendingPushNotification: PendingPushNotificationModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
@@ -93,6 +95,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   config: getConfigModel(),
   auth: getAuthModel(),
   toast: getToastModel(),
+  pendingPushNotification: getPendingPushNotificationModel(),
 
   // for testing only. noop otherwise.
   __inject: __TEST__

@@ -17,6 +17,7 @@ import { ModalStack } from "./navigation/ModalStack"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
+import { handlePendingNotification } from "./utils/PushNotification"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { AnalyticsConstants } from "./utils/track/constants"
 
@@ -37,6 +38,7 @@ const Main: React.FC<{}> = track()(({}) => {
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const forceUpdateMessage = GlobalStore.useAppState((state) => state.config.echo.forceUpdateMessage)
+  const pendingNotification = GlobalStore.useAppState((state) => state.pendingPushNotification.android)
 
   useSentryConfig()
   useStripeConfig()
@@ -84,6 +86,14 @@ const Main: React.FC<{}> = track()(({}) => {
       }, 500)
     }
   }, [isHydrated])
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      if (pendingNotification) {
+        handlePendingNotification(pendingNotification)
+      }
+    }
+  }, [isLoggedIn])
 
   if (!isHydrated) {
     return <View />
