@@ -1,6 +1,8 @@
 import { TEXT_LINE_HEIGHTS } from "@artsy/palette-tokens/dist/text"
 import React from "react"
 import { TextProps as RNTextProps } from "react-native"
+// @ts-ignore
+import { animated } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
 import {
   color,
@@ -44,10 +46,12 @@ export const textMixin = compose(typography, color, textColor, space)
 /** TextProps */
 export type TextProps = BaseTextProps & RNTextProps
 
-const InnerText = styled.Text<TextProps>`
+const InnerStyledText = styled.Text<TextProps>`
   ${systemVariant({ variants: TEXT_VARIANTS })}
   ${textMixin}
 `
+
+const InnerText = animated(InnerStyledText)
 
 /** Text */
 export const Text: React.FC<TextProps> = ({ children, variant, fontSize, letterSpacing, lineHeight, ...rest }) => {
