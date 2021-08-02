@@ -137,13 +137,27 @@ const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
     purple30: THEMES.v3.colors.blue10, // TODO-PALETTE-V3 replace all purple30 with blue10
     purple5: THEMES.v3.colors.blue10, // TODO-PALETTE-V3 replace all purple5 with blue10
   }
-  // TODO-PALETTE-V3 remove the mapping as the last TODO-PALETTE-V3 to be done
+  // TODO-PALETTE-V3 remove the mapping as the last TODO-PALETTE-V3 to be done for color
+
+  // forcing v3 spaces, unless specifically requiring v2, in which case we use `spaceV2`
+  const mergedSpacesV2WithV3OnTop = {
+    ...THEMES.v2.space, // get the base v2
+    ...THEMES.v3.space, // get the base v3 on top of that
+    // now add the rest of the mappings
+    "0.3": THEMES.v3.space["0.5"], // TODO-PALETTE-V3 replace all {0.3} and "0.3" with "0.5"
+    "1.5": THEMES.v3.space["2"], // TODO-PALETTE-V3 replace all {1.5} and "1.5" with "2"
+    "3": THEMES.v3.space["4"], // TODO-PALETTE-V3 replace all {3} and "3" with "4"
+    "5": THEMES.v3.space["6"], // TODO-PALETTE-V3 replace all {5} and "5" with "6"
+    "9": THEMES.v3.space["6"], // TODO-PALETTE-V3 replace all {9} and "9" with "6"
+    "18": THEMES.v3.space["12"], // TODO-PALETTE-V3 replace all {18} and "18" with "12"
+  }
+  // TODO-PALETTE-V3 remove the mapping as the last TODO-PALETTE-V3 to be done for space
 
   if (theme === "v3") {
-    return { ...THEMES.v3, colors: mergedColorsV2WithV3OnTop }
+    return { ...THEMES.v3, colors: mergedColorsV2WithV3OnTop, space: mergedSpacesV2WithV3OnTop }
   }
 
-  return { ...THEMES.v2, colors: mergedColorsV2WithV3OnTop }
+  return { ...THEMES.v2, colors: mergedColorsV2WithV3OnTop, space: mergedSpacesV2WithV3OnTop }
 }
 
 export const Theme: React.FC<{
@@ -193,6 +207,8 @@ export const useTheme = () => {
     space: space(theme ?? themeIfUnwrapped),
     colorV2: color(THEMES.v2),
     colorV3: color(THEMES.v3),
+    spaceV2: space(THEMES.v2),
+    spaceV3: space(THEMES.v3),
   }
 }
 
