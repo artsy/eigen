@@ -1,12 +1,12 @@
 import { GlobalStore, useIsStaging } from "lib/store/GlobalStore"
-import { Flex, Separator, useColor } from "palette"
+import { Flex, Separator, useTheme } from "palette"
 import React, { useEffect } from "react"
 import useInterval from "react-use/lib/useInterval"
 import { BottomTabsButton } from "./BottomTabsButton"
 import { ICON_HEIGHT } from "./BottomTabsIcon"
 
 export const BottomTabs: React.FC = () => {
-  const color = useColor()
+  const { color, colorV2 } = useTheme()
   const unreadConversationCount = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.unreadConversationCount
   )
@@ -24,7 +24,11 @@ export const BottomTabs: React.FC = () => {
 
   return (
     <Flex>
-      <Separator style={{ borderColor: isStaging ? color("purple100") : color("black10") }} />
+      <Separator
+        style={{
+          borderColor: isStaging ? colorV2("purple100") /* TODO-PALETTE-V3 color("devpurple") */ : color("black10"),
+        }}
+      />
       <Flex flexDirection="row" height={ICON_HEIGHT} px={1}>
         <BottomTabsButton tab="home" />
         <BottomTabsButton tab="search" />

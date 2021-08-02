@@ -4,11 +4,18 @@
 // https://github.com/elderfo/react-native-storybook-loader.git
 
 function loadStories() {
+  require("../palette/colors.stories")
+  require("../palette/colorsV2.stories")
   require("../palette/elements/Button/Button.stories")
   require("../palette/elements/Button/ButtonV2.stories")
 }
 
-const stories = ["../palette/elements/Button/Button.stories", "../palette/elements/Button/ButtonV2.stories"]
+const stories = [
+  "../palette/colors.stories",
+  "../palette/colorsV2.stories",
+  "../palette/elements/Button/Button.stories",
+  "../palette/elements/Button/ButtonV2.stories",
+]
 
 module.exports = {
   loadStories,

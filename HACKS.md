@@ -170,6 +170,7 @@ These are fairly superficial styling hacks for
 - shrinking the icon size to work nicely with our inputs
 - aligning inner inputs nicely
 - icon animation to work properly on android
+- palette v3 colors
 
 ## react-native-mapbox-gl/maps - 8.2.0-beta2 postinstall script
 
@@ -210,6 +211,18 @@ There is a known issue in react-native-screens that causes the app to crash on r
 added to the MainActivity class on Android https://github.com/software-mansion/react-native-screens/issues/17#issuecomment-424704067.
 
 This has the UX downside of not allowing state restore from background but this is an unsolved problem for RN apps.
+
+## typings/styled-components.native.d.ts
+
+#### When can we remove this:
+
+When we upgrade styled-components to a version with types that don't complain when we run `yarn type-check`.
+
+#### Explanation/Context:
+
+I wasn't the one to add this file, so I don't have all the context, but I do know that styled-component types are missing and/or causing problems when we don't have that file.
+
+The latest change I did was add the `ThemeContext` in there, because the version of styled-components we use has that, but the types are not exposing that, so I had to manually add it there.
 
 # `react-native-push-notification` Requiring unknown module on ios
 

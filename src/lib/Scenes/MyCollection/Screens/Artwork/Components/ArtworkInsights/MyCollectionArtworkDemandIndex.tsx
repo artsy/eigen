@@ -107,7 +107,7 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
   return (
     <>
       <Box>
-        <Text variant="largeTitle" color="purple100">
+        <Text variant="largeTitle" color="purple100" /* TODO-PALETTE-V3 "blue100" */>
           {adjustedDemandRank}
         </Text>
       </Box>

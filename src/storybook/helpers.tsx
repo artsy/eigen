@@ -1,6 +1,6 @@
-import { Spacer } from "palette"
+import { Flex, Spacer } from "palette"
 import React from "react"
-import { FlatList, ScrollView } from "react-native"
+import { FlatList, ScrollView, StyleProp, ViewStyle } from "react-native"
 
 export const DList = <ItemT,>({
   data,
@@ -20,14 +20,29 @@ export const DList = <ItemT,>({
   />
 )
 
-export const List = ({ children }: { children: React.ReactElement[] }) => (
+export const List = ({
+  children,
+  contentContainerStyle,
+  style,
+}: {
+  children: React.ReactElement[]
+  contentContainerStyle?: StyleProp<ViewStyle>
+  style?: StyleProp<ViewStyle>
+}) => (
   <FlatList
     data={children}
     keyExtractor={(_, index) => `${index}`}
     renderItem={({ item: child }) => child}
     ItemSeparatorComponent={() => <Spacer mb="4" />}
-    contentContainerStyle={{ flexGrow: 1, alignItems: "center", justifyContent: "center" }}
+    contentContainerStyle={[{ flexGrow: 1, alignItems: "center", justifyContent: "center" }, contentContainerStyle]}
+    style={style}
   />
+)
+
+export const Row = ({ children }: { children: React.ReactNode }) => (
+  <Flex width="100%" flexDirection="row" justifyContent="space-evenly">
+    {children}
+  </Flex>
 )
 
 export const CenterView = ({ children }: { children: React.ReactNode }) => {
