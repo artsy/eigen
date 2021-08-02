@@ -3,14 +3,14 @@ import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { useToast } from "lib/Components/Toast/toastHook"
 import { navigate } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
-import { useColor } from "palette/hooks"
+import { useTheme } from "palette"
 import React, { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
 import { getVersion } from "react-native-device-info"
 import useDebounce from "react-use/lib/useDebounce"
 
 export const About: React.FC = () => {
-  const color = useColor()
+  const { colorV2 } = useTheme()
   const appVersion = getVersion()
   const toast = useToast()
   const [tapCount, updateTapCount] = useState(0)
@@ -51,7 +51,11 @@ export const About: React.FC = () => {
           text={appVersion}
           onPress={() => updateTapCount((count) => count + 1)}
           chevron={false}
-          style={userIsDev ? { borderRightColor: color("purple100"), borderRightWidth: 1 } : undefined}
+          style={
+            userIsDev
+              ? { borderRightColor: colorV2("purple100") /* TODO-PALETTE-V3 color("devpurple") */, borderRightWidth: 1 }
+              : undefined
+          }
         />
       </ScrollView>
     </PageWithSimpleHeader>

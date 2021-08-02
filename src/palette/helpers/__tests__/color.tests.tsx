@@ -2,13 +2,13 @@ import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { View } from "react-native"
-import { useColor } from "../../hooks"
-import { Color, Theme } from "../../Theme"
+import { _test_THEMES, Color, Theme, useTheme } from "../../Theme"
 
 describe("color", () => {
-  const ColorView = ({ name }: { name: Color }) => {
-    const color = useColor()
-    return <View style={{ backgroundColor: color(name as any) }} />
+  const ColorView = ({ name, forceV2 }: { name: Color; forceV2?: boolean }) => {
+    const { color, colorV2 } = useTheme()
+    const colorFunc = forceV2 ? colorV2 : color
+    return <View style={{ backgroundColor: colorFunc(name as any) }} />
   }
 
   it("returns the correct color with a Theme provider", () => {
@@ -21,10 +21,27 @@ describe("color", () => {
     )
 
     const tree = renderWithWrappers(<TestComponent />).root
-    expect(tree.findByType(View).props.style.backgroundColor).toBe("#E5E5E5")
+    expect(tree.findByType(View).props.style.backgroundColor).toBe(_test_THEMES.v3.colors.black10)
   })
 
-  it("returns the correct color with a Theme provider in v2", () => {
+  it("returns the correct forced v2 color with a Theme provider in v2", () => {
+    const TestComponent = () => (
+      <GlobalStoreProvider>
+        <Theme theme="v2">
+          <>
+            <ColorView name="yellow30" forceV2 />
+            <ColorView name="copper100" forceV2 />
+          </>
+        </Theme>
+      </GlobalStoreProvider>
+    )
+    const tree = renderWithWrappers(<TestComponent />).root
+    const bgColors = tree.findAllByType(View).map((view) => view.props.style.backgroundColor)
+    expect(bgColors[0]).toBe(_test_THEMES.v2.colors.yellow30)
+    expect(bgColors[1]).toBe(_test_THEMES.v2.colors.copper100)
+  })
+
+  it("returns the correct global v3 color with a Theme provider in v2", () => {
     const TestComponent = () => (
       <GlobalStoreProvider>
         <Theme theme="v2">
@@ -37,8 +54,8 @@ describe("color", () => {
     )
     const tree = renderWithWrappers(<TestComponent />).root
     const bgColors = tree.findAllByType(View).map((view) => view.props.style.backgroundColor)
-    expect(bgColors[0]).toBe("#FAE7BA")
-    expect(bgColors[1]).toBe("#A85F00")
+    expect(bgColors[0]).toBe(_test_THEMES.v2.colors.yellow30)
+    expect(bgColors[1]).toBe(_test_THEMES.v3.colors.copper100)
   })
 
   it("returns the correct color with a Theme provider in v3", () => {
@@ -54,49 +71,7 @@ describe("color", () => {
     )
     const tree = renderWithWrappers(<TestComponent />).root
     const bgColors = tree.findAllByType(View).map((view) => view.props.style.backgroundColor)
-    expect(bgColors[0]).toBe(undefined)
-    expect(bgColors[1]).toBe("#7B5927")
-  })
-
-  it("returns the correct color with a Theme provider with override", () => {
-    const TestComponent = () => (
-      <GlobalStoreProvider>
-        <Theme theme="v3" override={{ colors: { yellow30: "red", copper100: "blue" } }}>
-          <>
-            <ColorView name="yellow30" />
-            <ColorView name="copper100" />
-          </>
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    const tree = renderWithWrappers(<TestComponent />).root
-    const bgColors = tree.findAllByType(View).map((view) => view.props.style.backgroundColor)
-    expect(bgColors[0]).toBe("red")
-    expect(bgColors[1]).toBe("blue")
-  })
-
-  it("returns the correct color with nested Theme providers", () => {
-    const TestComponent = () => (
-      <GlobalStoreProvider>
-        <Theme theme="v3" override={{ colors: { yellow30: "red", copper100: "blue" } }}>
-          <>
-            <ColorView name="yellow30" />
-            <ColorView name="copper100" />
-            <Theme theme="v3" override={{ colors: { yellow30: "green", copper100: "purple" } }}>
-              <>
-                <ColorView name="yellow30" />
-                <ColorView name="copper100" />
-              </>
-            </Theme>
-          </>
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    const tree = renderWithWrappers(<TestComponent />).root
-    const bgColors = tree.findAllByType(View).map((view) => view.props.style.backgroundColor)
-    expect(bgColors[0]).toBe("red")
-    expect(bgColors[1]).toBe("blue")
-    expect(bgColors[2]).toBe("green")
-    expect(bgColors[3]).toBe("purple")
+    expect(bgColors[0]).toBe(_test_THEMES.v2.colors.yellow30) // for now we keep v2 accessible, even in v3.
+    expect(bgColors[1]).toBe(_test_THEMES.v3.colors.copper100)
   })
 })

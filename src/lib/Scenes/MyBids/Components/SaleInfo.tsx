@@ -63,7 +63,7 @@ export const SaleInfo = ({
     Icon = BoltFill
     line2 = line2Message("Opens", endMoment)
     if (tSale.isLiveBiddingNow()) {
-      noteColor = "purple100"
+      noteColor = "purple100" /* TODO-PALETTE-V3 "blue100" */
       line1 = "Live bidding in progress"
     } else {
       noteColor = "black60"

@@ -85,7 +85,7 @@ export default class Composer extends React.Component<Props, State> {
             paddingTop: 13,
             paddingBottom: 10,
             paddingRight: 10,
-            borderColor: this.state.active ? color("purple100") : "transparent",
+            borderColor: this.state.active ? color("purple100" /* TODO-PALETTE-V3 "blue100" */) : "transparent",
             borderWidth: 1,
             fontFamily: themeProps.fontFamily.sans.regular.normal,
           }
