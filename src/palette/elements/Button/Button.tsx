@@ -1,6 +1,6 @@
 import { useColor } from "palette/hooks"
 import React, { ReactNode, useState } from "react"
-import { GestureResponderEvent, TouchableWithoutFeedback, ViewStyle } from "react-native"
+import { GestureResponderEvent, TextStyle, TouchableWithoutFeedback, ViewStyle } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
@@ -151,7 +151,7 @@ const PureButton: React.FC<ButtonProps> = ({
 
   return (
     <Spring native from={from} to={to}>
-      {(springProps: ViewStyle) => (
+      {(springProps: ViewStyle & TextStyle) => (
         <TouchableWithoutFeedback
           onPress={handlePress}
           onPressIn={() => {
@@ -174,18 +174,23 @@ const PureButton: React.FC<ButtonProps> = ({
             >
               <VisibleTextContainer>
                 {iconPosition === "left" && iconBox}
-                <AnimatedText
-                  color={loading ? "transparent" : to.textColor}
+                <Text
                   variant={size === "small" ? "small" : "mediumText"}
-                  style={{ textDecorationLine: current === "hover" ? "underline" : "none" }}
+                  fontSize={size === "small" ? "13" : "16"}
+                  style={{
+                    color: loading ? "transparent" : springProps.color,
+                    textDecorationLine: current === "hover" ? "underline" : "none",
+                  }}
                 >
                   {children}
-                </AnimatedText>
+                </Text>
                 {iconPosition === "right" && iconBox}
               </VisibleTextContainer>
               <HiddenContainer>
                 {icon}
-                <Text variant={size === "small" ? "small" : "mediumText"}>{longestText ? longestText : children}</Text>
+                <Text fontSize={size === "small" ? "13" : "16"} variant={size === "small" ? "small" : "mediumText"}>
+                  {longestText ? longestText : children}
+                </Text>
               </HiddenContainer>
 
               {!!loading && <Spinner size={size} color={spinnerColor} />}
@@ -323,4 +328,3 @@ const Container = styled(Box)<ButtonProps>`
 `
 
 const AnimatedContainer = animated(Container)
-const AnimatedText = animated(Text)

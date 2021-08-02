@@ -18,10 +18,10 @@ describe("Button", () => {
 
   it("returns variants and sizes", () => {
     const button = getWrapper({
-      variant: "primaryBlack",
+      variant: "fillDark",
     })
     expect(button.find("Spinner").length).toBe(0)
-    expect((button.find("PureButton").props() as any).variant).toBe("primaryBlack")
+    expect((button.find("PureButton").props() as any).variant).toBe("fillDark")
   })
 
   it("shows spinner if loading is true", () => {

@@ -10,22 +10,22 @@ const sizes: ButtonSize[] = ["small", "large"]
 const variants: ButtonVariant[] = ["fillDark", "fillLight", "fillGray", "outline", "text"]
 
 storiesOf("ButtonV3", module)
-  .add("Variants", () => (
-    <DList
-      data={variants}
-      renderItem={({ item: variant }) => (
-        <Button variant={variant} onPress={() => action(`tapped ${variant}`)}>
-          {variant}
-        </Button>
-      )}
-    />
-  ))
   .add("Sizes", () => (
     <DList
       data={sizes}
       renderItem={({ item: size }) => (
         <Button size={size} onPress={() => action(`tapped ${size}`)}>
           {size}
+        </Button>
+      )}
+    />
+  ))
+  .add("Variants", () => (
+    <DList
+      data={variants}
+      renderItem={({ item: variant }) => (
+        <Button variant={variant} onPress={() => action(`tapped ${variant}`)}>
+          {variant}
         </Button>
       )}
     />

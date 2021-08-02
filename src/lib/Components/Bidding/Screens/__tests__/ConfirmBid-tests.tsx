@@ -80,7 +80,7 @@ beforeEach(() => {
   __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsPriceTransparency: true })
 })
 
-it.only("renders without throwing an error", () => {
+it("renders without throwing an error", () => {
   mountConfirmBidComponent(initialProps)
 })
 
