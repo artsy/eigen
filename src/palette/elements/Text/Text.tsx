@@ -1,8 +1,7 @@
 import { TEXT_LINE_HEIGHTS } from "@artsy/palette-tokens/dist/text"
 import React from "react"
 import { TextProps as RNTextProps } from "react-native"
-// @ts-ignore
-import { animated } from "react-spring/renderprops-native.cjs"
+import { animated } from "react-spring"
 import styled from "styled-components/native"
 import {
   color,
