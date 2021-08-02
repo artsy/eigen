@@ -47,10 +47,6 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations) =
   const pills = commonFilters.map((filter) => {
     const { displayText, paramValue, paramName } = filter
 
-    if (!paramValue) {
-      return
-    }
-
     // Extract label from aggregations
     if (shouldExtractValueNamesFromAggregation.includes(paramName)) {
       return extractPillFromAggregation(filter, aggregations)
