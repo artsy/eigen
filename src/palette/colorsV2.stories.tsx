@@ -8,7 +8,6 @@ import { ColorV2, isThemeV2, useTheme } from "./Theme"
 
 const ColorSquare = ({ color: theColor, bright }: { color: ColorV2; bright?: boolean }) => {
   const { theme, color, colorV2 } = useTheme()
-
   const colorFunc = isThemeV2(theme) ? colorV2 : color
 
   return (
