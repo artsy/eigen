@@ -69,7 +69,7 @@ it("updates the validation for country when coming back from the select country 
   selectCountry(component, fakeNavigator, billingAddress.country)
 
   // The <Sans12> instances in the BillingAddress screen display error messages
-  expect(component.root.findAllByType(Sans).length).toEqual(2)
+  expect(component.root.findAllByType(Sans).length).toEqual(1)
 })
 
 it("pre-fills the fields if initial billing address is provided", () => {

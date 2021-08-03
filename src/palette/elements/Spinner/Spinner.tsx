@@ -1,4 +1,4 @@
-import { useColor } from "palette/hooks"
+import { useColor } from "palette"
 import React, { useEffect, useMemo } from "react"
 import { Animated, Easing, ViewProps } from "react-native"
 import styled from "styled-components/native"
