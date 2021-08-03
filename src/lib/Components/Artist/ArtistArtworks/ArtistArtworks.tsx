@@ -95,6 +95,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
         />
         {!!enableSavedSearchV2 && (
           <CreateSavedSearchAlert
+            artist={{ id: artist.internalID, name: artist.name! }}
             visible={isCreateSavedSearchModalVisible}
             onClosePress={handleCloseSavedSearchModal}
           />
