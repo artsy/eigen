@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native"
 import { BackButton } from "lib/navigation/BackButton"
-import { useEnvironment } from "lib/store/GlobalStore"
+import { GlobalStore, useEnvironment } from "lib/store/GlobalStore"
 import { Button, Flex, Join, Spacer, Text } from "palette"
-import React from "react"
-import { Image, Linking } from "react-native"
+import React, { useEffect } from "react"
+import { Alert, Image, Linking } from "react-native"
 import { EnvelopeIcon } from "../../../palette/svgs/EnvelopeIcon"
 
 interface OnboardingSocialPickProps {
@@ -13,6 +13,46 @@ interface OnboardingSocialPickProps {
 export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode }) => {
   const webURL = useEnvironment().webURL
   const navigation = useNavigation()
+
+  /**
+   * When we land on OnboardingSocialPick coming from OnboardingCreatAccount or OnboardingLogin
+   * withFadeAnimation is set to true which overrwites the default horizontal slide animation when
+   * navigating back,  To avoid that we need to reset withFadeAnimation to false
+   */
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      navigation.setParams({ withFadeAnimation: false })
+    }, 1000)
+
+    // When the user presses back on the back button immediately
+    // after opening the screen, we need to clear the timeout to avoid
+    // setting params on an unmounted screen
+    return clearTimeout(timeout)
+  }, [])
+
+  const useFacebook = async () => {
+    try {
+      if (mode === "login") {
+        await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" })
+      } else {
+        await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp" })
+      }
+    } catch (error) {
+      if (typeof error === "string") {
+        Alert.alert(error)
+      }
+    }
+  }
+
+  const useApple = async () => {
+    try {
+      await GlobalStore.actions.auth.authApple()
+    } catch (error) {
+      if (typeof error === "string") {
+        Alert.alert(error)
+      }
+    }
+  }
 
   return (
     <Flex justifyContent="center" alignItems="center" flex={1} px={1.5} backgroundColor="white">
@@ -43,9 +83,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             {mode === "login" ? "Continue with email" : "Sign up with email"}
           </Button>
           <Button
-            onPress={() => {
-              // Do nothing
-            }}
+            onPress={useFacebook}
             block
             haptic="impactMedium"
             mb={1}
@@ -56,9 +94,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             {mode === "login" ? "Continue with Facebook" : "Sign up with Facebook"}
           </Button>
           <Button
-            onPress={() => {
-              // Do nothing
-            }}
+            onPress={useApple}
             block
             haptic="impactMedium"
             mb={1}
@@ -98,7 +134,8 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             Don’t have an account?{" "}
             <Text
               onPress={() => {
-                navigation.navigate("OnboardingCreateAccount")
+                // @ts-ignore
+                navigation.replace("OnboardingCreateAccount", { withFadeAnimation: true })
               }}
               style={{ textDecorationLine: "underline" }}
             >
@@ -110,7 +147,8 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             Already have an account?{" "}
             <Text
               onPress={() => {
-                navigation.navigate("OnboardingLogin")
+                // @ts-ignore
+                navigation.replace("OnboardingLogin", { withFadeAnimation: true })
               }}
               style={{ textDecorationLine: "underline" }}
             >
