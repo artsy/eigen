@@ -2,8 +2,8 @@ import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Sans, Text, useTheme } from "palette"
 import React from "react"
-import { ScrollView } from 'react-native'
-import { SavedSearchAlertForm } from './SavedSearchAlertForm'
+import { ScrollView } from "react-native"
+import { SavedSearchAlertForm } from "./SavedSearchAlertForm"
 
 interface CreateSavedSearchAlertProps {
   visible: boolean

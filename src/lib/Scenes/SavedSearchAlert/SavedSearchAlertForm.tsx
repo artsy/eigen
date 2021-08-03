@@ -1,7 +1,7 @@
-import { FormikProvider, useFormik } from 'formik'
+import { FormikProvider, useFormik } from "formik"
 import React from "react"
 import { Form } from "./Components/Form"
-import { SavedSearchAlertFormValues } from './SavedSearchAlertModel'
+import { SavedSearchAlertFormValues } from "./SavedSearchAlertModel"
 
 interface SavedSearchAlertFormProps {
   onSaved?: () => void
@@ -14,7 +14,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     initialErrors: {},
     onSubmit: async () => {
       onSaved?.()
-    }
+    },
   })
 
   return (
