@@ -7,7 +7,7 @@ import { ShadowSeparator } from "../ShadowSeparator"
 
 export interface OpenInquiryModalButtonProps {
   artworkID: string
-  conversationID: string | null | undefined
+  conversationID: string
 }
 
 export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ artworkID, conversationID }) => {
