@@ -18,10 +18,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
     <FancyModal visible={visible} fullScreen>
       <FancyModalHeader useXButton hideBottomDivider onLeftButtonPress={onClosePress} />
       <ScrollView contentContainerStyle={{ paddingHorizontal: space(2) }}>
-        <Sans size="8">Create an Alert</Sans>
-        <Sans size="3t" mt={1} mb={4}>
-          Receive alerts as Push Notifications directly to your device.
-        </Sans>
+        <Sans size="8" mb={4}>Create an Alert</Sans>
         <SavedSearchAlertForm onSaved={onClosePress} />
         <Text variant="text" color="black60" textAlign="center" mt={2}>
           You will be able to access all your Artist Alerts in your Profile.
