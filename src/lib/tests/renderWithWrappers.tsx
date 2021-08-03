@@ -7,7 +7,6 @@ import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Theme } from "palette"
 import React from "react"
 import ReactTestRenderer from "react-test-renderer"
-import { ReactElement } from "simple-markdown"
 
 export const Wrappers: React.FC = ({ children }) => {
   return (
@@ -29,7 +28,7 @@ export const Wrappers: React.FC = ({ children }) => {
  * Returns given component wrapped with our page wrappers
  * @param component
  */
-export const componentWithWrappers = (component: ReactElement) => {
+export const componentWithWrappers = (component: React.ReactElement) => {
   return <Wrappers>{component}</Wrappers>
 }
 
@@ -37,7 +36,7 @@ export const componentWithWrappers = (component: ReactElement) => {
  * Renders a React Component with our page wrappers
  * @param component
  */
-export const renderWithWrappers = (component: ReactElement) => {
+export const renderWithWrappers = (component: React.ReactElement) => {
   const wrappedComponent = componentWithWrappers(component)
   try {
     // tslint:disable-next-line:use-wrapped-components
@@ -45,7 +44,7 @@ export const renderWithWrappers = (component: ReactElement) => {
 
     // monkey patch update method to wrap components
     const originalUpdate = renderedComponent.update
-    renderedComponent.update = (nextElement: ReactElement) => {
+    renderedComponent.update = (nextElement: React.ReactElement) => {
       originalUpdate(componentWithWrappers(nextElement))
     }
 
@@ -73,6 +72,14 @@ export const TrackProvider = track()(({ children }: { children?: React.ReactNode
  * by using @testing-library/react-native
  * @param component
  */
-export const renderWithWrappersTL = (component: ReactElement) => {
-  return render(component, { wrapper: Wrappers })
+export const renderWithWrappersTL = (component: React.ReactElement) => {
+  const result = render(component, { wrapper: Wrappers })
+
+  const container = result.UNSAFE_getByType(component.type as any)
+
+  return {
+    ...result, // return all the regular helpers we get from @testing-library
+    containerWithWrappers: result.container, // return the whole tree, wrappers and all
+    container, // return a tree starting from the component that we give to `renderWithWrappersTL`
+  }
 }
