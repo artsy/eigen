@@ -114,10 +114,6 @@ const TestWrapper: typeof AutosuggestResults = (props) => (
   </SearchContext.Provider>
 )
 
-jest.mock("lib/relay/createEnvironment", () => ({
-  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-}))
-
 jest.mock("lodash", () => ({
   ...jest.requireActual("lodash"),
   throttle: (f: any) => f,

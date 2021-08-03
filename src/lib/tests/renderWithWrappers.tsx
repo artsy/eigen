@@ -1,3 +1,4 @@
+import { render } from "@testing-library/react-native"
 import { PopoverMessageProvider } from "lib/Components/PopoverMessage/PopoverMessageProvider"
 import { ToastProvider } from "lib/Components/Toast/toastHook"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
@@ -7,6 +8,30 @@ import { Theme } from "palette"
 import React from "react"
 import ReactTestRenderer from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
+
+export const Wrappers: React.FC = ({ children }) => {
+  return (
+    <TrackProvider>
+      <GlobalStoreProvider>
+        <Theme>
+          <ToastProvider>
+            <PopoverMessageProvider>
+              <ProvideScreenDimensions>{children}</ProvideScreenDimensions>
+            </PopoverMessageProvider>
+          </ToastProvider>
+        </Theme>
+      </GlobalStoreProvider>
+    </TrackProvider>
+  )
+}
+
+/**
+ * Returns given component wrapped with our page wrappers
+ * @param component
+ */
+export const componentWithWrappers = (component: ReactElement) => {
+  return <Wrappers>{component}</Wrappers>
+}
 
 /**
  * Renders a React Component with our page wrappers
@@ -44,19 +69,10 @@ export const TrackProvider = track()(({ children }: { children?: React.ReactNode
 })
 
 /**
- * Returns given component wrapped with our page wrappers
+ * Renders a React Component with our page wrappers
+ * by using @testing-library/react-native
  * @param component
  */
-export const componentWithWrappers = (component: ReactElement) => (
-  <TrackProvider>
-    <GlobalStoreProvider>
-      <Theme>
-        <ToastProvider>
-          <PopoverMessageProvider>
-            <ProvideScreenDimensions>{component}</ProvideScreenDimensions>
-          </PopoverMessageProvider>
-        </ToastProvider>
-      </Theme>
-    </GlobalStoreProvider>
-  </TrackProvider>
-)
+export const renderWithWrappersTL = (component: ReactElement) => {
+  return render(component, { wrapper: Wrappers })
+}
