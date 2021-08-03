@@ -4,8 +4,10 @@ import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn,
 import { isArtsyEmail } from "lib/utils/general"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { stringify } from "qs"
+import { Alert, Linking, Platform } from "react-native"
 import Config from "react-native-config"
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "react-native-fbsdk-next"
+import PushNotification from "react-native-push-notification"
 import { getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
@@ -70,6 +72,8 @@ export interface AuthModel {
         oauthProvider?: never
         idToken?: never
         appleUID?: never
+
+        agreedToReceiveEmails: boolean
       }
     | {
         email: string
@@ -80,6 +84,8 @@ export interface AuthModel {
         password?: never
         idToken?: never
         appleUID?: never
+
+        agreedToReceiveEmails: boolean
       }
     | {
         email: string
@@ -90,14 +96,28 @@ export interface AuthModel {
 
         password?: never
         accessToken?: never
+
+        agreedToReceiveEmails: boolean
       },
     {},
     GlobalStoreModel,
     Promise<boolean>
   >
-  authFacebook: Thunk<AuthModel, { signInOrUp: "signIn" | "signUp" }, {}, GlobalStoreModel, Promise<true>>
-  authGoogle: Thunk<AuthModel, { signInOrUp: "signIn" | "signUp" }, {}, GlobalStoreModel, Promise<true>>
-  authApple: Thunk<AuthModel, undefined, {}, GlobalStoreModel, Promise<true>>
+  authFacebook: Thunk<
+    AuthModel,
+    { signInOrUp: "signIn" } | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
+    {},
+    GlobalStoreModel,
+    Promise<true>
+  >
+  authGoogle: Thunk<
+    AuthModel,
+    { signInOrUp: "signIn" } | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
+    {},
+    GlobalStoreModel,
+    Promise<true>
+  >
+  authApple: Thunk<AuthModel, { agreedToReceiveEmails?: boolean }, {}, GlobalStoreModel, Promise<true>>
   forgotPassword: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel, Promise<boolean>>
   gravityUnauthenticatedRequest: Thunk<
     this,
@@ -265,68 +285,96 @@ export const getAuthModel = (): AuthModel => ({
       })
       actions.notifyTracking({ userId: id })
 
+      if (Platform.OS === "android") {
+        PushNotification.checkPermissions((permissions) => {
+          if (!permissions.alert) {
+            // settimeout so alerts show when/immediately after page loads not before.
+            setTimeout(() => {
+              Alert.alert(
+                "Artsy Would Like to Send You Notifications",
+                "Turn on notifications to get important updates about artists you follow.",
+                [
+                  {
+                    text: "Dismiss",
+                    style: "cancel",
+                  },
+                  {
+                    text: "Settings",
+                    onPress: () => Linking.openSettings(),
+                  },
+                ]
+              )
+            }, 3000)
+          }
+        })
+      }
       return true
     }
 
     return false
   }),
-  signUp: thunk(async (actions, { email, password, name, accessToken, oauthProvider, idToken, appleUID }) => {
-    let body
-    switch (oauthProvider) {
-      case "facebook":
-      case "google":
-        body = {
-          provider: oauthProvider,
-          oauth_token: accessToken,
-          email,
-          name,
-          agreed_to_receive_emails: true,
-          accepted_terms_of_service: true,
-        }
-        break
-      case "apple":
-        body = {
-          provider: oauthProvider,
-          apple_uid: appleUID,
-          id_token: idToken,
-          email,
-          name,
-          agreed_to_receive_emails: true,
-          accepted_terms_of_service: true,
-        }
-        break
-      default:
-        body = {
-          email,
-          password,
-          name,
-          agreed_to_receive_emails: true,
-          accepted_terms_of_service: true,
-        }
-        break
-    }
+  signUp: thunk(
+    async (
+      actions,
+      { email, password, name, accessToken, oauthProvider, idToken, appleUID, agreedToReceiveEmails }
+    ) => {
+      let body
+      switch (oauthProvider) {
+        case "facebook":
+        case "google":
+          body = {
+            provider: oauthProvider,
+            oauth_token: accessToken,
+            email,
+            name,
+            agreed_to_receive_emails: agreedToReceiveEmails,
+            accepted_terms_of_service: true,
+          }
+          break
+        case "apple":
+          body = {
+            provider: oauthProvider,
+            apple_uid: appleUID,
+            id_token: idToken,
+            email,
+            name,
+            agreed_to_receive_emails: agreedToReceiveEmails,
+            accepted_terms_of_service: true,
+          }
+          break
+        default:
+          body = {
+            email,
+            password,
+            name,
+            agreed_to_receive_emails: agreedToReceiveEmails,
+            accepted_terms_of_service: true,
+          }
+          break
+      }
 
-    const result = await actions.gravityUnauthenticatedRequest({
-      path: `/api/v1/user`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body,
-    })
-
-    // The user account has been successfully created
-    if (result.status === 201) {
-      // @ts-ignore
-      await actions.signIn({ email, password, accessToken, oauthProvider, idToken, appleUID })
-      actions.setState({
-        onboardingState: "incomplete",
+      const result = await actions.gravityUnauthenticatedRequest({
+        path: `/api/v1/user`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body,
       })
-      return true
+
+      // The user account has been successfully created
+      if (result.status === 201) {
+        // @ts-ignore
+        await actions.signIn({ email, password, accessToken, oauthProvider, idToken, appleUID })
+        actions.setState({
+          onboardingState: "incomplete",
+        })
+        return true
+      }
+      return false
     }
-    return false
-  }),
-  authFacebook: thunk(async (actions, { signInOrUp }) => {
+  ),
+  authFacebook: thunk(async (actions, options) => {
     return await new Promise<true>(async (resolve, reject) => {
       const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions(["public_profile", "email"])
       if (declinedPermissions?.includes("email")) {
@@ -352,18 +400,19 @@ export const getAuthModel = (): AuthModel => ({
           return
         }
 
-        if (signInOrUp === "signUp") {
+        if (options.signInOrUp === "signUp") {
           const resultGravitySignUp = await actions.signUp({
             email: facebookInfo.email,
             name: facebookInfo.name,
             accessToken: accessToken.accessToken,
             oauthProvider: "facebook",
+            agreedToReceiveEmails: options.agreedToReceiveEmails,
           })
 
           resultGravitySignUp ? resolve(true) : reject("Could not sign up")
         }
 
-        if (signInOrUp === "signIn") {
+        if (options.signInOrUp === "signIn") {
           // we need to get X-ACCESS-TOKEN before actual sign in
           const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
             path: `/oauth2/access_token`,
@@ -421,7 +470,7 @@ export const getAuthModel = (): AuthModel => ({
       new GraphRequestManager().addRequest(infoRequest).start()
     })
   }),
-  authGoogle: thunk(async (actions, { signInOrUp }) => {
+  authGoogle: thunk(async (actions, options) => {
     return await new Promise<true>(async (resolve, reject) => {
       if (!(await GoogleSignin.hasPlayServices())) {
         reject("Play services are not available.")
@@ -429,7 +478,7 @@ export const getAuthModel = (): AuthModel => ({
       const userInfo = await GoogleSignin.signIn()
       const accessToken = (await GoogleSignin.getTokens()).accessToken
 
-      if (signInOrUp === "signUp") {
+      if (options.signInOrUp === "signUp") {
         const resultGravitySignUp =
           userInfo.user.name &&
           (await actions.signUp({
@@ -437,12 +486,13 @@ export const getAuthModel = (): AuthModel => ({
             name: userInfo.user.name,
             accessToken,
             oauthProvider: "google",
+            agreedToReceiveEmails: options.agreedToReceiveEmails,
           }))
 
         resultGravitySignUp ? resolve(true) : reject("Could not sign up")
       }
 
-      if (signInOrUp === "signIn") {
+      if (options.signInOrUp === "signIn") {
         // we need to get X-ACCESS-TOKEN before actual sign in
         const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
           path: `/oauth2/access_token`,
@@ -483,7 +533,7 @@ export const getAuthModel = (): AuthModel => ({
       }
     })
   }),
-  authApple: thunk(async (actions) => {
+  authApple: thunk(async (actions, { agreedToReceiveEmails }) => {
     return await new Promise<true>(async (resolve, reject) => {
       // we cannot have separated logic for sign in and sign up with apple, as with google or facebook,
       // because apple returns email only on the FIRST auth attempt, so we run sign up and sign in one by one
@@ -512,6 +562,7 @@ export const getAuthModel = (): AuthModel => ({
             appleUID,
             idToken,
             oauthProvider: "apple",
+            agreedToReceiveEmails: !!agreedToReceiveEmails,
           }))
 
         resultGravitySignUp ? resolve(true) : (signInOrUp = "signIn")

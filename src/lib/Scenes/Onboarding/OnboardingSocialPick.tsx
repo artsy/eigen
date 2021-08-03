@@ -35,7 +35,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       if (mode === "login") {
         await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" })
       } else {
-        await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp" })
+        await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
       }
     } catch (error) {
       if (typeof error === "string") {
@@ -46,7 +46,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
 
   const useApple = async () => {
     try {
-      await GlobalStore.actions.auth.authApple()
+      await GlobalStore.actions.auth.authApple({ agreedToReceiveEmails: true })
     } catch (error) {
       if (typeof error === "string") {
         Alert.alert(error)

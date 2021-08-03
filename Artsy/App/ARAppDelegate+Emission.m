@@ -96,6 +96,12 @@ SOFTWARE.
 {
     NSString *userID = [[[ARUserManager sharedManager] currentUser] userID];
     NSString *userEmail = [[[ARUserManager sharedManager] currentUser] email];
+
+    // Clear the auth token for any users who aren't logged in
+    if (userID == nil) {
+        [ARUserManager clearAccessToken];
+    }
+
     NSString *authenticationToken = [[ARUserManager sharedManager] userAuthenticationToken];
 
     NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];

@@ -53,7 +53,10 @@ describe("OnboardingSocialPick", () => {
 
       const tree = renderWithWrappers(<OnboardingSocialPick mode="signup" />)
       tree.root.findByProps({ testID: "useFacebook" }).props.onPress()
-      expect(GlobalStore.actions.auth.authFacebook).toHaveBeenCalledWith({ signInOrUp: "signUp" })
+      expect(GlobalStore.actions.auth.authFacebook).toHaveBeenCalledWith({
+        agreedToReceiveEmails: true,
+        signInOrUp: "signUp",
+      })
     })
 
     it("signs up in using apple when the user presses on continue with apple", () => {
@@ -61,7 +64,7 @@ describe("OnboardingSocialPick", () => {
 
       const tree = renderWithWrappers(<OnboardingSocialPick mode="signup" />)
       tree.root.findByProps({ testID: "useApple" }).props.onPress()
-      expect(GlobalStore.actions.auth.authApple).toHaveBeenCalled()
+      expect(GlobalStore.actions.auth.authApple).toHaveBeenCalledWith({ agreedToReceiveEmails: true })
     })
   })
 })

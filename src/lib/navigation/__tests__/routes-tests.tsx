@@ -12,7 +12,7 @@ describe("artsy.net routes", () => {
     expect(matchRoute("")).toEqual(expected)
     expect(matchRoute("//")).toEqual(expected)
     expect(matchRoute("https://www.artsy.net/")).toEqual(expected)
-    expect(matchRoute("https://artsy.net/")).toEqual(expected)
+    expect(matchRoute("https://www.artsy.net/")).toEqual(expected)
     expect(matchRoute("https://staging.artsy.net/")).toEqual(expected)
   })
 
@@ -84,7 +84,7 @@ describe("artsy.net routes", () => {
         "type": "match",
       }
     `)
-    expect(matchRoute("https://artsy.net/artist/more%26more")).toMatchInlineSnapshot(`
+    expect(matchRoute("https://www.artsy.net/artist/more%26more")).toMatchInlineSnapshot(`
       Object {
         "module": "Artist",
         "params": Object {
@@ -108,7 +108,7 @@ describe("artsy.net routes", () => {
     `)
     expect(
       matchRoute(
-        "https://artsy.net/artist/josef-albers%3Futm_medium%3Dsocial%26utm_source%3Dinstagram-story%26utm_campaign%3Ddp."
+        "https://www.artsy.net/artist/josef-albers%3Futm_medium%3Dsocial%26utm_source%3Dinstagram-story%26utm_campaign%3Ddp."
       )
     ).toMatchInlineSnapshot(`
       Object {
@@ -152,7 +152,7 @@ describe("artsy.net routes", () => {
         "type": "match",
       }
     `)
-    expect(matchRoute("https://artsy.net/artwork/more%26more")).toMatchInlineSnapshot(`
+    expect(matchRoute("https://www.artsy.net/artwork/more%26more")).toMatchInlineSnapshot(`
       Object {
         "module": "Artwork",
         "params": Object {
@@ -161,7 +161,7 @@ describe("artsy.net routes", () => {
         "type": "match",
       }
     `)
-    expect(matchRoute(encodeURIComponent(encodeURIComponent("https://artsy.net/artwork/more%26more"))))
+    expect(matchRoute(encodeURIComponent(encodeURIComponent("https://www.artsy.net/artwork/more%26more"))))
       .toMatchInlineSnapshot(`
       Object {
         "module": "Artwork",
@@ -187,7 +187,7 @@ describe("artsy.net routes", () => {
     `)
     expect(
       matchRoute(
-        "https://artsy.net/artwork/yayoi-kusama-red-pumpkin%3Futm_medium%3Dsocial%26utm_source%3Dinstagram-story%26utm_campaign%3Ddp."
+        "https://www.artsy.net/artwork/yayoi-kusama-red-pumpkin%3Futm_medium%3Dsocial%26utm_source%3Dinstagram-story%26utm_campaign%3Ddp."
       )
     ).toMatchInlineSnapshot(`
       Object {

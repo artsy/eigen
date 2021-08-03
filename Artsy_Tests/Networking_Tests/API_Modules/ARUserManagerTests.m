@@ -153,7 +153,7 @@ describe(@"clearUserData", ^{
         });
     });
     
-    it(@"clears artsy.net cookies", ^{
+    it(@"clears all cookies", ^{
         NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
         [cookieStorage setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
         for(NSHTTPCookie *cookie in [cookieStorage cookiesForURL:[NSURL URLWithString:@"http://artsy.net"]]) {
@@ -170,13 +170,13 @@ describe(@"clearUserData", ^{
             [cookieProperties setObject:artsyHost forKey:NSHTTPCookieDomain];
             [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:[NSHTTPCookie cookieWithProperties:cookieProperties]];
         }
-        // don't touch a cookie in a different domain
+        // will also delete a cookie in a different domain
         [cookieProperties setObject:@"example.com" forKey:NSHTTPCookieDomain];
         [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:[NSHTTPCookie cookieWithProperties:cookieProperties]];
         expect(cookieStorage.cookies.count).to.equal(cookieCount + ARRouter.artsyHosts.count + 1);
         expect([cookieStorage cookiesForURL:[NSURL URLWithString:@"http://artsy.net"]].count).to.equal(1);
         [ARUserManager clearUserData];
-        expect(cookieStorage.cookies.count).to.equal(cookieCount + 1);
+        expect(cookieStorage.cookies.count).to.equal(cookieCount);
         expect([cookieStorage cookiesForURL:[NSURL URLWithString:@"http://artsy.net"]].count).to.equal(0);
     });
 });

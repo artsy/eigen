@@ -1,19 +1,20 @@
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { BackButton } from "lib/navigation/BackButton"
-import { GlobalStore, useEnvironment } from "lib/store/GlobalStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Button, Flex, Spacer, Text, Touchable, useColor } from "palette"
+import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { Alert, Animated, Linking, ScrollView } from "react-native"
+import { Alert, Animated, ScrollView } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
 import { OnboardingSocialPick } from "../OnboardingSocialPick"
+import { EmailSubscriptionCheckbox } from "./EmailSubscriptionCheckbox"
 import { OnboardingCreateAccountEmail, OnboardingCreateAccountEmailParams } from "./OnboardingCreateAccountEmail"
 import { OnboardingCreateAccountName } from "./OnboardingCreateAccountName"
 import { OnboardingCreateAccountPassword } from "./OnboardingCreateAccountPassword"
+import { TermsOfServiceCheckbox } from "./TermsOfServiceCheckbox"
 
 export const OnboardingCreateAccount: React.FC = () => {
   return <OnboardingSocialPick mode="signup" />
@@ -66,6 +67,7 @@ const EMAIL_EXISTS_ERROR_MESSAGE = "We found an account with this email"
 
 export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountProps> = ({ navigation }) => {
   const [acceptedTerms, setAcceptedTerms] = useState(false)
+  const [agreedToReceiveEmails, setAgreedToReceiveEmails] = useState(false)
   const [higlightTerms, setHighlightTerms] = useState(false)
 
   const formik = useFormik<UserSchema>({
@@ -94,7 +96,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
           break
         case "OnboardingCreateAccountName":
           if (acceptedTerms) {
-            const res = await GlobalStore.actions.auth.signUp({ email, password, name })
+            const res = await GlobalStore.actions.auth.signUp({ email, password, name, agreedToReceiveEmails })
             if (!res) {
               Alert.alert("Error", "Please try signing up again")
             }
@@ -148,6 +150,8 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
           acceptedTerms={acceptedTerms}
           setAcceptedTerms={setAcceptedTerms}
           highlightTerms={higlightTerms}
+          agreedToReceiveEmails={agreedToReceiveEmails}
+          setAgreedToReceiveEmails={setAgreedToReceiveEmails}
         />
       </NavigationContainer>
     </FormikProvider>
@@ -203,12 +207,16 @@ export interface OnboardingCreateAccountButtonProps {
   acceptedTerms: boolean
   setAcceptedTerms: React.Dispatch<React.SetStateAction<boolean>>
   highlightTerms: boolean
+  agreedToReceiveEmails: boolean
+  setAgreedToReceiveEmails: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButtonProps> = ({
   navigateToLoginWithEmail,
   acceptedTerms,
   setAcceptedTerms,
+  agreedToReceiveEmails,
+  setAgreedToReceiveEmails,
   highlightTerms,
 }) => {
   const { handleSubmit, isSubmitting, errors } = useFormikContext<UserSchema>()
@@ -216,8 +224,6 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
   const isLastStep = getCurrentRoute() === "OnboardingCreateAccountName"
   const yTranslateAnim = useRef(new Animated.Value(0))
   const { safeAreaInsets } = useScreenDimensions()
-
-  const webURL = useEnvironment().webURL
 
   useEffect(() => {
     if (errors.email === EMAIL_EXISTS_ERROR_MESSAGE) {
@@ -249,41 +255,10 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
         </Animated.View>
       )}
       {!!isLastStep && (
-        <Touchable haptic onPress={() => setAcceptedTerms(!acceptedTerms)}>
-          <Flex my={2} flexDirection="row">
-            <Checkbox error={highlightTerms} checked={acceptedTerms} onPress={() => setAcceptedTerms(!acceptedTerms)} />
-            <Text variant="small">
-              I agree to Artsy’s{" "}
-              <Text
-                onPress={() => {
-                  Linking.openURL(`${webURL}/terms`)
-                }}
-                style={{ textDecorationLine: "underline" }}
-              >
-                Terms of Use
-              </Text>
-              ,{" "}
-              <Text
-                onPress={() => {
-                  Linking.openURL(`${webURL}/privacy`)
-                }}
-                style={{ textDecorationLine: "underline" }}
-              >
-                Privacy Policy
-              </Text>
-              , and{" "}
-              <Text
-                onPress={() => {
-                  Linking.openURL(`${webURL}/conditions-of-sale`)
-                }}
-                style={{ textDecorationLine: "underline" }}
-              >
-                Conditions of Sale
-              </Text>
-              .
-            </Text>
-          </Flex>
-        </Touchable>
+        <Flex width="100%" pr={3} my={2}>
+          <TermsOfServiceCheckbox setChecked={setAcceptedTerms} checked={acceptedTerms} error={highlightTerms} />
+          <EmailSubscriptionCheckbox setChecked={setAgreedToReceiveEmails} checked={agreedToReceiveEmails} />
+        </Flex>
       )}
       <Button
         onPress={handleSubmit}

@@ -4,19 +4,28 @@ import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilter
 import { Input } from "lib/Components/Input/Input"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
-import { debounce } from "lodash"
+import { debounce, throttle } from "lodash"
 import React, { useEffect, useMemo, useRef } from "react"
+import { Platform } from "react-native"
 import { useTracking } from "react-tracking"
 
-const DEBOUNCE_DELAY = 600
+export const DEBOUNCE_DELAY = 400
 
 interface KeywordFilterProps {
   artistId: string
   artistSlug: string
   onFocus?: () => void
+  loading?: boolean
+  onTypingStart?: () => void
 }
 
-export const KeywordFilter: React.FC<KeywordFilterProps> = ({ artistId, artistSlug, onFocus }) => {
+export const KeywordFilter: React.FC<KeywordFilterProps> = ({
+  artistId,
+  artistSlug,
+  loading,
+  onFocus,
+  onTypingStart,
+}) => {
   const { trackEvent } = useTracking()
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
@@ -39,6 +48,7 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({ artistId, artistSl
   }
 
   const handleChangeText = useMemo(() => debounce(updateKeywordFilter, DEBOUNCE_DELAY), [appliedFiltersParams])
+  const handleTypingStart = useMemo(() => throttle(() => onTypingStart?.(), DEBOUNCE_DELAY), [onTypingStart])
 
   // clear input text when keyword filter is reseted
   useEffect(() => {
@@ -57,11 +67,21 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({ artistId, artistSl
     return () => handleChangeText.cancel()
   }, [])
 
+  // Truncate placeholder for Android to prevent new line.
+  const placeholder =
+    Platform.OS === "android" && loading
+      ? "Search by artwork title, series..."
+      : "Search by artwork title, series, or description"
+
   return (
     <Input
+      loading={loading}
       icon={<SearchIcon width={18} height={18} />}
-      placeholder="Search by artwork title, series, or description"
-      onChangeText={handleChangeText}
+      placeholder={placeholder}
+      onChangeText={(e) => {
+        handleTypingStart()
+        handleChangeText(e)
+      }}
       autoCorrect={false}
       enableClearButton={true}
       ref={inputRef}

@@ -50,13 +50,15 @@
     "type-check:offence-ranking": "yarn -s type-check:offence 'TS\\d+' -o | sort | uniq -c | sort -r",
     "type-check:offence": "tsc --pretty false | grep -v __generated__ | grep -E",
     "type-check": "tsc",
+    "storybook-load-new": "rnstl",
     "storybook-ios": "npx artsy open -i storybook",
     "storybook-android": "npx artsy open -a storybook",
-    "prestorybook-server": "rnstl",
+    "prestorybook-server": "yarn storybook-load-new",
     "storybook-server": "start-storybook -p 7007",
     "build-storybook": "build-storybook",
+    "prestart-storybook": "yarn storybook-load-new",
     "start-storybook": "STORYBOOK=1 yarn start",
-    "detect-secrets": "detect-secrets-launcher",
+    "detect-secrets": "detect-secrets-launcher --baseline .secrets.baseline",
     "update-metaphysics": "node scripts/update-metaphysics.js"
   },
   "repository": {
@@ -84,8 +86,8 @@
     "cheerio": "0.22.0"
   },
   "dependencies": {
-    "@artsy/cohesion": "2.13.0",
-    "@artsy/palette-tokens": "2.1.2",
+    "@artsy/cohesion": "2.15.0",
+    "@artsy/palette-tokens": "2.3.0",
     "@expo/react-native-action-sheet": "^3.8.0",
     "@invertase/react-native-apple-authentication": "^2.1.2",
     "@ptomasroos/react-native-multi-slider": "^2.2.2",
@@ -172,6 +174,8 @@
     "@storybook/addon-actions": "^5.3",
     "@storybook/react-native": "^5.3.25",
     "@storybook/react-native-server": "^5.3.23",
+    "@testing-library/jest-native": "^4.0.1",
+    "@testing-library/react-native": "7.1.0",
     "@types/argparse": "^2.0.8",
     "@types/chalk": "2.2.0",
     "@types/dedent": "0.7.0",
@@ -277,7 +281,7 @@
       "yarn prettier-write"
     ],
     "**/!(package.json)": [
-      "detect-secrets-launcher --baseline .secrets.baseline"
+      "yarn detect-secrets"
     ]
   },
   "prettier": {

@@ -91,5 +91,6 @@ describe(SavedAddressesFormQueryRenderer, () => {
     const text = extractText(tree)
 
     expect(text).toContain("Edit Address")
+    expect(text).toContain("Delete address")
   })
 })

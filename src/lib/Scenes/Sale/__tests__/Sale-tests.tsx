@@ -1,3 +1,4 @@
+import { waitFor } from "@testing-library/react-native"
 import { navigate, popParentViewController } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -32,12 +33,10 @@ describe("Sale", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    jest.useFakeTimers()
   })
 
   afterEach(() => {
     jest.clearAllMocks()
-    jest.useRealTimers()
   })
 
   it("switches to live auction view when sale goes live", () => {
@@ -60,10 +59,11 @@ describe("Sale", () => {
     )
 
     expect(navigate).toHaveBeenCalledTimes(0)
-    jest.advanceTimersByTime(1000)
-    expect(navigate).toHaveBeenCalledTimes(1)
-    expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug")
-    expect(popParentViewController).toHaveBeenCalledTimes(1)
+    waitFor(() => {
+      expect(navigate).toHaveBeenCalledTimes(1)
+      expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug")
+      expect(popParentViewController).toHaveBeenCalledTimes(1)
+    })
   })
 
   it("switches to live auction view when sale goes live with no endAt", () => {
@@ -87,10 +87,12 @@ describe("Sale", () => {
     )
 
     expect(navigate).toHaveBeenCalledTimes(0)
-    jest.advanceTimersByTime(1000)
-    expect(navigate).toHaveBeenCalledTimes(1)
-    expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug")
-    expect(popParentViewController).toHaveBeenCalledTimes(1)
+
+    waitFor(() => {
+      expect(navigate).toHaveBeenCalledTimes(1)
+      expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug")
+      expect(popParentViewController).toHaveBeenCalledTimes(1)
+    })
   })
 
   it("doesn't switch to live auction view when sale is closed", () => {
@@ -110,9 +112,11 @@ describe("Sale", () => {
     )
 
     expect(navigate).toHaveBeenCalledTimes(0)
-    jest.advanceTimersByTime(1000)
-    expect(navigate).toHaveBeenCalledTimes(0)
-    expect(popParentViewController).toHaveBeenCalledTimes(0)
+
+    waitFor(() => {
+      expect(navigate).toHaveBeenCalledTimes(0)
+      expect(popParentViewController).toHaveBeenCalledTimes(0)
+    })
   })
 
   it("renders a Register button when registrations are open", () => {

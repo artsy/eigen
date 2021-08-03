@@ -1,3 +1,4 @@
+import { waitFor } from "@testing-library/react-native"
 import { ComposerTestsQuery } from "__generated__/ComposerTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
@@ -135,9 +136,7 @@ describe("inquiry offer enabled", () => {
 
     input.props.onFocus()
 
-    setTimeout(() => {
-      expect(tree.root.findAllByType(CTAPopUp)[0]).not.toBeDefined()
-    }, 0)
+    waitFor(() => expect(tree.root.findAllByType(CTAPopUp)[0]).not.toBeDefined())
   })
 
   describe("with associated orders (OrderCTAs)", () => {
