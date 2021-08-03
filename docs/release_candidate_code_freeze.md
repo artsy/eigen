@@ -1,11 +1,10 @@
-
 # Release candidate code freeze
 
-Due to the risky nature of mobile app releases we do a fair bit of QA on our builds before submitting them to the app store. With many developers contributing to Eigen this can present a problem. If we find a bug that needs to be fixed before launch chances are while we are fixing it other code will get into the main branch besides the bug fix. If we create a new release candidate from the main branch this code also presents a risk and to be thorough we really should kick off the QA process again. This can create a constant moving target issue and cause delayed releases and take up a fair amount of engineering time. We could pause PR merging until the bug(s) are fixed but this would be needlessly disruptive to teams contributing to Eigen. What we can do instead is utilize git tags to have a pseudo code freeze on the release candidate. 
+Due to the risky nature of mobile app releases we do a fair bit of QA on our builds before submitting them to the app store. With many developers contributing to Eigen this can present a problem. If we find a bug that needs to be fixed before launch chances are while we are fixing it other code will get into the main branch besides the bug fix. If we create a new release candidate from the main branch this code also presents a risk and to be thorough we really should kick off the QA process again. This can create a constant moving target issue and cause delayed releases and take up a fair amount of engineering time. We could pause PR merging until the bug(s) are fixed but this would be needlessly disruptive to teams contributing to Eigen. What we can do instead is utilize git tags to have a pseudo code freeze on the release candidate.
 
 # Happy Path - No Launch Blocking Bugs Found
 
-If there are no launch blocking bugs found during QA this means the release candidate is set to be submitted to the app store and google play store. 
+If there are no launch blocking bugs found during QA this means the release candidate is set to be submitted to the app store and google play store.
 In the QA scripts for this release candidate you can find the version and build numbers for both the Android and iOS versions of the release candidate.
 Run our fastlane script to promote these _exact_ versions to the stores
 
@@ -45,3 +44,11 @@ Communicate with other devs that a release candidate will be deployed and they s
 Follow the instructions for [deploying to app store](https://github.com/artsy/eigen/blob/master/docs/deploy_to_app_store.md) and [deploying to play store](https://github.com/artsy/eigen/blob/master/docs/deploy_to_play_store.md).
 
 Make sure to QA the bug fix changes and test any code paths that may have been affected.
+
+## Possibly bring back the fixes to master
+
+The changes on the release-candidate branch might be cherry-picks only, or it might be new code. Considering the release notes files are probably changed in that branch as well, it makes sense to make a PR from that release-candidate branch to master, in order to get all the changes back to master.
+
+TODO FIX HELP CHECK THIS OUT WOW LOOK!!
+a thread from the last time we did that. in case its useful
+https://artsy.slack.com/archives/C01B2P6LJUU/p1627916686040500
