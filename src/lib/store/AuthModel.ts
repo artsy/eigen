@@ -360,7 +360,7 @@ export const getAuthModel = (): AuthModel => ({
             oauthProvider: "facebook",
           })
 
-          resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
+          resultGravitySignUp ? resolve(true) : reject("Could not sign up")
         }
 
         if (signInOrUp === "signIn") {
@@ -394,12 +394,12 @@ export const getAuthModel = (): AuthModel => ({
               oauthProvider: "facebook",
             })
 
-            resultGravitySignIn ? resolve(true) : reject("Failed to log in.")
+            resultGravitySignIn ? resolve(true) : reject("Could not log in")
           } else {
             const res = await resultGravityAccessToken.json()
+
             if (res.error_description) {
-              console.log(res) // This will get us the error on sentry because we capture console.logs there
-              reject(`Failed to get gravity token from gravity: ${res.error_description}`)
+              reject("Could not create user account")
             }
           }
         }
@@ -439,7 +439,7 @@ export const getAuthModel = (): AuthModel => ({
             oauthProvider: "google",
           }))
 
-        resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
+        resultGravitySignUp ? resolve(true) : reject("Could not sign up")
       }
 
       if (signInOrUp === "signIn") {
@@ -473,12 +473,11 @@ export const getAuthModel = (): AuthModel => ({
             oauthProvider: "google",
           })
 
-          resultGravitySignIn ? resolve(true) : reject("Failed to log in.")
+          resultGravitySignIn ? resolve(true) : reject("Could not log in")
         } else {
           const res = await resultGravityAccessToken.json()
           if (res.error_description) {
-            console.log(res) // This will get us the error on sentry because we capture console.logs there
-            reject(`Failed to get gravity token from gravity: ${res.error_description}`)
+            reject(`Could not create user account`)
           }
         }
       }
@@ -550,12 +549,11 @@ export const getAuthModel = (): AuthModel => ({
             oauthProvider: "apple",
           })
 
-          resultGravitySignIn ? resolve(true) : reject("Failed to log in.")
+          resultGravitySignIn ? resolve(true) : reject("Could not log in")
         } else {
           const res = await resultGravityAccessToken.json()
           if (res.error_description) {
-            console.log(res) // This will get us the error on sentry because we capture console.logs there
-            reject(`Failed to get gravity token from gravity: ${res.error_description}`)
+            reject("Could not create user account")
           }
         }
       }
