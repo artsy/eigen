@@ -32,7 +32,7 @@ describe("Saved search alert form", () => {
   it("correctly renders placeholder for input name", () => {
     const wrapper = renderWithWrappers(<SavedSearchAlertForm {...baseProps} />)
 
-    expect(wrapper.root.findByType(Input).props.placeholder).toEqual("artistName • 4 filters")
+    expect(wrapper.root.findByType(Input).props.placeholder).toEqual("artistName • 5 filters")
   })
 
   it("correctly extracts the values of pills", () => {

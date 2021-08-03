@@ -1,5 +1,4 @@
 import { useFormikContext } from "formik"
-import { FilterArray } from 'lib/Components/ArtworkFilter/ArtworkFilterHelpers'
 import { Input } from "lib/Components/Input/Input"
 import { InputTitle } from "lib/Components/Input/InputTitle"
 import { Box, Button, Flex, Pill } from "palette"
@@ -7,12 +6,11 @@ import React from "react"
 import { SavedSearchAlertFormPropsBase, SavedSearchAlertFormValues } from "../SavedSearchAlertModel"
 
 interface FormProps extends SavedSearchAlertFormPropsBase {
-  filters: FilterArray
   pills: string[]
 }
 
 export const Form: React.FC<FormProps> = (props) => {
-  const { pills, filters, artist } = props
+  const { pills, artist } = props
   const {
     isSubmitting,
     values,
@@ -21,14 +19,14 @@ export const Form: React.FC<FormProps> = (props) => {
     handleChange,
     handleSubmit,
   } = useFormikContext<SavedSearchAlertFormValues>()
-  const filtersCountLabel = filters.length === 0 ? 'filter' : 'filters'
+  const filtersCountLabel = pills.length === 0 ? 'filter' : 'filters'
 
   return (
     <Box>
       <Box mb={2}>
         <Input
           title="Name"
-          placeholder={`${artist.name} • ${filters.length} ${filtersCountLabel}`}
+          placeholder={`${artist.name} • ${pills.length} ${filtersCountLabel}`}
           value={values.name}
           onChangeText={handleChange("name")}
           onBlur={handleBlur("name")}

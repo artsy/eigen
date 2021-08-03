@@ -25,7 +25,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
   return (
     <FormikProvider value={formik}>
-      <Form pills={pills} filters={filters} {...other} />
+      <Form pills={pills} {...other} />
     </FormikProvider>
   )
 }
