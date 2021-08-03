@@ -193,7 +193,7 @@ const PureButton: React.FC<ButtonProps> = ({
                 </Text>
               </HiddenContainer>
 
-              {!!loading && <Spinner size={size} color={spinnerColor} />}
+              {!!loading && <Spinner size={size} color={spinnerColor} testID="spinner" />}
             </AnimatedContainer>
           </Flex>
         </TouchableWithoutFeedback>
