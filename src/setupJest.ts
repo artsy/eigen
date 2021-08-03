@@ -6,7 +6,7 @@
 // declare var babelHelpers: any
 // Object.assign(babelHelpers, { applyDecoratedDescriptor, initializerDefineProperty })
 // import "@babel/runtime"
-
+import "@testing-library/jest-native/extend-expect"
 import chalk from "chalk"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Enzyme from "enzyme"
@@ -44,6 +44,10 @@ const trackEvent = jest.fn()
 jest.mock("lib/utils/track/providers", () => ({
   ...jest.requireActual("lib/utils/track/providers"),
   postEventToProviders: jest.fn(),
+}))
+
+jest.mock("lib/relay/createEnvironment", () => ({
+  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
 }))
 
 jest.mock("tipsi-stripe", () => ({

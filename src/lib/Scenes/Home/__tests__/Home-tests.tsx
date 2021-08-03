@@ -16,10 +16,6 @@ jest.mock("lib/Scenes/Home/Components/SalesRail", () => ({
   SalesRailFragmentContainer: jest.fn(() => null),
 }))
 
-jest.mock("lib/relay/createEnvironment", () => ({
-  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-}))
-
 import { EmailConfirmationBanner } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
