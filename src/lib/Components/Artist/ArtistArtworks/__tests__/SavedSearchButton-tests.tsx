@@ -5,6 +5,7 @@ import { renderWithWrappers } from 'lib/tests/renderWithWrappers'
 import { Button } from 'palette'
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
+import { act } from 'react-test-renderer'
 import { createMockEnvironment } from "relay-test-utils"
 import { SavedSearchButtonFragmentContainer as SavedSearchButton } from "../SavedSearchButton"
 
@@ -21,7 +22,7 @@ describe("SavedSearchButton", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  const TestRenderer = ({ attributes = mockedAttributes }) => {
+  const TestRenderer = ({ attributes = mockedAttributes, onCreateAlertPress = jest.fn() }) => {
     return (
       <QueryRenderer<SavedSearchButtonTestsQuery>
         environment={mockEnvironment}
@@ -37,6 +38,7 @@ describe("SavedSearchButton", () => {
             {...props}
             loading={props === null && error === null}
             attributes={attributes}
+            onCreateAlertPress={onCreateAlertPress}
           />
         )}
         variables={{
@@ -76,5 +78,20 @@ describe("SavedSearchButton", () => {
     })
 
     expect(tree.root.findByType(Button).props.disabled).toBe(true)
+  })
+
+  it("should call `onPress` handler when button is pressed", () => {
+    const onPress = jest.fn()
+    const tree = renderWithWrappers(<TestRenderer onCreateAlertPress={onPress} />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Me: () => ({
+        savedSearch: null,
+      }),
+    })
+
+    act(() => tree.root.findByType(Button).props.onPress())
+
+    expect(onPress).toHaveBeenCalled()
   })
 })
