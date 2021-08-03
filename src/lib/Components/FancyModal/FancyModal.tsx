@@ -1,6 +1,8 @@
+import { ICON_HEIGHT } from "lib/Scenes/BottomTabs/BottomTabsIcon"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { Modal, Platform } from "react-native"
+import { useSafeAreaFrame } from "react-native-safe-area-context"
 import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "../ArtsyKeyboardAvoidingView"
 import { CARD_STACK_OVERLAY_HEIGHT, CARD_STACK_OVERLAY_Y_OFFSET } from "./FancyModalCard"
 import { FancyModalContext } from "./FancyModalContext"
@@ -8,17 +10,36 @@ import { FancyModalContext } from "./FancyModalContext"
 export const FancyModal: React.FC<{
   visible: boolean
   maxHeight?: number
-  onBackgroundPressed(): void
+  fullScreen?: boolean
+  onBackgroundPressed?(): void
   onModalFinishedClosing?(): void
-}> = ({ visible, children, onBackgroundPressed, maxHeight, onModalFinishedClosing }) => {
+}> = ({ visible, children, onBackgroundPressed = () => null, maxHeight, fullScreen, onModalFinishedClosing }) => {
   const {
     height: screenHeight,
     safeAreaInsets: { top },
   } = useScreenDimensions()
+  const frame = useSafeAreaFrame()
 
   const actualMaxHeight = screenHeight - (top + CARD_STACK_OVERLAY_HEIGHT + CARD_STACK_OVERLAY_Y_OFFSET)
+  let height: number
 
-  const height = maxHeight ? Math.min(maxHeight, actualMaxHeight) : actualMaxHeight
+  if (fullScreen) {
+    height = Platform.select({
+      ios: screenHeight,
+      /**
+       * Android has a problem when getting window height
+       * https://github.com/facebook/react-native/issues/23693
+       *
+       * Getting the full height taking into account the notch
+       * Based on Frame height + bottom tabs height + bottom tabs spacer height
+       */
+      default: frame.height + ICON_HEIGHT + 1,
+    })
+  } else if (maxHeight) {
+    height = Math.min(maxHeight, actualMaxHeight)
+  } else {
+    height = actualMaxHeight
+  }
 
   const firstMount = useRef(true)
 
@@ -27,8 +48,9 @@ export const FancyModal: React.FC<{
   const context = useContext(FancyModalContext)
   const card = context.useCard({
     height,
+    fullScreen,
     // background never shrinks on android
-    backgroundShouldShrink: Platform.OS === "ios" && !maxHeight,
+    backgroundShouldShrink: Platform.OS === "ios" && !maxHeight && !fullScreen,
     content: showingUnderlyingModal ? (
       /* Keyboard Avoiding
         This works fine for full-screen fancy modals but a couple of caveats for the future:
