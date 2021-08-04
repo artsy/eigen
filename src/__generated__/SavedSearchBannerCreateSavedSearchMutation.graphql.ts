@@ -5,8 +5,9 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type CreateSavedSearchInput = {
-    attributes?: SearchCriteriaAttributes | null;
+    attributes: SearchCriteriaAttributes;
     clientMutationId?: string | null;
+    userAlertSettings?: UserAlertSettingsInput | null;
 };
 export type SearchCriteriaAttributes = {
     acquireable?: boolean | null;
@@ -25,6 +26,9 @@ export type SearchCriteriaAttributes = {
     partnerIDs?: Array<string> | null;
     priceRange?: string | null;
     width?: string | null;
+};
+export type UserAlertSettingsInput = {
+    name?: string | null;
 };
 export type SavedSearchBannerCreateSavedSearchMutationVariables = {
     input: CreateSavedSearchInput;
