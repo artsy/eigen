@@ -7977,7 +7977,7 @@ type Me implements Node {
     sort: SaleSorts
   ): SaleRegistrationConnection
   savedSearch(criteria: SearchCriteriaAttributes, id: ID): SearchCriteria
-  savedSearchesConnection: SearchCriteriaConnection
+  savedSearchesConnection(after: String, before: String, first: Int, last: Int): SearchCriteriaConnection
   secondFactors(kinds: [SecondFactorKind]): [SecondFactor]
   type: String
 
