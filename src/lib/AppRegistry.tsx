@@ -24,6 +24,7 @@ import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
 import { GeneQueryRenderer } from "./Scenes/Gene/Gene"
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
+import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/EditSavedSearchAlert"
 
 // Consignments / My Collection
 import { Consignments } from "./Scenes/Consignments"
@@ -385,6 +386,7 @@ export const modules = defineModules({
   LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer),
   Storybook: reactModule(StorybookUI, { fullBleed: true, hidesBackButton: true }),
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),
+  EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),
 })
 
 // Register react modules with the app registry
