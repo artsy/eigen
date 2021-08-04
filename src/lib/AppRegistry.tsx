@@ -89,7 +89,7 @@ import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { MyCollectionArtworkImagesQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkImages/MyCollectionArtworkImages"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
-import { SavedSearchAlertsList } from "./Scenes/SavedSearchAlert/SavedSearchAlertsList"
+import { SavedSearchAlertsListQueryRenderer } from "./Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
@@ -382,7 +382,7 @@ export const modules = defineModules({
   WorksForYou: reactModule(WorksForYouQueryRenderer),
   LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer),
   Storybook: reactModule(StorybookUI, { fullBleed: true, hidesBackButton: true }),
-  SavedSearchAlertsList: reactModule(SavedSearchAlertsList),
+  SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),
 })
 
 // Register react modules with the app registry
