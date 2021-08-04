@@ -5,6 +5,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
+import { EmptyMessage } from '../EmptyMessage'
 import { SavedSearchesListContainer as SavedSearchesList } from "../SavedSearchesList"
 import { SavedSearchListItem } from "../SavedSearchListItem"
 
@@ -69,5 +70,17 @@ describe("SavedSearches", () => {
     expect(items.length).toBe(2)
     expect(extractText(items[0])).toBe("one")
     expect(extractText(items[1])).toBe("two")
+  })
+
+  it("renders an empty message if there are no saved search alerts", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      SearchCriteriaConnection: () => ({
+        edges: [],
+      }),
+    })
+
+    expect(tree.root.findAllByType(EmptyMessage)).toHaveLength(1)
   })
 })

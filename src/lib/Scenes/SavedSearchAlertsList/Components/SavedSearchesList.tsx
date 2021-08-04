@@ -2,10 +2,10 @@ import { SavedSearchesList_me } from "__generated__/SavedSearchesList_me.graphql
 import { SAVED_SERCHES_PAGE_SIZE } from "lib/data/constants"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spinner, useTheme } from "palette"
-import React from "react"
-import { useState } from "react"
+import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { EmptyMessage } from "./EmptyMessage"
 import { SavedSearchListItem } from "./SavedSearchListItem"
 
 interface SavedSearchesListProps {
@@ -30,6 +30,10 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
       }
       setFetchingMore(false)
     })
+  }
+
+  if (items.length === 0) {
+    return <EmptyMessage />
   }
 
   return (
