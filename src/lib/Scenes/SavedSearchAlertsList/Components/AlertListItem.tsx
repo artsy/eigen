@@ -12,7 +12,7 @@ export const AlertListItem: React.FC<AlertListItemProps> = (props) => {
 
   return (
     <Touchable onPress={onPress} underlayColor={color("black5")}>
-      <Box p={2}>
+      <Box px={2} py={1.5}>
         <Flex
           flexDirection="row"
           alignItems="center"
