@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SavedSearches_me = {
+export type SavedSearchesList_me = {
     readonly recentlyViewedArtworksConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -13,12 +13,12 @@ export type SavedSearches_me = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "SavedSearches_me";
+    readonly " $refType": "SavedSearchesList_me";
 };
-export type SavedSearches_me$data = SavedSearches_me;
-export type SavedSearches_me$key = {
-    readonly " $data"?: SavedSearches_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"SavedSearches_me">;
+export type SavedSearchesList_me$data = SavedSearchesList_me;
+export type SavedSearchesList_me$key = {
+    readonly " $data"?: SavedSearchesList_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"SavedSearchesList_me">;
 };
 
 
@@ -49,7 +49,7 @@ const node: ReaderFragment = {
       }
     ]
   },
-  "name": "SavedSearches_me",
+  "name": "SavedSearchesList_me",
   "selections": [
     {
       "alias": "recentlyViewedArtworksConnection",
@@ -141,5 +141,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '5c7ea8f43e718bc53b9c55a3868990c1';
+(node as any).hash = '883a8825e94e7a098de9e173560c5f87';
 export default node;

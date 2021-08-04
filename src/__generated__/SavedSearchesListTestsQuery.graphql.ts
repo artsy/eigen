@@ -1,32 +1,32 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 29da0c9037dc61a81d898672ea71cff7 */
+/* @relayHash 8b0f8dd6531c34595a9ecb7ca2825fd4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SavedSearchesTestsQueryVariables = {};
-export type SavedSearchesTestsQueryResponse = {
+export type SavedSearchesListTestsQueryVariables = {};
+export type SavedSearchesListTestsQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"SavedSearches_me">;
+        readonly " $fragmentRefs": FragmentRefs<"SavedSearchesList_me">;
     } | null;
 };
-export type SavedSearchesTestsQuery = {
-    readonly response: SavedSearchesTestsQueryResponse;
-    readonly variables: SavedSearchesTestsQueryVariables;
+export type SavedSearchesListTestsQuery = {
+    readonly response: SavedSearchesListTestsQueryResponse;
+    readonly variables: SavedSearchesListTestsQueryVariables;
 };
 
 
 
 /*
-query SavedSearchesTestsQuery {
+query SavedSearchesListTestsQuery {
   me {
-    ...SavedSearches_me
+    ...SavedSearchesList_me
     id
   }
 }
 
-fragment SavedSearches_me on Me {
+fragment SavedSearchesList_me on Me {
   recentlyViewedArtworksConnection(first: 20) {
     edges {
       node {
@@ -76,7 +76,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "SavedSearchesTestsQuery",
+    "name": "SavedSearchesListTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -89,7 +89,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "SavedSearches_me"
+            "name": "SavedSearchesList_me"
           }
         ],
         "storageKey": null
@@ -102,7 +102,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "SavedSearchesTestsQuery",
+    "name": "SavedSearchesListTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -208,7 +208,7 @@ return {
     ]
   },
   "params": {
-    "id": "29da0c9037dc61a81d898672ea71cff7",
+    "id": "8b0f8dd6531c34595a9ecb7ca2825fd4",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -260,11 +260,11 @@ return {
         }
       }
     },
-    "name": "SavedSearchesTestsQuery",
+    "name": "SavedSearchesListTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '40d3937d3c8790b30b8cc60e0b41bbcf';
+(node as any).hash = 'd051faa41814d4960f1c8ade69a5748d';
 export default node;

@@ -1,12 +1,12 @@
 import { Box, ChevronIcon, Flex, Text, Touchable, useColor } from "palette"
 import React from "react"
 
-interface AlertListItemProps {
+interface SavedSearchListItemProps {
   title: string
   onPress?: () => void
 }
 
-export const AlertListItem: React.FC<AlertListItemProps> = (props) => {
+export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) => {
   const { title, onPress } = props
   const color = useColor()
 

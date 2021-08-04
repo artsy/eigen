@@ -1,38 +1,38 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 388dcf12c24d3ed7f962ff0576ec25ec */
+/* @relayHash 12b0df3be4d0a9d4d08ea85e2a16564b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SavedSearchesQueryVariables = {
+export type SavedSearchesListQueryVariables = {
     count: number;
     cursor?: string | null;
 };
-export type SavedSearchesQueryResponse = {
+export type SavedSearchesListQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"SavedSearches_me">;
+        readonly " $fragmentRefs": FragmentRefs<"SavedSearchesList_me">;
     } | null;
 };
-export type SavedSearchesQuery = {
-    readonly response: SavedSearchesQueryResponse;
-    readonly variables: SavedSearchesQueryVariables;
+export type SavedSearchesListQuery = {
+    readonly response: SavedSearchesListQueryResponse;
+    readonly variables: SavedSearchesListQueryVariables;
 };
 
 
 
 /*
-query SavedSearchesQuery(
+query SavedSearchesListQuery(
   $count: Int!
   $cursor: String
 ) {
   me {
-    ...SavedSearches_me_1G22uz
+    ...SavedSearchesList_me_1G22uz
     id
   }
 }
 
-fragment SavedSearches_me_1G22uz on Me {
+fragment SavedSearchesList_me_1G22uz on Me {
   recentlyViewedArtworksConnection(first: $count, after: $cursor) {
     edges {
       node {
@@ -87,7 +87,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "SavedSearchesQuery",
+    "name": "SavedSearchesListQuery",
     "selections": [
       {
         "alias": null,
@@ -111,7 +111,7 @@ return {
               }
             ],
             "kind": "FragmentSpread",
-            "name": "SavedSearches_me"
+            "name": "SavedSearchesList_me"
           }
         ],
         "storageKey": null
@@ -124,7 +124,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "SavedSearchesQuery",
+    "name": "SavedSearchesListQuery",
     "selections": [
       {
         "alias": null,
@@ -230,13 +230,13 @@ return {
     ]
   },
   "params": {
-    "id": "388dcf12c24d3ed7f962ff0576ec25ec",
+    "id": "12b0df3be4d0a9d4d08ea85e2a16564b",
     "metadata": {},
-    "name": "SavedSearchesQuery",
+    "name": "SavedSearchesListQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'c62b51f5b4faab0f2faf7cd3b34099ec';
+(node as any).hash = 'a66ec4366384bbb30cdbc96a10d9f55a';
 export default node;

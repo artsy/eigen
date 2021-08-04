@@ -1,4 +1,4 @@
-import { SavedSearches_me } from "__generated__/SavedSearches_me.graphql"
+import { SavedSearchesList_me } from "__generated__/SavedSearchesList_me.graphql"
 import { SAVED_SERCHES_PAGE_SIZE } from "lib/data/constants"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spinner, useTheme } from "palette"
@@ -6,14 +6,14 @@ import React from "react"
 import { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { AlertListItem } from "./AlertListItem"
+import { SavedSearchListItem } from "./SavedSearchListItem"
 
-interface SavedSearchesProps {
-  me: SavedSearches_me
+interface SavedSearchesListProps {
+  me: SavedSearchesList_me
   relay: RelayPaginationProp
 }
 
-export const SavedSearches: React.FC<SavedSearchesProps> = (props) => {
+export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   const { me, relay } = props
   const [fetchingMore, setFetchingMore] = useState(false)
   const { space } = useTheme()
@@ -39,7 +39,7 @@ export const SavedSearches: React.FC<SavedSearchesProps> = (props) => {
       contentContainerStyle={{ paddingVertical: space(1) }}
       renderItem={({ item }) => {
         return (
-          <AlertListItem
+          <SavedSearchListItem
             title={item.slug}
             onPress={() => {
               console.log("pressed")
@@ -59,11 +59,11 @@ export const SavedSearches: React.FC<SavedSearchesProps> = (props) => {
   )
 }
 
-export const SavedSearchesContainer = createPaginationContainer(
-  SavedSearches,
+export const SavedSearchesListContainer = createPaginationContainer(
+  SavedSearchesList,
   {
     me: graphql`
-      fragment SavedSearches_me on Me
+      fragment SavedSearchesList_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String" }) {
         recentlyViewedArtworksConnection(first: $count, after: $cursor)
           @connection(key: "SavedSearches_recentlyViewedArtworksConnection") {
@@ -88,9 +88,9 @@ export const SavedSearchesContainer = createPaginationContainer(
       return props.me.recentlyViewedArtworksConnection
     },
     query: graphql`
-      query SavedSearchesQuery($count: Int!, $cursor: String) {
+      query SavedSearchesListQuery($count: Int!, $cursor: String) {
         me {
-          ...SavedSearches_me @arguments(count: $count, cursor: $cursor)
+          ...SavedSearchesList_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,

@@ -1,12 +1,12 @@
-import { SavedSearchesTestsQuery } from "__generated__/SavedSearchesTestsQuery.graphql"
+import { SavedSearchesListTestsQuery } from "__generated__/SavedSearchesListTestsQuery.graphql"
 import { extractText } from 'lib/tests/extractText'
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { AlertListItem } from '../AlertListItem'
-import { SavedSearchesContainer as SavedSearches } from "../SavedSearches"
+import { SavedSearchesListContainer as SavedSearchesList } from "../SavedSearchesList"
+import { SavedSearchListItem } from '../SavedSearchListItem'
 
 jest.unmock("react-relay")
 
@@ -19,18 +19,18 @@ describe("SavedSearches", () => {
 
   const TestRenderer = () => {
     return (
-      <QueryRenderer<SavedSearchesTestsQuery>
+      <QueryRenderer<SavedSearchesListTestsQuery>
         environment={mockEnvironment}
         query={graphql`
-          query SavedSearchesTestsQuery @relay_test_operation {
+          query SavedSearchesListTestsQuery @relay_test_operation {
             me {
-              ...SavedSearches_me
+              ...SavedSearchesList_me
             }
           }
         `}
         render={({ props }) => {
           if (props?.me) {
-            return <SavedSearches me={props.me} />
+            return <SavedSearchesList me={props.me} />
           }
 
           return null
@@ -60,7 +60,7 @@ describe("SavedSearches", () => {
       }),
     })
 
-    const items = tree.root.findAllByType(AlertListItem)
+    const items = tree.root.findAllByType(SavedSearchListItem)
 
     expect(items.length).toBe(2)
     expect(extractText(items[0])).toBe("one")

@@ -5,7 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SavedSearchAlertsList_me = {
-    readonly " $fragmentRefs": FragmentRefs<"SavedSearches_me">;
+    readonly " $fragmentRefs": FragmentRefs<"SavedSearchesList_me">;
     readonly " $refType": "SavedSearchAlertsList_me";
 };
 export type SavedSearchAlertsList_me$data = SavedSearchAlertsList_me;
@@ -25,11 +25,11 @@ const node: ReaderFragment = {
     {
       "args": null,
       "kind": "FragmentSpread",
-      "name": "SavedSearches_me"
+      "name": "SavedSearchesList_me"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'bb4dab0082f6a02354c5f433c41bfb41';
+(node as any).hash = '09f629a4e6d4b3046d35da21453d9205';
 export default node;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 58d26b86534df80b90bc29ebdc85b2fc */
+/* @relayHash 6742989dc51bb1e02b344e2f62b8b42b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,10 +27,10 @@ query SavedSearchAlertsListQuery {
 }
 
 fragment SavedSearchAlertsList_me on Me {
-  ...SavedSearches_me
+  ...SavedSearchesList_me
 }
 
-fragment SavedSearches_me on Me {
+fragment SavedSearchesList_me on Me {
   recentlyViewedArtworksConnection(first: 20) {
     edges {
       node {
@@ -200,7 +200,7 @@ return {
     ]
   },
   "params": {
-    "id": "58d26b86534df80b90bc29ebdc85b2fc",
+    "id": "6742989dc51bb1e02b344e2f62b8b42b",
     "metadata": {},
     "name": "SavedSearchAlertsListQuery",
     "operationKind": "query",

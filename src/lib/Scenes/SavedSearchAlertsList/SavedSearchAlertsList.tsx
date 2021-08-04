@@ -6,7 +6,7 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { SavedSearchAlertsListPlaceholder } from './Components/SavedSearchAlertsListPlaceholder'
-import { SavedSearchesContainer as SavedSearches } from "./Components/SavedSearches"
+import { SavedSearchesListContainer as SavedSearchesList } from "./Components/SavedSearchesList"
 
 interface SavedSearchAlertsListProps {
   me: SavedSearchAlertsList_me
@@ -17,7 +17,7 @@ export const SavedSearchAlertsList: React.FC<SavedSearchAlertsListProps> = (prop
 
   return (
     <PageWithSimpleHeader title="Saved Alerts">
-      <SavedSearches me={me} />
+      <SavedSearchesList me={me} />
     </PageWithSimpleHeader>
   )
 }
@@ -25,12 +25,12 @@ export const SavedSearchAlertsList: React.FC<SavedSearchAlertsListProps> = (prop
 export const SavedSearchAlertsListFragmentContainer = createFragmentContainer(SavedSearchAlertsList, {
   me: graphql`
     fragment SavedSearchAlertsList_me on Me {
-      ...SavedSearches_me
+      ...SavedSearchesList_me
     }
   `
 })
 
-export const SavedSearchAlertsListQueryRenderer: React.FC<{}> = () => {
+export const SavedSearchAlertsListQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<SavedSearchAlertsListQuery>
       environment={defaultEnvironment}
