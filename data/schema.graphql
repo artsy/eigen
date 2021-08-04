@@ -6258,7 +6258,7 @@ type FairExhibitorsGroup {
 }
 
 type FairOrganizer {
-  about: String
+  about(format: Format): String
 
   # A connection of articles related to a partner.
   articlesConnection(
