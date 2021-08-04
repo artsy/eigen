@@ -3,7 +3,7 @@ import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore, useEnvironment } from "lib/store/GlobalStore"
 import { Button, Flex, Join, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
-import { Alert, Image, Linking } from "react-native"
+import { Alert, Image, Linking, Platform } from "react-native"
 import { EnvelopeIcon } from "../../../palette/svgs/EnvelopeIcon"
 
 interface OnboardingSocialPickProps {
@@ -93,17 +93,19 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
           >
             {mode === "login" ? "Continue with Facebook" : "Sign up with Facebook"}
           </Button>
-          <Button
-            onPress={useApple}
-            block
-            haptic="impactMedium"
-            mb={1}
-            variant="secondaryOutline"
-            icon={<Image source={require("@images/apple.png")} resizeMode="contain" style={{ marginRight: 10 }} />}
-            testID="useApple"
-          >
-            {mode === "login" ? "Continue with Apple" : "Sign up with Apple"}
-          </Button>
+          {Platform.OS === "ios" && (
+            <Button
+              onPress={useApple}
+              block
+              haptic="impactMedium"
+              mb={1}
+              variant="secondaryOutline"
+              icon={<Image source={require("@images/apple.png")} resizeMode="contain" style={{ marginRight: 10 }} />}
+              testID="useApple"
+            >
+              {mode === "login" ? "Continue with Apple" : "Sign up with Apple"}
+            </Button>
+          )}
         </>
 
         <Text variant="small" color="black60" textAlign="center">
