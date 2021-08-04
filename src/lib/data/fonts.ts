@@ -1,12 +1,11 @@
-// Prefer using this instead of the default export
+//  TODO-PALETTE-V3 remove this file completely
 
 export enum Fonts {
-  GaramondBold = "AGaramondPro-Bold",
-  GaramondBoldItalic = "AGaramondPro-BoldItalic",
-  GaramondItalic = "ReactNativeAGaramondPro-Italic",
-  GaramondRegular = "ReactNativeAGaramondPro-Regular",
-  GaramondSemibold = "ReactNativeAGaramondPro-Semibold",
-  AvantGardeRegular = "AvantGardeGothicITC",
+  GaramondBold = "AGaramondPro-Bold", // TODO-PALETTE-V3 remove this
+  GaramondBoldItalic = "AGaramondPro-BoldItalic", // TODO-PALETTE-V3 remove this
+  GaramondItalic = "ReactNativeAGaramondPro-Italic", // TODO-PALETTE-V3 remove this
+  GaramondRegular = "ReactNativeAGaramondPro-Regular", // TODO-PALETTE-V3 remove this
+  GaramondSemibold = "ReactNativeAGaramondPro-Semibold", // TODO-PALETTE-V3 remove this
   Unica77LLItalic = "Unica77LL-Italic",
   Unica77LLMedium = "Unica77LL-Medium",
   Unica77LLMediumItalic = "Unica77LL-MediumItalic",
@@ -14,8 +13,7 @@ export enum Fonts {
 }
 
 export default {
-  "garamond-regular": "ReactNativeAGaramondPro-Regular",
-  "garamond-italic": "ReactNativeAGaramondPro-Italic",
-  "avant-garde-regular": "AvantGardeGothicITC",
+  "garamond-regular": "ReactNativeAGaramondPro-Regular", // TODO-PALETTE-V3 remove this
+  "garamond-italic": "ReactNativeAGaramondPro-Italic", // TODO-PALETTE-V3 remove this
   "unica77ll-regular": "Unica77LL-Regular",
 }

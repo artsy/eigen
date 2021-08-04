@@ -1,4 +1,4 @@
-// Prefer using this instead of the default export
+//  TODO-PALETTE-V3 remove this file completely
 
 export enum Colors {
   GrayLight = "#f8f8f8",

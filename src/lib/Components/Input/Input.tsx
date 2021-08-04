@@ -1,6 +1,16 @@
 import _ from "lodash"
-import { Color, EyeOpenedIcon, Flex, Sans, Spinner, TEXT_FONTS, useTheme, XCircleIcon } from "palette"
-import { fontFamily } from "palette/platform/fonts/fontFamily"
+import {
+  Color,
+  EyeOpenedIcon,
+  Flex,
+  Sans,
+  Spinner,
+  ThemeV2Type,
+  ThemeV3Type,
+  useTheme,
+  useThemeConfig,
+  XCircleIcon,
+} from "palette"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
@@ -83,7 +93,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     },
     ref
   ) => {
-    const { color } = useTheme()
+    const { color, theme } = useTheme()
     const [focused, setFocused] = useState(false)
     const [showPassword, setShowPassword] = useState(!secureTextEntry)
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
@@ -97,13 +107,17 @@ export const Input = React.forwardRef<TextInput, InputProps>(
 
     useImperativeHandle(ref, () => input.current!)
 
+    const fontFamily = useThemeConfig({
+      v2: (theme as ThemeV2Type).fonts.sans,
+      v3: (theme as ThemeV3Type).fonts.sans.regular,
+    })
     useEffect(() => {
       /* to make the font work for secure text inputs,
       see https://github.com/facebook/react-native/issues/30123#issuecomment-711076098 */
       input.current?.setNativeProps({
-        style: { fontFamily: TEXT_FONTS.sans },
+        style: { fontFamily },
       })
-    }, [])
+    }, [fontFamily])
 
     const renderShowPasswordIcon = () => {
       if (!secureTextEntry) {
@@ -150,7 +164,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 borderColor: "red",
                 borderWidth: 1,
                 flex: 1,
-                fontFamily: fontFamily.sans.regular.normal,
+                fontFamily,
                 fontSize: 15,
                 textAlign: "left",
                 ...inputTextStyle,
@@ -323,6 +337,6 @@ const StyledInput = styled(TextInput)`
   padding-bottom: 30;
 
   /* to center the text */
-  font-family: ${fontFamily.sans.regular.normal};
+  font-family: "Unica77LL-Regular"; /* this should be taken from the theme, but in here we cant, so until we rework this component, hardcode it. */
 `
 StyledInput.displayName = "StyledInput"

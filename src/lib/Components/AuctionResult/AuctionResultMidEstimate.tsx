@@ -1,10 +1,10 @@
-import { DecreaseIcon, Flex, IncreaseIcon, Text, TextVariant } from "palette"
+import { DecreaseIcon, Flex, IncreaseIcon, Text, TextV2Props } from "palette"
 import React from "react"
 
 interface AuctionResultsMidEstimateProps {
   value: string
   shortDescription: string
-  textVariant?: TextVariant
+  textVariant?: TextV2Props["variant"]
 }
 
 type ArrowDirections = "up" | "down"

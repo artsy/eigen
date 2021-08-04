@@ -1,95 +1,47 @@
-import { TEXT_LINE_HEIGHTS } from "@artsy/palette-tokens/dist/text"
+import { useTheme } from "palette"
+import { isThemeV3, TextSizeV3 } from "palette/Theme"
 import React from "react"
-import { TextProps as RNTextProps } from "react-native"
-// @ts-ignore
-import { animated } from "react-spring/renderprops-native.cjs"
+import { StyleProp, TextStyle } from "react-native"
+import { Text as RNText, TextProps as RNTextProps } from "react-native"
 import styled from "styled-components/native"
-import {
-  color,
-  ColorProps,
-  compose,
-  space,
-  SpaceProps,
-  style,
-  typography,
-  TypographyProps,
-  variant as systemVariant,
-} from "styled-system"
-import {
-  calculateLetterSpacing,
-  calculateLineHeight,
-  isControlledFontSize,
-  isControlledLetterSpacing,
-  isControlledLineHeight,
-  TEXT_VARIANTS,
-  TextLineHeight,
-  TextVariant,
-  TREATMENTS,
-} from "./tokens"
+import { color, ColorProps, space, SpaceProps, typography, TypographyProps } from "styled-system"
+import { useFontFamilyFor } from "./helpers"
 
-/** BaseTextProps */
-export type BaseTextProps = TypographyProps &
-  ColorProps &
-  SpaceProps & {
-    variant?: TextVariant
+export type TextProps = {
+  size?: TextSizeV3
+  italic?: boolean
+  caps?: boolean
+  weight?: "regular" | "medium"
+} & RNTextProps &
+  InnerStyledTextProps
+
+export const Text: React.FC<TextProps> = React.forwardRef<RNText, TextProps>(
+  ({ size = "sm", italic = false, caps, weight = "regular", style, children, ...rest }, ref) => {
+    const { theme } = useTheme()
+    const fontFamily = useFontFamilyFor({ italic, weight })
+    if (!isThemeV3(theme)) {
+      console.warn("Text is missing because null is returned. Wrap your Text with ThemeV3.")
+      return null
+    }
+
+    const nativeTextStyle: StyleProp<TextStyle> = [caps ? { textTransform: "uppercase" } : {}]
+
+    return (
+      <InnerStyledText
+        ref={ref}
+        style={[...nativeTextStyle, style]}
+        fontFamily={fontFamily}
+        {...theme.textTreatments[size]}
+        children={children}
+        {...rest}
+      />
+    )
   }
+)
 
-const textColor = style({
-  prop: "textColor",
-  cssProperty: "color",
-  key: "colors",
-})
-
-/** styled functions for Text */
-export const textMixin = compose(typography, color, textColor, space)
-
-/** TextProps */
-export type TextProps = BaseTextProps & RNTextProps
-
-const InnerStyledText = styled.Text<TextProps>`
-  ${systemVariant({ variants: TEXT_VARIANTS })}
-  ${textMixin}
+type InnerStyledTextProps = ColorProps & SpaceProps & TypographyProps
+const InnerStyledText = styled(RNText)<InnerStyledTextProps>`
+  ${color}
+  ${space}
+  ${typography}
 `
-
-const InnerText = animated(InnerStyledText)
-
-/** Text */
-export const Text: React.FC<TextProps> = ({ children, variant, fontSize, letterSpacing, lineHeight, ...rest }) => {
-  const props = {
-    variant,
-    fontSize,
-    ...(!variant && letterSpacing && fontSize
-      ? // Possibly convert the letterSpacing
-        {
-          letterSpacing:
-            isControlledLetterSpacing(letterSpacing) && isControlledFontSize(fontSize)
-              ? calculateLetterSpacing(fontSize, letterSpacing)
-              : letterSpacing,
-        }
-      : {}),
-    ...(!variant && lineHeight && fontSize
-      ? // Possibly convert the lineHeight
-        {
-          lineHeight:
-            isControlledLineHeight(lineHeight) && isControlledFontSize(fontSize)
-              ? calculateLineHeight(fontSize, lineHeight)
-              : lineHeight,
-        }
-      : {}),
-    ...(variant && fontSize && typeof fontSize === "number" && !lineHeight
-      ? // Possibly convert the lineHeight
-        {
-          lineHeight: fontSize * TEXT_LINE_HEIGHTS[TREATMENTS[variant].lineHeight as TextLineHeight],
-        }
-      : {}),
-    ...rest,
-  }
-
-  return <InnerText {...props}>{children}</InnerText>
-}
-
-Text.displayName = "Text"
-
-Text.defaultProps = {
-  fontFamily: "sans",
-}

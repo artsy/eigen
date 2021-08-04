@@ -1,16 +1,17 @@
 import { usePaletteFlagStore } from "palette/PaletteFlag"
+import { ThemeV3 } from "palette/Theme"
 import React from "react"
 
 // v3
-import { Button as ButtonV3, ButtonProps as ButtonV3Props, ButtonVariant as ButtonV3Variant } from "./Button"
+import { Button as ButtonV3, ButtonProps as ButtonV3Props } from "./Button"
 export { ButtonV3, ButtonV3Props }
 
 // v2
-import { ButtonProps as ButtonV2Props, ButtonV2, ButtonVariant as ButtonV2Variant } from "./ButtonV2"
+import { ButtonProps as ButtonV2Props, ButtonV2 } from "./ButtonV2"
 export { ButtonV2, ButtonV2Props }
 
 export type ButtonProps = ButtonV2Props | ButtonV3Props
-export type ButtonVariant = ButtonV2Variant | ButtonV3Variant
+export type ButtonVariant = ButtonV2Props["variant"] | ButtonV3Props["variant"] // remove once it's not imported
 
 const isV2Props = (props: ButtonProps): props is ButtonV2Props => {
   const v2Variants: Array<ButtonV2Props["variant"]> = [
@@ -43,9 +44,17 @@ export const Button: React.FC<ButtonProps> = (props) => {
 
   if (allowV3) {
     if (isV2Props(props)) {
-      return <ButtonV3 {...transformV3Props(props)} />
+      return (
+        <ThemeV3>
+          <ButtonV3 {...transformV3Props(props)} />
+        </ThemeV3>
+      )
     } else {
-      return <ButtonV3 {...props} />
+      return (
+        <ThemeV3>
+          <ButtonV3 {...props} />
+        </ThemeV3>
+      )
     }
   }
 

@@ -25,16 +25,19 @@ export const List = ({
   contentContainerStyle,
   style,
 }: {
-  children: React.ReactElement[]
+  children: React.ReactElement[] | React.ReactElement
   contentContainerStyle?: StyleProp<ViewStyle>
   style?: StyleProp<ViewStyle>
 }) => (
   <FlatList
-    data={children}
+    data={Array.isArray(children) ? children : [children]}
     keyExtractor={(_, index) => `${index}`}
     renderItem={({ item: child }) => child}
     ItemSeparatorComponent={() => <Spacer mb="4" />}
-    contentContainerStyle={[{ flexGrow: 1, alignItems: "center", justifyContent: "center" }, contentContainerStyle]}
+    contentContainerStyle={[
+      { flexGrow: 1, alignItems: "center", justifyContent: "center", marginVertical: 100 },
+      contentContainerStyle,
+    ]}
     style={style}
   />
 )
@@ -53,6 +56,7 @@ export const CenterView = ({ children }: { children: React.ReactNode }) => {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#F5FCFF",
+        marginVertical: 100,
       }}
     >
       {children}

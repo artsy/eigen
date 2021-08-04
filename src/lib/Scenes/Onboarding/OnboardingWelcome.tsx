@@ -2,7 +2,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { useAnimatedValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Spacer, Text, Touchable, useTheme } from "palette"
+import { Button, Flex, Spacer, Text, Touchable, useTheme } from "palette"
 import React, { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
@@ -18,7 +18,7 @@ const BUTTON_HEIGHT = 41
 const imgProps = Image.resolveAssetSource(backgoundImage)
 
 export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation }) => {
-  const { color, space } = useTheme()
+  const { space } = useTheme()
   const { width: screenWidth } = useScreenDimensions()
   const { safeAreaInsets } = useScreenDimensions()
   // useScreenDimensions() returns the window height instead of the screen
@@ -128,22 +128,14 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           Build your personalized profile, get market insights, and buy and sell art with confidence.
         </Text>
         <Spacer mt={2} />
-        <Touchable
-          onPress={() => navigation.navigate("OnboardingCreateAccount")}
-          underlayColor={color("black5")}
+        <Button
+          variant="primaryWhite"
+          block
           haptic="impactMedium"
-          style={{
-            height: BUTTON_HEIGHT,
-            backgroundColor: "white",
-            borderRadius: 3,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          onPress={() => navigation.navigate("OnboardingCreateAccount")}
         >
-          <Text color="black" variant="mediumText">
-            Create account
-          </Text>
-        </Touchable>
+          Create account
+        </Button>
 
         <Touchable
           onPress={() => navigation.navigate("OnboardingLogin")}

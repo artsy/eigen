@@ -1,3 +1,4 @@
+import { SansSize } from "@artsy/palette-tokens/dist/themes/v2"
 import { useColor } from "palette/hooks"
 import React, { ReactNode, useState } from "react"
 import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
@@ -5,11 +6,11 @@ import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
-import { SansSize, themeProps, ThemeV2 } from "../../Theme"
+import { themeProps, ThemeV2 } from "../../Theme"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
-import { Sans } from "../Typography"
+import { SansV1 } from "../Text"
 
 /** Different theme variations */
 export type ButtonVariant =
@@ -305,9 +306,9 @@ const PureButton: React.FC<ButtonProps> = (props) => {
               >
                 <VisibleTextContainer>
                   {iconPosition === "left" && iconBox}
-                  <Sans weight="medium" color={loadingStyles.textColor || to.textColor} size={s.size}>
+                  <SansV1 weight="medium" color={loadingStyles.textColor || to.textColor} size={s.size}>
                     {children}
-                  </Sans>
+                  </SansV1>
                   {iconPosition === "right" && iconBox}
                 </VisibleTextContainer>
                 <HiddenContainer>
@@ -351,7 +352,7 @@ const HiddenContainer = styled(Box)<ButtonProps>`
   opacity: 0;
 `
 
-const LongestText = styled(Sans)``
+const LongestText = styled(SansV1)``
 
 const Container = styled(Box)<ButtonProps>`
   align-items: center;
