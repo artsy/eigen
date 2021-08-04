@@ -43,7 +43,6 @@ export const SavedSearches: React.FC<SavedSearchesProps> = (props) => {
         return (
           <AlertListItem
             title={item.slug}
-            pills={["Unique", "Painting", "$10,000-$50,000", "Limted Edition"]}
             onPress={() => {
               console.log("pressed")
             }}
