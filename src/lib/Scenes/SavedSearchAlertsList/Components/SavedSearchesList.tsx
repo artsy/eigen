@@ -1,5 +1,6 @@
 import { SavedSearchesList_me } from "__generated__/SavedSearchesList_me.graphql"
 import { SAVED_SERCHES_PAGE_SIZE } from "lib/data/constants"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spinner, useTheme } from "palette"
 import React, { useState } from "react"
@@ -46,7 +47,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
           <SavedSearchListItem
             title={item.userAlertSettings.name!}
             onPress={() => {
-              console.log("pressed")
+              navigate(`/saved-search-alerts/${item.internalID}`, { passProps: { artistID: item.artistID } })
             }}
           />
         )
@@ -79,6 +80,7 @@ export const SavedSearchesListContainer = createPaginationContainer(
           edges {
             node {
               internalID
+              artistID
               userAlertSettings {
                 name
               }
