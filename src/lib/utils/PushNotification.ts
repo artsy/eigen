@@ -1,13 +1,16 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { navigate } from "lib/navigation/navigate"
-import { GlobalStore, globalStoreInstance } from "lib/store/GlobalStore"
+import { GlobalStore, unsafe_getUserAccessToken } from "lib/store/GlobalStore"
 import { PendingPushNotification } from "lib/store/PendingPushNotificationModel"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
 import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "./AdminMenu"
 
 const MAX_ELAPSED_TAPPED_NOTIFICATION_TIME = 90 // seconds
 
-export const handlePendingNotification = (notification: PendingPushNotification) => {
+export const handlePendingNotification = (notification: PendingPushNotification | null) => {
+  if (!notification) {
+    return
+  }
   const elapsedTimeInSecs = Math.floor((Date.now() - notification.tappedAt) / 1000)
   if (elapsedTimeInSecs <= MAX_ELAPSED_TAPPED_NOTIFICATION_TIME && !!notification.data.url) {
     navigate(notification.data.url, { passProps: { ...notification.data, url: undefined } })
@@ -19,11 +22,16 @@ export const handleReceivedNotification = (notification: Omit<ReceivedNotificati
   if (__DEV__ && !__TEST__) {
     console.log("RECIEVED NOTIFICATION", notification)
   }
-  const isLoggedIn = !!globalStoreInstance().getState().auth.userAccessToken
+  const isLoggedIn = !!unsafe_getUserAccessToken()
   if (notification.userInteraction) {
     const hasUrl = !!notification.data.url
     if (isLoggedIn && hasUrl) {
       navigate(notification.data.url as string, { passProps: { ...notification.data, url: undefined } })
+      // clear any pending notification
+      GlobalStore.actions.pendingPushNotification.setPendingPushNotification({
+        platform: "android",
+        notification: null,
+      })
       return
     }
     if (!isLoggedIn) {

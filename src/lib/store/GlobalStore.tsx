@@ -120,7 +120,7 @@ export function useSelectedTab(): BottomTabType {
 }
 
 let _globalStoreInstance: ReturnType<typeof createGlobalStore> | undefined
-export const globalStoreInstance = (): ReturnType<typeof createGlobalStore> => {
+const globalStoreInstance = (): ReturnType<typeof createGlobalStore> => {
   if (_globalStoreInstance === undefined) {
     _globalStoreInstance = createGlobalStore()
   }
@@ -160,6 +160,17 @@ export function unsafe_getDevToggle(key: DevToggleName) {
     throw new Error(`Unable to access ${key} before GlobalStore bootstraps`)
   }
   return false
+}
+
+export function unsafe_getUserAccessToken() {
+  const state = globalStoreInstance().getState() ?? null
+  if (state) {
+    return state.auth.userAccessToken
+  }
+  if (__DEV__) {
+    throw new Error(`Unable to access userAccessToken before GlobalStore bootstraps`)
+  }
+  return null
 }
 
 export function getCurrentEmissionState() {
