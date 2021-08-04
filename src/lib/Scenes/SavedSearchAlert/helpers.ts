@@ -9,12 +9,6 @@ import {
 import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
 import { compact, flatten, keyBy } from "lodash"
 
-const applyCustomExtractorForFilterParams: FilterParamName[] = [
-  FilterParamName.dimensionRange,
-  FilterParamName.width,
-  FilterParamName.height,
-]
-
 export const extractPillFromAggregation = (filter: FilterData, aggregations: Aggregations) => {
   const { paramName, paramValue } = filter
   const aggregation = aggregationForFilter(paramName, aggregations)
@@ -41,11 +35,17 @@ export const extractSizePill = (filters: FilterArray) => {
 }
 
 export const extractPills = (filters: FilterArray, aggregations: Aggregations) => {
-  const commonFilters = filters.filter((filter) => !applyCustomExtractorForFilterParams.includes(filter.paramName))
+  const pills = filters.map((filter) => {
+    const { paramName, paramValue, displayText } = filter
 
-  const sizePill = extractSizePill(filters)
-  const pills = commonFilters.map((filter) => {
-    const { displayText, paramValue, paramName } = filter
+    if (paramName === FilterParamName.dimensionRange) {
+      return extractSizePill(filters)
+    }
+
+    // We skip width and height, since we extracted them in extractSizePill
+    if (paramName === FilterParamName.width || paramName === FilterParamName.height) {
+      return
+    }
 
     // Extract label from aggregations
     if (shouldExtractValueNamesFromAggregation.includes(paramName)) {
@@ -60,5 +60,5 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations) =
     return displayText
   })
 
-  return compact([...flatten(pills), sizePill])
+  return compact(flatten(pills))
 }
