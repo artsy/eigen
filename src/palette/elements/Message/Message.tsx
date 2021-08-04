@@ -4,7 +4,7 @@ import styled from "styled-components/native"
 import { useColor } from "../../hooks"
 import { SansSize } from "../../Theme"
 import { Flex, FlexProps } from "../Flex"
-import { Sans } from "../Typography"
+import { Sans } from "../Text"
 
 interface MessageProps extends FlexProps {
   children: React.ReactNode | null

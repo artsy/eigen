@@ -9,7 +9,7 @@ import { SansSize, themeProps, ThemeV2 } from "../../Theme"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
-import { Sans } from "../Typography"
+import { Sans } from "../Text"
 
 /** Different theme variations */
 export type ButtonVariant =

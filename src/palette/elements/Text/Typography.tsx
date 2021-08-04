@@ -167,15 +167,5 @@ export const Serif = createStyledText<SerifProps>("serif")
 Sans.displayName = "Sans"
 Serif.displayName = "Serif"
 
-/**
- * The endash is used in ranges like `$10k – $20k`.
- * This export makes it easier to use in the code, without having to find
- * the character in unicode.
- * It is a different character to the regular minus, usually a bit longer.
- * (for reference: minus `-`, endash `–`)
- */
-export const endash = "–"
-export const bullet = "•"
-
 // TODO: Remove this and put it as a prop on `Text`, after palette is absorbed in eigen.
 export const _maxWidth = { width: "100%", maxWidth: 600, alignSelf: "center" } as const
