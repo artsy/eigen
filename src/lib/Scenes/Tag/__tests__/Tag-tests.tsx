@@ -9,7 +9,8 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment } from "relay-test-utils"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { Tag } from "../Tag"
 
 jest.unmock("react-relay")
@@ -31,6 +32,15 @@ describe("Tag", () => {
   afterEach(() => {
     trackEvent.mockClear()
   })
+
+  function mockMostRecentOperation(mockResolvers: MockResolvers = {}) {
+    environment.mock.resolveMostRecentOperation((operation) => {
+      const result = MockPayloadGenerator.generate(operation, {
+        ...mockResolvers,
+      })
+      return result
+    })
+  }
 
   const TestRenderer = () => {
     return (
@@ -70,6 +80,20 @@ describe("Tag", () => {
 
     expect(tree.root.findAllByType(TagArtworks)).toHaveLength(1)
     expect(tree.root.findAllByType(About)).toHaveLength(1)
+  })
+
+  it('don\'t render "about" tab without description', async () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+    mockMostRecentOperation({
+      Tag() {
+        return {
+          description: null,
+        }
+      },
+    })
+
+    expect(tree.root.findAllByType(TagArtworks)).toHaveLength(1)
+    expect(tree.root.findAllByType(About)).toHaveLength(0)
   })
 
   it("renders filter modal", () => {

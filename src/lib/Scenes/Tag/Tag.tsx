@@ -9,9 +9,9 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Flex, useTheme } from "palette"
 import React from "react"
+import { View } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { graphql, QueryRenderer } from "react-relay"
-import styled, { css } from "styled-components/native"
 
 const isHandset = DeviceInfo.getDeviceType() === "Handset"
 const commonPadding = isHandset ? 20 : 40
@@ -20,17 +20,6 @@ const TABS = {
   ARTWORKS: "Artworks",
   ABOUT: "About",
 }
-
-const HeaderView = styled.View<{ backgroundColor: string }>`
-  padding-left: ${commonPadding};
-  padding-right: ${commonPadding};
-  justify-content: center;
-  align-self: ${isHandset ? "auto" : "center"};
-  ${(props) =>
-    css`
-      background-color: ${props.backgroundColor};
-    `}
-`
 
 interface TagProps {
   tagID?: string
@@ -60,9 +49,17 @@ export const Tag: React.FC<TagProps> = (props) => {
   }
 
   const headerContent = (
-    <HeaderView backgroundColor={color("white100")}>
+    <View
+      style={{
+        backgroundColor: color("white100"),
+        paddingLeft: commonPadding,
+        paddingRight: commonPadding,
+        justifyContent: "center",
+        alignSelf: isHandset ? "auto" : "center",
+      }}
+    >
       <Header tag={tag} />
-    </HeaderView>
+    </View>
   )
 
   const stickyHeaderContentProp = tabs.length === 1 ? { stickyHeaderContent: <></> } : {}
