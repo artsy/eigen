@@ -1,8 +1,7 @@
 import { SavedSearches_me } from "__generated__/SavedSearches_me.graphql"
 import { SAVED_SERCHES_PAGE_SIZE } from "lib/data/constants"
 import { extractNodes } from "lib/utils/extractNodes"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Separator, Spinner, useTheme } from "palette"
+import { Flex, Spinner, useTheme } from "palette"
 import React from "react"
 import { useState } from "react"
 import { FlatList } from "react-native"
@@ -16,9 +15,8 @@ interface SavedSearchesProps {
 
 export const SavedSearches: React.FC<SavedSearchesProps> = (props) => {
   const { me, relay } = props
-  const { space } = useTheme()
-  const { width } = useScreenDimensions()
   const [fetchingMore, setFetchingMore] = useState(false)
+  const { space } = useTheme()
   const items = extractNodes(me.recentlyViewedArtworksConnection)
 
   const loadMore = () => {
@@ -38,7 +36,7 @@ export const SavedSearches: React.FC<SavedSearchesProps> = (props) => {
     <FlatList
       data={items}
       keyExtractor={(item) => item.id}
-      ItemSeparatorComponent={() => <Separator width={width - 2 * space(2)} mx={2} />}
+      contentContainerStyle={{ paddingVertical: space(1) }}
       renderItem={({ item }) => {
         return (
           <AlertListItem
