@@ -17,7 +17,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   const { me, relay } = props
   const [fetchingMore, setFetchingMore] = useState(false)
   const { space } = useTheme()
-  const items = extractNodes(me.recentlyViewedArtworksConnection)
+  const items = extractNodes(me.savedSearchesConnection)
 
   const loadMore = () => {
     if (!relay.hasMore() || relay.isLoading()) {
@@ -35,12 +35,12 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   return (
     <FlatList
       data={items}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.internalID}
       contentContainerStyle={{ paddingVertical: space(1) }}
       renderItem={({ item }) => {
         return (
           <SavedSearchListItem
-            title={item.slug}
+            title={item.userAlertSettings.name!}
             onPress={() => {
               console.log("pressed")
             }}
@@ -65,12 +65,14 @@ export const SavedSearchesListContainer = createPaginationContainer(
     me: graphql`
       fragment SavedSearchesList_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String" }) {
-        recentlyViewedArtworksConnection(first: $count, after: $cursor)
-          @connection(key: "SavedSearches_recentlyViewedArtworksConnection") {
+        savedSearchesConnection(first: $count, after: $cursor)
+          @connection(key: "SavedSearches_savedSearchesConnection") {
           edges {
             node {
-              id
-              slug
+              internalID
+              userAlertSettings {
+                name
+              }
             }
           }
         }
@@ -85,7 +87,7 @@ export const SavedSearchesListContainer = createPaginationContainer(
       }
     },
     getConnectionFromProps(props) {
-      return props.me.recentlyViewedArtworksConnection
+      return props.me.savedSearchesConnection
     },
     query: graphql`
       query SavedSearchesListQuery($count: Int!, $cursor: String) {

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 12b0df3be4d0a9d4d08ea85e2a16564b */
+/* @relayHash 5c8e515f6ebe3d7a8e1c456bc264cfcb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,11 +33,13 @@ query SavedSearchesListQuery(
 }
 
 fragment SavedSearchesList_me_1G22uz on Me {
-  recentlyViewedArtworksConnection(first: $count, after: $cursor) {
+  savedSearchesConnection(first: $count, after: $cursor) {
     edges {
       node {
-        id
-        slug
+        internalID
+        userAlertSettings {
+          name
+        }
         __typename
       }
       cursor
@@ -74,14 +76,7 @@ v1 = [
     "name": "first",
     "variableName": "count"
   }
-],
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-};
+];
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -137,15 +132,15 @@ return {
           {
             "alias": null,
             "args": (v1/*: any*/),
-            "concreteType": "ArtworkConnection",
+            "concreteType": "SearchCriteriaConnection",
             "kind": "LinkedField",
-            "name": "recentlyViewedArtworksConnection",
+            "name": "savedSearchesConnection",
             "plural": false,
             "selections": [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "ArtworkEdge",
+                "concreteType": "SearchCriteriaEdge",
                 "kind": "LinkedField",
                 "name": "edges",
                 "plural": true,
@@ -153,17 +148,34 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "Artwork",
+                    "concreteType": "SearchCriteria",
                     "kind": "LinkedField",
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v2/*: any*/),
                       {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "slug",
+                        "name": "internalID",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "SavedSearchUserAlertSettings",
+                        "kind": "LinkedField",
+                        "name": "userAlertSettings",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "name",
+                            "storageKey": null
+                          }
+                        ],
                         "storageKey": null
                       },
                       {
@@ -219,18 +231,24 @@ return {
             "args": (v1/*: any*/),
             "filters": null,
             "handle": "connection",
-            "key": "SavedSearches_recentlyViewedArtworksConnection",
+            "key": "SavedSearches_savedSearchesConnection",
             "kind": "LinkedHandle",
-            "name": "recentlyViewedArtworksConnection"
+            "name": "savedSearchesConnection"
           },
-          (v2/*: any*/)
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "id",
+            "storageKey": null
+          }
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "12b0df3be4d0a9d4d08ea85e2a16564b",
+    "id": "5c8e515f6ebe3d7a8e1c456bc264cfcb",
     "metadata": {},
     "name": "SavedSearchesListQuery",
     "operationKind": "query",

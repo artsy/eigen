@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6742989dc51bb1e02b344e2f62b8b42b */
+/* @relayHash 20e2301c2c1e22d28e76c2621ebad531 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,11 +31,13 @@ fragment SavedSearchAlertsList_me on Me {
 }
 
 fragment SavedSearchesList_me on Me {
-  recentlyViewedArtworksConnection(first: 20) {
+  savedSearchesConnection(first: 20) {
     edges {
       node {
-        id
-        slug
+        internalID
+        userAlertSettings {
+          name
+        }
         __typename
       }
       cursor
@@ -55,14 +57,7 @@ var v0 = [
     "name": "first",
     "value": 20
   }
-],
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-};
+];
 return {
   "fragment": {
     "argumentDefinitions": [],
@@ -107,15 +102,15 @@ return {
           {
             "alias": null,
             "args": (v0/*: any*/),
-            "concreteType": "ArtworkConnection",
+            "concreteType": "SearchCriteriaConnection",
             "kind": "LinkedField",
-            "name": "recentlyViewedArtworksConnection",
+            "name": "savedSearchesConnection",
             "plural": false,
             "selections": [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "ArtworkEdge",
+                "concreteType": "SearchCriteriaEdge",
                 "kind": "LinkedField",
                 "name": "edges",
                 "plural": true,
@@ -123,17 +118,34 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "Artwork",
+                    "concreteType": "SearchCriteria",
                     "kind": "LinkedField",
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v1/*: any*/),
                       {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "slug",
+                        "name": "internalID",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "SavedSearchUserAlertSettings",
+                        "kind": "LinkedField",
+                        "name": "userAlertSettings",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "name",
+                            "storageKey": null
+                          }
+                        ],
                         "storageKey": null
                       },
                       {
@@ -182,25 +194,31 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "recentlyViewedArtworksConnection(first:20)"
+            "storageKey": "savedSearchesConnection(first:20)"
           },
           {
             "alias": null,
             "args": (v0/*: any*/),
             "filters": null,
             "handle": "connection",
-            "key": "SavedSearches_recentlyViewedArtworksConnection",
+            "key": "SavedSearches_savedSearchesConnection",
             "kind": "LinkedHandle",
-            "name": "recentlyViewedArtworksConnection"
+            "name": "savedSearchesConnection"
           },
-          (v1/*: any*/)
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "id",
+            "storageKey": null
+          }
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "6742989dc51bb1e02b344e2f62b8b42b",
+    "id": "20e2301c2c1e22d28e76c2621ebad531",
     "metadata": {},
     "name": "SavedSearchAlertsListQuery",
     "operationKind": "query",

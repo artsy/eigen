@@ -1,12 +1,12 @@
 import { SavedSearchesListTestsQuery } from "__generated__/SavedSearchesListTestsQuery.graphql"
-import { extractText } from 'lib/tests/extractText'
+import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { SavedSearchesListContainer as SavedSearchesList } from "../SavedSearchesList"
-import { SavedSearchListItem } from '../SavedSearchListItem'
+import { SavedSearchListItem } from "../SavedSearchListItem"
 
 jest.unmock("react-relay")
 
@@ -44,18 +44,22 @@ describe("SavedSearches", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
     mockEnvironmentPayload(mockEnvironment, {
-      ArtworkConnection: () => ({
+      SearchCriteriaConnection: () => ({
         edges: [
           {
             node: {
-              slug: "one",
-            }
+              userAlertSettings: {
+                name: "one",
+              },
+            },
           },
           {
             node: {
-              slug: "two",
-            }
-          }
+              userAlertSettings: {
+                name: "two",
+              },
+            },
+          },
         ],
       }),
     })

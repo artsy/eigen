@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8b0f8dd6531c34595a9ecb7ca2825fd4 */
+/* @relayHash 45c2a12969a5958640aad7e123275e7f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,11 +27,13 @@ query SavedSearchesListTestsQuery {
 }
 
 fragment SavedSearchesList_me on Me {
-  recentlyViewedArtworksConnection(first: 20) {
+  savedSearchesConnection(first: 20) {
     edges {
       node {
-        id
-        slug
+        internalID
+        userAlertSettings {
+          name
+        }
         __typename
       }
       cursor
@@ -53,21 +55,20 @@ var v0 = [
   }
 ],
 v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v2 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v3 = {
+v2 = {
   "enumValues": null,
   "nullable": false,
+  "plural": false,
+  "type": "String"
+},
+v3 = {
+  "enumValues": null,
+  "nullable": true,
   "plural": false,
   "type": "String"
 };
@@ -115,15 +116,15 @@ return {
           {
             "alias": null,
             "args": (v0/*: any*/),
-            "concreteType": "ArtworkConnection",
+            "concreteType": "SearchCriteriaConnection",
             "kind": "LinkedField",
-            "name": "recentlyViewedArtworksConnection",
+            "name": "savedSearchesConnection",
             "plural": false,
             "selections": [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "ArtworkEdge",
+                "concreteType": "SearchCriteriaEdge",
                 "kind": "LinkedField",
                 "name": "edges",
                 "plural": true,
@@ -131,17 +132,34 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "Artwork",
+                    "concreteType": "SearchCriteria",
                     "kind": "LinkedField",
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v1/*: any*/),
                       {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "slug",
+                        "name": "internalID",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "SavedSearchUserAlertSettings",
+                        "kind": "LinkedField",
+                        "name": "userAlertSettings",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "name",
+                            "storageKey": null
+                          }
+                        ],
                         "storageKey": null
                       },
                       {
@@ -190,25 +208,31 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "recentlyViewedArtworksConnection(first:20)"
+            "storageKey": "savedSearchesConnection(first:20)"
           },
           {
             "alias": null,
             "args": (v0/*: any*/),
             "filters": null,
             "handle": "connection",
-            "key": "SavedSearches_recentlyViewedArtworksConnection",
+            "key": "SavedSearches_savedSearchesConnection",
             "kind": "LinkedHandle",
-            "name": "recentlyViewedArtworksConnection"
+            "name": "savedSearchesConnection"
           },
-          (v1/*: any*/)
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "id",
+            "storageKey": null
+          }
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "8b0f8dd6531c34595a9ecb7ca2825fd4",
+    "id": "45c2a12969a5958640aad7e123275e7f",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -217,42 +241,43 @@ return {
           "plural": false,
           "type": "Me"
         },
-        "me.id": (v2/*: any*/),
-        "me.recentlyViewedArtworksConnection": {
+        "me.id": (v1/*: any*/),
+        "me.savedSearchesConnection": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
-          "type": "ArtworkConnection"
+          "type": "SearchCriteriaConnection"
         },
-        "me.recentlyViewedArtworksConnection.edges": {
+        "me.savedSearchesConnection.edges": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
-          "type": "ArtworkEdge"
+          "type": "SearchCriteriaEdge"
         },
-        "me.recentlyViewedArtworksConnection.edges.cursor": (v3/*: any*/),
-        "me.recentlyViewedArtworksConnection.edges.node": {
+        "me.savedSearchesConnection.edges.cursor": (v2/*: any*/),
+        "me.savedSearchesConnection.edges.node": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
-          "type": "Artwork"
+          "type": "SearchCriteria"
         },
-        "me.recentlyViewedArtworksConnection.edges.node.__typename": (v3/*: any*/),
-        "me.recentlyViewedArtworksConnection.edges.node.id": (v2/*: any*/),
-        "me.recentlyViewedArtworksConnection.edges.node.slug": (v2/*: any*/),
-        "me.recentlyViewedArtworksConnection.pageInfo": {
+        "me.savedSearchesConnection.edges.node.__typename": (v2/*: any*/),
+        "me.savedSearchesConnection.edges.node.internalID": (v1/*: any*/),
+        "me.savedSearchesConnection.edges.node.userAlertSettings": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "SavedSearchUserAlertSettings"
+        },
+        "me.savedSearchesConnection.edges.node.userAlertSettings.name": (v3/*: any*/),
+        "me.savedSearchesConnection.pageInfo": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "PageInfo"
         },
-        "me.recentlyViewedArtworksConnection.pageInfo.endCursor": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "String"
-        },
-        "me.recentlyViewedArtworksConnection.pageInfo.hasNextPage": {
+        "me.savedSearchesConnection.pageInfo.endCursor": (v3/*: any*/),
+        "me.savedSearchesConnection.pageInfo.hasNextPage": {
           "enumValues": null,
           "nullable": false,
           "plural": false,

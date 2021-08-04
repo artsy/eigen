@@ -5,11 +5,13 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SavedSearchesList_me = {
-    readonly recentlyViewedArtworksConnection: {
+    readonly savedSearchesConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly id: string;
-                readonly slug: string;
+                readonly internalID: string;
+                readonly userAlertSettings: {
+                    readonly name: string | null;
+                };
             } | null;
         } | null> | null;
     } | null;
@@ -44,7 +46,7 @@ const node: ReaderFragment = {
         "cursor": "cursor",
         "direction": "forward",
         "path": [
-          "recentlyViewedArtworksConnection"
+          "savedSearchesConnection"
         ]
       }
     ]
@@ -52,17 +54,17 @@ const node: ReaderFragment = {
   "name": "SavedSearchesList_me",
   "selections": [
     {
-      "alias": "recentlyViewedArtworksConnection",
+      "alias": "savedSearchesConnection",
       "args": null,
-      "concreteType": "ArtworkConnection",
+      "concreteType": "SearchCriteriaConnection",
       "kind": "LinkedField",
-      "name": "__SavedSearches_recentlyViewedArtworksConnection_connection",
+      "name": "__SavedSearches_savedSearchesConnection_connection",
       "plural": false,
       "selections": [
         {
           "alias": null,
           "args": null,
-          "concreteType": "ArtworkEdge",
+          "concreteType": "SearchCriteriaEdge",
           "kind": "LinkedField",
           "name": "edges",
           "plural": true,
@@ -70,7 +72,7 @@ const node: ReaderFragment = {
             {
               "alias": null,
               "args": null,
-              "concreteType": "Artwork",
+              "concreteType": "SearchCriteria",
               "kind": "LinkedField",
               "name": "node",
               "plural": false,
@@ -79,14 +81,25 @@ const node: ReaderFragment = {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
-                  "name": "id",
+                  "name": "internalID",
                   "storageKey": null
                 },
                 {
                   "alias": null,
                   "args": null,
-                  "kind": "ScalarField",
-                  "name": "slug",
+                  "concreteType": "SavedSearchUserAlertSettings",
+                  "kind": "LinkedField",
+                  "name": "userAlertSettings",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "name",
+                      "storageKey": null
+                    }
+                  ],
                   "storageKey": null
                 },
                 {
@@ -141,5 +154,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '883a8825e94e7a098de9e173560c5f87';
+(node as any).hash = '6babd9a937b1e9584a6fdeb8be947497';
 export default node;
