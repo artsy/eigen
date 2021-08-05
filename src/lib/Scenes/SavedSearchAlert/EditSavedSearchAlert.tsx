@@ -39,7 +39,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
   )
 
   const handleDeletePress = () => {
-    console.log("handleDeletePress")
+    goBack()
   }
 
   const updateMutation = async (values: SavedSearchAlertFormValues) => {
@@ -82,7 +82,6 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     <PageWithSimpleHeader title="Edit your Alert">
       <ScrollView contentContainerStyle={{ padding: space(2) }}>
         <SavedSearchAlertForm
-          mode="update"
           initialValues={{ name: userAlertSettings?.name ?? "" }}
           artist={{ name: artist.name!, id: artist.internalID }}
           filters={filters}

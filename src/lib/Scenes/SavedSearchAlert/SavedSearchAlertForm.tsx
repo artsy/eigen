@@ -9,22 +9,23 @@ interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase {
   initialValues: {
     name: string
   }
-  mode: "create" | "update"
   filters: FilterArray
   aggregations: Aggregations
   mutation: (values: SavedSearchAlertFormValues) => Promise<any>
-  onSaved?: () => void
   onDeletePress?: () => void
 }
 
 export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props) => {
-  const { filters, aggregations, initialValues, mutation, onSaved, ...other } = props
+  const { filters, aggregations, initialValues, mutation, ...other } = props
   const formik = useFormik<SavedSearchAlertFormValues>({
     initialValues,
     initialErrors: {},
     onSubmit: async (values) => {
-      await mutation(values)
-      onSaved?.()
+      try {
+        await mutation(values)
+      } catch (error) {
+        console.error(error)
+      }
     },
   })
 
