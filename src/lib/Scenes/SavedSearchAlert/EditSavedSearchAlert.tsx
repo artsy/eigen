@@ -38,11 +38,11 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     aggregations
   )
 
-  console.log("[debug] props", props)
+  const handleDeletePress = () => {
+    console.log("handleDeletePress")
+  }
 
   const updateMutation = async (values: SavedSearchAlertFormValues) => {
-    console.log("[debug] updateMutation", values)
-
     return new Promise((resolve, reject) => {
       commitMutation<EditSavedSearchAlertUpdateSavedSearchMutation>(relay.environment, {
         mutation: graphql`
@@ -88,6 +88,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
           filters={filters}
           aggregations={aggregations}
           mutation={updateMutation}
+          onDeletePress={handleDeletePress}
         />
       </ScrollView>
     </PageWithSimpleHeader>

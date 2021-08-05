@@ -1,16 +1,17 @@
 import { useFormikContext } from "formik"
 import { Input } from "lib/Components/Input/Input"
 import { InputTitle } from "lib/Components/Input/InputTitle"
-import { Box, Button, Flex, Pill } from "palette"
+import { Box, Button, Flex, Pill, Spacer } from "palette"
 import React from "react"
 import { SavedSearchAlertFormPropsBase, SavedSearchAlertFormValues } from "../SavedSearchAlertModel"
 
 interface FormProps extends SavedSearchAlertFormPropsBase {
   pills: string[]
+  onDeletePress?: () => void
 }
 
 export const Form: React.FC<FormProps> = (props) => {
-  const { pills, artist } = props
+  const { pills, artist, onDeletePress } = props
   const {
     isSubmitting,
     values,
@@ -43,12 +44,15 @@ export const Form: React.FC<FormProps> = (props) => {
           ))}
         </Flex>
       </Box>
-
-      <Box mt={4}>
-        <Button loading={isSubmitting} size="large" block onPress={handleSubmit}>
-          Save Alert
+      <Spacer mt={4} />
+      <Button loading={isSubmitting} size="large" block onPress={handleSubmit}>
+        Save Alert
+      </Button>
+      {!!onDeletePress && (
+        <Button variant="secondaryOutline" mt={2} size="large" block onPress={onDeletePress}>
+          Delete Alert
         </Button>
-      </Box>
+      )}
     </Box>
   )
 }
