@@ -6,17 +6,23 @@ import { extractPills } from "./helpers"
 import { SavedSearchAlertFormPropsBase, SavedSearchAlertFormValues } from "./SavedSearchAlertModel"
 
 interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase {
+  initialValues: {
+    name: string
+  }
+  mode: "create" | "update"
   filters: FilterArray
   aggregations: Aggregations
+  mutation: (values: SavedSearchAlertFormValues) => Promise<any>
   onSaved?: () => void
 }
 
 export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props) => {
-  const { filters, aggregations, onSaved, ...other } = props
+  const { filters, aggregations, initialValues, mode, mutation, onSaved, ...other } = props
   const formik = useFormik<SavedSearchAlertFormValues>({
-    initialValues: { name: "" },
+    initialValues,
     initialErrors: {},
-    onSubmit: async () => {
+    onSubmit: async (values) => {
+      await mutation(values)
       onSaved?.()
     },
   })

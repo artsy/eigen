@@ -1,6 +1,7 @@
 import { EditSavedSearchAlert_artist } from "__generated__/EditSavedSearchAlert_artist.graphql"
 import { EditSavedSearchAlert_me } from "__generated__/EditSavedSearchAlert_me.graphql"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
+import { EditSavedSearchAlertUpdateSavedSearchMutation } from "__generated__/EditSavedSearchAlertUpdateSavedSearchMutation.graphql"
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerCreateSavedSearchMutation.graphql"
 import { Aggregations } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
@@ -10,8 +11,9 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useTheme } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { SavedSearchAlertForm } from "./SavedSearchAlertForm"
+import { SavedSearchAlertFormValues } from "./SavedSearchAlertModel"
 
 interface EditSavedSearchAlertBaseProps {
   artistID: string
@@ -21,24 +23,70 @@ interface EditSavedSearchAlertBaseProps {
 interface EditSavedSearchAlertProps {
   me: EditSavedSearchAlert_me
   artist: EditSavedSearchAlert_artist
+  relay: RelayProp
+  savedSearchAlertId: string
 }
 
 export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props) => {
-  const { me, artist } = props
+  const { me, artist, relay, savedSearchAlertId } = props
   const { space } = useTheme()
-  const aggregations = artist.filterArtworksConnection?.aggregations ?? []
+  const aggregations = (artist.filterArtworksConnection?.aggregations ?? []) as Aggregations
   const { userAlertSettings, ...savedSearchCriteria } = me.savedSearch ?? {}
   const filters = convertSavedSearchCriteriaToFilterParams(
     savedSearchCriteria as SearchCriteriaAttributes,
-    aggregations as Aggregations
+    aggregations
   )
 
-  console.log("[debug] filters", filters)
+  console.log("[debug] props", props)
+
+  const updateMutation = async (values: SavedSearchAlertFormValues) => {
+    console.log('[debug] updateMutation', values)
+
+    return new Promise((resolve, reject) => {
+      commitMutation<EditSavedSearchAlertUpdateSavedSearchMutation>(relay.environment, {
+        mutation: graphql`
+          mutation EditSavedSearchAlertUpdateSavedSearchMutation($input: UpdateSavedSearchInput!) {
+            updateSavedSearch(input: $input) {
+              savedSearchOrErrors {
+                ... on SearchCriteria {
+                  internalID
+                  userAlertSettings {
+                    name
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+          input: {
+            searchCriteriaID: savedSearchAlertId,
+            userAlertSettings: {
+              name: values.name,
+            },
+          },
+        },
+        onCompleted: (response) => {
+          resolve(response)
+        },
+        onError: (error) => {
+          reject(error)
+        },
+      })
+    })
+  }
 
   return (
     <PageWithSimpleHeader title="Edit your Alert">
       <ScrollView contentContainerStyle={{ padding: space(2) }}>
-        <SavedSearchAlertForm />
+        <SavedSearchAlertForm
+          mode="update"
+          initialValues={{ name: userAlertSettings?.name ?? "" }}
+          artist={{ name: artist.name!, id: artist.internalID }}
+          filters={filters}
+          aggregations={aggregations}
+          mutation={updateMutation}
+        />
       </ScrollView>
     </PageWithSimpleHeader>
   )
@@ -74,6 +122,8 @@ const EditSavedSearchAlertFragmentContainer = createFragmentContainer(EditSavedS
   `,
   artist: graphql`
     fragment EditSavedSearchAlert_artist on Artist {
+      internalID
+      name
       filterArtworksConnection(first: 1, aggregations: [LOCATION_CITY, MATERIALS_TERMS, MEDIUM, PARTNER]) {
         aggregations {
           slice
@@ -108,6 +158,7 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
       render={renderWithPlaceholder({
         Container: EditSavedSearchAlertFragmentContainer,
         renderPlaceholder: () => <></>,
+        initialProps: { savedSearchAlertId },
       })}
     />
   )

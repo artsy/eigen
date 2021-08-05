@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1ce6293b4fd285681c2afe02fc78f049 */
+/* @relayHash 48cfa32fab527297991087dd6738d72d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -40,6 +40,8 @@ query EditSavedSearchAlertQuery(
 }
 
 fragment EditSavedSearchAlert_artist on Artist {
+  internalID
+  name
   filterArtworksConnection(first: 1, aggregations: [LOCATION_CITY, MATERIALS_TERMS, MEDIUM, PARTNER]) {
     aggregations {
       slice
@@ -101,10 +103,17 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "internalID",
   "storageKey": null
 },
 v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -194,13 +203,7 @@ return {
             "name": "savedSearch",
             "plural": false,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "internalID",
-                "storageKey": null
-              },
+              (v3/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -314,7 +317,7 @@ return {
                 "name": "userAlertSettings",
                 "plural": false,
                 "selections": [
-                  (v3/*: any*/)
+                  (v4/*: any*/)
                 ],
                 "storageKey": null
               },
@@ -328,7 +331,7 @@ return {
             ],
             "storageKey": null
           },
-          (v4/*: any*/)
+          (v5/*: any*/)
         ],
         "storageKey": null
       },
@@ -340,6 +343,8 @@ return {
         "name": "artist",
         "plural": false,
         "selections": [
+          (v3/*: any*/),
+          (v4/*: any*/),
           {
             "alias": null,
             "args": [
@@ -394,7 +399,7 @@ return {
                         "name": "count",
                         "storageKey": null
                       },
-                      (v3/*: any*/),
+                      (v4/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -408,18 +413,18 @@ return {
                 ],
                 "storageKey": null
               },
-              (v4/*: any*/)
+              (v5/*: any*/)
             ],
             "storageKey": "filterArtworksConnection(aggregations:[\"LOCATION_CITY\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\"],first:1)"
           },
-          (v4/*: any*/)
+          (v5/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "1ce6293b4fd285681c2afe02fc78f049",
+    "id": "48cfa32fab527297991087dd6738d72d",
     "metadata": {},
     "name": "EditSavedSearchAlertQuery",
     "operationKind": "query",
