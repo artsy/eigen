@@ -12,19 +12,21 @@ interface SavedSearchButtonProps {
   me?: SavedSearchButton_me | null
   loading?: boolean
   attributes: SearchCriteriaAttributes
+  onCreateAlertPress: () => void
 }
 
 interface SavedSearchButtonQueryRendererProps {
   filters: FilterParams
   artistId: string
+  onCreateAlertPress: () => void
 }
 
-export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({ me, loading, attributes }) => {
+export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({ me, loading, attributes, onCreateAlertPress }) => {
   const isSavedSearch = !!me?.savedSearch?.internalID
   const emptyAttributes = Object.keys(attributes).length === 0
 
   const handlePress = () => {
-    console.log("saved search button pressed")
+    onCreateAlertPress()
   }
 
   return (
@@ -53,7 +55,7 @@ export const SavedSearchButtonFragmentContainer = createFragmentContainer(SavedS
 })
 
 export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRendererProps> = (props) => {
-  const { filters, artistId } = props
+  const { filters, artistId, onCreateAlertPress } = props
   const input = prepareFilterParamsForSaveSearchInput(filters)
   const attributes: SearchCriteriaAttributes = {
     artistID: artistId,
@@ -61,7 +63,7 @@ export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRend
   }
 
   if (Object.keys(input).length === 0) {
-    return <SavedSearchButton loading={false} attributes={input} />
+    return <SavedSearchButton loading={false} attributes={input} onCreateAlertPress={onCreateAlertPress} />
   }
 
   return (
@@ -88,6 +90,7 @@ export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRend
             me={relayProps?.me ?? null}
             loading={relayProps === null && error === null}
             attributes={input}
+            onCreateAlertPress={onCreateAlertPress}
           />
         )
       }}

@@ -21,7 +21,7 @@ export interface SpinnerProps extends ViewProps {
  * Returns width and height of spinner based on size
  * @param props
  */
-export const getSize = (props: SpinnerProps) => {
+export const getSize = (props: SpinnerProps | BarProps) => {
   const base = { width: 25, height: 6 }
 
   switch (props.size) {
@@ -51,7 +51,8 @@ export const getSize = (props: SpinnerProps) => {
 /**
  * Spinner component for React Native
  */
-export const Spinner: React.FC<SpinnerProps> = ({ size = "medium", color = "black100", ...rest }) => {
+export const Spinner: React.FC<SpinnerProps> = ({ size = "medium", color: theColor = "black100", ...rest }) => {
+  const color = useColor()
   const rotation = useMemo(() => new Animated.Value(0), [])
 
   const startRotation = () => {
@@ -86,18 +87,18 @@ export const Spinner: React.FC<SpinnerProps> = ({ size = "medium", color = "blac
     rest.style,
   ]
 
-  const colors = useColor()
-
-  return <Bar size={size} color={colors(color) as Color} {...rest} style={style} />
+  return <Bar size={size} color={color(theColor)} {...rest} style={style} />
 }
 
+type BarProps = Omit<SpinnerProps, "color"> & { color?: string }
+
 /** Generic Spinner component */
-const Bar = styled(Animated.View)<Omit<SpinnerProps, "color"> & { color: string }>`
+const Bar = styled(Animated.View)<BarProps>`
   background: black;
   position: absolute;
 
   ${(props) => {
-    const { width, height } = getSize(props as SpinnerProps)
+    const { width, height } = getSize(props)
 
     return `
       background: ${props.color};

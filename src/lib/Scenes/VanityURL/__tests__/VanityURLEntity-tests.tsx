@@ -12,10 +12,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { VanityURLEntityRenderer } from "../VanityURLEntity"
 import { VanityURLPossibleRedirect } from "../VanityURLPossibleRedirect"
 
-jest.mock("lib/relay/createEnvironment", () => ({
-  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-}))
-
 jest.unmock("react-relay")
 
 jest.mock("../VanityURLPossibleRedirect", () => {

@@ -76,4 +76,11 @@ describe(MyProfileQueryRenderer, () => {
     const tree = getWrapper()
     expect(extractText(tree.root)).not.toContain("Push notifications")
   })
+
+  it("renders Saved Alerts only when the AREnableSavedSearchV2 flag is enable", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchV2: true })
+
+    const tree = getWrapper()
+    expect(extractText(tree.root)).toContain("Saved Alerts")
+  })
 })

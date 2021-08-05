@@ -55,6 +55,7 @@ class FancyModalCardStack {
   useCard(config: {
     content: React.ReactNode
     height: number
+    fullScreen?: boolean
     backgroundShouldShrink: boolean
     onBackgroundPressed(): void
   }): {
@@ -69,6 +70,7 @@ class FancyModalCardStack {
         ref={ref}
         onBackgroundPressed={config.onBackgroundPressed}
         height={config.height}
+        fullScreen={config.fullScreen}
         backgroundShouldShrink={config.backgroundShouldShrink}
       >
         {config.content}
