@@ -13,6 +13,7 @@ import { useTheme } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { EditSavedSearchFormPlaceholder } from "./Components/EditSavedSearchAlertPlaceholder"
 import { SavedSearchAlertForm } from "./SavedSearchAlertForm"
 import { SavedSearchAlertFormValues } from "./SavedSearchAlertModel"
 
@@ -159,7 +160,7 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
       variables={{ savedSearchAlertId, artistID }}
       render={renderWithPlaceholder({
         Container: EditSavedSearchAlertFragmentContainer,
-        renderPlaceholder: () => <></>,
+        renderPlaceholder: () => <EditSavedSearchFormPlaceholder />,
         initialProps: { savedSearchAlertId },
       })}
     />
