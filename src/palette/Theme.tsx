@@ -11,13 +11,16 @@ import { fontFamily } from "./platform/fonts/fontFamily"
  * design system from our design team:
  * https://www.notion.so/artsy/Master-Library-810612339f474d0997fe359af4285c56
  */
-export { SansSize, SerifSize, TypeSizes } from "@artsy/palette-tokens/dist/themes/v2"
 
 import { Color as ColorV2, SpacingUnit as SpacingUnitV2 } from "@artsy/palette-tokens/dist/themes/v2"
 import {
   Color as ColorV3BeforeDevPurple,
   SpacingUnit as SpacingUnitV3Numbers,
 } from "@artsy/palette-tokens/dist/themes/v3"
+import {
+  TextTreatment as TextTreatmentFunkyNames,
+  TextVariant as TextSizeV3FunkyNames,
+} from "@artsy/palette-tokens/dist/typography/v3"
 
 type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
 export type Color = ColorV2 | ColorV3
@@ -25,10 +28,13 @@ export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
 type ColorV3 = ColorV3BeforeDevPurple | "devpurple"
 export { ColorV2, ColorV3, SpacingUnitV2, SpacingUnitV3 }
 
+export type TextSizeV3 = Exclude<TextSizeV3FunkyNames, "sm" | "md" | "lg"> | "s" | "m" | "l"
+
 const {
   breakpoints: _eigenDoesntCareAboutBreakpoints,
   mediaQueries: _eigenDoesntCareAboutMediaQueries,
   grid: _eigenDoesntCareAboutGrid,
+  textVariants: textVariantsWithPx,
   space: spaceNumbers,
   ...eigenUsefulTHEME_V3
 } = THEME_V3
@@ -97,14 +103,55 @@ const fixColorV3 = (
   return colors as any
 }
 
+export interface TextTreatment {
+  fontSize: number
+  lineHeight: number
+  letterSpacing?: number
+}
+
+// this function is removing the `px` suffix and making the values into numbers
+const fixTextTreatments = (): Record<TextSizeV3, TextTreatment> => {
+  const textTreatmentsNicerNames = (_.mapKeys(textVariantsWithPx, (_value, key) => {
+    switch (key) {
+      case "sm":
+        return "s"
+      case "md":
+        return "m"
+      case "lg":
+        return "l"
+      default:
+        return key
+    }
+  }) as unknown) as Record<TextSizeV3, TextTreatmentFunkyNames>
+  const textTreatments = _.mapValues(textTreatmentsNicerNames, (treatmentWithUnits) => {
+    const newTreatment = {} as TextTreatment
+    ;([
+      ["fontSize", "px"],
+      ["lineHeight", "px"],
+      ["letterSpacing", "em"],
+    ] as Array<[keyof TextTreatment, string]>).forEach(([property, unit]) => {
+      const originalValue = treatmentWithUnits[property]
+      if (originalValue === undefined) {
+        return undefined
+      }
+      const justStringValue = _.split(originalValue, unit)[0]
+      const numberValue = parseInt(justStringValue, 10)
+      newTreatment[property] = numberValue
+    })
+    return newTreatment
+  })
+  return textTreatments
+}
+
 const THEMES = {
   v2: { ...THEME_V2, fontFamily, fonts: TEXT_FONTS_V2, space: fixSpaceUnitsV2(THEME_V2.space) },
   v3: {
     ...eigenUsefulTHEME_V3,
-    fonts: TEXT_FONTS_V3,
-    space: fixSpaceUnitsV3(spaceNumbers),
     colors: fixColorV3(eigenUsefulTHEME_V3.colors),
-  }, // v3 removed `fontFamily`, `fontSizes`, `letterSpacings`, `lineHeights`, `typeSizes`
+    space: fixSpaceUnitsV3(spaceNumbers),
+    fonts: TEXT_FONTS_V3,
+    textTreatments: fixTextTreatments(),
+  },
 }
 
 export type ThemeV2Type = typeof THEMES.v2
@@ -212,6 +259,7 @@ export const useTheme = () => {
   }
 }
 
+// TODO-PALETTE-V3 these should be removed after we are v3
 export const isThemeV2 = (theme: ThemeType): theme is ThemeV2Type => theme.id === "v2"
 export const isThemeV3 = (theme: ThemeType): theme is ThemeV3Type => theme.id === "v3"
 
