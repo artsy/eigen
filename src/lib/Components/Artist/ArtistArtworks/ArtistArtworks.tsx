@@ -4,6 +4,7 @@ import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkF
 import {
   Aggregations,
   filterArtworksParams,
+  FilterData,
   FilterParamName,
   prepareFilterArtworksParamsForInput,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -94,6 +95,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
         />
         {!!enableSavedSearchV2 && (
           <CreateSavedSearchAlert
+            artist={{ id: artist.internalID, name: artist.name! }}
             visible={isCreateSavedSearchModalVisible}
             onClosePress={handleCloseSavedSearchModal}
           />
@@ -195,7 +197,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
               />
               <SavedSearchButtonQueryRenderer
                 artistId={artistInternalId}
-                filters={filterParams}
+                filters={appliedFilters as FilterData[]}
                 onCreateAlertPress={openCreateSavedSearchAlertModal}
               />
             </Flex>
@@ -225,6 +227,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     artistInternalId,
     filterParams,
     enableSavedSearchV2,
+    appliedFilters,
     openCreateSavedSearchAlertModal,
   ])
 
@@ -268,6 +271,7 @@ export default createPaginationContainer(
       ) {
         id
         slug
+        name
         internalID
         artworks: filterArtworksConnection(
           first: $count
