@@ -19,7 +19,9 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   const [fetchingMore, setFetchingMore] = useState(false)
   const { space } = useTheme()
   const items = extractNodes(me.savedSearchesConnection)
+  const flatListRef = useRef<FlatList>(null)
   const onRefresh = useRef(() => {
+    flatListRef.current?.scrollToOffset({ offset: 0, animated: false })
     relay.refetchConnection(SAVED_SERCHES_PAGE_SIZE, (error) => {
       if (error) {
         console.error(error)
@@ -53,6 +55,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
 
   return (
     <FlatList
+      ref={flatListRef}
       data={items}
       keyExtractor={(item) => item.internalID}
       contentContainerStyle={{ paddingVertical: space(1) }}
