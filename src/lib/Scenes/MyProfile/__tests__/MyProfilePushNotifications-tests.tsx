@@ -14,10 +14,6 @@ import {
   PushAuthorizationStatus,
 } from "../MyProfilePushNotifications"
 
-jest.mock("lib/relay/createEnvironment", () => ({
-  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-}))
-
 const mockFetchNotificationPermissions = LegacyNativeModules.ARTemporaryAPIModule
   .fetchNotificationPermissions as jest.Mock<any>
 

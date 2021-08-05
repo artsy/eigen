@@ -1,14 +1,19 @@
 import AsyncStorage from "@react-native-community/async-storage"
+import { navigate } from "lib/navigation/navigate"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
+import { GlobalStore, unsafe_getUserAccessToken } from "lib/store/GlobalStore"
+import { PendingPushNotification } from "lib/store/PendingPushNotificationModel"
 import { Platform } from "react-native"
 import { getDeviceId } from "react-native-device-info"
-import PushNotification from "react-native-push-notification"
+import PushNotification, { ReceivedNotification } from "react-native-push-notification"
 import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "./AdminMenu"
 
 export const IOS_PUSH_NOTIFICATION_TOKEN = "IOS_PUSH_NOTIFICATION_TOKEN"
 export const ANDROID_PUSH_NOTIFICATION_TOKEN = "ANDRROID_PUSH_NOTIFICATION_TOKEN"
 export const PENDING_IOS_PUSH_NOTIFICATION_TOKEN = "PENDING_IOS_PUSH_NOTIFICATION_TOKEN"
 export const PENDING_ANDROID_PUSH_NOTIFICATION_TOKEN = "PENDING_ANDRROID_PUSH_NOTIFICATION_TOKEN"
+
+const MAX_ELAPSED_TAPPED_NOTIFICATION_TIME = 90 // seconds
 
 export const savePendingToken = async () => {
   const pendingStorageKey =
@@ -73,6 +78,76 @@ export const saveToken = (tokenObject: { os: string; token: string }) => {
   })
 }
 
+export const handlePendingNotification = (notification: PendingPushNotification | null) => {
+  if (!notification) {
+    return
+  }
+  const elapsedTimeInSecs = Math.floor((Date.now() - notification.tappedAt) / 1000)
+  if (elapsedTimeInSecs <= MAX_ELAPSED_TAPPED_NOTIFICATION_TIME && !!notification.data.url) {
+    navigate(notification.data.url, { passProps: { ...notification.data, url: undefined } })
+  }
+  GlobalStore.actions.pendingPushNotification.setPendingPushNotification({ platform: "android", notification: null })
+}
+
+export const handleReceivedNotification = (notification: Omit<ReceivedNotification, "userInfo">) => {
+  if (__DEV__ && !__TEST__) {
+    console.log("RECIEVED NOTIFICATION", notification)
+  }
+  const isLoggedIn = !!unsafe_getUserAccessToken()
+  if (notification.userInteraction) {
+    const hasUrl = !!notification.data.url
+    if (isLoggedIn && hasUrl) {
+      navigate(notification.data.url as string, { passProps: { ...notification.data, url: undefined } })
+      // clear any pending notification
+      GlobalStore.actions.pendingPushNotification.setPendingPushNotification({
+        platform: "android",
+        notification: null,
+      })
+      return
+    }
+    if (!isLoggedIn) {
+      // removing finish because we do not use it on android and we don't want to serialise functions at this time
+      const newNotification = { ...notification, finish: undefined, tappedAt: Date.now() }
+      delete newNotification.finish
+      GlobalStore.actions.pendingPushNotification.setPendingPushNotification({
+        platform: "android",
+        notification: newNotification,
+      })
+      return
+    }
+    return
+  }
+  if (notification.foreground) {
+    // flash notification and put it in Tray
+    const typedNotification: Omit<ReceivedNotification, "userInfo"> & { title?: string } = { ...notification }
+    const channelId = "net.artsy.artsy"
+    PushNotification.createChannel(
+      {
+        channelId, // (required)
+        channelName: "default", // (required)
+      },
+      (created) => {
+        if (__DEV__) {
+          // false if channel already exists
+          console.log("Notification Channel Created: ", created)
+        }
+        PushNotification.localNotification({
+          /* Android Only Properties */
+          channelId, // (required) channelId, if the channel doesn't exist, notification will not trigger.
+          subText: notification.subText,
+          ignoreInForeground: false, // (optional) if true, the notification will not be visible when the app is in the foreground (useful for parity with how iOS notifications appear). should be used in combine with `com.dieam.reactnativepushnotification.notification_foreground` setting
+          onlyAlertOnce: false, // (optional) alert will open only once with sound and notify, default: false
+          userInfo: notification.data,
+
+          /* iOS and Android properties */
+          id: 0,
+          message: typedNotification.title ?? "Artsy", // (required)
+        })
+      }
+    )
+  }
+}
+
 export async function configure() {
   const canInitPushNotification = await AsyncStorage.getItem(ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY)
   if (canInitPushNotification === "true") {
@@ -86,16 +161,7 @@ export async function configure() {
       },
 
       // (required) Called when a remote is received or opened, or local notification is opened
-      onNotification: (notification) => {
-        if (__DEV__) {
-          console.log("NOTIFICATION:", notification)
-        }
-
-        // TODO: Handle Notification | Defer handling based on auth state | Badges | etc
-
-        // (required) Called when a remote is received or opened, or local notification is opened
-        // notification.finish(PushNotificationIOS.FetchResult.NoData);
-      },
+      onNotification: handleReceivedNotification,
 
       // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
       onAction: (notification) => {
@@ -142,4 +208,6 @@ module.exports = {
   configure,
   saveToken,
   savePendingToken,
+  handlePendingNotification,
+  handleReceivedNotification,
 }

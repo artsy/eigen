@@ -178,8 +178,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)setupAnalytics:(UIApplication *)application withLaunchOptions:(NSDictionary *)launchOptions
 {
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    center.delegate = [self remoteNotificationsDelegate];
     NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_STAGING_APP_KEY_IOS"];
     if (![ARAppStatus isDev]) {
         brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];

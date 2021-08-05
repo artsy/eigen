@@ -1,9 +1,7 @@
-import { Text } from "palette"
+import { Flex, FlexProps, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-
-import { FlexProps } from "../Elements/Flex"
-import { Col, Row } from "../Elements/Grid"
+import styled from "styled-components/native"
 
 interface BidInfoRowProps extends FlexProps {
   label: string
@@ -27,7 +25,7 @@ export class BidInfoRow extends React.Component<BidInfoRowProps> {
           <Col alignItems="flex-end">{!!value && <Text numberOfLines={1}>{value}</Text>}</Col>
 
           <Col alignItems="flex-end" flexGrow={0} flexShrink={0} flexBasis="auto" flex={null}>
-            <Text color="purple100" ml={3}>
+            <Text color="purple100" /* TODO-PALETTE-V3 "blue100" */ ml={3}>
               {Boolean(value) ? "Edit" : "Add"}
             </Text>
           </Col>
@@ -36,3 +34,13 @@ export class BidInfoRow extends React.Component<BidInfoRowProps> {
     )
   }
 }
+
+const Col = styled(Flex)`
+  flex: 1;
+`
+
+const Row = styled(Flex)`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`
