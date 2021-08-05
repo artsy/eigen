@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 037f11e9a4eeaa5a4c32ea114f2a752d */
+/* @relayHash bd32e6475fe0f471b66cbf6562a048ae */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -93,6 +93,7 @@ query ArtistArtworksQuery(
 fragment ArtistArtworks_artist_YCAiB on Artist {
   id
   slug
+  name
   internalID
   artworks: filterArtworksConnection(first: $count, after: $cursor, input: $input, aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE]) {
     aggregations {
@@ -240,10 +241,17 @@ v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v10 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "internalID",
   "storageKey": null
 },
-v10 = [
+v11 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -269,14 +277,7 @@ v10 = [
     "variableName": "count"
   },
   (v5/*: any*/)
-],
-v11 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "name",
-  "storageKey": null
-};
+];
 return {
   "fragment": {
     "argumentDefinitions": [
@@ -354,9 +355,10 @@ return {
             "selections": [
               (v8/*: any*/),
               (v9/*: any*/),
+              (v10/*: any*/),
               {
                 "alias": "artworks",
-                "args": (v10/*: any*/),
+                "args": (v11/*: any*/),
                 "concreteType": "FilterArtworksConnection",
                 "kind": "LinkedField",
                 "name": "filterArtworksConnection",
@@ -392,7 +394,7 @@ return {
                             "name": "count",
                             "storageKey": null
                           },
-                          (v11/*: any*/),
+                          (v9/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -572,7 +574,7 @@ return {
                                 "name": "saleMessage",
                                 "storageKey": null
                               },
-                              (v9/*: any*/),
+                              (v10/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -690,7 +692,7 @@ return {
                                 "name": "partner",
                                 "plural": false,
                                 "selections": [
-                                  (v11/*: any*/),
+                                  (v9/*: any*/),
                                   (v7/*: any*/)
                                 ],
                                 "storageKey": null
@@ -718,7 +720,7 @@ return {
               },
               {
                 "alias": "artworks",
-                "args": (v10/*: any*/),
+                "args": (v11/*: any*/),
                 "filters": [
                   "input",
                   "aggregations"
@@ -738,7 +740,7 @@ return {
     ]
   },
   "params": {
-    "id": "037f11e9a4eeaa5a4c32ea114f2a752d",
+    "id": "bd32e6475fe0f471b66cbf6562a048ae",
     "metadata": {},
     "name": "ArtistArtworksQuery",
     "operationKind": "query",
