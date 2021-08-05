@@ -6,6 +6,7 @@ import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerCreateS
 import { Aggregations } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
+import { goBack } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useTheme } from "palette"
@@ -40,7 +41,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
   console.log("[debug] props", props)
 
   const updateMutation = async (values: SavedSearchAlertFormValues) => {
-    console.log('[debug] updateMutation', values)
+    console.log("[debug] updateMutation", values)
 
     return new Promise((resolve, reject) => {
       commitMutation<EditSavedSearchAlertUpdateSavedSearchMutation>(relay.environment, {
@@ -68,6 +69,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
         },
         onCompleted: (response) => {
           resolve(response)
+          goBack()
         },
         onError: (error) => {
           reject(error)

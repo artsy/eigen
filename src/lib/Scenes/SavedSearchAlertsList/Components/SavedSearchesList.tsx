@@ -1,9 +1,9 @@
 import { SavedSearchesList_me } from "__generated__/SavedSearchesList_me.graphql"
 import { SAVED_SERCHES_PAGE_SIZE } from "lib/data/constants"
-import { navigate } from "lib/navigation/navigate"
+import { navigate, navigationEvents } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spinner, useTheme } from "palette"
-import React, { useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { EmptyMessage } from "./EmptyMessage"
@@ -19,6 +19,20 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   const [fetchingMore, setFetchingMore] = useState(false)
   const { space } = useTheme()
   const items = extractNodes(me.savedSearchesConnection)
+  const onRefresh = useRef(() => {
+    relay.refetchConnection(SAVED_SERCHES_PAGE_SIZE, (error) => {
+      if (error) {
+        console.error(error)
+      }
+    })
+  }).current
+
+  useEffect(() => {
+    navigationEvents.addListener("goBack", onRefresh)
+    return () => {
+      navigationEvents.removeListener("goBack", onRefresh)
+    }
+  }, [])
 
   const loadMore = () => {
     if (!relay.hasMore() || relay.isLoading()) {
