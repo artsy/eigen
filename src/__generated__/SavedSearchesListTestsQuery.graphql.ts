@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 45c2a12969a5958640aad7e123275e7f */
+/* @relayHash 7f05c96bd766229abc081b08cdb18307 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,6 +28,11 @@ query SavedSearchesListTestsQuery {
 
 fragment SavedSearchesList_me on Me {
   savedSearchesConnection(first: 20) {
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+    }
     edges {
       node {
         internalID
@@ -37,10 +42,6 @@ fragment SavedSearchesList_me on Me {
         __typename
       }
       cursor
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
     }
   }
 }
@@ -124,6 +125,38 @@ return {
               {
                 "alias": null,
                 "args": null,
+                "concreteType": "PageInfo",
+                "kind": "LinkedField",
+                "name": "pageInfo",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "hasNextPage",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "startCursor",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "endCursor",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
                 "concreteType": "SearchCriteriaEdge",
                 "kind": "LinkedField",
                 "name": "edges",
@@ -181,31 +214,6 @@ return {
                   }
                 ],
                 "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "PageInfo",
-                "kind": "LinkedField",
-                "name": "pageInfo",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "endCursor",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "hasNextPage",
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
               }
             ],
             "storageKey": "savedSearchesConnection(first:20)"
@@ -232,7 +240,7 @@ return {
     ]
   },
   "params": {
-    "id": "45c2a12969a5958640aad7e123275e7f",
+    "id": "7f05c96bd766229abc081b08cdb18307",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -282,7 +290,8 @@ return {
           "nullable": false,
           "plural": false,
           "type": "Boolean"
-        }
+        },
+        "me.savedSearchesConnection.pageInfo.startCursor": (v3/*: any*/)
       }
     },
     "name": "SavedSearchesListTestsQuery",

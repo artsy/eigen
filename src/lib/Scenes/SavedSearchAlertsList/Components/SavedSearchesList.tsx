@@ -71,6 +71,11 @@ export const SavedSearchesListContainer = createPaginationContainer(
       @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String" }) {
         savedSearchesConnection(first: $count, after: $cursor)
           @connection(key: "SavedSearches_savedSearchesConnection") {
+          pageInfo {
+            hasNextPage
+            startCursor
+            endCursor
+          }
           edges {
             node {
               internalID
