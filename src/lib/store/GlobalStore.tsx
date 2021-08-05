@@ -162,6 +162,17 @@ export function unsafe_getDevToggle(key: DevToggleName) {
   return false
 }
 
+export function unsafe_getUserAccessToken() {
+  const state = globalStoreInstance().getState() ?? null
+  if (state) {
+    return state.auth.userAccessToken
+  }
+  if (__DEV__) {
+    throw new Error(`Unable to access userAccessToken before GlobalStore bootstraps`)
+  }
+  return null
+}
+
 export function getCurrentEmissionState() {
   const state = globalStoreInstance().getState() ?? null
   if (!unsafe_getFeatureFlag("AREnableNewOnboardingFlow")) {
