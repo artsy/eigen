@@ -220,8 +220,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/city-bmw-list/:citySlug", "CityBMWList"),
     new RouteMatcher("/make-offer/:artworkID", "MakeOfferModal"),
     new RouteMatcher("/user/purchases/:orderID", "OrderDetails"),
-    new RouteMatcher("/saved-search-alerts/list", "SavedSearchAlertsList"),
-    new RouteMatcher("/saved-search-alerts/:savedSearchAlertId", "EditSavedSearchAlert"),
+    new RouteMatcher("/my-profile/saved-search-alerts", "SavedSearchAlertsList"),
+    new RouteMatcher("/my-profile/saved-search-alerts/:savedSearchAlertId", "EditSavedSearchAlert"),
     unsafe_getFeatureFlag("AROptionsUseReactNativeWebView")
       ? webViewRoute("/orders/:orderID", { mimicBrowserBackButton: false })
       : new RouteMatcher("/orders/:orderID", "Checkout"),
