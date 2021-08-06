@@ -18,7 +18,6 @@ import { ModalStack } from "./navigation/ModalStack"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
-import { handlePendingNotification, handleReceivedNotification } from "./utils/PushNotification"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { AnalyticsConstants } from "./utils/track/constants"
 
@@ -35,12 +34,10 @@ const Main: React.FC<{}> = track()(({}) => {
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
     })
   }, [])
-  const [hasHandledInitialNotification, setHasHandledInitialNotification] = useState(false)
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const forceUpdateMessage = GlobalStore.useAppState((state) => state.config.echo.forceUpdateMessage)
-  const pendingNotification = GlobalStore.useAppState((state) => state.pendingPushNotification.android)
 
   useSentryConfig()
   useStripeConfig()
@@ -88,26 +85,6 @@ const Main: React.FC<{}> = track()(({}) => {
       }, 500)
     }
   }, [isHydrated])
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      if (!hasHandledInitialNotification) {
-        // initial notification is most recent and should be prioritised
-        PushNotification.popInitialNotification((notification) => {
-          if (notification) {
-            handleReceivedNotification(notification)
-            // prevent loop where user logs out and logs back in and previously
-            // handled initial push notification is rehandled
-            setHasHandledInitialNotification(true)
-            return
-          }
-          handlePendingNotification(pendingNotification)
-        })
-      } else {
-        handlePendingNotification(pendingNotification)
-      }
-    }
-  }, [isLoggedIn])
 
   if (!isHydrated) {
     return <View />
