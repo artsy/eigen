@@ -4,7 +4,7 @@ import { Aggregations, FilterArray, FilterParamName } from "lib/Components/Artwo
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { SavedSearchAlertForm } from "../SavedSearchAlertForm"
+import { SavedSearchAlertForm, SavedSearchAlertFormProps } from "../SavedSearchAlertForm"
 
 jest.mock("formik")
 
@@ -50,8 +50,10 @@ describe("Saved search alert form", () => {
     ])
   })
 
-  it(`should render "Delete Alert" button when the onDeletePress prop is passed`, () => {
-    const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm onDeletePress={jest.fn} {...baseProps} />)
+  it(`should render "Delete Alert" button when the onDeletePress prop is passed and mode is update`, () => {
+    const { getByTestId } = renderWithWrappersTL(
+      <SavedSearchAlertForm {...baseProps} mode="update" onDeletePress={jest.fn} />
+    )
     const button = getByTestId("delete-alert-button")
 
     expect(extractText(button)).toContain("Delete Alert")
@@ -60,7 +62,7 @@ describe("Saved search alert form", () => {
   it("fires onDeletePress prop when the delete alert button is pressed", () => {
     const onDeletePressMock = jest.fn()
     const { getByTestId } = renderWithWrappersTL(
-      <SavedSearchAlertForm {...baseProps} onDeletePress={onDeletePressMock} />
+      <SavedSearchAlertForm {...baseProps} onDeletePress={onDeletePressMock} mode="update" />
     )
 
     fireEvent.press(getByTestId("delete-alert-button"))
@@ -164,8 +166,9 @@ const aggregations: Aggregations = [
   },
 ]
 
-const baseProps = {
+const baseProps: SavedSearchAlertFormProps = {
   mutation: jest.fn(),
+  mode: "create",
   initialValues: {
     name: "",
   },

@@ -3,19 +3,25 @@ import { Input } from "lib/Components/Input/Input"
 import { InputTitle } from "lib/Components/Input/InputTitle"
 import { Box, Button, Flex, Pill, Spacer } from "palette"
 import React from "react"
-import { SavedSearchAlertFormPropsBase, SavedSearchAlertFormValues } from "../SavedSearchAlertModel"
+import {
+  SavedSearchAlertFormMode,
+  SavedSearchAlertFormPropsBase,
+  SavedSearchAlertFormValues,
+} from "../SavedSearchAlertModel"
 
 interface FormProps extends SavedSearchAlertFormPropsBase {
   pills: string[]
+  mode: SavedSearchAlertFormMode
   onDeletePress?: () => void
 }
 
 export const Form: React.FC<FormProps> = (props) => {
-  const { pills, artist, onDeletePress } = props
+  const { pills, artist, mode, onDeletePress } = props
   const {
     isSubmitting,
     values,
     errors,
+    dirty,
     handleBlur,
     handleChange,
     handleSubmit,
@@ -46,10 +52,17 @@ export const Form: React.FC<FormProps> = (props) => {
         </Flex>
       </Box>
       <Spacer mt={4} />
-      <Button testID="save-alert-button" loading={isSubmitting} size="large" block onPress={handleSubmit}>
+      <Button
+        testID="save-alert-button"
+        disabled={mode === "update" && !dirty}
+        loading={isSubmitting}
+        size="large"
+        block
+        onPress={handleSubmit}
+      >
         Save Alert
       </Button>
-      {!!onDeletePress && (
+      {mode === "update" && !!onDeletePress && (
         <Button
           testID="delete-alert-button"
           variant="secondaryOutline"

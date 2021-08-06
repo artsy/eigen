@@ -3,12 +3,17 @@ import { Aggregations, FilterArray } from "lib/Components/ArtworkFilter/ArtworkF
 import React from "react"
 import { Form } from "./Components/Form"
 import { extractPills } from "./helpers"
-import { SavedSearchAlertFormPropsBase, SavedSearchAlertFormValues } from "./SavedSearchAlertModel"
+import {
+  SavedSearchAlertFormMode,
+  SavedSearchAlertFormPropsBase,
+  SavedSearchAlertFormValues,
+} from "./SavedSearchAlertModel"
 
-interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase {
+export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase {
   initialValues: {
     name: string
   }
+  mode: SavedSearchAlertFormMode
   filters: FilterArray
   aggregations: Aggregations
   mutation: (values: SavedSearchAlertFormValues) => Promise<any>
