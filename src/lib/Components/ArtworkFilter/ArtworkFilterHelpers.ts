@@ -79,6 +79,7 @@ export const getSortDefaultValueByFilterType = (filterType: FilterType) => {
     showArtwork: "partner_show_position",
     auctionResult: "DATE_DESC",
     geneArtwork: "-partner_updated_at",
+    tagArtwork: "-partner_updated_at",
   }[filterType]
 }
 
@@ -185,7 +186,7 @@ export interface FilterData {
 }
 export type FilterArray = ReadonlyArray<FilterData>
 
-export type FilterType = "artwork" | "saleArtwork" | "showArtwork" | "auctionResult" | "geneArtwork"
+export type FilterType = "artwork" | "saleArtwork" | "showArtwork" | "auctionResult" | "geneArtwork" | "tagArtwork"
 
 export interface FilterCounts {
   total: number | null
@@ -244,6 +245,11 @@ const DEFAULT_GENE_ARTWORK_PARAMS = {
   medium: "*",
 } as FilterParams
 
+const DEFAULT_TAG_ARTWORK_PARAMS = {
+  ...DEFAULT_ARTWORKS_PARAMS,
+  sort: "-partner_updated_at",
+} as FilterParams
+
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams, filterType: FilterType) => {
   const groupedFilters = groupBy(appliedFilters, "paramName")
 
@@ -269,6 +275,7 @@ const getDefaultParamsByType = (filterType: FilterType) => {
     showArtwork: DEFAULT_SHOW_ARTWORKS_PARAMS,
     auctionResult: DEFAULT_AUCTION_RESULT_PARAMS,
     geneArtwork: DEFAULT_GENE_ARTWORK_PARAMS,
+    tagArtwork: DEFAULT_TAG_ARTWORK_PARAMS,
   }[filterType]
 }
 
