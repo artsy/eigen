@@ -43,7 +43,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     goBack()
   }
 
-  const updateMutation = async (values: SavedSearchAlertFormValues) => {
+  const updateMutation = (values: SavedSearchAlertFormValues) => {
     return new Promise((resolve, reject) => {
       commitMutation<EditSavedSearchAlertUpdateSavedSearchMutation>(enviroment, {
         mutation: graphql`
