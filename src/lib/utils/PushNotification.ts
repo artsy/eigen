@@ -15,7 +15,7 @@ export const handlePendingNotification = (notification: PendingPushNotification 
   if (elapsedTimeInSecs <= MAX_ELAPSED_TAPPED_NOTIFICATION_TIME && !!notification.data.url) {
     navigate(notification.data.url, { passProps: { ...notification.data, url: undefined } })
   }
-  GlobalStore.actions.pendingPushNotification.setPendingPushNotification({ platform: "android", notification: null })
+  GlobalStore.actions.pendingPushNotification.setPendingPushNotification(null)
 }
 
 export const handleReceivedNotification = (notification: Omit<ReceivedNotification, "userInfo">) => {
@@ -28,20 +28,14 @@ export const handleReceivedNotification = (notification: Omit<ReceivedNotificati
     if (isLoggedIn && hasUrl) {
       navigate(notification.data.url as string, { passProps: { ...notification.data, url: undefined } })
       // clear any pending notification
-      GlobalStore.actions.pendingPushNotification.setPendingPushNotification({
-        platform: "android",
-        notification: null,
-      })
+      GlobalStore.actions.pendingPushNotification.setPendingPushNotification(null)
       return
     }
     if (!isLoggedIn) {
       // removing finish because we do not use it on android and we don't want to serialise functions at this time
       const newNotification = { ...notification, finish: undefined, tappedAt: Date.now() }
       delete newNotification.finish
-      GlobalStore.actions.pendingPushNotification.setPendingPushNotification({
-        platform: "android",
-        notification: newNotification,
-      })
+      GlobalStore.actions.pendingPushNotification.setPendingPushNotification(newNotification)
       return
     }
     return
