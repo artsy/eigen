@@ -7,6 +7,59 @@ import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "./AdminMenu"
 
 const MAX_ELAPSED_TAPPED_NOTIFICATION_TIME = 90 // seconds
 
+const CHANNELS = [{ name: "net.artsy.artsy", id: "net.artsy.artsy", properties: {} }]
+
+type TypedNotification = Omit<ReceivedNotification, "userInfo"> & { title?: string }
+
+export const createChannel = (channelId: string, channelName: string, properties: any = {}) => {
+  return new Promise<boolean>((resolve) => {
+    PushNotification.createChannel(
+      {
+        channelId,
+        channelName,
+        ...properties,
+      },
+      (created) => {
+        resolve(created)
+      }
+    )
+  })
+}
+
+export const createAllChannels = () => {
+  CHANNELS.forEach(async (channel) => {
+    await createChannel(channel.name, channel.id, channel.properties)
+  })
+}
+
+export const createLocalNotification = (notification: TypedNotification) => {
+  const create = () => {
+    PushNotification.localNotification({
+      /* Android Only Properties */
+      channelId, // (required) channelId, if the channel doesn't exist, notification will not trigger.
+      subText: notification.subText,
+      ignoreInForeground: false, // (optional) if true, the notification will not be visible when the app is in the foreground (useful for parity with how iOS notifications appear). should be used in combine with `com.dieam.reactnativepushnotification.notification_foreground` setting
+      onlyAlertOnce: false, // (optional) alert will open only once with sound and notify, default: false
+      userInfo: notification.data,
+
+      /* iOS and Android properties */
+      id: 0,
+      message: notification.title ?? "Artsy", // (required)
+    })
+  }
+  const channelId = notification.data.channelId ?? CHANNELS[0].id
+  const channelName = notification.data.channelName ?? channelId
+  const exists = CHANNELS.filter((channel) => channel.id === channelId)
+  if (exists) {
+    // we can safely assume that these channels were created on App start
+    create()
+  } else {
+    createChannel(channelId, channelName).then(() => {
+      create()
+    })
+  }
+}
+
 export const handlePendingNotification = (notification: PendingPushNotification | null) => {
   if (!notification) {
     return
@@ -42,32 +95,11 @@ export const handleReceivedNotification = (notification: Omit<ReceivedNotificati
   }
   if (notification.foreground) {
     // flash notification and put it in Tray
-    const typedNotification: Omit<ReceivedNotification, "userInfo"> & { title?: string } = { ...notification }
-    const channelId = "net.artsy.artsy"
-    PushNotification.createChannel(
-      {
-        channelId, // (required)
-        channelName: "default", // (required)
-      },
-      (created) => {
-        if (__DEV__) {
-          // false if channel already exists
-          console.log("Notification Channel Created: ", created)
-        }
-        PushNotification.localNotification({
-          /* Android Only Properties */
-          channelId, // (required) channelId, if the channel doesn't exist, notification will not trigger.
-          subText: notification.subText,
-          ignoreInForeground: false, // (optional) if true, the notification will not be visible when the app is in the foreground (useful for parity with how iOS notifications appear). should be used in combine with `com.dieam.reactnativepushnotification.notification_foreground` setting
-          onlyAlertOnce: false, // (optional) alert will open only once with sound and notify, default: false
-          userInfo: notification.data,
-
-          /* iOS and Android properties */
-          id: 0,
-          message: typedNotification.title ?? "Artsy", // (required)
-        })
-      }
-    )
+    // In order to have a consistent behaviour in Android & iOS with the most flexibility,
+    // it is best to handle it manually by prompting a local notification when onNotification
+    // is triggered by a remote push notification on foreground
+    const typedNotification: TypedNotification = { ...notification }
+    createLocalNotification(typedNotification)
   }
 }
 

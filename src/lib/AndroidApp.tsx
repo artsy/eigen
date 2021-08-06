@@ -5,10 +5,9 @@ import { addTrackingProvider, track } from "lib/utils/track"
 import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { useDeepLinks } from "lib/utils/useDeepLinks"
 import { useStripeConfig } from "lib/utils/useStripeConfig"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { Appearance, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
-import PushNotification from "react-native-push-notification"
 import { AppProviders } from "./AppProviders"
 import { useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
@@ -18,6 +17,7 @@ import { ModalStack } from "./navigation/ModalStack"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
+import { createAllChannels } from "./utils/PushNotification"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { AnalyticsConstants } from "./utils/track/constants"
 
@@ -45,6 +45,7 @@ const Main: React.FC<{}> = track()(({}) => {
   useDeepLinks()
 
   useEffect(() => {
+    createAllChannels()
     const scheme = Appearance.getColorScheme()
     // null id means keep whatever id was there before. we only update the user interface info here.
     SegmentTrackingProvider.identify?.(null, {
