@@ -12,7 +12,7 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useTheme } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { commitMutation, createFragmentContainer, Environment, graphql, QueryRenderer } from "react-relay"
 import { EditSavedSearchFormPlaceholder } from "./Components/EditSavedSearchAlertPlaceholder"
 import { SavedSearchAlertForm } from "./SavedSearchAlertForm"
 import { SavedSearchAlertFormValues } from "./SavedSearchAlertModel"
@@ -25,12 +25,12 @@ interface EditSavedSearchAlertBaseProps {
 interface EditSavedSearchAlertProps {
   me: EditSavedSearchAlert_me
   artist: EditSavedSearchAlert_artist
-  relay: RelayProp
   savedSearchAlertId: string
+  enviroment: Environment
 }
 
 export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props) => {
-  const { me, artist, relay, savedSearchAlertId } = props
+  const { me, artist, savedSearchAlertId, enviroment = defaultEnvironment } = props
   const { space } = useTheme()
   const aggregations = (artist.filterArtworksConnection?.aggregations ?? []) as Aggregations
   const { userAlertSettings, ...savedSearchCriteria } = me.savedSearch ?? {}
@@ -45,7 +45,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
 
   const updateMutation = async (values: SavedSearchAlertFormValues) => {
     return new Promise((resolve, reject) => {
-      commitMutation<EditSavedSearchAlertUpdateSavedSearchMutation>(relay.environment, {
+      commitMutation<EditSavedSearchAlertUpdateSavedSearchMutation>(enviroment, {
         mutation: graphql`
           mutation EditSavedSearchAlertUpdateSavedSearchMutation($input: UpdateSavedSearchInput!) {
             updateSavedSearch(input: $input) {
@@ -96,7 +96,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
   )
 }
 
-const EditSavedSearchAlertFragmentContainer = createFragmentContainer(EditSavedSearchAlert, {
+export const EditSavedSearchAlertFragmentContainer = createFragmentContainer(EditSavedSearchAlert, {
   me: graphql`
     fragment EditSavedSearchAlert_me on Me @argumentDefinitions(savedSearchAlertId: { type: "ID" }) {
       savedSearch(id: $savedSearchAlertId) {
