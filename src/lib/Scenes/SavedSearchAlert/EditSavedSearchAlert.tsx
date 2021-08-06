@@ -47,7 +47,6 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
       <ScrollView contentContainerStyle={{ padding: space(2) }}>
         <SavedSearchAlertForm
           initialValues={{ name: userAlertSettings?.name ?? "" }}
-          mode="update"
           artist={{ name: artist.name!, id: artist.internalID }}
           filters={filters}
           aggregations={aggregations}
