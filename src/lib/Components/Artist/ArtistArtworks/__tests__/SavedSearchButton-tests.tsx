@@ -1,5 +1,5 @@
-import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { SavedSearchButtonTestsQuery } from "__generated__/SavedSearchButtonTestsQuery.graphql"
+import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
@@ -37,7 +37,7 @@ describe("SavedSearchButton", () => {
           <SavedSearchButton
             {...props}
             loading={props === null && error === null}
-            attributes={attributes}
+            isEmptyCriteria={Object.keys(attributes).length === 0}
             onCreateAlertPress={onCreateAlertPress}
           />
         )}

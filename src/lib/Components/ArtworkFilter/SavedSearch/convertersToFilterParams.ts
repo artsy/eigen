@@ -13,6 +13,7 @@ import { COLORS_INDEXED_BY_VALUE } from "../Filters/ColorsOptions"
 import { localizeDimension, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
 import { SIZE_OPTIONS } from "../Filters/SizeOptions"
 import { WAYS_TO_BUY_FILTER_PARAM_NAMES } from "../Filters/WaysToBuyOptions"
+import { shouldExtractValueNamesFromAggregation } from "./constants"
 import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "./types"
 
 export type AggregationByFilterParamName = Dictionary<Aggregation[]>
@@ -184,12 +185,6 @@ export const convertSavedSearchCriteriaToFilterParams = (
     aggregationByFilterParamName,
     "counts"
   ) as AggregationByFilterParamName
-  const shouldExtractValueNamesFromAggregation = [
-    FilterParamName.locationCities,
-    FilterParamName.materialsTerms,
-    FilterParamName.additionalGeneIDs,
-    FilterParamName.partnerIDs,
-  ]
 
   const converters = [
     convertPriceToFilterParam,

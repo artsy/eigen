@@ -1,7 +1,8 @@
 import { captureMessage } from "@sentry/react-native"
 import { SavedSearchButton_me } from "__generated__/SavedSearchButton_me.graphql"
 import { SavedSearchButtonQuery } from "__generated__/SavedSearchButtonQuery.graphql"
-import { FilterParams, prepareFilterParamsForSaveSearchInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { prepareFilterDataForSaveSearchInput } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { BellIcon, Button } from "palette"
@@ -11,12 +12,12 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 interface SavedSearchButtonProps {
   me?: SavedSearchButton_me | null
   loading?: boolean
-  attributes: SearchCriteriaAttributes
+  isEmptyCriteria: boolean
   onCreateAlertPress: () => void
 }
 
 interface SavedSearchButtonQueryRendererProps {
-  filters: FilterParams
+  filters: FilterData[]
   artistId: string
   onCreateAlertPress: () => void
 }
@@ -24,11 +25,10 @@ interface SavedSearchButtonQueryRendererProps {
 export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   me,
   loading,
-  attributes,
+  isEmptyCriteria,
   onCreateAlertPress,
 }) => {
   const isSavedSearch = !!me?.savedSearch?.internalID
-  const emptyAttributes = Object.keys(attributes).length === 0
 
   const handlePress = () => {
     onCreateAlertPress()
@@ -39,7 +39,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
       variant="primaryBlack"
       size="small"
       icon={<BellIcon fill="white100" mr={0.5} width="16px" height="16px" />}
-      disabled={isSavedSearch || emptyAttributes}
+      disabled={isSavedSearch || isEmptyCriteria}
       loading={loading}
       onPress={handlePress}
       haptic
@@ -61,14 +61,14 @@ export const SavedSearchButtonFragmentContainer = createFragmentContainer(SavedS
 
 export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRendererProps> = (props) => {
   const { filters, artistId, onCreateAlertPress } = props
-  const input = prepareFilterParamsForSaveSearchInput(filters)
-  const attributes: SearchCriteriaAttributes = {
+  const input = prepareFilterDataForSaveSearchInput(filters)
+  const criteria: SearchCriteriaAttributes = {
     artistID: artistId,
     ...input,
   }
 
   if (Object.keys(input).length === 0) {
-    return <SavedSearchButton loading={false} attributes={input} onCreateAlertPress={onCreateAlertPress} />
+    return <SavedSearchButton loading={false} isEmptyCriteria={true} onCreateAlertPress={onCreateAlertPress} />
   }
 
   return (
@@ -94,13 +94,13 @@ export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRend
           <SavedSearchButtonFragmentContainer
             me={relayProps?.me ?? null}
             loading={relayProps === null && error === null}
-            attributes={input}
+            isEmptyCriteria={Object.keys(input).length === 0}
             onCreateAlertPress={onCreateAlertPress}
           />
         )
       }}
       variables={{
-        criteria: attributes,
+        criteria,
       }}
     />
   )
