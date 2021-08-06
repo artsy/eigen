@@ -32,24 +32,32 @@ export const Form: React.FC<FormProps> = (props) => {
           onChangeText={handleChange("name")}
           onBlur={handleBlur("name")}
           error={errors.name}
+          testID="alert-input-name"
         />
       </Box>
       <Box mb={2}>
         <InputTitle>Filters</InputTitle>
         <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
           {pills.map((pill, index) => (
-            <Pill m={0.5} key={`filter-label-${index}`}>
+            <Pill testID="alert-pill" m={0.5} key={`filter-label-${index}`}>
               {pill}
             </Pill>
           ))}
         </Flex>
       </Box>
       <Spacer mt={4} />
-      <Button loading={isSubmitting} size="large" block onPress={handleSubmit}>
+      <Button testID="save-alert-button" loading={isSubmitting} size="large" block onPress={handleSubmit}>
         Save Alert
       </Button>
       {!!onDeletePress && (
-        <Button variant="secondaryOutline" mt={2} size="large" block onPress={onDeletePress}>
+        <Button
+          testID="delete-alert-button"
+          variant="secondaryOutline"
+          mt={2}
+          size="large"
+          block
+          onPress={onDeletePress}
+        >
           Delete Alert
         </Button>
       )}

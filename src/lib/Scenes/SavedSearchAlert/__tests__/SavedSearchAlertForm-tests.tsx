@@ -1,9 +1,8 @@
+import { fireEvent } from "@testing-library/react-native"
 import { useFormikContext } from "formik"
 import { Aggregations, FilterArray, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { Input } from "lib/Components/Input/Input"
 import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Pill } from "palette"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { SavedSearchAlertForm } from "../SavedSearchAlertForm"
 
@@ -25,27 +24,67 @@ describe("Saved search alert form", () => {
     }))
   })
 
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   it("renders without throwing an error", () => {
-    renderWithWrappers(<SavedSearchAlertForm {...baseProps} />)
+    renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
   })
 
   it("correctly renders placeholder for input name", () => {
-    const wrapper = renderWithWrappers(<SavedSearchAlertForm {...baseProps} />)
+    const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
 
-    expect(wrapper.root.findByType(Input).props.placeholder).toEqual("artistName • 5 filters")
+    expect(getByTestId("alert-input-name").props.placeholder).toEqual("artistName • 5 filters")
   })
 
   it("correctly extracts the values of pills", () => {
-    const wrapper = renderWithWrappers(<SavedSearchAlertForm {...baseProps} />)
-    const pills = wrapper.root.findAllByType(Pill)
+    const { getAllByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
 
-    expect(pills.map(extractText)).toEqual([
+    expect(getAllByTestId("alert-pill").map(extractText)).toEqual([
       "Limited Edition",
       "Tate Ward Auctions",
       "New York, NY, USA",
       "Photography",
       "Prints",
     ])
+  })
+
+  it(`should render "Delete Alert" button when the onDeletePress prop is passed`, () => {
+    const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm onDeletePress={jest.fn} {...baseProps} />)
+    const button = getByTestId("delete-alert-button")
+
+    expect(extractText(button)).toContain("Delete Alert")
+  })
+
+  it("fires onDeletePress prop when the delete alert button is pressed", () => {
+    const onDeletePressMock = jest.fn()
+    const { getByTestId } = renderWithWrappersTL(
+      <SavedSearchAlertForm {...baseProps} onDeletePress={onDeletePressMock} />
+    )
+
+    fireEvent.press(getByTestId("delete-alert-button"))
+
+    expect(onDeletePressMock).toHaveBeenCalled()
+  })
+
+  it("fires formik's handleSubmit when the save alert button is pressed", () => {
+    const handleSubmitMock = jest.fn()
+    useFormikContextMock.mockImplementation(() => ({
+      handleChange: jest.fn(),
+      handleBlur: jest.fn(),
+      handleSubmit: handleSubmitMock,
+      isSubmitting: false,
+      values: {
+        name: "",
+      },
+      errors: {},
+    }))
+    const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+    fireEvent.press(getByTestId("save-alert-button"))
+
+    expect(handleSubmitMock).toHaveBeenCalled()
   })
 })
 
@@ -126,6 +165,10 @@ const aggregations: Aggregations = [
 ]
 
 const baseProps = {
+  mutation: jest.fn(),
+  initialValues: {
+    name: "",
+  },
   filters,
   aggregations,
   artist: {
