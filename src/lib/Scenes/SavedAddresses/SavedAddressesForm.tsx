@@ -6,7 +6,7 @@ import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { CountrySelect } from "lib/Components/CountrySelect"
 import { Input } from "lib/Components/Input/Input"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
+import { PhoneInputValidated } from "lib/Components/PhoneInput/PhoneInputValidated"
 import { Stack } from "lib/Components/Stack"
 import { navigate, waitThenGoBack } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -227,12 +227,12 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
             value={state.fields.region.value ?? ""}
             onChangeText={actions.fields.region.setValue}
           />
-          <PhoneInput
-            title="Phone number"
-            description="Required for shipping logistics"
+          <PhoneInputValidated
+            // title="Phone number"
+            // description="Required for shipping logistics"
             value={phoneNumber ?? ""}
-            maxModalHeight={height * offSetTop}
-            onChangeText={setPhoneNumber}
+            // maxModalHeight={height * offSetTop}
+            // onChangeText={setPhoneNumber}
           />
           <Checkbox
             onPress={() => {

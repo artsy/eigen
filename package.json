@@ -132,6 +132,8 @@
     "react-native-image-crop-picker": "0.35.1",
     "react-native-linear-gradient": "2.5.6",
     "react-native-localize": "^2.0.1",
+    "react-native-phone-input-validation": "^1.0.0",
+    "react-native-phone-number-input": "^2.1.0",
     "react-native-push-notification": "7.4.0",
     "react-native-reanimated": "^1.13.1",
     "react-native-safe-area-context": "^3.1.9",
@@ -266,7 +268,9 @@
   },
   "config": {
     "react-native-storybook-loader": {
-      "searchDir": ["./src"],
+      "searchDir": [
+        "./src"
+      ],
       "pattern": "**/*.stories.tsx",
       "outputFile": "./src/storybook/storyLoader.js"
     }
