@@ -111,7 +111,7 @@ describe("Push Notification Tests", () => {
 
       Push.handleReceivedNotification(notification)
       expect(navigate).toHaveBeenNthCalledWith(1, notification.data.url, {
-        passProps: { ...notification.data, url: undefined },
+        passProps: notification.data,
       })
     })
 
@@ -120,7 +120,7 @@ describe("Push Notification Tests", () => {
       const pendingNotification = __globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification
       Push.handlePendingNotification(pendingNotification as PendingPushNotification)
       expect(navigate).toHaveBeenNthCalledWith(1, notification.data.url, {
-        passProps: { ...notification.data, url: undefined },
+        passProps: notification.data,
       })
     })
   })
