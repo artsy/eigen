@@ -8,8 +8,11 @@ import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "./AdminMenu"
 const MAX_ELAPSED_TAPPED_NOTIFICATION_TIME = 90 // seconds
 
 export const CHANNELS = [
-  { name: "net.artsy.artsy", id: "net.artsy.artsy", properties: {} },
-  { name: "fcm_fallback_notification_channel", id: "fcm_fallback_notification_channel", properties: {} },
+  {
+    name: "Default",
+    id: "fcm_fallback_notification_channel",
+    properties: { channelDescription: "Artsy's default notification channel" },
+  },
 ]
 
 type TypedNotification = Omit<ReceivedNotification, "userInfo"> & { title?: string }
@@ -53,13 +56,14 @@ export const createLocalNotification = (notification: TypedNotification) => {
       message: notification.title ?? "Artsy", // (required)
     })
   }
-  if (CHANNELS.some((channel) => channel.id === channelId)) {
-    // we can safely assume that these channels were created on App start
-    create()
-  } else {
-    createChannel(channelId, channelName)
-    create()
-  }
+  PushNotification.channelExists(channelId, (exists) => {
+    if (exists) {
+      create()
+    } else {
+      createChannel(channelId, channelName)
+      create()
+    }
+  })
 }
 
 export const handlePendingNotification = (notification: PendingPushNotification | null) => {

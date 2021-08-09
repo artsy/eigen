@@ -145,11 +145,19 @@ describe("Push Notification Tests", () => {
         // tslint:disable-next-line:no-empty
         finish: () => {},
       }
+
+      PushNotification.channelExists = jest.fn().mockImplementationOnce((_, cb) => {
+        cb(true)
+      })
+
       Push.createLocalNotification(notification)
       expect(PushNotification.createChannel).not.toHaveBeenCalled()
       expect(PushNotification.localNotification).toHaveBeenCalled()
 
       notification.data = { channelId: "unknown_channel_id" }
+      PushNotification.channelExists = jest.fn().mockImplementationOnce((_, cb) => {
+        cb(false)
+      })
       Push.createLocalNotification(notification)
       expect(PushNotification.createChannel).toHaveBeenCalled()
       expect(PushNotification.localNotification).toHaveBeenCalled()
