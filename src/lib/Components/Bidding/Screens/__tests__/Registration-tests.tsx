@@ -2,6 +2,7 @@ import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import { RegistrationResult, RegistrationStatus } from "lib/Components/Bidding/Screens/RegistrationResult"
 import { Modal } from "lib/Components/Modal"
+import { LinkText } from "lib/Components/Text/LinkText"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 // FIXME: Uncomment when x'd test is reenabled
 // import { LinkText } from "../../../Text/LinkText"
@@ -272,7 +273,7 @@ describe("when pressing register button", () => {
     const yourMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
     const creditCardRow = component.root.findAllByType(TouchableWithoutFeedback)[1]
     const billingAddressRow = component.root.findAllByType(TouchableWithoutFeedback)[2]
-    // const conditionsOfSaleLink = component.root.findByType(LinkText)
+    const conditionsOfSaleLink = component.root.findByType(LinkText)
     const conditionsOfSaleCheckbox = component.root.findByType(Checkbox)
 
     yourMaxBidRow.instance.props.onPress()
@@ -286,9 +287,9 @@ describe("when pressing register button", () => {
     billingAddressRow.instance.props.onPress()
 
     expect(navigator.push).not.toHaveBeenCalled()
-    // FIXME: Reenable
-    // expect(conditionsOfSaleLink.instance.props.onPress).toBeNull()
-    expect(conditionsOfSaleCheckbox.instance.props.disabled).toBeTruthy()
+
+    expect(conditionsOfSaleLink.props.onPress).toBeUndefined()
+    expect(conditionsOfSaleCheckbox.props.disabled).toBeTruthy()
   })
 
   it("displays an error message on a stripe failure", async () => {
