@@ -20,6 +20,7 @@ import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { createAllChannels } from "./utils/PushNotification"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { AnalyticsConstants } from "./utils/track/constants"
+import { useInitialNotification } from "./utils/useInitialNotification"
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
@@ -43,6 +44,7 @@ const Main: React.FC<{}> = track()(({}) => {
   useStripeConfig()
   useWebViewCookies()
   useDeepLinks()
+  useInitialNotification()
 
   useEffect(() => {
     createAllChannels()
