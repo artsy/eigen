@@ -75,32 +75,15 @@ describe("Push Notification Tests", () => {
       mockFetch.mockClear()
       mockFetchJsonOnce({}, 201)
 
-      await Push.saveToken({ os: Platform.OS, token: "pushnotificationtoken" })
+      await Push.saveToken("pushnotificationtoken")
       await flushPromiseQueue()
       expect(mockFetch).toHaveBeenCalledTimes(1)
     })
 
     it("does not try to save token to gravity when user is Not logged in", async () => {
-      expect(Push.saveToken({ os: "android", token: "sometoken" })).rejects.toMatch(
-        "Push Notification: No access token"
-      )
+      expect(Push.saveToken("sometoken")).rejects.toMatch("Push Notification: No access token")
 
       expect(mockFetch).not.toHaveBeenCalled()
-    })
-  })
-
-  describe("savePendingToken", () => {
-    const spiedFxn = jest.spyOn(Push, "saveToken")
-    it("calls saveToken when pending token is available", async () => {
-      await AsyncStorage.setItem(Push.PENDING_ANDROID_PUSH_NOTIFICATION_TOKEN, "pendingtoken")
-      Push.savePendingToken().then(() => {
-        expect(spiedFxn).toHaveBeenCalledWith({ os: "android", token: "pendingtoken" })
-      })
-    })
-
-    it("does not call saveToken when pending token is unavailable", async () => {
-      await Push.savePendingToken()
-      expect(spiedFxn).not.toHaveBeenCalled()
     })
   })
 

@@ -8,10 +8,8 @@ import { getDeviceId } from "react-native-device-info"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
 import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "./AdminMenu"
 
-export const IOS_PUSH_NOTIFICATION_TOKEN = "IOS_PUSH_NOTIFICATION_TOKEN"
-export const ANDROID_PUSH_NOTIFICATION_TOKEN = "ANDRROID_PUSH_NOTIFICATION_TOKEN"
-export const PENDING_IOS_PUSH_NOTIFICATION_TOKEN = "PENDING_IOS_PUSH_NOTIFICATION_TOKEN"
-export const PENDING_ANDROID_PUSH_NOTIFICATION_TOKEN = "PENDING_ANDRROID_PUSH_NOTIFICATION_TOKEN"
+export const PUSH_NOTIFICATION_TOKEN = "PUSH_NOTIFICATION_TOKEN"
+export const HAS_PENDING_NOTIFICATION = "HAS_PENDING_NOTIFICATION"
 
 const MAX_ELAPSED_TAPPED_NOTIFICATION_TIME = 90 // seconds
 
@@ -26,31 +24,28 @@ export const CHANNELS = [
 type TypedNotification = Omit<ReceivedNotification, "userInfo"> & { title?: string }
 
 export const savePendingToken = async () => {
-  const pendingStorageKey =
-    Platform.OS === "android" ? PENDING_ANDROID_PUSH_NOTIFICATION_TOKEN : PENDING_IOS_PUSH_NOTIFICATION_TOKEN
-  const token = await AsyncStorage.getItem(pendingStorageKey)
-  if (token) {
-    const saved = await saveToken({ os: Platform.OS, token })
+  const hasPendingToken = await AsyncStorage.getItem(HAS_PENDING_NOTIFICATION)
+  const token = await AsyncStorage.getItem(PUSH_NOTIFICATION_TOKEN)
+  if (token && hasPendingToken === "true") {
+    const saved = await saveToken(token, true)
     if (saved) {
-      AsyncStorage.removeItem(pendingStorageKey)
+      await AsyncStorage.removeItem(HAS_PENDING_NOTIFICATION)
     }
   }
 }
 
-export const saveToken = (tokenObject: { os: string; token: string }) => {
+export const saveToken = (token: string, ignoreSameTokenCheck: boolean = false) => {
   return new Promise<boolean>(async (resolve, reject) => {
-    const { token, os } = tokenObject
-    const storageKey = os === "android" ? ANDROID_PUSH_NOTIFICATION_TOKEN : IOS_PUSH_NOTIFICATION_TOKEN
-    const pendingStorageKey =
-      os === "android" ? PENDING_ANDROID_PUSH_NOTIFICATION_TOKEN : PENDING_IOS_PUSH_NOTIFICATION_TOKEN
-
-    const previousToken = await AsyncStorage.getItem(storageKey)
-    if (token !== previousToken) {
+    const previousToken = await AsyncStorage.getItem(PUSH_NOTIFICATION_TOKEN)
+    if (token !== previousToken || ignoreSameTokenCheck) {
       const { authenticationToken, userAgent } = getCurrentEmissionState()
       if (!authenticationToken) {
         // user is not logged in. The first time a user opens the app, expect token to be gotten before the global store is initialised
         // save the token and send to gravity when they log in
-        await AsyncStorage.setItem(pendingStorageKey, token)
+        await AsyncStorage.multiSet([
+          [HAS_PENDING_NOTIFICATION, "true"],
+          [PUSH_NOTIFICATION_TOKEN, token],
+        ])
         reject("Push Notification: No access token")
       } else {
         const gravityURL = unsafe__getEnvironment().gravityURL
@@ -60,7 +55,7 @@ export const saveToken = (tokenObject: { os: string; token: string }) => {
           name,
           token,
           app_id: "net.artsy.artsy",
-          platform: os,
+          platform: Platform.OS,
           production: !__DEV__, // TODO: Fix this asap when we can determine beta on android. production should be false for beta builds
         })
         const headers = {
@@ -81,7 +76,7 @@ export const saveToken = (tokenObject: { os: string; token: string }) => {
         if (__DEV__) {
           console.log(`New Push Token ${token} saved!`)
         }
-        await AsyncStorage.setItem(storageKey, token)
+        await AsyncStorage.setItem(PUSH_NOTIFICATION_TOKEN, token)
         resolve(true)
       }
     }
@@ -189,7 +184,7 @@ export async function configure() {
         if (__DEV__) {
           console.log("TOKEN:", token)
         }
-        saveToken(token)
+        saveToken(token.token)
       },
 
       // (required) Called when a remote is received or opened, or local notification is opened
