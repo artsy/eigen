@@ -557,4 +557,6 @@ jest.mock("react-native-push-notification", () => ({
   addEventListener: jest.fn(),
   requestPermissions: jest.fn(),
   checkPermissions: jest.fn(),
+  createChannel: jest.fn(),
+  localNotification: jest.fn(),
 }))
