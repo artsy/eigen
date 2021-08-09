@@ -71,8 +71,10 @@ describe("Push Notification Tests", () => {
 
     it("Saves tapped notification When a user is not logged in", () => {
       Push.handleReceivedNotification(notification)
-      expect(__globalStoreTestUtils__?.getCurrentState().pendingPushNotification.android).toHaveProperty("tappedAt")
-      expect(__globalStoreTestUtils__?.getCurrentState().pendingPushNotification.android?.data).toEqual(
+      expect(__globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification).toHaveProperty(
+        "tappedAt"
+      )
+      expect(__globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification?.data).toEqual(
         notification.data
       )
       // notification is not handled
@@ -115,11 +117,42 @@ describe("Push Notification Tests", () => {
 
     it("Pending Notification: navigates to appropriate screen when called", () => {
       Push.handleReceivedNotification(notification)
-      const pendingNotification = __globalStoreTestUtils__?.getCurrentState().pendingPushNotification.android
+      const pendingNotification = __globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification
       Push.handlePendingNotification(pendingNotification as PendingPushNotification)
       expect(navigate).toHaveBeenNthCalledWith(1, notification.data.url, {
         passProps: { ...notification.data, url: undefined },
       })
+    })
+  })
+
+  describe("Channels and Local Notifications", () => {
+    it("creates Channel", async () => {
+      const testChannel = { id: "test_channel_id", name: "test_channel_name" }
+      Push.createChannel(testChannel.id, testChannel.name)
+      expect(PushNotification.createChannel).toHaveBeenCalled()
+    })
+    it("creates LocalNotification", () => {
+      const notification = {
+        data: { channelId: Push.CHANNELS[0].id },
+        title: "A test push notification",
+        foreground: true,
+        userInteraction: false,
+        badge: 0,
+        message: "A test push",
+        alert: {},
+        id: 22,
+        sound: "default",
+        // tslint:disable-next-line:no-empty
+        finish: () => {},
+      }
+      Push.createLocalNotification(notification)
+      expect(PushNotification.createChannel).not.toHaveBeenCalled()
+      expect(PushNotification.localNotification).toHaveBeenCalled()
+
+      notification.data = { channelId: "unknown_channel_id" }
+      Push.createLocalNotification(notification)
+      expect(PushNotification.createChannel).toHaveBeenCalled()
+      expect(PushNotification.localNotification).toHaveBeenCalled()
     })
   })
 })

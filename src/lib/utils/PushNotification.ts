@@ -7,32 +7,38 @@ import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "./AdminMenu"
 
 const MAX_ELAPSED_TAPPED_NOTIFICATION_TIME = 90 // seconds
 
-const CHANNELS = [{ name: "net.artsy.artsy", id: "net.artsy.artsy", properties: {} }]
+export const CHANNELS = [
+  { name: "net.artsy.artsy", id: "net.artsy.artsy", properties: {} },
+  { name: "fcm_fallback_notification_channel", id: "fcm_fallback_notification_channel", properties: {} },
+]
 
 type TypedNotification = Omit<ReceivedNotification, "userInfo"> & { title?: string }
 
 export const createChannel = (channelId: string, channelName: string, properties: any = {}) => {
-  return new Promise<boolean>((resolve) => {
-    PushNotification.createChannel(
-      {
-        channelId,
-        channelName,
-        ...properties,
-      },
-      (created) => {
-        resolve(created)
+  PushNotification.createChannel(
+    {
+      channelId,
+      channelName,
+      ...properties,
+    },
+    (created) => {
+      if (created && __DEV__) {
+        console.log(`NEW CHANNEL ${channelName} CREATED`)
       }
-    )
-  })
+    }
+  )
 }
 
 export const createAllChannels = () => {
   CHANNELS.forEach(async (channel) => {
-    await createChannel(channel.name, channel.id, channel.properties)
+    createChannel(channel.name, channel.id, channel.properties)
   })
 }
 
 export const createLocalNotification = (notification: TypedNotification) => {
+  const channelId = notification.data.channelId ?? CHANNELS[0].id
+  const channelName = notification.data.channelName ?? channelId
+
   const create = () => {
     PushNotification.localNotification({
       /* Android Only Properties */
@@ -47,16 +53,12 @@ export const createLocalNotification = (notification: TypedNotification) => {
       message: notification.title ?? "Artsy", // (required)
     })
   }
-  const channelId = notification.data.channelId ?? CHANNELS[0].id
-  const channelName = notification.data.channelName ?? channelId
-  const exists = CHANNELS.filter((channel) => channel.id === channelId)
-  if (exists) {
+  if (CHANNELS.some((channel) => channel.id === channelId)) {
     // we can safely assume that these channels were created on App start
     create()
   } else {
-    createChannel(channelId, channelName).then(() => {
-      create()
-    })
+    createChannel(channelId, channelName)
+    create()
   }
 }
 
@@ -66,7 +68,7 @@ export const handlePendingNotification = (notification: PendingPushNotification 
   }
   const elapsedTimeInSecs = Math.floor((Date.now() - notification.tappedAt) / 1000)
   if (elapsedTimeInSecs <= MAX_ELAPSED_TAPPED_NOTIFICATION_TIME && !!notification.data.url) {
-    navigate(notification.data.url, { passProps: { ...notification.data, url: undefined } })
+    navigate(notification.data.url, { passProps: notification.data })
   }
   GlobalStore.actions.pendingPushNotification.setPendingPushNotification(null)
 }
@@ -77,18 +79,18 @@ export const handleReceivedNotification = (notification: Omit<ReceivedNotificati
   }
   const isLoggedIn = !!unsafe_getUserAccessToken()
   if (notification.userInteraction) {
-    const hasUrl = !!notification.data.url
-    if (isLoggedIn && hasUrl) {
-      navigate(notification.data.url as string, { passProps: { ...notification.data, url: undefined } })
-      // clear any pending notification
-      GlobalStore.actions.pendingPushNotification.setPendingPushNotification(null)
-      return
-    }
     if (!isLoggedIn) {
       // removing finish because we do not use it on android and we don't want to serialise functions at this time
       const newNotification = { ...notification, finish: undefined, tappedAt: Date.now() }
       delete newNotification.finish
       GlobalStore.actions.pendingPushNotification.setPendingPushNotification(newNotification)
+      return
+    }
+    const hasUrl = !!notification.data.url
+    if (isLoggedIn && hasUrl) {
+      navigate(notification.data.url as string, { passProps: notification.data })
+      // clear any pending notification
+      GlobalStore.actions.pendingPushNotification.setPendingPushNotification(null)
       return
     }
     return
@@ -163,4 +165,8 @@ module.exports = {
   configure,
   handlePendingNotification,
   handleReceivedNotification,
+  createChannel,
+  createAllChannels,
+  createLocalNotification,
+  CHANNELS,
 }
