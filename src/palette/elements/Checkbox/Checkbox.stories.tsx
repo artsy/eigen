@@ -6,16 +6,18 @@ import { Checkbox } from "./Checkbox"
 storiesOf("Checkbox", module).add("Variants", () => (
   <List>
     <Checkbox />
+    <Checkbox text={"Checkbox"} />
+    <Checkbox
+      text={`Multiline
+Text`}
+    />
     <Checkbox text="Checkbox" subtitle="Subtitle" />
     <Checkbox
       text={`Multiline
 Text`}
       subtitle="With Subtitle"
     />
-    <Checkbox
-      text={`Multiline
-Text`}
-    />
+
     <Checkbox checked text="Checked" />
     <Checkbox checked={false} text="Unchecked" />
     <Checkbox disabled text="Disabled" />
