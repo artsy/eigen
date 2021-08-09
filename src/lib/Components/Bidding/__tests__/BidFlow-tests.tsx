@@ -6,9 +6,9 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 
-import { Button } from "palette"
+import { Button, Theme } from "palette"
+import { Checkbox } from "palette/elements/Checkbox"
 import relay from "react-relay"
-import { Checkbox } from "../Components/Checkbox"
 import { SelectMaxBid } from "../Screens/SelectMaxBid"
 import { FakeNavigator } from "./Helpers/FakeNavigator"
 
@@ -35,8 +35,7 @@ const commitMutationMock = (fn?: typeof relay.commitMutation) =>
 
 const bidderPositionQueryMock = bidderPositionQuery as jest.Mock<any>
 let fakeNavigator: FakeNavigator
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-let fakeRelay
+let fakeRelay: any
 
 jest.useFakeTimers()
 
@@ -49,13 +48,14 @@ beforeEach(() => {
 
 it("allows bidders with a qualified credit card to bid", async () => {
   let screen = renderWithWrappers(
-    <SelectMaxBid
-      me={Me.qualifiedUser as any}
-      sale_artwork={SaleArtwork as any}
-      navigator={fakeNavigator as any}
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      relay={fakeRelay as any}
-    />
+    <Theme>
+      <SelectMaxBid
+        me={Me.qualifiedUser as any}
+        sale_artwork={SaleArtwork as any}
+        navigator={fakeNavigator as any}
+        relay={fakeRelay as any}
+      />
+    </Theme>
   )
 
   screen.root.findByType(Select).instance.props.onSelectValue(null, 2)
@@ -83,13 +83,14 @@ it("allows bidders with a qualified credit card to bid", async () => {
 
 it("allows bidders without a qualified credit card to register a card and bid", async () => {
   let screen = renderWithWrappers(
-    <SelectMaxBid
-      me={Me.unqualifiedUser as any}
-      sale_artwork={SaleArtwork as any}
-      navigator={fakeNavigator as any}
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      relay={fakeRelay as any}
-    />
+    <Theme>
+      <SelectMaxBid
+        me={Me.unqualifiedUser as any}
+        sale_artwork={SaleArtwork as any}
+        navigator={fakeNavigator as any}
+        relay={fakeRelay}
+      />
+    </Theme>
   )
 
   screen.root.findByType(Select).instance.props.onSelectValue(null, 2)

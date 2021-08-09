@@ -1,6 +1,6 @@
-import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { useEnvironment } from "lib/store/GlobalStore"
 import { Flex, Text, Touchable } from "palette"
+import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
 import { Linking } from "react-native"
 

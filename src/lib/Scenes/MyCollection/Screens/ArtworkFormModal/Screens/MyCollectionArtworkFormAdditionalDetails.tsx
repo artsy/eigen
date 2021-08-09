@@ -1,5 +1,5 @@
 import { NavigationProp } from "@react-navigation/native"
-import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
+import { Checkbox } from "palette/elements/Checkbox"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Input } from "lib/Components/Input/Input"
 import { Select } from "lib/Components/Select"

@@ -1,6 +1,6 @@
 import { Input } from "lib/Components/Input/Input"
 import React from "react"
-import { Touchable } from "../../../../palette/elements/Touchable/Touchable"
+import { Touchable } from "palette/elements/Touchable/Touchable"
 import { renderWithWrappers } from "../../../tests/renderWithWrappers"
 import { OnboardingLoginWithEmailForm } from "../OnboardingLogin"
 

@@ -2,6 +2,8 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Serif } from "palette"
 import React from "react"
 
+import { CssTransition } from "lib/Components/Bidding/Components/Animation/CssTransition"
+import { theme } from "lib/Components/Bidding/Elements/Theme"
 import { TouchableWithoutFeedback } from "react-native"
 import { theme } from "../../Elements/Theme"
 import { CssTransition } from "../Animation/CssTransition"

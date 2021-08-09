@@ -1,4 +1,4 @@
-import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
+import { Checkbox } from "palette/elements/Checkbox"
 import { Flex, Text, Touchable } from "palette"
 import React from "react"
 

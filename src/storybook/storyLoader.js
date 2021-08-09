@@ -10,6 +10,7 @@ function loadStories() {
   require("../palette/elements/Button/ButtonV2.stories")
   require("../palette/space.stories")
   require("../palette/spaceV2.stories")
+  require("../palette/elements/Checkbox/Checkbox.stories")
 }
 
 const stories = [
