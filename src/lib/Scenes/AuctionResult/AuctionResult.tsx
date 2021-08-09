@@ -174,7 +174,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <NoArtworkIcon width={28} height={28} opacity={0.3} />
+                {!auctionResult.images?.thumbnail?.url && <NoArtworkIcon width={28} height={28} opacity={0.3} />}
               </Box>
             )}
             <Flex justifyContent="center" flex={1} ml={2}>
