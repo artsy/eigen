@@ -18,6 +18,7 @@ import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
 } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
@@ -41,6 +42,7 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
 
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
   const tracking = useTracking()
+  const popover = usePopoverMessage()
   const enableSavedSearchV2 = useFeatureFlag("AREnableSavedSearchV2")
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const [isCreateSavedSearchModalVisible, setCreateSavedSearchModalVisible] = useState(false)
@@ -74,6 +76,14 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
     handleCloseFilterArtworksModal()
   }
 
+  const handleCreateSavedSearchComplete = () => {
+    handleCloseSavedSearchModal()
+    popover.show({
+      title: "Your alert has been created.",
+      message: "You can edit your alerts with your Profile.",
+    })
+  }
+
   return (
     <ArtworkFiltersStoreProvider>
       <StickyTabPageScrollView>
@@ -98,6 +108,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
             artist={{ id: artist.internalID, name: artist.name! }}
             visible={isCreateSavedSearchModalVisible}
             onClosePress={handleCloseSavedSearchModal}
+            onComplete={handleCreateSavedSearchComplete}
           />
         )}
       </StickyTabPageScrollView>

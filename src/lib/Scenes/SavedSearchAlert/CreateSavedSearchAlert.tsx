@@ -11,17 +11,18 @@ import { SavedSearchAlertFormPropsBase } from "./SavedSearchAlertModel"
 interface CreateSavedSearchAlertProps extends SavedSearchAlertFormPropsBase {
   visible: boolean
   onClosePress: () => void
+  onComplete: () => void
 }
 
 export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (props) => {
-  const { visible, onClosePress, ...other } = props
+  const { visible, onClosePress, onComplete, ...other } = props
   const { space } = useTheme()
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const allowedFilters = getAllowedFiltersForSavedSearchInput(appliedFilters)
 
-  const onComplete = async () => {
-    onClosePress()
+  const handleComplete = async () => {
+    onComplete()
   }
 
   return (
@@ -35,7 +36,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
           initialValues={{ name: "" }}
           aggregations={aggregations}
           filters={allowedFilters}
-          onComplete={onComplete}
+          onComplete={handleComplete}
           {...other}
         />
         <Text variant="text" color="black60" textAlign="center" my={2}>
