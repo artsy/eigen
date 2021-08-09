@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b0a9a1c53bc184c2101ccf3dcc36ae27 */
+/* @relayHash fca79f7089d70c26102d82354c982915 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateSavedSearchInput = {
@@ -12,10 +12,10 @@ export type UpdateSavedSearchInput = {
 export type UserAlertSettingsInput = {
     name?: string | null;
 };
-export type EditSavedSearchAlertUpdateSavedSearchMutationVariables = {
+export type updateSavedSearchAlertMutationVariables = {
     input: UpdateSavedSearchInput;
 };
-export type EditSavedSearchAlertUpdateSavedSearchMutationResponse = {
+export type updateSavedSearchAlertMutationResponse = {
     readonly updateSavedSearch: {
         readonly savedSearchOrErrors: {
             readonly internalID?: string;
@@ -25,15 +25,15 @@ export type EditSavedSearchAlertUpdateSavedSearchMutationResponse = {
         };
     } | null;
 };
-export type EditSavedSearchAlertUpdateSavedSearchMutation = {
-    readonly response: EditSavedSearchAlertUpdateSavedSearchMutationResponse;
-    readonly variables: EditSavedSearchAlertUpdateSavedSearchMutationVariables;
+export type updateSavedSearchAlertMutation = {
+    readonly response: updateSavedSearchAlertMutationResponse;
+    readonly variables: updateSavedSearchAlertMutationVariables;
 };
 
 
 
 /*
-mutation EditSavedSearchAlertUpdateSavedSearchMutation(
+mutation updateSavedSearchAlertMutation(
   $input: UpdateSavedSearchInput!
 ) {
   updateSavedSearch(input: $input) {
@@ -102,7 +102,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "EditSavedSearchAlertUpdateSavedSearchMutation",
+    "name": "updateSavedSearchAlertMutation",
     "selections": [
       {
         "alias": null,
@@ -135,7 +135,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "EditSavedSearchAlertUpdateSavedSearchMutation",
+    "name": "updateSavedSearchAlertMutation",
     "selections": [
       {
         "alias": null,
@@ -170,13 +170,13 @@ return {
     ]
   },
   "params": {
-    "id": "b0a9a1c53bc184c2101ccf3dcc36ae27",
+    "id": "fca79f7089d70c26102d82354c982915",
     "metadata": {},
-    "name": "EditSavedSearchAlertUpdateSavedSearchMutation",
+    "name": "updateSavedSearchAlertMutation",
     "operationKind": "mutation",
     "text": null
   }
 };
 })();
-(node as any).hash = '8f52570581b2b306f32180783990eb36';
+(node as any).hash = 'a7f979686c79c31c5e09b00802b89fe6';
 export default node;

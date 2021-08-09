@@ -1,6 +1,7 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { EditSavedSearchAlertTestsQuery } from "__generated__/EditSavedSearchAlertTestsQuery.graphql"
 import { goBack } from "lib/navigation/navigate"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
@@ -12,10 +13,10 @@ import { EditSavedSearchAlertFragmentContainer as EditSavedSearchAlert } from ".
 jest.unmock("react-relay")
 
 describe("EditSavedSearchAlert", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+    mockEnvironment.mockClear()
   })
 
   const TestRenderer = () => {
@@ -34,14 +35,7 @@ describe("EditSavedSearchAlert", () => {
         `}
         render={({ props }) => {
           if (props?.artist && props.me) {
-            return (
-              <EditSavedSearchAlert
-                enviroment={mockEnvironment}
-                savedSearchAlertId="savedSearchAlertId"
-                artist={props.artist}
-                me={props.me}
-              />
-            )
+            return <EditSavedSearchAlert savedSearchAlertId="savedSearchAlertId" artist={props.artist} me={props.me} />
           }
 
           return null
@@ -80,7 +74,7 @@ describe("EditSavedSearchAlert", () => {
     await waitFor(() => {
       const mutation = mockEnvironment.mock.getMostRecentOperation()
 
-      expect(mutation.request.node.operation.name).toBe("EditSavedSearchAlertUpdateSavedSearchMutation")
+      expect(mutation.request.node.operation.name).toBe("updateSavedSearchAlertMutation")
       expect(mutation.request.variables).toEqual({
         input: {
           searchCriteriaID: "savedSearchAlertId",
@@ -111,9 +105,9 @@ describe("EditSavedSearchAlert", () => {
           },
         }),
       })
-
-      expect(goBack).toHaveBeenCalled()
     })
+
+    expect(goBack).toHaveBeenCalled()
   })
 })
 

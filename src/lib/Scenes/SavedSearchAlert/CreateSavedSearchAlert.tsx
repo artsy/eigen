@@ -19,7 +19,8 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const allowedFilters = getAllowedFiltersForSavedSearchInput(appliedFilters)
-  const mutation = async () => {
+
+  const onComplete = async () => {
     onClosePress()
   }
 
@@ -32,10 +33,9 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
         </Sans>
         <SavedSearchAlertForm
           initialValues={{ name: "" }}
-          mode="create"
           aggregations={aggregations}
           filters={allowedFilters}
-          mutation={mutation}
+          onComplete={onComplete}
           {...other}
         />
         <Text variant="text" color="black60" textAlign="center" my={2}>

@@ -3,31 +3,32 @@ import { Aggregations, FilterArray } from "lib/Components/ArtworkFilter/ArtworkF
 import React from "react"
 import { Form } from "./Components/Form"
 import { extractPills } from "./helpers"
-import {
-  SavedSearchAlertFormMode,
-  SavedSearchAlertFormPropsBase,
-  SavedSearchAlertFormValues,
-} from "./SavedSearchAlertModel"
+import { updateSavedSearchAlert } from "./mutations/updateSavedSearchAlert"
+import { SavedSearchAlertFormPropsBase, SavedSearchAlertFormValues } from "./SavedSearchAlertModel"
 
 export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase {
   initialValues: {
     name: string
   }
-  mode: SavedSearchAlertFormMode
   filters: FilterArray
   aggregations: Aggregations
-  mutation: (values: SavedSearchAlertFormValues) => Promise<any>
-  onDeletePress?: () => void
+  savedSearchAlertId?: string
+  onComplete?: () => void
 }
 
 export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props) => {
-  const { filters, aggregations, initialValues, mutation, ...other } = props
+  const { filters, aggregations, initialValues, savedSearchAlertId, onComplete, ...other } = props
+  const isUpdateForm = !!savedSearchAlertId
   const formik = useFormik<SavedSearchAlertFormValues>({
     initialValues,
     initialErrors: {},
     onSubmit: async (values) => {
       try {
-        await mutation(values)
+        if (isUpdateForm) {
+          await updateSavedSearchAlert(savedSearchAlertId!, values)
+        }
+
+        onComplete?.()
       } catch (error) {
         console.error(error)
       }
@@ -38,7 +39,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
   return (
     <FormikProvider value={formik}>
-      <Form pills={pills} {...other} />
+      <Form pills={pills} isUpdateForm={isUpdateForm} {...other} />
     </FormikProvider>
   )
 }

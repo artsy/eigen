@@ -1,7 +1,6 @@
 import { EditSavedSearchAlert_artist } from "__generated__/EditSavedSearchAlert_artist.graphql"
 import { EditSavedSearchAlert_me } from "__generated__/EditSavedSearchAlert_me.graphql"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
-import { EditSavedSearchAlertUpdateSavedSearchMutation } from "__generated__/EditSavedSearchAlertUpdateSavedSearchMutation.graphql"
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerCreateSavedSearchMutation.graphql"
 import { Aggregations } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
@@ -12,10 +11,9 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useTheme } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
-import { commitMutation, createFragmentContainer, Environment, graphql, QueryRenderer } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { EditSavedSearchFormPlaceholder } from "./Components/EditSavedSearchAlertPlaceholder"
 import { SavedSearchAlertForm } from "./SavedSearchAlertForm"
-import { SavedSearchAlertFormValues } from "./SavedSearchAlertModel"
 
 interface EditSavedSearchAlertBaseProps {
   artistID: string
@@ -26,11 +24,10 @@ interface EditSavedSearchAlertProps {
   me: EditSavedSearchAlert_me
   artist: EditSavedSearchAlert_artist
   savedSearchAlertId: string
-  enviroment: Environment
 }
 
 export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props) => {
-  const { me, artist, savedSearchAlertId, enviroment = defaultEnvironment } = props
+  const { me, artist, savedSearchAlertId } = props
   const { space } = useTheme()
   const aggregations = (artist.filterArtworksConnection?.aggregations ?? []) as Aggregations
   const { userAlertSettings, ...savedSearchCriteria } = me.savedSearch ?? {}
@@ -39,44 +36,8 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     aggregations
   )
 
-  const handleDeletePress = () => {
+  const onComplete = () => {
     goBack()
-  }
-
-  const updateMutation = (values: SavedSearchAlertFormValues) => {
-    return new Promise((resolve, reject) => {
-      commitMutation<EditSavedSearchAlertUpdateSavedSearchMutation>(enviroment, {
-        mutation: graphql`
-          mutation EditSavedSearchAlertUpdateSavedSearchMutation($input: UpdateSavedSearchInput!) {
-            updateSavedSearch(input: $input) {
-              savedSearchOrErrors {
-                ... on SearchCriteria {
-                  internalID
-                  userAlertSettings {
-                    name
-                  }
-                }
-              }
-            }
-          }
-        `,
-        variables: {
-          input: {
-            searchCriteriaID: savedSearchAlertId,
-            userAlertSettings: {
-              name: values.name,
-            },
-          },
-        },
-        onCompleted: (response) => {
-          resolve(response)
-          goBack()
-        },
-        onError: (error) => {
-          reject(error)
-        },
-      })
-    })
   }
 
   return (
@@ -84,12 +45,11 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
       <ScrollView contentContainerStyle={{ padding: space(2) }}>
         <SavedSearchAlertForm
           initialValues={{ name: userAlertSettings?.name ?? "" }}
-          mode="update"
           artist={{ name: artist.name!, id: artist.internalID }}
           filters={filters}
           aggregations={aggregations}
-          mutation={updateMutation}
-          onDeletePress={handleDeletePress}
+          savedSearchAlertId={savedSearchAlertId}
+          onComplete={onComplete}
         />
       </ScrollView>
     </PageWithSimpleHeader>

@@ -50,24 +50,12 @@ describe("Saved search alert form", () => {
     ])
   })
 
-  it(`should render "Delete Alert" button when the onDeletePress prop is passed and mode is update`, () => {
-    const { getByTestId } = renderWithWrappersTL(
-      <SavedSearchAlertForm {...baseProps} mode="update" onDeletePress={jest.fn} />
-    )
-    const button = getByTestId("delete-alert-button")
-
-    expect(extractText(button)).toContain("Delete Alert")
-  })
-
-  it("fires onDeletePress prop when the delete alert button is pressed", () => {
-    const onDeletePressMock = jest.fn()
-    const { getByTestId } = renderWithWrappersTL(
-      <SavedSearchAlertForm {...baseProps} onDeletePress={onDeletePressMock} mode="update" />
+  it(`should render "Delete Alert" button when the savedSearchAlertId is passed`, () => {
+    const { getAllByTestId } = renderWithWrappersTL(
+      <SavedSearchAlertForm {...baseProps} savedSearchAlertId="savedSearchAlertId" />
     )
 
-    fireEvent.press(getByTestId("delete-alert-button"))
-
-    expect(onDeletePressMock).toHaveBeenCalled()
+    expect(getAllByTestId("delete-alert-button")).toHaveLength(1)
   })
 
   it("fires formik's handleSubmit when the save alert button is pressed", () => {
@@ -167,8 +155,6 @@ const aggregations: Aggregations = [
 ]
 
 const baseProps: SavedSearchAlertFormProps = {
-  mutation: jest.fn(),
-  mode: "create",
   initialValues: {
     name: "",
   },

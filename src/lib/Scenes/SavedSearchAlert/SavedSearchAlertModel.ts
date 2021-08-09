@@ -8,5 +8,3 @@ export interface SavedSearchAlertFormPropsBase {
     name: string
   }
 }
-
-export type SavedSearchAlertFormMode = "create" | "update"
