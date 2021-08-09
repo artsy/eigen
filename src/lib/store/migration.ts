@@ -92,7 +92,7 @@ export const artsyAppMigrations: Migrations = {
     state.toast = {}
   },
   [Versions.PendingPushNotification]: (state) => {
-    state.pendingPushNotification = { ios: null, android: null }
+    state.pendingPushNotification = { notification: null }
   },
 }
 

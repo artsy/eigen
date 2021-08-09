@@ -19,7 +19,7 @@ export const Form: React.FC<FormProps> = (props) => {
     handleChange,
     handleSubmit,
   } = useFormikContext<SavedSearchAlertFormValues>()
-  const filtersCountLabel = pills.length > 0 ? "filters" : "filter"
+  const filtersCountLabel = pills.length > 1 ? "filters" : "filter"
 
   return (
     <Box>

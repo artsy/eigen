@@ -13,10 +13,10 @@ const IMAGE_SIZES = {
   large: 240,
 }
 
-const ArtworkCard = styled.TouchableHighlight.attrs({
+const ArtworkCard = styled.TouchableHighlight.attrs(() => ({
   underlayColor: themeGet("colors.white100"),
   activeOpacity: 0.8,
-})``
+}))``
 
 export interface ArtworkTileRailCardProps {
   onPress: ((event: GestureResponderEvent) => void) | null | undefined

@@ -142,6 +142,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/auction-faq", "AuctionFAQ"),
     new RouteMatcher("/auction/:saleID/bid/:artworkID", "AuctionBidArtwork"),
     new RouteMatcher("/gene/:geneID", "Gene"),
+    new RouteMatcher("/tag/:tagID", "Tag"),
     new RouteMatcher("/show/:showID", "Show"),
     new RouteMatcher("/show/:showID/info", "ShowMoreInfo"),
 

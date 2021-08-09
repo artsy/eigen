@@ -121,10 +121,10 @@ export const MyCollectionArtworkListItemFragmentContainer = createFragmentContai
   `,
 })
 
-const TouchElement = styled.TouchableHighlight.attrs({
+const TouchElement = styled.TouchableHighlight.attrs(() => ({
   underlayColor: themeGet("colors.white100"),
   activeOpacity: 0.8,
-})``
+}))``
 
 export const tests = {
   TouchElement,

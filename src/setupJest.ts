@@ -89,6 +89,7 @@ jest.mock("react-native-device-info", () => ({
   getVersion: jest.fn(),
   getModel: jest.fn(),
   getUserAgentSync: jest.fn(),
+  getDeviceType: jest.fn(),
 }))
 
 jest.mock("rn-fetch-blob", () => ({
@@ -556,4 +557,6 @@ jest.mock("react-native-push-notification", () => ({
   addEventListener: jest.fn(),
   requestPermissions: jest.fn(),
   checkPermissions: jest.fn(),
+  createChannel: jest.fn(),
+  localNotification: jest.fn(),
 }))

@@ -5,10 +5,9 @@ import { addTrackingProvider, track } from "lib/utils/track"
 import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { useDeepLinks } from "lib/utils/useDeepLinks"
 import { useStripeConfig } from "lib/utils/useStripeConfig"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { Appearance, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
-import PushNotification from "react-native-push-notification"
 import { AppProviders } from "./AppProviders"
 import { useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
@@ -18,9 +17,10 @@ import { ModalStack } from "./navigation/ModalStack"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
-import { handlePendingNotification, handleReceivedNotification, savePendingToken } from "./utils/PushNotification"
+import { createAllChannels, savePendingToken } from "./utils/PushNotification"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { AnalyticsConstants } from "./utils/track/constants"
+import { useInitialNotification } from "./utils/useInitialNotification"
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
@@ -35,19 +35,19 @@ const Main: React.FC<{}> = track()(({}) => {
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
     })
   }, [])
-  const [hasHandledInitialNotification, setHasHandledInitialNotification] = useState(false)
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const forceUpdateMessage = GlobalStore.useAppState((state) => state.config.echo.forceUpdateMessage)
-  const pendingNotification = GlobalStore.useAppState((state) => state.pendingPushNotification.android)
 
   useSentryConfig()
   useStripeConfig()
   useWebViewCookies()
   useDeepLinks()
+  useInitialNotification()
 
   useEffect(() => {
+    createAllChannels()
     const scheme = Appearance.getColorScheme()
     // null id means keep whatever id was there before. we only update the user interface info here.
     SegmentTrackingProvider.identify?.(null, {
@@ -92,21 +92,6 @@ const Main: React.FC<{}> = track()(({}) => {
   useEffect(() => {
     if (isLoggedIn) {
       savePendingToken()
-      if (!hasHandledInitialNotification) {
-        // initial notification is most recent and should be prioritised
-        PushNotification.popInitialNotification((notification) => {
-          if (notification) {
-            handleReceivedNotification(notification)
-            // prevent loop where user logs out and logs back in and previously
-            // handled initial push notification is rehandled
-            setHasHandledInitialNotification(true)
-            return
-          }
-          handlePendingNotification(pendingNotification)
-        })
-      } else {
-        handlePendingNotification(pendingNotification)
-      }
     }
   }, [isLoggedIn])
 

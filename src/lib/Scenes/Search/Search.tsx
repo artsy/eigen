@@ -69,10 +69,10 @@ export const Search: React.FC = () => {
   )
 }
 
-const Scrollable = styled(ScrollView).attrs({
+const Scrollable = styled(ScrollView).attrs(() => ({
   keyboardDismissMode: "on-drag",
   keyboardShouldPersistTaps: "handled",
-})`
+}))`
   flex: 1;
   padding: 0 20px;
   padding-top: 20px;

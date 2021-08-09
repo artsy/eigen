@@ -15,6 +15,16 @@ export const PENDING_ANDROID_PUSH_NOTIFICATION_TOKEN = "PENDING_ANDRROID_PUSH_NO
 
 const MAX_ELAPSED_TAPPED_NOTIFICATION_TIME = 90 // seconds
 
+export const CHANNELS = [
+  {
+    name: "Default",
+    id: "fcm_fallback_notification_channel",
+    properties: { channelDescription: "Artsy's default notification channel" },
+  },
+]
+
+type TypedNotification = Omit<ReceivedNotification, "userInfo"> & { title?: string }
+
 export const savePendingToken = async () => {
   const pendingStorageKey =
     Platform.OS === "android" ? PENDING_ANDROID_PUSH_NOTIFICATION_TOKEN : PENDING_IOS_PUSH_NOTIFICATION_TOKEN
@@ -78,15 +88,64 @@ export const saveToken = (tokenObject: { os: string; token: string }) => {
   })
 }
 
+export const createChannel = (channelId: string, channelName: string, properties: any = {}) => {
+  PushNotification.createChannel(
+    {
+      channelId,
+      channelName,
+      ...properties,
+    },
+    (created) => {
+      if (created && __DEV__) {
+        console.log(`NEW CHANNEL ${channelName} CREATED`)
+      }
+    }
+  )
+}
+
+export const createAllChannels = () => {
+  CHANNELS.forEach((channel) => {
+    createChannel(channel.name, channel.id, channel.properties)
+  })
+}
+
+export const createLocalNotification = (notification: TypedNotification) => {
+  const channelId = notification.data.channelId ?? CHANNELS[0].id
+  const channelName = notification.data.channelName ?? channelId
+
+  const create = () => {
+    PushNotification.localNotification({
+      /* Android Only Properties */
+      channelId, // (required) channelId, if the channel doesn't exist, notification will not trigger.
+      subText: notification.subText,
+      ignoreInForeground: false, // (optional) if true, the notification will not be visible when the app is in the foreground (useful for parity with how iOS notifications appear). should be used in combine with `com.dieam.reactnativepushnotification.notification_foreground` setting
+      onlyAlertOnce: false, // (optional) alert will open only once with sound and notify, default: false
+      userInfo: notification.data,
+
+      /* iOS and Android properties */
+      id: 0,
+      message: notification.title ?? "Artsy", // (required)
+    })
+  }
+  PushNotification.channelExists(channelId, (exists) => {
+    if (exists) {
+      create()
+    } else {
+      createChannel(channelId, channelName)
+      create()
+    }
+  })
+}
+
 export const handlePendingNotification = (notification: PendingPushNotification | null) => {
   if (!notification) {
     return
   }
   const elapsedTimeInSecs = Math.floor((Date.now() - notification.tappedAt) / 1000)
   if (elapsedTimeInSecs <= MAX_ELAPSED_TAPPED_NOTIFICATION_TIME && !!notification.data.url) {
-    navigate(notification.data.url, { passProps: { ...notification.data, url: undefined } })
+    navigate(notification.data.url, { passProps: notification.data })
   }
-  GlobalStore.actions.pendingPushNotification.setPendingPushNotification({ platform: "android", notification: null })
+  GlobalStore.actions.pendingPushNotification.setPendingPushNotification(null)
 }
 
 export const handleReceivedNotification = (notification: Omit<ReceivedNotification, "userInfo">) => {
@@ -95,56 +154,29 @@ export const handleReceivedNotification = (notification: Omit<ReceivedNotificati
   }
   const isLoggedIn = !!unsafe_getUserAccessToken()
   if (notification.userInteraction) {
-    const hasUrl = !!notification.data.url
-    if (isLoggedIn && hasUrl) {
-      navigate(notification.data.url as string, { passProps: { ...notification.data, url: undefined } })
-      // clear any pending notification
-      GlobalStore.actions.pendingPushNotification.setPendingPushNotification({
-        platform: "android",
-        notification: null,
-      })
-      return
-    }
     if (!isLoggedIn) {
       // removing finish because we do not use it on android and we don't want to serialise functions at this time
       const newNotification = { ...notification, finish: undefined, tappedAt: Date.now() }
       delete newNotification.finish
-      GlobalStore.actions.pendingPushNotification.setPendingPushNotification({
-        platform: "android",
-        notification: newNotification,
-      })
+      GlobalStore.actions.pendingPushNotification.setPendingPushNotification(newNotification)
+      return
+    }
+    const hasUrl = !!notification.data.url
+    if (isLoggedIn && hasUrl) {
+      navigate(notification.data.url as string, { passProps: notification.data })
+      // clear any pending notification
+      GlobalStore.actions.pendingPushNotification.setPendingPushNotification(null)
       return
     }
     return
   }
   if (notification.foreground) {
     // flash notification and put it in Tray
-    const typedNotification: Omit<ReceivedNotification, "userInfo"> & { title?: string } = { ...notification }
-    const channelId = "net.artsy.artsy"
-    PushNotification.createChannel(
-      {
-        channelId, // (required)
-        channelName: "default", // (required)
-      },
-      (created) => {
-        if (__DEV__) {
-          // false if channel already exists
-          console.log("Notification Channel Created: ", created)
-        }
-        PushNotification.localNotification({
-          /* Android Only Properties */
-          channelId, // (required) channelId, if the channel doesn't exist, notification will not trigger.
-          subText: notification.subText,
-          ignoreInForeground: false, // (optional) if true, the notification will not be visible when the app is in the foreground (useful for parity with how iOS notifications appear). should be used in combine with `com.dieam.reactnativepushnotification.notification_foreground` setting
-          onlyAlertOnce: false, // (optional) alert will open only once with sound and notify, default: false
-          userInfo: notification.data,
-
-          /* iOS and Android properties */
-          id: 0,
-          message: typedNotification.title ?? "Artsy", // (required)
-        })
-      }
-    )
+    // In order to have a consistent behaviour in Android & iOS with the most flexibility,
+    // it is best to handle it manually by prompting a local notification when onNotification
+    // is triggered by a remote push notification on foreground
+    const typedNotification: TypedNotification = { ...notification }
+    createLocalNotification(typedNotification)
   }
 }
 
@@ -210,4 +242,8 @@ module.exports = {
   savePendingToken,
   handlePendingNotification,
   handleReceivedNotification,
+  createChannel,
+  createAllChannels,
+  createLocalNotification,
+  CHANNELS,
 }

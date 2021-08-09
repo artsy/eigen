@@ -308,6 +308,6 @@ describe("PendingPushNotification migration", () => {
       toVersion: migrationToTest,
     }) as any
 
-    expect(migratedState.pendingPushNotification).toEqual({ ios: null, android: null })
+    expect(migratedState.pendingPushNotification).toEqual({ notification: null })
   })
 })
