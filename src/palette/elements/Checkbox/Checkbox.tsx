@@ -96,6 +96,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
               {subtitle}
             </Text>
           )}
+          {/* TODO: Remove once the migration from V2 to V3 is completed. */}
           {children}
         </Flex>
       </Flex>
