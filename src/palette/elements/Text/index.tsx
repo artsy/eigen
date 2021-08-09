@@ -7,30 +7,27 @@ export * from "./tokens"
 
 // TextV3
 import { Text as TextV3, TextProps as TextV3Props } from "./TextV3"
-export { TextV3Props, TextV3 }
+export { TextV3 as Text, TextV3Props as TextProps, TextV3, TextV3Props }
 
 // TextV2
-export { Text as TextV2, TextProps as TextV2Props } from "./Text"
+export { Text as TextV2, TextProps as TextV2Props } from "./TextV2"
 
 // TextV1
 export { _maxWidth } from "./Typography-v1"
-export { Sans as SansV1, SansProps as SansV1Props } from "./Sans"
+import { Sans as SansV1, SansProps as SansV1Props } from "./Sans"
+export { SansV1, SansV1Props, SansV1Props as SansProps }
 import { Serif as SerifV1, SerifProps as SerifV1Props } from "./Serif"
-export { SerifV1, SerifV1Props }
+export { SerifV1, SerifV1Props, SerifV1Props as SerifProps }
 
-export { Text as Sans, TextProps as SansProps } from "./Text"
-export { TextProps as SerifProps } from "./Text"
-import { SerifProps } from "./Serif"
-
-export const Serif: React.FC<SerifProps> = (props) => {
+export const Serif: React.FC<SerifV1Props> = (props) => {
   const allowV3 = usePaletteFlagStore((state) => state.allowV3)
   if (allowV3) {
-    return <TextV3 {...transformPropsToV3(props)} />
+    return <TextV3 {...transformSerifPropsToV3(props)} />
   }
   return <SerifV1 {...props} />
 }
 
-const transformPropsToV3 = (props: SerifProps): TextV3Props => {
+const transformSerifPropsToV3 = (props: SerifV1Props): TextV3Props => {
   const { size, weight, ...newProps } = _.cloneDeep(props)
 
   const actualSize = _.isArray(size) ? size[0] : size
@@ -52,29 +49,55 @@ const transformPropsToV3 = (props: SerifProps): TextV3Props => {
     "12": "xxl",
   }
 
-  //   weight?: null | "regular" | "semibold"
+  if (weight === "semibold") {
+    newProps.weight = "medium"
+  }
 
   return {
     ...newProps,
     size: sizeMap[actualSize],
   }
-  // const sizeMap: { [key: string]: ButtonSize } = {
-  //   small: "small",
-  //   medium: "small",
-  //   large: "large",
-  // }
+}
 
-  // const variantMap: { [key: string]: ButtonVariant } = {
-  //   primaryBlack: "fillDark",
-  //   primaryWhite: "fillLight",
-  //   secondaryGray: "fillGray",
-  //   secondaryOutline: "outline",
-  //   secondaryOutlineWarning: "outline",
-  //   noOutline: "text",
-  // }
+export const Sans: React.FC<SansV1Props> = (props) => {
+  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
+  if (allowV3) {
+    return <TextV3 {...transformSansPropsToV3(props)} />
+  }
+  return <SansV1 {...props} />
+}
 
-  // const size = props.size && sizeMap[props.size]
-  // const variant = props.variant && variantMap[props.variant]
+const transformSansPropsToV3 = (props: SansV1Props): TextV3Props => {
+  const { size, weight, ...newProps } = _.cloneDeep(props)
 
-  // return { ...props, size, variant } as ButtonPropsV3
+  const actualSize = _.isArray(size) ? size[0] : size
+  const sizeMap: Record<
+    "0" | "1" | "2" | "3" | "3t" | "4" | "4t" | "5" | "5t" | "6" | "8" | "10" | "12" | "14" | "16",
+    TextV3Props["size"]
+  > = {
+    "0": "xs",
+    "1": "xs",
+    "2": "xs",
+    "3": "sm",
+    "3t": "sm",
+    "4": "md",
+    "4t": "md",
+    "5": "md",
+    "5t": "md",
+    "6": "lg",
+    "8": "lg",
+    "10": "xl",
+    "12": "xxl",
+    "14": "xxl",
+    "16": "xxl",
+  }
+
+  if (weight === "medium") {
+    newProps.weight = "medium"
+  }
+
+  return {
+    ...newProps,
+    size: sizeMap[actualSize],
+  }
 }

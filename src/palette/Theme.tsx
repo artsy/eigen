@@ -18,8 +18,8 @@ import {
   SpacingUnit as SpacingUnitV3Numbers,
 } from "@artsy/palette-tokens/dist/themes/v3"
 import {
-  TextTreatment as TextTreatmentFunkyNames,
-  TextVariant as TextSizeV3FunkyNames,
+  TextTreatment as TextTreatmentWithUnits,
+  TextVariant as TextSizeV3,
 } from "@artsy/palette-tokens/dist/typography/v3"
 
 type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
@@ -27,14 +27,13 @@ export type Color = ColorV2 | ColorV3
 export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
 type ColorV3 = ColorV3BeforeDevPurple | "devpurple"
 export { ColorV2, ColorV3, SpacingUnitV2, SpacingUnitV3 }
-
-export type TextSizeV3 = Exclude<TextSizeV3FunkyNames, "sm" | "md" | "lg"> | "s" | "m" | "l"
+export { TextSizeV3 }
 
 const {
   breakpoints: _eigenDoesntCareAboutBreakpoints,
   mediaQueries: _eigenDoesntCareAboutMediaQueries,
   grid: _eigenDoesntCareAboutGrid,
-  textVariants: textVariantsWithPx,
+  textVariants: textVariantsWithUnits,
   space: spaceNumbers,
   ...eigenUsefulTHEME_V3
 } = THEME_V3
@@ -109,21 +108,11 @@ export interface TextTreatment {
   letterSpacing?: number
 }
 
-// this function is removing the `px` suffix and making the values into numbers
-const fixTextTreatments = (): Record<TextSizeV3, TextTreatment> => {
-  const textTreatmentsNicerNames = (_.mapKeys(textVariantsWithPx, (_value, key) => {
-    switch (key) {
-      case "sm":
-        return "s"
-      case "md":
-        return "m"
-      case "lg":
-        return "l"
-      default:
-        return key
-    }
-  }) as unknown) as Record<TextSizeV3, TextTreatmentFunkyNames>
-  const textTreatments = _.mapValues(textTreatmentsNicerNames, (treatmentWithUnits) => {
+// this function is removing the `px` and `em` suffix and making the values into numbers
+const fixTextTreatments = (
+  variantsWithUnits: Record<"xxl" | "xl" | "lg" | "md" | "sm" | "xs", TextTreatmentWithUnits>
+): Record<TextSizeV3, TextTreatment> => {
+  const textTreatments = _.mapValues(variantsWithUnits, (treatmentWithUnits) => {
     const newTreatment = {} as TextTreatment
     ;([
       ["fontSize", "px"],
@@ -150,7 +139,7 @@ const THEMES = {
     colors: fixColorV3(eigenUsefulTHEME_V3.colors),
     space: fixSpaceUnitsV3(spaceNumbers),
     fonts: TEXT_FONTS_V3,
-    textTreatments: fixTextTreatments(),
+    textTreatments: fixTextTreatments(textVariantsWithUnits),
   },
 }
 
