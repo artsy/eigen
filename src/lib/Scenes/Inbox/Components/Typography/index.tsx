@@ -3,10 +3,12 @@ import { StyleSheet, Text, TextProps, TextStyle } from "react-native"
 
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
+import { useTheme } from "palette"
 
 const LargeHeadline: React.FC<TextProps> = (props) => {
+  const { theme } = useTheme()
   const children: string = (props as any).children
-  const style = [styles.largeDefault, props.style || {}, styles.largeRequired]
+  const style = [styles.largeDefault, props.style || {}, { fontFamily: theme.fonts.sans }]
   return (
     <Text key={children} style={style}>
       {children}
@@ -15,8 +17,14 @@ const LargeHeadline: React.FC<TextProps> = (props) => {
 }
 
 const SmallHeadline: React.FC<TextProps & { disabled?: boolean }> = (props) => {
+  const { theme } = useTheme()
   const children: string = (props as any).children
-  const style = [styles.smallDefault, props.disabled && styles.disabled, props.style || {}, styles.smallRequired]
+  const style = [
+    styles.smallDefault,
+    props.disabled && styles.disabled,
+    props.style || {},
+    { fontFamily: theme.fonts.sans },
+  ]
   return (
     <Text key={children} style={style}>
       {(children || "").toUpperCase()}
@@ -45,8 +53,9 @@ const FromSignatureText: React.FC<TextProps> = (props) => {
 }
 
 const MetadataText: React.FC<TextProps> = (props) => {
+  const { theme } = useTheme()
   const children: string = (props as any).children
-  const style = [styles.metadataDefault, props.style || {}, styles.metadataRequired]
+  const style = [styles.metadataDefault, props.style || {}, { fontFamily: theme.fonts.sans }]
   return (
     <Text key={children} style={style}>
       {children.toUpperCase()}
@@ -77,14 +86,11 @@ const BodyText: React.FC<TextProps & { disabled?: boolean }> = (props) => {
 export { LargeHeadline, SmallHeadline, Subtitle, FromSignatureText, MetadataText, PreviewText, BodyText }
 
 interface Styles {
-  largeRequired: TextStyle
   largeDefault: TextStyle
-  smallRequired: TextStyle
   smallDefault: TextStyle
   subtitleRequired: TextStyle
   subtitleDefault: TextStyle
   fromSignatureDefault: TextStyle
-  metadataRequired: TextStyle
   metadataDefault: TextStyle
   bodyRequired: TextStyle
   bodyDefault: TextStyle
@@ -100,18 +106,10 @@ const styles = StyleSheet.create<Styles>({
     paddingRight: 20,
   },
 
-  largeRequired: {
-    fontFamily: fonts["garamond-regular"],
-  },
-
   smallDefault: {
     fontSize: 11,
     color: "black",
     textAlign: "left",
-  },
-
-  smallRequired: {
-    fontFamily: fonts["avant-garde-regular"],
   },
 
   subtitleDefault: {
@@ -132,10 +130,6 @@ const styles = StyleSheet.create<Styles>({
     fontSize: 11,
     color: colors["gray-medium"],
     textAlign: "left",
-  },
-
-  metadataRequired: {
-    fontFamily: fonts["avant-garde-regular"],
   },
 
   bodyDefault: {

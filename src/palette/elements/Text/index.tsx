@@ -1,16 +1,16 @@
 import _ from "lodash"
 import { usePaletteFlagStore } from "palette/PaletteFlag"
 import React from "react"
-// import { Text as TextV3, TextProps as TextV3Props } from "./Text"
 
 export * from "./tokens"
 
 // TextV3
 import { Text as TextV3, TextProps as TextV3Props } from "./TextV3"
-export { TextV3 as Text, TextV3Props as TextProps, TextV3, TextV3Props }
+export { TextV3, TextV3Props }
 
 // TextV2
-export { Text as TextV2, TextProps as TextV2Props } from "./TextV2"
+import { Text as TextV2, TextProps as TextV2Props } from "./TextV2"
+export { TextV2, TextV2Props }
 
 // TextV1
 export { _maxWidth } from "./Typography-v1"

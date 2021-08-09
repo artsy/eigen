@@ -1,3 +1,5 @@
+//  TODO-PALETTE-V3 remove this file completely
+
 import { SansSize, SerifSize } from "palette"
 
 type FontSize = SansSize & SerifSize

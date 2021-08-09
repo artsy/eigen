@@ -1,7 +1,6 @@
 import React from "react"
-
 import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import { themeGet } from "@styled-system/theme-get"
 import styled from "styled-components/native"
 
 const BackgroundCircle = styled.View`
@@ -17,7 +16,7 @@ interface NameProps {
 
 const Name = styled.Text`
   color: ${(props: NameProps) => (props.user ? "white" : colors["gray-semibold"])};
-  font-family: ${fonts["avant-garde-regular"]};
+  font-family: ${themeGet("fonts.sans")};
   font-size: 12;
   align-self: center;
   margin-top: 14;

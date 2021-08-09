@@ -17,8 +17,9 @@ import { ThemeV3 } from "../../Theme"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
+import { TextV3 } from "../Text"
 
-export type ButtonVariant = "fillDark" | "fillLight" | "fillGray" | "outline" | "text"
+type ButtonVariant = "fillDark" | "fillLight" | "fillGray" | "outline" | "text"
 
 const defaultVariant: ButtonVariant = "fillDark"
 
@@ -161,23 +162,20 @@ const PureButton: React.FC<ButtonProps> = ({
             >
               <VisibleTextContainer>
                 {iconPosition === "left" && iconBox}
-                <Text
-                  variant={size === "small" ? "small" : "mediumText"}
-                  fontSize={size === "small" ? "13" : "16"}
+                <TextV3
+                  size={size === "small" ? "xs" : "sm"}
                   style={{
                     color: loading ? "transparent" : springProps.color,
                     textDecorationLine: current === "hover" ? "underline" : "none",
                   }}
                 >
                   {children}
-                </Text>
+                </TextV3>
                 {iconPosition === "right" && iconBox}
               </VisibleTextContainer>
               <HiddenContainer>
                 {icon}
-                <Text fontSize={size === "small" ? "13" : "16"} variant={size === "small" ? "small" : "mediumText"}>
-                  {longestText ? longestText : children}
-                </Text>
+                <TextV3 size={size === "small" ? "xs" : "sm"}>{longestText ? longestText : children}</TextV3>
               </HiddenContainer>
 
               {!!loading && <Spinner size={size} color={spinnerColor} />}
