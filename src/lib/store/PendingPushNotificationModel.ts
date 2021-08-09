@@ -7,18 +7,13 @@ export interface PendingPushNotification extends Omit<ReceivedNotification, "use
 }
 
 export interface PendingPushNotificationModel {
-  ios: PendingPushNotification | null
-  android: PendingPushNotification | null
-  setPendingPushNotification: Action<
-    this,
-    { platform: "ios" | "android"; notification: PendingPushNotification | null }
-  >
+  notification: PendingPushNotification | null
+  setPendingPushNotification: Action<this, PendingPushNotification | null>
 }
 
 export const getPendingPushNotificationModel = (): PendingPushNotificationModel => ({
-  ios: null,
-  android: null,
-  setPendingPushNotification: action((state, notifObject) => {
-    state[notifObject.platform] = notifObject.notification
+  notification: null,
+  setPendingPushNotification: action((state, notification) => {
+    state.notification = notification
   }),
 })
