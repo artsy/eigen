@@ -1,5 +1,5 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
-import { Aggregations, FilterArray, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { Aggregations, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
@@ -131,7 +131,7 @@ describe("Saved search alert form", () => {
   })
 })
 
-const filters: FilterArray = [
+const filters: FilterData[] = [
   {
     paramName: FilterParamName.attributionClass,
     displayText: "Limited Edition",
