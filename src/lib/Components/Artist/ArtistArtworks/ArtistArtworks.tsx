@@ -42,15 +42,10 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
 
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
   const tracking = useTracking()
-  const popover = usePopoverMessage()
-  const enableSavedSearchV2 = useFeatureFlag("AREnableSavedSearchV2")
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-  const [isCreateSavedSearchModalVisible, setCreateSavedSearchModalVisible] = useState(false)
 
   const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
   const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
-  const handleOpenSavedSearchModal = () => setCreateSavedSearchModalVisible(true)
-  const handleCloseSavedSearchModal = () => setCreateSavedSearchModalVisible(false)
 
   const openFilterArtworksModal = () => {
     tracking.trackEvent({
@@ -76,14 +71,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
     handleCloseFilterArtworksModal()
   }
 
-  const handleCreateSavedSearchComplete = () => {
-    handleCloseSavedSearchModal()
-    popover.show({
-      title: "Your alert has been created.",
-      message: "You can edit your alerts with your Profile.",
-    })
-  }
-
   return (
     <ArtworkFiltersStoreProvider>
       <StickyTabPageScrollView>
@@ -92,7 +79,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
           artist={artist}
           relay={relay}
           openFilterModal={openFilterArtworksModal}
-          openCreateSavedSearchAlertModal={handleOpenSavedSearchModal}
         />
         <ArtworkFilterNavigator
           {...props}
@@ -103,21 +89,12 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
           closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.ArtistArtworks}
         />
-        {!!enableSavedSearchV2 && (
-          <CreateSavedSearchAlert
-            artist={{ id: artist.internalID, name: artist.name! }}
-            visible={isCreateSavedSearchModalVisible}
-            onClosePress={handleCloseSavedSearchModal}
-            onComplete={handleCreateSavedSearchComplete}
-          />
-        )}
       </StickyTabPageScrollView>
     </ArtworkFiltersStoreProvider>
   )
 }
 interface ArtistArtworksContainerProps {
   openFilterModal: () => void
-  openCreateSavedSearchAlertModal: () => void
 }
 
 const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContainerProps> = ({
@@ -125,7 +102,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   relay,
   searchCriteria,
   openFilterModal,
-  openCreateSavedSearchAlertModal,
   ...props
 }) => {
   const tracking = useTracking()
@@ -137,6 +113,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
 
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const relevantFiltersForSavedSearch = appliedFilters.filter((filter) => !(filter.paramName === FilterParamName.sort))
   const shouldShowSavedSearchBanner = enableSavedSearch && relevantFiltersForSavedSearch.length > 0
 
@@ -146,6 +123,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const artworks = artist.artworks
   const artworksCount = artworks?.edges?.length
   const artworksTotal = artworks?.counts?.total ?? 0
+  const artistName = artist.name
   const artistInternalId = artist.internalID
 
   useEffect(() => {
@@ -207,9 +185,9 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
                 )}
               />
               <SavedSearchButtonQueryRenderer
-                artistId={artistInternalId}
                 filters={appliedFilters as FilterData[]}
-                onCreateAlertPress={openCreateSavedSearchAlertModal}
+                artist={{ id: artistInternalId, name: artistName! }}
+                aggregations={aggregations}
               />
             </Flex>
             <Separator />
@@ -235,11 +213,12 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   }, [
     artworksTotal,
     shouldShowSavedSearchBanner,
+    artistName,
     artistInternalId,
     filterParams,
     enableSavedSearchV2,
     appliedFilters,
-    openCreateSavedSearchAlertModal,
+    aggregations,
   ])
 
   const filteredArtworks = () => {

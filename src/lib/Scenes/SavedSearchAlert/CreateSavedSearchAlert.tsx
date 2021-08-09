@@ -1,3 +1,4 @@
+import { Aggregations, FilterData } from 'lib/Components/ArtworkFilter/ArtworkFilterHelpers'
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { getAllowedFiltersForSavedSearchInput } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
@@ -10,16 +11,16 @@ import { SavedSearchAlertFormPropsBase } from "./SavedSearchAlertModel"
 
 interface CreateSavedSearchAlertProps extends SavedSearchAlertFormPropsBase {
   visible: boolean
+  filters: FilterData[]
+  aggregations: Aggregations
   onClosePress: () => void
   onComplete: () => void
 }
 
 export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (props) => {
-  const { visible, onClosePress, onComplete, ...other } = props
+  const { visible, filters, aggregations, onClosePress, onComplete, ...other } = props
   const { space } = useTheme()
-  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
-  const allowedFilters = getAllowedFiltersForSavedSearchInput(appliedFilters)
+  const allowedFilters = getAllowedFiltersForSavedSearchInput(filters)
 
   const handleComplete = async () => {
     onComplete()

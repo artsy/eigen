@@ -3,9 +3,9 @@ import { Input } from "lib/Components/Input/Input"
 import { InputTitle } from "lib/Components/Input/InputTitle"
 import { Box, Button, Flex, Pill, Spacer } from "palette"
 import React from "react"
-import { SavedSearchAlertFormPropsBase, SavedSearchAlertFormValues } from "../SavedSearchAlertModel"
+import { SavedSearchAlertFormValues, SavedSearchArtistProp } from "../SavedSearchAlertModel"
 
-interface FormProps extends SavedSearchAlertFormPropsBase {
+interface FormProps extends SavedSearchArtistProp {
   pills: string[]
   isUpdateForm: boolean
   onDeletePress?: () => void

@@ -12,8 +12,6 @@ export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase
   initialValues: {
     name: string
   }
-  filters: FilterArray
-  aggregations: Aggregations
   savedSearchAlertId?: string
   onComplete?: () => void
   onDeleteComplete?: () => void
