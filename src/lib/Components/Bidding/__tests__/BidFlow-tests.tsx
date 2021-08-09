@@ -6,7 +6,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 
-import { Button, Theme } from "palette"
+import { Button } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import relay from "react-relay"
 import { SelectMaxBid } from "../Screens/SelectMaxBid"
@@ -46,16 +46,14 @@ beforeEach(() => {
   }
 })
 
-it("allows bidders with a qualified credit card to bid", async () => {
+it.only("allows bidders with a qualified credit card to bid", async () => {
   let screen = renderWithWrappers(
-    <Theme>
-      <SelectMaxBid
-        me={Me.qualifiedUser as any}
-        sale_artwork={SaleArtwork as any}
-        navigator={fakeNavigator as any}
-        relay={fakeRelay as any}
-      />
-    </Theme>
+    <SelectMaxBid
+      me={Me.qualifiedUser as any}
+      sale_artwork={SaleArtwork as any}
+      navigator={fakeNavigator as any}
+      relay={fakeRelay as any}
+    />
   )
 
   screen.root.findByType(Select).instance.props.onSelectValue(null, 2)
@@ -72,7 +70,7 @@ it("allows bidders with a qualified credit card to bid", async () => {
     return null
   }) as any
 
-  screen.root.findByType(Checkbox).instance.props.onPress()
+  screen.root.findByType(Checkbox).props.onPress()
   screen.root.findAllByType(Button)[1].props.onPress()
 
   await waitUntil(() => fakeNavigator.stackSize() === 2)
@@ -83,14 +81,12 @@ it("allows bidders with a qualified credit card to bid", async () => {
 
 it("allows bidders without a qualified credit card to register a card and bid", async () => {
   let screen = renderWithWrappers(
-    <Theme>
-      <SelectMaxBid
-        me={Me.unqualifiedUser as any}
-        sale_artwork={SaleArtwork as any}
-        navigator={fakeNavigator as any}
-        relay={fakeRelay}
-      />
-    </Theme>
+    <SelectMaxBid
+      me={Me.unqualifiedUser as any}
+      sale_artwork={SaleArtwork as any}
+      navigator={fakeNavigator as any}
+      relay={fakeRelay}
+    />
   )
 
   screen.root.findByType(Select).instance.props.onSelectValue(null, 2)
@@ -120,7 +116,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
     },
   })
 
-  screen.root.findByType(Checkbox).instance.props.onPress()
+  screen.root.findByType(Checkbox).props.onPress()
   await screen.root.findAllByType(Button)[1].props.onPress()
 
   expect(stripe.createTokenWithCard).toHaveBeenCalledWith({
