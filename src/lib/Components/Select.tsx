@@ -315,7 +315,7 @@ const SelectModal: React.FC<{
             </Flex>
           </Touchable>
         )}
-      ></FlatList>
+      />
     </FancyModal>
   )
 }

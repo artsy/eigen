@@ -7,6 +7,7 @@ import {
 } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
 import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
 import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
+import { BiddingThemeProvider } from "lib/Components/Bidding/Components/BiddingThemeProvider"
 import { BidInfoRow } from "lib/Components/Bidding/Components/BidInfoRow"
 import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { Divider } from "lib/Components/Bidding/Components/Divider"
@@ -455,134 +456,136 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     const enablePriceTransparency = unsafe_getFeatureFlag("AROptionsPriceTransparency")
 
     return (
-      <Flex m={0} flex={1} flexDirection="column">
-        <Theme>
-          <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>Confirm your bid</FancyModalHeader>
-        </Theme>
-        <ScrollView scrollEnabled>
-          <Flex alignItems="center" pt="20px">
-            <Timer
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              liveStartsAt={sale.live_start_at}
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              endsAt={sale.end_at}
-            />
-          </Flex>
-
-          <Box>
-            <Flex m={4} alignItems="center">
-              {!!artworkImage && (
+      <BiddingThemeProvider>
+        <Flex m={0} flex={1} flexDirection="column">
+          <Theme>
+            <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>Confirm your bid</FancyModalHeader>
+          </Theme>
+          <ScrollView scrollEnabled>
+            <Flex alignItems="center" pt="20px">
+              <Timer
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                <Image resizeMode="contain" style={{ width: 50, height: 50 }} source={{ uri: artworkImage.url }} />
+                liveStartsAt={sale.live_start_at}
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                endsAt={sale.end_at}
+              />
+            </Flex>
+
+            <Box>
+              <Flex m={4} alignItems="center">
+                {!!artworkImage && (
+                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                  <Image resizeMode="contain" style={{ width: 50, height: 50 }} source={{ uri: artworkImage.url }} />
+                )}
+
+                <Serif mt={4} size="4t" weight="semibold" numberOfLines={1} ellipsizeMode={"tail"}>
+                  {
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                    artwork.artist_names
+                  }
+                </Serif>
+                <Serif size="2" weight="semibold">
+                  Lot {lot_label}
+                </Serif>
+
+                <Serif italic size="2" color="black60" textAlign="center" numberOfLines={1} ellipsizeMode={"tail"}>
+                  {
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                    artwork.title
+                  }
+                  {!!artwork! /* STRICTNESS_MIGRATION */.date && (
+                    <Serif size="2">
+                      ,{" "}
+                      {
+                        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                        artwork.date
+                      }
+                    </Serif>
+                  )}
+                </Serif>
+              </Flex>
+
+              <Divider />
+
+              <BidInfoRow
+                label="Max bid"
+                value={this.selectedBid().display}
+                onPress={isLoading ? () => null : () => this.props.navigator?.pop()}
+              />
+
+              {requiresPaymentInformation ? (
+                <PaymentInfo
+                  navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+                  onCreditCardAdded={this.onCreditCardAdded.bind(this)}
+                  onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
+                  billingAddress={this.state.billingAddress}
+                  creditCardFormParams={this.state.creditCardFormParams}
+                  creditCardToken={this.state.creditCardToken}
+                />
+              ) : (
+                <Divider mb={2} />
               )}
 
-              <Serif mt={4} size="4t" weight="semibold" numberOfLines={1} ellipsizeMode={"tail"}>
-                {
-                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                  artwork.artist_names
-                }
-              </Serif>
-              <Serif size="2" weight="semibold">
-                Lot {lot_label}
-              </Serif>
+              {enablePriceTransparency ? (
+                <Box mt={4}>
+                  <PriceSummary saleArtworkId={id} bid={this.selectedBid()} />
+                </Box>
+              ) : null}
 
-              <Serif italic size="2" color="black60" textAlign="center" numberOfLines={1} ellipsizeMode={"tail"}>
-                {
-                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                  artwork.title
-                }
-                {!!artwork! /* STRICTNESS_MIGRATION */.date && (
-                  <Serif size="2">
-                    ,{" "}
-                    {
-                      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                      artwork.date
-                    }
-                  </Serif>
-                )}
-              </Serif>
-            </Flex>
+              <Modal
+                visible={this.state.errorModalVisible}
+                headerText="An error occurred"
+                detailText={this.state.errorModalDetailText}
+                closeModal={this.closeModal.bind(this)}
+              />
+            </Box>
+          </ScrollView>
 
+          <Box>
             <Divider />
 
-            <BidInfoRow
-              label="Max bid"
-              value={this.selectedBid().display}
-              onPress={isLoading ? () => null : () => this.props.navigator?.pop()}
-            />
-
-            {requiresPaymentInformation ? (
-              <PaymentInfo
-                navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
-                onCreditCardAdded={this.onCreditCardAdded.bind(this)}
-                onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
-                billingAddress={this.state.billingAddress}
-                creditCardFormParams={this.state.creditCardFormParams}
-                creditCardToken={this.state.creditCardToken}
-              />
+            {requiresCheckbox ? (
+              <Checkbox
+                mt={4}
+                mx={5}
+                justifyContent="center"
+                onPress={() => this.onConditionsOfSaleCheckboxPressed()}
+                disabled={isLoading}
+              >
+                <Serif size="2" mt={2} color="black60">
+                  You agree to{" "}
+                  <LinkText onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}>
+                    {partnerName(sale! /* STRICTNESS_MIGRATION */)} Conditions of Sale
+                  </LinkText>
+                  .
+                </Serif>
+              </Checkbox>
             ) : (
-              <Divider mb={2} />
+              <Flex alignItems="center">
+                <Serif size="2" mt={2} color="black60">
+                  You agree to{" "}
+                  <LinkText onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}>
+                    {partnerName(sale! /* STRICTNESS_MIGRATION */)} Conditions of Sale
+                  </LinkText>
+                  .
+                </Serif>
+              </Flex>
             )}
 
-            {enablePriceTransparency ? (
-              <Box mt={4}>
-                <PriceSummary saleArtworkId={id} bid={this.selectedBid()} />
-              </Box>
-            ) : null}
-
-            <Modal
-              visible={this.state.errorModalVisible}
-              headerText="An error occurred"
-              detailText={this.state.errorModalDetailText}
-              closeModal={this.closeModal.bind(this)}
-            />
+            <Box m={4}>
+              <Button
+                loading={this.state.isLoading}
+                block
+                width={100}
+                disabled={!this.canPlaceBid()}
+                onPress={this.canPlaceBid() ? () => this.placeBid() : undefined}
+              >
+                Bid
+              </Button>
+            </Box>
           </Box>
-        </ScrollView>
-
-        <Box>
-          <Divider />
-
-          {requiresCheckbox ? (
-            <Checkbox
-              mt={4}
-              mx={5}
-              justifyContent="center"
-              onPress={() => this.onConditionsOfSaleCheckboxPressed()}
-              disabled={isLoading}
-            >
-              <Serif size="2" mt={2} color="black60">
-                You agree to{" "}
-                <LinkText onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}>
-                  {partnerName(sale! /* STRICTNESS_MIGRATION */)} Conditions of Sale
-                </LinkText>
-                .
-              </Serif>
-            </Checkbox>
-          ) : (
-            <Flex alignItems="center">
-              <Serif size="2" mt={2} color="black60">
-                You agree to{" "}
-                <LinkText onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}>
-                  {partnerName(sale! /* STRICTNESS_MIGRATION */)} Conditions of Sale
-                </LinkText>
-                .
-              </Serif>
-            </Flex>
-          )}
-
-          <Box m={4}>
-            <Button
-              loading={this.state.isLoading}
-              block
-              width={100}
-              disabled={!this.canPlaceBid()}
-              onPress={this.canPlaceBid() ? () => this.placeBid() : undefined}
-            >
-              Bid
-            </Button>
-          </Box>
-        </Box>
-      </Flex>
+        </Flex>
+      </BiddingThemeProvider>
     )
   }
 
