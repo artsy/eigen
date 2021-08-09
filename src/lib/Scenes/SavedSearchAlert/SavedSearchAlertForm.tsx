@@ -1,9 +1,10 @@
 import { FormikProvider, useFormik } from "formik"
-import { Aggregations, FilterArray } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import React from "react"
 import { Alert } from "react-native"
 import { Form } from "./Components/Form"
 import { extractPills } from "./helpers"
+import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
 import { updateSavedSearchAlert } from "./mutations/updateSavedSearchAlert"
 import { SavedSearchAlertFormPropsBase, SavedSearchAlertFormValues } from "./SavedSearchAlertModel"
@@ -27,6 +28,10 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       try {
         if (isUpdateForm) {
           await updateSavedSearchAlert(savedSearchAlertId!, values)
+        } else {
+          const criteria = getSearchCriteriaFromFilters(props.artist.id, filters)
+
+          await createSavedSearchAlert(values.name, criteria)
         }
 
         onComplete?.()

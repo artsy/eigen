@@ -1,8 +1,10 @@
 import { captureMessage } from "@sentry/react-native"
 import { SavedSearchButton_me } from "__generated__/SavedSearchButton_me.graphql"
 import { SavedSearchButtonQuery } from "__generated__/SavedSearchButtonQuery.graphql"
-import { prepareFilterDataForSaveSearchInput } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
-import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import {
+  getAllowedFiltersForSavedSearchInput,
+  getSearchCriteriaFromFilters,
+} from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
@@ -78,12 +80,8 @@ export const SavedSearchButtonFragmentContainer = createFragmentContainer(SavedS
 
 export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchAlertFormPropsBase> = (props) => {
   const { filters, artist } = props
-  const input = prepareFilterDataForSaveSearchInput(filters)
-  const isEmptyCriteria = Object.keys(input).length === 0
-  const criteria: SearchCriteriaAttributes = {
-    artistID: artist.id,
-    ...input,
-  }
+  const allowedFilters = getAllowedFiltersForSavedSearchInput(filters)
+  const isEmptyCriteria = allowedFilters.length === 0
 
   if (isEmptyCriteria) {
     return <SavedSearchButton loading={false} isEmptyCriteria={true} {...props} />
@@ -118,7 +116,7 @@ export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchAlertFormPropsB
         )
       }}
       variables={{
-        criteria,
+        criteria: getSearchCriteriaFromFilters(artist.id, filters),
       }}
     />
   )
