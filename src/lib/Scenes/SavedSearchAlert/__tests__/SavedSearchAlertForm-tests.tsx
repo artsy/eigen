@@ -5,14 +5,24 @@ import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
+import { Alert } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
 import { SavedSearchAlertForm, SavedSearchAlertFormProps } from "../SavedSearchAlertForm"
+
+jest.mock("formik")
+
+const spyAlert = jest.spyOn(Alert, "alert")
 
 describe("Saved search alert form", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
     mockEnvironment.mockClear()
+    ;(Alert.alert as jest.Mock).mockClear()
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
   it("renders without throwing an error", () => {
@@ -82,6 +92,16 @@ describe("Saved search alert form", () => {
     })
 
     expect(onCompleteMock).toHaveBeenCalled()
+  })
+
+  it("shows an alert when the delete alert button is pressed", async () => {
+    const { getByTestId } = renderWithWrappersTL(
+      <SavedSearchAlertForm {...baseProps} savedSearchAlertId="savedSearchAlertId" />
+    )
+
+    fireEvent.press(getByTestId("delete-alert-button"))
+
+    expect(Alert.alert).toHaveBeenCalled()
   })
 })
 
