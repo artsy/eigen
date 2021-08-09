@@ -807,48 +807,26 @@ DEPENDENCIES:
   - Yoga (from `./node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/artsy/Specs.git:
-    - Aerodramus
-    - "Artsy+UIColors"
-    - "Artsy+UIFonts"
-    - "Artsy+UILabels"
-    - Artsy-UIButtons
-    - Extraction
-  trunk:
+  https://cdn.cocoapods.org/:
     - AFNetworkActivityLogger
-    - AFNetworking
     - Analytics
-    - AppAuth
     - Appboy-iOS-SDK
-    - boost-for-react-native
     - CocoaAsyncSocket
     - CocoaLumberjack
     - DHCShakeNotifier
     - EDColor
-    - Expecta
     - "Expecta+Snapshots"
-    - FBSDKCoreKit
     - FBSDKLoginKit
     - FBSDKShareKit
-    - FBSnapshotTestCase
     - Firebase
     - FirebaseAuth
-    - FirebaseCore
     - FirebaseCoreDiagnostics
-    - Flipper
-    - Flipper-DoubleConversion
-    - Flipper-Folly
-    - Flipper-Glog
     - Flipper-PeerTalk
-    - Flipper-RSocket
     - FlipperKit
     - Forgeries
     - FXBlurView
     - GoogleDataTransport
-    - GoogleSignIn
-    - GoogleUtilities
     - GTMAppAuth
-    - GTMSessionFetcher
     - INTUAnimationEngine
     - JSDecoupledAppDelegate
     - JWTDecode
@@ -860,7 +838,6 @@ SPEC REPOS:
     - MMMarkdown
     - MultiDelegate
     - nanopb
-    - Nimble
     - Nimble-Snapshots
     - NPKeyboardLayoutGuide
     - ObjectiveSugar
@@ -868,13 +845,10 @@ SPEC REPOS:
     - OHHTTPStubs
     - OpenSSL-Universal
     - ORKeyboardReactingApplication
-    - ORStackView
     - PromisesObjC
     - Quick
-    - SDWebImage
     - Segment-Appboy
     - Sentry
-    - Specta
     - Starscream
     - Stripe
     - SwiftyJSON
@@ -884,6 +858,33 @@ SPEC REPOS:
     - "UIView+BooleanAnimations"
     - "XCTest+OHHTTPStubSuiteCleanUp"
     - YogaKit
+  https://github.com/artsy/Specs.git:
+    - Aerodramus
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts"
+    - "Artsy+UILabels"
+    - Artsy-UIButtons
+    - Extraction
+  https://github.com/CocoaPods/Specs.git:
+    - AFNetworking
+    - AppAuth
+    - boost-for-react-native
+    - Expecta
+    - FBSDKCoreKit
+    - FBSnapshotTestCase
+    - FirebaseCore
+    - Flipper
+    - Flipper-DoubleConversion
+    - Flipper-Folly
+    - Flipper-Glog
+    - Flipper-RSocket
+    - GoogleSignIn
+    - GoogleUtilities
+    - GTMSessionFetcher
+    - Nimble
+    - ORStackView
+    - SDWebImage
+    - Specta
 
 EXTERNAL SOURCES:
   AFOAuth1Client:
