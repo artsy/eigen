@@ -94,14 +94,31 @@ describe("Saved search alert form", () => {
     expect(onCompleteMock).toHaveBeenCalled()
   })
 
-  it("shows an alert when the delete alert button is pressed", async () => {
+  it("calls delete mutation when the delete alert button is pressed", async () => {
+    const onDeletePressMock = jest.fn()
     const { getByTestId } = renderWithWrappersTL(
-      <SavedSearchAlertForm {...baseProps} savedSearchAlertId="savedSearchAlertId" />
+      <SavedSearchAlertForm
+        {...baseProps}
+        savedSearchAlertId="savedSearchAlertId"
+        onDeleteComplete={onDeletePressMock}
+      />
     )
 
     fireEvent.press(getByTestId("delete-alert-button"))
 
-    expect(Alert.alert).toHaveBeenCalled()
+    // Click confirm button
+    // @ts-ignore
+    spyAlert.mock.calls[0][2][1].onPress()
+
+    expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(
+      "deleteSavedSearchAlertMutation"
+    )
+
+    await waitFor(() => {
+      mockEnvironmentPayload(mockEnvironment)
+    })
+
+    expect(onDeletePressMock).toHaveBeenCalled()
   })
 })
 
