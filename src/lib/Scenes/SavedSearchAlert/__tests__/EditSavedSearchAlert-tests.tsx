@@ -35,41 +35,12 @@ describe("EditSavedSearchAlert", () => {
     expect(getByTestId("alert-input-name").props.value).toBe("unique-name")
   })
 
-<<<<<<< HEAD
   it("should navigate go back if the update mutation is successful", async () => {
-=======
-  it("calls update mutation when form is submitted", async () => {
->>>>>>> chore: small refactor
     const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
 
     mockEnvironmentPayload(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
     })
-<<<<<<< HEAD
-=======
-
-    fireEvent.changeText(getByTestId("alert-input-name"), "something new")
-    fireEvent.press(getByTestId("save-alert-button"))
-
-    await waitFor(() => {
-      const mutation = mockEnvironment.mock.getMostRecentOperation()
-
-      expect(mutation.request.node.operation.name).toBe("EditSavedSearchAlertUpdateSavedSearchMutation")
-      expect(mutation.request.variables).toEqual({
-        input: {
-          searchCriteriaID: "savedSearchAlertId",
-          userAlertSettings: {
-            name: "something new",
-          },
-        },
-      })
-    })
-  })
-
-  it("should navigate go back if the update mutation is successful", async () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
-
->>>>>>> chore: small refactor
     mockEnvironmentPayload(mockEnvironment, {
       FilterArtworksConnection: () => filterArtworks,
     })

@@ -33,7 +33,6 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
         </Sans>
         <SavedSearchAlertForm
           initialValues={{ name: "" }}
-          mode="create"
           aggregations={aggregations}
           filters={allowedFilters}
           onComplete={onComplete}
