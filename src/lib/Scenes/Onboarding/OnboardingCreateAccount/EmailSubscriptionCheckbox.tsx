@@ -1,5 +1,5 @@
-import { Checkbox } from "palette/elements/Checkbox"
 import { Flex, Text, Touchable } from "palette"
+import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
 
 interface EmailSubscriptionCheckboxProps {

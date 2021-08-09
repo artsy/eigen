@@ -1,6 +1,6 @@
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import React from "react"
 import { Touchable } from "palette/elements/Touchable/Touchable"
+import React from "react"
 import { renderWithWrappers } from "../../../tests/renderWithWrappers"
 import { OnboardingWelcome } from "../OnboardingWelcome"
 
