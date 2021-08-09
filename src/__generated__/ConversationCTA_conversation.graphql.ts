@@ -17,6 +17,15 @@ export type ConversationCTA_conversation = {
             value in case none of the concrete values match.*/
             readonly __typename: "%other";
         }) | null;
+        readonly liveArtwork: ({
+            readonly isOfferableFromInquiry: boolean | null;
+            readonly internalID: string;
+            readonly __typename: "Artwork";
+        } | {
+            /*This will never be '%other', but we need some
+            value in case none of the concrete values match.*/
+            readonly __typename: "%other";
+        }) | null;
     } | null> | null;
     readonly activeOrders: {
         readonly edges: ReadonlyArray<{
@@ -57,6 +66,13 @@ var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "__typename",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "internalID",
   "storageKey": null
 };
@@ -89,13 +105,7 @@ return {
           "name": "item",
           "plural": false,
           "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "__typename",
-              "storageKey": null
-            },
+            (v0/*: any*/),
             {
               "kind": "InlineFragment",
               "selections": [
@@ -106,6 +116,33 @@ return {
                   "name": "internalID",
                   "storageKey": null
                 }
+              ],
+              "type": "Artwork",
+              "abstractKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": null,
+          "kind": "LinkedField",
+          "name": "liveArtwork",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "InlineFragment",
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "isOfferableFromInquiry",
+                  "storageKey": null
+                },
+                (v1/*: any*/),
+                (v0/*: any*/)
               ],
               "type": "Artwork",
               "abstractKey": null
@@ -156,7 +193,7 @@ return {
               "name": "node",
               "plural": false,
               "selections": [
-                (v0/*: any*/),
+                (v1/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -257,7 +294,7 @@ return {
                               "name": "node",
                               "plural": false,
                               "selections": [
-                                (v0/*: any*/)
+                                (v1/*: any*/)
                               ],
                               "storageKey": null
                             }
@@ -285,5 +322,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '74760fbf7b7484a06b992e6657611499';
+(node as any).hash = 'd88e0ce324778a0b7771e6cb793662d3';
 export default node;
