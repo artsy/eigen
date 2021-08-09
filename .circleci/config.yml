@@ -16,6 +16,13 @@ commands:
           time: "30" # how long a queue will wait until the job exits
           only-on-branch: <<parameters.branch>> # restrict queueing to a specific branch (default *)
           consider-job: false # block whole workflow if any job still running
+  detect-secrets:
+    docker:
+      - image: lirantal/detect-secrets
+    working_directory: /usr/src/app
+    steps:
+      - checkout
+      - run: detect-secrets-hook --baseline .secrets.baseline --exclude-secrets '[a-fA-F0-9]{24}' --exclude-lines 'W/"[!#-\x7E]*"' $(git ls-files)
   install-node:
     steps:
       - run:
@@ -215,6 +222,7 @@ jobs:
       tag: "14.13.1"
     steps:
       - checkout
+      - detect-secrets
       - generate-checksums
       - install-node-modules
       - run:
@@ -494,6 +502,13 @@ workflows:
 
   test-build-deploy:
     jobs:
+      - detect-secrets:
+          filters:
+            branches:
+              ignore:
+                - master
+                - release
+                - staging
       - check-pr:
           filters:
             branches:
