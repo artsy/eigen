@@ -30,7 +30,7 @@ export const createChannel = (channelId: string, channelName: string, properties
 }
 
 export const createAllChannels = () => {
-  CHANNELS.forEach(async (channel) => {
+  CHANNELS.forEach((channel) => {
     createChannel(channel.name, channel.id, channel.properties)
   })
 }
