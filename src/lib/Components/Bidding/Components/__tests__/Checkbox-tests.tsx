@@ -5,13 +5,16 @@ import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { theme } from "../../Elements/Theme"
 import { CssTransition } from "../Animation/CssTransition"
+import { BiddingThemeProvider } from "../BiddingThemeProvider"
 import { Checkbox, CheckMark, DisabledMark } from "../Checkbox"
 
 it("shows children within the checkbox", () => {
   const component = renderWithWrappers(
-    <Checkbox>
-      <Serif size="2">Remember me</Serif>
-    </Checkbox>
+    <BiddingThemeProvider>
+      <Checkbox>
+        <Serif size="2">Remember me</Serif>
+      </Checkbox>
+    </BiddingThemeProvider>
   )
 
   expect(component.root.findAllByType(Serif).length).toEqual(1)
@@ -21,7 +24,11 @@ it("calls onPress when tapped", (done) => {
   let clicked: boolean
   const onPress = () => (clicked = true)
 
-  const component = renderWithWrappers(<Checkbox onPress={onPress} />)
+  const component = renderWithWrappers(
+    <BiddingThemeProvider>
+      <Checkbox onPress={onPress} />
+    </BiddingThemeProvider>
+  )
 
   component.root.findByType(TouchableWithoutFeedback).props.onPress()
 
@@ -33,7 +40,11 @@ it("calls onPress when tapped", (done) => {
 })
 
 it("shows a gray border and white background by default", () => {
-  const component = renderWithWrappers(<Checkbox />)
+  const component = renderWithWrappers(
+    <BiddingThemeProvider>
+      <Checkbox />
+    </BiddingThemeProvider>
+  )
 
   const checkboxStyle = component.root.findByType(CssTransition).props.style[1]
 
@@ -42,7 +53,11 @@ it("shows a gray border and white background by default", () => {
 })
 
 it("shows a black border and black background if checked is true", () => {
-  const component = renderWithWrappers(<Checkbox error checked />)
+  const component = renderWithWrappers(
+    <BiddingThemeProvider>
+      <Checkbox error checked />
+    </BiddingThemeProvider>
+  )
 
   const checkboxStyle = component.root.findByType(CssTransition).props.style[1]
 
@@ -51,7 +66,11 @@ it("shows a black border and black background if checked is true", () => {
 })
 
 it("shows a purple border and white background if error is true", () => {
-  const component = renderWithWrappers(<Checkbox error />)
+  const component = renderWithWrappers(
+    <BiddingThemeProvider>
+      <Checkbox error />
+    </BiddingThemeProvider>
+  )
 
   const checkboxStyle = component.root.findByType(CssTransition).props.style[1]
 
@@ -60,7 +79,11 @@ it("shows a purple border and white background if error is true", () => {
 })
 
 it("shows a black border and black background if both error and checked are true", () => {
-  const component = renderWithWrappers(<Checkbox error checked />)
+  const component = renderWithWrappers(
+    <BiddingThemeProvider>
+      <Checkbox error checked />
+    </BiddingThemeProvider>
+  )
 
   const checkboxStyle = component.root.findByType(CssTransition).props.style[1]
 
@@ -69,7 +92,11 @@ it("shows a black border and black background if both error and checked are true
 })
 
 it("shows a gray border and background if it is disabled", () => {
-  const component = renderWithWrappers(<Checkbox disabled />)
+  const component = renderWithWrappers(
+    <BiddingThemeProvider>
+      <Checkbox disabled />
+    </BiddingThemeProvider>
+  )
 
   const checkboxStyle = component.root.findByType(CssTransition).props.style[1]
 
@@ -80,7 +107,11 @@ it("shows a gray border and background if it is disabled", () => {
 })
 
 it("shows a black border and black background if it is disabled but checked", () => {
-  const component = renderWithWrappers(<Checkbox disabled checked />)
+  const component = renderWithWrappers(
+    <BiddingThemeProvider>
+      <Checkbox disabled checked />
+    </BiddingThemeProvider>
+  )
 
   const checkboxStyle = component.root.findByType(CssTransition).props.style[1]
 

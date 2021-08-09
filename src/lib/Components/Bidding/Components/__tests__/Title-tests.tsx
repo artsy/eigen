@@ -4,6 +4,12 @@ import "react-native"
 
 import { Title } from "../Title"
 
+import { BiddingThemeProvider } from "../BiddingThemeProvider"
+
 it("renders without throwing an error", () => {
-  renderWithWrappers(<Title>Confirm your bid</Title>)
+  renderWithWrappers(
+    <BiddingThemeProvider>
+      <Title>Confirm your bid</Title>
+    </BiddingThemeProvider>
+  )
 })

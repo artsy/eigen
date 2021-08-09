@@ -7,6 +7,7 @@ import {
 } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
 import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
 import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
+import { BiddingThemeProvider } from "lib/Components/Bidding/Components/BiddingThemeProvider"
 import { BidInfoRow } from "lib/Components/Bidding/Components/BidInfoRow"
 import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { Divider } from "lib/Components/Bidding/Components/Divider"
