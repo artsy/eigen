@@ -5,36 +5,53 @@ import {
   getAllowedFiltersForSavedSearchInput,
   getSearchCriteriaFromFilters,
 } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
+import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import { SavedSearchAlertFormPropsBase } from "lib/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { BellIcon, Button } from "palette"
 import React, { useState } from "react"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 interface SavedSearchButtonProps extends SavedSearchAlertFormPropsBase {
   me?: SavedSearchButton_me | null
   loading?: boolean
-  isEmptyCriteria: boolean
+  relay: RelayRefetchProp
+  criteria: SearchCriteriaAttributes
 }
 
 export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   me,
   loading,
-  isEmptyCriteria,
   artist,
   filters,
   aggregations,
+  relay,
+  criteria,
 }) => {
   const [visibleForm, setVisibleForm] = useState(false)
+  const [refetching, setRefetching] = useState(false)
   const popover = usePopoverMessage()
   const isSavedSearch = !!me?.savedSearch?.internalID
+
+  const refetch = () => {
+    setRefetching(true)
+    relay.refetch(
+      { criteria },
+      null,
+      () => {
+        setRefetching(false)
+      },
+      { force: true }
+    )
+  }
 
   const handleOpenForm = () => setVisibleForm(true)
   const handleCloseForm = () => setVisibleForm(false)
 
   const handleComplete = () => {
+    refetch()
     handleCloseForm()
 
     popover.show({
@@ -49,8 +66,8 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
         variant="primaryBlack"
         size="small"
         icon={<BellIcon fill="white100" mr={0.5} width="16px" height="16px" />}
-        disabled={isSavedSearch || isEmptyCriteria}
-        loading={loading}
+        disabled={isSavedSearch || filters.length === 0}
+        loading={loading || refetching}
         onPress={handleOpenForm}
         haptic
       >
@@ -68,23 +85,34 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   )
 }
 
-export const SavedSearchButtonFragmentContainer = createFragmentContainer(SavedSearchButton, {
-  me: graphql`
-    fragment SavedSearchButton_me on Me @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
-      savedSearch(criteria: $criteria) {
-        internalID
+export const SavedSearchButtonRefetchContainer = createRefetchContainer(
+  SavedSearchButton,
+  {
+    me: graphql`
+      fragment SavedSearchButton_me on Me @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
+        savedSearch(criteria: $criteria) {
+          internalID
+        }
+      }
+    `,
+  },
+  graphql`
+    query SavedSearchButtonRefetchQuery($criteria: SearchCriteriaAttributes) {
+      me {
+        ...SavedSearchButton_me @arguments(criteria: $criteria)
       }
     }
-  `,
-})
+  `
+)
 
 export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchAlertFormPropsBase> = (props) => {
   const { filters, artist } = props
   const allowedFilters = getAllowedFiltersForSavedSearchInput(filters)
   const isEmptyCriteria = allowedFilters.length === 0
+  const criteria = getSearchCriteriaFromFilters(artist.id, filters)
 
   if (isEmptyCriteria) {
-    return <SavedSearchButton loading={false} isEmptyCriteria={true} {...props} />
+    return <SavedSearchButtonRefetchContainer me={null} loading={false} criteria={criteria} {...props} />
   }
 
   return (
@@ -107,16 +135,17 @@ export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchAlertFormPropsB
         }
 
         return (
-          <SavedSearchButtonFragmentContainer
+          <SavedSearchButtonRefetchContainer
+            {...props}
             me={relayProps?.me ?? null}
             loading={relayProps === null && error === null}
-            isEmptyCriteria={isEmptyCriteria}
-            {...props}
+            criteria={criteria}
+            filters={allowedFilters}
           />
         )
       }}
       variables={{
-        criteria: getSearchCriteriaFromFilters(artist.id, filters),
+        criteria,
       }}
     />
   )

@@ -6,14 +6,24 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { SavedSearchButtonFragmentContainer as SavedSearchButton } from "../SavedSearchButton"
+import { SavedSearchButtonRefetchContainer as SavedSearchButton } from "../SavedSearchButton"
+import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 
 jest.unmock("react-relay")
 
 const mockedAttributes: SearchCriteriaAttributes = {
-  acquireable: true,
+  atAuction: true,
 }
+
+const mockedFilters = [
+  {
+    displayText: "Bid",
+    paramName: FilterParamName.waysToBuyBid,
+    paramValue: true,
+  },
+]
 
 describe("SavedSearchButton", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -37,14 +47,8 @@ describe("SavedSearchButton", () => {
           <SavedSearchButton
             {...props}
             loading={props === null && error === null}
-            isEmptyCriteria={Object.keys(attributes).length === 0}
-            filters={[
-              {
-                displayText: "Bid",
-                paramName: FilterParamName.waysToBuyBid,
-                paramValue: true,
-              },
-            ]}
+            filters={mockedFilters}
+            criteria={attributes}
             aggregations={[]}
             artist={{
               id: "artistID",
@@ -89,5 +93,19 @@ describe("SavedSearchButton", () => {
     })
 
     expect(tree.root.findByType(Button).props.disabled).toBe(true)
+  })
+
+  it("should show the create saved search form when the button is pressed", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Me: () => ({
+        savedSearch: null,
+      }),
+    })
+
+    act(() => tree.root.findByType(Button).props.onPress())
+
+    expect(tree.root.findByType(CreateSavedSearchAlert).props.visible).toBeTruthy()
   })
 })
