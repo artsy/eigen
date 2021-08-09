@@ -4,8 +4,6 @@ import { RegistrationResult, RegistrationStatus } from "lib/Components/Bidding/S
 import { Modal } from "lib/Components/Modal"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-// FIXME: Uncomment when x'd test is reenabled
-// import { LinkText } from "../../../Text/LinkText"
 import { mockTimezone } from "lib/tests/mockTimezone"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button, Sans, Text } from "palette"
@@ -34,10 +32,8 @@ jest.mock("tipsi-stripe", () => ({
   createTokenWithCard: jest.fn(),
 }))
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-let nextStep
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const mockNavigator = { push: (route) => (nextStep = route), pop: () => null }
+let nextStep: any
+const mockNavigator = { push: (route: any) => (nextStep = route), pop: () => null }
 jest.useFakeTimers()
 const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager.postNotificationName
 
@@ -94,10 +90,8 @@ it("shows the billing address that the user typed in the billing address form", 
     </BiddingThemeProvider>
   ).root.findAllByType(BidInfoRow)[1]
   billingAddressRow.instance.props.onPress()
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   expect(nextStep.component).toEqual(BillingAddress)
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   nextStep.passProps.onSubmit(billingAddress)
 
   expect(billingAddressRow.findAllByType(Text)[1].props.children).toEqual("401 Broadway 25th floor New York NY")
@@ -112,7 +106,6 @@ it("shows the credit card form when the user tap the edit text in the credit car
 
   creditcardRow.instance.props.onPress()
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   expect(nextStep.component).toEqual(CreditCardForm)
 })
 
@@ -607,9 +600,7 @@ describe("when pressing register button", () => {
       ARAuctionID: "sale-id",
     })
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.component).toEqual(RegistrationResult)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.passProps).toEqual({
       status: RegistrationStatus.RegistrationStatusPending,
       needsIdentityVerification: false,
@@ -624,7 +615,6 @@ describe("when pressing register button", () => {
         requireIdentityVerification: true,
       },
     }
-
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -642,9 +632,7 @@ describe("when pressing register button", () => {
     component.root.findAllByType(Button)[1].props.onPress()
     jest.runAllTicks()
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.component).toEqual(RegistrationResult)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.passProps).toEqual({
       status: RegistrationStatus.RegistrationStatusPending,
       needsIdentityVerification: true,
@@ -674,9 +662,7 @@ describe("when pressing register button", () => {
       ARAuctionID: "sale-id",
     })
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.component).toEqual(RegistrationResult)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.passProps).toEqual({
       status: RegistrationStatus.RegistrationStatusComplete,
       needsIdentityVerification: false,
@@ -709,9 +695,7 @@ describe("when pressing register button", () => {
     component.root.findAllByType(Button)[1].props.onPress()
     jest.runAllTicks()
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.component).toEqual(RegistrationResult)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.passProps.status).toEqual(RegistrationStatus.RegistrationStatusComplete)
   })
 })

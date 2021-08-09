@@ -24,7 +24,6 @@ import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayP
 import stripe from "tipsi-stripe"
 import { LinkText } from "../../Text/LinkText"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { Checkbox } from "../Components/Checkbox"
 import { PaymentInfo } from "../Components/PaymentInfo"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"

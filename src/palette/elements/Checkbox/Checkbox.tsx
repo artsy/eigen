@@ -17,6 +17,7 @@ export interface CheckboxProps extends TouchableWithoutFeedbackProps, FlexProps 
   error?: boolean
   text?: React.ReactElement | string
   subtitle?: React.ReactElement | string
+  children?: React.ReactElement | string
 }
 
 export const Checkbox: React.FC<CheckboxProps> = ({

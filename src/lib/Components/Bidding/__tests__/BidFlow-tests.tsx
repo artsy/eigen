@@ -46,7 +46,7 @@ beforeEach(() => {
   }
 })
 
-it.only("allows bidders with a qualified credit card to bid", async () => {
+it("allows bidders with a qualified credit card to bid", async () => {
   let screen = renderWithWrappers(
     <SelectMaxBid
       me={Me.qualifiedUser as any}
