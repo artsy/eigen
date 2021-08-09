@@ -1,31 +1,18 @@
-import { fireEvent } from "@testing-library/react-native"
-import { useFormikContext } from "formik"
+import { fireEvent, waitFor } from "@testing-library/react-native"
 import { Aggregations, FilterArray, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
+import { createMockEnvironment } from "relay-test-utils"
 import { SavedSearchAlertForm, SavedSearchAlertFormProps } from "../SavedSearchAlertForm"
 
-jest.mock("formik")
-
 describe("Saved search alert form", () => {
-  const useFormikContextMock = useFormikContext as jest.Mock
+  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
-    useFormikContextMock.mockImplementation(() => ({
-      handleChange: jest.fn(),
-      handleBlur: jest.fn(),
-      handleSubmit: jest.fn(),
-      isSubmitting: false,
-      values: {
-        name: "",
-      },
-      errors: {},
-    }))
-  })
-
-  afterEach(() => {
-    jest.clearAllMocks()
+    mockEnvironment.mockClear()
   })
 
   it("renders without throwing an error", () => {
@@ -58,23 +45,43 @@ describe("Saved search alert form", () => {
     expect(getAllByTestId("delete-alert-button")).toHaveLength(1)
   })
 
-  it("fires formik's handleSubmit when the save alert button is pressed", () => {
-    const handleSubmitMock = jest.fn()
-    useFormikContextMock.mockImplementation(() => ({
-      handleChange: jest.fn(),
-      handleBlur: jest.fn(),
-      handleSubmit: handleSubmitMock,
-      isSubmitting: false,
-      values: {
-        name: "",
-      },
-      errors: {},
-    }))
-    const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+  it("calls update mutation when form is submitted", async () => {
+    const { getByTestId } = renderWithWrappersTL(
+      <SavedSearchAlertForm {...baseProps} savedSearchAlertId="savedSearchAlertId" />
+    )
 
+    fireEvent.changeText(getByTestId("alert-input-name"), "something new")
     fireEvent.press(getByTestId("save-alert-button"))
 
-    expect(handleSubmitMock).toHaveBeenCalled()
+    await waitFor(() => {
+      const mutation = mockEnvironment.mock.getMostRecentOperation()
+
+      expect(mutation.request.node.operation.name).toBe("updateSavedSearchAlertMutation")
+      expect(mutation.request.variables).toEqual({
+        input: {
+          searchCriteriaID: "savedSearchAlertId",
+          userAlertSettings: {
+            name: "something new",
+          },
+        },
+      })
+    })
+  })
+
+  it("calls onComplete when the mutation is completed", async () => {
+    const onCompleteMock = jest.fn()
+    const { getByTestId } = renderWithWrappersTL(
+      <SavedSearchAlertForm {...baseProps} onComplete={onCompleteMock} savedSearchAlertId="savedSearchAlertId" />
+    )
+
+    fireEvent.changeText(getByTestId("alert-input-name"), "something new")
+    fireEvent.press(getByTestId("save-alert-button"))
+
+    await waitFor(() => {
+      mockEnvironmentPayload(mockEnvironment)
+    })
+
+    expect(onCompleteMock).toHaveBeenCalled()
   })
 })
 
