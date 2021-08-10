@@ -38,15 +38,11 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
   }, [])
 
   useEffect(() => {
-    AsyncStorage.getItem(ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY).then((canDisplay) => {
-      setShouldDisplayPushNotifications(
-        Platform.select({
-          ios: true,
-          android: canDisplay === "true",
-          default: shouldDisplayPushNotifications,
-        })
-      )
-    })
+    if (Platform.OS === "android") {
+      AsyncStorage.getItem(ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY).then((canDisplay) => {
+        setShouldDisplayPushNotifications(canDisplay === "true")
+      })
+    }
   }, [])
 
   return (

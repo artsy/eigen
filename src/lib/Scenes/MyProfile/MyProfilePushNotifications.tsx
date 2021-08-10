@@ -14,12 +14,13 @@ import { MyProfilePushNotifications_me } from "../../../__generated__/MyProfileP
 import { MyProfilePushNotificationsQuery } from "../../../__generated__/MyProfilePushNotificationsQuery.graphql"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 
-const INSTRUCTIONS = {
+const INSTRUCTIONS = Platform.select({
   ios: `To receive push notifications from Artsy, you will need to enable them in your iOS Settings. Tap 'Artsy' and
-  toggle "Allow Notifications" on.`,
+  toggle 'Allow Notifications' on.`,
   android: `To receive push notifications from Artsy, you will need to enable them in your device settings.
-  In the settings go to "Apps", Tap on 'Artsy' to access Artsy specific settings, go to Notifications and toggle "Show Notifications" on.`,
-}
+  Go to 'Apps', Tap on 'Artsy' to access Artsy specific settings, Tap on 'Notifications' and toggle 'Show Notifications' on.`,
+  default: "",
+})
 
 export type UserPushNotificationSettings =
   | "receiveLotOpeningSoonNotification"
@@ -37,7 +38,7 @@ export const OpenSettingsBanner = () => (
         Artsy would like to send you notifications
       </Sans>
       <Sans size="3t" textAlign="center" color="black60" marginTop="1" marginBottom="2">
-        {Platform.select({ ios: INSTRUCTIONS.ios, android: INSTRUCTIONS.android, default: "" })}
+        {INSTRUCTIONS}
       </Sans>
       <Button
         size="large"
@@ -112,9 +113,13 @@ export const MyProfilePushNotifications: React.FC<{
   const [userNotificationSettings, setUserNotificationSettings] = useState<MyProfilePushNotifications_me>(me)
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
 
-  useEffect(() => getPermissionStatus(), [])
+  useEffect(() => {
+    getPermissionStatus()
+  }, [])
 
-  const onForeground = useCallback(() => getPermissionStatus(), [])
+  const onForeground = useCallback(() => {
+    getPermissionStatus()
+  }, [])
 
   useAppState({ onForeground })
 
