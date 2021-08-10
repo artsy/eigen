@@ -24,16 +24,16 @@ export type ButtonVariant =
 export const defaultVariant: ButtonVariant = "primaryBlack"
 
 /** The size of the button */
-export type ButtonSize = "small" | "medium" | "large"
+type ButtonSize = "small" | "medium" | "large"
 
 /** Icon position */
-export type ButtonIconPosition = "left" | "right"
+type ButtonIconPosition = "left" | "right"
 
 /** Default button size */
-export const defaultSize: ButtonSize = "medium"
+const defaultSize: ButtonSize = "medium"
 
 /** Default icon position */
-export const defaultIconPosition: ButtonIconPosition = "left"
+const defaultIconPosition: ButtonIconPosition = "left"
 
 export interface ButtonProps extends ButtonBaseProps {
   children: ReactNode

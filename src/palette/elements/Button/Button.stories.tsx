@@ -2,14 +2,15 @@ import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
 import { LinkIcon } from "palette"
 import React from "react"
+import { withThemeV3 } from "storybook/decorators"
 import { DList, List } from "storybook/helpers"
-import { Button, ButtonSize, ButtonVariant } from "./Button"
+import { Button, ButtonV3Props } from "."
 
-const sizes: ButtonSize[] = ["small", "large"]
-
-const variants: ButtonVariant[] = ["fillDark", "fillLight", "fillGray", "outline", "text"]
+const sizes: Array<ButtonV3Props["size"]> = ["small", "large"]
+const variants: Array<ButtonV3Props["variant"]> = ["fillDark", "fillLight", "fillGray", "outline", "text"]
 
 storiesOf("ButtonV3", module)
+  .addDecorator(withThemeV3)
   .add("Sizes", () => (
     <DList
       data={sizes}
