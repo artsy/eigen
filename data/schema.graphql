@@ -8072,7 +8072,6 @@ type MessageInitiator {
 
 type MetaphysicsService {
   environment: String!
-  heapDumps: Boolean!
   queryTracing: Boolean!
   stitching: Boolean!
   stitchingConvection: Boolean!
