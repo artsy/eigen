@@ -47,12 +47,12 @@ RCT_EXPORT_METHOD(requestPhotos:(RCTPromiseResolveBlock)resolve
 }
 
 - (void)presentPhotoPicker API_AVAILABLE(ios(14)) {
-    PHPickerConfiguration *config = [[PHPickerConfiguration alloc] init];
-    config.selectionLimit = 10;
-    config.filter = [PHPickerFilter imagesFilter];
-    PHPickerViewController *picker = [[PHPickerViewController alloc] initWithConfiguration:config];
-    picker.delegate = self;
     dispatch_async(dispatch_get_main_queue(), ^{
+        PHPickerConfiguration *config = [[PHPickerConfiguration alloc] init];
+        config.selectionLimit = 10;
+        config.filter = [PHPickerFilter imagesFilter];
+        PHPickerViewController *picker = [[PHPickerViewController alloc] initWithConfiguration:config];
+        picker.delegate = self;
         UIViewController *currentVC = RCTPresentedViewController();
         [currentVC presentViewController:picker animated:true completion:nil];
     });
