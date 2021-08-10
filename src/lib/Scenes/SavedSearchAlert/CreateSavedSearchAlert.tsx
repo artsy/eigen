@@ -6,7 +6,7 @@ import { Sans, Text, useTheme } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { SavedSearchAlertForm } from "./SavedSearchAlertForm"
-import { SavedSearchAlertFormPropsBase } from './SavedSearchAlertModel'
+import { SavedSearchAlertFormPropsBase } from "./SavedSearchAlertModel"
 
 interface CreateSavedSearchAlertProps extends SavedSearchAlertFormPropsBase {
   visible: boolean
@@ -24,7 +24,9 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
     <FancyModal visible={visible} fullScreen>
       <FancyModalHeader useXButton hideBottomDivider onLeftButtonPress={onClosePress} />
       <ScrollView contentContainerStyle={{ paddingHorizontal: space(2) }}>
-        <Sans size="8" mb={4}>Create an Alert</Sans>
+        <Sans size="8" mb={4}>
+          Create an Alert
+        </Sans>
         <SavedSearchAlertForm aggregations={aggregations} filters={allowedFilters} onSaved={onClosePress} {...other} />
         <Text variant="text" color="black60" textAlign="center" my={2}>
           You will be able to access all your Artist Alerts in your Profile.

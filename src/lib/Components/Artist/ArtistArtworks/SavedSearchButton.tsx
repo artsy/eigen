@@ -2,7 +2,7 @@ import { captureMessage } from "@sentry/react-native"
 import { SavedSearchButton_me } from "__generated__/SavedSearchButton_me.graphql"
 import { SavedSearchButtonQuery } from "__generated__/SavedSearchButtonQuery.graphql"
 import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { prepareFilterDataForSaveSearchInput } from 'lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers'
+import { prepareFilterDataForSaveSearchInput } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { BellIcon, Button } from "palette"
@@ -22,7 +22,12 @@ interface SavedSearchButtonQueryRendererProps {
   onCreateAlertPress: () => void
 }
 
-export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({ me, loading, isEmptyCriteria, onCreateAlertPress }) => {
+export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
+  me,
+  loading,
+  isEmptyCriteria,
+  onCreateAlertPress,
+}) => {
   const isSavedSearch = !!me?.savedSearch?.internalID
 
   const handlePress = () => {

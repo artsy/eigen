@@ -5,7 +5,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { SavedSearchAlertsListPlaceholder } from './Components/SavedSearchAlertsListPlaceholder'
+import { SavedSearchAlertsListPlaceholder } from "./Components/SavedSearchAlertsListPlaceholder"
 import { SavedSearchesListContainer as SavedSearchesList } from "./Components/SavedSearchesList"
 
 interface SavedSearchAlertsListProps {
@@ -27,7 +27,7 @@ export const SavedSearchAlertsListFragmentContainer = createFragmentContainer(Sa
     fragment SavedSearchAlertsList_me on Me {
       ...SavedSearchesList_me
     }
-  `
+  `,
 })
 
 export const SavedSearchAlertsListQueryRenderer: React.FC = () => {

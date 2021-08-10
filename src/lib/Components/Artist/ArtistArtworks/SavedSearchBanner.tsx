@@ -5,7 +5,7 @@ import { SavedSearchBannerCreateSavedSearchMutation } from "__generated__/SavedS
 import { SavedSearchBannerDisableSavedSearchMutation } from "__generated__/SavedSearchBannerDisableSavedSearchMutation.graphql"
 import { SavedSearchBannerQuery } from "__generated__/SavedSearchBannerQuery.graphql"
 import { FilterParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { prepareFilterParamsForSaveSearchInput } from 'lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers'
+import { prepareFilterParamsForSaveSearchInput } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"

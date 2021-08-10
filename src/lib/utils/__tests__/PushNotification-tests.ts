@@ -27,12 +27,12 @@ beforeEach(() => {
 describe("Push Notification Tests", () => {
   beforeEach(async () => {
     jest.clearAllMocks()
-    await AsyncStorage.removeItem(ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY)
+    await AsyncStorage.clear()
   })
 
   afterAll(async () => {
     jest.clearAllMocks()
-    await AsyncStorage.removeItem(ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY)
+    await AsyncStorage.clear()
   })
 
   it("Initialises when feature flag is true", async () => {
@@ -46,6 +46,45 @@ describe("Push Notification Tests", () => {
     await AsyncStorage.setItem(ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY, "false")
     await Push.configure()
     expect(PushNotification.configure).not.toHaveBeenCalled()
+  })
+
+  describe("saveToken", () => {
+    it("sends token to gravity if user is logged in", async () => {
+      mockFetchJsonOnce({
+        xapp_token: "xapp-token",
+        expires_in: "never",
+      })
+      await GlobalStore.actions.auth.getXAppToken()
+      mockFetch.mockClear()
+      // log user in
+      mockFetchJsonOnce(
+        {
+          access_token: "auth-access-token",
+          expires_in: "1000years",
+        },
+        201
+      )
+      mockFetchJsonOnce({
+        id: "userid",
+      })
+      await GlobalStore.actions.auth.signIn({
+        email: "user@example.com",
+        password: "mypassword",
+      })
+
+      mockFetch.mockClear()
+      mockFetchJsonOnce({}, 201)
+
+      await Push.saveToken("pushnotificationtoken")
+      await flushPromiseQueue()
+      expect(mockFetch).toHaveBeenCalledTimes(1)
+    })
+
+    it("does not try to save token to gravity when user is Not logged in", async () => {
+      expect(Push.saveToken("sometoken")).rejects.toMatch("Push Notification: No access token")
+
+      expect(mockFetch).not.toHaveBeenCalled()
+    })
   })
 
   describe("Handling Notifications", () => {
