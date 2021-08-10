@@ -7,11 +7,20 @@ import useAppState from "lib/utils/useAppState"
 import { debounce } from "lodash"
 import { Box, Button, Flex, Join, Sans, Separator } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
-import { ActivityIndicator, Alert, Linking, RefreshControl, ScrollView, View } from "react-native"
+import { ActivityIndicator, Alert, Linking, Platform, RefreshControl, ScrollView, View } from "react-native"
+import PushNotification from "react-native-push-notification"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { MyProfilePushNotifications_me } from "../../../__generated__/MyProfilePushNotifications_me.graphql"
 import { MyProfilePushNotificationsQuery } from "../../../__generated__/MyProfilePushNotificationsQuery.graphql"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
+
+const INSTRUCTIONS = Platform.select({
+  ios: `To receive push notifications from Artsy, you will need to enable them in your iOS Settings. Tap 'Artsy' and
+  toggle 'Allow Notifications' on.`,
+  android: `To receive push notifications from Artsy, you will need to enable them in your device settings.
+  Go to 'Apps', Tap on 'Artsy' to access Artsy specific settings, Tap on 'Notifications' and toggle 'Show Notifications' on.`,
+  default: "",
+})
 
 export type UserPushNotificationSettings =
   | "receiveLotOpeningSoonNotification"
@@ -29,14 +38,16 @@ export const OpenSettingsBanner = () => (
         Artsy would like to send you notifications
       </Sans>
       <Sans size="3t" textAlign="center" color="black60" marginTop="1" marginBottom="2">
-        To receive push notifications from Artsy, you will need to enable them in your iOS Settings. Tap 'Artsy' and
-        toggle "Allow Notifications" on.
+        {INSTRUCTIONS}
       </Sans>
       <Button
         size="large"
-        onPress={() => {
-          Linking.openURL("App-prefs:NOTIFICATIONS_ID")
-        }}
+        onPress={Platform.select({
+          ios: () => {
+            Linking.openURL("App-prefs:NOTIFICATIONS_ID")
+          },
+          android: () => Linking.openSettings(),
+        })}
       >
         Open settings
       </Button>
@@ -103,18 +114,28 @@ export const MyProfilePushNotifications: React.FC<{
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
 
   useEffect(() => {
-    LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
-      setNotificationAuthorizationStatus(result)
-    })
+    getPermissionStatus()
   }, [])
 
   const onForeground = useCallback(() => {
-    LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
-      setNotificationAuthorizationStatus(result)
-    })
+    getPermissionStatus()
   }, [])
 
   useAppState({ onForeground })
+
+  const getPermissionStatus = () => {
+    if (Platform.OS === "ios") {
+      LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
+        setNotificationAuthorizationStatus(result)
+      })
+    } else if (Platform.OS === "android") {
+      PushNotification.checkPermissions((permissions) => {
+        setNotificationAuthorizationStatus(
+          permissions.alert ? PushAuthorizationStatus.Authorized : PushAuthorizationStatus.Denied
+        )
+      })
+    }
+  }
 
   const onRefresh = useCallback(() => {
     if (relay) {
@@ -233,7 +254,9 @@ export const MyProfilePushNotifications: React.FC<{
     >
       <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
         {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && <OpenSettingsBanner />}
-        {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined && <AllowPushNotificationsBanner />}
+        {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined && Platform.OS === "ios" && (
+          <AllowPushNotificationsBanner />
+        )}
         {renderContent()}
       </ScrollView>
     </PageWithSimpleHeader>
