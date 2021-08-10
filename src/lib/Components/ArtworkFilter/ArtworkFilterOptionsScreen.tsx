@@ -94,57 +94,12 @@ export const ArtworkFilterOptionsScreen: React.FC<
       return filterOption ? filterOptionToDisplayConfigMap[filterOption] : null
     })
   )
-  // aggregateFilterOptions ------
-
-  // Exhibitors
-  // Color
-  // Size
-  // Artists
-  // Artwork Location
-  // Price
-  // Medium
-  // Artist Nationality & Ethnicity
-  // Material
-  // Time Period
 
   const filterOptions: FilterDisplayConfig[] = getStaticFilterOptionsByMode(mode).concat(aggregateFilterOptions)
-
-  // filterOptions ----
-
-  // Exhibitors
-  // Color
-  // Size
-  // Artists
-  // Artwork Location
-  // Price
-  // Medium
-  // Artist Nationality & Ethnicity
-  // Material
-  // Time Period
 
   const sortedFilterOptions = filterOptions
     .sort(getFilterScreenSortByMode(mode))
     .filter((filterOption) => filterOption.filterType)
-
-  sortedFilterOptions.map((item) => {
-    console.log("Check :: ", item.displayText)
-  })
-
-  // sortedFilterOptions
-
-  // Sort By
-  // Size
-  // Medium
-  // Exhibitors
-  // Artists
-  // Rarity
-  // Price
-  // Ways to Buy
-  // Material
-  // Artist Nationality & Ethnicity
-  // Artwork Location
-  // Time Period
-  // Color
 
   const clearAllFilters = () => {
     clearFiltersZeroStateAction()
@@ -274,9 +229,6 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
 
     case FilterModalMode.Gene:
       return [filterOptionToDisplayConfigMap.sort]
-
-    // case FilterModalMode.Fair:
-    //   return []
 
     default:
       return [
@@ -583,21 +535,18 @@ const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "partnerIDs",
 ]
 const FairFiltersSorted: FilterScreen[] = [
-  "partnerIDs", // ex
-  "artistIDs", // artis
-  "attributionClass", // rairt
-  "medium",
+  "partnerIDs",
+  "artistIDs",
+  "attributionClass",
+  "additionalGeneIDs",
   "priceRange",
-  "sizes",
+  "dimensionRange",
   "waysToBuy",
   "materialsTerms",
   "artistNationalities",
   "locationCities",
   "majorPeriods",
   "colors",
-  "artistsIFollow",
-  "additionalGeneIDs",
-  "dimensionRange",
 ]
 const SaleArtworksFiltersSorted: FilterScreen[] = [
   "sort",
