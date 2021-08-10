@@ -1,8 +1,5 @@
-import { extractText } from "lib/tests/extractText"
+import { renderHook } from "@testing-library/react-hooks"
 import { DateTime } from "luxon"
-import React from "react"
-import { Text } from "react-native"
-import TestRenderer from "react-test-renderer"
 import { useEventTiming } from "../useEventTiming"
 
 type Time = Partial<{
@@ -18,43 +15,33 @@ interface WrapperProps {
   endAt: Time
 }
 
-const Wrapper = ({ currentTime, startAt, endAt }: WrapperProps) => {
-  return (
-    <Text>
-      {JSON.stringify(
-        useEventTiming({
-          currentTime: DateTime.fromObject({
-            year: 2000,
-            ...currentTime,
-          }).toISO(),
-          startAt: DateTime.fromObject({
-            year: 2000,
-            ...startAt,
-          }).toISO(),
-          endAt: DateTime.fromObject({
-            year: 2000,
-            ...endAt,
-          }).toISO(),
-        })
-      )}
-    </Text>
-  )
-}
-
-const renderHook = (props: WrapperProps) => {
-  const wrapper = TestRenderer.create(<Wrapper {...props} />)
-  return JSON.parse(extractText(wrapper.root))
-}
+const makeObj = ({ currentTime, startAt, endAt }: WrapperProps) => ({
+  currentTime: DateTime.fromObject({
+    year: 2000,
+    ...currentTime,
+  }).toISO(),
+  startAt: DateTime.fromObject({
+    year: 2000,
+    ...startAt,
+  }).toISO(),
+  endAt: DateTime.fromObject({
+    year: 2000,
+    ...endAt,
+  }).toISO(),
+})
 
 describe("useEventTiming", () => {
   it("returns 'Closed' when everything defaults to now", () => {
-    expect(
-      renderHook({
-        currentTime: { seconds: 0 },
-        startAt: { seconds: 0 },
-        endAt: { seconds: 0 },
-      })
-    ).toStrictEqual({
+    const { result } = renderHook(() =>
+      useEventTiming(
+        makeObj({
+          currentTime: { seconds: 0 },
+          startAt: { seconds: 0 },
+          endAt: { seconds: 0 },
+        })
+      )
+    )
+    expect(result.current).toStrictEqual({
       closesSoon: false,
       closesToday: false,
       daysTilEnd: 0,
@@ -71,13 +58,16 @@ describe("useEventTiming", () => {
   })
 
   it("returns the correct values if the event is already over", () => {
-    expect(
-      renderHook({
-        currentTime: { seconds: 21 },
-        startAt: { seconds: 0 },
-        endAt: { seconds: 20 },
-      })
-    ).toStrictEqual({
+    const { result } = renderHook(() =>
+      useEventTiming(
+        makeObj({
+          currentTime: { seconds: 21 },
+          startAt: { seconds: 0 },
+          endAt: { seconds: 20 },
+        })
+      )
+    )
+    expect(result.current).toStrictEqual({
       closesSoon: false,
       closesToday: false,
       daysTilEnd: -0.000011574074074074073,
@@ -94,13 +84,16 @@ describe("useEventTiming", () => {
   })
 
   it("returns the correct value if the event is opening soon", () => {
-    expect(
-      renderHook({
-        currentTime: { seconds: 0 },
-        startAt: { seconds: 10 },
-        endAt: { seconds: 20 },
-      })
-    ).toStrictEqual({
+    const { result } = renderHook(() =>
+      useEventTiming(
+        makeObj({
+          currentTime: { seconds: 0 },
+          startAt: { seconds: 10 },
+          endAt: { seconds: 20 },
+        })
+      )
+    )
+    expect(result.current).toStrictEqual({
       closesSoon: false,
       closesToday: true,
       daysTilEnd: 0.0002314814814814815,
@@ -117,13 +110,16 @@ describe("useEventTiming", () => {
   })
 
   it("returns the correct values if the event is ending soon", () => {
-    expect(
-      renderHook({
-        currentTime: { seconds: 10 },
-        startAt: { seconds: 0 },
-        endAt: { day: 2, seconds: 10 },
-      })
-    ).toStrictEqual({
+    const { result } = renderHook(() =>
+      useEventTiming(
+        makeObj({
+          currentTime: { seconds: 10 },
+          startAt: { seconds: 0 },
+          endAt: { day: 2, seconds: 10 },
+        })
+      )
+    )
+    expect(result.current).toStrictEqual({
       closesSoon: true,
       closesToday: false,
       daysTilEnd: 1,
@@ -140,13 +136,16 @@ describe("useEventTiming", () => {
   })
 
   it("returns the correct values if the event is ending today", () => {
-    expect(
-      renderHook({
-        currentTime: { seconds: 10 },
-        startAt: { seconds: 0 },
-        endAt: { seconds: 20 },
-      })
-    ).toStrictEqual({
+    const { result } = renderHook(() =>
+      useEventTiming(
+        makeObj({
+          currentTime: { seconds: 10 },
+          startAt: { seconds: 0 },
+          endAt: { seconds: 20 },
+        })
+      )
+    )
+    expect(result.current).toStrictEqual({
       closesSoon: false,
       closesToday: true,
       daysTilEnd: 0.00011574074074074075,
