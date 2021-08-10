@@ -235,3 +235,14 @@ Once we want to use react-native-push-notification on iOS
 This is happening because react-native-push-notification requires @react-native-community/push-notification-ios. We are not
 adding this dependency at this time because it is unnecessary and we do not use react-native-push-notification on iOS. Also,
 we do not want unnecessary conflicts between our native push notification implementation and @react-native-community/push-notification-ios's.
+
+## `@testing-library/react-native` patch
+
+#### When can we remove this:
+
+When we upgrade to v8, or a v7 that has https://github.com/callstack/react-native-testing-library/pull/697 merged in.
+
+#### Explanation/Context:
+
+We tried to add the library in https://github.com/artsy/eigen/pull/5197, and 7.2.0 was giving type errors because of the missing `: void` in our patch.
+There is an issue https://github.com/callstack/react-native-testing-library/issues/708 and the fix https://github.com/callstack/react-native-testing-library/pull/697, and we just took the fix and used it as a patch, so we don't have to upgrade to v8.0.0-rc.0, which is the latest v8 out currently.
