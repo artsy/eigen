@@ -274,30 +274,28 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="telephoneNumber"
               />
 
-              <Theme override={serifOnly}>
-                <ScreenDimensionsContext.Consumer>
-                  {({ height }) => (
-                    <Flex mb={4}>
-                      <CountrySelect
-                        maxModalHeight={height * 0.95}
-                        onSelectValue={(value) => {
-                          this.onCountrySelected({
-                            shortName: value,
-                            longName: COUNTRY_SELECT_OPTIONS.find((opt) => opt.value === value)!.label,
-                          } as Country)
-                        }}
-                        value={this.state.values.country?.shortName}
-                        hasError={!!errorForCountry}
-                      />
-                      {!!errorForCountry && (
-                        <Sans size="2" color="red100">
-                          {errorForCountry}
-                        </Sans>
-                      )}
-                    </Flex>
-                  )}
-                </ScreenDimensionsContext.Consumer>
-              </Theme>
+              <ScreenDimensionsContext.Consumer>
+                {({ height }) => (
+                  <Flex mb={4}>
+                    <CountrySelect
+                      maxModalHeight={height * 0.95}
+                      onSelectValue={(value) => {
+                        this.onCountrySelected({
+                          shortName: value,
+                          longName: COUNTRY_SELECT_OPTIONS.find((opt) => opt.value === value)!.label,
+                        } as Country)
+                      }}
+                      value={this.state.values.country?.shortName}
+                      hasError={!!errorForCountry}
+                    />
+                    {!!errorForCountry && (
+                      <Sans size="2" color="red100">
+                        {errorForCountry}
+                      </Sans>
+                    )}
+                  </Flex>
+                )}
+              </ScreenDimensionsContext.Consumer>
 
               <Button block width={100} onPress={() => this.onSubmit()}>
                 Add billing address
@@ -336,41 +334,4 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
     return isPhoneX ? 15 : 0
   }
-}
-
-const serifOnly = {
-  fontFamily: {
-    sans: {
-      regular: {
-        normal: "ReactNativeAGaramondPro-Regular",
-        italic: "ReactNativeAGaramondPro-Italic",
-      },
-      medium: {
-        normal: "ReactNativeAGaramondPro-Regular",
-        italic: "ReactNativeAGaramondPro-Italic",
-      },
-      semibold: {
-        normal: "ReactNativeAGaramondPro-Regular",
-        italic: "ReactNativeAGaramondPro-Regular",
-      },
-    },
-    serif: {
-      regular: {
-        normal: "ReactNativeAGaramondPro-Regular",
-        italic: "ReactNativeAGaramondPro-Italic",
-      },
-      medium: {
-        normal: null,
-        italic: null,
-      },
-      semibold: {
-        normal: "ReactNativeAGaramondPro-Semibold",
-        italic: null,
-      },
-    },
-  },
-  fonts: {
-    sans: "ReactNativeAGaramondPro-Regular",
-    serif: "ReactNativeAGaramondPro-Regular",
-  },
 }

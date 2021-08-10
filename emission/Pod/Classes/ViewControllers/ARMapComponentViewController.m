@@ -4,8 +4,8 @@
 @implementation ARMapComponentViewController
 
 + (void)initialize {
-    UIColor *purple100 = [UIColor colorWithRed:110.0f/255.0f green:30.0f/255.0f blue:255.0f/255.0f alpha:1.0f];
-    [[RCTMGLMapView appearanceWhenContainedInInstancesOfClasses:@[self]] setTintColor:purple100];
+    UIColor *blue100 = [UIColor colorWithRed:16.0f/255.0f green:35.0f/255.0f blue:215.0f/255.0f alpha:1.0f];
+    [[RCTMGLMapView appearanceWhenContainedInInstancesOfClasses:@[self]] setTintColor:blue100];
 }
 
 - (instancetype)init

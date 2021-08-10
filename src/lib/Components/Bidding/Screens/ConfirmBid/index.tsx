@@ -578,8 +578,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 block
                 width={100}
                 disabled={!this.canPlaceBid()}
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                onPress={this.canPlaceBid() ? () => this.placeBid() : null}
+                onPress={this.canPlaceBid() ? () => this.placeBid() : undefined}
               >
                 Bid
               </Button>

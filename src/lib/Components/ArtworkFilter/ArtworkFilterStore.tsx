@@ -284,6 +284,11 @@ export const selectedOptionsUnion = ({
       paramValue: "-partner_updated_at",
       displayText: "Default",
     },
+    tagArtwork: {
+      paramName: FilterParamName.sort,
+      paramValue: "-partner_updated_at",
+      displayText: "Default",
+    },
   }[filterType]
 
   const defaultFilters: FilterArray = [defaultSortFilter, ...DEFAULT_FILTERS]

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash bf2613dbb4971580a649f4750eea1e65 */
+/* @relayHash 46b093fec44bc540bc991a0597186bef */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -73,6 +73,18 @@ fragment ConversationCTA_conversation on Conversation {
       __typename
       ... on Artwork {
         artworkID: internalID
+      }
+      ... on Node {
+        __isNode: __typename
+        id
+      }
+    }
+    liveArtwork {
+      __typename
+      ... on Artwork {
+        isOfferableFromInquiry
+        internalID
+        __typename
       }
       ... on Node {
         __isNode: __typename
@@ -534,9 +546,15 @@ v32 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
-  "type": "Image"
+  "type": "ConversationItemType"
 },
 v33 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Image"
+},
+v34 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
@@ -728,6 +746,34 @@ return {
                         "type": "Show",
                         "abstractKey": null
                       }
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": null,
+                    "kind": "LinkedField",
+                    "name": "liveArtwork",
+                    "plural": false,
+                    "selections": [
+                      (v1/*: any*/),
+                      {
+                        "kind": "InlineFragment",
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "isOfferableFromInquiry",
+                            "storageKey": null
+                          },
+                          (v4/*: any*/)
+                        ],
+                        "type": "Artwork",
+                        "abstractKey": null
+                      },
+                      (v8/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -1190,7 +1236,7 @@ return {
     ]
   },
   "params": {
-    "id": "bf2613dbb4971580a649f4750eea1e65",
+    "id": "46b093fec44bc540bc991a0597186bef",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -1255,18 +1301,13 @@ return {
           "plural": true,
           "type": "ConversationItem"
         },
-        "me.conversation.items.item": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "ConversationItemType"
-        },
+        "me.conversation.items.item": (v32/*: any*/),
         "me.conversation.items.item.__isNode": (v23/*: any*/),
         "me.conversation.items.item.__typename": (v23/*: any*/),
         "me.conversation.items.item.artistNames": (v30/*: any*/),
         "me.conversation.items.item.artworkID": (v24/*: any*/),
-        "me.conversation.items.item.coverImage": (v32/*: any*/),
-        "me.conversation.items.item.coverImage.aspectRatio": (v33/*: any*/),
+        "me.conversation.items.item.coverImage": (v33/*: any*/),
+        "me.conversation.items.item.coverImage.aspectRatio": (v34/*: any*/),
         "me.conversation.items.item.coverImage.url": (v30/*: any*/),
         "me.conversation.items.item.date": (v30/*: any*/),
         "me.conversation.items.item.fair": {
@@ -1279,8 +1320,8 @@ return {
         "me.conversation.items.item.fair.name": (v30/*: any*/),
         "me.conversation.items.item.href": (v30/*: any*/),
         "me.conversation.items.item.id": (v24/*: any*/),
-        "me.conversation.items.item.image": (v32/*: any*/),
-        "me.conversation.items.item.image.aspectRatio": (v33/*: any*/),
+        "me.conversation.items.item.image": (v33/*: any*/),
+        "me.conversation.items.item.image.aspectRatio": (v34/*: any*/),
         "me.conversation.items.item.image.url": (v30/*: any*/),
         "me.conversation.items.item.internalID": (v24/*: any*/),
         "me.conversation.items.item.name": (v30/*: any*/),
@@ -1296,6 +1337,12 @@ return {
         "me.conversation.items.item.partner.name": (v30/*: any*/),
         "me.conversation.items.item.slug": (v24/*: any*/),
         "me.conversation.items.item.title": (v30/*: any*/),
+        "me.conversation.items.liveArtwork": (v32/*: any*/),
+        "me.conversation.items.liveArtwork.__isNode": (v23/*: any*/),
+        "me.conversation.items.liveArtwork.__typename": (v23/*: any*/),
+        "me.conversation.items.liveArtwork.id": (v24/*: any*/),
+        "me.conversation.items.liveArtwork.internalID": (v24/*: any*/),
+        "me.conversation.items.liveArtwork.isOfferableFromInquiry": (v28/*: any*/),
         "me.conversation.lastMessageID": (v30/*: any*/),
         "me.conversation.messagesConnection": {
           "enumValues": null,

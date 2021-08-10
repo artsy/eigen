@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 79884a1fef91998536dafd61ec3ecfa8 */
+/* @relayHash f291072a2b3d2c59383fb5d84b6e340f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -111,6 +111,7 @@ query ArtistAboveTheFoldQuery(
 fragment ArtistArtworks_artist_2VV6jB on Artist {
   id
   slug
+  name
   internalID
   artworks: filterArtworksConnection(first: 10, input: $input, aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE]) {
     aggregations {
@@ -845,7 +846,7 @@ return {
     ]
   },
   "params": {
-    "id": "79884a1fef91998536dafd61ec3ecfa8",
+    "id": "f291072a2b3d2c59383fb5d84b6e340f",
     "metadata": {},
     "name": "ArtistAboveTheFoldQuery",
     "operationKind": "query",

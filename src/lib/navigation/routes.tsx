@@ -142,6 +142,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/auction-faq", "AuctionFAQ"),
     new RouteMatcher("/auction/:saleID/bid/:artworkID", "AuctionBidArtwork"),
     new RouteMatcher("/gene/:geneID", "Gene"),
+    new RouteMatcher("/tag/:tagID", "Tag"),
     new RouteMatcher("/show/:showID", "Show"),
     new RouteMatcher("/show/:showID/info", "ShowMoreInfo"),
 
@@ -219,6 +220,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/city-bmw-list/:citySlug", "CityBMWList"),
     new RouteMatcher("/make-offer/:artworkID", "MakeOfferModal"),
     new RouteMatcher("/user/purchases/:orderID", "OrderDetails"),
+    new RouteMatcher("/saved-search-alerts/list", "SavedSearchAlertsList"),
     unsafe_getFeatureFlag("AROptionsUseReactNativeWebView")
       ? webViewRoute("/orders/:orderID", { mimicBrowserBackButton: false })
       : new RouteMatcher("/orders/:orderID", "Checkout"),

@@ -1,10 +1,11 @@
-import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.graphql"
 import { SavedSearchButtonTestsQuery } from "__generated__/SavedSearchButtonTestsQuery.graphql"
-import { mockEnvironmentPayload } from 'lib/tests/mockEnvironmentPayload'
-import { renderWithWrappers } from 'lib/tests/renderWithWrappers'
-import { Button } from 'palette'
+import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Button } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { SavedSearchButtonFragmentContainer as SavedSearchButton } from "../SavedSearchButton"
 
@@ -21,7 +22,7 @@ describe("SavedSearchButton", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  const TestRenderer = ({ attributes = mockedAttributes }) => {
+  const TestRenderer = ({ attributes = mockedAttributes, onCreateAlertPress = jest.fn() }) => {
     return (
       <QueryRenderer<SavedSearchButtonTestsQuery>
         environment={mockEnvironment}
@@ -36,7 +37,8 @@ describe("SavedSearchButton", () => {
           <SavedSearchButton
             {...props}
             loading={props === null && error === null}
-            attributes={attributes}
+            isEmptyCriteria={Object.keys(attributes).length === 0}
+            onCreateAlertPress={onCreateAlertPress}
           />
         )}
         variables={{
@@ -70,11 +72,26 @@ describe("SavedSearchButton", () => {
     mockEnvironmentPayload(mockEnvironment, {
       Me: () => ({
         savedSearch: {
-          internalID: 'internalID'
+          internalID: "internalID",
         },
       }),
     })
 
     expect(tree.root.findByType(Button).props.disabled).toBe(true)
+  })
+
+  it("should call `onPress` handler when button is pressed", () => {
+    const onPress = jest.fn()
+    const tree = renderWithWrappers(<TestRenderer onCreateAlertPress={onPress} />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Me: () => ({
+        savedSearch: null,
+      }),
+    })
+
+    act(() => tree.root.findByType(Button).props.onPress())
+
+    expect(onPress).toHaveBeenCalled()
   })
 })

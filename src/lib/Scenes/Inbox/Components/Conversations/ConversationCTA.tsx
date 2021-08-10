@@ -4,7 +4,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CTAPopUp } from "./CTAPopUp"
-import { OpenInquiryModalButtonQueryRenderer } from "./OpenInquiryModalButton"
+import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
 import { ReviewOfferButton, ReviewOfferCTAKind } from "./ReviewOfferButton"
 
 interface Props {
@@ -13,21 +13,23 @@ interface Props {
 }
 
 export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
-  // Determine whether we have a conversation about an artwork
-  const firstItem = conversation?.items?.[0]?.item
-  const artwork = firstItem?.__typename === "Artwork" ? firstItem : null
-  const artworkID = artwork?.artworkID
+  const liveArtwork = conversation?.items?.[0]?.liveArtwork
+
+  const artwork = liveArtwork?.__typename === "Artwork" ? liveArtwork : null
+  const artworkID = artwork?.internalID
+  const isOfferableFromInquiry = artwork?.isOfferableFromInquiry
 
   let CTA: JSX.Element | null = null
 
   const inquiryCheckoutEnabled = unsafe_getFeatureFlag("AROptionsInquiryCheckout")
 
-  if (inquiryCheckoutEnabled) {
+  if (inquiryCheckoutEnabled && isOfferableFromInquiry) {
     // artworkID is guaranteed to be present if `isOfferableFromInquiry` was present.
     const conversationID = conversation.conversationID!
+
     const activeOrder = extractNodes(conversation.activeOrders)[0]
     if (!activeOrder) {
-      CTA = <OpenInquiryModalButtonQueryRenderer artworkID={artworkID!} conversationID={conversationID} />
+      CTA = <OpenInquiryModalButton artworkID={artworkID!} conversationID={conversationID} />
     } else {
       const { lastTransactionFailed, state, lastOffer } = activeOrder
 
@@ -77,6 +79,13 @@ export const ConversationCTAFragmentContainer = createFragmentContainer(Conversa
           __typename
           ... on Artwork {
             artworkID: internalID
+          }
+        }
+        liveArtwork {
+          ... on Artwork {
+            isOfferableFromInquiry
+            internalID
+            __typename
           }
         }
       }

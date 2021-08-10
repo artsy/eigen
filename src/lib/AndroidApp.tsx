@@ -17,8 +17,10 @@ import { ModalStack } from "./navigation/ModalStack"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
+import { createAllChannels, savePendingToken } from "./utils/PushNotification"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { AnalyticsConstants } from "./utils/track/constants"
+import { useInitialNotification } from "./utils/useInitialNotification"
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
@@ -42,8 +44,10 @@ const Main: React.FC<{}> = track()(({}) => {
   useStripeConfig()
   useWebViewCookies()
   useDeepLinks()
+  useInitialNotification()
 
   useEffect(() => {
+    createAllChannels()
     const scheme = Appearance.getColorScheme()
     // null id means keep whatever id was there before. we only update the user interface info here.
     SegmentTrackingProvider.identify?.(null, {
@@ -84,6 +88,12 @@ const Main: React.FC<{}> = track()(({}) => {
       }, 500)
     }
   }, [isHydrated])
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      savePendingToken()
+    }
+  }, [isLoggedIn])
 
   if (!isHydrated) {
     return <View />

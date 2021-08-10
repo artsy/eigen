@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 01946c90063b48d4d5e033e0550e6b11 */
+/* @relayHash be4ad86be3187ab1bfae0a3586cb2272 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -73,6 +73,18 @@ fragment ConversationCTA_conversation on Conversation {
       __typename
       ... on Artwork {
         artworkID: internalID
+      }
+      ... on Node {
+        __isNode: __typename
+        id
+      }
+    }
+    liveArtwork {
+      __typename
+      ... on Artwork {
+        isOfferableFromInquiry
+        internalID
+        __typename
       }
       ... on Node {
         __isNode: __typename
@@ -635,6 +647,34 @@ return {
                       }
                     ],
                     "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": null,
+                    "kind": "LinkedField",
+                    "name": "liveArtwork",
+                    "plural": false,
+                    "selections": [
+                      (v1/*: any*/),
+                      {
+                        "kind": "InlineFragment",
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "isOfferableFromInquiry",
+                            "storageKey": null
+                          },
+                          (v4/*: any*/)
+                        ],
+                        "type": "Artwork",
+                        "abstractKey": null
+                      },
+                      (v8/*: any*/)
+                    ],
+                    "storageKey": null
                   }
                 ],
                 "storageKey": null
@@ -1095,7 +1135,7 @@ return {
     ]
   },
   "params": {
-    "id": "01946c90063b48d4d5e033e0550e6b11",
+    "id": "be4ad86be3187ab1bfae0a3586cb2272",
     "metadata": {},
     "name": "ConversationQuery",
     "operationKind": "query",

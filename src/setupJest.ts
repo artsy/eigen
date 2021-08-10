@@ -6,7 +6,7 @@
 // declare var babelHelpers: any
 // Object.assign(babelHelpers, { applyDecoratedDescriptor, initializerDefineProperty })
 // import "@babel/runtime"
-
+import "@testing-library/jest-native/extend-expect"
 import chalk from "chalk"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Enzyme from "enzyme"
@@ -44,6 +44,10 @@ const trackEvent = jest.fn()
 jest.mock("lib/utils/track/providers", () => ({
   ...jest.requireActual("lib/utils/track/providers"),
   postEventToProviders: jest.fn(),
+}))
+
+jest.mock("lib/relay/createEnvironment", () => ({
+  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
 }))
 
 jest.mock("tipsi-stripe", () => ({
@@ -85,6 +89,7 @@ jest.mock("react-native-device-info", () => ({
   getVersion: jest.fn(),
   getModel: jest.fn(),
   getUserAgentSync: jest.fn(),
+  getDeviceType: jest.fn(),
 }))
 
 jest.mock("rn-fetch-blob", () => ({
@@ -392,6 +397,18 @@ jest.mock("./lib/utils/useScreenDimensions", () => {
   }
 })
 
+jest.mock("react-native-safe-area-context", () => {
+  return {
+    ...jest.requireActual("react-native-safe-area-context"),
+    useSafeAreaFrame: () => ({
+      width: 380,
+      height: 550,
+      x: 0,
+      y: 0,
+    }),
+  }
+})
+
 jest.mock("@react-native-community/async-storage", () => {
   let state: any = {}
   return {
@@ -540,4 +557,6 @@ jest.mock("react-native-push-notification", () => ({
   addEventListener: jest.fn(),
   requestPermissions: jest.fn(),
   checkPermissions: jest.fn(),
+  createChannel: jest.fn(),
+  localNotification: jest.fn(),
 }))

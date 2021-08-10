@@ -1,7 +1,6 @@
 import { FilterScreen } from "lib/Components/ArtworkFilter"
 import { capitalize, compact, groupBy, isEqual, isUndefined, pick, pickBy, sortBy } from "lodash"
 import { LOCALIZED_UNIT } from "./Filters/helpers"
-import { SearchCriteriaAttributes } from "./SavedSearch/types"
 
 export enum FilterDisplayName {
   // artist = "Artists",
@@ -80,6 +79,7 @@ export const getSortDefaultValueByFilterType = (filterType: FilterType) => {
     showArtwork: "partner_show_position",
     auctionResult: "DATE_DESC",
     geneArtwork: "-partner_updated_at",
+    tagArtwork: "-partner_updated_at",
   }[filterType]
 }
 
@@ -186,7 +186,7 @@ export interface FilterData {
 }
 export type FilterArray = ReadonlyArray<FilterData>
 
-export type FilterType = "artwork" | "saleArtwork" | "showArtwork" | "auctionResult" | "geneArtwork"
+export type FilterType = "artwork" | "saleArtwork" | "showArtwork" | "auctionResult" | "geneArtwork" | "tagArtwork"
 
 export interface FilterCounts {
   total: number | null
@@ -245,6 +245,11 @@ const DEFAULT_GENE_ARTWORK_PARAMS = {
   medium: "*",
 } as FilterParams
 
+const DEFAULT_TAG_ARTWORK_PARAMS = {
+  ...DEFAULT_ARTWORKS_PARAMS,
+  sort: "-partner_updated_at",
+} as FilterParams
+
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams, filterType: FilterType) => {
   const groupedFilters = groupBy(appliedFilters, "paramName")
 
@@ -270,6 +275,7 @@ const getDefaultParamsByType = (filterType: FilterType) => {
     showArtwork: DEFAULT_SHOW_ARTWORKS_PARAMS,
     auctionResult: DEFAULT_AUCTION_RESULT_PARAMS,
     geneArtwork: DEFAULT_GENE_ARTWORK_PARAMS,
+    tagArtwork: DEFAULT_TAG_ARTWORK_PARAMS,
   }[filterType]
 }
 
@@ -295,6 +301,21 @@ export const filterArtworksParams = (appliedFilters: FilterArray, filterType: Fi
   return paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams }, filterType)
 }
 
+export const extractCustomSizeLabel = (selectedOptions: FilterArray) => {
+  const selectedDimensionRange = selectedOptions.find(({ paramName }) => paramName === FilterParamName.dimensionRange)
+
+  // Handle custom range
+  if (selectedDimensionRange?.displayText === "Custom size") {
+    const selectedCustomWidth = selectedOptions.find(({ paramName }) => paramName === FilterParamName.width)
+    const selectedCustomHeight = selectedOptions.find(({ paramName }) => paramName === FilterParamName.height)
+    return (
+      [selectedCustomWidth?.displayText, selectedCustomHeight?.displayText].filter(Boolean).join(" × ") + LOCALIZED_UNIT
+    )
+  }
+
+  // Intentionally doesn't return anything
+}
+
 /**
  * Formats the display for the Filter Modal "home" screen.
  */
@@ -310,19 +331,11 @@ export const selectedOption = ({
   aggregations: Aggregations
 }) => {
   if (filterScreen === "dimensionRange") {
-    const selectedDimensionRange = selectedOptions.find(({ paramName }) => paramName === FilterParamName.dimensionRange)
+    const label = extractCustomSizeLabel(selectedOptions)
 
-    // Handle custom range
-    if (selectedDimensionRange?.displayText === "Custom size") {
-      const selectedCustomWidth = selectedOptions.find(({ paramName }) => paramName === FilterParamName.width)
-      const selectedCustomHeight = selectedOptions.find(({ paramName }) => paramName === FilterParamName.height)
-      return (
-        [selectedCustomWidth?.displayText, selectedCustomHeight?.displayText].filter(Boolean).join(" × ") +
-        LOCALIZED_UNIT
-      )
+    if (label) {
+      return label
     }
-
-    // Intentionally doesn't return anything
   }
 
   if (filterScreen === "categories") {
@@ -461,6 +474,7 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   majorPeriods: "MAJOR_PERIOD",
   materialsTerms: "MATERIALS_TERMS",
   medium: "MEDIUM",
+  additionalGeneIDs: "MEDIUM",
   partnerIDs: "PARTNER",
   priceRange: "PRICE_RANGE",
 }
@@ -568,39 +582,6 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
     "tagID",
     "width",
   ])
-}
-
-export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams) => {
-  const input: SearchCriteriaAttributes = {}
-  const allowedKeys = pick(filterParams, [
-    "artistID",
-    "locationCities",
-    "colors",
-    "partnerIDs",
-    "additionalGeneIDs",
-    "attributionClass",
-    "majorPeriods",
-    "acquireable",
-    "atAuction",
-    "inquireableOnly",
-    "offerable",
-    "materialsTerms",
-    "priceRange",
-    "dimensionRange",
-    "height",
-    "width",
-  ])
-
-  for (const key of Object.keys(allowedKeys)) {
-    const value = filterParams[key as FilterParamName]
-    const defaultValue = defaultCommonFilterOptions[key as FilterParamName]
-
-    if (!isEqual(defaultValue, value)) {
-      input[key as keyof SearchCriteriaAttributes] = value as any
-    }
-  }
-
-  return input
 }
 
 export const getParamsForInputByFilterType = (

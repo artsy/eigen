@@ -1,17 +1,13 @@
 import { tappedMakeOffer } from "@artsy/cohesion"
-import { captureMessage } from "@sentry/react-native"
-import { OpenInquiryModalButtonQuery } from "__generated__/OpenInquiryModalButtonQuery.graphql"
 import { navigate } from "lib/navigation/navigate"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { Button, CheckCircleIcon, Flex, Text } from "palette"
 import React from "react"
-import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ShadowSeparator } from "../ShadowSeparator"
 
 export interface OpenInquiryModalButtonProps {
   artworkID: string
-  conversationID: string | null | undefined
+  conversationID: string
 }
 
 export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ artworkID, conversationID }) => {
@@ -57,42 +53,5 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ 
         </Button>
       </Flex>
     </>
-  )
-}
-
-export const OpenInquiryModalButtonQueryRenderer: React.FC<{
-  artworkID: string
-  conversationID: string
-}> = ({ artworkID, conversationID }) => {
-  return (
-    <QueryRenderer<OpenInquiryModalButtonQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query OpenInquiryModalButtonQuery($artworkID: String!) {
-          artwork(id: $artworkID) {
-            isOfferableFromInquiry
-          }
-        }
-      `}
-      variables={{
-        artworkID,
-      }}
-      cacheConfig={{ force: true }}
-      render={({ props, error }): null | JSX.Element => {
-        if (error) {
-          // A typical scenario an error happens would be 404 (artwork deleted, unpublished, etc.). This captures the
-          // error in Sentry and simply doesn't render to button for now. We can be more specific about particular
-          // errors and also improve the UX through some messaging.
-          captureMessage(error.stack!)
-          return null
-        }
-
-        if (props?.artwork?.isOfferableFromInquiry) {
-          return <OpenInquiryModalButton artworkID={artworkID} conversationID={conversationID} />
-        } else {
-          return null
-        }
-      }}
-    />
   )
 }

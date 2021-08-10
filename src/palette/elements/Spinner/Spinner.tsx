@@ -1,4 +1,4 @@
-import { themeGet } from "@styled-system/theme-get"
+import { useColor } from "palette"
 import React, { useEffect, useMemo } from "react"
 import { Animated, Easing, ViewProps } from "react-native"
 import styled from "styled-components/native"
@@ -21,7 +21,7 @@ export interface SpinnerProps extends ViewProps {
  * Returns width and height of spinner based on size
  * @param props
  */
-export const getSize = (props: SpinnerProps) => {
+export const getSize = (props: SpinnerProps | BarProps) => {
   const base = { width: 25, height: 6 }
 
   switch (props.size) {
@@ -51,7 +51,8 @@ export const getSize = (props: SpinnerProps) => {
 /**
  * Spinner component for React Native
  */
-export const Spinner: React.FC<SpinnerProps> = ({ size = "medium", color = "black100", ...rest }) => {
+export const Spinner: React.FC<SpinnerProps> = ({ size = "medium", color: theColor = "black100", ...rest }) => {
+  const color = useColor()
   const rotation = useMemo(() => new Animated.Value(0), [])
 
   const startRotation = () => {
@@ -86,20 +87,21 @@ export const Spinner: React.FC<SpinnerProps> = ({ size = "medium", color = "blac
     rest.style,
   ]
 
-  return <Bar size={size} color={color} {...rest} style={style} />
+  return <Bar size={size} color={color(theColor)} {...rest} style={style} />
 }
 
+type BarProps = Omit<SpinnerProps, "color"> & { color?: string }
+
 /** Generic Spinner component */
-const Bar = styled(Animated.View)<SpinnerProps>`
+const Bar = styled(Animated.View)<BarProps>`
   background: black;
   position: absolute;
 
   ${(props) => {
     const { width, height } = getSize(props)
-    const propColorString = `colors.${props.color}`
 
     return `
-      background: ${themeGet(propColorString)};
+      background: ${props.color};
       width: ${width}px;
       height: ${height}px;
     `

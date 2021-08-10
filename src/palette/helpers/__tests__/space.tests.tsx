@@ -37,7 +37,7 @@ describe("space", () => {
     )
     const tree = renderWithWrappers(<TestComponent />).root
     const margins = tree.findAllByType(View).map((view) => view.props.style.marginLeft)
-    expect(margins[0]).toBe(3)
+    expect(margins[0]).toBe(5) // this is because we have v2 merged with v3 by default, so 0.3 maps to 0.5
     expect(margins[1]).toBe(60)
   })
 
@@ -55,22 +55,7 @@ describe("space", () => {
     )
     const tree = renderWithWrappers(<TestComponent />).root
     const margins = tree.findAllByType(View).map((view) => view.props.style.marginLeft)
-    expect(margins[0]).toBe(undefined)
+    expect(margins[0]).toBe(5) // for now we keep v2 accessible, even in v3
     expect(margins[1]).toBe(20)
-  })
-
-  it("returns the correct space with a Theme provider with override", () => {
-    const TestComponent = () => (
-      <GlobalStoreProvider>
-        <Theme theme="v3" override={{ space: { "1": 12 } }}>
-          <>
-            <SpaceView name="1" />
-          </>
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    const tree = renderWithWrappers(<TestComponent />).root
-    const margins = tree.findAllByType(View).map((view) => view.props.style.marginLeft)
-    expect(margins[0]).toBe(12)
   })
 })
