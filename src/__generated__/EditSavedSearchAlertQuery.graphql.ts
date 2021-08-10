@@ -1,20 +1,19 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 48cfa32fab527297991087dd6738d72d */
+/* @relayHash 529a385beeebd78309eb1f0ac2528f74 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type EditSavedSearchAlertQueryVariables = {
-    savedSearchAlertId: string;
     artistID: string;
 };
 export type EditSavedSearchAlertQueryResponse = {
-    readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"EditSavedSearchAlert_me">;
-    } | null;
     readonly artist: {
         readonly " $fragmentRefs": FragmentRefs<"EditSavedSearchAlert_artist">;
+    } | null;
+    readonly artworksConnection: {
+        readonly " $fragmentRefs": FragmentRefs<"EditSavedSearchAlert_artworksConnection">;
     } | null;
 };
 export type EditSavedSearchAlertQuery = {
@@ -26,15 +25,14 @@ export type EditSavedSearchAlertQuery = {
 
 /*
 query EditSavedSearchAlertQuery(
-  $savedSearchAlertId: ID!
   $artistID: String!
 ) {
-  me {
-    ...EditSavedSearchAlert_me_4i8ECC
-    id
-  }
   artist(id: $artistID) {
     ...EditSavedSearchAlert_artist
+    id
+  }
+  artworksConnection(first: 0, artistID: $artistID, acquireable: true, aggregations: [ARTIST, LOCATION_CITY, MATERIALS_TERMS, MEDIUM, PARTNER]) {
+    ...EditSavedSearchAlert_artworksConnection
     id
   }
 }
@@ -42,78 +40,71 @@ query EditSavedSearchAlertQuery(
 fragment EditSavedSearchAlert_artist on Artist {
   internalID
   name
-  filterArtworksConnection(first: 1, aggregations: [LOCATION_CITY, MATERIALS_TERMS, MEDIUM, PARTNER]) {
-    aggregations {
-      slice
-      counts {
-        count
-        name
-        value
-      }
-    }
-    id
-  }
 }
 
-fragment EditSavedSearchAlert_me_4i8ECC on Me {
-  savedSearch(id: $savedSearchAlertId) {
-    internalID
-    acquireable
-    additionalGeneIDs
-    artistID
-    atAuction
-    attributionClass
-    colors
-    dimensionRange
-    height
-    inquireableOnly
-    locationCities
-    majorPeriods
-    materialsTerms
-    offerable
-    partnerIDs
-    priceRange
-    userAlertSettings {
+fragment EditSavedSearchAlert_artworksConnection on FilterArtworksConnection {
+  aggregations {
+    slice
+    counts {
+      count
       name
+      value
     }
-    width
   }
 }
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "artistID"
-},
-v1 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "savedSearchAlertId"
-},
-v2 = [
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "artistID"
+  }
+],
+v1 = [
   {
     "kind": "Variable",
     "name": "id",
     "variableName": "artistID"
   }
 ],
+v2 = [
+  {
+    "kind": "Literal",
+    "name": "acquireable",
+    "value": true
+  },
+  {
+    "kind": "Literal",
+    "name": "aggregations",
+    "value": [
+      "ARTIST",
+      "LOCATION_CITY",
+      "MATERIALS_TERMS",
+      "MEDIUM",
+      "PARTNER"
+    ]
+  },
+  {
+    "kind": "Variable",
+    "name": "artistID",
+    "variableName": "artistID"
+  },
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 0
+  }
+],
 v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-},
-v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v5 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -122,39 +113,14 @@ v5 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": [
-      (v0/*: any*/),
-      (v1/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "EditSavedSearchAlertQuery",
     "selections": [
       {
         "alias": null,
-        "args": null,
-        "concreteType": "Me",
-        "kind": "LinkedField",
-        "name": "me",
-        "plural": false,
-        "selections": [
-          {
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "savedSearchAlertId",
-                "variableName": "savedSearchAlertId"
-              }
-            ],
-            "kind": "FragmentSpread",
-            "name": "EditSavedSearchAlert_me"
-          }
-        ],
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": (v2/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "Artist",
         "kind": "LinkedField",
         "name": "artist",
@@ -167,6 +133,22 @@ return {
           }
         ],
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": (v2/*: any*/),
+        "concreteType": "FilterArtworksConnection",
+        "kind": "LinkedField",
+        "name": "artworksConnection",
+        "plural": false,
+        "selections": [
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "EditSavedSearchAlert_artworksConnection"
+          }
+        ],
+        "storageKey": null
       }
     ],
     "type": "Query",
@@ -174,257 +156,90 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [
-      (v1/*: any*/),
-      (v0/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "EditSavedSearchAlertQuery",
     "selections": [
       {
         "alias": null,
-        "args": null,
-        "concreteType": "Me",
+        "args": (v1/*: any*/),
+        "concreteType": "Artist",
         "kind": "LinkedField",
-        "name": "me",
+        "name": "artist",
         "plural": false,
         "selections": [
           {
             "alias": null,
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "id",
-                "variableName": "savedSearchAlertId"
-              }
-            ],
-            "concreteType": "SearchCriteria",
-            "kind": "LinkedField",
-            "name": "savedSearch",
-            "plural": false,
-            "selections": [
-              (v3/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "acquireable",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "additionalGeneIDs",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "artistID",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "atAuction",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "attributionClass",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "colors",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "dimensionRange",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "height",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "inquireableOnly",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "locationCities",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "majorPeriods",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "materialsTerms",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "offerable",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "partnerIDs",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "priceRange",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "SavedSearchUserAlertSettings",
-                "kind": "LinkedField",
-                "name": "userAlertSettings",
-                "plural": false,
-                "selections": [
-                  (v4/*: any*/)
-                ],
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "width",
-                "storageKey": null
-              }
-            ],
+            "args": null,
+            "kind": "ScalarField",
+            "name": "internalID",
             "storageKey": null
           },
-          (v5/*: any*/)
+          (v3/*: any*/),
+          (v4/*: any*/)
         ],
         "storageKey": null
       },
       {
         "alias": null,
         "args": (v2/*: any*/),
-        "concreteType": "Artist",
+        "concreteType": "FilterArtworksConnection",
         "kind": "LinkedField",
-        "name": "artist",
+        "name": "artworksConnection",
         "plural": false,
         "selections": [
-          (v3/*: any*/),
-          (v4/*: any*/),
           {
             "alias": null,
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "aggregations",
-                "value": [
-                  "LOCATION_CITY",
-                  "MATERIALS_TERMS",
-                  "MEDIUM",
-                  "PARTNER"
-                ]
-              },
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 1
-              }
-            ],
-            "concreteType": "FilterArtworksConnection",
+            "args": null,
+            "concreteType": "ArtworksAggregationResults",
             "kind": "LinkedField",
-            "name": "filterArtworksConnection",
-            "plural": false,
+            "name": "aggregations",
+            "plural": true,
             "selections": [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "ArtworksAggregationResults",
+                "kind": "ScalarField",
+                "name": "slice",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "AggregationCount",
                 "kind": "LinkedField",
-                "name": "aggregations",
+                "name": "counts",
                 "plural": true,
                 "selections": [
                   {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "slice",
+                    "name": "count",
                     "storageKey": null
                   },
+                  (v3/*: any*/),
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "AggregationCount",
-                    "kind": "LinkedField",
-                    "name": "counts",
-                    "plural": true,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "count",
-                        "storageKey": null
-                      },
-                      (v4/*: any*/),
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "value",
-                        "storageKey": null
-                      }
-                    ],
+                    "kind": "ScalarField",
+                    "name": "value",
                     "storageKey": null
                   }
                 ],
                 "storageKey": null
-              },
-              (v5/*: any*/)
+              }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"LOCATION_CITY\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\"],first:1)"
+            "storageKey": null
           },
-          (v5/*: any*/)
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "48cfa32fab527297991087dd6738d72d",
+    "id": "529a385beeebd78309eb1f0ac2528f74",
     "metadata": {},
     "name": "EditSavedSearchAlertQuery",
     "operationKind": "query",
@@ -432,5 +247,5 @@ return {
   }
 };
 })();
-(node as any).hash = '8f08531acecb830724fb3d8c6a08c958';
+(node as any).hash = 'beced6333b3263e678f5723b924333f6';
 export default node;

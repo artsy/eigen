@@ -1,14 +1,12 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
-import { EditSavedSearchAlertTestsQuery } from "__generated__/EditSavedSearchAlertTestsQuery.graphql"
 import { goBack } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { EditSavedSearchAlertFragmentContainer as EditSavedSearchAlert } from "../EditSavedSearchAlert"
+import { EditSavedSearchAlertQueryRenderer } from "../EditSavedSearchAlert"
 
 jest.unmock("react-relay")
 
@@ -20,32 +18,7 @@ describe("EditSavedSearchAlert", () => {
   })
 
   const TestRenderer = () => {
-    return (
-      <QueryRenderer<EditSavedSearchAlertTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query EditSavedSearchAlertTestsQuery($savedSearchAlertId: ID!, $artistID: String!) @relay_test_operation {
-            me {
-              ...EditSavedSearchAlert_me @arguments(savedSearchAlertId: $savedSearchAlertId)
-            }
-            artist(id: $artistID) {
-              ...EditSavedSearchAlert_artist
-            }
-          }
-        `}
-        render={({ props }) => {
-          if (props?.artist && props.me) {
-            return <EditSavedSearchAlert savedSearchAlertId="savedSearchAlertId" artist={props.artist} me={props.me} />
-          }
-
-          return null
-        }}
-        variables={{
-          savedSearchAlertId: "savedSearchAlertId",
-          artistID: "artistID",
-        }}
-      />
-    )
+    return <EditSavedSearchAlertQueryRenderer savedSearchAlertId="savedSearchAlertId" />
   }
 
   it("renders without throwing an error", () => {
@@ -53,6 +26,8 @@ describe("EditSavedSearchAlert", () => {
 
     mockEnvironmentPayload(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
+    })
+    mockEnvironmentPayload(mockEnvironment, {
       FilterArtworksConnection: () => filterArtworks,
     })
 
@@ -65,6 +40,8 @@ describe("EditSavedSearchAlert", () => {
 
     mockEnvironmentPayload(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
+    })
+    mockEnvironmentPayload(mockEnvironment, {
       FilterArtworksConnection: () => filterArtworks,
     })
 
