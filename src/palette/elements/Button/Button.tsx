@@ -20,15 +20,15 @@ import { Spinner } from "../Spinner"
 
 export type ButtonVariant = "fillDark" | "fillLight" | "fillGray" | "outline" | "text"
 
-export const defaultVariant: ButtonVariant = "fillDark"
+const defaultVariant: ButtonVariant = "fillDark"
 
-export type ButtonSize = "small" | "large"
+type ButtonSize = "small" | "large"
 
-export type ButtonIconPosition = "left" | "right"
+type ButtonIconPosition = "left" | "right"
 
-export const defaultSize: ButtonSize = "large"
+const defaultSize: ButtonSize = "large"
 
-export const defaultIconPosition: ButtonIconPosition = "left"
+const defaultIconPosition: ButtonIconPosition = "left"
 
 export interface ButtonProps extends ButtonBaseProps {
   children: ReactNode
