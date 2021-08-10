@@ -1,9 +1,15 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { navigate } from "lib/navigation/navigate"
+import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
 import { GlobalStore, unsafe_getUserAccessToken } from "lib/store/GlobalStore"
 import { PendingPushNotification } from "lib/store/PendingPushNotificationModel"
+import { Platform } from "react-native"
+import { getDeviceId } from "react-native-device-info"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
 import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "./AdminMenu"
+
+export const PUSH_NOTIFICATION_TOKEN = "PUSH_NOTIFICATION_TOKEN"
+export const HAS_PENDING_NOTIFICATION = "HAS_PENDING_NOTIFICATION"
 
 const MAX_ELAPSED_TAPPED_NOTIFICATION_TIME = 90 // seconds
 
@@ -16,6 +22,66 @@ export const CHANNELS = [
 ]
 
 type TypedNotification = Omit<ReceivedNotification, "userInfo"> & { title?: string }
+
+export const savePendingToken = async () => {
+  const hasPendingToken = await AsyncStorage.getItem(HAS_PENDING_NOTIFICATION)
+  const token = await AsyncStorage.getItem(PUSH_NOTIFICATION_TOKEN)
+  if (token && hasPendingToken === "true") {
+    const saved = await saveToken(token, true)
+    if (saved) {
+      await AsyncStorage.removeItem(HAS_PENDING_NOTIFICATION)
+    }
+  }
+}
+
+export const saveToken = (token: string, ignoreSameTokenCheck: boolean = false) => {
+  return new Promise<boolean>(async (resolve, reject) => {
+    const previousToken = await AsyncStorage.getItem(PUSH_NOTIFICATION_TOKEN)
+    if (token !== previousToken || ignoreSameTokenCheck) {
+      const { authenticationToken, userAgent } = getCurrentEmissionState()
+      if (!authenticationToken) {
+        // user is not logged in. The first time a user opens the app, expect token to be gotten before the global store is initialised
+        // save the token and send to gravity when they log in
+        await AsyncStorage.multiSet([
+          [HAS_PENDING_NOTIFICATION, "true"],
+          [PUSH_NOTIFICATION_TOKEN, token],
+        ])
+        reject("Push Notification: No access token")
+      } else {
+        const gravityURL = unsafe__getEnvironment().gravityURL
+        const url = gravityURL + "/api/v1/device"
+        const name = __TEST__ ? "my-device-name" : getDeviceId()
+        const body = JSON.stringify({
+          name,
+          token,
+          app_id: "net.artsy.artsy",
+          platform: Platform.OS,
+          production: !__DEV__, // TODO: Fix this asap when we can determine beta on android. production should be false for beta builds
+        })
+        const headers = {
+          "Content-Type": "application/json",
+          "X-ACCESS-TOKEN": authenticationToken,
+          "User-Agent": userAgent,
+        }
+        const request = new Request(url, { method: "POST", body, headers })
+        const res = await fetch(request)
+        const response = await res.json()
+        if (response.status < 200 || response.status > 299 || response.error) {
+          if (__DEV__) {
+            console.warn(`New Push Token ${token} was NOT saved`, response?.error)
+          }
+          reject("Push Notification: Failed to save new push notification token")
+          return
+        }
+        if (__DEV__) {
+          console.log(`New Push Token ${token} saved!`)
+        }
+        await AsyncStorage.setItem(PUSH_NOTIFICATION_TOKEN, token)
+        resolve(true)
+      }
+    }
+  })
+}
 
 export const createChannel = (channelId: string, channelName: string, properties: any = {}) => {
   PushNotification.createChannel(
@@ -118,7 +184,7 @@ export async function configure() {
         if (__DEV__) {
           console.log("TOKEN:", token)
         }
-        // TODO: Send the token to Gravity
+        saveToken(token.token)
       },
 
       // (required) Called when a remote is received or opened, or local notification is opened
@@ -167,6 +233,8 @@ export async function configure() {
 
 module.exports = {
   configure,
+  saveToken,
+  savePendingToken,
   handlePendingNotification,
   handleReceivedNotification,
   createChannel,

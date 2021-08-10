@@ -18,14 +18,16 @@ export const Pill: React.FC<PillProps> = ({ children, style, onPress, ...other }
           borderWidth: 1,
           borderColor: color("black60"),
           paddingHorizontal: space(1),
-          justifyContent: 'center',
+          justifyContent: "center",
           height: 30,
         },
         style,
       ]}
       {...other}
     >
-      <Text variant="small" numberOfLines={1}>{children}</Text>
+      <Text variant="small" numberOfLines={1}>
+        {children}
+      </Text>
     </Flex>
   )
 

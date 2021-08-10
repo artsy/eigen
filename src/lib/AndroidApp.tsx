@@ -17,7 +17,7 @@ import { ModalStack } from "./navigation/ModalStack"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
-import { createAllChannels } from "./utils/PushNotification"
+import { createAllChannels, savePendingToken } from "./utils/PushNotification"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { AnalyticsConstants } from "./utils/track/constants"
 import { useInitialNotification } from "./utils/useInitialNotification"
@@ -88,6 +88,12 @@ const Main: React.FC<{}> = track()(({}) => {
       }, 500)
     }
   }, [isHydrated])
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      savePendingToken()
+    }
+  }, [isLoggedIn])
 
   if (!isHydrated) {
     return <View />

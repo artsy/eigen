@@ -1,11 +1,11 @@
 import { SavedSearchButtonTestsQuery } from "__generated__/SavedSearchButtonTestsQuery.graphql"
-import { SearchCriteriaAttributes } from 'lib/Components/ArtworkFilter/SavedSearch/types'
-import { mockEnvironmentPayload } from 'lib/tests/mockEnvironmentPayload'
-import { renderWithWrappers } from 'lib/tests/renderWithWrappers'
-import { Button } from 'palette'
+import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Button } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from 'react-test-renderer'
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { SavedSearchButtonFragmentContainer as SavedSearchButton } from "../SavedSearchButton"
 
@@ -72,7 +72,7 @@ describe("SavedSearchButton", () => {
     mockEnvironmentPayload(mockEnvironment, {
       Me: () => ({
         savedSearch: {
-          internalID: 'internalID'
+          internalID: "internalID",
         },
       }),
     })

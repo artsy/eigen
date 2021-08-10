@@ -13,11 +13,7 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
   return (
     <Touchable onPress={onPress} underlayColor={color("black5")}>
       <Box px={2} py={1.5}>
-        <Flex
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="space-between"
-        >
+        <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
           <Flex flex={1} flexDirection="row" mr="2">
             <Text variant="text">{title}</Text>
           </Flex>
