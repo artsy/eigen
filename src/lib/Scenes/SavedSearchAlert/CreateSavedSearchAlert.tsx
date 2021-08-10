@@ -7,7 +7,7 @@ import { ScrollView } from "react-native"
 import { SavedSearchAlertForm } from "./SavedSearchAlertForm"
 import { SavedSearchAlertFormPropsBase } from "./SavedSearchAlertModel"
 
-interface CreateSavedSearchAlertProps extends SavedSearchAlertFormPropsBase {
+export interface CreateSavedSearchAlertProps extends SavedSearchAlertFormPropsBase {
   visible: boolean
   filters: FilterData[]
   aggregations: Aggregations

@@ -72,6 +72,33 @@ describe("Saved search alert form", () => {
     })
   })
 
+  it("calls create mutation when form is submitted", async () => {
+    const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+    fireEvent.changeText(getByTestId("alert-input-name"), "something new")
+    fireEvent.press(getByTestId("save-alert-button"))
+
+    await waitFor(() => {
+      const mutation = mockEnvironment.mock.getMostRecentOperation()
+
+      expect(mutation.request.node.operation.name).toBe("createSavedSearchAlertMutation")
+      expect(mutation.request.variables).toEqual({
+        input: {
+          attributes: {
+            artistID: "artistID",
+            attributionClass: ["limited edition"],
+            partnerIDs: ["tate-ward-auctions"],
+            locationCities: ["New York, NY, USA"],
+            additionalGeneIDs: ["photography", "prints"],
+          },
+          userAlertSettings: {
+            name: "something new",
+          },
+        },
+      })
+    })
+  })
+
   it("calls onComplete when the mutation is completed", async () => {
     const onCompleteMock = jest.fn()
     const { getByTestId } = renderWithWrappersTL(
@@ -214,7 +241,7 @@ const baseProps: SavedSearchAlertFormProps = {
   filters,
   aggregations,
   artist: {
-    id: "artistId",
+    id: "artistID",
     name: "artistName",
   },
 }
