@@ -3768,7 +3768,7 @@
   dependencies:
     type-detect "4.0.8"
 
-"@storybook/addon-actions@^5.3":
+"@storybook/addon-actions@5.3.21":
   version "5.3.21"
   resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-5.3.21.tgz#16eed3eb24996adfcbf70bd476a261324d6de593"
   integrity sha512-6SAF/j8UBZaAbRz/rYUlcCXda+c4LQvvNlbVJc9GHjNNNMJQQVc3/EU+M7PyFz6uDUxudAW1+AFchGk04ACJ2g==
@@ -4017,7 +4017,7 @@
     pretty-hrtime "^1.0.3"
     regenerator-runtime "^0.13.3"
 
-"@storybook/react-native-server@^5.3.23":
+"@storybook/react-native-server@5.3.23":
   version "5.3.23"
   resolved "https://registry.yarnpkg.com/@storybook/react-native-server/-/react-native-server-5.3.23.tgz#27ef61a74ec991b3d56690cd1dd9eba30718f3a5"
   integrity sha512-1jGHwikc6BVoEW8tdJeYvnY1N2+cHyzit9xiXL9WXofiiYERoL4ENj1pgVp+AGA+yUYBsuSzeN7Hqp/LwdJ1Ug==
@@ -4037,7 +4037,7 @@
     webpack "^4.33.0"
     ws "^7.1.2"
 
-"@storybook/react-native@^5.3.25":
+"@storybook/react-native@5.3.25":
   version "5.3.25"
   resolved "https://registry.yarnpkg.com/@storybook/react-native/-/react-native-5.3.25.tgz#681c9cdcadba7eda88716f5d383ea47558367825"
   integrity sha512-KPctJdk1++k4byblqTwULmxKDADsRAMat9BgMTx3Gewk4PjMbsbKCvRK7+AlJeNjz/kEsf9L6Y25y8lrw3rPXA==
@@ -4246,10 +4246,10 @@
     "@types/react-test-renderer" ">=16.9.0"
     react-error-boundary "^3.1.0"
 
-"@testing-library/react-native@7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-7.2.0.tgz#e5ec5b0974e4e5f525f8057563417d1e9f820d96"
-  integrity sha512-rDKzJjAAeGgyoJT0gFQiMsIL09chdWcwZyYx6WZHMgm2c5NDqY52hUuyTkzhqddMYWmSRklFphSg7B2HX+246Q==
+"@testing-library/react-native@7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-7.1.0.tgz#6b168aac21522c8a5175461b350336fd79612ac9"
+  integrity sha512-ljVM9KZqG7BT/NFN6CHzdF6MNmM28+k7MEybFJ7FW1wVrhpiY4+hU9ypZ+hboO+MG3KpE2aFBzP4od3gu+Zzdg==
   dependencies:
     pretty-format "^26.0.1"
 
@@ -4505,10 +4505,10 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.8.tgz#edf1bf1dbf4e04413ca8e5b17b3b7d7d54b59818"
   integrity sha512-YSBPTLTVm2e2OoQIDYx8HaeWJ5tTToLH67kXR7zYNGupXMEHa2++G8k+DczX2cFVgalypqtyZIcU19AFcmOpmg==
 
-"@types/lodash@4.14.170":
-  version "4.14.170"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.170.tgz#0d67711d4bf7f4ca5147e9091b847479b87925d6"
-  integrity sha512-bpcvu/MKHHeYX+qeEN8GE7DIravODWdACVA1ctevD8CN24RhPZIKMn9ntfAsrvLfSX3cR5RrBKAbYm9bGs0A+Q==
+"@types/lodash@4.14.172":
+  version "4.14.172"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.172.tgz#aad774c28e7bfd7a67de25408e03ee5a8c3d028a"
+  integrity sha512-/BHF5HAx3em7/KkzVKm3LrsD6HZAXuXO1AJZQ3cRRBZj4oHZDviWPYu0aEplAqDFNHZPW6d3G7KN+ONcCCC7pw==
 
 "@types/luxon@2.0.0":
   version "2.0.0"
@@ -17226,6 +17226,10 @@ slice-ansi@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/slice-ansi/-/slice-ansi-2.1.0.tgz#cacd7693461a637a5788d92a7dd4fba068e81636"
   integrity sha512-Qu+VC3EwYLldKa1fCxuuvULvSJOKEgk9pi8dZeCVK7TqBfUNTH4sFkk4joj8afVSfAYgJoSOetjx9QWOJ5mYoQ==
+  dependencies:
+    ansi-styles "^3.2.0"
+    astral-regex "^1.0.0"
+    is-fullwidth-code-point "^2.0.0"
 
 slice-ansi@^3.0.0:
   version "3.0.0"
