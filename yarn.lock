@@ -9,10 +9,10 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-tokens@2.5.0":
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-tokens/-/palette-tokens-2.5.0.tgz#55cdbba4714ac004c03401826faab66d2f978547"
-  integrity sha512-77RKXo4WOQ076OI2uYgF7uF1cNOlnQy54T4RS75GjtDuB/+rrEyARv6fLLLCeiRI5L1rrEZOdJN4eL3LRWeCeA==
+"@artsy/palette-tokens@2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-tokens/-/palette-tokens-2.6.0.tgz#3d780ff65994fef0daadef29d43d11f89470b728"
+  integrity sha512-UQP6P+xv/5hm82ep0z5X3kCFFnk03H6y8kdW/wTU+xPq45ESUay7aNFYXeub47tmW2v6dXJ8Oa01Z0iwc6BVpA==
 
 "@artsy/update-repo@0.4.0":
   version "0.4.0"
