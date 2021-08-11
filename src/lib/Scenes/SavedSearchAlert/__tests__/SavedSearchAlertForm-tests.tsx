@@ -9,8 +9,6 @@ import { Alert } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
 import { SavedSearchAlertForm, SavedSearchAlertFormProps } from "../SavedSearchAlertForm"
 
-jest.mock("formik")
-
 const spyAlert = jest.spyOn(Alert, "alert")
 
 describe("Saved search alert form", () => {
@@ -19,10 +17,6 @@ describe("Saved search alert form", () => {
   beforeEach(() => {
     mockEnvironment.mockClear()
     ;(Alert.alert as jest.Mock).mockClear()
-  })
-
-  afterEach(() => {
-    jest.clearAllMocks()
   })
 
   it("renders without throwing an error", () => {
