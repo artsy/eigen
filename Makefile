@@ -9,6 +9,18 @@ artsy:
 	./scripts/setup-env-for-artsy
 
 
+# Installers
+
+install:
+	./scripts/install
+
+
+# Troubleshoot
+
+help:
+	./scripts/help.js
+
+
 # Deploy betas
 
 deploy:
