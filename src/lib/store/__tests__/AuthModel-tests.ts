@@ -313,7 +313,7 @@ describe("AuthModel", () => {
         .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
         .catch((e) => e)
 
-      expect(result).toBe("Failed to sign up.")
+      expect(result).toBe("Could not sign up")
     })
 
     it("fetches profile info from facebook and signs in", async () => {
@@ -335,7 +335,7 @@ describe("AuthModel", () => {
 
       const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" }).catch((e) => e)
 
-      expect(result).toBe("Failed to get gravity token from gravity: getting X-ACCESS-TOKEN error")
+      expect(result).toBe("Could not create user account")
     })
   })
 
@@ -385,7 +385,7 @@ describe("AuthModel", () => {
         .authGoogle({ signInOrUp: "signUp", agreedToReceiveEmails: true })
         .catch((e) => e)
 
-      expect(result).toBe("Failed to sign up.")
+      expect(result).toBe("Could not sign up")
     })
 
     it("fetches profile info from google and signs in", async () => {
@@ -407,7 +407,7 @@ describe("AuthModel", () => {
 
       const result = await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signIn" }).catch((e) => e)
 
-      expect(result).toBe("Failed to get gravity token from gravity: getting X-ACCESS-TOKEN error")
+      expect(result).toBe("Could not create user account")
     })
   })
 
@@ -466,7 +466,7 @@ describe("AuthModel", () => {
 
       const result = await GlobalStore.actions.auth.authApple({}).catch((e) => e)
 
-      expect(result).toBe("Failed to get gravity token from gravity: getting X-ACCESS-TOKEN error")
+      expect(result).toBe("Could not create user account")
     })
   })
 })
