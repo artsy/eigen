@@ -52,6 +52,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
           aggregations={aggregations}
           savedSearchAlertId={savedSearchAlertId}
           onComplete={onComplete}
+          onDeleteComplete={onComplete}
         />
       </ScrollView>
     </PageWithSimpleHeader>
