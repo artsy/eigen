@@ -6,6 +6,7 @@ import {
 } from "react-relay-network-modern/node8"
 
 import * as Sentry from "@sentry/react-native"
+import { volleyClient } from "lib/utils/volleyClient"
 import { GraphQLResponse } from "relay-runtime/lib/network/RelayNetworkTypes"
 import { GraphQLRequest } from "./types"
 
@@ -42,7 +43,13 @@ export const errorMiddleware = () => {
 
     const allErrorsAreOptional = resJson.extensions?.optionalFields?.length === resJson.errors?.length
 
+    console.log("================")
     if (allErrorsAreOptional) {
+      volleyClient.send({
+        type: "increment",
+        name: "graphql-request-with-errors",
+        tags: [`query:${req.operation.name}`, `kind:${req.operation.kind}`, "handler: optionalField"],
+      })
       return res
     }
 
@@ -51,6 +58,11 @@ export const errorMiddleware = () => {
     const requestHasPrincipalField = req.operation.text?.includes("@principalField")
 
     if (!requestHasPrincipalField) {
+      volleyClient.send({
+        type: "increment",
+        name: "graphql-request-with-errors",
+        tags: [`query:${req.operation.name}`, `kind:${req.operation.kind}`, "handler: default"],
+      })
       return throwError(req, res)
     }
 
@@ -61,6 +73,11 @@ export const errorMiddleware = () => {
     const principalFieldWasInvolvedInError = isErrorStatus(resJson.extensions?.principalField?.httpStatusCode)
 
     if (principalFieldWasInvolvedInError) {
+      volleyClient.send({
+        type: "increment",
+        name: "graphql-request-with-errors",
+        tags: [`query:${req.operation.name}`, `kind:${req.operation.kind}`, "handler: principalField"],
+      })
       return throwError(req, res)
     }
 
