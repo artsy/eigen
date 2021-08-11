@@ -11,7 +11,6 @@ export const Search2: React.FC = () => {
       <Flex p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
         <SearchInput
           placeholder="Search artists"
-          enableCancelButton
           onChangeText={(queryText) => {
             setQuery(queryText)
           }}
