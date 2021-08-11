@@ -535,21 +535,18 @@ const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "partnerIDs",
 ]
 const FairFiltersSorted: FilterScreen[] = [
-  "sort",
+  "partnerIDs",
   "artistIDs",
-  "artistsIFollow",
-  "medium",
-  "additionalGeneIDs",
-  "materialsTerms",
-  "priceRange",
   "attributionClass",
+  "additionalGeneIDs",
+  "priceRange",
   "dimensionRange",
   "waysToBuy",
-  "locationCities",
+  "materialsTerms",
   "artistNationalities",
+  "locationCities",
   "majorPeriods",
   "colors",
-  "partnerIDs",
 ]
 const SaleArtworksFiltersSorted: FilterScreen[] = [
   "sort",
