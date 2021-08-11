@@ -14,6 +14,7 @@ export type SavedSearchesList_me = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly internalID: string;
+                readonly artistID: string | null;
                 readonly userAlertSettings: {
                     readonly name: string | null;
                 };
@@ -124,6 +125,13 @@ const node: ReaderFragment = {
                 {
                   "alias": null,
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "artistID",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
                   "concreteType": "SavedSearchUserAlertSettings",
                   "kind": "LinkedField",
                   "name": "userAlertSettings",
@@ -166,5 +174,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'a14b02ee765ff5ff272f046ac0ad56b0';
+(node as any).hash = 'c01848cb199928bab068e2c35a55a3dc';
 export default node;

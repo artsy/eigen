@@ -1,51 +1,87 @@
-import { useFormikContext } from "formik"
+import { fireEvent, waitFor } from "@testing-library/react-native"
 import { Aggregations, FilterArray, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { Input } from "lib/Components/Input/Input"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Pill } from "palette"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { SavedSearchAlertForm } from "../SavedSearchAlertForm"
-
-jest.mock("formik")
+import { createMockEnvironment } from "relay-test-utils"
+import { SavedSearchAlertForm, SavedSearchAlertFormProps } from "../SavedSearchAlertForm"
 
 describe("Saved search alert form", () => {
-  const useFormikContextMock = useFormikContext as jest.Mock
+  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
-    useFormikContextMock.mockImplementation(() => ({
-      handleChange: jest.fn(),
-      handleBlur: jest.fn(),
-      handleSubmit: jest.fn(),
-      isSubmitting: false,
-      values: {
-        name: "",
-      },
-      errors: {},
-    }))
+    mockEnvironment.mockClear()
   })
 
   it("renders without throwing an error", () => {
-    renderWithWrappers(<SavedSearchAlertForm {...baseProps} />)
+    renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
   })
 
   it("correctly renders placeholder for input name", () => {
-    const wrapper = renderWithWrappers(<SavedSearchAlertForm {...baseProps} />)
+    const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
 
-    expect(wrapper.root.findByType(Input).props.placeholder).toEqual("artistName • 5 filters")
+    expect(getByTestId("alert-input-name").props.placeholder).toEqual("artistName • 5 filters")
   })
 
   it("correctly extracts the values of pills", () => {
-    const wrapper = renderWithWrappers(<SavedSearchAlertForm {...baseProps} />)
-    const pills = wrapper.root.findAllByType(Pill)
+    const { getAllByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
 
-    expect(pills.map(extractText)).toEqual([
+    expect(getAllByTestId("alert-pill").map(extractText)).toEqual([
       "Limited Edition",
       "Tate Ward Auctions",
       "New York, NY, USA",
       "Photography",
       "Prints",
     ])
+  })
+
+  it(`should render "Delete Alert" button when the savedSearchAlertId is passed`, () => {
+    const { getAllByTestId } = renderWithWrappersTL(
+      <SavedSearchAlertForm {...baseProps} savedSearchAlertId="savedSearchAlertId" />
+    )
+
+    expect(getAllByTestId("delete-alert-button")).toHaveLength(1)
+  })
+
+  it("calls update mutation when form is submitted", async () => {
+    const { getByTestId } = renderWithWrappersTL(
+      <SavedSearchAlertForm {...baseProps} savedSearchAlertId="savedSearchAlertId" />
+    )
+
+    fireEvent.changeText(getByTestId("alert-input-name"), "something new")
+    fireEvent.press(getByTestId("save-alert-button"))
+
+    await waitFor(() => {
+      const mutation = mockEnvironment.mock.getMostRecentOperation()
+
+      expect(mutation.request.node.operation.name).toBe("updateSavedSearchAlertMutation")
+      expect(mutation.request.variables).toEqual({
+        input: {
+          searchCriteriaID: "savedSearchAlertId",
+          userAlertSettings: {
+            name: "something new",
+          },
+        },
+      })
+    })
+  })
+
+  it("calls onComplete when the mutation is completed", async () => {
+    const onCompleteMock = jest.fn()
+    const { getByTestId } = renderWithWrappersTL(
+      <SavedSearchAlertForm {...baseProps} onComplete={onCompleteMock} savedSearchAlertId="savedSearchAlertId" />
+    )
+
+    fireEvent.changeText(getByTestId("alert-input-name"), "something new")
+    fireEvent.press(getByTestId("save-alert-button"))
+
+    await waitFor(() => {
+      mockEnvironmentPayload(mockEnvironment)
+    })
+
+    expect(onCompleteMock).toHaveBeenCalled()
   })
 })
 
@@ -125,7 +161,10 @@ const aggregations: Aggregations = [
   },
 ]
 
-const baseProps = {
+const baseProps: SavedSearchAlertFormProps = {
+  initialValues: {
+    name: "",
+  },
   filters,
   aggregations,
   artist: {
