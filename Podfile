@@ -128,6 +128,7 @@ target 'Artsy' do
 
   # Analytics
   pod 'Segment-Appboy'
+  pod 'Segment-Adjust'
 
   # Developer Pods
   pod 'DHCShakeNotifier'
