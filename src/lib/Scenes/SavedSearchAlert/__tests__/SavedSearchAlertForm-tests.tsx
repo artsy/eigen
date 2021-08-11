@@ -100,7 +100,22 @@ describe("Saved search alert form", () => {
 
     fireEvent.press(getByTestId("delete-alert-button"))
 
-    // Click confirm button
+    /**
+     * Click confirm button in Alert
+     *
+     * The first call of the function
+     * calls[0] === [
+     *  [
+     *    'Title', === calls[0][0]
+     *    'Description' === calls[0][1],
+     *    [
+     *      ['cancel button'], === calls[0][2][0]
+     *      ['confirm button'] === calls[0][2][1]
+     *    ]
+     *  ]
+     * ]
+     */
+
     // @ts-ignore
     spyAlert.mock.calls[0][2][1].onPress()
 
