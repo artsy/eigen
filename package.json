@@ -27,7 +27,7 @@
     "clean-ios": "yarn rimraf ~/Library/Developer/Xcode/DerivedData",
     "clean-android": "cd android; ./gradlew clean cleanBuildCache; cd -",
     "clean": "yarn clean-ios; yarn clean-android",
-    "diagnose": "node scripts/diagnose.js",
+    "doctor": "scripts/doctor.js",
     "lint-fix": "yarn lint --fix",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "open-sim": "open -a Simulator",
