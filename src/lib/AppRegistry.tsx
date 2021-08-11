@@ -65,9 +65,9 @@ import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
 import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddresses"
 import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAddressesForm"
 
-import { AlgoliaSearch } from "./Scenes/AlgoliaSearch/AlgoliaSearch"
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
+import { Search2 } from "./Scenes/Search2/Search2"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
@@ -278,7 +278,6 @@ export const modules = defineModules({
   Admin: nativeModule({ alwaysPresentModally: true }),
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
-  AlgoliaSearch: reactModule(AlgoliaSearch),
   Articles: reactModule(ArticlesQueryRenderer),
   Artist: reactModule(ArtistQueryRenderer),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
@@ -370,6 +369,7 @@ export const modules = defineModules({
   SalesNotRootTabView: reactModule(Consignments),
   SearchSwitchContainer: reactModule(SearchSwitchContainer, { isRootViewForTabName: "search" }),
   Search: reactModule(SearchWithTracking),
+  Search2: reactModule(Search2),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SavedAddresses: reactModule(SavedAddressesQueryRenderer),

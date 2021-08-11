@@ -133,9 +133,9 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableAuctionResultsKeywordFilter",
   },
-  AREnableAlgoliaSearch: {
+  AREnableImprovedSearch: {
     readyForRelease: false,
-    description: "Enable Algolia Search",
+    description: "Enable improved search experience",
     showInAdminMenu: true,
   },
 })
