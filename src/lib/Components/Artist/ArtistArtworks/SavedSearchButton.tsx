@@ -10,7 +10,7 @@ import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageH
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import { SavedSearchAlertFormPropsBase } from "lib/Scenes/SavedSearchAlert/SavedSearchAlertModel"
-import { BellIcon, Button } from "palette"
+import { BellIcon, Box, Button } from "palette"
 import React, { useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
@@ -61,7 +61,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   }
 
   return (
-    <>
+    <Box>
       <Button
         variant="primaryBlack"
         size="small"
@@ -81,7 +81,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
         filters={filters}
         aggregations={aggregations}
       />
-    </>
+    </Box>
   )
 }
 
