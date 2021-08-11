@@ -7,7 +7,6 @@ import { BottomTabsModel, getBottomTabsModel } from "lib/Scenes/BottomTabs/Botto
 import { getMyCollectionModel, MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
 import { getSearchModel, SearchModel } from "lib/Scenes/Search/SearchModel"
 import { Platform } from "react-native"
-import { LoginManager } from "react-native-fbsdk-next"
 import { AuthModel, getAuthModel } from "./AuthModel"
 import { ConfigModel, getConfigModel } from "./ConfigModel"
 import { unsafe__getEnvironment } from "./GlobalStore"
@@ -67,8 +66,18 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
     if (Platform.OS === "ios") {
       await LegacyNativeModules.ARTemporaryAPIModule.clearUserData()
     }
-    await GoogleSignin.signOut()
-    LoginManager.logOut()
+
+    const signOutGoogle = async () => {
+      try {
+        await GoogleSignin.revokeAccess()
+        await GoogleSignin.signOut()
+      } catch (error) {
+        console.log("Failed to signout from Google")
+        console.error(error)
+      }
+    }
+
+    await signOutGoogle()
     CookieManager.clearAll()
     RelayCache.clearAll()
     actions.reset({ config })
