@@ -9,6 +9,7 @@
 #import <Analytics/SEGAnalytics.h>
 #import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
 #import <Segment-Adjust/SEGAdjustIntegrationFactory.h>
+#import <Adjust/Adjust.h>
 
 #import "ARAnalyticsConstants.h"
 #import "ARAppDelegate.h"
