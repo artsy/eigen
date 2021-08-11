@@ -51,7 +51,10 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     Alert.alert(
       "Delete Alert",
       "Once you delete this alert, you will have to recreate it to continue receiving alerts on your favorite artworks.",
-      [{ text: "Cancel" }, { text: "Delete", onPress: onDelete }]
+      [
+        { text: "Cancel", style: "cancel" },
+        { text: "Delete", style: "destructive", onPress: onDelete },
+      ]
     )
   }
 
