@@ -299,7 +299,6 @@
     "hooks": {
       "post-merge": "pull-lock",
       "pre-commit": "lint-staged",
-      "pre-push": "yarn type-check"
     }
   },
   "pull-lock": {
