@@ -5,14 +5,18 @@ import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
+import { Alert } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
 import { SavedSearchAlertForm, SavedSearchAlertFormProps } from "../SavedSearchAlertForm"
+
+const spyAlert = jest.spyOn(Alert, "alert")
 
 describe("Saved search alert form", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
     mockEnvironment.mockClear()
+    ;(Alert.alert as jest.Mock).mockClear()
   })
 
   it("renders without throwing an error", () => {
@@ -82,6 +86,48 @@ describe("Saved search alert form", () => {
     })
 
     expect(onCompleteMock).toHaveBeenCalled()
+  })
+
+  it("calls delete mutation when the delete alert button is pressed", async () => {
+    const onDeletePressMock = jest.fn()
+    const { getByTestId } = renderWithWrappersTL(
+      <SavedSearchAlertForm
+        {...baseProps}
+        savedSearchAlertId="savedSearchAlertId"
+        onDeleteComplete={onDeletePressMock}
+      />
+    )
+
+    fireEvent.press(getByTestId("delete-alert-button"))
+
+    /**
+     * Click confirm button in Alert
+     *
+     * The first call of the function
+     * calls[0] === [
+     *  [
+     *    'Title', === calls[0][0]
+     *    'Description' === calls[0][1],
+     *    [
+     *      ['cancel button'], === calls[0][2][0]
+     *      ['confirm button'] === calls[0][2][1]
+     *    ]
+     *  ]
+     * ]
+     */
+
+    // @ts-ignore
+    spyAlert.mock.calls[0][2][1].onPress()
+
+    expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(
+      "deleteSavedSearchAlertMutation"
+    )
+
+    await waitFor(() => {
+      mockEnvironmentPayload(mockEnvironment)
+    })
+
+    expect(onDeletePressMock).toHaveBeenCalled()
   })
 })
 
