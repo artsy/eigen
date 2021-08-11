@@ -522,13 +522,13 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
 ]
 const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "sort",
+  "attributionClass",
   "medium",
   "additionalGeneIDs",
-  "materialsTerms",
   "priceRange",
-  "attributionClass",
   "dimensionRange",
   "waysToBuy",
+  "materialsTerms",
   "locationCities",
   "majorPeriods",
   "colors",

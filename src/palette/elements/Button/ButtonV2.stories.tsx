@@ -1,13 +1,14 @@
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
 import { LinkIcon } from "palette"
-import { ButtonSize, ButtonV2 as Button, ButtonVariant } from "palette/elements/Button/ButtonV2"
 import React from "react"
+import { withThemeV2 } from "storybook/decorators"
 import { DList, List } from "storybook/helpers"
+import { ButtonV2, ButtonV2Props } from "."
 
-const sizes: ButtonSize[] = ["small", "medium", "large"]
+const sizes: Array<ButtonV2Props["size"]> = ["small", "medium", "large"]
 
-const variants: ButtonVariant[] = [
+const variants: Array<ButtonV2Props["variant"]> = [
   "primaryBlack",
   "primaryWhite",
   "secondaryGray",
@@ -17,13 +18,14 @@ const variants: ButtonVariant[] = [
 ]
 
 storiesOf("ButtonV2", module)
+  .addDecorator(withThemeV2)
   .add("Sizes", () => (
     <DList
       data={sizes}
       renderItem={({ item: size }) => (
-        <Button size={size} onPress={() => action(`tapped ${size}`)}>
+        <ButtonV2 size={size} onPress={() => action(`tapped ${size}`)}>
           {size}
-        </Button>
+        </ButtonV2>
       )}
     />
   ))
@@ -31,20 +33,20 @@ storiesOf("ButtonV2", module)
     <DList
       data={variants}
       renderItem={({ item: variant }) => (
-        <Button variant={variant} onPress={() => action(`tapped ${variant}`)}>
+        <ButtonV2 variant={variant} onPress={() => action(`tapped ${variant}`)}>
           {variant}
-        </Button>
+        </ButtonV2>
       )}
     />
   ))
   .add("Miscellaneous", () => (
     <List>
-      <Button loading>loading</Button>
-      <Button disabled>disabled</Button>
-      <Button block>block</Button>
-      <Button icon={<LinkIcon />}>with icon</Button>
-      <Button icon={<LinkIcon />} iconPosition="right">
+      <ButtonV2 loading>loading</ButtonV2>
+      <ButtonV2 disabled>disabled</ButtonV2>
+      <ButtonV2 block>block</ButtonV2>
+      <ButtonV2 icon={<LinkIcon />}>with icon</ButtonV2>
+      <ButtonV2 icon={<LinkIcon />} iconPosition="right">
         with icon
-      </Button>
+      </ButtonV2>
     </List>
   ))
