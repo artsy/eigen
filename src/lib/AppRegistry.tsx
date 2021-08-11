@@ -65,6 +65,7 @@ import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
 import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddresses"
 import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAddressesForm"
 
+import { AlgoliaSearch } from "./Scenes/AlgoliaSearch/AlgoliaSearch"
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
@@ -90,6 +91,7 @@ import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollecti
 import { MyCollectionArtworkImagesQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkImages/MyCollectionArtworkImages"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { SavedSearchAlertsListQueryRenderer } from "./Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
+import { SearchSwitchContainer } from "./Scenes/SearchSwitchContainer"
 import { TagQueryRenderer } from "./Scenes/Tag/Tag"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
@@ -276,6 +278,7 @@ export const modules = defineModules({
   Admin: nativeModule({ alwaysPresentModally: true }),
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
+  AlgoliaSearch: reactModule(AlgoliaSearch),
   Articles: reactModule(ArticlesQueryRenderer),
   Artist: reactModule(ArtistQueryRenderer),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
@@ -365,7 +368,8 @@ export const modules = defineModules({
   PrivacyRequest: reactModule(PrivacyRequest),
   Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }),
   SalesNotRootTabView: reactModule(Consignments),
-  Search: reactModule(SearchWithTracking, { isRootViewForTabName: "search" }),
+  SearchSwitchContainer: reactModule(SearchSwitchContainer, { isRootViewForTabName: "search" }),
+  Search: reactModule(SearchWithTracking),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SavedAddresses: reactModule(SavedAddressesQueryRenderer),
