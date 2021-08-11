@@ -25,8 +25,8 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
   const showSavedAddresses = useFeatureFlag("AREnableSavedAddresses")
   const showSavedSearchV2 = useFeatureFlag("AREnableSavedSearchV2")
   const listRef = useRef<FlatList<any>>(null)
-  const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
-  const shouldDisplayMyCollection = me.labFeatures?.includes("My Collection")
+  const recentlySavedArtworks = extractNodes(me?.followsAndSaves?.artworksConnection)
+  const shouldDisplayMyCollection = me?.labFeatures?.includes("My Collection")
   const [shouldDisplayPushNotifications, setShouldDisplayPushNotifications] = useState(Platform.OS === "ios")
   const [isRefreshing, setIsRefreshing] = useState(false)
 
@@ -49,7 +49,7 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
       <Sans size="8" mx="2" mt="3">
-        {me.name}
+        {me?.name}
       </Sans>
       <Separator my={2} />
       <SectionHeading title="Favorites" />
@@ -153,7 +153,7 @@ export const MyProfileQueryRenderer: React.FC<{}> = ({}) => (
       environment={defaultEnvironment}
       query={graphql`
         query MyProfileQuery {
-          me {
+          me @optionalField {
             ...MyProfile_me
           }
         }
