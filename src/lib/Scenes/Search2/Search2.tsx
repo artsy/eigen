@@ -1,10 +1,22 @@
-import { Flex, Text } from "palette"
-import React from "react"
+import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
+import { SearchInput } from "lib/Components/SearchInput"
+import { Flex, useColor } from "palette"
+import React, { useState } from "react"
 
 export const Search2: React.FC = () => {
+  const color = useColor()
+  const [_query, setQuery] = useState("")
   return (
-    <Flex flexGrow={1} justifyContent="center" alignItems="center">
-      <Text>Improved Search Screen</Text>
-    </Flex>
+    <ArtsyKeyboardAvoidingView>
+      <Flex p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
+        <SearchInput
+          placeholder="Search artists"
+          enableCancelButton
+          onChangeText={(queryText) => {
+            setQuery(queryText)
+          }}
+        />
+      </Flex>
+    </ArtsyKeyboardAvoidingView>
   )
 }
