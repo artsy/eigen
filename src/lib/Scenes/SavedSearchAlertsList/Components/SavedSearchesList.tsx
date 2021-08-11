@@ -1,9 +1,10 @@
 import { SavedSearchesList_me } from "__generated__/SavedSearchesList_me.graphql"
 import { SAVED_SERCHES_PAGE_SIZE } from "lib/data/constants"
+import { navigate, navigationEvents } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spinner, useTheme } from "palette"
-import React, { useState } from "react"
-import { FlatList } from "react-native"
+import React, { useEffect, useRef, useState } from "react"
+import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { EmptyMessage } from "./EmptyMessage"
 import { SavedSearchListItem } from "./SavedSearchListItem"
@@ -16,8 +17,29 @@ interface SavedSearchesListProps {
 export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   const { me, relay } = props
   const [fetchingMore, setFetchingMore] = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
   const { space } = useTheme()
   const items = extractNodes(me.savedSearchesConnection)
+  const flatListRef = useRef<FlatList>(null)
+  const onRefresh = useRef(() => {
+    setRefreshing(true)
+
+    flatListRef.current?.scrollToOffset({ offset: 0, animated: false })
+    relay.refetchConnection(SAVED_SERCHES_PAGE_SIZE, (error) => {
+      if (error) {
+        console.error(error)
+      }
+
+      setRefreshing(false)
+    })
+  }).current
+
+  useEffect(() => {
+    navigationEvents.addListener("goBack", onRefresh)
+    return () => {
+      navigationEvents.removeListener("goBack", onRefresh)
+    }
+  }, [])
 
   const loadMore = () => {
     if (!relay.hasMore() || relay.isLoading()) {
@@ -38,7 +60,9 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
 
   return (
     <FlatList
+      ref={flatListRef}
       data={items}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       keyExtractor={(item) => item.internalID}
       contentContainerStyle={{ paddingVertical: space(1) }}
       renderItem={({ item }) => {
@@ -46,7 +70,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
           <SavedSearchListItem
             title={item.userAlertSettings.name!}
             onPress={() => {
-              console.log("pressed")
+              navigate(`my-profile/saved-search-alerts/${item.internalID}`)
             }}
           />
         )
@@ -79,6 +103,7 @@ export const SavedSearchesListContainer = createPaginationContainer(
           edges {
             node {
               internalID
+              artistID
               userAlertSettings {
                 name
               }

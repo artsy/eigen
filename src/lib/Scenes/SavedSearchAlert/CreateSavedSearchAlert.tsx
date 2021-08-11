@@ -20,6 +20,10 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const allowedFilters = getAllowedFiltersForSavedSearchInput(appliedFilters)
 
+  const onComplete = async () => {
+    onClosePress()
+  }
+
   return (
     <FancyModal visible={visible} fullScreen>
       <FancyModalHeader useXButton hideBottomDivider onLeftButtonPress={onClosePress} />
@@ -27,7 +31,13 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
         <Sans size="8" mb={4}>
           Create an Alert
         </Sans>
-        <SavedSearchAlertForm aggregations={aggregations} filters={allowedFilters} onSaved={onClosePress} {...other} />
+        <SavedSearchAlertForm
+          initialValues={{ name: "" }}
+          aggregations={aggregations}
+          filters={allowedFilters}
+          onComplete={onComplete}
+          {...other}
+        />
         <Text variant="text" color="black60" textAlign="center" my={2}>
           You will be able to access all your Artist Alerts in your Profile.
         </Text>
