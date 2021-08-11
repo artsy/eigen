@@ -139,6 +139,13 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           }}
         />
         <MenuItem
+          title="Log out"
+          chevron={null}
+          onPress={() => {
+            GlobalStore.actions.signOut()
+          }}
+        />
+        <MenuItem
           title="Throw Sentry Error"
           onPress={() => {
             if (!Config.SENTRY_DSN) {
