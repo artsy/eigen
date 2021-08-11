@@ -267,19 +267,7 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
       sortOrder = AuctionResultsFiltersSorted
       break
     case FilterModalMode.Partner:
-      sortOrder = [
-        "sort",
-        "medium",
-        "additionalGeneIDs",
-        "materialsTerms",
-        "priceRange",
-        "attributionClass",
-        "dimensionRange",
-        "waysToBuy",
-        "artistNationalities",
-        "majorPeriods",
-        "colors",
-      ]
+      sortOrder = GalleryShowFiltersSorted
       break
     case FilterModalMode.Gene:
       sortOrder = ["sort", "medium", "additionalGeneIDs", "priceRange"]
@@ -555,6 +543,20 @@ const SaleArtworksFiltersSorted: FilterScreen[] = [
   "medium",
   "additionalGeneIDs",
   "estimateRange",
+]
+
+const GalleryShowFiltersSorted: FilterScreen[] = [
+  "sort",
+  "artistIDs",
+  "attributionClass",
+  "additionalGeneIDs",
+  "priceRange",
+  "dimensionRange",
+  "waysToBuy",
+  "materialsTerms",
+  "artistNationalities",
+  "majorPeriods",
+  "colors",
 ]
 
 const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories", "sizes", "year", "organizations"]
