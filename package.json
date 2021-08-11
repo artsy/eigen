@@ -297,7 +297,6 @@
   },
   "husky": {
     "hooks": {
-      "post-merge": "pull-lock",
       "pre-commit": "lint-staged",
     }
   },
