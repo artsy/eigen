@@ -13,7 +13,7 @@ This PR resolves []
 
 ### PR Checklist (tick all before merging)
 
-<!-- 💡 This checklist is experimental. MX warmly welcomes any feedback about the list or how it impacts your workflow -->
+<!-- 💡 This checklist is experimental. CX warmly welcomes any feedback about the list or how it impacts your workflow -->
 
 - [ ] I have included screenshots or videos to illustrate my changes, or I have not changed anything that impacts the UI.
 - [ ] I have tested my changes on **iOS** and **Android**.
