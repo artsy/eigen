@@ -7043,6 +7043,9 @@ type HomePage {
     # Exclude certain modules
     exclude: [HomePageArtworkModuleTypes] = []
 
+    # Include certain modules and return these modules only
+    include: [HomePageArtworkModuleTypes]
+
     # Maximum number of followed genes to return, disable with a negative number
     maxFollowedGeneRails: Int = 1
 
