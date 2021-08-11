@@ -43,7 +43,6 @@ export const errorMiddleware = () => {
 
     const allErrorsAreOptional = resJson.extensions?.optionalFields?.length === resJson.errors?.length
 
-    console.log("================")
     if (allErrorsAreOptional) {
       volleyClient.send({
         type: "increment",
