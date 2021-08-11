@@ -1,7 +1,10 @@
 import { SavedSearchButtonTestsQuery } from "__generated__/SavedSearchButtonTestsQuery.graphql"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { PopoverMessage } from "lib/Components/PopoverMessage/PopoverMessage"
+import { navigate, switchTab } from "lib/navigation/navigate"
 import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
@@ -107,5 +110,14 @@ describe("SavedSearchButton", () => {
     act(() => tree.root.findByType(Button).props.onPress())
 
     expect(tree.root.findByType(CreateSavedSearchAlert).props.visible).toBeTruthy()
+  })
+
+  it("should navigate to the saved search alerts list when popover is pressed", async () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+
+    act(() => tree.root.findByType(CreateSavedSearchAlert).props.onComplete())
+    act(() => tree.root.findByType(PopoverMessage).props.onPress())
+
+    expect(navigate).toHaveBeenCalled()
   })
 })

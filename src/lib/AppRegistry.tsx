@@ -389,7 +389,7 @@ export const modules = defineModules({
   WorksForYou: reactModule(WorksForYouQueryRenderer),
   LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer),
   Storybook: reactModule(StorybookUI, { fullBleed: true, hidesBackButton: true }),
-  SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),
+  SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer, { onlyShowInTabName: "profile" }),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),
 })
 

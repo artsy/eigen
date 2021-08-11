@@ -7,6 +7,7 @@ import {
 } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import { SavedSearchAlertFormPropsBase } from "lib/Scenes/SavedSearchAlert/SavedSearchAlertModel"
@@ -57,6 +58,9 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
     popover.show({
       title: "Your alert has been created.",
       message: "You can edit your alerts with your Profile.",
+      onPress: () => {
+        navigate("my-profile/saved-search-alerts")
+      },
     })
   }
 
@@ -69,6 +73,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
         disabled={isSavedSearch || filters.length === 0}
         loading={loading || refetching}
         onPress={handleOpenForm}
+        testID="create-saved-search-button"
         haptic
       >
         Create Alert
