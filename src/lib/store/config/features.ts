@@ -133,6 +133,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableAuctionResultsKeywordFilter",
   },
+  AREnableAlgoliaSearch: {
+    readyForRelease: false,
+    description: "Enable Algolia Search",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
