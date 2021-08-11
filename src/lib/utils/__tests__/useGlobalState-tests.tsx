@@ -1,6 +1,8 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
+import { act, renderHook } from "@testing-library/react-hooks"
+import { extractText } from "lib/tests/extractText"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
+import { Text } from "react-native"
 import { useGlobalState } from "../useGlobalState"
 
 describe(useGlobalState, () => {
@@ -18,48 +20,51 @@ describe(useGlobalState, () => {
       n.useUpdates()
     }
 
-    return <div>Hello {n.current}</div>
+    return <Text>Hello {n.current}</Text>
   }
 
   it("returns a tuple of [stateContainer, stateSetter]", () => {
-    mount(<TestComponent />)
+    const { result } = renderHook(() => {
+      const [_n, _setN] = useGlobalState(0)
+      return { n: _n, setN: _setN }
+    })
 
-    expect(n.current).toBe(0)
+    expect(result.current.n.current).toBe(0)
 
-    setN(5)
+    act(() => result.current.setN(5))
 
-    expect(n.current).toBe(5)
+    expect(result.current.n.current).toBe(5)
 
-    setN(-245)
+    act(() => result.current.setN(-245))
 
-    expect(n.current).toBe(-245)
+    expect(result.current.n.current).toBe(-245)
   })
 
   it("does not cause the wrapper to be updated by default", () => {
-    const wrapper = mount(<TestComponent />)
+    const { container } = renderWithWrappersTL(<TestComponent />)
 
-    expect(wrapper.text()).toBe("Hello 0")
+    expect(extractText(container)).toBe("Hello 0")
 
     setN(5)
 
-    expect(wrapper.text()).toBe("Hello 0")
+    expect(extractText(container)).toBe("Hello 0")
 
     setN(-245)
 
-    expect(wrapper.text()).toBe("Hello 0")
+    expect(extractText(container)).toBe("Hello 0")
   })
 
   it("does cause the wrapper to be updated when listening", () => {
-    const wrapper = mount(<TestComponent listen />)
+    const { container } = renderWithWrappersTL(<TestComponent listen />)
 
-    expect(wrapper.text()).toBe("Hello 0")
+    expect(extractText(container)).toBe("Hello 0")
 
     setN(5)
 
-    expect(wrapper.text()).toBe("Hello 5")
+    expect(extractText(container)).toBe("Hello 5")
 
     setN(-245)
 
-    expect(wrapper.text()).toBe("Hello -245")
+    expect(extractText(container)).toBe("Hello -245")
   })
 })

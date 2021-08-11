@@ -57,7 +57,7 @@ export const useEventTiming = ({
 
   return {
     formattedTime,
-    durationTilEnd,
+    durationTilEnd: durationTilEnd.toString(),
     daysTilEnd,
     hoursTillEnd,
     secondsTilEnd,
