@@ -283,9 +283,6 @@
     ],
     "*.@(json|md)": [
       "yarn prettier-write"
-    ],
-    "**/!(package.json)": [
-      "yarn detect-secrets"
     ]
   },
   "prettier": {
@@ -294,11 +291,6 @@
     "singleQuote": false,
     "trailingComma": "es5",
     "bracketSpacing": true
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-    }
   },
   "pull-lock": {
     "yarn.lock": "yarn install"

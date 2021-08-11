@@ -135,6 +135,18 @@ const checkPythonDependenciesAreUpToDate = () => {
   }
 }
 
+const checkDetectSecretsExists = () => {
+  try {
+    exec("detect-secrets-hook --version")
+    YES(`Your ${g`detect-secrets`} is ready to go.`)
+  } catch (e) {
+    NO(
+      `Your ${r`detect-secrets`} is missing or not linked.`,
+      `Run ${g`make install`} or ${g`pip install -r requirements.txt`} to install, and then make sure it's in your $PATH.`
+    )
+  }
+}
+
 const main = async () => {
   checkEnvVariablesAreUpToDate()
 
@@ -146,8 +158,10 @@ const main = async () => {
 
   checkBundlerDependenciesAreUpToDate()
   await checkNodeDependenciesAreUpToDate()
-  checkPodDependenciesAreUpToDate()
+  // checkPodDependenciesAreUpToDate() // this is broken right now.. pod check is always reporting an error.
   checkPythonDependenciesAreUpToDate()
+
+  checkDetectSecretsExists()
 }
 
 main()
