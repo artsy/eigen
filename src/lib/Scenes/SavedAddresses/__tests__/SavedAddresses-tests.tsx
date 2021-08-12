@@ -2,7 +2,7 @@ import { SavedAddressesTestsQuery } from "__generated__/SavedAddressesTestsQuery
 import { navigate, navigationEvents } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Button } from "palette"
+import { Button, Flex } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -50,7 +50,7 @@ describe(SavedAddressesQueryRenderer, () => {
       return result
     })
 
-    expect(tree.findByProps({ "data-test-id": "no-saved-addresses" }).props.children).toContain("No Saved Addresses")
+    expect(tree.findAllByType(Flex)[4].props.children[0].props.children).toEqual("No Saved Addresses")
   })
 
   it("should render the saved addresses on the screen", () => {
