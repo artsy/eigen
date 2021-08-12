@@ -89,6 +89,7 @@ jest.mock("react-native-device-info", () => ({
   getVersion: jest.fn(),
   getModel: jest.fn(),
   getUserAgentSync: jest.fn(),
+  getDeviceType: jest.fn(),
 }))
 
 jest.mock("rn-fetch-blob", () => ({
@@ -129,11 +130,12 @@ jest.mock("react-native-fbsdk-next", () => ({
 
 jest.mock("@react-native-google-signin/google-signin", () => ({
   GoogleSignin: {
-    signOut: jest.fn(),
     configure: jest.fn(),
-    hasPlayServices: jest.fn(),
-    signIn: jest.fn(),
     getTokens: jest.fn(),
+    hasPlayServices: jest.fn(),
+    revokeAccess: jest.fn(),
+    signIn: jest.fn(),
+    signOut: jest.fn(),
   },
 }))
 
@@ -396,6 +398,18 @@ jest.mock("./lib/utils/useScreenDimensions", () => {
   }
 })
 
+jest.mock("react-native-safe-area-context", () => {
+  return {
+    ...jest.requireActual("react-native-safe-area-context"),
+    useSafeAreaFrame: () => ({
+      width: 380,
+      height: 550,
+      x: 0,
+      y: 0,
+    }),
+  }
+})
+
 jest.mock("@react-native-community/async-storage", () => {
   let state: any = {}
   return {
@@ -543,4 +557,7 @@ jest.mock("react-native-push-notification", () => ({
   onNotification: jest.fn(),
   addEventListener: jest.fn(),
   requestPermissions: jest.fn(),
+  checkPermissions: jest.fn(),
+  createChannel: jest.fn(),
+  localNotification: jest.fn(),
 }))

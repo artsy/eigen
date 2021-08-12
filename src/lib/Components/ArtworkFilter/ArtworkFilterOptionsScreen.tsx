@@ -59,6 +59,7 @@ export enum FilterModalMode {
   SaleArtworks = "SaleArtworks",
   Show = "Show",
   Gene = "Gene",
+  Tag = "Tag",
 }
 
 export const ArtworkFilterOptionsScreen: React.FC<
@@ -266,19 +267,7 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
       sortOrder = AuctionResultsFiltersSorted
       break
     case FilterModalMode.Partner:
-      sortOrder = [
-        "sort",
-        "medium",
-        "additionalGeneIDs",
-        "materialsTerms",
-        "priceRange",
-        "attributionClass",
-        "dimensionRange",
-        "waysToBuy",
-        "artistNationalities",
-        "majorPeriods",
-        "colors",
-      ]
+      sortOrder = GalleryShowFiltersSorted
       break
     case FilterModalMode.Gene:
       sortOrder = ["sort", "medium", "additionalGeneIDs", "priceRange"]
@@ -507,13 +496,13 @@ const CollectionFiltersSorted: FilterScreen[] = [
 ]
 const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "sort",
+  "attributionClass",
   "medium",
   "additionalGeneIDs",
-  "materialsTerms",
   "priceRange",
-  "attributionClass",
   "dimensionRange",
   "waysToBuy",
+  "materialsTerms",
   "locationCities",
   "majorPeriods",
   "colors",
@@ -521,34 +510,31 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
 ]
 const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "sort",
+  "attributionClass",
   "medium",
   "additionalGeneIDs",
-  "materialsTerms",
   "priceRange",
-  "attributionClass",
   "dimensionRange",
   "waysToBuy",
+  "materialsTerms",
   "locationCities",
   "majorPeriods",
   "colors",
   "partnerIDs",
 ]
 const FairFiltersSorted: FilterScreen[] = [
-  "sort",
+  "partnerIDs",
   "artistIDs",
-  "artistsIFollow",
-  "medium",
-  "additionalGeneIDs",
-  "materialsTerms",
-  "priceRange",
   "attributionClass",
+  "additionalGeneIDs",
+  "priceRange",
   "dimensionRange",
   "waysToBuy",
-  "locationCities",
+  "materialsTerms",
   "artistNationalities",
+  "locationCities",
   "majorPeriods",
   "colors",
-  "partnerIDs",
 ]
 const SaleArtworksFiltersSorted: FilterScreen[] = [
   "sort",
@@ -557,6 +543,20 @@ const SaleArtworksFiltersSorted: FilterScreen[] = [
   "medium",
   "additionalGeneIDs",
   "estimateRange",
+]
+
+const GalleryShowFiltersSorted: FilterScreen[] = [
+  "sort",
+  "artistIDs",
+  "attributionClass",
+  "additionalGeneIDs",
+  "priceRange",
+  "dimensionRange",
+  "waysToBuy",
+  "materialsTerms",
+  "artistNationalities",
+  "majorPeriods",
+  "colors",
 ]
 
 const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories", "sizes", "year", "organizations"]

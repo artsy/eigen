@@ -1,5 +1,7 @@
+import { PhoneNumberUtil } from "google-libphonenumber"
 import { TriangleDown } from "lib/Icons/TriangleDown"
-import { Flex, Sans, Spacer, Touchable, useColor } from "palette"
+import replace from "lodash/replace"
+import { Flex, Sans, Spacer, Text, Touchable, useColor } from "palette"
 import { useEffect, useRef, useState } from "react"
 import React from "react"
 import { Platform } from "react-native"
@@ -27,8 +29,20 @@ export const PhoneInput = React.forwardRef<
   const [phoneNumber, setPhoneNumber] = useState(
     formatPhoneNumber({ current: initialValues.phoneNumber, previous: initialValues.phoneNumber, countryCode })
   )
-
+  const [validationMessage, setValidationMessage] = useState("")
   const dialCode = countryIndex[countryCode].dialCode
+  const countryISO2Code = countryIndex[countryCode].iso2
+  const phoneUtil = PhoneNumberUtil.getInstance()
+
+  const isValidNumber = (number: string, code: string) => {
+    try {
+      number = replace(number, /[+()-\s]/g, "")
+      const parsedNumber = phoneUtil.parse(number, code)
+      return phoneUtil.isValidNumber(parsedNumber)
+    } catch (err) {
+      return false
+    }
+  }
 
   const isFirstRun = useRef(true)
   useEffect(() => {
@@ -36,90 +50,99 @@ export const PhoneInput = React.forwardRef<
       isFirstRun.current = false
       return
     }
+
     const newValue = phoneNumber ? `+${dialCode} ${phoneNumber}` : ""
     onChangeText?.(newValue)
     onChange?.(newValue)
   }, [phoneNumber, dialCode])
 
   return (
-    <Input
-      {...rest}
-      ref={(ref) => {
-        if (typeof outerRef === "function") {
-          outerRef(ref)
-        } else if (outerRef && "current" in outerRef) {
-          // @ts-expect-error
-          outerRef.current = ref
-        } else if (outerRef != null) {
-          console.error("bad ref given to PhoneInput")
+    <>
+      <Input
+        {...rest}
+        ref={(ref) => {
+          if (typeof outerRef === "function") {
+            outerRef(ref)
+          } else if (outerRef && "current" in outerRef) {
+            // @ts-expect-error
+            outerRef.current = ref
+          } else if (outerRef != null) {
+            console.error("bad ref given to PhoneInput")
+          }
+          innerRef.current = ref
+        }}
+        value={phoneNumber}
+        inputTextStyle={Platform.select({
+          android: { paddingTop: UNDERLINE_TEXTINPUT_HEIGHT_ANDROID },
+          default: {},
+        })}
+        placeholder={countryIndex[countryCode]?.mask?.replace(/9/g, "0")}
+        placeholderTextColor={color("black30")}
+        onChangeText={(newPhoneNumber) =>
+          setPhoneNumber(formatPhoneNumber({ current: newPhoneNumber, previous: phoneNumber, countryCode }))
         }
-        innerRef.current = ref
-      }}
-      value={phoneNumber}
-      inputTextStyle={Platform.select({
-        android: { paddingTop: UNDERLINE_TEXTINPUT_HEIGHT_ANDROID },
-        default: {},
-      })}
-      placeholder={countryIndex[countryCode]?.mask?.replace(/9/g, "0")}
-      placeholderTextColor={color("black30")}
-      onChangeText={(newPhoneNumber) =>
-        setPhoneNumber(formatPhoneNumber({ current: newPhoneNumber, previous: phoneNumber, countryCode }))
-      }
-      keyboardType="phone-pad"
-      renderLeftHandSection={() => (
-        <Select<string>
-          options={countryOptions}
-          enableSearch
-          value={countryCode}
-          maxModalHeight={maxModalHeight}
-          onModalFinishedClosing={() => {
-            innerRef.current?.focus()
-          }}
-          onSelectValue={(newCountryCode) => {
-            setCountryCode(newCountryCode)
-            setPhoneNumber(
-              formatPhoneNumber({ current: phoneNumber, previous: phoneNumber, countryCode: newCountryCode })
-            )
-          }}
-          title="Country code"
-          renderButton={({ selectedValue, onPress }) => {
-            return (
-              <Touchable onPress={onPress}>
-                <Flex flexDirection="row" style={{ width: "100%", height: "100%" }}>
-                  <Flex flexDirection="row" px="1" alignItems="center" backgroundColor="black10">
-                    {/* selectedValue should always be present */}
-                    <Sans size="4">{countryIndex[selectedValue ?? countryCode].flag}</Sans>
-                    <Spacer mr={0.5} />
-                    <TriangleDown width="8" />
+        keyboardType="phone-pad"
+        onBlur={() => {
+          setValidationMessage(isValidNumber(phoneNumber, countryISO2Code) ? "" : "Invalid phone number")
+        }}
+        renderLeftHandSection={() => (
+          <Select<string>
+            options={countryOptions}
+            enableSearch
+            value={countryCode}
+            maxModalHeight={maxModalHeight}
+            onModalFinishedClosing={() => {
+              innerRef.current?.focus()
+            }}
+            onSelectValue={(newCountryCode) => {
+              setCountryCode(newCountryCode)
+              setPhoneNumber(
+                formatPhoneNumber({ current: phoneNumber, previous: phoneNumber, countryCode: newCountryCode })
+              )
+            }}
+            title="Country code"
+            renderButton={({ selectedValue, onPress }) => {
+              return (
+                <Touchable onPress={onPress}>
+                  <Flex flexDirection="row" style={{ width: "100%", height: "100%" }}>
+                    <Flex flexDirection="row" px="1" alignItems="center" backgroundColor="black10">
+                      {/* selectedValue should always be present */}
+                      <Sans size="4">{countryIndex[selectedValue ?? countryCode].flag}</Sans>
+                      <Spacer mr={0.5} />
+                      <TriangleDown width="8" />
+                    </Flex>
+                    <Flex justifyContent="center" pl="1">
+                      <Sans color="black60" size="3" mt="2px">
+                        +{dialCode}
+                      </Sans>
+                    </Flex>
                   </Flex>
-                  <Flex justifyContent="center" pl="1">
-                    <Sans color="black60" size="3" mt="2px">
-                      +{dialCode}
-                    </Sans>
-                  </Flex>
+                </Touchable>
+              )
+            }}
+            // tslint:disable-next-line:no-shadowed-variable
+            renderItemLabel={({ label, value }) => {
+              return (
+                <Flex flexDirection="row" alignItems="center" flexShrink={1}>
+                  <Sans size="4">{countryIndex[value].flag}</Sans>
+                  <Spacer mr="1" />
+                  <Sans size="4" style={{ width: 45 }}>
+                    +{countryIndex[value].dialCode}
+                  </Sans>
+                  <Spacer mr="1" />
+                  <Sans size="4" numberOfLines={1} ellipsizeMode="tail" style={{ flexShrink: 1 }}>
+                    {label}
+                  </Sans>
                 </Flex>
-              </Touchable>
-            )
-          }}
-          // tslint:disable-next-line:no-shadowed-variable
-          renderItemLabel={({ label, value }) => {
-            return (
-              <Flex flexDirection="row" alignItems="center" flexShrink={1}>
-                <Sans size="4">{countryIndex[value].flag}</Sans>
-                <Spacer mr="1" />
-                <Sans size="4" style={{ width: 45 }}>
-                  +{countryIndex[value].dialCode}
-                </Sans>
-                <Spacer mr="1" />
-                <Sans size="4" numberOfLines={1} ellipsizeMode="tail" style={{ flexShrink: 1 }}>
-                  {label}
-                </Sans>
-              </Flex>
-            )
-          }}
-        />
-      )}
-    />
+              )
+            }}
+          />
+        )}
+      />
+      <Text numberOfLines={1} variant="caption" color="red">
+        {validationMessage}
+      </Text>
+    </>
   )
 })
 

@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@4.6.0
+  node: circleci/node@4.7.0
   queue: eddiewebb/queue@1.0.110
   horizon: artsy/release@0.0.1
 
@@ -182,6 +182,14 @@ commands:
             - node_modules/react-native-config
 
 jobs:
+  detect-secrets:
+    docker:
+      - image: lirantal/detect-secrets
+    working_directory: /usr/src/app
+    steps:
+      - checkout
+      - run: detect-secrets-hook --baseline .secrets.baseline --exclude-secrets '[a-fA-F0-9]{24}' --exclude-lines 'W/"[!#-\x7E]*"' $(git ls-files)
+
   deploy-nightly-beta:
     environment:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
@@ -494,6 +502,13 @@ workflows:
 
   test-build-deploy:
     jobs:
+      - detect-secrets:
+          filters:
+            branches:
+              ignore:
+                - master
+                - release
+                - staging
       - check-pr:
           filters:
             branches:

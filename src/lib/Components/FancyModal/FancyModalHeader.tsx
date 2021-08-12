@@ -51,6 +51,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
             <LeftButtonContainer
               hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
               onPress={() => onLeftButtonPress()}
+              testID="fancy-modal-header-left-button"
             >
               {leftButtonText ? <Text variant="text">{leftButtonText}</Text> : leftButton()}
             </LeftButtonContainer>

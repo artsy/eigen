@@ -100,7 +100,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
     const tree = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
     const items = tree.root.findAllByType(FilterModalOptionListItem)
 
-    expect(extractText(items[1])).toContain("Prints, Sculpture")
+    expect(extractText(items[2])).toContain("Prints, Sculpture")
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {

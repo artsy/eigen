@@ -9,7 +9,7 @@ import { act, ReactTestRenderer } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ConversationCTA, ConversationCTAFragmentContainer } from "../ConversationCTA"
-import { OpenInquiryModalButtonQueryRenderer } from "../OpenInquiryModalButton"
+import { OpenInquiryModalButton } from "../OpenInquiryModalButton"
 import { ReviewOfferButton } from "../ReviewOfferButton"
 jest.unmock("react-relay")
 
@@ -91,7 +91,19 @@ describe("ConversationCTA", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsInquiryCheckout: true })
     })
     const artworkItem = {
-      items: [{ item: { __typename: "Artwork", isOfferableFromInquiry: true } }],
+      items: [
+        {
+          item: {
+            __typename: "Artwork",
+            //  isOfferableFromInquiry: true
+          },
+          liveArtwork: {
+            isOfferableFromInquiry: true,
+            __typename: "Artwork",
+            internalID: "123",
+          },
+        },
+      ],
     }
     const getWrapperWithOrders = (...orders: any[]) => {
       return getWrapper({
@@ -107,7 +119,7 @@ describe("ConversationCTA", () => {
     it("renders the make offer button if there is no active order", () => {
       const wrapper = getWrapperWithOrders()
 
-      expect(wrapper.root.findAllByType(OpenInquiryModalButtonQueryRenderer)).toHaveLength(1)
+      expect(wrapper.root.findAllByType(OpenInquiryModalButton)).toHaveLength(1)
     })
 
     it("renders the payment failed message if the payment failed", () => {

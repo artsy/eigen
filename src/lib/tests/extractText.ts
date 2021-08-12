@@ -4,6 +4,7 @@ export const extractText = (root: ReactTestInstance | string) => {
   if (typeof root === "string") {
     return root
   }
+
   let result = ""
   root.findAll((el) => {
     // @ts-expect-error

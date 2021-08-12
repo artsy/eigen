@@ -113,7 +113,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
   const artsyDotNet: RouteMatcher[] = compact([
     new RouteMatcher("/", "Home"),
     new RouteMatcher("/sales", "Sales"),
-    new RouteMatcher("/search", "Search"),
+    new RouteMatcher("/search", "SearchSwitchContainer"),
     new RouteMatcher("/inbox", "Inbox"),
     new RouteMatcher("/my-profile", "MyProfile"),
     new RouteMatcher("/articles", "Articles"),
@@ -142,6 +142,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/auction-faq", "AuctionFAQ"),
     new RouteMatcher("/auction/:saleID/bid/:artworkID", "AuctionBidArtwork"),
     new RouteMatcher("/gene/:geneID", "Gene"),
+    new RouteMatcher("/tag/:tagID", "Tag"),
     new RouteMatcher("/show/:showID", "Show"),
     new RouteMatcher("/show/:showID/info", "ShowMoreInfo"),
 
@@ -219,6 +220,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/city-bmw-list/:citySlug", "CityBMWList"),
     new RouteMatcher("/make-offer/:artworkID", "MakeOfferModal"),
     new RouteMatcher("/user/purchases/:orderID", "OrderDetails"),
+    new RouteMatcher("/my-profile/saved-search-alerts", "SavedSearchAlertsList"),
+    new RouteMatcher("/my-profile/saved-search-alerts/:savedSearchAlertId", "EditSavedSearchAlert"),
     unsafe_getFeatureFlag("AROptionsUseReactNativeWebView")
       ? webViewRoute("/orders/:orderID", { mimicBrowserBackButton: false })
       : new RouteMatcher("/orders/:orderID", "Checkout"),

@@ -9,6 +9,7 @@ import { BidInfoRow } from "./BidInfoRow"
 import { Divider } from "./Divider"
 
 import { bullet } from "palette"
+import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { FlexProps } from "../Elements/Flex"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 
@@ -67,27 +68,29 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
     const { billingAddress, creditCardToken: token } = this.props
 
     return (
-      <View>
-        <Divider />
+      <BiddingThemeProvider>
+        <View>
+          <Divider />
 
-        <BidInfoRow
-          label="Credit card"
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          value={token && this.formatCard(token)}
-          onPress={() => this.presentCreditCardForm()}
-        />
+          <BidInfoRow
+            label="Credit card"
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            value={token && this.formatCard(token)}
+            onPress={() => this.presentCreditCardForm()}
+          />
 
-        <Divider />
+          <Divider />
 
-        <BidInfoRow
-          label="Billing address"
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          value={billingAddress && this.formatAddress(billingAddress)}
-          onPress={() => this.presentBillingAddressForm()}
-        />
+          <BidInfoRow
+            label="Billing address"
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            value={billingAddress && this.formatAddress(billingAddress)}
+            onPress={() => this.presentBillingAddressForm()}
+          />
 
-        <Divider />
-      </View>
+          <Divider />
+        </View>
+      </BiddingThemeProvider>
     )
   }
 

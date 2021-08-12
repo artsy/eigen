@@ -4,6 +4,7 @@ import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkF
 import {
   Aggregations,
   filterArtworksParams,
+  FilterData,
   FilterParamName,
   prepareFilterArtworksParamsForInput,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -71,7 +72,12 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   return (
     <ArtworkFiltersStoreProvider>
       <StickyTabPageScrollView>
-        <ArtistArtworksContainer {...props} artist={artist} relay={relay} openFilterModal={openFilterArtworksModal} />
+        <ArtistArtworksContainer
+          {...props}
+          artist={artist}
+          relay={relay}
+          openFilterModal={openFilterArtworksModal}
+        />
         <ArtworkFilterNavigator
           {...props}
           id={artist.internalID}
@@ -105,6 +111,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
 
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const relevantFiltersForSavedSearch = appliedFilters.filter((filter) => !(filter.paramName === FilterParamName.sort))
   const shouldShowSavedSearchBanner = enableSavedSearch && relevantFiltersForSavedSearch.length > 0
 
@@ -114,6 +121,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const artworks = artist.artworks
   const artworksCount = artworks?.edges?.length
   const artworksTotal = artworks?.counts?.total ?? 0
+  const artistName = artist.name
   const artistInternalId = artist.internalID
 
   useEffect(() => {
@@ -174,7 +182,11 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
                   </Flex>
                 )}
               />
-              <SavedSearchButtonQueryRenderer artistId={artistInternalId} filters={filterParams} />
+              <SavedSearchButtonQueryRenderer
+                filters={appliedFilters as FilterData[]}
+                artist={{ id: artistInternalId, name: artistName! }}
+                aggregations={aggregations}
+              />
             </Flex>
             <Separator />
           </>
@@ -196,7 +208,16 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
         )}
       </Box>
     )
-  }, [artworksTotal, shouldShowSavedSearchBanner, artistInternalId, filterParams, enableSavedSearchV2])
+  }, [
+    artworksTotal,
+    shouldShowSavedSearchBanner,
+    artistName,
+    artistInternalId,
+    filterParams,
+    enableSavedSearchV2,
+    appliedFilters,
+    aggregations,
+  ])
 
   const filteredArtworks = () => {
     if (artworksCount === 0) {
@@ -238,6 +259,7 @@ export default createPaginationContainer(
       ) {
         id
         slug
+        name
         internalID
         artworks: filterArtworksConnection(
           first: $count

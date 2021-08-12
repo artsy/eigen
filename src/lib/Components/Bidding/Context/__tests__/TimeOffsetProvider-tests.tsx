@@ -4,6 +4,7 @@ import PropTypes from "prop-types"
 import React from "react"
 import { View } from "react-native"
 
+import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { TimeOffsetProvider } from "../TimeOffsetProvider"
 
 // tslint:disable-next-line:no-var-requires
@@ -42,10 +43,11 @@ it("injects timeOffsetInMilliSeconds as a context", async () => {
 
   // There’s no explicit assertion made here, because this test would fail with a timeout if it wouldn’t find a match.
   await mount(
-    <TimeOffsetProvider>
-      <TestConsumer />
-    </TimeOffsetProvider>
-
+    <BiddingThemeProvider>
+      <TimeOffsetProvider>
+        <TestConsumer />
+      </TimeOffsetProvider>
+    </BiddingThemeProvider>
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   ).renderUntil((wrapper) => {
     return wrapper.find(TestConsumer).instance().context.timeOffsetInMilliSeconds === 10 * MINUTES
