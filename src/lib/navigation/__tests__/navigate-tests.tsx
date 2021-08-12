@@ -160,6 +160,26 @@ describe(navigate, () => {
     `)
   })
 
+  it("pop to root tab view in cases where that's required", async () => {
+    await navigate("my-profile/payment")
+    await navigate("my-profile/saved-search-alerts", {
+      popToRootTabView: true,
+    })
+    expect(GlobalStore.actions.bottomTabs.switchTab).toHaveBeenCalledWith("profile")
+    expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any)).toMatchInlineSnapshot(`
+      Array [
+        "profile",
+        Object {
+          "moduleName": "SavedSearchAlertsList",
+          "onlyShowInTabName": "profile",
+          "props": Object {},
+          "replace": false,
+          "type": "react",
+        },
+      ]
+    `)
+  })
+
   describe("debouncing", () => {
     const dateNow = Date.now
     const mockDateNow = jest.fn(() => 0)
