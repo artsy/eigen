@@ -5,15 +5,13 @@ import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef } from "react"
 import { Alert, Animated, ScrollView } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
-import { EmailSubscriptionCheckbox } from "./EmailSubscriptionCheckbox"
 import { OnboardingCreateAccountEmail, OnboardingCreateAccountEmailParams } from "./OnboardingCreateAccountEmail"
 import { OnboardingCreateAccountName } from "./OnboardingCreateAccountName"
 import { OnboardingCreateAccountPassword } from "./OnboardingCreateAccountPassword"
-import { TermsOfServiceCheckbox } from "./TermsOfServiceCheckbox"
 
 export interface OnboardingCreateAccountProps
   extends StackScreenProps<OnboardingNavigationStack, "OnboardingCreateAccount"> {}
@@ -38,6 +36,11 @@ export interface UserSchema {
   name: string
 }
 
+export interface FormikSchema extends UserSchema {
+  acceptedTerms: boolean
+  agreedToReceiveEmails: boolean
+}
+
 export const emailSchema = Yup.object().shape({
   email: Yup.string().email("Please provide a valid email address").required("Email field is required"),
 })
@@ -53,7 +56,7 @@ export const nameSchema = Yup.object().shape({
   name: Yup.string().required("Full name field is required"),
 })
 
-const getCurrentRoute = () =>
+export const getCurrentRoute = () =>
   __unsafe__createAccountNavigationRef.current?.getCurrentRoute()?.name as
     | keyof OnboardingCreateAccountNavigationStack
     | undefined
@@ -61,17 +64,13 @@ const getCurrentRoute = () =>
 const EMAIL_EXISTS_ERROR_MESSAGE = "We found an account with this email"
 
 export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = ({ navigation }) => {
-  const [acceptedTerms, setAcceptedTerms] = useState(false)
-  const [agreedToReceiveEmails, setAgreedToReceiveEmails] = useState(false)
-  const [higlightTerms, setHighlightTerms] = useState(false)
-
-  const formik = useFormik<UserSchema>({
+  const formik = useFormik<FormikSchema>({
     enableReinitialize: true,
     validateOnChange: false,
     validateOnBlur: true,
-    initialValues: { email: "", password: "", name: "" },
+    initialValues: { email: "", password: "", name: "", acceptedTerms: false, agreedToReceiveEmails: false },
     initialErrors: {},
-    onSubmit: async ({ email, password, name }, { setErrors }) => {
+    onSubmit: async ({ email, password, name, agreedToReceiveEmails, acceptedTerms }, { setErrors }) => {
       switch (getCurrentRoute()) {
         case "OnboardingCreateAccountEmail":
           const userExists = await GlobalStore.actions.auth.userExists({ email })
@@ -95,9 +94,6 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
             if (!res) {
               Alert.alert("Error", "Please try signing up again")
             }
-          } else {
-            // Highlight the terms and conditions checkbox
-            setHighlightTerms(true)
           }
 
           break
@@ -142,11 +138,6 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
           navigateToLogin={() => {
             navigation.replace("OnboardingLogin", { withFadeAnimation: true, email: formik.values.email })
           }}
-          acceptedTerms={acceptedTerms}
-          setAcceptedTerms={setAcceptedTerms}
-          highlightTerms={higlightTerms}
-          agreedToReceiveEmails={agreedToReceiveEmails}
-          setAgreedToReceiveEmails={setAgreedToReceiveEmails}
         />
       </NavigationContainer>
     </FormikProvider>
@@ -199,22 +190,10 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
 
 export interface OnboardingCreateAccountButtonProps {
   navigateToLogin: () => void
-  acceptedTerms: boolean
-  setAcceptedTerms: React.Dispatch<React.SetStateAction<boolean>>
-  highlightTerms: boolean
-  agreedToReceiveEmails: boolean
-  setAgreedToReceiveEmails: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButtonProps> = ({
-  navigateToLogin,
-  acceptedTerms,
-  setAcceptedTerms,
-  agreedToReceiveEmails,
-  setAgreedToReceiveEmails,
-  highlightTerms,
-}) => {
-  const { handleSubmit, isSubmitting, errors } = useFormikContext<UserSchema>()
+export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButtonProps> = ({ navigateToLogin }) => {
+  const { values, handleSubmit, isSubmitting, errors } = useFormikContext<FormikSchema>()
 
   const isLastStep = getCurrentRoute() === "OnboardingCreateAccountName"
   const yTranslateAnim = useRef(new Animated.Value(0))
@@ -249,17 +228,12 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
           </Button>
         </Animated.View>
       )}
-      {!!isLastStep && (
-        <Flex width="100%" pr={3} my={2}>
-          <TermsOfServiceCheckbox setChecked={setAcceptedTerms} checked={acceptedTerms} error={highlightTerms} />
-          <EmailSubscriptionCheckbox setChecked={setAgreedToReceiveEmails} checked={agreedToReceiveEmails} />
-        </Flex>
-      )}
+
       <Button
         onPress={handleSubmit}
         block
         haptic="impactMedium"
-        disabled={isLastStep && !acceptedTerms}
+        disabled={isLastStep && !values.acceptedTerms}
         loading={isSubmitting}
         testID="signUpButton"
         variant="primaryBlack"
