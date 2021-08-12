@@ -156,6 +156,45 @@ describe("Saved search alert form", () => {
 
     expect(onDeletePressMock).toHaveBeenCalled()
   })
+
+  it("should auto populate alert name for the create mutation", async () => {
+    const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+    fireEvent.press(getByTestId("save-alert-button"))
+
+    await waitFor(() => {
+      expect(mockEnvironment.mock.getMostRecentOperation().request.variables).toMatchObject({
+        input: {
+          userAlertSettings: {
+            name: "artistName • 5 filters",
+          },
+        },
+      })
+    })
+  })
+
+  it("should auto populate alert name for the update mutation", async () => {
+    const { getByTestId } = renderWithWrappersTL(
+      <SavedSearchAlertForm
+        {...baseProps}
+        savedSearchAlertId="savedSearchAlertId"
+        initialValues={{ name: "update value" }}
+      />
+    )
+
+    fireEvent.changeText(getByTestId("alert-input-name"), "")
+    fireEvent.press(getByTestId("save-alert-button"))
+
+    await waitFor(() => {
+      expect(mockEnvironment.mock.getMostRecentOperation().request.variables).toMatchObject({
+        input: {
+          userAlertSettings: {
+            name: "artistName • 5 filters",
+          },
+        },
+      })
+    })
+  })
 })
 
 const filters: FilterData[] = [
