@@ -119,70 +119,63 @@ const Home = (props: Props) => {
   }
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.Home,
-        context_screen_owner_type: null as any,
-      }}
-    >
-      <Theme>
-        <View style={{ flex: 1 }}>
-          <AboveTheFoldFlatList
-            data={rowData}
-            initialNumToRender={5}
-            refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-            renderItem={({ item, index, separators }) => {
-              switch (item.type) {
-                case "articles":
-                  return <ArticlesRailFragmentContainer articlesConnection={articlesConnection} />
-                case "artwork":
-                  return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
-                case "artist":
-                  return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
-                case "fairs":
-                  return <FairsRailFragmentContainer fairsModule={item.data} scrollRef={scrollRefs.current[index]} />
-                case "sales":
-                  return <SalesRailFragmentContainer salesModule={item.data} scrollRef={scrollRefs.current[index]} />
-                case "collections":
-                  return (
-                    <CollectionsRailFragmentContainer
-                      collectionsModule={item.data}
-                      scrollRef={scrollRefs.current[index]}
-                    />
-                  )
-                case "viewing-rooms":
-                  return <ViewingRoomsHomeRail featured={featured} />
+    <Theme>
+      <View style={{ flex: 1 }}>
+        <AboveTheFoldFlatList
+          data={rowData}
+          initialNumToRender={5}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+          renderItem={({ item, index, separators }) => {
+            switch (item.type) {
+              case "articles":
+                return <ArticlesRailFragmentContainer articlesConnection={articlesConnection} />
+              case "artwork":
+                return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
+              case "artist":
+                return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
+              case "fairs":
+                return <FairsRailFragmentContainer fairsModule={item.data} scrollRef={scrollRefs.current[index]} />
+              case "sales":
+                return <SalesRailFragmentContainer salesModule={item.data} scrollRef={scrollRefs.current[index]} />
+              case "collections":
+                return (
+                  <CollectionsRailFragmentContainer
+                    collectionsModule={item.data}
+                    scrollRef={scrollRefs.current[index]}
+                  />
+                )
+              case "viewing-rooms":
+                return <ViewingRoomsHomeRail featured={featured} />
 
-                case "auction-results":
-                  return <AuctionResultsRailFragmentContainer me={me} scrollRef={scrollRefs.current[index]} />
-                case "lotsByFollowedArtists":
-                  return (
-                    <SaleArtworksHomeRailContainer
-                      me={me}
-                      onShow={() => separators.updateProps("leading", { hideSeparator: false })}
-                      onHide={() => separators.updateProps("leading", { hideSeparator: true })}
-                    />
-                  )
-              }
-            }}
-            ListHeaderComponent={
-              <Box mb={1} mt={2}>
-                <Flex alignItems="center">
-                  <ArtsyLogoIcon scale={0.75} />
-                </Flex>
-                <Spacer mb="15px" />
-                <HomeHeroContainer homePage={homePage} />
-                <Spacer mb="2" />
-              </Box>
+              case "auction-results":
+                return <AuctionResultsRailFragmentContainer me={me} scrollRef={scrollRefs.current[index]} />
+              case "lotsByFollowedArtists":
+                return (
+                  <SaleArtworksHomeRailContainer
+                    me={me}
+                    onShow={() => separators.updateProps("leading", { hideSeparator: false })}
+                    onHide={() => separators.updateProps("leading", { hideSeparator: true })}
+                  />
+                )
             }
-            ItemSeparatorComponent={({ hideSeparator }) => (!hideSeparator ? <Spacer mb={3} /> : null)}
-            ListFooterComponent={() => <Spacer mb={3} />}
-            keyExtractor={(_item, index) => String(index)}
-          />
-          <EmailConfirmationBannerFragmentContainer me={me} />
-        </View>
-      </Theme>
-    </ProvideScreenTracking>
+          }}
+          ListHeaderComponent={
+            <Box mb={1} mt={2}>
+              <Flex alignItems="center">
+                <ArtsyLogoIcon scale={0.75} />
+              </Flex>
+              <Spacer mb="15px" />
+              <HomeHeroContainer homePage={homePage} />
+              <Spacer mb="2" />
+            </Box>
+          }
+          ItemSeparatorComponent={({ hideSeparator }) => (!hideSeparator ? <Spacer mb={3} /> : null)}
+          ListFooterComponent={() => <Spacer mb={3} />}
+          keyExtractor={(_item, index) => String(index)}
+        />
+        <EmailConfirmationBannerFragmentContainer me={me} />
+      </View>
+    </Theme>
   )
 }
 
@@ -370,29 +363,41 @@ export const HomeQueryRenderer: React.FC = () => {
   }, [flash_message])
 
   // Avoid rendering when user is logged out, it will fail anyway
-  return userAccessToken ? (
-    <QueryRenderer<HomeQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query HomeQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
-          homePage @optionalField {
-            ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
-          }
-          me @optionalField {
-            ...Home_me
-            ...AuctionResultsRail_me
-          }
-          featured: viewingRooms(featured: true) @optionalField {
-            ...Home_featured
-          }
-          articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
-            ...Home_articlesConnection
-          }
-        }
-      `}
-      variables={{ heroImageVersion: isPad() ? "WIDE" : "NARROW" }}
-      render={renderWithPlaceholder({ Container: HomeFragmentContainer, renderPlaceholder: () => <HomePlaceholder /> })}
-      cacheConfig={{ force: true }}
-    />
-  ) : null
+  return (
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.Home,
+        context_screen_owner_type: null as any,
+      }}
+    >
+      {!!userAccessToken && (
+        <QueryRenderer<HomeQuery>
+          environment={defaultEnvironment}
+          query={graphql`
+            query HomeQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
+              homePage @optionalField {
+                ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
+              }
+              me @optionalField {
+                ...Home_me
+                ...AuctionResultsRail_me
+              }
+              featured: viewingRooms(featured: true) @optionalField {
+                ...Home_featured
+              }
+              articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
+                ...Home_articlesConnection
+              }
+            }
+          `}
+          variables={{ heroImageVersion: isPad() ? "WIDE" : "NARROW" }}
+          render={renderWithPlaceholder({
+            Container: HomeFragmentContainer,
+            renderPlaceholder: () => <HomePlaceholder />,
+          })}
+          cacheConfig={{ force: true }}
+        />
+      )}
+    </ProvideScreenTracking>
+  )
 }
