@@ -16,12 +16,17 @@ export interface ViewDescriptor extends ViewOptions {
   props: object
 }
 
+export interface NavigatOptions {
+  modal?: boolean
+  passProps?: object
+  replace?: boolean
+  // Only when onlyShowInTabName specified
+  popToRootTabView?: boolean
+}
+
 let lastInvocation = { url: "", timestamp: 0 }
 
-export async function navigate(
-  url: string,
-  options: { modal?: boolean; passProps?: object; replace?: boolean; popToRootTabView?: boolean } = {}
-) {
+export async function navigate(url: string, options: NavigatOptions = {}) {
   // Debounce double taps
   if (lastInvocation.url === url && Date.now() - lastInvocation.timestamp < 1000) {
     return
