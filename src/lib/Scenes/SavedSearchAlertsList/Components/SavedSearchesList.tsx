@@ -2,11 +2,13 @@ import { SavedSearchesList_me } from "__generated__/SavedSearchesList_me.graphql
 import { SAVED_SERCHES_PAGE_SIZE } from "lib/data/constants"
 import { navigate, navigationEvents } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
+import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Flex, Spinner, useTheme } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { FlatList, RefreshControl } from "react-native"
+import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { EmptyMessage } from "./EmptyMessage"
+import { SavedSearchAlertsListPlaceholder } from "./SavedSearchAlertsListPlaceholder"
 import { SavedSearchListItem } from "./SavedSearchListItem"
 
 interface SavedSearchesListProps {
@@ -20,11 +22,9 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   const [refreshing, setRefreshing] = useState(false)
   const { space } = useTheme()
   const items = extractNodes(me.savedSearchesConnection)
-  const flatListRef = useRef<FlatList>(null)
   const onRefresh = useRef(() => {
     setRefreshing(true)
 
-    flatListRef.current?.scrollToOffset({ offset: 0, animated: false })
     relay.refetchConnection(SAVED_SERCHES_PAGE_SIZE, (error) => {
       if (error) {
         console.error(error)
@@ -54,15 +54,21 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
     })
   }
 
+  if (refreshing) {
+    return (
+      <ProvidePlaceholderContext>
+        <SavedSearchAlertsListPlaceholder />
+      </ProvidePlaceholderContext>
+    )
+  }
+
   if (items.length === 0) {
     return <EmptyMessage />
   }
 
   return (
     <FlatList
-      ref={flatListRef}
       data={items}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       keyExtractor={(item) => item.internalID}
       contentContainerStyle={{ paddingVertical: space(1) }}
       renderItem={({ item }) => {

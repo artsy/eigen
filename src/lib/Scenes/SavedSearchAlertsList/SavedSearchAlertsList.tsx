@@ -45,7 +45,11 @@ export const SavedSearchAlertsListQueryRenderer: React.FC = () => {
       cacheConfig={{ force: true }}
       render={renderWithPlaceholder({
         Container: SavedSearchAlertsListFragmentContainer,
-        renderPlaceholder: () => <SavedSearchAlertsListPlaceholder />,
+        renderPlaceholder: () => (
+          <PageWithSimpleHeader title="Saved Alerts">
+            <SavedSearchAlertsListPlaceholder />
+          </PageWithSimpleHeader>
+        ),
       })}
     />
   )
