@@ -36,6 +36,7 @@ export const Form: React.FC<FormProps> = (props) => {
           onBlur={handleBlur("name")}
           error={errors.name}
           testID="alert-input-name"
+          maxLength={75}
         />
       </Box>
       <Box mb={2}>
