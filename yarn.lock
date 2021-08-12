@@ -5040,24 +5040,6 @@ address@1.1.2, address@^1.0.1:
   resolved "https://registry.yarnpkg.com/address/-/address-1.1.2.tgz#bf1116c9c758c51b7a933d296b72c221ed9428b6"
   integrity sha512-aT6camzM4xEA54YVJYSqxz1kv4IHnQZRtThJJHhUMRExaU5spC7jX5ugSwTaTgJliIgs4VhZOk7htClvQ/LmRA==
 
-adjust-engine@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/adjust-engine/-/adjust-engine-2.0.4.tgz#31ac43911325020c273453822ec04bc2d769fd01"
-  integrity sha1-MaxDkRMlAgwnNFOCLsBLwtdp/QE=
-  dependencies:
-    object-assign "^3.0.0"
-
-adjust@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/adjust/-/adjust-2.1.1.tgz#17d96e0f43b58780027596b2be919b317b7bbaea"
-  integrity sha1-F9luD0O1h4ACdZayvpGbMXt7uuo=
-  dependencies:
-    adjust-engine "^2.0.4"
-    component-raf "^1.2.0"
-    right-now "^1.0.0"
-    scrollparent "^0.1.0"
-    translate-component "0.0.1"
-
 agent-base@4, agent-base@^4.1.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-4.2.0.tgz#9838b5c3392b962bad031e6a4c5e1024abec45ce"
@@ -7211,11 +7193,6 @@ component-emitter@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/component-emitter/-/component-emitter-1.2.1.tgz#137918d6d78283f7df7a6b7c5a63e140e69425e6"
   integrity sha1-E3kY1teCg/ffemt8WmPhQOaUJeY=
-
-component-raf@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/component-raf/-/component-raf-1.2.0.tgz#b2bc72d43f1b014fde7a4b3c447c764bc73ccbaa"
-  integrity sha1-srxy1D8bAU/eeks8RHx2S8c8y6o=
 
 compressible@~2.0.13:
   version "2.0.13"
@@ -10158,13 +10135,6 @@ has-to-string-tag-x@^1.2.0:
   integrity sha512-vdbKfmw+3LoOYVr+mtxHaX5a96+0f3DljYd8JOqvOLsf5mw2Otda2qCDT9qRqLAhrjyQ0h7ual5nOiASpsGNFw==
   dependencies:
     has-symbol-support-x "^1.4.1"
-
-has-translate3d@*:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/has-translate3d/-/has-translate3d-0.0.3.tgz#ee0157ad5b4ca8a1a33514a9e7ef45415a132103"
-  integrity sha1-7gFXrVtMqKGjNRSp5+9FQVoTIQM=
-  dependencies:
-    transform-property "0.0.1"
 
 has-unicode@^2.0.0:
   version "2.0.1"
@@ -14148,11 +14118,6 @@ ob1@0.59.0:
   resolved "https://registry.yarnpkg.com/ob1/-/ob1-0.59.0.tgz#ee103619ef5cb697f2866e3577da6f0ecd565a36"
   integrity sha512-opXMTxyWJ9m68ZglCxwo0OPRESIC/iGmKFPXEXzMZqsVIrgoRXOHmoMDkQzz4y3irVjbyPJRAh5pI9fd0MJTFQ==
 
-object-assign@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-3.0.0.tgz#9bedd5ca0897949bca47e7ff408062d549f587f2"
-  integrity sha1-m+3VygiXlJvKR+f/QIBi1Un1h/I=
-
 object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
@@ -16716,11 +16681,6 @@ retry@0.12.0:
   resolved "https://registry.yarnpkg.com/retry/-/retry-0.12.0.tgz#1b42a6266a21f07421d1b0b54b7dc167b01c013b"
   integrity sha1-G0KmJmoh8HQh0bC1S33BZ7AcATs=
 
-right-now@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/right-now/-/right-now-1.0.0.tgz#6e89609deebd7dcdaf8daecc9aea39cf585a0918"
-  integrity sha1-bolgne69fc2vja7Mmuo5z1haCRg=
-
 rimraf@^2.2.8, rimraf@^2.5.4, rimraf@^2.6.2, rimraf@^2.6.3:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.3.tgz#b2d104fe0d8fb27cf9e0a1cda8262dd3833c6cab"
@@ -16938,11 +16898,6 @@ screenfull@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/screenfull/-/screenfull-5.1.0.tgz#85c13c70f4ead4c1b8a935c70010dfdcd2c0e5c8"
   integrity sha512-dYaNuOdzr+kc6J6CFcBrzkLCfyGcMg+gWkJ8us93IQ7y1cevhQAugFsaCdMHb6lw8KV3xPzSxzH7zM1dQap9mA==
-
-scrollparent@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/scrollparent/-/scrollparent-0.1.0.tgz#e7a0460e9920372eb3cc0182add0e0e356f6349e"
-  integrity sha1-56BGDpkgNy6zzAGCrdDg41b2NJ4=
 
 select@^1.1.2:
   version "1.1.2"
@@ -18375,19 +18330,6 @@ tr46@^1.0.1:
   integrity sha1-qLE/1r/SSJUZZ0zN5VujaTtwbQk=
   dependencies:
     punycode "^2.1.0"
-
-transform-property@*, transform-property@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/transform-property/-/transform-property-0.0.1.tgz#4863662f9d5e5bb8f0c00648eff08beb14fd65f2"
-  integrity sha1-SGNmL51eW7jwwAZI7/CL6xT9ZfI=
-
-translate-component@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/translate-component/-/translate-component-0.0.1.tgz#64a992cfaa03e77c97a4c833222d46d3a9c09076"
-  integrity sha1-ZKmSz6oD53yXpMgzIi1G06nAkHY=
-  dependencies:
-    has-translate3d "*"
-    transform-property "*"
 
 trim-right@^1.0.1:
   version "1.0.1"
