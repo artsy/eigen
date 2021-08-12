@@ -5,45 +5,70 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import React from "react"
 import { View } from "react-native"
 import { ForgotPassword } from "./ForgotPassword"
-import { OnboardingCreateAccount } from "./OnboardingCreateAccount/OnboardingCreateAccount"
-import { OnboardingLogin } from "./OnboardingLogin"
+import {
+  OnboardingCreateAccount,
+  OnboardingCreateAccountWithEmail,
+} from "./OnboardingCreateAccount/OnboardingCreateAccount"
+import { OnboardingLogin, OnboardingLoginWithEmail } from "./OnboardingLogin"
 import { OnboardingPersonalization } from "./OnboardingPersonalization/OnboardingPersonalization"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
 // tslint:disable-next-line:interface-over-type-literal
 export type OnboardingNavigationStack = {
   OnboardingWelcome: undefined
-  OnboardingLogin: { withFadeAnimation: boolean; email: string } | undefined
-  OnboardingCreateAccount: undefined
+  OnboardingLogin: { withFadeAnimation: boolean } | undefined
+  OnboardingLoginWithEmail: { withFadeAnimation: boolean; email: string } | undefined
+  OnboardingCreateAccount: { withFadeAnimation: boolean } | undefined
+  OnboardingCreateAccountWithEmail: undefined
   ForgotPassword: undefined
 }
 
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
 
-export const OnboardingWelcomeScreens = () => (
-  <NavigationContainer independent>
-    <StackNavigator.Navigator
-      headerMode="screen"
-      screenOptions={{
-        ...TransitionPresets.SlideFromRightIOS,
-        headerShown: false,
-      }}
-    >
-      <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
-      <StackNavigator.Screen
-        name="OnboardingLogin"
-        component={OnboardingLogin}
-        options={({ route: { params } }) => ({
-          cardStyleInterpolator: params?.withFadeAnimation
-            ? CardStyleInterpolators.forFadeFromBottomAndroid
-            : CardStyleInterpolators.forHorizontalIOS,
-        })}
-      />
-      <StackNavigator.Screen name="OnboardingCreateAccount" component={OnboardingCreateAccount} />
-      <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
-    </StackNavigator.Navigator>
-  </NavigationContainer>
-)
+export const OnboardingWelcomeScreens = () => {
+  return (
+    <NavigationContainer independent>
+      <StackNavigator.Navigator
+        headerMode="screen"
+        screenOptions={{
+          ...TransitionPresets.SlideFromRightIOS,
+          headerShown: false,
+        }}
+      >
+        <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
+        <StackNavigator.Screen
+          name="OnboardingLogin"
+          component={OnboardingLogin}
+          options={({ route: { params } }) => ({
+            cardStyleInterpolator: params?.withFadeAnimation
+              ? CardStyleInterpolators.forFadeFromBottomAndroid
+              : CardStyleInterpolators.forHorizontalIOS,
+          })}
+        />
+        <StackNavigator.Screen
+          name="OnboardingLoginWithEmail"
+          component={OnboardingLoginWithEmail}
+          options={({ route: { params } }) => ({
+            cardStyleInterpolator: params?.withFadeAnimation
+              ? CardStyleInterpolators.forFadeFromBottomAndroid
+              : CardStyleInterpolators.forHorizontalIOS,
+          })}
+        />
+        <StackNavigator.Screen
+          name="OnboardingCreateAccount"
+          component={OnboardingCreateAccount}
+          options={({ route: { params } }) => ({
+            cardStyleInterpolator: params?.withFadeAnimation
+              ? CardStyleInterpolators.forFadeFromBottomAndroid
+              : CardStyleInterpolators.forHorizontalIOS,
+          })}
+        />
+        <StackNavigator.Screen name="OnboardingCreateAccountWithEmail" component={OnboardingCreateAccountWithEmail} />
+        <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
+      </StackNavigator.Navigator>
+    </NavigationContainer>
+  )
+}
 export const Onboarding = () => {
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
 

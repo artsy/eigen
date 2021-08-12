@@ -2,7 +2,7 @@ import { Input } from "lib/Components/Input/Input"
 import React from "react"
 import { Touchable } from "../../../../palette/elements/Touchable/Touchable"
 import { renderWithWrappers } from "../../../tests/renderWithWrappers"
-import { OnboardingLoginForm } from "../OnboardingLogin"
+import { OnboardingLoginWithEmailForm } from "../OnboardingLogin"
 
 const navigateMock = jest.fn()
 
@@ -31,7 +31,7 @@ jest.mock("formik", () => ({
 
 describe("OnboardingLogin", () => {
   const TestProvider = ({ email = "" }) => {
-    return <OnboardingLoginForm navigation={navigationPropsMock as any} route={{ params: { email } } as any} />
+    return <OnboardingLoginWithEmailForm navigation={navigationPropsMock as any} route={{ params: { email } } as any} />
   }
 
   describe("Forget Button", () => {

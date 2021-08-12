@@ -10,9 +10,14 @@ import { Alert, Animated, ScrollView } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
+import { OnboardingSocialPick } from "../OnboardingSocialPick"
 import { OnboardingCreateAccountEmail, OnboardingCreateAccountEmailParams } from "./OnboardingCreateAccountEmail"
 import { OnboardingCreateAccountName } from "./OnboardingCreateAccountName"
 import { OnboardingCreateAccountPassword } from "./OnboardingCreateAccountPassword"
+
+export const OnboardingCreateAccount: React.FC = () => {
+  return <OnboardingSocialPick mode="signup" />
+}
 
 export interface OnboardingCreateAccountProps
   extends StackScreenProps<OnboardingNavigationStack, "OnboardingCreateAccount"> {}
@@ -64,7 +69,7 @@ export const getCurrentRoute = () =>
 
 const EMAIL_EXISTS_ERROR_MESSAGE = "We found an account with this email"
 
-export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = ({ navigation }) => {
+export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountProps> = ({ navigation }) => {
   const formik = useFormik<FormikSchema>({
     enableReinitialize: true,
     validateOnChange: false,
@@ -136,8 +141,8 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
           <StackNavigator.Screen name="OnboardingCreateAccountName" component={OnboardingCreateAccountName} />
         </StackNavigator.Navigator>
         <OnboardingCreateAccountButton
-          navigateToLogin={() => {
-            navigation.replace("OnboardingLogin", { withFadeAnimation: true, email: formik.values.email })
+          navigateToLoginWithEmail={() => {
+            navigation.replace("OnboardingLoginWithEmail", { withFadeAnimation: true, email: formik.values.email })
           }}
         />
       </NavigationContainer>
@@ -190,10 +195,12 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
 }
 
 export interface OnboardingCreateAccountButtonProps {
-  navigateToLogin: () => void
+  navigateToLoginWithEmail: () => void
 }
 
-export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButtonProps> = ({ navigateToLogin }) => {
+export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButtonProps> = ({
+  navigateToLoginWithEmail,
+}) => {
   const { values, handleSubmit, isSubmitting, errors } = useFormikContext<FormikSchema>()
 
   const isLastStep = getCurrentRoute() === "OnboardingCreateAccountName"
@@ -217,7 +224,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
       {errors.email === EMAIL_EXISTS_ERROR_MESSAGE && (
         <Animated.View style={{ bottom: -50, transform: [{ translateY: yTranslateAnim.current }] }}>
           <Button
-            onPress={navigateToLogin}
+            onPress={navigateToLoginWithEmail}
             block
             haptic="impactMedium"
             mb={1}
