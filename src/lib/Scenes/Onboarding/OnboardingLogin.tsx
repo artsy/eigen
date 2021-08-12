@@ -11,8 +11,13 @@ import DeviceInfo from "react-native-device-info"
 import * as Yup from "yup"
 import { Touchable } from "../../../palette/elements/Touchable/Touchable"
 import { OnboardingNavigationStack } from "./Onboarding"
+import { OnboardingSocialPick } from "./OnboardingSocialPick"
 
-export interface OnboardingLoginProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingLogin"> {}
+export const OnboardingLogin: React.FC = () => {
+  return <OnboardingSocialPick mode="login" />
+}
+
+export interface OnboardingLoginProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWithEmail"> {}
 
 export interface OnboardingLoginValuesSchema {
   email: string
@@ -24,7 +29,7 @@ export const loginSchema = Yup.object().shape({
   password: Yup.string().test("password", "Password field is required", (value) => value !== ""),
 })
 
-export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation, route }) => {
+export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ navigation, route }) => {
   const color = useColor()
   const {
     values,
@@ -168,7 +173,7 @@ export const OnboardingLoginForm: React.FC<OnboardingLoginProps> = ({ navigation
 
 const initialValues: OnboardingLoginValuesSchema = { email: "", password: "" }
 
-export const OnboardingLogin: React.FC<OnboardingLoginProps> = ({ navigation, route }) => {
+export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navigation, route }) => {
   const formik = useFormik<OnboardingLoginValuesSchema>({
     enableReinitialize: true,
     validateOnChange: false,
@@ -192,7 +197,7 @@ export const OnboardingLogin: React.FC<OnboardingLoginProps> = ({ navigation, ro
 
   return (
     <FormikProvider value={formik}>
-      <OnboardingLoginForm navigation={navigation} route={route} />
+      <OnboardingLoginWithEmailForm navigation={navigation} route={route} />
     </FormikProvider>
   )
 }
