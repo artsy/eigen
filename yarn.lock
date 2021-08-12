@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@artsy/cohesion@2.17.0":
-  version "2.17.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-2.17.0.tgz#0222def910df91f0aca6aae2de20c60f96d66ec7"
-  integrity sha512-iRHpG7vrs4ESwx0T/G+EdUHmJ5Jc5DvPZQXS2AcuCiMbta73qUZnn+uWmXc0O9wTGN289aT9no6968EFGXX0zg==
+"@artsy/cohesion@2.18.0":
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-2.18.0.tgz#411d58f5bdea55d98ce9c7aa549523b1f83c9165"
+  integrity sha512-+8JaO3/XG5zcCRNUMeyTUiQO+I0aaY99LmOyYoEyEFJHBbtZS4mmlfYtY9cH6KJn626mLdUakyg73CaZJUfzJA==
   dependencies:
     core-js "3"
 
