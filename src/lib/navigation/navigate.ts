@@ -75,7 +75,7 @@ export async function navigate(url: string, options: NavigatOptions = {}) {
         await LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(module.options.onlyShowInTabName)
       }
 
-      GlobalStore.actions.bottomTabs.switchTab(module.options.onlyShowInTabName)
+      switchTab(module.options.onlyShowInTabName)
     }
 
     LegacyNativeModules.ARScreenPresenterModule.pushView(
