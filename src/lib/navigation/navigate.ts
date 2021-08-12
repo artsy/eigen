@@ -16,9 +16,17 @@ export interface ViewDescriptor extends ViewOptions {
   props: object
 }
 
+export interface NavigateOptions {
+  modal?: boolean
+  passProps?: object
+  replace?: boolean
+  // Only when onlyShowInTabName specified
+  popToRootTabView?: boolean
+}
+
 let lastInvocation = { url: "", timestamp: 0 }
 
-export async function navigate(url: string, options: { modal?: boolean; passProps?: object; replace?: boolean } = {}) {
+export async function navigate(url: string, options: NavigateOptions = {}) {
   // Debounce double taps
   if (lastInvocation.url === url && Date.now() - lastInvocation.timestamp < 1000) {
     return
@@ -40,7 +48,7 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
 
   const module = modules[result.module]
   const presentModally = options.modal ?? module.options.alwaysPresentModally ?? false
-  const { replace = false } = options
+  const { replace = false, popToRootTabView } = options
 
   const screenDescriptor: ViewDescriptor = {
     type: module.type,
@@ -63,7 +71,11 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
   } else {
     const selectedTab = unsafe__getSelectedTab()
     if (module.options.onlyShowInTabName) {
-      GlobalStore.actions.bottomTabs.switchTab(module.options.onlyShowInTabName)
+      if (popToRootTabView) {
+        await LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(module.options.onlyShowInTabName)
+      }
+
+      switchTab(module.options.onlyShowInTabName)
     }
 
     LegacyNativeModules.ARScreenPresenterModule.pushView(
