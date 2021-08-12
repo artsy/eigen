@@ -1,5 +1,7 @@
 import { SavedSearchButtonTestsQuery } from "__generated__/SavedSearchButtonTestsQuery.graphql"
+import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
@@ -7,13 +9,21 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { SavedSearchButtonFragmentContainer as SavedSearchButton } from "../SavedSearchButton"
+import { SavedSearchButtonRefetchContainer as SavedSearchButton } from "../SavedSearchButton"
 
 jest.unmock("react-relay")
 
 const mockedAttributes: SearchCriteriaAttributes = {
-  acquireable: true,
+  atAuction: true,
 }
+
+const mockedFilters = [
+  {
+    displayText: "Bid",
+    paramName: FilterParamName.waysToBuyBid,
+    paramValue: true,
+  },
+]
 
 describe("SavedSearchButton", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -22,7 +32,7 @@ describe("SavedSearchButton", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  const TestRenderer = ({ attributes = mockedAttributes, onCreateAlertPress = jest.fn() }) => {
+  const TestRenderer = ({ attributes = mockedAttributes }) => {
     return (
       <QueryRenderer<SavedSearchButtonTestsQuery>
         environment={mockEnvironment}
@@ -37,8 +47,13 @@ describe("SavedSearchButton", () => {
           <SavedSearchButton
             {...props}
             loading={props === null && error === null}
-            isEmptyCriteria={Object.keys(attributes).length === 0}
-            onCreateAlertPress={onCreateAlertPress}
+            filters={mockedFilters}
+            criteria={attributes}
+            aggregations={[]}
+            artist={{
+              id: "artistID",
+              name: "artistName",
+            }}
           />
         )}
         variables={{
@@ -80,9 +95,8 @@ describe("SavedSearchButton", () => {
     expect(tree.root.findByType(Button).props.disabled).toBe(true)
   })
 
-  it("should call `onPress` handler when button is pressed", () => {
-    const onPress = jest.fn()
-    const tree = renderWithWrappers(<TestRenderer onCreateAlertPress={onPress} />)
+  it("should show the create saved search form when the button is pressed", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
 
     mockEnvironmentPayload(mockEnvironment, {
       Me: () => ({
@@ -92,6 +106,6 @@ describe("SavedSearchButton", () => {
 
     act(() => tree.root.findByType(Button).props.onPress())
 
-    expect(onPress).toHaveBeenCalled()
+    expect(tree.root.findByType(CreateSavedSearchAlert).props.visible).toBeTruthy()
   })
 })

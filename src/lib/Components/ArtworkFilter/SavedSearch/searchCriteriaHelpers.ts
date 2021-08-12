@@ -68,3 +68,13 @@ export const prepareFilterDataForSaveSearchInput = (filters: FilterData[]) => {
 
   return input
 }
+
+export const getSearchCriteriaFromFilters = (artistID: string, filters: FilterData[]) => {
+  const input = prepareFilterDataForSaveSearchInput(filters)
+  const criteria: SearchCriteriaAttributes = {
+    artistID,
+    ...input,
+  }
+
+  return criteria
+}
