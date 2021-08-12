@@ -90,6 +90,7 @@ jest.mock("react-native-device-info", () => ({
   getModel: jest.fn(),
   getUserAgentSync: jest.fn(),
   getDeviceType: jest.fn(),
+  hasNotch: jest.fn(),
 }))
 
 jest.mock("rn-fetch-blob", () => ({

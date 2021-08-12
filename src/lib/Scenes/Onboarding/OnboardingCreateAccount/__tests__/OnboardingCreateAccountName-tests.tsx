@@ -26,8 +26,8 @@ describe("OnboardingCreateAccountName", () => {
       validateOnChange: false,
       validateOnBlur: true,
       initialValues: {
-        email: "validEmail@test.com",
-        password: "1validPassword",
+        email: "",
+        password: "",
         name,
         acceptedTerms,
         agreedToReceiveEmails,
