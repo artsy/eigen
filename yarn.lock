@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@artsy/cohesion@2.15.0":
-  version "2.15.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-2.15.0.tgz#9defc606318afa8696b1b71ee84fd76c5c8f1c38"
-  integrity sha512-FoUgn+f34rnMXE3IR3q+Rv6i2oe4G4gCYKNmsuNxVYMHnZq8hZMWoGz7ZIU6aV3g1fj5hQu2nwlRK4WYYQq0cg==
+"@artsy/cohesion@2.17.0":
+  version "2.17.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-2.17.0.tgz#0222def910df91f0aca6aae2de20c60f96d66ec7"
+  integrity sha512-iRHpG7vrs4ESwx0T/G+EdUHmJ5Jc5DvPZQXS2AcuCiMbta73qUZnn+uWmXc0O9wTGN289aT9no6968EFGXX0zg==
   dependencies:
     core-js "3"
 
-"@artsy/palette-tokens@2.5.0":
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-tokens/-/palette-tokens-2.5.0.tgz#55cdbba4714ac004c03401826faab66d2f978547"
-  integrity sha512-77RKXo4WOQ076OI2uYgF7uF1cNOlnQy54T4RS75GjtDuB/+rrEyARv6fLLLCeiRI5L1rrEZOdJN4eL3LRWeCeA==
+"@artsy/palette-tokens@2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-tokens/-/palette-tokens-2.6.0.tgz#3d780ff65994fef0daadef29d43d11f89470b728"
+  integrity sha512-UQP6P+xv/5hm82ep0z5X3kCFFnk03H6y8kdW/wTU+xPq45ESUay7aNFYXeub47tmW2v6dXJ8Oa01Z0iwc6BVpA==
 
 "@artsy/update-repo@0.4.0":
   version "0.4.0"
@@ -4431,6 +4431,11 @@
   version "7946.0.7"
   resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.7.tgz#c8fa532b60a0042219cdf173ca21a975ef0666ad"
   integrity sha512-wE2v81i4C4Ol09RtsWFAqg3BUitWbHSpSlIo+bNdsCJijO9sjme+zm+73ZMCa/qMC8UEERxzGbvmr1cffo2SiQ==
+
+"@types/google-libphonenumber@^7.4.21":
+  version "7.4.21"
+  resolved "https://registry.yarnpkg.com/@types/google-libphonenumber/-/google-libphonenumber-7.4.21.tgz#db5293874ffa91cbbc4bc6bd1b065615e8e615ba"
+  integrity sha512-AkZh/KMuvHpjpMeV1Wx1BJl5gMUVc2gKJhzhbQlpUzIg5s/vjcw8tZeH7nLsCwddCxqf93YVpdJcjUNRkW7gvQ==
 
 "@types/hammerjs@^2.0.36":
   version "2.0.36"
@@ -9961,6 +9966,11 @@ good-listener@^1.2.2:
   integrity sha1-1TswzfkxPf+33JoNR3CWqm0UXFA=
   dependencies:
     delegate "^3.1.2"
+
+google-libphonenumber@^3.2.22:
+  version "3.2.22"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.22.tgz#04d1df75324d4210c1bbfba0c238a0b08c594d22"
+  integrity sha512-lzEllxWc05n/HEv75SsDrA7zdEVvQzTZimItZm/TZ5XBs7cmx2NJmSlA5I0kZbdKNu8GFETBhSpo+SOhx0JslA==
 
 got@^7.0.0:
   version "7.1.0"

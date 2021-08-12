@@ -1,9 +1,10 @@
 import { FormikProvider, useFormik } from "formik"
-import { Aggregations, FilterArray } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import React from "react"
 import { Alert } from "react-native"
 import { Form } from "./Components/Form"
-import { extractPills } from "./helpers"
+import { extractPills, getNamePlaceholder } from "./helpers"
+import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
 import { updateSavedSearchAlert } from "./mutations/updateSavedSearchAlert"
 import { SavedSearchAlertFormPropsBase, SavedSearchAlertFormValues } from "./SavedSearchAlertModel"
@@ -12,8 +13,6 @@ export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase
   initialValues: {
     name: string
   }
-  filters: FilterArray
-  aggregations: Aggregations
   savedSearchAlertId?: string
   onComplete?: () => void
   onDeleteComplete?: () => void
@@ -22,13 +21,23 @@ export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase
 export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props) => {
   const { filters, aggregations, initialValues, savedSearchAlertId, onComplete, onDeleteComplete, ...other } = props
   const isUpdateForm = !!savedSearchAlertId
+  const pills = extractPills(filters, aggregations)
   const formik = useFormik<SavedSearchAlertFormValues>({
     initialValues,
     initialErrors: {},
     onSubmit: async (values) => {
+      let alertName = values.name
+
+      if (alertName.length === 0) {
+        alertName = getNamePlaceholder(props.artist.name, pills)
+      }
+
       try {
         if (isUpdateForm) {
-          await updateSavedSearchAlert(savedSearchAlertId!, values)
+          await updateSavedSearchAlert(alertName, savedSearchAlertId!)
+        } else {
+          const criteria = getSearchCriteriaFromFilters(props.artist.id, filters)
+          await createSavedSearchAlert(alertName, criteria)
         }
 
         onComplete?.()
@@ -57,8 +66,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       ]
     )
   }
-
-  const pills = extractPills(filters, aggregations)
 
   return (
     <FormikProvider value={formik}>

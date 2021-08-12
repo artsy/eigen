@@ -6,6 +6,7 @@ import {
 } from "react-relay-network-modern/node8"
 
 import * as Sentry from "@sentry/react-native"
+import { volleyClient } from "lib/utils/volleyClient"
 import { GraphQLResponse } from "relay-runtime/lib/network/RelayNetworkTypes"
 import { GraphQLRequest } from "./types"
 
@@ -29,6 +30,14 @@ const throwError = (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
   throw createRequestError(req, res)
 }
 
+const trackError = (queryName: string, queryKind: string, handler: "optionalField" | "principalField" | "default") => {
+  volleyClient.send({
+    type: "increment",
+    name: "graphql-request-with-errors",
+    tags: [`query:${queryName}`, `kind:${queryKind}`, `handler: ${handler}`],
+  })
+}
+
 export const errorMiddleware = () => {
   return (next: MiddlewareNextFn) => async (req: GraphQLRequest) => {
     const res = await next(req)
@@ -43,6 +52,7 @@ export const errorMiddleware = () => {
     const allErrorsAreOptional = resJson.extensions?.optionalFields?.length === resJson.errors?.length
 
     if (allErrorsAreOptional) {
+      trackError(req.operation.name, req.operation.kind, "optionalField")
       return res
     }
 
@@ -51,6 +61,7 @@ export const errorMiddleware = () => {
     const requestHasPrincipalField = req.operation.text?.includes("@principalField")
 
     if (!requestHasPrincipalField) {
+      trackError(req.operation.name, req.operation.kind, "default")
       return throwError(req, res)
     }
 
@@ -61,6 +72,7 @@ export const errorMiddleware = () => {
     const principalFieldWasInvolvedInError = isErrorStatus(resJson.extensions?.principalField?.httpStatusCode)
 
     if (principalFieldWasInvolvedInError) {
+      trackError(req.operation.name, req.operation.kind, "principalField")
       return throwError(req, res)
     }
 

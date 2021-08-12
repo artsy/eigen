@@ -3,9 +3,10 @@ import { Input } from "lib/Components/Input/Input"
 import { InputTitle } from "lib/Components/Input/InputTitle"
 import { Box, Button, Flex, Pill, Spacer } from "palette"
 import React from "react"
-import { SavedSearchAlertFormPropsBase, SavedSearchAlertFormValues } from "../SavedSearchAlertModel"
+import { getNamePlaceholder } from "../helpers"
+import { SavedSearchAlertFormValues, SavedSearchArtistProp } from "../SavedSearchAlertModel"
 
-interface FormProps extends SavedSearchAlertFormPropsBase {
+interface FormProps extends SavedSearchArtistProp {
   pills: string[]
   isUpdateForm: boolean
   onDeletePress?: () => void
@@ -22,19 +23,20 @@ export const Form: React.FC<FormProps> = (props) => {
     handleChange,
     handleSubmit,
   } = useFormikContext<SavedSearchAlertFormValues>()
-  const filtersCountLabel = pills.length > 1 ? "filters" : "filter"
+  const namePlaceholder = getNamePlaceholder(artist.name, pills)
 
   return (
     <Box>
       <Box mb={2}>
         <Input
           title="Name"
-          placeholder={`${artist.name} • ${pills.length} ${filtersCountLabel}`}
+          placeholder={namePlaceholder}
           value={values.name}
           onChangeText={handleChange("name")}
           onBlur={handleBlur("name")}
           error={errors.name}
           testID="alert-input-name"
+          maxLength={75}
         />
       </Box>
       <Box mb={2}>

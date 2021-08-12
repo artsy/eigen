@@ -2,6 +2,7 @@ import { filterArtworksParams, FilterParamName } from "../../ArtworkFilterHelper
 import {
   getAllowedFiltersForSavedSearchInput,
   getOnlyFilledSearchCriteriaValues,
+  getSearchCriteriaFromFilters,
   prepareFilterDataForSaveSearchInput,
   prepareFilterParamsForSaveSearchInput,
 } from "../searchCriteriaHelpers"
@@ -504,5 +505,28 @@ describe("getAllowedFiltersForSavedSearchInput", () => {
         paramValue: "0-*",
       },
     ])
+  })
+})
+
+describe("getSearchCriteriaFromFilters", () => {
+  it("returns fields in the saved search criteria format", () => {
+    const filters = [
+      {
+        displayText: "Prints",
+        paramName: FilterParamName.additionalGeneIDs,
+        paramValue: ["prints"],
+      },
+      {
+        displayText: "1990-1999",
+        paramName: FilterParamName.timePeriod,
+        paramValue: ["1990"],
+      },
+    ]
+
+    expect(getSearchCriteriaFromFilters("artistID", filters)).toEqual({
+      artistID: "artistID",
+      additionalGeneIDs: ["prints"],
+      majorPeriods: ["1990"],
+    })
   })
 })

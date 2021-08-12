@@ -1,5 +1,5 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
-import { Aggregations, FilterArray, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { Aggregations, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
@@ -72,6 +72,33 @@ describe("Saved search alert form", () => {
     })
   })
 
+  it("calls create mutation when form is submitted", async () => {
+    const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+    fireEvent.changeText(getByTestId("alert-input-name"), "something new")
+    fireEvent.press(getByTestId("save-alert-button"))
+
+    await waitFor(() => {
+      const mutation = mockEnvironment.mock.getMostRecentOperation()
+
+      expect(mutation.request.node.operation.name).toBe("createSavedSearchAlertMutation")
+      expect(mutation.request.variables).toEqual({
+        input: {
+          attributes: {
+            artistID: "artistID",
+            attributionClass: ["limited edition"],
+            partnerIDs: ["tate-ward-auctions"],
+            locationCities: ["New York, NY, USA"],
+            additionalGeneIDs: ["photography", "prints"],
+          },
+          userAlertSettings: {
+            name: "something new",
+          },
+        },
+      })
+    })
+  })
+
   it("calls onComplete when the mutation is completed", async () => {
     const onCompleteMock = jest.fn()
     const { getByTestId } = renderWithWrappersTL(
@@ -129,9 +156,48 @@ describe("Saved search alert form", () => {
 
     expect(onDeletePressMock).toHaveBeenCalled()
   })
+
+  it("should auto populate alert name for the create mutation", async () => {
+    const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+    fireEvent.press(getByTestId("save-alert-button"))
+
+    await waitFor(() => {
+      expect(mockEnvironment.mock.getMostRecentOperation().request.variables).toMatchObject({
+        input: {
+          userAlertSettings: {
+            name: "artistName • 5 filters",
+          },
+        },
+      })
+    })
+  })
+
+  it("should auto populate alert name for the update mutation", async () => {
+    const { getByTestId } = renderWithWrappersTL(
+      <SavedSearchAlertForm
+        {...baseProps}
+        savedSearchAlertId="savedSearchAlertId"
+        initialValues={{ name: "update value" }}
+      />
+    )
+
+    fireEvent.changeText(getByTestId("alert-input-name"), "")
+    fireEvent.press(getByTestId("save-alert-button"))
+
+    await waitFor(() => {
+      expect(mockEnvironment.mock.getMostRecentOperation().request.variables).toMatchObject({
+        input: {
+          userAlertSettings: {
+            name: "artistName • 5 filters",
+          },
+        },
+      })
+    })
+  })
 })
 
-const filters: FilterArray = [
+const filters: FilterData[] = [
   {
     paramName: FilterParamName.attributionClass,
     displayText: "Limited Edition",
@@ -214,7 +280,7 @@ const baseProps: SavedSearchAlertFormProps = {
   filters,
   aggregations,
   artist: {
-    id: "artistId",
+    id: "artistID",
     name: "artistName",
   },
 }
