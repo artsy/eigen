@@ -8,9 +8,8 @@ import { Input } from "lib/Components/Input/Input"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { Stack } from "lib/Components/Stack"
-import { navigate, waitThenGoBack } from "lib/navigation/navigate"
+import { goBack, navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { SavedAddressNotification } from "lib/Scenes/SavedAddresses/SavedAddressNotification"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -87,7 +86,6 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
   const [state, actions] = useStore()
   const [phoneNumber, setPhoneNumber] = useState(me?.phone)
   const [isDefaultAddress, setIsDefaultAddress] = useState(false)
-  const [notificationState, setNotificationState] = useState({ notificationVisible: false, action: "" })
   const { height } = useScreenDimensions()
   const offSetTop = 0.75
 
@@ -122,14 +120,10 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
         phoneNumber,
       })
 
-      if (!creatingResponse.createUserAddress?.userAddressOrErrors.errors) {
-        await setNotificationState({ notificationVisible: true, action: "Added" })
-      }
-
       if (isDefaultAddress) {
         await setAsDefaultAddress(creatingResponse.createUserAddress?.userAddressOrErrors.internalID!)
       }
-      waitThenGoBack(3000)
+      goBack()
     } catch (e) {
       captureMessage(e.stack)
       Alert.alert("Something went wrong while attempting to save your address. Please try again or contact us.")
@@ -149,15 +143,10 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
         phoneNumber,
       })
 
-      if (!response.updateUserAddress?.userAddressOrErrors.errors) {
-        await setNotificationState({ notificationVisible: true, action: "Edited" })
-      }
-
       if (isDefaultAddress) {
         await setAsDefaultAddress(response.updateUserAddress?.userAddressOrErrors.internalID!)
       }
-
-      waitThenGoBack(3000)
+      goBack()
     } catch (e) {
       Alert.alert("Something went wrong while attempting to save your address. Please try again or contact us.")
       captureMessage(e.stack)
@@ -169,95 +158,86 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       userAddressID,
       () => {
         navigate("my-profile/saved-addresses")
-        setNotificationState({ notificationVisible: true, action: "Deleted" })
       },
       (message: string) => captureMessage(message)
     )
   }
 
   return (
-    <>
-      <SavedAddressNotification
-        setNotificationState={(notifState) => setNotificationState(notifState)}
-        showNotification={notificationState.notificationVisible}
-        notificationAction={notificationState.action}
-        duration={6000}
-      />
-      <MyAccountFieldEditScreen
-        ref={screenRef}
-        canSave={true}
-        isSaveButtonVisible={false}
-        title={isEditForm ? "Edit Address" : "Add New Address"}
-      >
-        <Stack spacing={2}>
-          <Input
-            title="Full name"
-            placeholder="Add full name"
-            value={state.fields.name.value ?? ""}
-            onChangeText={actions.fields.name.setValue}
-          />
-          <CountrySelect onSelectValue={actions.fields.country.setValue} value={state.fields.country.value} />
-          <Input
-            title="Postal Code"
-            placeholder="Add postal code"
-            value={state.fields.postalCode.value ?? ""}
-            onChangeText={actions.fields.postalCode.setValue}
-          />
-          <Input
-            title="Address line 1"
-            placeholder="Add address"
-            value={state.fields.addressLine1.value ?? ""}
-            onChangeText={actions.fields.addressLine1.setValue}
-          />
-          <Input
-            title="Address line 2 (optional)"
-            placeholder="Add address line 2"
-            value={state.fields.addressLine2.value ?? ""}
-            onChangeText={actions.fields.addressLine2.setValue}
-          />
-          <Input
-            title="City"
-            placeholder="Add city"
-            value={state.fields.city.value ?? ""}
-            onChangeText={actions.fields.city.setValue}
-          />
-          <Input
-            title="State, province, or region"
-            placeholder="Add state, province, or region"
-            value={state.fields.region.value ?? ""}
-            onChangeText={actions.fields.region.setValue}
-          />
-          <PhoneInput
-            title="Phone number"
-            description="Required for shipping logistics"
-            value={phoneNumber ?? ""}
-            maxModalHeight={height * offSetTop}
-            onChangeText={setPhoneNumber}
-          />
-          <Checkbox
-            onPress={() => {
-              setIsDefaultAddress(!isDefaultAddress)
-            }}
-            checked={isDefaultAddress}
-            mb={1}
-          >
-            <Text>Set as default</Text>
-          </Checkbox>
+    <MyAccountFieldEditScreen
+      ref={screenRef}
+      canSave={true}
+      isSaveButtonVisible={false}
+      title={isEditForm ? "Edit Address" : "Add New Address"}
+    >
+      <Stack spacing={2}>
+        <Input
+          title="Full name"
+          placeholder="Add full name"
+          value={state.fields.name.value ?? ""}
+          onChangeText={actions.fields.name.setValue}
+        />
+        <CountrySelect onSelectValue={actions.fields.country.setValue} value={state.fields.country.value} />
+        <Input
+          title="Postal Code"
+          placeholder="Add postal code"
+          value={state.fields.postalCode.value ?? ""}
+          onChangeText={actions.fields.postalCode.setValue}
+        />
+        <Input
+          title="Address line 1"
+          placeholder="Add address"
+          value={state.fields.addressLine1.value ?? ""}
+          onChangeText={actions.fields.addressLine1.setValue}
+        />
+        <Input
+          title="Address line 2 (optional)"
+          placeholder="Add address line 2"
+          value={state.fields.addressLine2.value ?? ""}
+          onChangeText={actions.fields.addressLine2.setValue}
+        />
+        <Input
+          title="City"
+          placeholder="Add city"
+          value={state.fields.city.value ?? ""}
+          onChangeText={actions.fields.city.setValue}
+        />
+        <Input
+          title="State, province, or region"
+          placeholder="Add state, province, or region"
+          value={state.fields.region.value ?? ""}
+          onChangeText={actions.fields.region.setValue}
+        />
+        <PhoneInput
+          title="Phone number"
+          description="Required for shipping logistics"
+          value={phoneNumber ?? ""}
+          maxModalHeight={height * offSetTop}
+          onChangeText={setPhoneNumber}
+        />
+        <Checkbox
+          onPress={() => {
+            setIsDefaultAddress(!isDefaultAddress)
+          }}
+          checked={isDefaultAddress}
+          mb={1}
+        >
+          <Text>Set as default</Text>
+        </Checkbox>
 
-          {!!isEditForm && (
-            <Text onPress={() => deleteUserAddress(addressId!)} variant="caption" textAlign="center" mb={2} color="red">
-              Delete address
-            </Text>
-          )}
+        {!!isEditForm && (
+          <Text onPress={() => deleteUserAddress(addressId!)} variant="caption" textAlign="center" mb={2} color="red">
+            Delete address
+          </Text>
+        )}
 
-          <AddAddressButton
-            handleOnPress={isEditForm ? () => editUserAddress(addressId!) : submitAddAddress}
-            title={isEditForm ? "Add" : "Add Address"}
-            disabled={!state.allPresent}
-          />
-        </Stack>
-      </MyAccountFieldEditScreen>
-    </>
+        <AddAddressButton
+          handleOnPress={isEditForm ? () => editUserAddress(addressId!) : submitAddAddress}
+          title={isEditForm ? "Add" : "Add Address"}
+          disabled={!state.allPresent}
+        />
+      </Stack>
+    </MyAccountFieldEditScreen>
   )
 }
 

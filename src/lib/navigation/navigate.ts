@@ -110,13 +110,6 @@ export function goBack() {
   navigationEvents.emit("goBack")
 }
 
-export function waitThenGoBack(duration = 0) {
-  setTimeout(() => {
-    LegacyNativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
-    navigationEvents.emit("goBack")
-  }, duration)
-}
-
 export function popParentViewController() {
   LegacyNativeModules.ARScreenPresenterModule.popStack(unsafe__getSelectedTab())
 }
