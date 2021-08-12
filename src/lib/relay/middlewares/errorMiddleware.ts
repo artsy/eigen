@@ -30,6 +30,14 @@ const throwError = (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
   throw createRequestError(req, res)
 }
 
+const trackError = (queryName: string, queryKind: string, handler: "optionalField" | "principalField" | "default") => {
+  volleyClient.send({
+    type: "increment",
+    name: "graphql-request-with-errors",
+    tags: [`query:${queryName}`, `kind:${queryKind}`, `handler: ${handler}`],
+  })
+}
+
 export const errorMiddleware = () => {
   return (next: MiddlewareNextFn) => async (req: GraphQLRequest) => {
     const res = await next(req)
@@ -44,11 +52,7 @@ export const errorMiddleware = () => {
     const allErrorsAreOptional = resJson.extensions?.optionalFields?.length === resJson.errors?.length
 
     if (allErrorsAreOptional) {
-      volleyClient.send({
-        type: "increment",
-        name: "graphql-request-with-errors",
-        tags: [`query:${req.operation.name}`, `kind:${req.operation.kind}`, "handler: optionalField"],
-      })
+      trackError(req.operation.name, req.operation.kind, "optionalField")
       return res
     }
 
@@ -57,11 +61,7 @@ export const errorMiddleware = () => {
     const requestHasPrincipalField = req.operation.text?.includes("@principalField")
 
     if (!requestHasPrincipalField) {
-      volleyClient.send({
-        type: "increment",
-        name: "graphql-request-with-errors",
-        tags: [`query:${req.operation.name}`, `kind:${req.operation.kind}`, "handler: default"],
-      })
+      trackError(req.operation.name, req.operation.kind, "default")
       return throwError(req, res)
     }
 
@@ -72,11 +72,7 @@ export const errorMiddleware = () => {
     const principalFieldWasInvolvedInError = isErrorStatus(resJson.extensions?.principalField?.httpStatusCode)
 
     if (principalFieldWasInvolvedInError) {
-      volleyClient.send({
-        type: "increment",
-        name: "graphql-request-with-errors",
-        tags: [`query:${req.operation.name}`, `kind:${req.operation.kind}`, "handler: principalField"],
-      })
+      trackError(req.operation.name, req.operation.kind, "principalField")
       return throwError(req, res)
     }
 
