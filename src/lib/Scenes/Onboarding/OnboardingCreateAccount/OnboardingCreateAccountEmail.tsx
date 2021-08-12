@@ -5,9 +5,9 @@ import { useColor } from "palette/hooks"
 import React from "react"
 import { Platform } from "react-native"
 import {
+  FormikSchema,
   OnboardingCreateAccountNavigationStack,
   OnboardingCreateAccountScreenWrapper,
-  UserSchema,
 } from "./OnboardingCreateAccount"
 
 export interface OnboardingCreateAccountEmailParams {
@@ -19,7 +19,7 @@ interface OnboardingCreateAccountEmailProps
 
 export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmailProps> = ({ route }) => {
   const color = useColor()
-  const { values, handleChange, errors, setErrors, handleSubmit } = useFormikContext<UserSchema>()
+  const { values, handleChange, errors, setErrors, handleSubmit } = useFormikContext<FormikSchema>()
 
   return (
     <OnboardingCreateAccountScreenWrapper

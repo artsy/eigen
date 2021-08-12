@@ -34,9 +34,10 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
     const imgScale = imgProps.height / screenHeight
     const imgWidth = imgProps.width * imgScale
     if (screenWidth < imgWidth) {
+      const iOSRightMarging = Platform.OS === "ios" ? 120 : 0
       Animated.timing(translateX, {
         duration: 40000,
-        toValue: -(imgWidth - screenWidth),
+        toValue: -(imgWidth - iOSRightMarging - screenWidth),
         easing: Easing.inOut(Easing.ease),
       }).start()
     }
