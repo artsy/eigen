@@ -1,5 +1,5 @@
 import { Aggregations, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { extractPillFromAggregation, extractPills } from "../helpers"
+import { extractPillFromAggregation, extractPills, getNamePlaceholder } from "../helpers"
 
 describe("extractPillFromAggregation", () => {
   it("returns pills", () => {
@@ -88,3 +88,13 @@ const aggregations: Aggregations = [
     ],
   },
 ]
+
+describe("getNamePlaceholder", () => {
+  it("returns the singular form for the filter label", () => {
+    expect(getNamePlaceholder("artistName", ["one"])).toBe("artistName • 1 filter")
+  })
+
+  it("returns the plural form for the filter label", () => {
+    expect(getNamePlaceholder("artistName", ["one", "two"])).toBe("artistName • 2 filters")
+  })
+})
