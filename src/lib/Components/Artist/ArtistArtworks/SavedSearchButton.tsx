@@ -59,7 +59,9 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
       title: "Your alert has been created.",
       message: "You can edit your alerts with your Profile.",
       onPress: () => {
-        navigate("my-profile/saved-search-alerts")
+        navigate("my-profile/saved-search-alerts", {
+          popToRootTabView: true,
+        })
       },
     })
   }
