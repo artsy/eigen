@@ -179,6 +179,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     new RouteMatcher("/my-account", "MyAccount"),
 
+    new RouteMatcher("/algolia-search", "AlgoliaSearchScreen"),
+
     new RouteMatcher("/my-collection", "MyCollection"),
     new RouteMatcher("/my-collection/artwork/:artworkSlug", "MyCollectionArtwork"),
     new RouteMatcher("/my-collection/artwork-details/:artworkSlug", "MyCollectionArtworkFullDetails"),

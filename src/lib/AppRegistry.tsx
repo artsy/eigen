@@ -77,6 +77,11 @@ import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoi
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
+// toggle between these two imports to switch between them
+// the below is implementing search in multiple indexes
+// import { AlgoliaScreen } from "./Scenes/Algolia/Algolia"
+// the below is implementing changing between indexes via pills
+import { AlgoliaScreen } from "./Scenes/Algolia/"
 import { ArticlesQueryRenderer } from "./Scenes/Articles/Articles"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { AuctionResultsForYouQueryRenderer } from "./Scenes/AuctionResultsForYou/AuctionResultsForYou"
@@ -379,6 +384,7 @@ export const modules = defineModules({
     hasOwnModalCloseButton: true,
   }),
   WorksForYou: reactModule(WorksForYouQueryRenderer),
+  AlgoliaSearchScreen: reactModule(AlgoliaScreen),
   LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer),
   Storybook: reactModule(StorybookUI, { fullBleed: true, hidesBackButton: true }),
 })
