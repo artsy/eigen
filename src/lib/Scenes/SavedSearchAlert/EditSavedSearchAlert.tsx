@@ -98,7 +98,6 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
                 artworksConnection(
                   first: 0
                   artistID: $artistID
-                  acquireable: true
                   aggregations: [ARTIST, LOCATION_CITY, MATERIALS_TERMS, MEDIUM, PARTNER]
                 ) {
                   ...EditSavedSearchAlert_artworksConnection
