@@ -16,7 +16,7 @@ export interface ViewDescriptor extends ViewOptions {
   props: object
 }
 
-export interface NavigatOptions {
+export interface NavigateOptions {
   modal?: boolean
   passProps?: object
   replace?: boolean
@@ -26,7 +26,7 @@ export interface NavigatOptions {
 
 let lastInvocation = { url: "", timestamp: 0 }
 
-export async function navigate(url: string, options: NavigatOptions = {}) {
+export async function navigate(url: string, options: NavigateOptions = {}) {
   // Debounce double taps
   if (lastInvocation.url === url && Date.now() - lastInvocation.timestamp < 1000) {
     return
