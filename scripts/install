@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+bundle check || bundle install
+yarn install
+bundle exec pod install
+pip install -r requirements.txt

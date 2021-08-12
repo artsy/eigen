@@ -22,11 +22,11 @@ typedef NS_ENUM(NSUInteger, ARPHPhotoPickerError) {
 
 @implementation ARPHPhotoPickerModule
 
-static const NSString *ErrorDomain = @"net.artsy.ARPHPhotoPicker";
+static NSString *ErrorDomain = @"net.artsy.ARPHPhotoPicker";
 
-static const NSString *UnsupportedOSErrorMessage = @"PHPhotoPicker unavailable before iOS 14.";
-static const NSString *LoadFailedErrorMessage = @"Failed to load photos from picker.";
-static const NSString *SaveFailedErrorMessage = @"Failed to save photos locally.";
+static NSString *UnsupportedOSErrorMessage = @"PHPhotoPicker unavailable before iOS 14.";
+static NSString *LoadFailedErrorMessage = @"Failed to load photos from picker.";
+static NSString *SaveFailedErrorMessage = @"Failed to save photos locally.";
 
 RCT_EXPORT_MODULE();
 
@@ -47,12 +47,12 @@ RCT_EXPORT_METHOD(requestPhotos:(RCTPromiseResolveBlock)resolve
 }
 
 - (void)presentPhotoPicker API_AVAILABLE(ios(14)) {
-    PHPickerConfiguration *config = [[PHPickerConfiguration alloc] init];
-    config.selectionLimit = 10;
-    config.filter = [PHPickerFilter imagesFilter];
-    PHPickerViewController *picker = [[PHPickerViewController alloc] initWithConfiguration:config];
-    picker.delegate = self;
     dispatch_async(dispatch_get_main_queue(), ^{
+        PHPickerConfiguration *config = [[PHPickerConfiguration alloc] init];
+        config.selectionLimit = 10;
+        config.filter = [PHPickerFilter imagesFilter];
+        PHPickerViewController *picker = [[PHPickerViewController alloc] initWithConfiguration:config];
+        picker.delegate = self;
         UIViewController *currentVC = RCTPresentedViewController();
         [currentVC presentViewController:picker animated:true completion:nil];
     });
@@ -90,7 +90,7 @@ RCT_EXPORT_METHOD(requestPhotos:(RCTPromiseResolveBlock)resolve
 
         double delayInSeconds = 3.0;
         dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        intptr_t status = dispatch_group_wait(imageLoadGroup, timeout);
+        dispatch_group_wait(imageLoadGroup, timeout);
 
         if (results.count == 0) {
             NSError *loadFailedError = [NSError errorWithDomain:ErrorDomain code:ARPHPhotoPickerErrorLoadFailed userInfo:@{ NSLocalizedDescriptionKey: LoadFailedErrorMessage }];

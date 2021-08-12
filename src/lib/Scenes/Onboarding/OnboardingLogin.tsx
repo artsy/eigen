@@ -7,6 +7,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useRef } from "react"
 import { ScrollView, View } from "react-native"
+import DeviceInfo from "react-native-device-info"
 import * as Yup from "yup"
 import { Touchable } from "../../../palette/elements/Touchable/Touchable"
 import { OnboardingNavigationStack } from "./Onboarding"
@@ -152,7 +153,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
         </Touchable>
       </ScrollView>
       <BackButton onPress={() => navigation.goBack()} />
-      <Flex px={1.5} paddingBottom={1.5}>
+      <Flex px={1.5} paddingBottom={DeviceInfo.hasNotch() ? 0 : 1.5}>
         <Button
           onPress={handleSubmit}
           block

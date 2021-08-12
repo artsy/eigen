@@ -1,20 +1,25 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
 import { Input } from "lib/Components/Input/Input"
+import { Flex } from "palette"
 import { useColor } from "palette/hooks"
-import React from "react"
+import React, { useState } from "react"
+import { Keyboard } from "react-native"
+import { EmailSubscriptionCheckbox } from "./EmailSubscriptionCheckbox"
 import {
+  FormikSchema,
   OnboardingCreateAccountNavigationStack,
   OnboardingCreateAccountScreenWrapper,
-  UserSchema,
 } from "./OnboardingCreateAccount"
+import { TermsOfServiceCheckbox } from "./TermsOfServiceCheckbox"
 
 export interface OnboardingCreateAccountNameProps
   extends StackScreenProps<OnboardingCreateAccountNavigationStack, "OnboardingCreateAccountName"> {}
 
 export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNameProps> = ({ navigation }) => {
   const color = useColor()
-  const { values, handleSubmit, handleChange, errors, setErrors } = useFormikContext<UserSchema>()
+  const { values, handleSubmit, handleChange, errors, setErrors, setFieldValue } = useFormikContext<FormikSchema>()
+  const [highlightTerms, setHighlightTerms] = useState<boolean>(false)
 
   return (
     <OnboardingCreateAccountScreenWrapper
@@ -35,7 +40,16 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
           }
           handleChange("name")(text)
         }}
-        onSubmitEditing={handleSubmit}
+        onSubmitEditing={() => {
+          Keyboard.dismiss()
+          requestAnimationFrame(() => {
+            if (values.acceptedTerms) {
+              handleSubmit()
+            } else {
+              setHighlightTerms(true)
+            }
+          })
+        }}
         blurOnSubmit={false}
         placeholder="First and Last Name"
         placeholderTextColor={color("black30")}
@@ -45,6 +59,18 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
         error={errors.name}
         testID="nameInput"
       />
+
+      <Flex width="100%" pr={3} my={2}>
+        <TermsOfServiceCheckbox
+          setChecked={() => setFieldValue("acceptedTerms", !values.acceptedTerms)}
+          checked={values.acceptedTerms}
+          error={highlightTerms}
+        />
+        <EmailSubscriptionCheckbox
+          setChecked={() => setFieldValue("agreedToReceiveEmails", !values.agreedToReceiveEmails)}
+          checked={values.agreedToReceiveEmails}
+        />
+      </Flex>
     </OnboardingCreateAccountScreenWrapper>
   )
 }
