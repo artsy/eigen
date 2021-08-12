@@ -1,9 +1,7 @@
-import { screen } from "lib/utils/track/helpers"
 import { debounce } from "lodash"
 import { Flex, Text, Touchable, useColor } from "palette"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
-import { useTracking } from "react-tracking"
 import { ReloadIcon } from "../../palette/svgs/ReloadIcon"
 
 interface LoadFailureViewProps {
@@ -16,8 +14,6 @@ export const LoadFailureView: React.FC<LoadFailureViewProps> = (props) => {
   const spinAnimation = useRef(new Animated.Value(0)).current
   const [isAnimating, setIsAnimating] = useState(false)
 
-  const tracking = useTracking()
-
   const playAnimation = () => {
     setIsAnimating(true)
     Animated.loop(
@@ -29,10 +25,6 @@ export const LoadFailureView: React.FC<LoadFailureViewProps> = (props) => {
       })
     ).start()
   }
-
-  useEffect(() => {
-    tracking.trackEvent(tracks.screen())
-  }, [])
 
   return (
     <Flex flex={1} justifyContent="center" alignItems="center">
@@ -80,12 +72,4 @@ export const LoadFailureView: React.FC<LoadFailureViewProps> = (props) => {
       </Touchable>
     </Flex>
   )
-}
-
-const tracks = {
-  screen: () =>
-    screen({
-      // @ts-ignore
-      context_screen_owner_type: "unableToLoad",
-    }),
 }
