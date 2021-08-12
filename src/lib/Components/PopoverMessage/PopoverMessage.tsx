@@ -1,5 +1,5 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, CloseIcon, Color, Flex, Text, Touchable, useColor } from "palette"
+import { Box, Flex, Text, Touchable, useColor } from "palette"
 import React from "react"
 import { Animated } from "react-native"
 import { usePopoverMessage } from "./popoverMessageHooks"
@@ -21,50 +21,57 @@ export interface PopoverMessageProps {
   message?: string
   autoHide?: boolean
   hideTimeout?: number
-  showCloseIcon?: boolean
   type?: PopoverMessageType
   onPress?: () => void
-  onClose?: () => void
+  onUndoPress?: () => void
 }
 
-export const getTitleColorByType = (type?: PopoverMessageType): Color => {
+export const getColorsByType = (type?: PopoverMessageType) => {
+  const color = useColor()
+
   if (type === "success") {
-    return "green100"
-  } else if (type === "info") {
-    return "blue100"
-  } else if (type === "error") {
-    return "red100"
+    return {
+      descriptionColor: color("green10"),
+      backgroundColor: color("green100"),
+    }
   }
 
-  return "black100"
+  if (type === "info") {
+    return {
+      descriptionColor: color("blue10"),
+      backgroundColor: color("blue100"),
+    }
+  }
+
+  if (type === "error") {
+    return {
+      descriptionColor: color("red10"),
+      backgroundColor: color("red100"),
+    }
+  }
+
+  return {
+    descriptionColor: color("black10"),
+    backgroundColor: color("black100"),
+  }
 }
 
 // TODO: Remove NAVBAR_HEIGHT when a new design without a floating back button is added
 export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
   const color = useColor()
-  const {
-    placement = "top",
-    title,
-    message,
-    showCloseIcon = true,
-    type,
-    translateYAnimation,
-    opacityAnimation,
-    onPress,
-    onClose,
-  } = props
+  const { placement = "top", title, message, type, translateYAnimation, opacityAnimation, onPress, onUndoPress } = props
   const { safeAreaInsets } = useScreenDimensions()
   const { hide } = usePopoverMessage()
-  const titleColor = getTitleColorByType(type)
+  const colors = getColorsByType(type)
 
   const handlePopoverMessagePress = () => {
     hide()
     onPress?.()
   }
 
-  const handlePopoverMessageClosePress = () => {
+  const handlePopoverMessageUndoPress = () => {
     hide()
-    onClose?.()
+    onUndoPress?.()
   }
 
   const range = [-150, 0]
@@ -73,22 +80,24 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
   const opacity = opacityAnimation.interpolate({ inputRange: [0, 1], outputRange: [0, 1] })
 
   const content = (
-    <Flex p={1}>
+    <Flex py={1} px={2} backgroundColor={colors.backgroundColor}>
       <Flex flexDirection="row" justifyContent="space-between">
-        <Flex flex={1} mr={!!showCloseIcon ? 1 : 0}>
-          <Text color={titleColor} variant="subtitle" numberOfLines={1}>
+        <Flex flex={1} mr={!!onUndoPress ? 1 : 0}>
+          <Text color="white100" variant="subtitle" numberOfLines={1}>
             {title}
           </Text>
           {!!message && (
-            <Text color="black60" variant="small">
+            <Text color={colors.descriptionColor} variant="small">
               {message}
             </Text>
           )}
         </Flex>
-        {!!showCloseIcon && (
-          <Box mt={0.25}>
-            <Touchable onPress={handlePopoverMessageClosePress}>
-              <CloseIcon />
+        {!!onUndoPress && (
+          <Box>
+            <Touchable noFeedback onPress={handlePopoverMessageUndoPress}>
+              <Text variant="small" color={colors.descriptionColor} style={{ textDecorationLine: "underline" }}>
+                Undo
+              </Text>
             </Touchable>
           </Box>
         )}
@@ -107,14 +116,12 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
         opacity,
         transform: [{ translateY }],
         zIndex: 99999,
-        borderColor: "#F7F7F7",
-        borderWidth: 1,
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
-          height: 1,
+          height: 2,
         },
-        shadowOpacity: 0.18,
+        shadowOpacity: 0.2,
         shadowRadius: 5,
       }}
       backgroundColor={color("white100")}
