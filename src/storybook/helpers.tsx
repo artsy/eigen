@@ -31,12 +31,12 @@ export const List = ({
   contentContainerStyle,
   style,
 }: {
-  children: React.ReactElement[]
+  children: React.ReactElement[] | React.ReactElement
   contentContainerStyle?: StyleProp<ViewStyle>
   style?: StyleProp<ViewStyle>
 }) => (
   <FlatList
-    data={children}
+    data={Array.isArray(children) ? children : [children]}
     keyExtractor={(_, index) => `${index}`}
     renderItem={({ item: child }) => child}
     ItemSeparatorComponent={() => <Spacer mb="4" />}

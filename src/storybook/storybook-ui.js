@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-community/async-storage"
 import { addDecorator, configure, getStorybookUI } from "@storybook/react-native"
 import "./rn-addons"
 import { loadStories } from "./storyLoader"
@@ -11,7 +12,7 @@ configure(() => {
 // To find allowed options for getStorybookUI
 const StorybookUIRoot = getStorybookUI({
   onDeviceUI: true,
-  asyncStorage: null,
+  asyncStorage: AsyncStorage,
 })
 
 export default StorybookUIRoot

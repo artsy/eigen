@@ -9,6 +9,7 @@ import { persist } from "zustand/middleware"
 interface PaletteFlagState {
   allowV3: boolean
   setAllowV3: (value: boolean) => void
+  toggleAllowV3: () => void
 }
 
 export const usePaletteFlagStore = create<PaletteFlagState>(
@@ -16,6 +17,7 @@ export const usePaletteFlagStore = create<PaletteFlagState>(
     (set) => ({
       allowV3: __TEST__,
       setAllowV3: (value) => set((_state) => ({ allowV3: value })),
+      toggleAllowV3: () => set((state) => ({ allowV3: !state.allowV3 })),
     }),
     { name: "z-devtoggle-palette", getStorage: () => AsyncStorage }
   )

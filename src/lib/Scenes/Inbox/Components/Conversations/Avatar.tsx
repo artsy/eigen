@@ -1,6 +1,6 @@
-import React from "react"
-import colors from "lib/data/colors"
 import { themeGet } from "@styled-system/theme-get"
+import colors from "lib/data/colors"
+import React from "react"
 import styled from "styled-components/native"
 
 const BackgroundCircle = styled.View`

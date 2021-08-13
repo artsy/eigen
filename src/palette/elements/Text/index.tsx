@@ -5,7 +5,7 @@ import React from "react"
 export * from "./tokens"
 
 // TextV3
-import { Text as TextV3, TextProps as TextV3Props } from "./TextV3"
+import { Text as TextV3, TextProps as TextV3Props } from "./Text"
 export { TextV3, TextV3Props }
 
 // TextV2
@@ -18,6 +18,8 @@ import { Sans as SansV1, SansProps as SansV1Props } from "./Sans"
 export { SansV1, SansV1Props, SansV1Props as SansProps }
 import { Serif as SerifV1, SerifProps as SerifV1Props } from "./Serif"
 export { SerifV1, SerifV1Props, SerifV1Props as SerifProps }
+
+// V1 handler
 
 export const Serif: React.FC<SerifV1Props> = (props) => {
   const allowV3 = usePaletteFlagStore((state) => state.allowV3)
@@ -99,5 +101,59 @@ const transformSansPropsToV3 = (props: SansV1Props): TextV3Props => {
   return {
     ...newProps,
     size: sizeMap[actualSize],
+  }
+}
+
+// V2 handler
+
+const isTextV2Props = (props: TextProps): props is TextV2Props => {
+  if ((props as TextV2Props).variant !== undefined) {
+    return true
+  }
+
+  if ((props as TextV3Props).size !== undefined) {
+    return false
+  }
+
+  // if nothing is obviously v2 or v3, assume v2
+  return true
+}
+
+export type TextProps = TextV2Props | TextV3Props
+export const Text: React.FC<TextProps> = (props) => {
+  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
+  if (allowV3) {
+    if (isTextV2Props(props)) {
+      return <TextV3 {...transformTextV2PropsToV3(props)} />
+    } else {
+      return <TextV3 {...props} />
+    }
+  }
+
+  if (isTextV2Props(props)) {
+    return <TextV2 {...props} />
+  }
+  throw new Error("TextV2 used with v3 props. Don't do that.")
+}
+
+const transformTextV2PropsToV3 = (props: TextV2Props): TextV3Props => {
+  const { variant, ...newProps } = _.cloneDeep(props)
+
+  const variantMap: Record<
+    "small" | "largeTitle" | "title" | "subtitle" | "text" | "mediumText" | "caption",
+    TextV3Props["size"]
+  > = {
+    largeTitle: "lg",
+    title: "md",
+    subtitle: "md",
+    text: "sm",
+    mediumText: "sm",
+    caption: "xs",
+    small: "xs",
+  }
+
+  return {
+    ...newProps,
+    size: variantMap[variant ?? "text"],
   }
 }

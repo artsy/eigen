@@ -1,5 +1,4 @@
 import { themeGet } from "@styled-system/theme-get"
-import fonts from "lib/data/fonts"
 import { ClassTheme } from "palette"
 import React from "react"
 import { View } from "react-native"

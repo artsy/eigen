@@ -2,29 +2,24 @@ import { useTheme } from "palette"
 import { isThemeV3, TextSizeV3 } from "palette/Theme"
 import React from "react"
 import { StyleProp, TextStyle } from "react-native"
-import { Text as RNText } from "react-native"
+import { Text as RNText, TextProps as RNTextProps } from "react-native"
 import styled from "styled-components/native"
 import { color, ColorProps, space, SpaceProps, typography, TypographyProps } from "styled-system"
-
-type StyledTextProps = ColorProps & SpaceProps & TypographyProps
-const StyledText = styled(RNText)<StyledTextProps>`
-  ${color}
-  ${space}
-  ${typography}
-`
 
 export type TextProps = {
   size?: TextSizeV3
   italic?: boolean
   caps?: boolean
   weight?: "regular" | "medium"
-} & StyledTextProps
+} & RNTextProps &
+  InnerStyledTextProps
 
 export const Text: React.FC<TextProps> = ({
   size = "sm",
   italic = false,
   caps,
   weight = "regular",
+  style,
   children,
   ...rest
 }) => {
@@ -43,12 +38,19 @@ export const Text: React.FC<TextProps> = ({
     italic ? { fontStyle: "italic" } : {},
   ]
 
-  return <StyledText style={nativeTextStyle} children={children} {...rest} />
+  return <InnerStyledText style={[nativeTextStyle, style]} children={children} {...rest} />
 }
 
-// based on:
-// https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight#common_weight_name_mapping
 const weightMap: Record<Exclude<TextProps["weight"], undefined>, TextStyle["fontWeight"]> = {
+  // based on:
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight#common_weight_name_mapping
   regular: "400",
   medium: "500",
 }
+
+type InnerStyledTextProps = ColorProps & SpaceProps & TypographyProps
+const InnerStyledText = styled(RNText)<InnerStyledTextProps>`
+  ${color}
+  ${space}
+  ${typography}
+`

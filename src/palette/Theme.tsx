@@ -189,7 +189,8 @@ const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
   }
   // TODO-PALETTE-V3 remove the mapping as the last TODO-PALETTE-V3 to be done for space
 
-  if (theme === "v3") {
+  if (__TEST__ || theme === "v3") {
+    // if we are in tests, default to v3
     return { ...THEMES.v3, colors: mergedColorsV2WithV3OnTop, space: mergedSpacesV2WithV3OnTop }
   }
 
