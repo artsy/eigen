@@ -4,7 +4,7 @@ import { LinkIcon } from "palette"
 import React from "react"
 import { withThemeV3 } from "storybook/decorators"
 import { DList, List } from "storybook/helpers"
-import { Button, ButtonV3Props } from "."
+import { ButtonV3, ButtonV3Props } from "."
 
 const sizes: Array<ButtonV3Props["size"]> = ["small", "large"]
 const variants: Array<ButtonV3Props["variant"]> = ["fillDark", "fillLight", "fillGray", "outline", "text"]
@@ -15,9 +15,9 @@ storiesOf("ButtonV3", module)
     <DList
       data={sizes}
       renderItem={({ item: size }) => (
-        <Button size={size} onPress={() => action(`tapped ${size}`)}>
+        <ButtonV3 size={size} onPress={() => action(`tapped ${size}`)}>
           {size}
-        </Button>
+        </ButtonV3>
       )}
     />
   ))
@@ -25,9 +25,9 @@ storiesOf("ButtonV3", module)
     <DList
       data={variants}
       renderItem={({ item: variant }) => (
-        <Button variant={variant} onPress={() => action(`tapped ${variant}`)}>
+        <ButtonV3 variant={variant} onPress={() => action(`tapped ${variant}`)}>
           {variant}
-        </Button>
+        </ButtonV3>
       )}
     />
   ))
@@ -35,9 +35,9 @@ storiesOf("ButtonV3", module)
     <DList
       data={variants}
       renderItem={({ item: variant }) => (
-        <Button variant={variant} loading onPress={() => action(`tapped ${variant}`)}>
+        <ButtonV3 variant={variant} loading onPress={() => action(`tapped ${variant}`)}>
           {variant}
-        </Button>
+        </ButtonV3>
       )}
     />
   ))
@@ -45,20 +45,20 @@ storiesOf("ButtonV3", module)
     <DList
       data={variants}
       renderItem={({ item: variant }) => (
-        <Button variant={variant} disabled onPress={() => action(`tapped ${variant}`)}>
+        <ButtonV3 variant={variant} disabled onPress={() => action(`tapped ${variant}`)}>
           {variant}
-        </Button>
+        </ButtonV3>
       )}
     />
   ))
   .add("Miscellaneous", () => (
     <List>
-      <Button loading>loading</Button>
-      <Button disabled>disabled</Button>
-      <Button block>block</Button>
-      <Button icon={<LinkIcon />}>left icon</Button>
-      <Button icon={<LinkIcon />} iconPosition="right">
+      <ButtonV3 loading>loading</ButtonV3>
+      <ButtonV3 disabled>disabled</ButtonV3>
+      <ButtonV3 block>block</ButtonV3>
+      <ButtonV3 icon={<LinkIcon />}>left icon</ButtonV3>
+      <ButtonV3 icon={<LinkIcon />} iconPosition="right">
         right icon
-      </Button>
+      </ButtonV3>
     </List>
   ))
