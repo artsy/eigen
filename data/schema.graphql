@@ -76,6 +76,7 @@ type Agreement {
 
 type Algolia {
   apiKey: String
+  appID: String
 }
 
 type AnalyticsArtist {
