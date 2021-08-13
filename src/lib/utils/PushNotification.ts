@@ -263,4 +263,5 @@ module.exports = {
   createLocalNotification,
   getNotificationPermissionsStatus,
   CHANNELS,
+  PushAuthorizationStatus,
 }
