@@ -1,7 +1,8 @@
 import { useFormikContext } from "formik"
 import { Input } from "lib/Components/Input/Input"
 import { InputTitle } from "lib/Components/Input/InputTitle"
-import { Box, Button, Flex, Pill, Spacer } from "palette"
+import { navigate } from "lib/navigation/navigate"
+import { Box, Button, Flex, Pill, Spacer, Text, Touchable } from "palette"
 import React from "react"
 import { getNamePlaceholder } from "../helpers"
 import { SavedSearchAlertFormValues, SavedSearchArtistProp } from "../SavedSearchAlertModel"
@@ -9,11 +10,12 @@ import { SavedSearchAlertFormValues, SavedSearchArtistProp } from "../SavedSearc
 interface FormProps extends SavedSearchArtistProp {
   pills: string[]
   isUpdateForm: boolean
+  savedSearchAlertId?: string
   onDeletePress?: () => void
 }
 
 export const Form: React.FC<FormProps> = (props) => {
-  const { pills, artist, isUpdateForm, onDeletePress } = props
+  const { pills, artist, isUpdateForm, savedSearchAlertId, onDeletePress } = props
   const {
     isSubmitting,
     values,
@@ -39,6 +41,26 @@ export const Form: React.FC<FormProps> = (props) => {
           maxLength={75}
         />
       </Box>
+      {!!savedSearchAlertId && (
+        <Box mb={2} height={40} justifyContent="center" alignItems="center">
+          <Touchable
+            haptic
+            testID="view-artworks-button"
+            hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }}
+            onPress={() =>
+              navigate(`/artist/${artist.id}`, {
+                passProps: {
+                  searchCriteriaID: savedSearchAlertId,
+                },
+              })
+            }
+          >
+            <Text variant="small" color="blue100" style={{ textDecorationLine: "underline" }}>
+              View Artworks
+            </Text>
+          </Touchable>
+        </Box>
+      )}
       <Box mb={2}>
         <InputTitle>Filters</InputTitle>
         <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
