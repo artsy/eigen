@@ -102,7 +102,7 @@ export enum PushAuthorizationStatus {
   Denied = "denied",
 }
 
-export const getNotificationPermissionsStatus = () => {
+export const getNotificationPermissionsStatus = (): Promise<PushAuthorizationStatus> => {
   return new Promise((resolve) => {
     if (Platform.OS === "ios") {
       LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
@@ -137,18 +137,9 @@ export const MyProfilePushNotifications: React.FC<{
 
   useAppState({ onForeground })
 
-  const getPermissionStatus = () => {
-    if (Platform.OS === "ios") {
-      LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
-        setNotificationAuthorizationStatus(result)
-      })
-    } else if (Platform.OS === "android") {
-      PushNotification.checkPermissions((permissions) => {
-        setNotificationAuthorizationStatus(
-          permissions.alert ? PushAuthorizationStatus.Authorized : PushAuthorizationStatus.Denied
-        )
-      })
-    }
+  const getPermissionStatus = async () => {
+    const status = await getNotificationPermissionsStatus()
+    setNotificationAuthorizationStatus(status)
   }
 
   const onRefresh = useCallback(() => {
