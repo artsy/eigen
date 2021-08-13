@@ -119,7 +119,7 @@ export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchAlertFormPropsB
   const criteria = getSearchCriteriaFromFilters(artist.id, filters)
 
   if (isEmptyCriteria) {
-    return <SavedSearchButtonRefetchContainer me={null} loading={false} criteria={criteria} {...props} />
+    return <SavedSearchButtonRefetchContainer {...props} me={null} loading={false} criteria={criteria} filters={[]} />
   }
 
   return (

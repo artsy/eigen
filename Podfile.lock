@@ -594,11 +594,6 @@ PODS:
   - RNAnalytics (1.5.0):
     - Analytics
     - React-Core
-  - RNAnalyticsIntegration-Adjust (1.5.0):
-    - Analytics
-    - React-Core
-    - RNAnalytics
-    - Segment-Adjust (~> 3.1.1)
   - RNAnalyticsIntegration-Appboy (1.5.0):
     - Analytics
     - React-Core
@@ -788,7 +783,6 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `./node_modules/react-native/ReactCommon`)
   - rn-fetch-blob (from `node_modules/rn-fetch-blob`)
   - "RNAnalytics (from `node_modules/@segment/analytics-react-native`)"
-  - "RNAnalyticsIntegration-Adjust (from `node_modules/@segment/analytics-react-native-adjust`)"
   - "RNAnalyticsIntegration-Appboy (from `node_modules/@segment/analytics-react-native-appboy`)"
   - "RNAppleAuthentication (from `node_modules/@invertase/react-native-apple-authentication`)"
   - RNBootSplash (from `node_modules/react-native-bootsplash`)
@@ -1003,8 +997,6 @@ EXTERNAL SOURCES:
     :path: node_modules/rn-fetch-blob
   RNAnalytics:
     :path: "node_modules/@segment/analytics-react-native"
-  RNAnalyticsIntegration-Adjust:
-    :path: "node_modules/@segment/analytics-react-native-adjust"
   RNAnalyticsIntegration-Appboy:
     :path: "node_modules/@segment/analytics-react-native-appboy"
   RNAppleAuthentication:
@@ -1180,7 +1172,6 @@ SPEC CHECKSUMS:
   ReactCommon: 4167844018c9ed375cc01a843e9ee564399e53c3
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAnalytics: a6dc48511d5d99b1ecaaf7157d8b5c618d15337e
-  RNAnalyticsIntegration-Adjust: fcd3a1e9e653ea81528cfd21d947d8fa2d865d2a
   RNAnalyticsIntegration-Appboy: 6940f54ff28e6be80f1e3b78c996b1f0945b4113
   RNAppleAuthentication: e95bcfbd044013667f35c5ca20ae17d39500c009
   RNBootSplash: 24175aa28fe203b10c48dc34e78d946fd33c77af
@@ -1215,6 +1206,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 7aa1ef1912b995733553978d9a630a264cd0ded6
+PODFILE CHECKSUM: d3d1943370bdc3b6f0eb6cd79653163ff4f81432
 
 COCOAPODS: 1.10.1

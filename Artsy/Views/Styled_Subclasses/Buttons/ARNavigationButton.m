@@ -9,7 +9,7 @@
 @interface ARNavigationButton ()
 
 @property (nonatomic, strong, readonly) UILabel *primaryTitleLabel;
-@property (nonatomic, strong, readonly) UILabel *subtitleLabel;
+@property (nonatomic, strong, readonly) UILabel *secondaryTitleLabel;
 @property (nonatomic, strong, readonly) UIView *topBorder;
 @property (nonatomic, strong, readonly) UIView *bottomBorder;
 @property (nonatomic, strong, readonly) UIImageView *arrowView;
@@ -43,12 +43,12 @@
     self.primaryTitleLabel.font = [UIFont sansSerifFontWithSize:12];
     [self addSubview:self.primaryTitleLabel];
 
-    _subtitleLabel = [[UILabel alloc] init];
-    self.subtitleLabel.numberOfLines = 1;
-    self.subtitleLabel.backgroundColor = [UIColor clearColor];
-    self.subtitleLabel.font = [UIFont serifFontWithSize:14];
-    self.subtitleLabel.textColor = [UIColor blackColor];
-    [self addSubview:self.subtitleLabel];
+    _secondaryTitleLabel = [[UILabel alloc] init];
+    self.secondaryTitleLabel.numberOfLines = 1;
+    self.secondaryTitleLabel.backgroundColor = [UIColor clearColor];
+    self.secondaryTitleLabel.font = [UIFont serifFontWithSize:14];
+    self.secondaryTitleLabel.textColor = [UIColor blackColor];
+    [self addSubview:self.secondaryTitleLabel];
 
     _arrowView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"navigation_more_arrow_horizontal@2x"]];
     self.arrowView.backgroundColor = [UIColor clearColor];
@@ -115,10 +115,10 @@
     [self.primaryTitleLabel alignLeadingEdgeWithView:self predicate:@"0"];
     [self.primaryTitleLabel alignTrailingEdgeWithView:self predicate:@"-26"];
 
-    [self.subtitleLabel removeConstraints:self.subtitleLabel.constraints];
-    [self.subtitleLabel constrainTopSpaceToView:self.primaryTitleLabel predicate:@"0"];
-    [self.subtitleLabel alignLeadingEdgeWithView:self predicate:@"0"];
-    [self.subtitleLabel alignTrailingEdgeWithView:self predicate:@"-26"];
+    [self.secondaryTitleLabel removeConstraints:self.secondaryTitleLabel.constraints];
+    [self.secondaryTitleLabel constrainTopSpaceToView:self.primaryTitleLabel predicate:@"0"];
+    [self.secondaryTitleLabel alignLeadingEdgeWithView:self predicate:@"0"];
+    [self.secondaryTitleLabel alignTrailingEdgeWithView:self predicate:@"-26"];
 
     [self.arrowView removeConstraints:self.arrowView.constraints];
     [self.arrowView alignTrailingEdgeWithView:self predicate:@"0"];
@@ -126,7 +126,7 @@
 
     [self.bottomBorder removeConstraints:self.bottomBorder.constraints];
     [self.bottomBorder constrainHeight:NSStringWithFormat(@"%f", self.borderWidth)];
-    [self.bottomBorder constrainTopSpaceToView:self.subtitleLabel predicate:paddingHeight];
+    [self.bottomBorder constrainTopSpaceToView:self.secondaryTitleLabel predicate:paddingHeight];
     [self.bottomBorder alignCenterXWithView:self predicate:@"0"];
     [self.bottomBorder constrainWidthToView:self predicate:@"0"];
     [self alignBottomEdgeWithView:self.bottomBorder predicate:@"0"];
@@ -149,7 +149,7 @@
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         paragraphStyle.minimumLineHeight = 17;
         NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:_subtitle attributes:@{NSParagraphStyleAttributeName : paragraphStyle}];
-        self.subtitleLabel.attributedText = attrString;
+        self.secondaryTitleLabel.attributedText = attrString;
     }
 }
 
@@ -190,7 +190,7 @@
     self = [super initWithFrame:frame withBorder:borderWidth];
     if (self) {
         self.primaryTitleLabel.font = [UIFont serifFontWithSize:18];
-        self.subtitleLabel.font = [UIFont serifFontWithSize:16];
+        self.secondaryTitleLabel.font = [UIFont serifFontWithSize:16];
     }
 
     [self setNeedsUpdateConstraints];

@@ -74,6 +74,10 @@ type Agreement {
   updatedAt: ISO8601DateTime!
 }
 
+type Algolia {
+  apiKey: String
+}
+
 type AnalyticsArtist {
   entityId: String!
 }
@@ -11513,6 +11517,8 @@ type SubmitInquiryRequestMutationPayload {
 }
 
 type System {
+  algolia: Algolia
+
   # Creates, and authorizes, a JWT custom for Causality
   causalityJWT(
     role: Role

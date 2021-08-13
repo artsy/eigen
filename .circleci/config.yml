@@ -26,8 +26,8 @@ commands:
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
             echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
             echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-            echo 'nvm install v14.13.1' >> $BASH_ENV
-            echo 'nvm alias default v14.13.1' >> $BASH_ENV
+            echo 'nvm install v14.17.1' >> $BASH_ENV
+            echo 'nvm alias default v14.17.1' >> $BASH_ENV
             sudo mkdir ~/.config
             sudo chown -R $USER:$GROUP ~/.config
   generate-checksums:
@@ -207,7 +207,7 @@ jobs:
   update-metaphysics:
     executor:
       name: node/default
-      tag: "14.13.1"
+      tag: "14.17.1"
     steps:
       - checkout
       - generate-checksums
@@ -220,7 +220,7 @@ jobs:
   check-pr:
     executor:
       name: node/default
-      tag: "14.13.1"
+      tag: "14.17.1"
     steps:
       - checkout
       - generate-checksums
@@ -235,7 +235,7 @@ jobs:
   check-metaphysics-freshness:
     executor:
       name: node/default
-      tag: "14.13.1"
+      tag: "14.17.1"
     steps:
       - checkout
       - run:
@@ -263,7 +263,7 @@ jobs:
   build-test-js:
     executor:
       name: node/default
-      tag: "14.13.1"
+      tag: "14.17.1"
     steps:
       - checkout
       - generate-checksums
@@ -445,7 +445,7 @@ jobs:
   update-changelog:
     executor:
       name: node/default
-      tag: "14.13.1"
+      tag: "14.17.1"
 
     steps:
       - checkout

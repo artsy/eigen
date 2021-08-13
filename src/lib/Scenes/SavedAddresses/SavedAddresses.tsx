@@ -5,7 +5,6 @@ import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { navigate, navigationEvents } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { SavedAddressNotification } from "lib/Scenes/SavedAddresses/SavedAddressNotification"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -37,7 +36,6 @@ export const util = { onRefresh: () => {} }
 
 const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const [notificationState, setNotificationState] = useState({ notificationVisible: false, action: "" })
   const addresses = extractNodes(me.addressConnection)
   util.onRefresh = useCallback(() => {
     setIsRefreshing(true)
@@ -69,22 +67,13 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
   const onPressDeleteAddress = (addressId: string) => {
     deleteSavedAddress(
       addressId,
-      () => {
-        relay.refetch({})
-        setNotificationState({ notificationVisible: true, action: "Deleted" })
-      },
+      () => relay.refetch({}),
       (message: string) => captureMessage(message)
     )
   }
 
   return (
     <PageWithSimpleHeader title="Saved Addresses">
-      <SavedAddressNotification
-        setNotificationState={(notifState) => setNotificationState(notifState)}
-        showNotification={notificationState.notificationVisible}
-        notificationAction={notificationState.action}
-        duration={6000}
-      />
       <FlatList
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={util.onRefresh} />}
         data={addresses.sort((a, b) => Number(b?.isDefault) - Number(a?.isDefault))}
@@ -153,7 +142,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
         }
         ListEmptyComponent={
           <Flex py={3} px={2} alignItems="center" height="100%" justifyContent="center">
-            <Text variant="title" mb={2} data-test-id="no-saved-addresses">
+            <Text variant="title" mb={2}>
               No Saved Addresses
             </Text>
             <Text variant="caption" textAlign="center" mb={3}>
