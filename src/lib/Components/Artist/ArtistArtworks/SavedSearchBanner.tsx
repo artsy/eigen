@@ -11,7 +11,7 @@ import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageH
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
-import { Button, Flex, Text } from "palette"
+import { BellIcon, Button } from "palette"
 import React, { useState } from "react"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
 import PushNotification from "react-native-push-notification"
@@ -25,6 +25,7 @@ interface SavedSearchBannerProps {
   attributes: SearchCriteriaAttributes
   loading?: boolean
   relay: RelayRefetchProp
+  disabled?: boolean
 }
 
 export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
@@ -33,6 +34,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
   artistSlug,
   attributes,
   loading,
+  disabled,
   relay,
 }) => {
   const [saving, setSaving] = useState(false)
@@ -217,29 +219,18 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
   }
 
   return (
-    <Flex
-      backgroundColor="white"
-      flexDirection="row"
-      mx={-2}
-      px={2}
-      py={11}
-      justifyContent="space-between"
-      alignItems="center"
+    <Button
+      variant={enabled ? "secondaryOutline" : "primaryBlack"}
+      disabled={disabled}
+      onPress={handleSaveSearchFiltersPress}
+      icon={<BellIcon fill={enabled ? "black100" : "white100"} mr={0.5} width="16px" height="16px" />}
+      size="small"
+      loading={inProcess}
+      longestText="Remove Alert"
+      haptic
     >
-      <Text variant="small" color="black">
-        {enabled ? "Remove alert with these filters" : "Set alert with these filters"}
-      </Text>
-      <Button
-        variant={enabled ? "secondaryOutline" : "primaryBlack"}
-        onPress={handleSaveSearchFiltersPress}
-        size="small"
-        loading={inProcess}
-        longestText="Disable"
-        haptic
-      >
-        {enabled ? "Disable" : "Enable"}
-      </Button>
-    </Flex>
+      {enabled ? "Remove Alert" : "Create Alert"}
+    </Button>
   )
 }
 
@@ -269,9 +260,22 @@ export const SavedSearchBannerQueryRender: React.FC<{
   artistSlug: string
 }> = ({ filters, artistId, artistSlug }) => {
   const input = prepareFilterParamsForSaveSearchInput(filters)
+  const isEmptyCriteria = Object.keys(input).length === 0
   const attributes: SearchCriteriaAttributes = {
     artistID: artistId,
     ...input,
+  }
+
+  if (isEmptyCriteria) {
+    return (
+      <SavedSearchBannerRefetchContainer
+        me={null}
+        attributes={attributes}
+        artistId={artistId}
+        artistSlug={artistSlug}
+        disabled
+      />
+    )
   }
 
   return (
