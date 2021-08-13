@@ -311,3 +311,22 @@ describe("PendingPushNotification migration", () => {
     expect(migratedState.pendingPushNotification).toEqual({ notification: null })
   })
 })
+
+describe("CopyIOSNativeSessionAuthToTS migration", () => {
+  const migrationToTest = Versions.CopyIOSNativeSessionAuthToTS
+  it.only("populates authentication details into the auth model", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.auth.userAccessToken).toEqual("authenticationToken")
+    expect(migratedState.auth.onboardingState).toEqual("complete")
+    expect(migratedState.auth.userID).toEqual("userID")
+  })
+})

@@ -88,8 +88,19 @@ listenToNativeEvents((event: NativeEvent) => {
         }
       }
       GlobalStore.actions.native.setLocalState(event.payload)
-      if (!newOnboardingFlow && event.payload.userEmail !== null) {
-        GlobalStore.actions.auth.setState({ userEmail: event.payload.userEmail })
+      // We need to set the values we get from the native state on iOS to the global store
+      // to have parity between the auth on native and react-native
+      if (
+        event.payload.userEmail &&
+        event.payload.onboardingState &&
+        event.payload.userID &&
+        event.payload.authenticationToken
+      ) {
+        GlobalStore.actions.auth.setState({
+          userEmail: event.payload.userEmail,
+          userAccessToken: event.payload.authenticationToken,
+          userID: event.payload.userID,
+        })
       }
       return
     case "NOTIFICATION_RECEIVED":

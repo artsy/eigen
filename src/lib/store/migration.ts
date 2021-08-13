@@ -23,9 +23,10 @@ export const Versions = {
   RenameUserEmail: 11,
   AddToastModel: 12,
   PendingPushNotification: 13,
+  CopyIOSNativeSessionAuthToTS: 14,
 }
 
-export const CURRENT_APP_VERSION = Versions.PendingPushNotification
+export const CURRENT_APP_VERSION = Versions.CopyIOSNativeSessionAuthToTS
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -93,6 +94,14 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.PendingPushNotification]: (state) => {
     state.pendingPushNotification = { notification: null }
+  },
+  [Versions.CopyIOSNativeSessionAuthToTS]: (state) => {
+    if (Platform.OS === "ios") {
+      const nativeState = LegacyNativeModules.ARNotificationsManager.nativeState
+      state.auth.userAccessToken = nativeState.authenticationToken
+      state.auth.onboardingState = nativeState.onboardingState
+      state.auth.userID = nativeState.userID
+    }
   },
 }
 
