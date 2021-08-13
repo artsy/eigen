@@ -1,7 +1,9 @@
 import { FormikProvider, useFormik } from "formik"
 import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import React from "react"
-import { Alert } from "react-native"
+import { Alert, AlertButton, Linking, Platform } from "react-native"
+import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "../MyProfile/MyProfilePushNotifications"
 import { Form } from "./Components/Form"
 import { extractPills, getNamePlaceholder } from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
@@ -47,6 +49,73 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     },
   })
 
+  const requestNotificationPermissions = () => {
+    // permissions not determined: Android should never need this
+    if (Platform.OS === "ios") {
+      Alert.alert(
+        "Artsy would like to send you notifications",
+        "We need your permission to send notifications on alerts you have created.",
+        [
+          {
+            text: "Proceed",
+            onPress: () => LegacyNativeModules.ARTemporaryAPIModule.requestNotificationPermissions(),
+          },
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+        ]
+      )
+    }
+  }
+
+  const showHowToEnableNotificationInstructionAlert = () => {
+    const deviceText = Platform.select({
+      ios: "iOS",
+      android: "android",
+      default: "device",
+    })
+    const instruction = Platform.select({
+      ios: `Tap 'Artsy' and enable "Allow Notifications" for Artsy.`,
+      default: "",
+    })
+
+    const buttons: AlertButton[] = [
+      {
+        text: "Settings",
+        onPress: () => {
+          if (Platform.OS === "android") {
+            Linking.openSettings()
+          } else {
+            Linking.openURL("App-prefs:NOTIFICATIONS_ID")
+          }
+        },
+      },
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+    ]
+
+    Alert.alert(
+      "Artsy would like to send you notifications",
+      `To receive notifications for your alerts, you will need to enable them in your ${deviceText} Settings. ${instruction}`,
+      Platform.OS === "ios" ? buttons : buttons.reverse()
+    )
+  }
+
+  const handleSubmit = async () => {
+    const notificationStatus = await getNotificationPermissionsStatus()
+
+    if (notificationStatus === PushAuthorizationStatus.Authorized) {
+      formik.handleSubmit()
+    } else if (notificationStatus === PushAuthorizationStatus.Denied) {
+      showHowToEnableNotificationInstructionAlert()
+    } else {
+      requestNotificationPermissions()
+    }
+  }
+
   const onDelete = async () => {
     try {
       await deleteSavedSearchMutation(savedSearchAlertId!)
@@ -69,7 +138,13 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
   return (
     <FormikProvider value={formik}>
-      <Form pills={pills} savedSearchAlertId={savedSearchAlertId} onDeletePress={handleDeletePress} {...other} />
+      <Form
+        pills={pills}
+        savedSearchAlertId={savedSearchAlertId}
+        onDeletePress={handleDeletePress}
+        onSubmitPress={handleSubmit}
+        {...other}
+      />
     </FormikProvider>
   )
 }
