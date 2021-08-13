@@ -9,13 +9,12 @@ import { SavedSearchAlertFormValues, SavedSearchArtistProp } from "../SavedSearc
 
 interface FormProps extends SavedSearchArtistProp {
   pills: string[]
-  isUpdateForm: boolean
   savedSearchAlertId?: string
   onDeletePress?: () => void
 }
 
 export const Form: React.FC<FormProps> = (props) => {
-  const { pills, artist, isUpdateForm, savedSearchAlertId, onDeletePress } = props
+  const { pills, artist, savedSearchAlertId, onDeletePress } = props
   const {
     isSubmitting,
     values,
@@ -48,7 +47,7 @@ export const Form: React.FC<FormProps> = (props) => {
             testID="view-artworks-button"
             hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }}
             onPress={() =>
-              navigate(`/artist/${artist.id}`, {
+              navigate(`artist/${artist.id}`, {
                 passProps: {
                   searchCriteriaID: savedSearchAlertId,
                 },
@@ -74,7 +73,7 @@ export const Form: React.FC<FormProps> = (props) => {
       <Spacer mt={4} />
       <Button
         testID="save-alert-button"
-        disabled={isUpdateForm && !dirty}
+        disabled={!!savedSearchAlertId && !dirty}
         loading={isSubmitting}
         size="large"
         block
@@ -82,7 +81,7 @@ export const Form: React.FC<FormProps> = (props) => {
       >
         Save Alert
       </Button>
-      {!!isUpdateForm && (
+      {!!savedSearchAlertId && (
         <Button
           testID="delete-alert-button"
           variant="secondaryOutline"

@@ -69,13 +69,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
   return (
     <FormikProvider value={formik}>
-      <Form
-        pills={pills}
-        isUpdateForm={isUpdateForm}
-        savedSearchAlertId={savedSearchAlertId}
-        onDeletePress={handleDeletePress}
-        {...other}
-      />
+      <Form pills={pills} savedSearchAlertId={savedSearchAlertId} onDeletePress={handleDeletePress} {...other} />
     </FormikProvider>
   )
 }

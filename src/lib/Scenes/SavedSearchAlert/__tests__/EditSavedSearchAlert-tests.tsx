@@ -1,5 +1,5 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
-import { goBack } from "lib/navigation/navigate"
+import { goBack, navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
@@ -59,6 +59,28 @@ describe("EditSavedSearchAlert", () => {
     })
 
     expect(goBack).toHaveBeenCalled()
+  })
+
+  it("should navigate to artworks grid when the view artworks is pressed", async () => {
+    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      SearchCriteria: () => searchCriteria,
+    })
+    mockEnvironmentPayload(mockEnvironment, {
+      Artist: () => ({
+        internalID: "artistID",
+      }),
+      FilterArtworksConnection: () => filterArtworks,
+    })
+
+    fireEvent.press(getByTestId("view-artworks-button"))
+
+    expect(navigate).toBeCalledWith("artist/artistID", {
+      passProps: {
+        searchCriteriaID: "savedSearchAlertId",
+      },
+    })
   })
 })
 
