@@ -10,13 +10,14 @@ import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { Stack } from "lib/Components/Stack"
 import { goBack, navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import AddressNotificationContext from "lib/utils/AddressNotificationStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { times } from "lodash"
 import { Flex, Text } from "palette"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { MyAccountFieldEditScreen } from "../MyAccount/Components/MyAccountFieldEditScreen"
@@ -82,12 +83,13 @@ const useStore = createComponentStore<Store>({
 
 export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId?: string }> = ({ me, addressId }) => {
   const isEditForm = !!addressId
-
   const [state, actions] = useStore()
   const [phoneNumber, setPhoneNumber] = useState(me?.phone)
   const [isDefaultAddress, setIsDefaultAddress] = useState(false)
   const { height } = useScreenDimensions()
   const offSetTop = 0.75
+  // const { notificationState } = useContext(AddressNotificationContext)
+  // console.log("🚀 ~ file: SavedAddressesForm.tsx ~ line 92 ~ notificationState", notificationState)
 
   useEffect(() => {
     setPhoneNumber(me?.phone)
@@ -158,6 +160,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       userAddressID,
       () => {
         navigate("my-profile/saved-addresses")
+        // notificationState.setNotificationState({ notificationVisible: true, action: "Deleted" })
       },
       (message: string) => captureMessage(message)
     )

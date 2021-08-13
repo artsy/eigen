@@ -1,4 +1,5 @@
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
+import AddressNotificationsProvider from "lib/utils/AddressNotificationProvider"
 import { Theme } from "palette"
 import React, { ReactNode } from "react"
 import { RelayEnvironmentProvider } from "relay-hooks"
@@ -17,7 +18,9 @@ export const AppProviders = ({ children }: { children: ReactNode }) => (
           <ActionSheetProvider>
             <PopoverMessageProvider>
               <_FancyModalPageWrapper>
-                <ToastProvider>{children}</ToastProvider>
+                <ToastProvider>
+                  <AddressNotificationsProvider>{children}</AddressNotificationsProvider>
+                </ToastProvider>
               </_FancyModalPageWrapper>
             </PopoverMessageProvider>
           </ActionSheetProvider>
