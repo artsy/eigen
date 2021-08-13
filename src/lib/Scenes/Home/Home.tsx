@@ -362,7 +362,6 @@ export const HomeQueryRenderer: React.FC = () => {
     }
   }, [flash_message])
 
-  // Avoid rendering when user is logged out, it will fail anyway
   return (
     <ProvideScreenTracking
       info={{
@@ -370,6 +369,7 @@ export const HomeQueryRenderer: React.FC = () => {
         context_screen_owner_type: null as any,
       }}
     >
+      {/* Avoid rendering when user is logged out, it will fail anyway */}
       {!!userAccessToken && (
         <QueryRenderer<HomeQuery>
           environment={defaultEnvironment}
