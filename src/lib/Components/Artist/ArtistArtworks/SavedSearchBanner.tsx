@@ -10,7 +10,7 @@ import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSear
 import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
+import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { BellIcon, Button } from "palette"
 import React, { useState } from "react"
 import { Alert, AlertButton, Linking, Platform } from "react-native"

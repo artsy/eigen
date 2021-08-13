@@ -2,13 +2,13 @@ import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "lib/Components/SwitchMenu"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import useAppState from "lib/utils/useAppState"
 import { debounce } from "lodash"
 import { Box, Button, Flex, Join, Sans, Separator } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import { ActivityIndicator, Alert, Linking, Platform, RefreshControl, ScrollView, View } from "react-native"
-import PushNotification from "react-native-push-notification"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { MyProfilePushNotifications_me } from "../../../__generated__/MyProfilePushNotifications_me.graphql"
 import { MyProfilePushNotificationsQuery } from "../../../__generated__/MyProfilePushNotificationsQuery.graphql"
@@ -95,26 +95,6 @@ const NotificationPermissionsBox = ({
     {children}
   </Box>
 )
-
-export enum PushAuthorizationStatus {
-  NotDetermined = "notDetermined",
-  Authorized = "authorized",
-  Denied = "denied",
-}
-
-export const getNotificationPermissionsStatus = (): Promise<PushAuthorizationStatus> => {
-  return new Promise((resolve) => {
-    if (Platform.OS === "ios") {
-      LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
-        resolve(result)
-      })
-    } else if (Platform.OS === "android") {
-      PushNotification.checkPermissions((permissions) => {
-        resolve(permissions.alert ? PushAuthorizationStatus.Authorized : PushAuthorizationStatus.Denied)
-      })
-    }
-  })
-}
 
 export const MyProfilePushNotifications: React.FC<{
   me: MyProfilePushNotifications_me

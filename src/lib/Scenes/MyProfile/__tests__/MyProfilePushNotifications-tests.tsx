@@ -3,6 +3,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { Sans } from "palette"
 import React from "react"
 import { Platform, Switch } from "react-native"
@@ -13,7 +14,6 @@ import {
   MyProfilePushNotifications,
   MyProfilePushNotificationsQueryRenderer,
   OpenSettingsBanner,
-  PushAuthorizationStatus,
 } from "../MyProfilePushNotifications"
 
 jest.mock("lib/relay/createEnvironment", () => ({
