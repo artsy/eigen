@@ -3,11 +3,16 @@ import { Search2Query, Search2QueryResponse } from "__generated__/Search2Query.g
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { SearchInput } from "lib/Components/SearchInput"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { isPad } from "lib/utils/hardware"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
-import { Flex, useColor } from "palette"
+import { Flex, Spacer, useColor } from "palette"
 import React, { useState } from "react"
 import { connectSearchBox, InstantSearch } from "react-instantsearch-native"
+import { Platform, ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
+import styled from "styled-components"
+import { CityGuideCTA } from "../Search/CityGuideCTA"
+import { RecentSearches } from "../Search/RecentSearches"
 
 interface ImprovedSearchInputProps {
   refine: (value: string) => any
@@ -26,9 +31,14 @@ const ImprovedSearchInput: React.FC<ImprovedSearchInputProps> = ({ refine }) => 
 
 const ImprovedSearchInputContainer = connectSearchBox(ImprovedSearchInput)
 
+interface SearchState {
+  query?: string
+  page?: number
+}
+
 export const Search2: React.FC<Search2QueryResponse> = (props) => {
   const color = useColor()
-  const [searchState, setSearchState] = useState({})
+  const [searchState, setSearchState] = useState<SearchState>({})
 
   const { system } = props
 
@@ -50,6 +60,14 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
         <Flex p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
           <ImprovedSearchInputContainer />
         </Flex>
+        {!!searchState?.query?.length && searchState?.query?.length >= 2 ? null : (
+          <Scrollable>
+            <RecentSearches />
+            <Spacer mb={3} />
+            {!isPad() && Platform.OS === "ios" ? <CityGuideCTA /> : null}
+            <Spacer mb="40px" />
+          </Scrollable>
+        )}
       </InstantSearch>
     </ArtsyKeyboardAvoidingView>
   )
@@ -84,3 +102,12 @@ export const Search2QueryRenderer: React.FC<{}> = ({}) => {
     />
   )
 }
+
+const Scrollable = styled(ScrollView).attrs(() => ({
+  keyboardDismissMode: "on-drag",
+  keyboardShouldPersistTaps: "handled",
+}))`
+  flex: 1;
+  padding: 0 20px;
+  padding-top: 20px;
+`
