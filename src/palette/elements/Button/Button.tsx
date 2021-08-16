@@ -1,4 +1,3 @@
-import { Text } from "palette"
 import { useColor } from "palette/hooks"
 import React, { ReactNode, useState } from "react"
 import {
@@ -17,7 +16,7 @@ import { ThemeV3 } from "../../Theme"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
-import { TextV3 } from "../Text"
+import { Text } from "../Text"
 
 type ButtonVariant = "fillDark" | "fillLight" | "fillGray" | "outline" | "text"
 
@@ -68,8 +67,7 @@ enum DisplayState {
   Disabled = "default",
 }
 
-/** A button with various size and color settings */
-const PureButton: React.FC<ButtonProps> = ({
+export const Button: React.FC<ButtonProps> = ({
   children,
   disabled,
   haptic,
@@ -264,14 +262,6 @@ function getColorsForVariant(variant: ButtonVariant, disabled: boolean = false) 
       }
   }
 }
-
-export const Button: React.FC<ButtonProps> = (props) => (
-  <ThemeV3>
-    <PureButton {...props} />
-  </ThemeV3>
-)
-
-/** Base props that construct button */
 
 const VisibleTextContainer = styled(Box)`
   position: absolute;

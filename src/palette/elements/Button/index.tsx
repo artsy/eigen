@@ -1,4 +1,5 @@
 import { usePaletteFlagStore } from "palette/PaletteFlag"
+import { ThemeV3 } from "palette/Theme"
 import React from "react"
 
 // v3
@@ -43,9 +44,17 @@ export const Button: React.FC<ButtonProps> = (props) => {
 
   if (allowV3) {
     if (isV2Props(props)) {
-      return <ButtonV3 {...transformV3Props(props)} />
+      return (
+        <ThemeV3>
+          <ButtonV3 {...transformV3Props(props)} />
+        </ThemeV3>
+      )
     } else {
-      return <ButtonV3 {...props} />
+      return (
+        <ThemeV3>
+          <ButtonV3 {...props} />
+        </ThemeV3>
+      )
     }
   }
 

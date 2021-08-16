@@ -1,6 +1,8 @@
 import _ from "lodash"
 import { usePaletteFlagStore } from "palette/PaletteFlag"
+import { ThemeV3 } from "palette/Theme"
 import React from "react"
+import { Text as RNText } from "react-native"
 
 export * from "./tokens"
 export * from "./helpers"
@@ -25,7 +27,11 @@ export { SerifV1, SerifV1Props, SerifV1Props as SerifProps }
 export const Serif: React.FC<SerifV1Props> = (props) => {
   const allowV3 = usePaletteFlagStore((state) => state.allowV3)
   if (allowV3) {
-    return <TextV3 {...transformSerifPropsToV3(props)} />
+    return (
+      <ThemeV3>
+        <TextV3 {...transformSerifPropsToV3(props)} />
+      </ThemeV3>
+    )
   }
   return <SerifV1 {...props} />
 }
@@ -65,7 +71,11 @@ const transformSerifPropsToV3 = (props: SerifV1Props): TextV3Props => {
 export const Sans: React.FC<SansV1Props> = (props) => {
   const allowV3 = usePaletteFlagStore((state) => state.allowV3)
   if (allowV3) {
-    return <TextV3 {...transformSansPropsToV3(props)} />
+    return (
+      <ThemeV3>
+        <TextV3 {...transformSansPropsToV3(props)} />
+      </ThemeV3>
+    )
   }
   return <SansV1 {...props} />
 }
@@ -125,9 +135,17 @@ export const Text: React.FC<TextProps> = (props) => {
   const allowV3 = usePaletteFlagStore((state) => state.allowV3)
   if (allowV3) {
     if (isTextV2Props(props)) {
-      return <TextV3 {...transformTextV2PropsToV3(props)} />
+      return (
+        <ThemeV3>
+          <TextV3 {...transformTextV2PropsToV3(props)} />
+        </ThemeV3>
+      )
     } else {
-      return <TextV3 {...props} />
+      return (
+        <ThemeV3>
+          <TextV3 {...props} />
+        </ThemeV3>
+      )
     }
   }
 

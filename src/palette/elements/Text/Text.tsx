@@ -1,7 +1,6 @@
 import { useTheme } from "palette"
-import { isThemeV3, TextSizeV3, ThemeV3Type } from "palette/Theme"
+import { isThemeV3, TextSizeV3 } from "palette/Theme"
 import React from "react"
-import { Platform } from "react-native"
 import { StyleProp, TextStyle } from "react-native"
 import { Text as RNText, TextProps as RNTextProps } from "react-native"
 import styled from "styled-components/native"
