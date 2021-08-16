@@ -254,6 +254,8 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
       sortOrder = ArtistSeriesFiltersSorted
       break
     case FilterModalMode.Show:
+      sortOrder = ShowFiltersSorted
+      break
     case FilterModalMode.Fair:
       sortOrder = FairFiltersSorted
       break
@@ -264,7 +266,7 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
       sortOrder = AuctionResultsFiltersSorted
       break
     case FilterModalMode.Partner:
-      sortOrder = GalleryShowFiltersSorted
+      sortOrder = PartnerFiltersSorted
       break
     case FilterModalMode.Gene:
       sortOrder = TagAndGeneFiltersSorted
@@ -546,7 +548,21 @@ const SaleArtworksFiltersSorted: FilterScreen[] = [
   "estimateRange",
 ]
 
-const GalleryShowFiltersSorted: FilterScreen[] = [
+const ShowFiltersSorted: FilterScreen[] = [
+  "sort",
+  "artistIDs",
+  "attributionClass",
+  "additionalGeneIDs",
+  "priceRange",
+  "dimensionRange",
+  "waysToBuy",
+  "materialsTerms",
+  "artistNationalities",
+  "majorPeriods",
+  "colors",
+]
+
+const PartnerFiltersSorted: FilterScreen[] = [
   "sort",
   "artistIDs",
   "attributionClass",
