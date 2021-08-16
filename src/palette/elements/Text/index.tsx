@@ -22,6 +22,11 @@ export { SerifV1, SerifV1Props, SerifV1Props as SerifProps }
 
 // V1 handler
 
+/**
+ * Deprecated. Use `TextV3` instead.
+ * Mapping:
+ * 1: xs, 2: xs, 3: sm, 3t: sm, 4: md, 4t: md, 5: md, 5t: md, 6: lg, 8: lg, 10: xl, 12: xxl
+ */
 export const Serif: React.FC<SerifV1Props> = (props) => {
   const allowV3 = usePaletteFlagStore((state) => state.allowV3)
   if (allowV3) {
@@ -66,6 +71,11 @@ const transformSerifPropsToV3 = (props: SerifV1Props): TextV3Props => {
   }
 }
 
+/**
+ * Deprecated. Use `TextV3` instead.
+ * Mapping:
+ * 0: xs, 1: xs, 2: xs, 3: sm, 3t: sm, 4: md, 4t: md, 5: md, 5t: md, 6: lg, 8: lg, 10: xl, 12: xxl, 14: xxl, 16: xxl
+ */
 export const Sans: React.FC<SansV1Props> = (props) => {
   const allowV3 = usePaletteFlagStore((state) => state.allowV3)
   if (allowV3) {
@@ -129,6 +139,12 @@ const isTextV2Props = (props: TextProps): props is TextV2Props => {
 }
 
 export type TextProps = TextV2Props | TextV3Props
+
+/**
+ * Deprecated. Use `TextV3` instead.
+ * Mapping:
+ * largeTitle: lg, title: md, subtitle: md, text: sm, mediumText: sm, caption: xs, small: xs
+ */
 export const Text: React.FC<TextProps> = (props) => {
   const allowV3 = usePaletteFlagStore((state) => state.allowV3)
   if (allowV3) {
