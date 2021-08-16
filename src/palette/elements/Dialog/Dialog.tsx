@@ -19,13 +19,13 @@ export const Dialog: React.FC<DialogProps> = (props) => {
         Animated.timing(value, {
           toValue: 1,
           useNativeDriver: true,
-          duration: 250,
+          duration: 170,
         }).start(resolve)
       } else {
         Animated.timing(value, {
           toValue: 0,
           useNativeDriver: true,
-          duration: 150,
+          duration: 140,
         }).start(resolve)
       }
     })
