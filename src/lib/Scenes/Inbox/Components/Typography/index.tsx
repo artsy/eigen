@@ -3,12 +3,16 @@ import { StyleSheet, Text, TextProps, TextStyle } from "react-native"
 
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
-import { useTheme } from "palette"
+import { ThemeV2Type, ThemeV3Type, useTheme, useThemeConfig } from "palette"
 
 const LargeHeadline: React.FC<TextProps> = (props) => {
   const { theme } = useTheme()
+  const fontFamily = useThemeConfig({
+    v2: (theme as ThemeV2Type).fonts.sans,
+    v3: (theme as ThemeV3Type).fonts.sans.regular,
+  })
   const children: string = (props as any).children
-  const style = [styles.largeDefault, props.style || {}, { fontFamily: theme.fonts.sans }]
+  const style = [styles.largeDefault, props.style || {}, { fontFamily }]
   return (
     <Text key={children} style={style}>
       {children}
@@ -18,13 +22,12 @@ const LargeHeadline: React.FC<TextProps> = (props) => {
 
 const SmallHeadline: React.FC<TextProps & { disabled?: boolean }> = (props) => {
   const { theme } = useTheme()
+  const fontFamily = useThemeConfig({
+    v2: (theme as ThemeV2Type).fonts.sans,
+    v3: (theme as ThemeV3Type).fonts.sans.regular,
+  })
   const children: string = (props as any).children
-  const style = [
-    styles.smallDefault,
-    props.disabled && styles.disabled,
-    props.style || {},
-    { fontFamily: theme.fonts.sans },
-  ]
+  const style = [styles.smallDefault, props.disabled && styles.disabled, props.style || {}, { fontFamily }]
   return (
     <Text key={children} style={style}>
       {(children || "").toUpperCase()}
@@ -54,8 +57,12 @@ const FromSignatureText: React.FC<TextProps> = (props) => {
 
 const MetadataText: React.FC<TextProps> = (props) => {
   const { theme } = useTheme()
+  const fontFamily = useThemeConfig({
+    v2: (theme as ThemeV2Type).fonts.sans,
+    v3: (theme as ThemeV3Type).fonts.sans.regular,
+  })
   const children: string = (props as any).children
-  const style = [styles.metadataDefault, props.style || {}, { fontFamily: theme.fonts.sans }]
+  const style = [styles.metadataDefault, props.style || {}, { fontFamily }]
   return (
     <Text key={children} style={style}>
       {children.toUpperCase()}

@@ -1,9 +1,12 @@
 //  TODO-PALETTE-V3 remove this file completely
 
-import { SansSize, SerifSize } from "palette"
+import { SansV1Props, SerifV1Props } from "palette"
 
-type FontSize = SansSize & SerifSize
+type FontSize = SansV1Props["size"] & SerifV1Props["size"]
 
+/**
+ * Deprecated. Use `useScreenDimensions` instead.
+ */
 export const dimensions = (size: number) => ({
   small: {
     cityFontSize: "4" as FontSize,

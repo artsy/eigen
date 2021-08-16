@@ -3,7 +3,6 @@ import _ from "lodash"
 import React, { useContext } from "react"
 import { ThemeContext, ThemeProvider } from "styled-components/native"
 import { usePaletteFlagStore } from "./PaletteFlag"
-import { fontFamily } from "./platform/fonts/fontFamily"
 
 /**
  * All of the config for the Artsy theming system, based on the
@@ -134,11 +133,19 @@ const fixTextTreatments = (
 const THEMES = {
   v2: {
     ...THEME_V2,
-    fontFamily,
-    fonts: {
-      sans: "Unica77LL-Regular",
-      serif: "ReactNativeAGaramondPro-Regular",
+    fontFamily: {
+      sans: {
+        regular: { normal: "Unica77LL-Regular", italic: "Unica77LL-Italic" },
+        medium: { normal: "Unica77LL-Medium", italic: "Unica77LL-MediumItalic" },
+        semibold: { normal: null, italic: null },
+      },
+      serif: {
+        regular: { normal: "ReactNativeAGaramondPro-Regular", italic: "ReactNativeAGaramondPro-Italic" },
+        medium: { normal: null, italic: null },
+        semibold: { normal: "ReactNativeAGaramondPro-Semibold", italic: null },
+      },
     },
+    fonts: { sans: "Unica77LL-Regular", serif: "ReactNativeAGaramondPro-Regular" },
     space: fixSpaceUnitsV2(THEME_V2.space),
   },
   v3: {

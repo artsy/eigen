@@ -1,8 +1,8 @@
 import { useEventTiming } from "lib/utils/useEventTiming"
-import { Text, TextProps } from "palette"
+import { Text, TextV2Props } from "palette"
 import React from "react"
 
-interface Props extends TextProps {
+interface Props extends TextV2Props {
   startAt: string | null
   endAt: string | null
   currentTime: string

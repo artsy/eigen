@@ -1,4 +1,3 @@
-import { FontFamily, fontFamily } from "palette/platform/fonts/fontFamily"
 import React from "react"
 import { TextProps } from "react-native"
 import styled from "styled-components/native"
@@ -20,7 +19,7 @@ import {
   verticalAlign,
   VerticalAlignProps,
 } from "styled-system"
-import { themeProps } from "../../Theme"
+import { _test_THEMES, themeProps } from "../../Theme"
 import { SansProps } from "./Sans"
 import { SerifProps } from "./Serif"
 
@@ -53,6 +52,9 @@ interface StyledTextProps extends Partial<FullTextProps> {
   weight?: null | FontWeights
   italic?: boolean
 }
+
+const fontFamily = _test_THEMES.v2.fontFamily
+type FontFamily = typeof fontFamily
 
 /**
  * Creates a wrapper around the generic `Text` component for a font type defined
