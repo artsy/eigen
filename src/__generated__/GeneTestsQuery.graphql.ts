@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 66e2d4b78f426fa9adb35b8389a8a7e4 */
+/* @relayHash 4e2dfb8793b02b9ffc540cea3ad1ed09 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -138,7 +138,7 @@ fragment GeneArtworks_gene_2VV6jB on Gene {
   id
   internalID
   slug
-  artworks: filterArtworksConnection(first: 10, after: "", aggregations: [MEDIUM, PRICE_RANGE, TOTAL], forSale: true, input: $input) {
+  artworks: filterArtworksConnection(first: 10, after: "", aggregations: [LOCATION_CITY, ARTIST_NATIONALITY, PRICE_RANGE, COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, ARTIST, LOCATION_CITY, MATERIALS_TERMS], forSale: true, input: $input) {
     counts {
       total
     }
@@ -299,9 +299,18 @@ v9 = [
     "kind": "Literal",
     "name": "aggregations",
     "value": [
+      "LOCATION_CITY",
+      "ARTIST_NATIONALITY",
+      "PRICE_RANGE",
+      "COLOR",
+      "DIMENSION_RANGE",
+      "PARTNER",
+      "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE",
-      "TOTAL"
+      "ARTIST",
+      "LOCATION_CITY",
+      "MATERIALS_TERMS"
     ]
   },
   {
@@ -845,7 +854,7 @@ return {
     ]
   },
   "params": {
-    "id": "66e2d4b78f426fa9adb35b8389a8a7e4",
+    "id": "4e2dfb8793b02b9ffc540cea3ad1ed09",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "gene": {
