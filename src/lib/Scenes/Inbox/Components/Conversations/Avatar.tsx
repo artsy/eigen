@@ -1,4 +1,3 @@
-import { themeGet } from "@styled-system/theme-get"
 import colors from "lib/data/colors"
 import React from "react"
 import styled from "styled-components/native"
@@ -16,7 +15,7 @@ interface NameProps {
 
 const Name = styled.Text`
   color: ${(props: NameProps) => (props.user ? "white" : colors["gray-semibold"])};
-  font-family: ${themeGet("fonts.sans")};
+  font-family: "Unica77LL-Regular"; /* this should be taken from the theme, but in here we cant, so until we rework this component, hardcode it. */
   font-size: 12;
   align-self: center;
   margin-top: 14;
