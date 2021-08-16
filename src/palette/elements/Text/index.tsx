@@ -2,9 +2,7 @@ import _ from "lodash"
 import { usePaletteFlagStore } from "palette/PaletteFlag"
 import { ThemeV3 } from "palette/Theme"
 import React from "react"
-import { Text as RNText } from "react-native"
 
-export * from "./tokens"
 export * from "./helpers"
 
 // TextV3
@@ -59,7 +57,7 @@ const transformSerifPropsToV3 = (props: SerifV1Props): TextV3Props => {
   }
 
   if (weight === "semibold") {
-    newProps.weight = "medium"
+    ;(newProps as TextV3Props).weight = "medium"
   }
 
   return {
@@ -106,7 +104,7 @@ const transformSansPropsToV3 = (props: SansV1Props): TextV3Props => {
   }
 
   if (weight === "medium") {
-    newProps.weight = "medium"
+    ;(newProps as TextV3Props).weight = "medium"
   }
 
   return {

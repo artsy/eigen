@@ -14,10 +14,9 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import { times } from "lodash"
-import { Flex, Join, Sans, Separator, Spacer, Text, TextV3 } from "palette"
-import { usePaletteFlagStore } from "palette/PaletteFlag"
+import { Flex, Join, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { Alert, Button, FlatList, Platform, RefreshControl, ScrollView } from "react-native"
+import { Alert, FlatList, Platform, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 
@@ -47,8 +46,6 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
     }
   }, [])
 
-  const { toggleAllowV3, allowV3 } = usePaletteFlagStore()
-
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
       <Sans size="8" mx="2" mt="3">
@@ -56,7 +53,6 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       </Sans>
       <Separator my={2} />
       <SectionHeading title="Favorites" />
-      <Button title={`tog ${allowV3 ? "on" : "off"}`} onPress={toggleAllowV3} />
       {!!shouldDisplayMyCollection && (
         <MenuItem isBeta={true} title="My Collection" onPress={() => navigate("my-collection")} />
       )}

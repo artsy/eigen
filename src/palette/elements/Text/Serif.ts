@@ -1,6 +1,4 @@
 import { SerifSize } from "@artsy/palette-tokens/dist/themes/v2"
-// @ts-ignore
-import React from "react"
 import { createStyledText, FullTextProps } from "./Typography-v1"
 
 export interface SerifProps extends Partial<FullTextProps> {

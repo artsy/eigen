@@ -1,5 +1,3 @@
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
-import React from "react"
 import { Text } from ".."
 import { endash, range } from "../../../helpers"
 

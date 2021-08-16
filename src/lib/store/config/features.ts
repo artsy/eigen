@@ -182,7 +182,7 @@ export const devToggles = defineDevToggles({
     description: "Show analytics visualiser",
   },
   DTShowV3Toggle: {
-    description: "Show palette v3 toggle everywhere",
+    description: "Show Palette V3 toggle everywhere",
   },
 })
 

@@ -12,7 +12,6 @@ import { config } from "react-spring"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
-import { ThemeV3 } from "../../Theme"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
@@ -160,7 +159,7 @@ export const Button: React.FC<ButtonProps> = ({
             >
               <VisibleTextContainer>
                 {iconPosition === "left" && iconBox}
-                <TextV3
+                <Text
                   size={size === "small" ? "xs" : "sm"}
                   style={{
                     color: loading ? "transparent" : springProps.color,
@@ -168,12 +167,12 @@ export const Button: React.FC<ButtonProps> = ({
                   }}
                 >
                   {children}
-                </TextV3>
+                </Text>
                 {iconPosition === "right" && iconBox}
               </VisibleTextContainer>
               <HiddenContainer>
                 {icon}
-                <TextV3 size={size === "small" ? "xs" : "sm"}>{longestText ? longestText : children}</TextV3>
+                <Text size={size === "small" ? "xs" : "sm"}>{longestText ? longestText : children}</Text>
               </HiddenContainer>
 
               {!!loading && <Spinner size={size} color={spinnerColor} />}

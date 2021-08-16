@@ -1,5 +1,4 @@
 import { SansSize } from "@artsy/palette-tokens/dist/themes/v2"
-import React from "react"
 import { createStyledText, FullTextProps } from "./Typography-v1"
 
 export interface SansProps extends Partial<FullTextProps> {

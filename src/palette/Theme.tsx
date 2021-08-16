@@ -2,7 +2,6 @@ import { THEME_V2, THEME_V3 } from "@artsy/palette-tokens"
 import _ from "lodash"
 import React, { useContext } from "react"
 import { ThemeContext, ThemeProvider } from "styled-components/native"
-import { TEXT_FONTS_V2, TEXT_FONTS_V3 } from "./elements/Text/tokens"
 import { usePaletteFlagStore } from "./PaletteFlag"
 import { fontFamily } from "./platform/fonts/fontFamily"
 
@@ -133,12 +132,27 @@ const fixTextTreatments = (
 }
 
 const THEMES = {
-  v2: { ...THEME_V2, fontFamily, fonts: TEXT_FONTS_V2, space: fixSpaceUnitsV2(THEME_V2.space) },
+  v2: {
+    ...THEME_V2,
+    fontFamily,
+    fonts: {
+      sans: "Unica77LL-Regular",
+      serif: "ReactNativeAGaramondPro-Regular",
+    },
+    space: fixSpaceUnitsV2(THEME_V2.space),
+  },
   v3: {
     ...eigenUsefulTHEME_V3,
     colors: fixColorV3(eigenUsefulTHEME_V3.colors),
     space: fixSpaceUnitsV3(spaceNumbers),
-    fonts: TEXT_FONTS_V3,
+    fonts: {
+      sans: {
+        regular: "Unica77LL-Regular",
+        italic: "Unica77LL-Italic",
+        medium: "Unica77LL-Medium",
+        mediumItalic: "Unica77LL-MediumItalic",
+      },
+    },
     textTreatments: fixTextTreatments(textVariantsWithUnits),
   },
 }
