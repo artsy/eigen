@@ -19,6 +19,9 @@ const noop: any = (name: string) => () => console.warn(`method ${name} doesn't e
  */
 
 interface LegacyNativeModules {
+  ARAppStatusModule: {
+    isBeta(): Promise<boolean>
+  }
   ARTemporaryAPIModule: {
     requestNotificationPermissions(): void
     fetchNotificationPermissions(callback: (error: any, result: PushAuthorizationStatus) => void): void
@@ -89,6 +92,9 @@ export const LegacyNativeModules: LegacyNativeModules =
   Platform.OS === "ios"
     ? LegacyNativeModulesIOS
     : {
+        ARAppStatusModule: {
+          isBeta: () => Promise.reject("isBeta has not been implemented on android"),
+        },
         ARTakeCameraPhotoModule: {
           errorCodes: {
             cameraNotAvailable: "cameraNotAvailable",
