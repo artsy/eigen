@@ -39,7 +39,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       }
     } catch (error) {
       if (typeof error === "string") {
-        Alert.alert(error)
+        Alert.alert("Try again", error)
       }
     }
   }
@@ -49,7 +49,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       await GlobalStore.actions.auth.authApple({ agreedToReceiveEmails: true })
     } catch (error) {
       if (typeof error === "string") {
-        Alert.alert(error)
+        Alert.alert("Try again", error)
       }
     }
   }

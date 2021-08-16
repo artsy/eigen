@@ -102,7 +102,7 @@ describe("AuthModel", () => {
       try {
         await GlobalStore.actions.auth.userExists({ email: "user@example.com" })
       } catch (e) {
-        error = e
+        error = e as Error
       }
 
       expect(error).not.toBe(null)
@@ -213,7 +213,7 @@ describe("AuthModel", () => {
         agreedToReceiveEmails: false,
       })
 
-      expect(result).toBe(true)
+      expect(result.success).toBe(true)
       expect(__globalStoreTestUtils__?.getCurrentState().auth.onboardingState).toBe("incomplete")
       expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe("my-access-token")
       expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessTokenExpiresIn).toBe("a billion years")
@@ -228,7 +228,7 @@ describe("AuthModel", () => {
         name: "full name",
         agreedToReceiveEmails: false,
       })
-      expect(result).toBe(false)
+      expect(result.success).toBe(false)
     })
   })
 
@@ -273,7 +273,7 @@ describe("AuthModel", () => {
     })
 
     it("fetches access token from facebook", async () => {
-      GlobalStore.actions.auth.signUp = jest.fn(() => true) as any
+      GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
 
       await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
 
@@ -293,7 +293,7 @@ describe("AuthModel", () => {
     })
 
     it("fetches profile info from facebook and signs up", async () => {
-      GlobalStore.actions.auth.signUp = jest.fn(() => true) as any
+      GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
 
       await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
 
@@ -307,7 +307,7 @@ describe("AuthModel", () => {
     })
 
     it("throws an error if sign up fails", async () => {
-      GlobalStore.actions.auth.signUp = jest.fn(() => false) as any
+      GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: false, message: "Could not sign up" })) as any
 
       const result = await GlobalStore.actions.auth
         .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
@@ -335,7 +335,7 @@ describe("AuthModel", () => {
 
       const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" }).catch((e) => e)
 
-      expect(result).toBe("Could not create user account")
+      expect(result).toBe("Could not log you in")
     })
   })
 
@@ -365,7 +365,7 @@ describe("AuthModel", () => {
     })
 
     it("fetches profile info from google and signs up", async () => {
-      GlobalStore.actions.auth.signUp = jest.fn(() => true) as any
+      GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
 
       await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signUp", agreedToReceiveEmails: false })
 
@@ -379,7 +379,7 @@ describe("AuthModel", () => {
     })
 
     it("throws an error if sign up fails", async () => {
-      GlobalStore.actions.auth.signUp = jest.fn(() => false) as any
+      GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: false, message: "Could not sign up" })) as any
 
       const result = await GlobalStore.actions.auth
         .authGoogle({ signInOrUp: "signUp", agreedToReceiveEmails: true })
@@ -407,7 +407,7 @@ describe("AuthModel", () => {
 
       const result = await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signIn" }).catch((e) => e)
 
-      expect(result).toBe("Could not create user account")
+      expect(result).toBe("Could not log you in")
     })
   })
 
@@ -423,7 +423,7 @@ describe("AuthModel", () => {
     })
 
     it("fetches profile info from apple and signs up", async () => {
-      GlobalStore.actions.auth.signUp = jest.fn(() => true) as any
+      GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
       ;(appleAuth.performRequest as jest.Mock).mockReturnValue({
         identityToken: "apple-id-token",
         user: "appleUID",
@@ -466,7 +466,7 @@ describe("AuthModel", () => {
 
       const result = await GlobalStore.actions.auth.authApple({}).catch((e) => e)
 
-      expect(result).toBe("Could not create user account")
+      expect(result).toBe("Could not log you in")
     })
   })
 })
