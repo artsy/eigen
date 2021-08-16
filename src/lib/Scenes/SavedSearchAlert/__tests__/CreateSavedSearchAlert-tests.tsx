@@ -3,7 +3,9 @@ import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpe
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
+import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
 import { CreateSavedSearchAlert, CreateSavedSearchAlertProps } from "../CreateSavedSearchAlert"
@@ -30,9 +32,11 @@ const defaultProps: CreateSavedSearchAlertProps = {
 
 describe("CreateSavedSearchAlert", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+  const notificationPermissions = mockFetchNotificationPermissions(false)
 
   beforeEach(() => {
     mockEnvironment.mockClear()
+    notificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Authorized))
   })
 
   it("renders without throwing an error", () => {
