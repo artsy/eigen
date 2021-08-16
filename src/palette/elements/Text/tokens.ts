@@ -21,7 +21,12 @@ export const TEXT_FONTS_V2 = {
   serif: "ReactNativeAGaramondPro-Regular",
 }
 export const TEXT_FONTS_V3 = {
-  sans: "Unica77LL-Regular",
+  sans: {
+    regular: "Unica77LL-Regular",
+    italic: "Unica77LL-Italic",
+    medium: "Unica77LL-Medium",
+    mediumItalic: "Unica77LL-MediumItalic",
+  },
 }
 export const TEXT_FONTS = TEXT_FONTS_V2
 

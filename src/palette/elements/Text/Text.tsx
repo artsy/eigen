@@ -1,10 +1,12 @@
 import { useTheme } from "palette"
-import { isThemeV3, TextSizeV3 } from "palette/Theme"
+import { isThemeV3, TextSizeV3, ThemeV3Type } from "palette/Theme"
 import React from "react"
+import { Platform } from "react-native"
 import { StyleProp, TextStyle } from "react-native"
 import { Text as RNText, TextProps as RNTextProps } from "react-native"
 import styled from "styled-components/native"
 import { color, ColorProps, space, SpaceProps, typography, TypographyProps } from "styled-system"
+import { useFontFamilyFor } from "./helpers"
 
 export type TextProps = {
   size?: TextSizeV3
@@ -24,28 +26,20 @@ export const Text: React.FC<TextProps> = ({
   ...rest
 }) => {
   const { theme } = useTheme()
+  const fontFamily = useFontFamilyFor({ italic, weight })
   if (!isThemeV3(theme)) {
     return null
   }
 
   const nativeTextStyle: StyleProp<TextStyle> = [
     {
-      fontFamily: theme.fonts.sans,
-      fontWeight: weightMap[weight],
+      fontFamily,
       ...theme.textTreatments[size],
     },
     caps ? { textTransform: "uppercase" } : {},
-    italic ? { fontStyle: "italic" } : {},
   ]
 
   return <InnerStyledText style={[nativeTextStyle, style]} children={children} {...rest} />
-}
-
-const weightMap: Record<Exclude<TextProps["weight"], undefined>, TextStyle["fontWeight"]> = {
-  // based on:
-  // https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight#common_weight_name_mapping
-  regular: "400",
-  medium: "500",
 }
 
 type InnerStyledTextProps = ColorProps & SpaceProps & TypographyProps
