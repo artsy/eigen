@@ -17,7 +17,7 @@ export const withThemeV2AndSwitcher: DecoratorFunction<React.ReactNode> = (story
   return (
     <Theme theme={theme}>
       <>
-        <Flex flexDirection="row" width="100%" justifyContent="center" mt={top} backgroundColor="gray">
+        <Flex flexDirection="row" width="100%" justifyContent="center" mt={top} backgroundColor="lightgray">
           <View>
             <Button title="v3 flag" color={allowV3 ? "green" : "red"} onPress={toggleAllowV3} />
           </View>
