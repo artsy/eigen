@@ -1,4 +1,4 @@
-import { ChevronIcon, Flex, Sans, SansProps, TextV3, Touchable, useColor } from "palette"
+import { ChevronIcon, Flex, Sans, SansProps, Touchable, useColor } from "palette"
 import React from "react"
 import { StyleProp, ViewStyle } from "react-native"
 
@@ -36,7 +36,7 @@ export const MenuItem: React.FC<{
         style={style}
       >
         <Flex flexDirection="row" mr="2">
-          <TextV3 size="md">{title}</TextV3>
+          <Sans size="3">{title}</Sans>
           {!!isBeta && (
             <Flex px={0.5} mx={1} backgroundColor={color("black10")}>
               <Sans size="3" color={color("black60")}>

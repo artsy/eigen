@@ -27,6 +27,26 @@ import {
 const TREATMENTS = WEB_TEXT_VARIANTS.small
 
 /**
+ * em-units don't exist on React Native so we convert it to a number
+ * which will be evaluated as px based on the given font-size.
+ */
+const calculateLetterSpacing = (fontSize: TextFontSize, letterSpacing: TextLetterSpacing): number => {
+  const tracking = parseFloat(TEXT_LETTER_SPACING[letterSpacing])
+  const size = parseInt(TEXT_FONT_SIZES[fontSize], 10)
+  return size * tracking
+}
+
+/**
+ * unitless line-heights don't exist on React Native so we convert it
+ * to a px string. Since unitless line-heights are valid/normal, styled-system
+ * won't convert it to px.
+ */
+const calculateLineHeight = (fontSize: TextFontSize, lineHeight: TextLineHeight): number => {
+  const size = parseInt(TEXT_FONT_SIZES[fontSize], 10)
+  return size * TEXT_LINE_HEIGHTS[lineHeight]
+}
+
+/**
  * iOS-specific typographic treatments
  */
 export const TEXT_VARIANTS = (Object.keys(TREATMENTS) as Array<keyof typeof TREATMENTS>).reduce((acc, name) => {
@@ -129,26 +149,6 @@ type TextTreatments = {
 }
 
 type TextVariant = keyof TextTreatments
-
-/**
- * em-units don't exist on React Native so we convert it to a number
- * which will be evaluated as px based on the given font-size.
- */
-const calculateLetterSpacing = (fontSize: TextFontSize, letterSpacing: TextLetterSpacing): number => {
-  const tracking = parseFloat(TEXT_LETTER_SPACING[letterSpacing])
-  const size = parseInt(TEXT_FONT_SIZES[fontSize], 10)
-  return size * tracking
-}
-
-/**
- * unitless line-heights don't exist on React Native so we convert it
- * to a px string. Since unitless line-heights are valid/normal, styled-system
- * won't convert it to px.
- */
-const calculateLineHeight = (fontSize: TextFontSize, lineHeight: TextLineHeight): number => {
-  const size = parseInt(TEXT_FONT_SIZES[fontSize], 10)
-  return size * TEXT_LINE_HEIGHTS[lineHeight]
-}
 
 interface TextTreatment extends Omit<WebTextTreatment, "lineHeight" | "letterSpacing"> {
   lineHeight: number
