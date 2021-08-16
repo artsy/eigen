@@ -151,15 +151,18 @@ export const TagArtworksPaginationContainer = createPaginationContainer(
           first: $count
           after: $cursor
           aggregations: [
-            MEDIUM
             LOCATION_CITY
-            PRICE_RANGE
-            MATERIALS_TERMS
-            PARTNER
             ARTIST_NATIONALITY
+            PRICE_RANGE
+            COLOR
+            DIMENSION_RANGE
+            PARTNER
             MAJOR_PERIOD
+            MEDIUM
+            PRICE_RANGE
             ARTIST
-            TOTAL
+            LOCATION_CITY
+            MATERIALS_TERMS
           ]
           input: $input
         ) @connection(key: "TagArtworksGrid_artworks") {
