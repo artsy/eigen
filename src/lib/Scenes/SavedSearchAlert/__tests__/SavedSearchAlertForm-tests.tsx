@@ -3,7 +3,9 @@ import { Aggregations, FilterData, FilterParamName } from "lib/Components/Artwor
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
+import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import React from "react"
 import { Alert } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
@@ -13,9 +15,11 @@ const spyAlert = jest.spyOn(Alert, "alert")
 
 describe("Saved search alert form", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+  const notificationPermissions = mockFetchNotificationPermissions(false)
 
   beforeEach(() => {
     mockEnvironment.mockClear()
+    notificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Authorized))
     ;(Alert.alert as jest.Mock).mockClear()
   })
 

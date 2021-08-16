@@ -11,10 +11,11 @@ interface FormProps extends SavedSearchArtistProp {
   pills: string[]
   savedSearchAlertId?: string
   onDeletePress?: () => void
+  onSubmitPress?: () => void
 }
 
 export const Form: React.FC<FormProps> = (props) => {
-  const { pills, artist, savedSearchAlertId, onDeletePress } = props
+  const { pills, artist, savedSearchAlertId, onDeletePress, onSubmitPress } = props
   const {
     isSubmitting,
     values,
@@ -22,7 +23,6 @@ export const Form: React.FC<FormProps> = (props) => {
     dirty,
     handleBlur,
     handleChange,
-    handleSubmit,
   } = useFormikContext<SavedSearchAlertFormValues>()
   const namePlaceholder = getNamePlaceholder(artist.name, pills)
 
@@ -77,7 +77,7 @@ export const Form: React.FC<FormProps> = (props) => {
         loading={isSubmitting}
         size="large"
         block
-        onPress={handleSubmit}
+        onPress={onSubmitPress}
       >
         Save Alert
       </Button>

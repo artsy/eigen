@@ -3,6 +3,7 @@ import { navigate } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
 import { PendingPushNotification } from "lib/store/PendingPushNotificationModel"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { Platform } from "react-native"
 import PushNotification from "react-native-push-notification"
 import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "../AdminMenu"
@@ -200,6 +201,22 @@ describe("Push Notification Tests", () => {
       Push.createLocalNotification(notification)
       expect(PushNotification.createChannel).toHaveBeenCalled()
       expect(PushNotification.localNotification).toHaveBeenCalled()
+    })
+  })
+
+  describe("Notification permission status", () => {
+    it("should return Authorized status when there are permissions to alert on Android", async () => {
+      mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: true }))
+      const status = await Push.getNotificationPermissionsStatus()
+
+      expect(status).toBe(Push.PushAuthorizationStatus.Authorized)
+    })
+
+    it("should return Denied status when there is no permission to alert on Android", async () => {
+      mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: true }))
+      const status = await Push.getNotificationPermissionsStatus()
+
+      expect(status).toBe(Push.PushAuthorizationStatus.Authorized)
     })
   })
 })
