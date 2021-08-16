@@ -207,7 +207,7 @@ describe("Filter modal navigation flow", () => {
       </ArtworkFiltersStoreProvider>
     )
     // the second row item takes users to the Medium navigation route
-    const instance = filterScreen.root.findAllByType(TouchableRow)[1]
+    const instance = filterScreen.root.findAllByType(TouchableRow)[2]
 
     act(() => instance.props.onPress())
 

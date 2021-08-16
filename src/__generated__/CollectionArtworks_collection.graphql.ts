@@ -101,6 +101,7 @@ return {
           "kind": "Literal",
           "name": "aggregations",
           "value": [
+            "ARTIST",
             "ARTIST_NATIONALITY",
             "COLOR",
             "DIMENSION_RANGE",
@@ -266,5 +267,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'fbc59216c6350aa9be647245eba3529e';
+(node as any).hash = '61ef255db8b87d06a7b9525acbb4e864';
 export default node;
