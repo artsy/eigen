@@ -118,7 +118,6 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
           <ImprovedSearchResultsContainer />
         ) : (
           <Scrollable>
-            <Text>New Search (Remove me)</Text>
             <RecentSearches />
             <Spacer mb={3} />
             {!isPad() && Platform.OS === "ios" ? <CityGuideCTA /> : null}
