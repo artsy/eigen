@@ -36,13 +36,13 @@ const Highlight = connectHighlight(({ highlight, attribute, hit, highlightProper
 
   return (
     <Sans size="3t" weight="regular">
-      {parsedHit.map(({ isHighlighted, value }) =>
+      {parsedHit.map(({ isHighlighted, value }, index) =>
         isHighlighted ? (
-          <Sans size="3t" weight="medium" style={{ padding: 0, margin: 0 }}>
+          <Sans key={index} size="3t" weight="medium" padding={0} margin={0}>
             {value}
           </Sans>
         ) : (
-          <Sans size="3t" weight="regular">
+          <Sans key={index} size="3t" weight="regular">
             {value}
           </Sans>
         )
