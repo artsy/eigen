@@ -4246,10 +4246,10 @@
     "@types/react-test-renderer" ">=16.9.0"
     react-error-boundary "^3.1.0"
 
-"@testing-library/react-native@7.1.0":
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-7.1.0.tgz#6b168aac21522c8a5175461b350336fd79612ac9"
-  integrity sha512-ljVM9KZqG7BT/NFN6CHzdF6MNmM28+k7MEybFJ7FW1wVrhpiY4+hU9ypZ+hboO+MG3KpE2aFBzP4od3gu+Zzdg==
+"@testing-library/react-native@7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-7.2.0.tgz#e5ec5b0974e4e5f525f8057563417d1e9f820d96"
+  integrity sha512-rDKzJjAAeGgyoJT0gFQiMsIL09chdWcwZyYx6WZHMgm2c5NDqY52hUuyTkzhqddMYWmSRklFphSg7B2HX+246Q==
   dependencies:
     pretty-format "^26.0.1"
 
