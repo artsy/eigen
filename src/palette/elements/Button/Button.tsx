@@ -189,9 +189,9 @@ const useStyleForVariantAndState = (
 
   if (state === DisplayState.Loading) {
     retval.backgroundColor = variant === "text" ? color("black10") : color("blue100")
-    retval.borderColor = "transparent"
+    retval.borderColor = "rgba(0, 0, 0, 0)"
     retval.borderWidth = 0
-    retval.textColor = "transparent"
+    retval.textColor = "rgba(0, 0, 0, 0)"
     return retval
   }
 
@@ -287,26 +287,21 @@ const useStyleForVariantAndState = (
       break
 
     case "text":
+      retval.backgroundColor = "rgba(0, 0, 0, 0)"
+      retval.borderColor = "rgba(0, 0, 0, 0)"
       switch (state) {
         case DisplayState.Enabled:
-          return {
-            backgroundColor: color("white100"),
-            borderColor: color("white100"),
-            textColor: color("black100"),
-          }
+          retval.textColor = color("black100")
+          break
         case DisplayState.Disabled:
-          return {
-            backgroundColor: color("white100"),
-            borderColor: color("white100"),
-            textColor: color("black30"),
-          }
+          retval.textColor = color("black30")
+          break
         case DisplayState.Pressed:
-          return {
-            backgroundColor: color("black10"),
-            borderColor: color("black10"),
-            textColor: color("blue100"),
-            textDecorationLine: "underline",
-          }
+          retval.backgroundColor = color("black10")
+          retval.borderColor = color("black10")
+          retval.textColor = color("blue100")
+          retval.textDecorationLine = "underline"
+          break
         default:
           assertNever(state)
       }

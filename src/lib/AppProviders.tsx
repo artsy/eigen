@@ -39,7 +39,11 @@ export const AppProviders = ({ children }: { children: ReactNode }) => (
               <PopoverMessageProvider>
                 <_FancyModalPageWrapper>
                   <ToastProvider>
-                    <V3Toggle>{children}</V3Toggle>
+                    <V3Toggle>
+                      {/*  */}
+                      {children}
+                      {/*  */}
+                    </V3Toggle>
                   </ToastProvider>
                 </_FancyModalPageWrapper>
               </PopoverMessageProvider>

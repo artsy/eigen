@@ -20,18 +20,22 @@ export const Text: React.FC<TextProps> = React.forwardRef<RNText, TextProps>(
     const { theme } = useTheme()
     const fontFamily = useFontFamilyFor({ italic, weight })
     if (!isThemeV3(theme)) {
+      console.warn("Text is missing because null is returned. Wrap your Text with ThemeV3.")
       return null
     }
 
-    const nativeTextStyle: StyleProp<TextStyle> = [
-      {
-        fontFamily,
-        ...theme.textTreatments[size],
-      },
-      caps ? { textTransform: "uppercase" } : {},
-    ]
+    const nativeTextStyle: StyleProp<TextStyle> = [caps ? { textTransform: "uppercase" } : {}]
 
-    return <InnerStyledText ref={ref} style={[nativeTextStyle, style]} children={children} {...rest} />
+    return (
+      <InnerStyledText
+        ref={ref}
+        style={[...nativeTextStyle, style]}
+        fontFamily={fontFamily}
+        {...theme.textTreatments[size]}
+        children={children}
+        {...rest}
+      />
+    )
   }
 )
 
