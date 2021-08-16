@@ -16,7 +16,7 @@ export enum FilterDisplayName {
   materialsTerms = "Material",
   medium = "Medium",
   organizations = "Auction House",
-  partnerIDs = "Galleries and Institutions",
+  partnerIDs = "Galleries & Institutions",
   priceRange = "Price",
   size = "Size",
   sizes = "Size",
