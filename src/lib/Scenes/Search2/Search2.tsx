@@ -33,26 +33,20 @@ const ImprovedSearchInput: React.FC<ImprovedSearchInputProps> = ({ refine }) => 
 
 const Highlight = connectHighlight(({ highlight, attribute, hit, highlightProperty = "_highlightResult" }) => {
   const parsedHit = highlight({ attribute, hit, highlightProperty })
-  console.warn(parsedHit)
-  const highligtedHit = parsedHit.map((part) => {
-    if (part.isHighlighted) {
-      return (
-        <Sans size="3t" weight="medium" style={{ padding: 0, margin: 0 }}>
-          {part.value}
-        </Sans>
-      )
-    }
-
-    return (
-      <Sans size="3t" weight="regular">
-        {part.value}
-      </Sans>
-    )
-  })
 
   return (
     <Sans size="3t" weight="regular">
-      {highligtedHit}
+      {parsedHit.map(({ isHighlighted, value }) =>
+        isHighlighted ? (
+          <Sans size="3t" weight="medium" style={{ padding: 0, margin: 0 }}>
+            {value}
+          </Sans>
+        ) : (
+          <Sans size="3t" weight="regular">
+            {value}
+          </Sans>
+        )
+      )}
     </Sans>
   )
 })
