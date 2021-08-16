@@ -4,10 +4,11 @@ import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SearchInput } from "lib/Components/SearchInput"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
-import { Flex, Sans, Spacer, Text, Touchable, useColor } from "palette"
+import { Flex, Sans, Spacer, Touchable, useColor } from "palette"
 import React, { useRef, useState } from "react"
 import { connectHighlight, connectInfiniteHits, connectSearchBox, InstantSearch } from "react-instantsearch-native"
 import { FlatList, Platform, ScrollView } from "react-native"
@@ -62,7 +63,7 @@ const ImprovedSearchResults: React.FC<{ hits: any }> = ({ hits }) => {
       keyExtractor={(item) => item.objectID}
       renderItem={({ item }) => (
         <Flex mb={2}>
-          <Touchable onPress={() => null}>
+          <Touchable onPress={() => navigate(`/artist/${item.slug}`, { passProps: { initialTab: "Artworks" } })}>
             <Flex flexDirection="row" alignItems="center">
               <OpaqueImageView
                 imageURL={item.image_url}
