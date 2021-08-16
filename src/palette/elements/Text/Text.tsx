@@ -15,31 +15,25 @@ export type TextProps = {
 } & RNTextProps &
   InnerStyledTextProps
 
-export const Text: React.FC<TextProps> = ({
-  size = "sm",
-  italic = false,
-  caps,
-  weight = "regular",
-  style,
-  children,
-  ...rest
-}) => {
-  const { theme } = useTheme()
-  const fontFamily = useFontFamilyFor({ italic, weight })
-  if (!isThemeV3(theme)) {
-    return null
+export const Text: React.FC<TextProps> = React.forwardRef<RNText, TextProps>(
+  ({ size = "sm", italic = false, caps, weight = "regular", style, children, ...rest }, ref) => {
+    const { theme } = useTheme()
+    const fontFamily = useFontFamilyFor({ italic, weight })
+    if (!isThemeV3(theme)) {
+      return null
+    }
+
+    const nativeTextStyle: StyleProp<TextStyle> = [
+      {
+        fontFamily,
+        ...theme.textTreatments[size],
+      },
+      caps ? { textTransform: "uppercase" } : {},
+    ]
+
+    return <InnerStyledText ref={ref} style={[nativeTextStyle, style]} children={children} {...rest} />
   }
-
-  const nativeTextStyle: StyleProp<TextStyle> = [
-    {
-      fontFamily,
-      ...theme.textTreatments[size],
-    },
-    caps ? { textTransform: "uppercase" } : {},
-  ]
-
-  return <InnerStyledText style={[nativeTextStyle, style]} children={children} {...rest} />
-}
+)
 
 type InnerStyledTextProps = ColorProps & SpaceProps & TypographyProps
 const InnerStyledText = styled(RNText)<InnerStyledTextProps>`
