@@ -15,7 +15,6 @@ import { FlatList, Platform, ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components"
 import { CityGuideCTA } from "../Search/CityGuideCTA"
-import { RecentSearches } from "../Search/RecentSearches"
 
 interface ImprovedSearchInputProps {
   refine: (value: string) => any
@@ -119,7 +118,6 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
           <ImprovedSearchResultsContainer />
         ) : (
           <Scrollable>
-            <RecentSearches />
             <Spacer mb={3} />
             {!isPad() && Platform.OS === "ios" ? <CityGuideCTA /> : null}
             <Spacer mb="40px" />
