@@ -3,6 +3,7 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { isArtsyEmail } from "lib/utils/general"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
+import { capitalize } from "lodash"
 import { stringify } from "qs"
 import { Alert, Linking, Platform } from "react-native"
 import Config from "react-native-config"
@@ -11,6 +12,17 @@ import PushNotification from "react-native-push-notification"
 import { getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
+
+const afterSocialAuthLogin = (res: any, reject: (reason?: any) => void, provider: "facebook" | "apple" | "google") => {
+  const providerName = capitalize(provider)
+  if (res.error_description) {
+    if (res.error_description.includes("no account linked to oauth token")) {
+      reject(`We could not find a user account linked to your ${providerName} account, try signing up`)
+    } else {
+      reject("Could not log you in")
+    }
+  }
+}
 
 export interface AuthModel {
   // State
@@ -101,7 +113,7 @@ export interface AuthModel {
       },
     {},
     GlobalStoreModel,
-    Promise<boolean>
+    Promise<{ success: boolean; message?: string }>
   >
   authFacebook: Thunk<
     AuthModel,
@@ -369,9 +381,29 @@ export const getAuthModel = (): AuthModel => ({
         actions.setState({
           onboardingState: "incomplete",
         })
-        return true
+        return { success: true }
       }
-      return false
+
+      const resultJson = await result.json()
+      let message = ""
+      const providerName = capitalize(oauthProvider)
+      if (resultJson?.error === "User Already Exists") {
+        message =
+          `${providerName} account previously linked to Artsy. ` +
+          "Log in to your Artsy account via email and password and link " +
+          `${providerName} in your settings instead.`
+      } else if (resultJson?.error === "Another Account Already Linked") {
+        message =
+          `${providerName} account already linked to another Artsy account. ` +
+          `Try logging out and back in with ${providerName}. Then consider ` +
+          `deleting that user account and re-linking ${providerName}. `
+      } else if (resultJson.message && resultJson.message.match("Unauthorized source IP address")) {
+        message = `Your IP address was blocked by ${providerName}.`
+      } else {
+        message = "Failed to sign up"
+      }
+
+      return { success: false, message }
     }
   ),
   authFacebook: thunk(async (actions, options) => {
@@ -409,7 +441,7 @@ export const getAuthModel = (): AuthModel => ({
             agreedToReceiveEmails: options.agreedToReceiveEmails,
           })
 
-          resultGravitySignUp ? resolve(true) : reject("Could not sign up")
+          resultGravitySignUp.success ? resolve(true) : reject(resultGravitySignUp.message)
         }
 
         if (options.signInOrUp === "signIn") {
@@ -446,10 +478,7 @@ export const getAuthModel = (): AuthModel => ({
             resultGravitySignIn ? resolve(true) : reject("Could not log in")
           } else {
             const res = await resultGravityAccessToken.json()
-
-            if (res.error_description) {
-              reject("Could not create user account")
-            }
+            afterSocialAuthLogin(res, reject, "facebook")
           }
         }
       }
@@ -479,17 +508,17 @@ export const getAuthModel = (): AuthModel => ({
       const accessToken = (await GoogleSignin.getTokens()).accessToken
 
       if (options.signInOrUp === "signUp") {
-        const resultGravitySignUp =
-          userInfo.user.name &&
-          (await actions.signUp({
-            email: userInfo.user.email,
-            name: userInfo.user.name,
-            accessToken,
-            oauthProvider: "google",
-            agreedToReceiveEmails: options.agreedToReceiveEmails,
-          }))
+        const resultGravitySignUp = userInfo.user.name
+          ? await actions.signUp({
+              email: userInfo.user.email,
+              name: userInfo.user.name,
+              accessToken,
+              oauthProvider: "google",
+              agreedToReceiveEmails: options.agreedToReceiveEmails,
+            })
+          : { success: false }
 
-        resultGravitySignUp ? resolve(true) : reject("Could not sign up")
+        resultGravitySignUp.success ? resolve(true) : reject(resultGravitySignUp.message)
       }
 
       if (options.signInOrUp === "signIn") {
@@ -526,9 +555,7 @@ export const getAuthModel = (): AuthModel => ({
           resultGravitySignIn ? resolve(true) : reject("Could not log in")
         } else {
           const res = await resultGravityAccessToken.json()
-          if (res.error_description) {
-            reject(`Could not create user account`)
-          }
+          afterSocialAuthLogin(res, reject, "google")
         }
       }
     })
@@ -554,18 +581,18 @@ export const getAuthModel = (): AuthModel => ({
         const firstName = userInfo.fullName?.givenName ? userInfo.fullName.givenName : ""
         const lastName = userInfo.fullName?.familyName ? userInfo.fullName.familyName : ""
 
-        const resultGravitySignUp =
-          userInfo.email &&
-          (await actions.signUp({
-            email: userInfo.email,
-            name: `${firstName} ${lastName}`.trim(),
-            appleUID,
-            idToken,
-            oauthProvider: "apple",
-            agreedToReceiveEmails: !!agreedToReceiveEmails,
-          }))
+        const resultGravitySignUp = userInfo.email
+          ? await actions.signUp({
+              email: userInfo.email,
+              name: `${firstName} ${lastName}`.trim(),
+              appleUID,
+              idToken,
+              oauthProvider: "apple",
+              agreedToReceiveEmails: !!agreedToReceiveEmails,
+            })
+          : { success: false }
 
-        resultGravitySignUp ? resolve(true) : (signInOrUp = "signIn")
+        resultGravitySignUp.success ? resolve(true) : (signInOrUp = "signIn")
       }
 
       if (signInOrUp === "signIn") {
@@ -603,9 +630,7 @@ export const getAuthModel = (): AuthModel => ({
           resultGravitySignIn ? resolve(true) : reject("Could not log in")
         } else {
           const res = await resultGravityAccessToken.json()
-          if (res.error_description) {
-            reject("Could not create user account")
-          }
+          afterSocialAuthLogin(res, reject, "apple")
         }
       }
     })
