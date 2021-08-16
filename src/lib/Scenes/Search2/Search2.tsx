@@ -38,7 +38,7 @@ const Highlight = connectHighlight(({ highlight, attribute, hit, highlightProper
     <Sans size="3t" weight="regular">
       {parsedHit.map(({ isHighlighted, value }, index) =>
         isHighlighted ? (
-          <Sans key={index} size="3t" weight="medium" padding={0} margin={0}>
+          <Sans key={index} color="blue100" size="3t" weight="medium" padding={0} margin={0}>
             {value}
           </Sans>
         ) : (
