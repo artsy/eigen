@@ -130,10 +130,13 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   }, [appliedFilters])
 
   useEffect(() => {
-    setAggregationsAction(artworks?.aggregations)
+    setAggregationsAction(artist.aggregations?.aggregations)
 
-    if (searchCriteria && artworks?.aggregations) {
-      const params = convertSavedSearchCriteriaToFilterParams(searchCriteria, artworks.aggregations as Aggregations)
+    if (searchCriteria && artist.aggregations?.aggregations) {
+      const params = convertSavedSearchCriteriaToFilterParams(
+        searchCriteria,
+        artist.aggregations.aggregations as Aggregations
+      )
       const sortFilterItem = ORDERED_ARTWORK_SORTS.find((sortEntity) => sortEntity.paramValue === "-published_at")
 
       setInitialFilterStateAction([...params, sortFilterItem!])
@@ -244,10 +247,8 @@ export default createPaginationContainer(
         slug
         name
         internalID
-        artworks: filterArtworksConnection(
-          first: $count
-          after: $cursor
-          input: $input
+        aggregations: filterArtworksConnection(
+          first: 0
           aggregations: [
             COLOR
             DIMENSION_RANGE
@@ -258,7 +259,7 @@ export default createPaginationContainer(
             PARTNER
             PRICE_RANGE
           ]
-        ) @connection(key: "ArtistArtworksGrid_artworks") {
+        ) {
           aggregations {
             slice
             counts {
@@ -267,6 +268,9 @@ export default createPaginationContainer(
               value
             }
           }
+        }
+        artworks: filterArtworksConnection(first: $count, after: $cursor, input: $input)
+          @connection(key: "ArtistArtworksGrid_artworks") {
           edges {
             node {
               id
