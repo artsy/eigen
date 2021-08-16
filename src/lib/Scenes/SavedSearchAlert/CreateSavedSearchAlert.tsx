@@ -28,7 +28,11 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
     <ArtsyKeyboardAvoidingView>
       <FancyModal visible={visible} fullScreen>
         <FancyModalHeader useXButton hideBottomDivider onLeftButtonPress={onClosePress} />
-        <ScrollView contentContainerStyle={{ paddingHorizontal: space(2) }}>
+        <ScrollView
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{ paddingHorizontal: space(2) }}
+        >
           <Sans size="8" mb={4}>
             Create an Alert
           </Sans>
