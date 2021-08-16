@@ -9,6 +9,7 @@ import LinearGradient from "react-native-linear-gradient"
 import Animated, { Easing } from "react-native-reanimated"
 import backgoundImage from "../../../../images/WelcomeImage.png"
 import { ArtsyMarkWhiteIcon } from "../../../palette/svgs/ArtsyMarkWhiteIcon"
+import { useFeatureFlag } from "../../store/GlobalStore"
 import { OnboardingNavigationStack } from "./Onboarding"
 
 interface OnboardingWelcomeProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingWelcome"> {}
@@ -21,6 +22,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   const { color, space } = useTheme()
   const { width: screenWidth } = useScreenDimensions()
   const { safeAreaInsets } = useScreenDimensions()
+  const AREnableNewOnboardingFlow = useFeatureFlag("AREnableNewOnboardingFlow")
   // useScreenDimensions() returns the window height instead of the screen
   // We need the entire screen height here because the background image should fill
   // the entire screen including drawing below the navigation bar
@@ -129,7 +131,11 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
         </Text>
         <Spacer mt={2} />
         <Touchable
-          onPress={() => navigation.navigate("OnboardingCreateAccount")}
+          onPress={() =>
+            AREnableNewOnboardingFlow
+              ? navigation.navigate("OnboardingCreateAccount")
+              : navigation.navigate("OnboardingCreateAccountWithEmail")
+          }
           underlayColor={color("black5")}
           haptic="impactMedium"
           style={{
@@ -146,7 +152,11 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
         </Touchable>
 
         <Touchable
-          onPress={() => navigation.navigate("OnboardingLogin")}
+          onPress={() =>
+            AREnableNewOnboardingFlow
+              ? navigation.navigate("OnboardingLogin")
+              : navigation.navigate("OnboardingLoginWithEmail")
+          }
           underlayColor="transparent"
           haptic="impactMedium"
           style={{ justifyContent: "center", alignItems: "center", height: BUTTON_HEIGHT }}
