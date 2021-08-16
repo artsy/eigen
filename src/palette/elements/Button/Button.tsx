@@ -69,8 +69,6 @@ export const Button: React.FC<ButtonProps> = ({
   testOnly_state,
   ...rest
 }) => {
-  const color = useColor()
-
   const [displayState, setDisplayState] = useState(
     testOnly_state ?? (loading ? DisplayState.Loading : disabled ? DisplayState.Disabled : DisplayState.Enabled)
   )
