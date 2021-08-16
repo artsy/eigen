@@ -227,9 +227,6 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
         filterOptionToDisplayConfigMap.organizations,
       ]
 
-    case FilterModalMode.Gene:
-      return [filterOptionToDisplayConfigMap.sort]
-
     default:
       return [
         filterOptionToDisplayConfigMap.sort,
@@ -270,7 +267,10 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
       sortOrder = GalleryShowFiltersSorted
       break
     case FilterModalMode.Gene:
-      sortOrder = ["sort", "medium", "additionalGeneIDs", "priceRange"]
+      sortOrder = TagAndGeneFiltersSorted
+      break
+    case FilterModalMode.Tag:
+      sortOrder = TagAndGeneFiltersSorted
       break
   }
 
@@ -558,6 +558,22 @@ const GalleryShowFiltersSorted: FilterScreen[] = [
   "artistNationalities",
   "majorPeriods",
   "colors",
+]
+
+const TagAndGeneFiltersSorted: FilterScreen[] = [
+  "sort",
+  "artistIDs",
+  "attributionClass",
+  "additionalGeneIDs",
+  "priceRange",
+  "dimensionRange",
+  "waysToBuy",
+  "materialsTerms",
+  "artistNationalities",
+  "locationCities",
+  "majorPeriods",
+  "colors",
+  "partnerIDs",
 ]
 
 const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories", "sizes", "year", "organizations"]
