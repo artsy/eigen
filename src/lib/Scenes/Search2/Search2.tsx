@@ -49,7 +49,7 @@ const Highlight = connectHighlight(({ highlight, attribute, hit, highlightProper
   )
 })
 
-interface Artist {
+interface ArtistSearchResult {
   objectID: string
   name_exact: string
   name: string
@@ -66,10 +66,10 @@ interface Artist {
   slug: string
 }
 
-const SearchResults: React.FC<{ hits: Artist[] }> = ({ hits }) => {
-  const flatListRef = useRef<FlatList<Artist>>(null)
+const SearchResults: React.FC<{ hits: ArtistSearchResult[] }> = ({ hits }) => {
+  const flatListRef = useRef<FlatList<ArtistSearchResult>>(null)
   return (
-    <AboveTheFoldFlatList<Artist>
+    <AboveTheFoldFlatList<ArtistSearchResult>
       listRef={flatListRef}
       initialNumToRender={isPad() ? 24 : 12}
       style={{ flex: 1, padding: 20 }}
