@@ -3,6 +3,7 @@ import { EditSavedSearchAlert_artworksConnection } from "__generated__/EditSaved
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
 import { SavedSearchAlertQueryResponse } from "__generated__/SavedSearchAlertQuery.graphql"
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerCreateSavedSearchMutation.graphql"
+import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { Aggregations } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
@@ -43,19 +44,25 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
   }
 
   return (
-    <PageWithSimpleHeader title="Edit your Alert">
-      <ScrollView contentContainerStyle={{ padding: space(2) }}>
-        <SavedSearchAlertForm
-          initialValues={{ name: userAlertSettings?.name ?? "" }}
-          artist={{ name: artist.name!, id: artist.internalID }}
-          filters={filters}
-          aggregations={aggregations}
-          savedSearchAlertId={savedSearchAlertId}
-          onComplete={onComplete}
-          onDeleteComplete={onComplete}
-        />
-      </ScrollView>
-    </PageWithSimpleHeader>
+    <ArtsyKeyboardAvoidingView>
+      <PageWithSimpleHeader title="Edit your Alert">
+        <ScrollView
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{ padding: space(2) }}
+        >
+          <SavedSearchAlertForm
+            initialValues={{ name: userAlertSettings?.name ?? "" }}
+            artist={{ name: artist.name!, id: artist.internalID }}
+            filters={filters}
+            aggregations={aggregations}
+            savedSearchAlertId={savedSearchAlertId}
+            onComplete={onComplete}
+            onDeleteComplete={onComplete}
+          />
+        </ScrollView>
+      </PageWithSimpleHeader>
+    </ArtsyKeyboardAvoidingView>
   )
 }
 
