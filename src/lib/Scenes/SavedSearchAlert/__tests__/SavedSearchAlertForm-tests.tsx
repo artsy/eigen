@@ -7,12 +7,9 @@ import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificatio
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import React from "react"
-import { Alert } from "react-native"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { SavedSearchAlertForm, SavedSearchAlertFormProps, tracks } from "../SavedSearchAlertForm"
-
-const spyAlert = jest.spyOn(Alert, "alert")
 
 describe("Saved search alert form", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
@@ -22,7 +19,6 @@ describe("Saved search alert form", () => {
   beforeEach(() => {
     mockEnvironment.mockClear()
     notificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Authorized))
-    ;(Alert.alert as jest.Mock).mockClear()
     ;(useTracking as jest.Mock).mockImplementation(() => {
       return {
         trackEvent,
@@ -158,25 +154,7 @@ describe("Saved search alert form", () => {
     )
 
     fireEvent.press(getByTestId("delete-alert-button"))
-
-    /**
-     * Click confirm button in Alert
-     *
-     * The first call of the function
-     * calls[0] === [
-     *  [
-     *    'Title', === calls[0][0]
-     *    'Description' === calls[0][1],
-     *    [
-     *      ['cancel button'], === calls[0][2][0]
-     *      ['confirm button'] === calls[0][2][1]
-     *    ]
-     *  ]
-     * ]
-     */
-
-    // @ts-ignore
-    spyAlert.mock.calls[0][2][1].onPress()
+    fireEvent.press(getByTestId("dialog-primary-action-button"))
 
     expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(
       "deleteSavedSearchAlertMutation"
@@ -195,9 +173,7 @@ describe("Saved search alert form", () => {
     )
 
     fireEvent.press(getByTestId("delete-alert-button"))
-
-    // @ts-ignore
-    spyAlert.mock.calls[0][2][1].onPress()
+    fireEvent.press(getByTestId("dialog-primary-action-button"))
 
     await waitFor(() => {
       mockEnvironmentPayload(mockEnvironment)
