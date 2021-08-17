@@ -3,12 +3,12 @@ import { Search2Query, Search2QueryResponse } from "__generated__/Search2Query.g
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { SearchInput } from "lib/Components/SearchInput"
+import { SearchInput as SearchBox } from "lib/Components/SearchInput"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
-import { Flex, Sans, Spacer, Touchable, useColor } from "palette"
+import { Flex, Spacer, Text, Touchable, useColor } from "palette"
 import React, { useRef, useState } from "react"
 import { connectHighlight, connectInfiniteHits, connectSearchBox, InstantSearch } from "react-instantsearch-native"
 import { FlatList, Platform, ScrollView } from "react-native"
@@ -16,13 +16,13 @@ import { graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components"
 import { CityGuideCTA } from "../Search/CityGuideCTA"
 
-interface ImprovedSearchInputProps {
+interface SearchInputProps {
   refine: (value: string) => any
 }
 
-const ImprovedSearchInput: React.FC<ImprovedSearchInputProps> = ({ refine }) => {
+const SearchInput: React.FC<SearchInputProps> = ({ refine }) => {
   return (
-    <SearchInput
+    <SearchBox
       placeholder="Search artists"
       onChangeText={(queryText) => {
         refine(queryText)
@@ -35,26 +35,41 @@ const Highlight = connectHighlight(({ highlight, attribute, hit, highlightProper
   const parsedHit = highlight({ attribute, hit, highlightProperty })
 
   return (
-    <Sans size="3t" weight="regular">
+    <Text>
       {parsedHit.map(({ isHighlighted, value }, index) =>
         isHighlighted ? (
-          <Sans key={index} color="blue100" size="3t" weight="medium" padding={0} margin={0}>
+          <Text key={index} color="blue100" fontWeight="600" padding={0} margin={0}>
             {value}
-          </Sans>
+          </Text>
         ) : (
-          <Sans key={index} size="3t" weight="regular">
-            {value}
-          </Sans>
+          <Text key={index}>{value}</Text>
         )
       )}
-    </Sans>
+    </Text>
   )
 })
 
-const ImprovedSearchResults: React.FC<{ hits: any }> = ({ hits }) => {
-  const flatListRef = useRef<FlatList<any>>(null)
+interface Artist {
+  objectID: string
+  name_exact: string
+  name: string
+  alternate_names: string
+  career_stage: number
+  follow_count: number
+  search_boost: number
+  nationality: string
+  visible_to_public: boolean
+  fair_ids: string[]
+  partner_ids: string[]
+  image_url: string
+  birth_year: string
+  slug: string
+}
+
+const SearchResults: React.FC<{ hits: Artist[] }> = ({ hits }) => {
+  const flatListRef = useRef<FlatList<Artist>>(null)
   return (
-    <AboveTheFoldFlatList<any>
+    <AboveTheFoldFlatList<Artist>
       listRef={flatListRef}
       initialNumToRender={isPad() ? 24 : 12}
       style={{ flex: 1, padding: 20 }}
@@ -82,8 +97,8 @@ const ImprovedSearchResults: React.FC<{ hits: any }> = ({ hits }) => {
   )
 }
 
-const ImprovedSearchInputContainer = connectSearchBox(ImprovedSearchInput)
-const ImprovedSearchResultsContainer = connectInfiniteHits(ImprovedSearchResults)
+const SearchInputContainer = connectSearchBox(SearchInput)
+const SearchResultsContainer = connectInfiniteHits(SearchResults)
 
 interface SearchState {
   query?: string
@@ -112,10 +127,10 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
         onSearchStateChange={setSearchState}
       >
         <Flex p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
-          <ImprovedSearchInputContainer />
+          <SearchInputContainer />
         </Flex>
         {!!searchState?.query?.length && searchState?.query?.length >= 2 ? (
-          <ImprovedSearchResultsContainer />
+          <SearchResultsContainer />
         ) : (
           <Scrollable>
             <Spacer mb={3} />
