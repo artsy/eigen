@@ -214,9 +214,6 @@ type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof
 
 function getNativeModules(): OurNativeModules {
   return {
-    ARAppStatusModule: {
-      isBeta: jest.fn(),
-    },
     ARTakeCameraPhotoModule: {
       errorCodes: {
         cameraNotAvailable: "cameraNotAvailable",
