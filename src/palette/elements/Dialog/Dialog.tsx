@@ -1,6 +1,6 @@
 import { useTheme } from "palette/Theme"
 import React, { useEffect, useRef, useState } from "react"
-import { Animated, Modal, ModalProps, StyleSheet } from "react-native"
+import { Animated, Modal, ModalProps, StyleSheet, TouchableWithoutFeedback } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Button } from "../Button/Button"
@@ -18,11 +18,11 @@ interface DialogProps extends Omit<ModalProps, "animationType" | "transparent" |
   detail?: string
   primaryCta: DialogAction
   secondaryCta?: DialogAction
-  onBackgroundPressed?: () => void
+  onBackgroundPress?: () => void
 }
 
 export const Dialog = (props: DialogProps) => {
-  const { isVisible, title, detail, primaryCta, secondaryCta, onBackgroundPressed, ...other } = props
+  const { isVisible, title, detail, primaryCta, secondaryCta, onBackgroundPress, ...other } = props
   const [visible, setVisible] = useState(isVisible)
   const { space, color } = useTheme()
   const value = useRef(new Animated.Value(Number(isVisible))).current
@@ -58,12 +58,23 @@ export const Dialog = (props: DialogProps) => {
     }
   }, [isVisible])
 
+  const backdrop = (
+    <Animated.View
+      style={[StyleSheet.absoluteFillObject, { opacity: value, backgroundColor: "rgba(194,194,194,0.5)" }]}
+    />
+  )
+
   return (
     <Modal {...other} visible={visible} statusBarTranslucent transparent animationType="none">
-      <Animated.View
-        style={[StyleSheet.absoluteFillObject, { opacity: value, backgroundColor: "rgba(194,194,194,0.5)" }]}
-      />
+      {!!onBackgroundPress ? (
+        <TouchableWithoutFeedback testID="dialog-backdrop" onPress={onBackgroundPress}>
+          {backdrop}
+        </TouchableWithoutFeedback>
+      ) : (
+        backdrop
+      )}
       <SafeAreaView
+        pointerEvents="box-none"
         style={{
           flex: 1,
           justifyContent: "center",

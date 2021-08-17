@@ -81,4 +81,23 @@ describe("Dialog", () => {
     expect(secondaryActionMock).toHaveBeenCalled()
     expect(extractText(secondaryButton)).toContain("Secondary Action Button")
   })
+
+  it("should call onBackgroundPress when backdrop is pressed", () => {
+    const onBackgroundPressMock = jest.fn()
+    const { getByTestId } = renderWithWrappersTL(
+      <Dialog
+        title="title"
+        isVisible={true}
+        onBackgroundPress={onBackgroundPressMock}
+        primaryCta={{
+          text: "Primary Action Button",
+          onPress: jest.fn(),
+        }}
+      />
+    )
+
+    fireEvent.press(getByTestId("dialog-backdrop"))
+
+    expect(onBackgroundPressMock).toHaveBeenCalled()
+  })
 })
