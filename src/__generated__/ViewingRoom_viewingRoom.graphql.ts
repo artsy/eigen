@@ -16,6 +16,9 @@ export type ViewingRoom_viewingRoom = {
     readonly slug: string;
     readonly status: string;
     readonly title: string;
+    readonly artworks: {
+        readonly totalCount: number | null;
+    } | null;
     readonly " $fragmentRefs": FragmentRefs<"ViewingRoomViewWorksButton_viewingRoom" | "ViewingRoomSubsections_viewingRoom" | "ViewingRoomArtworkRail_viewingRoom" | "ViewingRoomHeader_viewingRoom">;
     readonly " $refType": "ViewingRoom_viewingRoom";
 };
@@ -108,6 +111,30 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
+      "alias": "artworks",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 10
+        }
+      ],
+      "concreteType": "ArtworkConnection",
+      "kind": "LinkedField",
+      "name": "artworksConnection",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "totalCount",
+          "storageKey": null
+        }
+      ],
+      "storageKey": "artworksConnection(first:10)"
+    },
+    {
       "args": null,
       "kind": "FragmentSpread",
       "name": "ViewingRoomViewWorksButton_viewingRoom"
@@ -131,5 +158,5 @@ const node: ReaderFragment = {
   "type": "ViewingRoom",
   "abstractKey": null
 };
-(node as any).hash = 'df57f83b52fa8a39e1e6cdfd48be20fb';
+(node as any).hash = '2868de706326992d349d98839e9e0e85';
 export default node;
