@@ -113,7 +113,7 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
         }}
         cacheConfig={props.cacheConfig || null}
       />
-      {(renderBelowTheFold || aboveArgs?.props) && false && (
+      {(renderBelowTheFold || aboveArgs?.props) && (
         <QueryRenderer
           environment={props.environment}
           // tslint:disable-next-line:relay-operation-generics
