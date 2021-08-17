@@ -2,12 +2,12 @@ import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import { RegistrationResult, RegistrationStatus } from "lib/Components/Bidding/Screens/RegistrationResult"
 import { Modal } from "lib/Components/Modal"
+import { LinkText } from "lib/Components/Text/LinkText"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-// FIXME: Uncomment when x'd test is reenabled
-// import { LinkText } from "../../../Text/LinkText"
 import { mockTimezone } from "lib/tests/mockTimezone"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button, Sans, Text } from "palette"
+import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
@@ -15,7 +15,6 @@ import relay from "react-relay"
 import stripe from "tipsi-stripe"
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { BidInfoRow } from "../../Components/BidInfoRow"
-import { Checkbox } from "../../Components/Checkbox"
 import { Address } from "../../types"
 import { BillingAddress } from "../BillingAddress"
 import { CreditCardForm } from "../CreditCardForm"
@@ -33,10 +32,8 @@ jest.mock("tipsi-stripe", () => ({
   createTokenWithCard: jest.fn(),
 }))
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-let nextStep
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const mockNavigator = { push: (route) => (nextStep = route), pop: () => null }
+let nextStep: any
+const mockNavigator = { push: (route: any) => (nextStep = route), pop: () => null }
 jest.useFakeTimers()
 const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager.postNotificationName
 
@@ -93,10 +90,8 @@ it("shows the billing address that the user typed in the billing address form", 
     </BiddingThemeProvider>
   ).root.findAllByType(BidInfoRow)[1]
   billingAddressRow.instance.props.onPress()
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   expect(nextStep.component).toEqual(BillingAddress)
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   nextStep.passProps.onSubmit(billingAddress)
 
   expect(billingAddressRow.findAllByType(Text)[1].props.children).toEqual("401 Broadway 25th floor New York NY")
@@ -111,7 +106,6 @@ it("shows the credit card form when the user tap the edit text in the credit car
 
   creditcardRow.instance.props.onPress()
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   expect(nextStep.component).toEqual(CreditCardForm)
 })
 
@@ -272,7 +266,7 @@ describe("when pressing register button", () => {
     const yourMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
     const creditCardRow = component.root.findAllByType(TouchableWithoutFeedback)[1]
     const billingAddressRow = component.root.findAllByType(TouchableWithoutFeedback)[2]
-    // const conditionsOfSaleLink = component.root.findByType(LinkText)
+    const conditionsOfSaleLink = component.root.findByType(LinkText)
     const conditionsOfSaleCheckbox = component.root.findByType(Checkbox)
 
     yourMaxBidRow.instance.props.onPress()
@@ -286,9 +280,9 @@ describe("when pressing register button", () => {
     billingAddressRow.instance.props.onPress()
 
     expect(navigator.push).not.toHaveBeenCalled()
-    // FIXME: Reenable
-    // expect(conditionsOfSaleLink.instance.props.onPress).toBeNull()
-    expect(conditionsOfSaleCheckbox.instance.props.disabled).toBeTruthy()
+
+    expect(conditionsOfSaleLink.props.onPress).toBeUndefined()
+    expect(conditionsOfSaleCheckbox.props.disabled).toBeTruthy()
   })
 
   it("displays an error message on a stripe failure", async () => {
@@ -310,7 +304,7 @@ describe("when pressing register button", () => {
 
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
-    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Checkbox).props.onPress()
     await component.root.findAllByType(Button)[1].props.onPress()
 
     expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
@@ -342,7 +336,7 @@ describe("when pressing register button", () => {
     // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
-    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Checkbox).props.onPress()
     component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
@@ -375,7 +369,7 @@ describe("when pressing register button", () => {
 
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
-    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Checkbox).props.onPress()
     await component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
@@ -402,7 +396,7 @@ describe("when pressing register button", () => {
     // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
-    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Checkbox).props.onPress()
     component.root.findAllByType(Button)[1].props.onPress()
 
     expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
@@ -438,7 +432,7 @@ describe("when pressing register button", () => {
 
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
-    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Checkbox).props.onPress()
     component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
@@ -478,7 +472,7 @@ describe("when pressing register button", () => {
     // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
-    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Checkbox).props.onPress()
     component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
@@ -515,7 +509,7 @@ describe("when pressing register button", () => {
     )
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
-    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Checkbox).props.onPress()
     component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
@@ -544,7 +538,7 @@ describe("when pressing register button", () => {
       </BiddingThemeProvider>
     )
 
-    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Checkbox).props.onPress()
     await component.root.findAllByType(Button)[1].props.onPress()
 
     expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
@@ -572,7 +566,7 @@ describe("when pressing register button", () => {
       </BiddingThemeProvider>
     )
 
-    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Checkbox).props.onPress()
     await component.root.findAllByType(Button)[1].props.onPress()
 
     expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
@@ -598,7 +592,7 @@ describe("when pressing register button", () => {
       </BiddingThemeProvider>
     )
 
-    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Checkbox).props.onPress()
     component.root.findAllByType(Button)[1].props.onPress()
     jest.runAllTicks()
 
@@ -606,9 +600,7 @@ describe("when pressing register button", () => {
       ARAuctionID: "sale-id",
     })
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.component).toEqual(RegistrationResult)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.passProps).toEqual({
       status: RegistrationStatus.RegistrationStatusPending,
       needsIdentityVerification: false,
@@ -623,7 +615,6 @@ describe("when pressing register button", () => {
         requireIdentityVerification: true,
       },
     }
-
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -637,13 +628,11 @@ describe("when pressing register button", () => {
       </BiddingThemeProvider>
     )
 
-    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Checkbox).props.onPress()
     component.root.findAllByType(Button)[1].props.onPress()
     jest.runAllTicks()
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.component).toEqual(RegistrationResult)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.passProps).toEqual({
       status: RegistrationStatus.RegistrationStatusPending,
       needsIdentityVerification: true,
@@ -664,7 +653,7 @@ describe("when pressing register button", () => {
       </BiddingThemeProvider>
     )
 
-    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Checkbox).props.onPress()
     component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
@@ -673,9 +662,7 @@ describe("when pressing register button", () => {
       ARAuctionID: "sale-id",
     })
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.component).toEqual(RegistrationResult)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.passProps).toEqual({
       status: RegistrationStatus.RegistrationStatusComplete,
       needsIdentityVerification: false,
@@ -704,13 +691,11 @@ describe("when pressing register button", () => {
       </BiddingThemeProvider>
     )
 
-    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Checkbox).props.onPress()
     component.root.findAllByType(Button)[1].props.onPress()
     jest.runAllTicks()
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.component).toEqual(RegistrationResult)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     expect(nextStep.passProps.status).toEqual(RegistrationStatus.RegistrationStatusComplete)
   })
 })
