@@ -1,3 +1,4 @@
+import { ThemeV2, ThemeV3 } from "palette"
 import { usePaletteFlagStore } from "palette/PaletteFlag"
 import React from "react"
 import { Checkbox as CheckboxV3, CheckboxProps } from "./Checkbox"
@@ -8,8 +9,16 @@ export const Checkbox: React.FC<CheckboxProps> = (props) => {
   const allowV3 = usePaletteFlagStore((state) => state.allowV3)
 
   if (allowV3) {
-    return <CheckboxV3 {...props} />
+    return (
+      <ThemeV3>
+        <CheckboxV3 {...props} />
+      </ThemeV3>
+    )
   }
 
-  return <CheckboxV2 {...(props as CheckboxV2Props)} />
+  return (
+    <ThemeV2>
+      <CheckboxV2 {...(props as CheckboxV2Props)} />
+    </ThemeV2>
+  )
 }

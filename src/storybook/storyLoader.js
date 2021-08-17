@@ -11,6 +11,7 @@ function loadStories() {
   require("../palette/space.stories")
   require("../palette/spaceV2.stories")
   require("../palette/elements/Checkbox/Checkbox.stories")
+  require("../palette/elements/Checkbox/CheckboxV2.stories")
 }
 
 const stories = [
@@ -20,6 +21,8 @@ const stories = [
   "../palette/elements/Button/ButtonV2.stories",
   "../palette/space.stories",
   "../palette/spaceV2.stories",
+  "../palette/elements/Checkbox/Checkbox.stories",
+  "../palette/elements/Checkbox/CheckboxV2.stories",
 ]
 
 module.exports = {
