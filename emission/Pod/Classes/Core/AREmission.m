@@ -7,6 +7,7 @@
 #import "ARCocoaConstantsModule.h"
 #import "ARGraphQLQueryPreloader.h"
 #import "ARGraphQLQueryCache.h"
+#import "ARAppStatusModule.h"
 
 
 @implementation AREmission
@@ -37,6 +38,7 @@ static AREmission *_sharedInstance = nil;
     // When adding a new native module, remember to add it
     // to the array of modules below.
     _eventsModule = [AREventsModule new];
+    _appStatusModule = [ARAppStatusModule new];
     _APIModule = [ARTemporaryAPIModule new];
     _cameraModule = [ARTakeCameraPhotoModule new];
     _phPhotoPickerModule = [ARPHPhotoPickerModule new];
@@ -45,6 +47,7 @@ static AREmission *_sharedInstance = nil;
     _graphQLQueryPreloaderModule = [[ARGraphQLQueryPreloader alloc] initWithCache:_graphQLQueryCacheModule];
 
     NSArray *modules = @[
+        _appStatusModule,
         _APIModule,
         _eventsModule,
         _cameraModule,
