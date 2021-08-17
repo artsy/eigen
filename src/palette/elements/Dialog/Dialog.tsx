@@ -9,10 +9,11 @@ import { Text } from "../Text"
 
 interface DialogAction {
   text: string
-  action: () => void
+  onPress: () => void
 }
 
-interface DialogProps extends Omit<ModalProps, "animationType" | "transparent" | "statusBarTranslucent"> {
+interface DialogProps extends Omit<ModalProps, "animationType" | "transparent" | "statusBarTranslucent" | "visible"> {
+  isVisible: boolean
   title: string
   detail?: string
   primaryCta: DialogAction
@@ -21,10 +22,10 @@ interface DialogProps extends Omit<ModalProps, "animationType" | "transparent" |
 }
 
 export const Dialog = (props: DialogProps) => {
-  const { visible, title, detail, primaryCta, secondaryCta, onBackgroundPressed, ...other } = props
-  const [showModal, setShowModal] = useState(visible)
+  const { isVisible, title, detail, primaryCta, secondaryCta, onBackgroundPressed, ...other } = props
+  const [visible, setVisible] = useState(isVisible)
   const { space, color } = useTheme()
-  const value = useRef(new Animated.Value(Number(visible))).current
+  const value = useRef(new Animated.Value(Number(isVisible))).current
 
   const fadeIn = () => {
     return new Promise((resolve) => {
@@ -47,18 +48,18 @@ export const Dialog = (props: DialogProps) => {
   }
 
   useEffect(() => {
-    if (visible) {
-      setShowModal(true)
+    if (isVisible) {
+      setVisible(true)
       fadeIn()
     } else {
       fadeOut().then(() => {
-        setShowModal(false)
+        setVisible(false)
       })
     }
-  }, [visible])
+  }, [isVisible])
 
   return (
-    <Modal {...other} visible={showModal} statusBarTranslucent transparent animationType="none">
+    <Modal {...other} visible={visible} statusBarTranslucent transparent animationType="none">
       <Animated.View
         style={[StyleSheet.absoluteFillObject, { opacity: value, backgroundColor: "rgba(194,194,194,0.5)" }]}
       />
@@ -88,23 +89,28 @@ export const Dialog = (props: DialogProps) => {
             shadowRadius: 10,
           }}
         >
-          <Text variant="title" mb={0.5} mt={2} mx={2}>
+          <Text testID="dialog-title" variant="title" mb={0.5} mt={2} mx={2}>
             {title}
           </Text>
           {!!detail && (
             <ScrollView alwaysBounceVertical={false} contentContainerStyle={{ paddingHorizontal: space(2) }}>
-              <Text variant="caption" color="black60">
+              <Text testID="dialog-detail" variant="caption" color="black60">
                 {detail}
               </Text>
             </ScrollView>
           )}
           <Flex mt={0.5} mb={2} mx={2} flexDirection="row" justifyContent="flex-end">
             {!!secondaryCta && (
-              <Button size="small" variant="text" onPress={secondaryCta.action}>
+              <Button
+                size="small"
+                testID="dialog-secondary-action-button"
+                variant="text"
+                onPress={secondaryCta.onPress}
+              >
                 {secondaryCta.text}
               </Button>
             )}
-            <Button size="small" ml={2} onPress={primaryCta.action}>
+            <Button size="small" testID="dialog-primary-action-button" ml={2} onPress={primaryCta.onPress}>
               {primaryCta.text}
             </Button>
           </Flex>
