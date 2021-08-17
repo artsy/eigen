@@ -1,4 +1,4 @@
-import { ThemeV2, ThemeV3 } from "palette"
+import { ThemeV3 } from "palette"
 import { usePaletteFlagStore } from "palette/PaletteFlag"
 import React from "react"
 import { Checkbox as CheckboxV3, CheckboxProps } from "./Checkbox"
@@ -16,9 +16,5 @@ export const Checkbox: React.FC<CheckboxProps> = (props) => {
     )
   }
 
-  return (
-    <ThemeV2>
-      <CheckboxV2 {...(props as CheckboxV2Props)} />
-    </ThemeV2>
-  )
+  return <CheckboxV2 {...(props as CheckboxV2Props)} />
 }
