@@ -884,6 +884,13 @@ SPEC REPOS:
     - "UIView+BooleanAnimations"
     - "XCTest+OHHTTPStubSuiteCleanUp"
     - YogaKit
+  https://github.com/artsy/Specs.git:
+    - Aerodramus
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts"
+    - "Artsy+UILabels"
+    - Artsy-UIButtons
+    - Extraction
 
 EXTERNAL SOURCES:
   AFOAuth1Client:
