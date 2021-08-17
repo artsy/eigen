@@ -116,7 +116,7 @@ const main = async () => {
     return
   }
   // Otherwise, Create a pull request and merge it
-  await createAndMergePullRequest
+  await createAndMergePullRequest()
 }
 
 main()
