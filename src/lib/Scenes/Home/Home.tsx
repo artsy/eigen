@@ -150,7 +150,11 @@ const Home = (props: Props) => {
             renderItem={({ item, index, separators }) => {
               switch (item.type) {
                 case "articles":
-                  return <ArticlesRailFragmentContainer articlesConnection={articlesConnection} />
+                  return articlesConnection ? (
+                    <ArticlesRailFragmentContainer articlesConnection={articlesConnection} />
+                  ) : (
+                    <></>
+                  )
                 case "artwork":
                   return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
                 case "artist":
@@ -167,17 +171,22 @@ const Home = (props: Props) => {
                     />
                   )
                 case "viewing-rooms":
-                  return <ViewingRoomsHomeRail featured={featured} />
-
+                  return featured ? <ViewingRoomsHomeRail featured={featured} /> : <></>
                 case "auction-results":
-                  return <AuctionResultsRailFragmentContainer me={me} scrollRef={scrollRefs.current[index]} />
+                  return me ? (
+                    <AuctionResultsRailFragmentContainer me={me} scrollRef={scrollRefs.current[index]} />
+                  ) : (
+                    <></>
+                  )
                 case "lotsByFollowedArtists":
-                  return (
+                  return meAbove ? (
                     <SaleArtworksHomeRailContainer
-                      me={me}
+                      me={meAbove}
                       onShow={() => separators.updateProps("leading", { hideSeparator: false })}
                       onHide={() => separators.updateProps("leading", { hideSeparator: true })}
                     />
+                  ) : (
+                    <></>
                   )
               }
             }}
@@ -187,15 +196,15 @@ const Home = (props: Props) => {
                   <ArtsyLogoIcon scale={0.75} />
                 </Flex>
                 <Spacer mb="15px" />
-                <HomeHeroContainer homePage={homePage} />
+                {!!homePageAbove && <HomeHeroContainer homePage={homePageAbove} />}
                 <Spacer mb="2" />
               </Box>
             }
             ItemSeparatorComponent={({ hideSeparator }) => (!hideSeparator ? <Spacer mb={3} /> : null)}
-            ListFooterComponent={() => <Spacer mb={3} />}
+            ListFooterComponent={() => <Flex mb={3}>{!!loading && <HomeLoadingPlaceholder />}</Flex>}
             keyExtractor={(_item, index) => String(index)}
           />
-          <EmailConfirmationBannerFragmentContainer me={me} />
+          {!!meAbove && <EmailConfirmationBannerFragmentContainer me={meAbove} />}
         </View>
       </Theme>
     </ProvideScreenTracking>
@@ -297,7 +306,18 @@ const HomeLoadingPlaceholder: React.FC<{}> = () => (
   <ProvidePlaceholderContext>
     <Theme>
       <Flex>
-        {/* Larger tiles to mimic the fairs, sales, and collections rails */}
+        <Box ml={2} mr={2}>
+          <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
+          <Flex flexDirection="row" mt={1}>
+            <Join separator={<Spacer width={15} />}>
+              {times(10).map((index) => (
+                <PlaceholderBox key={index} height={270} width={270} />
+              ))}
+            </Join>
+            <Spacer mb={2} />
+          </Flex>
+        </Box>
+        <Spacer mb={3} />
         <Box ml={2} mr={2}>
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
           <Flex flexDirection="row" mt={1}>
