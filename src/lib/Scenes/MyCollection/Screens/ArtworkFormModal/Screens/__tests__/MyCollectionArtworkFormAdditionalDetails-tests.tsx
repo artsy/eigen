@@ -1,6 +1,6 @@
 import { useFormikContext } from "formik"
-import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
 import { ReactElement } from "simple-markdown"
 import { MyCollectionAdditionalDetailsForm } from "../MyCollectionArtworkFormAdditionalDetails"

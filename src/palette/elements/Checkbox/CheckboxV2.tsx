@@ -2,15 +2,15 @@ import React, { Component, GetDerivedStateFromProps } from "react"
 import { StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from "react-native"
 import styled from "styled-components/native"
 
-import { Flex, FlexProps } from "../Elements/Flex"
-import { theme } from "../Elements/Theme"
-import { CssTransition } from "./Animation/CssTransition"
+import { CssTransition } from "../../../lib/Components/Bidding/Components/Animation/CssTransition"
+import { Flex, FlexProps } from "../../../lib/Components/Bidding/Elements/Flex"
+import { theme } from "../../../lib/Components/Bidding/Elements/Theme"
 
 interface CheckboxState {
   checked: boolean
 }
 
-interface CheckboxProps extends TouchableWithoutFeedbackProps, FlexProps {
+export interface CheckboxProps extends TouchableWithoutFeedbackProps, FlexProps {
   checked?: boolean
   disabled?: boolean
   error?: boolean
