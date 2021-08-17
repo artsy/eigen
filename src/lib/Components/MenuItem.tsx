@@ -36,7 +36,7 @@ export const MenuItem: React.FC<{
         style={style}
       >
         <Flex flexDirection="row" mr="2">
-          <Sans size="3">{title}</Sans>
+          <Sans size="4">{title}</Sans>
           {!!isBeta && (
             <Flex px={0.5} mx={1} backgroundColor={color("black10")}>
               <Sans size="3" color={color("black60")}>
