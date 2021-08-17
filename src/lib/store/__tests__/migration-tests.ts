@@ -314,7 +314,7 @@ describe("PendingPushNotification migration", () => {
 
 describe("CopyIOSNativeSessionAuthToTS migration", () => {
   const migrationToTest = Versions.CopyIOSNativeSessionAuthToTS
-  it.only("populates authentication details into the auth model", () => {
+  it("populates authentication details into the auth model", () => {
     const previousState = migrate({
       state: { version: 0 },
       toVersion: migrationToTest,
