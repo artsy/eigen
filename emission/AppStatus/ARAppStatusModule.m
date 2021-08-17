@@ -11,7 +11,8 @@
 
 RCT_EXPORT_MODULE()
 
-RCT_EXPORT_METHOD(isBeta: (RCTPromiseResolveBlock) resolve) {
+RCT_EXPORT_METHOD(isBeta: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) reject) {
     static BOOL isBeta = NO;
     static dispatch_once_t onceToken = 0;
     dispatch_once(&onceToken, ^{
