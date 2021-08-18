@@ -293,7 +293,23 @@ export const HomeFragmentContainer = createRefetchContainer(
     `,
   },
   graphql`
-    query HomeRefetchQuery {
+    query HomeRefetchQuery($heroImageVersion: HomePageHeroUnitImageVersion!) {
+      homePage @optionalField {
+        ...Home_homePageAbove @arguments(heroImageVersion: $heroImageVersion)
+      }
+      homePageBelow: homePage @optionalField {
+        ...Home_homePageBelow @arguments(heroImageVersion: $heroImageVersion)
+      }
+      me @optionalField {
+        ...Home_meAbove
+        ...AuctionResultsRail_me
+      }
+      meBelow: me @optionalField {
+        ...Home_meBelow
+      }
+      featured: viewingRooms(featured: true) @optionalField {
+        ...Home_featured
+      }
       articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
         ...Home_articlesConnection
       }
