@@ -84,7 +84,10 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
     if (props.belowTheFoldTimeout === undefined) {
       return
     }
-    setImmediate(() => setRenderBelowTheFold(true), props.belowTheFoldTimeout)
+
+    const immediate = setImmediate(() => setRenderBelowTheFold(true), props.belowTheFoldTimeout)
+
+    return () => clearImmediate(immediate)
   }, [])
 
   return (
