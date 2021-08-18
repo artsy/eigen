@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, tappedLink } from "@artsy/cohesion"
 import { AuctionResultsForYou_me } from "__generated__/AuctionResultsForYou_me.graphql"
 import { AuctionResultsForYouContainerQuery } from "__generated__/AuctionResultsForYouContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
@@ -10,6 +10,8 @@ import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { groupBy } from "lodash"
 import moment from "moment"
@@ -55,69 +57,76 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
   }
 
   return (
-    <PageWithSimpleHeader title="Auction Results for Artists You Follow">
-      <ArtworkFiltersStoreProvider>
-        <SectionList
-          sections={groupedAuctionResultSections}
-          onEndReached={loadMoreArtworks}
-          keyExtractor={(item) => item.internalID}
-          stickySectionHeadersEnabled
-          ListHeaderComponent={() => (
-            <Flex>
-              <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
-                The latest auction results for the {""}
-                <LinkText
-                  onPress={() => {
-                    navigate("/favorites", { passProps: { initialTab: Tab.artists } })
-                  }}
-                >
-                  artists you follow
-                </LinkText>
-                . You can also look up more auction results on the insights tab on any artist’s page.
-              </Text>
-            </Flex>
-          )}
-          renderSectionHeader={({ section: { sectionTitle } }) => (
-            <Flex bg="white" mx="2">
-              <Text my="2" variant="title">
-                {sectionTitle}
-              </Text>
-              <Separator borderColor={"black5"} />
-            </Flex>
-          )}
-          renderSectionFooter={() => <Flex mt="2" />}
-          ItemSeparatorComponent={() => (
-            <Flex px={2}>
-              <Separator borderColor={"black5"} />
-            </Flex>
-          )}
-          renderItem={({ item }) =>
-            item ? (
-              <Flex px={1}>
-                <AuctionResultFragmentContainer
-                  auctionResult={item}
-                  showArtistName
-                  onPress={() => {
-                    trackEvent(tracks.tapAuctionGroup(item.internalID))
-                    navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
-                  }}
-                />
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.auctionResultsForArtistsYouFollow,
+      })}
+    >
+      <PageWithSimpleHeader title="Auction Results for Artists You Follow">
+        <ArtworkFiltersStoreProvider>
+          <SectionList
+            sections={groupedAuctionResultSections}
+            onEndReached={loadMoreArtworks}
+            keyExtractor={(item) => item.internalID}
+            stickySectionHeadersEnabled
+            ListHeaderComponent={() => (
+              <Flex>
+                <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
+                  The latest auction results for the {""}
+                  <LinkText
+                    onPress={() => {
+                      trackEvent(tracks.tappedLink)
+                      navigate("/favorites", { passProps: { initialTab: Tab.artists } })
+                    }}
+                  >
+                    artists you follow
+                  </LinkText>
+                  . You can also look up more auction results on the insights tab on any artist’s page.
+                </Text>
               </Flex>
-            ) : (
-              <></>
-            )
-          }
-          ListFooterComponent={
-            loadingMoreData ? (
-              <Flex my={2} flexDirection="row" justifyContent="center">
-                <Spinner />
+            )}
+            renderSectionHeader={({ section: { sectionTitle } }) => (
+              <Flex bg="white" mx="2">
+                <Text my="2" variant="title">
+                  {sectionTitle}
+                </Text>
+                <Separator borderColor={"black5"} />
               </Flex>
-            ) : null
-          }
-          style={{ width: useScreenDimensions().width }}
-        />
-      </ArtworkFiltersStoreProvider>
-    </PageWithSimpleHeader>
+            )}
+            renderSectionFooter={() => <Flex mt="2" />}
+            ItemSeparatorComponent={() => (
+              <Flex px={2}>
+                <Separator borderColor={"black5"} />
+              </Flex>
+            )}
+            renderItem={({ item }) =>
+              item ? (
+                <Flex px={1}>
+                  <AuctionResultFragmentContainer
+                    auctionResult={item}
+                    showArtistName
+                    onPress={() => {
+                      trackEvent(tracks.tapAuctionGroup(item.internalID))
+                      navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+                    }}
+                  />
+                </Flex>
+              ) : (
+                <></>
+              )
+            }
+            ListFooterComponent={
+              loadingMoreData ? (
+                <Flex my={2} flexDirection="row" justifyContent="center">
+                  <Spinner />
+                </Flex>
+              ) : null
+            }
+            style={{ width: useScreenDimensions().width }}
+          />
+        </ArtworkFiltersStoreProvider>
+      </PageWithSimpleHeader>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
@@ -189,5 +198,11 @@ export const tracks = {
     destination_screen_owner_type: OwnerType.auctionResult,
     destination_screen_owner_id: auctionResultId,
     type: "thumbnail",
+  }),
+  tappedLink: tappedLink({
+    contextModule: ContextModule.auctionResultsForArtistsYouFollow,
+    contextScreenOwnerType: OwnerType.auctionResultsForArtistsYouFollow,
+    destinationScreenOwnerSlug: "/favorites",
+    destinationPath: "/favorites",
   }),
 }
