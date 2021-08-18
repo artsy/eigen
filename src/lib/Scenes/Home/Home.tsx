@@ -80,11 +80,10 @@ const Home = (props: Props) => {
 
   /*
   Ordering is defined in https://www.notion.so/artsy/App-Home-Screen-4841255ded3f47c9bcdb73185ee3f335.
-  Please make sure to keep this page in sync with the home screen and include at least the first ~4 modules
-  in `HomeAboveTheFoldQuery`.
+  Please make sure to keep this page in sync with the home screen.
   */
   const rowData = compact([
-    // Above-the-fold modules
+    // Above-the-fold modules (make sure to include enough modules in the above-the-fold query to cover the whole screen.)
     artworkRails[0],
     { type: "lotsByFollowedArtists" } as const,
     artworkRails[1],
