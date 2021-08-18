@@ -202,7 +202,6 @@ export const tracks = {
   tappedLink: tappedLink({
     contextModule: ContextModule.auctionResultsForArtistsYouFollow,
     contextScreenOwnerType: OwnerType.auctionResultsForArtistsYouFollow,
-    destinationScreenOwnerSlug: "/favorites",
     destinationPath: "/favorites",
   }),
 }
