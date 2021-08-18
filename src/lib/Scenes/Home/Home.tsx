@@ -1,9 +1,9 @@
 import { Home_articlesConnection } from "__generated__/Home_articlesConnection.graphql"
 import { Home_featured } from "__generated__/Home_featured.graphql"
-import { Home_homePage } from "__generated__/Home_homePage.graphql"
 import { Home_homePageAbove } from "__generated__/Home_homePageAbove.graphql"
-import { Home_me } from "__generated__/Home_me.graphql"
+import { Home_homePageBelow } from "__generated__/Home_homePageBelow.graphql"
 import { Home_meAbove } from "__generated__/Home_meAbove.graphql"
+import { Home_meBelow } from "__generated__/Home_meBelow.graphql"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
@@ -39,23 +39,23 @@ import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProps {
   articlesConnection: Home_articlesConnection | null
-  homePage: Home_homePage | null
-  homePageAbove: Home_homePageAbove | null
-  me: Home_me | null
-  meAbove: Home_meAbove | null
   featured: Home_featured | null
-  relay: RelayRefetchProp
+  homePageAbove: Home_homePageAbove | null
+  homePageBelow: Home_homePageBelow | null
   loading: boolean
+  meAbove: Home_meAbove | null
+  meBelow: Home_meBelow | null
+  relay: RelayRefetchProp
 }
 
 const Home = (props: Props) => {
-  const { articlesConnection, homePage, homePageAbove, me, meAbove, featured, loading } = props
+  const { homePageAbove, homePageBelow, meAbove, meBelow, articlesConnection, featured, loading } = props
 
-  const artworkModules = (homePageAbove?.artworkModules || []).concat(homePage?.artworkModules || [])
+  const artworkModules = (homePageAbove?.artworkModules || []).concat(homePageBelow?.artworkModules || [])
   const salesModule = homePageAbove?.salesModule
-  const collectionsModule = homePage?.marketingCollectionsModule
-  const artistModules = (homePage?.artistModules && homePage?.artistModules.concat()) || []
-  const fairsModule = homePage?.fairsModule
+  const collectionsModule = homePageBelow?.marketingCollectionsModule
+  const artistModules = (homePageBelow?.artistModules && homePageBelow?.artistModules.concat()) || []
+  const fairsModule = homePageBelow?.fairsModule
 
   const enableAuctionResultsByFollowedArtists = useFeatureFlag("ARHomeAuctionResultsByFollowedArtists")
 
@@ -84,7 +84,7 @@ const Home = (props: Props) => {
   in `HomeAboveTheFoldQuery`.
   */
   const rowData = compact([
-    // Above the fold modules
+    // Above-the-fold modules
     artworkRails[0],
     { type: "lotsByFollowedArtists" } as const,
     artworkRails[1],
@@ -93,7 +93,7 @@ const Home = (props: Props) => {
         type: "sales",
         data: salesModule,
       } as const),
-    // Below the fold modules
+    // Below-the-fold modules
     !!articlesConnection && ({ type: "articles" } as const),
     !!viewingRoomsEchoFlag && !!featured && ({ type: "viewing-rooms" } as const),
     fairsModule &&
@@ -173,8 +173,8 @@ const Home = (props: Props) => {
                 case "viewing-rooms":
                   return featured ? <ViewingRoomsHomeRail featured={featured} /> : <></>
                 case "auction-results":
-                  return me ? (
-                    <AuctionResultsRailFragmentContainer me={me} scrollRef={scrollRefs.current[index]} />
+                  return meBelow ? (
+                    <AuctionResultsRailFragmentContainer me={meBelow} scrollRef={scrollRefs.current[index]} />
                   ) : (
                     <></>
                   )
@@ -201,7 +201,7 @@ const Home = (props: Props) => {
               </Box>
             }
             ItemSeparatorComponent={({ hideSeparator }) => (!hideSeparator ? <Spacer mb={3} /> : null)}
-            ListFooterComponent={() => <Flex mb={3}>{!!loading && <HomeLoadingPlaceholder />}</Flex>}
+            ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
             keyExtractor={(_item, index) => String(index)}
           />
           {!!meAbove && <EmailConfirmationBannerFragmentContainer me={meAbove} />}
@@ -214,7 +214,7 @@ const Home = (props: Props) => {
 export const HomeFragmentContainer = createRefetchContainer(
   Home,
   {
-    // Make sure to exclude all modules that are part of "homePage"
+    // Make sure not to include modules that are part of "homePageBelow"
     homePageAbove: graphql`
       fragment Home_homePageAbove on HomePage
       @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
@@ -234,8 +234,8 @@ export const HomeFragmentContainer = createRefetchContainer(
       }
     `,
     // Make sure to exclude all modules that are part of "homePageAbove"
-    homePage: graphql`
-      fragment Home_homePage on HomePage
+    homePageBelow: graphql`
+      fragment Home_homePageBelow on HomePage
       @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
         artworkModules(
           maxRails: -1
@@ -277,8 +277,8 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...SaleArtworksHomeRail_me
       }
     `,
-    me: graphql`
-      fragment Home_me on Me {
+    meBelow: graphql`
+      fragment Home_meBelow on Me {
         ...AuctionResultsRail_me
       }
     `,
@@ -302,37 +302,44 @@ export const HomeFragmentContainer = createRefetchContainer(
   `
 )
 
-const HomeLoadingPlaceholder: React.FC<{}> = () => (
-  <ProvidePlaceholderContext>
-    <Theme>
-      <Flex>
-        <Box ml={2} mr={2}>
-          <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-          <Flex flexDirection="row" mt={1}>
-            <Join separator={<Spacer width={15} />}>
-              {times(10).map((index) => (
-                <PlaceholderBox key={index} height={270} width={270} />
-              ))}
-            </Join>
-            <Spacer mb={2} />
-          </Flex>
-        </Box>
-        <Spacer mb={3} />
-        <Box ml={2} mr={2}>
-          <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-          <Flex flexDirection="row" mt={1}>
-            <Join separator={<Spacer width={15} />}>
-              {times(10).map((index) => (
-                <PlaceholderBox key={index} height={270} width={270} />
-              ))}
-            </Join>
-            <Spacer mb={2} />
-          </Flex>
-        </Box>
-      </Flex>
-    </Theme>
-  </ProvidePlaceholderContext>
-)
+const BelowTheFoldPlaceholder: React.FC<{}> = () => {
+  const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
+
+  return (
+    <ProvidePlaceholderContext>
+      <Theme>
+        <Flex>
+          {!!viewingRoomsEchoFlag && (
+            <Flex ml="2" mt="3">
+              <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
+              <Flex flexDirection="row">
+                {times(4).map((i) => (
+                  <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
+                ))}
+              </Flex>
+            </Flex>
+          )}
+          {times(2).map((r) => (
+            <Box key={r}>
+              <Spacer mb={3} />
+              <Box ml={2} mr={2}>
+                <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
+                <Flex flexDirection="row" mt={1}>
+                  <Join separator={<Spacer width={15} />}>
+                    {times(10).map((index) => (
+                      <PlaceholderBox key={index} height={270} width={270} />
+                    ))}
+                  </Join>
+                  <Spacer mb={2} />
+                </Flex>
+              </Box>
+            </Box>
+          ))}
+        </Flex>
+      </Theme>
+    </ProvidePlaceholderContext>
+  )
+}
 
 const HomePlaceholder: React.FC<{}> = () => {
   const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
@@ -480,13 +487,13 @@ export const HomeQueryRenderer: React.FC = () => {
             query: graphql`
               query HomeBelowTheFoldQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
                 homePage @optionalField {
-                  ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
+                  ...Home_homePageBelow @arguments(heroImageVersion: $heroImageVersion)
                 }
                 featured: viewingRooms(featured: true) @optionalField {
                   ...Home_featured
                 }
                 me @optionalField {
-                  ...Home_me
+                  ...Home_meBelow
                   ...AuctionResultsRail_me
                 }
               }
@@ -502,11 +509,11 @@ export const HomeQueryRenderer: React.FC = () => {
               return (
                 <HomeFragmentContainer
                   articlesConnection={above?.articlesConnection ?? null}
-                  homePage={below ? below.homePage : null}
-                  me={below ? below.me : null}
                   featured={below ? below.featured : null}
                   homePageAbove={above.homePage}
+                  homePageBelow={below ? below.homePage : null}
                   meAbove={above.me}
+                  meBelow={below ? below.me : null}
                   loading={!below}
                 />
               )

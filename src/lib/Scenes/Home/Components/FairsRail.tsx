@@ -41,6 +41,10 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
     </Flex>
   )
 
+  if (!props.fairsModule?.results) {
+    return null
+  }
+
   return (
     <View>
       {props.fairsModule.results.length ? <FairHeader /> : null}

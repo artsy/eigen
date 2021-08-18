@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Home_homePage = {
+export type Home_homePageBelow = {
     readonly artworkModules: ReadonlyArray<{
         readonly id: string;
         readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_rail">;
@@ -20,12 +20,12 @@ export type Home_homePage = {
         readonly " $fragmentRefs": FragmentRefs<"CollectionsRail_collectionsModule">;
     } | null;
     readonly " $fragmentRefs": FragmentRefs<"HomeHero_homePage">;
-    readonly " $refType": "Home_homePage";
+    readonly " $refType": "Home_homePageBelow";
 };
-export type Home_homePage$data = Home_homePage;
-export type Home_homePage$key = {
-    readonly " $data"?: Home_homePage$data;
-    readonly " $fragmentRefs": FragmentRefs<"Home_homePage">;
+export type Home_homePageBelow$data = Home_homePageBelow;
+export type Home_homePageBelow$key = {
+    readonly " $data"?: Home_homePageBelow$data;
+    readonly " $fragmentRefs": FragmentRefs<"Home_homePageBelow">;
 };
 
 
@@ -48,7 +48,7 @@ return {
   ],
   "kind": "Fragment",
   "metadata": null,
-  "name": "Home_homePage",
+  "name": "Home_homePageBelow",
   "selections": [
     {
       "alias": null,
@@ -166,5 +166,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '11def503c1885457300b2087b4a2f9ce';
+(node as any).hash = '6fa27b263326bc52f74685205870c514';
 export default node;

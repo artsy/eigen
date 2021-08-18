@@ -25,7 +25,8 @@ interface AboveTheFoldQueryRendererProps<AboveQuery extends OperationType, Below
         renderPlaceholder: () => React.ReactChild
       }
   cacheConfig?: CacheConfig | null
-  /** Fire below the fold query after the timeout or when the above the fold query returns */
+  /** Fire below-the-fold query after the given timeout or when the above-the-fold query returns. */
+  /** If 'belowTheFoldTimeout' is not set, the below-the-fold query will be fired when the above-the-fold query returns */
   belowTheFoldTimeout?: number
 }
 
