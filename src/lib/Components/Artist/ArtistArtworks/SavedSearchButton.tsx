@@ -1,3 +1,4 @@
+import { ActionType, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
 import { captureMessage } from "@sentry/react-native"
 import { SavedSearchButton_me } from "__generated__/SavedSearchButton_me.graphql"
 import { SavedSearchButtonQuery } from "__generated__/SavedSearchButtonQuery.graphql"
@@ -14,6 +15,7 @@ import { SavedSearchAlertFormPropsBase } from "lib/Scenes/SavedSearchAlert/Saved
 import { BellIcon, Box, Button } from "palette"
 import React, { useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface SavedSearchButtonProps extends SavedSearchAlertFormPropsBase {
   me?: SavedSearchButton_me | null
@@ -31,6 +33,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   relay,
   criteria,
 }) => {
+  const tracking = useTracking()
   const [visibleForm, setVisibleForm] = useState(false)
   const [refetching, setRefetching] = useState(false)
   const popover = usePopoverMessage()
@@ -66,6 +69,11 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
     })
   }
 
+  const handleCreateAlertPress = () => {
+    handleOpenForm()
+    tracking.trackEvent(tracks.tappedCreateAlert(artist.id, artist.slug))
+  }
+
   return (
     <Box>
       <Button
@@ -74,7 +82,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
         icon={<BellIcon fill="white100" mr={0.5} width="16px" height="16px" />}
         disabled={isSavedSearch || filters.length === 0}
         loading={loading || refetching}
-        onPress={handleOpenForm}
+        onPress={handleCreateAlertPress}
         testID="create-saved-search-button"
         haptic
       >
@@ -156,4 +164,13 @@ export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchAlertFormPropsB
       }}
     />
   )
+}
+
+export const tracks = {
+  tappedCreateAlert: (artistId: string, artistSlug: string): TappedCreateAlert => ({
+    action: ActionType.tappedCreateAlert,
+    context_screen_owner_type: OwnerType.artist,
+    context_screen_owner_id: artistId,
+    context_screen_owner_slug: artistSlug,
+  }),
 }

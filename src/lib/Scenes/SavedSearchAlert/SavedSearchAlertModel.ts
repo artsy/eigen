@@ -8,6 +8,7 @@ export interface SavedSearchArtistProp {
   artist: {
     id: string
     name: string
+    slug: string
   }
 }
 
