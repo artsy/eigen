@@ -8,19 +8,30 @@ import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import React from "react"
 import { Alert } from "react-native"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-import { SavedSearchAlertForm, SavedSearchAlertFormProps } from "../SavedSearchAlertForm"
+import { SavedSearchAlertForm, SavedSearchAlertFormProps, tracks } from "../SavedSearchAlertForm"
 
 const spyAlert = jest.spyOn(Alert, "alert")
 
 describe("Saved search alert form", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)
+  const trackEvent = jest.fn()
 
   beforeEach(() => {
     mockEnvironment.mockClear()
     notificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Authorized))
     ;(Alert.alert as jest.Mock).mockClear()
+    ;(useTracking as jest.Mock).mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
+
+  afterEach(() => {
+    trackEvent.mockClear()
   })
 
   it("renders without throwing an error", () => {
@@ -73,6 +84,21 @@ describe("Saved search alert form", () => {
           },
         },
       })
+    })
+  })
+
+  it("tracks the edited saved search event when the save alert button is pressed", async () => {
+    const { getByTestId } = renderWithWrappersTL(
+      <SavedSearchAlertForm {...baseProps} savedSearchAlertId="savedSearchAlertId" />
+    )
+
+    fireEvent.changeText(getByTestId("alert-input-name"), "something new")
+    fireEvent.press(getByTestId("save-alert-button"))
+
+    await waitFor(() => {
+      expect(trackEvent).toHaveBeenCalledWith(
+        tracks.editedSavedSearch("artistID", { name: "" }, { name: "something new" })
+      )
     })
   })
 
@@ -159,6 +185,16 @@ describe("Saved search alert form", () => {
     })
 
     expect(onDeletePressMock).toHaveBeenCalled()
+  })
+
+  it("tracks clicks when the delete alert button is pressed", async () => {
+    const { getByTestId } = renderWithWrappersTL(
+      <SavedSearchAlertForm {...baseProps} savedSearchAlertId="savedSearchAlertId" />
+    )
+
+    fireEvent.press(getByTestId("delete-alert-button"))
+
+    expect(trackEvent).toHaveBeenCalledWith(tracks.deletedSavedSearch("artistID"))
   })
 
   it("should auto populate alert name for the create mutation", async () => {
@@ -286,5 +322,6 @@ const baseProps: SavedSearchAlertFormProps = {
   artist: {
     id: "artistID",
     name: "artistName",
+    slug: "artistSlug",
   },
 }

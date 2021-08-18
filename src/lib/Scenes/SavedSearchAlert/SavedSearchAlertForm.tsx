@@ -1,9 +1,11 @@
+import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
 import { FormikProvider, useFormik } from "formik"
 import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
 import React from "react"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
+import { useTracking } from "react-tracking"
 import { Form } from "./Components/Form"
 import { extractPills, getNamePlaceholder } from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
@@ -24,6 +26,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const { filters, aggregations, initialValues, savedSearchAlertId, onComplete, onDeleteComplete, ...other } = props
   const isUpdateForm = !!savedSearchAlertId
   const pills = extractPills(filters, aggregations)
+  const tracking = useTracking()
   const formik = useFormik<SavedSearchAlertFormValues>({
     initialValues,
     initialErrors: {},
@@ -36,6 +39,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
       try {
         if (isUpdateForm) {
+          tracking.trackEvent(tracks.editedSavedSearch(props.artist.id, initialValues, values))
           await updateSavedSearchAlert(alertName, savedSearchAlertId!)
         } else {
           const criteria = getSearchCriteriaFromFilters(props.artist.id, filters)
@@ -134,6 +138,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         { text: "Delete", style: "destructive", onPress: onDelete },
       ]
     )
+    tracking.trackEvent(tracks.deletedSavedSearch(props.artist.id))
   }
 
   return (
@@ -147,4 +152,23 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       />
     </FormikProvider>
   )
+}
+
+export const tracks = {
+  deletedSavedSearch: (artistId: string): DeletedSavedSearch => ({
+    action: ActionType.deletedSavedSearch,
+    context_screen_owner_type: OwnerType.artist,
+    context_screen_owner_id: artistId,
+  }),
+  editedSavedSearch: (
+    artistId: string,
+    currentValues: SavedSearchAlertFormValues,
+    modifiesValues: SavedSearchAlertFormValues
+  ): EditedSavedSearch => ({
+    action: ActionType.editedSavedSearch,
+    context_screen_owner_type: OwnerType.artist,
+    context_screen_owner_id: artistId,
+    current: JSON.stringify(currentValues),
+    changed: JSON.stringify(modifiesValues),
+  }),
 }
