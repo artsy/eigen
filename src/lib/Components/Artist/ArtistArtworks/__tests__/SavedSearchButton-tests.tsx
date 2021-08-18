@@ -63,11 +63,9 @@ describe("SavedSearchButton", () => {
             filters={mockedFilters}
             criteria={attributes}
             aggregations={[]}
-            artist={{
-              id: "artistID",
-              name: "artistName",
-              slug: "artistSlug",
-            }}
+            artistId="artistID"
+            artistName="artistName"
+            artistSlug="artistSlug"
           />
         )}
         variables={{

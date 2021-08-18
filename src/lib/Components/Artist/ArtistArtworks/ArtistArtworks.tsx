@@ -175,7 +175,9 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
             {!!enableSavedSearchV2 ? (
               <SavedSearchButtonQueryRenderer
                 filters={appliedFilters as FilterData[]}
-                artist={{ id: artist.internalID, name: artist.name!, slug: artist.slug }}
+                artistId={artist.internalID}
+                artistName={artist.name!}
+                artistSlug={artist.slug}
                 aggregations={aggregations}
               />
             ) : (

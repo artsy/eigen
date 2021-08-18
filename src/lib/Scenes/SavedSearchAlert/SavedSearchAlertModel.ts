@@ -4,15 +4,9 @@ export interface SavedSearchAlertFormValues {
   name: string
 }
 
-export interface SavedSearchArtistProp {
-  artist: {
-    id: string
-    name: string
-    slug: string
-  }
-}
-
-export interface SavedSearchAlertFormPropsBase extends SavedSearchArtistProp {
+export interface SavedSearchAlertFormPropsBase {
   filters: FilterData[]
   aggregations: Aggregations
+  artistId: string
+  artistName: string
 }

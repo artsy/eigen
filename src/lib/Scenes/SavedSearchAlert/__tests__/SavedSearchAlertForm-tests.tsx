@@ -319,9 +319,6 @@ const baseProps: SavedSearchAlertFormProps = {
   },
   filters,
   aggregations,
-  artist: {
-    id: "artistID",
-    name: "artistName",
-    slug: "artistSlug",
-  },
+  artistId: "artistID",
+  artistName: "artistName",
 }

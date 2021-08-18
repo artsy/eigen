@@ -53,7 +53,8 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
         >
           <SavedSearchAlertForm
             initialValues={{ name: userAlertSettings?.name ?? "" }}
-            artist={{ name: artist.name!, id: artist.internalID }}
+            artistId={artist.internalID}
+            artistName={artist.name!}
             filters={filters}
             aggregations={aggregations}
             savedSearchAlertId={savedSearchAlertId}

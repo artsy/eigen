@@ -23,7 +23,17 @@ export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase
 }
 
 export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props) => {
-  const { filters, aggregations, initialValues, savedSearchAlertId, onComplete, onDeleteComplete, ...other } = props
+  const {
+    filters,
+    aggregations,
+    initialValues,
+    savedSearchAlertId,
+    artistId,
+    artistName,
+    onComplete,
+    onDeleteComplete,
+    ...other
+  } = props
   const isUpdateForm = !!savedSearchAlertId
   const pills = extractPills(filters, aggregations)
   const tracking = useTracking()
@@ -34,15 +44,15 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       let alertName = values.name
 
       if (alertName.length === 0) {
-        alertName = getNamePlaceholder(props.artist.name, pills)
+        alertName = getNamePlaceholder(artistName, pills)
       }
 
       try {
         if (isUpdateForm) {
-          tracking.trackEvent(tracks.editedSavedSearch(props.artist.id, initialValues, values))
+          tracking.trackEvent(tracks.editedSavedSearch(artistId, initialValues, values))
           await updateSavedSearchAlert(alertName, savedSearchAlertId!)
         } else {
-          const criteria = getSearchCriteriaFromFilters(props.artist.id, filters)
+          const criteria = getSearchCriteriaFromFilters(artistId, filters)
           await createSavedSearchAlert(alertName, criteria)
         }
 
@@ -138,7 +148,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         { text: "Delete", style: "destructive", onPress: onDelete },
       ]
     )
-    tracking.trackEvent(tracks.deletedSavedSearch(props.artist.id))
+    tracking.trackEvent(tracks.deletedSavedSearch(artistId))
   }
 
   return (
@@ -146,6 +156,8 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       <Form
         pills={pills}
         savedSearchAlertId={savedSearchAlertId}
+        artistId={artistId}
+        artistName={artistName}
         onDeletePress={handleDeletePress}
         onSubmitPress={handleSubmit}
         {...other}

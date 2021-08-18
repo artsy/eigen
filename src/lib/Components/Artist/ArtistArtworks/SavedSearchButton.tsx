@@ -22,12 +22,19 @@ interface SavedSearchButtonProps extends SavedSearchAlertFormPropsBase {
   loading?: boolean
   relay: RelayRefetchProp
   criteria: SearchCriteriaAttributes
+  artistSlug: string
+}
+
+interface SavedSearchButtonQueryRendererProps extends SavedSearchAlertFormPropsBase {
+  artistSlug: string
 }
 
 export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   me,
   loading,
-  artist,
+  artistId,
+  artistName,
+  artistSlug,
   filters,
   aggregations,
   relay,
@@ -71,7 +78,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
 
   const handleCreateAlertPress = () => {
     handleOpenForm()
-    tracking.trackEvent(tracks.tappedCreateAlert(artist.id, artist.slug))
+    tracking.trackEvent(tracks.tappedCreateAlert(artistId, artistSlug))
   }
 
   return (
@@ -89,7 +96,8 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
         Create Alert
       </Button>
       <CreateSavedSearchAlert
-        artist={artist}
+        artistId={artistId}
+        artistName={artistName}
         visible={visibleForm}
         onClosePress={handleCloseForm}
         onComplete={handleComplete}
@@ -120,11 +128,11 @@ export const SavedSearchButtonRefetchContainer = createRefetchContainer(
   `
 )
 
-export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchAlertFormPropsBase> = (props) => {
-  const { filters, artist } = props
+export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRendererProps> = (props) => {
+  const { filters, artistId } = props
   const allowedFilters = getAllowedFiltersForSavedSearchInput(filters)
   const isEmptyCriteria = allowedFilters.length === 0
-  const criteria = getSearchCriteriaFromFilters(artist.id, filters)
+  const criteria = getSearchCriteriaFromFilters(artistId, filters)
 
   if (isEmptyCriteria) {
     return <SavedSearchButtonRefetchContainer {...props} me={null} loading={false} criteria={criteria} filters={[]} />
