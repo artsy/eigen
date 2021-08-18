@@ -49,8 +49,8 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
       try {
         if (isUpdateForm) {
-          tracking.trackEvent(tracks.editedSavedSearch(artistId, initialValues, values))
           await updateSavedSearchAlert(alertName, savedSearchAlertId!)
+          tracking.trackEvent(tracks.editedSavedSearch(artistId, initialValues, values))
         } else {
           const criteria = getSearchCriteriaFromFilters(artistId, filters)
           await createSavedSearchAlert(alertName, criteria)
@@ -133,6 +133,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const onDelete = async () => {
     try {
       await deleteSavedSearchMutation(savedSearchAlertId!)
+      tracking.trackEvent(tracks.deletedSavedSearch(artistId))
       onDeleteComplete?.()
     } catch (error) {
       console.error(error)
@@ -148,7 +149,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         { text: "Delete", style: "destructive", onPress: onDelete },
       ]
     )
-    tracking.trackEvent(tracks.deletedSavedSearch(artistId))
   }
 
   return (

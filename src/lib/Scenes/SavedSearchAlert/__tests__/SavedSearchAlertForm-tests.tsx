@@ -96,10 +96,12 @@ describe("Saved search alert form", () => {
     fireEvent.press(getByTestId("save-alert-button"))
 
     await waitFor(() => {
-      expect(trackEvent).toHaveBeenCalledWith(
-        tracks.editedSavedSearch("artistID", { name: "" }, { name: "something new" })
-      )
+      mockEnvironmentPayload(mockEnvironment)
     })
+
+    expect(trackEvent).toHaveBeenCalledWith(
+      tracks.editedSavedSearch("artistID", { name: "" }, { name: "something new" })
+    )
   })
 
   it("calls create mutation when form is submitted", async () => {
@@ -193,6 +195,13 @@ describe("Saved search alert form", () => {
     )
 
     fireEvent.press(getByTestId("delete-alert-button"))
+
+    // @ts-ignore
+    spyAlert.mock.calls[0][2][1].onPress()
+
+    await waitFor(() => {
+      mockEnvironmentPayload(mockEnvironment)
+    })
 
     expect(trackEvent).toHaveBeenCalledWith(tracks.deletedSavedSearch("artistID"))
   })
