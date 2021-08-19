@@ -100,7 +100,7 @@ describe("Saved search alert form", () => {
     })
 
     expect(trackEvent).toHaveBeenCalledWith(
-      tracks.editedSavedSearch("artistID", { name: "" }, { name: "something new" })
+      tracks.editedSavedSearch("savedSearchAlertId", { name: "" }, { name: "something new" })
     )
   })
 
@@ -203,7 +203,7 @@ describe("Saved search alert form", () => {
       mockEnvironmentPayload(mockEnvironment)
     })
 
-    expect(trackEvent).toHaveBeenCalledWith(tracks.deletedSavedSearch("artistID"))
+    expect(trackEvent).toHaveBeenCalledWith(tracks.deletedSavedSearch("savedSearchAlertId"))
   })
 
   it("should auto populate alert name for the create mutation", async () => {

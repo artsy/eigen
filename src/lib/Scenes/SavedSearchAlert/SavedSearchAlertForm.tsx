@@ -50,7 +50,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       try {
         if (isUpdateForm) {
           await updateSavedSearchAlert(alertName, savedSearchAlertId!)
-          tracking.trackEvent(tracks.editedSavedSearch(artistId, initialValues, values))
+          tracking.trackEvent(tracks.editedSavedSearch(savedSearchAlertId!, initialValues, values))
         } else {
           const criteria = getSearchCriteriaFromFilters(artistId, filters)
           await createSavedSearchAlert(alertName, criteria)
@@ -133,7 +133,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const onDelete = async () => {
     try {
       await deleteSavedSearchMutation(savedSearchAlertId!)
-      tracking.trackEvent(tracks.deletedSavedSearch(artistId))
+      tracking.trackEvent(tracks.deletedSavedSearch(savedSearchAlertId!))
       onDeleteComplete?.()
     } catch (error) {
       console.error(error)
@@ -167,19 +167,19 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 }
 
 export const tracks = {
-  deletedSavedSearch: (artistId: string): DeletedSavedSearch => ({
+  deletedSavedSearch: (savedSearchAlertId: string): DeletedSavedSearch => ({
     action: ActionType.deletedSavedSearch,
-    context_screen_owner_type: OwnerType.artist,
-    context_screen_owner_id: artistId,
+    context_screen_owner_type: OwnerType.savedSearch,
+    context_screen_owner_id: savedSearchAlertId,
   }),
   editedSavedSearch: (
-    artistId: string,
+    savedSearchAlertId: string,
     currentValues: SavedSearchAlertFormValues,
     modifiesValues: SavedSearchAlertFormValues
   ): EditedSavedSearch => ({
     action: ActionType.editedSavedSearch,
-    context_screen_owner_type: OwnerType.artist,
-    context_screen_owner_id: artistId,
+    context_screen_owner_type: OwnerType.savedSearch,
+    context_screen_owner_id: savedSearchAlertId,
     current: JSON.stringify(currentValues),
     changed: JSON.stringify(modifiesValues),
   }),
