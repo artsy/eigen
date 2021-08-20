@@ -26,9 +26,9 @@ jest.mock("tipsi-stripe", () => ({
 import stripe from "tipsi-stripe"
 
 import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
-import { Select } from "lib/Components/Select"
 import { extractText } from "lib/tests/extractText"
 import { waitUntil } from "lib/tests/waitUntil"
+import { Select } from "palette/elements/Select"
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)

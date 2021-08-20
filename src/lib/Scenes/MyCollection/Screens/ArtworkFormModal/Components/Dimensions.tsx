@@ -1,13 +1,13 @@
 import { Input } from "lib/Components/Input/Input"
-import { Select } from "lib/Components/Select"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkFormModal/Form/useArtworkForm"
 import { Flex, Sans, Spacer, useSpace } from "palette"
+import { Select } from "palette/elements/Select"
 import React, { useRef } from "react"
 
 export const Dimensions: React.FC = () => {
   const space = useSpace()
   const { formik } = useArtworkForm()
-  const metricInputRef = useRef<Select<Metric>>(null)
+  const metricInputRef = useRef<typeof Select>(null)
 
   return (
     <>

@@ -3,9 +3,9 @@ import { Action, action, computed, Computed, createComponentStore } from "easy-p
 import { CountrySelect } from "lib/Components/CountrySelect"
 import { Input } from "lib/Components/Input/Input"
 import { InputTitle } from "lib/Components/Input/InputTitle"
-import { Select } from "lib/Components/Select"
 import { Stack } from "lib/Components/Stack"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { Select } from "palette/elements/Select/Select"
 import React, { useEffect, useRef } from "react"
 import { commitMutation, graphql } from "react-relay"
 // @ts-ignore

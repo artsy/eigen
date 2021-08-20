@@ -3,11 +3,11 @@ import { Autocomplete } from "lib/utils/Autocomplete"
 import { CheckIcon, CloseIcon, Flex, Sans, Separator, Spacer, Touchable, useColor } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
-import { FancyModal } from "./FancyModal/FancyModal"
-import { INPUT_HEIGHT } from "./Input/Input"
-import { InputTitle } from "./Input/InputTitle"
-import { PopIn } from "./PopIn"
-import { SearchInput } from "./SearchInput"
+import { FancyModal } from "../../../lib/Components/FancyModal/FancyModal"
+import { INPUT_HEIGHT } from "../../../lib/Components/Input/Input"
+import { InputTitle } from "../../../lib/Components/Input/InputTitle"
+import { PopIn } from "../../../lib/Components/PopIn"
+import { SearchInput } from "../../../lib/Components/SearchInput"
 
 export interface SelectOption<ValueType> {
   value: ValueType
@@ -17,7 +17,7 @@ export interface SelectOption<ValueType> {
 }
 
 const ROW_HEIGHT = 40
-interface SelectProps<ValueType> {
+export interface SelectProps<ValueType> {
   options: Array<SelectOption<ValueType>>
   value: ValueType | null
   placeholder?: string
