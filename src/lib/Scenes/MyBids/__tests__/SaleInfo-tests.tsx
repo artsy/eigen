@@ -1,22 +1,15 @@
-jest.mock("moment-timezone", () => {
-  const CURRENT_TIME = "2020-07-31T05:21:14+00:00"
-  const TIME_ZONE = "America/New_York"
-  const actual = jest.requireActual("moment-timezone")
-  const momentMock = (time: string) => (!!time ? actual(time) : actual(CURRENT_TIME))
-  momentMock.tz = { guess: () => TIME_ZONE }
-
-  return momentMock
-})
-
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { merge } from "lodash"
-import moment from "moment-timezone"
+import { DateTime, Settings } from "luxon"
 import { Text } from "palette"
 import { BoltFill, Stopwatch } from "palette/svgs/sf"
 import React from "react"
 import { ReactTestRenderer } from "react-test-renderer"
 import { SaleInfo } from "../Components/SaleInfo"
+
+Settings.now = () => Date.parse("2020-07-31T05:21:14+00:00")
+Settings.defaultZone = "America/New_York"
 
 const renderText = (node: React.ReactElement) => extractText(renderWithWrappers(node).root)
 
@@ -27,15 +20,9 @@ interface SaleInfoProps {
 }
 
 const saleFixture: (overrides: SaleInfoProps) => SaleInfoProps = (overrides = {}) =>
-  merge(
-    {
-      status: "open",
-    },
-    overrides
-  )
+  merge({ status: "open" }, overrides)
 
-// CURRENT_TIME above is "2020-07-31T05:21:14+00:00"
-describe("<SaleInfo />", () => {
+describe(SaleInfo, () => {
   describe("live sale", () => {
     it("has a lightning bolt", () => {
       expect(
@@ -48,7 +35,7 @@ describe("<SaleInfo />", () => {
     describe("live bidding in progress", () => {
       let tree: ReactTestRenderer
       beforeEach(() => {
-        const liveStartAt = moment().subtract(5, "minutes").toJSON()
+        const liveStartAt = DateTime.now().minus({ minutes: 5 }).toJSON()
         tree = renderWithWrappers(<SaleInfo sale={saleFixture({ liveStartAt, status: "open" })} />)
       })
       it("has a purple100 icon + note if live bidding is active, black60 otherwise", () => {
@@ -61,6 +48,7 @@ describe("<SaleInfo />", () => {
         expect(tree.root.findAllByType(Text).length).toEqual(1)
       })
     })
+
     describe("time bounds", () => {
       it("displays 'today' and time (with no second line) if the sale goes live on the same day but more than 10 hours away", () => {
         const text = renderText(<SaleInfo sale={saleFixture({ liveStartAt: "2020-07-31T18:00:00+00:00" })} />)

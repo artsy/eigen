@@ -1,4 +1,4 @@
-import moment from "moment-timezone"
+import { DateTime } from "luxon"
 
 /** Whether lot is in one of its pre-closed states */
 export const lotInActiveSale: (lot: { saleArtwork: { sale: { status: string | null } | null } | null }) => boolean = (
@@ -56,10 +56,9 @@ export class TimelySale {
       return false
     }
 
-    const tz = moment.tz.guess(true)
-    const now = moment().tz(tz)
-    const liveStartMoment = moment(this.liveStartAt!).tz(tz)
+    const now = DateTime.now()
+    const liveStartMoment = DateTime.fromISO(this.liveStartAt!)
 
-    return now.isAfter(liveStartMoment)
+    return now > liveStartMoment
   }
 }
