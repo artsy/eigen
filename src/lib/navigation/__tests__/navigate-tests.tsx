@@ -1,5 +1,6 @@
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { GlobalStore } from "lib/store/GlobalStore"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { Linking } from "react-native"
 import { navigate } from "../navigate"
 
@@ -144,6 +145,7 @@ describe(navigate, () => {
   it("switches tab before pushing in cases where that's required", async () => {
     await navigate("/conversation/234")
     expect(GlobalStore.actions.bottomTabs.switchTab).toHaveBeenCalledWith("inbox")
+    await flushPromiseQueue()
     expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any)).toMatchInlineSnapshot(`
       Array [
         "inbox",
@@ -165,6 +167,7 @@ describe(navigate, () => {
     await navigate("my-profile/saved-search-alerts", {
       popToRootTabView: true,
     })
+    await flushPromiseQueue()
     expect(GlobalStore.actions.bottomTabs.switchTab).toHaveBeenCalledWith("profile")
     expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any)).toMatchInlineSnapshot(`
       Array [
