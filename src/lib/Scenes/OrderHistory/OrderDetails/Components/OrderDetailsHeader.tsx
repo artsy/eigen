@@ -1,5 +1,5 @@
 import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
-import { DateTime, LocaleOptions } from "luxon"
+import { DateTime } from "luxon"
 import { Flex, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -33,7 +33,7 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
       </Flex>
       <Flex flexDirection="column">
         <Text testID="date" color="black60" variant="text" mb={1}>
-          {DateTime.fromISO(createdAt).toLocaleString(DateTime.DATE_MED as LocaleOptions)}
+          {DateTime.fromISO(createdAt).toLocaleString(DateTime.DATE_MED)}
         </Text>
         <Text testID="code" color="black60" variant="text" mb={1}>
           {code}

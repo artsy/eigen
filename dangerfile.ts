@@ -21,6 +21,22 @@ const testOnlyFilter = (filename: string) => filename.includes("-tests") && type
 /**
  * Danger Rules
  */
+// We are trying to migrate away from moment towards luxon
+const preventUsingMoment = () => {
+  const newMomentImports = getCreatedFiles(danger.git.created_files).filter((filename) => {
+    const content = fs.readFileSync(filename).toString()
+    return content.includes('from "moment"') || content.includes('from "moment-timezone"')
+  })
+  if (newMomentImports.length > 0) {
+    warn(`We are trying to migrate away from moment towards \`luxon\`, but found moment imports in the following new files:
+
+${newMomentImports.map((filename) => `- \`${filename}\``).join("\n")}
+
+See [docs](https://moment.github.io/luxon/api-docs/index.html).
+  `)
+  }
+}
+
 // We are trying to migrate away from Enzyme towards react-test-renderer
 const preventUsingEnzyme = () => {
   const newEnzymeImports = getCreatedFiles(danger.git.created_files)
@@ -132,6 +148,7 @@ export const validatePRChangelog = () => {
   return markdown(message)
 }
 ;(async function () {
+  preventUsingMoment()
   preventUsingEnzyme()
   preventUsingRenderRelayTree()
   verifyRemainingDevWork()
