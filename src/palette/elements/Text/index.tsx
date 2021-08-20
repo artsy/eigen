@@ -40,7 +40,7 @@ export const Serif: React.FC<SerifV1Props> = (props) => {
 }
 
 const transformSerifPropsToV3 = (props: SerifV1Props): TextV3Props => {
-  const { size, weight, ...newProps } = _.cloneDeep(props)
+  const { size, weight, ...newProps } = _.clone(props)
 
   const actualSize = _.isArray(size) ? size[0] : size
   const sizeMap: Record<
@@ -89,7 +89,7 @@ export const Sans: React.FC<SansV1Props> = (props) => {
 }
 
 const transformSansPropsToV3 = (props: SansV1Props): TextV3Props => {
-  const { size, weight, ...newProps } = _.cloneDeep(props)
+  const { size, weight, ...newProps } = _.clone(props)
 
   const actualSize = _.isArray(size) ? size[0] : size
   const sizeMap: Record<
@@ -170,7 +170,7 @@ export const Text: React.FC<TextProps> = (props) => {
 }
 
 const transformTextV2PropsToV3 = (props: TextV2Props): TextV3Props => {
-  const { variant, ...newProps } = _.cloneDeep(props)
+  const { variant, ...newProps } = _.clone(props)
 
   const variantMap: Record<
     "small" | "largeTitle" | "title" | "subtitle" | "text" | "mediumText" | "caption",
