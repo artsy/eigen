@@ -7,6 +7,7 @@ import { Input } from "lib/Components/Input/Input"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { Stack } from "lib/Components/Stack"
+import { useToast } from "lib/Components/Toast/toastHook"
 import { goBack, navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -14,8 +15,7 @@ import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { times } from "lodash"
-import { Flex, Text } from "palette"
-import { Checkbox } from "palette/elements/Checkbox"
+import { Checkbox, Flex, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -88,6 +88,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
   const [isDefaultAddress, setIsDefaultAddress] = useState(false)
   const { height } = useScreenDimensions()
   const offSetTop = 0.75
+  const { show } = useToast()
 
   useEffect(() => {
     setPhoneNumber(me?.phone)
@@ -123,6 +124,9 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       if (isDefaultAddress) {
         await setAsDefaultAddress(creatingResponse.createUserAddress?.userAddressOrErrors.internalID!)
       }
+      if (!creatingResponse.createUserAddress?.userAddressOrErrors.errors) {
+        show("Added", "top")
+      }
       goBack()
     } catch (e) {
       captureMessage(e.stack)
@@ -146,6 +150,9 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       if (isDefaultAddress) {
         await setAsDefaultAddress(response.updateUserAddress?.userAddressOrErrors.internalID!)
       }
+      if (!response.updateUserAddress?.userAddressOrErrors.errors) {
+        show("Edited", "top")
+      }
       goBack()
     } catch (e) {
       Alert.alert("Something went wrong while attempting to save your address. Please try again or contact us.")
@@ -158,6 +165,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       userAddressID,
       () => {
         navigate("my-profile/saved-addresses")
+        show("Deleted", "top")
       },
       (message: string) => captureMessage(message)
     )

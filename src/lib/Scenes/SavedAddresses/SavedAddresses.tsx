@@ -3,6 +3,7 @@ import { themeGet } from "@styled-system/theme-get"
 import { SavedAddresses_me } from "__generated__/SavedAddresses_me.graphql"
 import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
+import { useToast } from "lib/Components/Toast/toastHook"
 import { navigate, navigationEvents } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -37,6 +38,7 @@ export const util = { onRefresh: () => {} }
 const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const addresses = extractNodes(me.addressConnection)
+  const { show } = useToast()
   util.onRefresh = useCallback(() => {
     setIsRefreshing(true)
     relay.refetch(
@@ -67,7 +69,10 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
   const onPressDeleteAddress = (addressId: string) => {
     deleteSavedAddress(
       addressId,
-      () => relay.refetch({}),
+      () => {
+        relay.refetch({})
+        show("Deleted", "top")
+      },
       (message: string) => captureMessage(message)
     )
   }
