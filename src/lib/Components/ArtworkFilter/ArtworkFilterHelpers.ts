@@ -1,5 +1,5 @@
 import { FilterScreen } from "lib/Components/ArtworkFilter"
-import { capitalize, compact, groupBy, isEqual, isUndefined, pick, pickBy, sortBy } from "lodash"
+import { capitalize, compact, groupBy, isArray, isEqual, isUndefined, pick, pickBy, sortBy } from "lodash"
 import { LOCALIZED_UNIT } from "./Filters/helpers"
 
 export enum FilterDisplayName {
@@ -193,6 +193,14 @@ export interface FilterCounts {
   followedArtists: number | null
 }
 
+export type SelectedFiltersCountsType = {
+  [Name in FilterParamName]: number
+}
+
+export interface SelectedFiltersCounts extends SelectedFiltersCountsType {
+  waysToBuy: number
+}
+
 export const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string | undefined> = {
   ARTIST_NATIONALITY: FilterParamName.artistNationalities,
   ARTIST: "artistIDs",
@@ -316,6 +324,13 @@ export const extractCustomSizeLabel = (selectedOptions: FilterArray) => {
   // Intentionally doesn't return anything
 }
 
+const waysToBuyFilterNames = [
+  FilterParamName.waysToBuyBuy,
+  FilterParamName.waysToBuyMakeOffer,
+  FilterParamName.waysToBuyBid,
+  FilterParamName.waysToBuyInquire,
+]
+
 /**
  * Formats the display for the Filter Modal "home" screen.
  */
@@ -398,13 +413,6 @@ export const selectedOption = ({
 
   if (filterScreen === "waysToBuy") {
     const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
-
-    const waysToBuyFilterNames = [
-      FilterParamName.waysToBuyBuy,
-      FilterParamName.waysToBuyMakeOffer,
-      FilterParamName.waysToBuyBid,
-      FilterParamName.waysToBuyInquire,
-    ]
 
     const waysToBuyOptions = multiSelectedOptions
       .filter((value) => waysToBuyFilterNames.includes(value.paramName))
@@ -596,4 +604,21 @@ export const getParamsForInputByFilterType = (
   })
 
   return allowedParams
+}
+
+export const getSelectedFiltersCounts = (selectedFilters: FilterArray) => {
+  const counts: Partial<SelectedFiltersCounts> = {}
+  selectedFilters.forEach(({ paramName, paramValue }: FilterData) => {
+    if (paramName === "artistIDs") {
+      counts.artistIDs = (counts.artistIDs ?? 0) + 1
+    } else if (waysToBuyFilterNames.includes(paramName)) {
+      counts.waysToBuy = (counts.waysToBuy ?? 0) + 1
+    } else if (typeof paramValue === "string") {
+      counts[paramName] = 1
+    } else if (isArray(paramValue)) {
+      counts[paramName] = paramValue.length
+    }
+  })
+
+  return counts
 }
