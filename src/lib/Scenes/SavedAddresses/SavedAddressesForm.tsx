@@ -7,6 +7,7 @@ import { Input } from "lib/Components/Input/Input"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { Stack } from "lib/Components/Stack"
+import { useToast } from "lib/Components/Toast/toastHook"
 import { goBack, navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -82,6 +83,7 @@ const useStore = createComponentStore<Store>({
 
 export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId?: string }> = ({ me, addressId }) => {
   const isEditForm = !!addressId
+  const toast = useToast()
 
   const [state, actions] = useStore()
   const [phoneNumber, setPhoneNumber] = useState(me?.phone)
@@ -123,6 +125,9 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       if (isDefaultAddress) {
         await setAsDefaultAddress(creatingResponse.createUserAddress?.userAddressOrErrors.internalID!)
       }
+      if (!creatingResponse.createUserAddress?.userAddressOrErrors.errors) {
+        toast.show("Address successfully added", "top")
+      }
       goBack()
     } catch (e) {
       captureMessage(e.stack)
@@ -146,6 +151,9 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       if (isDefaultAddress) {
         await setAsDefaultAddress(response.updateUserAddress?.userAddressOrErrors.internalID!)
       }
+      if (!response.updateUserAddress?.userAddressOrErrors.errors) {
+        toast.show("Address successfully edited", "top")
+      }
       goBack()
     } catch (e) {
       Alert.alert("Something went wrong while attempting to save your address. Please try again or contact us.")
@@ -158,6 +166,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       userAddressID,
       () => {
         navigate("my-profile/saved-addresses")
+        toast.show("Address successfully deleted", "top")
       },
       (message: string) => captureMessage(message)
     )
