@@ -4,14 +4,14 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Home_me = {
-    readonly " $fragmentRefs": FragmentRefs<"EmailConfirmationBanner_me" | "SaleArtworksHomeRail_me" | "AuctionResultsRail_me">;
-    readonly " $refType": "Home_me";
+export type Home_meAbove = {
+    readonly " $fragmentRefs": FragmentRefs<"EmailConfirmationBanner_me" | "SaleArtworksHomeRail_me">;
+    readonly " $refType": "Home_meAbove";
 };
-export type Home_me$data = Home_me;
-export type Home_me$key = {
-    readonly " $data"?: Home_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"Home_me">;
+export type Home_meAbove$data = Home_meAbove;
+export type Home_meAbove$key = {
+    readonly " $data"?: Home_meAbove$data;
+    readonly " $fragmentRefs": FragmentRefs<"Home_meAbove">;
 };
 
 
@@ -20,7 +20,7 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "Home_me",
+  "name": "Home_meAbove",
   "selections": [
     {
       "args": null,
@@ -31,15 +31,10 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "FragmentSpread",
       "name": "SaleArtworksHomeRail_me"
-    },
-    {
-      "args": null,
-      "kind": "FragmentSpread",
-      "name": "AuctionResultsRail_me"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '628b099479983f109a233b2f3ba92048';
+(node as any).hash = 'ba2bef8742264c9f4908f79dc3546752';
 export default node;
