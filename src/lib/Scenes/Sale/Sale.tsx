@@ -237,6 +237,12 @@ export const tracks = {
       context_screen_owner_slug: slug,
     }
   },
+  pageView: (slug: string) => {
+    return {
+      auction_slug: slug,
+      name: "Auctions Pageview",
+    }
+  },
   openFilter: (id: string, slug: string) => {
     return {
       action_name: "filter",
@@ -328,6 +334,12 @@ export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayMo
   saleID,
   environment,
 }) => {
+  const { trackEvent } = useTracking()
+
+  useEffect(() => {
+    trackEvent(tracks.pageView(saleID))
+  }, [])
+
   return (
     <RetryErrorBoundary
       render={({ isRetry }) => {
