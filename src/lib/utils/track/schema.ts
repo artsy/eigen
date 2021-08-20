@@ -138,6 +138,7 @@ export enum PageNames {
   ShowPage = "Show",
   ShowMoreInfoPage = "moreInfo",
   SavedSearchEdit = "SavedSearchEdit",
+  SavedSearchList = "SavedSearchList",
 }
 
 export enum OwnerEntityTypes {
