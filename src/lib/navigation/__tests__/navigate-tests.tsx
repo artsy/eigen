@@ -162,6 +162,13 @@ describe(navigate, () => {
     `)
   })
 
+  it("with delay if the screen should be open in a another tab", async () => {
+    await navigate("my-profile/saved-search-alerts")
+    expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any)).toBeUndefined()
+    await flushPromiseQueue()
+    expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any)).not.toBeUndefined()
+  })
+
   it("pop to root tab view in cases where that's required", async () => {
     await navigate("my-profile/payment")
     await navigate("my-profile/saved-search-alerts", {
