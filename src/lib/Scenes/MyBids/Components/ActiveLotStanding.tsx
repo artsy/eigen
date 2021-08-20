@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { ActiveLotStanding_lotStanding } from "__generated__/ActiveLotStanding_lotStanding.graphql"
+import { ActiveLotStanding_saleArtwork } from "__generated__/ActiveLotStanding_saleArtwork.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
 import { Flex, Text } from "palette"
@@ -11,20 +11,23 @@ import { TimelySale } from "../helpers/timely"
 import { HighestBid, Outbid, ReserveNotMet } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
-export const ActiveLotStanding = ({ lotStanding }: { lotStanding: ActiveLotStanding_lotStanding }) => {
-  const timelySale = TimelySale.create(lotStanding?.saleArtwork?.sale!)
+export const ActiveLotStanding = ({
+  saleArtwork
+}: {
+  saleArtwork: ActiveLotStanding_saleArtwork
+}) => {
+  const timelySale = TimelySale.create(saleArtwork?.sale!)
 
-  const sellingPrice = lotStanding?.lot?.sellingPrice?.display
-  const bidCount = lotStanding?.lot?.bidCount
-  const { saleArtwork, lot } = lotStanding
+  const sellingPrice = saleArtwork?.lotState?.sellingPrice?.display
+  const bidCount = saleArtwork?.lotState?.bidCount
   const tracking = useTracking()
 
   const displayBidCount = (): string | undefined => {
     if (isSmallScreen) {
       return
-    } else {
-      return `(${bidCount.toString() + (bidCount === 1 ? " bid" : " bids")})`
     }
+
+    return `(${bidCount?.toString() + (bidCount === 1 ? " bid" : " bids")})`
   }
 
   const handleLotTap = () => {
@@ -40,8 +43,7 @@ export const ActiveLotStanding = ({ lotStanding }: { lotStanding: ActiveLotStand
   }
 
   return (
-    saleArtwork &&
-    lot && (
+    saleArtwork && (
       <TouchableOpacity onPress={() => handleLotTap()} style={{ marginHorizontal: 0, width: "100%" }}>
         <Lot saleArtwork={saleArtwork} isSmallScreen={isSmallScreen}>
           <Flex flexDirection="row" justifyContent="flex-end">
@@ -52,9 +54,9 @@ export const ActiveLotStanding = ({ lotStanding }: { lotStanding: ActiveLotStand
             </Text>
           </Flex>
           <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
-            {!timelySale.isLAI && lotStanding?.isHighestBidder && lotStanding.lot.reserveStatus === "ReserveNotMet" ? (
+            {!timelySale.isLAI && saleArtwork?.isHighestBidder && saleArtwork?.lotState?.reserveStatus === "ReserveNotMet" ? (
               <ReserveNotMet />
-            ) : lotStanding?.isHighestBidder ? (
+            ) : saleArtwork?.isHighestBidder ? (
               <HighestBid />
             ) : (
               <Outbid />
@@ -67,32 +69,42 @@ export const ActiveLotStanding = ({ lotStanding }: { lotStanding: ActiveLotStand
 }
 
 export const ActiveLotStandingFragmentContainer = createFragmentContainer(ActiveLotStanding, {
-  lotStanding: graphql`
-    fragment ActiveLotStanding_lotStanding on AuctionsLotStanding {
+  saleArtwork: graphql`
+    fragment ActiveLotStanding_saleArtwork on SaleArtwork {
+      ...Lot_saleArtwork
       isHighestBidder
-      lot {
-        internalID
+      sale {
+        status
+        liveStartAt
+        endAt
+      }
+      lotState {
         bidCount
         reserveStatus
         soldStatus
-        askingPrice: onlineAskingPrice {
-          display
-        }
         sellingPrice {
           display
         }
       }
-      saleArtwork {
-        ...Lot_saleArtwork
-        artwork {
-          internalID
-          href
-          slug
-        }
-        sale {
-          liveStartAt
-        }
+      artwork {
+        internalID
+        href
+        slug
       }
     }
   `,
 })
+
+// isHighestBidder
+// estimate
+// artwork {
+//   internalID
+//   href
+//   slug
+// }
+// lotState {
+//   soldStatus
+//   sellingPrice {
+//     display
+//   }
+// }
