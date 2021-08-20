@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { EditSavedSearchAlert_artist } from "__generated__/EditSavedSearchAlert_artist.graphql"
 import { EditSavedSearchAlert_artworksConnection } from "__generated__/EditSavedSearchAlert_artworksConnection.graphql"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
@@ -10,6 +11,7 @@ import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { goBack } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useTheme } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
@@ -44,26 +46,34 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
   }
 
   return (
-    <ArtsyKeyboardAvoidingView>
-      <PageWithSimpleHeader title="Edit your Alert">
-        <ScrollView
-          keyboardDismissMode="on-drag"
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{ padding: space(2) }}
-        >
-          <SavedSearchAlertForm
-            initialValues={{ name: userAlertSettings?.name ?? "" }}
-            artistId={artist.internalID}
-            artistName={artist.name!}
-            filters={filters}
-            aggregations={aggregations}
-            savedSearchAlertId={savedSearchAlertId}
-            onComplete={onComplete}
-            onDeleteComplete={onComplete}
-          />
-        </ScrollView>
-      </PageWithSimpleHeader>
-    </ArtsyKeyboardAvoidingView>
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.SavedSearchEdit,
+        context_screen_owner_id: savedSearchAlertId,
+        context_screen_owner_type: OwnerType.savedSearch,
+      }}
+    >
+      <ArtsyKeyboardAvoidingView>
+        <PageWithSimpleHeader title="Edit your Alert">
+          <ScrollView
+            keyboardDismissMode="on-drag"
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ padding: space(2) }}
+          >
+            <SavedSearchAlertForm
+              initialValues={{ name: userAlertSettings?.name ?? "" }}
+              artistId={artist.internalID}
+              artistName={artist.name!}
+              filters={filters}
+              aggregations={aggregations}
+              savedSearchAlertId={savedSearchAlertId}
+              onComplete={onComplete}
+              onDeleteComplete={onComplete}
+            />
+          </ScrollView>
+        </PageWithSimpleHeader>
+      </ArtsyKeyboardAvoidingView>
+    </ProvideScreenTracking>
   )
 }
 
