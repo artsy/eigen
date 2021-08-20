@@ -9,6 +9,7 @@ import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { Stack } from "lib/Components/Stack"
 import { goBack, navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { AddressNotificationContext } from "lib/utils/AddressNotificationProvider"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -16,7 +17,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { times } from "lodash"
 import { Flex, Text } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { MyAccountFieldEditScreen } from "../MyAccount/Components/MyAccountFieldEditScreen"
@@ -82,6 +83,7 @@ const useStore = createComponentStore<Store>({
 
 export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId?: string }> = ({ me, addressId }) => {
   const isEditForm = !!addressId
+  const notificationState = useContext(AddressNotificationContext)
 
   const [state, actions] = useStore()
   const [phoneNumber, setPhoneNumber] = useState(me?.phone)
@@ -123,6 +125,9 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       if (isDefaultAddress) {
         await setAsDefaultAddress(creatingResponse.createUserAddress?.userAddressOrErrors.internalID!)
       }
+      if (!creatingResponse.createUserAddress?.userAddressOrErrors.errors) {
+        notificationState.setNotificationState!({ action: "Added", notificationVisible: true })
+      }
       goBack()
     } catch (e) {
       captureMessage(e.stack)
@@ -146,6 +151,9 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       if (isDefaultAddress) {
         await setAsDefaultAddress(response.updateUserAddress?.userAddressOrErrors.internalID!)
       }
+      if (!response.updateUserAddress?.userAddressOrErrors.errors) {
+        notificationState.setNotificationState!({ action: "Edited", notificationVisible: true })
+      }
       goBack()
     } catch (e) {
       Alert.alert("Something went wrong while attempting to save your address. Please try again or contact us.")
@@ -158,6 +166,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       userAddressID,
       () => {
         navigate("my-profile/saved-addresses")
+        notificationState.setNotificationState!({ action: "Deleted", notificationVisible: true })
       },
       (message: string) => captureMessage(message)
     )

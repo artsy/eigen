@@ -5,19 +5,19 @@ import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { navigate, navigationEvents } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { AddressNotificationContext } from "lib/utils/AddressNotificationProvider"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { Box, Flex, Separator, Spacer, Text, Touchable } from "palette"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useContext, useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { graphql } from "relay-runtime"
 import styled from "styled-components/native"
 import { AddAddressButton } from "./Components/AddAddressButton"
 import { deleteSavedAddress } from "./mutations/deleteSavedAddress"
-
 interface CardProps {
   isDefault: boolean
 }
@@ -35,6 +35,7 @@ const NUM_ADDRESSES_TO_FETCH = 10
 export const util = { onRefresh: () => {} }
 
 const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
+  const notificationState = useContext(AddressNotificationContext)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const addresses = extractNodes(me.addressConnection)
   util.onRefresh = useCallback(() => {
@@ -67,7 +68,10 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
   const onPressDeleteAddress = (addressId: string) => {
     deleteSavedAddress(
       addressId,
-      () => relay.refetch({}),
+      () => {
+        relay.refetch({})
+        notificationState.setNotificationState!({ action: "Deleted", notificationVisible: true })
+      },
       (message: string) => captureMessage(message)
     )
   }
