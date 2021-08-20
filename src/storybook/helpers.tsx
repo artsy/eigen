@@ -1,6 +1,6 @@
 import { Flex, Spacer } from "palette"
 import React from "react"
-import { FlatList, ScrollView, StyleProp, ViewStyle } from "react-native"
+import { FlatList, StyleProp, ViewStyle } from "react-native"
 
 export const DList = <ItemT,>({
   data,
@@ -20,8 +20,7 @@ export const DList = <ItemT,>({
       flexGrow: 1,
       alignItems: "center",
       justifyContent: "center",
-      marginTop: 30,
-      paddingBottom: 30,
+      paddingVertical: 30,
     }}
   />
 )
@@ -44,10 +43,8 @@ export const List = ({
       {
         flexGrow: 1,
         alignItems: "center",
-        marginTop: 30,
-        paddingBottom: 30,
         justifyContent: "center",
-        marginVertical: 100,
+        paddingVertical: 30,
       },
       contentContainerStyle,
     ]}
@@ -60,21 +57,3 @@ export const Row = ({ children }: { children: React.ReactNode }) => (
     {children}
   </Flex>
 )
-
-export const CenterView = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <ScrollView
-      contentContainerStyle={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#F5FCFF",
-        marginTop: 30,
-        paddingBottom: 30,
-        marginVertical: 100,
-      }}
-    >
-      {children}
-    </ScrollView>
-  )
-}
