@@ -6,7 +6,9 @@
  * (for reference: minus `-`, endash `–`)
  */
 export const endash = "–"
+export const emdash = "—"
 export const bullet = "•"
+export const nbsp = String.fromCharCode(160)
 
 /**
  * A helper func to create a range string out of two strings, by putting an endash between them.

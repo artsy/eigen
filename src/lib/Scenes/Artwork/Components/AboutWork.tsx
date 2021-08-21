@@ -22,6 +22,7 @@ export class AboutWork extends React.Component<AboutWorkProps> {
           <Sans size="4t">About the work</Sans>
           {!!additional_information && (
             <ReadMore
+              testID="additional-info-readmore"
               content={additional_information}
               maxChars={textLimit}
               trackingFlow={Schema.Flow.AboutTheWork}
@@ -37,6 +38,7 @@ export class AboutWork extends React.Component<AboutWorkProps> {
                 </Sans>
               )}
               <ReadMore
+                testID="description-readmore"
                 content={description}
                 maxChars={textLimit}
                 trackingFlow={Schema.Flow.AboutTheWork}

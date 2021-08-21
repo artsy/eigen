@@ -7,13 +7,13 @@ import styled from "styled-components/native"
 import { color, ColorProps, space, SpaceProps, typography, TypographyProps } from "styled-system"
 import { useFontFamilyFor } from "./helpers"
 
-export type TextProps = {
+export interface TextProps extends RNTextProps, InnerStyledTextProps {
   size?: TextSizeV3
   italic?: boolean
   caps?: boolean
   weight?: "regular" | "medium"
-} & RNTextProps &
-  InnerStyledTextProps
+  maxChars?: number
+}
 
 export const Text: React.FC<TextProps> = React.forwardRef<RNText, TextProps>(
   ({ size = "sm", italic = false, caps, weight = "regular", style, children, ...rest }, ref) => {
