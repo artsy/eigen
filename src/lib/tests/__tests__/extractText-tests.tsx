@@ -13,7 +13,7 @@ describe("extractText", () => {
     expect(extractText(container)).toEqual("wow")
   })
 
-  fit("works for nested Texts", () => {
+  it("works for nested Texts", () => {
     const { container } = renderWithWrappersTL(
       <RNText>
         wow

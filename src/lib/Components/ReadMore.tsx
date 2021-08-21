@@ -2,16 +2,7 @@ import { plainTextFromTree } from "lib/utils/plainTextFromTree"
 import { defaultRules, renderMarkdown } from "lib/utils/renderMarkdown"
 import { Schema } from "lib/utils/track"
 import _ from "lodash"
-import {
-  Color,
-  Flex,
-  Sans,
-  SansProps,
-  Serif,
-  SerifProps,
-  Text as PaletteText,
-  TextProps as PaletteTextProps,
-} from "palette"
+import { Color, Flex, Sans, SansProps, Text as PaletteText, TextProps as PaletteTextProps } from "palette"
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { useTracking } from "react-tracking"
@@ -25,22 +16,19 @@ interface Props {
   contextModule?: string
   trackingFlow?: string
   color?: ResponsiveValue<Color>
-  textStyle?: "serif" | "sans" | "new"
+  textStyle?: "sans" | "new"
 }
 
 export const ReadMore = React.memo(
-  ({ content, maxChars, presentLinksModally, color, trackingFlow, contextModule, textStyle = "serif" }: Props) => {
+  ({ content, maxChars, presentLinksModally, color, trackingFlow, contextModule, textStyle = "sans" }: Props) => {
     const [isExpanded, setIsExpanded] = useState(false)
     const tracking = useTracking()
     const useNewTextStyles = textStyle === "new"
     const basicRules = defaultRules({ modal: presentLinksModally, useNewTextStyles })
-    const TextComponent: React.ComponentType<SansProps | SerifProps | PaletteTextProps> = (textStyle === "new"
+    const TextComponent: React.ComponentType<SansProps | PaletteTextProps> = (textStyle === "new"
       ? PaletteText
-      : textStyle === "sans"
-      ? Sans
-      : Serif) as any
-    const textProps: SansProps | SerifProps | PaletteTextProps =
-      textStyle === "new" ? { variant: "text" } : { size: "3" }
+      : Sans) as any
+    const textProps: SansProps | PaletteTextProps = textStyle === "new" ? { variant: "text" } : { size: "3" }
     const rules = {
       ...basicRules,
       paragraph: {
@@ -72,21 +60,19 @@ export const ReadMore = React.memo(
       root
     ) : (
       <Flex>
-        <Text>
-          {truncate({
-            root,
-            maxChars,
-            onExpand: () => {
-              tracking.trackEvent({
-                action_name: Schema.ActionNames.ReadMore,
-                action_type: Schema.ActionTypes.Tap,
-                context_module: contextModule ? contextModule : null,
-                flow: trackingFlow ? trackingFlow : null,
-              })
-              setIsExpanded(true)
-            },
-          })}
-        </Text>
+        {truncate({
+          root,
+          maxChars,
+          onExpand: () => {
+            tracking.trackEvent({
+              action_name: Schema.ActionNames.ReadMore,
+              action_type: Schema.ActionTypes.Tap,
+              context_module: contextModule ? contextModule : null,
+              flow: trackingFlow ? trackingFlow : null,
+            })
+            setIsExpanded(true)
+          },
+        })}
       </Flex>
     )
   }
@@ -135,14 +121,14 @@ function truncate({
     if (React.isValidElement(node)) {
       // TODO: find a way to make the rendering extensible while allowing textDepth to be tracked.
       // Right now we assume that only these two Text nodes will be used.
-      if (node.type === Sans || node.type === Serif || node.type === PaletteText) {
+      if (node.type === Sans || node.type === PaletteText) {
         textDepth += 1
       }
       const children = React.Children.toArray((node.props as any).children)
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const truncatedChildren = traverse(children)
 
-      if (node.type === Sans || node.type === Serif || node.type === PaletteText) {
+      if (node.type === Sans || node.type === PaletteText) {
         if (textDepth === 1 && maxChars === offset) {
           truncatedChildren.push(
             <>
