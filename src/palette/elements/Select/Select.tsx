@@ -1,12 +1,10 @@
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import { Autocomplete } from "lib/utils/Autocomplete"
-import { CheckIcon, CloseIcon, Flex, Sans, Separator, Spacer, Touchable, useColor } from "palette"
+import { CloseIcon, Flex, Separator, Spacer, Text, Touchable, useColor } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
 import { FancyModal } from "../../../lib/Components/FancyModal/FancyModal"
 import { INPUT_HEIGHT } from "../../../lib/Components/Input/Input"
-import { InputTitle } from "../../../lib/Components/Input/InputTitle"
-import { PopIn } from "../../../lib/Components/PopIn"
 import { SearchInput } from "../../../lib/Components/SearchInput"
 
 export interface SelectOption<ValueType> {
@@ -16,7 +14,6 @@ export interface SelectOption<ValueType> {
   searchImportance?: number
 }
 
-const ROW_HEIGHT = 40
 export interface SelectProps<ValueType> {
   options: Array<SelectOption<ValueType>>
   value: ValueType | null
@@ -32,74 +29,73 @@ export interface SelectProps<ValueType> {
   renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
   onModalFinishedClosing?(): void
 }
-interface State {
-  showingModal: boolean
-}
-export class Select<ValueType> extends React.Component<SelectProps<ValueType>, State> {
-  static defaultProps = {
-    showTitleLabel: true,
-  }
 
-  state: State = { showingModal: false }
+export const Select = <ValueType,>({
+  options,
+  value,
+  placeholder,
+  title,
+  showTitleLabel = true,
+  subTitle,
+  enableSearch,
+  maxModalHeight,
+  hasError,
+  onSelectValue,
+  renderButton,
+  renderItemLabel,
+  onModalFinishedClosing,
+}: SelectProps<ValueType>) => {
+  const [showingModal, setShowingModal] = useState(false)
 
-  async open() {
-    // tinkering with RN internals here to make sure that when this select is tapped we blur
-    // any text input that was focuesd at the time.
+  // tinkering with RN internals here to make sure that when this select is tapped we blur
+  // any text input that was focuesd at the time.
+  const blurAllOtherInputs = async () => {
     const inputRef = TextInput.State.currentlyFocusedInput()
+
     if (inputRef) {
       TextInput.State.blurTextInput(inputRef)
       await new Promise((r) => requestAnimationFrame(r))
     }
-    await new Promise<void>((r) => this.setState({ showingModal: true }, r))
   }
 
-  close() {
-    this.setState({ showingModal: false })
+  const open = async () => {
+    await blurAllOtherInputs()
+    setShowingModal(true)
   }
 
-  render() {
-    const {
-      options,
-      onSelectValue,
-      value,
-      placeholder,
-      enableSearch,
-      title,
-      showTitleLabel,
-      subTitle,
-      maxModalHeight,
-      hasError,
-    } = this.props
+  const close = () => {
+    setShowingModal(false)
+  }
 
-    const selectedItem = options.find((o) => o.value === value)
-    return (
-      <>
-        {this.props.renderButton?.({ selectedValue: selectedItem?.value ?? null, onPress: this.open.bind(this) }) ?? (
-          <SelectButton
-            title={title}
-            showTitleLabel={showTitleLabel}
-            subTitle={subTitle}
-            placeholder={placeholder}
-            value={selectedItem?.label}
-            onPress={this.open.bind(this)}
-            hasError={hasError}
-          />
-        )}
-        <SelectModal
-          visible={this.state.showingModal}
+  const selectedItem = options.find((o) => o.value === value)
+
+  return (
+    <>
+      {renderButton?.({ selectedValue: selectedItem?.value ?? null, onPress: open.bind(this) }) ?? (
+        <SelectButton
           title={title}
-          enableSearch={enableSearch}
-          value={value}
-          options={options}
-          maxHeight={maxModalHeight}
-          onDismiss={this.close.bind(this)}
-          onSelectValue={onSelectValue}
-          renderItemLabel={this.props.renderItemLabel}
-          onModalFinishedClosing={this.props.onModalFinishedClosing}
+          showTitleLabel={showTitleLabel}
+          subTitle={subTitle}
+          placeholder={placeholder}
+          value={selectedItem?.label}
+          onPress={open.bind(this)}
+          hasError={hasError}
         />
-      </>
-    )
-  }
+      )}
+      <SelectModal
+        visible={showingModal}
+        title={title}
+        enableSearch={enableSearch}
+        value={value}
+        options={options}
+        maxHeight={maxModalHeight}
+        onDismiss={close.bind(this)}
+        onSelectValue={onSelectValue}
+        renderItemLabel={renderItemLabel}
+        onModalFinishedClosing={onModalFinishedClosing}
+      />
+    </>
+  )
 }
 
 const SelectButton: React.FC<{
@@ -114,12 +110,12 @@ const SelectButton: React.FC<{
   const color = useColor()
   return (
     <Flex>
-      {showTitleLabel ? <InputTitle>{title}</InputTitle> : null}
+      {showTitleLabel ? <Text>{title?.toUpperCase()}</Text> : null}
 
       {subTitle ? (
-        <Sans mb={0.5} size="2" color={color("black60")}>
+        <Text mb={0.5} color={color("black60")}>
           {subTitle}
-        </Sans>
+        </Text>
       ) : (
         <Spacer mb={0.5} />
       )}
@@ -134,13 +130,13 @@ const SelectButton: React.FC<{
           alignItems="center"
         >
           {value ? (
-            <Sans size="3t" color="black100">
+            <Text color="black100" mr={0.5}>
               {value}
-            </Sans>
+            </Text>
           ) : (
-            <Sans size="3t" color="black60">
+            <Text color="black60" mr={0.5}>
               {placeholder ?? "Pick an option"}
-            </Sans>
+            </Text>
           )}
           <TriangleDown />
         </Flex>
@@ -160,7 +156,18 @@ const SelectModal: React.FC<{
   onSelectValue(value: unknown, index: number): any
   renderItemLabel?(value: SelectOption<unknown>): JSX.Element
   onModalFinishedClosing?(): void
-}> = (props) => {
+}> = ({
+  options,
+  value,
+  title,
+  enableSearch,
+  visible,
+  maxHeight,
+  onDismiss,
+  onSelectValue,
+  renderItemLabel,
+  onModalFinishedClosing,
+}) => {
   const color = useColor()
 
   // we need to be able to have a local version of the value state so we can show the updated
@@ -168,17 +175,17 @@ const SelectModal: React.FC<{
   // close the modal. We don't want to tell the consuming component about the user's selection until the
   // animation is finished, so they don't have to worry about waiting for the animation to finish if they need
   // to trigger further actions as a result.
-  const [localValue, setValue] = useState(props.value)
+  const [localValue, setValue] = useState(value)
   useEffect(() => {
-    setValue(props.value)
-  }, [props.value])
+    setValue(value)
+  }, [value])
 
-  const selectedItem = props.options.find((o) => o.value === localValue)
+  const selectedItem = options.find((o) => o.value === localValue)
 
   const autocomplete = useMemo(() => {
-    return props.enableSearch
+    return enableSearch
       ? new Autocomplete<SelectOption<unknown>>(
-          props.options.map((option) => {
+          options.map((option) => {
             if (!option.searchTerms || option.searchTerms.length === 0) {
               console.error("Option with empty search terms: " + JSON.stringify(option))
               return { searchTerms: [], importance: 0, key: option }
@@ -187,19 +194,19 @@ const SelectModal: React.FC<{
           })
         )
       : null
-  }, [props.enableSearch, props.options])
+  }, [enableSearch, options])
 
   const [searchTerm, setSearchTerm] = useState("")
 
   // reset the search term whenever we show the modal
   useEffect(() => {
-    if (props.visible) {
+    if (visible) {
       setSearchTerm("")
     }
-  }, [props.visible])
+  }, [visible])
 
   const autocompleteResults = useMemo(() => {
-    return searchTerm && autocomplete ? autocomplete.getSuggestions(searchTerm) : props.options
+    return searchTerm && autocomplete ? autocomplete.getSuggestions(searchTerm) : options
   }, [autocomplete, searchTerm])
 
   const flatListRef = useRef<FlatList>(null)
@@ -208,7 +215,7 @@ const SelectModal: React.FC<{
   // scroll to show the selected value whenever we either clear the
   // search input, or show the modal.
   useEffect(() => {
-    if (!props.visible) {
+    if (!visible) {
       return
     }
 
@@ -220,9 +227,9 @@ const SelectModal: React.FC<{
           await new Promise((r) => requestAnimationFrame(r))
         }
         // search was cleared (or hasn't been touched yet) and the user has previously selected a value
-        const initialScrollIndex = props.options.indexOf(selectedItem)
+        const initialScrollIndex = options.indexOf(selectedItem)
         // try to center the option on screen
-        const initialScrollOffset = initialScrollIndex * ROW_HEIGHT - (flatListHeight.current ?? 0) / 2 + ROW_HEIGHT
+        const initialScrollOffset = initialScrollIndex * INPUT_HEIGHT - (flatListHeight.current ?? 0) / 2 + INPUT_HEIGHT
         requestAnimationFrame(() => {
           flatListRef.current?.scrollToOffset({ offset: initialScrollOffset, animated: false })
         })
@@ -234,31 +241,29 @@ const SelectModal: React.FC<{
         flatListRef.current?.scrollToOffset({ offset: 0, animated: false })
       })
     }
-  }, [searchTerm, props.visible])
+  }, [searchTerm, visible])
 
   return (
     <FancyModal
-      visible={props.visible}
-      onBackgroundPressed={props.onDismiss}
-      maxHeight={props.maxHeight}
-      onModalFinishedClosing={props.onModalFinishedClosing}
+      visible={visible}
+      onBackgroundPressed={onDismiss}
+      maxHeight={maxHeight}
+      onModalFinishedClosing={onModalFinishedClosing}
     >
       <Flex p="2" pb={15} flexDirection="row" alignItems="center" flexGrow={0}>
         <Flex flex={1}></Flex>
         <Flex flex={2} alignItems="center">
-          <Sans size="4" weight="medium">
-            {props.title}
-          </Sans>
+          <Text>{title}</Text>
         </Flex>
         <TouchableOpacity
-          onPress={props.onDismiss}
+          onPress={onDismiss}
           hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
           style={{ flex: 1, alignItems: "flex-end" }}
         >
           <CloseIcon fill="black60" />
         </TouchableOpacity>
       </Flex>
-      {!!props.enableSearch && (
+      {!!enableSearch && (
         <Flex mb="1" mx="2">
           <SearchInput placeholder="Type to search..." onChangeText={setSearchTerm} />
         </Flex>
@@ -276,45 +281,44 @@ const SelectModal: React.FC<{
         // we handle scrolling to the selected value ourselves because FlatList has weird
         // rendering bugs when initialScrollIndex changes, at the time of writing
         initialScrollIndex={undefined}
-        getItemLayout={(_item, index) => ({ index, length: ROW_HEIGHT, offset: ROW_HEIGHT * index })}
+        getItemLayout={(_item, index) => ({ index, length: INPUT_HEIGHT, offset: INPUT_HEIGHT * index })}
         style={{ flex: 1 }}
         onLayout={(e) => (flatListHeight.current = e.nativeEvent.layout.height)}
-        renderItem={({ item, index }) => (
-          <Touchable
-            underlayColor={color("black10")}
-            onPress={() => {
-              setValue(item.value)
-              // give the pop-in animation a chance to play
-              setTimeout(() => {
-                props.onDismiss()
-                props.onSelectValue(item.value, index)
-              }, 400)
-            }}
-            style={{ flexGrow: 0 }}
-          >
-            <Flex
-              flexDirection="row"
-              pl="2"
-              pr={15}
-              justifyContent="space-between"
-              height={ROW_HEIGHT}
-              alignItems="center"
-              backgroundColor={localValue === item.value ? "black5" : "white"}
-              flexGrow={0}
+        renderItem={({ item, index }) => {
+          const selected = localValue === item.value
+
+          return (
+            <Touchable
+              onPress={() => {
+                setValue(item.value)
+                onDismiss()
+                onSelectValue(item.value, index)
+              }}
+              style={{ flexGrow: 0 }}
             >
-              {props.renderItemLabel?.(item) ?? (
-                <Sans size="4" numberOfLines={1} ellipsizeMode="tail" style={{ flexShrink: 1 }}>
-                  {item.label}
-                </Sans>
-              )}
-              {localValue === item.value ? (
-                <PopIn>
-                  <CheckIcon width={25} height={25} />
-                </PopIn>
-              ) : null}
-            </Flex>
-          </Touchable>
-        )}
+              <Flex
+                flexDirection="row"
+                pl="2"
+                pr={15}
+                justifyContent="space-between"
+                height={INPUT_HEIGHT}
+                alignItems="center"
+                flexGrow={0}
+              >
+                {renderItemLabel?.(item) ?? (
+                  <Text
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    color={selected ? color("blue100") : color("black100")}
+                    style={{ flexShrink: 1, textDecorationLine: selected ? "underline" : "none" }}
+                  >
+                    {item.label}
+                  </Text>
+                )}
+              </Flex>
+            </Touchable>
+          )
+        }}
       />
     </FancyModal>
   )

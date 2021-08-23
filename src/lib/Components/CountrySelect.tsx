@@ -1,4 +1,4 @@
-import styled from "styled-components/native"
+import React from "react"
 import { Select, SelectOption } from "../../palette/elements/Select"
 
 // This data was copied over from force & the populations (searchImportance) was extracted mostly from this
@@ -388,11 +388,17 @@ export const COUNTRY_SELECT_OPTIONS: Array<SelectOption<string>> = [
   { label: "Zimbabwe", value: "ZW", searchImportance: 15159624, searchTerms: ["Zimbabwe", "ZW"] },
 ]
 
+// export const CountrySelect: React.ComponentType<
+//   Omit<React.ComponentPropsWithRef<typeof Select>, "options" | "placeholder" | "title" | "enableSearch">
+// > = styled(Select).attrs({
+//   options: COUNTRY_SELECT_OPTIONS,
+//   placeholder: "Select country",
+//   title: "Country",
+//   enableSearch: true,
+// })``
+
 export const CountrySelect: React.ComponentType<
   Omit<React.ComponentPropsWithRef<typeof Select>, "options" | "placeholder" | "title" | "enableSearch">
-> = styled(Select).attrs({
-  options: COUNTRY_SELECT_OPTIONS,
-  placeholder: "Select country",
-  title: "Country",
-  enableSearch: true,
-})``
+> = (props) => (
+  <Select options={COUNTRY_SELECT_OPTIONS} placeholder="Select country" title="Country" enableSearch {...props} />
+)

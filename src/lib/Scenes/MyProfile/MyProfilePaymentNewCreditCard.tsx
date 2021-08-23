@@ -5,7 +5,7 @@ import { Input } from "lib/Components/Input/Input"
 import { InputTitle } from "lib/Components/Input/InputTitle"
 import { Stack } from "lib/Components/Stack"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { Select } from "palette/elements/Select/Select"
+import { Select } from "palette/elements/Select/SelectV2"
 import React, { useEffect, useRef } from "react"
 import { commitMutation, graphql } from "react-relay"
 // @ts-ignore

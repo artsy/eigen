@@ -14,7 +14,7 @@ const options = [
   },
 ]
 
-storiesOf("Select", module).add("Variants", () => (
+storiesOf("SelectV2", module).add("Variants", () => (
   <List>
     <Select title="Select" options={options} value="option-1" onSelectValue={() => null} />
     <Select title="Select" showTitleLabel={false} options={options} value="option-1" onSelectValue={() => null} />

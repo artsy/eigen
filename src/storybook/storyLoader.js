@@ -4,8 +4,8 @@
 // https://github.com/elderfo/react-native-storybook-loader.git
 
 function loadStories() {
+  require("../palette/elements/Select/Select.stories")
   require("../palette/elements/Select/SelectV2.stories")
-
   require("../palette/colors.stories")
   require("../palette/colorsV2.stories")
   require("../palette/elements/Button/Button.stories")
@@ -17,8 +17,8 @@ function loadStories() {
 }
 
 const stories = [
+  "../palette/elements/Select/Select.stories",
   "../palette/elements/Select/SelectV2.stories",
-
   "../palette/colors.stories",
   "../palette/colorsV2.stories",
   "../palette/elements/Button/Button.stories",
