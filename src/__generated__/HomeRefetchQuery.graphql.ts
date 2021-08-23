@@ -228,6 +228,7 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
   }
   priceRealized {
     display
+    displayUSD
     cents
   }
   saleDate
@@ -1254,6 +1255,13 @@ v44 = {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
+                  "name": "displayUSD",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "cents",
                   "storageKey": null
                 }
@@ -2166,7 +2174,11 @@ return {
     ]
   },
   "params": {
+<<<<<<< HEAD
     "id": "717924f2f8d316675bed943adbb8e722",
+=======
+    "id": "5f3cce20d006eaffe25fe166c27b691b",
+>>>>>>> 12513d8fe (feat: Add price in USD to auction results list item)
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",

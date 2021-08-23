@@ -143,6 +143,11 @@ export const features = defineFeatures({
     description: "Enable phone number validation",
     showInAdminMenu: true,
   },
+  ARShowAuctionResultsPriceUSD: {
+    readyForRelease: false,
+    description: "Enable auction result prices in USD",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash cb527bbec2ad35e04c594d006af9ba61 */
+/* @relayHash b2fd3f02fc5fda8e0616ee4f5026a51f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -81,6 +81,7 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
   }
   priceRealized {
     display
+    displayUSD
     cents
   }
   saleDate
@@ -453,6 +454,13 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
+                            "name": "displayUSD",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "cents",
                             "storageKey": null
                           }
@@ -545,7 +553,7 @@ return {
     ]
   },
   "params": {
-    "id": "cb527bbec2ad35e04c594d006af9ba61",
+    "id": "b2fd3f02fc5fda8e0616ee4f5026a51f",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": (v4/*: any*/),
@@ -635,6 +643,7 @@ return {
         },
         "artist.auctionResultsConnection.edges.node.priceRealized.cents": (v9/*: any*/),
         "artist.auctionResultsConnection.edges.node.priceRealized.display": (v8/*: any*/),
+        "artist.auctionResultsConnection.edges.node.priceRealized.displayUSD": (v8/*: any*/),
         "artist.auctionResultsConnection.edges.node.saleDate": (v8/*: any*/),
         "artist.auctionResultsConnection.edges.node.title": (v8/*: any*/),
         "artist.auctionResultsConnection.pageInfo": {

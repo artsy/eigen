@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash dc139ebd19a879cdac3700a74be930d4 */
+/* @relayHash 50862b61afa836d01ae6bc17056e1d38 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -45,6 +45,7 @@ export type AuctionResultsRailTestsQueryRawResponse = {
                     }) | null;
                     readonly priceRealized: ({
                         readonly display: string | null;
+                        readonly displayUSD: string | null;
                         readonly cents: number | null;
                     }) | null;
                     readonly saleDate: string | null;
@@ -100,6 +101,7 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
   }
   priceRealized {
     display
+    displayUSD
     cents
   }
   saleDate
@@ -388,6 +390,13 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
+                            "name": "displayUSD",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "cents",
                             "storageKey": null
                           }
@@ -431,7 +440,7 @@ return {
     ]
   },
   "params": {
-    "id": "dc139ebd19a879cdac3700a74be930d4",
+    "id": "50862b61afa836d01ae6bc17056e1d38",
     "metadata": {},
     "name": "AuctionResultsRailTestsQuery",
     "operationKind": "query",

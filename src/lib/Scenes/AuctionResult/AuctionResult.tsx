@@ -20,7 +20,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { getImageDimensions } from "../Sale/Components/SaleArtworkListItem"
-import { auctionResultHasPrice, auctionResultText } from "./helpers"
+import { auctionResultHasPrice, AuctionResultHelperData, auctionResultText } from "./helpers"
 
 const CONTAINER_HEIGHT = 80
 
@@ -129,8 +129,8 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     details.push(makeRow("Description", auctionResult.description, { fullWidth: true }))
   }
 
-  const hasSalePrice = auctionResultHasPrice(auctionResult)
-  const salePriceMessage = auctionResultText(auctionResult)
+  const hasSalePrice = auctionResultHasPrice(auctionResult as AuctionResultHelperData)
+  const salePriceMessage = auctionResultText(auctionResult as AuctionResultHelperData)
 
   const renderRealizedPriceModal = () => (
     <>
