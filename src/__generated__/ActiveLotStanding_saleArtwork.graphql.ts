@@ -24,6 +24,10 @@ export type ActiveLotStanding_saleArtwork = {
         readonly href: string | null;
         readonly slug: string;
     } | null;
+    readonly currentBid: {
+        readonly display: string | null;
+    } | null;
+    readonly estimate: string | null;
     readonly " $fragmentRefs": FragmentRefs<"Lot_saleArtwork">;
     readonly " $refType": "ActiveLotStanding_saleArtwork";
 };
@@ -35,7 +39,17 @@ export type ActiveLotStanding_saleArtwork$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = [
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "display",
+    "storageKey": null
+  }
+];
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -116,15 +130,7 @@ const node: ReaderFragment = {
           "kind": "LinkedField",
           "name": "sellingPrice",
           "plural": false,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "display",
-              "storageKey": null
-            }
-          ],
+          "selections": (v0/*: any*/),
           "storageKey": null
         }
       ],
@@ -163,6 +169,23 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
+      "concreteType": "SaleArtworkCurrentBid",
+      "kind": "LinkedField",
+      "name": "currentBid",
+      "plural": false,
+      "selections": (v0/*: any*/),
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "estimate",
+      "storageKey": null
+    },
+    {
       "args": null,
       "kind": "FragmentSpread",
       "name": "Lot_saleArtwork"
@@ -171,5 +194,6 @@ const node: ReaderFragment = {
   "type": "SaleArtwork",
   "abstractKey": null
 };
-(node as any).hash = 'ebaa88bcc771839d0bfc82c26cbb253a';
+})();
+(node as any).hash = '8005426fb9bbdc747ee1dd3d7b71a403';
 export default node;

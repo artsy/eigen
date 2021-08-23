@@ -16,6 +16,10 @@ export type WatchedLot_saleArtwork = {
         readonly href: string | null;
         readonly slug: string;
     } | null;
+    readonly currentBid: {
+        readonly display: string | null;
+    } | null;
+    readonly estimate: string | null;
     readonly " $fragmentRefs": FragmentRefs<"Lot_saleArtwork">;
     readonly " $refType": "WatchedLot_saleArtwork";
 };
@@ -27,7 +31,17 @@ export type WatchedLot_saleArtwork$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = [
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "display",
+    "storageKey": null
+  }
+];
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -55,15 +69,7 @@ const node: ReaderFragment = {
           "kind": "LinkedField",
           "name": "sellingPrice",
           "plural": false,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "display",
-              "storageKey": null
-            }
-          ],
+          "selections": (v0/*: any*/),
           "storageKey": null
         }
       ],
@@ -102,6 +108,23 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
+      "concreteType": "SaleArtworkCurrentBid",
+      "kind": "LinkedField",
+      "name": "currentBid",
+      "plural": false,
+      "selections": (v0/*: any*/),
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "estimate",
+      "storageKey": null
+    },
+    {
       "args": null,
       "kind": "FragmentSpread",
       "name": "Lot_saleArtwork"
@@ -110,5 +133,6 @@ const node: ReaderFragment = {
   "type": "SaleArtwork",
   "abstractKey": null
 };
-(node as any).hash = '6111866c78843dcaaeddbc368afb0f5b';
+})();
+(node as any).hash = '450abac109a59586a70143a4828bfa2f';
 export default node;

@@ -16,12 +16,9 @@ interface WatchedLotProps {
 
 export const WatchedLot: React.FC<WatchedLotProps> = ({ saleArtwork }) => {
   const { lotState } = saleArtwork
-  if (!lotState) {
-    return null
-  }
 
-  const bidCount = lotState.bidCount
-  const sellingPrice = lotState?.sellingPrice?.display
+  const bidCount = lotState?.bidCount
+  const sellingPrice = saleArtwork?.currentBid?.display || saleArtwork?.estimate
   const tracking = useTracking()
 
   const displayBidCount = (): string | undefined => {
@@ -49,10 +46,12 @@ export const WatchedLot: React.FC<WatchedLotProps> = ({ saleArtwork }) => {
       <Lot saleArtwork={saleArtwork!} isSmallScreen={isSmallScreen}>
         <Flex flexDirection="row" justifyContent="flex-end">
           <Text variant="caption">{sellingPrice}</Text>
-          <Text variant="caption" color="black60">
-            {" "}
-            {displayBidCount()}
-          </Text>
+          {!!bidCount && (
+            <Text variant="caption" color="black60">
+              {" "}
+              {displayBidCount()}
+            </Text>
+          )}
         </Flex>
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
           <Watching />
@@ -77,6 +76,10 @@ export const WatchedLotFragmentContainer = createFragmentContainer(WatchedLot, {
         href
         slug
       }
+      currentBid {
+        display
+      }
+      estimate
     }
   `,
 })
