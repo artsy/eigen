@@ -30,9 +30,7 @@ export interface SelectProps<ValueType> {
   onModalFinishedClosing?(): void
 }
 
-type SelectI<T = any> = React.FC<SelectProps<T>>
-
-export const Select: SelectI = ({
+export const Select = <ValueType,>({
   options,
   value,
   placeholder,
@@ -46,7 +44,7 @@ export const Select: SelectI = ({
   renderButton,
   renderItemLabel,
   onModalFinishedClosing,
-}) => {
+}: SelectProps<ValueType>) => {
   const [showingModal, setShowingModal] = useState(false)
 
   // tinkering with RN internals here to make sure that when this select is tapped we blur
