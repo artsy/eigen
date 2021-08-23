@@ -1,5 +1,6 @@
 import { FilterScreen } from "lib/Components/ArtworkFilter"
 import { capitalize, compact, groupBy, isEqual, isUndefined, pick, pickBy, sortBy } from "lodash"
+import { isEmpty } from "lodash"
 import { LOCALIZED_UNIT } from "./Filters/helpers"
 
 export enum FilterDisplayName {
@@ -415,7 +416,9 @@ export const selectedOption = ({
     }
 
     return waysToBuyOptions.join(", ")
-  } else if (filterScreen === "artistIDs") {
+  }
+
+  if (filterScreen === "artistIDs") {
     const hasArtistsIFollowChecked = !!selectedOptions.find(({ paramName, paramValue }) => {
       return paramName === FilterParamName.artistsIFollow && paramValue === true
     })
@@ -438,7 +441,8 @@ export const selectedOption = ({
       }
     } else {
       selectedArtistNames = selectedOptions
-        .filter((filter) => filter.paramName === FilterParamName.artistIDs)
+        // Filtering out paramValue with an empty array to remove default option "All"
+        .filter((filter) => filter.paramName === FilterParamName.artistIDs && !isEmpty(filter.paramValue))
         .map(({ displayText }) => displayText)
     }
 
