@@ -1,9 +1,10 @@
+import { usePaletteFlagStore } from "palette/PaletteFlag"
 import { useTheme } from "palette/Theme"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Modal, StyleSheet, TouchableWithoutFeedback } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { Button } from "../Button/Button"
+import { Button } from "../Button"
 import { Flex } from "../Flex"
 import { Text } from "../Text"
 
@@ -25,6 +26,7 @@ export const Dialog = (props: DialogProps) => {
   const { isVisible, title, detail, primaryCta, secondaryCta, onBackgroundPress, ...other } = props
   const [visible, setVisible] = useState(isVisible)
   const { space, color } = useTheme()
+  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
   const value = useRef(new Animated.Value(Number(isVisible))).current
 
   const fadeIn = () => {
@@ -115,13 +117,19 @@ export const Dialog = (props: DialogProps) => {
               <Button
                 size="small"
                 testID="dialog-secondary-action-button"
-                variant="text"
+                variant={allowV3 ? "text" : "secondaryOutline"}
                 onPress={secondaryCta.onPress}
               >
                 {secondaryCta.text}
               </Button>
             )}
-            <Button size="small" testID="dialog-primary-action-button" ml={2} onPress={primaryCta.onPress}>
+            <Button
+              size="small"
+              variant={allowV3 ? "fillDark" : "primaryBlack"}
+              testID="dialog-primary-action-button"
+              ml={2}
+              onPress={primaryCta.onPress}
+            >
               {primaryCta.text}
             </Button>
           </Flex>
