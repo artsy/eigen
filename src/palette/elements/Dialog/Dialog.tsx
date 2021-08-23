@@ -13,7 +13,7 @@ interface DialogAction {
   onPress: () => void
 }
 
-interface DialogProps {
+export interface DialogProps {
   isVisible: boolean
   title: string
   detail?: string
