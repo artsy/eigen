@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2bc8e3a6c3df30e266ddaeacbb17273e */
+/* @relayHash 535f0778ba1698712f0b9ab65deacaf9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -106,9 +106,9 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
     mid
   }
   priceRealized {
+    cents
     display
     displayUSD
-    cents
   }
   saleDate
   title
@@ -546,6 +546,13 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
+                            "name": "cents",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "display",
                             "storageKey": null
                           },
@@ -554,13 +561,6 @@ return {
                             "args": null,
                             "kind": "ScalarField",
                             "name": "displayUSD",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "cents",
                             "storageKey": null
                           }
                         ],
@@ -652,7 +652,7 @@ return {
     ]
   },
   "params": {
-    "id": "2bc8e3a6c3df30e266ddaeacbb17273e",
+    "id": "535f0778ba1698712f0b9ab65deacaf9",
     "metadata": {},
     "name": "ArtistInsightsAuctionResultsQuery",
     "operationKind": "query",

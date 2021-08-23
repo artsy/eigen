@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 174a57ab96d371f97dbbd4073ede2a18 */
+/* @relayHash 7f43da9fce7de1961642a2483a98f48c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -132,9 +132,9 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
     mid
   }
   priceRealized {
+    cents
     display
     displayUSD
-    cents
   }
   saleDate
   title
@@ -800,19 +800,19 @@ return {
                             "name": "priceRealized",
                             "plural": false,
                             "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "cents",
+                                "storageKey": null
+                              },
                               (v7/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
                                 "kind": "ScalarField",
                                 "name": "displayUSD",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "cents",
                                 "storageKey": null
                               }
                             ],
@@ -1146,7 +1146,7 @@ return {
     ]
   },
   "params": {
-    "id": "174a57ab96d371f97dbbd4073ede2a18",
+    "id": "7f43da9fce7de1961642a2483a98f48c",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",
