@@ -69,19 +69,26 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     await LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(module.options.isRootViewForTabName)
     switchTab(module.options.isRootViewForTabName, screenDescriptor.props)
   } else {
+    const { onlyShowInTabName } = module.options
     const selectedTab = unsafe__getSelectedTab()
-    if (module.options.onlyShowInTabName) {
-      if (popToRootTabView) {
-        await LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(module.options.onlyShowInTabName)
-      }
-
-      switchTab(module.options.onlyShowInTabName)
+    const delayExecution = !!onlyShowInTabName && onlyShowInTabName !== selectedTab
+    const pushView = () => {
+      LegacyNativeModules.ARScreenPresenterModule.pushView(onlyShowInTabName ?? selectedTab, screenDescriptor)
     }
 
-    LegacyNativeModules.ARScreenPresenterModule.pushView(
-      module.options.onlyShowInTabName ?? selectedTab,
-      screenDescriptor
-    )
+    if (onlyShowInTabName) {
+      if (popToRootTabView) {
+        await LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(onlyShowInTabName)
+      }
+
+      switchTab(onlyShowInTabName)
+    }
+
+    if (delayExecution) {
+      requestAnimationFrame(pushView)
+    } else {
+      pushView()
+    }
   }
 }
 
