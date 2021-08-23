@@ -12701,6 +12701,7 @@ type ViewingRoom {
 
   # Datetime after which the viewing room is no longer viewable
   endAt: ISO8601DateTime
+  exhibitionPeriod: String
   heroImageURL: String @deprecated(reason: "Use image field instead")
   href: String
   image: ARImage
