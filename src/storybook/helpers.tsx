@@ -41,7 +41,7 @@ export const List = ({
     renderItem={({ item: child }) => child}
     ItemSeparatorComponent={() => <Spacer mb="4" />}
     contentContainerStyle={[
-      { flexGrow: 1, alignItems: "center", marginTop: 30, paddingBottom: 30 },
+      { flexGrow: 1, alignItems: "center", marginTop: 30, paddingBottom: 60 },
       contentContainerStyle,
     ]}
     style={style}
