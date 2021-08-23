@@ -1,6 +1,6 @@
 import { useTheme } from "palette/Theme"
 import React, { useEffect, useRef, useState } from "react"
-import { Animated, Modal, ModalProps, StyleSheet, TouchableWithoutFeedback } from "react-native"
+import { Animated, Modal, StyleSheet, TouchableWithoutFeedback } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Button } from "../Button/Button"
@@ -12,7 +12,7 @@ interface DialogAction {
   onPress: () => void
 }
 
-interface DialogProps extends Omit<ModalProps, "animationType" | "transparent" | "statusBarTranslucent" | "visible"> {
+interface DialogProps {
   isVisible: boolean
   title: string
   detail?: string
