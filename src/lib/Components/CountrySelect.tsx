@@ -388,15 +388,6 @@ export const COUNTRY_SELECT_OPTIONS: Array<SelectOption<string>> = [
   { label: "Zimbabwe", value: "ZW", searchImportance: 15159624, searchTerms: ["Zimbabwe", "ZW"] },
 ]
 
-// export const CountrySelect: React.ComponentType<
-//   Omit<React.ComponentPropsWithRef<typeof Select>, "options" | "placeholder" | "title" | "enableSearch">
-// > = styled(Select).attrs({
-//   options: COUNTRY_SELECT_OPTIONS,
-//   placeholder: "Select country",
-//   title: "Country",
-//   enableSearch: true,
-// })``
-
 export const CountrySelect: React.ComponentType<
   Omit<React.ComponentPropsWithRef<typeof Select>, "options" | "placeholder" | "title" | "enableSearch">
 > = (props) => (
