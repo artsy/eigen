@@ -56,7 +56,7 @@ it("allows bidders with a qualified credit card to bid", async () => {
     />
   )
 
-  screen.root.findByType(Select).instance.props.onSelectValue(null, 2)
+  screen.root.findByType(Select).props.onSelectValue(null, 2)
   screen.root.findAllByType(Button)[0].props.onPress()
 
   screen = fakeNavigator.nextStep()
@@ -89,7 +89,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
     />
   )
 
-  screen.root.findByType(Select).instance.props.onSelectValue(null, 2)
+  screen.root.findByType(Select).props.onSelectValue(null, 2)
   screen.root.findAllByType(Button)[0].props.onPress()
 
   screen = fakeNavigator.nextStep()
