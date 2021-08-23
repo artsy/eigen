@@ -11,14 +11,11 @@ import { TimelySale } from "../helpers/timely"
 import { HighestBid, Outbid, ReserveNotMet } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
-export const ActiveLotStanding = ({
-  saleArtwork
-}: {
-  saleArtwork: ActiveLotStanding_saleArtwork
-}) => {
+export const ActiveLotStanding = ({ saleArtwork }: { saleArtwork: ActiveLotStanding_saleArtwork }) => {
   const timelySale = TimelySale.create(saleArtwork?.sale!)
 
-  const sellingPrice = saleArtwork?.lotState?.sellingPrice?.display
+  const sellingPrice =
+    saleArtwork?.currentBid?.display || saleArtwork?.lotState?.sellingPrice?.display || saleArtwork?.estimate
   const bidCount = saleArtwork?.lotState?.bidCount
   const tracking = useTracking()
 
@@ -54,7 +51,9 @@ export const ActiveLotStanding = ({
             </Text>
           </Flex>
           <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
-            {!timelySale.isLAI && saleArtwork?.isHighestBidder && saleArtwork?.lotState?.reserveStatus === "ReserveNotMet" ? (
+            {!timelySale.isLAI &&
+            saleArtwork?.isHighestBidder &&
+            saleArtwork?.lotState?.reserveStatus === "ReserveNotMet" ? (
               <ReserveNotMet />
             ) : saleArtwork?.isHighestBidder ? (
               <HighestBid />
@@ -91,6 +90,10 @@ export const ActiveLotStandingFragmentContainer = createFragmentContainer(Active
         href
         slug
       }
+      currentBid {
+        display
+      }
+      estimate
     }
   `,
 })

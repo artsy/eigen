@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash bca23b8fe0e9d72b50f5037296089487 */
+/* @relayHash 0d760ff0d70c8dce99316b4f41a5e709 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -49,6 +49,10 @@ fragment ActiveLotStanding_saleArtwork on SaleArtwork {
     slug
     id
   }
+  currentBid {
+    display
+  }
+  estimate
 }
 
 fragment ClosedLotStanding_saleArtwork on SaleArtwork {
@@ -264,6 +268,10 @@ fragment WatchedLot_saleArtwork on SaleArtwork {
     slug
     id
   }
+  currentBid {
+    display
+  }
+  estimate
 }
 */
 
@@ -378,6 +386,15 @@ v14 = {
   "storageKey": null
 },
 v15 = [
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "display",
+    "storageKey": null
+  }
+],
+v16 = [
   {
     "alias": null,
     "args": null,
@@ -532,15 +549,7 @@ v15 = [
             "kind": "LinkedField",
             "name": "sellingPrice",
             "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "display",
-                "storageKey": null
-              }
-            ],
+            "selections": (v15/*: any*/),
             "storageKey": null
           },
           {
@@ -573,6 +582,16 @@ v15 = [
           (v3/*: any*/),
           (v12/*: any*/)
         ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "SaleArtworkCurrentBid",
+        "kind": "LinkedField",
+        "name": "currentBid",
+        "plural": false,
+        "selections": (v15/*: any*/),
         "storageKey": null
       },
       {
@@ -876,7 +895,7 @@ return {
                 "kind": "LinkedField",
                 "name": "active",
                 "plural": true,
-                "selections": (v15/*: any*/),
+                "selections": (v16/*: any*/),
                 "storageKey": null
               },
               {
@@ -886,7 +905,7 @@ return {
                 "kind": "LinkedField",
                 "name": "closed",
                 "plural": true,
-                "selections": (v15/*: any*/),
+                "selections": (v16/*: any*/),
                 "storageKey": null
               }
             ],
@@ -899,7 +918,7 @@ return {
     ]
   },
   "params": {
-    "id": "bca23b8fe0e9d72b50f5037296089487",
+    "id": "0d760ff0d70c8dce99316b4f41a5e709",
     "metadata": {},
     "name": "InboxRefetchQuery",
     "operationKind": "query",
