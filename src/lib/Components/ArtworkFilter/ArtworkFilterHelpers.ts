@@ -441,7 +441,7 @@ export const selectedOption = ({
       }
     } else {
       selectedArtistNames = selectedOptions
-        // Filtering out paramValue with an empty array to remove delfault option "All"
+        // Filtering out paramValue with an empty array to remove default option "All"
         .filter((filter) => filter.paramName === FilterParamName.artistIDs && !isEmpty(filter.paramValue))
         .map(({ displayText }) => displayText)
     }
