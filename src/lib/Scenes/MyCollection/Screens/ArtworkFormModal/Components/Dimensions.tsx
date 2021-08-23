@@ -7,7 +7,7 @@ import React, { useRef } from "react"
 export const Dimensions: React.FC = () => {
   const space = useSpace()
   const { formik } = useArtworkForm()
-  const metricInputRef = useRef<Select>(null)
+  const metricInputRef = useRef<typeof Select>(null)
 
   return (
     <>
