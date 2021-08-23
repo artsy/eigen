@@ -1,19 +1,23 @@
 import { useFormikContext } from "formik"
 import { Input } from "lib/Components/Input/Input"
 import { InputTitle } from "lib/Components/Input/InputTitle"
-import { Box, Button, Flex, Pill, Spacer } from "palette"
+import { navigate } from "lib/navigation/navigate"
+import { Box, Button, Flex, Pill, Spacer, Text, Touchable } from "palette"
 import React from "react"
 import { getNamePlaceholder } from "../helpers"
-import { SavedSearchAlertFormValues, SavedSearchArtistProp } from "../SavedSearchAlertModel"
+import { SavedSearchAlertFormValues } from "../SavedSearchAlertModel"
 
-interface FormProps extends SavedSearchArtistProp {
+interface FormProps {
   pills: string[]
-  isUpdateForm: boolean
+  savedSearchAlertId?: string
+  artistId: string
+  artistName: string
   onDeletePress?: () => void
+  onSubmitPress?: () => void
 }
 
 export const Form: React.FC<FormProps> = (props) => {
-  const { pills, artist, isUpdateForm, onDeletePress } = props
+  const { pills, artistId, artistName, savedSearchAlertId, onDeletePress, onSubmitPress } = props
   const {
     isSubmitting,
     values,
@@ -21,9 +25,8 @@ export const Form: React.FC<FormProps> = (props) => {
     dirty,
     handleBlur,
     handleChange,
-    handleSubmit,
   } = useFormikContext<SavedSearchAlertFormValues>()
-  const namePlaceholder = getNamePlaceholder(artist.name, pills)
+  const namePlaceholder = getNamePlaceholder(artistName, pills)
 
   return (
     <Box>
@@ -39,6 +42,26 @@ export const Form: React.FC<FormProps> = (props) => {
           maxLength={75}
         />
       </Box>
+      {!!savedSearchAlertId && (
+        <Box mb={2} height={40} justifyContent="center" alignItems="center">
+          <Touchable
+            haptic
+            testID="view-artworks-button"
+            hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }}
+            onPress={() =>
+              navigate(`artist/${artistId}`, {
+                passProps: {
+                  searchCriteriaID: savedSearchAlertId,
+                },
+              })
+            }
+          >
+            <Text variant="small" color="blue100" style={{ textDecorationLine: "underline" }}>
+              View Artworks
+            </Text>
+          </Touchable>
+        </Box>
+      )}
       <Box mb={2}>
         <InputTitle>Filters</InputTitle>
         <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
@@ -52,15 +75,15 @@ export const Form: React.FC<FormProps> = (props) => {
       <Spacer mt={4} />
       <Button
         testID="save-alert-button"
-        disabled={isUpdateForm && !dirty}
+        disabled={!!savedSearchAlertId && !dirty}
         loading={isSubmitting}
         size="large"
         block
-        onPress={handleSubmit}
+        onPress={onSubmitPress}
       >
         Save Alert
       </Button>
-      {!!isUpdateForm && (
+      {!!savedSearchAlertId && (
         <Button
           testID="delete-alert-button"
           variant="secondaryOutline"

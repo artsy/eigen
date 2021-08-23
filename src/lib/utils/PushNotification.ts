@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
 import { GlobalStore, unsafe_getUserAccessToken } from "lib/store/GlobalStore"
@@ -22,6 +23,12 @@ export const CHANNELS = [
 ]
 
 type TypedNotification = Omit<ReceivedNotification, "userInfo"> & { title?: string }
+
+export enum PushAuthorizationStatus {
+  NotDetermined = "notDetermined",
+  Authorized = "authorized",
+  Denied = "denied",
+}
 
 export const savePendingToken = async () => {
   const hasPendingToken = await AsyncStorage.getItem(HAS_PENDING_NOTIFICATION)
@@ -231,6 +238,20 @@ export async function configure() {
   }
 }
 
+export const getNotificationPermissionsStatus = (): Promise<PushAuthorizationStatus> => {
+  return new Promise((resolve) => {
+    if (Platform.OS === "ios") {
+      LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
+        resolve(result)
+      })
+    } else if (Platform.OS === "android") {
+      PushNotification.checkPermissions((permissions) => {
+        resolve(permissions.alert ? PushAuthorizationStatus.Authorized : PushAuthorizationStatus.Denied)
+      })
+    }
+  })
+}
+
 module.exports = {
   configure,
   saveToken,
@@ -240,5 +261,7 @@ module.exports = {
   createChannel,
   createAllChannels,
   createLocalNotification,
+  getNotificationPermissionsStatus,
   CHANNELS,
+  PushAuthorizationStatus,
 }

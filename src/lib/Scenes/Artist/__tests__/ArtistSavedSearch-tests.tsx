@@ -1,5 +1,5 @@
 import { SavedSearchBanner } from "lib/Components/Artist/ArtistArtworks/SavedSearchBanner"
-import { SavedSearchButtonQueryRenderer } from 'lib/Components/Artist/ArtistArtworks/SavedSearchButton'
+import { SavedSearchButtonQueryRenderer } from "lib/Components/Artist/ArtistArtworks/SavedSearchButton"
 import { CurrentOption } from "lib/Components/ArtworkFilter"
 import { PopoverMessage } from "lib/Components/PopoverMessage/PopoverMessage"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
@@ -60,7 +60,7 @@ describe("Saved search banner on artist screen", () => {
     )
   }
 
-  it("should not render banner when criteria attributes passed and AREnableSavedSearch flag set to false", () => {
+  it("should not render saved search button when AREnableSavedSearch flag set to false", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: false })
 
     const tree = getTree("search-criteria-id")
@@ -68,27 +68,6 @@ describe("Saved search banner on artist screen", () => {
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
     expect(tree.root.findAllByType(SavedSearchBanner)).toHaveLength(0)
-  })
-
-  it("should not render banner when the criteria attributes not passed", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: true })
-
-    const tree = getTree()
-
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
-
-    expect(tree.root.findAllByType(SavedSearchBanner)).toHaveLength(0)
-  })
-
-  it("should render banner when the criteria attributes passed", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: true })
-
-    const tree = getTree("search-criteria-id")
-
-    mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
-
-    expect(tree.root.findAllByType(SavedSearchBanner)).toHaveLength(1)
   })
 
   it("should convert the criteria attributes to the filter params format", async () => {

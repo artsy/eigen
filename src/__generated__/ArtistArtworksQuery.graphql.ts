@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash bd32e6475fe0f471b66cbf6562a048ae */
+/* @relayHash 2dca1fe40a7ce954d07e00de47f776e5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -95,7 +95,7 @@ fragment ArtistArtworks_artist_YCAiB on Artist {
   slug
   name
   internalID
-  artworks: filterArtworksConnection(first: $count, after: $cursor, input: $input, aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE]) {
+  aggregations: filterArtworksConnection(first: 0, aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -104,6 +104,9 @@ fragment ArtistArtworks_artist_YCAiB on Artist {
         value
       }
     }
+    id
+  }
+  artworks: filterArtworksConnection(first: $count, after: $cursor, input: $input) {
     edges {
       node {
         id
@@ -258,20 +261,6 @@ v11 = [
     "variableName": "cursor"
   },
   {
-    "kind": "Literal",
-    "name": "aggregations",
-    "value": [
-      "COLOR",
-      "DIMENSION_RANGE",
-      "LOCATION_CITY",
-      "MAJOR_PERIOD",
-      "MATERIALS_TERMS",
-      "MEDIUM",
-      "PARTNER",
-      "PRICE_RANGE"
-    ]
-  },
-  {
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
@@ -357,8 +346,28 @@ return {
               (v9/*: any*/),
               (v10/*: any*/),
               {
-                "alias": "artworks",
-                "args": (v11/*: any*/),
+                "alias": "aggregations",
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "aggregations",
+                    "value": [
+                      "COLOR",
+                      "DIMENSION_RANGE",
+                      "LOCATION_CITY",
+                      "MAJOR_PERIOD",
+                      "MATERIALS_TERMS",
+                      "MEDIUM",
+                      "PARTNER",
+                      "PRICE_RANGE"
+                    ]
+                  },
+                  {
+                    "kind": "Literal",
+                    "name": "first",
+                    "value": 0
+                  }
+                ],
                 "concreteType": "FilterArtworksConnection",
                 "kind": "LinkedField",
                 "name": "filterArtworksConnection",
@@ -408,6 +417,18 @@ return {
                     ],
                     "storageKey": null
                   },
+                  (v7/*: any*/)
+                ],
+                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:0)"
+              },
+              {
+                "alias": "artworks",
+                "args": (v11/*: any*/),
+                "concreteType": "FilterArtworksConnection",
+                "kind": "LinkedField",
+                "name": "filterArtworksConnection",
+                "plural": false,
+                "selections": [
                   {
                     "alias": null,
                     "args": null,
@@ -722,8 +743,7 @@ return {
                 "alias": "artworks",
                 "args": (v11/*: any*/),
                 "filters": [
-                  "input",
-                  "aggregations"
+                  "input"
                 ],
                 "handle": "connection",
                 "key": "ArtistArtworksGrid_artworks",
@@ -740,7 +760,7 @@ return {
     ]
   },
   "params": {
-    "id": "bd32e6475fe0f471b66cbf6562a048ae",
+    "id": "2dca1fe40a7ce954d07e00de47f776e5",
     "metadata": {},
     "name": "ArtistArtworksQuery",
     "operationKind": "query",

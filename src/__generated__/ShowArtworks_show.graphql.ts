@@ -91,9 +91,11 @@ const node: ReaderFragment = {
           "kind": "Literal",
           "name": "aggregations",
           "value": [
+            "ARTIST",
             "ARTIST_NATIONALITY",
             "COLOR",
             "DIMENSION_RANGE",
+            "FOLLOWED_ARTISTS",
             "LOCATION_CITY",
             "MAJOR_PERIOD",
             "MATERIALS_TERMS",
@@ -260,5 +262,5 @@ const node: ReaderFragment = {
   "type": "Show",
   "abstractKey": null
 };
-(node as any).hash = 'ebcfd5b5a891747ed9987e7431b2a28c';
+(node as any).hash = 'e0484a1201759977abb9414e36c139f4';
 export default node;

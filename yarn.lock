@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@artsy/cohesion@2.18.0":
-  version "2.18.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-2.18.0.tgz#411d58f5bdea55d98ce9c7aa549523b1f83c9165"
-  integrity sha512-+8JaO3/XG5zcCRNUMeyTUiQO+I0aaY99LmOyYoEyEFJHBbtZS4mmlfYtY9cH6KJn626mLdUakyg73CaZJUfzJA==
+"@artsy/cohesion@2.21.0":
+  version "2.21.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-2.21.0.tgz#69271c25d55b0f3b18b6ce86a06ce910cfc34556"
+  integrity sha512-IIXLJxUZ0jMOJPNUIajrIthJIXRuqfx/JBVPF1loXTvHz9SsEhEQv2wQe3OsSb/GvBMA1WRLdhbOoU0YS8Oi6g==
   dependencies:
     core-js "3"
 
@@ -3773,7 +3773,7 @@
   dependencies:
     type-detect "4.0.8"
 
-"@storybook/addon-actions@^5.3":
+"@storybook/addon-actions@5.3.21":
   version "5.3.21"
   resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-5.3.21.tgz#16eed3eb24996adfcbf70bd476a261324d6de593"
   integrity sha512-6SAF/j8UBZaAbRz/rYUlcCXda+c4LQvvNlbVJc9GHjNNNMJQQVc3/EU+M7PyFz6uDUxudAW1+AFchGk04ACJ2g==
@@ -4022,7 +4022,7 @@
     pretty-hrtime "^1.0.3"
     regenerator-runtime "^0.13.3"
 
-"@storybook/react-native-server@^5.3.23":
+"@storybook/react-native-server@5.3.23":
   version "5.3.23"
   resolved "https://registry.yarnpkg.com/@storybook/react-native-server/-/react-native-server-5.3.23.tgz#27ef61a74ec991b3d56690cd1dd9eba30718f3a5"
   integrity sha512-1jGHwikc6BVoEW8tdJeYvnY1N2+cHyzit9xiXL9WXofiiYERoL4ENj1pgVp+AGA+yUYBsuSzeN7Hqp/LwdJ1Ug==
@@ -4042,7 +4042,7 @@
     webpack "^4.33.0"
     ws "^7.1.2"
 
-"@storybook/react-native@^5.3.25":
+"@storybook/react-native@5.3.25":
   version "5.3.25"
   resolved "https://registry.yarnpkg.com/@storybook/react-native/-/react-native-5.3.25.tgz#681c9cdcadba7eda88716f5d383ea47558367825"
   integrity sha512-KPctJdk1++k4byblqTwULmxKDADsRAMat9BgMTx3Gewk4PjMbsbKCvRK7+AlJeNjz/kEsf9L6Y25y8lrw3rPXA==
@@ -4510,15 +4510,15 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.8.tgz#edf1bf1dbf4e04413ca8e5b17b3b7d7d54b59818"
   integrity sha512-YSBPTLTVm2e2OoQIDYx8HaeWJ5tTToLH67kXR7zYNGupXMEHa2++G8k+DczX2cFVgalypqtyZIcU19AFcmOpmg==
 
-"@types/lodash@4.14.149":
-  version "4.14.149"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.149.tgz#1342d63d948c6062838fbf961012f74d4e638440"
-  integrity sha512-ijGqzZt/b7BfzcK9vTrS6MFljQRPn5BFWOx8oE0GYxribu6uV+aA9zZuXI1zc/etK9E8nrgdoF2+LgUw7+9tJQ==
+"@types/lodash@4.14.172":
+  version "4.14.172"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.172.tgz#aad774c28e7bfd7a67de25408e03ee5a8c3d028a"
+  integrity sha512-/BHF5HAx3em7/KkzVKm3LrsD6HZAXuXO1AJZQ3cRRBZj4oHZDviWPYu0aEplAqDFNHZPW6d3G7KN+ONcCCC7pw==
 
-"@types/luxon@1.15.2":
-  version "1.15.2"
-  resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-1.15.2.tgz#528f11f7d6dc08cec0445d4bea8065a5bb6989b2"
-  integrity sha512-zHPoyVrLvNaiMRYdhmh88Rn489ZgAgbc6iLxR5Yi0VCNfeNYHcszbhJV2vDHLNrVGy35BPtWBRn4OP2F9BBvFw==
+"@types/luxon@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-2.0.0.tgz#3dd1d8c51b49e34585c5158ba3393e95c51fee89"
+  integrity sha512-L7iL3FitRSeuz8fbeLtql7qU6inHVtwEDWI1+vBXgyp0J2tmxOD7TgMBiEQjII/Y/TPcwrKasXb1BPuiCXRgxg==
 
 "@types/moment-timezone@0.5.4":
   version "0.5.4"
@@ -12036,6 +12036,11 @@ jsc-android@^245459.0.0:
   resolved "https://registry.yarnpkg.com/jsc-android/-/jsc-android-245459.0.0.tgz#e584258dd0b04c9159a27fb104cd5d491fd202c9"
   integrity sha512-wkjURqwaB1daNkDi2OYYbsLnIdC/lUM2nPXQKRs5pqEU9chDg435bjvo+LSaHotDENygHQDHe+ntUkkw2gwMtg==
 
+jsc-android@^250230.2.1:
+  version "250230.2.1"
+  resolved "https://registry.yarnpkg.com/jsc-android/-/jsc-android-250230.2.1.tgz#3790313a970586a03ab0ad47defbc84df54f1b83"
+  integrity sha512-KmxeBlRjwoqCnBBKGsihFtvsBHyUFlBxJPK4FzeYcIuBfdjv6jFys44JITAgSTbQD+vIdwMEfyZklsuQX0yI1Q==
+
 jsdom@^15.2.1:
   version "15.2.1"
   resolved "https://registry.yarnpkg.com/jsdom/-/jsdom-15.2.1.tgz#d2feb1aef7183f86be521b8c6833ff5296d07ec5"
@@ -12819,10 +12824,10 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-luxon@1.25.0:
-  version "1.25.0"
-  resolved "https://registry.yarnpkg.com/luxon/-/luxon-1.25.0.tgz#d86219e90bc0102c0eb299d65b2f5e95efe1fe72"
-  integrity sha512-hEgLurSH8kQRjY6i4YLey+mcKVAWXbDNlZRmM6AgWDJ1cY3atl8Ztf5wEY7VBReFbmGnwQPz7KYJblL8B2k0jQ==
+luxon@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-2.0.1.tgz#b41ca2f1f5ad8099c18603ae6c36a7794039daf0"
+  integrity sha512-8Eawf81c9ZlQj62W3eq4mp+C7SAIAnmaS7ZuEAiX503YMcn+0C1JnMQRtfaQj6B5qTZLgHv0F4H5WabBCvi1fw==
 
 macos-release@^2.2.0:
   version "2.3.0"
@@ -14365,6 +14370,11 @@ ora@^5.4.0:
     log-symbols "^4.1.0"
     strip-ansi "^6.0.0"
     wcwidth "^1.0.1"
+
+ordinal@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/ordinal/-/ordinal-1.0.3.tgz#1a3c7726a61728112f50944ad7c35c06ae3a0d4d"
+  integrity sha512-cMddMgb2QElm8G7vdaa02jhUNbTSrhsgAGUz1OokD83uJTwSUn+nKoNoKVVaRa08yF6sgfO7Maou1+bgLd9rdQ==
 
 original@^1.0.0:
   version "1.0.2"

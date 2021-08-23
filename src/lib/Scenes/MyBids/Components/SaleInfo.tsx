@@ -1,6 +1,7 @@
 import React from "react"
 
-import moment, { Moment } from "moment-timezone"
+import { DateTime } from "luxon"
+import ordinal from "ordinal"
 import { Box, Flex, IconProps, Text } from "palette"
 import { BoltFill, Stopwatch } from "palette/svgs/sf"
 import { TimelySale } from "../helpers/timely"
@@ -17,40 +18,39 @@ export const SaleInfo = ({
 
   const tSale = TimelySale.create(sale)
 
-  const tz = moment.tz.guess(true)
-  const now = moment().tz(tz)
-  const endMoment = moment(tSale.relevantEnd, moment.ISO_8601).tz(tz)
+  const now = DateTime.now()
+  const endMoment = DateTime.fromISO(tSale.relevantEnd)
 
-  const formatTime = (dateTime: Moment): string => {
-    const suffix = dateTime.format("a") === "am" ? "a.m." : "p.m."
-    const time = dateTime.format("h:mm")
-    const timeZone = dateTime.format("z")
+  const formatTime = (dateTime: DateTime): string => {
+    const suffix = dateTime.toFormat("a") === "AM" ? "a.m." : "p.m."
+    const time = dateTime.toFormat("h:mm")
+    const timeZone = dateTime.toFormat("ZZZZ")
     return `${time} ${suffix} (${timeZone})`
   }
 
-  const formatDate = (dateTime: Moment): string => {
+  const formatDate = (dateTime: DateTime): string => {
     const month =
-      dateTime.format("MMMM") === "June" || dateTime.format("MMMM") === "July"
-        ? dateTime.format("MMMM")
-        : dateTime.format("MMM.")
-    const day = dateTime.format("Do")
+      dateTime.toFormat("MMMM") === "June" || dateTime.toFormat("MMMM") === "July"
+        ? dateTime.toFormat("MMMM")
+        : dateTime.toFormat("MMM.")
+    const day = ordinal(parseInt(dateTime.toFormat("d"), 10))
     return `${month} ${day}`
   }
-  const line1Message = (message: string, deadline: Moment): string => {
-    if (deadline.isSame(now, "day")) {
+  const line1Message = (message: string, deadline: DateTime): string => {
+    if (deadline.hasSame(now, "day")) {
       return `${message} today at ${formatTime(endMoment)}`
-    } else if (endMoment.isSame(now.clone().add(1, "day"), "day")) {
+    } else if (endMoment.hasSame(now.plus({ day: 1 }), "day")) {
       return `${message} tomorrow at ${formatTime(endMoment)}`
     } else {
       return `${message} ${formatDate(endMoment)} at ${formatTime(endMoment)}`
     }
   }
 
-  const line2Message = (message: string, deadline: Moment): string | undefined => {
-    const hoursTillDeadline = deadline.diff(now, "hours")
-    if (now.isBefore(deadline) && hoursTillDeadline <= 10) {
+  const line2Message = (message: string, deadline: DateTime): string | undefined => {
+    const hoursTillDeadline = Math.floor(deadline.diff(now, "hours").as("hours"))
+    if (now < deadline && hoursTillDeadline <= 10) {
       if (hoursTillDeadline === 0) {
-        return `${message} in ${deadline.diff(now, "minutes")} minutes`
+        return `${message} in ${Math.floor(deadline.diff(now, "minutes").as("minutes"))} minutes`
       } else if (hoursTillDeadline === 1) {
         return `${message} in ${hoursTillDeadline} hour`
       } else {

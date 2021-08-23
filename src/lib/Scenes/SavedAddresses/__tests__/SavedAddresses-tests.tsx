@@ -1,8 +1,8 @@
+import { act, fireEvent } from "@testing-library/react-native"
 import { SavedAddressesTestsQuery } from "__generated__/SavedAddressesTestsQuery.graphql"
 import { navigate, navigationEvents } from "lib/navigation/navigate"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Button, Flex } from "palette"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -11,10 +11,11 @@ import { SavedAddressesContainer, SavedAddressesQueryRenderer, util } from "../S
 jest.unmock("react-relay")
 
 describe(SavedAddressesQueryRenderer, () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  type MockEnvironment = ReturnType<typeof createMockEnvironment>
+  const mockEnvironment = defaultEnvironment as MockEnvironment
   const TestRenderer = () => (
     <QueryRenderer<SavedAddressesTestsQuery>
-      environment={mockEnvironment}
+      environment={defaultEnvironment}
       query={graphql`
         query SavedAddressesTestsQuery {
           me {
@@ -32,12 +33,9 @@ describe(SavedAddressesQueryRenderer, () => {
       variables={{}}
     />
   )
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
 
   it("renders no saved addresses screen", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const { queryByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         Me: () => ({
@@ -50,11 +48,11 @@ describe(SavedAddressesQueryRenderer, () => {
       return result
     })
 
-    expect(tree.findAllByType(Flex)[4].props.children[0].props.children).toEqual("No Saved Addresses")
+    expect(queryByText("No Saved Addresses")).toBeTruthy()
   })
 
   it("should render the saved addresses on the screen", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const { queryByText, queryAllByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         Me: () => ({
@@ -95,24 +93,23 @@ describe(SavedAddressesQueryRenderer, () => {
       })
       return result
     })
-    const text = extractText(tree.root)
 
-    expect(text).toContain("George Tester")
-    expect(text).toContain("Stallschreiberstr 21, apt 61, 1st Floor")
-    expect(text).toContain("Berlin, 10179")
-    expect(text).toContain("015904832846")
+    expect(queryByText("George Tester")).toBeTruthy()
+    expect(queryByText("Stallschreiberstr 21, apt 61, 1st Floor")).toBeTruthy()
+    expect(queryByText("Berlin, 10179")).toBeTruthy()
+    expect(queryByText("015904832846")).toBeTruthy()
 
-    expect(text).toContain("George Testing")
-    expect(text).toContain("401 Brodway, 26th Floor")
-    expect(text).toContain("New York, NY 10013")
-    expect(text).toContain("1293581028945")
+    expect(queryByText("George Testing")).toBeTruthy()
+    expect(queryByText("401 Brodway, 26th Floor")).toBeTruthy()
+    expect(queryByText("New York, NY 10013")).toBeTruthy()
+    expect(queryByText("1293581028945")).toBeTruthy()
 
-    expect(text).toContain("Edit")
-    expect(text).toContain("Delete")
+    expect(queryAllByText("Edit")).toHaveLength(2)
+    expect(queryAllByText("Delete")).toHaveLength(2)
   })
 
   it("testing add new address navigation", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         Me: () => ({
@@ -124,12 +121,13 @@ describe(SavedAddressesQueryRenderer, () => {
       })
       return result
     })
-    tree.findByType(Button).props.onPress()
+
+    fireEvent.press(getAllByText("Add New Address")[0])
     expect(navigate).toHaveBeenCalledWith("/my-profile/saved-addresses/new-address", { modal: true })
   })
 
   it("should navigate to edit address screen", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         Me: () => ({
@@ -171,9 +169,9 @@ describe(SavedAddressesQueryRenderer, () => {
       return result
     })
 
-    const EditButton = tree.findByProps({ testID: "EditAddress-5861" })
+    const EditButton = getByTestId("EditAddress-5861")
 
-    EditButton.props.onPress()
+    fireEvent.press(EditButton)
     expect(navigate).toHaveBeenCalledWith("/my-profile/saved-addresses/edit-address", {
       modal: true,
       passProps: { addressId: "5861" },
@@ -185,5 +183,55 @@ describe(SavedAddressesQueryRenderer, () => {
     navigationEvents.addListener("goBack", mockCallback)
     navigationEvents.emit("goBack")
     expect(mockCallback.mock.calls.length).toBe(1)
+  })
+
+  it("deletes successfully an address from the address list", () => {
+    const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
+    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+      const result = MockPayloadGenerator.generate(operation, {
+        Me: () => ({
+          name: "saver",
+          addressConnection: {
+            edges: [
+              {
+                node: {
+                  id: "VXNlckFkZHJlc3M6NTg0MA==",
+                  internalID: "5840",
+                  name: "George Tester",
+                  addressLine1: "Stallschreiberstr 21",
+                  addressLine2: "apt 61, 1st Floor",
+                  addressLine3: null,
+                  city: "Berlin",
+                  region: "Mitte",
+                  postalCode: "10179",
+                  phoneNumber: "015904832846",
+                },
+              },
+              {
+                node: {
+                  id: "VXNlckFkZHJlc3M6NTg2MQ==",
+                  internalID: "5861",
+                  name: "George Testing",
+                  addressLine1: "401 Brodway",
+                  addressLine2: "26th Floor",
+                  addressLine3: null,
+                  city: "New York",
+                  region: "New York",
+                  postalCode: "NY 10013",
+                  phoneNumber: "1293581028945",
+                },
+              },
+            ],
+          },
+        }),
+      })
+      return result
+    })
+
+    act(() => fireEvent.press(getAllByText("Delete")[0]))
+
+    const createOperation = mockEnvironment.mock.getMostRecentOperation()
+    expect(createOperation.request.node.operation.name).toEqual("deleteSavedAddressDeleteUserAddressMutation")
+    expect(createOperation.request.variables).toEqual({ input: { userAddressID: "5840" } })
   })
 })

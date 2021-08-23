@@ -1,6 +1,6 @@
-import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { fetchMockResponseOnce } from "lib/tests/fetchMockHelpers"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
 import { __globalStoreTestUtils__ } from "../../../../store/GlobalStore"
 import { flushPromiseQueue } from "../../../../tests/flushPromiseQueue"

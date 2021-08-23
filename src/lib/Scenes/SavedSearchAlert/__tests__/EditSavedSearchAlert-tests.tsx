@@ -1,9 +1,11 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
-import { goBack } from "lib/navigation/navigate"
+import { goBack, navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
+import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
 import { EditSavedSearchAlertQueryRenderer } from "../EditSavedSearchAlert"
@@ -12,9 +14,11 @@ jest.unmock("react-relay")
 
 describe("EditSavedSearchAlert", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+  const notificationPermissions = mockFetchNotificationPermissions(false)
 
   beforeEach(() => {
     mockEnvironment.mockClear()
+    notificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Authorized))
   })
 
   const TestRenderer = () => {
@@ -59,6 +63,28 @@ describe("EditSavedSearchAlert", () => {
     })
 
     expect(goBack).toHaveBeenCalled()
+  })
+
+  it("should navigate to artworks grid when the view artworks is pressed", async () => {
+    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      SearchCriteria: () => searchCriteria,
+    })
+    mockEnvironmentPayload(mockEnvironment, {
+      Artist: () => ({
+        internalID: "artistID",
+      }),
+      FilterArtworksConnection: () => filterArtworks,
+    })
+
+    fireEvent.press(getByTestId("view-artworks-button"))
+
+    expect(navigate).toBeCalledWith("artist/artistID", {
+      passProps: {
+        searchCriteriaID: "savedSearchAlertId",
+      },
+    })
   })
 })
 

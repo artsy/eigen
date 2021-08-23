@@ -10,7 +10,7 @@ export type ArtistArtworks_artist = {
     readonly slug: string;
     readonly name: string | null;
     readonly internalID: string;
-    readonly artworks: {
+    readonly aggregations: {
         readonly aggregations: ReadonlyArray<{
             readonly slice: ArtworkAggregation | null;
             readonly counts: ReadonlyArray<{
@@ -19,6 +19,8 @@ export type ArtistArtworks_artist = {
                 readonly value: string;
             } | null> | null;
         } | null> | null;
+    } | null;
+    readonly artworks: {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
@@ -104,7 +106,7 @@ return {
       "storageKey": null
     },
     {
-      "alias": "artworks",
+      "alias": "aggregations",
       "args": [
         {
           "kind": "Literal",
@@ -121,14 +123,14 @@ return {
           ]
         },
         {
-          "kind": "Variable",
-          "name": "input",
-          "variableName": "input"
+          "kind": "Literal",
+          "name": "first",
+          "value": 0
         }
       ],
       "concreteType": "FilterArtworksConnection",
       "kind": "LinkedField",
-      "name": "__ArtistArtworksGrid_artworks_connection",
+      "name": "filterArtworksConnection",
       "plural": false,
       "selections": [
         {
@@ -174,7 +176,24 @@ return {
             }
           ],
           "storageKey": null
-        },
+        }
+      ],
+      "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:0)"
+    },
+    {
+      "alias": "artworks",
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "input",
+          "variableName": "input"
+        }
+      ],
+      "concreteType": "FilterArtworksConnection",
+      "kind": "LinkedField",
+      "name": "__ArtistArtworksGrid_artworks_connection",
+      "plural": false,
+      "selections": [
         {
           "alias": null,
           "args": null,
@@ -268,5 +287,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'c1c6bedae2f8f85aeeca5518db4a4fdb';
+(node as any).hash = 'd75c83cfdcffbddc7d230323b368c5bd';
 export default node;

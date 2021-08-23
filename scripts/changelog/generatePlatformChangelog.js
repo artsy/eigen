@@ -15,11 +15,10 @@ const ora = require("ora")
 const prettier = require("prettier")
 const appVersion = require("../../app.json").version
 
-const octokit = new Octokit({ auth: process.env.CHANGELOG_GITHUB_TOKEN_KEY})
+const octokit = new Octokit({ auth: process.env.CHANGELOG_GITHUB_TOKEN_KEY })
 
 const owner = "artsy"
 const repo = "eigen"
-
 
 /**
  * @param {string | null} mergeDate Date when the commit was merged
@@ -140,7 +139,6 @@ function generatePlatformChangelog(platform, changelog, variant) {
     regex = /## Undeployed Changes[\S\s]+## Released Changes/
   }
 
-
   if (!fileContent.match(regex)) {
     if (variant === "appstore") {
       console.log(`Can't find 'Released Changes' section in the ${platform} template file`)
@@ -178,7 +176,7 @@ function generatePlatformChangelog(platform, changelog, variant) {
 function getPlaformSpecificChangeLog(platform, changelog, variant) {
   let changeLogMD
   if (variant === "appstore") {
-  changeLogMD = `
+    changeLogMD = `
 ## Released Changes
 
 ### v${appVersion}
@@ -188,13 +186,12 @@ function getPlaformSpecificChangeLog(platform, changelog, variant) {
 - Changelog:
 `
   } else {
-  changeLogMD = `
+    changeLogMD = `
 ## Undeployed Changes
 
 ### v${appVersion}
 
 - Status: **Beta**
-- Changelog update date: **${new Date().toString()}**
 - Changelog:
 `
   }
@@ -213,7 +210,7 @@ function getPlaformSpecificChangeLog(platform, changelog, variant) {
   - User facing changes:
     - ${userFacingChanges.join("\n    - ")}
 `
-}
+  }
 
   /**
    * Fill in the dev changes if any are available
@@ -225,7 +222,7 @@ function getPlaformSpecificChangeLog(platform, changelog, variant) {
 `
   }
 
-    // For beta releases, we need to add back ## Released Changes to make sure our regex does not break
+  // For beta releases, we need to add back ## Released Changes to make sure our regex does not break
   if (variant === "beta") {
     changeLogMD = changeLogMD + "\n<!-- DO NOT CHANGE -->\n## Released Changes"
   }

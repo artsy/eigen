@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4e04606ba38a03327cd00b5df769c3ff */
+/* @relayHash 895a204ad09fff20ffd6096e38410704 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -115,6 +115,9 @@ fragment ViewingRoom_viewingRoom on ViewingRoom {
   slug
   status
   title
+  artworks: artworksConnection(first: 10) {
+    totalCount
+  }
   ...ViewingRoomViewWorksButton_viewingRoom
   ...ViewingRoomSubsections_viewingRoom
   ...ViewingRoomArtworkRail_viewingRoom
@@ -320,70 +323,6 @@ return {
           },
           (v6/*: any*/),
           {
-            "alias": "artworksForCount",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 1
-              }
-            ],
-            "concreteType": "ArtworkConnection",
-            "kind": "LinkedField",
-            "name": "artworksConnection",
-            "plural": false,
-            "selections": [
-              (v7/*: any*/)
-            ],
-            "storageKey": "artworksConnection(first:1)"
-          },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "ViewingRoomSubsection",
-            "kind": "LinkedField",
-            "name": "subsections",
-            "plural": true,
-            "selections": [
-              (v1/*: any*/),
-              (v6/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "caption",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "ARImage",
-                "kind": "LinkedField",
-                "name": "image",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "width",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "height",
-                    "storageKey": null
-                  },
-                  (v8/*: any*/)
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          },
-          {
             "alias": "artworks",
             "args": [
               {
@@ -482,6 +421,70 @@ return {
             "storageKey": "artworksConnection(first:10)"
           },
           {
+            "alias": "artworksForCount",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 1
+              }
+            ],
+            "concreteType": "ArtworkConnection",
+            "kind": "LinkedField",
+            "name": "artworksConnection",
+            "plural": false,
+            "selections": [
+              (v7/*: any*/)
+            ],
+            "storageKey": "artworksConnection(first:1)"
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ViewingRoomSubsection",
+            "kind": "LinkedField",
+            "name": "subsections",
+            "plural": true,
+            "selections": [
+              (v1/*: any*/),
+              (v6/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "caption",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "ARImage",
+                "kind": "LinkedField",
+                "name": "image",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "width",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "height",
+                    "storageKey": null
+                  },
+                  (v8/*: any*/)
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
@@ -513,7 +516,7 @@ return {
     ]
   },
   "params": {
-    "id": "4e04606ba38a03327cd00b5df769c3ff",
+    "id": "895a204ad09fff20ffd6096e38410704",
     "metadata": {},
     "name": "ViewingRoomTestsQuery",
     "operationKind": "query",

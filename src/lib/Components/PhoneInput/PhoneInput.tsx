@@ -1,5 +1,6 @@
 import { PhoneNumberUtil } from "google-libphonenumber"
 import { TriangleDown } from "lib/Icons/TriangleDown"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import replace from "lodash/replace"
 import { Flex, Sans, Spacer, Text, Touchable, useColor } from "palette"
 import { useEffect, useRef, useState } from "react"
@@ -24,6 +25,7 @@ export const PhoneInput = React.forwardRef<
   const color = useColor()
   const innerRef = useRef<Input | null>()
   const initialValues = cleanUserPhoneNumber(value ?? "")
+  const showPhoneValidationMessage = useFeatureFlag("ARPhoneValidation")
 
   const [countryCode, setCountryCode] = useState(initialValues.countryCode)
   const [phoneNumber, setPhoneNumber] = useState(
@@ -82,9 +84,14 @@ export const PhoneInput = React.forwardRef<
           setPhoneNumber(formatPhoneNumber({ current: newPhoneNumber, previous: phoneNumber, countryCode }))
         }
         keyboardType="phone-pad"
-        onBlur={() => {
-          setValidationMessage(isValidNumber(phoneNumber, countryISO2Code) ? "" : "Invalid phone number")
-        }}
+        onBlur={
+          !!showPhoneValidationMessage
+            ? () => {
+                setValidationMessage(isValidNumber(phoneNumber, countryISO2Code) ? "" : "Invalid phone number")
+              }
+            : // tslint:disable-next-line: no-empty
+              () => {}
+        }
         renderLeftHandSection={() => (
           <Select<string>
             options={countryOptions}

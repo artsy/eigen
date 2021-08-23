@@ -26,8 +26,9 @@ export const SearchCriteriaQueryRenderer: React.FC<SearchCriteriaQueryRendererPr
   const { renderComponent, renderPlaceholder } = render
   const enableSavedSearch =
     Platform.OS === "ios" ? useFeatureFlag("AREnableSavedSearch") : useFeatureFlag("AREnableSavedSearchAndroid")
+  const enableSavedSearchV2 = useFeatureFlag("AREnableSavedSearchV2")
 
-  if (enableSavedSearch && searchCriteriaId) {
+  if ((enableSavedSearch || enableSavedSearchV2) && searchCriteriaId) {
     return (
       <QueryRenderer<SearchCriteriaQuery>
         environment={environment}

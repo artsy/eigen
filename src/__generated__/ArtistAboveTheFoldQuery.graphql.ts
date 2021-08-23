@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f291072a2b3d2c59383fb5d84b6e340f */
+/* @relayHash d74797e1d61502554354eaf9da6af6aa */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -113,7 +113,7 @@ fragment ArtistArtworks_artist_2VV6jB on Artist {
   slug
   name
   internalID
-  artworks: filterArtworksConnection(first: 10, input: $input, aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE]) {
+  aggregations: filterArtworksConnection(first: 0, aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE]) {
     aggregations {
       slice
       counts {
@@ -122,6 +122,9 @@ fragment ArtistArtworks_artist_2VV6jB on Artist {
         value
       }
     }
+    id
+  }
+  artworks: filterArtworksConnection(first: 10, input: $input) {
     edges {
       node {
         id
@@ -324,20 +327,6 @@ v12 = {
 v13 = [
   {
     "kind": "Literal",
-    "name": "aggregations",
-    "value": [
-      "COLOR",
-      "DIMENSION_RANGE",
-      "LOCATION_CITY",
-      "MAJOR_PERIOD",
-      "MATERIALS_TERMS",
-      "MEDIUM",
-      "PARTNER",
-      "PRICE_RANGE"
-    ]
-  },
-  {
-    "kind": "Literal",
     "name": "first",
     "value": 10
   },
@@ -466,8 +455,28 @@ return {
             "storageKey": null
           },
           {
-            "alias": "artworks",
-            "args": (v13/*: any*/),
+            "alias": "aggregations",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "aggregations",
+                "value": [
+                  "COLOR",
+                  "DIMENSION_RANGE",
+                  "LOCATION_CITY",
+                  "MAJOR_PERIOD",
+                  "MATERIALS_TERMS",
+                  "MEDIUM",
+                  "PARTNER",
+                  "PRICE_RANGE"
+                ]
+              },
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 0
+              }
+            ],
             "concreteType": "FilterArtworksConnection",
             "kind": "LinkedField",
             "name": "filterArtworksConnection",
@@ -517,6 +526,18 @@ return {
                 ],
                 "storageKey": null
               },
+              (v11/*: any*/)
+            ],
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:0)"
+          },
+          {
+            "alias": "artworks",
+            "args": (v13/*: any*/),
+            "concreteType": "FilterArtworksConnection",
+            "kind": "LinkedField",
+            "name": "filterArtworksConnection",
+            "plural": false,
+            "selections": [
               {
                 "alias": null,
                 "args": null,
@@ -831,8 +852,7 @@ return {
             "alias": "artworks",
             "args": (v13/*: any*/),
             "filters": [
-              "input",
-              "aggregations"
+              "input"
             ],
             "handle": "connection",
             "key": "ArtistArtworksGrid_artworks",
@@ -846,7 +866,7 @@ return {
     ]
   },
   "params": {
-    "id": "f291072a2b3d2c59383fb5d84b6e340f",
+    "id": "d74797e1d61502554354eaf9da6af6aa",
     "metadata": {},
     "name": "ArtistAboveTheFoldQuery",
     "operationKind": "query",

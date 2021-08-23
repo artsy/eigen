@@ -1,12 +1,12 @@
 import { SwitchMenu } from "lib/Components/SwitchMenu"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { Sans } from "palette"
 import React from "react"
 import { Platform, Switch } from "react-native"
-import PushNotification from "react-native-push-notification"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import {
@@ -14,19 +14,11 @@ import {
   MyProfilePushNotifications,
   MyProfilePushNotificationsQueryRenderer,
   OpenSettingsBanner,
-  PushAuthorizationStatus,
 } from "../MyProfilePushNotifications"
 
 jest.mock("lib/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
 }))
-
-const mockFetchNotificationPermissions = (isAndroid: boolean) => {
-  const module = isAndroid
-    ? (PushNotification.checkPermissions as jest.Mock<any>)
-    : (LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions as jest.Mock<any>)
-  return module
-}
 
 jest.unmock("react-relay")
 

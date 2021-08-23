@@ -76,6 +76,7 @@ type Agreement {
 
 type Algolia {
   apiKey: String
+  appID: String
 }
 
 type AnalyticsArtist {
@@ -3080,6 +3081,7 @@ type CommerceLineItem {
   order: CommerceOrder!
   priceCents: Int! @deprecated(reason: "switch to use listPriceCents")
   quantity: Int!
+  selectedShippingQuote: CommerceShippingQuote
   shipment: CommerceShipment
   shippingQuoteOptions(
     # Returns the elements in the list that come after the specified cursor.
@@ -6243,6 +6245,7 @@ type FairEdge {
 type FairExhibitor {
   # Exhibitor name
   name: String
+  partner: Partner
 
   # Exhibitors _id
   partnerID: String

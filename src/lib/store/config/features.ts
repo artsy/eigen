@@ -120,7 +120,7 @@ export const features = defineFeatures({
   AREnableNewOnboardingFlow: {
     readyForRelease: false,
     description: "Enable new onboarding flow",
-    showInAdminMenu: Platform.OS === "ios",
+    showInAdminMenu: true,
   },
   AREnableSavedAddresses: {
     readyForRelease: false,
@@ -136,6 +136,11 @@ export const features = defineFeatures({
   AREnableImprovedSearch: {
     readyForRelease: false,
     description: "Enable improved search experience",
+    showInAdminMenu: true,
+  },
+  ARPhoneValidation: {
+    readyForRelease: false,
+    description: "Enable phone number validation",
     showInAdminMenu: true,
   },
 })
