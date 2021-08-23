@@ -112,8 +112,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const artworks = artist.artworks
   const artworksCount = artworks?.edges?.length
   const artworksTotal = artworks?.counts?.total ?? 0
-  const artistName = artist.name
-  const artistInternalId = artist.internalID
 
   useEffect(() => {
     if (applyFilters) {
@@ -177,12 +175,14 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
             {!!enableSavedSearchV2 ? (
               <SavedSearchButtonQueryRenderer
                 filters={appliedFilters as FilterData[]}
-                artist={{ id: artistInternalId, name: artistName! }}
+                artistId={artist.internalID}
+                artistName={artist.name!}
+                artistSlug={artist.slug}
                 aggregations={aggregations}
               />
             ) : (
               <SavedSearchBannerQueryRender
-                artistId={artistInternalId}
+                artistId={artist.internalID}
                 filters={filterParams}
                 artistSlug={artist.slug}
               />
@@ -194,16 +194,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
         <Separator />
       </Box>
     )
-  }, [
-    artworksTotal,
-    artistName,
-    artistInternalId,
-    filterParams,
-    enableSavedSearch,
-    enableSavedSearchV2,
-    appliedFilters,
-    aggregations,
-  ])
+  }, [artworksTotal, filterParams, enableSavedSearch, enableSavedSearchV2, appliedFilters, aggregations])
 
   const filteredArtworks = () => {
     if (artworksCount === 0) {
