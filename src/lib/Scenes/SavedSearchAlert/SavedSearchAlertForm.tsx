@@ -3,7 +3,8 @@ import { FormikProvider, useFormik } from "formik"
 import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
-import React from "react"
+import { Dialog } from "palette"
+import React, { useState } from "react"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
 import { useTracking } from "react-tracking"
 import { Form } from "./Components/Form"
@@ -37,6 +38,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const isUpdateForm = !!savedSearchAlertId
   const pills = extractPills(filters, aggregations)
   const tracking = useTracking()
+  const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
   const formik = useFormik<SavedSearchAlertFormValues>({
     initialValues,
     initialErrors: {},
@@ -141,14 +143,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   }
 
   const handleDeletePress = () => {
-    Alert.alert(
-      "Delete Alert",
-      "Once you delete this alert, you will have to recreate it to continue receiving alerts on your favorite artworks.",
-      [
-        { text: "Cancel", style: "cancel" },
-        { text: "Delete", style: "destructive", onPress: onDelete },
-      ]
-    )
+    setVisibleDeleteDialog(true)
   }
 
   return (
@@ -162,6 +157,26 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         onSubmitPress={handleSubmit}
         {...other}
       />
+      {!!savedSearchAlertId && (
+        <Dialog
+          isVisible={visibleDeleteDialog}
+          title="Delete Alert"
+          detail="Once deleted, you will no longer receive notifications for these filter criteria."
+          primaryCta={{
+            text: "Delete",
+            onPress: () => {
+              onDelete()
+              setVisibleDeleteDialog(false)
+            },
+          }}
+          secondaryCta={{
+            text: "Cancel",
+            onPress: () => {
+              setVisibleDeleteDialog(false)
+            },
+          }}
+        />
+      )}
     </FormikProvider>
   )
 }
