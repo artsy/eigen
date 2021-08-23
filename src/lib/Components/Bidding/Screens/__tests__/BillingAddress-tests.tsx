@@ -1,5 +1,5 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Sans } from "palette"
+import { Sans, Text } from "palette"
 import React from "react"
 import { TextInput } from "react-native"
 
@@ -64,12 +64,11 @@ it("updates the validation for country when coming back from the select country 
 
   component.root.findByType(Button).props.onPress()
 
-  expect(component.root.findAllByType(Sans)[1].props.children).toEqual("This field is required")
+  expect(component.root.findAllByType(Sans)[0].props.children).toEqual("This field is required")
 
   selectCountry(component, fakeNavigator, billingAddress.country)
 
-  // The <Sans12> instances in the BillingAddress screen display error messages
-  expect(component.root.findAllByType(Sans).length).toEqual(1)
+  expect(component.root.findAllByType(Text).length).toEqual(5)
 })
 
 it("pre-fills the fields if initial billing address is provided", () => {
@@ -82,7 +81,7 @@ it("pre-fills the fields if initial billing address is provided", () => {
   expect(textInputComponent(component, "State, Province, or Region").props.value).toEqual("NY")
   expect(textInputComponent(component, "Postal code").props.value).toEqual("10013")
 
-  const countryField = component.root.findAllByType(Sans)[0]
+  const countryField = component.root.findAllByType(Text)[2]
   expect(countryField.props.children).toEqual("United States")
 })
 
