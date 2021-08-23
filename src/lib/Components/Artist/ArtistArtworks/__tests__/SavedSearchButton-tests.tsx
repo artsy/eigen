@@ -10,8 +10,9 @@ import { Button } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-import { SavedSearchButtonRefetchContainer as SavedSearchButton } from "../SavedSearchButton"
+import { SavedSearchButtonRefetchContainer as SavedSearchButton, tracks } from "../SavedSearchButton"
 
 jest.unmock("react-relay")
 
@@ -29,9 +30,19 @@ const mockedFilters = [
 
 describe("SavedSearchButton", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const trackEvent = jest.fn()
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    ;(useTracking as jest.Mock).mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
+
+  afterEach(() => {
+    trackEvent.mockClear()
   })
 
   const TestRenderer = ({ attributes = mockedAttributes }) => {
@@ -52,10 +63,9 @@ describe("SavedSearchButton", () => {
             filters={mockedFilters}
             criteria={attributes}
             aggregations={[]}
-            artist={{
-              id: "artistID",
-              name: "artistName",
-            }}
+            artistId="artistID"
+            artistName="artistName"
+            artistSlug="artistSlug"
           />
         )}
         variables={{
@@ -109,6 +119,20 @@ describe("SavedSearchButton", () => {
     act(() => tree.root.findByType(Button).props.onPress())
 
     expect(tree.root.findByType(CreateSavedSearchAlert).props.visible).toBeTruthy()
+  })
+
+  it("tracks clicks when the create alert button is pressed", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Me: () => ({
+        savedSearch: null,
+      }),
+    })
+
+    act(() => tree.root.findByType(Button).props.onPress())
+
+    expect(trackEvent).toHaveBeenCalledWith(tracks.tappedCreateAlert("artistID", "artistSlug"))
   })
 
   it("should navigate to the saved search alerts list when popover is pressed", async () => {

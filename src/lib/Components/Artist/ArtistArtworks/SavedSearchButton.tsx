@@ -1,3 +1,4 @@
+import { ActionType, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
 import { captureMessage } from "@sentry/react-native"
 import { SavedSearchButton_me } from "__generated__/SavedSearchButton_me.graphql"
 import { SavedSearchButtonQuery } from "__generated__/SavedSearchButtonQuery.graphql"
@@ -14,23 +15,32 @@ import { SavedSearchAlertFormPropsBase } from "lib/Scenes/SavedSearchAlert/Saved
 import { BellIcon, Box, Button } from "palette"
 import React, { useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface SavedSearchButtonProps extends SavedSearchAlertFormPropsBase {
   me?: SavedSearchButton_me | null
   loading?: boolean
   relay: RelayRefetchProp
   criteria: SearchCriteriaAttributes
+  artistSlug: string
+}
+
+interface SavedSearchButtonQueryRendererProps extends SavedSearchAlertFormPropsBase {
+  artistSlug: string
 }
 
 export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   me,
   loading,
-  artist,
+  artistId,
+  artistName,
+  artistSlug,
   filters,
   aggregations,
   relay,
   criteria,
 }) => {
+  const tracking = useTracking()
   const [visibleForm, setVisibleForm] = useState(false)
   const [refetching, setRefetching] = useState(false)
   const popover = usePopoverMessage()
@@ -66,6 +76,11 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
     })
   }
 
+  const handleCreateAlertPress = () => {
+    handleOpenForm()
+    tracking.trackEvent(tracks.tappedCreateAlert(artistId, artistSlug))
+  }
+
   return (
     <Box>
       <Button
@@ -74,14 +89,15 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
         icon={<BellIcon fill="white100" mr={0.5} width="16px" height="16px" />}
         disabled={isSavedSearch || filters.length === 0}
         loading={loading || refetching}
-        onPress={handleOpenForm}
+        onPress={handleCreateAlertPress}
         testID="create-saved-search-button"
         haptic
       >
         Create Alert
       </Button>
       <CreateSavedSearchAlert
-        artist={artist}
+        artistId={artistId}
+        artistName={artistName}
         visible={visibleForm}
         onClosePress={handleCloseForm}
         onComplete={handleComplete}
@@ -112,11 +128,11 @@ export const SavedSearchButtonRefetchContainer = createRefetchContainer(
   `
 )
 
-export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchAlertFormPropsBase> = (props) => {
-  const { filters, artist } = props
+export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRendererProps> = (props) => {
+  const { filters, artistId } = props
   const allowedFilters = getAllowedFiltersForSavedSearchInput(filters)
   const isEmptyCriteria = allowedFilters.length === 0
-  const criteria = getSearchCriteriaFromFilters(artist.id, filters)
+  const criteria = getSearchCriteriaFromFilters(artistId, filters)
 
   if (isEmptyCriteria) {
     return <SavedSearchButtonRefetchContainer {...props} me={null} loading={false} criteria={criteria} filters={[]} />
@@ -156,4 +172,13 @@ export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchAlertFormPropsB
       }}
     />
   )
+}
+
+export const tracks = {
+  tappedCreateAlert: (artistId: string, artistSlug: string): TappedCreateAlert => ({
+    action: ActionType.tappedCreateAlert,
+    context_screen_owner_type: OwnerType.artist,
+    context_screen_owner_id: artistId,
+    context_screen_owner_slug: artistSlug,
+  }),
 }
