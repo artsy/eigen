@@ -71,14 +71,14 @@ export const Select = <ValueType,>({
 
   return (
     <>
-      {renderButton?.({ selectedValue: selectedItem?.value ?? null, onPress: open.bind(this) }) ?? (
+      {renderButton?.({ selectedValue: selectedItem?.value ?? null, onPress: open }) ?? (
         <SelectButton
           title={title}
           showTitleLabel={showTitleLabel}
           subTitle={subTitle}
           placeholder={placeholder}
           value={selectedItem?.label}
-          onPress={open.bind(this)}
+          onPress={open}
           hasError={hasError}
         />
       )}
@@ -89,7 +89,7 @@ export const Select = <ValueType,>({
         value={value}
         options={options}
         maxHeight={maxModalHeight}
-        onDismiss={close.bind(this)}
+        onDismiss={close}
         onSelectValue={onSelectValue}
         renderItemLabel={renderItemLabel}
         onModalFinishedClosing={onModalFinishedClosing}
@@ -295,6 +295,7 @@ const SelectModal: React.FC<{
                 onSelectValue(item.value, index)
               }}
               style={{ flexGrow: 0 }}
+              testID="select-option"
             >
               <Flex
                 flexDirection="row"
