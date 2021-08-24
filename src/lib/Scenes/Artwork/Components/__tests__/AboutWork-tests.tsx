@@ -1,17 +1,12 @@
 import { AboutWork_artwork } from "__generated__/AboutWork_artwork.graphql"
-import { ReadMore } from "lib/Components/ReadMore"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
-import { Theme } from "palette"
 import React from "react"
-import { Text } from "react-native"
 import { AboutWork } from "../AboutWork"
 
 jest.mock("lib/utils/hardware", () => ({
   truncatedTextLimit: jest.fn(),
 }))
 
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
-import { extractText } from "lib/tests/extractText"
 import { truncatedTextLimit } from "lib/utils/hardware"
 
 describe("AboutWork", () => {
