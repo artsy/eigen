@@ -218,7 +218,7 @@ export const HomeFragmentContainer = createRefetchContainer(
       fragment Home_homePageAbove on HomePage
       @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
         artworkModules(
-          maxRails: 2
+          maxRails: -1
           maxFollowedGeneRails: -1
           order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS]
           include: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS]
