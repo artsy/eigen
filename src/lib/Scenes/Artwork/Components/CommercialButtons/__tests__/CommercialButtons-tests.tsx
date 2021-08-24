@@ -101,7 +101,7 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(commercialButtons.text()).toContain("Make offer")
+    expect(commercialButtons.text()).toContain("Make Offer")
   })
 
   it("renders Buy Now button if isAcquireable", async () => {
@@ -116,7 +116,7 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(commercialButtons.text()).toContain("Buy now")
+    expect(commercialButtons.text()).toContain("Buy Now")
   })
 
   it("renders Bid button if isInAuction & isBiddable", async () => {
@@ -167,8 +167,8 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(commercialButtons.find(Button).at(0).text()).toContain("Buy now")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Make offer")
+    expect(commercialButtons.find(Button).at(0).text()).toContain("Buy Now")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Make Offer")
   })
 
   it("commits the Buy Now mutation", async () => {
@@ -261,7 +261,7 @@ describe("CommercialButtons", () => {
       artwork,
     })
     expect(commercialButtons.find(Button).at(0).text()).toContain("Bid")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Buy now $8000")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Buy Now $8000")
   })
 
   it("doesn't render the Buy Now or Bid buttons when isInAuction and isBuyNowable but has sold via buy now", async () => {

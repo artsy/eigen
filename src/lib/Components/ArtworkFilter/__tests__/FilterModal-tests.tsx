@@ -225,7 +225,7 @@ describe("Filter modal navigation flow", () => {
 describe("Filter modal states", () => {
   it("displays the currently selected sort option on the filter screen", () => {
     const injectedState: ArtworkFiltersState = {
-      selectedFilters: [{ displayText: "Price (low to high)", paramName: FilterParamName.sort }],
+      selectedFilters: [{ displayText: "Price (Low to High)", paramName: FilterParamName.sort }],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
@@ -238,7 +238,7 @@ describe("Filter modal states", () => {
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={injectedState} />)
-    expect(filterScreen.find(CurrentOption).at(0).text()).toEqual("Price (low to high)")
+    expect(filterScreen.find(CurrentOption).at(0).text()).toEqual("Price (Low to High)")
   })
 
   it("displays the currently selected medium option on the filter screen", () => {
@@ -274,7 +274,7 @@ describe("Filter modal states", () => {
 
   it("displays the filter screen apply button correctly when filters are selected", () => {
     const injectedState: ArtworkFiltersState = {
-      selectedFilters: [{ displayText: "Price (low to high)", paramName: FilterParamName.sort }],
+      selectedFilters: [{ displayText: "Price (Low to High)", paramName: FilterParamName.sort }],
       appliedFilters: [],
       previouslyAppliedFilters: [],
       applyFilters: false,
@@ -305,7 +305,7 @@ describe("Filter modal states", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         { displayText: "Drawing", paramValue: ["drawing"], paramName: FilterParamName.additionalGeneIDs },
-        { displayText: "Price (low to high)", paramName: FilterParamName.sort },
+        { displayText: "Price (Low to High)", paramName: FilterParamName.sort },
         { displayText: "$10,000-20,000", paramName: FilterParamName.priceRange },
         {
           displayText: "Bid",
@@ -327,7 +327,7 @@ describe("Filter modal states", () => {
 
     const filterScreen = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[0])).toEqual("Price (low to high)")
+    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[0])).toEqual("Price (Low to High)")
     expect(extractText(filterScreen.root.findAllByType(CurrentOption)[1])).toEqual("")
     expect(extractText(filterScreen.root.findAllByType(CurrentOption)[2])).toEqual("Drawing")
     expect(extractText(filterScreen.root.findAllByType(CurrentOption)[3])).toEqual("$10,000-20,000")
@@ -342,8 +342,8 @@ describe("Clearing filters", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
-          displayText: "Price (low to high)",
-          paramValue: "Price (low to high)",
+          displayText: "Price (Low to High)",
+          paramValue: "Price (Low to High)",
           paramName: FilterParamName.sort,
         },
       ],
@@ -360,7 +360,7 @@ describe("Clearing filters", () => {
 
     const filterScreen = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[0])).toEqual("Price (low to high)")
+    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[0])).toEqual("Price (Low to High)")
 
     filterScreen.root.findByType(ClearAllButton).props.onPress()
 
@@ -370,8 +370,8 @@ describe("Clearing filters", () => {
   it("exits the modal when clear all button is pressed", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [],
-      appliedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [{ displayText: "Recently added", paramName: FilterParamName.sort }],
+      appliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
       applyFilters: false,
       aggregations: mockAggregations,
       filterType: "artwork",
@@ -383,7 +383,7 @@ describe("Clearing filters", () => {
 
     const filterModal = mount(<MockFilterModalNavigator initialData={injectedState} />)
 
-    expect(filterModal.find(CurrentOption).at(0).text()).toEqual("Recently added")
+    expect(filterModal.find(CurrentOption).at(0).text()).toEqual("Recently Added")
     expect(filterModal.find(ApplyButton).props().disabled).toEqual(true)
 
     filterModal.find(ClearAllButton).at(0).props().onPress()
@@ -434,9 +434,9 @@ describe("Applying filters on Artworks", () => {
 
   it.skip("calls the relay method to refetch artworks when a filter is applied", async () => {
     const injectedState: ArtworkFiltersState = {
-      selectedFilters: [{ displayText: "Price (high to low)", paramName: FilterParamName.sort }],
-      appliedFilters: [{ displayText: "Price (high to low)", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [{ displayText: "Price (high to low)", paramName: FilterParamName.sort }],
+      selectedFilters: [{ displayText: "Price (High to Low)", paramName: FilterParamName.sort }],
+      appliedFilters: [{ displayText: "Price (High to Low)", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [{ displayText: "Price (High to Low)", paramName: FilterParamName.sort }],
       applyFilters: true,
       aggregations: mockAggregations,
       filterType: "artwork",
@@ -485,10 +485,10 @@ describe("Applying filters on Artworks", () => {
         { displayText: "Works on paper", paramName: FilterParamName.medium, paramValue: "work-on-paper" },
       ],
       appliedFilters: [
-        { displayText: "Recently added", paramName: FilterParamName.sort, paramValue: "-decayed_merch" },
+        { displayText: "Recently Added", paramName: FilterParamName.sort, paramValue: "-decayed_merch" },
       ],
       previouslyAppliedFilters: [
-        { displayText: "Recently added", paramName: FilterParamName.sort, paramValue: "-decayed_merch" },
+        { displayText: "Recently Added", paramName: FilterParamName.sort, paramValue: "-decayed_merch" },
       ],
       applyFilters: true,
       aggregations: mockAggregations,

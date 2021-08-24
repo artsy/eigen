@@ -44,7 +44,7 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
   // Add in Artists I Follow at the start of the list
   const allOptions = [
     {
-      displayText: "All artists I follow",
+      displayText: "All Artists I Follow",
       paramName: FilterParamName.artistsIFollow,
       paramValue: !!(selectedArtistIFollowOptions ?? [])[0]?.paramValue,
     },

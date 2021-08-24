@@ -26,7 +26,7 @@ export const FairAllFollowedArtists: React.FC<FairAllFollowedArtistsProps> = ({ 
 
   const initialFilter: FilterArray = [
     {
-      displayText: "All artists I follow",
+      displayText: "All Artists I Follow",
       paramName: FilterParamName.artistsIFollow,
       paramValue: true,
     },
@@ -71,11 +71,8 @@ export const FairAllFollowedArtistsFragmentContainer = createFragmentContainer(F
     fragment FairAllFollowedArtists_fair on Fair {
       internalID
       slug
-      ...FairArtworks_fair @arguments(input: {
-        includeArtworksByFollowedArtists: true,
-        sort: "-decayed_merch",
-        dimensionRange: "*-*",
-      })
+      ...FairArtworks_fair
+        @arguments(input: { includeArtworksByFollowedArtists: true, sort: "-decayed_merch", dimensionRange: "*-*" })
     }
   `,
   /**

@@ -75,7 +75,7 @@ describe("TimePeriodOptions Screen", () => {
       expect(tree.root.findAllByType(MultiSelectOptionListItem)).toHaveLength(3)
 
       const items = tree.root.findAllByType(MultiSelectOptionListItem)
-      expect(items.map(extractText)).toEqual(["2020–today", "2010–2019", "In the year 2000!"])
+      expect(items.map(extractText)).toEqual(["2020–Today", "2010–2019", "In the year 2000!"])
     })
   })
 
@@ -84,7 +84,7 @@ describe("TimePeriodOptions Screen", () => {
       ...initialState,
       selectedFilters: [
         {
-          displayText: "2020–today",
+          displayText: "2020–Today",
           paramName: FilterParamName.timePeriod,
           paramValue: ["2020"],
         },
@@ -99,7 +99,7 @@ describe("TimePeriodOptions Screen", () => {
 
       expect(item).not.toBeUndefined()
       if (item) {
-        expect(extractText(item)).toContain("2020–today")
+        expect(extractText(item)).toContain("2020–Today")
       }
     })
 

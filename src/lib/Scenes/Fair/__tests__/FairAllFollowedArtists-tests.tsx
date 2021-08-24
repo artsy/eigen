@@ -58,7 +58,7 @@ describe("FairAllFollowedArtists", () => {
     expect(wrapper.root.findAllByType(FairArtworksFragmentContainer)).toHaveLength(1)
     expect(wrapper.root.findAllByType(FairArtworksFragmentContainer)[0].props.initiallyAppliedFilter).toStrictEqual([
       {
-        displayText: "All artists I follow",
+        displayText: "All Artists I Follow",
         paramName: "includeArtworksByFollowedArtists",
         paramValue: true,
       },

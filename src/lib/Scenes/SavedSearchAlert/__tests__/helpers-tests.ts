@@ -55,14 +55,14 @@ describe("extractPills", () => {
         paramValue: ["limited edition", "open edition"],
       },
       {
-        displayText: "Make offer",
+        displayText: "Make Offer",
         paramValue: true,
         paramName: FilterParamName.waysToBuyMakeOffer,
       },
     ]
     const result = extractPills(filters, aggregations)
 
-    expect(result).toEqual(["Acrylic", "Canvas", "$5,000–10,000", "Limited Edition", "Open Edition", "Make offer"])
+    expect(result).toEqual(["Acrylic", "Canvas", "$5,000–10,000", "Limited Edition", "Open Edition", "Make Offer"])
   })
 })
 

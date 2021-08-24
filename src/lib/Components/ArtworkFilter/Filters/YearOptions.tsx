@@ -15,7 +15,7 @@ import styled from "styled-components/native"
 interface YearOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "YearOptionsScreen"> {}
 
 export const ALLOW_EMPTY_CREATED_DATES_FILTER: FilterData = {
-  displayText: "Include lots without artwork date listed",
+  displayText: "Include Lots without Artwork Date Listed",
   paramName: FilterParamName.allowEmptyCreatedDates,
   paramValue: true,
 }

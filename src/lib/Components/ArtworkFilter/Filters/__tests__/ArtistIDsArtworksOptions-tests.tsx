@@ -143,7 +143,7 @@ describe("Artist options screen", () => {
 
       const selectedOptions = selectedArtistOptions(tree)
       expect(selectedOptions).toHaveLength(3)
-      expect(extractText(selectedOptions[0])).toMatch("All artists I follow")
+      expect(extractText(selectedOptions[0])).toMatch("All Artists I Follow")
       expect(extractText(selectedOptions[1])).toMatch("Artist 1")
       expect(extractText(selectedOptions[2])).toMatch("Artist 2")
     })

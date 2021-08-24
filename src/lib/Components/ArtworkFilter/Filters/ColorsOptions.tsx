@@ -11,19 +11,19 @@ import { ColorsSwatch } from "./ColorsSwatch"
 import { useMultiSelect } from "./useMultiSelect"
 
 export const COLORS = [
-  { value: "black-and-white", name: "Black and white", backgroundColor: "#000", foregroundColor: "#fff" },
+  { value: "black-and-white", name: "Black and White", backgroundColor: "#000", foregroundColor: "#fff" },
   { value: "red", name: "Red", backgroundColor: "#FF0000", foregroundColor: "#fff" },
   { value: "yellow", name: "Yellow", backgroundColor: "#FBE854", foregroundColor: "#000" },
   { value: "pink", name: "Pink", backgroundColor: "#FB81CD", foregroundColor: "#000" },
   { value: "violet", name: "Violet", backgroundColor: "#B82C83", foregroundColor: "#fff" },
   { value: "gold", name: "Gold", backgroundColor: "#DAA520", foregroundColor: "#000" },
   { value: "orange", name: "Orange", backgroundColor: "#F7923A", foregroundColor: "#000" },
-  { value: "darkviolet", name: "Dark violet", backgroundColor: "#642B7F", foregroundColor: "#fff" },
-  { value: "lightgreen", name: "Light green", backgroundColor: "#BCCC46", foregroundColor: "#000" },
-  { value: "lightblue", name: "Light blue", backgroundColor: "#C2D5F1", foregroundColor: "#000" },
-  { value: "darkblue", name: "Dark blue", backgroundColor: "#0A1AB4", foregroundColor: "#fff" },
-  { value: "darkorange", name: "Dark orange", backgroundColor: "#612A00", foregroundColor: "#fff" },
-  { value: "darkgreen", name: "Dark green", backgroundColor: "#004600", foregroundColor: "#fff" },
+  { value: "darkviolet", name: "Dark Violet", backgroundColor: "#642B7F", foregroundColor: "#fff" },
+  { value: "lightgreen", name: "Light Green", backgroundColor: "#BCCC46", foregroundColor: "#000" },
+  { value: "lightblue", name: "Light Blue", backgroundColor: "#C2D5F1", foregroundColor: "#000" },
+  { value: "darkblue", name: "Dark Blue", backgroundColor: "#0A1AB4", foregroundColor: "#fff" },
+  { value: "darkorange", name: "Dark Orange", backgroundColor: "#612A00", foregroundColor: "#fff" },
+  { value: "darkgreen", name: "Dark Green", backgroundColor: "#004600", foregroundColor: "#fff" },
 ] as const
 
 type Color = typeof COLORS[number]
