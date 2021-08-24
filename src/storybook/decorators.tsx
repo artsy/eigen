@@ -35,7 +35,7 @@ export const withThemeV2AndSwitcher: DecoratorFunction<React.ReactNode> = (story
   )
 }
 
-export const withSafeAreaProvider: DecoratorFunction<React.ReactNode> = (story) => (
+export const withSafeArea: DecoratorFunction<React.ReactNode> = (story) => (
   <SafeAreaProvider>{story()}</SafeAreaProvider>
 )
 
