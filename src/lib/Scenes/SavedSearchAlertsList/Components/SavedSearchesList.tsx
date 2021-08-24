@@ -1,8 +1,10 @@
+import { OwnerType } from "@artsy/cohesion"
 import { SavedSearchesList_me } from "__generated__/SavedSearchesList_me.graphql"
 import { SAVED_SERCHES_PAGE_SIZE } from "lib/data/constants"
 import { navigate, navigationEvents } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Flex, Spinner, useTheme } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { FlatList } from "react-native"
@@ -93,8 +95,21 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   )
 }
 
+export const SavedSearchesListWrapper: React.FC<SavedSearchesListProps> = (props) => {
+  return (
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.SavedSearchList,
+        context_screen_owner_type: OwnerType.savedSearch,
+      }}
+    >
+      <SavedSearchesList {...props} />
+    </ProvideScreenTracking>
+  )
+}
+
 export const SavedSearchesListContainer = createPaginationContainer(
-  SavedSearchesList,
+  SavedSearchesListWrapper,
   {
     me: graphql`
       fragment SavedSearchesList_me on Me

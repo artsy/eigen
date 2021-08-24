@@ -2,7 +2,7 @@ import { waitFor } from "@testing-library/react-native"
 import { navigate, popParentViewController } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import moment from "moment"
+import { DateTime } from "luxon"
 import React, { Suspense } from "react"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { RegisterToBidButtonContainer } from "../Components/RegisterToBidButton"
@@ -45,9 +45,9 @@ describe("Sale", () => {
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
           slug: "live-sale-slug",
-          startAt: moment().subtract(1, "day").toISOString(),
-          liveStartAt: moment().subtract(1, "second").toISOString(),
-          endAt: moment().add(1, "day").toISOString(),
+          startAt: DateTime.now().minus({ day: 1 }).toISO(),
+          liveStartAt: DateTime.now().minus({ second: 1 }).toISO(),
+          endAt: DateTime.now().plus({ day: 1 }).toISO(),
           timeZone: "Europe/Berlin",
           coverImage: {
             url: "cover image url",
@@ -73,8 +73,8 @@ describe("Sale", () => {
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
           slug: "live-sale-slug",
-          startAt: moment().subtract(1, "day").toISOString(),
-          liveStartAt: moment().subtract(1, "second").toISOString(),
+          startAt: DateTime.now().minus({ day: 1 }).toISO(),
+          liveStartAt: DateTime.now().minus({ second: 1 }).toISO(),
           endAt: null,
           timeZone: "Europe/Berlin",
           coverImage: {
@@ -102,9 +102,9 @@ describe("Sale", () => {
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
           slug: "closed-sale-slug",
-          startAt: moment().subtract(2, "days").toISOString(),
-          liveStartAt: moment().subtract(2, "days").toISOString(),
-          endAt: moment().subtract(1, "day").toISOString(),
+          startAt: DateTime.now().minus({ days: 2 }).toISO(),
+          liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
+          endAt: DateTime.now().minus({ day: 1 }).toISO(),
           timeZone: "Europe/Berlin",
           name: "closed!",
         }),
@@ -126,10 +126,10 @@ describe("Sale", () => {
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
           slug: "regular-sale-slug",
-          startAt: moment().add(1, "day").toISOString(),
-          liveStartAt: moment().add(2, "days").toISOString(),
-          endAt: moment().add(3, "days").toISOString(),
-          registrationEndsAt: moment().add(3, "hours").toISOString(),
+          startAt: DateTime.now().plus({ day: 1 }).toISO(),
+          liveStartAt: DateTime.now().plus({ days: 2 }).toISO(),
+          endAt: DateTime.now().plus({ days: 3 }).toISO(),
+          registrationEndsAt: DateTime.now().plus({ hours: 3 }).toISO(),
           name: "regular sale!",
         }),
       })
@@ -145,10 +145,10 @@ describe("Sale", () => {
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
           slug: "reg-ended-sale-slug",
-          startAt: moment().subtract(3, "days").toISOString(),
-          liveStartAt: moment().subtract(2, "days").toISOString(),
-          endAt: moment().add(3, "days").toISOString(),
-          registrationEndsAt: moment().subtract(3, "hours").toISOString(),
+          startAt: DateTime.now().minus({ days: 3 }).toISO(),
+          liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
+          endAt: DateTime.now().plus({ days: 3 }).toISO(),
+          registrationEndsAt: DateTime.now().minus({ hours: 3 }).toISO(),
           name: "reg ended sale!",
         }),
       })
@@ -164,9 +164,9 @@ describe("Sale", () => {
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
           slug: "closed-sale-slug",
-          startAt: moment().subtract(3, "days").toISOString(),
-          liveStartAt: moment().subtract(2, "days").toISOString(),
-          endAt: moment().subtract(1, "day").toISOString(),
+          startAt: DateTime.now().minus({ days: 3 }).toISO(),
+          liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
+          endAt: DateTime.now().minus({ day: 1 }).toISO(),
           name: "closed sale!",
         }),
       })

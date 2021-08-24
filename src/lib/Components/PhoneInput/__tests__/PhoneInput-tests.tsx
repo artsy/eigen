@@ -1,7 +1,7 @@
 import { Input } from "lib/Components/Input/Input"
-import { Select } from "lib/Components/Select"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Select } from "palette/elements/Select"
 import React from "react"
 import { act } from "react-test-renderer"
 import { PhoneInput } from "../PhoneInput"

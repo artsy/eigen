@@ -28,7 +28,7 @@ jest.unmock("react-relay")
 const merge: (...args: object[]) => any = _merge
 
 const realNow = Settings.now
-const realDefaultZone = Settings.defaultZoneName
+const realDefaultZone = Settings.defaultZone
 
 const meFixture: BidButtonTestsQueryRawResponse["me"] = {
   id: "id",
@@ -37,13 +37,13 @@ const meFixture: BidButtonTestsQueryRawResponse["me"] = {
 
 describe("BidButton", () => {
   beforeAll(() => {
-    Settings.defaultZoneName = "America/New_York"
+    Settings.defaultZone = "America/New_York"
     Settings.now = () => new Date("2019-08-15T12:00:00+00:00").valueOf()
   })
 
   afterAll(() => {
     Settings.now = realNow
-    Settings.defaultZoneName = realDefaultZone
+    Settings.defaultZone = realDefaultZone
   })
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

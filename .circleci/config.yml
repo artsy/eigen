@@ -24,6 +24,7 @@ commands:
             set +e
             touch $BASH_ENV
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
+            echo "HOMEBREW_NO_AUTO_UPDATE=1" >> $BASH_ENV
             echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
             echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
             echo 'nvm install v14.17.1' >> $BASH_ENV
@@ -195,7 +196,7 @@ jobs:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
 
     macos:
-      xcode: 12.2.0
+      xcode: 12.5.1
 
     steps:
       - checkout
@@ -297,7 +298,7 @@ jobs:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
 
     macos:
-      xcode: 12.2.0
+      xcode: 12.5.1
 
     steps:
       - attach_workspace:
@@ -413,7 +414,7 @@ jobs:
     environment:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
     macos:
-      xcode: 12.2.0
+      xcode: 12.5.1
     steps:
       - checkout
       - install-gems
