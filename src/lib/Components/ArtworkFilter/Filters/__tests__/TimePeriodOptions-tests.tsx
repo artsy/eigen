@@ -75,7 +75,7 @@ describe("TimePeriodOptions Screen", () => {
       expect(tree.root.findAllByType(MultiSelectOptionListItem)).toHaveLength(3)
 
       const items = tree.root.findAllByType(MultiSelectOptionListItem)
-      expect(items.map(extractText)).toEqual(["2020–Today", "2010–2019", "In the year 2000!"])
+      expect(items.map(extractText)).toEqual(["2020–Today", "2010–2019", "In the Year 2000!"])
     })
   })
 

@@ -1,4 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { toTitleCase } from "lib/utils/toTitleCase"
 import React from "react"
 import { ArtworkFilterNavigationStack } from "../ArtworkFilter"
 import { FilterData, FilterDisplayName, FilterParamName } from "../ArtworkFilterHelpers"
@@ -15,7 +16,7 @@ export const ArtistNationalitiesOptionsScreen: React.FC<ArtistNationalitiesOptio
   const { aggregation } = useArtworkFiltersAggregation({ paramName: PARAM_NAME })
 
   const options: FilterData[] = (aggregation?.counts ?? []).map(({ value: paramValue, name }) => {
-    return { displayText: name, paramName: PARAM_NAME, paramValue }
+    return { displayText: toTitleCase(name), paramName: PARAM_NAME, paramValue }
   })
 
   const { handleSelect, isSelected, handleClear, isActive } = useMultiSelect({

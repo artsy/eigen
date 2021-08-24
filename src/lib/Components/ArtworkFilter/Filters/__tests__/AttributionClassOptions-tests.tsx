@@ -49,7 +49,7 @@ describe("AttributionClassOptions Screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
-          displayText: "Unique, Unknown edition",
+          displayText: "Unique, Unknown Edition",
           paramName: FilterParamName.attributionClass,
           paramValue: ["unique", "unknown edition"],
         },
@@ -68,14 +68,14 @@ describe("AttributionClassOptions Screen", () => {
     const tree = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
     const items = tree.root.findAllByType(FilterModalOptionListItem)
 
-    expect(extractText(items[1])).toContain("Unique, Unknown edition")
+    expect(extractText(items[1])).toContain("Unique, Unknown Edition")
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
-          displayText: "Unique, Unknown edition",
+          displayText: "Unique, Unknown Edition",
           paramName: FilterParamName.attributionClass,
           paramValue: ["unique", "unknown edition"],
         },

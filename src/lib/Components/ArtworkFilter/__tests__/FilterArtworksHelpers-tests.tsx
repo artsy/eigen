@@ -525,10 +525,10 @@ describe("selectedOption", () => {
 
     it("returns the correct value when an options is selected", () => {
       const selectedOptions = [
-        { paramName: FilterParamName.partnerIDs, displayText: "gallery one", filterKey: "gallery" },
+        { paramName: FilterParamName.partnerIDs, displayText: "Gallery One", filterKey: "gallery" },
       ]
 
-      expect(selectedOption({ selectedOptions, filterScreen: "partnerIDs", aggregations: [] })).toEqual("gallery one")
+      expect(selectedOption({ selectedOptions, filterScreen: "partnerIDs", aggregations: [] })).toEqual("Gallery One")
     })
   })
 
@@ -658,12 +658,12 @@ describe("selectedOption", () => {
         {
           paramName: FilterParamName.materialsTerms,
           paramValue: ["screen print"],
-          displayText: "Screen print",
+          displayText: "Screen Print",
         },
       ]
 
       expect(selectedOption({ selectedOptions, filterScreen: "materialsTerms", aggregations: [] })).toEqual(
-        "Screen print"
+        "Screen Print"
       )
     })
     it("returns the correct result when multiple items is selected", () => {
@@ -672,12 +672,12 @@ describe("selectedOption", () => {
         {
           paramName: FilterParamName.materialsTerms,
           paramValue: ["screen print", "paper"],
-          displayText: "Screen print, Paper",
+          displayText: "Screen Print, Paper",
         },
       ]
 
       expect(selectedOption({ selectedOptions, filterScreen: "materialsTerms", aggregations: [] })).toEqual(
-        "Screen print, Paper"
+        "Screen Print, Paper"
       )
     })
   })

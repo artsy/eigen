@@ -482,7 +482,7 @@ describe("Applying filters on Artworks", () => {
   it.skip("tracks changes in the filter state when a filter is applied", async () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
-        { displayText: "Works on paper", paramName: FilterParamName.medium, paramValue: "work-on-paper" },
+        { displayText: "Works on Paper", paramName: FilterParamName.medium, paramValue: "work-on-paper" },
       ],
       appliedFilters: [
         { displayText: "Recently Added", paramName: FilterParamName.sort, paramValue: "-decayed_merch" },

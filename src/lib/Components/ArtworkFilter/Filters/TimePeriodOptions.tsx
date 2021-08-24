@@ -7,6 +7,7 @@ import {
   getDisplayNameForTimePeriod,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
+import { toTitleCase } from "lib/utils/toTitleCase"
 import React from "react"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
@@ -18,7 +19,10 @@ export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = (
   const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.timePeriod })
 
   const options: FilterData[] = (aggregation?.counts ?? []).map(({ value: paramValue, name }) => {
-    return { displayText: getDisplayNameForTimePeriod(name), paramName: FilterParamName.timePeriod, paramValue }
+    const label = getDisplayNameForTimePeriod(name)
+    const displayText = toTitleCase(label)
+
+    return { displayText, paramName: FilterParamName.timePeriod, paramValue }
   })
 
   const { handleSelect, handleClear, isSelected, isActive } = useMultiSelect({

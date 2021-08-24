@@ -9,6 +9,7 @@ import {
   ParamDefaultValues,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { toTitleCase } from "lib/utils/toTitleCase"
 import React from "react"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
@@ -23,7 +24,7 @@ export const MediumOptionsScreen: React.FC<MediumOptionsScreenProps> = ({ naviga
   const aggregation = aggregationForFilter(paramName, aggregations)
   const options = aggregation?.counts.map((aggCount) => {
     return {
-      displayText: aggCount.name,
+      displayText: toTitleCase(aggCount.name),
       paramValue: aggCount.value,
       paramName,
       count: aggCount.count,
