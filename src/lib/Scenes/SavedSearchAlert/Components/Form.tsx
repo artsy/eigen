@@ -84,16 +84,12 @@ export const Form: React.FC<FormProps> = (props) => {
         Save Alert
       </Button>
       {!!savedSearchAlertId && (
-        <Button
-          testID="delete-alert-button"
-          variant="secondaryOutline"
-          mt={2}
-          size="large"
-          block
-          onPress={onDeletePress}
-        >
-          Delete Alert
-        </Button>
+        <>
+          <Spacer mt={2} />
+          <Button testID="delete-alert-button" variant="secondaryOutline" size="large" block onPress={onDeletePress}>
+            Delete Alert
+          </Button>
+        </>
       )}
     </Box>
   )
