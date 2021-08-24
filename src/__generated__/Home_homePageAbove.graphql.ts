@@ -57,7 +57,7 @@ return {
         {
           "kind": "Literal",
           "name": "maxRails",
-          "value": 2
+          "value": -1
         },
         {
           "kind": "Literal",
@@ -83,7 +83,7 @@ return {
           "name": "ArtworkRail_rail"
         }
       ],
-      "storageKey": "artworkModules(include:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"RECENTLY_VIEWED_WORKS\"],maxFollowedGeneRails:-1,maxRails:2,order:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"RECENTLY_VIEWED_WORKS\"])"
+      "storageKey": "artworkModules(include:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"RECENTLY_VIEWED_WORKS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"RECENTLY_VIEWED_WORKS\"])"
     },
     {
       "alias": null,
@@ -117,5 +117,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'fbc3b790f1ff3ff2765d6d87ae35dee4';
+(node as any).hash = 'beefbffc3fcc591a84b97c5d34446dda';
 export default node;
