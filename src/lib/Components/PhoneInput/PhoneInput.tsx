@@ -18,10 +18,11 @@ const UNDERLINE_TEXTINPUT_HEIGHT_ANDROID = 1.5
 export const PhoneInput = React.forwardRef<
   Input,
   {
+    setValidation?: (value: boolean) => void
     onChange?: (value: string) => void
     maxModalHeight?: number
   } & Omit<InputProps, "onChange">
->(({ value, onChange, onChangeText, maxModalHeight, ...rest }, outerRef) => {
+>(({ setValidation, value, onChange, onChangeText, maxModalHeight, ...rest }, outerRef) => {
   const color = useColor()
   const innerRef = useRef<Input | null>()
   const initialValues = cleanUserPhoneNumber(value ?? "")
@@ -31,7 +32,7 @@ export const PhoneInput = React.forwardRef<
   const [phoneNumber, setPhoneNumber] = useState(
     formatPhoneNumber({ current: initialValues.phoneNumber, previous: initialValues.phoneNumber, countryCode })
   )
-  const [validationMessage, setValidationMessage] = useState("")
+  const [validationMessage, setValidationMessage] = useState<string | undefined>(undefined)
   const dialCode = countryIndex[countryCode].dialCode
   const countryISO2Code = countryIndex[countryCode].iso2
   const phoneUtil = PhoneNumberUtil.getInstance()
@@ -46,8 +47,19 @@ export const PhoneInput = React.forwardRef<
     }
   }
 
+  const handleValidation = () => {
+    const isValid = isValidNumber(phoneNumber, countryISO2Code)
+    if (typeof setValidation === "function") {
+      setValidation(isValid)
+    }
+    setValidationMessage(isValid ? "" : "This phone number is incomplete")
+  }
+
   const isFirstRun = useRef(true)
   useEffect(() => {
+    if (showPhoneValidationMessage) {
+      handleValidation()
+    }
     if (isFirstRun.current) {
       isFirstRun.current = false
       return
@@ -84,14 +96,6 @@ export const PhoneInput = React.forwardRef<
           setPhoneNumber(formatPhoneNumber({ current: newPhoneNumber, previous: phoneNumber, countryCode }))
         }
         keyboardType="phone-pad"
-        onBlur={
-          !!showPhoneValidationMessage
-            ? () => {
-                setValidationMessage(isValidNumber(phoneNumber, countryISO2Code) ? "" : "Invalid phone number")
-              }
-            : // tslint:disable-next-line: no-empty
-              () => {}
-        }
         renderLeftHandSection={() => (
           <Select<string>
             options={countryOptions}
