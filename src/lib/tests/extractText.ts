@@ -10,6 +10,12 @@ export const extractText = (root: ReactTestInstance | string | number): string =
   }
 
   return root.children.reduce((acc: string, child) => {
+    // @ts-ignore
+    if (child.type === "TextInput") {
+      // @ts-ignore
+      return acc + child.props.value ?? ""
+    }
+
     return acc + extractText(child)
   }, "")
 }

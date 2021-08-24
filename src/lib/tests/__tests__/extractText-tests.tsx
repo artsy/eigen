@@ -1,5 +1,5 @@
 import React from "react"
-import { Text as RNText } from "react-native"
+import { Text as RNText, TextInput as RNTextInput } from "react-native"
 import { extractText } from "../extractText"
 import { renderWithWrappersTL } from "../renderWithWrappers"
 
@@ -22,5 +22,10 @@ describe("extractText", () => {
       </RNText>
     )
     expect(extractText(container)).toEqual("wowsuchnest")
+  })
+
+  it("works for Inputs", () => {
+    const { container } = renderWithWrappersTL(<RNTextInput value="wow" />)
+    expect(extractText(container)).toEqual("wow")
   })
 })
