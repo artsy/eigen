@@ -4,7 +4,16 @@ import React from "react"
 import { StyleProp, TextStyle } from "react-native"
 import { Text as RNText, TextProps as RNTextProps } from "react-native"
 import styled from "styled-components/native"
-import { color, ColorProps, space, SpaceProps, typography, TypographyProps } from "styled-system"
+import {
+  color,
+  ColorProps,
+  fontSize,
+  FontSizeProps,
+  space,
+  SpaceProps,
+  typography,
+  TypographyProps,
+} from "styled-system"
 import { useFontFamilyFor } from "./helpers"
 
 export interface TextProps extends RNTextProps, InnerStyledTextProps {
@@ -39,9 +48,10 @@ export const Text: React.FC<TextProps> = React.forwardRef<RNText, TextProps>(
   }
 )
 
-type InnerStyledTextProps = ColorProps & SpaceProps & TypographyProps
+type InnerStyledTextProps = ColorProps & SpaceProps & TypographyProps & FontSizeProps
 const InnerStyledText = styled(RNText)<InnerStyledTextProps>`
   ${color}
   ${space}
   ${typography}
+  ${fontSize}
 `

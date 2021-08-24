@@ -15,7 +15,7 @@ interface PaletteFlagState {
 export const usePaletteFlagStore = create<PaletteFlagState>(
   persist(
     (set) => ({
-      allowV3: __TEST__,
+      allowV3: __TEST__ || __STORYBOOK__,
       setAllowV3: (value) => set((_state) => ({ allowV3: value })),
       toggleAllowV3: () => set((state) => ({ allowV3: !state.allowV3 })),
     }),

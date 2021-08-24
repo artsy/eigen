@@ -17,6 +17,7 @@ export { TextV2, TextV2Props }
 export { _maxWidth } from "./Typography-v1"
 import { Sans as SansV1, SansProps as SansV1Props } from "./Sans"
 export { SansV1, SansV1Props, SansV1Props as SansProps }
+import { TEXT_FONT_SIZES } from "@artsy/palette-tokens/dist/typography/v2"
 import { Serif as SerifV1, SerifProps as SerifV1Props } from "./Serif"
 export { SerifV1, SerifV1Props, SerifV1Props as SerifProps }
 
@@ -132,6 +133,10 @@ const isTextV2Props = (props: TextProps): props is TextV2Props => {
     return true
   }
 
+  if (typeof (props as TextV2Props).fontSize === "string") {
+    return true
+  }
+
   if ((props as TextV3Props).size !== undefined) {
     return false
   }
@@ -173,7 +178,7 @@ export const Text: React.FC<TextProps> = (props) => {
 
 const transformTextV2PropsToV3 = (props: TextV2Props): TextV3Props => {
   // TODO-PALETTE-V3 remove this and replace all usages with the mapping. also remove TextV2 files.
-  const { variant, ...newProps } = _.clone(props)
+  const { variant, fontSize, ...newProps } = _.clone(props)
 
   const variantMap: Record<
     "small" | "largeTitle" | "title" | "subtitle" | "text" | "mediumText" | "caption",
@@ -186,6 +191,10 @@ const transformTextV2PropsToV3 = (props: TextV2Props): TextV3Props => {
     mediumText: "sm",
     caption: "xs",
     small: "xs",
+  }
+
+  if (typeof fontSize === "string") {
+    ;(newProps as TextV3Props).fontSize = TEXT_FONT_SIZES[fontSize as keyof typeof TEXT_FONT_SIZES] ?? undefined
   }
 
   return {

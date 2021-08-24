@@ -1,7 +1,7 @@
 import { SaleInfoTestsQuery } from "__generated__/SaleInfoTestsQuery.graphql"
 import { RegisterToBidButtonContainer } from "lib/Scenes/Sale/Components/RegisterToBidButton"
 import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -66,7 +66,7 @@ describe("SaleInfo", () => {
   })
 
   it("shows Auction is live View shows up when an auction is live", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const { UNSAFE_queryAllByType } = renderWithWrappersTL(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -74,7 +74,7 @@ describe("SaleInfo", () => {
       })
     )
 
-    expect(tree.root.findAllByType(tests.AuctionIsLive)).toHaveLength(1)
+    expect(UNSAFE_queryAllByType(tests.AuctionIsLive)).toHaveLength(1)
   })
 
   it("doesn't show Auction is live view when an auction is not live", () => {

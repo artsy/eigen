@@ -1,4 +1,5 @@
 import { DecoratorFunction } from "@storybook/addons"
+import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Theme, ThemeV2, ThemeV3 } from "palette"
 import { usePaletteFlagStore } from "palette/PaletteFlag"
 import React, { useState } from "react"
@@ -36,6 +37,10 @@ export const withThemeV2AndSwitcher: DecoratorFunction<React.ReactNode> = (story
 
 export const withSafeAreaProvider: DecoratorFunction<React.ReactNode> = (story) => (
   <SafeAreaProvider>{story()}</SafeAreaProvider>
+)
+
+export const withScreenDimensions: DecoratorFunction<React.ReactNode> = (story) => (
+  <ProvideScreenDimensions>{story()}</ProvideScreenDimensions>
 )
 
 /**
