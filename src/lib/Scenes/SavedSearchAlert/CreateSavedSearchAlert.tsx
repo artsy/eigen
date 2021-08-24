@@ -44,7 +44,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
             {...other}
           />
           <Text variant="text" color="black60" textAlign="center" my={2}>
-            You will be able to access all your Artist Alerts in your Profile.
+            You will be able to access all your Saved Alerts in your Profile.
           </Text>
         </ScrollView>
       </FancyModal>
