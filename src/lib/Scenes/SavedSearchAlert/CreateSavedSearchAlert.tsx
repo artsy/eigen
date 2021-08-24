@@ -33,8 +33,11 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{ paddingHorizontal: space(2) }}
         >
-          <Sans size="8" mb={4}>
+          <Sans size="8" mb={1}>
             Create an Alert
+          </Sans>
+          <Sans size="3t" mb={4}>
+            Receive alerts as Push Notifications directly to your device.
           </Sans>
           <SavedSearchAlertForm
             initialValues={{ name: "" }}
