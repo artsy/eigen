@@ -9,7 +9,7 @@ export const SavedSearchAlertsListPlaceholder: React.FC = () => {
       <Box py={1}>
         {times(20).map((index: number) => (
           <Flex key={index} m={1.5}>
-            <PlaceholderText height={23} />
+            <PlaceholderText width={200 + Math.round(Math.random() * 100)} height={23} />
           </Flex>
         ))}
       </Box>
