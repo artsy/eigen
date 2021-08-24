@@ -28,6 +28,7 @@ export { SerifV1, SerifV1Props, SerifV1Props as SerifProps }
  * 1: xs, 2: xs, 3: sm, 3t: sm, 4: md, 4t: md, 5: md, 5t: md, 6: lg, 8: lg, 10: xl, 12: xxl
  */
 export const Serif: React.FC<SerifV1Props> = (props) => {
+  // TODO-PALETTE-V3 remove this and replace all usages with the mapping. also remove Serif files.
   const allowV3 = usePaletteFlagStore((state) => state.allowV3)
   if (allowV3) {
     return (
@@ -77,6 +78,7 @@ const transformSerifPropsToV3 = (props: SerifV1Props): TextV3Props => {
  * 0: xs, 1: xs, 2: xs, 3: sm, 3t: sm, 4: md, 4t: md, 5: md, 5t: md, 6: lg, 8: lg, 10: xl, 12: xxl, 14: xxl, 16: xxl
  */
 export const Sans: React.FC<SansV1Props> = (props) => {
+  // TODO-PALETTE-V3 remove this and replace all usages with the mapping. also remove Sans files.
   const allowV3 = usePaletteFlagStore((state) => state.allowV3)
   if (allowV3) {
     return (
@@ -170,6 +172,7 @@ export const Text: React.FC<TextProps> = (props) => {
 }
 
 const transformTextV2PropsToV3 = (props: TextV2Props): TextV3Props => {
+  // TODO-PALETTE-V3 remove this and replace all usages with the mapping. also remove TextV2 files.
   const { variant, ...newProps } = _.clone(props)
 
   const variantMap: Record<
