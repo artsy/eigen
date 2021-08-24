@@ -88,7 +88,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             haptic="impactMedium"
             mb={1}
             variant="secondaryOutline"
-            icon={<Image source={require("@images/facebook.png")} resizeMode="contain" style={{ marginRight: 10 }} />}
+            icon={<Image source={require("@images/facebook.webp")} resizeMode="contain" style={{ marginRight: 10 }} />}
             testID="useFacebook"
           >
             {mode === "login" ? "Continue with Facebook" : "Sign up with Facebook"}
@@ -100,7 +100,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               haptic="impactMedium"
               mb={1}
               variant="secondaryOutline"
-              icon={<Image source={require("@images/apple.png")} resizeMode="contain" style={{ marginRight: 10 }} />}
+              icon={<Image source={require("@images/apple.webp")} resizeMode="contain" style={{ marginRight: 10 }} />}
               testID="useApple"
             >
               {mode === "login" ? "Continue with Apple" : "Sign up with Apple"}
