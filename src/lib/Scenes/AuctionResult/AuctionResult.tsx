@@ -131,6 +131,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
 
   const hasSalePrice = auctionResultHasPrice(auctionResult as AuctionResultHelperData)
   const salePriceMessage = auctionResultText(auctionResult as AuctionResultHelperData)
+  const showPriceUSD = auctionResult.priceRealized?.displayUSD && auctionResult.currency !== "USD"
 
   const renderRealizedPriceModal = () => (
     <>
@@ -209,7 +210,8 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           )}
           {hasSalePrice ? (
             <>
-              <Text variant="largeTitle" mb={0.5}>{`${auctionResult.priceRealized?.display}`}</Text>
+              <Text variant="largeTitle">{`${auctionResult.priceRealized?.display}`}</Text>
+              {!!showPriceUSD && <Text variant="caption" color="black60" testID="priceUSD">{`$10,000`}</Text>}
               {!!auctionResult.performance?.mid && (
                 <AuctionResultsMidEstimate
                   textVariant="caption"
@@ -249,6 +251,7 @@ export const AuctionResultQueryRenderer: React.FC<{
             internalID
             artistID
             boughtIn
+            currency
             categoryText
             dateText
             description
@@ -281,6 +284,7 @@ export const AuctionResultQueryRenderer: React.FC<{
               cents
               centsUSD
               display
+              displayUSD
             }
             saleDate
             saleTitle
