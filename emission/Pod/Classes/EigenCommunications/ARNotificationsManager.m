@@ -100,6 +100,16 @@ RCT_EXPORT_MODULE();
     });
 }
 
+- (void)dispatchAfterBootstrap:(NSString *)eventName data:(NSDictionary *)data
+{
+    __weak typeof(self) wself = self;
+    [self afterBootstrap:^{
+        __strong typeof(self) sself = wself;
+        if (!sself) return;
+        [sself dispatch:eventName data:data];
+    }];
+}
+
 - (void)updateState:(NSDictionary *)state
 {
     @synchronized(self)
@@ -107,7 +117,7 @@ RCT_EXPORT_MODULE();
         NSMutableDictionary *nextState = [[self state] mutableCopy];
         [nextState addEntriesFromDictionary:state];
         _state = [[NSDictionary alloc] initWithDictionary:nextState];
-        [self dispatch:stateChanged data:_state];
+        [self dispatchAfterBootstrap:stateChanged data:_state];
     }
 }
 
@@ -115,12 +125,7 @@ RCT_EXPORT_MODULE();
 {
     @synchronized(self)
     {
-        __weak typeof(self) wself = self;
-        [self afterBootstrap:^{
-            __strong typeof(self) sself = wself;
-            if (!sself) return;
-            [sself dispatch:eventTracking data:traits];
-        }];
+        [self dispatchAfterBootstrap:eventTracking data:traits];
     }
 }
 
@@ -128,18 +133,18 @@ RCT_EXPORT_MODULE();
 {
     @synchronized(self)
     {
-        [self dispatch:identifyTracking data:traits];
+        [self dispatchAfterBootstrap:identifyTracking data:traits];
     }
 }
 
 - (void)notificationReceived
 {
-    [self dispatch:notificationReceived data:@{}];
+    [self dispatchAfterBootstrap:notificationReceived data:@{}];
 }
 
 - (void)modalDismissed
 {
-    [self dispatch:modalDismissed data:@{}];
+    [self dispatchAfterBootstrap:modalDismissed data:@{}];
 }
 
 - (void)requestNavigation:(NSString *)route
@@ -149,13 +154,8 @@ RCT_EXPORT_MODULE();
 
 - (void)requestNavigation:(NSString *)route withProps:(NSDictionary *)props
 {
-    __weak typeof(self) wself = self;
-    [self afterBootstrap:^{
-        __strong typeof(self) sself = wself;
-        if (!sself) return;
-        if (!route) return;
-        [sself dispatch:requestNavigation data:@{@"route": route, @"props": props}];
-    }];
+    if (!route) return;
+    [self dispatchAfterBootstrap:requestNavigation data:@{@"route": route, @"props": props}];
 }
 
 // Will be called when this module's first listener is added.
