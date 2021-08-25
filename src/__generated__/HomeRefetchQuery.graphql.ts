@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 717924f2f8d316675bed943adbb8e722 */
+/* @relayHash b19f5bc61f2579c1d761394ee5ee71da */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -1250,7 +1250,6 @@ v44 = {
               "name": "priceRealized",
               "plural": false,
               "selections": [
-                (v19/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -1258,7 +1257,7 @@ v44 = {
                   "name": "cents",
                   "storageKey": null
                 },
-                (v18/*: any*/),
+                (v19/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -2175,6 +2174,7 @@ return {
     ]
   },
   "params": {
+    "id": "b19f5bc61f2579c1d761394ee5ee71da",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",

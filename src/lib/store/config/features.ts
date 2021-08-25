@@ -144,7 +144,7 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   ARShowAuctionResultsPriceUSD: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable auction result prices in USD",
     showInAdminMenu: true,
   },
