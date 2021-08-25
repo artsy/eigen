@@ -210,7 +210,7 @@ lane :promote_beta_android do
   #   skip_upload_screenshots: true,
   # )
 
-  flag_android_beta(is_android_beta: true)
+  sh("git", "stash")
 
   sh("git", "checkout", start_branch)
 end
