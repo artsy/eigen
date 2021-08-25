@@ -213,7 +213,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
               <Flex mb={0.5}>
                 <Text variant="largeTitle">{auctionResult.priceRealized?.display}</Text>
                 {!!showPriceUSD && (
-                  <Text variant="caption" color="black60" testID="priceUSD">
+                  <Text variant="text" color="black60" testID="priceUSD">
                     {auctionResult.priceRealized?.displayUSD}
                   </Text>
                 )}
