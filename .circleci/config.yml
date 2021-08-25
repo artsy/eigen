@@ -510,6 +510,7 @@ workflows:
                 - master
                 - release
                 - staging
+                - update-changelog
       - check-pr:
           filters:
             branches:
