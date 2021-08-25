@@ -1,7 +1,5 @@
-import React from "react"
-
 import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import React from "react"
 import styled from "styled-components/native"
 
 const BackgroundCircle = styled.View`
@@ -17,7 +15,7 @@ interface NameProps {
 
 const Name = styled.Text`
   color: ${(props: NameProps) => (props.user ? "white" : colors["gray-semibold"])};
-  font-family: ${fonts["avant-garde-regular"]};
+  font-family: "Unica77LL-Regular"; /* this should be taken from the theme, but in here we cant, so until we rework this component, hardcode it. */
   font-size: 12;
   align-self: center;
   margin-top: 14;

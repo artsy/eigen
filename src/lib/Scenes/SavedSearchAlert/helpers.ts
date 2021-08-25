@@ -8,6 +8,7 @@ import {
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
 import { compact, flatten, keyBy } from "lodash"
+import { bullet } from "palette"
 
 export const extractPillFromAggregation = (filter: FilterData, aggregations: Aggregations) => {
   const { paramName, paramValue } = filter
@@ -65,5 +66,5 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations) =
 
 export const getNamePlaceholder = (artistName: string, pills: string[]) => {
   const filtersCountLabel = pills.length > 1 ? "filters" : "filter"
-  return `${artistName} • ${pills.length} ${filtersCountLabel}`
+  return `${artistName} ${bullet} ${pills.length} ${filtersCountLabel}`
 }

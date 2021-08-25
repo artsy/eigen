@@ -4,8 +4,3 @@
 @interface ARSeparatorView : UIView
 
 @end
-
-
-@interface ARDottedSeparatorView : ARSeparatorView
-
-@end

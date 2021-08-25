@@ -13,7 +13,18 @@ import { screen } from "lib/utils/track/helpers"
 import { useStickyScrollHeader } from "lib/utils/useStickyScrollHeader"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { Box, Flex, NoArtworkIcon, Separator, Spacer, Text, TEXT_FONTS } from "palette"
+import {
+  Box,
+  Flex,
+  NoArtworkIcon,
+  Separator,
+  Spacer,
+  Text,
+  ThemeV2Type,
+  ThemeV3Type,
+  useTheme,
+  useThemeConfig,
+} from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated, Image, TextInput, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -30,6 +41,7 @@ interface Props {
 }
 
 const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
+  const { theme } = useTheme()
   const [imageHeight, setImageHeight] = useState<number>(0)
   const [imageWidth, setImageWidth] = useState<number>(0)
 
@@ -50,6 +62,11 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
       })
     }
   }, [])
+
+  const fontFamily = useThemeConfig({
+    v2: (theme as ThemeV2Type).fonts.sans,
+    v3: (theme as ThemeV3Type).fonts.sans.regular,
+  })
 
   const { headerElement, scrollProps } = useStickyScrollHeader({
     header: (
@@ -79,7 +96,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             multiline
             scrollEnabled={false}
             style={{
-              fontFamily: TEXT_FONTS.sans,
+              fontFamily,
               fontSize: 14,
               lineHeight: 21,
             }}

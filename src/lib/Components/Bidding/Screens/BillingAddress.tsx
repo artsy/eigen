@@ -218,6 +218,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="name"
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.addressLine1.focus()}
+                testID="input-full-name"
               />
 
               <StyledInput
@@ -227,6 +228,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="streetAddressLine1"
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.addressLine2.focus()}
+                testID="input-address-1"
               />
 
               <StyledInput
@@ -236,6 +238,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="streetAddressLine2"
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.city.focus()}
+                testID="input-address-2"
               />
 
               <StyledInput
@@ -245,6 +248,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="addressCity"
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.stateProvinceRegion.focus()}
+                testID="input-city"
               />
 
               <StyledInput
@@ -255,6 +259,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.postalCode.focus()}
                 inputRef={(el) => (this.stateProvinceRegion = el)}
+                testID="input-state-province-region"
               />
 
               <StyledInput
@@ -264,6 +269,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 textContentType="postalCode"
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.phoneNumber.focus()}
+                testID="input-post-code"
               />
 
               <StyledInput
@@ -272,6 +278,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 placeholder="Add your phone number"
                 keyboardType="phone-pad"
                 textContentType="telephoneNumber"
+                testID="input-phone"
               />
 
               <ScreenDimensionsContext.Consumer>
@@ -297,7 +304,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 )}
               </ScreenDimensionsContext.Consumer>
 
-              <Button block width={100} onPress={() => this.onSubmit()}>
+              <Button block width={100} onPress={() => this.onSubmit()} testID="button-add">
                 Add billing address
               </Button>
             </Container>

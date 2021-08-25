@@ -1,8 +1,6 @@
 import React from "react"
+import { TextProps } from "react-native"
 import styled from "styled-components/native"
-
-import { SansSize, SerifSize, themeProps, TypeSizes } from "../../Theme"
-
 import {
   color,
   ColorProps,
@@ -21,15 +19,11 @@ import {
   verticalAlign,
   VerticalAlignProps,
 } from "styled-system"
+import { _test_THEMES, themeProps } from "../../Theme"
+import { SansProps } from "./Sans"
+import { SerifProps } from "./Serif"
 
-import { FontFamily, fontFamily } from "palette/platform/fonts/fontFamily"
-import { TextProps } from "react-native"
-
-/**
- * Spec: https://www.notion.so/artsy/Typography-d1f9f6731f3d47c78003d6d016c30221
- */
-
-interface FullTextProps
+export interface FullTextProps
   extends TextProps,
     ColorProps,
     FontSizeProps,
@@ -40,8 +34,7 @@ interface FullTextProps
     TextAlignProps,
     VerticalAlignProps {}
 
-/** Base Text component for typography */
-export const BaseText = styled.Text<FullTextProps>`
+const BaseText = styled.Text<FullTextProps>`
   ${fontSize};
   ${lineHeight};
   ${color};
@@ -52,26 +45,16 @@ export const BaseText = styled.Text<FullTextProps>`
   ${verticalAlign};
 `
 
-/**
- * The supported typefaces
- */
-export type FontTypes = keyof TypeSizes
-
-export interface TypeSizeKeys {
-  sans: SansSize
-  serif: SerifSize
-}
-
-/**
- * Any valid font weight
- */
-export type FontWeights = SansProps["weight"] | SerifProps["weight"]
+type FontWeights = SansProps["weight"] | SerifProps["weight"]
 
 interface StyledTextProps extends Partial<FullTextProps> {
-  size: SansSize | SerifSize
+  size: any
   weight?: null | FontWeights
   italic?: boolean
 }
+
+const fontFamily = _test_THEMES.v2.fontFamily
+type FontFamily = typeof fontFamily
 
 /**
  * Creates a wrapper around the generic `Text` component for a font type defined
@@ -86,7 +69,7 @@ interface StyledTextProps extends Partial<FullTextProps> {
  * @param selectFontFamilyType
  *        An optional function that maps weight+italic to a font-family.
  */
-function createStyledText<P extends StyledTextProps>(fontType: keyof FontFamily) {
+export function createStyledText<P extends StyledTextProps>(fontType: keyof FontFamily) {
   return styled<React.ComponentType<P>>(({ size, weight, italic, style: _style, ...textProps }: StyledTextProps) => {
     const fontFamilyString = fontFamily[fontType][weight ?? "regular"][italic ? "italic" : "normal"]
     if (fontFamilyString === null) {
@@ -111,71 +94,6 @@ function stripPx(fontMetrics: { fontSize: string; lineHeight: string }): { fontS
     lineHeight: Number(fontMetrics.lineHeight.replace("px", "")),
   }
 }
-
-/**
- * Sans
- */
-
-export interface SansProps extends Partial<FullTextProps> {
-  italic?: boolean
-
-  role?: string
-
-  size: SansSize
-
-  /**
-   * Explicitly specify `null` to inherit weight from parent, otherwise default
-   * to `regular`.
-   */
-  weight?: null | "regular" | "medium"
-}
-
-/**
- * The Sans typeface is used for presenting objective dense information
- * (such as tables) and intervening communications (such as error feedback).
- *
- * @example
- * <Sans color="black10" size="3t" weight="medium" italic>Hi</Sans>
- */
-export const Sans = createStyledText<SansProps>("sans")
-
-/**
- * Serif
- */
-
-export interface SerifProps extends Partial<FullTextProps> {
-  italic?: boolean
-
-  size: SerifSize
-
-  /**
-   * Explicitly specify `null` to inherit weight from parent, otherwise default
-   * to `regular`.
-   */
-  weight?: null | "regular" | "semibold"
-}
-
-/**
- * The Serif typeface is used as the primary Artsy voice, guiding users through
- * flows, instruction, and communications.
- *
- * @example
- * <Serif color="black10" size="3t" weight="semibold">Hi</Serif>
- */
-export const Serif = createStyledText<SerifProps>("serif")
-
-Sans.displayName = "Sans"
-Serif.displayName = "Serif"
-
-/**
- * The endash is used in ranges like `$10k – $20k`.
- * This export makes it easier to use in the code, without having to find
- * the character in unicode.
- * It is a different character to the regular minus, usually a bit longer.
- * (for reference: minus `-`, endash `–`)
- */
-export const endash = "–"
-export const bullet = "•"
 
 // TODO: Remove this and put it as a prop on `Text`, after palette is absorbed in eigen.
 export const _maxWidth = { width: "100%", maxWidth: 600, alignSelf: "center" } as const

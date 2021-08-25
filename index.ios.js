@@ -1,4 +1,5 @@
 global.__TEST__ = false
+global.__STORYBOOK__ = false
 
 // start storybook depending on content of storybook.json
 let startStorybook = false
@@ -11,6 +12,7 @@ if (__DEV__) {
 }
 
 if (startStorybook) {
+  global.__STORYBOOK__ = true
   require("./src/storybook")
 } else {
   require("react-native-gesture-handler")

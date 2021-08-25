@@ -22,8 +22,8 @@ import {
   CollectionArtistSeriesRailContainer,
 } from "lib/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Sans, Theme } from "palette"
+import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { Theme } from "palette"
 import { useTracking } from "react-tracking"
 
 jest.unmock("react-relay")
@@ -181,15 +181,9 @@ describe("Artist Series Rail", () => {
     })
 
     it("renders the collection hub rail title", () => {
-      const wrapper = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <CollectionArtistSeriesRail {...props} />
-          </Theme>
-        </GlobalStoreProvider>
-      )
+      const { queryByText } = renderWithWrappersTL(<CollectionArtistSeriesRail {...props} />)
 
-      expect(wrapper.find(Sans).text()).toBe("Trending Artist Series")
+      expect(queryByText("Trending Artist Series")).toBeTruthy()
     })
 
     it("renders each artist series' title", () => {
