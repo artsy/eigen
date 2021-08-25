@@ -2,10 +2,7 @@ import { ActionType, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
 import { captureMessage } from "@sentry/react-native"
 import { SavedSearchButton_me } from "__generated__/SavedSearchButton_me.graphql"
 import { SavedSearchButtonQuery } from "__generated__/SavedSearchButtonQuery.graphql"
-import {
-  getAllowedFiltersForSavedSearchInput,
-  getSearchCriteriaFromFilters,
-} from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
+import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
 import { navigate } from "lib/navigation/navigate"
@@ -130,13 +127,7 @@ export const SavedSearchButtonRefetchContainer = createRefetchContainer(
 
 export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRendererProps> = (props) => {
   const { filters, artistId } = props
-  const allowedFilters = getAllowedFiltersForSavedSearchInput(filters)
-  const isEmptyCriteria = allowedFilters.length === 0
   const criteria = getSearchCriteriaFromFilters(artistId, filters)
-
-  if (isEmptyCriteria) {
-    return <SavedSearchButtonRefetchContainer {...props} me={null} loading={false} criteria={criteria} filters={[]} />
-  }
 
   return (
     <QueryRenderer<SavedSearchButtonQuery>
@@ -163,7 +154,7 @@ export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRend
             me={relayProps?.me ?? null}
             loading={relayProps === null && error === null}
             criteria={criteria}
-            filters={allowedFilters}
+            filters={filters}
           />
         )
       }}
