@@ -196,19 +196,19 @@ lane :promote_beta_android do
 
   flag_android_beta(is_android_beta: false)
 
-  gradle(
-    task: "bundle",
-    build_type: "Release",
-    project_dir: "android/",
-  )
+  # gradle(
+  #   task: "bundle",
+  #   build_type: "Release",
+  #   project_dir: "android/",
+  # )
 
-  supply(
-    track: 'production',
-    version_code: current_version_code,
-    skip_upload_metadata: true,
-    skip_upload_images: true,
-    skip_upload_screenshots: true,
-  )
+  # supply(
+  #   track: 'production',
+  #   version_code: current_version_code,
+  #   skip_upload_metadata: true,
+  #   skip_upload_images: true,
+  #   skip_upload_screenshots: true,
+  # )
 
   sh("git", "checkout", start_branch)
 end
