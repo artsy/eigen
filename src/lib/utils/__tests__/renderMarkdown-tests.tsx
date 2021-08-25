@@ -1,14 +1,12 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount, shallow } from "enzyme"
-import { LinkText } from "lib/Components/Text/LinkText"
-import { Flex, Sans, Serif, Text, Theme } from "palette"
-import React from "react"
-import { defaultRules, renderMarkdown } from "../renderMarkdown"
-
+import { act, fireEvent } from "@testing-library/react-native"
 import { readFileSync } from "fs"
 import { navigate } from "lib/navigation/navigate"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { extractText } from "lib/tests/extractText"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { Flex, Serif } from "palette"
 import { join } from "path"
+import React from "react"
+import { defaultRules, renderMarkdown } from "../renderMarkdown"
 
 describe("renderMarkdown", () => {
   it("returns markdown for a simple string", () => {
@@ -23,22 +21,9 @@ describe("renderMarkdown", () => {
     const componentList = renderMarkdown("This is a first paragraph\n\nThis is a second paragraph") as any
     expect(componentList.length).toEqual(4)
 
-    const renderedComponent = shallow(<Flex>{componentList}</Flex>)
-    expect(renderedComponent.find(Sans).at(0).text()).toEqual("This is a first paragraph")
-
-    expect(renderedComponent.find(Sans).at(1).text()).toEqual("This is a second paragraph")
-  })
-
-  it("returns markdown with the new style", () => {
-    const componentList = renderMarkdown(
-      "This is a first paragraph\n\nThis is a second paragraph",
-      defaultRules({ useNewTextStyles: true })
-    ) as any
-    expect(componentList.length).toEqual(4)
-
-    const renderedComponent = shallow(<Flex>{componentList}</Flex>)
-    expect(renderedComponent.find(Sans).length).toEqual(0)
-    expect(renderedComponent.find(Text).length).toEqual(2)
+    const { queryByText } = renderWithWrappersTL(<Flex>{componentList}</Flex>)
+    expect(queryByText("This is a first paragraph")).toBeTruthy()
+    expect(queryByText("This is a second paragraph")).toBeTruthy()
   })
 
   it("returns markdown for multiple paragraphs and links", () => {
@@ -47,17 +32,16 @@ describe("renderMarkdown", () => {
     ) as any
     expect(componentList.length).toEqual(4)
 
-    const renderedComponent = shallow(<Flex>{componentList}</Flex>)
-    expect(renderedComponent.find(Sans).length).toEqual(2)
-    expect(renderedComponent.find(LinkText).length).toEqual(2)
+    const { queryByText, queryAllByTestId } = renderWithWrappersTL(<Flex>{componentList}</Flex>)
+    expect(queryAllByTestId(/linktext-/)).toHaveLength(2)
 
-    expect(renderedComponent.find(Sans).at(0).text()).toEqual("This is a first paragraph")
+    expect(queryByText("This is a first paragraph")).toBeTruthy()
 
-    expect(renderedComponent.find(LinkText).at(0).text()).toEqual("first")
+    expect(extractText(queryAllByTestId(/linktext-/)[0])).toEqual("first")
 
-    expect(renderedComponent.find(Sans).at(1).text()).toEqual("This is a second paragraph")
+    expect(queryByText("This is a second paragraph")).toBeTruthy()
 
-    expect(renderedComponent.find(LinkText).at(1).text()).toEqual("second")
+    expect(extractText(queryAllByTestId(/linktext-/)[1])).toEqual("second")
   })
 
   it("handles custom rules", () => {
@@ -76,17 +60,11 @@ describe("renderMarkdown", () => {
         },
       },
     }
-
     const componentList = renderMarkdown("This is a first paragraph\n\nThis is a second paragraph", customRules) as any
     expect(componentList.length).toEqual(4)
-
-    const renderedComponent = shallow(<Flex>{componentList}</Flex>)
-    expect(renderedComponent.find(Sans).length).toEqual(0)
-    expect(renderedComponent.find(Serif).length).toEqual(2)
-
-    expect(renderedComponent.find(Serif).at(0).text()).toEqual("This is a first paragraph")
-
-    expect(renderedComponent.find(Serif).at(1).text()).toEqual("This is a second paragraph")
+    const { queryByText } = renderWithWrappersTL(<Flex>{componentList}</Flex>)
+    expect(queryByText("This is a first paragraph")).toBeTruthy()
+    expect(queryByText("This is a second paragraph")).toBeTruthy()
   })
 
   it("opens links modally when specified", () => {
@@ -110,16 +88,10 @@ describe("renderMarkdown", () => {
       customRules
     ) as any
 
-    const renderedComponent = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <Flex>{componentList}</Flex>
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(renderedComponent.find(LinkText).length).toEqual(2)
+    const { queryAllByTestId } = renderWithWrappersTL(<Flex>{componentList}</Flex>)
+    expect(queryAllByTestId(/linktext-/)).toHaveLength(2)
 
-    renderedComponent.find(LinkText).at(0).props().onPress()
+    act(() => fireEvent.press(queryAllByTestId(/linktext-/)[0]))
 
     expect(navigate).toHaveBeenCalledWith("/artist/first", { modal: true })
   })
@@ -145,16 +117,10 @@ describe("renderMarkdown", () => {
       customRules
     ) as any
 
-    const renderedComponent = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <Flex>{componentList}</Flex>
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(renderedComponent.find(LinkText).length).toEqual(2)
+    const { queryAllByTestId } = renderWithWrappersTL(<Flex>{componentList}</Flex>)
+    expect(queryAllByTestId(/linktext-/)).toHaveLength(2)
 
-    renderedComponent.find(LinkText).at(0).props().onPress()
+    act(() => fireEvent.press(queryAllByTestId(/linktext-/)[0]))
 
     expect(navigate).toHaveBeenCalledWith("/artist/first")
   })

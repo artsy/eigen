@@ -373,7 +373,6 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
           <Box m={4}>
             <Button
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               onPress={this.canCreateBidder() ? this.register.bind(this) : null}
               loading={isLoading}
               block

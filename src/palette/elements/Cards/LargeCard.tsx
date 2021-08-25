@@ -6,7 +6,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { useTheme } from "palette/Theme"
 import { Flex } from "../Flex"
 import { Spacer } from "../Spacer"
-import { Sans } from "../Typography"
+import { Sans } from "../Text"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface LargeCardProps {

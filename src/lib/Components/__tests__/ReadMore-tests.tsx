@@ -1,109 +1,97 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount, shallow } from "enzyme"
+import { act, fireEvent } from "@testing-library/react-native"
 import { navigate } from "lib/navigation/navigate"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
-import { Sans, Serif, Text, Theme } from "palette"
+import { extractText } from "lib/tests/extractText"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { emdash, nbsp } from "palette"
 import React from "react"
+import { Text as RNText } from "react-native"
 import { ReadMore } from "../ReadMore"
 import { LinkText } from "../Text/LinkText"
 
 describe("ReadMore", () => {
   it("Doesn't show the 'Read more' link when the length of the text is < the number of characters allowed", () => {
-    const component = shallow(<ReadMore maxChars={20} content="Small text." />)
+    const { queryByText } = renderWithWrappersTL(<ReadMore maxChars={20} content="Small text." />)
 
-    expect(component.find(Serif).length).toEqual(1)
-    expect(component.find(Serif).text()).toEqual("Small text.")
-    expect(component.find(Sans).length).toEqual(0)
+    expect(queryByText("Small text.")).toBeTruthy()
   })
 
   it("Doesn't show the 'Read more' link when the length of the text is equal to the number of characters allowed", () => {
-    const component = shallow(<ReadMore maxChars={11} content={"Small [text](/artist/andy-warhol)."} />)
+    const { queryByText } = renderWithWrappersTL(<ReadMore maxChars={11} content="Small text." />)
 
-    expect(component.find(Serif).length).toEqual(1)
-    expect(component.find(Serif).text()).toEqual("Small text.")
-    expect(component.find(Sans).length).toEqual(0)
-  })
-
-  it("Renders an em dash if the text has line breaks when not expanded", () => {
-    const component = shallow(<ReadMore maxChars={30} content={"Line break\n\nWhich should render an em dash"} />)
-
-    expect(component.find(Serif).at(1).text()).toContain(" — Which should")
+    expect(queryByText("Small text.")).toBeTruthy()
   })
 
   it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ReadMore maxChars={7} textStyle="new" content={"This text is slightly longer than is allowed."} />
-        </Theme>
-      </GlobalStoreProvider>
+    const { queryByText } = renderWithWrappersTL(<ReadMore maxChars={3} content="Small text." />)
+
+    expect(queryByText(`Sma... Read${nbsp}more`)).toBeTruthy()
+  })
+
+  it("Renders markdown", () => {
+    const { queryByText } = renderWithWrappersTL(
+      <ReadMore maxChars={11} content="Small [text](/artist/andy-warhol)." />
     )
 
-    expect(component.find(Text).length).toEqual(2)
-    expect(component.find(Text).at(0).text()).toMatchInlineSnapshot(`"This te... Read more"`)
-    expect(component.find(Text).at(1).text()).toMatchInlineSnapshot(`"Read more"`)
+    expect(queryByText("Small text.")).toBeTruthy()
+  })
+
+  it("Renders an em dash if the text has line breaks when not expanded", () => {
+    const { UNSAFE_queryAllByType } = renderWithWrappersTL(
+      <ReadMore maxChars={30} content={"Line break\n\nWhich should render an emdash"} />
+    )
+
+    expect(extractText(UNSAFE_queryAllByType(RNText)[2])).toContain(` ${emdash} Which should`)
+  })
+
+  it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
+    const { queryByText, getAllByText, UNSAFE_queryAllByType } = renderWithWrappersTL(
+      <ReadMore maxChars={7} textStyle="new" content={"This text is slightly longer than is allowed."} />
+    )
+
+    expect(extractText(UNSAFE_queryAllByType(RNText)[0])).toBe(`This te... Read${nbsp}more`)
+    expect(extractText(UNSAFE_queryAllByType(RNText)[1])).toBe(`Read${nbsp}more`)
 
     // Clicking "Read more" expands the text
-    component.find(LinkText).props().onPress()
+    act(() => fireEvent.press(getAllByText(`Read${nbsp}more`)[1]))
 
-    component.update()
-
-    expect(component.find(Text).length).toEqual(1)
-    expect(component.find(Text).text()).toEqual("This text is slightly longer than is allowed.")
+    expect(queryByText("This text is slightly longer than is allowed.")).toBeTruthy()
   })
 
   it("truncates correctly if there are links within the text", () => {
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ReadMore
-            maxChars={7}
-            textStyle="new"
-            content={"This [text](/artist/text) is slightly longer than is [allowed](/gene/allowed)."}
-          />
-        </Theme>
-      </GlobalStoreProvider>
+    const { getAllByText, UNSAFE_getAllByType, queryByText } = renderWithWrappersTL(
+      <ReadMore
+        maxChars={7}
+        textStyle="new"
+        content={"This [text](/artist/text) is slightly longer than is [allowed](/gene/allowed)."}
+      />
     )
 
-    expect(component.find(Text).length).toEqual(2)
-    expect(component.find(Text).at(0).text()).toMatchInlineSnapshot(`"This te... Read more"`)
-    expect(component.find(Text).at(1).text()).toMatchInlineSnapshot(`"Read more"`)
-    expect(component.find(LinkText).length).toEqual(2) // One for the "text" link, one for "Read more"
+    expect(queryByText(`This te... Read${nbsp}more`)).toBeTruthy()
+    expect(UNSAFE_getAllByType(LinkText)).toHaveLength(2) // One for the `/artist/text` link, one for "Read more"
 
     // Clicking "Read more" expands the text
-    component.find(LinkText).at(1).props().onPress()
+    act(() => fireEvent.press(getAllByText(`Read${nbsp}more`)[1]))
 
-    component.update()
-
-    expect(component.find(Text).length).toEqual(1)
-    expect(component.find(Text).text()).toEqual("This text is slightly longer than is allowed.")
-    expect(component.find(LinkText).length).toEqual(2) // We still have 2 links, since we expanded to view one
+    expect(queryByText("This text is slightly longer than is allowed.")).toBeTruthy()
+    expect(UNSAFE_getAllByType(LinkText)).toHaveLength(2) // We still have 2 links, since we expanded to view one
   })
 
   it("opens links modally when specified", () => {
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ReadMore maxChars={7} content={"Small [text](/artist/andy-warhol)."} presentLinksModally={true} />
-        </Theme>
-      </GlobalStoreProvider>
+    const { UNSAFE_getAllByType } = renderWithWrappersTL(
+      <ReadMore maxChars={7} content={"Small [text](/artist/andy-warhol)."} presentLinksModally={true} />
     )
-    // Clicking "Read more" expands the text
-    component.find(LinkText).at(0).props().onPress()
+
+    act(() => fireEvent.press(UNSAFE_getAllByType(LinkText)[0]))
 
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol", { modal: true })
   })
 
   it("doesn't open links modally when not specified", () => {
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ReadMore maxChars={7} content={"Small [text](/artist/andy-warhol)."} />
-        </Theme>
-      </GlobalStoreProvider>
+    const { UNSAFE_getAllByType } = renderWithWrappersTL(
+      <ReadMore maxChars={7} content={"Small [text](/artist/andy-warhol)."} />
     )
-    // Clicking "Read more" expands the text
-    component.find(LinkText).at(0).props().onPress()
+
+    act(() => fireEvent.press(UNSAFE_getAllByType(LinkText)[0]))
 
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
   })

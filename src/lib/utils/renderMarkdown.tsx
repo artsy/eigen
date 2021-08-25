@@ -59,7 +59,7 @@ export function defaultRules({
         }
 
         return (
-          <LinkText key={state.key} onPress={() => openUrl(node.target)}>
+          <LinkText key={state.key} testID={`linktext-${state.key}`} onPress={() => openUrl(node.target)}>
             {output(node.content, state)}
           </LinkText>
         )

@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react-native"
 import React from "react"
 import { useState } from "react"
 import { withThemeV3 } from "storybook/decorators"
-import { CenterView } from "storybook/helpers"
+import { List } from "storybook/helpers"
 import { Dialog, DialogProps } from "."
 import { Button } from "../Button/Button"
 
@@ -11,7 +11,7 @@ const DialogDemo: React.FC<Omit<DialogProps, "isVisible" | "primaryCta" | "title
   const [visible, setVisible] = useState(false)
 
   return (
-    <CenterView>
+    <List>
       <Button onPress={() => setVisible(true)}>Show</Button>
       <Dialog
         isVisible={visible}
@@ -22,7 +22,7 @@ const DialogDemo: React.FC<Omit<DialogProps, "isVisible" | "primaryCta" | "title
         }}
         {...props}
       />
-    </CenterView>
+    </List>
   )
 }
 
