@@ -5,6 +5,25 @@ import { __globalStoreTestUtils__ } from "../GlobalStore"
 import { CURRENT_APP_VERSION, migrate, Versions } from "../migration"
 import { sanitize } from "../persistence"
 
+jest.mock("lib/NativeModules/LegacyNativeModules", () => ({
+  LegacyNativeModules: {
+    ...jest.requireActual("lib/NativeModules/LegacyNativeModules").LegacyNativeModules,
+    // ...LegacyNativeModules,
+    ARNotificationsManager: {
+      ...jest.requireActual("lib/NativeModules/LegacyNativeModules").LegacyNativeModules.ARNotificationsManager,
+      nativeState: {
+        userAgent: "Jest Unit Tests",
+        authenticationToken: null,
+        onboardingState: "none",
+        launchCount: 1,
+        deviceId: "testDevice",
+        userID: null,
+        userEmail: null,
+      },
+    },
+  },
+}))
+
 describe(migrate, () => {
   it("leaves an object untouched if there are no migrations pending", () => {
     const result = migrate({
@@ -313,7 +332,16 @@ describe("PendingPushNotification migration", () => {
 })
 
 describe("CopyIOSNativeSessionAuthToTS migration", () => {
+  beforeAll(() => {
+    LegacyNativeModules.ARNotificationsManager.nativeState = {
+      authenticationToken: "authenticationToken",
+      onboardingState: "complete",
+      userID: "userID",
+    } as any
+  })
+
   const migrationToTest = Versions.CopyIOSNativeSessionAuthToTS
+
   it("populates authentication details into the auth model", () => {
     const previousState = migrate({
       state: { version: 0 },
