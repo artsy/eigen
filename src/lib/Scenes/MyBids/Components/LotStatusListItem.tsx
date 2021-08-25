@@ -4,9 +4,8 @@ import { ActiveLotStandingFragmentContainer } from "./ActiveLotStanding"
 import { ClosedLotStandingFragmentContainer } from "./ClosedLotStanding"
 import { WatchedLotFragmentContainer } from "./WatchedLot"
 
-import { LotStatusListItem_sale } from "../../../../__generated__/LotStatusListItem_sale.graphql";
-import { LotStatusListItem_saleArtwork } from "../../../../__generated__/LotStatusListItem_saleArtwork.graphql";
-
+import { LotStatusListItem_sale } from "../../../../__generated__/LotStatusListItem_sale.graphql"
+import { LotStatusListItem_saleArtwork } from "../../../../__generated__/LotStatusListItem_saleArtwork.graphql"
 
 interface Props {
   /** A general lot to display. */
@@ -17,20 +16,23 @@ interface Props {
 
 const completeStatuses = ["sold", "passed"]
 
-const LotStatusListItem: React.FC<Props> = ({ saleArtwork, sale}) => {
+const LotStatusListItem: React.FC<Props> = ({ saleArtwork, sale }) => {
+  console.warn("SALE", sale.isClosed)
   if (sale.isClosed) {
-    return <ClosedLotStandingFragmentContainer withTimelyInfo data-test-id="closed-sale-lot" saleArtwork={saleArtwork}/>
+    return (
+      <ClosedLotStandingFragmentContainer withTimelyInfo data-test-id="closed-sale-lot" saleArtwork={saleArtwork} />
+    )
   }
 
   if (saleArtwork.isWatching) {
-    return <WatchedLotFragmentContainer saleArtwork={saleArtwork}/>
+    return <WatchedLotFragmentContainer saleArtwork={saleArtwork} />
   }
 
   const isComplete = completeStatuses.includes(saleArtwork.lotState?.soldStatus!)
   return isComplete ? (
-    <ClosedLotStandingFragmentContainer saleArtwork={saleArtwork}/>
+    <ClosedLotStandingFragmentContainer saleArtwork={saleArtwork} />
   ) : (
-    <ActiveLotStandingFragmentContainer saleArtwork={saleArtwork}/>
+    <ActiveLotStandingFragmentContainer saleArtwork={saleArtwork} />
   )
 }
 
