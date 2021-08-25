@@ -7,7 +7,7 @@ import React, { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import Animated, { Easing } from "react-native-reanimated"
-import backgoundImage from "../../../../images/WelcomeImage.png"
+import backgoundImage from "../../../../images/WelcomeImage.webp"
 import { ArtsyMarkWhiteIcon } from "../../../palette/svgs/ArtsyMarkWhiteIcon"
 import { useFeatureFlag } from "../../store/GlobalStore"
 import { OnboardingNavigationStack } from "./Onboarding"
@@ -96,7 +96,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
         }}
       >
         <Image
-          source={require("@images/WelcomeImage.png")}
+          source={require("@images/WelcomeImage.webp")}
           resizeMode="cover"
           style={{
             height: screenHeight,

@@ -71,8 +71,8 @@ const messageMock: Omit<
     },
     {
       id: "2",
-      fileName: "happybigaccident.png",
-      downloadURL: "http://example.com/happylittleaccident.png",
+      fileName: "happybigaccident.webp",
+      downloadURL: "http://example.com/happylittleaccident.webp",
       contentType: "image",
     },
   ],
