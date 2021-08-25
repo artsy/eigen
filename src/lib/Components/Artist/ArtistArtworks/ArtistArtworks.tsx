@@ -4,12 +4,12 @@ import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkF
 import {
   Aggregations,
   filterArtworksParams,
-  FilterData,
   prepareFilterArtworksParamsForInput,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ORDERED_ARTWORK_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
+import { getAllowedFiltersForSavedSearchInput } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader"
@@ -109,6 +109,9 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
 
   const filterParams = useMemo(() => filterArtworksParams(appliedFilters), [appliedFilters])
+  const allowedFiltersForSavedSearch = useMemo(() => getAllowedFiltersForSavedSearchInput(appliedFilters), [
+    appliedFilters,
+  ])
   const artworks = artist.artworks
   const artworksCount = artworks?.edges?.length
   const artworksTotal = artworks?.counts?.total ?? 0
@@ -159,34 +162,36 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     setJSX(
       <Box backgroundColor="white">
         {enableSavedSearchV2 || enableSavedSearch ? (
-          <Flex flexDirection="row" my={1} px={2} justifyContent="space-between" alignItems="center">
+          <Flex flexDirection="row" height={28} my={1} px={2} justifyContent="space-between" alignItems="center">
             <TouchableHighlightColor
               haptic
               onPress={openFilterModal}
               render={({ color }) => (
-                <Flex flexDirection="row" alignItems="center">
+                <Flex flex={1} flexDirection="row" alignItems="center">
                   <FilterIcon fill={color} width="20px" height="20px" />
-                  <Text variant="small" color={color} ml={0.5}>
+                  <Text variant="small" numberOfLines={1} color={color} ml={0.5}>
                     Sort & Filter
                   </Text>
                 </Flex>
               )}
             />
-            {!!enableSavedSearchV2 ? (
-              <SavedSearchButtonQueryRenderer
-                filters={appliedFilters as FilterData[]}
-                artistId={artist.internalID}
-                artistName={artist.name!}
-                artistSlug={artist.slug}
-                aggregations={aggregations}
-              />
-            ) : (
-              <SavedSearchBannerQueryRender
-                artistId={artist.internalID}
-                filters={filterParams}
-                artistSlug={artist.slug}
-              />
-            )}
+            {allowedFiltersForSavedSearch.length > 0 ? (
+              !!enableSavedSearchV2 ? (
+                <SavedSearchButtonQueryRenderer
+                  filters={allowedFiltersForSavedSearch}
+                  artistId={artist.internalID}
+                  artistName={artist.name!}
+                  artistSlug={artist.slug}
+                  aggregations={aggregations}
+                />
+              ) : (
+                <SavedSearchBannerQueryRender
+                  artistId={artist.internalID}
+                  filters={filterParams}
+                  artistSlug={artist.slug}
+                />
+              )
+            ) : null}
           </Flex>
         ) : (
           <ArtworksFilterHeader count={artworksTotal} onFilterPress={openFilterModal} />
@@ -194,7 +199,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
         <Separator />
       </Box>
     )
-  }, [artworksTotal, filterParams, enableSavedSearch, enableSavedSearchV2, appliedFilters, aggregations])
+  }, [artworksTotal, filterParams, enableSavedSearch, enableSavedSearchV2, aggregations, allowedFiltersForSavedSearch])
 
   const filteredArtworks = () => {
     if (artworksCount === 0) {
