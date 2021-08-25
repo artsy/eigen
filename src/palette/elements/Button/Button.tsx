@@ -67,11 +67,13 @@ export const Button: React.FC<ButtonProps> = ({
   style,
   variant = "fillDark",
   testOnly_state,
+  testID,
   ...rest
 }) => {
-  const [displayState, setDisplayState] = useState(
-    testOnly_state ?? (loading ? DisplayState.Loading : disabled ? DisplayState.Disabled : DisplayState.Enabled)
-  )
+  const [innerDisplayState, setInnerDisplayState] = useState(DisplayState.Enabled)
+
+  const displayState =
+    testOnly_state ?? (loading ? DisplayState.Loading : disabled ? DisplayState.Disabled : innerDisplayState)
 
   const getSize = (): { height: number; px: number } => {
     switch (size) {
@@ -95,13 +97,13 @@ export const Button: React.FC<ButtonProps> = ({
 
     // Did someone tap really fast? Flick the highlighted state
     if (displayState === DisplayState.Enabled) {
-      setDisplayState(DisplayState.Pressed)
+      setInnerDisplayState(DisplayState.Pressed)
       setTimeout(() => {
-        setDisplayState(DisplayState.Enabled)
+        setInnerDisplayState(DisplayState.Enabled)
       }, 0.3)
     } else {
       // Was already selected
-      setDisplayState(DisplayState.Enabled)
+      setInnerDisplayState(DisplayState.Enabled)
     }
 
     if (haptic !== undefined) {
@@ -125,15 +127,16 @@ export const Button: React.FC<ButtonProps> = ({
             if (displayState === DisplayState.Loading) {
               return
             }
-            setDisplayState(DisplayState.Pressed)
+            setInnerDisplayState(DisplayState.Pressed)
           }}
           onPressOut={() => {
             if (displayState === DisplayState.Loading) {
               return
             }
-            setDisplayState(DisplayState.Enabled)
+            setInnerDisplayState(DisplayState.Enabled)
           }}
           onPress={handlePress}
+          testID={testID}
         >
           <Flex flexDirection="row">
             <AnimatedContainer

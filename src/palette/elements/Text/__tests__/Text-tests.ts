@@ -1,7 +1,6 @@
-import { Text } from ".."
 import { endash, range } from "../../../helpers"
 
-describe(Text, () => {
+describe("Text", () => {
   it("uses endash in ranges", () => {
     const usingHelper = range("10", "20")
     const usingEndash = `10 ${endash} 20`

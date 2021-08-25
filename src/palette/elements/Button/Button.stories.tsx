@@ -1,8 +1,9 @@
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
 import { LinkIcon } from "palette"
-import React from "react"
-import { withThemeV3 } from "storybook/decorators"
+import React, { useState } from "react"
+import { Button as RNButton } from "react-native"
+import { withHooks, withThemeV3 } from "storybook/decorators"
 import { DList, List } from "storybook/helpers"
 import { ButtonV3, ButtonV3Props } from "."
 import { _test_DisplayState } from "./Button"
@@ -19,6 +20,7 @@ const states: Array<_test_DisplayState | undefined> = [
 
 storiesOf("ButtonV3", module)
   .addDecorator(withThemeV3)
+  .addDecorator(withHooks)
   .add("Sizes", () => (
     <DList
       data={sizes}
@@ -83,3 +85,22 @@ storiesOf("ButtonV3", module)
       </ButtonV3>
     </List>
   ))
+  .add("Playground", () => {
+    const [loading, setLoading] = useState(false)
+    const [disabled, setDisabled] = useState(true)
+    const [block, setBlock] = useState(false)
+
+    return (
+      <>
+        <RNButton title="loading" onPress={() => setLoading((v) => !v)} />
+        <RNButton title="disabled" onPress={() => setDisabled((v) => !v)} />
+        <RNButton title="block" onPress={() => setBlock((v) => !v)} />
+        <List>
+          <ButtonV3 loading={loading} disabled={disabled} block={block}>
+            loading {loading ? "true" : "false"}, disabled {disabled ? "true" : "false"}, block{" "}
+            {block ? "true" : "false"}
+          </ButtonV3>
+        </List>
+      </>
+    )
+  })
