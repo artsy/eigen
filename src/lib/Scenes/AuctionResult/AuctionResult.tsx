@@ -192,10 +192,10 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             </Flex>
           </Flex>
           {!!hasSalePrice && (
-            <Flex flexDirection="row">
+            <Flex flexDirection="row" mb={1}>
               <InfoButton
                 titleElement={
-                  <Text variant="title" mb={1} mr={0.5}>
+                  <Text variant="title" mr={0.5}>
                     Sale Price
                   </Text>
                 }
@@ -210,8 +210,14 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           )}
           {hasSalePrice ? (
             <>
-              <Text variant="largeTitle">{`${auctionResult.priceRealized?.display}`}</Text>
-              {!!showPriceUSD && <Text variant="caption" color="black60" testID="priceUSD">{`$10,000`}</Text>}
+              <Flex mb={0.5}>
+                <Text variant="largeTitle">{auctionResult.priceRealized?.display}</Text>
+                {!!showPriceUSD && (
+                  <Text variant="caption" color="black60" testID="priceUSD">
+                    {auctionResult.priceRealized?.displayUSD}
+                  </Text>
+                )}
+              </Flex>
               {!!auctionResult.performance?.mid && (
                 <AuctionResultsMidEstimate
                   textVariant="caption"
