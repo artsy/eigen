@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8e57b8e0acc9aaaadf58927ccc34e5ac */
+/* @relayHash 0b8f6fe341d26bc29719dd47efdd2d60 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -182,8 +182,9 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
     mid
   }
   priceRealized {
-    display
     cents
+    display
+    displayUSD
   }
   saleDate
   title
@@ -1501,12 +1502,19 @@ return {
                         "name": "priceRealized",
                         "plural": false,
                         "selections": [
-                          (v8/*: any*/),
                           {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
                             "name": "cents",
+                            "storageKey": null
+                          },
+                          (v8/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "displayUSD",
                             "storageKey": null
                           }
                         ],
@@ -1543,7 +1551,7 @@ return {
     ]
   },
   "params": {
-    "id": "8e57b8e0acc9aaaadf58927ccc34e5ac",
+    "id": "0b8f6fe341d26bc29719dd47efdd2d60",
     "metadata": {},
     "name": "HomeBelowTheFoldQuery",
     "operationKind": "query",

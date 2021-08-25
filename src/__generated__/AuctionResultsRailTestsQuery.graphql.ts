@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash dc139ebd19a879cdac3700a74be930d4 */
+/* @relayHash 70860020d941158d949f64261e9eb1d3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -44,8 +44,9 @@ export type AuctionResultsRailTestsQueryRawResponse = {
                         readonly mid: string | null;
                     }) | null;
                     readonly priceRealized: ({
-                        readonly display: string | null;
                         readonly cents: number | null;
+                        readonly display: string | null;
+                        readonly displayUSD: string | null;
                     }) | null;
                     readonly saleDate: string | null;
                     readonly title: string | null;
@@ -99,8 +100,9 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
     mid
   }
   priceRealized {
-    display
     cents
+    display
+    displayUSD
   }
   saleDate
   title
@@ -381,6 +383,13 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
+                            "name": "cents",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "display",
                             "storageKey": null
                           },
@@ -388,7 +397,7 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "cents",
+                            "name": "displayUSD",
                             "storageKey": null
                           }
                         ],
@@ -431,7 +440,7 @@ return {
     ]
   },
   "params": {
-    "id": "dc139ebd19a879cdac3700a74be930d4",
+    "id": "70860020d941158d949f64261e9eb1d3",
     "metadata": {},
     "name": "AuctionResultsRailTestsQuery",
     "operationKind": "query",
