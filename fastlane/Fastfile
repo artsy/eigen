@@ -108,12 +108,14 @@ lane :set_build_version_android do |options|
 
   next_version_name = app_json['version']
 
-  if target_version.nil?
+  if version_code.nil?
     current_version_code = google_play_track_version_codes(
       track: "alpha",
     ).first
     version_code = current_version_code + 1
   end
+
+  next_version_code = version_code
 
   contents = File.read(build_gradle)
 
