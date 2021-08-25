@@ -23,6 +23,9 @@ help:
 
 # Deploy betas
 
+beta:
+	./scripts/deploy-both
+
 deploy:
 	./scripts/deploy-both
 
