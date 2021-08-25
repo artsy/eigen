@@ -155,6 +155,7 @@ lane :ship_beta_android do
 
   sentry_release_name = "android-#{vname}-#{vcode}"
   update_sentry_release_name(sentry_release_name: sentry_release_name)
+  flag_android_beta(is_android_beta: true)
 
   gradle(
     task: "bundle",
@@ -250,6 +251,14 @@ end
 lane :update_sentry_release_name do |options|
   sentry_release_name = options[:sentry_release_name]
   app_json['sentryReleaseName'] = sentry_release_name
+  File.open(app_json_path, 'w') do |file|
+    file.puts JSON.pretty_generate(app_json)
+  end
+end
+
+lane :flag_android_beta do |options|
+  is_android_beta = options[:is_android_beta]
+  app_json['isAndroidBeta'] = is_android_beta
   File.open(app_json_path, 'w') do |file|
     file.puts JSON.pretty_generate(app_json)
   end
