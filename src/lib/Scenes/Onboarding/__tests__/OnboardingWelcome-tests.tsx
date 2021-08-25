@@ -1,7 +1,7 @@
+import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { Button } from "palette/elements/Button/Button"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { renderWithWrappers } from "../../../tests/renderWithWrappers"
 import { OnboardingWelcome } from "../OnboardingWelcome"
 
 const navigateMock = jest.fn()
@@ -15,39 +15,45 @@ describe("OnboardingWelcome", () => {
   describe("old flow", () => {
     beforeEach(() => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewOnboardingFlow: false })
+      navigateMock.mockReset()
     })
     it("navigates to create account screen when the user taps on create account", () => {
-      const tree = renderWithWrappers(<OnboardingWelcome navigation={navigationPropsMock as any} route={null as any} />)
-      const createAccountButton = tree.root.findAllByType(Button)[0]
-      createAccountButton.props.onPress()
+      const { getByTestId } = renderWithWrappersTL(
+        <OnboardingWelcome navigation={navigationPropsMock as any} route={null as any} />
+      )
+      fireEvent.press(getByTestId("button-create"))
       expect(navigateMock).toHaveBeenCalledWith("OnboardingCreateAccountWithEmail")
     })
 
     it("navigates to log in screen when the user taps on log in", () => {
-      const tree = renderWithWrappers(<OnboardingWelcome navigation={navigationPropsMock as any} route={null as any} />)
-      const loginButton = tree.root.findAllByType(Button)[1]
-      loginButton.props.onPress()
-      expect(navigateMock).toHaveBeenCalledWith("OnboardingCreateAccountWithEmail")
+      const { getByTestId } = renderWithWrappersTL(
+        <OnboardingWelcome navigation={navigationPropsMock as any} route={null as any} />
+      )
+      fireEvent.press(getByTestId("button-login"))
+      expect(navigateMock).toHaveBeenCalledWith("OnboardingLoginWithEmail")
     })
   })
 
   describe("new flow", () => {
     beforeEach(() => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewOnboardingFlow: true })
+      navigateMock.mockReset()
     })
 
     it("navigates to create account screen when the user taps on create account", () => {
-      const tree = renderWithWrappers(<OnboardingWelcome navigation={navigationPropsMock as any} route={null as any} />)
-      const createAccountButton = tree.root.findAllByType(Button)[0]
-      createAccountButton.props.onPress()
-      expect(navigateMock).toHaveBeenCalledWith("OnboardingCreateAccountWithEmail")
+      const { getByTestId } = renderWithWrappersTL(
+        <OnboardingWelcome navigation={navigationPropsMock as any} route={null as any} />
+      )
+      fireEvent.press(getByTestId("button-create"))
+      expect(navigateMock).toHaveBeenCalledWith("OnboardingCreateAccount")
     })
 
     it("navigates to log in screen when the user taps on log in", () => {
-      const tree = renderWithWrappers(<OnboardingWelcome navigation={navigationPropsMock as any} route={null as any} />)
-      const loginButton = tree.root.findAllByType(Button)[1]
-      loginButton.props.onPress()
-      expect(navigateMock).toHaveBeenCalledWith("OnboardingCreateAccountWithEmail")
+      const { getByTestId } = renderWithWrappersTL(
+        <OnboardingWelcome navigation={navigationPropsMock as any} route={null as any} />
+      )
+      fireEvent.press(getByTestId("button-login"))
+      expect(navigateMock).toHaveBeenCalledWith("OnboardingLogin")
     })
   })
 })

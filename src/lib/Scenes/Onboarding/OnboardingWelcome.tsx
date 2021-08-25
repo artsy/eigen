@@ -139,6 +139,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
               ? navigation.navigate("OnboardingCreateAccount")
               : navigation.navigate("OnboardingCreateAccountWithEmail")
           }
+          testID="button-create"
         >
           Create account
         </Button>
@@ -152,6 +153,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           underlayColor="transparent"
           haptic="impactMedium"
           style={{ justifyContent: "center", alignItems: "center", height: BUTTON_HEIGHT }}
+          testID="button-login"
         >
           <Text color="white" variant="mediumText">
             Log in

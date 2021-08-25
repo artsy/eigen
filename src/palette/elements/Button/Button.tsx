@@ -73,7 +73,12 @@ export const Button: React.FC<ButtonProps> = ({
   const [innerDisplayState, setInnerDisplayState] = useState(DisplayState.Enabled)
 
   const displayState =
-    testOnly_state ?? (loading ? DisplayState.Loading : disabled ? DisplayState.Disabled : innerDisplayState)
+    testOnly_state ?? // if we use the test prop, use that
+    (loading // if we have loading or disabled in props, they are used
+      ? DisplayState.Loading
+      : disabled
+      ? DisplayState.Disabled
+      : innerDisplayState) // otherwise use the inner state for pressed or enabled
 
   const getSize = (): { height: number; px: number } => {
     switch (size) {
