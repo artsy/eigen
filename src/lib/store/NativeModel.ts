@@ -100,6 +100,7 @@ listenToNativeEvents((event: NativeEvent) => {
           userEmail: event.payload.userEmail,
           userAccessToken: event.payload.authenticationToken,
           userID: event.payload.userID,
+          onboardingState: event.payload.onboardingState,
         })
       }
       return
