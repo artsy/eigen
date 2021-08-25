@@ -324,7 +324,7 @@ const PartnerCardArtwork: PartnerCard_artwork = {
       internalID: "56789",
       is_followed: false,
       icon: {
-        url: "https://d32dm0rphc51dk.cloudfront.net/YciR5levjrhp2JnFYlPxpw/square140.png",
+        url: "https://d32dm0rphc51dk.cloudfront.net/YciR5levjrhp2JnFYlPxpw/square140.webp",
       },
     },
     cities: ["Miami", "New York", "Hong Kong", "London", "Boston"],

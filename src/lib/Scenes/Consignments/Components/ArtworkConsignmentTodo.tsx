@@ -16,13 +16,13 @@ const ImageBG = styled.View`
 
 const ToDoButton = () => (
   <ImageBG>
-    <Image source={require("../../../../../images/consignments/plus.png")} />
+    <Image source={require("../../../../../images/consignments/plus.webp")} />
   </ImageBG>
 )
 
 const DoneButton = () => (
   <ImageBG style={{ backgroundColor: "white" }}>
-    <Image source={require("../../../../../images/consignments/black-tick.png")} />
+    <Image source={require("../../../../../images/consignments/black-tick.webp")} />
   </ImageBG>
 )
 
