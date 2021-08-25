@@ -100,7 +100,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchesListProps> = (props
     <ProvideScreenTracking
       info={{
         context_screen: Schema.PageNames.SavedSearchList,
-        context_screen_owner_type: OwnerType.savedSearch,
+        context_screen_owner_type: OwnerType.savedSearches,
       }}
     >
       <SavedSearchesList {...props} />
