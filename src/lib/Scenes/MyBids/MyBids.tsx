@@ -80,17 +80,16 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
             <Join separator={<Spacer my={1} />}>
               {active.map((activeSale) => {
                 if (!activeSale) {
-                  return <></>
+                  return null
                 }
 
                 const { sale, saleArtworks } = activeSale
 
                 if (!sale || !saleArtworks) {
-                  return <></>
+                  return null
                 }
 
-                // const sortedActiveLotStandings = ActiveLotStandingsBySaleId[sale.internalID] || []
-                const showNoBids = !(saleArtworks.length || !sale?.registrationStatus?.qualifiedForBidding)
+                const showNoBids = !saleArtworks.length || !sale?.registrationStatus?.qualifiedForBidding
                 return (
                   <SaleCardFragmentContainer
                     key={sale.internalID}
