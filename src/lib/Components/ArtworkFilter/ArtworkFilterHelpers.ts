@@ -625,14 +625,22 @@ export const getParamsForInputByFilterType = (
   return allowedParams
 }
 
-const getArrayToUnion = (arrayToFilter: FilterArray, arrayToCheck: FilterArray, isSecondary: boolean = false) => {
+const getFiltersArrayToUnion = (
+  arrayToFilter: FilterArray,
+  arrayToCompareWith: FilterArray,
+  isSecondary: boolean = false
+) => {
   return arrayToFilter.filter((el) => {
     if (el.paramName === FilterParamName.artistIDs) {
-      return !map(arrayToCheck, "paramValue").includes(el.paramValue)
+      return !map(arrayToCompareWith, "paramValue").includes(el.paramValue)
     }
 
     if (waysToBuyFilterNames.includes(el.paramName) || isSecondary) {
-      return !map(arrayToCheck, "paramName").includes(el.paramName)
+      return !map(arrayToCompareWith, "paramName").includes(el.paramName)
+    }
+
+    if (el.paramValue === defaultCommonFilterOptions[el.paramName]) {
+      return false
     }
 
     return true
@@ -654,8 +662,8 @@ export const unionSelectedAndAppliedFilters = ({
     return selectedFilters
   }
 
-  const appliedFiltersToUnion = getArrayToUnion(appliedFilters, selectedFilters, true)
-  const selectedFiltersToUnion = getArrayToUnion(selectedFilters, appliedFilters)
+  const appliedFiltersToUnion = getFiltersArrayToUnion(appliedFilters, selectedFilters, true)
+  const selectedFiltersToUnion = getFiltersArrayToUnion(selectedFilters, appliedFilters)
   const unitedFilters = appliedFiltersToUnion.concat(selectedFiltersToUnion)
 
   return unitedFilters
