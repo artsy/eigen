@@ -201,7 +201,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
                 <Flex p={2} pr={1.5} flexDirection="row" justifyContent="space-between" flexGrow={1}>
                   <Flex flex={1}>
                     <Text variant="caption">
-                      {item.displayText} {selectedFiltersCount ? <Text>&#8226; {selectedFiltersCount}</Text> : ""}
+                      {item.displayText} {selectedFiltersCount ? `• ${selectedFiltersCount}` : ""}
                     </Text>
                   </Flex>
 
