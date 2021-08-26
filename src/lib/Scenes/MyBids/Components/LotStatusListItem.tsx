@@ -1,24 +1,20 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { LotStatusListItem_saleArtwork } from "../../../../__generated__/LotStatusListItem_saleArtwork.graphql"
 import { ActiveLotStandingFragmentContainer } from "./ActiveLotStanding"
 import { ClosedLotStandingFragmentContainer } from "./ClosedLotStanding"
 import { WatchedLotFragmentContainer } from "./WatchedLot"
 
-import { LotStatusListItem_sale } from "../../../../__generated__/LotStatusListItem_sale.graphql"
-import { LotStatusListItem_saleArtwork } from "../../../../__generated__/LotStatusListItem_saleArtwork.graphql"
-
 interface Props {
   /** A general lot to display. */
   saleArtwork: LotStatusListItem_saleArtwork
-  /** A general lot to display. */
-  sale: LotStatusListItem_sale
+  saleIsClosed?: boolean
 }
 
 const completeStatuses = ["sold", "passed"]
 
-const LotStatusListItem: React.FC<Props> = ({ saleArtwork, sale }) => {
-  console.warn("SALE", sale.isClosed)
-  if (sale.isClosed) {
+const LotStatusListItem: React.FC<Props> = ({ saleArtwork, saleIsClosed }) => {
+  if (saleIsClosed) {
     return (
       <ClosedLotStandingFragmentContainer withTimelyInfo data-test-id="closed-sale-lot" saleArtwork={saleArtwork} />
     )
@@ -46,19 +42,6 @@ export const LotStatusListItemContainer = createFragmentContainer(LotStatusListI
       lotState {
         soldStatus
       }
-    }
-  `,
-  sale: graphql`
-    fragment LotStatusListItem_sale on Sale {
-      internalID
-      registrationStatus {
-        qualifiedForBidding
-      }
-      internalID
-      liveStartAt
-      endAt
-      status
-      isClosed
     }
   `,
 })
