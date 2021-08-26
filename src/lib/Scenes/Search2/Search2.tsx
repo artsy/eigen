@@ -122,7 +122,7 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
     <ArtsyKeyboardAvoidingView>
       <InstantSearch
         searchClient={searchClient}
-        indexName="POC_Artists"
+        indexName="Artist_staging"
         searchState={searchState}
         onSearchStateChange={setSearchState}
       >
