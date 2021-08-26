@@ -1,5 +1,17 @@
 import { FilterScreen } from "lib/Components/ArtworkFilter"
-import { capitalize, compact, filter, groupBy, isEqual, isUndefined, pick, pickBy, sortBy, unionBy } from "lodash"
+import {
+  capitalize,
+  compact,
+  filter,
+  groupBy,
+  isArray,
+  isEqual,
+  isUndefined,
+  pick,
+  pickBy,
+  sortBy,
+  unionBy,
+} from "lodash"
 import { LOCALIZED_UNIT } from "./Filters/helpers"
 
 export enum FilterDisplayName {
@@ -267,22 +279,6 @@ const waysToBuyFilterNames = [
   FilterParamName.waysToBuyBid,
   FilterParamName.waysToBuyInquire,
 ]
-
-const multiFilterNames = [
-  FilterParamName.attributionClass,
-  FilterParamName.additionalGeneIDs,
-  FilterParamName.materialsTerms,
-  FilterParamName.artistNationalities,
-  FilterParamName.locationCities,
-  FilterParamName.timePeriod,
-  FilterParamName.colors,
-  FilterParamName.partnerIDs,
-  FilterParamName.organizations,
-  FilterParamName.sizes,
-  FilterParamName.categories,
-]
-
-const radioFilterNames = [FilterParamName.sort, FilterParamName.priceRange, FilterParamName.dimensionRange]
 
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams, filterType: FilterType) => {
   const groupedFilters = groupBy(appliedFilters, "paramName")
@@ -690,10 +686,10 @@ export const getSelectedFiltersCounts = (selectedFilters: FilterArray) => {
       counts.waysToBuy = (counts.waysToBuy ?? 0) + 1
     } else if (createdYearsFilterNames.includes(paramName)) {
       counts.year = 1
-    } else if (radioFilterNames.includes(paramName)) {
+    } else if (isArray(paramValue)) {
+      counts[paramName] = paramValue.length
+    } else {
       counts[paramName] = 1
-    } else if (multiFilterNames.includes(paramName)) {
-      counts[paramName] = (paramValue as []).length
     }
   })
 
