@@ -205,13 +205,8 @@ export interface FilterCounts {
   followedArtists: number | null
 }
 
-export type SelectedFiltersCountsType = {
-  [Name in FilterParamName]: number
-}
-
-export interface SelectedFiltersCounts extends SelectedFiltersCountsType {
-  waysToBuy: number
-  year: number
+export type SelectedFiltersCounts = {
+  [Name in FilterParamName | "waysToBuy" | "year"]: number
 }
 
 export const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string | undefined> = {
