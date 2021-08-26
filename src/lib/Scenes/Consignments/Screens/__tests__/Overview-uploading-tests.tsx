@@ -26,18 +26,18 @@ it("uploads a photo when there's an photo without upload as true", () => {
   const overview = new Overview({
     nav,
     route,
-    setup: { submissionID: 1, photos: [{ image: { path: "/a/b/c.png" }, uploaded: false }] },
+    setup: { submissionID: 1, photos: [{ image: { path: "/a/b/c.webp" }, uploaded: false }] },
     params: {},
   })
   overview.setState = jest.fn()
   overview.uploadPhotosIfNeeded()
-  expect(uploadImageAndPassToGemini).toBeCalledWith("/a/b/c.png", "private", 1)
+  expect(uploadImageAndPassToGemini).toBeCalledWith("/a/b/c.webp", "private", 1)
 })
 
 it("doesnt upload a photo when when uploading is true", () => {
   const photos = [
-    { image: { path: "/a/b/c.png" }, uploaded: false, uploading: true },
-    { image: { path: "/a/b/d.png" }, uploaded: false, uploading: false },
+    { image: { path: "/a/b/c.webp" }, uploaded: false, uploading: true },
+    { image: { path: "/a/b/d.webp" }, uploaded: false, uploading: false },
   ]
   const overview = new Overview({
     nav,

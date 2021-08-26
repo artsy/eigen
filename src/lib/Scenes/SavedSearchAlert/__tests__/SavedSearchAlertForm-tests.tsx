@@ -6,6 +6,7 @@ import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { PushAuthorizationStatus } from "lib/utils/PushNotification"
+import { bullet } from "palette"
 import React from "react"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
@@ -37,7 +38,7 @@ describe("Saved search alert form", () => {
   it("correctly renders placeholder for input name", () => {
     const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
 
-    expect(getByTestId("alert-input-name").props.placeholder).toEqual("artistName • 5 filters")
+    expect(getByTestId("alert-input-name").props.placeholder).toEqual(`artistName ${bullet} 5 filters`)
   })
 
   it("correctly extracts the values of pills", () => {
@@ -214,7 +215,7 @@ describe("Saved search alert form", () => {
       expect(mockEnvironment.mock.getMostRecentOperation().request.variables).toMatchObject({
         input: {
           userAlertSettings: {
-            name: "artistName • 5 filters",
+            name: `artistName ${bullet} 5 filters`,
           },
         },
       })

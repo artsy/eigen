@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ba47aeef9cb738af3b650ab09a0f3450 */
+/* @relayHash 59b15a5cffb63e2e4c328d91b3f2c771 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -59,8 +59,9 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
     mid
   }
   priceRealized {
-    display
     cents
+    display
+    displayUSD
   }
   saleDate
   title
@@ -406,6 +407,13 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
+                            "name": "cents",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "display",
                             "storageKey": null
                           },
@@ -413,7 +421,7 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "cents",
+                            "name": "displayUSD",
                             "storageKey": null
                           }
                         ],
@@ -490,7 +498,7 @@ return {
     ]
   },
   "params": {
-    "id": "ba47aeef9cb738af3b650ab09a0f3450",
+    "id": "59b15a5cffb63e2e4c328d91b3f2c771",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -583,6 +591,7 @@ return {
         },
         "me.auctionResultsByFollowedArtists.edges.node.priceRealized.cents": (v7/*: any*/),
         "me.auctionResultsByFollowedArtists.edges.node.priceRealized.display": (v6/*: any*/),
+        "me.auctionResultsByFollowedArtists.edges.node.priceRealized.displayUSD": (v6/*: any*/),
         "me.auctionResultsByFollowedArtists.edges.node.saleDate": (v6/*: any*/),
         "me.auctionResultsByFollowedArtists.edges.node.title": (v6/*: any*/),
         "me.auctionResultsByFollowedArtists.pageInfo": {

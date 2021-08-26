@@ -1,21 +1,21 @@
 import { ReactTestInstance } from "react-test-renderer"
 
-export const extractText = (root: ReactTestInstance | string) => {
+export const extractText = (root: ReactTestInstance | string | number): string => {
   if (typeof root === "string") {
     return root
   }
 
-  let result = ""
-  root.findAll((el) => {
-    // @ts-expect-error
-    if (el.type === "Text") {
-      result += el.children.map(extractText).join("")
+  if (typeof root === "number") {
+    return root.toString()
+  }
+
+  return root.children.reduce((acc: string, child) => {
+    // @ts-ignore
+    if (child.type === "TextInput") {
+      // @ts-ignore
+      return acc + child.props.value ?? ""
     }
-    // @ts-expect-error
-    if (el.type === "TextInput") {
-      result += el.props.value ?? el.props.defaultValue ?? ""
-    }
-    return false
-  })
-  return result
+
+    return acc + extractText(child)
+  }, "")
 }

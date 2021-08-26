@@ -55,6 +55,7 @@ describe("AuctionResults", () => {
                 currency: "USD",
                 priceRealized: {
                   display: "$one gazillion",
+                  displayUSD: "$one gazillion",
                 },
                 artist: {
                   name: "artist-name",
@@ -68,6 +69,36 @@ describe("AuctionResults", () => {
     })
 
     expect(tree.findByProps({ testID: "price" }).props.children).toBe("$one gazillion")
+    expect(tree.findAllByProps({ testID: "priceUSD" }).length).toBe(0)
+  })
+
+  it("renders price in USD when currency is not USD", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+    mockEnvironmentPayload(mockEnvironment, {
+      Artist: () => ({
+        auctionResultsConnection: {
+          edges: [
+            {
+              node: {
+                id: "an-id",
+                currency: "EU",
+                priceRealized: {
+                  display: "€one gazillion",
+                  displayUSD: "$one gazillion",
+                },
+                artist: {
+                  name: "artist-name",
+                  slug: "artist-slug",
+                },
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    expect(tree.findByProps({ testID: "price" }).props.children).toBe("€one gazillion")
+    expect(tree.findByProps({ testID: "priceUSD" }).props.children).toBe("$one gazillion")
   })
 
   it("renders auction result when auction results are not available yet", () => {
@@ -81,6 +112,7 @@ describe("AuctionResults", () => {
                 id: "an-id",
                 priceRealized: {
                   display: null,
+                  displayUSD: null,
                 },
                 saleDate: moment().subtract(1, "day").toISOString(),
               },
@@ -91,6 +123,7 @@ describe("AuctionResults", () => {
     })
 
     expect(tree.findByProps({ testID: "price" }).props.children).toBe("Awaiting results")
+    expect(tree.findAllByProps({ testID: "priceUSD" }).length).toBe(0)
   })
 
   it("renders auction result when auction result is `bought in`", () => {
@@ -104,6 +137,7 @@ describe("AuctionResults", () => {
                 id: "an-id",
                 priceRealized: {
                   display: null,
+                  displayUSD: null,
                 },
                 saleDate: moment().subtract(2, "months").toISOString(),
                 boughtIn: true,
@@ -115,6 +149,7 @@ describe("AuctionResults", () => {
     })
 
     expect(tree.findByProps({ testID: "price" }).props.children).toBe("Bought in")
+    expect(tree.findAllByProps({ testID: "priceUSD" }).length).toBe(0)
   })
 
   it("renders sale date correctly", () => {

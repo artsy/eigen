@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f2e53f09b43c23225c53402a6a892ea4 */
+/* @relayHash df45a067a2e1d0346f7564d69218f4ea */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -88,8 +88,9 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
     mid
   }
   priceRealized {
-    display
     cents
+    display
+    displayUSD
   }
   saleDate
   title
@@ -456,6 +457,13 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
+                            "name": "cents",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "display",
                             "storageKey": null
                           },
@@ -463,7 +471,7 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "cents",
+                            "name": "displayUSD",
                             "storageKey": null
                           }
                         ],
@@ -555,7 +563,7 @@ return {
     ]
   },
   "params": {
-    "id": "f2e53f09b43c23225c53402a6a892ea4",
+    "id": "df45a067a2e1d0346f7564d69218f4ea",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": (v5/*: any*/),
@@ -645,6 +653,7 @@ return {
         },
         "artist.auctionResultsConnection.edges.node.priceRealized.cents": (v10/*: any*/),
         "artist.auctionResultsConnection.edges.node.priceRealized.display": (v9/*: any*/),
+        "artist.auctionResultsConnection.edges.node.priceRealized.displayUSD": (v9/*: any*/),
         "artist.auctionResultsConnection.edges.node.saleDate": (v9/*: any*/),
         "artist.auctionResultsConnection.edges.node.title": (v9/*: any*/),
         "artist.auctionResultsConnection.pageInfo": {

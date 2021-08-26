@@ -1842,6 +1842,10 @@ type AuctionResultPriceRealized {
     # Passes in to numeral, such as `'0.00'`
     format: String = ""
   ): String
+  displayUSD(
+    # Passes in to numeral, such as `'0.00'`
+    format: String = ""
+  ): String
 }
 
 # An auction lot result
@@ -2477,6 +2481,7 @@ type CollectorProfileType {
 
   # A globally unique ID.
   id: ID!
+  institutionalAffiliations: String
   intents: [String]
 
   # A type-specific ID likely used as a database ID.
@@ -7949,6 +7954,7 @@ type Me implements Node {
   # The user's most current pending identity verification, if it exists
   pendingIdentityVerification: IdentityVerification
   phone: String
+  profession: String
 
   # This user should receive lot opening notifications
   receiveLotOpeningSoonNotification: Boolean
@@ -11698,10 +11704,21 @@ type UpdateAppSecondFactorPayload {
 }
 
 input UpdateCollectorProfileInput {
+  # List of affiliated auction house ids, referencing Galaxy.
+  affiliatedAuctionIds: [String]
+
+  # List of affiliated fair ids, referencing Galaxy.
+  affiliatedFairIds: [String]
+
+  # List of affiliated gallery ids, referencing Galaxy.
+  affiliatedGalleryIds: [String]
   clientMutationId: String
+  institutionalAffiliations: String
   intents: [Intents]
   loyaltyApplicant: Boolean
   professionalBuyer: Boolean
+
+  # Free-form text of purchases the collector has indicated.
   selfReportedPurchases: String
 }
 
@@ -11718,6 +11735,7 @@ type UpdateCollectorProfilePayload {
 
   # A globally unique ID.
   id: ID!
+  institutionalAffiliations: String
   intents: [String]
 
   # A type-specific ID likely used as a database ID.
@@ -11760,6 +11778,8 @@ type UpdateConversationMutationPayload {
 }
 
 input UpdateMyProfileInput {
+  # Number of artworks purchased per year.
+  artworksPerYear: String
   clientMutationId: String
 
   # The collector level for the user
@@ -11774,11 +11794,23 @@ input UpdateMyProfileInput {
   # Frequency of marketing emails.
   emailFrequency: String
 
+  # Gender.
+  gender: String
+
+  # Works in the art industry?
+  industry: String
+
+  # Is a collector?
+  isCollector: Boolean
+
   # The given location of the user as structured data
   location: EditableLocation
 
   # The given name of the user.
   name: String
+
+  # Additional personal notes.
+  notes: String
 
   # The user's password, required to change email address.
   password: String
@@ -11791,6 +11823,9 @@ input UpdateMyProfileInput {
 
   # The minimum price collector has selected
   priceRangeMin: Int
+
+  # Profession.
+  profession: String
 
   # This user should receive lot opening notifications
   receiveLotOpeningSoonNotification: Boolean
@@ -11812,6 +11847,9 @@ input UpdateMyProfileInput {
 
   # This user should receive sale opening/closing notifications
   receiveSaleOpeningClosingNotification: Boolean
+
+  # Shares FollowArtists, FollowGenes, and FollowProfiles with partners.
+  shareFollows: Boolean
 }
 
 union UpdateMyProfileMutation = UpdateMyProfileMutationFailure | UpdateMyProfileMutationSuccess

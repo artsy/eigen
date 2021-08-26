@@ -1,6 +1,6 @@
 import { Flex, Spacer } from "palette"
 import React from "react"
-import { FlatList, ScrollView, StyleProp, ViewStyle } from "react-native"
+import { FlatList, StyleProp, ViewStyle } from "react-native"
 
 export const DList = <ItemT,>({
   data,
@@ -20,8 +20,7 @@ export const DList = <ItemT,>({
       flexGrow: 1,
       alignItems: "center",
       justifyContent: "center",
-      marginTop: 30,
-      paddingBottom: 30,
+      paddingVertical: 30,
     }}
   />
 )
@@ -31,17 +30,22 @@ export const List = ({
   contentContainerStyle,
   style,
 }: {
-  children: React.ReactElement[]
+  children: React.ReactElement[] | React.ReactElement
   contentContainerStyle?: StyleProp<ViewStyle>
   style?: StyleProp<ViewStyle>
 }) => (
   <FlatList
-    data={children}
+    data={Array.isArray(children) ? children : [children]}
     keyExtractor={(_, index) => `${index}`}
     renderItem={({ item: child }) => child}
     ItemSeparatorComponent={() => <Spacer mb="4" />}
     contentContainerStyle={[
-      { flexGrow: 1, alignItems: "center", marginTop: 30, paddingBottom: 60 },
+      {
+        flexGrow: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        paddingVertical: 30,
+      },
       contentContainerStyle,
     ]}
     style={style}
@@ -53,20 +57,3 @@ export const Row = ({ children }: { children: React.ReactNode }) => (
     {children}
   </Flex>
 )
-
-export const CenterView = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <ScrollView
-      contentContainerStyle={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#F5FCFF",
-        marginTop: 30,
-        paddingBottom: 30,
-      }}
-    >
-      {children}
-    </ScrollView>
-  )
-}

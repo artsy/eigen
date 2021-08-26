@@ -133,7 +133,7 @@ const meMock = {
             title: "happy little accident",
             href: "/artwork/happy-little-accident",
             image: {
-              thumbnailUrl: "http://example.com/image.png",
+              thumbnailUrl: "http://example.com/image.webp",
             },
           },
         },

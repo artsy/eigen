@@ -17,6 +17,9 @@ interface Props {
 
 const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress, showArtistName }) => {
   const color = useColor()
+
+  const showPriceUSD = auctionResult.priceRealized?.displayUSD && auctionResult.currency !== "USD"
+
   const QAInfo: React.FC = () => (
     <QAInfoManualPanel position="absolute" top={0} left={95}>
       <QAInfoRow name="id" value={auctionResult.internalID} />
@@ -88,6 +91,11 @@ const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress, showAr
                 <Text variant="caption" fontWeight="bold" testID="price">
                   {auctionResult.priceRealized?.display}
                 </Text>
+                {!!showPriceUSD && (
+                  <Text variant="caption" color="black60" testID="priceUSD">
+                    {auctionResult.priceRealized?.displayUSD}
+                  </Text>
+                )}
                 {!!auctionResult.performance?.mid && (
                   <AuctionResultsMidEstimate value={auctionResult.performance.mid} shortDescription="est" />
                 )}
@@ -135,8 +143,9 @@ export const AuctionResultFragmentContainer = createFragmentContainer(AuctionRes
         mid
       }
       priceRealized {
-        display
         cents
+        display
+        displayUSD
       }
       saleDate
       title

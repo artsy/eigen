@@ -1,5 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
-import { Text } from "palette"
+import { TextV2 } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { withHooks, withThemeV2AndSwitcher } from "storybook/decorators"
@@ -20,8 +20,8 @@ const SpaceLine = ({ space: theSpace }: { space: SpacingUnitV2 }) => {
           marginBottom: 4,
         }}
       />
-      <Text color="black">{theSpace}</Text>
-      <Text color="black">{`${spaceFunc(theSpace)}px`}</Text>
+      <TextV2 color="black">{theSpace}</TextV2>
+      <TextV2 color="black">{`${spaceFunc(theSpace)}px`}</TextV2>
     </View>
   )
 }

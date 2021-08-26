@@ -2,33 +2,36 @@ import { THEME_V2, THEME_V3 } from "@artsy/palette-tokens"
 import _ from "lodash"
 import React, { useContext } from "react"
 import { ThemeContext, ThemeProvider } from "styled-components/native"
-import { TEXT_FONTS_V2, TEXT_FONTS_V3 } from "./elements/Text/tokens"
 import { usePaletteFlagStore } from "./PaletteFlag"
-import { fontFamily } from "./platform/fonts/fontFamily"
 
 /**
  * All of the config for the Artsy theming system, based on the
  * design system from our design team:
  * https://www.notion.so/artsy/Master-Library-810612339f474d0997fe359af4285c56
  */
-export { SansSize, SerifSize, TypeSizes } from "@artsy/palette-tokens/dist/themes/v2"
 
 import { Color as ColorV2, SpacingUnit as SpacingUnitV2 } from "@artsy/palette-tokens/dist/themes/v2"
 import {
   Color as ColorV3BeforeDevPurple,
   SpacingUnit as SpacingUnitV3Numbers,
 } from "@artsy/palette-tokens/dist/themes/v3"
+import {
+  TextTreatment as TextTreatmentWithUnits,
+  TextVariant as TextSizeV3,
+} from "@artsy/palette-tokens/dist/typography/v3"
 
 type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
 export type Color = ColorV2 | ColorV3
 export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
 type ColorV3 = ColorV3BeforeDevPurple | "devpurple"
 export { ColorV2, ColorV3, SpacingUnitV2, SpacingUnitV3 }
+export { TextSizeV3 }
 
 const {
   breakpoints: _eigenDoesntCareAboutBreakpoints,
   mediaQueries: _eigenDoesntCareAboutMediaQueries,
   grid: _eigenDoesntCareAboutGrid,
+  textVariants: textVariantsWithUnits,
   space: spaceNumbers,
   ...eigenUsefulTHEME_V3
 } = THEME_V3
@@ -97,14 +100,68 @@ const fixColorV3 = (
   return colors as any
 }
 
+export interface TextTreatment {
+  fontSize: number
+  lineHeight: number
+  letterSpacing?: number
+}
+
+// this function is removing the `px` and `em` suffix and making the values into numbers
+const fixTextTreatments = (
+  variantsWithUnits: Record<"xxl" | "xl" | "lg" | "md" | "sm" | "xs", TextTreatmentWithUnits>
+): Record<TextSizeV3, TextTreatment> => {
+  const textTreatments = _.mapValues(variantsWithUnits, (treatmentWithUnits) => {
+    const newTreatment = {} as TextTreatment
+    ;([
+      ["fontSize", "px"],
+      ["lineHeight", "px"],
+      ["letterSpacing", "em"],
+    ] as Array<[keyof TextTreatment, string]>).forEach(([property, unit]) => {
+      const originalValue = treatmentWithUnits[property]
+      if (originalValue === undefined) {
+        return undefined
+      }
+      const justStringValue = _.split(originalValue, unit)[0]
+      const numberValue = parseInt(justStringValue, 10)
+      newTreatment[property] = numberValue
+    })
+    return newTreatment
+  })
+  return textTreatments
+}
+
 const THEMES = {
-  v2: { ...THEME_V2, fontFamily, fonts: TEXT_FONTS_V2, space: fixSpaceUnitsV2(THEME_V2.space) },
+  v2: {
+    ...THEME_V2,
+    fontFamily: {
+      sans: {
+        regular: { normal: "Unica77LL-Regular", italic: "Unica77LL-Italic" },
+        medium: { normal: "Unica77LL-Medium", italic: "Unica77LL-MediumItalic" },
+        semibold: { normal: null, italic: null },
+      },
+      serif: {
+        regular: { normal: "ReactNativeAGaramondPro-Regular", italic: "ReactNativeAGaramondPro-Italic" },
+        medium: { normal: null, italic: null },
+        semibold: { normal: "ReactNativeAGaramondPro-Semibold", italic: null },
+      },
+    },
+    fonts: { sans: "Unica77LL-Regular", serif: "ReactNativeAGaramondPro-Regular" },
+    space: fixSpaceUnitsV2(THEME_V2.space),
+  },
   v3: {
     ...eigenUsefulTHEME_V3,
-    fonts: TEXT_FONTS_V3,
-    space: fixSpaceUnitsV3(spaceNumbers),
     colors: fixColorV3(eigenUsefulTHEME_V3.colors),
-  }, // v3 removed `fontFamily`, `fontSizes`, `letterSpacings`, `lineHeights`, `typeSizes`
+    space: fixSpaceUnitsV3(spaceNumbers),
+    fonts: {
+      sans: {
+        regular: "Unica77LL-Regular",
+        italic: "Unica77LL-Italic",
+        medium: "Unica77LL-Medium",
+        mediumItalic: "Unica77LL-MediumItalic",
+      },
+    },
+    textTreatments: fixTextTreatments(textVariantsWithUnits),
+  },
 }
 
 export type ThemeV2Type = typeof THEMES.v2
@@ -153,7 +210,8 @@ const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
   }
   // TODO-PALETTE-V3 remove the mapping as the last TODO-PALETTE-V3 to be done for space
 
-  if (theme === "v3") {
+  if (__TEST__ || theme === "v3") {
+    // if we are in tests, default to v3
     return { ...THEMES.v3, colors: mergedColorsV2WithV3OnTop, space: mergedSpacesV2WithV3OnTop }
   }
 
@@ -212,6 +270,7 @@ export const useTheme = () => {
   }
 }
 
+// TODO-PALETTE-V3 these should be removed after we are v3
 export const isThemeV2 = (theme: ThemeType): theme is ThemeV2Type => theme.id === "v2"
 export const isThemeV3 = (theme: ThemeType): theme is ThemeV3Type => theme.id === "v3"
 
