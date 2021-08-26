@@ -11,7 +11,7 @@ import { TimelySale } from "../helpers/timely"
 import { Lost, Passed, Won } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
-import { ClosedLotStanding_saleArtwork } from "../../../../__generated__/ClosedLotStanding_saleArtwork.graphql";
+import { ClosedLotStanding_saleArtwork } from "../../../../__generated__/ClosedLotStanding_saleArtwork.graphql"
 
 type BidderResult = "won" | "lost" | "passed"
 
@@ -67,7 +67,7 @@ export const ClosedLotStanding = ({
     <TouchableOpacity onPress={() => handleLotTap()} style={{ marginHorizontal: 0, width: "100%" }}>
       <Lot saleArtwork={saleArtwork!} subtitle={subtitle} ArtworkBadge={Badge}>
         <Flex flexDirection="row">
-          <Text variant="caption">{sellingPrice}</Text>
+          <Text variant="caption">{sellingPrice?.display}</Text>
         </Flex>
         <Flex flexDirection="row" alignItems="center">
           <Result />

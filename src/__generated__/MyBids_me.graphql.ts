@@ -12,7 +12,7 @@ export type MyBids_me = {
                 readonly registrationStatus: {
                     readonly qualifiedForBidding: boolean | null;
                 } | null;
-                readonly " $fragmentRefs": FragmentRefs<"SaleCard_sale" | "LotStatusListItem_sale">;
+                readonly " $fragmentRefs": FragmentRefs<"SaleCard_sale">;
             } | null;
             readonly saleArtworks: ReadonlyArray<{
                 readonly internalID: string;
@@ -21,7 +21,11 @@ export type MyBids_me = {
         } | null> | null;
         readonly closed: ReadonlyArray<{
             readonly sale: {
-                readonly " $fragmentRefs": FragmentRefs<"SaleCard_sale" | "LotStatusListItem_sale">;
+                readonly internalID: string;
+                readonly registrationStatus: {
+                    readonly qualifiedForBidding: boolean | null;
+                } | null;
+                readonly " $fragmentRefs": FragmentRefs<"SaleCard_sale">;
             } | null;
             readonly saleArtworks: ReadonlyArray<{
                 readonly internalID: string;
@@ -48,33 +52,60 @@ var v0 = {
   "name": "internalID",
   "storageKey": null
 },
-v1 = {
-  "args": null,
-  "kind": "FragmentSpread",
-  "name": "SaleCard_sale"
-},
-v2 = {
-  "args": null,
-  "kind": "FragmentSpread",
-  "name": "LotStatusListItem_sale"
-},
-v3 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "SaleArtwork",
-  "kind": "LinkedField",
-  "name": "saleArtworks",
-  "plural": true,
-  "selections": [
-    (v0/*: any*/),
-    {
-      "args": null,
-      "kind": "FragmentSpread",
-      "name": "LotStatusListItem_saleArtwork"
-    }
-  ],
-  "storageKey": null
-};
+v1 = [
+  {
+    "alias": null,
+    "args": null,
+    "concreteType": "Sale",
+    "kind": "LinkedField",
+    "name": "sale",
+    "plural": false,
+    "selections": [
+      (v0/*: any*/),
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Bidder",
+        "kind": "LinkedField",
+        "name": "registrationStatus",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "qualifiedForBidding",
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "args": null,
+        "kind": "FragmentSpread",
+        "name": "SaleCard_sale"
+      }
+    ],
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "concreteType": "SaleArtwork",
+    "kind": "LinkedField",
+    "name": "saleArtworks",
+    "plural": true,
+    "selections": [
+      (v0/*: any*/),
+      {
+        "args": null,
+        "kind": "FragmentSpread",
+        "name": "LotStatusListItem_saleArtwork"
+      }
+    ],
+    "storageKey": null
+  }
+];
 return {
   "argumentDefinitions": [],
   "kind": "Fragment",
@@ -96,41 +127,7 @@ return {
           "kind": "LinkedField",
           "name": "active",
           "plural": true,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "Sale",
-              "kind": "LinkedField",
-              "name": "sale",
-              "plural": false,
-              "selections": [
-                (v0/*: any*/),
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "Bidder",
-                  "kind": "LinkedField",
-                  "name": "registrationStatus",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "qualifiedForBidding",
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
-                },
-                (v1/*: any*/),
-                (v2/*: any*/)
-              ],
-              "storageKey": null
-            },
-            (v3/*: any*/)
-          ],
+          "selections": (v1/*: any*/),
           "storageKey": null
         },
         {
@@ -140,22 +137,7 @@ return {
           "kind": "LinkedField",
           "name": "closed",
           "plural": true,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "Sale",
-              "kind": "LinkedField",
-              "name": "sale",
-              "plural": false,
-              "selections": [
-                (v1/*: any*/),
-                (v2/*: any*/)
-              ],
-              "storageKey": null
-            },
-            (v3/*: any*/)
-          ],
+          "selections": (v1/*: any*/),
           "storageKey": null
         }
       ],
@@ -171,5 +153,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'd422640170f3a5de3ff954d65737df14';
+(node as any).hash = 'a36c4d711d7185d4dbbb51c0cc024737';
 export default node;

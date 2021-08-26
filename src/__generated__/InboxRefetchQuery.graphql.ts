@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0d760ff0d70c8dce99316b4f41a5e709 */
+/* @relayHash 327d556434679d48a8ac6397ed46ee60 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -157,18 +157,6 @@ fragment Inbox_me on Me {
   ...MyBids_me
 }
 
-fragment LotStatusListItem_sale on Sale {
-  internalID
-  registrationStatus {
-    qualifiedForBidding
-    id
-  }
-  liveStartAt
-  endAt
-  status
-  isClosed
-}
-
 fragment LotStatusListItem_saleArtwork on SaleArtwork {
   ...ClosedLotStanding_saleArtwork
   ...ActiveLotStanding_saleArtwork
@@ -196,7 +184,6 @@ fragment MyBids_me on Me {
     active {
       sale {
         ...SaleCard_sale
-        ...LotStatusListItem_sale
         internalID
         registrationStatus {
           qualifiedForBidding
@@ -213,7 +200,11 @@ fragment MyBids_me on Me {
     closed {
       sale {
         ...SaleCard_sale
-        ...LotStatusListItem_sale
+        internalID
+        registrationStatus {
+          qualifiedForBidding
+          id
+        }
         id
       }
       saleArtworks {
@@ -378,14 +369,7 @@ v13 = {
   "name": "endAt",
   "storageKey": null
 },
-v14 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "status",
-  "storageKey": null
-},
-v15 = [
+v14 = [
   {
     "alias": null,
     "args": null,
@@ -394,7 +378,7 @@ v15 = [
     "storageKey": null
   }
 ],
-v16 = [
+v15 = [
   {
     "alias": null,
     "args": null,
@@ -444,14 +428,6 @@ v16 = [
         "args": null,
         "kind": "ScalarField",
         "name": "requireIdentityVerification",
-        "storageKey": null
-      },
-      (v14/*: any*/),
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "isClosed",
         "storageKey": null
       },
       (v3/*: any*/)
@@ -549,7 +525,7 @@ v16 = [
             "kind": "LinkedField",
             "name": "sellingPrice",
             "plural": false,
-            "selections": (v15/*: any*/),
+            "selections": (v14/*: any*/),
             "storageKey": null
           },
           {
@@ -578,7 +554,13 @@ v16 = [
         "plural": false,
         "selections": [
           (v13/*: any*/),
-          (v14/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "status",
+            "storageKey": null
+          },
           (v3/*: any*/),
           (v12/*: any*/)
         ],
@@ -591,7 +573,7 @@ v16 = [
         "kind": "LinkedField",
         "name": "currentBid",
         "plural": false,
-        "selections": (v15/*: any*/),
+        "selections": (v14/*: any*/),
         "storageKey": null
       },
       {
@@ -895,7 +877,7 @@ return {
                 "kind": "LinkedField",
                 "name": "active",
                 "plural": true,
-                "selections": (v16/*: any*/),
+                "selections": (v15/*: any*/),
                 "storageKey": null
               },
               {
@@ -905,7 +887,7 @@ return {
                 "kind": "LinkedField",
                 "name": "closed",
                 "plural": true,
-                "selections": (v16/*: any*/),
+                "selections": (v15/*: any*/),
                 "storageKey": null
               }
             ],
@@ -918,7 +900,7 @@ return {
     ]
   },
   "params": {
-    "id": "0d760ff0d70c8dce99316b4f41a5e709",
+    "id": "327d556434679d48a8ac6397ed46ee60",
     "metadata": {},
     "name": "InboxRefetchQuery",
     "operationKind": "query",

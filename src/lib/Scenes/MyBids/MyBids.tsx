@@ -74,84 +74,82 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
         }
       >
         {!somethingToShow && <NoBids headerText="Discover works for you at auction." />}
+        {!!hasActiveSales && <BidTitle>Active Bids</BidTitle>}
         {!!hasActiveSales && (
-          <>
-            <BidTitle>Active Bids</BidTitle>
-            <Flex data-test-id="active-section">
-              <Join separator={<Spacer my={1} />}>
-                {active.map((activeSale) => {
-                  if (!activeSale) {
-                    return <></>
-                  }
+          <Flex data-test-id="active-section">
+            <Join separator={<Spacer my={1} />}>
+              {active.map((activeSale) => {
+                if (!activeSale) {
+                  return <></>
+                }
 
-                  const { sale, saleArtworks } = activeSale
+                const { sale, saleArtworks } = activeSale
 
-                  if (!sale || !saleArtworks) {
-                    return <></>
-                  }
+                if (!sale || !saleArtworks) {
+                  return <></>
+                }
 
-                  // const sortedActiveLotStandings = ActiveLotStandingsBySaleId[sale.internalID] || []
-                  const showNoBids = !(saleArtworks.length || !sale?.registrationStatus?.qualifiedForBidding)
-                  return (
-                    <SaleCardFragmentContainer
-                      key={sale.internalID}
-                      sale={sale}
-                      me={me}
-                      smallScreen={isSmallScreen}
-                      hideChildren={!(showNoBids || saleArtworks.length)}
-                    >
-                      <Join separator={<Separator my={1} />}>
-                        {!!showNoBids && (
-                          <Text color="black60" py={1} textAlign="center">
-                            You haven't placed any bids on this sale
-                          </Text>
-                        )}
-                        {saleArtworks.map((saleArtwork) => {
+                // const sortedActiveLotStandings = ActiveLotStandingsBySaleId[sale.internalID] || []
+                const showNoBids = !(saleArtworks.length || !sale?.registrationStatus?.qualifiedForBidding)
+                return (
+                  <SaleCardFragmentContainer
+                    key={sale.internalID}
+                    sale={sale}
+                    me={me}
+                    smallScreen={isSmallScreen}
+                    hideChildren={!(showNoBids || saleArtworks.length)}
+                  >
+                    <Join separator={<Separator my={1} />}>
+                      {!!showNoBids && (
+                        <Text color="black60" py={1} textAlign="center">
+                          You haven't placed any bids on this sale
+                        </Text>
+                      )}
+                      {saleArtworks.map((saleArtwork) => {
+                        if (!saleArtwork) {
+                          return <></>
+                        }
+
+                        return <LotStatusListItemContainer key={saleArtwork.internalID} saleArtwork={saleArtwork} />
+                      })}
+                    </Join>
+                  </SaleCardFragmentContainer>
+                )
+              })}
+            </Join>
+          </Flex>
+        )}
+        {!!hasClosedBids && <BidTitle>Closed Bids</BidTitle>}
+        {!!hasClosedBids && (
+          <Flex data-test-id="closed-section">
+            <Flex mt={2} px={1.5}>
+              <Join separator={<Separator my={2} />}>
+                {closed
+                  .filter((closedSale) => closedSale?.saleArtworks?.length)
+                  .map((closedSale) => {
+                    const { saleArtworks } = closedSale!
+
+                    return (
+                      <Join separator={<Separator my={2} />}>
+                        {saleArtworks!.map((saleArtwork) => {
                           if (!saleArtwork) {
-                            return <></>
+                            return null
                           }
 
                           return (
                             <LotStatusListItemContainer
+                              saleIsClosed
                               key={saleArtwork.internalID}
                               saleArtwork={saleArtwork}
-                              sale={sale}
                             />
                           )
                         })}
                       </Join>
-                    </SaleCardFragmentContainer>
-                  )
-                })}
+                    )
+                  })}
               </Join>
             </Flex>
-          </>
-        )}
-        {!!hasClosedBids && (
-          <>
-            <BidTitle>Closed Bids</BidTitle>
-            <Flex data-test-id="closed-section">
-              <Flex mt={2} px={1.5}>
-                <Join separator={<Separator my={2} />}>
-                  {closed?.map((closedSale) => {
-                    const { sale, saleArtworks } = closedSale!
-
-                    console.warn("SALE", sale)
-
-                    saleArtworks?.map((saleArtwork) => {
-                      return (
-                        <LotStatusListItemContainer
-                          sale={sale!}
-                          saleArtwork={saleArtwork!}
-                          key={saleArtwork?.internalID}
-                        />
-                      )
-                    })
-                  })}
-                </Join>
-              </Flex>
-            </Flex>
-          </>
+          </Flex>
         )}
         <Spacer my={2} />
       </ScrollView>
@@ -178,7 +176,6 @@ export const MyBidsContainer = createRefetchContainer(
           active {
             sale {
               ...SaleCard_sale
-              ...LotStatusListItem_sale
               internalID
               registrationStatus {
                 qualifiedForBidding
@@ -192,7 +189,10 @@ export const MyBidsContainer = createRefetchContainer(
           closed {
             sale {
               ...SaleCard_sale
-              ...LotStatusListItem_sale
+              internalID
+              registrationStatus {
+                qualifiedForBidding
+              }
             }
             saleArtworks {
               ...LotStatusListItem_saleArtwork
