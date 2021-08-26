@@ -276,7 +276,7 @@ function getNativeModules(): OurNativeModules {
       navigationBarHeight: 11,
       lockActivityScreenOrientation: jest.fn(),
       gitCommitShortHash: "de4dc0de",
-      isBetaOrDev: false,
+      isBetaOrDev: true,
     },
   }
 }
