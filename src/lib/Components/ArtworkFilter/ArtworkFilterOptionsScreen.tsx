@@ -13,7 +13,7 @@ import { TouchableRow } from "lib/Components/TouchableRow"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
-import { ArrowRightIcon, CloseIcon, FilterIcon, Flex, Sans, Separator, Text, useSpace } from "palette"
+import { ArrowRightIcon, bullet, CloseIcon, FilterIcon, Flex, Sans, Separator, Text, useSpace } from "palette"
 import React, { useMemo } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
@@ -203,7 +203,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
                 <Flex p={2} pr={1.5} flexDirection="row" justifyContent="space-between" flexGrow={1}>
                   <Flex flex={1}>
                     <Text variant="caption">
-                      {item.displayText} {selectedFiltersCount ? `• ${selectedFiltersCount}` : ""}
+                      {item.displayText} {selectedFiltersCount ? `${bullet} ${selectedFiltersCount}` : ""}
                     </Text>
                   </Flex>
 
