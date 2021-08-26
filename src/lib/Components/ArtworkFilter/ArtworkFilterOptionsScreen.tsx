@@ -5,7 +5,7 @@ import {
   filterKeyFromAggregation,
   FilterParamName,
   getSelectedFiltersCounts,
-  unionSelectedAndAppliedFilters,
+  getUnitedSelectedAndAppliedFilters,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { selectedOption } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
@@ -72,6 +72,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const previouslyAppliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.previouslyAppliedFilters)
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
   const aggregationsState = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
@@ -83,13 +84,14 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const selectedOptions = useSelectedOptionsDisplay()
 
   const selectedFiltersCounts = useMemo(() => {
-    const unitedFilters = unionSelectedAndAppliedFilters({
+    const unitedFilters = getUnitedSelectedAndAppliedFilters({
+      filterType: filterTypeState,
       selectedFilters: selectedFiltersState,
-      appliedFilters: appliedFiltersState,
+      previouslyAppliedFilters: previouslyAppliedFiltersState,
     })
     const counts = getSelectedFiltersCounts(unitedFilters)
     return counts
-  }, [selectedFiltersState, appliedFiltersState])
+  }, [filterTypeState, selectedFiltersState, previouslyAppliedFiltersState])
 
   const navigateToNextFilterScreen = (screenName: keyof ArtworkFilterNavigationStack) => {
     navigation.navigate(screenName)
