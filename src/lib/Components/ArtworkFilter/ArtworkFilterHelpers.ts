@@ -1,5 +1,5 @@
 import { FilterScreen } from "lib/Components/ArtworkFilter"
-import { capitalize, compact, groupBy, isArray, isEqual, isUndefined, pick, pickBy, sortBy } from "lodash"
+import { capitalize, compact, groupBy, isEqual, isUndefined, map, pick, pickBy, sortBy } from "lodash"
 import { LOCALIZED_UNIT } from "./Filters/helpers"
 
 export enum FilterDisplayName {
@@ -199,6 +199,7 @@ export type SelectedFiltersCountsType = {
 
 export interface SelectedFiltersCounts extends SelectedFiltersCountsType {
   waysToBuy: number
+  year: number
 }
 
 export const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string | undefined> = {
@@ -257,6 +258,31 @@ const DEFAULT_TAG_ARTWORK_PARAMS = {
   ...DEFAULT_ARTWORKS_PARAMS,
   sort: "-partner_updated_at",
 } as FilterParams
+
+const createdYearsFilterNames = [FilterParamName.earliestCreatedYear, FilterParamName.latestCreatedYear]
+
+const waysToBuyFilterNames = [
+  FilterParamName.waysToBuyBuy,
+  FilterParamName.waysToBuyMakeOffer,
+  FilterParamName.waysToBuyBid,
+  FilterParamName.waysToBuyInquire,
+]
+
+const multiFilterNames = [
+  FilterParamName.attributionClass,
+  FilterParamName.additionalGeneIDs,
+  FilterParamName.materialsTerms,
+  FilterParamName.artistNationalities,
+  FilterParamName.locationCities,
+  FilterParamName.timePeriod,
+  FilterParamName.colors,
+  FilterParamName.partnerIDs,
+  FilterParamName.organizations,
+  FilterParamName.sizes,
+  FilterParamName.categories,
+]
+
+const radioFilterNames = [FilterParamName.sort, FilterParamName.priceRange, FilterParamName.dimensionRange]
 
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams, filterType: FilterType) => {
   const groupedFilters = groupBy(appliedFilters, "paramName")
@@ -323,13 +349,6 @@ export const extractCustomSizeLabel = (selectedOptions: FilterArray) => {
 
   // Intentionally doesn't return anything
 }
-
-const waysToBuyFilterNames = [
-  FilterParamName.waysToBuyBuy,
-  FilterParamName.waysToBuyMakeOffer,
-  FilterParamName.waysToBuyBid,
-  FilterParamName.waysToBuyInquire,
-]
 
 /**
  * Formats the display for the Filter Modal "home" screen.
@@ -606,17 +625,55 @@ export const getParamsForInputByFilterType = (
   return allowedParams
 }
 
+const getArrayToUnion = (arrayToFilter: FilterArray, arrayToCheck: FilterArray, isSecondary: boolean = false) => {
+  return arrayToFilter.filter((el) => {
+    if (el.paramName === FilterParamName.artistIDs) {
+      return !map(arrayToCheck, "paramValue").includes(el.paramValue)
+    }
+
+    if (waysToBuyFilterNames.includes(el.paramName) || isSecondary) {
+      return !map(arrayToCheck, "paramName").includes(el.paramName)
+    }
+
+    return true
+  })
+}
+
+export const unionSelectedAndAppliedFilters = ({
+  selectedFilters,
+  appliedFilters,
+}: {
+  selectedFilters: FilterArray
+  appliedFilters: FilterArray
+}) => {
+  if (!selectedFilters.length) {
+    return appliedFilters
+  }
+
+  if (!appliedFilters.length) {
+    return selectedFilters
+  }
+
+  const appliedFiltersToUnion = getArrayToUnion(appliedFilters, selectedFilters, true)
+  const selectedFiltersToUnion = getArrayToUnion(selectedFilters, appliedFilters)
+  const unitedFilters = appliedFiltersToUnion.concat(selectedFiltersToUnion)
+
+  return unitedFilters
+}
+
 export const getSelectedFiltersCounts = (selectedFilters: FilterArray) => {
   const counts: Partial<SelectedFiltersCounts> = {}
   selectedFilters.forEach(({ paramName, paramValue }: FilterData) => {
-    if (paramName === "artistIDs") {
+    if (paramName === FilterParamName.artistIDs) {
       counts.artistIDs = (counts.artistIDs ?? 0) + 1
     } else if (waysToBuyFilterNames.includes(paramName)) {
       counts.waysToBuy = (counts.waysToBuy ?? 0) + 1
-    } else if (typeof paramValue === "string") {
+    } else if (createdYearsFilterNames.includes(paramName)) {
+      counts.year = 1
+    } else if (radioFilterNames.includes(paramName)) {
       counts[paramName] = 1
-    } else if (isArray(paramValue)) {
-      counts[paramName] = paramValue.length
+    } else if (multiFilterNames.includes(paramName)) {
+      counts[paramName] = (paramValue as []).length
     }
   })
 

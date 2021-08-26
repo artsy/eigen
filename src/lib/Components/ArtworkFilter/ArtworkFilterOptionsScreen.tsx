@@ -5,7 +5,7 @@ import {
   filterKeyFromAggregation,
   FilterParamName,
   getSelectedFiltersCounts,
-  SelectedFiltersCounts,
+  unionSelectedAndAppliedFilters,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { selectedOption } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
@@ -14,7 +14,7 @@ import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
 import { ArrowRightIcon, CloseIcon, FilterIcon, Flex, Sans, Separator, Text, useSpace } from "palette"
-import React, { useEffect, useState } from "react"
+import React, { useMemo } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -82,11 +82,14 @@ export const ArtworkFilterOptionsScreen: React.FC<
 
   const selectedOptions = useSelectedOptionsDisplay()
 
-  const [selectedFiltersCounts, setSelectedFiltersCounts] = useState<Partial<SelectedFiltersCounts>>({})
-
-  useEffect(() => {
-    setSelectedFiltersCounts(getSelectedFiltersCounts(selectedFiltersState))
-  }, [selectedFiltersState])
+  const selectedFiltersCounts = useMemo(() => {
+    const unitedFilters = unionSelectedAndAppliedFilters({
+      selectedFilters: selectedFiltersState,
+      appliedFilters: appliedFiltersState,
+    })
+    const counts = getSelectedFiltersCounts(unitedFilters)
+    return counts
+  }, [selectedFiltersState, appliedFiltersState])
 
   const navigateToNextFilterScreen = (screenName: keyof ArtworkFilterNavigationStack) => {
     navigation.navigate(screenName)
