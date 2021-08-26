@@ -5,7 +5,7 @@ import LinearGradient from "react-native-linear-gradient"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spacer } from "../Spacer"
-import { Sans } from "../Typography"
+import { Sans } from "../Text"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface MediumCardProps extends BoxProps {

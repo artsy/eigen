@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8a1a1ad783a35a177a5da6cd8ec163db */
+/* @relayHash 6c5fa6d298f99359641d3ddef5e6efc9 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type AuctionResultQueryVariables = {
@@ -14,6 +14,7 @@ export type AuctionResultQueryResponse = {
         readonly internalID: string;
         readonly artistID: string;
         readonly boughtIn: boolean | null;
+        readonly currency: string | null;
         readonly categoryText: string | null;
         readonly dateText: string | null;
         readonly description: string | null;
@@ -41,11 +42,11 @@ export type AuctionResultQueryResponse = {
         readonly performance: {
             readonly mid: string | null;
         } | null;
-        readonly currency: string | null;
         readonly priceRealized: {
             readonly cents: number | null;
             readonly centsUSD: number | null;
             readonly display: string | null;
+            readonly displayUSD: string | null;
         } | null;
         readonly saleDate: string | null;
         readonly saleTitle: string | null;
@@ -73,6 +74,7 @@ query AuctionResultQuery(
     internalID
     artistID
     boughtIn
+    currency
     categoryText
     dateText
     description
@@ -100,11 +102,11 @@ query AuctionResultQuery(
     performance {
       mid
     }
-    currency
     priceRealized {
       cents
       centsUSD
       display
+      displayUSD
     }
     saleDate
     saleTitle
@@ -191,6 +193,13 @@ v6 = {
       "args": null,
       "kind": "ScalarField",
       "name": "boughtIn",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "currency",
       "storageKey": null
     },
     {
@@ -346,13 +355,6 @@ v6 = {
     {
       "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "currency",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
       "concreteType": "AuctionResultPriceRealized",
       "kind": "LinkedField",
       "name": "priceRealized",
@@ -372,7 +374,14 @@ v6 = {
           "name": "centsUSD",
           "storageKey": null
         },
-        (v5/*: any*/)
+        (v5/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "displayUSD",
+          "storageKey": null
+        }
       ],
       "storageKey": null
     },
@@ -476,7 +485,7 @@ return {
     ]
   },
   "params": {
-    "id": "8a1a1ad783a35a177a5da6cd8ec163db",
+    "id": "6c5fa6d298f99359641d3ddef5e6efc9",
     "metadata": {},
     "name": "AuctionResultQuery",
     "operationKind": "query",
@@ -484,5 +493,5 @@ return {
   }
 };
 })();
-(node as any).hash = '7d5de469998c6b6769d66b6830aa74db';
+(node as any).hash = 'aab128c077bb4f181703946649f7f444';
 export default node;

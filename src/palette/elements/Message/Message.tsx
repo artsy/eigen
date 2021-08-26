@@ -2,16 +2,15 @@ import { themeGet } from "@styled-system/theme-get"
 import React from "react"
 import styled from "styled-components/native"
 import { useColor } from "../../hooks"
-import { SansSize } from "../../Theme"
 import { Flex, FlexProps } from "../Flex"
-import { Sans } from "../Typography"
+import { Sans, SansV1Props } from "../Text"
 
 interface MessageProps extends FlexProps {
   children: React.ReactNode | null
   /**
    * Size of text to display in message window
    */
-  textSize?: SansSize
+  textSize?: SansV1Props["size"]
 }
 
 const StyledFlex = styled(Flex)`

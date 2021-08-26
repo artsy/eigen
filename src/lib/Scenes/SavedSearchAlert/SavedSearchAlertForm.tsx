@@ -1,9 +1,12 @@
+import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
 import { FormikProvider, useFormik } from "formik"
 import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
-import React from "react"
+import { Dialog } from "palette"
+import React, { useState } from "react"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
+import { useTracking } from "react-tracking"
 import { Form } from "./Components/Form"
 import { extractPills, getNamePlaceholder } from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
@@ -21,9 +24,21 @@ export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase
 }
 
 export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props) => {
-  const { filters, aggregations, initialValues, savedSearchAlertId, onComplete, onDeleteComplete, ...other } = props
+  const {
+    filters,
+    aggregations,
+    initialValues,
+    savedSearchAlertId,
+    artistId,
+    artistName,
+    onComplete,
+    onDeleteComplete,
+    ...other
+  } = props
   const isUpdateForm = !!savedSearchAlertId
   const pills = extractPills(filters, aggregations)
+  const tracking = useTracking()
+  const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
   const formik = useFormik<SavedSearchAlertFormValues>({
     initialValues,
     initialErrors: {},
@@ -31,14 +46,15 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       let alertName = values.name
 
       if (alertName.length === 0) {
-        alertName = getNamePlaceholder(props.artist.name, pills)
+        alertName = getNamePlaceholder(artistName, pills)
       }
 
       try {
         if (isUpdateForm) {
           await updateSavedSearchAlert(alertName, savedSearchAlertId!)
+          tracking.trackEvent(tracks.editedSavedSearch(savedSearchAlertId!, initialValues, values))
         } else {
-          const criteria = getSearchCriteriaFromFilters(props.artist.id, filters)
+          const criteria = getSearchCriteriaFromFilters(artistId, filters)
           await createSavedSearchAlert(alertName, criteria)
         }
 
@@ -119,6 +135,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const onDelete = async () => {
     try {
       await deleteSavedSearchMutation(savedSearchAlertId!)
+      tracking.trackEvent(tracks.deletedSavedSearch(savedSearchAlertId!))
       onDeleteComplete?.()
     } catch (error) {
       console.error(error)
@@ -126,14 +143,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   }
 
   const handleDeletePress = () => {
-    Alert.alert(
-      "Delete Alert",
-      "Once you delete this alert, you will have to recreate it to continue receiving alerts on your favorite artworks.",
-      [
-        { text: "Cancel", style: "cancel" },
-        { text: "Delete", style: "destructive", onPress: onDelete },
-      ]
-    )
+    setVisibleDeleteDialog(true)
   }
 
   return (
@@ -141,10 +151,51 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       <Form
         pills={pills}
         savedSearchAlertId={savedSearchAlertId}
+        artistId={artistId}
+        artistName={artistName}
         onDeletePress={handleDeletePress}
         onSubmitPress={handleSubmit}
         {...other}
       />
+      {!!savedSearchAlertId && (
+        <Dialog
+          isVisible={visibleDeleteDialog}
+          title="Delete Alert"
+          detail="Once deleted, you will no longer receive notifications for these filter criteria."
+          primaryCta={{
+            text: "Delete",
+            onPress: () => {
+              onDelete()
+              setVisibleDeleteDialog(false)
+            },
+          }}
+          secondaryCta={{
+            text: "Cancel",
+            onPress: () => {
+              setVisibleDeleteDialog(false)
+            },
+          }}
+        />
+      )}
     </FormikProvider>
   )
+}
+
+export const tracks = {
+  deletedSavedSearch: (savedSearchAlertId: string): DeletedSavedSearch => ({
+    action: ActionType.deletedSavedSearch,
+    context_screen_owner_type: OwnerType.savedSearch,
+    context_screen_owner_id: savedSearchAlertId,
+  }),
+  editedSavedSearch: (
+    savedSearchAlertId: string,
+    currentValues: SavedSearchAlertFormValues,
+    modifiesValues: SavedSearchAlertFormValues
+  ): EditedSavedSearch => ({
+    action: ActionType.editedSavedSearch,
+    context_screen_owner_type: OwnerType.savedSearch,
+    context_screen_owner_id: savedSearchAlertId,
+    current: JSON.stringify(currentValues),
+    changed: JSON.stringify(modifiesValues),
+  }),
 }

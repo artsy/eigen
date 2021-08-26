@@ -6,21 +6,29 @@ import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { PushAuthorizationStatus } from "lib/utils/PushNotification"
+import { bullet } from "palette"
 import React from "react"
-import { Alert } from "react-native"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-import { SavedSearchAlertForm, SavedSearchAlertFormProps } from "../SavedSearchAlertForm"
-
-const spyAlert = jest.spyOn(Alert, "alert")
+import { SavedSearchAlertForm, SavedSearchAlertFormProps, tracks } from "../SavedSearchAlertForm"
 
 describe("Saved search alert form", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)
+  const trackEvent = jest.fn()
 
   beforeEach(() => {
     mockEnvironment.mockClear()
     notificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Authorized))
-    ;(Alert.alert as jest.Mock).mockClear()
+    ;(useTracking as jest.Mock).mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
+
+  afterEach(() => {
+    trackEvent.mockClear()
   })
 
   it("renders without throwing an error", () => {
@@ -30,7 +38,7 @@ describe("Saved search alert form", () => {
   it("correctly renders placeholder for input name", () => {
     const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
 
-    expect(getByTestId("alert-input-name").props.placeholder).toEqual("artistName • 5 filters")
+    expect(getByTestId("alert-input-name").props.placeholder).toEqual(`artistName ${bullet} 5 filters`)
   })
 
   it("correctly extracts the values of pills", () => {
@@ -74,6 +82,23 @@ describe("Saved search alert form", () => {
         },
       })
     })
+  })
+
+  it("tracks the edited saved search event when the save alert button is pressed", async () => {
+    const { getByTestId } = renderWithWrappersTL(
+      <SavedSearchAlertForm {...baseProps} savedSearchAlertId="savedSearchAlertId" />
+    )
+
+    fireEvent.changeText(getByTestId("alert-input-name"), "something new")
+    fireEvent.press(getByTestId("save-alert-button"))
+
+    await waitFor(() => {
+      mockEnvironmentPayload(mockEnvironment)
+    })
+
+    expect(trackEvent).toHaveBeenCalledWith(
+      tracks.editedSavedSearch("savedSearchAlertId", { name: "" }, { name: "something new" })
+    )
   })
 
   it("calls create mutation when form is submitted", async () => {
@@ -130,25 +155,7 @@ describe("Saved search alert form", () => {
     )
 
     fireEvent.press(getByTestId("delete-alert-button"))
-
-    /**
-     * Click confirm button in Alert
-     *
-     * The first call of the function
-     * calls[0] === [
-     *  [
-     *    'Title', === calls[0][0]
-     *    'Description' === calls[0][1],
-     *    [
-     *      ['cancel button'], === calls[0][2][0]
-     *      ['confirm button'] === calls[0][2][1]
-     *    ]
-     *  ]
-     * ]
-     */
-
-    // @ts-ignore
-    spyAlert.mock.calls[0][2][1].onPress()
+    fireEvent.press(getByTestId("dialog-primary-action-button"))
 
     expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(
       "deleteSavedSearchAlertMutation"
@@ -159,6 +166,21 @@ describe("Saved search alert form", () => {
     })
 
     expect(onDeletePressMock).toHaveBeenCalled()
+  })
+
+  it("tracks clicks when the delete alert button is pressed", async () => {
+    const { getByTestId } = renderWithWrappersTL(
+      <SavedSearchAlertForm {...baseProps} savedSearchAlertId="savedSearchAlertId" />
+    )
+
+    fireEvent.press(getByTestId("delete-alert-button"))
+    fireEvent.press(getByTestId("dialog-primary-action-button"))
+
+    await waitFor(() => {
+      mockEnvironmentPayload(mockEnvironment)
+    })
+
+    expect(trackEvent).toHaveBeenCalledWith(tracks.deletedSavedSearch("savedSearchAlertId"))
   })
 
   it("should auto populate alert name for the create mutation", async () => {
@@ -193,7 +215,7 @@ describe("Saved search alert form", () => {
       expect(mockEnvironment.mock.getMostRecentOperation().request.variables).toMatchObject({
         input: {
           userAlertSettings: {
-            name: "artistName • 5 filters",
+            name: `artistName ${bullet} 5 filters`,
           },
         },
       })
@@ -283,8 +305,6 @@ const baseProps: SavedSearchAlertFormProps = {
   },
   filters,
   aggregations,
-  artist: {
-    id: "artistID",
-    name: "artistName",
-  },
+  artistId: "artistID",
+  artistName: "artistName",
 }

@@ -22,10 +22,8 @@ const defaultProps: CreateSavedSearchAlertProps = {
     },
   ],
   aggregations: [],
-  artist: {
-    id: "artistID",
-    name: "artistName",
-  },
+  artistId: "artistID",
+  artistName: "artistName",
   onComplete: jest.fn(),
   onClosePress: jest.fn(),
 }

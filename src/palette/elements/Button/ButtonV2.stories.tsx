@@ -7,7 +7,6 @@ import { DList, List } from "storybook/helpers"
 import { ButtonV2, ButtonV2Props } from "."
 
 const sizes: Array<ButtonV2Props["size"]> = ["small", "medium", "large"]
-
 const variants: Array<ButtonV2Props["variant"]> = [
   "primaryBlack",
   "primaryWhite",

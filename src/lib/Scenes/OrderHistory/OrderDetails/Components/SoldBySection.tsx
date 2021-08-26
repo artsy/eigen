@@ -1,6 +1,6 @@
 import { SoldBySection_soldBy } from "__generated__/SoldBySection_soldBy.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
-import { DateTime, LocaleOptions } from "luxon"
+import { DateTime } from "luxon"
 import { Box, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -35,7 +35,7 @@ export const SoldBySection: React.FC<Props> = ({ soldBy }) => {
             Estimated Delivery:{" "}
           </Text>
           <Text color="black60" testID="delivery" variant="text">
-            {orderEstimatedDelivery.toLocaleString(DateTime.DATE_MED as LocaleOptions)}
+            {orderEstimatedDelivery.toLocaleString(DateTime.DATE_MED)}
           </Text>
         </Box>
       )}

@@ -44,13 +44,13 @@
 
 // event keys
 // These should match the values in src/lib/store/NativeModel.ts
-static const NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
-static const NSString *modalDismissed = @"MODAL_DISMISSED";
-static const NSString *stateChanged = @"STATE_CHANGED";
-static const NSString *reactStateChanged = @"STATE_CHANGED";
-static const NSString *requestNavigation = @"REQUEST_NAVIGATION";
-static const NSString *eventTracking = @"EVENT_TRACKING";
-static const NSString *identifyTracking = @"IDENTIFY_TRACKING";
+static NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
+static NSString *modalDismissed = @"MODAL_DISMISSED";
+static NSString *stateChanged = @"STATE_CHANGED";
+static NSString *reactStateChanged = @"STATE_CHANGED";
+static NSString *requestNavigation = @"REQUEST_NAVIGATION";
+static NSString *eventTracking = @"EVENT_TRACKING";
+static NSString *identifyTracking = @"IDENTIFY_TRACKING";
 
 
 @implementation ARNotificationsManager
@@ -100,6 +100,16 @@ RCT_EXPORT_MODULE();
     });
 }
 
+- (void)dispatchAfterBootstrap:(NSString *)eventName data:(NSDictionary *)data
+{
+    __weak typeof(self) wself = self;
+    [self afterBootstrap:^{
+        __strong typeof(self) sself = wself;
+        if (!sself) return;
+        [sself dispatch:eventName data:data];
+    }];
+}
+
 - (void)updateState:(NSDictionary *)state
 {
     @synchronized(self)
@@ -107,7 +117,7 @@ RCT_EXPORT_MODULE();
         NSMutableDictionary *nextState = [[self state] mutableCopy];
         [nextState addEntriesFromDictionary:state];
         _state = [[NSDictionary alloc] initWithDictionary:nextState];
-        [self dispatch:stateChanged data:_state];
+        [self dispatchAfterBootstrap:stateChanged data:_state];
     }
 }
 
@@ -115,7 +125,7 @@ RCT_EXPORT_MODULE();
 {
     @synchronized(self)
     {
-        [self dispatch:eventTracking data:traits];
+        [self dispatchAfterBootstrap:eventTracking data:traits];
     }
 }
 
@@ -123,18 +133,18 @@ RCT_EXPORT_MODULE();
 {
     @synchronized(self)
     {
-        [self dispatch:identifyTracking data:traits];
+        [self dispatchAfterBootstrap:identifyTracking data:traits];
     }
 }
 
 - (void)notificationReceived
 {
-    [self dispatch:notificationReceived data:@{}];
+    [self dispatchAfterBootstrap:notificationReceived data:@{}];
 }
 
 - (void)modalDismissed
 {
-    [self dispatch:modalDismissed data:@{}];
+    [self dispatchAfterBootstrap:modalDismissed data:@{}];
 }
 
 - (void)requestNavigation:(NSString *)route
@@ -144,13 +154,8 @@ RCT_EXPORT_MODULE();
 
 - (void)requestNavigation:(NSString *)route withProps:(NSDictionary *)props
 {
-    __weak typeof(self) wself = self;
-    [self afterBootstrap:^{
-        __strong typeof(self) sself = wself;
-        if (!sself) return;
-        if (!route) return;
-        [sself dispatch:requestNavigation data:@{@"route": route, @"props": props}];
-    }];
+    if (!route) return;
+    [self dispatchAfterBootstrap:requestNavigation data:@{@"route": route, @"props": props}];
 }
 
 // Will be called when this module's first listener is added.
@@ -165,7 +170,7 @@ RCT_EXPORT_MODULE();
     self.isBeingObserved = false;
 }
 
-- (void)afterBootstrap:(void (^)())completion
+- (void)afterBootstrap:(void (^)(void))completion
 {
     if (self.didBootStrap) {
         completion();
@@ -185,7 +190,7 @@ RCT_EXPORT_METHOD(didFinishBootstrapping)
 {
     self.didBootStrap = true;
     while (self.bootstrapQueue.count > 0) {
-        void (^completion)() = [self.bootstrapQueue firstObject];
+        void (^completion)(void) = [self.bootstrapQueue firstObject];
         [self.bootstrapQueue removeObjectAtIndex:0];
         completion();
     }

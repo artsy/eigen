@@ -33,8 +33,11 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{ paddingHorizontal: space(2) }}
         >
-          <Sans size="8" mb={4}>
+          <Sans size="8" mb={1}>
             Create an Alert
+          </Sans>
+          <Sans size="3t" mb={4}>
+            Receive alerts as Push Notifications directly to your device.
           </Sans>
           <SavedSearchAlertForm
             initialValues={{ name: "" }}
@@ -44,7 +47,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
             {...other}
           />
           <Text variant="text" color="black60" textAlign="center" my={2}>
-            You will be able to access all your Artist Alerts in your Profile.
+            You will be able to access all your Saved Alerts in your Profile.
           </Text>
         </ScrollView>
       </FancyModal>

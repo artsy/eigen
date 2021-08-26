@@ -77,7 +77,7 @@ describe(OrderDetailsQueryRender, () => {
                   artistNames: "Kerry James Marshall",
                   date: "2017",
                   image: {
-                    url: "https://homepages.cae.wisc.edu/~ece533/images/airplane.png",
+                    url: "https://homepages.cae.wisc.edu/~ece533/images/airplane.webp",
                   },
                   title: "Set of Six (Six) Scout Series Embroidered Patches",
                 },

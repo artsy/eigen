@@ -5,17 +5,19 @@ import { navigate } from "lib/navigation/navigate"
 import { Box, Button, Flex, Pill, Spacer, Text, Touchable } from "palette"
 import React from "react"
 import { getNamePlaceholder } from "../helpers"
-import { SavedSearchAlertFormValues, SavedSearchArtistProp } from "../SavedSearchAlertModel"
+import { SavedSearchAlertFormValues } from "../SavedSearchAlertModel"
 
-interface FormProps extends SavedSearchArtistProp {
+interface FormProps {
   pills: string[]
   savedSearchAlertId?: string
+  artistId: string
+  artistName: string
   onDeletePress?: () => void
   onSubmitPress?: () => void
 }
 
 export const Form: React.FC<FormProps> = (props) => {
-  const { pills, artist, savedSearchAlertId, onDeletePress, onSubmitPress } = props
+  const { pills, artistId, artistName, savedSearchAlertId, onDeletePress, onSubmitPress } = props
   const {
     isSubmitting,
     values,
@@ -24,7 +26,7 @@ export const Form: React.FC<FormProps> = (props) => {
     handleBlur,
     handleChange,
   } = useFormikContext<SavedSearchAlertFormValues>()
-  const namePlaceholder = getNamePlaceholder(artist.name, pills)
+  const namePlaceholder = getNamePlaceholder(artistName, pills)
 
   return (
     <Box>
@@ -47,7 +49,7 @@ export const Form: React.FC<FormProps> = (props) => {
             testID="view-artworks-button"
             hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }}
             onPress={() =>
-              navigate(`artist/${artist.id}`, {
+              navigate(`artist/${artistId}`, {
                 passProps: {
                   searchCriteriaID: savedSearchAlertId,
                 },
@@ -82,16 +84,12 @@ export const Form: React.FC<FormProps> = (props) => {
         Save Alert
       </Button>
       {!!savedSearchAlertId && (
-        <Button
-          testID="delete-alert-button"
-          variant="secondaryOutline"
-          mt={2}
-          size="large"
-          block
-          onPress={onDeletePress}
-        >
-          Delete Alert
-        </Button>
+        <>
+          <Spacer mt={2} />
+          <Button testID="delete-alert-button" variant="secondaryOutline" size="large" block onPress={onDeletePress}>
+            Delete Alert
+          </Button>
+        </>
       )}
     </Box>
   )

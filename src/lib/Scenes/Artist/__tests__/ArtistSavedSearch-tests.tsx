@@ -107,8 +107,9 @@ describe("Saved search banner on artist screen", () => {
   it("should render new saved search component if AREnableSavedSearchV2 flag set to true", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchV2: true })
 
-    const tree = getTree()
+    const tree = getTree("search-criteria-id")
 
+    mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
     await flushPromiseQueue()

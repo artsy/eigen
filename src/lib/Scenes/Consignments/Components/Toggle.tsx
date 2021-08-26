@@ -1,4 +1,4 @@
-import fonts from "lib/data/fonts"
+import { themeGet } from "@styled-system/theme-get"
 import { ClassTheme } from "palette"
 import React from "react"
 import { View } from "react-native"
@@ -6,7 +6,7 @@ import styled from "styled-components/native"
 
 const Title = styled.Text`
   color: white;
-  font-family: "${fonts["avant-garde-regular"]}";
+  font-family: "${themeGet("fonts.sans")}";
   font-size: 11;
   letter-spacing: 0.75;
   width: 24;

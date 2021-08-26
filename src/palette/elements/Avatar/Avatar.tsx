@@ -4,7 +4,7 @@ import { Image } from "react-native"
 import styled from "styled-components/native"
 import { borderRadius } from "styled-system"
 import { Flex } from "../Flex"
-import { Text, TextFontSize } from "../Text"
+import { Text, TextV2Props } from "../Text"
 
 const IOSDiameters = {
   xs: 45,
@@ -15,7 +15,7 @@ const IOSDiameters = {
 export interface SizeProps {
   [key: string]: {
     diameter: string
-    typeSize: TextFontSize
+    typeSize: TextV2Props["fontSize"]
   }
 }
 

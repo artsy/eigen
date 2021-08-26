@@ -103,6 +103,7 @@ const auctionResultEdge = {
     priceRealized: {
       cents: 315000000,
       display: "HK$3,150,000",
+      displayUSD: "$30,000",
     },
     performance: {
       mid: "70%",

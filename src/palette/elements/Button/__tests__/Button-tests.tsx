@@ -1,45 +1,30 @@
-// @ts-expect-error
-import { mount } from "enzyme"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { fireEvent } from "@testing-library/react-native"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { Spinner } from "palette/elements/Spinner"
 import React from "react"
-import { Theme } from "../../../Theme"
 import { Button } from "../Button"
 
 describe("Button", () => {
-  const getWrapper = (props: any) => {
-    return mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <Button {...props}>Hi</Button>
-        </Theme>
-      </GlobalStoreProvider>
-    )
-  }
-
-  it("returns variants and sizes", () => {
-    const button = getWrapper({
-      variant: "fillDark",
-    })
-    expect(button.find("Spinner").length).toBe(0)
-    expect((button.find("PureButton").props() as any).variant).toBe("fillDark")
+  it("returns correctly", () => {
+    const { UNSAFE_queryAllByType } = renderWithWrappersTL(<Button variant="fillDark">wow</Button>)
+    expect(UNSAFE_queryAllByType(Spinner)).toHaveLength(0)
   })
 
   it("shows spinner if loading is true", () => {
-    const button = getWrapper({
-      loading: true,
-    })
-
-    expect(button.find("Spinner").length).toBe(1)
+    const { UNSAFE_queryAllByType } = renderWithWrappersTL(<Button loading>wow</Button>)
+    expect(UNSAFE_queryAllByType(Spinner)).toHaveLength(1)
   })
 
   it("invokes the onClick callback", () => {
     const onPress = jest.fn()
 
-    const button = getWrapper({
-      onPress,
-    })
+    const { getByTestId } = renderWithWrappersTL(
+      <Button testID="the-button" onPress={onPress}>
+        wow
+      </Button>
+    )
 
-    button.find("Button").simulate("click")
+    fireEvent.press(getByTestId("the-button"))
 
     expect(onPress).toHaveBeenCalled()
   })
@@ -47,12 +32,13 @@ describe("Button", () => {
   it("does not invoke the onClick callback if loading is true", () => {
     const onPress = jest.fn()
 
-    const button = getWrapper({
-      onPress,
-      loading: true,
-    })
+    const { getByTestId } = renderWithWrappersTL(
+      <Button testID="the-button" onPress={onPress} loading>
+        wow
+      </Button>
+    )
 
-    button.find("Button").simulate("click")
+    fireEvent.press(getByTestId("the-button"))
 
     expect(onPress).not.toHaveBeenCalled()
   })
@@ -60,12 +46,13 @@ describe("Button", () => {
   it("does not invoke the onClick callback if disabled is true", () => {
     const onPress = jest.fn()
 
-    const button = getWrapper({
-      onPress,
-      disabled: true,
-    })
+    const { getByTestId } = renderWithWrappersTL(
+      <Button testID="the-button" onPress={onPress} disabled>
+        wow
+      </Button>
+    )
 
-    button.find("Button").simulate("click")
+    fireEvent.press(getByTestId("the-button"))
 
     expect(onPress).not.toHaveBeenCalled()
   })

@@ -51,7 +51,7 @@ describe("ArtworkInfoSection", () => {
                   artistNames: "Kerry James Marshall",
                   date: "2017",
                   image: {
-                    url: "https://homepages.cae.wisc.edu/~ece533/images/airplane.png",
+                    url: "https://homepages.cae.wisc.edu/~ece533/images/airplane.webp",
                   },
                   title: "Set of Six (Six) Scout Series Embroidered Patches",
                 },
@@ -69,7 +69,7 @@ describe("ArtworkInfoSection", () => {
       "Set of Six (Six) Scout Series Embroidered Patches, "
     )
     expect(tree.findByProps({ testID: "image" }).props.source).toStrictEqual({
-      uri: "https://homepages.cae.wisc.edu/~ece533/images/airplane.png",
+      uri: "https://homepages.cae.wisc.edu/~ece533/images/airplane.webp",
     })
     expect(tree.findByProps({ testID: "artistNames" }).props.children).toBe("Kerry James Marshall")
     expect(tree.findByProps({ testID: "editionOf" }).props.children).toBe("edit of 30")
