@@ -55,15 +55,16 @@ export const saveToken = (token: string, ignoreSameTokenCheck: boolean = false) 
         ])
         reject("Push Notification: No access token")
       } else {
-        const gravityURL = unsafe__getEnvironment().gravityURL
-        const url = gravityURL + "/api/v1/device"
+        const environment = unsafe__getEnvironment()
+        const url = environment.gravityURL + "/api/v1/device"
         const name = __TEST__ ? "my-device-name" : getDeviceId()
+        const production = environment.env === "production"
         const body = JSON.stringify({
           name,
           token,
           app_id: "net.artsy.artsy",
           platform: Platform.OS,
-          production: !__DEV__, // TODO: Fix this asap when we can determine beta on android. production should be false for beta builds
+          production,
         })
         const headers = {
           "Content-Type": "application/json",
