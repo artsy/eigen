@@ -4,6 +4,7 @@ import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSear
 import { PopoverMessage } from "lib/Components/PopoverMessage/PopoverMessage"
 import { navigate } from "lib/navigation/navigate"
 import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
+import { SavedSearchAlertMutationResult } from "lib/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
@@ -18,6 +19,10 @@ jest.unmock("react-relay")
 
 const mockedAttributes: SearchCriteriaAttributes = {
   atAuction: true,
+}
+
+const mockedMutationResult: SavedSearchAlertMutationResult = {
+  id: "savedSearchAlertId",
 }
 
 const mockedFilters = [
@@ -138,9 +143,19 @@ describe("SavedSearchButton", () => {
   it("should navigate to the saved search alerts list when popover is pressed", async () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    act(() => tree.root.findByType(CreateSavedSearchAlert).props.onComplete())
+    act(() => tree.root.findByType(CreateSavedSearchAlert).props.onComplete(mockedMutationResult))
     act(() => tree.root.findByType(PopoverMessage).props.onPress())
 
     expect(navigate).toHaveBeenCalled()
+  })
+
+  it("tracks clicks when the create alert button is pressed", async () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+
+    act(() => tree.root.findByType(CreateSavedSearchAlert).props.onComplete(mockedMutationResult))
+
+    expect(trackEvent).toHaveBeenCalledWith(
+      tracks.toggleSavedSearch(true, "artistID", "artistSlug", "savedSearchAlertId")
+    )
   })
 })

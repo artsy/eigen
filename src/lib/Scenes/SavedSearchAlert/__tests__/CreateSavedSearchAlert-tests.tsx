@@ -64,9 +64,15 @@ describe("CreateSavedSearchAlert", () => {
     fireEvent.press(getByTestId("save-alert-button"))
 
     await waitFor(() => {
-      mockEnvironmentPayload(mockEnvironment)
+      mockEnvironmentPayload(mockEnvironment, {
+        SearchCriteria: () => ({
+          internalID: "internalID",
+        }),
+      })
     })
 
-    expect(onCompleteMock).toBeCalled()
+    expect(onCompleteMock).toHaveBeenCalledWith({
+      id: "internalID",
+    })
   })
 })
