@@ -53,18 +53,18 @@ describe("Sort Options Screen", () => {
         selectedFilters: [],
         appliedFilters: [
           {
-            displayText: "Recently added",
+            displayText: "Recently Added",
 
             paramName: FilterParamName.sort,
-            paramValue: "Recently added",
+            paramValue: "Recently Added",
           },
         ],
         previouslyAppliedFilters: [
           {
-            displayText: "Recently added",
+            displayText: "Recently Added",
 
             paramName: FilterParamName.sort,
-            paramValue: "Recently added",
+            paramValue: "Recently Added",
           },
         ],
         applyFilters: false,
@@ -79,17 +79,17 @@ describe("Sort Options Screen", () => {
       const tree = renderWithWrappers(<MockSortScreen initialData={injectedState} />)
 
       const selectedOption = selectedSortOption(tree)
-      expect(extractText(selectedOption)).toContain("Recently added")
+      expect(extractText(selectedOption)).toContain("Recently Added")
     })
 
     it("prefers the selected filter over the default filter", () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [
           {
-            displayText: "Recently added",
+            displayText: "Recently Added",
 
             paramName: FilterParamName.sort,
-            paramValue: "Recently added",
+            paramValue: "Recently Added",
           },
         ],
         appliedFilters: [],
@@ -106,33 +106,33 @@ describe("Sort Options Screen", () => {
       const tree = renderWithWrappers(<MockSortScreen initialData={injectedState} />)
 
       const selectedOption = selectedSortOption(tree)
-      expect(extractText(selectedOption)).toContain("Recently added")
+      expect(extractText(selectedOption)).toContain("Recently Added")
     })
 
     it("prefers the selected filter over an applied filter", () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [
           {
-            displayText: "Recently added",
+            displayText: "Recently Added",
 
             paramName: FilterParamName.sort,
-            paramValue: "Recently added",
+            paramValue: "Recently Added",
           },
         ],
         appliedFilters: [
           {
-            displayText: "Recently updated",
+            displayText: "Recently Updated",
 
             paramName: FilterParamName.sort,
-            paramValue: "Recently updated",
+            paramValue: "Recently Updated",
           },
         ],
         previouslyAppliedFilters: [
           {
-            displayText: "Recently updated",
+            displayText: "Recently Updated",
 
             paramName: FilterParamName.sort,
-            paramValue: "Recently updated",
+            paramValue: "Recently Updated",
           },
         ],
         applyFilters: false,
@@ -147,7 +147,7 @@ describe("Sort Options Screen", () => {
       const tree = renderWithWrappers(<MockSortScreen initialData={injectedState} />)
 
       const selectedOption = selectedSortOption(tree)
-      expect(extractText(selectedOption)).toContain("Recently added")
+      expect(extractText(selectedOption)).toContain("Recently Added")
     })
   })
 
@@ -155,16 +155,16 @@ describe("Sort Options Screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
-          displayText: "Price (high to low)",
+          displayText: "Price (High to Low)",
 
           paramName: FilterParamName.sort,
-          paramValue: "Price (high to low)",
+          paramValue: "Price (High to Low)",
         },
         {
-          displayText: "Price (low to high)",
+          displayText: "Price (Low to High)",
 
           paramName: FilterParamName.sort,
-          paramValue: "Price (low to high)",
+          paramValue: "Price (Low to High)",
         },
       ],
       appliedFilters: [],
@@ -181,7 +181,7 @@ describe("Sort Options Screen", () => {
     const tree = renderWithWrappers(<MockSortScreen initialData={injectedState} />)
 
     const selectedRow = selectedSortOption(tree)
-    expect(extractText(selectedRow)).toEqual("Price (high to low)")
+    expect(extractText(selectedRow)).toEqual("Price (High to Low)")
     expect(selectedRow.findByType(RadioDot).props.selected).toEqual(true)
   })
 
@@ -228,7 +228,7 @@ describe("Sort Options Screen", () => {
 
       const selectedRow = selectedSortOption(tree)
 
-      expect(extractText(selectedRow)).toEqual("Most recent sale date")
+      expect(extractText(selectedRow)).toEqual("Most Recent Sale Date")
       expect(selectedRow.findByType(RadioDot).props.selected).toEqual(true)
     })
   })

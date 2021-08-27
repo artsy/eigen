@@ -37,10 +37,10 @@ describe("Ways to Buy Options Screen", () => {
 
     const listItems = tree.root.findAllByType(OptionListItem)
     const firstListItem = listItems[0]
-    expect(extractText(firstListItem)).toBe("Buy now")
+    expect(extractText(firstListItem)).toBe("Buy Now")
 
     const secondListItem = listItems[1]
-    expect(extractText(secondListItem)).toBe("Make offer")
+    expect(extractText(secondListItem)).toBe("Make Offer")
 
     const thirdListItem = listItems[2]
     expect(extractText(thirdListItem)).toBe("Bid")
@@ -74,7 +74,7 @@ describe("Ways to Buy Options Screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
-          displayText: "Buy now",
+          displayText: "Buy Now",
           paramName: FilterParamName.waysToBuyBuy,
           paramValue: true,
         },
@@ -102,14 +102,14 @@ describe("Ways to Buy Options Screen", () => {
 
     const tree = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-    expect(extractText(tree.root)).toContain("Buy now, Inquire, Bid")
+    expect(extractText(tree.root)).toContain("Buy Now, Inquire, Bid")
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
-          displayText: "Buy now",
+          displayText: "Buy Now",
           paramName: FilterParamName.waysToBuyBuy,
           paramValue: true,
         },

@@ -86,7 +86,7 @@ describe("convertSizeToFilterParams", () => {
   it("returns only the minimum width for the size filter", () => {
     expect(convertSizeToFilterParams({ dimensionRange: "0-*", width: "100-*" })).toEqual([
       {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramValue: "0-*",
         paramName: FilterParamName.dimensionRange,
       },
@@ -101,7 +101,7 @@ describe("convertSizeToFilterParams", () => {
   it("returns only the maximum width for the size filter", () => {
     expect(convertSizeToFilterParams({ dimensionRange: "0-*", width: "*-150" })).toEqual([
       {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramValue: "0-*",
         paramName: FilterParamName.dimensionRange,
       },
@@ -116,7 +116,7 @@ describe("convertSizeToFilterParams", () => {
   it("returns the minimum and maximum width for the size filter", () => {
     expect(convertSizeToFilterParams({ dimensionRange: "0-*", width: "100-150" })).toEqual([
       {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramValue: "0-*",
         paramName: FilterParamName.dimensionRange,
       },
@@ -131,7 +131,7 @@ describe("convertSizeToFilterParams", () => {
   it("returns only the minimum height for the size filter", () => {
     expect(convertSizeToFilterParams({ dimensionRange: "0-*", height: "200-*" })).toEqual([
       {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramValue: "0-*",
         paramName: FilterParamName.dimensionRange,
       },
@@ -146,7 +146,7 @@ describe("convertSizeToFilterParams", () => {
   it("returns only the maximum height for the size filter", () => {
     expect(convertSizeToFilterParams({ dimensionRange: "0-*", height: "*-250" })).toEqual([
       {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramValue: "0-*",
         paramName: FilterParamName.dimensionRange,
       },
@@ -161,7 +161,7 @@ describe("convertSizeToFilterParams", () => {
   it("returns the minimum and maximum height for the size filter", () => {
     expect(convertSizeToFilterParams({ dimensionRange: "0-*", height: "200-250" })).toEqual([
       {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramValue: "0-*",
         paramName: FilterParamName.dimensionRange,
       },
@@ -176,7 +176,7 @@ describe("convertSizeToFilterParams", () => {
   it("returns the width and height for the size filter", () => {
     expect(convertSizeToFilterParams({ dimensionRange: "0-*", width: "100-150", height: "200-250" })).toEqual([
       {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramValue: "0-*",
         paramName: FilterParamName.dimensionRange,
       },
@@ -364,7 +364,7 @@ describe("convertWaysToBuyToFilterParams", () => {
 
     expect(result).toEqual([
       {
-        displayText: "Make offer",
+        displayText: "Make Offer",
         paramValue: true,
         paramName: FilterParamName.waysToBuyMakeOffer,
       },
@@ -387,7 +387,7 @@ describe("convertWaysToBuyToFilterParams", () => {
 
     expect(result).toEqual([
       {
-        displayText: "Buy now",
+        displayText: "Buy Now",
         paramValue: true,
         paramName: FilterParamName.waysToBuyBuy,
       },
@@ -416,7 +416,7 @@ describe("convertMajorPeriodToFilterParam", () => {
     const result = convertMajorPeriodToFilterParam(criteria)
 
     expect(result).toEqual({
-      displayText: "2020–today, 2010–2019",
+      displayText: "2020–Today, 2010–2019",
       paramValue: ["2020", "2010"],
       paramName: FilterParamName.timePeriod,
     })
@@ -554,7 +554,7 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       paramName: FilterParamName.attributionClass,
     })
     expect(result).toContainEqual({
-      displayText: "Make offer",
+      displayText: "Make Offer",
       paramValue: true,
       paramName: FilterParamName.waysToBuyMakeOffer,
     })

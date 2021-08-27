@@ -306,7 +306,7 @@ export const extractCustomSizeLabel = (selectedOptions: FilterArray) => {
   const selectedDimensionRange = selectedOptions.find(({ paramName }) => paramName === FilterParamName.dimensionRange)
 
   // Handle custom range
-  if (selectedDimensionRange?.displayText === "Custom size") {
+  if (selectedDimensionRange?.displayText === "Custom Size") {
     const selectedCustomWidth = selectedOptions.find(({ paramName }) => paramName === FilterParamName.width)
     const selectedCustomHeight = selectedOptions.find(({ paramName }) => paramName === FilterParamName.height)
     return (
@@ -448,7 +448,7 @@ export const selectedOption = ({
 
     const alphabetizedArtistNames = sortBy(selectedArtistNames, (name) => name)
     const allArtistDisplayNames = hasArtistsIFollowChecked
-      ? ["All artists I follow", ...alphabetizedArtistNames]
+      ? ["All Artists I Follow", ...alphabetizedArtistNames]
       : alphabetizedArtistNames
 
     if (allArtistDisplayNames.length === 1) {
@@ -519,7 +519,7 @@ export const aggregationsWithFollowedArtists = (
 
 export const getDisplayNameForTimePeriod = (aggregationName: string) => {
   const DISPLAY_TEXT: Record<string, string> = {
-    "2020": "2020–today",
+    "2020": "2020–Today",
     "2010": "2010–2019",
     "2000": "2000–2009",
     "1990": "1990–1999",
