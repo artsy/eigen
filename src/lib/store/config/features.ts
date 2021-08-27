@@ -107,13 +107,14 @@ export const features = defineFeatures({
     description: "Enable Saved Search: iOS",
   },
   AREnableSavedSearchAndroid: {
-    readyForRelease: false,
+    readyForRelease: true,
     echoFlagKey: "AREnableSavedSearchAndroid",
     description: "Enable Saved Search: Android",
     showInAdminMenu: true,
   },
   AREnableSavedSearchV2: {
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "AREnableSavedSearchV2",
     description: "Enable Saved Search V2",
     showInAdminMenu: true,
   },
