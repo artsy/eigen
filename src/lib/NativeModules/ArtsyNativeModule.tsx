@@ -1,3 +1,4 @@
+import { appJson } from "lib/utils/jsonFiles"
 import { NativeModules, PixelRatio, Platform } from "react-native"
 import { LegacyNativeModules } from "./LegacyNativeModules"
 
@@ -42,5 +43,5 @@ export const ArtsyNativeModule = {
         }
       : NativeModules.ArtsyNativeModule.lockActivityScreenOrientation,
   gitCommitShortHash: NativeModules.ArtsyNativeModule.gitCommitShortHash,
-  isBetaOrDev: Platform.OS === "ios" ? NativeModules.ArtsyNativeModule.isBetaOrDev : __DEV__,
+  isBetaOrDev: Platform.OS === "ios" ? NativeModules.ArtsyNativeModule.isBetaOrDev : appJson().isAndroidBeta || __DEV__,
 }
