@@ -1,7 +1,7 @@
 import { themeGet } from "@styled-system/theme-get"
 import { Text, useColor } from "palette"
 import React, { useState } from "react"
-import { StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProps, View } from "react-native"
+import { StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from "react-native"
 import styled from "styled-components/native"
 
 import { CssTransition } from "lib/Components/Bidding/Components/Animation/CssTransition"
