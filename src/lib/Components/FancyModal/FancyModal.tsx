@@ -1,4 +1,3 @@
-import { ICON_HEIGHT } from "lib/Scenes/BottomTabs/BottomTabsIcon"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { Modal, Platform } from "react-native"
@@ -29,11 +28,8 @@ export const FancyModal: React.FC<{
       /**
        * Android has a problem when getting window height
        * https://github.com/facebook/react-native/issues/23693
-       *
-       * Getting the full height taking into account the notch
-       * Based on Frame height + bottom tabs height + bottom tabs spacer height
        */
-      default: frame.height + ICON_HEIGHT + 1,
+      default: frame.height,
     })
   } else if (maxHeight) {
     height = Math.min(maxHeight, actualMaxHeight)
