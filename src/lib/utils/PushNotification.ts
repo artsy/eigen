@@ -1,5 +1,4 @@
 import AsyncStorage from "@react-native-community/async-storage"
-import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
