@@ -15,6 +15,7 @@ const laterDate = originalDate.clone().add(2, "days")
 const appVersion = (version: string) => ({
   sentryReleaseName: "wut",
   version,
+  isAndroidBeta: false,
 })
 
 const _echoLaunchJsonActual = loads.echoLaunchJson()

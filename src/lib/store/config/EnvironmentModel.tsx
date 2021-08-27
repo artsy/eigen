@@ -1,4 +1,5 @@
 import { action, Action, computed, Computed, thunkOn, ThunkOn } from "easy-peasy"
+import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { Platform } from "react-native"
 import { unsafe__getEnvironment } from "../GlobalStore"
@@ -76,7 +77,7 @@ export interface EnvironmentModel {
 }
 
 export const getEnvironmentModel = (): EnvironmentModel => ({
-  env: __DEV__ ? "staging" : "production",
+  env: ArtsyNativeModule.isBetaOrDev ? "staging" : "production",
   adminOverrides: {},
   strings: computed(({ env, adminOverrides }) => {
     const result: { [k in EnvironmentKey]: string } = {} as any

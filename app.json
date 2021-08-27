@@ -1,4 +1,5 @@
 {
   "version": "7.0.0",
-  "sentryReleaseName": ""
+  "sentryReleaseName": "",
+  "isAndroidBeta": false
 }
