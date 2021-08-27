@@ -8,7 +8,7 @@ import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { Stack } from "lib/Components/Stack"
 import { useToast } from "lib/Components/Toast/toastHook"
-import { goBack, navigate } from "lib/navigation/navigate"
+import { goBack } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
@@ -165,7 +165,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
     deleteSavedAddress(
       userAddressID,
       () => {
-        navigate("my-profile/saved-addresses")
+        goBack()
         toast.show("Address successfully deleted", "top")
       },
       (message: string) => captureMessage(message)
@@ -242,7 +242,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
 
         <AddAddressButton
           handleOnPress={isEditForm ? () => editUserAddress(addressId!) : submitAddAddress}
-          title={isEditForm ? "Add" : "Add Address"}
+          title={`${isEditForm ? "Save" : "Add"} address`}
           disabled={!state.allPresent}
         />
       </Stack>
