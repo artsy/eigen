@@ -16,9 +16,9 @@ const MAX_ELAPSED_TAPPED_NOTIFICATION_TIME = 90 // seconds
 
 export const CHANNELS = [
   {
-    name: "Default",
-    id: "fcm_fallback_notification_channel",
-    properties: { channelDescription: "Artsy's default notification channel" },
+    name: "Artsy's default notifications channel",
+    id: "Default",
+    properties: { channelDescription: "Artsy's default notifications channel" },
   },
 ]
 
