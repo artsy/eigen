@@ -1,3 +1,4 @@
+import { toTitleCase } from "@artsy/to-title-case"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
@@ -14,7 +15,7 @@ export const MaterialsTermsOptionsScreen: React.FC<MaterialsTermsOptionsScreenPr
   const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.materialsTerms })
 
   const options: FilterData[] = (aggregation?.counts ?? []).map(({ value: paramValue, name, count }) => {
-    return { displayText: name, paramName: FilterParamName.materialsTerms, paramValue, count }
+    return { displayText: toTitleCase(name), paramName: FilterParamName.materialsTerms, paramValue, count }
   })
 
   const { handleSelect, handleClear, isSelected, isActive } = useMultiSelect({
