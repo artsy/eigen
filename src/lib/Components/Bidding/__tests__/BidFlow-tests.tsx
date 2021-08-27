@@ -26,9 +26,9 @@ jest.mock("tipsi-stripe", () => ({
 import stripe from "tipsi-stripe"
 
 import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
-import { Select } from "lib/Components/Select"
 import { extractText } from "lib/tests/extractText"
 import { waitUntil } from "lib/tests/waitUntil"
+import { Select } from "palette/elements/Select"
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
@@ -56,7 +56,7 @@ it("allows bidders with a qualified credit card to bid", async () => {
     />
   )
 
-  screen.root.findByType(Select).instance.props.onSelectValue(null, 2)
+  screen.root.findByType(Select).props.onSelectValue(null, 2)
   screen.root.findAllByType(Button)[0].props.onPress()
 
   screen = fakeNavigator.nextStep()
@@ -89,7 +89,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
     />
   )
 
-  screen.root.findByType(Select).instance.props.onSelectValue(null, 2)
+  screen.root.findByType(Select).props.onSelectValue(null, 2)
   screen.root.findAllByType(Button)[0].props.onPress()
 
   screen = fakeNavigator.nextStep()

@@ -73,7 +73,7 @@ import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import StorybookUI from "../storybook/storybook-ui"
+import { StorybookUIRoot } from "../storybook/storybook-ui"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
@@ -388,7 +388,7 @@ export const modules = defineModules({
   }),
   WorksForYou: reactModule(WorksForYouQueryRenderer),
   LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer),
-  Storybook: reactModule(StorybookUI, { fullBleed: true, hidesBackButton: true }),
+  Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer, { onlyShowInTabName: "profile" }),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),
 })

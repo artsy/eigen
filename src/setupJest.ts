@@ -1,12 +1,6 @@
-// re: https://github.com/facebook/react-native/issues/19955
-// and https://github.com/facebook/metro/pull/198
-//
-// import applyDecoratedDescriptor from "@babel/runtime/helpers/applyDecoratedDescriptor"
-// import initializerDefineProperty from "@babel/runtime/helpers/initializerDefineProperty"
-// declare var babelHelpers: any
-// Object.assign(babelHelpers, { applyDecoratedDescriptor, initializerDefineProperty })
-// import "@babel/runtime"
 import "@testing-library/jest-native/extend-expect"
+import "jest-extended"
+
 import chalk from "chalk"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Enzyme from "enzyme"
@@ -282,6 +276,7 @@ function getNativeModules(): OurNativeModules {
       navigationBarHeight: 11,
       lockActivityScreenOrientation: jest.fn(),
       gitCommitShortHash: "de4dc0de",
+      isBetaOrDev: true,
     },
   }
 }

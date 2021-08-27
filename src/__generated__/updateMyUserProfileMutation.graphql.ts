@@ -5,17 +5,23 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateMyProfileInput = {
+    artworksPerYear?: string | null;
     clientMutationId?: string | null;
     collectorLevel?: number | null;
     completedOnboarding?: boolean | null;
     email?: string | null;
     emailFrequency?: string | null;
+    gender?: string | null;
+    industry?: string | null;
+    isCollector?: boolean | null;
     location?: EditableLocation | null;
     name?: string | null;
+    notes?: string | null;
     password?: string | null;
     phone?: string | null;
     priceRangeMax?: number | null;
     priceRangeMin?: number | null;
+    profession?: string | null;
     receiveLotOpeningSoonNotification?: boolean | null;
     receiveNewSalesNotification?: boolean | null;
     receiveNewWorksNotification?: boolean | null;
@@ -23,6 +29,7 @@ export type UpdateMyProfileInput = {
     receivePromotionNotification?: boolean | null;
     receivePurchaseNotification?: boolean | null;
     receiveSaleOpeningClosingNotification?: boolean | null;
+    shareFollows?: boolean | null;
 };
 export type EditableLocation = {
     address?: string | null;

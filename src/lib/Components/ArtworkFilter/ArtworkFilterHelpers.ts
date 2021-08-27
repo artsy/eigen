@@ -5,6 +5,7 @@ import {
   filter,
   groupBy,
   isArray,
+  isEmpty,
   isEqual,
   isUndefined,
   pick,
@@ -330,7 +331,7 @@ export const extractCustomSizeLabel = (selectedOptions: FilterArray) => {
   const selectedDimensionRange = selectedOptions.find(({ paramName }) => paramName === FilterParamName.dimensionRange)
 
   // Handle custom range
-  if (selectedDimensionRange?.displayText === "Custom size") {
+  if (selectedDimensionRange?.displayText === "Custom Size") {
     const selectedCustomWidth = selectedOptions.find(({ paramName }) => paramName === FilterParamName.width)
     const selectedCustomHeight = selectedOptions.find(({ paramName }) => paramName === FilterParamName.height)
     return (
@@ -433,7 +434,9 @@ export const selectedOption = ({
     }
 
     return waysToBuyOptions.join(", ")
-  } else if (filterScreen === "artistIDs") {
+  }
+
+  if (filterScreen === "artistIDs") {
     const hasArtistsIFollowChecked = !!selectedOptions.find(({ paramName, paramValue }) => {
       return paramName === FilterParamName.artistsIFollow && paramValue === true
     })
@@ -456,13 +459,14 @@ export const selectedOption = ({
       }
     } else {
       selectedArtistNames = selectedOptions
-        .filter(({ paramName }) => paramName === FilterParamName.artistIDs)
+        // Filtering out paramValue with an empty array to remove default option "All"
+        .filter(({ paramName }) => paramName === FilterParamName.artistIDs && !isEmpty(filter.paramValue))
         .map(({ displayText }) => displayText)
     }
 
     const alphabetizedArtistNames = sortBy(selectedArtistNames, (name) => name)
     const allArtistDisplayNames = hasArtistsIFollowChecked
-      ? ["All artists I follow", ...alphabetizedArtistNames]
+      ? ["All Artists I Follow", ...alphabetizedArtistNames]
       : alphabetizedArtistNames
 
     if (allArtistDisplayNames.length === 1) {
@@ -533,7 +537,7 @@ export const aggregationsWithFollowedArtists = (
 
 export const getDisplayNameForTimePeriod = (aggregationName: string) => {
   const DISPLAY_TEXT: Record<string, string> = {
-    "2020": "2020–today",
+    "2020": "2020–Today",
     "2010": "2010–2019",
     "2000": "2000–2009",
     "1990": "1990–1999",

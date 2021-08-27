@@ -193,11 +193,11 @@ export const DEFAULT_FILTERS: FilterArray = [
   { paramName: FilterParamName.locationCities, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.colors, displayText: "All" },
   { paramName: FilterParamName.timePeriod, paramValue: [], displayText: "All" },
-  { paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy now" },
+  { paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy Now" },
   { paramName: FilterParamName.waysToBuyInquire, paramValue: false, displayText: "Inquire" },
-  { paramName: FilterParamName.waysToBuyMakeOffer, paramValue: false, displayText: "Make offer" },
+  { paramName: FilterParamName.waysToBuyMakeOffer, paramValue: false, displayText: "Make Offer" },
   { paramName: FilterParamName.waysToBuyBid, paramValue: false, displayText: "Bid" },
-  { paramName: FilterParamName.artistsIFollow, paramValue: false, displayText: "All artists I follow" },
+  { paramName: FilterParamName.artistsIFollow, paramValue: false, displayText: "All Artists I Follow" },
   { paramName: FilterParamName.artistIDs, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.viewAs, paramValue: false, displayText: "Grid" },
   { paramName: FilterParamName.attributionClass, paramValue: "", displayText: "All" },
@@ -221,7 +221,7 @@ export const selectedOptionsUnion = ({
     saleArtwork: {
       paramName: FilterParamName.sort,
       paramValue: "position",
-      displayText: "Lot number ascending",
+      displayText: "Lot Number Ascending",
     },
     showArtwork: {
       paramName: FilterParamName.sort,
@@ -231,7 +231,7 @@ export const selectedOptionsUnion = ({
     auctionResult: {
       paramName: FilterParamName.sort,
       paramValue: "DATE_DESC",
-      displayText: "Most recent sale date",
+      displayText: "Most Recent Sale Date",
     },
     geneArtwork: {
       paramName: FilterParamName.sort,

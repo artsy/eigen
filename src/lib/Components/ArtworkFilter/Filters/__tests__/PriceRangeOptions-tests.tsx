@@ -86,13 +86,13 @@ describe("PriceRangeOptions", () => {
     expect(text).toContain("$5,000–10,000")
     expect(text).toContain("$1,000–5,000")
     expect(text).toContain("$0–1,000")
-    expect(text).toContain("Custom price")
+    expect(text).toContain("Custom Price")
   })
 
   it("dispatches a custom price", () => {
     const tree = getTree()
     const options = tree.root.findAllByType(TouchableRow)
-    const customPriceOption = options.find((node) => extractText(node) === "Custom price")!
+    const customPriceOption = options.find((node) => extractText(node) === "Custom Price")!
 
     // Tap the Custom price option to display the inputs
     act(() => {

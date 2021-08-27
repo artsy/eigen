@@ -11,12 +11,12 @@ interface SortOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigatio
 enum ArtworkSorts {
   "Gallery Curated" = "partner_show_position",
   "Default" = "-decayed_merch",
-  "Price (high to low)" = "sold,-has_price,-prices",
-  "Price (low to high)" = "sold,-has_price,prices",
-  "Recently updated" = "-partner_updated_at",
-  "Recently added" = "-published_at",
-  "Artwork year (descending)" = "-year",
-  "Artwork year (ascending)" = "year",
+  "Price (High to Low)" = "sold,-has_price,-prices",
+  "Price (Low to High)" = "sold,-has_price,prices",
+  "Recently Updated" = "-partner_updated_at",
+  "Recently Added" = "-published_at",
+  "Artwork Year (Descending)" = "-year",
+  "Artwork Year (Ascending)" = "year",
 }
 
 export type SortOption = keyof typeof ArtworkSorts
@@ -47,32 +47,32 @@ const DEFAULT_TAG_SORT = {
 
 export const ORDERED_ARTWORK_SORTS: FilterData[] = [
   {
-    displayText: "Price (high to low)",
+    displayText: "Price (High to Low)",
     paramName: FilterParamName.sort,
     paramValue: "sold,-has_price,-prices",
   },
   {
-    displayText: "Price (low to high)",
+    displayText: "Price (Low to High)",
     paramName: FilterParamName.sort,
     paramValue: "sold,-has_price,prices",
   },
   {
-    displayText: "Recently updated",
+    displayText: "Recently Updated",
     paramName: FilterParamName.sort,
     paramValue: "-partner_updated_at",
   },
   {
-    displayText: "Recently added",
+    displayText: "Recently Added",
     paramName: FilterParamName.sort,
     paramValue: "-published_at",
   },
   {
-    displayText: "Artwork year (descending)",
+    displayText: "Artwork Year (Descending)",
     paramName: FilterParamName.sort,
     paramValue: "-year",
   },
   {
-    displayText: "Artwork year (ascending)",
+    displayText: "Artwork Year (Ascending)",
     paramName: FilterParamName.sort,
     paramValue: "year",
   },
@@ -80,32 +80,32 @@ export const ORDERED_ARTWORK_SORTS: FilterData[] = [
 
 export const ORDERED_SALE_ARTWORK_SORTS: FilterData[] = [
   {
-    displayText: "Lot number ascending",
+    displayText: "Lot Number Ascending",
     paramName: FilterParamName.sort,
     paramValue: "position",
   },
   {
-    displayText: "Lot number descending",
+    displayText: "Lot Number Descending",
     paramName: FilterParamName.sort,
     paramValue: "-position",
   },
   {
-    displayText: "Most bids",
+    displayText: "Most Bids",
     paramName: FilterParamName.sort,
     paramValue: "-bidder_positions_count",
   },
   {
-    displayText: "Least bids",
+    displayText: "Least Bids",
     paramName: FilterParamName.sort,
     paramValue: "bidder_positions_count",
   },
   {
-    displayText: "Highest bid",
+    displayText: "Highest Bid",
     paramName: FilterParamName.sort,
     paramValue: "-searchable_estimate",
   },
   {
-    displayText: "Lowest bid",
+    displayText: "Lowest Bid",
     paramName: FilterParamName.sort,
     paramValue: "searchable_estimate",
   },
@@ -113,7 +113,7 @@ export const ORDERED_SALE_ARTWORK_SORTS: FilterData[] = [
 
 export const ORDERED_AUCTION_RESULTS_SORTS: FilterData[] = [
   {
-    displayText: "Most recent sale date",
+    displayText: "Most Recent Sale Date",
     paramName: FilterParamName.sort,
     paramValue: "DATE_DESC",
   },
@@ -123,7 +123,7 @@ export const ORDERED_AUCTION_RESULTS_SORTS: FilterData[] = [
     paramValue: "ESTIMATE_AND_DATE_DESC",
   },
   {
-    displayText: "Sale price",
+    displayText: "Sale Price",
     paramName: FilterParamName.sort,
     paramValue: "PRICE_AND_DATE_DESC",
   },

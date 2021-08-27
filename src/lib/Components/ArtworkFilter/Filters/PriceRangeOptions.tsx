@@ -19,7 +19,7 @@ interface PriceRangeOptionsScreenProps
 const PARAM_NAME = FilterParamName.priceRange
 
 export const CUSTOM_PRICE_OPTION = {
-  displayText: "Custom price",
+  displayText: "Custom Price",
   // Values need to be unique and we can't use "*-*" which is used by "All."
   // This essentially means the same thing.
   paramValue: "0-*",

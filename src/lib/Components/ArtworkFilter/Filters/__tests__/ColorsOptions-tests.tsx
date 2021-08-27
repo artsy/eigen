@@ -13,17 +13,17 @@ describe("Colors options screen", () => {
       slice: "COLOR",
       counts: [
         {
-          name: "Black and white",
+          name: "Black and White",
           count: 2956,
           value: "black-and-white",
         },
         {
-          name: "Dark orange",
+          name: "Dark Orange",
           count: 513,
           value: "darkorange",
         },
         {
-          name: "Light blue",
+          name: "Light Blue",
           count: 277,
           value: "lightblue",
         },

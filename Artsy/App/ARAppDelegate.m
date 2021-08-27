@@ -8,6 +8,8 @@
 #import "AppboyReactUtils.h"
 #import <Analytics/SEGAnalytics.h>
 #import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
+#import <Segment-Adjust/SEGAdjustIntegrationFactory.h>
+#import <Adjust/Adjust.h>
 
 #import "ARAnalyticsConstants.h"
 #import "ARAppDelegate.h"
@@ -200,6 +202,7 @@ static ARAppDelegate *_sharedInstance = nil;
     configuration.trackApplicationLifecycleEvents = YES;
     configuration.trackPushNotifications = YES;
     configuration.trackDeepLinks = YES;
+    [configuration use:[SEGAdjustIntegrationFactory instance]];
     [SEGAnalytics setupWithConfiguration:configuration];
     [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:launchOptions];
     [[AppboyReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];

@@ -246,3 +246,13 @@ When we upgrade to v8, or a v7 that has https://github.com/callstack/react-nativ
 
 We tried to add the library in https://github.com/artsy/eigen/pull/5197, and 7.2.0 was giving type errors because of the missing `: void` in our patch.
 There is an issue https://github.com/callstack/react-native-testing-library/issues/708 and the fix https://github.com/callstack/react-native-testing-library/pull/697, and we just took the fix and used it as a patch, so we don't have to upgrade to v8.0.0-rc.0, which is the latest v8 out currently.
+
+## `@storybook/client-api` patch-package
+
+#### When can we remove this:
+
+Once storybook is upgraded to a version that does not use the removed `Cancellable` from `lodash` in that file.
+
+#### Explanation/Context:
+
+We get an error like here, and that is the solution. https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47166#issuecomment-685738545

@@ -113,7 +113,7 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
   it("return nothing if only the sort filter is selected", () => {
     const filters = filterArtworksParams([
       {
-        displayText: "Recently updated",
+        displayText: "Recently Updated",
         paramName: FilterParamName.sort,
         paramValue: "-partner_updated_at",
       },
@@ -183,7 +183,7 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
         paramValue: "39.37007874015748-59.05511811023622",
       },
       {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramName: FilterParamName.dimensionRange,
         paramValue: "0-*",
       },
@@ -204,7 +204,7 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
         paramValue: "12.5-34.6",
       },
       {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramName: FilterParamName.dimensionRange,
         paramValue: "0-*",
       },
@@ -224,7 +224,7 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
         paramValue: "*-196.8503937007874",
       },
       {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramName: FilterParamName.dimensionRange,
         paramValue: "0-*",
       },
@@ -244,7 +244,7 @@ describe("prepareFilterParamsForSaveSearchInput", () => {
         paramValue: "10-*",
       },
       {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramName: FilterParamName.dimensionRange,
         paramValue: "0-*",
       },
@@ -329,7 +329,7 @@ describe("prepareFilterDataForSaveSearchInput", () => {
   it("return nothing if only the sort filter is selected", () => {
     const filters = [
       {
-        displayText: "Recently updated",
+        displayText: "Recently Updated",
         paramName: FilterParamName.sort,
         paramValue: "-partner_updated_at",
       },
@@ -399,7 +399,7 @@ describe("prepareFilterDataForSaveSearchInput", () => {
         paramValue: "39.37007874015748-59.05511811023622",
       },
       {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramName: FilterParamName.dimensionRange,
         paramValue: "0-*",
       },
@@ -420,7 +420,7 @@ describe("prepareFilterDataForSaveSearchInput", () => {
         paramValue: "12.5-34.6",
       },
       {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramName: FilterParamName.dimensionRange,
         paramValue: "0-*",
       },
@@ -440,7 +440,7 @@ describe("prepareFilterDataForSaveSearchInput", () => {
         paramValue: "*-196.8503937007874",
       },
       {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramName: FilterParamName.dimensionRange,
         paramValue: "0-*",
       },
@@ -460,7 +460,7 @@ describe("prepareFilterDataForSaveSearchInput", () => {
         paramValue: "10-*",
       },
       {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramName: FilterParamName.dimensionRange,
         paramValue: "0-*",
       },
@@ -482,12 +482,12 @@ describe("getAllowedFiltersForSavedSearchInput", () => {
         paramValue: "10-*",
       },
       {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramName: FilterParamName.dimensionRange,
         paramValue: "0-*",
       },
       {
-        displayText: "Recently updated",
+        displayText: "Recently Updated",
         paramName: FilterParamName.sort,
         paramValue: "-partner_updated_at",
       },
@@ -500,7 +500,7 @@ describe("getAllowedFiltersForSavedSearchInput", () => {
         paramValue: "10-*",
       },
       {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramName: FilterParamName.dimensionRange,
         paramValue: "0-*",
       },

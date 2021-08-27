@@ -260,22 +260,9 @@ export const SavedSearchBannerQueryRender: React.FC<{
   artistSlug: string
 }> = ({ filters, artistId, artistSlug }) => {
   const input = prepareFilterParamsForSaveSearchInput(filters)
-  const isEmptyCriteria = Object.keys(input).length === 0
   const attributes: SearchCriteriaAttributes = {
     artistID: artistId,
     ...input,
-  }
-
-  if (isEmptyCriteria) {
-    return (
-      <SavedSearchBannerRefetchContainer
-        me={null}
-        attributes={attributes}
-        artistId={artistId}
-        artistSlug={artistSlug}
-        disabled
-      />
-    )
   }
 
   return (

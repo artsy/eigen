@@ -102,13 +102,20 @@ lane :set_build_version_ios do
 end
 
 build_gradle = "../android/app/build.gradle"
-lane :set_build_version_android do
-  current_version_code = google_play_track_version_codes(
-    track: "alpha",
-  ).first
+lane :set_build_version_android do |options|
+
+  version_code = options[:version_code]
 
   next_version_name = app_json['version']
-  next_version_code = current_version_code + 1
+
+  if version_code.nil?
+    current_version_code = google_play_track_version_codes(
+      track: "alpha",
+    ).first
+    version_code = current_version_code + 1
+  end
+
+  next_version_code = version_code
 
   contents = File.read(build_gradle)
 
@@ -155,6 +162,7 @@ lane :ship_beta_android do
 
   sentry_release_name = "android-#{vname}-#{vcode}"
   update_sentry_release_name(sentry_release_name: sentry_release_name)
+  flag_android_beta(is_android_beta: true)
 
   gradle(
     task: "bundle",
@@ -170,6 +178,41 @@ lane :ship_beta_android do
     skip_upload_images: true,
     skip_upload_screenshots: true,
   )
+end
+
+lane :promote_beta_android do
+  current_release_name = google_play_track_release_names(
+    track: "alpha"
+  ).first
+  current_version_code = google_play_track_version_codes(
+    track: "alpha",
+  ).first
+
+  # checkout the tag corresponding to that version code
+  start_branch = git_branch
+  vname, vcode = set_build_version_android(version_code: current_version_code)
+  android_tag =  "android-#{vname}-#{vcode}"
+  sh("git", "checkout", android_tag)
+
+  flag_android_beta(is_android_beta: false)
+
+  gradle(
+    task: "bundle",
+    build_type: "Release",
+    project_dir: "android/",
+  )
+
+  supply(
+    track: 'production',
+    version_code: current_version_code,
+    skip_upload_metadata: true,
+    skip_upload_images: true,
+    skip_upload_screenshots: true,
+  )
+
+  sh("git", "stash")
+
+  sh("git", "checkout", start_branch)
 end
 
 lane :promote_beta_ios do
@@ -250,6 +293,14 @@ end
 lane :update_sentry_release_name do |options|
   sentry_release_name = options[:sentry_release_name]
   app_json['sentryReleaseName'] = sentry_release_name
+  File.open(app_json_path, 'w') do |file|
+    file.puts JSON.pretty_generate(app_json)
+  end
+end
+
+lane :flag_android_beta do |options|
+  is_android_beta = options[:is_android_beta]
+  app_json['isAndroidBeta'] = is_android_beta
   File.open(app_json_path, 'w') do |file|
     file.puts JSON.pretty_generate(app_json)
   end
@@ -386,25 +437,6 @@ lane :notify_beta_failed do |options|
     },
     default_payloads: []
   )
-end
-
-lane :promote_beta_android do
-  current_version_code = google_play_track_version_codes(
-    track: "alpha",
-  ).first
-
-  supply(
-    track: 'alpha',
-    version_code: current_version_code,
-    track_promote_to: 'production',
-    skip_upload_metadata: true,
-    skip_upload_images: true,
-    skip_upload_screenshots: true,
-  )
-
-  vname, vcode = set_build_version_android
-  tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
-
 end
 
 lane :tag_and_push do |options|

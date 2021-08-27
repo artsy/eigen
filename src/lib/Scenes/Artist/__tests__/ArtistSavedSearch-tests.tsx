@@ -84,8 +84,8 @@ describe("Saved search banner on artist screen", () => {
 
     const filterTextValues = tree.root.findAllByType(CurrentOption).map(extractText)
 
-    expect(filterTextValues).toContain("Recently added")
-    expect(filterTextValues).toContain("Buy now, Inquire")
+    expect(filterTextValues).toContain("Recently Added")
+    expect(filterTextValues).toContain("Buy Now, Inquire")
     expect(filterTextValues).toContain("Limited Edition, Open Edition")
   })
 
@@ -107,8 +107,9 @@ describe("Saved search banner on artist screen", () => {
   it("should render new saved search component if AREnableSavedSearchV2 flag set to true", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchV2: true })
 
-    const tree = getTree()
+    const tree = getTree("search-criteria-id")
 
+    mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
     await flushPromiseQueue()

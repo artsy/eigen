@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c42dcb3f7d37769b16f5cfb4e30e63c5 */
+/* @relayHash 6aeacf2bb7bdfac8a516a17343e709c2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -53,8 +53,9 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
     mid
   }
   priceRealized {
-    display
     cents
+    display
+    displayUSD
   }
   saleDate
   title
@@ -388,6 +389,13 @@ return {
                                 "alias": null,
                                 "args": null,
                                 "kind": "ScalarField",
+                                "name": "cents",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
                                 "name": "display",
                                 "storageKey": null
                               },
@@ -395,7 +403,7 @@ return {
                                 "alias": null,
                                 "args": null,
                                 "kind": "ScalarField",
-                                "name": "cents",
+                                "name": "displayUSD",
                                 "storageKey": null
                               }
                             ],
@@ -435,7 +443,7 @@ return {
     ]
   },
   "params": {
-    "id": "c42dcb3f7d37769b16f5cfb4e30e63c5",
+    "id": "6aeacf2bb7bdfac8a516a17343e709c2",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -521,6 +529,7 @@ return {
         },
         "artwork.artist.auctionResultsConnection.edges.node.priceRealized.cents": (v8/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.priceRealized.display": (v7/*: any*/),
+        "artwork.artist.auctionResultsConnection.edges.node.priceRealized.displayUSD": (v7/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.saleDate": (v7/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.title": (v7/*: any*/),
         "artwork.artist.id": (v6/*: any*/),

@@ -16,7 +16,7 @@ export const CATEGORIES_OPTIONS: FilterData[] = [
     paramValue: "Painting",
   },
   {
-    displayText: "Work on paper",
+    displayText: "Work on Paper",
     paramName: FilterParamName.categories,
     paramValue: "Work on Paper",
   },
@@ -36,7 +36,7 @@ export const CATEGORIES_OPTIONS: FilterData[] = [
     paramValue: "Photography",
   },
   {
-    displayText: "Textile arts",
+    displayText: "Textile Arts",
     paramName: FilterParamName.categories,
     paramValue: "Textile Arts",
   },

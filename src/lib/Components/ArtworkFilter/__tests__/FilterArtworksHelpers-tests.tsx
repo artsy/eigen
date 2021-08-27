@@ -24,7 +24,7 @@ describe("changedFiltersParams helper", () => {
         paramName: FilterParamName.sort,
       },
       {
-        displayText: "Performance art",
+        displayText: "Performance Art",
         paramValue: "performance-art",
         paramName: FilterParamName.medium,
       },
@@ -79,7 +79,7 @@ describe("changedFiltersParams helper", () => {
     expect(
       changedFiltersParams(appliedFilters, [
         {
-          displayText: "Artwork year (ascending)",
+          displayText: "Artwork Year (Ascending)",
           paramValue: "year",
           paramName: FilterParamName.sort,
         },
@@ -91,7 +91,7 @@ describe("changedFiltersParams helper", () => {
   it("when a medium selection unchanged and sort selection changed", () => {
     const appliedFilters = filterArtworksParams([
       {
-        displayText: "Artwork year (descending)",
+        displayText: "Artwork Year (Descending)",
         paramValue: "-year",
         paramName: FilterParamName.sort,
       },
@@ -104,7 +104,7 @@ describe("changedFiltersParams helper", () => {
     expect(
       changedFiltersParams(appliedFilters, [
         {
-          displayText: "Artwork year (ascending)",
+          displayText: "Artwork Year (Ascending)",
           paramValue: "year",
           paramName: FilterParamName.sort,
         },
@@ -120,7 +120,7 @@ describe("changedFiltersParams helper", () => {
   it("when clearing applied sort selection", () => {
     const appliedFilters = filterArtworksParams([
       {
-        displayText: "Artwork year (ascending)",
+        displayText: "Artwork Year (Ascending)",
         paramValue: "year",
         paramName: FilterParamName.sort,
       },
@@ -244,7 +244,7 @@ describe("filterArtworksParams helper", () => {
   it("maps applied filters to a default filter relay params when a single filter applied", () => {
     appliedFilters = [
       {
-        displayText: "Artwork year (descending)",
+        displayText: "Artwork Year (Descending)",
         paramValue: "-year",
         paramName: FilterParamName.sort,
       },
@@ -266,7 +266,7 @@ describe("filterArtworksParams helper", () => {
   it("maps applied filters to relay params when multiple filters", () => {
     appliedFilters = [
       {
-        displayText: "Recently updated",
+        displayText: "Recently Updated",
         paramValue: "-partner_updated_at",
         paramName: FilterParamName.sort,
       },
@@ -301,7 +301,7 @@ describe("filterArtworksParams helper", () => {
         paramName: FilterParamName.waysToBuyMakeOffer,
       },
       {
-        displayText: "All artists I follow",
+        displayText: "All Artists I Follow",
         paramValue: true,
         paramName: FilterParamName.artistsIFollow,
       },
@@ -441,7 +441,7 @@ describe("selectedOption", () => {
         {
           paramName: FilterParamName.waysToBuyBuy,
           paramValue: false,
-          displayText: "Buy now",
+          displayText: "Buy Now",
         },
         {
           paramName: FilterParamName.waysToBuyInquire,
@@ -451,7 +451,7 @@ describe("selectedOption", () => {
         {
           paramName: FilterParamName.waysToBuyMakeOffer,
           paramValue: false,
-          displayText: "Make offer",
+          displayText: "Make Offer",
         },
         {
           paramName: FilterParamName.waysToBuyBid,
@@ -469,7 +469,7 @@ describe("selectedOption", () => {
         {
           paramName: FilterParamName.waysToBuyBuy,
           paramValue: true,
-          displayText: "Buy now",
+          displayText: "Buy Now",
         },
         {
           paramName: FilterParamName.waysToBuyInquire,
@@ -479,7 +479,7 @@ describe("selectedOption", () => {
         {
           paramName: FilterParamName.waysToBuyMakeOffer,
           paramValue: false,
-          displayText: "Make offer",
+          displayText: "Make Offer",
         },
         {
           paramName: FilterParamName.waysToBuyBid,
@@ -488,7 +488,7 @@ describe("selectedOption", () => {
         },
       ]
 
-      expect(selectedOption({ selectedOptions, filterScreen: "waysToBuy", aggregations: [] })).toEqual("Buy now")
+      expect(selectedOption({ selectedOptions, filterScreen: "waysToBuy", aggregations: [] })).toEqual("Buy Now")
     })
     it("returns the correct result when multiple items is selected", () => {
       const selectedOptions = [
@@ -496,7 +496,7 @@ describe("selectedOption", () => {
         {
           paramName: FilterParamName.waysToBuyBuy,
           paramValue: true,
-          displayText: "Buy now",
+          displayText: "Buy Now",
         },
         {
           paramName: FilterParamName.waysToBuyInquire,
@@ -506,7 +506,7 @@ describe("selectedOption", () => {
         {
           paramName: FilterParamName.waysToBuyMakeOffer,
           paramValue: true,
-          displayText: "Make offer",
+          displayText: "Make Offer",
         },
         {
           paramName: FilterParamName.waysToBuyBid,
@@ -516,7 +516,7 @@ describe("selectedOption", () => {
       ]
 
       expect(selectedOption({ selectedOptions, filterScreen: "waysToBuy", aggregations: [] })).toEqual(
-        "Buy now, Make offer"
+        "Buy Now, Make Offer"
       )
     })
   })
@@ -530,10 +530,10 @@ describe("selectedOption", () => {
 
     it("returns the correct value when an options is selected", () => {
       const selectedOptions = [
-        { paramName: FilterParamName.partnerIDs, displayText: "gallery one", filterKey: "gallery" },
+        { paramName: FilterParamName.partnerIDs, displayText: "Gallery One", filterKey: "gallery" },
       ]
 
-      expect(selectedOption({ selectedOptions, filterScreen: "partnerIDs", aggregations: [] })).toEqual("gallery one")
+      expect(selectedOption({ selectedOptions, filterScreen: "partnerIDs", aggregations: [] })).toEqual("Gallery One")
     })
   })
 
@@ -591,12 +591,12 @@ describe("selectedOption", () => {
           {
             paramName: FilterParamName.artistsIFollow,
             paramValue: true,
-            displayText: "All artists I follow",
+            displayText: "All Artists I Follow",
           },
         ]
 
         expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations: [] })).toEqual(
-          "All artists I follow, 2 more"
+          "All Artists I Follow, 2 more"
         )
       })
     })
@@ -663,12 +663,12 @@ describe("selectedOption", () => {
         {
           paramName: FilterParamName.materialsTerms,
           paramValue: ["screen print"],
-          displayText: "Screen print",
+          displayText: "Screen Print",
         },
       ]
 
       expect(selectedOption({ selectedOptions, filterScreen: "materialsTerms", aggregations: [] })).toEqual(
-        "Screen print"
+        "Screen Print"
       )
     })
     it("returns the correct result when multiple items is selected", () => {
@@ -677,12 +677,12 @@ describe("selectedOption", () => {
         {
           paramName: FilterParamName.materialsTerms,
           paramValue: ["screen print", "paper"],
-          displayText: "Screen print, Paper",
+          displayText: "Screen Print, Paper",
         },
       ]
 
       expect(selectedOption({ selectedOptions, filterScreen: "materialsTerms", aggregations: [] })).toEqual(
-        "Screen print, Paper"
+        "Screen Print, Paper"
       )
     })
   })

@@ -1,10 +1,10 @@
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Sans } from "palette"
+import { fireEvent } from "@testing-library/react-native"
+import { CountrySelect } from "lib/Components/CountrySelect"
+import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { Sans, Text } from "palette"
+import { Button } from "palette"
 import React from "react"
 import { TextInput } from "react-native"
-
-import { CountrySelect } from "lib/Components/CountrySelect"
-import { Button } from "palette"
 import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
 import { BillingAddress } from "../BillingAddress"
 
@@ -52,24 +52,25 @@ it("calls the onSubmit() callback with billing address when ADD BILLING ADDRESS 
 it("updates the validation for country when coming back from the select country screen", () => {
   const fakeNavigator = new FakeNavigator()
 
-  const component = renderWithWrappers(<BillingAddress onSubmit={() => null} navigator={fakeNavigator as any} />)
+  const { getByTestId, queryAllByText, UNSAFE_getByType } = renderWithWrappersTL(
+    <BillingAddress onSubmit={() => null} navigator={fakeNavigator as any} />
+  )
 
-  textInputComponent(component, "Full name").props.onChangeText("Yuki Stockmeier")
-  textInputComponent(component, "Address line 1").props.onChangeText("401 Broadway")
-  textInputComponent(component, "Address line 2 (optional)").props.onChangeText("25th floor")
-  textInputComponent(component, "City").props.onChangeText("New York")
-  textInputComponent(component, "State, Province, or Region").props.onChangeText("NY")
-  textInputComponent(component, "Postal code").props.onChangeText("10013")
-  textInputComponent(component, "Phone").props.onChangeText("656 333 11111")
+  fireEvent.changeText(getByTestId("input-full-name"), "Yuki Stockmeier")
+  fireEvent.changeText(getByTestId("input-address-1"), "401 Broadway")
+  fireEvent.changeText(getByTestId("input-address-2"), "25th floor")
+  fireEvent.changeText(getByTestId("input-city"), "New York")
+  fireEvent.changeText(getByTestId("input-state-province-region"), "NY")
+  fireEvent.changeText(getByTestId("input-post-code"), "10013")
+  fireEvent.changeText(getByTestId("input-phone"), "656 333 11111")
 
-  component.root.findByType(Button).props.onPress()
+  fireEvent.press(getByTestId("button-add"))
 
-  expect(component.root.findAllByType(Sans)[1].props.children).toEqual("This field is required")
+  expect(queryAllByText("This field is required")).toHaveLength(1)
 
-  selectCountry(component, fakeNavigator, billingAddress.country)
+  UNSAFE_getByType(CountrySelect).props.onSelectValue(billingAddress.country.shortName, 5)
 
-  // The <Sans12> instances in the BillingAddress screen display error messages
-  expect(component.root.findAllByType(Sans).length).toEqual(1)
+  expect(queryAllByText("This field is required")).toHaveLength(0)
 })
 
 it("pre-fills the fields if initial billing address is provided", () => {
@@ -82,7 +83,7 @@ it("pre-fills the fields if initial billing address is provided", () => {
   expect(textInputComponent(component, "State, Province, or Region").props.value).toEqual("NY")
   expect(textInputComponent(component, "Postal code").props.value).toEqual("10013")
 
-  const countryField = component.root.findAllByType(Sans)[0]
+  const countryField = component.root.findAllByType(Text)[2]
   expect(countryField.props.children).toEqual("United States")
 })
 

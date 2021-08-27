@@ -5,7 +5,7 @@ set -euxo pipefail
 # Create fonts directory
 mkdir -p android/app/src/main/assets/fonts
 
-# Get fonts from eigen s3 bueck
+# Get fonts from eigen s3 bucket
 aws s3 cp s3://artsy-citadel/eigen/fonts.tar.gz android/app/src/main/assets/fonts
 
 # Extract fonts from the fonts directory

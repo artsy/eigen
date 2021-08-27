@@ -88,7 +88,6 @@ describe("getPlaformSpecificChangeLog", () => {
 ### v6.9.4
 
 - Status: **Beta**
-- Changelog update date: **Fri Jun 04 2021 15:48:24 GMT+0200 (Central European Summer Time)**
 - Changelog:
 
   - User facing changes:
@@ -138,7 +137,6 @@ describe("getPlaformSpecificChangeLog", () => {
 ### v6.9.4
 
 - Status: **Beta**
-- Changelog update date: **Fri Jun 04 2021 15:48:24 GMT+0200 (Central European Summer Time)**
 - Changelog:
 
 <!-- DO NOT CHANGE -->

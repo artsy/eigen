@@ -70,47 +70,78 @@ describe("ViewingRoom", () => {
     const defaultProps = {
       status: "live",
     }
-    it("renders all sections", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-        const result = MockPayloadGenerator.generate(operation, {
-          ViewingRoom: () => ({ introStatement: "Foo", pullQuote: "Bar", body: "Baz", ...defaultProps }),
+    describe("without any artworks", () => {
+      it("doesn't render artworks rail", () => {
+        const tree = renderWithWrappers(<TestRenderer />)
+        mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+          const result = MockPayloadGenerator.generate(operation, {
+            ViewingRoom: () => ({
+              introStatement: "Foo",
+              pullQuote: "Bar",
+              body: "Baz",
+              artworks: null,
+              ...defaultProps,
+            }),
+          })
+          return result
         })
-        return result
+        expect(extractText(tree.root.findByProps({ "data-test-id": "intro-statement" }))).toEqual("Foo")
+        expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(0)
+        expect(extractText(tree.root.findByProps({ "data-test-id": "pull-quote" }))).toEqual("Bar")
+        expect(extractText(tree.root.findByProps({ "data-test-id": "body" }))).toEqual("Baz")
+        expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(1)
+        expect(tree.root.findAllByProps({ "data-test-id": "share-button" })).toHaveLength(1)
       })
-      expect(extractText(tree.root.findByProps({ "data-test-id": "intro-statement" }))).toEqual("Foo")
-      expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(1)
-      expect(extractText(tree.root.findByProps({ "data-test-id": "pull-quote" }))).toEqual("Bar")
-      expect(extractText(tree.root.findByProps({ "data-test-id": "body" }))).toEqual("Baz")
-      expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(1)
-      expect(tree.root.findAllByProps({ "data-test-id": "share-button" })).toHaveLength(1)
     })
-
-    it("renders a button + calls tracking when body enters viewport", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-        const result = MockPayloadGenerator.generate(operation, {
-          ViewingRoom: () => ({
-            artworksForCount: { totalCount: 42 },
-            slug: "gallery-name-viewing-room-name",
-            internalID: "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
-            ...defaultProps,
-          }),
+    describe("with artworks", () => {
+      it("renders all sections", () => {
+        const tree = renderWithWrappers(<TestRenderer />)
+        mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+          const result = MockPayloadGenerator.generate(operation, {
+            ViewingRoom: () => ({
+              introStatement: "Foo",
+              pullQuote: "Bar",
+              body: "Baz",
+              artworks: { totalCount: 5 },
+              ...defaultProps,
+            }),
+          })
+          return result
         })
-        return result
+        expect(extractText(tree.root.findByProps({ "data-test-id": "intro-statement" }))).toEqual("Foo")
+        expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(1)
+        expect(extractText(tree.root.findByProps({ "data-test-id": "pull-quote" }))).toEqual("Bar")
+        expect(extractText(tree.root.findByProps({ "data-test-id": "body" }))).toEqual("Baz")
+        expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(1)
+        expect(tree.root.findAllByProps({ "data-test-id": "share-button" })).toHaveLength(1)
       })
 
-      expect(tree.root.findAllByType(AnimatedBottomButton)).toHaveLength(1)
-      expect(tree.root.findAllByType(AnimatedBottomButton)[0].props.isVisible).toBe(false)
+      it("renders a button + calls tracking when body enters viewport", () => {
+        const tree = renderWithWrappers(<TestRenderer />)
+        mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+          const result = MockPayloadGenerator.generate(operation, {
+            ViewingRoom: () => ({
+              artworksForCount: { totalCount: 42 },
+              slug: "gallery-name-viewing-room-name",
+              internalID: "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
+              ...defaultProps,
+            }),
+          })
+          return result
+        })
 
-      act(() => {
-        tree.root.findByType(FlatList).props.onViewableItemsChanged({ viewableItems: [{ item: { key: "body" } }] })
+        expect(tree.root.findAllByType(AnimatedBottomButton)).toHaveLength(1)
+        expect(tree.root.findAllByType(AnimatedBottomButton)[0].props.isVisible).toBe(false)
+
+        act(() => {
+          tree.root.findByType(FlatList).props.onViewableItemsChanged({ viewableItems: [{ item: { key: "body" } }] })
+        })
+
+        expect(tree.root.findAllByType(AnimatedBottomButton)[0].props.isVisible).toBe(true)
+        expect(useTracking().trackEvent).toHaveBeenCalledWith(
+          tracks.bodyImpression("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name")
+        )
       })
-
-      expect(tree.root.findAllByType(AnimatedBottomButton)[0].props.isVisible).toBe(true)
-      expect(useTracking().trackEvent).toHaveBeenCalledWith(
-        tracks.bodyImpression("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name")
-      )
     })
   })
 

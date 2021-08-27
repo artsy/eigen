@@ -13,12 +13,12 @@ import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"
 import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
 import { SelectMaxBidQuery } from "__generated__/SelectMaxBidQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { Select } from "lib/Components/Select"
 import { dismissModal } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
 import { compact } from "lodash"
+import { Select } from "palette/elements/Select"
 
 interface SelectMaxBidProps extends ViewProps {
   sale_artwork: SelectMaxBid_sale_artwork

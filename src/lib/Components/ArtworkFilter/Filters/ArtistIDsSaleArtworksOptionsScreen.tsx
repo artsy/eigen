@@ -57,13 +57,13 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksO
   })
 
   const allOption: FilterData = {
-    displayText: "All artists",
+    displayText: "All Artists",
     paramName,
     paramValue: "all",
   }
 
   const artistsYouFollowOption: FilterData = {
-    displayText: "Artists you follow",
+    displayText: "Artists You Follow",
     paramName: FilterParamName.artistsIFollow,
     paramValue: "artistsYouFollow",
     count: counts.followedArtists,
@@ -84,7 +84,7 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksO
       })
 
       selectFiltersAction({
-        displayText: "All artists",
+        displayText: "All Artists",
         paramValue: [],
         paramName,
       })
