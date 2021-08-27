@@ -1,9 +1,9 @@
 import { Aggregations, FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { Sans, Spacer, Text, useTheme } from "palette"
+import { Sans, Text, useTheme } from "palette"
 import React from "react"
-import { Platform, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import { SavedSearchAlertForm } from "./SavedSearchAlertForm"
 import { SavedSearchAlertFormPropsBase } from "./SavedSearchAlertModel"
 
@@ -25,7 +25,6 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
 
   return (
     <FancyModal visible={visible} fullScreen>
-      {Platform.OS === "android" && <Spacer mt={5} />}
       <FancyModalHeader useXButton hideBottomDivider onLeftButtonPress={onClosePress} />
       <ScrollView
         keyboardDismissMode="on-drag"
