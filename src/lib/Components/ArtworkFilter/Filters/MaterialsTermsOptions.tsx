@@ -1,7 +1,7 @@
+import { toTitleCase } from "@artsy/to-title-case"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
-import { toTitleCase } from "lib/utils/toTitleCase"
 import { orderBy } from "lodash"
 import React from "react"
 import { ArtworkFilterNavigationStack } from "../ArtworkFilter"

@@ -1,3 +1,4 @@
+import { toTitleCase } from "@artsy/to-title-case"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import {
@@ -9,7 +10,6 @@ import {
   ParamDefaultValues,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { toTitleCase } from "lib/utils/toTitleCase"
 import React from "react"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
