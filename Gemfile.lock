@@ -180,6 +180,7 @@ GEM
       xcodeproj (>= 1.13.0, < 2.0.0)
       xcpretty (~> 0.3.0)
       xcpretty-travis-formatter (>= 0.0.3)
+    fastlane-plugin-firebase_app_distribution (0.3.1)
     fastlane-plugin-sentry (1.9.0)
     ffi (1.15.0)
     fourflusher (2.3.1)
@@ -334,6 +335,7 @@ DEPENDENCIES
   dotenv
   down
   fastlane
+  fastlane-plugin-firebase_app_distribution
   fastlane-plugin-sentry
   json
   lowdown
