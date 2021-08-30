@@ -1,6 +1,18 @@
 import { FilterScreen } from "lib/Components/ArtworkFilter"
-import { capitalize, compact, groupBy, isEqual, isUndefined, pick, pickBy, sortBy } from "lodash"
-import { isEmpty } from "lodash"
+import {
+  capitalize,
+  compact,
+  filter,
+  groupBy,
+  isArray,
+  isEmpty,
+  isEqual,
+  isUndefined,
+  pick,
+  pickBy,
+  sortBy,
+  unionBy,
+} from "lodash"
 import { LOCALIZED_UNIT } from "./Filters/helpers"
 
 export enum FilterDisplayName {
@@ -194,6 +206,10 @@ export interface FilterCounts {
   followedArtists: number | null
 }
 
+export type SelectedFiltersCounts = {
+  [Name in FilterParamName | "waysToBuy" | "year"]: number
+}
+
 export const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string | undefined> = {
   ARTIST_NATIONALITY: FilterParamName.artistNationalities,
   ARTIST: "artistIDs",
@@ -250,6 +266,15 @@ const DEFAULT_TAG_ARTWORK_PARAMS = {
   ...DEFAULT_ARTWORKS_PARAMS,
   sort: "-partner_updated_at",
 } as FilterParams
+
+const createdYearsFilterNames = [FilterParamName.earliestCreatedYear, FilterParamName.latestCreatedYear]
+
+const waysToBuyFilterNames = [
+  FilterParamName.waysToBuyBuy,
+  FilterParamName.waysToBuyMakeOffer,
+  FilterParamName.waysToBuyBid,
+  FilterParamName.waysToBuyInquire,
+]
 
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams, filterType: FilterType) => {
   const groupedFilters = groupBy(appliedFilters, "paramName")
@@ -340,7 +365,7 @@ export const selectedOption = ({
   }
 
   if (filterScreen === "categories") {
-    const selectedCategoriesValues = selectedOptions.find((filter) => filter.paramName === FilterParamName.categories)
+    const selectedCategoriesValues = selectedOptions.find(({ paramName }) => paramName === FilterParamName.categories)
       ?.paramValue as string[] | undefined
 
     if (selectedCategoriesValues?.length) {
@@ -354,7 +379,7 @@ export const selectedOption = ({
   }
 
   if (filterScreen === "sizes") {
-    const selectedSizesValues = selectedOptions.find((filter) => filter.paramName === FilterParamName.sizes)
+    const selectedSizesValues = selectedOptions.find(({ paramName }) => paramName === FilterParamName.sizes)
       ?.paramValue as string[] | undefined
     if (selectedSizesValues?.length) {
       const numSelectedSizesToDisplay = selectedSizesValues.length
@@ -370,7 +395,7 @@ export const selectedOption = ({
   // selected option display text for auction house filter
   if (filterScreen === "organizations") {
     const selectedOrganizationsValues = selectedOptions.find(
-      (filter) => filter.paramName === FilterParamName.organizations
+      ({ paramName }) => paramName === FilterParamName.organizations
     )?.paramValue as string[] | undefined
     if (selectedOrganizationsValues?.length) {
       const numSelectedOrganizationsToDisplay = selectedOrganizationsValues.length
@@ -385,10 +410,10 @@ export const selectedOption = ({
 
   if (filterScreen === "year") {
     const selectedEarliestCreatedYear = selectedOptions.find(
-      (filter) => filter.paramName === FilterParamName.earliestCreatedYear
+      ({ paramName }) => paramName === FilterParamName.earliestCreatedYear
     )?.paramValue
     const selectedLatestCreatedYear = selectedOptions.find(
-      (filter) => filter.paramName === FilterParamName.latestCreatedYear
+      ({ paramName }) => paramName === FilterParamName.latestCreatedYear
     )?.paramValue
 
     if (selectedEarliestCreatedYear && selectedLatestCreatedYear) {
@@ -399,13 +424,6 @@ export const selectedOption = ({
 
   if (filterScreen === "waysToBuy") {
     const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
-
-    const waysToBuyFilterNames = [
-      FilterParamName.waysToBuyBuy,
-      FilterParamName.waysToBuyMakeOffer,
-      FilterParamName.waysToBuyBid,
-      FilterParamName.waysToBuyInquire,
-    ]
 
     const waysToBuyOptions = multiSelectedOptions
       .filter((value) => waysToBuyFilterNames.includes(value.paramName))
@@ -426,7 +444,7 @@ export const selectedOption = ({
     let selectedArtistNames: string[]
 
     if (filterType === "saleArtwork") {
-      const saleArtworksArtistIDs = selectedOptions.find((filter) => filter.paramName === FilterParamName.artistIDs)
+      const saleArtworksArtistIDs = selectedOptions.find(({ paramName }) => paramName === FilterParamName.artistIDs)
       // The user has selected one or more artist ids
       if (saleArtworksArtistIDs && Array.isArray(saleArtworksArtistIDs?.paramValue)) {
         const artistIDsAggregation = aggregationForFilter(FilterParamName.artistIDs, aggregations)
@@ -442,7 +460,7 @@ export const selectedOption = ({
     } else {
       selectedArtistNames = selectedOptions
         // Filtering out paramValue with an empty array to remove default option "All"
-        .filter((filter) => filter.paramName === FilterParamName.artistIDs && !isEmpty(filter.paramValue))
+        .filter(({ paramName, paramValue }) => paramName === FilterParamName.artistIDs && !isEmpty(paramValue))
         .map(({ displayText }) => displayText)
     }
 
@@ -600,4 +618,79 @@ export const getParamsForInputByFilterType = (
   })
 
   return allowedParams
+}
+
+export const getUnitedSelectedAndAppliedFilters = ({
+  filterType,
+  selectedFilters,
+  previouslyAppliedFilters,
+}: {
+  filterType: FilterType
+  selectedFilters: FilterArray
+  previouslyAppliedFilters: FilterArray
+}) => {
+  const defaultFilterOptions = {
+    ...defaultCommonFilterOptions,
+    sort: getSortDefaultValueByFilterType(filterType),
+  }
+
+  // replace previously applied options with currently selected options
+  const filtersToUnite = unionBy(selectedFilters, previouslyAppliedFilters, ({ paramValue, paramName }) => {
+    // We don't want to union the artistID params, as each entry corresponds to a
+    // different artist that may be selected. Instead we de-dupe based on the paramValue.
+    if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
+      return paramValue
+    } else {
+      return paramName
+    }
+  })
+
+  const unitedFilters = filter(filtersToUnite, ({ paramName, paramValue }) => {
+    // This logic is specific to filters that allow for multiple options. Right now
+    // it only applies to the artist filter, but this will likely change.
+    if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
+      // See if we have an existing entry in previouslyAppliedFilters
+      const hasExistingPreviouslyAppliedFilter = previouslyAppliedFilters.find(
+        (previouslyAppliedFilter) =>
+          paramName === previouslyAppliedFilter.paramName && paramValue === previouslyAppliedFilter.paramValue
+      )
+
+      const hasExistingSelectedAppliedFilter = selectedFilters.find(
+        (selectedFilter) => paramName === selectedFilter.paramName && paramValue === selectedFilter.paramValue
+      )
+
+      // If so, it means that this filter had been previously applied and is now being de-selected.
+      // We need it to exist in the "selectedFilters" array so that our counts, etc. are correct,
+      // but it's technically de-selected.
+      return !(hasExistingPreviouslyAppliedFilter && hasExistingSelectedAppliedFilter)
+    }
+
+    // The default sorting and lot ascending sorting at the saleArtwork filterType has the same paramValue
+    // with a different displayText, we want to make sure that the user can still switch between the two.
+    if (paramName === FilterParamName.sort && filterType === "saleArtwork") {
+      return true
+    }
+    return !isEqual((defaultFilterOptions as any)[paramName], paramValue)
+  })
+
+  return unitedFilters
+}
+
+export const getSelectedFiltersCounts = (selectedFilters: FilterArray) => {
+  const counts: Partial<SelectedFiltersCounts> = {}
+  selectedFilters.forEach(({ paramName, paramValue }: FilterData) => {
+    if (paramName === FilterParamName.artistIDs) {
+      counts.artistIDs = (counts.artistIDs ?? 0) + 1
+    } else if (waysToBuyFilterNames.includes(paramName)) {
+      counts.waysToBuy = (counts.waysToBuy ?? 0) + 1
+    } else if (createdYearsFilterNames.includes(paramName)) {
+      counts.year = 1
+    } else if (isArray(paramValue)) {
+      counts[paramName] = paramValue.length
+    } else {
+      counts[paramName] = 1
+    }
+  })
+
+  return counts
 }

@@ -1,4 +1,8 @@
-import { Aggregations, FilterArray } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  Aggregations,
+  FilterArray,
+  getUnitedSelectedAndAppliedFilters,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   aggregationsWithFollowedArtists,
   changedFiltersParams,
@@ -6,6 +10,7 @@ import {
   FilterParamName,
   FilterParams,
   getParamsForInputByFilterType,
+  getSelectedFiltersCounts,
   prepareFilterArtworksParamsForInput,
   selectedOption,
 } from "../ArtworkFilterHelpers"
@@ -859,5 +864,483 @@ describe("getParamsForInputByFilterType", () => {
       priceRange: "100-200",
       medium: "*",
     })
+  })
+})
+
+describe("getSelectedFiltersCounts helper", () => {
+  const multiSelectFilters = [
+    {
+      displayText: "Galleries & Institutions",
+      paramName: FilterParamName.partnerIDs,
+      paramValue: ["sugarlift", "ai-bo-gallery", "lilac-gallery"],
+    },
+    {
+      displayText: "Time Period",
+      paramName: FilterParamName.timePeriod,
+      paramValue: ["2000-2009"],
+    },
+    {
+      displayText: "Rarity",
+      paramName: FilterParamName.attributionClass,
+      paramValue: ["unique", "unknown-edition"],
+    },
+    {
+      displayText: "Medium",
+      paramName: FilterParamName.medium,
+      paramValue: ["prints", "design", "installation", "drawing"],
+    },
+    {
+      displayText: "Material",
+      paramName: FilterParamName.materialsTerms,
+      paramValue: ["glass", "wood"],
+    },
+    {
+      displayText: "Nationality & Ethnicity",
+      paramName: FilterParamName.artistNationalities,
+      paramValue: ["british", "japanese"],
+    },
+    {
+      displayText: "Artwork Location",
+      paramName: FilterParamName.locationCities,
+      paramValue: ["new-york", "miami", "harrison", "denver", "greenport"],
+    },
+    {
+      displayText: "Color",
+      paramName: FilterParamName.colors,
+      paramValue: ["yellow", "orange", "red"],
+    },
+  ]
+
+  const multiSelectFiltersExpectedResult = {
+    partnerIDs: 3,
+    majorPeriods: 1,
+    attributionClass: 2,
+    medium: 4,
+    materialsTerms: 2,
+    artistNationalities: 2,
+    locationCities: 5,
+    colors: 3,
+  }
+
+  const singleOptionFilters = [
+    {
+      displayText: "Sort By",
+      paramName: FilterParamName.sort,
+      paramValue: "year",
+    },
+    {
+      displayText: "Price",
+      paramName: FilterParamName.priceRange,
+      paramValue: "10000-50000",
+    },
+    {
+      displayText: "Size",
+      paramName: FilterParamName.dimensionRange,
+      paramValue: "large",
+    },
+  ]
+
+  const singleOptionFiltersExpectedResult = {
+    sort: 1,
+    priceRange: 1,
+    dimensionRange: 1,
+  }
+
+  const waysToBuyFilters = [
+    {
+      displayText: "Ways to Buy",
+      paramName: FilterParamName.waysToBuyMakeOffer,
+      paramValue: true,
+    },
+    {
+      displayText: "Ways to Buy",
+      paramName: FilterParamName.waysToBuyBid,
+      paramValue: true,
+    },
+  ]
+
+  const waysToBuyFiltersExpectedResult = {
+    waysToBuy: 2,
+  }
+
+  const artistsFilters = [
+    {
+      displayText: "Artists",
+      paramName: FilterParamName.artistIDs,
+      paramValue: "alex-katz",
+    },
+    {
+      displayText: "Artists",
+      paramName: FilterParamName.artistIDs,
+      paramValue: "anne-siems",
+    },
+    {
+      displayText: "Artists",
+      paramName: FilterParamName.artistIDs,
+      paramValue: "cat-sirot",
+    },
+    {
+      displayText: "Artists",
+      paramName: FilterParamName.artistIDs,
+      paramValue: "brian-rutenberg",
+    },
+    {
+      displayText: "Artists",
+      paramName: FilterParamName.artistIDs,
+      paramValue: "ceravolo",
+    },
+    {
+      displayText: "Artists",
+      paramName: FilterParamName.artistIDs,
+      paramValue: "andy-warhol",
+    },
+  ]
+
+  const artistsFiltersExpectedResult = {
+    artistIDs: 6,
+  }
+
+  it("returns empty object if empty array is passed", () => {
+    const result = getSelectedFiltersCounts([])
+    expect(result).toEqual({})
+  })
+
+  it("counts multiselect filters correctly", () => {
+    const result = getSelectedFiltersCounts(multiSelectFilters)
+    expect(result).toEqual(multiSelectFiltersExpectedResult)
+  })
+
+  it("counts single option filters correctly", () => {
+    const result = getSelectedFiltersCounts(singleOptionFilters)
+    expect(result).toEqual(singleOptionFiltersExpectedResult)
+  })
+
+  it("counts ways to buy options correctly", () => {
+    const result = getSelectedFiltersCounts(waysToBuyFilters)
+    expect(result).toEqual(waysToBuyFiltersExpectedResult)
+  })
+
+  it("counts artists options correctly", () => {
+    const result = getSelectedFiltersCounts(artistsFilters)
+    expect(result).toEqual(artistsFiltersExpectedResult)
+  })
+
+  it("counts all filters correctly", () => {
+    const result = getSelectedFiltersCounts([
+      ...multiSelectFilters,
+      ...singleOptionFilters,
+      ...waysToBuyFilters,
+      ...artistsFilters,
+    ])
+    expect(result).toEqual({
+      ...multiSelectFiltersExpectedResult,
+      ...singleOptionFiltersExpectedResult,
+      ...waysToBuyFiltersExpectedResult,
+      ...artistsFiltersExpectedResult,
+    })
+  })
+})
+
+describe("getUnitedSelectedAndAppliedFilters helper", () => {
+  const filters1 = [
+    {
+      displayText: "Color",
+      paramName: FilterParamName.colors,
+      paramValue: ["green", "blue"],
+    },
+    {
+      displayText: "Price",
+      paramName: FilterParamName.priceRange,
+      paramValue: "*-1000",
+    },
+  ]
+
+  const filters2 = [
+    {
+      displayText: "Medium",
+      paramName: FilterParamName.medium,
+      paramValue: ["perfomance-art"],
+    },
+  ]
+
+  it("returns empty array if both selected and applied filters are passed empty", () => {
+    const result = getUnitedSelectedAndAppliedFilters({
+      filterType: "artwork",
+      selectedFilters: [],
+      previouslyAppliedFilters: [],
+    })
+    expect(result).toEqual([])
+  })
+
+  it("returns selected filters if applied filters are passed empty", () => {
+    const result = getUnitedSelectedAndAppliedFilters({
+      filterType: "artwork",
+      selectedFilters: filters1,
+      previouslyAppliedFilters: [],
+    })
+    expect(result).toEqual(filters1)
+  })
+
+  it("returns applied filters if selected filters are passed empty", () => {
+    const result = getUnitedSelectedAndAppliedFilters({
+      filterType: "artwork",
+      selectedFilters: [],
+      previouslyAppliedFilters: filters2,
+    })
+    expect(result).toEqual(filters2)
+  })
+
+  it("unites selected and applied filters if they don't cross", () => {
+    const result = getUnitedSelectedAndAppliedFilters({
+      filterType: "artwork",
+      selectedFilters: filters1,
+      previouslyAppliedFilters: filters2,
+    })
+    expect(result).toEqual([...filters1, ...filters2])
+  })
+
+  it("returns array containing newly selected filters if those filters are already applied", () => {
+    const previouslyAppliedFilters = [
+      {
+        displayText: "Rarity",
+        paramName: FilterParamName.attributionClass,
+        paramValue: ["open-edition"],
+      },
+      {
+        displayText: "Price",
+        paramName: FilterParamName.priceRange,
+        paramValue: "1000-5000",
+      },
+      {
+        displayText: "Material",
+        paramName: FilterParamName.materialsTerms,
+        paramValue: ["glass", "oil"],
+      },
+    ]
+
+    const newlySelectedFilters = [
+      {
+        displayText: "Price",
+        paramName: FilterParamName.priceRange,
+        paramValue: "50000-*",
+      },
+      {
+        displayText: "Material",
+        paramName: FilterParamName.materialsTerms,
+        paramValue: ["paper", "oil"],
+      },
+    ]
+    const result = getUnitedSelectedAndAppliedFilters({
+      filterType: "artwork",
+      selectedFilters: newlySelectedFilters,
+      previouslyAppliedFilters,
+    })
+
+    expect(result).toEqual(
+      expect.arrayContaining([
+        {
+          displayText: "Rarity",
+          paramName: FilterParamName.attributionClass,
+          paramValue: ["open-edition"],
+        },
+        {
+          displayText: "Price",
+          paramName: FilterParamName.priceRange,
+          paramValue: "50000-*",
+        },
+        {
+          displayText: "Material",
+          paramName: FilterParamName.materialsTerms,
+          paramValue: ["paper", "oil"],
+        },
+      ])
+    )
+  })
+
+  it("returns only ways to buy filter options that weren't unselected", () => {
+    const previouslyAppliedFilters = [
+      {
+        displayText: "Ways to Buy",
+        paramName: FilterParamName.waysToBuyMakeOffer,
+        paramValue: true,
+      },
+      {
+        displayText: "Ways to Buy",
+        paramName: FilterParamName.waysToBuyBuy,
+        paramValue: true,
+      },
+      {
+        displayText: "Ways to Buy",
+        paramName: FilterParamName.waysToBuyBid,
+        paramValue: true,
+      },
+    ]
+
+    const newlySelectedFilters = [
+      {
+        displayText: "Ways to Buy",
+        paramName: FilterParamName.waysToBuyBuy,
+        paramValue: true,
+      },
+      {
+        displayText: "Ways to Buy",
+        paramName: FilterParamName.waysToBuyBid,
+        paramValue: true,
+      },
+      {
+        displayText: "Ways to Buy",
+        paramName: FilterParamName.waysToBuyInquire,
+        paramValue: true,
+      },
+    ]
+
+    const result = getUnitedSelectedAndAppliedFilters({
+      filterType: "artwork",
+      selectedFilters: newlySelectedFilters,
+      previouslyAppliedFilters,
+    })
+
+    expect(result).toEqual(
+      expect.arrayContaining([
+        {
+          displayText: "Ways to Buy",
+          paramName: FilterParamName.waysToBuyMakeOffer,
+          paramValue: true,
+        },
+        {
+          displayText: "Ways to Buy",
+          paramName: FilterParamName.waysToBuyInquire,
+          paramValue: true,
+        },
+      ])
+    )
+  })
+
+  it("returns only artists options that weren't unselected", () => {
+    const previouslyAppliedFilters = [
+      {
+        displayText: "Artists",
+        paramName: FilterParamName.artistIDs,
+        paramValue: "alex-katz",
+      },
+      {
+        displayText: "Artists",
+        paramName: FilterParamName.artistIDs,
+        paramValue: "anne-siems",
+      },
+      {
+        displayText: "Artists",
+        paramName: FilterParamName.artistIDs,
+        paramValue: "cat-sirot",
+      },
+      {
+        displayText: "Artists",
+        paramName: FilterParamName.artistIDs,
+        paramValue: "ceravolo",
+      },
+    ]
+
+    const newlySelectedFilters = [
+      {
+        displayText: "Artists",
+        paramName: FilterParamName.artistIDs,
+        paramValue: "anne-siems",
+      },
+      {
+        displayText: "Artists",
+        paramName: FilterParamName.artistIDs,
+        paramValue: "brian-rutenberg",
+      },
+      {
+        displayText: "Artists",
+        paramName: FilterParamName.artistIDs,
+        paramValue: "ceravolo",
+      },
+    ]
+
+    const result = getUnitedSelectedAndAppliedFilters({
+      filterType: "artwork",
+      selectedFilters: newlySelectedFilters,
+      previouslyAppliedFilters,
+    })
+
+    expect(result).toEqual(
+      expect.arrayContaining([
+        {
+          displayText: "Artists",
+          paramName: FilterParamName.artistIDs,
+          paramValue: "alex-katz",
+        },
+        {
+          displayText: "Artists",
+          paramName: FilterParamName.artistIDs,
+          paramValue: "brian-rutenberg",
+        },
+        {
+          displayText: "Artists",
+          paramName: FilterParamName.artistIDs,
+          paramValue: "cat-sirot",
+        },
+      ])
+    )
+  })
+
+  it("omits filters with default values", () => {
+    const previouslyAppliedFilters = [
+      {
+        displayText: "Price",
+        paramName: FilterParamName.priceRange,
+        paramValue: "50000-*",
+      },
+      {
+        displayText: "Size",
+        paramName: FilterParamName.dimensionRange,
+        paramValue: "small",
+      },
+    ]
+
+    const newlySelectedFilters = [
+      {
+        displayText: "Medium",
+        paramName: FilterParamName.additionalGeneIDs,
+        paramValue: ["prints"],
+      },
+      {
+        displayText: "Price",
+        paramName: FilterParamName.priceRange,
+        paramValue: "*-*",
+      },
+      {
+        displayText: "Size",
+        paramName: FilterParamName.dimensionRange,
+        paramValue: "*-*",
+      },
+      {
+        displayText: "Color",
+        paramName: FilterParamName.colors,
+        paramValue: ["blue", "brown"],
+      },
+    ]
+
+    const result = getUnitedSelectedAndAppliedFilters({
+      filterType: "artwork",
+      selectedFilters: newlySelectedFilters,
+      previouslyAppliedFilters,
+    })
+
+    expect(result).toEqual(
+      expect.arrayContaining([
+        {
+          displayText: "Medium",
+          paramName: FilterParamName.additionalGeneIDs,
+          paramValue: ["prints"],
+        },
+        {
+          displayText: "Color",
+          paramName: FilterParamName.colors,
+          paramValue: ["blue", "brown"],
+        },
+      ])
+    )
   })
 })
