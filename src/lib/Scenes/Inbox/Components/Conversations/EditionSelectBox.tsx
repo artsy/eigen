@@ -1,5 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
-import { BorderBox, Flex, Text, Touchable, useColor } from "palette"
+import { BorderBox, Flex, Text, Touchable } from "palette"
+import { RadioButton } from "palette/elements/Radio"
 import React from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
@@ -13,36 +14,6 @@ const UnavailableIndicator = styled(View)`
   background-color: ${themeGet("colors.red100")};
   margin-right: 6px;
 `
-
-export const RadioButton: React.FC<{ selected: boolean }> = (props) => {
-  const color = useColor()
-  const { selected } = props
-  return (
-    <View
-      style={{
-        height: 20,
-        width: 20,
-        borderRadius: 10,
-        borderWidth: 2,
-        borderColor: selected ? color("black100") : color("black10"),
-        backgroundColor: selected ? color("black100") : color("white100"),
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      {selected ? (
-        <View
-          style={{
-            height: 10,
-            width: 10,
-            borderRadius: 5,
-            backgroundColor: color("white100"),
-          }}
-        />
-      ) : null}
-    </View>
-  )
-}
 
 interface Props {
   edition: NonNullable<NonNullable<MakeOfferModal_artwork["editionSets"]>[number]>
