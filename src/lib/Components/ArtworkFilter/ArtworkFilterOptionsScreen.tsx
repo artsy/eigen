@@ -4,6 +4,8 @@ import {
   FilterDisplayName,
   filterKeyFromAggregation,
   FilterParamName,
+  getSelectedFiltersCounts,
+  getUnitedSelectedAndAppliedFilters,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { selectedOption } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
@@ -11,8 +13,8 @@ import { TouchableRow } from "lib/Components/TouchableRow"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
-import { ArrowRightIcon, CloseIcon, FilterIcon, Flex, Sans, Separator, Text, useSpace } from "palette"
-import React from "react"
+import { ArrowRightIcon, bullet, CloseIcon, FilterIcon, Flex, Sans, Separator, Text, useSpace } from "palette"
+import React, { useMemo } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -70,6 +72,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const previouslyAppliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.previouslyAppliedFilters)
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
   const aggregationsState = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
@@ -79,6 +82,16 @@ export const ArtworkFilterOptionsScreen: React.FC<
   )
 
   const selectedOptions = useSelectedOptionsDisplay()
+
+  const selectedFiltersCounts = useMemo(() => {
+    const unitedFilters = getUnitedSelectedAndAppliedFilters({
+      filterType: filterTypeState,
+      selectedFilters: selectedFiltersState,
+      previouslyAppliedFilters: previouslyAppliedFiltersState,
+    })
+    const counts = getSelectedFiltersCounts(unitedFilters)
+    return counts
+  }, [filterTypeState, selectedFiltersState, previouslyAppliedFiltersState])
 
   const navigateToNextFilterScreen = (screenName: keyof ArtworkFilterNavigationStack) => {
     navigation.navigate(screenName)
@@ -182,12 +195,16 @@ export const ArtworkFilterOptionsScreen: React.FC<
           const currentOption =
             selectedCurrentOption === "All" || selectedCurrentOption === "Default" ? null : selectedCurrentOption
 
+          const selectedFiltersCount = selectedFiltersCounts[item.filterType as FilterParamName]
+
           return (
             <TouchableRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
               <OptionListItem>
                 <Flex p={2} pr={1.5} flexDirection="row" justifyContent="space-between" flexGrow={1}>
                   <Flex flex={1}>
-                    <Text variant="caption">{item.displayText}</Text>
+                    <Text variant="caption">
+                      {item.displayText} {selectedFiltersCount ? `${bullet} ${selectedFiltersCount}` : ""}
+                    </Text>
                   </Flex>
 
                   <Flex flexDirection="row" alignItems="center" justifyContent="flex-end" flex={1}>
