@@ -7,12 +7,14 @@ import { SearchInput as SearchBox } from "lib/Components/SearchInput"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
+import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
 import { Flex, Pill, Spacer, Text, Touchable, useColor } from "palette"
 import React, { useRef, useState } from "react"
 import { connectHighlight, connectInfiniteHits, connectSearchBox, InstantSearch } from "react-instantsearch-native"
 import { FlatList, Platform, ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components"
 import { AutosuggestResults } from "../Search/AutosuggestResults"
 import { CityGuideCTA } from "../Search/CityGuideCTA"
@@ -26,6 +28,7 @@ interface SearchInputProps {
 }
 
 const SearchInput2: React.FC<SearchInputProps> = ({ currentRefinement, refine, placeholder }) => {
+  const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
   return (
     <SearchBox
@@ -34,6 +37,21 @@ const SearchInput2: React.FC<SearchInputProps> = ({ currentRefinement, refine, p
       placeholder={placeholder}
       onChangeText={(queryText) => {
         refine(queryText)
+        trackEvent({
+          action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
+          query: queryText,
+        })
+      }}
+      onFocus={() => {
+        trackEvent({
+          action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
+          currentRefinement,
+        })
+      }}
+      onClear={() => {
+        trackEvent({
+          action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
+        })
       }}
     />
   )
