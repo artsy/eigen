@@ -94,7 +94,15 @@ export const ArtworkFiltersModel: ArtworkFiltersModel = {
         filtersToSelect = [...state.selectedFilters, payload]
       }
     } else {
-      filtersToSelect = unionBy([payload], state.selectedFilters, "paramName")
+      filtersToSelect = unionBy([payload], state.selectedFilters, ({ paramValue, paramName }) => {
+        // We don't want to union the artistID params, as each entry corresponds to a
+        // different artist that may be selected. Instead we de-dupe based on the paramValue.
+        if (paramName === FilterParamName.artistIDs && state.filterType === "artwork") {
+          return paramValue
+        } else {
+          return paramName
+        }
+      })
     }
 
     // Then we have to remove any "invalid" choices.
