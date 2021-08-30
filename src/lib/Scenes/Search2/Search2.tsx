@@ -14,16 +14,24 @@ import { connectHighlight, connectInfiniteHits, connectSearchBox, InstantSearch 
 import { FlatList, Platform, ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components"
+import { AutosuggestResults } from "../Search/AutosuggestResults"
 import { CityGuideCTA } from "../Search/CityGuideCTA"
+import { RecentSearches } from "../Search/RecentSearches"
+import { SearchContext, useSearchProviderValues } from "../Search/SearchContext"
 
 interface SearchInputProps {
   refine: (value: string) => any
+  placeholder: string
+  currentRefinement: string
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({ refine }) => {
+const SearchInput2: React.FC<SearchInputProps> = ({ currentRefinement, refine, placeholder }) => {
+  const searchProviderValues = useSearchProviderValues(currentRefinement)
   return (
     <SearchBox
-      placeholder="Search artists"
+      ref={searchProviderValues.inputRef}
+      enableCancelButton
+      placeholder={placeholder}
       onChangeText={(queryText) => {
         refine(queryText)
       }}
@@ -97,7 +105,7 @@ const SearchResults: React.FC<{ hits: ArtistSearchResult[] }> = ({ hits }) => {
   )
 }
 
-const SearchInputContainer = connectSearchBox(SearchInput)
+const SearchInputContainer = connectSearchBox(SearchInput2)
 const SearchResultsContainer = connectInfiniteHits(SearchResults)
 
 interface SearchState {
@@ -108,7 +116,8 @@ interface SearchState {
 export const Search2: React.FC<Search2QueryResponse> = (props) => {
   const color = useColor()
   const [searchState, setSearchState] = useState<SearchState>({})
-
+  const [algoliaIndex, _setAlgoliaIndex] = useState("")
+  const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
   const { system } = props
 
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
@@ -119,27 +128,42 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
   }
 
   return (
-    <ArtsyKeyboardAvoidingView>
-      <InstantSearch
-        searchClient={searchClient}
-        indexName="Artist_staging"
-        searchState={searchState}
-        onSearchStateChange={setSearchState}
-      >
-        <Flex p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
-          <SearchInputContainer />
-        </Flex>
-        {!!searchState?.query?.length && searchState?.query?.length >= 2 ? (
-          <SearchResultsContainer />
-        ) : (
-          <Scrollable>
-            <Spacer mb={3} />
-            {!isPad() && Platform.OS === "ios" ? <CityGuideCTA /> : null}
-            <Spacer mb="40px" />
-          </Scrollable>
-        )}
-      </InstantSearch>
-    </ArtsyKeyboardAvoidingView>
+    <SearchContext.Provider value={searchProviderValues}>
+      <ArtsyKeyboardAvoidingView>
+        <InstantSearch
+          searchClient={searchClient}
+          indexName="Artist_staging"
+          searchState={searchState}
+          onSearchStateChange={setSearchState}
+        >
+          <Flex p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
+            <SearchInputContainer
+              placeholder={!!algoliaIndex ? "Search Artists" : "Search artists, artworks, galleries, etc"}
+            />
+          </Flex>
+          {!!algoliaIndex ? (
+            !!searchState?.query?.length && searchState?.query?.length >= 2 ? (
+              <SearchResultsContainer />
+            ) : (
+              <Scrollable>
+                <Spacer mb={3} />
+                {!isPad() && Platform.OS === "ios" && <CityGuideCTA />}
+                <Spacer mb="40px" />
+              </Scrollable>
+            )
+          ) : !!searchState?.query?.length && searchState?.query.length >= 2 ? (
+            <AutosuggestResults query={searchState.query} />
+          ) : (
+            <Scrollable>
+              <RecentSearches />
+              <Spacer mb={3} />
+              {!isPad() && Platform.OS === "ios" && <CityGuideCTA />}
+              <Spacer mb="40px" />
+            </Scrollable>
+          )}
+        </InstantSearch>
+      </ArtsyKeyboardAvoidingView>
+    </SearchContext.Provider>
   )
 }
 
