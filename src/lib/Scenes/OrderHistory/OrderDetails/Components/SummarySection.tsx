@@ -1,4 +1,5 @@
 import { SummarySection_section } from "__generated__/SummarySection_section.graphql"
+import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -8,14 +9,16 @@ interface Props {
 }
 
 export const SummarySection: React.FC<Props> = ({ section }) => {
-  const { buyerTotal, taxTotal, shippingTotal, totalListPrice } = section
+  const { buyerTotal, taxTotal, shippingTotal, totalListPrice, lineItems } = section
+  const { selectedShippingQuote } = extractNodes(lineItems)?.[0]
+  const shippingName = selectedShippingQuote?.displayName ? `${selectedShippingQuote.displayName} delivery` : "Shipping"
 
   return (
     <Flex flexDirection="row" justifyContent="space-between">
       <Flex>
         <Text variant="text">Price</Text>
-        <Text variant="text" mt={0.5}>
-          Shipping
+        <Text variant="text" mt={0.5} testID="shippingTotalLabel">
+          {shippingName}
         </Text>
         <Text mt={0.5} variant="text">
           Tax
@@ -49,6 +52,15 @@ export const SummarySectionFragmentContainer = createFragmentContainer(SummarySe
       taxTotal(precision: 2)
       shippingTotal(precision: 2)
       totalListPrice(precision: 2)
+      lineItems(first: 1) {
+        edges {
+          node {
+            selectedShippingQuote {
+              displayName
+            }
+          }
+        }
+      }
     }
   `,
 })
