@@ -420,10 +420,10 @@
 		CB6CE8F224F9684400ED2843 /* Track@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EE24F9684400ED2843 /* Track@2x.png */; };
 		CB879D0C180746C900E2D8EC /* AuctionLot.m in Sources */ = {isa = PBXBuildFile; fileRef = CB879D0B180746C900E2D8EC /* AuctionLot.m */; };
 		CB8FF7C226C45CFC00022DA3 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49473F2C17BEDE1F004BF082 /* AdSupport.framework */; };
-		CB8FF7C426C45CFC00022DA3 /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB8FF7C326C45CFC00022DA3 /* AdServices.framework */; };
+		CB8FF7C426C45CFC00022DA3 /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB8FF7C326C45CFC00022DA3 /* AdServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		CB8FF7C526C45D0B00022DA3 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49473F2E17BEDFFD004BF082 /* iAd.framework */; };
 		CB8FF7C726C45D2200022DA3 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB8FF7C626C45D2100022DA3 /* StoreKit.framework */; };
-		CB8FF7C926C45D3400022DA3 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB8FF7C826C45D3400022DA3 /* AppTrackingTransparency.framework */; };
+		CB8FF7C926C45D3400022DA3 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB8FF7C826C45D3400022DA3 /* AppTrackingTransparency.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		CB9E244117CBC36F00773A9A /* ARAuthProviders.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9E244017CBC36F00773A9A /* ARAuthProviders.m */; };
 		CBB469D0181F1F1200B5692B /* Bid.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB469CF181F1F1200B5692B /* Bid.m */; };
 		CBF74085250ACDC5004048D3 /* ARAppDelegate+Echo.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF74084250ACDC5004048D3 /* ARAppDelegate+Echo.m */; };
