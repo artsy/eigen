@@ -21,6 +21,7 @@ function loadStories() {
   require("../palette/elements/Text/TextV1.stories")
   require("../palette/elements/Text/TextV2.stories")
   require("../palette/elements/Avatar/Avatar.stories")
+  require("../palette/elements/Radio/RadioButton.stories")
 }
 
 const stories = [
@@ -41,6 +42,7 @@ const stories = [
   "../palette/elements/Text/TextV1.stories",
   "../palette/elements/Text/TextV2.stories",
   "../palette/elements/Avatar/Avatar.stories",
+  "../palette/elements/RadioButton/RadioButton.stories"
 ]
 
 module.exports = {
