@@ -5,22 +5,22 @@ import { Sans, Text, useTheme } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { SavedSearchAlertForm } from "./SavedSearchAlertForm"
-import { SavedSearchAlertFormPropsBase } from "./SavedSearchAlertModel"
+import { SavedSearchAlertFormPropsBase, SavedSearchAlertMutationResult } from "./SavedSearchAlertModel"
 
 export interface CreateSavedSearchAlertProps extends SavedSearchAlertFormPropsBase {
   visible: boolean
   filters: FilterData[]
   aggregations: Aggregations
   onClosePress: () => void
-  onComplete: () => void
+  onComplete: (response: SavedSearchAlertMutationResult) => void
 }
 
 export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (props) => {
   const { visible, filters, aggregations, onClosePress, onComplete, ...other } = props
   const { space } = useTheme()
 
-  const handleComplete = async () => {
-    onComplete()
+  const handleComplete = async (result: SavedSearchAlertMutationResult) => {
+    onComplete(result)
   }
 
   return (
