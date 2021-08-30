@@ -10,3 +10,7 @@ export interface SavedSearchAlertFormPropsBase {
   artistId: string
   artistName: string
 }
+
+export interface SavedSearchAlertMutationResult {
+  id: string
+}
