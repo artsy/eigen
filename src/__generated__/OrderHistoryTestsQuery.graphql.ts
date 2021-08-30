@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash be1c7bd18bc109ca30f15311a2738e24 */
+/* @relayHash 26afedc52667307b8828d051a8c6ce15 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -40,6 +40,11 @@ fragment OrderHistoryRow_order on CommerceOrder {
   lineItems(first: 1) {
     edges {
       node {
+        shipment {
+          trackingUrl
+          trackingNumber
+          id
+        }
         artwork {
           image {
             resized(width: 55) {
@@ -302,6 +307,32 @@ return {
                                   {
                                     "alias": null,
                                     "args": null,
+                                    "concreteType": "CommerceShipment",
+                                    "kind": "LinkedField",
+                                    "name": "shipment",
+                                    "plural": false,
+                                    "selections": [
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "kind": "ScalarField",
+                                        "name": "trackingUrl",
+                                        "storageKey": null
+                                      },
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "kind": "ScalarField",
+                                        "name": "trackingNumber",
+                                        "storageKey": null
+                                      },
+                                      (v3/*: any*/)
+                                    ],
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
                                     "concreteType": "Artwork",
                                     "kind": "LinkedField",
                                     "name": "artwork",
@@ -490,7 +521,7 @@ return {
     ]
   },
   "params": {
-    "id": "be1c7bd18bc109ca30f15311a2738e24",
+    "id": "26afedc52667307b8828d051a8c6ce15",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -596,6 +627,15 @@ return {
         "me.orders.edges.node.lineItems.edges.node.fulfillments.edges.node.id": (v4/*: any*/),
         "me.orders.edges.node.lineItems.edges.node.fulfillments.edges.node.trackingId": (v6/*: any*/),
         "me.orders.edges.node.lineItems.edges.node.id": (v4/*: any*/),
+        "me.orders.edges.node.lineItems.edges.node.shipment": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceShipment"
+        },
+        "me.orders.edges.node.lineItems.edges.node.shipment.id": (v4/*: any*/),
+        "me.orders.edges.node.lineItems.edges.node.shipment.trackingNumber": (v6/*: any*/),
+        "me.orders.edges.node.lineItems.edges.node.shipment.trackingUrl": (v6/*: any*/),
         "me.orders.edges.node.state": {
           "enumValues": [
             "ABANDONED",
