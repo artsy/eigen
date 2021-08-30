@@ -8,7 +8,7 @@ import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
-import { Flex, Spacer, Text, Touchable, useColor } from "palette"
+import { Flex, Pill, Spacer, Text, Touchable, useColor } from "palette"
 import React, { useRef, useState } from "react"
 import { connectHighlight, connectInfiniteHits, connectSearchBox, InstantSearch } from "react-instantsearch-native"
 import { FlatList, Platform, ScrollView } from "react-native"
@@ -116,7 +116,7 @@ interface SearchState {
 export const Search2: React.FC<Search2QueryResponse> = (props) => {
   const color = useColor()
   const [searchState, setSearchState] = useState<SearchState>({})
-  const [algoliaIndex, _setAlgoliaIndex] = useState("")
+  const [selectedAlgoliaIndex, setSelectedAlgoliaIndex] = useState("")
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
   const { system } = props
 
@@ -127,6 +127,11 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
     return null
   }
 
+  const renderResults = () =>
+    !!selectedAlgoliaIndex ? <SearchResultsContainer /> : <AutosuggestResults query={searchState.query!} />
+
+  const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 2
+
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <ArtsyKeyboardAvoidingView>
@@ -136,23 +141,28 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
           searchState={searchState}
           onSearchStateChange={setSearchState}
         >
-          <Flex p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
+          <Flex p={2} pb={1}>
             <SearchInputContainer
-              placeholder={!!algoliaIndex ? "Search Artists" : "Search artists, artworks, galleries, etc"}
+              placeholder={!!selectedAlgoliaIndex ? "Search Artists" : "Search artists, artworks, galleries, etc"}
             />
           </Flex>
-          {!!algoliaIndex ? (
-            !!searchState?.query?.length && searchState?.query?.length >= 2 ? (
-              <SearchResultsContainer />
-            ) : (
-              <Scrollable>
-                <Spacer mb={3} />
-                {!isPad() && Platform.OS === "ios" && <CityGuideCTA />}
-                <Spacer mb="40px" />
-              </Scrollable>
-            )
-          ) : !!searchState?.query?.length && searchState?.query.length >= 2 ? (
-            <AutosuggestResults query={searchState.query} />
+
+          {!!shouldStartQuering ? (
+            <>
+              {/* This will change to render dynamically all the index labels */}
+              <Flex p={2} pb={1} flexDirection="row">
+                <Pill
+                  style={{
+                    borderRadius: 50,
+                    borderColor: selectedAlgoliaIndex === "Artist" ? color("black60") : color("black10"),
+                  }}
+                  onPress={() => setSelectedAlgoliaIndex(selectedAlgoliaIndex === "Artist" ? "" : "Artist")}
+                >
+                  Artist
+                </Pill>
+              </Flex>
+              {renderResults()}
+            </>
           ) : (
             <Scrollable>
               <RecentSearches />
