@@ -223,7 +223,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-profile/saved-search-alerts", "SavedSearchAlertsList"),
     new RouteMatcher("/my-profile/saved-search-alerts/:savedSearchAlertId", "EditSavedSearchAlert"),
     unsafe_getFeatureFlag("AROptionsUseReactNativeWebView")
-      ? webViewRoute("/orders/:orderID", { mimicBrowserBackButton: false })
+      ? webViewRoute("/orders/:orderID", { mimicBrowserBackButton: true, useRightCloseButton: true })
       : new RouteMatcher("/orders/:orderID", "Checkout"),
     __DEV__ && new RouteMatcher("/storybook", "Storybook"),
 
