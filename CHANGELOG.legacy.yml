@@ -4,7 +4,6 @@ upcoming:
   version: 6.10.1
   date: TBD
   dev:
-    - Add navigate back in BNMO - alexj105
     - Add new adress form - alexj105
     - Add apple authentication - dzmitry
     - Add google authentication - dzmitry
