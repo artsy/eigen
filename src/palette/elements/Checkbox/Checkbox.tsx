@@ -1,3 +1,4 @@
+import { Color } from "@artsy/palette-tokens/dist/themes/v3"
 import { themeGet } from "@styled-system/theme-get"
 import { Text, useColor } from "palette"
 import React, { useState } from "react"
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
 
 interface CheckMarkProps {
   size: number
+  color?: Color
 }
 
 // This component represents the √ mark in CSS. We are not using styled-system since it's easier to specify raw CSS
@@ -129,9 +131,9 @@ export const CheckMark = styled.View.attrs<CheckMarkProps>({})`
   top: -12%;
   width: ${(props) => props.size * 0.625};
   height: ${(props) => props.size * 0.3125};
-  border-bottom-color: white;
+  border-bottom-color: ${(props) => (props.color ? themeGet(props.color) : `white`)};
   border-bottom-width: 2px;
-  border-left-color: white;
+  border-left-color: ${(props) => (props.color ? themeGet(props.color) : `white`)};
   border-left-width: 2px;
 `
 
