@@ -35,7 +35,7 @@ export const ClosedLotStanding = ({
   inActiveSale?: boolean
 }) => {
   const sale = saleArtwork?.sale!
-  const sellingPrice = saleArtwork.lotState?.sellingPrice || saleArtwork.estimate
+  const sellingPrice = saleArtwork.lotState?.sellingPrice?.display || saleArtwork.estimate
   const subtitle = withTimelyInfo ? saleClosedMessage(sale) : undefined
 
   const result: BidderResult =
@@ -67,7 +67,7 @@ export const ClosedLotStanding = ({
     <TouchableOpacity onPress={() => handleLotTap()} style={{ marginHorizontal: 0, width: "100%" }}>
       <Lot saleArtwork={saleArtwork!} subtitle={subtitle} ArtworkBadge={Badge}>
         <Flex flexDirection="row">
-          <Text variant="caption">{sellingPrice?.display}</Text>
+          <Text variant="caption">{sellingPrice}</Text>
         </Flex>
         <Flex flexDirection="row" alignItems="center">
           <Result />
