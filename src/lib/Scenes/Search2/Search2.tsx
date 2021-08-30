@@ -27,7 +27,7 @@ interface SearchInputProps {
   currentRefinement: string
 }
 
-const SearchInput2: React.FC<SearchInputProps> = ({ currentRefinement, refine, placeholder }) => {
+const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, refine, placeholder }) => {
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
   return (
@@ -123,7 +123,7 @@ const SearchResults: React.FC<{ hits: ArtistSearchResult[] }> = ({ hits }) => {
   )
 }
 
-const SearchInputContainer = connectSearchBox(SearchInput2)
+const SearchInputContainer = connectSearchBox(SearchInput)
 const SearchResultsContainer = connectInfiniteHits(SearchResults)
 
 interface SearchState {
@@ -176,7 +176,7 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
                   }}
                   onPress={() => setSelectedAlgoliaIndex(selectedAlgoliaIndex === "Artist" ? "" : "Artist")}
                 >
-                  Artist
+                  Artists
                 </Pill>
               </Flex>
               {renderResults()}
