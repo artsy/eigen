@@ -72,8 +72,14 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
       addressId,
       () => {
         toast.show("Address successfully deleted", "top")
-
-        relay.refetch({})
+        relay.refetch(
+          {},
+          { first: NUM_ADDRESSES_TO_FETCH },
+          () => {
+            setIsRefreshing(false)
+          },
+          { force: true }
+        )
       },
       (message: string) => captureMessage(message)
     )
@@ -91,7 +97,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
         }}
         renderItem={({ item }) => (
           <>
-            <Flex mx={2}>
+            <Flex testID="addressItem" mx={2}>
               <Card py={2} px={16} isDefault={item.isDefault}>
                 <Text fontSize={16} lineHeight={24}>
                   {item.name}
