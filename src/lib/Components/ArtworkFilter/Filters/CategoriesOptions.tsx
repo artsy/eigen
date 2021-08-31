@@ -1,10 +1,9 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { xor } from "lodash"
-import React, { useState } from "react"
+import React from "react"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
+import { useMultiSelect } from "./useMultiSelect"
 
 interface ArtistIDsArtworksOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "CategoriesOptionsScreen"> {}
@@ -43,48 +42,18 @@ export const CATEGORIES_OPTIONS: FilterData[] = [
 ]
 
 export const CategoriesOptionsScreen: React.FC<ArtistIDsArtworksOptionsScreenProps> = ({ navigation }) => {
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+  const { handleSelect, isSelected } = useMultiSelect({
+    options: CATEGORIES_OPTIONS,
+    paramName: FilterParamName.categories,
+  })
 
-  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-  const selectedFilters = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
-
-  const oldAppliedFilterCategories = appliedFilters.find((filter) => filter.paramName === FilterParamName.categories)
-    ?.paramValue as string[] | undefined
-
-  const oldSelectedFilterCategories = selectedFilters.find((filter) => filter.paramName === FilterParamName.categories)
-    ?.paramValue as string[] | undefined
-
-  // Get the Symmetric difference of the previously applied filters and the ones that were selected but not yet applied
-  // Read more about Symmetric difference here https://en.wikipedia.org/wiki/Symmetric_difference
-  const initialState = xor(oldAppliedFilterCategories, oldSelectedFilterCategories)
-  const [selectedOptions, setSelectedOptions] = useState(initialState)
-
-  const toggleOption = (option: FilterData) => {
-    let updatedParamValue: string[]
-
-    // The user is trying to uncheck the category
-    if (typeof option.paramValue === "string" && selectedOptions?.includes(option.paramValue)) {
-      updatedParamValue = selectedOptions.filter((paramValue) => paramValue !== option.paramValue)
-    } else {
-      // The user is trying to check the category
-      updatedParamValue = [...(selectedOptions || []), option.paramValue as string]
-    }
-
-    setSelectedOptions(updatedParamValue)
-
-    selectFiltersAction({
-      displayText: option.displayText,
-      paramValue: updatedParamValue,
-      paramName: FilterParamName.categories,
-    })
-  }
+  const filterOptions = CATEGORIES_OPTIONS.map((option) => ({ ...option, paramValue: isSelected(option) }))
 
   return (
     <MultiSelectCheckOptionScreen
-      onSelect={toggleOption}
+      onSelect={handleSelect}
       filterHeaderText={FilterDisplayName.categories}
-      filterOptions={CATEGORIES_OPTIONS}
-      selectedOptions={selectedOptions}
+      filterOptions={filterOptions}
       navigation={navigation}
     />
   )
