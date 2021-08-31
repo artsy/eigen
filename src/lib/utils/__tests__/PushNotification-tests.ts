@@ -6,7 +6,6 @@ import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { Platform } from "react-native"
 import PushNotification from "react-native-push-notification"
-import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "../AdminMenu"
 import * as Push from "../PushNotification"
 
 Object.defineProperty(Platform, "OS", { get: jest.fn(() => "android") }) // We only use this for android only for now
@@ -36,17 +35,9 @@ describe("Push Notification Tests", () => {
     await AsyncStorage.clear()
   })
 
-  it("Initialises when feature flag is true", async () => {
-    await AsyncStorage.setItem(ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY, "true")
-
+  it("Initialises", async () => {
     await Push.configure()
     expect(PushNotification.configure).toHaveBeenCalled()
-  })
-
-  it("Does not when feature flag is false", async () => {
-    await AsyncStorage.setItem(ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY, "false")
-    await Push.configure()
-    expect(PushNotification.configure).not.toHaveBeenCalled()
   })
 
   describe("saveToken", () => {

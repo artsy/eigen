@@ -7,7 +7,6 @@ import { presentEmailComposer } from "lib/NativeModules/presentEmailComposer"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
-import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "lib/utils/AdminMenu"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -27,7 +26,6 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
   const listRef = useRef<FlatList<any>>(null)
   const recentlySavedArtworks = extractNodes(me?.followsAndSaves?.artworksConnection)
   const shouldDisplayMyCollection = me?.labFeatures?.includes("My Collection")
-  const [shouldDisplayPushNotifications, setShouldDisplayPushNotifications] = useState(Platform.OS === "ios")
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const onRefresh = useCallback(() => {
@@ -36,14 +34,6 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       setIsRefreshing(false)
       listRef.current?.scrollToOffset({ offset: 0, animated: false })
     })
-  }, [])
-
-  useEffect(() => {
-    if (Platform.OS === "android") {
-      AsyncStorage.getItem(ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY).then((canDisplay) => {
-        setShouldDisplayPushNotifications(canDisplay === "true")
-      })
-    }
   }, [])
 
   return (
@@ -68,9 +58,9 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
       <MenuItem title="Account" onPress={() => navigate("my-account")} />
       {!!showOrderHistory && <MenuItem title="Order History" onPress={() => navigate("/orders")} />}
       <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
-      {!!shouldDisplayPushNotifications && (
-        <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />
-      )}
+
+      <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />
+
       {!!showSavedAddresses && (
         <MenuItem title="Saved Addresses" onPress={() => navigate("my-profile/saved-addresses")} />
       )}
