@@ -97,7 +97,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
         }}
         renderItem={({ item }) => (
           <>
-            <Flex testID="addressItem" mx={2}>
+            <Flex mx={2}>
               <Card py={2} px={16} isDefault={item.isDefault}>
                 <Text fontSize={16} lineHeight={24}>
                   {item.name}
