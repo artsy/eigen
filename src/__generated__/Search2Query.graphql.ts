@@ -8,8 +8,8 @@ export type Search2QueryVariables = {};
 export type Search2QueryResponse = {
     readonly system: {
         readonly algolia: {
-            readonly appID: string | null;
-            readonly apiKey: string | null;
+            readonly appID: string;
+            readonly apiKey: string;
         } | null;
     } | null;
 };
