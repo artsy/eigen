@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@4.5.1
+  node: circleci/node@4.7.0
   queue: eddiewebb/queue@1.0.110
   horizon: artsy/release@0.0.1
 
@@ -24,10 +24,11 @@ commands:
             set +e
             touch $BASH_ENV
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
+            echo "HOMEBREW_NO_AUTO_UPDATE=1" >> $BASH_ENV
             echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
             echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-            echo 'nvm install v14.13.1' >> $BASH_ENV
-            echo 'nvm alias default v14.13.1' >> $BASH_ENV
+            echo 'nvm install v14.17.1' >> $BASH_ENV
+            echo 'nvm alias default v14.17.1' >> $BASH_ENV
             sudo mkdir ~/.config
             sudo chown -R $USER:$GROUP ~/.config
   generate-checksums:
@@ -182,12 +183,20 @@ commands:
             - node_modules/react-native-config
 
 jobs:
+  detect-secrets:
+    docker:
+      - image: lirantal/detect-secrets
+    working_directory: /usr/src/app
+    steps:
+      - checkout
+      - run: detect-secrets-hook --baseline .secrets.baseline --exclude-secrets '[a-fA-F0-9]{24}' --exclude-lines 'W/"[!#-\x7E]*"' $(git ls-files)
+
   deploy-nightly-beta:
     environment:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
 
     macos:
-      xcode: 12.2.0
+      xcode: 12.5.1
 
     steps:
       - checkout
@@ -199,7 +208,7 @@ jobs:
   update-metaphysics:
     executor:
       name: node/default
-      tag: "14.13.1"
+      tag: "14.17.1"
     steps:
       - checkout
       - generate-checksums
@@ -212,7 +221,7 @@ jobs:
   check-pr:
     executor:
       name: node/default
-      tag: "14.13.1"
+      tag: "14.17.1"
     steps:
       - checkout
       - generate-checksums
@@ -227,7 +236,7 @@ jobs:
   check-metaphysics-freshness:
     executor:
       name: node/default
-      tag: "14.13.1"
+      tag: "14.17.1"
     steps:
       - checkout
       - run:
@@ -255,7 +264,7 @@ jobs:
   build-test-js:
     executor:
       name: node/default
-      tag: "14.13.1"
+      tag: "14.17.1"
     steps:
       - checkout
       - generate-checksums
@@ -289,7 +298,7 @@ jobs:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
 
     macos:
-      xcode: 12.2.0
+      xcode: 12.5.1
 
     steps:
       - attach_workspace:
@@ -405,7 +414,7 @@ jobs:
     environment:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
     macos:
-      xcode: 12.2.0
+      xcode: 12.5.1
     steps:
       - checkout
       - install-gems
@@ -437,7 +446,7 @@ jobs:
   update-changelog:
     executor:
       name: node/default
-      tag: "14.13.1"
+      tag: "14.17.1"
 
     steps:
       - checkout
@@ -494,6 +503,13 @@ workflows:
 
   test-build-deploy:
     jobs:
+      - detect-secrets:
+          filters:
+            branches:
+              ignore:
+                - master
+                - release
+                - staging
       - check-pr:
           filters:
             branches:

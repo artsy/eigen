@@ -11,10 +11,10 @@ import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
 export const CONTAINER_HEIGHT = 120
 
-const SaleArtworkCard = styled.TouchableHighlight.attrs({
+const SaleArtworkCard = styled.TouchableHighlight.attrs(() => ({
   underlayColor: themeGet("colors.white100"),
   activeOpacity: 0.8,
-})``
+}))``
 
 export interface SaleArtworkTileRailCardProps {
   onPress: () => void

@@ -12,15 +12,9 @@ require 'dotenv'
 Dotenv.load('.env.shared')
 
 
-# We need to scope the side-effects of downloading Emission's NPM podspecs to
-# only cases where we are actually installing pods.
-installing_pods = ARGV.include?('install') || ARGV.include?('update')
-
-
 source 'https://github.com/artsy/Specs.git'
 source 'https://cdn.cocoapods.org/'
 
-system 'yarn install --ignore-engines' if installing_pods
 
 require_relative './node_modules/react-native/scripts/react_native_pods'
 require_relative './node_modules/@react-native-community/cli-platform-ios/native_modules'
@@ -128,6 +122,7 @@ target 'Artsy' do
 
   # Analytics
   pod 'Segment-Appboy'
+  pod 'Segment-Adjust'
 
   # Developer Pods
   pod 'DHCShakeNotifier'

@@ -1,6 +1,6 @@
 import type { ViewDescriptor } from "lib/navigation/navigate"
-import type { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
 import type { NativeState } from "lib/store/NativeModel"
+import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { NativeModules as AllNativeModules, Platform } from "react-native"
 import type { Image as RNCImage } from "react-native-image-crop-picker"
 import { getLocales, getTimeZone } from "react-native-localize"

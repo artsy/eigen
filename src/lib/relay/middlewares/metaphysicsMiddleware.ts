@@ -1,6 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
+import { getCurrentEmissionState, unsafe__getEnvironment, unsafe_getUserAccessToken } from "lib/store/GlobalStore"
 import _ from "lodash"
 import { Middleware, urlMiddleware } from "react-relay-network-modern/node8"
 
@@ -94,7 +94,7 @@ export function metaphysicsURLMiddleware() {
         "Content-Type": "application/json",
         "User-Agent": userAgent,
         "X-USER-ID": userID,
-        "X-ACCESS-TOKEN": authenticationToken,
+        "X-ACCESS-TOKEN": unsafe_getUserAccessToken() || authenticationToken,
         "X-TIMEZONE": LegacyNativeModules.ARCocoaConstantsModule.LocalTimeZone,
       }
     },

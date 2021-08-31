@@ -70,7 +70,7 @@ describe("SizeOptionsNew", () => {
     expect(text).toContain("Small (under 16in)")
     expect(text).toContain("Medium (16in – 40in)")
     expect(text).toContain("Large (over 40in)")
-    expect(text).toContain("Custom size")
+    expect(text).toContain("Custom Size")
   })
 
   it("selects an option", () => {
@@ -112,7 +112,7 @@ describe("SizeOptionsNew", () => {
     })
 
     const dimensionRange = {
-      displayText: "Custom size",
+      displayText: "Custom Size",
       paramValue: "0-*",
       paramName: "dimensionRange",
     }
@@ -200,7 +200,7 @@ describe("SizeOptionsNew", () => {
 
     expect(getData(tree)).toEqual({
       dimensionRange: {
-        displayText: "Custom size",
+        displayText: "Custom Size",
         paramValue: "0-*",
         paramName: "dimensionRange",
       },

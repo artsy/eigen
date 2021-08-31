@@ -4,15 +4,17 @@ import { SavedSearchBanner_me } from "__generated__/SavedSearchBanner_me.graphql
 import { SavedSearchBannerCreateSavedSearchMutation } from "__generated__/SavedSearchBannerCreateSavedSearchMutation.graphql"
 import { SavedSearchBannerDisableSavedSearchMutation } from "__generated__/SavedSearchBannerDisableSavedSearchMutation.graphql"
 import { SavedSearchBannerQuery } from "__generated__/SavedSearchBannerQuery.graphql"
-import { FilterParams, prepareFilterParamsForSaveSearchInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { FilterParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { prepareFilterParamsForSaveSearchInput } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
-import { Button, Flex, Text } from "palette"
+import { PushAuthorizationStatus } from "lib/utils/PushNotification"
+import { BellIcon, Button } from "palette"
 import React, { useState } from "react"
-import { Alert, Linking, Platform } from "react-native"
+import { Alert, AlertButton, Linking, Platform } from "react-native"
+import PushNotification from "react-native-push-notification"
 import { commitMutation, createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -23,6 +25,7 @@ interface SavedSearchBannerProps {
   attributes: SearchCriteriaAttributes
   loading?: boolean
   relay: RelayRefetchProp
+  disabled?: boolean
 }
 
 export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
@@ -31,6 +34,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
   artistSlug,
   attributes,
   loading,
+  disabled,
   relay,
 }) => {
   const [saving, setSaving] = useState(false)
@@ -128,47 +132,68 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
     })
   }
 
+  const showAlert = (permissionsDenied: boolean) => {
+    if (permissionsDenied) {
+      const buttons: AlertButton[] = [
+        {
+          text: "Settings",
+          onPress: () =>
+            Platform.OS === "android" ? Linking.openSettings() : Linking.openURL("App-prefs:NOTIFICATIONS_ID"),
+        },
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ]
+      Alert.alert(
+        "Artsy would like to send you notifications",
+        `To receive notifications for your alerts, you will need to enable them in your ${Platform.select({
+          ios: "iOS",
+          android: "android",
+          default: "device",
+        })} Settings. ${Platform.select({
+          ios: `Tap 'Artsy' and enable "Allow Notifications" for Artsy.`,
+          default: "",
+        })} `,
+        Platform.OS === "ios" ? buttons : buttons.reverse()
+      )
+    } else {
+      // permissions not determined: Android should never need this
+      Alert.alert(
+        "Artsy would like to send you notifications",
+        "We need your permission to send notifications on alerts you have created.",
+        [
+          {
+            text: "Proceed",
+            onPress: () => LegacyNativeModules.ARTemporaryAPIModule.requestNotificationPermissions(),
+          },
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+        ]
+      )
+    }
+  }
+
   const checkNotificationPermissionsAndCreate = () => {
     if (Platform.OS === "android") {
-      // TODO:- When android Push notification setup is ready add check for permission
-      // NotificationManagerCompat.from(getReactApplicationContext()).areNotificationsEnabled();
-      createSavedSearch()
-      return
+      PushNotification.checkPermissions((permissions) => {
+        if (!permissions.alert) {
+          return showAlert(true)
+        }
+        createSavedSearch()
+        return
+      })
     }
     LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
       switch (result) {
         case PushAuthorizationStatus.Authorized:
           return createSavedSearch()
         case PushAuthorizationStatus.Denied:
-          return Alert.alert(
-            "Artsy would like to send you notifications",
-            `To receive notifications for your alerts, you will need to enable them in your iOS Settings. Tap 'Artsy' and enable "Allow Notifications" for Artsy.`,
-            [
-              {
-                text: "Settings",
-                onPress: () => Linking.openURL("App-prefs:NOTIFICATIONS_ID"),
-              },
-              {
-                text: "Cancel",
-                style: "cancel",
-              },
-            ]
-          )
+          return showAlert(true)
         case PushAuthorizationStatus.NotDetermined:
-          return Alert.alert(
-            "Artsy would like to send you notifications",
-            "We need your permission to send notifications on alerts you have created.",
-            [
-              {
-                text: "Proceed",
-                onPress: () => LegacyNativeModules.ARTemporaryAPIModule.requestNotificationPermissions(),
-              },
-              {
-                text: "Cancel",
-                style: "cancel",
-              },
-            ]
-          )
+          return showAlert(false)
         default:
           return
       }
@@ -194,29 +219,18 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
   }
 
   return (
-    <Flex
-      backgroundColor="white"
-      flexDirection="row"
-      mx={-2}
-      px={2}
-      py={11}
-      justifyContent="space-between"
-      alignItems="center"
+    <Button
+      variant={enabled ? "secondaryOutline" : "primaryBlack"}
+      disabled={disabled}
+      onPress={handleSaveSearchFiltersPress}
+      icon={<BellIcon fill={enabled ? "black100" : "white100"} mr={0.5} width="16px" height="16px" />}
+      size="small"
+      loading={inProcess}
+      longestText="Remove Alert"
+      haptic
     >
-      <Text variant="small" color="black">
-        {enabled ? "Remove alert with these filters" : "Set alert with these filters"}
-      </Text>
-      <Button
-        variant={enabled ? "secondaryOutline" : "primaryBlack"}
-        onPress={handleSaveSearchFiltersPress}
-        size="small"
-        loading={inProcess}
-        longestText="Disable"
-        haptic
-      >
-        {enabled ? "Disable" : "Enable"}
-      </Button>
-    </Flex>
+      {enabled ? "Remove Alert" : "Create Alert"}
+    </Button>
   )
 }
 

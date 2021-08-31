@@ -25,6 +25,9 @@ interface AboveTheFoldQueryRendererProps<AboveQuery extends OperationType, Below
         renderPlaceholder: () => React.ReactChild
       }
   cacheConfig?: CacheConfig | null
+  /** Fire below-the-fold query after the given timeout or when the above-the-fold query returns. */
+  /** If 'belowTheFoldTimeout' is not set, the below-the-fold query will be fired when the above-the-fold query returns */
+  belowTheFoldTimeout?: number
 }
 
 interface RenderArgs<Response> {
@@ -75,6 +78,18 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
     belowArgs?.retry?.()
   }
 
+  const [renderBelowTheFold, setRenderBelowTheFold] = useState(false)
+
+  useEffect(() => {
+    if (props.belowTheFoldTimeout === undefined) {
+      return
+    }
+
+    const immediate = setImmediate(() => setRenderBelowTheFold(true), props.belowTheFoldTimeout)
+
+    return () => clearImmediate(immediate)
+  }, [])
+
   return (
     <>
       <QueryRenderer
@@ -102,7 +117,7 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
         }}
         cacheConfig={props.cacheConfig || null}
       />
-      {aboveArgs?.props && (
+      {(renderBelowTheFold || aboveArgs?.props) && (
         <QueryRenderer
           environment={props.environment}
           // tslint:disable-next-line:relay-operation-generics

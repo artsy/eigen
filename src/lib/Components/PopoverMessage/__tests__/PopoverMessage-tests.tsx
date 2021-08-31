@@ -1,4 +1,4 @@
-import { flushPromiseQueue } from 'lib/tests/flushPromiseQueue'
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import React from "react"
@@ -73,24 +73,6 @@ describe("PopoverMessage", () => {
 
     expect(textInstances[0].props.children).toEqual("Some title")
     expect(textInstances[1].props.children).toEqual("Some message")
-  })
-
-  it("renders with red title color on error", async () => {
-    const tree = renderWithWrappers(
-      <TestRenderer
-        options={{
-          title: "Some title",
-          message: "Some message",
-          type: "error",
-        }}
-      />
-    )
-
-    const buttonInstance = tree.root.findByType(Touchable)
-    act(() => buttonInstance.props.onPress())
-
-    const textInstances = tree.root.findByType(PopoverMessage).findAllByType(Text)
-    expect(textInstances[0].props.color).toEqual("red100")
   })
 
   it("renders at the top", async () => {
@@ -180,12 +162,13 @@ describe("PopoverMessage", () => {
     expect(tree.root.findAllByType(PopoverMessage)).toHaveLength(0)
   })
 
-  it("hides when `close` button is pressed", async () => {
+  it("hides when `undo` button is pressed", async () => {
     const tree = renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
           message: "Some message",
+          onUndoPress: jest.fn(),
         }}
       />
     )
@@ -200,14 +183,14 @@ describe("PopoverMessage", () => {
     expect(tree.root.findAllByType(PopoverMessage)).toHaveLength(0)
   })
 
-  it("should call `onClose` handler when `close` button is pressed", async () => {
-    const onClose = jest.fn()
+  it("should call `onUndoPress` handler when `close` button is pressed", async () => {
+    const onUndoMock = jest.fn()
     const tree = renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
           message: "Some message",
-          onClose,
+          onUndoPress: onUndoMock,
         }}
       />
     )
@@ -216,16 +199,15 @@ describe("PopoverMessage", () => {
     act(() => buttonInstance.props.onPress())
     act(() => tree.root.findByType(PopoverMessage).findByType(Touchable).props.onPress())
 
-    expect(onClose).toBeCalled()
+    expect(onUndoMock).toBeCalled()
   })
 
-  it("should hide `close` button when `showCloseIcon` is set to false", async () => {
+  it("should hide `undo` button when `onUndoPress` is not passed", async () => {
     const tree = renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
           message: "Some message",
-          showCloseIcon: false,
         }}
       />
     )

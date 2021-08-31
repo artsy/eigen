@@ -7,8 +7,8 @@ import React from "react"
 import "react-native"
 
 import { Button } from "palette"
+import { Checkbox } from "palette/elements/Checkbox"
 import relay from "react-relay"
-import { Checkbox } from "../Components/Checkbox"
 import { SelectMaxBid } from "../Screens/SelectMaxBid"
 import { FakeNavigator } from "./Helpers/FakeNavigator"
 
@@ -26,17 +26,16 @@ jest.mock("tipsi-stripe", () => ({
 import stripe from "tipsi-stripe"
 
 import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
-import { Select } from "lib/Components/Select"
 import { extractText } from "lib/tests/extractText"
 import { waitUntil } from "lib/tests/waitUntil"
+import { Select } from "palette/elements/Select"
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
 
 const bidderPositionQueryMock = bidderPositionQuery as jest.Mock<any>
 let fakeNavigator: FakeNavigator
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-let fakeRelay
+let fakeRelay: any
 
 jest.useFakeTimers()
 
@@ -53,12 +52,11 @@ it("allows bidders with a qualified credit card to bid", async () => {
       me={Me.qualifiedUser as any}
       sale_artwork={SaleArtwork as any}
       navigator={fakeNavigator as any}
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       relay={fakeRelay as any}
     />
   )
 
-  screen.root.findByType(Select).instance.props.onSelectValue(null, 2)
+  screen.root.findByType(Select).props.onSelectValue(null, 2)
   screen.root.findAllByType(Button)[0].props.onPress()
 
   screen = fakeNavigator.nextStep()
@@ -72,7 +70,7 @@ it("allows bidders with a qualified credit card to bid", async () => {
     return null
   }) as any
 
-  screen.root.findByType(Checkbox).instance.props.onPress()
+  screen.root.findByType(Checkbox).props.onPress()
   screen.root.findAllByType(Button)[1].props.onPress()
 
   await waitUntil(() => fakeNavigator.stackSize() === 2)
@@ -87,12 +85,11 @@ it("allows bidders without a qualified credit card to register a card and bid", 
       me={Me.unqualifiedUser as any}
       sale_artwork={SaleArtwork as any}
       navigator={fakeNavigator as any}
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      relay={fakeRelay as any}
+      relay={fakeRelay}
     />
   )
 
-  screen.root.findByType(Select).instance.props.onSelectValue(null, 2)
+  screen.root.findByType(Select).props.onSelectValue(null, 2)
   screen.root.findAllByType(Button)[0].props.onPress()
 
   screen = fakeNavigator.nextStep()
@@ -119,7 +116,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
     },
   })
 
-  screen.root.findByType(Checkbox).instance.props.onPress()
+  screen.root.findByType(Checkbox).props.onPress()
   await screen.root.findAllByType(Button)[1].props.onPress()
 
   expect(stripe.createTokenWithCard).toHaveBeenCalledWith({

@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import AsyncStorage from "@react-native-community/async-storage"
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
@@ -6,6 +7,7 @@ import { presentEmailComposer } from "lib/NativeModules/presentEmailComposer"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
+import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "lib/utils/AdminMenu"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -13,7 +15,7 @@ import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import { times } from "lodash"
 import { Flex, Join, Sans, Separator, Spacer } from "palette"
-import React, { useCallback, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Alert, FlatList, Platform, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
@@ -21,11 +23,13 @@ import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const showOrderHistory = useFeatureFlag("AREnableOrderHistoryOption")
   const showSavedAddresses = useFeatureFlag("AREnableSavedAddresses")
+  const showSavedSearchV2 = useFeatureFlag("AREnableSavedSearchV2")
   const listRef = useRef<FlatList<any>>(null)
-  const recentlySavedArtworks = extractNodes(me.followsAndSaves?.artworksConnection)
-  const shouldDisplayMyCollection = me.labFeatures?.includes("My Collection")
-  const shouldDisplayPushNotifications = Platform.OS === "ios"
+  const recentlySavedArtworks = extractNodes(me?.followsAndSaves?.artworksConnection)
+  const shouldDisplayMyCollection = me?.labFeatures?.includes("My Collection")
+  const [shouldDisplayPushNotifications, setShouldDisplayPushNotifications] = useState(Platform.OS === "ios")
   const [isRefreshing, setIsRefreshing] = useState(false)
+
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
     relay.refetch(() => {
@@ -34,15 +38,26 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
     })
   }, [])
 
+  useEffect(() => {
+    if (Platform.OS === "android") {
+      AsyncStorage.getItem(ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY).then((canDisplay) => {
+        setShouldDisplayPushNotifications(canDisplay === "true")
+      })
+    }
+  }, [])
+
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
       <Sans size="8" mx="2" mt="3">
-        {me.name}
+        {me?.name}
       </Sans>
       <Separator my={2} />
       <SectionHeading title="Favorites" />
       {!!shouldDisplayMyCollection && (
         <MenuItem isBeta={true} title="My Collection" onPress={() => navigate("my-collection")} />
+      )}
+      {!!showSavedSearchV2 && (
+        <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
       )}
       <MenuItem title="Saves and follows" onPress={() => navigate("favorites")} />
       {!!recentlySavedArtworks.length && (
@@ -140,7 +155,7 @@ export const MyProfileQueryRenderer: React.FC<{}> = ({}) => (
       environment={defaultEnvironment}
       query={graphql`
         query MyProfileQuery {
-          me {
+          me @optionalField {
             ...MyProfile_me
           }
         }

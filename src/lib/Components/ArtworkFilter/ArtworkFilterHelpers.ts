@@ -1,7 +1,19 @@
 import { FilterScreen } from "lib/Components/ArtworkFilter"
-import { capitalize, compact, groupBy, isEqual, isUndefined, pick, pickBy, sortBy } from "lodash"
+import {
+  capitalize,
+  compact,
+  filter,
+  groupBy,
+  isArray,
+  isEmpty,
+  isEqual,
+  isUndefined,
+  pick,
+  pickBy,
+  sortBy,
+  unionBy,
+} from "lodash"
 import { LOCALIZED_UNIT } from "./Filters/helpers"
-import { SearchCriteriaAttributes } from "./SavedSearch/types"
 
 export enum FilterDisplayName {
   // artist = "Artists",
@@ -17,7 +29,7 @@ export enum FilterDisplayName {
   materialsTerms = "Material",
   medium = "Medium",
   organizations = "Auction House",
-  partnerIDs = "Galleries and Institutions",
+  partnerIDs = "Galleries & Institutions",
   priceRange = "Price",
   size = "Size",
   sizes = "Size",
@@ -80,6 +92,7 @@ export const getSortDefaultValueByFilterType = (filterType: FilterType) => {
     showArtwork: "partner_show_position",
     auctionResult: "DATE_DESC",
     geneArtwork: "-partner_updated_at",
+    tagArtwork: "-partner_updated_at",
   }[filterType]
 }
 
@@ -186,11 +199,15 @@ export interface FilterData {
 }
 export type FilterArray = ReadonlyArray<FilterData>
 
-export type FilterType = "artwork" | "saleArtwork" | "showArtwork" | "auctionResult" | "geneArtwork"
+export type FilterType = "artwork" | "saleArtwork" | "showArtwork" | "auctionResult" | "geneArtwork" | "tagArtwork"
 
 export interface FilterCounts {
   total: number | null
   followedArtists: number | null
+}
+
+export type SelectedFiltersCounts = {
+  [Name in FilterParamName | "waysToBuy" | "year"]: number
 }
 
 export const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string | undefined> = {
@@ -245,6 +262,20 @@ const DEFAULT_GENE_ARTWORK_PARAMS = {
   medium: "*",
 } as FilterParams
 
+const DEFAULT_TAG_ARTWORK_PARAMS = {
+  ...DEFAULT_ARTWORKS_PARAMS,
+  sort: "-partner_updated_at",
+} as FilterParams
+
+const createdYearsFilterNames = [FilterParamName.earliestCreatedYear, FilterParamName.latestCreatedYear]
+
+const waysToBuyFilterNames = [
+  FilterParamName.waysToBuyBuy,
+  FilterParamName.waysToBuyMakeOffer,
+  FilterParamName.waysToBuyBid,
+  FilterParamName.waysToBuyInquire,
+]
+
 const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams, filterType: FilterType) => {
   const groupedFilters = groupBy(appliedFilters, "paramName")
 
@@ -270,6 +301,7 @@ const getDefaultParamsByType = (filterType: FilterType) => {
     showArtwork: DEFAULT_SHOW_ARTWORKS_PARAMS,
     auctionResult: DEFAULT_AUCTION_RESULT_PARAMS,
     geneArtwork: DEFAULT_GENE_ARTWORK_PARAMS,
+    tagArtwork: DEFAULT_TAG_ARTWORK_PARAMS,
   }[filterType]
 }
 
@@ -295,6 +327,21 @@ export const filterArtworksParams = (appliedFilters: FilterArray, filterType: Fi
   return paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams }, filterType)
 }
 
+export const extractCustomSizeLabel = (selectedOptions: FilterArray) => {
+  const selectedDimensionRange = selectedOptions.find(({ paramName }) => paramName === FilterParamName.dimensionRange)
+
+  // Handle custom range
+  if (selectedDimensionRange?.displayText === "Custom Size") {
+    const selectedCustomWidth = selectedOptions.find(({ paramName }) => paramName === FilterParamName.width)
+    const selectedCustomHeight = selectedOptions.find(({ paramName }) => paramName === FilterParamName.height)
+    return (
+      [selectedCustomWidth?.displayText, selectedCustomHeight?.displayText].filter(Boolean).join(" × ") + LOCALIZED_UNIT
+    )
+  }
+
+  // Intentionally doesn't return anything
+}
+
 /**
  * Formats the display for the Filter Modal "home" screen.
  */
@@ -310,23 +357,15 @@ export const selectedOption = ({
   aggregations: Aggregations
 }) => {
   if (filterScreen === "dimensionRange") {
-    const selectedDimensionRange = selectedOptions.find(({ paramName }) => paramName === FilterParamName.dimensionRange)
+    const label = extractCustomSizeLabel(selectedOptions)
 
-    // Handle custom range
-    if (selectedDimensionRange?.displayText === "Custom size") {
-      const selectedCustomWidth = selectedOptions.find(({ paramName }) => paramName === FilterParamName.width)
-      const selectedCustomHeight = selectedOptions.find(({ paramName }) => paramName === FilterParamName.height)
-      return (
-        [selectedCustomWidth?.displayText, selectedCustomHeight?.displayText].filter(Boolean).join(" × ") +
-        LOCALIZED_UNIT
-      )
+    if (label) {
+      return label
     }
-
-    // Intentionally doesn't return anything
   }
 
   if (filterScreen === "categories") {
-    const selectedCategoriesValues = selectedOptions.find((filter) => filter.paramName === FilterParamName.categories)
+    const selectedCategoriesValues = selectedOptions.find(({ paramName }) => paramName === FilterParamName.categories)
       ?.paramValue as string[] | undefined
 
     if (selectedCategoriesValues?.length) {
@@ -340,7 +379,7 @@ export const selectedOption = ({
   }
 
   if (filterScreen === "sizes") {
-    const selectedSizesValues = selectedOptions.find((filter) => filter.paramName === FilterParamName.sizes)
+    const selectedSizesValues = selectedOptions.find(({ paramName }) => paramName === FilterParamName.sizes)
       ?.paramValue as string[] | undefined
     if (selectedSizesValues?.length) {
       const numSelectedSizesToDisplay = selectedSizesValues.length
@@ -356,7 +395,7 @@ export const selectedOption = ({
   // selected option display text for auction house filter
   if (filterScreen === "organizations") {
     const selectedOrganizationsValues = selectedOptions.find(
-      (filter) => filter.paramName === FilterParamName.organizations
+      ({ paramName }) => paramName === FilterParamName.organizations
     )?.paramValue as string[] | undefined
     if (selectedOrganizationsValues?.length) {
       const numSelectedOrganizationsToDisplay = selectedOrganizationsValues.length
@@ -371,10 +410,10 @@ export const selectedOption = ({
 
   if (filterScreen === "year") {
     const selectedEarliestCreatedYear = selectedOptions.find(
-      (filter) => filter.paramName === FilterParamName.earliestCreatedYear
+      ({ paramName }) => paramName === FilterParamName.earliestCreatedYear
     )?.paramValue
     const selectedLatestCreatedYear = selectedOptions.find(
-      (filter) => filter.paramName === FilterParamName.latestCreatedYear
+      ({ paramName }) => paramName === FilterParamName.latestCreatedYear
     )?.paramValue
 
     if (selectedEarliestCreatedYear && selectedLatestCreatedYear) {
@@ -386,13 +425,6 @@ export const selectedOption = ({
   if (filterScreen === "waysToBuy") {
     const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
 
-    const waysToBuyFilterNames = [
-      FilterParamName.waysToBuyBuy,
-      FilterParamName.waysToBuyMakeOffer,
-      FilterParamName.waysToBuyBid,
-      FilterParamName.waysToBuyInquire,
-    ]
-
     const waysToBuyOptions = multiSelectedOptions
       .filter((value) => waysToBuyFilterNames.includes(value.paramName))
       .map((option) => option.displayText)
@@ -402,7 +434,9 @@ export const selectedOption = ({
     }
 
     return waysToBuyOptions.join(", ")
-  } else if (filterScreen === "artistIDs") {
+  }
+
+  if (filterScreen === "artistIDs") {
     const hasArtistsIFollowChecked = !!selectedOptions.find(({ paramName, paramValue }) => {
       return paramName === FilterParamName.artistsIFollow && paramValue === true
     })
@@ -410,7 +444,7 @@ export const selectedOption = ({
     let selectedArtistNames: string[]
 
     if (filterType === "saleArtwork") {
-      const saleArtworksArtistIDs = selectedOptions.find((filter) => filter.paramName === FilterParamName.artistIDs)
+      const saleArtworksArtistIDs = selectedOptions.find(({ paramName }) => paramName === FilterParamName.artistIDs)
       // The user has selected one or more artist ids
       if (saleArtworksArtistIDs && Array.isArray(saleArtworksArtistIDs?.paramValue)) {
         const artistIDsAggregation = aggregationForFilter(FilterParamName.artistIDs, aggregations)
@@ -425,13 +459,14 @@ export const selectedOption = ({
       }
     } else {
       selectedArtistNames = selectedOptions
-        .filter((filter) => filter.paramName === FilterParamName.artistIDs)
+        // Filtering out paramValue with an empty array to remove default option "All"
+        .filter(({ paramName, paramValue }) => paramName === FilterParamName.artistIDs && !isEmpty(paramValue))
         .map(({ displayText }) => displayText)
     }
 
     const alphabetizedArtistNames = sortBy(selectedArtistNames, (name) => name)
     const allArtistDisplayNames = hasArtistsIFollowChecked
-      ? ["All artists I follow", ...alphabetizedArtistNames]
+      ? ["All Artists I Follow", ...alphabetizedArtistNames]
       : alphabetizedArtistNames
 
     if (allArtistDisplayNames.length === 1) {
@@ -461,6 +496,7 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   majorPeriods: "MAJOR_PERIOD",
   materialsTerms: "MATERIALS_TERMS",
   medium: "MEDIUM",
+  additionalGeneIDs: "MEDIUM",
   partnerIDs: "PARTNER",
   priceRange: "PRICE_RANGE",
 }
@@ -501,7 +537,7 @@ export const aggregationsWithFollowedArtists = (
 
 export const getDisplayNameForTimePeriod = (aggregationName: string) => {
   const DISPLAY_TEXT: Record<string, string> = {
-    "2020": "2020–today",
+    "2020": "2020–Today",
     "2010": "2010–2019",
     "2000": "2000–2009",
     "1990": "1990–1999",
@@ -570,39 +606,6 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
   ])
 }
 
-export const prepareFilterParamsForSaveSearchInput = (filterParams: FilterParams) => {
-  const input: SearchCriteriaAttributes = {}
-  const allowedKeys = pick(filterParams, [
-    "artistID",
-    "locationCities",
-    "colors",
-    "partnerIDs",
-    "additionalGeneIDs",
-    "attributionClass",
-    "majorPeriods",
-    "acquireable",
-    "atAuction",
-    "inquireableOnly",
-    "offerable",
-    "materialsTerms",
-    "priceRange",
-    "dimensionRange",
-    "height",
-    "width",
-  ])
-
-  for (const key of Object.keys(allowedKeys)) {
-    const value = filterParams[key as FilterParamName]
-    const defaultValue = defaultCommonFilterOptions[key as FilterParamName]
-
-    if (!isEqual(defaultValue, value)) {
-      input[key as keyof SearchCriteriaAttributes] = value as any
-    }
-  }
-
-  return input
-}
-
 export const getParamsForInputByFilterType = (
   initialParams: Partial<FilterParams>,
   filterType: FilterType = "artwork"
@@ -615,4 +618,79 @@ export const getParamsForInputByFilterType = (
   })
 
   return allowedParams
+}
+
+export const getUnitedSelectedAndAppliedFilters = ({
+  filterType,
+  selectedFilters,
+  previouslyAppliedFilters,
+}: {
+  filterType: FilterType
+  selectedFilters: FilterArray
+  previouslyAppliedFilters: FilterArray
+}) => {
+  const defaultFilterOptions = {
+    ...defaultCommonFilterOptions,
+    sort: getSortDefaultValueByFilterType(filterType),
+  }
+
+  // replace previously applied options with currently selected options
+  const filtersToUnite = unionBy(selectedFilters, previouslyAppliedFilters, ({ paramValue, paramName }) => {
+    // We don't want to union the artistID params, as each entry corresponds to a
+    // different artist that may be selected. Instead we de-dupe based on the paramValue.
+    if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
+      return paramValue
+    } else {
+      return paramName
+    }
+  })
+
+  const unitedFilters = filter(filtersToUnite, ({ paramName, paramValue }) => {
+    // This logic is specific to filters that allow for multiple options. Right now
+    // it only applies to the artist filter, but this will likely change.
+    if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
+      // See if we have an existing entry in previouslyAppliedFilters
+      const hasExistingPreviouslyAppliedFilter = previouslyAppliedFilters.find(
+        (previouslyAppliedFilter) =>
+          paramName === previouslyAppliedFilter.paramName && paramValue === previouslyAppliedFilter.paramValue
+      )
+
+      const hasExistingSelectedAppliedFilter = selectedFilters.find(
+        (selectedFilter) => paramName === selectedFilter.paramName && paramValue === selectedFilter.paramValue
+      )
+
+      // If so, it means that this filter had been previously applied and is now being de-selected.
+      // We need it to exist in the "selectedFilters" array so that our counts, etc. are correct,
+      // but it's technically de-selected.
+      return !(hasExistingPreviouslyAppliedFilter && hasExistingSelectedAppliedFilter)
+    }
+
+    // The default sorting and lot ascending sorting at the saleArtwork filterType has the same paramValue
+    // with a different displayText, we want to make sure that the user can still switch between the two.
+    if (paramName === FilterParamName.sort && filterType === "saleArtwork") {
+      return true
+    }
+    return !isEqual((defaultFilterOptions as any)[paramName], paramValue)
+  })
+
+  return unitedFilters
+}
+
+export const getSelectedFiltersCounts = (selectedFilters: FilterArray) => {
+  const counts: Partial<SelectedFiltersCounts> = {}
+  selectedFilters.forEach(({ paramName, paramValue }: FilterData) => {
+    if (paramName === FilterParamName.artistIDs) {
+      counts.artistIDs = (counts.artistIDs ?? 0) + 1
+    } else if (waysToBuyFilterNames.includes(paramName)) {
+      counts.waysToBuy = (counts.waysToBuy ?? 0) + 1
+    } else if (createdYearsFilterNames.includes(paramName)) {
+      counts.year = 1
+    } else if (isArray(paramValue)) {
+      counts[paramName] = paramValue.length
+    } else {
+      counts[paramName] = 1
+    }
+  })
+
+  return counts
 }

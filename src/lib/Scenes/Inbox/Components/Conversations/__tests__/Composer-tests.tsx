@@ -1,3 +1,4 @@
+import { waitFor } from "@testing-library/react-native"
 import { ComposerTestsQuery } from "__generated__/ComposerTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
@@ -11,7 +12,7 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ComposerFragmentContainer } from "../Composer"
 import { CTAPopUp } from "../CTAPopUp"
-import { OpenInquiryModalButtonQueryRenderer } from "../OpenInquiryModalButton"
+import { OpenInquiryModalButton } from "../OpenInquiryModalButton"
 import { ReviewOfferButton } from "../ReviewOfferButton"
 
 jest.unmock("react-tracking")
@@ -94,7 +95,7 @@ it("doesn't render the inquiry make offer button if the feature is disabled", ()
       ],
     }),
   })
-  expect(tree.root.findAllByType(OpenInquiryModalButtonQueryRenderer).length).toEqual(0) // submit button only
+  expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(0) // submit button only
 })
 
 describe("inquiry offer enabled", () => {
@@ -110,12 +111,37 @@ describe("inquiry offer enabled", () => {
             item: {
               __typename: "Artwork",
             },
+            liveArtwork: {
+              isOfferableFromInquiry: true,
+              __typename: "Artwork",
+              internalID: "123",
+            },
           },
         ],
         activeOrders: { edges: [] },
       }),
     })
-    expect(tree.root.findAllByType(OpenInquiryModalButtonQueryRenderer).length).toEqual(1)
+    expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(1)
+  })
+
+  it("does not render the inquiry make offer button if inquiry item is not an offerable artwork", () => {
+    const tree = getWrapper({
+      Conversation: () => ({
+        items: [
+          {
+            item: {
+              __typename: "Artwork",
+            },
+            liveArtwork: {
+              isOfferableFromInquiry: true,
+              __typename: "Artwork",
+              internalID: "123",
+            },
+          },
+        ],
+      }),
+    })
+    expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(0)
   })
 
   it("does not render a CTA when the keyboard is visible", () => {
@@ -135,9 +161,7 @@ describe("inquiry offer enabled", () => {
 
     input.props.onFocus()
 
-    setTimeout(() => {
-      expect(tree.root.findAllByType(CTAPopUp)[0]).not.toBeDefined()
-    }, 0)
+    waitFor(() => expect(tree.root.findAllByType(CTAPopUp)[0]).not.toBeDefined())
   })
 
   describe("with associated orders (OrderCTAs)", () => {
@@ -178,6 +202,11 @@ describe("inquiry offer enabled", () => {
               item: {
                 __typename: "Artwork",
               },
+              liveArtwork: {
+                isOfferableFromInquiry: true,
+                __typename: "Artwork",
+                internalID: "123",
+              },
             },
           ],
           activeOrders: {
@@ -212,6 +241,11 @@ describe("inquiry offer enabled", () => {
             {
               item: {
                 __typename: "Artwork",
+              },
+              liveArtwork: {
+                isOfferableFromInquiry: true,
+                __typename: "Artwork",
+                internalID: "123",
               },
             },
           ],
@@ -248,6 +282,11 @@ describe("inquiry offer enabled", () => {
               item: {
                 __typename: "Artwork",
               },
+              liveArtwork: {
+                isOfferableFromInquiry: true,
+                __typename: "Artwork",
+                internalID: "123",
+              },
             },
           ],
           activeOrders: { edges: [] },
@@ -269,7 +308,7 @@ describe("inquiry offer enabled", () => {
           },
         }),
       })
-      expect(tree.root.findAllByType(OpenInquiryModalButtonQueryRenderer).length).toEqual(1)
+      expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(1)
       expect(tree.root.findAllByType(ReviewOfferButton).length).toEqual(0)
     })
 
@@ -280,6 +319,11 @@ describe("inquiry offer enabled", () => {
             {
               item: {
                 __typename: "Artwork",
+              },
+              liveArtwork: {
+                isOfferableFromInquiry: true,
+                __typename: "Artwork",
+                internalID: "123",
               },
             },
           ],
@@ -308,13 +352,18 @@ describe("inquiry offer enabled", () => {
       expect(cta.findAllByType(Flex)[0].props).toEqual(expect.objectContaining({ bg: "red100" }))
     })
 
-    it("renders the MO button instad of the cta if the offer lapsed", () => {
+    it("renders the MO button instead of the cta if the offer lapsed", () => {
       const tree = getWrapper({
         Conversation: () => ({
           items: [
             {
               item: {
                 __typename: "Artwork",
+              },
+              liveArtwork: {
+                isOfferableFromInquiry: true,
+                __typename: "Artwork",
+                internalID: "123",
               },
             },
           ],
@@ -337,7 +386,7 @@ describe("inquiry offer enabled", () => {
           },
         }),
       })
-      expect(tree.root.findAllByType(OpenInquiryModalButtonQueryRenderer).length).toEqual(1)
+      expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(1)
       expect(tree.root.findAllByType(ReviewOfferButton).length).toEqual(0)
     })
   })

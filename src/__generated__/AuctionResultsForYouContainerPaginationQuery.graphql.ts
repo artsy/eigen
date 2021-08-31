@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 56e75a004163c085c3700c8581239709 */
+/* @relayHash 7fc70f291e1361af6a93b58d627ff180 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -59,8 +59,9 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
     mid
   }
   priceRealized {
-    display
     cents
+    display
+    displayUSD
   }
   saleDate
   title
@@ -376,6 +377,13 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
+                            "name": "cents",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "display",
                             "storageKey": null
                           },
@@ -383,7 +391,7 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "cents",
+                            "name": "displayUSD",
                             "storageKey": null
                           }
                         ],
@@ -460,7 +468,7 @@ return {
     ]
   },
   "params": {
-    "id": "56e75a004163c085c3700c8581239709",
+    "id": "7fc70f291e1361af6a93b58d627ff180",
     "metadata": {},
     "name": "AuctionResultsForYouContainerPaginationQuery",
     "operationKind": "query",

@@ -2,13 +2,14 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { useAnimatedValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Spacer, Text, Touchable, useTheme } from "palette"
+import { Button, Flex, Spacer, Text, Touchable, useTheme } from "palette"
 import React, { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import Animated, { Easing } from "react-native-reanimated"
-import backgoundImage from "../../../../images/WelcomeImage.png"
+import backgoundImage from "../../../../images/WelcomeImage.webp"
 import { ArtsyMarkWhiteIcon } from "../../../palette/svgs/ArtsyMarkWhiteIcon"
+import { useFeatureFlag } from "../../store/GlobalStore"
 import { OnboardingNavigationStack } from "./Onboarding"
 
 interface OnboardingWelcomeProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingWelcome"> {}
@@ -18,9 +19,10 @@ const BUTTON_HEIGHT = 41
 const imgProps = Image.resolveAssetSource(backgoundImage)
 
 export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation }) => {
-  const { color, space } = useTheme()
+  const { space } = useTheme()
   const { width: screenWidth } = useScreenDimensions()
   const { safeAreaInsets } = useScreenDimensions()
+  const AREnableNewOnboardingFlow = useFeatureFlag("AREnableNewOnboardingFlow")
   // useScreenDimensions() returns the window height instead of the screen
   // We need the entire screen height here because the background image should fill
   // the entire screen including drawing below the navigation bar
@@ -34,9 +36,10 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
     const imgScale = imgProps.height / screenHeight
     const imgWidth = imgProps.width * imgScale
     if (screenWidth < imgWidth) {
+      const iOSRightMarging = Platform.OS === "ios" ? 120 : 0
       Animated.timing(translateX, {
         duration: 40000,
-        toValue: -(imgWidth - screenWidth),
+        toValue: -(imgWidth - iOSRightMarging - screenWidth),
         easing: Easing.inOut(Easing.ease),
       }).start()
     }
@@ -93,7 +96,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
         }}
       >
         <Image
-          source={require("@images/WelcomeImage.png")}
+          source={require("@images/WelcomeImage.webp")}
           resizeMode="cover"
           style={{
             height: screenHeight,
@@ -127,28 +130,30 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           Build your personalized profile, get market insights, and buy and sell art with confidence.
         </Text>
         <Spacer mt={2} />
-        <Touchable
-          onPress={() => navigation.navigate("OnboardingCreateAccount")}
-          underlayColor={color("black5")}
+        <Button
+          variant="primaryWhite"
+          block
           haptic="impactMedium"
-          style={{
-            height: BUTTON_HEIGHT,
-            backgroundColor: "white",
-            borderRadius: 3,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          onPress={() =>
+            AREnableNewOnboardingFlow
+              ? navigation.navigate("OnboardingCreateAccount")
+              : navigation.navigate("OnboardingCreateAccountWithEmail")
+          }
+          testID="button-create"
         >
-          <Text color="black" variant="mediumText">
-            Create account
-          </Text>
-        </Touchable>
+          Create account
+        </Button>
 
         <Touchable
-          onPress={() => navigation.navigate("OnboardingLogin")}
+          onPress={() =>
+            AREnableNewOnboardingFlow
+              ? navigation.navigate("OnboardingLogin")
+              : navigation.navigate("OnboardingLoginWithEmail")
+          }
           underlayColor="transparent"
           haptic="impactMedium"
           style={{ justifyContent: "center", alignItems: "center", height: BUTTON_HEIGHT }}
+          testID="button-login"
         >
           <Text color="white" variant="mediumText">
             Log in

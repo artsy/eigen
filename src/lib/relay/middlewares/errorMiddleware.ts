@@ -6,6 +6,7 @@ import {
 } from "react-relay-network-modern/node8"
 
 import * as Sentry from "@sentry/react-native"
+import { volleyClient } from "lib/utils/volleyClient"
 import { GraphQLResponse } from "relay-runtime/lib/network/RelayNetworkTypes"
 import { GraphQLRequest } from "./types"
 
@@ -14,7 +15,7 @@ const isErrorStatus = (status: number | undefined) => {
 }
 
 const throwError = (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
-  // const formattedError = formatGraphQLErrors(req, res.errors!)
+  const resJson = res?.json as GraphQLResponse
   Sentry.withScope((scope) => {
     scope.setExtra("kind", req.operation.operationKind)
     scope.setExtra("query-name", req.operation.name)
@@ -24,9 +25,17 @@ const throwError = (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
       scope.setExtra("variables", req.variables as any)
     }
     console.log(createRequestError(req, res))
-    Sentry.captureException(req.operation.name)
+    Sentry.captureException(resJson.errors && resJson.errors[0]?.message)
   })
   throw createRequestError(req, res)
+}
+
+const trackError = (queryName: string, queryKind: string, handler: "optionalField" | "principalField" | "default") => {
+  volleyClient.send({
+    type: "increment",
+    name: "graphql-request-with-errors",
+    tags: [`query:${queryName}`, `kind:${queryKind}`, `handler: ${handler}`],
+  })
 }
 
 export const errorMiddleware = () => {
@@ -43,6 +52,7 @@ export const errorMiddleware = () => {
     const allErrorsAreOptional = resJson.extensions?.optionalFields?.length === resJson.errors?.length
 
     if (allErrorsAreOptional) {
+      trackError(req.operation.name, req.operation.kind, "optionalField")
       return res
     }
 
@@ -51,6 +61,7 @@ export const errorMiddleware = () => {
     const requestHasPrincipalField = req.operation.text?.includes("@principalField")
 
     if (!requestHasPrincipalField) {
+      trackError(req.operation.name, req.operation.kind, "default")
       return throwError(req, res)
     }
 
@@ -61,6 +72,7 @@ export const errorMiddleware = () => {
     const principalFieldWasInvolvedInError = isErrorStatus(resJson.extensions?.principalField?.httpStatusCode)
 
     if (principalFieldWasInvolvedInError) {
+      trackError(req.operation.name, req.operation.kind, "principalField")
       return throwError(req, res)
     }
 

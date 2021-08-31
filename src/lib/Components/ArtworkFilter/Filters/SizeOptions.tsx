@@ -21,7 +21,7 @@ const CUSTOM_SIZE_PARAMS = {
 } as const
 
 const CUSTOM_SIZE_OPTION = {
-  displayText: "Custom size",
+  displayText: "Custom Size",
   // Values need to be unique and we can't use "*-*" which is used by "All."
   // This essentially means the same thing.
   paramValue: "0-*",

@@ -35,7 +35,7 @@ else
   echo "aws already installed"
 fi
 
-
 aws s3 cp s3://artsy-citadel/eigen/release.keystore android/app/release.keystore
 aws s3 cp s3://artsy-citadel/eigen/android-secret.json android-secret.json
+aws s3 cp s3://artsy-citadel/eigen/eigen-firebase-app-distribution.json eigen-firebase-app-distribution.json
 aws s3 cp s3://artsy-citadel/eigen/google-services.json android/app/google-services.json

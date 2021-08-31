@@ -16,6 +16,7 @@ import { saleTime } from "lib/utils/saleTime"
 import { Schema, screenTrack } from "lib/utils/track"
 import { get, isEmpty } from "lodash"
 import { Box, Button, Flex, Text } from "palette"
+import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
 import { ScrollView, View, ViewProps } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
@@ -23,7 +24,6 @@ import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayP
 import stripe from "tipsi-stripe"
 import { LinkText } from "../../Text/LinkText"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { Checkbox } from "../Components/Checkbox"
 import { PaymentInfo } from "../Components/PaymentInfo"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
@@ -373,7 +373,6 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
           <Box m={4}>
             <Button
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               onPress={this.canCreateBidder() ? this.register.bind(this) : null}
               loading={isLoading}
               block

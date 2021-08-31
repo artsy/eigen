@@ -7,7 +7,7 @@ import { BMWSponsorship } from "../City/CityBMWSponsorship"
 
 export class CityGuideCTA extends React.Component {
   render() {
-    const cityGuideMapImage = require("../../../../images/city-guide-bg.png")
+    const cityGuideMapImage = require("../../../../images/city-guide-bg.webp")
     return (
       <ClassTheme>
         {({ color }) => (

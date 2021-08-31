@@ -3,12 +3,26 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { isArtsyEmail } from "lib/utils/general"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
+import { capitalize } from "lodash"
 import { stringify } from "qs"
+import { Alert, Linking, Platform } from "react-native"
 import Config from "react-native-config"
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "react-native-fbsdk-next"
+import PushNotification from "react-native-push-notification"
 import { getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
+
+const afterSocialAuthLogin = (res: any, reject: (reason?: any) => void, provider: "facebook" | "apple" | "google") => {
+  const providerName = capitalize(provider)
+  if (res.error_description) {
+    if (res.error_description.includes("no account linked to oauth token")) {
+      reject(`We could not find a user account linked to your ${providerName} account, try signing up`)
+    } else {
+      reject("Could not log you in")
+    }
+  }
+}
 
 export interface AuthModel {
   // State
@@ -70,6 +84,8 @@ export interface AuthModel {
         oauthProvider?: never
         idToken?: never
         appleUID?: never
+
+        agreedToReceiveEmails: boolean
       }
     | {
         email: string
@@ -80,6 +96,8 @@ export interface AuthModel {
         password?: never
         idToken?: never
         appleUID?: never
+
+        agreedToReceiveEmails: boolean
       }
     | {
         email: string
@@ -90,14 +108,28 @@ export interface AuthModel {
 
         password?: never
         accessToken?: never
+
+        agreedToReceiveEmails: boolean
       },
     {},
     GlobalStoreModel,
-    Promise<boolean>
+    Promise<{ success: boolean; message?: string }>
   >
-  authFacebook: Thunk<AuthModel, { signInOrUp: "signIn" | "signUp" }, {}, GlobalStoreModel, Promise<true>>
-  authGoogle: Thunk<AuthModel, { signInOrUp: "signIn" | "signUp" }, {}, GlobalStoreModel, Promise<true>>
-  authApple: Thunk<AuthModel, undefined, {}, GlobalStoreModel, Promise<true>>
+  authFacebook: Thunk<
+    AuthModel,
+    { signInOrUp: "signIn" } | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
+    {},
+    GlobalStoreModel,
+    Promise<true>
+  >
+  authGoogle: Thunk<
+    AuthModel,
+    { signInOrUp: "signIn" } | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
+    {},
+    GlobalStoreModel,
+    Promise<true>
+  >
+  authApple: Thunk<AuthModel, { agreedToReceiveEmails?: boolean }, {}, GlobalStoreModel, Promise<true>>
   forgotPassword: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel, Promise<boolean>>
   gravityUnauthenticatedRequest: Thunk<
     this,
@@ -265,68 +297,116 @@ export const getAuthModel = (): AuthModel => ({
       })
       actions.notifyTracking({ userId: id })
 
+      if (Platform.OS === "android") {
+        PushNotification.checkPermissions((permissions) => {
+          if (!permissions.alert) {
+            // settimeout so alerts show when/immediately after page loads not before.
+            setTimeout(() => {
+              Alert.alert(
+                "Artsy Would Like to Send You Notifications",
+                "Turn on notifications to get important updates about artists you follow.",
+                [
+                  {
+                    text: "Dismiss",
+                    style: "cancel",
+                  },
+                  {
+                    text: "Settings",
+                    onPress: () => Linking.openSettings(),
+                  },
+                ]
+              )
+            }, 3000)
+          }
+        })
+      }
       return true
     }
 
     return false
   }),
-  signUp: thunk(async (actions, { email, password, name, accessToken, oauthProvider, idToken, appleUID }) => {
-    let body
-    switch (oauthProvider) {
-      case "facebook":
-      case "google":
-        body = {
-          provider: oauthProvider,
-          oauth_token: accessToken,
-          email,
-          name,
-          agreed_to_receive_emails: true,
-          accepted_terms_of_service: true,
-        }
-        break
-      case "apple":
-        body = {
-          provider: oauthProvider,
-          apple_uid: appleUID,
-          id_token: idToken,
-          email,
-          name,
-          agreed_to_receive_emails: true,
-          accepted_terms_of_service: true,
-        }
-        break
-      default:
-        body = {
-          email,
-          password,
-          name,
-          agreed_to_receive_emails: true,
-          accepted_terms_of_service: true,
-        }
-        break
-    }
+  signUp: thunk(
+    async (
+      actions,
+      { email, password, name, accessToken, oauthProvider, idToken, appleUID, agreedToReceiveEmails }
+    ) => {
+      let body
+      switch (oauthProvider) {
+        case "facebook":
+        case "google":
+          body = {
+            provider: oauthProvider,
+            oauth_token: accessToken,
+            email,
+            name,
+            agreed_to_receive_emails: agreedToReceiveEmails,
+            accepted_terms_of_service: true,
+          }
+          break
+        case "apple":
+          body = {
+            provider: oauthProvider,
+            apple_uid: appleUID,
+            id_token: idToken,
+            email,
+            name,
+            agreed_to_receive_emails: agreedToReceiveEmails,
+            accepted_terms_of_service: true,
+          }
+          break
+        default:
+          body = {
+            email,
+            password,
+            name,
+            agreed_to_receive_emails: agreedToReceiveEmails,
+            accepted_terms_of_service: true,
+          }
+          break
+      }
 
-    const result = await actions.gravityUnauthenticatedRequest({
-      path: `/api/v1/user`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body,
-    })
-
-    // The user account has been successfully created
-    if (result.status === 201) {
-      // @ts-ignore
-      await actions.signIn({ email, password, accessToken, oauthProvider, idToken, appleUID })
-      actions.setState({
-        onboardingState: "incomplete",
+      const result = await actions.gravityUnauthenticatedRequest({
+        path: `/api/v1/user`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body,
       })
-      return true
+
+      // The user account has been successfully created
+      if (result.status === 201) {
+        // @ts-ignore
+        await actions.signIn({ email, password, accessToken, oauthProvider, idToken, appleUID })
+        actions.setState({
+          onboardingState: "incomplete",
+        })
+        return { success: true }
+      }
+
+      const resultJson = await result.json()
+      let message = ""
+      const providerName = capitalize(oauthProvider)
+      if (resultJson?.error === "User Already Exists") {
+        message =
+          `${providerName} account previously linked to Artsy. ` +
+          "Log in to your Artsy account via email and password and link " +
+          `${providerName} in your settings instead.`
+      } else if (resultJson?.error === "Another Account Already Linked") {
+        message =
+          `${providerName} account already linked to another Artsy account. ` +
+          `Try logging out and back in with ${providerName}. Then consider ` +
+          `deleting that user account and re-linking ${providerName}. `
+      } else if (resultJson.message && resultJson.message.match("Unauthorized source IP address")) {
+        message = `Your IP address was blocked by ${providerName}.`
+      } else {
+        message = "Failed to sign up"
+      }
+
+      return { success: false, message }
     }
-    return false
-  }),
-  authFacebook: thunk(async (actions, { signInOrUp }) => {
+  ),
+  authFacebook: thunk(async (actions, options) => {
     return await new Promise<true>(async (resolve, reject) => {
       const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions(["public_profile", "email"])
       if (declinedPermissions?.includes("email")) {
@@ -352,18 +432,19 @@ export const getAuthModel = (): AuthModel => ({
           return
         }
 
-        if (signInOrUp === "signUp") {
+        if (options.signInOrUp === "signUp") {
           const resultGravitySignUp = await actions.signUp({
             email: facebookInfo.email,
             name: facebookInfo.name,
             accessToken: accessToken.accessToken,
             oauthProvider: "facebook",
+            agreedToReceiveEmails: options.agreedToReceiveEmails,
           })
 
-          resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
+          resultGravitySignUp.success ? resolve(true) : reject(resultGravitySignUp.message)
         }
 
-        if (signInOrUp === "signIn") {
+        if (options.signInOrUp === "signIn") {
           // we need to get X-ACCESS-TOKEN before actual sign in
           const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
             path: `/oauth2/access_token`,
@@ -394,13 +475,10 @@ export const getAuthModel = (): AuthModel => ({
               oauthProvider: "facebook",
             })
 
-            resultGravitySignIn ? resolve(true) : reject("Failed to log in.")
+            resultGravitySignIn ? resolve(true) : reject("Could not log in")
           } else {
             const res = await resultGravityAccessToken.json()
-            if (res.error_description) {
-              console.log(res) // This will get us the error on sentry because we capture console.logs there
-              reject(`Failed to get gravity token from gravity: ${res.error_description}`)
-            }
+            afterSocialAuthLogin(res, reject, "facebook")
           }
         }
       }
@@ -421,7 +499,7 @@ export const getAuthModel = (): AuthModel => ({
       new GraphRequestManager().addRequest(infoRequest).start()
     })
   }),
-  authGoogle: thunk(async (actions, { signInOrUp }) => {
+  authGoogle: thunk(async (actions, options) => {
     return await new Promise<true>(async (resolve, reject) => {
       if (!(await GoogleSignin.hasPlayServices())) {
         reject("Play services are not available.")
@@ -429,20 +507,21 @@ export const getAuthModel = (): AuthModel => ({
       const userInfo = await GoogleSignin.signIn()
       const accessToken = (await GoogleSignin.getTokens()).accessToken
 
-      if (signInOrUp === "signUp") {
-        const resultGravitySignUp =
-          userInfo.user.name &&
-          (await actions.signUp({
-            email: userInfo.user.email,
-            name: userInfo.user.name,
-            accessToken,
-            oauthProvider: "google",
-          }))
+      if (options.signInOrUp === "signUp") {
+        const resultGravitySignUp = userInfo.user.name
+          ? await actions.signUp({
+              email: userInfo.user.email,
+              name: userInfo.user.name,
+              accessToken,
+              oauthProvider: "google",
+              agreedToReceiveEmails: options.agreedToReceiveEmails,
+            })
+          : { success: false }
 
-        resultGravitySignUp ? resolve(true) : reject("Failed to sign up.")
+        resultGravitySignUp.success ? resolve(true) : reject(resultGravitySignUp.message)
       }
 
-      if (signInOrUp === "signIn") {
+      if (options.signInOrUp === "signIn") {
         // we need to get X-ACCESS-TOKEN before actual sign in
         const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
           path: `/oauth2/access_token`,
@@ -473,18 +552,15 @@ export const getAuthModel = (): AuthModel => ({
             oauthProvider: "google",
           })
 
-          resultGravitySignIn ? resolve(true) : reject("Failed to log in.")
+          resultGravitySignIn ? resolve(true) : reject("Could not log in")
         } else {
           const res = await resultGravityAccessToken.json()
-          if (res.error_description) {
-            console.log(res) // This will get us the error on sentry because we capture console.logs there
-            reject(`Failed to get gravity token from gravity: ${res.error_description}`)
-          }
+          afterSocialAuthLogin(res, reject, "google")
         }
       }
     })
   }),
-  authApple: thunk(async (actions) => {
+  authApple: thunk(async (actions, { agreedToReceiveEmails }) => {
     return await new Promise<true>(async (resolve, reject) => {
       // we cannot have separated logic for sign in and sign up with apple, as with google or facebook,
       // because apple returns email only on the FIRST auth attempt, so we run sign up and sign in one by one
@@ -505,17 +581,18 @@ export const getAuthModel = (): AuthModel => ({
         const firstName = userInfo.fullName?.givenName ? userInfo.fullName.givenName : ""
         const lastName = userInfo.fullName?.familyName ? userInfo.fullName.familyName : ""
 
-        const resultGravitySignUp =
-          userInfo.email &&
-          (await actions.signUp({
-            email: userInfo.email,
-            name: `${firstName} ${lastName}`.trim(),
-            appleUID,
-            idToken,
-            oauthProvider: "apple",
-          }))
+        const resultGravitySignUp = userInfo.email
+          ? await actions.signUp({
+              email: userInfo.email,
+              name: `${firstName} ${lastName}`.trim(),
+              appleUID,
+              idToken,
+              oauthProvider: "apple",
+              agreedToReceiveEmails: !!agreedToReceiveEmails,
+            })
+          : { success: false }
 
-        resultGravitySignUp ? resolve(true) : (signInOrUp = "signIn")
+        resultGravitySignUp.success ? resolve(true) : (signInOrUp = "signIn")
       }
 
       if (signInOrUp === "signIn") {
@@ -550,13 +627,10 @@ export const getAuthModel = (): AuthModel => ({
             oauthProvider: "apple",
           })
 
-          resultGravitySignIn ? resolve(true) : reject("Failed to log in.")
+          resultGravitySignIn ? resolve(true) : reject("Could not log in")
         } else {
           const res = await resultGravityAccessToken.json()
-          if (res.error_description) {
-            console.log(res) // This will get us the error on sentry because we capture console.logs there
-            reject(`Failed to get gravity token from gravity: ${res.error_description}`)
-          }
+          afterSocialAuthLogin(res, reject, "apple")
         }
       }
     })

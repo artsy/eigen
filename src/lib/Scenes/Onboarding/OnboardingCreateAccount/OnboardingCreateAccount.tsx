@@ -1,18 +1,23 @@
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { BackButton } from "lib/navigation/BackButton"
-import { GlobalStore, useEnvironment } from "lib/store/GlobalStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Button, Flex, Spacer, Text, Touchable, useColor } from "palette"
-import React, { useEffect, useRef, useState } from "react"
-import { Alert, Animated, Linking, ScrollView } from "react-native"
+import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
+import React, { useEffect, useRef } from "react"
+import { Alert, Animated, ScrollView } from "react-native"
+import DeviceInfo from "react-native-device-info"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
+import { OnboardingSocialPick } from "../OnboardingSocialPick"
 import { OnboardingCreateAccountEmail, OnboardingCreateAccountEmailParams } from "./OnboardingCreateAccountEmail"
 import { OnboardingCreateAccountName } from "./OnboardingCreateAccountName"
 import { OnboardingCreateAccountPassword } from "./OnboardingCreateAccountPassword"
+
+export const OnboardingCreateAccount: React.FC = () => {
+  return <OnboardingSocialPick mode="signup" />
+}
 
 export interface OnboardingCreateAccountProps
   extends StackScreenProps<OnboardingNavigationStack, "OnboardingCreateAccount"> {}
@@ -37,6 +42,11 @@ export interface UserSchema {
   name: string
 }
 
+export interface FormikSchema extends UserSchema {
+  acceptedTerms: boolean
+  agreedToReceiveEmails: boolean
+}
+
 export const emailSchema = Yup.object().shape({
   email: Yup.string().email("Please provide a valid email address").required("Email field is required"),
 })
@@ -52,24 +62,21 @@ export const nameSchema = Yup.object().shape({
   name: Yup.string().required("Full name field is required"),
 })
 
-const getCurrentRoute = () =>
+export const getCurrentRoute = () =>
   __unsafe__createAccountNavigationRef.current?.getCurrentRoute()?.name as
     | keyof OnboardingCreateAccountNavigationStack
     | undefined
 
 const EMAIL_EXISTS_ERROR_MESSAGE = "We found an account with this email"
 
-export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = ({ navigation }) => {
-  const [acceptedTerms, setAcceptedTerms] = useState(false)
-  const [higlightTerms, setHighlightTerms] = useState(false)
-
-  const formik = useFormik<UserSchema>({
+export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountProps> = ({ navigation }) => {
+  const formik = useFormik<FormikSchema>({
     enableReinitialize: true,
     validateOnChange: false,
     validateOnBlur: true,
-    initialValues: { email: "", password: "", name: "" },
+    initialValues: { email: "", password: "", name: "", acceptedTerms: false, agreedToReceiveEmails: false },
     initialErrors: {},
-    onSubmit: async ({ email, password, name }, { setErrors }) => {
+    onSubmit: async ({ email, password, name, agreedToReceiveEmails, acceptedTerms }, { setErrors }) => {
       switch (getCurrentRoute()) {
         case "OnboardingCreateAccountEmail":
           const userExists = await GlobalStore.actions.auth.userExists({ email })
@@ -89,13 +96,10 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
           break
         case "OnboardingCreateAccountName":
           if (acceptedTerms) {
-            const res = await GlobalStore.actions.auth.signUp({ email, password, name })
-            if (!res) {
-              Alert.alert("Error", "Please try signing up again")
+            const res = await GlobalStore.actions.auth.signUp({ email, password, name, agreedToReceiveEmails })
+            if (!res.success) {
+              Alert.alert("Try again", res.message)
             }
-          } else {
-            // Highlight the terms and conditions checkbox
-            setHighlightTerms(true)
           }
 
           break
@@ -137,12 +141,9 @@ export const OnboardingCreateAccount: React.FC<OnboardingCreateAccountProps> = (
           <StackNavigator.Screen name="OnboardingCreateAccountName" component={OnboardingCreateAccountName} />
         </StackNavigator.Navigator>
         <OnboardingCreateAccountButton
-          navigateToLogin={() => {
-            navigation.replace("OnboardingLogin", { withFadeAnimation: true, email: formik.values.email })
+          navigateToLoginWithEmail={() => {
+            navigation.replace("OnboardingLoginWithEmail", { withFadeAnimation: true, email: formik.values.email })
           }}
-          acceptedTerms={acceptedTerms}
-          setAcceptedTerms={setAcceptedTerms}
-          highlightTerms={higlightTerms}
         />
       </NavigationContainer>
     </FormikProvider>
@@ -194,25 +195,17 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
 }
 
 export interface OnboardingCreateAccountButtonProps {
-  navigateToLogin: () => void
-  acceptedTerms: boolean
-  setAcceptedTerms: React.Dispatch<React.SetStateAction<boolean>>
-  highlightTerms: boolean
+  navigateToLoginWithEmail: () => void
 }
 
 export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButtonProps> = ({
-  navigateToLogin,
-  acceptedTerms,
-  setAcceptedTerms,
-  highlightTerms,
+  navigateToLoginWithEmail,
 }) => {
-  const { handleSubmit, isSubmitting, errors } = useFormikContext<UserSchema>()
+  const { values, handleSubmit, isSubmitting, errors } = useFormikContext<FormikSchema>()
 
   const isLastStep = getCurrentRoute() === "OnboardingCreateAccountName"
   const yTranslateAnim = useRef(new Animated.Value(0))
   const { safeAreaInsets } = useScreenDimensions()
-
-  const webURL = useEnvironment().webURL
 
   useEffect(() => {
     if (errors.email === EMAIL_EXISTS_ERROR_MESSAGE) {
@@ -227,11 +220,11 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
   }, [errors.email])
 
   return (
-    <Flex px={1.5} paddingBottom={1.5} backgroundColor="white">
+    <Flex px={1.5} paddingBottom={DeviceInfo.hasNotch() ? 0 : 1.5} backgroundColor="white" pt={0.5}>
       {errors.email === EMAIL_EXISTS_ERROR_MESSAGE && (
         <Animated.View style={{ bottom: -50, transform: [{ translateY: yTranslateAnim.current }] }}>
           <Button
-            onPress={navigateToLogin}
+            onPress={navigateToLoginWithEmail}
             block
             haptic="impactMedium"
             mb={1}
@@ -243,48 +236,12 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
           </Button>
         </Animated.View>
       )}
-      {!!isLastStep && (
-        <Touchable haptic onPress={() => setAcceptedTerms(!acceptedTerms)}>
-          <Flex my={2} flexDirection="row">
-            <Checkbox error={highlightTerms} checked={acceptedTerms} onPress={() => setAcceptedTerms(!acceptedTerms)} />
-            <Text variant="small">
-              I agree to Artsy’s{" "}
-              <Text
-                onPress={() => {
-                  Linking.openURL(`${webURL}/terms`)
-                }}
-                style={{ textDecorationLine: "underline" }}
-              >
-                Terms of Use
-              </Text>
-              ,{" "}
-              <Text
-                onPress={() => {
-                  Linking.openURL(`${webURL}/privacy`)
-                }}
-                style={{ textDecorationLine: "underline" }}
-              >
-                Privacy Policy
-              </Text>
-              , and{" "}
-              <Text
-                onPress={() => {
-                  Linking.openURL(`${webURL}/conditions-of-sale`)
-                }}
-                style={{ textDecorationLine: "underline" }}
-              >
-                Conditions of Sale
-              </Text>
-              .
-            </Text>
-          </Flex>
-        </Touchable>
-      )}
+
       <Button
         onPress={handleSubmit}
         block
         haptic="impactMedium"
-        disabled={isLastStep && !acceptedTerms}
+        disabled={isLastStep && !values.acceptedTerms}
         loading={isSubmitting}
         testID="signUpButton"
         variant="primaryBlack"

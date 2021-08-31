@@ -6,7 +6,7 @@ describe("auction result helpers", () => {
     const auctionResultWithPrice: AuctionResultHelperData = {
       currency: "USD",
       saleDate: moment().toISOString(),
-      priceRealized: { display: "one dollar", cents: 100 },
+      priceRealized: { display: "one dollar", displayUSD: "one dollar", cents: 100 },
       boughtIn: false,
     }
 
@@ -18,7 +18,7 @@ describe("auction result helpers", () => {
     const auctionResultAwaitingResults: AuctionResultHelperData = {
       currency: "USD",
       saleDate: moment().subtract(2, "days").toISOString(),
-      priceRealized: { display: "zero", cents: 0 },
+      priceRealized: { display: "zero", displayUSD: "zero", cents: 0 },
       boughtIn: false,
     }
 
@@ -30,7 +30,7 @@ describe("auction result helpers", () => {
     const auctionResultBoughtIn: AuctionResultHelperData = {
       currency: "USD",
       saleDate: moment().toISOString(),
-      priceRealized: { display: "zero", cents: 0 },
+      priceRealized: { display: "zero", displayUSD: "zero", cents: 0 },
       boughtIn: true,
     }
 
@@ -42,7 +42,7 @@ describe("auction result helpers", () => {
     const auctionResultNotAvailable: AuctionResultHelperData = {
       currency: "USD",
       saleDate: moment().subtract(3, "months").toISOString(),
-      priceRealized: { display: "zero", cents: 0 },
+      priceRealized: { display: "zero", displayUSD: "zero", cents: 0 },
       boughtIn: false,
     }
 

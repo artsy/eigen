@@ -24,6 +24,7 @@ import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
 import { GeneQueryRenderer } from "./Scenes/Gene/Gene"
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
+import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/EditSavedSearchAlert"
 
 // Consignments / My Collection
 import { Consignments } from "./Scenes/Consignments"
@@ -67,11 +68,12 @@ import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAd
 
 import { SalesQueryRenderer } from "./Scenes/Sales"
 import { Search } from "./Scenes/Search"
+import { Search2 } from "./Scenes/Search2/Search2"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import StorybookUI from "../storybook/storybook-ui"
+import { StorybookUIRoot } from "../storybook/storybook-ui"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
@@ -89,6 +91,9 @@ import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { MyCollectionArtworkImagesQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkImages/MyCollectionArtworkImages"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
+import { SavedSearchAlertsListQueryRenderer } from "./Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
+import { SearchSwitchContainer } from "./Scenes/SearchSwitchContainer"
+import { TagQueryRenderer } from "./Scenes/Tag/Tag"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
@@ -321,6 +326,7 @@ export const modules = defineModules({
   FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
   Gene: reactModule(GeneQueryRenderer),
+  Tag: reactModule(TagQueryRenderer),
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
   Inbox: reactModule(InboxWrapper, { isRootViewForTabName: "inbox" }),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
@@ -362,7 +368,9 @@ export const modules = defineModules({
   PrivacyRequest: reactModule(PrivacyRequest),
   Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }),
   SalesNotRootTabView: reactModule(Consignments),
-  Search: reactModule(SearchWithTracking, { isRootViewForTabName: "search" }),
+  SearchSwitchContainer: reactModule(SearchSwitchContainer, { isRootViewForTabName: "search" }),
+  Search: reactModule(SearchWithTracking),
+  Search2: reactModule(Search2),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SavedAddresses: reactModule(SavedAddressesQueryRenderer),
@@ -380,7 +388,9 @@ export const modules = defineModules({
   }),
   WorksForYou: reactModule(WorksForYouQueryRenderer),
   LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer),
-  Storybook: reactModule(StorybookUI, { fullBleed: true, hidesBackButton: true }),
+  Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
+  SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer, { onlyShowInTabName: "profile" }),
+  EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),
 })
 
 // Register react modules with the app registry

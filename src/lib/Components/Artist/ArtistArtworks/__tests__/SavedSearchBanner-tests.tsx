@@ -3,9 +3,9 @@ import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerQuery.g
 import { SavedSearchBannerTestsQuery } from "__generated__/SavedSearchBannerTestsQuery.graphql"
 import { PopoverMessage } from "lib/Components/PopoverMessage/PopoverMessage"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { PushAuthorizationStatus } from "lib/Scenes/MyProfile/MyProfilePushNotifications"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { Button, Text } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -122,7 +122,7 @@ describe("SavedSearchBanner", () => {
 
     const buttonComponent = tree.root.findByType(Button)
 
-    expect(buttonComponent.props.children).toEqual("Enable")
+    expect(buttonComponent.props.children).toEqual("Create Alert")
     expect(buttonComponent.props.variant).toBe("primaryBlack")
     expect(buttonComponent.props.loading).toBe(false)
   })
@@ -133,7 +133,7 @@ describe("SavedSearchBanner", () => {
 
     const buttonComponent = tree.root.findByType(Button)
 
-    expect(buttonComponent.props.children).toEqual("Disable")
+    expect(buttonComponent.props.children).toEqual("Remove Alert")
     expect(buttonComponent.props.variant).toBe("secondaryOutline")
     expect(buttonComponent.props.loading).toBe(false)
   })

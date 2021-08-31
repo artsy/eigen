@@ -1,5 +1,4 @@
 import { InquiryModal_artwork } from "__generated__/InquiryModal_artwork.graphql"
-import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { TextArea } from "lib/Components/TextArea"
@@ -10,6 +9,7 @@ import { InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes
 import { LocationWithDetails } from "lib/utils/googleMaps"
 import { Schema } from "lib/utils/track"
 import { Box, Flex, Separator, Text, useTheme } from "palette"
+import { Checkbox } from "palette/elements/Checkbox"
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -121,7 +121,7 @@ const InquiryQuestionOption: React.FC<{
                       <Text variant="text" color="black100" style={{ width: "70%" }}>
                         {state.shippingLocation.name}
                       </Text>
-                      <Text variant="text" color="purple100">
+                      <Text variant="text" color="purple100" /* TODO-PALETTE-V3 "blue100" */>
                         Edit
                       </Text>
                     </>

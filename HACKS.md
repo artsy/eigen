@@ -170,6 +170,7 @@ These are fairly superficial styling hacks for
 - shrinking the icon size to work nicely with our inputs
 - aligning inner inputs nicely
 - icon animation to work properly on android
+- palette v3 colors
 
 ## react-native-mapbox-gl/maps - 8.2.0-beta2 postinstall script
 
@@ -210,3 +211,48 @@ There is a known issue in react-native-screens that causes the app to crash on r
 added to the MainActivity class on Android https://github.com/software-mansion/react-native-screens/issues/17#issuecomment-424704067.
 
 This has the UX downside of not allowing state restore from background but this is an unsolved problem for RN apps.
+
+## typings/styled-components.native.d.ts
+
+#### When can we remove this:
+
+When we upgrade styled-components to a version with types that don't complain when we run `yarn type-check`.
+
+#### Explanation/Context:
+
+I wasn't the one to add this file, so I don't have all the context, but I do know that styled-component types are missing and/or causing problems when we don't have that file.
+
+The latest change I did was add the `ThemeContext` in there, because the version of styled-components we use has that, but the types are not exposing that, so I had to manually add it there.
+
+# `react-native-push-notification` Requiring unknown module on ios
+
+#### When can we remove this:
+
+Once we want to use react-native-push-notification on iOS
+
+#### Explanation/Context:
+
+This is happening because react-native-push-notification requires @react-native-community/push-notification-ios. We are not
+adding this dependency at this time because it is unnecessary and we do not use react-native-push-notification on iOS. Also,
+we do not want unnecessary conflicts between our native push notification implementation and @react-native-community/push-notification-ios's.
+
+## `@testing-library/react-native` patch
+
+#### When can we remove this:
+
+When we upgrade to v8, or a v7 that has https://github.com/callstack/react-native-testing-library/pull/697 merged in.
+
+#### Explanation/Context:
+
+We tried to add the library in https://github.com/artsy/eigen/pull/5197, and 7.2.0 was giving type errors because of the missing `: void` in our patch.
+There is an issue https://github.com/callstack/react-native-testing-library/issues/708 and the fix https://github.com/callstack/react-native-testing-library/pull/697, and we just took the fix and used it as a patch, so we don't have to upgrade to v8.0.0-rc.0, which is the latest v8 out currently.
+
+## `@storybook/client-api` patch-package
+
+#### When can we remove this:
+
+Once storybook is upgraded to a version that does not use the removed `Cancellable` from `lodash` in that file.
+
+#### Explanation/Context:
+
+We get an error like here, and that is the solution. https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47166#issuecomment-685738545

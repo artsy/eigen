@@ -93,7 +93,7 @@ describe("filterArtworksParams", () => {
   it("returns the value of appliedFilter", () => {
     const appliedFilters: FilterArray = [
       {
-        displayText: "Recently added",
+        displayText: "Recently Added",
         paramName: FilterParamName.sort,
         paramValue: "-published_at",
       },

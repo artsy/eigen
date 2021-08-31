@@ -1,10 +1,10 @@
 import { NavigationProp } from "@react-navigation/native"
-import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Input } from "lib/Components/Input/Input"
-import { Select } from "lib/Components/Select"
 import { TextArea } from "lib/Components/TextArea"
 import { Flex, Join, Sans, Spacer, useSpace } from "palette"
+import { Checkbox } from "palette/elements/Checkbox"
+import { Select } from "palette/elements/Select"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native-gesture-handler"
 import { useArtworkForm } from "../Form/useArtworkForm"
@@ -17,7 +17,7 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
   const { formik } = useArtworkForm()
   const formikValues = formik?.values
   const [isEdition, setIsEdition] = useState(formikValues?.isEdition)
-  const pricePaidCurrencyInputRef = useRef<Select<string>>(null)
+  const pricePaidCurrencyInputRef = useRef<typeof Select>(null)
 
   const handleEditionChange = (editionStatus: boolean) => {
     setIsEdition(editionStatus)

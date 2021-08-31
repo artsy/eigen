@@ -1,8 +1,11 @@
 import { Home_articlesConnection } from "__generated__/Home_articlesConnection.graphql"
 import { Home_featured } from "__generated__/Home_featured.graphql"
-import { Home_homePage } from "__generated__/Home_homePage.graphql"
-import { Home_me } from "__generated__/Home_me.graphql"
-import { HomeQuery } from "__generated__/HomeQuery.graphql"
+import { Home_homePageAbove } from "__generated__/Home_homePageAbove.graphql"
+import { Home_homePageBelow } from "__generated__/Home_homePageBelow.graphql"
+import { Home_meAbove } from "__generated__/Home_meAbove.graphql"
+import { Home_meBelow } from "__generated__/Home_meBelow.graphql"
+import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
+import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -14,35 +17,45 @@ import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail
 import { SaleArtworksHomeRailContainer } from "lib/Scenes/Home/Components/SaleArtworksHomeRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
+import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { isPad } from "lib/utils/hardware"
-import { PlaceholderBox, PlaceholderText, RandomWidthPlaceholderText, useMemoizedRandom } from "lib/utils/placeholders"
-import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import {
+  PlaceholderBox,
+  PlaceholderText,
+  ProvidePlaceholderContext,
+  RandomWidthPlaceholderText,
+  useMemoizedRandom,
+} from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { compact, drop, flatten, times, zip } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, Platform, RefreshControl, View, ViewProps } from "react-native"
-import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { _FragmentRefs, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProps {
-  articlesConnection: Home_articlesConnection
-  homePage: Home_homePage
-  me: Home_me
-  featured: Home_featured
+  articlesConnection: Home_articlesConnection | null
+  featured: Home_featured | null
+  homePageAbove: Home_homePageAbove | null
+  homePageBelow: Home_homePageBelow | null
+  loading: boolean
+  meAbove: Home_meAbove | null
+  meBelow: Home_meBelow | null
   relay: RelayRefetchProp
 }
 
 const Home = (props: Props) => {
-  const { articlesConnection, homePage, me, featured } = props
-  const artworkModules = homePage?.artworkModules || []
-  const salesModule = homePage?.salesModule
-  const collectionsModule = homePage?.marketingCollectionsModule
-  const artistModules = (homePage?.artistModules && homePage.artistModules.concat()) || []
-  const fairsModule = homePage?.fairsModule
+  const { homePageAbove, homePageBelow, meAbove, meBelow, articlesConnection, featured, loading } = props
+
+  const artworkModules = (homePageAbove?.artworkModules || []).concat(homePageBelow?.artworkModules || [])
+  const salesModule = homePageAbove?.salesModule
+  const collectionsModule = homePageBelow?.marketingCollectionsModule
+  const artistModules = (homePageBelow?.artistModules && homePageBelow?.artistModules.concat()) || []
+  const fairsModule = homePageBelow?.fairsModule
 
   const enableAuctionResultsByFollowedArtists = useFeatureFlag("ARHomeAuctionResultsByFollowedArtists")
 
@@ -70,6 +83,7 @@ const Home = (props: Props) => {
   Please make sure to keep this page in sync with the home screen.
   */
   const rowData = compact([
+    // Above-the-fold modules (make sure to include enough modules in the above-the-fold query to cover the whole screen.)
     artworkRails[0],
     { type: "lotsByFollowedArtists" } as const,
     artworkRails[1],
@@ -78,8 +92,9 @@ const Home = (props: Props) => {
         type: "sales",
         data: salesModule,
       } as const),
-    { type: "articles" } as const,
-    !!viewingRoomsEchoFlag && ({ type: "viewing-rooms" } as const),
+    // Below-the-fold modules
+    !!articlesConnection && ({ type: "articles" } as const),
+    !!viewingRoomsEchoFlag && !!featured && ({ type: "viewing-rooms" } as const),
     fairsModule &&
       ({
         type: "fairs",
@@ -134,7 +149,11 @@ const Home = (props: Props) => {
             renderItem={({ item, index, separators }) => {
               switch (item.type) {
                 case "articles":
-                  return <ArticlesRailFragmentContainer articlesConnection={articlesConnection} />
+                  return articlesConnection ? (
+                    <ArticlesRailFragmentContainer articlesConnection={articlesConnection} />
+                  ) : (
+                    <></>
+                  )
                 case "artwork":
                   return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
                 case "artist":
@@ -151,17 +170,22 @@ const Home = (props: Props) => {
                     />
                   )
                 case "viewing-rooms":
-                  return <ViewingRoomsHomeRail featured={featured} />
-
+                  return featured ? <ViewingRoomsHomeRail featured={featured} /> : <></>
                 case "auction-results":
-                  return <AuctionResultsRailFragmentContainer me={me} scrollRef={scrollRefs.current[index]} />
+                  return meBelow ? (
+                    <AuctionResultsRailFragmentContainer me={meBelow} scrollRef={scrollRefs.current[index]} />
+                  ) : (
+                    <></>
+                  )
                 case "lotsByFollowedArtists":
-                  return (
+                  return meAbove ? (
                     <SaleArtworksHomeRailContainer
-                      me={me}
+                      me={meAbove}
                       onShow={() => separators.updateProps("leading", { hideSeparator: false })}
                       onHide={() => separators.updateProps("leading", { hideSeparator: true })}
                     />
+                  ) : (
+                    <></>
                   )
               }
             }}
@@ -171,15 +195,15 @@ const Home = (props: Props) => {
                   <ArtsyLogoIcon scale={0.75} />
                 </Flex>
                 <Spacer mb="15px" />
-                <HomeHeroContainer homePage={homePage} />
+                {!!homePageAbove && <HomeHeroContainer homePage={homePageAbove} />}
                 <Spacer mb="2" />
               </Box>
             }
             ItemSeparatorComponent={({ hideSeparator }) => (!hideSeparator ? <Spacer mb={3} /> : null)}
-            ListFooterComponent={() => <Spacer mb={3} />}
+            ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
             keyExtractor={(_item, index) => String(index)}
           />
-          <EmailConfirmationBannerFragmentContainer me={me} />
+          {!!meAbove && <EmailConfirmationBannerFragmentContainer me={meAbove} />}
         </View>
       </Theme>
     </ProvideScreenTracking>
@@ -189,15 +213,46 @@ const Home = (props: Props) => {
 export const HomeFragmentContainer = createRefetchContainer(
   Home,
   {
-    homePage: graphql`
-      fragment Home_homePage on HomePage
+    // Make sure not to include modules that are part of "homePageBelow"
+    homePageAbove: graphql`
+      fragment Home_homePageAbove on HomePage
       @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
         artworkModules(
           maxRails: -1
           maxFollowedGeneRails: -1
-          order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_GALLERIES]
+          order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS]
+          include: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS]
+        ) {
+          id
+          ...ArtworkRail_rail
+        }
+        salesModule {
+          ...SalesRail_salesModule
+        }
+        ...HomeHero_homePage @arguments(heroImageVersion: $heroImageVersion)
+      }
+    `,
+    // Make sure to exclude all modules that are part of "homePageAbove"
+    homePageBelow: graphql`
+      fragment Home_homePageBelow on HomePage
+      @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
+        artworkModules(
+          maxRails: -1
+          maxFollowedGeneRails: -1
+          order: [RECOMMENDED_WORKS, FOLLOWED_GALLERIES]
           # LIVE_AUCTIONS and CURRENT_FAIRS both have their own modules, below.
-          exclude: [SAVED_WORKS, GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]
+          # Make sure to exclude all modules that are part of "homePageAbove"
+          exclude: [
+            RECENTLY_VIEWED_WORKS
+            ACTIVE_BIDS
+            FOLLOWED_ARTISTS
+            SAVED_WORKS
+            GENERIC_GENES
+            LIVE_AUCTIONS
+            CURRENT_FAIRS
+            RELATED_ARTISTS
+            FOLLOWED_GENES
+          ]
         ) {
           id
           ...ArtworkRail_rail
@@ -209,25 +264,21 @@ export const HomeFragmentContainer = createRefetchContainer(
         fairsModule {
           ...FairsRail_fairsModule
         }
-        salesModule {
-          ...SalesRail_salesModule
-        }
         marketingCollectionsModule {
           ...CollectionsRail_collectionsModule
         }
         ...HomeHero_homePage @arguments(heroImageVersion: $heroImageVersion)
       }
     `,
-    me: graphql`
-      fragment Home_me on Me {
+    meAbove: graphql`
+      fragment Home_meAbove on Me {
         ...EmailConfirmationBanner_me
         ...SaleArtworksHomeRail_me
-        ...AuctionResultsRail_me
       }
     `,
-    featured: graphql`
-      fragment Home_featured on ViewingRoomConnection {
-        ...ViewingRoomsListFeatured_featured
+    meBelow: graphql`
+      fragment Home_meBelow on Me {
+        ...AuctionResultsRail_me
       }
     `,
     articlesConnection: graphql`
@@ -235,14 +286,26 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...ArticlesRail_articlesConnection
       }
     `,
+    featured: graphql`
+      fragment Home_featured on ViewingRoomConnection {
+        ...ViewingRoomsListFeatured_featured
+      }
+    `,
   },
   graphql`
     query HomeRefetchQuery($heroImageVersion: HomePageHeroUnitImageVersion!) {
       homePage @optionalField {
-        ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
+        ...Home_homePageAbove @arguments(heroImageVersion: $heroImageVersion)
+      }
+      homePageBelow: homePage @optionalField {
+        ...Home_homePageBelow @arguments(heroImageVersion: $heroImageVersion)
       }
       me @optionalField {
-        ...Home_me
+        ...Home_meAbove
+        ...AuctionResultsRail_me
+      }
+      meBelow: me @optionalField {
+        ...Home_meBelow
       }
       featured: viewingRooms(featured: true) @optionalField {
         ...Home_featured
@@ -253,6 +316,45 @@ export const HomeFragmentContainer = createRefetchContainer(
     }
   `
 )
+
+const BelowTheFoldPlaceholder: React.FC<{}> = () => {
+  const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
+
+  return (
+    <ProvidePlaceholderContext>
+      <Theme>
+        <Flex>
+          {!!viewingRoomsEchoFlag && (
+            <Flex ml="2" mt="3">
+              <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
+              <Flex flexDirection="row">
+                {times(4).map((i) => (
+                  <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
+                ))}
+              </Flex>
+            </Flex>
+          )}
+          {times(2).map((r) => (
+            <Box key={r}>
+              <Spacer mb={3} />
+              <Box ml={2} mr={2}>
+                <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
+                <Flex flexDirection="row" mt={1}>
+                  <Join separator={<Spacer width={15} />}>
+                    {times(10).map((index) => (
+                      <PlaceholderBox key={index} height={270} width={270} />
+                    ))}
+                  </Join>
+                  <Spacer mb={2} />
+                </Flex>
+              </Box>
+            </Box>
+          ))}
+        </Flex>
+      </Theme>
+    </ProvidePlaceholderContext>
+  )
+}
 
 const HomePlaceholder: React.FC<{}> = () => {
   const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
@@ -369,30 +471,74 @@ export const HomeQueryRenderer: React.FC = () => {
     }
   }, [flash_message])
 
-  // Avoid rendering when user is logged out, it will fail anyway
-  return userAccessToken ? (
-    <QueryRenderer<HomeQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query HomeQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
-          homePage @optionalField {
-            ...Home_homePage @arguments(heroImageVersion: $heroImageVersion)
-          }
-          me @optionalField {
-            ...Home_me
-            ...AuctionResultsRail_me
-          }
-          featured: viewingRooms(featured: true) @optionalField {
-            ...Home_featured
-          }
-          articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
-            ...Home_articlesConnection
-          }
-        }
-      `}
-      variables={{ heroImageVersion: isPad() ? "WIDE" : "NARROW" }}
-      render={renderWithPlaceholder({ Container: HomeFragmentContainer, renderPlaceholder: () => <HomePlaceholder /> })}
-      cacheConfig={{ force: true }}
-    />
-  ) : null
+  return (
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.Home,
+        context_screen_owner_type: null as any,
+      }}
+    >
+      {/* Avoid rendering when user is logged out, it will fail anyway */}
+      {!!userAccessToken && (
+        <AboveTheFoldQueryRenderer<HomeAboveTheFoldQuery, HomeBelowTheFoldQuery>
+          environment={defaultEnvironment}
+          above={{
+            query: graphql`
+              query HomeAboveTheFoldQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
+                homePage @optionalField {
+                  ...Home_homePageAbove @arguments(heroImageVersion: $heroImageVersion)
+                }
+                me @optionalField {
+                  ...Home_meAbove
+                }
+                articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
+                  ...Home_articlesConnection
+                }
+              }
+            `,
+            variables: { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
+          }}
+          below={{
+            query: graphql`
+              query HomeBelowTheFoldQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
+                homePage @optionalField {
+                  ...Home_homePageBelow @arguments(heroImageVersion: $heroImageVersion)
+                }
+                featured: viewingRooms(featured: true) @optionalField {
+                  ...Home_featured
+                }
+                me @optionalField {
+                  ...Home_meBelow
+                  ...AuctionResultsRail_me
+                }
+              }
+            `,
+            variables: { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
+          }}
+          render={{
+            renderComponent: ({ above, below }) => {
+              if (!above) {
+                throw new Error("no data")
+              }
+
+              return (
+                <HomeFragmentContainer
+                  articlesConnection={above?.articlesConnection ?? null}
+                  featured={below ? below.featured : null}
+                  homePageAbove={above.homePage}
+                  homePageBelow={below ? below.homePage : null}
+                  meAbove={above.me}
+                  meBelow={below ? below.me : null}
+                  loading={!below}
+                />
+              )
+            },
+            renderPlaceholder: () => <HomePlaceholder />,
+          }}
+          cacheConfig={{ force: true }}
+          belowTheFoldTimeout={100}
+        />
+      )}
+    </ProvideScreenTracking>
+  )
 }

@@ -13,14 +13,25 @@ import { screen } from "lib/utils/track/helpers"
 import { useStickyScrollHeader } from "lib/utils/useStickyScrollHeader"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { Box, Flex, NoArtworkIcon, Separator, Spacer, Text, TEXT_FONTS } from "palette"
+import {
+  Box,
+  Flex,
+  NoArtworkIcon,
+  Separator,
+  Spacer,
+  Text,
+  ThemeV2Type,
+  ThemeV3Type,
+  useTheme,
+  useThemeConfig,
+} from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated, Image, TextInput, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { getImageDimensions } from "../Sale/Components/SaleArtworkListItem"
-import { auctionResultHasPrice, auctionResultText } from "./helpers"
+import { auctionResultHasPrice, AuctionResultHelperData, auctionResultText } from "./helpers"
 
 const CONTAINER_HEIGHT = 80
 
@@ -30,6 +41,7 @@ interface Props {
 }
 
 const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
+  const { theme } = useTheme()
   const [imageHeight, setImageHeight] = useState<number>(0)
   const [imageWidth, setImageWidth] = useState<number>(0)
 
@@ -50,6 +62,11 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
       })
     }
   }, [])
+
+  const fontFamily = useThemeConfig({
+    v2: (theme as ThemeV2Type).fonts.sans,
+    v3: (theme as ThemeV3Type).fonts.sans.regular,
+  })
 
   const { headerElement, scrollProps } = useStickyScrollHeader({
     header: (
@@ -79,7 +96,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             multiline
             scrollEnabled={false}
             style={{
-              fontFamily: TEXT_FONTS.sans,
+              fontFamily,
               fontSize: 14,
               lineHeight: 21,
             }}
@@ -129,8 +146,9 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     details.push(makeRow("Description", auctionResult.description, { fullWidth: true }))
   }
 
-  const hasSalePrice = auctionResultHasPrice(auctionResult)
-  const salePriceMessage = auctionResultText(auctionResult)
+  const hasSalePrice = auctionResultHasPrice(auctionResult as AuctionResultHelperData)
+  const salePriceMessage = auctionResultText(auctionResult as AuctionResultHelperData)
+  const showPriceUSD = auctionResult.priceRealized?.displayUSD && auctionResult.currency !== "USD"
 
   const renderRealizedPriceModal = () => (
     <>
@@ -174,7 +192,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <NoArtworkIcon width={28} height={28} opacity={0.3} />
+                {!auctionResult.images?.thumbnail?.url && <NoArtworkIcon width={28} height={28} opacity={0.3} />}
               </Box>
             )}
             <Flex justifyContent="center" flex={1} ml={2}>
@@ -191,10 +209,10 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             </Flex>
           </Flex>
           {!!hasSalePrice && (
-            <Flex flexDirection="row">
+            <Flex flexDirection="row" mb={1}>
               <InfoButton
                 titleElement={
-                  <Text variant="title" mb={1} mr={0.5}>
+                  <Text variant="title" mr={0.5}>
                     Sale Price
                   </Text>
                 }
@@ -209,7 +227,14 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           )}
           {hasSalePrice ? (
             <>
-              <Text variant="largeTitle" mb={0.5}>{`${auctionResult.priceRealized?.display}`}</Text>
+              <Flex mb={0.5}>
+                <Text variant="largeTitle">{auctionResult.priceRealized?.display}</Text>
+                {!!showPriceUSD && (
+                  <Text variant="text" color="black60" testID="priceUSD">
+                    {auctionResult.priceRealized?.displayUSD}
+                  </Text>
+                )}
+              </Flex>
               {!!auctionResult.performance?.mid && (
                 <AuctionResultsMidEstimate
                   textVariant="caption"
@@ -249,6 +274,7 @@ export const AuctionResultQueryRenderer: React.FC<{
             internalID
             artistID
             boughtIn
+            currency
             categoryText
             dateText
             description
@@ -281,6 +307,7 @@ export const AuctionResultQueryRenderer: React.FC<{
               cents
               centsUSD
               display
+              displayUSD
             }
             saleDate
             saleTitle

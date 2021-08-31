@@ -153,7 +153,20 @@ export const GeneArtworksPaginationContainer = createPaginationContainer(
         artworks: filterArtworksConnection(
           first: $count
           after: $cursor
-          aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
+          aggregations: [
+            LOCATION_CITY
+            ARTIST_NATIONALITY
+            PRICE_RANGE
+            COLOR
+            DIMENSION_RANGE
+            PARTNER
+            MAJOR_PERIOD
+            MEDIUM
+            PRICE_RANGE
+            ARTIST
+            LOCATION_CITY
+            MATERIALS_TERMS
+          ]
           forSale: true
           input: $input
         ) @connection(key: "GeneArtworksGrid_artworks") {

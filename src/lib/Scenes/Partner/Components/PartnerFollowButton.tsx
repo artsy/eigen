@@ -1,14 +1,14 @@
 import { PartnerFollowButton_partner } from "__generated__/PartnerFollowButton_partner.graphql"
 import { PartnerFollowButtonFollowMutation } from "__generated__/PartnerFollowButtonFollowMutation.graphql"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { Button, ButtonSize } from "palette"
+import { Button, ButtonProps } from "palette"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface Props {
   partner: PartnerFollowButton_partner
   relay: RelayProp
-  size?: ButtonSize
+  size?: ButtonProps["size"]
 }
 
 interface State {

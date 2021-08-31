@@ -2,12 +2,12 @@ import { captureMessage } from "@sentry/react-native"
 import { SavedAddressesForm_me } from "__generated__/SavedAddressesForm_me.graphql"
 import { SavedAddressesFormQuery } from "__generated__/SavedAddressesFormQuery.graphql"
 import { Action, action, computed, Computed, createComponentStore } from "easy-peasy"
-import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { CountrySelect } from "lib/Components/CountrySelect"
 import { Input } from "lib/Components/Input/Input"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { Stack } from "lib/Components/Stack"
+import { useToast } from "lib/Components/Toast/toastHook"
 import { goBack } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -16,12 +16,14 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { times } from "lodash"
 import { Flex, Text } from "palette"
+import { Checkbox } from "palette/elements/Checkbox"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { MyAccountFieldEditScreen } from "../MyAccount/Components/MyAccountFieldEditScreen"
 import { AddAddressButton } from "./Components/AddAddressButton"
 import { createUserAddress } from "./mutations/addNewAddress"
+import { deleteSavedAddress } from "./mutations/deleteSavedAddress"
 import { setAsDefaultAddress } from "./mutations/setAsDefaultAddress"
 import { updateUserAddress } from "./mutations/updateUserAddress"
 
@@ -81,6 +83,7 @@ const useStore = createComponentStore<Store>({
 
 export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId?: string }> = ({ me, addressId }) => {
   const isEditForm = !!addressId
+  const toast = useToast()
 
   const [state, actions] = useStore()
   const [phoneNumber, setPhoneNumber] = useState(me?.phone)
@@ -122,6 +125,9 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       if (isDefaultAddress) {
         await setAsDefaultAddress(creatingResponse.createUserAddress?.userAddressOrErrors.internalID!)
       }
+      if (!creatingResponse.createUserAddress?.userAddressOrErrors.errors) {
+        toast.show("Address successfully added", "top")
+      }
       goBack()
     } catch (e) {
       captureMessage(e.stack)
@@ -145,11 +151,25 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       if (isDefaultAddress) {
         await setAsDefaultAddress(response.updateUserAddress?.userAddressOrErrors.internalID!)
       }
+      if (!response.updateUserAddress?.userAddressOrErrors.errors) {
+        toast.show("Address successfully edited", "top")
+      }
       goBack()
     } catch (e) {
       Alert.alert("Something went wrong while attempting to save your address. Please try again or contact us.")
       captureMessage(e.stack)
     }
+  }
+
+  const deleteUserAddress = async (userAddressID: string) => {
+    deleteSavedAddress(
+      userAddressID,
+      () => {
+        goBack()
+        toast.show("Address successfully deleted", "top")
+      },
+      (message: string) => captureMessage(message)
+    )
   }
 
   return (
@@ -209,14 +229,20 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
             setIsDefaultAddress(!isDefaultAddress)
           }}
           checked={isDefaultAddress}
-          mb={4}
+          mb={1}
         >
           <Text>Set as default</Text>
         </Checkbox>
 
+        {!!isEditForm && (
+          <Text onPress={() => deleteUserAddress(addressId!)} variant="caption" textAlign="center" mb={2} color="red">
+            Delete address
+          </Text>
+        )}
+
         <AddAddressButton
           handleOnPress={isEditForm ? () => editUserAddress(addressId!) : submitAddAddress}
-          title={isEditForm ? "Add" : "Add Address"}
+          title={`${isEditForm ? "Save" : "Add"} address`}
           disabled={!state.allPresent}
         />
       </Stack>

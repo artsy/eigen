@@ -1,9 +1,10 @@
-import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
+import { fetchMockResponseOnce } from "lib/tests/fetchMockHelpers"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
 import { __globalStoreTestUtils__ } from "../../../../store/GlobalStore"
 import { flushPromiseQueue } from "../../../../tests/flushPromiseQueue"
-import { OnboardingCreateAccount } from "../OnboardingCreateAccount"
+import { OnboardingCreateAccountWithEmail } from "../OnboardingCreateAccount"
 
 const goBackMock = jest.fn()
 const replaceMock = jest.fn()
@@ -13,27 +14,11 @@ const navigationMock = {
   replace: replaceMock,
 }
 
-const mockFetch = jest.fn()
-
-;(global as any).fetch = mockFetch
-
-function mockFetchResponseOnce(response: Partial<Response>) {
-  mockFetch.mockResolvedValueOnce(response)
-}
-function mockFetchJsonOnce(json: object, status: number = 200) {
-  mockFetch.mockResolvedValueOnce({
-    status,
-    json: () => Promise.resolve(json),
-  })
-}
-
 describe("OnboardingCreateAccount", () => {
-  beforeEach(() => {
-    mockFetch.mockClear()
-  })
-
   it("form validation works properly", async () => {
-    const tree = renderWithWrappers(<OnboardingCreateAccount navigation={navigationMock as any} route={null as any} />)
+    const tree = renderWithWrappers(
+      <OnboardingCreateAccountWithEmail navigation={navigationMock as any} route={null as any} />
+    )
 
     const signUpButton = tree.root.findByProps({ testID: "signUpButton" })
 
@@ -56,12 +41,17 @@ describe("OnboardingCreateAccount", () => {
     expect(signUpButton.props.disabled).toEqual(false)
     expect(signUpButton.props.error).toEqual(undefined)
 
-    mockFetchJsonOnce({
-      xapp_token: "my-special-token",
-      expires_in: "never",
+    fetchMockResponseOnce(
+      JSON.stringify({
+        xapp_token: "my-special-token",
+        expires_in: "never",
+      })
+    )
+
+    fetchMockResponseOnce({
+      status: 404,
     })
 
-    mockFetchResponseOnce({ status: 404 })
     signUpButton.props.onPress()
 
     await flushPromiseQueue()
@@ -92,21 +82,25 @@ describe("OnboardingCreateAccount", () => {
 
     expect(signUpButton.props.disabled).toEqual(false)
 
-    mockFetchResponseOnce({ status: 201 })
-    mockFetchJsonOnce({
-      xapp_token: "my-special-token",
-      expires_in: "never",
-    })
-    mockFetchJsonOnce(
-      {
+    fetchMockResponseOnce({ status: 201 })
+    fetchMockResponseOnce(
+      JSON.stringify({
+        xapp_token: "my-special-token",
+        expires_in: "never",
+      })
+    )
+    fetchMockResponseOnce(
+      JSON.stringify({
         access_token: "my-access-token",
         expires_in: "a billion years",
-      },
-      201
+        status: 201,
+      })
     )
-    mockFetchJsonOnce({
-      id: "my-user-id",
-    })
+    fetchMockResponseOnce(
+      JSON.stringify({
+        id: "my-user-id",
+      })
+    )
     const isLoggedIn = !!__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken
     expect(isLoggedIn).toEqual(false)
 
@@ -118,7 +112,9 @@ describe("OnboardingCreateAccount", () => {
   })
 
   it("shows go to login button when the email is already used", async () => {
-    const tree = renderWithWrappers(<OnboardingCreateAccount navigation={navigationMock as any} route={null as any} />)
+    const tree = renderWithWrappers(
+      <OnboardingCreateAccountWithEmail navigation={navigationMock as any} route={null as any} />
+    )
 
     const signUpButton = tree.root.findByProps({ testID: "signUpButton" })
 
@@ -126,12 +122,14 @@ describe("OnboardingCreateAccount", () => {
 
     emailInput.props.onChangeText("used-email@example.com")
 
-    mockFetchJsonOnce({
-      xapp_token: "my-special-token",
-      expires_in: "never",
-    })
+    fetchMockResponseOnce(
+      JSON.stringify({
+        xapp_token: "my-special-token",
+        expires_in: "never",
+      })
+    )
 
-    mockFetchResponseOnce({ status: 200 })
+    fetchMockResponseOnce({ status: 200 })
     signUpButton.props.onPress()
 
     setTimeout(() => {

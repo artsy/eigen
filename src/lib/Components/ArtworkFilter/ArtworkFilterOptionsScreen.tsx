@@ -4,6 +4,8 @@ import {
   FilterDisplayName,
   filterKeyFromAggregation,
   FilterParamName,
+  getSelectedFiltersCounts,
+  getUnitedSelectedAndAppliedFilters,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { selectedOption } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
@@ -11,8 +13,8 @@ import { TouchableRow } from "lib/Components/TouchableRow"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
-import { ArrowRightIcon, CloseIcon, FilterIcon, Flex, Sans, Separator, Text, useSpace } from "palette"
-import React from "react"
+import { ArrowRightIcon, bullet, CloseIcon, FilterIcon, Flex, Sans, Separator, Text, useSpace } from "palette"
+import React, { useMemo } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -59,6 +61,7 @@ export enum FilterModalMode {
   SaleArtworks = "SaleArtworks",
   Show = "Show",
   Gene = "Gene",
+  Tag = "Tag",
 }
 
 export const ArtworkFilterOptionsScreen: React.FC<
@@ -69,6 +72,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const previouslyAppliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.previouslyAppliedFilters)
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
   const aggregationsState = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
@@ -78,6 +82,16 @@ export const ArtworkFilterOptionsScreen: React.FC<
   )
 
   const selectedOptions = useSelectedOptionsDisplay()
+
+  const selectedFiltersCounts = useMemo(() => {
+    const unitedFilters = getUnitedSelectedAndAppliedFilters({
+      filterType: filterTypeState,
+      selectedFilters: selectedFiltersState,
+      previouslyAppliedFilters: previouslyAppliedFiltersState,
+    })
+    const counts = getSelectedFiltersCounts(unitedFilters)
+    return counts
+  }, [filterTypeState, selectedFiltersState, previouslyAppliedFiltersState])
 
   const navigateToNextFilterScreen = (screenName: keyof ArtworkFilterNavigationStack) => {
     navigation.navigate(screenName)
@@ -181,12 +195,16 @@ export const ArtworkFilterOptionsScreen: React.FC<
           const currentOption =
             selectedCurrentOption === "All" || selectedCurrentOption === "Default" ? null : selectedCurrentOption
 
+          const selectedFiltersCount = selectedFiltersCounts[item.filterType as FilterParamName]
+
           return (
             <TouchableRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
               <OptionListItem>
                 <Flex p={2} pr={1.5} flexDirection="row" justifyContent="space-between" flexGrow={1}>
                   <Flex flex={1}>
-                    <Text variant="caption">{item.displayText}</Text>
+                    <Text variant="caption">
+                      {item.displayText} {selectedFiltersCount ? `${bullet} ${selectedFiltersCount}` : ""}
+                    </Text>
                   </Flex>
 
                   <Flex flexDirection="row" alignItems="center" justifyContent="flex-end" flex={1}>
@@ -226,9 +244,6 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
         filterOptionToDisplayConfigMap.organizations,
       ]
 
-    case FilterModalMode.Gene:
-      return [filterOptionToDisplayConfigMap.sort]
-
     default:
       return [
         filterOptionToDisplayConfigMap.sort,
@@ -256,6 +271,8 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
       sortOrder = ArtistSeriesFiltersSorted
       break
     case FilterModalMode.Show:
+      sortOrder = ShowFiltersSorted
+      break
     case FilterModalMode.Fair:
       sortOrder = FairFiltersSorted
       break
@@ -266,22 +283,13 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
       sortOrder = AuctionResultsFiltersSorted
       break
     case FilterModalMode.Partner:
-      sortOrder = [
-        "sort",
-        "medium",
-        "additionalGeneIDs",
-        "materialsTerms",
-        "priceRange",
-        "attributionClass",
-        "dimensionRange",
-        "waysToBuy",
-        "artistNationalities",
-        "majorPeriods",
-        "colors",
-      ]
+      sortOrder = PartnerFiltersSorted
       break
     case FilterModalMode.Gene:
-      sortOrder = ["sort", "medium", "additionalGeneIDs", "priceRange"]
+      sortOrder = TagAndGeneFiltersSorted
+      break
+    case FilterModalMode.Tag:
+      sortOrder = TagAndGeneFiltersSorted
       break
   }
 
@@ -492,28 +500,29 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
 
 const CollectionFiltersSorted: FilterScreen[] = [
   "sort",
+  "artistIDs",
+  "attributionClass",
   "medium",
   "additionalGeneIDs",
-  "materialsTerms",
   "priceRange",
-  "attributionClass",
   "dimensionRange",
   "waysToBuy",
-  "locationCities",
+  "materialsTerms",
   "artistNationalities",
+  "locationCities",
   "majorPeriods",
   "colors",
   "partnerIDs",
 ]
 const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "sort",
+  "attributionClass",
   "medium",
   "additionalGeneIDs",
-  "materialsTerms",
   "priceRange",
-  "attributionClass",
   "dimensionRange",
   "waysToBuy",
+  "materialsTerms",
   "locationCities",
   "majorPeriods",
   "colors",
@@ -521,34 +530,31 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
 ]
 const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "sort",
+  "attributionClass",
   "medium",
   "additionalGeneIDs",
-  "materialsTerms",
   "priceRange",
-  "attributionClass",
   "dimensionRange",
   "waysToBuy",
+  "materialsTerms",
   "locationCities",
   "majorPeriods",
   "colors",
   "partnerIDs",
 ]
 const FairFiltersSorted: FilterScreen[] = [
-  "sort",
+  "partnerIDs",
   "artistIDs",
-  "artistsIFollow",
-  "medium",
-  "additionalGeneIDs",
-  "materialsTerms",
-  "priceRange",
   "attributionClass",
+  "additionalGeneIDs",
+  "priceRange",
   "dimensionRange",
   "waysToBuy",
-  "locationCities",
+  "materialsTerms",
   "artistNationalities",
+  "locationCities",
   "majorPeriods",
   "colors",
-  "partnerIDs",
 ]
 const SaleArtworksFiltersSorted: FilterScreen[] = [
   "sort",
@@ -557,6 +563,50 @@ const SaleArtworksFiltersSorted: FilterScreen[] = [
   "medium",
   "additionalGeneIDs",
   "estimateRange",
+]
+
+const ShowFiltersSorted: FilterScreen[] = [
+  "sort",
+  "artistIDs",
+  "attributionClass",
+  "additionalGeneIDs",
+  "priceRange",
+  "dimensionRange",
+  "waysToBuy",
+  "materialsTerms",
+  "artistNationalities",
+  "majorPeriods",
+  "colors",
+]
+
+const PartnerFiltersSorted: FilterScreen[] = [
+  "sort",
+  "artistIDs",
+  "attributionClass",
+  "additionalGeneIDs",
+  "priceRange",
+  "dimensionRange",
+  "waysToBuy",
+  "materialsTerms",
+  "artistNationalities",
+  "majorPeriods",
+  "colors",
+]
+
+const TagAndGeneFiltersSorted: FilterScreen[] = [
+  "sort",
+  "artistIDs",
+  "attributionClass",
+  "additionalGeneIDs",
+  "priceRange",
+  "dimensionRange",
+  "waysToBuy",
+  "materialsTerms",
+  "artistNationalities",
+  "locationCities",
+  "majorPeriods",
+  "colors",
+  "partnerIDs",
 ]
 
 const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories", "sizes", "year", "organizations"]

@@ -9,7 +9,6 @@ import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCrea
 import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { BiddingThemeProvider } from "lib/Components/Bidding/Components/BiddingThemeProvider"
 import { BidInfoRow } from "lib/Components/Bidding/Components/BidInfoRow"
-import { Checkbox } from "lib/Components/Bidding/Components/Checkbox"
 import { Divider } from "lib/Components/Bidding/Components/Divider"
 import { PaymentInfo } from "lib/Components/Bidding/Components/PaymentInfo"
 import { Timer } from "lib/Components/Bidding/Components/Timer"
@@ -29,6 +28,7 @@ import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { get, isEmpty } from "lodash"
 import { Box, Button, Serif, Theme } from "palette"
+import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
 import { Image, ScrollView, ViewProps } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -578,8 +578,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 block
                 width={100}
                 disabled={!this.canPlaceBid()}
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                onPress={this.canPlaceBid() ? () => this.placeBid() : null}
+                onPress={this.canPlaceBid() ? () => this.placeBid() : undefined}
               >
                 Bid
               </Button>

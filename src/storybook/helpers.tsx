@@ -1,6 +1,6 @@
-import { Spacer } from "palette"
+import { Flex, Spacer } from "palette"
 import React from "react"
-import { FlatList, ScrollView } from "react-native"
+import { FlatList, StyleProp, ViewStyle } from "react-native"
 
 export const DList = <ItemT,>({
   data,
@@ -16,31 +16,44 @@ export const DList = <ItemT,>({
     keyExtractor={keyExtractor ?? ((item) => `${item}`)}
     renderItem={renderItem}
     ItemSeparatorComponent={() => <Spacer mb="4" />}
-    contentContainerStyle={{ flexGrow: 1, alignItems: "center", justifyContent: "center" }}
+    contentContainerStyle={{
+      flexGrow: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      paddingVertical: 30,
+    }}
   />
 )
 
-export const List = ({ children }: { children: React.ReactElement[] }) => (
+export const List = ({
+  children,
+  contentContainerStyle,
+  style,
+}: {
+  children: React.ReactElement[] | React.ReactElement
+  contentContainerStyle?: StyleProp<ViewStyle>
+  style?: StyleProp<ViewStyle>
+}) => (
   <FlatList
-    data={children}
+    data={Array.isArray(children) ? children : [children]}
     keyExtractor={(_, index) => `${index}`}
     renderItem={({ item: child }) => child}
     ItemSeparatorComponent={() => <Spacer mb="4" />}
-    contentContainerStyle={{ flexGrow: 1, alignItems: "center", justifyContent: "center" }}
+    contentContainerStyle={[
+      {
+        flexGrow: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        paddingVertical: 30,
+      },
+      contentContainerStyle,
+    ]}
+    style={style}
   />
 )
 
-export const CenterView = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <ScrollView
-      contentContainerStyle={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#F5FCFF",
-      }}
-    >
-      {children}
-    </ScrollView>
-  )
-}
+export const Row = ({ children }: { children: React.ReactNode }) => (
+  <Flex width="100%" flexDirection="row" justifyContent="space-evenly">
+    {children}
+  </Flex>
+)

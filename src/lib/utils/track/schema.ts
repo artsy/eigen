@@ -121,6 +121,7 @@ export enum PageNames {
   FairAllExhibitorsPage = "FairAllExhibitorsPage",
   FairBoothPage = "FairBoothPage",
   GenePage = "Gene",
+  TagPage = "Tag",
   Home = "Home",
   InquiryPage = "Inquiry",
   PartnerPage = "PartnerPage",
@@ -136,6 +137,8 @@ export enum PageNames {
   FairMoreInfoPage = "Fair",
   ShowPage = "Show",
   ShowMoreInfoPage = "moreInfo",
+  SavedSearchEdit = "SavedSearchEdit",
+  SavedSearchList = "SavedSearchList",
 }
 
 export enum OwnerEntityTypes {
@@ -152,6 +155,7 @@ export enum OwnerEntityTypes {
   Conversation = "Conversation",
   Gallery = "Gallery",
   Gene = "Gene",
+  Tag = "Tag",
   Home = "home",
   Fair = "Fair",
   FairMoreInfo = "moreInfo",

@@ -1,3 +1,4 @@
+import { toTitleCase } from "@artsy/to-title-case"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -15,7 +16,7 @@ export const AdditionalGeneIDsOptionsScreen: React.FC<AdditionalGeneIDsOptionsSc
 
   // Convert aggregations to filter options
   const options: FilterData[] = (aggregation?.counts ?? []).map(({ name: displayText, value: paramValue }) => {
-    return { paramName: FilterParamName.additionalGeneIDs, displayText, paramValue }
+    return { paramName: FilterParamName.additionalGeneIDs, displayText: toTitleCase(displayText), paramValue }
   })
 
   const { isSelected, handleClear, handleSelect, isActive } = useMultiSelect({

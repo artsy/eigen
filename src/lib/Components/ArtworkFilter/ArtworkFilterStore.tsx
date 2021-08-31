@@ -10,6 +10,7 @@ import {
   FilterParamName,
   FilterType,
   getSortDefaultValueByFilterType,
+  getUnitedSelectedAndAppliedFilters,
 } from "./ArtworkFilterHelpers"
 
 export interface ArtworkFiltersModel {
@@ -52,54 +53,7 @@ export const ArtworkFiltersModel: ArtworkFiltersModel = {
    * Store actions
    */
   applyFiltersAction: action((state) => {
-    const defaultFilterOptions = {
-      ...defaultCommonFilterOptions,
-      sort: getSortDefaultValueByFilterType(state.filterType),
-    }
-
-    // replace previously applied options with currently selected options
-    const filtersToApply = unionBy(
-      state.selectedFilters,
-      state.previouslyAppliedFilters,
-      ({ paramValue, paramName }) => {
-        // We don't want to union the artistID params, as each entry corresponds to a
-        // different artist that may be selected. Instead we de-dupe based on the paramValue.
-        if (paramName === FilterParamName.artistIDs && state.filterType === "artwork") {
-          return paramValue
-        } else {
-          return paramName
-        }
-      }
-    )
-
-    // Remove default values as those are accounted for when we make the API request.
-    const appliedFilters = filter(filtersToApply, ({ paramName, paramValue }) => {
-      // This logic is specific to filters that allow for multiple options. Right now
-      // it only applies to the artist filter, but this will likely change.
-      if (paramName === FilterParamName.artistIDs && state.filterType === "artwork") {
-        // See if we have an existing entry in previouslyAppliedFilters
-        const hasExistingPreviouslyAppliedFilter = state.previouslyAppliedFilters.find(
-          (previouslyAppliedFilter) =>
-            paramName === previouslyAppliedFilter.paramName && paramValue === previouslyAppliedFilter.paramValue
-        )
-
-        const hasExistingSelectedAppliedFilter = state.selectedFilters.find(
-          (selectedFilter) => paramName === selectedFilter.paramName && paramValue === selectedFilter.paramValue
-        )
-
-        // If so, it means that this filter had been previously applied and is now being de-selected.
-        // We need it to exist in the "selectedFilters" array so that our counts, etc. are correct,
-        // but it's technically de-selected.
-        return !(hasExistingPreviouslyAppliedFilter && hasExistingSelectedAppliedFilter)
-      }
-
-      // The default sorting and lot ascending sorting at the saleArtwork filterType has the same paramValue
-      // with a different displayText, we want to make sure that the user can still switch between the two.
-      if (paramName === FilterParamName.sort && state.filterType === "saleArtwork") {
-        return true
-      }
-      return !isEqual(defaultFilterOptions[paramName], paramValue)
-    })
+    const appliedFilters = getUnitedSelectedAndAppliedFilters(state)
 
     state.applyFilters = true
     state.appliedFilters = appliedFilters
@@ -239,11 +193,11 @@ export const DEFAULT_FILTERS: FilterArray = [
   { paramName: FilterParamName.locationCities, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.colors, displayText: "All" },
   { paramName: FilterParamName.timePeriod, paramValue: [], displayText: "All" },
-  { paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy now" },
+  { paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy Now" },
   { paramName: FilterParamName.waysToBuyInquire, paramValue: false, displayText: "Inquire" },
-  { paramName: FilterParamName.waysToBuyMakeOffer, paramValue: false, displayText: "Make offer" },
+  { paramName: FilterParamName.waysToBuyMakeOffer, paramValue: false, displayText: "Make Offer" },
   { paramName: FilterParamName.waysToBuyBid, paramValue: false, displayText: "Bid" },
-  { paramName: FilterParamName.artistsIFollow, paramValue: false, displayText: "All artists I follow" },
+  { paramName: FilterParamName.artistsIFollow, paramValue: false, displayText: "All Artists I Follow" },
   { paramName: FilterParamName.artistIDs, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.viewAs, paramValue: false, displayText: "Grid" },
   { paramName: FilterParamName.attributionClass, paramValue: "", displayText: "All" },
@@ -267,7 +221,7 @@ export const selectedOptionsUnion = ({
     saleArtwork: {
       paramName: FilterParamName.sort,
       paramValue: "position",
-      displayText: "Lot number ascending",
+      displayText: "Lot Number Ascending",
     },
     showArtwork: {
       paramName: FilterParamName.sort,
@@ -277,9 +231,14 @@ export const selectedOptionsUnion = ({
     auctionResult: {
       paramName: FilterParamName.sort,
       paramValue: "DATE_DESC",
-      displayText: "Most recent sale date",
+      displayText: "Most Recent Sale Date",
     },
     geneArtwork: {
+      paramName: FilterParamName.sort,
+      paramValue: "-partner_updated_at",
+      displayText: "Default",
+    },
+    tagArtwork: {
       paramName: FilterParamName.sort,
       paramValue: "-partner_updated_at",
       displayText: "Default",

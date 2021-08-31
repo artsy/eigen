@@ -8,8 +8,9 @@ export type ArtworkAggregation = "ARTIST" | "ARTIST_NATIONALITY" | "ATTRIBUTION_
 export type ArtistArtworks_artist = {
     readonly id: string;
     readonly slug: string;
+    readonly name: string | null;
     readonly internalID: string;
-    readonly artworks: {
+    readonly aggregations: {
         readonly aggregations: ReadonlyArray<{
             readonly slice: ArtworkAggregation | null;
             readonly counts: ReadonlyArray<{
@@ -18,6 +19,8 @@ export type ArtistArtworks_artist = {
                 readonly value: string;
             } | null> | null;
         } | null> | null;
+    } | null;
+    readonly artworks: {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
@@ -44,6 +47,13 @@ var v0 = {
   "args": null,
   "kind": "ScalarField",
   "name": "id",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 };
 return {
@@ -87,6 +97,7 @@ return {
       "name": "slug",
       "storageKey": null
     },
+    (v1/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -95,7 +106,7 @@ return {
       "storageKey": null
     },
     {
-      "alias": "artworks",
+      "alias": "aggregations",
       "args": [
         {
           "kind": "Literal",
@@ -112,14 +123,14 @@ return {
           ]
         },
         {
-          "kind": "Variable",
-          "name": "input",
-          "variableName": "input"
+          "kind": "Literal",
+          "name": "first",
+          "value": 0
         }
       ],
       "concreteType": "FilterArtworksConnection",
       "kind": "LinkedField",
-      "name": "__ArtistArtworksGrid_artworks_connection",
+      "name": "filterArtworksConnection",
       "plural": false,
       "selections": [
         {
@@ -152,13 +163,7 @@ return {
                   "name": "count",
                   "storageKey": null
                 },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "name",
-                  "storageKey": null
-                },
+                (v1/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -171,7 +176,24 @@ return {
             }
           ],
           "storageKey": null
-        },
+        }
+      ],
+      "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:0)"
+    },
+    {
+      "alias": "artworks",
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "input",
+          "variableName": "input"
+        }
+      ],
+      "concreteType": "FilterArtworksConnection",
+      "kind": "LinkedField",
+      "name": "__ArtistArtworksGrid_artworks_connection",
+      "plural": false,
+      "selections": [
         {
           "alias": null,
           "args": null,
@@ -265,5 +287,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '772ab02113ce651f7426a24951d3cf6b';
+(node as any).hash = 'd75c83cfdcffbddc7d230323b368c5bd';
 export default node;

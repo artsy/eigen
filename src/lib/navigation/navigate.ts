@@ -16,9 +16,17 @@ export interface ViewDescriptor extends ViewOptions {
   props: object
 }
 
+export interface NavigateOptions {
+  modal?: boolean
+  passProps?: object
+  replace?: boolean
+  // Only when onlyShowInTabName specified
+  popToRootTabView?: boolean
+}
+
 let lastInvocation = { url: "", timestamp: 0 }
 
-export async function navigate(url: string, options: { modal?: boolean; passProps?: object; replace?: boolean } = {}) {
+export async function navigate(url: string, options: NavigateOptions = {}) {
   // Debounce double taps
   if (lastInvocation.url === url && Date.now() - lastInvocation.timestamp < 1000) {
     return
@@ -40,7 +48,7 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
 
   const module = modules[result.module]
   const presentModally = options.modal ?? module.options.alwaysPresentModally ?? false
-  const { replace = false } = options
+  const { replace = false, popToRootTabView } = options
 
   const screenDescriptor: ViewDescriptor = {
     type: module.type,
@@ -61,15 +69,26 @@ export async function navigate(url: string, options: { modal?: boolean; passProp
     await LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(module.options.isRootViewForTabName)
     switchTab(module.options.isRootViewForTabName, screenDescriptor.props)
   } else {
+    const { onlyShowInTabName } = module.options
     const selectedTab = unsafe__getSelectedTab()
-    if (module.options.onlyShowInTabName) {
-      GlobalStore.actions.bottomTabs.switchTab(module.options.onlyShowInTabName)
+    const delayExecution = !!onlyShowInTabName && onlyShowInTabName !== selectedTab
+    const pushView = () => {
+      LegacyNativeModules.ARScreenPresenterModule.pushView(onlyShowInTabName ?? selectedTab, screenDescriptor)
     }
 
-    LegacyNativeModules.ARScreenPresenterModule.pushView(
-      module.options.onlyShowInTabName ?? selectedTab,
-      screenDescriptor
-    )
+    if (onlyShowInTabName) {
+      if (popToRootTabView) {
+        await LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(onlyShowInTabName)
+      }
+
+      switchTab(onlyShowInTabName)
+    }
+
+    if (delayExecution) {
+      requestAnimationFrame(pushView)
+    } else {
+      pushView()
+    }
   }
 }
 

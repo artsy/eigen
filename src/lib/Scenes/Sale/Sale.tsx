@@ -16,7 +16,7 @@ import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import _, { times } from "lodash"
-import moment from "moment"
+import { DateTime } from "luxon"
 import { Box, Flex, Join, Spacer } from "palette"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Animated, FlatList, RefreshControl } from "react-native"
@@ -89,13 +89,13 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
       setIsLive(false)
       return
     }
-    const now = moment()
-    if (now.isAfter(sale.liveStartAt)) {
+    const now = DateTime.now()
+    if (now > DateTime.fromISO(sale.liveStartAt)) {
       if (sale.endAt === null) {
         setIsLive(true)
         return
       }
-      if (now.isBefore(sale.endAt)) {
+      if (now < DateTime.fromISO(sale.endAt)) {
         setIsLive(true)
         return
       }
@@ -237,6 +237,12 @@ export const tracks = {
       context_screen_owner_slug: slug,
     }
   },
+  pageView: (slug: string) => {
+    return {
+      auction_slug: slug,
+      name: "Auctions Pageview",
+    }
+  },
   openFilter: (id: string, slug: string) => {
     return {
       action_name: "filter",
@@ -328,6 +334,12 @@ export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayMo
   saleID,
   environment,
 }) => {
+  const { trackEvent } = useTracking()
+
+  useEffect(() => {
+    trackEvent(tracks.pageView(saleID))
+  }, [])
+
   return (
     <RetryErrorBoundary
       render={({ isRetry }) => {

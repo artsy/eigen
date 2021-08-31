@@ -17,7 +17,7 @@ const SelectedIndicator = styled.View`
 `
 
 const Overlay = styled.View`
-  ${(p: { selected: boolean }) => p.selected && `border-width: 1; border-color: ${themeGet("colors.black80")}`};
+  ${(p: { selected: boolean }) => p.selected && `border-width: 1; border-color: ${themeGet("colors.black60")}`};
 `
 
 export interface ImageData {
@@ -38,7 +38,7 @@ interface TakePhotoImageProps {
 
 const SelectedIcon = () => (
   <SelectedIndicator style={{ backgroundColor: "white", position: "absolute", bottom: 20, right: 0 }}>
-    <Image source={require("../../../../../images/consignments/black-tick.png")} />
+    <Image source={require("../../../../../images/consignments/black-tick.webp")} />
   </SelectedIndicator>
 )
 
@@ -60,7 +60,7 @@ const TakePhotoImage = (props: TakePhotoImageProps) => {
         alignItems: "center",
       }}
     >
-      <Image source={require("../../../../../images/consignments/camera-black.png")} />
+      <Image source={require("../../../../../images/consignments/camera-black.webp")} />
     </TouchableOpacity>
   )
 }

@@ -13,10 +13,6 @@ import { OrderHistoryPlaceholder } from "../OrderHistory"
 import { OrderHistoryRowContainer } from "../OrderHistoryRow"
 jest.unmock("react-relay")
 
-jest.mock("lib/relay/createEnvironment", () => ({
-  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-}))
-
 describe(OrderHistoryQueryRender, () => {
   it("Loads OrderHistoryQueryRender", () => {
     const tree = renderWithWrappers(<OrderHistoryQueryRender />)

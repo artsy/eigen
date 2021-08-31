@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 58c7b8fb6f84e77ca3bd783831e04edf */
+/* @relayHash 1b7a37c63ae5c351815cd4182182e21f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -108,7 +108,7 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
 fragment PartnerArtwork_partner_BRGa6 on Partner {
   internalID
   slug
-  artworks: filterArtworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY], input: {sort: "-partner_updated_at", dimensionRange: "*-*"}) {
+  artworks: filterArtworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, ARTIST, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY], input: {sort: "-partner_updated_at", dimensionRange: "*-*"}) {
     aggregations {
       slice
       counts {
@@ -357,6 +357,7 @@ v7 = [
     "value": [
       "COLOR",
       "DIMENSION_RANGE",
+      "ARTIST",
       "MAJOR_PERIOD",
       "MEDIUM",
       "PRICE_RANGE",
@@ -889,7 +890,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-partner_updated_at\"})"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"ARTIST\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-partner_updated_at\"})"
           },
           {
             "alias": "artworks",
@@ -1276,7 +1277,7 @@ return {
     ]
   },
   "params": {
-    "id": "58c7b8fb6f84e77ca3bd783831e04edf",
+    "id": "1b7a37c63ae5c351815cd4182182e21f",
     "metadata": {},
     "name": "PartnerQuery",
     "operationKind": "query",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 91c6032c7224242432e0599b4a9cf0dc */
+/* @relayHash b886d2da8acb5c5b4ebeba09b3173917 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -42,6 +42,18 @@ fragment ConversationCTA_conversation on Conversation {
       __typename
       ... on Artwork {
         artworkID: internalID
+      }
+      ... on Node {
+        __isNode: __typename
+        id
+      }
+    }
+    liveArtwork {
+      __typename
+      ... on Artwork {
+        isOfferableFromInquiry
+        internalID
+        __typename
       }
       ... on Node {
         __isNode: __typename
@@ -112,41 +124,61 @@ v3 = {
   "storageKey": null
 },
 v4 = {
+  "kind": "InlineFragment",
+  "selections": [
+    (v3/*: any*/)
+  ],
+  "type": "Node",
+  "abstractKey": "__isNode"
+},
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
   "storageKey": null
 },
-v5 = {
+v6 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "String"
 },
-v6 = {
+v7 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v7 = {
+v8 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "CommerceOffer"
 },
-v8 = {
+v9 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "Boolean"
 },
-v9 = {
+v10 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Boolean"
+},
+v11 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
+},
+v12 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "ConversationItemType"
 };
 return {
   "fragment": {
@@ -246,14 +278,35 @@ return {
                         "type": "Artwork",
                         "abstractKey": null
                       },
+                      (v4/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": null,
+                    "kind": "LinkedField",
+                    "name": "liveArtwork",
+                    "plural": false,
+                    "selections": [
+                      (v2/*: any*/),
                       {
                         "kind": "InlineFragment",
                         "selections": [
-                          (v3/*: any*/)
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "isOfferableFromInquiry",
+                            "storageKey": null
+                          },
+                          (v5/*: any*/)
                         ],
-                        "type": "Node",
-                        "abstractKey": "__isNode"
-                      }
+                        "type": "Artwork",
+                        "abstractKey": null
+                      },
+                      (v4/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -301,7 +354,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v2/*: any*/),
-                          (v4/*: any*/),
+                          (v5/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -404,7 +457,7 @@ return {
                                         "name": "node",
                                         "plural": false,
                                         "selections": [
-                                          (v4/*: any*/),
+                                          (v5/*: any*/),
                                           (v3/*: any*/)
                                         ],
                                         "storageKey": null
@@ -439,7 +492,7 @@ return {
     ]
   },
   "params": {
-    "id": "91c6032c7224242432e0599b4a9cf0dc",
+    "id": "b886d2da8acb5c5b4ebeba09b3173917",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -472,12 +525,12 @@ return {
           "plural": false,
           "type": "CommerceOrder"
         },
-        "me.conversation.activeOrders.edges.node.__typename": (v5/*: any*/),
-        "me.conversation.activeOrders.edges.node.id": (v6/*: any*/),
-        "me.conversation.activeOrders.edges.node.internalID": (v6/*: any*/),
-        "me.conversation.activeOrders.edges.node.lastOffer": (v7/*: any*/),
-        "me.conversation.activeOrders.edges.node.lastOffer.createdAt": (v5/*: any*/),
-        "me.conversation.activeOrders.edges.node.lastOffer.definesTotal": (v8/*: any*/),
+        "me.conversation.activeOrders.edges.node.__typename": (v6/*: any*/),
+        "me.conversation.activeOrders.edges.node.id": (v7/*: any*/),
+        "me.conversation.activeOrders.edges.node.internalID": (v7/*: any*/),
+        "me.conversation.activeOrders.edges.node.lastOffer": (v8/*: any*/),
+        "me.conversation.activeOrders.edges.node.lastOffer.createdAt": (v6/*: any*/),
+        "me.conversation.activeOrders.edges.node.lastOffer.definesTotal": (v9/*: any*/),
         "me.conversation.activeOrders.edges.node.lastOffer.fromParticipant": {
           "enumValues": [
             "BUYER",
@@ -487,14 +540,9 @@ return {
           "plural": false,
           "type": "CommerceOrderParticipantEnum"
         },
-        "me.conversation.activeOrders.edges.node.lastOffer.id": (v6/*: any*/),
-        "me.conversation.activeOrders.edges.node.lastOffer.offerAmountChanged": (v8/*: any*/),
-        "me.conversation.activeOrders.edges.node.lastTransactionFailed": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Boolean"
-        },
+        "me.conversation.activeOrders.edges.node.lastOffer.id": (v7/*: any*/),
+        "me.conversation.activeOrders.edges.node.lastOffer.offerAmountChanged": (v9/*: any*/),
+        "me.conversation.activeOrders.edges.node.lastTransactionFailed": (v10/*: any*/),
         "me.conversation.activeOrders.edges.node.offers": {
           "enumValues": null,
           "nullable": true,
@@ -507,9 +555,9 @@ return {
           "plural": true,
           "type": "CommerceOfferEdge"
         },
-        "me.conversation.activeOrders.edges.node.offers.edges.node": (v7/*: any*/),
-        "me.conversation.activeOrders.edges.node.offers.edges.node.id": (v6/*: any*/),
-        "me.conversation.activeOrders.edges.node.offers.edges.node.internalID": (v6/*: any*/),
+        "me.conversation.activeOrders.edges.node.offers.edges.node": (v8/*: any*/),
+        "me.conversation.activeOrders.edges.node.offers.edges.node.id": (v7/*: any*/),
+        "me.conversation.activeOrders.edges.node.offers.edges.node.internalID": (v7/*: any*/),
         "me.conversation.activeOrders.edges.node.state": {
           "enumValues": [
             "ABANDONED",
@@ -524,32 +572,33 @@ return {
           "plural": false,
           "type": "CommerceOrderStateEnum"
         },
-        "me.conversation.activeOrders.edges.node.stateExpiresAt": (v9/*: any*/),
-        "me.conversation.activeOrders.edges.node.stateReason": (v9/*: any*/),
+        "me.conversation.activeOrders.edges.node.stateExpiresAt": (v11/*: any*/),
+        "me.conversation.activeOrders.edges.node.stateReason": (v11/*: any*/),
         "me.conversation.conversationID": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "ID"
         },
-        "me.conversation.id": (v6/*: any*/),
+        "me.conversation.id": (v7/*: any*/),
         "me.conversation.items": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "ConversationItem"
         },
-        "me.conversation.items.item": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "ConversationItemType"
-        },
-        "me.conversation.items.item.__isNode": (v5/*: any*/),
-        "me.conversation.items.item.__typename": (v5/*: any*/),
-        "me.conversation.items.item.artworkID": (v6/*: any*/),
-        "me.conversation.items.item.id": (v6/*: any*/),
-        "me.id": (v6/*: any*/)
+        "me.conversation.items.item": (v12/*: any*/),
+        "me.conversation.items.item.__isNode": (v6/*: any*/),
+        "me.conversation.items.item.__typename": (v6/*: any*/),
+        "me.conversation.items.item.artworkID": (v7/*: any*/),
+        "me.conversation.items.item.id": (v7/*: any*/),
+        "me.conversation.items.liveArtwork": (v12/*: any*/),
+        "me.conversation.items.liveArtwork.__isNode": (v6/*: any*/),
+        "me.conversation.items.liveArtwork.__typename": (v6/*: any*/),
+        "me.conversation.items.liveArtwork.id": (v7/*: any*/),
+        "me.conversation.items.liveArtwork.internalID": (v7/*: any*/),
+        "me.conversation.items.liveArtwork.isOfferableFromInquiry": (v10/*: any*/),
+        "me.id": (v7/*: any*/)
       }
     },
     "name": "ConversationCTATestsQuery",

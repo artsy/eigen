@@ -33,6 +33,10 @@ export interface ArtsyWebViewConfig {
    * Show the share URL button
    */
   showShareButton?: boolean
+  /**
+   * Show the X  button on the right side
+   */
+  useRightCloseButton?: boolean
 }
 
 type CustomWebView = WebView & { shareTitleUrl: string }
@@ -48,6 +52,7 @@ export const ArtsyReactWebViewPage: React.FC<
   isPresentedModally,
   allowWebViewInnerNavigation = true,
   mimicBrowserBackButton = true,
+  useRightCloseButton = false,
   showShareButton,
 }) => {
   const paddingTop = useScreenDimensions().safeAreaInsets.top
@@ -75,22 +80,35 @@ export const ArtsyReactWebViewPage: React.FC<
     }
   }
 
+  const onRightButtonPress = () => {
+    if (showShareButton) {
+      return handleArticleShare
+    } else if (useRightCloseButton) {
+      return goBack()
+    }
+  }
+
   return (
     <View style={{ flex: 1, paddingTop }}>
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
+          rightCloseButton={useRightCloseButton}
           useXButton={isPresentedModally && !canGoBack}
-          onLeftButtonPress={() => {
-            if (isPresentedModally && !canGoBack) {
-              dismissModal()
-            } else if (!canGoBack) {
-              goBack()
-            } else {
-              ref.current?.goBack()
-            }
-          }}
+          onLeftButtonPress={
+            useRightCloseButton && !canGoBack
+              ? undefined
+              : () => {
+                  if (isPresentedModally && !canGoBack) {
+                    dismissModal()
+                  } else if (!canGoBack) {
+                    goBack()
+                  } else {
+                    ref.current?.goBack()
+                  }
+                }
+          }
           useShareButton={showShareButton}
-          onRightButtonPress={showShareButton ? handleArticleShare : undefined}
+          onRightButtonPress={onRightButtonPress}
         >
           {title}
         </FancyModalHeader>
@@ -98,7 +116,13 @@ export const ArtsyReactWebViewPage: React.FC<
           url={url}
           ref={ref}
           allowWebViewInnerNavigation={allowWebViewInnerNavigation}
-          onNavigationStateChange={mimicBrowserBackButton ? (ev) => setCanGoBack(ev.canGoBack) : undefined}
+          onNavigationStateChange={
+            mimicBrowserBackButton
+              ? (ev) => {
+                  setCanGoBack(ev.canGoBack)
+                }
+              : undefined
+          }
         />
       </ArtsyKeyboardAvoidingView>
     </View>
@@ -192,7 +216,7 @@ const ProgressBar: React.FC<{ loadProgress: number | null }> = ({ loadProgress }
         left: 0,
         width: progressPercent + "%",
         height: 2,
-        backgroundColor: color("purple100"),
+        backgroundColor: color("purple100" /* TODO-PALETTE-V3 "blue100" */),
       }}
     />
   )
@@ -205,14 +229,17 @@ export function useWebViewCookies() {
       ? store.native.sessionState.authenticationToken
       : store.auth.userAccessToken
   )
+  const isLoggedIn = GlobalStore.useAppState((state) =>
+    showNewOnboarding ? !!state.auth.userID : !!state.native.sessionState.userID
+  )
   const { webURL, predictionURL } = useEnvironment()
-  useUrlCookies(webURL, accesstoken)
-  useUrlCookies(predictionURL + "/login", accesstoken)
+  useUrlCookies(webURL, accesstoken, isLoggedIn)
+  useUrlCookies(predictionURL + "/login", accesstoken, isLoggedIn)
 }
 
-function useUrlCookies(url: string, accessToken: string | null) {
+function useUrlCookies(url: string, accessToken: string | null, isLoggedIn: boolean) {
   useEffect(() => {
-    if (accessToken) {
+    if (accessToken && isLoggedIn) {
       const attempt = new CookieRequestAttempt(url, accessToken)
       attempt.makeAttempt()
       return () => {

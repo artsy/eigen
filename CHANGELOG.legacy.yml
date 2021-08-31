@@ -24,7 +24,6 @@ upcoming:
     - Adjust auction results for you tracking - ole
     - Make Home Auction Results By Followed Artists ready for release - mounir
     - Replace ios native analytics with segment analytics - kizito
-    -
   user_facing:
     - Add keyword search to artist auction reults - ole
 

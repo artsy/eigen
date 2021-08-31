@@ -1,68 +1,138 @@
+import { ActionType, OwnerType, TappedCreateAlert, ToggledSavedSearch } from "@artsy/cohesion"
 import { captureMessage } from "@sentry/react-native"
 import { SavedSearchButton_me } from "__generated__/SavedSearchButton_me.graphql"
 import { SavedSearchButtonQuery } from "__generated__/SavedSearchButtonQuery.graphql"
-import { FilterParams, prepareFilterParamsForSaveSearchInput } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { BellIcon, Button } from "palette"
-import React from "react"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
+import {
+  SavedSearchAlertFormPropsBase,
+  SavedSearchAlertMutationResult,
+} from "lib/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+import { BellIcon, Box, Button } from "palette"
+import React, { useState } from "react"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { useTracking } from "react-tracking"
 
-interface SavedSearchButtonProps {
+interface SavedSearchButtonProps extends SavedSearchAlertFormPropsBase {
   me?: SavedSearchButton_me | null
   loading?: boolean
-  attributes: SearchCriteriaAttributes
+  relay: RelayRefetchProp
+  criteria: SearchCriteriaAttributes
+  artistSlug: string
 }
 
-interface SavedSearchButtonQueryRendererProps {
-  filters: FilterParams
-  artistId: string
+interface SavedSearchButtonQueryRendererProps extends SavedSearchAlertFormPropsBase {
+  artistSlug: string
 }
 
-export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({ me, loading, attributes }) => {
+export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
+  me,
+  loading,
+  artistId,
+  artistName,
+  artistSlug,
+  filters,
+  aggregations,
+  relay,
+  criteria,
+}) => {
+  const tracking = useTracking()
+  const [visibleForm, setVisibleForm] = useState(false)
+  const [refetching, setRefetching] = useState(false)
+  const popover = usePopoverMessage()
   const isSavedSearch = !!me?.savedSearch?.internalID
-  const emptyAttributes = Object.keys(attributes).length === 0
 
-  const handlePress = () => {
-    console.log("saved search button pressed")
+  const refetch = () => {
+    setRefetching(true)
+    relay.refetch(
+      { criteria },
+      null,
+      () => {
+        setRefetching(false)
+      },
+      { force: true }
+    )
+  }
+
+  const handleOpenForm = () => setVisibleForm(true)
+  const handleCloseForm = () => setVisibleForm(false)
+
+  const handleComplete = (result: SavedSearchAlertMutationResult) => {
+    tracking.trackEvent(tracks.toggleSavedSearch(true, artistId, artistSlug, result.id))
+
+    refetch()
+    handleCloseForm()
+
+    popover.show({
+      title: "Your alert has been created.",
+      message: "You can edit your alerts with your Profile.",
+      onPress: () => {
+        navigate("my-profile/saved-search-alerts", {
+          popToRootTabView: true,
+        })
+      },
+    })
+  }
+
+  const handleCreateAlertPress = () => {
+    handleOpenForm()
+    tracking.trackEvent(tracks.tappedCreateAlert(artistId, artistSlug))
   }
 
   return (
-    <Button
-      variant="primaryBlack"
-      size="small"
-      icon={<BellIcon fill="white100" mr={0.5} width="16px" height="16px" />}
-      disabled={isSavedSearch || emptyAttributes}
-      loading={loading}
-      onPress={handlePress}
-      haptic
-    >
-      Create Alert
-    </Button>
+    <Box>
+      <Button
+        variant="primaryBlack"
+        size="small"
+        icon={<BellIcon fill="white100" mr={0.5} width="16px" height="16px" />}
+        disabled={isSavedSearch || filters.length === 0}
+        loading={loading || refetching}
+        onPress={handleCreateAlertPress}
+        testID="create-saved-search-button"
+        haptic
+      >
+        Create Alert
+      </Button>
+      <CreateSavedSearchAlert
+        artistId={artistId}
+        artistName={artistName}
+        visible={visibleForm}
+        onClosePress={handleCloseForm}
+        onComplete={handleComplete}
+        filters={filters}
+        aggregations={aggregations}
+      />
+    </Box>
   )
 }
 
-export const SavedSearchButtonFragmentContainer = createFragmentContainer(SavedSearchButton, {
-  me: graphql`
-    fragment SavedSearchButton_me on Me @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
-      savedSearch(criteria: $criteria) {
-        internalID
+export const SavedSearchButtonRefetchContainer = createRefetchContainer(
+  SavedSearchButton,
+  {
+    me: graphql`
+      fragment SavedSearchButton_me on Me @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
+        savedSearch(criteria: $criteria) {
+          internalID
+        }
+      }
+    `,
+  },
+  graphql`
+    query SavedSearchButtonRefetchQuery($criteria: SearchCriteriaAttributes) {
+      me {
+        ...SavedSearchButton_me @arguments(criteria: $criteria)
       }
     }
-  `,
-})
+  `
+)
 
 export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRendererProps> = (props) => {
   const { filters, artistId } = props
-  const input = prepareFilterParamsForSaveSearchInput(filters)
-  const attributes: SearchCriteriaAttributes = {
-    artistID: artistId,
-    ...input,
-  }
-
-  if (Object.keys(input).length === 0) {
-    return <SavedSearchButton loading={false} attributes={input} />
-  }
+  const criteria = getSearchCriteriaFromFilters(artistId, filters)
 
   return (
     <QueryRenderer<SavedSearchButtonQuery>
@@ -84,16 +154,41 @@ export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRend
         }
 
         return (
-          <SavedSearchButtonFragmentContainer
+          <SavedSearchButtonRefetchContainer
+            {...props}
             me={relayProps?.me ?? null}
             loading={relayProps === null && error === null}
-            attributes={input}
+            criteria={criteria}
+            filters={filters}
           />
         )
       }}
       variables={{
-        criteria: attributes,
+        criteria,
       }}
     />
   )
+}
+
+export const tracks = {
+  tappedCreateAlert: (artistId: string, artistSlug: string): TappedCreateAlert => ({
+    action: ActionType.tappedCreateAlert,
+    context_screen_owner_type: OwnerType.artist,
+    context_screen_owner_id: artistId,
+    context_screen_owner_slug: artistSlug,
+  }),
+  toggleSavedSearch: (
+    enabled: boolean,
+    artistId: string,
+    artistSlug: string,
+    searchCriteriaId: string
+  ): ToggledSavedSearch => ({
+    action: ActionType.toggledSavedSearch,
+    context_screen_owner_type: OwnerType.artist,
+    context_screen_owner_id: artistId,
+    context_screen_owner_slug: artistSlug,
+    modified: enabled,
+    original: !enabled,
+    search_criteria_id: searchCriteriaId,
+  }),
 }

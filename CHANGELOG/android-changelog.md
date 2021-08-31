@@ -1,10 +1,13 @@
 ## Undeployed Changes
 
-### v6.10.0
+### v7.0.0
 
 - Status: **Beta**
-- Changelog update date: **Thu Jul 01 2021 16:53:43 GMT+0200 (Central European Summer Time)**
 - Changelog:
+
+  - Dev changes:
+    - Do not save the changelog update date - mounir
+    - Track link tap and AuctionResultsForYou Screen - kizito
 
 <!-- DO NOT CHANGE -->
 

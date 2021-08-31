@@ -1,127 +1,80 @@
 import { themeGet } from "@styled-system/theme-get"
-import React, { FunctionComponent, ImgHTMLAttributes } from "react"
+import React, { ImgHTMLAttributes } from "react"
 import { Image } from "react-native"
+import styled from "styled-components/native"
 import { borderRadius } from "styled-system"
-import { styledWrapper } from "../../platform/primitives"
 import { Flex } from "../Flex"
-import { Text, TextFontSize } from "../Text"
+import { Text } from "../Text"
 
-const IOSDiameters = {
-  xs: 45,
-  sm: 70,
-  md: 100,
-}
+const DEFAULT_SIZE = "md"
 
-export interface SizeProps {
-  [key: string]: {
-    diameter: string
-    typeSize: TextFontSize
-  }
-}
-
-/** Size */
-export const Size: SizeProps = {
-  xs: {
-    diameter: "45px",
-    typeSize: "size3",
+const SIZES = {
+  xxs: {
+    diameter: 30,
+    typeSize: "13",
   },
+  xs: {
+    diameter: 45,
+    typeSize: "13",
+  },
+
   sm: {
-    diameter: "70px",
-    typeSize: "size6",
+    diameter: 70,
+    typeSize: "16",
   },
   md: {
-    diameter: "100px",
-    typeSize: "size8",
+    diameter: 100,
+    typeSize: "24",
   },
-}
-
-type SizeKey = "xs" | "sm" | "md"
-
-/** sizeValue */
-export const sizeValue = (size: SizeKey) => {
-  switch (size) {
-    case "xs":
-      return Size.xs
-    case "sm":
-      return Size.sm
-    case "md":
-    default:
-      return Size.md
-  }
 }
 
 export interface AvatarProps extends ImgHTMLAttributes<any> {
+  src?: string
   /** If an image is missing, show initials instead */
   initials?: string
   /** The size of the Avatar */
-  size?: SizeKey
-}
-
-interface BaseAvatarProps extends AvatarProps {
-  renderAvatar: () => JSX.Element
+  size?: "xxs" | "xs" | "sm" | "md"
 }
 
 /** An circular Avatar component containing an image or initials */
-export const BaseAvatar = ({ src, initials, size = "md", renderAvatar }: BaseAvatarProps) => {
-  const { diameter, typeSize } = sizeValue(size)
+export const Avatar = ({ src, initials, size = DEFAULT_SIZE }: AvatarProps) => {
+  const { diameter, typeSize } = SIZES[size]
 
   if (src) {
-    return renderAvatar()
-  } else if (initials) {
-    // Left align for overflow
-    const justifyContent = initials.length > 4 ? "left" : "center"
-
     return (
-      <InitialsHolder
-        width={diameter}
-        height={diameter}
-        justifyContent={justifyContent}
-        alignItems="center"
-        // NOTE: To make a circle in React Native:
-        // you have to use a numeric value and can't use "50%"
-        borderRadius={diameter}
-      >
-        <Text variant="mediumText" fontSize={typeSize} color="black60" lineHeight={parseInt(diameter, 10)}>
-          {initials}
-        </Text>
-      </InitialsHolder>
+      <Image
+        resizeMode="cover"
+        style={{
+          width: diameter,
+          height: diameter,
+          borderRadius: diameter / 2,
+        }}
+        source={{
+          uri: src,
+        }}
+      />
     )
-  } else {
-    return null
   }
+
+  return (
+    <InitialsHolder
+      width={diameter}
+      height={diameter}
+      justifyContent="center"
+      alignItems="center"
+      borderRadius={diameter}
+    >
+      <Text fontSize={typeSize} lineHeight={diameter}>
+        {initials}
+      </Text>
+    </InitialsHolder>
+  )
 }
 
 /** InitialsHolder */
-export const InitialsHolder = styledWrapper(Flex)`
-  background-color: ${themeGet("colors.black10")};
+export const InitialsHolder = styled(Flex)`
+  border: ${themeGet("colors.black10")};
   text-align: center;
   overflow: hidden;
   ${borderRadius}
 `
-
-InitialsHolder.displayName = "InitialsHolder"
-
-/** Avatar */
-export const Avatar: FunctionComponent<AvatarProps> = ({ ...props }) => {
-  const diameter = IOSDiameters[props.size || "md"]
-
-  return (
-    <BaseAvatar
-      size={props.size}
-      renderAvatar={() => (
-        <Image
-          resizeMode="cover"
-          style={{
-            width: diameter,
-            height: diameter,
-            borderRadius: diameter / 2,
-          }}
-          source={{
-            uri: props.src,
-          }}
-        />
-      )}
-      {...props}
-    />
-  )
-}

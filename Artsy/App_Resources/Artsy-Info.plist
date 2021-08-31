@@ -2,11 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Braze</key>
-	<dict>
-		<key>LogLevel</key>
-		<integer>0</integer>
-	</dict>
 	<key>AppIdentifierPrefix</key>
 	<string>$(AppIdentifierPrefix)</string>
 	<key>CFBundleDevelopmentRegion</key>
@@ -143,7 +138,6 @@
 		<string>AGaramondPro-Bold.otf</string>
 		<string>AGaramondPro-Italic.otf</string>
 		<string>AGaramondPro-Regular.otf</string>
-		<string>AVG65lig.otf</string>
 		<string>AGaramondPro-Semibold.otf</string>
 	</array>
 	<key>UIApplicationShortcutItems</key>

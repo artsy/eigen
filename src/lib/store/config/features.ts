@@ -75,11 +75,6 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AROptionsLotConditionReport",
   },
-  ARAllowPaletteV3: {
-    readyForRelease: __DEV__ || __TEST__,
-    description: "Allow for palette v3 to appear",
-    showInAdminMenu: true,
-  },
   AROptionsNewSalePage: {
     readyForRelease: true,
     echoFlagKey: "AROptionsNewSalePage",
@@ -112,20 +107,21 @@ export const features = defineFeatures({
     description: "Enable Saved Search: iOS",
   },
   AREnableSavedSearchAndroid: {
-    readyForRelease: false,
+    readyForRelease: true,
     echoFlagKey: "AREnableSavedSearchAndroid",
     description: "Enable Saved Search: Android",
     showInAdminMenu: true,
   },
   AREnableSavedSearchV2: {
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "AREnableSavedSearchV2",
     description: "Enable Saved Search V2",
     showInAdminMenu: true,
   },
   AREnableNewOnboardingFlow: {
     readyForRelease: false,
     description: "Enable new onboarding flow",
-    showInAdminMenu: Platform.OS === "ios",
+    showInAdminMenu: true,
   },
   AREnableSavedAddresses: {
     readyForRelease: false,
@@ -133,8 +129,19 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableAuctionResultsKeywordFilter: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable auction results keyword filter",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableAuctionResultsKeywordFilter",
+  },
+  AREnableImprovedSearch: {
+    readyForRelease: false,
+    description: "Enable improved search experience",
+    showInAdminMenu: true,
+  },
+  ARPhoneValidation: {
+    readyForRelease: false,
+    description: "Enable phone number validation",
     showInAdminMenu: true,
   },
 })
@@ -172,8 +179,11 @@ export const devToggles = defineDevToggles({
       }
     },
   },
-  DTDShowAnalyticsVisualiser: {
+  DTShowAnalyticsVisualiser: {
     description: "Show analytics visualiser",
+  },
+  DTShowV3Toggle: {
+    description: "Show Palette V3 toggle everywhere",
   },
 })
 

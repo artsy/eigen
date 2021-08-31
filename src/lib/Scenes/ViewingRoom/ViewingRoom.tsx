@@ -70,7 +70,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
       await Share.share({
         title: viewingRoom.title,
         message: `${viewingRoom.title} by ${viewingRoom?.partner?.name} on Artsy`,
-        url: `https://artsy.net/viewing-room/${viewingRoom.slug}?utm_content=viewing-room-share`,
+        url: `https://www.artsy.net/viewing-room/${viewingRoom.slug}?utm_content=viewing-room-share`,
       })
     } catch (error) {
       console.error("ViewingRoom.tsx", error)
@@ -85,21 +85,23 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
       content: <ClosedNotice status={viewingRoom.status} partnerHref={viewingRoom.partner!.href!} />,
     })
   } else if (viewingRoom.status === ViewingRoomStatus.LIVE) {
-    sections.push(
-      {
-        key: "introStatement",
-        content: (
-          <Flex mt="2" mx="2">
-            <Text data-test-id="intro-statement" mt="2" variant="text" mx="2" style={maxWidth}>
-              {viewingRoom.introStatement}
-            </Text>
-          </Flex>
-        ),
-      },
-      {
+    sections.push({
+      key: "introStatement",
+      content: (
+        <Flex mt="2" mx="2">
+          <Text data-test-id="intro-statement" mt="2" variant="text" mx="2" style={maxWidth}>
+            {viewingRoom.introStatement}
+          </Text>
+        </Flex>
+      ),
+    })
+    if ((viewingRoom.artworks?.totalCount ?? 0) > 0) {
+      sections.push({
         key: "artworkRail",
         content: <ViewingRoomArtworkRailContainer viewingRoom={viewingRoom} />,
-      },
+      })
+    }
+    sections.push(
       {
         key: "pullQuote",
         content: (
@@ -221,6 +223,9 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
       slug
       status
       title
+      artworks: artworksConnection(first: 10) {
+        totalCount
+      }
       ...ViewingRoomViewWorksButton_viewingRoom
       ...ViewingRoomSubsections_viewingRoom
       ...ViewingRoomArtworkRail_viewingRoom

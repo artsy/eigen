@@ -1,11 +1,5 @@
-// re: https://github.com/facebook/react-native/issues/19955
-// and https://github.com/facebook/metro/pull/198
-//
-// import applyDecoratedDescriptor from "@babel/runtime/helpers/applyDecoratedDescriptor"
-// import initializerDefineProperty from "@babel/runtime/helpers/initializerDefineProperty"
-// declare var babelHelpers: any
-// Object.assign(babelHelpers, { applyDecoratedDescriptor, initializerDefineProperty })
-// import "@babel/runtime"
+import "@testing-library/jest-native/extend-expect"
+import "jest-extended"
 
 import chalk from "chalk"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -44,6 +38,10 @@ const trackEvent = jest.fn()
 jest.mock("lib/utils/track/providers", () => ({
   ...jest.requireActual("lib/utils/track/providers"),
   postEventToProviders: jest.fn(),
+}))
+
+jest.mock("lib/relay/createEnvironment", () => ({
+  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
 }))
 
 jest.mock("tipsi-stripe", () => ({
@@ -85,6 +83,8 @@ jest.mock("react-native-device-info", () => ({
   getVersion: jest.fn(),
   getModel: jest.fn(),
   getUserAgentSync: jest.fn(),
+  getDeviceType: jest.fn(),
+  hasNotch: jest.fn(),
 }))
 
 jest.mock("rn-fetch-blob", () => ({
@@ -125,11 +125,12 @@ jest.mock("react-native-fbsdk-next", () => ({
 
 jest.mock("@react-native-google-signin/google-signin", () => ({
   GoogleSignin: {
-    signOut: jest.fn(),
     configure: jest.fn(),
-    hasPlayServices: jest.fn(),
-    signIn: jest.fn(),
     getTokens: jest.fn(),
+    hasPlayServices: jest.fn(),
+    revokeAccess: jest.fn(),
+    signIn: jest.fn(),
+    signOut: jest.fn(),
   },
 }))
 
@@ -275,6 +276,7 @@ function getNativeModules(): OurNativeModules {
       navigationBarHeight: 11,
       lockActivityScreenOrientation: jest.fn(),
       gitCommitShortHash: "de4dc0de",
+      isBetaOrDev: true,
     },
   }
 }
@@ -389,6 +391,18 @@ jest.mock("./lib/utils/useScreenDimensions", () => {
       return React.createElement(React.Fragment, null, children)
     },
     useScreenDimensions: () => screenDimensions,
+  }
+})
+
+jest.mock("react-native-safe-area-context", () => {
+  return {
+    ...jest.requireActual("react-native-safe-area-context"),
+    useSafeAreaFrame: () => ({
+      width: 380,
+      height: 550,
+      x: 0,
+      y: 0,
+    }),
   }
 })
 
@@ -539,4 +553,7 @@ jest.mock("react-native-push-notification", () => ({
   onNotification: jest.fn(),
   addEventListener: jest.fn(),
   requestPermissions: jest.fn(),
+  checkPermissions: jest.fn(),
+  createChannel: jest.fn(),
+  localNotification: jest.fn(),
 }))

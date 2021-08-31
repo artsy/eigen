@@ -2,16 +2,25 @@ import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "lib/Components/SwitchMenu"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import useAppState from "lib/utils/useAppState"
 import { debounce } from "lodash"
 import { Box, Button, Flex, Join, Sans, Separator } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
-import { ActivityIndicator, Alert, Linking, RefreshControl, ScrollView, View } from "react-native"
+import { ActivityIndicator, Alert, Linking, Platform, RefreshControl, ScrollView, View } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { MyProfilePushNotifications_me } from "../../../__generated__/MyProfilePushNotifications_me.graphql"
 import { MyProfilePushNotificationsQuery } from "../../../__generated__/MyProfilePushNotificationsQuery.graphql"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
+
+const INSTRUCTIONS = Platform.select({
+  ios: `To receive push notifications from Artsy, you will need to enable them in your iOS Settings. Tap 'Artsy' and
+  toggle 'Allow Notifications' on.`,
+  android: `To receive push notifications from Artsy, you will need to enable them in your device settings.
+  Go to 'Apps', Tap on 'Artsy' to access Artsy specific settings, Tap on 'Notifications' and toggle 'Show Notifications' on.`,
+  default: "",
+})
 
 export type UserPushNotificationSettings =
   | "receiveLotOpeningSoonNotification"
@@ -29,14 +38,16 @@ export const OpenSettingsBanner = () => (
         Artsy would like to send you notifications
       </Sans>
       <Sans size="3t" textAlign="center" color="black60" marginTop="1" marginBottom="2">
-        To receive push notifications from Artsy, you will need to enable them in your iOS Settings. Tap 'Artsy' and
-        toggle "Allow Notifications" on.
+        {INSTRUCTIONS}
       </Sans>
       <Button
         size="large"
-        onPress={() => {
-          Linking.openURL("App-prefs:NOTIFICATIONS_ID")
-        }}
+        onPress={Platform.select({
+          ios: () => {
+            Linking.openURL("App-prefs:NOTIFICATIONS_ID")
+          },
+          android: () => Linking.openSettings(),
+        })}
       >
         Open settings
       </Button>
@@ -85,12 +96,6 @@ const NotificationPermissionsBox = ({
   </Box>
 )
 
-export enum PushAuthorizationStatus {
-  NotDetermined = "notDetermined",
-  Authorized = "authorized",
-  Denied = "denied",
-}
-
 export const MyProfilePushNotifications: React.FC<{
   me: MyProfilePushNotifications_me
   relay: RelayRefetchProp
@@ -103,18 +108,19 @@ export const MyProfilePushNotifications: React.FC<{
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
 
   useEffect(() => {
-    LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
-      setNotificationAuthorizationStatus(result)
-    })
+    getPermissionStatus()
   }, [])
 
   const onForeground = useCallback(() => {
-    LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
-      setNotificationAuthorizationStatus(result)
-    })
+    getPermissionStatus()
   }, [])
 
   useAppState({ onForeground })
+
+  const getPermissionStatus = async () => {
+    const status = await getNotificationPermissionsStatus()
+    setNotificationAuthorizationStatus(status)
+  }
 
   const onRefresh = useCallback(() => {
     if (relay) {
@@ -233,7 +239,9 @@ export const MyProfilePushNotifications: React.FC<{
     >
       <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
         {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && <OpenSettingsBanner />}
-        {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined && <AllowPushNotificationsBanner />}
+        {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined && Platform.OS === "ios" && (
+          <AllowPushNotificationsBanner />
+        )}
         {renderContent()}
       </ScrollView>
     </PageWithSimpleHeader>

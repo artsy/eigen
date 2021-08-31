@@ -128,10 +128,11 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
           first: 30
           after: $cursor
           aggregations: [
+            ARTIST
             ARTIST_NATIONALITY
             COLOR
             DIMENSION_RANGE
-            LOCATION_CITY
+            FOLLOWED_ARTISTS
             MAJOR_PERIOD
             MATERIALS_TERMS
             MEDIUM

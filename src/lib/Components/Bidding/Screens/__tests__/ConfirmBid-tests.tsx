@@ -1,7 +1,3 @@
-jest.mock("lib/relay/createEnvironment", () => ({
-  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-}))
-
 import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
 import { ConfirmBidCreateBidderPositionMutationResponse } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
@@ -18,6 +14,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { waitUntil } from "lib/tests/waitUntil"
 import { merge } from "lodash"
 import { Button, Sans, Serif, Text } from "palette"
+import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
 import "react-native"
 import { TouchableWithoutFeedback } from "react-native"
@@ -27,7 +24,6 @@ import stripe from "tipsi-stripe"
 import { LinkText } from "../../../Text/LinkText"
 import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { BidInfoRow } from "../../Components/BidInfoRow"
-import { Checkbox } from "../../Components/Checkbox"
 import { Address } from "../../types"
 import { BidResultScreen } from "../BidResult"
 import { BillingAddress } from "../BillingAddress"

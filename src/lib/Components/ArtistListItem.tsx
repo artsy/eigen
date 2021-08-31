@@ -5,7 +5,7 @@ import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { Schema, track } from "lib/utils/track"
 import { Button, ClassTheme, EntityHeader, Flex, Touchable } from "palette"
 import React from "react"
-import { StyleProp, TouchableWithoutFeedback, ViewStyle } from "react-native"
+import { StyleProp, ViewStyle } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
@@ -109,8 +109,6 @@ export class ArtistListItem extends React.Component<Props, State> {
     const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
     const imageURl = image && image.url
 
-    const TouchableComponent = withFeedback ? Touchable : TouchableWithoutFeedback
-
     if (!name) {
       return null
     }
@@ -118,7 +116,8 @@ export class ArtistListItem extends React.Component<Props, State> {
     return (
       <ClassTheme>
         {({ color }) => (
-          <TouchableComponent
+          <Touchable
+            noFeedback={!withFeedback}
             onPress={() => {
               if (href && !disableNavigation) {
                 this.handleTap(href)
@@ -150,7 +149,7 @@ export class ArtistListItem extends React.Component<Props, State> {
                 </Button>
               </Flex>
             </Flex>
-          </TouchableComponent>
+          </Touchable>
         )}
       </ClassTheme>
     )

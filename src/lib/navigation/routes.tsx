@@ -113,7 +113,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
   const artsyDotNet: RouteMatcher[] = compact([
     new RouteMatcher("/", "Home"),
     new RouteMatcher("/sales", "Sales"),
-    new RouteMatcher("/search", "Search"),
+    new RouteMatcher("/search", "SearchSwitchContainer"),
     new RouteMatcher("/inbox", "Inbox"),
     new RouteMatcher("/my-profile", "MyProfile"),
     new RouteMatcher("/articles", "Articles"),
@@ -131,7 +131,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/artist/:artistID/artist-series", "FullArtistSeriesList"),
     webViewRoute("/artist/:artistID/articles"),
     new RouteMatcher("/artist/:artistID/*", "Artist"),
-    // For artists in a gallery context, like https://artsy.net/spruth-magers/artist/astrid-klein . Until we have a native
+    // For artists in a gallery context, like https://www.artsy.net/spruth-magers/artist/astrid-klein . Until we have a native
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
     new RouteMatcher("/:profile_id_ignored/artist/:artistID", "Artist"),
     new RouteMatcher("/auction-registration/:saleID", "AuctionRegistration"),
@@ -142,6 +142,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/auction-faq", "AuctionFAQ"),
     new RouteMatcher("/auction/:saleID/bid/:artworkID", "AuctionBidArtwork"),
     new RouteMatcher("/gene/:geneID", "Gene"),
+    new RouteMatcher("/tag/:tagID", "Tag"),
     new RouteMatcher("/show/:showID", "Show"),
     new RouteMatcher("/show/:showID/info", "ShowMoreInfo"),
 
@@ -219,8 +220,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/city-bmw-list/:citySlug", "CityBMWList"),
     new RouteMatcher("/make-offer/:artworkID", "MakeOfferModal"),
     new RouteMatcher("/user/purchases/:orderID", "OrderDetails"),
+    new RouteMatcher("/my-profile/saved-search-alerts", "SavedSearchAlertsList"),
+    new RouteMatcher("/my-profile/saved-search-alerts/:savedSearchAlertId", "EditSavedSearchAlert"),
     unsafe_getFeatureFlag("AROptionsUseReactNativeWebView")
-      ? webViewRoute("/orders/:orderID", { mimicBrowserBackButton: false })
+      ? webViewRoute("/orders/:orderID", { mimicBrowserBackButton: true, useRightCloseButton: true })
       : new RouteMatcher("/orders/:orderID", "Checkout"),
     __DEV__ && new RouteMatcher("/storybook", "Storybook"),
 
