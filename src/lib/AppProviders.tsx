@@ -22,7 +22,7 @@ const V3Toggle: React.FC = ({ children }) => {
       {children}
       {showToggle ? (
         <View style={{ position: "absolute", right: 0, top: 300 }}>
-          <Button title="v3" onPress={toggleAllowV3} color={allowV3 ? "green" : "red"} />
+          <Button title={allowV3 ? "v3" : "v2"} onPress={toggleAllowV3} color={allowV3 ? "green" : "red"} />
         </View>
       ) : null}
     </>
