@@ -205,18 +205,30 @@ const LoadingSkeleton = () => {
     placeholderResults.push(
       <React.Fragment key={i}>
         <Spacer height={20} />
-        <Flex flexDirection="row">
+        <Flex flexDirection="row" pl={1} flexGrow={1}>
           {/* Image */}
-          <PlaceholderBox width={80} height={80} />
-          <Flex ml={2} mt={1}>
-            {/* Artist name */}
-            <PlaceholderBox width={100} height={20} />
-            <Spacer mb={1} />
-            {/* Artwork n ame */}
-            <PlaceholderBox width={150} height={20} />
+          <PlaceholderBox width={60} height={60} />
+          <Spacer width={15} />
+          <Flex flexDirection="row" justifyContent="space-between" py={0.5} flexGrow={1}>
+            <Flex>
+              {/* Artist name */}
+              <PlaceholderText width={100} />
+              {/* Artwork name */}
+              <PlaceholderText width={150} />
+              {/* Artwork medium */}
+              <PlaceholderText width={125} />
+              {/* Auction Date & Place */}
+              <PlaceholderText width={100} />
+            </Flex>
+            <Flex alignItems="flex-end" pr={1}>
+              {/* Price */}
+              <PlaceholderText width={40} />
+              {/* Mid estimate */}
+              <PlaceholderText width={65} />
+            </Flex>
           </Flex>
         </Flex>
-        <Spacer height={20} />
+        <Spacer height={10} />
         <Separator borderColor={"black5"} />
       </React.Fragment>
     )
