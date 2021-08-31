@@ -49,6 +49,6 @@ Make sure to QA the bug fix changes and test any code paths that may have been a
 
 The changes on the release-candidate branch might be cherry-picks only, or it might be new code. Considering the release notes files are probably changed in that branch as well, it makes sense to make a PR from that release-candidate branch to master, in order to get all the changes back to master.
 
-TODO FIX HELP CHECK THIS OUT WOW LOOK!!
-a thread from the last time we did that. in case its useful
+## Slack thread for reference
+Here is a thread from a previous time we did this:
 https://artsy.slack.com/archives/C01B2P6LJUU/p1627916686040500
