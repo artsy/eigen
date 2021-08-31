@@ -1,10 +1,10 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { Separator, Text } from "palette"
-import React, { useRef, useState } from "react"
+import React from "react"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
+import { useMultiSelect } from "./useMultiSelect"
 
 interface SizesOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "SizesOptionsScreen"> {}
 
@@ -27,41 +27,16 @@ export const SIZES_OPTIONS: FilterData[] = [
 ]
 
 export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigation }) => {
-  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-  const selectedFilters = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+  const { handleSelect, isSelected } = useMultiSelect({
+    options: SIZES_OPTIONS,
+    paramName: FilterParamName.sizes,
+  })
 
-  const oldAppliedFilterSizs = useRef(
-    appliedFilters.find((filter) => filter.paramName === FilterParamName.sizes)?.paramValue as string[] | undefined
-  )
-
-  const oldSelectedFilterSizs = useRef(
-    selectedFilters.find((filter) => filter.paramName === FilterParamName.sizes)?.paramValue as string[] | undefined
-  )
-  const [selectedOptions, setSelectedOptions] = useState(oldSelectedFilterSizs.current || oldAppliedFilterSizs.current)
-
-  const toggleOption = (option: FilterData) => {
-    let updatedParamValue: string[]
-
-    // The user is trying to uncheck the size
-    if (typeof option.paramValue === "string" && selectedOptions?.includes(option.paramValue)) {
-      updatedParamValue = selectedOptions.filter((paramValue) => paramValue !== option.paramValue)
-    } else {
-      // The user is trying to check the size
-      updatedParamValue = [...(selectedOptions || []), option.paramValue as string]
-    }
-
-    setSelectedOptions(updatedParamValue)
-    selectFiltersAction({
-      displayText: option.displayText,
-      paramValue: updatedParamValue,
-      paramName: FilterParamName.sizes,
-    })
-  }
+  const filterOptions = SIZES_OPTIONS.map((option) => ({ ...option, paramValue: isSelected(option) }))
 
   return (
     <MultiSelectCheckOptionScreen
-      onSelect={toggleOption}
+      onSelect={handleSelect}
       ListHeaderComponent={
         <>
           <Text variant="caption" color="black60" textAlign="center" my={15}>
@@ -71,8 +46,7 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
         </>
       }
       filterHeaderText={FilterDisplayName.sizes}
-      filterOptions={SIZES_OPTIONS}
-      selectedOptions={selectedOptions}
+      filterOptions={filterOptions}
       navigation={navigation}
     />
   )

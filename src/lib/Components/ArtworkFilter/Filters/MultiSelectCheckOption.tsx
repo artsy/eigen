@@ -13,7 +13,7 @@ interface MultiSelectOptionScreenProps {
   ListHeaderComponent?: React.ReactElement
   navigation: StackNavigationProp<ParamListBase>
   onSelect: (filterData: FilterData, updatedValue: boolean) => void
-  selectedOptions: string[] | undefined
+  selectedOptions?: string[]
   withIndent?: boolean
 }
 
@@ -34,6 +34,11 @@ export const MultiSelectCheckOptionScreen: React.FC<MultiSelectOptionScreenProps
     if (typeof item?.paramValue === "string") {
       return selectedOptions?.includes(item.paramValue)
     }
+
+    if (typeof item.paramValue === "boolean") {
+      return item.paramValue
+    }
+
     return false
   }
 
