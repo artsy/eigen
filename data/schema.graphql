@@ -644,7 +644,9 @@ type Article implements Node {
   publishedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   slug: String
@@ -656,7 +658,9 @@ type Article implements Node {
   updatedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   vertical: String
@@ -1787,7 +1791,9 @@ type AuctionResult implements Node {
   date(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   dateText: String
@@ -1811,7 +1817,9 @@ type AuctionResult implements Node {
   saleDate(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   saleDateText: String
@@ -2245,7 +2253,9 @@ type Bidder implements Node {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
 
@@ -2264,7 +2274,9 @@ type BidderPosition {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   highestBid: HighestBid
@@ -2282,7 +2294,9 @@ type BidderPosition {
   processedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   saleArtwork: SaleArtwork
@@ -2290,7 +2304,9 @@ type BidderPosition {
   updatedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
 }
@@ -2480,7 +2496,9 @@ type CollectorProfileType {
   confirmedBuyerAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   email: String
@@ -2495,20 +2513,26 @@ type CollectorProfileType {
   loyaltyApplicantAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   name: String
   professionalBuyerAppliedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   professionalBuyerAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   selfReportedPurchases: String
@@ -2663,7 +2687,9 @@ type CommerceBuyOrder implements CommerceOrder {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
   creditCard: CreditCard
@@ -2687,13 +2713,17 @@ type CommerceBuyOrder implements CommerceOrder {
   lastApprovedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   lastSubmittedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   lastTransactionFailed: Boolean
@@ -2739,14 +2769,18 @@ type CommerceBuyOrder implements CommerceOrder {
   stateExpiresAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   stateReason: String
   stateUpdatedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   taxTotal(
@@ -2782,7 +2816,9 @@ type CommerceBuyOrder implements CommerceOrder {
   updatedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
 }
@@ -2945,7 +2981,9 @@ interface CommerceEventInterface {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
 }
@@ -2990,13 +3028,17 @@ type CommerceFulfillment {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
   estimatedDelivery(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   id: ID!
@@ -3006,7 +3048,9 @@ type CommerceFulfillment {
   updatedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
 }
@@ -3060,7 +3104,9 @@ type CommerceLineItem {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
   editionSetId: String
@@ -3120,7 +3166,9 @@ type CommerceLineItem {
   updatedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
 }
@@ -3171,7 +3219,9 @@ type CommerceOffer {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
   creatorId: String!
@@ -3206,7 +3256,9 @@ type CommerceOffer {
   submittedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   taxTotal(
@@ -3276,7 +3328,9 @@ type CommerceOfferOrder implements CommerceOrder {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
   creditCard: CreditCard
@@ -3302,7 +3356,9 @@ type CommerceOfferOrder implements CommerceOrder {
   lastApprovedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
 
@@ -3311,7 +3367,9 @@ type CommerceOfferOrder implements CommerceOrder {
   lastSubmittedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   lastTransactionFailed: Boolean
@@ -3382,14 +3440,18 @@ type CommerceOfferOrder implements CommerceOrder {
   stateExpiresAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   stateReason: String
   stateUpdatedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   taxTotal(
@@ -3425,7 +3487,9 @@ type CommerceOfferOrder implements CommerceOrder {
   updatedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
 }
@@ -3434,7 +3498,9 @@ type CommerceOfferSubmittedEvent implements CommerceEventInterface {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
   offer: CommerceOffer!
@@ -3470,7 +3536,9 @@ interface CommerceOrder {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
   creditCard: CreditCard
@@ -3494,13 +3562,17 @@ interface CommerceOrder {
   lastApprovedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   lastSubmittedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   lastTransactionFailed: Boolean
@@ -3546,14 +3618,18 @@ interface CommerceOrder {
   stateExpiresAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   stateReason: String
   stateUpdatedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   taxTotal(
@@ -3589,7 +3665,9 @@ interface CommerceOrder {
   updatedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
 }
@@ -3693,7 +3771,9 @@ type CommerceOrderStateChangedEvent implements CommerceEventInterface {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
   state: CommerceOrderStateEnum!
@@ -3949,19 +4029,25 @@ type CommerceShipment {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
   deliveryEnd(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   deliveryStart(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   deliveryWindowModifier: String
@@ -3969,13 +4055,17 @@ type CommerceShipment {
   pickupEnd(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   pickupStart(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   pickupWindowModifier: String
@@ -3987,7 +4077,9 @@ type CommerceShipment {
   updatedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
 }
@@ -4016,7 +4108,9 @@ type CommerceShippingQuote {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
   displayName: String!
@@ -4038,7 +4132,9 @@ type CommerceShippingQuote {
   updatedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
 }
@@ -5104,13 +5200,17 @@ type Conversation implements Node {
   buyerOutcomeAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
 
@@ -5140,7 +5240,9 @@ type Conversation implements Node {
   lastMessageAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
 
@@ -5753,19 +5855,25 @@ type Delivery {
   bouncedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   clickedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   deliveredAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
 
@@ -5780,7 +5888,9 @@ type Delivery {
   openedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
 }
@@ -6030,6 +6140,50 @@ enum EventStatus {
   UPCOMING
 }
 
+type External {
+  auctionHouses(size: Int, term: String): [ExternalAuctionHouse!]!
+  fairs(size: Int, term: String): [ExternalFair!]!
+  galleries(size: Int, term: String): [ExternalGallery!]!
+}
+
+type ExternalAuctionHouse {
+  city: String
+  country: String
+  id: Int!
+  name: String!
+}
+
+type ExternalFair {
+  city: String
+  country: String
+  endAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  id: Int!
+  name: String!
+  startAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+}
+
+type ExternalGallery {
+  city: String
+  id: Int!
+  name: String!
+  partner: Partner
+  region: String
+}
+
 type ExternalPartner {
   city: String
 
@@ -6046,7 +6200,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   activeStartAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   articlesConnection(
@@ -6075,7 +6231,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   endAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
 
@@ -6196,7 +6354,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   startAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   summary(format: Format): String
@@ -6604,7 +6764,9 @@ type FollowedArtistsArtworksGroup implements Node {
   publishedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   summary: String
@@ -6993,7 +7155,9 @@ type HighestBid {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   display: String
@@ -7235,7 +7399,9 @@ type IdentityVerification {
   invitationExpiresAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
 
@@ -7860,7 +8026,9 @@ type Me implements Node {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
 
@@ -8046,7 +8214,9 @@ type Message implements Node {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   deliveries: [Delivery]
@@ -9822,6 +9992,9 @@ type Query {
     id: String!
   ): CreditCard
 
+  # A namespace external partners (provided by Galaxy)
+  external: External
+
   # A Fair
   fair(
     # The slug or ID of the Fair
@@ -10396,19 +10569,25 @@ type Sale implements Node {
   endAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   eventEndAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   eventStartAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
 
@@ -10438,7 +10617,9 @@ type Sale implements Node {
   liveStartAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
 
@@ -10451,7 +10632,9 @@ type Sale implements Node {
   registrationEndsAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
 
@@ -10477,7 +10660,9 @@ type Sale implements Node {
   startAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   status: String
@@ -10615,7 +10800,9 @@ type SaleArtworkHighestBid {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   display: String
@@ -11154,7 +11341,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   createdAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
 
@@ -11163,7 +11352,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   endAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
 
@@ -11329,7 +11520,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   startAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
 
@@ -11395,7 +11588,9 @@ type ShowEventType {
   endAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   eventType: String
@@ -11405,7 +11600,9 @@ type ShowEventType {
   startAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   title: String
@@ -11758,7 +11955,9 @@ type UpdateCollectorProfilePayload {
   confirmedBuyerAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   email: String
@@ -11773,20 +11972,26 @@ type UpdateCollectorProfilePayload {
   loyaltyApplicantAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   name: String
   professionalBuyerAppliedAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   professionalBuyerAt(
     format: String
 
-    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
   selfReportedPurchases: String
@@ -12428,6 +12633,9 @@ type Viewer {
     # The ID of the Credit Card
     id: String!
   ): CreditCard
+
+  # A namespace external partners (provided by Galaxy)
+  external: External
 
   # A Fair
   fair(
