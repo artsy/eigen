@@ -172,6 +172,7 @@ lane :ship_beta_android do
 
   firebase_app_distribution(
     app: ENV["FIREBASE_APP_ID"],
+    android_artifact_path: './android/app/build/outputs/bundle/release/app-release.aab'
   )
 
   upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
