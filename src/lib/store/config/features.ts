@@ -144,6 +144,11 @@ export const features = defineFeatures({
     description: "Enable phone number validation",
     showInAdminMenu: true,
   },
+  ARDeepZoom: {
+    readyForRelease: false,
+    description: "Enable deep zoom",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
