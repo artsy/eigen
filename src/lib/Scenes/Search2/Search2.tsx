@@ -154,7 +154,7 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
       <ArtsyKeyboardAvoidingView>
         <InstantSearch
           searchClient={searchClient}
-          indexName="Artist_staging"
+          indexName={selectedAlgoliaIndex}
           searchState={searchState}
           onSearchStateChange={setSearchState}
         >
@@ -166,15 +166,17 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
 
           {!!shouldStartQuering ? (
             <>
-              {/* This will change to render dynamically all the index labels */}
               <Flex p={2} pb={1} flexDirection="row">
-                <Pill
-                  variant="textRound"
-                  active={selectedAlgoliaIndex === "Artist"}
-                  onPress={() => setSelectedAlgoliaIndex(selectedAlgoliaIndex === "Artist" ? "" : "Artist")}
-                >
-                  Artists
-                </Pill>
+                {system?.algolia?.indices.map(({ name, displayName }) => (
+                  <Pill
+                    key={name}
+                    variant="textRound"
+                    active={selectedAlgoliaIndex === name}
+                    onPress={() => setSelectedAlgoliaIndex(selectedAlgoliaIndex === name ? "" : name)}
+                  >
+                    {displayName}
+                  </Pill>
+                ))}
               </Flex>
               {renderResults()}
             </>
@@ -199,9 +201,14 @@ export const Search2QueryRenderer: React.FC<{}> = ({}) => {
       query={graphql`
         query Search2Query {
           system {
+            __typename
             algolia {
               appID
               apiKey
+              indices {
+                name
+                displayName
+              }
             }
           }
         }

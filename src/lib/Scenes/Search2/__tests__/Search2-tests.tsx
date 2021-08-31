@@ -27,7 +27,12 @@ const TestWrapper: typeof Search = () => {
       <Theme>
         <CatchErrors>
           <GlobalStoreProvider>
-            <Search2 system={null} />
+            <Search2
+              system={{
+                __typename: "System",
+                algolia: { appID: "", apiKey: "", indices: [{ name: "Artist_staging", displayName: "Artists" }] },
+              }}
+            />
           </GlobalStoreProvider>
         </CatchErrors>
       </Theme>

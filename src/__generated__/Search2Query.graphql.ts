@@ -1,15 +1,20 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ab6b83dc77585a03bb1e2053de796626 */
+/* @relayHash 29fc6f1745014e053d0ae718d1f4200d */
 
 import { ConcreteRequest } from "relay-runtime";
 export type Search2QueryVariables = {};
 export type Search2QueryResponse = {
     readonly system: {
+        readonly __typename: string;
         readonly algolia: {
             readonly appID: string;
             readonly apiKey: string;
+            readonly indices: ReadonlyArray<{
+                readonly name: string;
+                readonly displayName: string;
+            }>;
         } | null;
     } | null;
 };
@@ -23,9 +28,14 @@ export type Search2Query = {
 /*
 query Search2Query {
   system {
+    __typename
     algolia {
       appID
       apiKey
+      indices {
+        name
+        displayName
+      }
     }
   }
 }
@@ -41,6 +51,13 @@ var v0 = [
     "name": "system",
     "plural": false,
     "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "__typename",
+        "storageKey": null
+      },
       {
         "alias": null,
         "args": null,
@@ -61,6 +78,31 @@ var v0 = [
             "args": null,
             "kind": "ScalarField",
             "name": "apiKey",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "AlgoliaIndex",
+            "kind": "LinkedField",
+            "name": "indices",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "name",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "displayName",
+                "storageKey": null
+              }
+            ],
             "storageKey": null
           }
         ],
@@ -88,7 +130,7 @@ return {
     "selections": (v0/*: any*/)
   },
   "params": {
-    "id": "ab6b83dc77585a03bb1e2053de796626",
+    "id": "29fc6f1745014e053d0ae718d1f4200d",
     "metadata": {},
     "name": "Search2Query",
     "operationKind": "query",
@@ -96,5 +138,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'fa87f0920473f8709236b4266eeb94cd';
+(node as any).hash = '5293287bb06a36f2e10be5cb9a5eadb7';
 export default node;
