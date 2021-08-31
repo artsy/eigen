@@ -137,7 +137,7 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
   const { system } = props
 
-  const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
+  const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, "0985bf099598398349ab0db06414c2dc")
 
   if (!searchClient) {
     // error handling in case appID or apiKey is not set ??
@@ -154,7 +154,7 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
       <ArtsyKeyboardAvoidingView>
         <InstantSearch
           searchClient={searchClient}
-          indexName={selectedAlgoliaIndex || "Artist_staging"}
+          indexName={selectedAlgoliaIndex}
           searchState={searchState}
           onSearchStateChange={setSearchState}
         >
