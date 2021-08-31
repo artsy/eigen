@@ -1,1 +1,1 @@
-export * from "./Pill"
+export * from "./PillV2"
