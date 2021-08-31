@@ -9,13 +9,14 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { groupBy } from "lodash"
 import moment from "moment"
-import { Flex, Separator, Spinner, Text } from "palette"
+import { Flex, Separator, Spacer, Spinner, Text } from "palette"
 import React, { useState } from "react"
 import { SectionList } from "react-native"
 import { RelayPaginationProp } from "react-relay"
@@ -69,22 +70,7 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
             onEndReached={loadMoreArtworks}
             keyExtractor={(item) => item.internalID}
             stickySectionHeadersEnabled
-            ListHeaderComponent={() => (
-              <Flex>
-                <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
-                  The latest auction results for the {""}
-                  <LinkText
-                    onPress={() => {
-                      trackEvent(tracks.tappedLink)
-                      navigate("/favorites", { passProps: { initialTab: Tab.artists } })
-                    }}
-                  >
-                    artists you follow
-                  </LinkText>
-                  . You can also look up more auction results on the insights tab on any artist’s page.
-                </Text>
-              </Flex>
-            )}
+            ListHeaderComponent={ListHeader}
             renderSectionHeader={({ section: { sectionTitle } }) => (
               <Flex bg="white" mx="2">
                 <Text my="2" variant="title">
@@ -172,6 +158,26 @@ export const AuctionResultsForYouContainer = createPaginationContainer(
   }
 )
 
+export const ListHeader: React.FC = () => {
+  const { trackEvent } = useTracking()
+  return (
+    <Flex>
+      <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
+        The latest auction results for the {""}
+        <LinkText
+          onPress={() => {
+            trackEvent(tracks.tappedLink)
+            navigate("/favorites", { passProps: { initialTab: Tab.artists } })
+          }}
+        >
+          artists you follow
+        </LinkText>
+        . You can also look up more auction results on the insights tab on any artist’s page.
+      </Text>
+    </Flex>
+  )
+}
+
 export const AuctionResultsForYouQueryRenderer: React.FC = () => (
   <QueryRenderer<AuctionResultsForYouContainerQuery>
     environment={defaultEnvironment}
@@ -186,9 +192,48 @@ export const AuctionResultsForYouQueryRenderer: React.FC = () => (
     cacheConfig={{
       force: true,
     }}
-    render={renderWithLoadProgress(AuctionResultsForYouContainer)}
+    render={renderWithPlaceholder({
+      Container: AuctionResultsForYouContainer,
+      renderPlaceholder: LoadingSkeleton,
+    })}
   />
 )
+
+const LoadingSkeleton = () => {
+  const placeholderResults = []
+  for (let i = 0; i < 8; i++) {
+    placeholderResults.push(
+      <React.Fragment key={i}>
+        <Spacer height={20} />
+        <Flex flexDirection="row">
+          {/* Image */}
+          <PlaceholderBox width={80} height={80} />
+          <Flex ml={2} mt={1}>
+            {/* Artist name */}
+            <PlaceholderBox width={100} height={20} />
+            <Spacer mb={1} />
+            {/* Artwork n ame */}
+            <PlaceholderBox width={150} height={20} />
+          </Flex>
+        </Flex>
+        <Spacer height={20} />
+        <Separator borderColor={"black5"} />
+      </React.Fragment>
+    )
+  }
+  return (
+    <PageWithSimpleHeader title="Auction Results for Artists You Follow">
+      <ListHeader />
+      <Flex mx={2}>
+        <Spacer height={20} />
+        <PlaceholderText height={24} width={100 + Math.random() * 50} />
+        <Spacer height={10} />
+        <Separator borderColor={"black5"} />
+        {placeholderResults}
+      </Flex>
+    </PageWithSimpleHeader>
+  )
+}
 
 export const tracks = {
   tapAuctionGroup: (auctionResultId: string) => ({
