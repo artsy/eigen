@@ -9,7 +9,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
-import { Flex, Pill, Spacer, Text, Touchable, useColor } from "palette"
+import { Flex, Pill, Spacer, Text, Touchable } from "palette"
 import React, { useRef, useState } from "react"
 import { connectHighlight, connectInfiniteHits, connectSearchBox, InstantSearch } from "react-instantsearch-native"
 import { FlatList, Platform, ScrollView } from "react-native"
@@ -132,7 +132,6 @@ interface SearchState {
 }
 
 export const Search2: React.FC<Search2QueryResponse> = (props) => {
-  const color = useColor()
   const [searchState, setSearchState] = useState<SearchState>({})
   const [selectedAlgoliaIndex, setSelectedAlgoliaIndex] = useState("")
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
@@ -170,10 +169,8 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
               {/* This will change to render dynamically all the index labels */}
               <Flex p={2} pb={1} flexDirection="row">
                 <Pill
-                  style={{
-                    borderRadius: 50,
-                    borderColor: selectedAlgoliaIndex === "Artist" ? color("black60") : color("black10"),
-                  }}
+                  variant="textRound"
+                  active={selectedAlgoliaIndex === "Artist"}
                   onPress={() => setSelectedAlgoliaIndex(selectedAlgoliaIndex === "Artist" ? "" : "Artist")}
                 >
                   Artists
