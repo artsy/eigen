@@ -6291,7 +6291,17 @@ type FairOrganizer {
     page: Int
     sort: ArticleSorts
   ): ArticleConnection
-  fairsConnection(after: String, before: String, first: Int, last: Int): FairConnection
+  fairsConnection(
+    after: String
+    before: String
+    first: Int
+    hasFullFeature: Boolean
+    hasHomepageSection: Boolean
+    hasListing: Boolean
+    last: Int
+    sort: FairSorts
+    status: EventStatus
+  ): FairConnection
 
   # A globally unique ID.
   id: ID!
