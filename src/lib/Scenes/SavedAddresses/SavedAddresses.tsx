@@ -72,8 +72,14 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
       addressId,
       () => {
         toast.show("Address successfully deleted", "top")
-
-        relay.refetch({})
+        relay.refetch(
+          {},
+          { first: NUM_ADDRESSES_TO_FETCH },
+          () => {
+            setIsRefreshing(false)
+          },
+          { force: true }
+        )
       },
       (message: string) => captureMessage(message)
     )
