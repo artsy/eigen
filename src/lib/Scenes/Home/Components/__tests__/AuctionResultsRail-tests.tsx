@@ -69,7 +69,7 @@ describe("AuctionResultsRailFragmentContainer", () => {
     )
   })
 
-  it("routes to auction-results-for-you URL", () => {
+  it("routes to auction-results-for-artists-you-follow URL", () => {
     const tree = renderWithWrappers(<TestRenderer />)
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -80,7 +80,7 @@ describe("AuctionResultsRailFragmentContainer", () => {
     )
 
     first(tree.root.findAllByType(SectionTitle))?.props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/auction-results-for-you")
+    expect(navigate).toHaveBeenCalledWith("/auction-results-for-artists-you-follow")
   })
 })
 

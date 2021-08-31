@@ -1,27 +1,33 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8f154495ca4efb8d4f659b83f82f4666 */
+/* @relayHash 668914f9579e091f9e0db4b244aed0bf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type AuctionResultsForYouContainerQueryVariables = {};
-export type AuctionResultsForYouContainerQueryResponse = {
+export type AuctionResultsForArtistsYouFollowContainerPaginationQueryVariables = {
+    first: number;
+    after?: string | null;
+};
+export type AuctionResultsForArtistsYouFollowContainerPaginationQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"AuctionResultsForYou_me">;
+        readonly " $fragmentRefs": FragmentRefs<"AuctionResultsForArtistsYouFollow_me">;
     } | null;
 };
-export type AuctionResultsForYouContainerQuery = {
-    readonly response: AuctionResultsForYouContainerQueryResponse;
-    readonly variables: AuctionResultsForYouContainerQueryVariables;
+export type AuctionResultsForArtistsYouFollowContainerPaginationQuery = {
+    readonly response: AuctionResultsForArtistsYouFollowContainerPaginationQueryResponse;
+    readonly variables: AuctionResultsForArtistsYouFollowContainerPaginationQueryVariables;
 };
 
 
 
 /*
-query AuctionResultsForYouContainerQuery {
+query AuctionResultsForArtistsYouFollowContainerPaginationQuery(
+  $first: Int!
+  $after: String
+) {
   me {
-    ...AuctionResultsForYou_me
+    ...AuctionResultsForArtistsYouFollow_me_2HEEH6
     id
   }
 }
@@ -61,8 +67,8 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
   title
 }
 
-fragment AuctionResultsForYou_me on Me {
-  auctionResultsByFollowedArtists(first: 10) {
+fragment AuctionResultsForArtistsYouFollow_me_2HEEH6 on Me {
+  auctionResultsByFollowedArtists(first: $first, after: $after) {
     totalCount
     edges {
       node {
@@ -84,14 +90,29 @@ fragment AuctionResultsForYou_me on Me {
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "after"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "first"
+},
+v2 = [
   {
-    "kind": "Literal",
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "after"
+  },
+  {
+    "kind": "Variable",
     "name": "first",
-    "value": 10
+    "variableName": "first"
   }
 ],
-v1 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -100,10 +121,13 @@ v1 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "AuctionResultsForYouContainerQuery",
+    "name": "AuctionResultsForArtistsYouFollowContainerPaginationQuery",
     "selections": [
       {
         "alias": null,
@@ -114,9 +138,9 @@ return {
         "plural": false,
         "selections": [
           {
-            "args": null,
+            "args": (v2/*: any*/),
             "kind": "FragmentSpread",
-            "name": "AuctionResultsForYou_me"
+            "name": "AuctionResultsForArtistsYouFollow_me"
           }
         ],
         "storageKey": null
@@ -127,9 +151,12 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
-    "name": "AuctionResultsForYouContainerQuery",
+    "name": "AuctionResultsForArtistsYouFollowContainerPaginationQuery",
     "selections": [
       {
         "alias": null,
@@ -141,7 +168,7 @@ return {
         "selections": [
           {
             "alias": null,
-            "args": (v0/*: any*/),
+            "args": (v2/*: any*/),
             "concreteType": "AuctionResultConnection",
             "kind": "LinkedField",
             "name": "auctionResultsByFollowedArtists",
@@ -205,7 +232,7 @@ return {
                         "name": "dateText",
                         "storageKey": null
                       },
-                      (v1/*: any*/),
+                      (v3/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -221,7 +248,7 @@ return {
                             "name": "name",
                             "storageKey": null
                           },
-                          (v1/*: any*/)
+                          (v3/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -423,31 +450,31 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "auctionResultsByFollowedArtists(first:10)"
+            "storageKey": null
           },
           {
             "alias": null,
-            "args": (v0/*: any*/),
+            "args": (v2/*: any*/),
             "filters": null,
             "handle": "connection",
-            "key": "AuctionResultsForYouContainer_auctionResultsByFollowedArtists",
+            "key": "AuctionResultsForArtistsYouFollowContainer_auctionResultsByFollowedArtists",
             "kind": "LinkedHandle",
             "name": "auctionResultsByFollowedArtists"
           },
-          (v1/*: any*/)
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "8f154495ca4efb8d4f659b83f82f4666",
+    "id": "668914f9579e091f9e0db4b244aed0bf",
     "metadata": {},
-    "name": "AuctionResultsForYouContainerQuery",
+    "name": "AuctionResultsForArtistsYouFollowContainerPaginationQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '154265cbdac035e313d0652c98e7aa62';
+(node as any).hash = '30aa21994425545c2b04109083da75eb';
 export default node;

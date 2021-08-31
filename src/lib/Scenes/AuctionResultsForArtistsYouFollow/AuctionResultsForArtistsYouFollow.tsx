@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType, tappedLink } from "@artsy/cohesion"
-import { AuctionResultsForYou_me } from "__generated__/AuctionResultsForYou_me.graphql"
-import { AuctionResultsForYouContainerQuery } from "__generated__/AuctionResultsForYouContainerQuery.graphql"
+import { AuctionResultsForArtistsYouFollow_me } from "__generated__/AuctionResultsForArtistsYouFollow_me.graphql"
+import { AuctionResultsForArtistsYouFollowContainerQuery } from "__generated__/AuctionResultsForArtistsYouFollowContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
@@ -25,11 +25,11 @@ import { useTracking } from "react-tracking"
 import { Tab } from "../Favorites/Favorites"
 
 interface Props {
-  me: AuctionResultsForYou_me | null
+  me: AuctionResultsForArtistsYouFollow_me | null
   relay: RelayPaginationProp
 }
 
-export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
+export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }) => {
   const { hasMore, isLoading, loadMore } = relay
   const [loadingMoreData, setLoadingMoreData] = useState(false)
 
@@ -116,14 +116,14 @@ export const AuctionResultsForYou: React.FC<Props> = ({ me, relay }) => {
   )
 }
 
-export const AuctionResultsForYouContainer = createPaginationContainer(
-  AuctionResultsForYou,
+export const AuctionResultsForArtistsYouFollowContainer = createPaginationContainer(
+  AuctionResultsForArtistsYouFollow,
   {
     me: graphql`
-      fragment AuctionResultsForYou_me on Me
+      fragment AuctionResultsForArtistsYouFollow_me on Me
       @argumentDefinitions(first: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
         auctionResultsByFollowedArtists(first: $first, after: $after)
-          @connection(key: "AuctionResultsForYouContainer_auctionResultsByFollowedArtists") {
+          @connection(key: "AuctionResultsForArtistsYouFollowContainer_auctionResultsByFollowedArtists") {
           totalCount
           edges {
             node {
@@ -149,9 +149,9 @@ export const AuctionResultsForYouContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query AuctionResultsForYouContainerPaginationQuery($first: Int!, $after: String) {
+      query AuctionResultsForArtistsYouFollowContainerPaginationQuery($first: Int!, $after: String) {
         me {
-          ...AuctionResultsForYou_me @arguments(first: $first, after: $after)
+          ...AuctionResultsForArtistsYouFollow_me @arguments(first: $first, after: $after)
         }
       }
     `,
@@ -178,13 +178,13 @@ export const ListHeader: React.FC = () => {
   )
 }
 
-export const AuctionResultsForYouQueryRenderer: React.FC = () => (
-  <QueryRenderer<AuctionResultsForYouContainerQuery>
+export const AuctionResultsForArtistsYouFollowQueryRenderer: React.FC = () => (
+  <QueryRenderer<AuctionResultsForArtistsYouFollowContainerQuery>
     environment={defaultEnvironment}
     query={graphql`
-      query AuctionResultsForYouContainerQuery {
+      query AuctionResultsForArtistsYouFollowContainerQuery {
         me {
-          ...AuctionResultsForYou_me
+          ...AuctionResultsForArtistsYouFollow_me
         }
       }
     `}
@@ -193,7 +193,7 @@ export const AuctionResultsForYouQueryRenderer: React.FC = () => (
       force: true,
     }}
     render={renderWithPlaceholder({
-      Container: AuctionResultsForYouContainer,
+      Container: AuctionResultsForArtistsYouFollowContainer,
       renderPlaceholder: LoadingSkeleton,
     })}
   />
