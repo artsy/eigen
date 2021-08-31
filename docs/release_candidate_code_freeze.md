@@ -21,9 +21,9 @@ We will want to checkout the tag 6.4.4-2020.5.11.15:
 
 `git checkout 6.4.4-2020.5.11.15`
 
-## Create a branch for the new release candidate
+## Create and checkout a branch for the new release candidate
 
-`git branch brian/6.4.4-release-candidate`
+`git checkout -b brian/6.4.4-release-candidate`
 
 ## Cherry pick the squashed merge commits for the bug fix(es) into your branch
 
