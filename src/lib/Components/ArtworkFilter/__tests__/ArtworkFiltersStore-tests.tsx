@@ -1684,6 +1684,135 @@ describe("selectedOptionsUnion", () => {
         },
       ])
     })
+
+    it("correctly unions params when an artistID has been previously applied", () => {
+      const previouslyAppliedFilters = [
+        {
+          paramName: FilterParamName.artistIDs,
+          paramValue: "artist-1",
+          displayText: "Artist 1",
+        },
+      ] as FilterArray
+      const selectedFilters = [
+        {
+          displayText: "2010-2020",
+          paramName: FilterParamName.timePeriod,
+          paramValue: ["2010-2020"],
+        },
+        {
+          displayText: "Buy Now",
+          paramName: FilterParamName.waysToBuyBuy,
+          paramValue: true,
+        },
+      ]
+
+      expect(selectedOptionsUnion({ selectedFilters, previouslyAppliedFilters })).toEqual([
+        {
+          displayText: "2010-2020",
+          paramName: "majorPeriods",
+          paramValue: ["2010-2020"],
+        },
+        {
+          displayText: "Buy Now",
+          paramName: "acquireable",
+          paramValue: true,
+        },
+        {
+          paramName: FilterParamName.artistIDs,
+          paramValue: "artist-1",
+          displayText: "Artist 1",
+        },
+        {
+          displayText: "Default",
+          paramName: "sort",
+          paramValue: "-decayed_merch",
+        },
+        {
+          displayText: "All",
+          paramName: "estimateRange",
+          paramValue: "",
+        },
+        {
+          displayText: "All",
+          paramName: "medium",
+          paramValue: "*",
+        },
+        {
+          displayText: "All",
+          paramName: "materialsTerms",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "organizations",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "priceRange",
+          paramValue: "*-*",
+        },
+        {
+          displayText: "All",
+          paramName: "dimensionRange",
+          paramValue: "*-*",
+        },
+        {
+          displayText: "All",
+          paramName: "partnerIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "keyword",
+          paramValue: "",
+        },
+        {
+          displayText: "All",
+          paramName: "locationCities",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "colors",
+        },
+        {
+          displayText: "Inquire",
+          paramName: "inquireableOnly",
+          paramValue: false,
+        },
+        {
+          displayText: "Make Offer",
+          paramName: "offerable",
+          paramValue: false,
+        },
+        {
+          displayText: "Bid",
+          paramName: "atAuction",
+          paramValue: false,
+        },
+        {
+          displayText: "All Artists I Follow",
+          paramName: "includeArtworksByFollowedArtists",
+          paramValue: false,
+        },
+        {
+          displayText: "All",
+          paramName: "artistIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "Grid",
+          paramName: "viewAs",
+          paramValue: false,
+        },
+        {
+          displayText: "All",
+          paramName: "attributionClass",
+          paramValue: "",
+        },
+      ])
+    })
   })
 
   describe("saleArtworks", () => {
