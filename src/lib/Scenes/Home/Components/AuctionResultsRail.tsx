@@ -17,9 +17,9 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
   const { trackEvent } = useTracking()
   const auctionResultsByFollowedArtists = extractNodes(me?.auctionResultsByFollowedArtists)
   const listRef = useRef<FlatList<any>>()
-  const navigateToAuctionResultsForYou = () => {
+  const navigateToAuctionResultsForArtistsYouFollow = () => {
     trackEvent(tracks.tappedHeader())
-    navigate(`/auction-results-for-you`)
+    navigate(`/auction-results-for-artists-you-follow`)
   }
 
   useImperativeHandle(scrollRef, () => ({
@@ -33,7 +33,10 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
   return (
     <View>
       <Flex pl="2" pr="2">
-        <SectionTitle title="Auction Results for Artists You Follow" onPress={navigateToAuctionResultsForYou} />
+        <SectionTitle
+          title="Auction Results for Artists You Follow"
+          onPress={navigateToAuctionResultsForArtistsYouFollow}
+        />
       </Flex>
 
       <CardRailFlatList

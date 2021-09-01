@@ -1,4 +1,4 @@
-import { AuctionResultsForYouTestsQuery } from "__generated__/AuctionResultsForYouTestsQuery.graphql"
+import { AuctionResultsForArtistsYouFollowTestsQuery } from "__generated__/AuctionResultsForArtistsYouFollowTestsQuery.graphql"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { navigate } from "lib/navigation/navigate"
 import { Tab } from "lib/Scenes/Favorites/Favorites"
@@ -8,27 +8,27 @@ import { first } from "lodash"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { AuctionResultsForYouContainer } from "../AuctionResultsForYou"
+import { AuctionResultsForArtistsYouFollowContainer } from "../AuctionResultsForArtistsYouFollow"
 
 jest.unmock("react-relay")
 
-describe("AuctionResultsForYouContainer", () => {
+describe("AuctionResultsForArtistsYouFollowContainer", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
-    <QueryRenderer<AuctionResultsForYouTestsQuery>
+    <QueryRenderer<AuctionResultsForArtistsYouFollowTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query AuctionResultsForYouTestsQuery($first: Int!, $after: String) @relay_test_operation {
+        query AuctionResultsForArtistsYouFollowTestsQuery($first: Int!, $after: String) @relay_test_operation {
           me {
-            ...AuctionResultsForYou_me @arguments(first: $first, after: $after)
+            ...AuctionResultsForArtistsYouFollow_me @arguments(first: $first, after: $after)
           }
         }
       `}
       variables={{ after: "YXJyYXljb25uZWN0aW9uOjA", first: 3 }}
       render={({ props }) => {
         if (props) {
-          return <AuctionResultsForYouContainer me={props.me} />
+          return <AuctionResultsForArtistsYouFollowContainer me={props.me} />
         }
         return null
       }}
@@ -52,7 +52,7 @@ describe("AuctionResultsForYouContainer", () => {
       }),
     })
 
-    expect(tree.root.findAllByType(AuctionResultsForYouContainer)).toHaveLength(1)
+    expect(tree.root.findAllByType(AuctionResultsForArtistsYouFollowContainer)).toHaveLength(1)
   })
 
   it("routes to favorites URL with passProps", () => {
