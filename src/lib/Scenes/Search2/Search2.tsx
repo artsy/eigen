@@ -132,7 +132,6 @@ interface SearchState {
 }
 
 export const Search2: React.FC<Search2QueryResponse> = (props) => {
-  const color = useColor()
   const [searchState, setSearchState] = useState<SearchState>({})
   const [selectedAlgoliaIndex, setSelectedAlgoliaIndex] = useState("")
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
