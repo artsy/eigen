@@ -3,9 +3,11 @@ import { createGeminiUrl } from "lib/Components/OpaqueImageView/createGeminiUrl"
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import compact from "lodash/compact"
+import { Flex, Spacer } from "palette"
 import React, { useMemo } from "react"
-import { PixelRatio } from "react-native"
+import { Animated, PixelRatio } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useSpringValue } from "../ImageCarousel/useSpringValue"
 import { fitInside, getBestImageVersionForThumbnail } from "./helpers"
 import { NewImagesCarouselStore } from "./NewImagesCarouselContext"
 import { NewImagesCarouselEmbedded } from "./NewImagesCarouselEmbedded"
@@ -43,9 +45,43 @@ export const NewImagesCarousel: React.FC<NewImagesCarouselProps> = ({ images: ra
   }, [rawImages])
 
   return (
-    <NewImagesCarouselStore.Provider>
+    <NewImagesCarouselStore.Provider initialData={{ images }}>
       <NewImagesCarouselEmbedded images={images} />
+      {images.length > 1 && <PaginationDots />}
     </NewImagesCarouselStore.Provider>
+  )
+}
+
+const PaginationDots = () => {
+  const images = NewImagesCarouselStore.useStoreState((state) => state.images)
+
+  return (
+    <>
+      <Spacer mb={2} />
+      <Flex flexDirection="row" justifyContent="center">
+        {images.map((_, index) => (
+          <PaginationDot key={index} diameter={5} index={index} />
+        ))}
+      </Flex>
+    </>
+  )
+}
+
+const PaginationDot = ({ diameter, index }: { diameter: number; index: number }) => {
+  const imageIndex = NewImagesCarouselStore.useStoreState((state) => state.imageIndex)
+  const opacity = useSpringValue(imageIndex === index ? 1 : 0.1)
+
+  return (
+    <Animated.View
+      style={{
+        marginHorizontal: diameter * 0.8,
+        borderRadius: diameter / 2,
+        width: diameter,
+        height: diameter,
+        backgroundColor: "black",
+        opacity,
+      }}
+    />
   )
 }
 
