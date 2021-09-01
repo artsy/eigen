@@ -1,6 +1,8 @@
+import { useAnimatedValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import { MutableRefObject } from "react"
-import { ScrollView, View, ViewStyle } from "react-native"
+import { View, ViewStyle } from "react-native"
+import Animated, { Easing, interpolate } from "react-native-reanimated"
 import { useColor } from "../../hooks"
 import { Box } from "../Box"
 import { Tab } from "./Tab"
@@ -8,10 +10,10 @@ import { Tab } from "./Tab"
 interface TabAttributes {
   width: number
   height: number
-  px: number
-  py: number
-  fx: number
-  fy: number
+  x: number
+  y: number
+  pageX: number
+  pageY: number
 }
 interface ItemProps {
   active: boolean
@@ -23,33 +25,29 @@ interface ItemProps {
 }
 
 const TabItem: React.FC<ItemProps> = ({ active, getTabAttributes, label, onPress, setActiveTabRef }) => {
-  const color = useColor()
-  const [boxWidth, setBoxWidth] = useState(0)
   const boxRef = useRef<View>(null)
-  // const setActiveTabRefOnParent = (current: View) => {
-  //   setActiveTabRef(current)
-  // }
+  const setActiveTabRefOnParent = (current: View) => {
+    setActiveTabRef(current)
+  }
   useEffect(() => {
     if (active && !!boxRef.current) {
-      boxRef.current.measure((width, height, px, py, fx, fy) => {
+      boxRef.current.measure((x, y, width, height, pageX, pageY) => {
         const tabAttributes = {
-          fx,
-          fy,
-          px,
-          py,
+          x,
+          y,
+          pageX,
+          pageY,
           width,
           height,
         }
-        console.log("location", tabAttributes)
+        setActiveTabRefOnParent(boxRef.current as View)
         getTabAttributes(tabAttributes)
-        // setActiveTabRefOnParent(boxRef.current as View)
       })
     }
   }, [active])
   return (
-    <View ref={boxRef} onLayout={({ nativeEvent }) => setBoxWidth(nativeEvent.layout.width)}>
+    <View ref={boxRef}>
       <Tab style={{ paddingHorizontal: 8 }} label={label} onPress={onPress} active={active} />
-      {!!active && <Box height={2} backgroundColor={color("black100")} width={boxWidth} />}
     </View>
   )
 }
@@ -65,29 +63,102 @@ interface ContentTabsProps {
 }
 
 export const ContentTabs: React.FC<ContentTabsProps> = ({ setActiveTab, activeTab, tabs }) => {
+  const initalTabAttributes = {
+    x: 0,
+    y: 0,
+    pageX: 0,
+    pageY: 0,
+    width: 0,
+    height: 0,
+  }
   const color = useColor()
+
   const activeTabRef = useRef<View>(null)
-  const [currentTabAttributes, setCurrentTabAttributes] = useState<TabAttributes | null>(null)
+
+  const [currentTabAttributes, setCurrentTabAttributes] = useState<TabAttributes>(initalTabAttributes)
+  const [previousTabAttributes, setPreviousTabAttributes] = useState<TabAttributes>(initalTabAttributes)
+
+  const xOffset = useAnimatedValue(0)
 
   const getAttributes = (attributes: TabAttributes) => {
+    setPreviousTabAttributes(currentTabAttributes)
     setCurrentTabAttributes(attributes)
+    xOffset.setValue(-attributes.pageX)
   }
 
   const setActiveTabRef = (current: View) => {
     ;(activeTabRef as MutableRefObject<View>).current = current
   }
 
+  const animation = () => {
+    const { Value, set, cond, startClock, clockRunning, timing, block, Clock } = Animated
+    const clock = new Clock()
+    const state = {
+      finished: new Value(0),
+      position: new Value(0),
+      time: new Value(0),
+      frameTime: new Value(0),
+    }
+
+    const config = {
+      duration: 500,
+      toValue: new Value(1),
+      easing: Easing.linear,
+    }
+
+    return block([
+      cond(
+        clockRunning(clock),
+        [set(config.toValue, 1)],
+        [
+          set(state.finished, 0),
+          set(state.time, 0),
+          set(state.position, 0),
+          set(state.frameTime, 0),
+          set(config.toValue, 1),
+          startClock(clock),
+        ]
+      ),
+      timing(clock, state, config),
+      state.position,
+    ])
+  }
+
+  const validateTabs = (): boolean => {
+    interface Obj {
+      [key: string]: boolean
+    }
+    const obj: Obj = {}
+    for (const tab of tabs) {
+      if (obj[tab.id]) {
+        return true
+      }
+      obj[tab.id] = true
+    }
+    return false
+  }
+
+  if (validateTabs()) {
+    console.error("Each tab object in the tabs array prop passed in ContentTabs much have a unique id")
+    return null
+  }
   return (
     <Box>
-      <Box borderBottomWidth={1} borderBottomColor={color("black10")} top={currentTabAttributes?.py ?? 50 - 0.8} />
-      <ScrollView
-        scrollEventThrottle={50}
+      <Box borderBottomWidth={1} borderBottomColor={color("black10")} top={currentTabAttributes.height ?? 55 - 0.8} />
+      <Animated.ScrollView
+        scrollEventThrottle={10}
+        onScroll={() => {
+          // Measuring instead of computing nativeEvent.contentOffset.x - currentTabAttributes.pageX
+          // because of occassional drifting of values in long lists TODO:- Investigate
+          activeTabRef.current?.measure((_x, _y, _width, _height, pageX, _pageY) => {
+            xOffset.setValue(-pageX)
+          })
+        }}
         alwaysBounceVertical={false}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           flexDirection: "row",
-          // height: 50,
         }}
         horizontal
       >
@@ -107,13 +178,25 @@ export const ContentTabs: React.FC<ContentTabsProps> = ({ setActiveTab, activeTa
             />
           )
         })}
-      </ScrollView>
-      <Box
-        height={1}
-        top={-1}
-        backgroundColor={color("black100")}
-        width={currentTabAttributes?.px}
-        left={currentTabAttributes?.fx}
+      </Animated.ScrollView>
+      <Animated.View
+        style={{
+          width: interpolate(animation(), {
+            inputRange: [0, 1],
+            outputRange: [previousTabAttributes.width, currentTabAttributes.width],
+          }),
+          height: 1,
+          top: -1,
+          backgroundColor: color("black100"),
+          transform: [
+            {
+              translateX: xOffset.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, -1],
+              }),
+            },
+          ],
+        }}
       />
     </Box>
   )
