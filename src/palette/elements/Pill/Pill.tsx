@@ -1,44 +1,89 @@
-import React from "react"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import React, { ReactNode } from "react"
 import { GestureResponderEvent, TouchableOpacity } from "react-native"
+import styled from "styled-components/native"
 import { useTheme } from "../../Theme"
 import { Flex, FlexProps } from "../Flex"
 import { Text } from "../Text"
 
-interface PillProps extends FlexProps {
-  onPress?: (event: GestureResponderEvent) => void
-  // if no variant is passed defaulting to textSquare
-  variant?: "textRound"
-  active?: boolean
+const SIZES = {
+  xxs: {
+    height: 25,
+    typeSize: "12",
+  },
+  xs: {
+    height: 35,
+    typeSize: "13",
+  },
+  sm: {
+    height: 45,
+    typeSize: "16",
+  },
 }
 
-export const Pill: React.FC<PillProps> = ({ children, style, variant, active = true, onPress, ...other }) => {
-  const { colorV3, space } = useTheme()
-  const borderColor = active ? colorV3("black60") : colorV3("black15")
-  const borderRadius = variant === "textRound" ? 50 : 0
+interface PillProps extends FlexProps {
+  selected?: boolean
+  rounded?: boolean
+  size?: "xxs" | "xs" | "sm"
+  imageUrl?: string
+  icon?: ReactNode
+  iconPosition?: "left" | "right"
+  onPress?: (event: GestureResponderEvent) => void
+}
+
+export const Pill: React.FC<PillProps> = ({
+  children,
+  size = "xxs",
+  selected,
+  rounded,
+  icon,
+  iconPosition = "left",
+  imageUrl,
+  onPress,
+  testID,
+  ...other
+}) => {
+  const { color, space } = useTheme()
+  const { height, typeSize } = SIZES[size]
+
   const content = (
     <Flex
-      style={[
-        {
-          borderWidth: 1,
-          borderColor,
-          paddingHorizontal: space(1),
-          justifyContent: "center",
-          height: 30,
-          borderRadius,
-        },
-        style,
-      ]}
+      flexDirection="row"
+      justifyContent="center"
+      alignItems="center"
+      borderWidth={1}
+      borderRadius={icon || rounded ? 20 : 0}
+      borderColor={icon || selected ? color("black60") : color("black10")}
+      style={{
+        paddingHorizontal: space(1),
+        height,
+      }}
       {...other}
     >
-      <Text variant="small" numberOfLines={1}>
+      {iconPosition === "left" && icon}
+      {!!imageUrl && <OpaqueImageViewContainer imageURL={imageUrl} />}
+      <Text variant="small" numberOfLines={1} fontSize={typeSize}>
         {children}
       </Text>
+      {iconPosition === "right" && icon}
     </Flex>
   )
 
   if (onPress) {
-    return <TouchableOpacity onPress={onPress}>{content}</TouchableOpacity>
+    return (
+      <TouchableOpacity onPress={onPress} testID={testID}>
+        {content}
+      </TouchableOpacity>
+    )
   }
 
   return content
 }
+
+export const OpaqueImageViewContainer = styled(OpaqueImageView)`
+  width: 30;
+  height: 30;
+  border-radius: 15;
+  overflow: hidden;
+  margin-right: 10;
+`
