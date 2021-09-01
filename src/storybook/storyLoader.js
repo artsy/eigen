@@ -44,7 +44,7 @@ const stories = [
   "../palette/elements/Text/TextV2.stories",
   "../palette/elements/Avatar/Avatar.stories",
   "../palette/elements/RadioButton/RadioButton.stories",
-  "../palette/elements/Pill/PillV2.stories"
+  "../palette/elements/Pill/Pill.stories"
 ]
 
 module.exports = {
