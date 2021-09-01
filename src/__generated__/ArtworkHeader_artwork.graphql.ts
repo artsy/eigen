@@ -10,6 +10,11 @@ export type ArtworkHeader_artwork = {
         readonly imageVersions: ReadonlyArray<string | null> | null;
         readonly " $fragmentRefs": FragmentRefs<"ImageCarousel_images">;
     } | null> | null;
+    readonly newImages: ReadonlyArray<{
+        readonly url: string | null;
+        readonly imageVersions: ReadonlyArray<string | null> | null;
+        readonly " $fragmentRefs": FragmentRefs<"NewImageCarousel_images">;
+    } | null> | null;
     readonly title: string | null;
     readonly href: string | null;
     readonly internalID: string;
@@ -28,7 +33,22 @@ export type ArtworkHeader_artwork$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": "url",
+  "args": null,
+  "kind": "ScalarField",
+  "name": "imageURL",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "imageVersions",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -42,24 +62,30 @@ const node: ReaderFragment = {
       "name": "images",
       "plural": true,
       "selections": [
-        {
-          "alias": "url",
-          "args": null,
-          "kind": "ScalarField",
-          "name": "imageURL",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "imageVersions",
-          "storageKey": null
-        },
+        (v0/*: any*/),
+        (v1/*: any*/),
         {
           "args": null,
           "kind": "FragmentSpread",
           "name": "ImageCarousel_images"
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": "newImages",
+      "args": null,
+      "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "images",
+      "plural": true,
+      "selections": [
+        (v0/*: any*/),
+        (v1/*: any*/),
+        {
+          "args": null,
+          "kind": "FragmentSpread",
+          "name": "NewImageCarousel_images"
         }
       ],
       "storageKey": null
@@ -124,5 +150,6 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '13684b2f69c685bc5a951d0454e4910f';
+})();
+(node as any).hash = 'fd6b20699b42d2cba5508140b6902500';
 export default node;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 72face3d23df644d8eeaec6db816efeb */
+/* @relayHash 7960478f015bcb4f19e5b033c2378861 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -202,6 +202,11 @@ fragment ArtworkHeader_artwork on Artwork {
   ...ArtworkTombstone_artwork
   images {
     ...ImageCarousel_images
+    url: imageURL
+    imageVersions
+  }
+  newImages: images {
+    ...NewImageCarousel_images
     url: imageURL
     imageVersions
   }
@@ -717,6 +722,14 @@ fragment MakeOfferButton_artwork on Artwork {
   internalID
 }
 
+fragment NewImageCarousel_images on Image {
+  url: imageURL
+  width
+  height
+  aspectRatio
+  imageVersions
+}
+
 fragment OtherWorks_artwork on Artwork {
   contextGrids {
     __typename
@@ -1010,20 +1023,41 @@ v28 = {
   "storageKey": null
 },
 v29 = {
-  "alias": null,
+  "alias": "url",
   "args": null,
   "kind": "ScalarField",
-  "name": "saleMessage",
+  "name": "imageURL",
   "storageKey": null
 },
 v30 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "imageVersions",
+  "storageKey": null
+},
+v31 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "aspectRatio",
+  "storageKey": null
+},
+v32 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "saleMessage",
+  "storageKey": null
+},
+v33 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "editionOf",
   "storageKey": null
 },
-v31 = [
+v34 = [
   {
     "alias": null,
     "args": null,
@@ -1039,21 +1073,21 @@ v31 = [
     "storageKey": null
   }
 ],
-v32 = {
+v35 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "artistNames",
   "storageKey": null
 },
-v33 = {
+v36 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v34 = {
+v37 = {
   "alias": null,
   "args": null,
   "concreteType": "Image",
@@ -1063,21 +1097,14 @@ v34 = {
   "selections": (v12/*: any*/),
   "storageKey": null
 },
-v35 = {
+v38 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "exhibitionPeriod",
   "storageKey": null
 },
-v36 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "aspectRatio",
-  "storageKey": null
-},
-v37 = {
+v39 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -1492,22 +1519,10 @@ return {
             "name": "images",
             "plural": true,
             "selections": [
-              {
-                "alias": "url",
-                "args": null,
-                "kind": "ScalarField",
-                "name": "imageURL",
-                "storageKey": null
-              },
+              (v29/*: any*/),
               (v14/*: any*/),
               (v15/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "imageVersions",
-                "storageKey": null
-              },
+              (v30/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -1580,6 +1595,22 @@ return {
             "storageKey": null
           },
           {
+            "alias": "newImages",
+            "args": null,
+            "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "images",
+            "plural": true,
+            "selections": [
+              (v29/*: any*/),
+              (v14/*: any*/),
+              (v15/*: any*/),
+              (v31/*: any*/),
+              (v30/*: any*/)
+            ],
+            "storageKey": null
+          },
+          {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
@@ -1607,7 +1638,7 @@ return {
             "name": "availability",
             "storageKey": null
           },
-          (v29/*: any*/),
+          (v32/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -1625,8 +1656,8 @@ return {
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/),
-              (v29/*: any*/),
-              (v30/*: any*/),
+              (v32/*: any*/),
+              (v33/*: any*/),
               (v28/*: any*/)
             ],
             "storageKey": null
@@ -1706,7 +1737,7 @@ return {
             "name": "isPriceHidden",
             "storageKey": null
           },
-          (v30/*: any*/),
+          (v33/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -1714,7 +1745,7 @@ return {
             "kind": "LinkedField",
             "name": "signatureInfo",
             "plural": false,
-            "selections": (v31/*: any*/),
+            "selections": (v34/*: any*/),
             "storageKey": null
           },
           {
@@ -1835,7 +1866,7 @@ return {
             "kind": "LinkedField",
             "name": "conditionDescription",
             "plural": false,
-            "selections": (v31/*: any*/),
+            "selections": (v34/*: any*/),
             "storageKey": null
           },
           {
@@ -1845,7 +1876,7 @@ return {
             "kind": "LinkedField",
             "name": "certificateOfAuthenticity",
             "plural": false,
-            "selections": (v31/*: any*/),
+            "selections": (v34/*: any*/),
             "storageKey": null
           },
           {
@@ -1855,10 +1886,10 @@ return {
             "kind": "LinkedField",
             "name": "framed",
             "plural": false,
-            "selections": (v31/*: any*/),
+            "selections": (v34/*: any*/),
             "storageKey": null
           },
-          (v32/*: any*/),
+          (v35/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -1999,7 +2030,7 @@ return {
             "name": "context",
             "plural": false,
             "selections": [
-              (v33/*: any*/),
+              (v36/*: any*/),
               {
                 "kind": "InlineFragment",
                 "selections": [
@@ -2015,7 +2046,7 @@ return {
                     "name": "formattedStartDateTime",
                     "storageKey": null
                   },
-                  (v34/*: any*/)
+                  (v37/*: any*/)
                 ],
                 "type": "Sale",
                 "abstractKey": null
@@ -2034,7 +2065,7 @@ return {
                   (v2/*: any*/),
                   (v7/*: any*/),
                   (v6/*: any*/),
-                  (v35/*: any*/),
+                  (v38/*: any*/),
                   (v13/*: any*/)
                 ],
                 "type": "Fair",
@@ -2048,7 +2079,7 @@ return {
                   (v4/*: any*/),
                   (v7/*: any*/),
                   (v6/*: any*/),
-                  (v35/*: any*/),
+                  (v38/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -2056,7 +2087,7 @@ return {
                     "name": "isFollowed",
                     "storageKey": null
                   },
-                  (v34/*: any*/)
+                  (v37/*: any*/)
                 ],
                 "type": "Show",
                 "abstractKey": null
@@ -2072,7 +2103,7 @@ return {
             "name": "contextGrids",
             "plural": true,
             "selections": [
-              (v33/*: any*/),
+              (v36/*: any*/),
               {
                 "alias": "artworks",
                 "args": [
@@ -2132,16 +2163,16 @@ return {
                                 "name": "url",
                                 "storageKey": "url(version:\"large\")"
                               },
-                              (v36/*: any*/)
+                              (v31/*: any*/)
                             ],
                             "storageKey": null
                           },
                           (v5/*: any*/),
                           (v22/*: any*/),
-                          (v29/*: any*/),
+                          (v32/*: any*/),
                           (v4/*: any*/),
                           (v3/*: any*/),
-                          (v32/*: any*/),
+                          (v35/*: any*/),
                           (v6/*: any*/),
                           {
                             "alias": null,
@@ -2153,7 +2184,7 @@ return {
                             "selections": [
                               (v16/*: any*/),
                               (v17/*: any*/),
-                              (v37/*: any*/),
+                              (v39/*: any*/),
                               (v19/*: any*/),
                               (v2/*: any*/)
                             ],
@@ -2273,7 +2304,7 @@ return {
                                   (v4/*: any*/),
                                   (v3/*: any*/),
                                   (v6/*: any*/),
-                                  (v32/*: any*/),
+                                  (v35/*: any*/),
                                   {
                                     "alias": null,
                                     "args": null,
@@ -2289,7 +2320,7 @@ return {
                                         "name": "imageURL",
                                         "storageKey": null
                                       },
-                                      (v36/*: any*/)
+                                      (v31/*: any*/)
                                     ],
                                     "storageKey": null
                                   },
@@ -2303,7 +2334,7 @@ return {
                                     "selections": [
                                       (v16/*: any*/),
                                       (v17/*: any*/),
-                                      (v37/*: any*/),
+                                      (v39/*: any*/),
                                       (v2/*: any*/)
                                     ],
                                     "storageKey": null
@@ -2322,7 +2353,7 @@ return {
                                     ],
                                     "storageKey": null
                                   },
-                                  (v29/*: any*/),
+                                  (v32/*: any*/),
                                   (v5/*: any*/),
                                   (v22/*: any*/),
                                   (v21/*: any*/)
@@ -2355,7 +2386,7 @@ return {
             "name": "mediumType",
             "plural": false,
             "selections": [
-              (v33/*: any*/)
+              (v36/*: any*/)
             ],
             "storageKey": null
           }
@@ -2365,7 +2396,7 @@ return {
     ]
   },
   "params": {
-    "id": "72face3d23df644d8eeaec6db816efeb",
+    "id": "7960478f015bcb4f19e5b033c2378861",
     "metadata": {},
     "name": "ArtworkRefetchQuery",
     "operationKind": "query",
