@@ -1,4 +1,4 @@
-import { NewImageCarousel_images } from "__generated__/NewImageCarousel_images.graphql"
+import { NewImagesCarousel_images } from "__generated__/NewImagesCarousel_images.graphql"
 import { createGeminiUrl } from "lib/Components/OpaqueImageView/createGeminiUrl"
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -9,11 +9,11 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { fitInside, getBestImageVersionForThumbnail } from "./helpers"
 import { NewImagesCarouselEmbedded } from "./NewImagesCarouselEmbedded"
 
-interface NewImageCarouselProps {
-  images: NewImageCarousel_images
+interface NewImagesCarouselProps {
+  images: NewImagesCarousel_images
 }
 
-export const NewImageCarousel: React.FC<NewImageCarouselProps> = ({ images: rawImages }) => {
+export const NewImagesCarousel: React.FC<NewImagesCarouselProps> = ({ images: rawImages }) => {
   const screenDimensions = useScreenDimensions()
   const embeddedCardBoundingBox = { width: screenDimensions.width, height: isPad() ? 460 : 340 }
 
@@ -44,9 +44,9 @@ export const NewImageCarousel: React.FC<NewImageCarouselProps> = ({ images: rawI
   return <NewImagesCarouselEmbedded images={images} />
 }
 
-export const NewImageCarouselFragmentContainer = createFragmentContainer(NewImageCarousel, {
+export const NewImagesCarouselFragmentContainer = createFragmentContainer(NewImagesCarousel, {
   images: graphql`
-    fragment NewImageCarousel_images on Image @relay(plural: true) {
+    fragment NewImagesCarousel_images on Image @relay(plural: true) {
       url: imageURL
       width
       height

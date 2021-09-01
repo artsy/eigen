@@ -20,6 +20,7 @@ import { ArtworkActionsFragmentContainer as ArtworkActions, shareContent } from 
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./ArtworkTombstone"
 import { IGStoryViewShot } from "./IGStoryViewShot"
 import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
+import { NewImagesCarouselFragmentContainer } from "./NewImagesCarousel/NewImagesCarousel"
 
 interface ArtworkHeaderProps {
   artwork: ArtworkHeader_artwork
@@ -107,15 +108,22 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
     toast.show("Copied to Clipboard", "middle", { Icon: ShareIcon })
   }
 
+  const enableNewDeepZoom = useFeatureFlag("ARDeepZoom")
+
   return (
     <>
       <Box>
         <Spacer mb={2} />
-        <ImageCarouselFragmentContainer
-          images={artwork.images as any /* STRICTNESS_MIGRATION */}
-          cardHeight={screenDimensions.width >= 375 ? 340 : 290}
-          onImageIndexChange={(imageIndex) => setCurrentImageIndex(imageIndex)}
-        />
+        {enableNewDeepZoom ? (
+          <NewImagesCarouselFragmentContainer images={artwork.newImages as any /* STRICTNESS_MIGRATION */} />
+        ) : (
+          <ImageCarouselFragmentContainer
+            images={artwork.images as any /* STRICTNESS_MIGRATION */}
+            cardHeight={screenDimensions.width >= 375 ? 340 : 290}
+            onImageIndexChange={(imageIndex) => setCurrentImageIndex(imageIndex)}
+          />
+        )}
+
         <Flex alignItems="center" mt={2}>
           <ArtworkActions
             artwork={artwork}
@@ -171,6 +179,11 @@ export const ArtworkHeaderFragmentContainer = createFragmentContainer(ArtworkHea
       ...ArtworkTombstone_artwork
       images {
         ...ImageCarousel_images
+        url: imageURL
+        imageVersions
+      }
+      newImages: images {
+        ...NewImagesCarousel_images
         url: imageURL
         imageVersions
       }

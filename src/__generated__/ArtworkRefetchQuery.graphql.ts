@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7960478f015bcb4f19e5b033c2378861 */
+/* @relayHash b036a237d27010da38f88437c66932f0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -206,7 +206,7 @@ fragment ArtworkHeader_artwork on Artwork {
     imageVersions
   }
   newImages: images {
-    ...NewImageCarousel_images
+    ...NewImagesCarousel_images
     url: imageURL
     imageVersions
   }
@@ -722,7 +722,7 @@ fragment MakeOfferButton_artwork on Artwork {
   internalID
 }
 
-fragment NewImageCarousel_images on Image {
+fragment NewImagesCarousel_images on Image {
   url: imageURL
   width
   height
@@ -2396,7 +2396,7 @@ return {
     ]
   },
   "params": {
-    "id": "7960478f015bcb4f19e5b033c2378861",
+    "id": "b036a237d27010da38f88437c66932f0",
     "metadata": {},
     "name": "ArtworkRefetchQuery",
     "operationKind": "query",

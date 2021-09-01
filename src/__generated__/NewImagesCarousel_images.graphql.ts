@@ -4,18 +4,18 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type NewImageCarousel_images = ReadonlyArray<{
+export type NewImagesCarousel_images = ReadonlyArray<{
     readonly url: string | null;
     readonly width: number | null;
     readonly height: number | null;
     readonly aspectRatio: number;
     readonly imageVersions: ReadonlyArray<string | null> | null;
-    readonly " $refType": "NewImageCarousel_images";
+    readonly " $refType": "NewImagesCarousel_images";
 }>;
-export type NewImageCarousel_images$data = NewImageCarousel_images;
-export type NewImageCarousel_images$key = ReadonlyArray<{
-    readonly " $data"?: NewImageCarousel_images$data;
-    readonly " $fragmentRefs": FragmentRefs<"NewImageCarousel_images">;
+export type NewImagesCarousel_images$data = NewImagesCarousel_images;
+export type NewImagesCarousel_images$key = ReadonlyArray<{
+    readonly " $data"?: NewImagesCarousel_images$data;
+    readonly " $fragmentRefs": FragmentRefs<"NewImagesCarousel_images">;
 }>;
 
 
@@ -26,7 +26,7 @@ const node: ReaderFragment = {
   "metadata": {
     "plural": true
   },
-  "name": "NewImageCarousel_images",
+  "name": "NewImagesCarousel_images",
   "selections": [
     {
       "alias": "url",
@@ -67,5 +67,5 @@ const node: ReaderFragment = {
   "type": "Image",
   "abstractKey": null
 };
-(node as any).hash = '2981fb9045e5d69b5bcdb01fd49d4b06';
+(node as any).hash = 'c036a7af57de63c699bba3c78bb7cfff';
 export default node;

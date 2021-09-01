@@ -13,7 +13,7 @@ export type ArtworkHeader_artwork = {
     readonly newImages: ReadonlyArray<{
         readonly url: string | null;
         readonly imageVersions: ReadonlyArray<string | null> | null;
-        readonly " $fragmentRefs": FragmentRefs<"NewImageCarousel_images">;
+        readonly " $fragmentRefs": FragmentRefs<"NewImagesCarousel_images">;
     } | null> | null;
     readonly title: string | null;
     readonly href: string | null;
@@ -85,7 +85,7 @@ return {
         {
           "args": null,
           "kind": "FragmentSpread",
-          "name": "NewImageCarousel_images"
+          "name": "NewImagesCarousel_images"
         }
       ],
       "storageKey": null
@@ -151,5 +151,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'fd6b20699b42d2cba5508140b6902500';
+(node as any).hash = 'ea105de06fa9520d71b348164d987076';
 export default node;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8e920ccb63f8fa9de873d2235df34c7e */
+/* @relayHash 7c98c341b42e0c5619b7ed35b3e4a6d3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -96,7 +96,7 @@ fragment ArtworkHeader_artwork on Artwork {
     imageVersions
   }
   newImages: images {
-    ...NewImageCarousel_images
+    ...NewImagesCarousel_images
     url: imageURL
     imageVersions
   }
@@ -432,7 +432,7 @@ fragment MakeOfferButton_artwork on Artwork {
   internalID
 }
 
-fragment NewImageCarousel_images on Image {
+fragment NewImagesCarousel_images on Image {
   url: imageURL
   width
   height
@@ -1398,7 +1398,7 @@ return {
     ]
   },
   "params": {
-    "id": "8e920ccb63f8fa9de873d2235df34c7e",
+    "id": "7c98c341b42e0c5619b7ed35b3e4a6d3",
     "metadata": {},
     "name": "ArtworkAboveTheFoldQuery",
     "operationKind": "query",
