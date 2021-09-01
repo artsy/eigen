@@ -11,6 +11,7 @@ import { useSpringValue } from "../ImageCarousel/useSpringValue"
 import { fitInside, getBestImageVersionForThumbnail } from "./helpers"
 import { NewImagesCarouselStore } from "./NewImagesCarouselContext"
 import { NewImagesCarouselEmbedded } from "./NewImagesCarouselEmbedded"
+import { NewImagesCarouselFullScreen } from "./NewImagesCarouselFullScreen"
 
 interface NewImagesCarouselProps {
   images: NewImagesCarousel_images
@@ -48,6 +49,7 @@ export const NewImagesCarousel: React.FC<NewImagesCarouselProps> = ({ images: ra
     <NewImagesCarouselStore.Provider initialData={{ images }}>
       <NewImagesCarouselEmbedded images={images} />
       {images.length > 1 && <PaginationDots />}
+      <NewImagesCarouselFullScreen />
     </NewImagesCarouselStore.Provider>
   )
 }

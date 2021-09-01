@@ -1,7 +1,7 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex } from "palette"
+import { Touchable } from "palette"
 import React, { useMemo } from "react"
 import { FlatList, ViewToken } from "react-native"
 import { getMeasurements } from "./helpers"
@@ -23,6 +23,7 @@ export const NewImagesCarouselEmbedded: React.FC<NewImagesCarouselEmbeddedProps>
   const screenDimensions = useScreenDimensions()
   const embeddedCardBoundingBox = { width: screenDimensions.width, height: isPad() ? 460 : 340 }
   const setImageIndex = NewImagesCarouselStore.useStoreActions((actions) => actions.setImageIndex)
+  const setFullScreenState = NewImagesCarouselStore.useStoreActions((actions) => actions.setFullScreenState)
 
   const viewableItemsChangedRef = React.useRef(({ viewableItems }: ViewableItems) => {
     // We would like to only update the visible image index when the transition finishes
@@ -56,7 +57,12 @@ export const NewImagesCarouselEmbedded: React.FC<NewImagesCarouselEmbeddedProps>
         renderItem={({ item, index }) => {
           const { cumulativeScrollOffset, ...styles } = measurements[index]
           return (
-            <Flex>
+            <Touchable
+              haptic="impactLight"
+              onPress={() => {
+                setFullScreenState("entered")
+              }}
+            >
               <OpaqueImageView
                 useRawURL
                 imageURL={item?.url}
@@ -67,7 +73,7 @@ export const NewImagesCarouselEmbedded: React.FC<NewImagesCarouselEmbeddedProps>
                 highPriority={index === 0}
                 style={[styles, images.length === 1 ? { marginTop: 0, marginBottom: 0 } : {}]}
               />
-            </Flex>
+            </Touchable>
           )
         }}
       />
