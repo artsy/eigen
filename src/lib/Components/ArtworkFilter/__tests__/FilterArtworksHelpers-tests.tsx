@@ -991,7 +991,7 @@ describe("getSelectedFiltersCounts helper", () => {
     },
     {
       displayText: "Artists",
-      paramName: FilterParamName.artistIDs,
+      paramName: FilterParamName.artistsIFollow,
       paramValue: "andy-warhol",
     },
   ]

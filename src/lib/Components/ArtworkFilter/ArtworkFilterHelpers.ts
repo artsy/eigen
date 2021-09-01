@@ -679,7 +679,7 @@ export const getUnitedSelectedAndAppliedFilters = ({
 export const getSelectedFiltersCounts = (selectedFilters: FilterArray) => {
   const counts: Partial<SelectedFiltersCounts> = {}
   selectedFilters.forEach(({ paramName, paramValue }: FilterData) => {
-    if (paramName === FilterParamName.artistIDs) {
+    if (paramName === FilterParamName.artistIDs || paramName === FilterParamName.artistsIFollow) {
       counts.artistIDs = (counts.artistIDs ?? 0) + 1
     } else if (waysToBuyFilterNames.includes(paramName)) {
       counts.waysToBuy = (counts.waysToBuy ?? 0) + 1
