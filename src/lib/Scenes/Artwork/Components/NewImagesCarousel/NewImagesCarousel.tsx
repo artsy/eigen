@@ -7,6 +7,7 @@ import React, { useMemo } from "react"
 import { PixelRatio } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { fitInside, getBestImageVersionForThumbnail } from "./helpers"
+import { NewImagesCarouselStore } from "./NewImagesCarouselContext"
 import { NewImagesCarouselEmbedded } from "./NewImagesCarouselEmbedded"
 
 interface NewImagesCarouselProps {
@@ -41,7 +42,11 @@ export const NewImagesCarousel: React.FC<NewImagesCarouselProps> = ({ images: ra
     return result
   }, [rawImages])
 
-  return <NewImagesCarouselEmbedded images={images} />
+  return (
+    <NewImagesCarouselStore.Provider>
+      <NewImagesCarouselEmbedded images={images} />
+    </NewImagesCarouselStore.Provider>
+  )
 }
 
 export const NewImagesCarouselFragmentContainer = createFragmentContainer(NewImagesCarousel, {

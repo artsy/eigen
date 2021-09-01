@@ -3,8 +3,9 @@ import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex } from "palette"
 import React, { useMemo } from "react"
-import { FlatList } from "react-native"
+import { FlatList, ViewToken } from "react-native"
 import { getMeasurements } from "./helpers"
+import { NewImagesCarouselStore } from "./NewImagesCarouselContext"
 
 interface NewImagesCarouselEmbeddedProps {
   images: Array<{
@@ -14,9 +15,21 @@ interface NewImagesCarouselEmbeddedProps {
   } | null>
 }
 
+export interface ViewableItems {
+  viewableItems?: ViewToken[]
+}
+
 export const NewImagesCarouselEmbedded: React.FC<NewImagesCarouselEmbeddedProps> = ({ images }) => {
   const screenDimensions = useScreenDimensions()
   const embeddedCardBoundingBox = { width: screenDimensions.width, height: isPad() ? 460 : 340 }
+  const setImageIndex = NewImagesCarouselStore.useStoreActions((actions) => actions.setImageIndex)
+
+  const viewableItemsChangedRef = React.useRef(({ viewableItems }: ViewableItems) => {
+    // We would like to only update the visible image index when the transition finishes
+    if (viewableItems?.length === 1 && typeof viewableItems[0].index === "number") {
+      setImageIndex(viewableItems[0].index)
+    }
+  })
 
   const measurements = useMemo(
     () =>
@@ -30,31 +43,34 @@ export const NewImagesCarouselEmbedded: React.FC<NewImagesCarouselEmbeddedProps>
   )
 
   return (
-    <FlatList
-      data={images}
-      // contentContainerStyle={{ flex: 1, height: 100, width: 100 }}
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      keyExtractor={(item) => item.url}
-      horizontal
-      pagingEnabled
-      showsHorizontalScrollIndicator={false}
-      renderItem={({ item, index }) => {
-        const { cumulativeScrollOffset, ...styles } = measurements[index]
-        return (
-          <Flex>
-            <OpaqueImageView
-              useRawURL
-              imageURL={item?.url}
-              height={styles.height}
-              width={styles.width}
-              // style={{ width: item.width, height: item.height }}
-              // make sure first image loads first
-              highPriority={index === 0}
-              style={[styles, images.length === 1 ? { marginTop: 0, marginBottom: 0 } : {}]}
-            />
-          </Flex>
-        )
-      }}
-    />
+    <>
+      <FlatList
+        data={images}
+        // contentContainerStyle={{ flex: 1, height: 100, width: 100 }}
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        keyExtractor={(item) => item.url}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onViewableItemsChanged={viewableItemsChangedRef.current}
+        renderItem={({ item, index }) => {
+          const { cumulativeScrollOffset, ...styles } = measurements[index]
+          return (
+            <Flex>
+              <OpaqueImageView
+                useRawURL
+                imageURL={item?.url}
+                height={styles.height}
+                width={styles.width}
+                // style={{ width: item.width, height: item.height }}
+                // make sure first image loads first
+                highPriority={index === 0}
+                style={[styles, images.length === 1 ? { marginTop: 0, marginBottom: 0 } : {}]}
+              />
+            </Flex>
+          )
+        }}
+      />
+    </>
   )
 }
