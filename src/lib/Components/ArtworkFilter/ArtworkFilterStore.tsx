@@ -62,48 +62,11 @@ export const ArtworkFiltersModel: ArtworkFiltersModel = {
   }),
 
   selectFiltersAction: action((state, payload) => {
-    let filtersToSelect
-    let removedOption = false
-
     const defaultFilterOptions = {
       ...defaultCommonFilterOptions,
       sort: getSortDefaultValueByFilterType(state.filterType),
     }
-
-    // This logic is specific to filters that can have multiple options. Right now it only
-    // applies to the artist filter, but this will likely change in the future.
-    if (payload.paramName === FilterParamName.artistIDs && state.filterType === "artwork") {
-      const filtersWithoutSelectedArtist = state.selectedFilters.filter(({ paramName, paramValue }) => {
-        if (
-          paramName === FilterParamName.artistIDs &&
-          state.filterType === "artwork" &&
-          paramValue === payload.paramValue
-        ) {
-          removedOption = true
-          return false
-        }
-        return true
-      })
-
-      if (removedOption) {
-        // An artist is "selected" when it is present in the selectedFilters array. To de-select,
-        // we simply remove it from the array.
-        filtersToSelect = filtersWithoutSelectedArtist
-      } else {
-        // If the artist was not already selected, then we add it to the array like normal.
-        filtersToSelect = [...state.selectedFilters, payload]
-      }
-    } else {
-      filtersToSelect = unionBy([payload], state.selectedFilters, ({ paramValue, paramName }) => {
-        // We don't want to union the artistID params, as each entry corresponds to a
-        // different artist that may be selected. Instead we de-dupe based on the paramValue.
-        if (paramName === FilterParamName.artistIDs && state.filterType === "artwork") {
-          return paramValue
-        } else {
-          return paramName
-        }
-      })
-    }
+    const filtersToSelect = unionBy([payload], state.selectedFilters, "paramName")
 
     // Then we have to remove any "invalid" choices.
     const selectedFilters = filter(filtersToSelect, ({ paramName, paramValue }) => {
@@ -126,12 +89,11 @@ export const ArtworkFiltersModel: ArtworkFiltersModel = {
       }
 
       if (appliedFilter.paramValue === paramValue) {
-        // Ignore this case when it's an artistID or when we are setting back the default sorting for saleArtworks
+        // Ignore this case when we are setting back the default sorting for saleArtworks
         return (
-          (appliedFilter.paramName === FilterParamName.artistIDs && state.filterType === "artwork") ||
-          (defaultFilterOptions[paramName] === appliedFilter.paramValue &&
-            appliedFilter.paramName === FilterParamName.sort &&
-            state.filterType === "saleArtwork")
+          defaultFilterOptions[paramName] === appliedFilter.paramValue &&
+          appliedFilter.paramName === FilterParamName.sort &&
+          state.filterType === "saleArtwork"
         )
       }
 
@@ -255,41 +217,9 @@ export const selectedOptionsUnion = ({
 
   const defaultFilters: FilterArray = [defaultSortFilter, ...DEFAULT_FILTERS]
 
-  // First, naively attempt to union all of the existing filters. Give selectedFilters
+  // Attempt to union all of the existing filters. Give selectedFilters
   // precedence over previouslyAppliedFilters and defaultFilters.
-  const preliminarySelectedFilters = unionBy(
-    selectedFilters,
-    previouslyAppliedFilters,
-    defaultFilters,
-    ({ paramValue, paramName }) => {
-      if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
-        return paramValue
-      } else {
-        return paramName
-      }
-    }
-  )
-
-  // Then, handle the case where a multi-select option is technically de-selected.
-  return preliminarySelectedFilters.filter(({ paramName, paramValue }) => {
-    if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
-      // See if we have an existing entry in previouslyAppliedFilters
-      const hasExistingPreviouslyAppliedFilter = previouslyAppliedFilters.find(
-        (previouslyAppliedFilter) =>
-          paramName === previouslyAppliedFilter.paramName && paramValue === previouslyAppliedFilter.paramValue
-      )
-
-      const hasExistingSelectedAppliedFilter = selectedFilters.find(
-        (selectedFilter) => paramName === selectedFilter.paramName && paramValue === selectedFilter.paramValue
-      )
-
-      // If so, it means that this filter had been previously applied and is now being de-selected.
-      // We need it to exist in the "selectedFilters" array so that our counts, etc. are correct,
-      // but it's technically de-selected.
-      return !(hasExistingPreviouslyAppliedFilter && hasExistingSelectedAppliedFilter)
-    }
-    return true
-  })
+  return unionBy(selectedFilters, previouslyAppliedFilters, defaultFilters, "paramName")
 }
 
 export function createArtworkFiltersStore() {
