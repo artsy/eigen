@@ -170,10 +170,8 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
               {/* This will change to render dynamically all the index labels */}
               <Flex p={2} pb={1} flexDirection="row">
                 <Pill
-                  style={{
-                    borderRadius: 50,
-                    borderColor: selectedAlgoliaIndex === "Artist" ? color("black60") : color("black10"),
-                  }}
+                  rounded
+                  selected={selectedAlgoliaIndex === "Artist"}
                   onPress={() => setSelectedAlgoliaIndex(selectedAlgoliaIndex === "Artist" ? "" : "Artist")}
                 >
                   Artists

@@ -1,8 +1,7 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { CheckIcon } from "palette"
-import { CloseIcon } from "palette/svgs"
-import React from "react"
+import React, { ReactNode } from "react"
 import { GestureResponderEvent, TouchableOpacity } from "react-native"
+import styled from "styled-components/native"
 import { useTheme } from "../../Theme"
 import { Flex, FlexProps } from "../Flex"
 import { Text } from "../Text"
@@ -25,10 +24,10 @@ const SIZES = {
 interface PillProps extends FlexProps {
   selected?: boolean
   rounded?: boolean
-  check?: boolean
-  cross?: boolean
   size?: "xxs" | "xs" | "sm"
-  image_url?: string
+  imageUrl?: string
+  icon?: ReactNode
+  iconPosition?: "left" | "right"
   onPress?: (event: GestureResponderEvent) => void
 }
 
@@ -37,9 +36,9 @@ export const Pill: React.FC<PillProps> = ({
   size = "xxs",
   selected,
   rounded,
-  check,
-  cross,
-  image_url,
+  icon,
+  iconPosition = "left",
+  imageUrl,
   onPress,
   ...other
 }) => {
@@ -49,28 +48,23 @@ export const Pill: React.FC<PillProps> = ({
   const content = (
     <Flex
       flexDirection="row"
+      justifyContent="center"
+      alignItems="center"
+      borderWidth={1}
+      borderRadius={icon || rounded ? 20 : 0}
+      borderColor={icon || selected ? color("black60") : color("black10")}
       style={{
-        borderWidth: 1,
         paddingHorizontal: space(1),
-        justifyContent: "center",
-        alignItems: "center",
         height,
-        borderRadius: check || cross || rounded ? 20 : 0,
-        borderColor: check || cross || selected ? color("black60") : color("black10"),
       }}
       {...other}
     >
-      {!!check && <CheckIcon fill="black100" mr={1} />}
-      {!!cross && <CloseIcon fill="black100" mr={1} />}
-      {!!image_url && (
-        <OpaqueImageView
-          imageURL={image_url}
-          style={{ width: 30, height: 30, borderRadius: 15, overflow: "hidden", marginRight: 10 }}
-        />
-      )}
+      {iconPosition === "left" && icon}
+      {!!imageUrl && <OpaqueImageViewContainer imageURL={imageUrl} />}
       <Text variant="small" numberOfLines={1} fontSize={typeSize}>
         {children}
       </Text>
+      {iconPosition === "right" && icon}
     </Flex>
   )
 
@@ -80,3 +74,11 @@ export const Pill: React.FC<PillProps> = ({
 
   return content
 }
+
+const OpaqueImageViewContainer = styled(OpaqueImageView)`
+  width: 30;
+  height: 30;
+  border-radius: 15;
+  overflow: hidden;
+  margin-right: 10;
+`
