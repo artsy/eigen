@@ -81,7 +81,7 @@ import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
 import { ArticlesQueryRenderer } from "./Scenes/Articles/Articles"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
-import { AuctionResultsForYouQueryRenderer } from "./Scenes/AuctionResultsForYou/AuctionResultsForYou"
+import { AuctionResultsForArtistsYouFollowQueryRenderer } from "./Scenes/AuctionResultsForArtistsYouFollow/AuctionResultsForArtistsYouFollow"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
@@ -292,7 +292,7 @@ export const modules = defineModules({
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
   AuctionResult: reactModule(AuctionResultQueryRenderer),
-  AuctionResultsForYou: reactModule(AuctionResultsForYouQueryRenderer),
+  AuctionResultsForArtistsYouFollow: reactModule(AuctionResultsForArtistsYouFollowQueryRenderer),
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
