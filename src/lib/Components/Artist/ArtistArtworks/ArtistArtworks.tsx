@@ -4,6 +4,7 @@ import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkF
 import {
   Aggregations,
   filterArtworksParams,
+  getSelectedFiltersCounts,
   prepareFilterArtworksParamsForInput,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
@@ -23,6 +24,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { Box, FilterIcon, Flex, Separator, Spacer, Text, TouchableHighlightColor } from "palette"
+import { bullet } from "palette"
 import React, { useContext, useEffect, useMemo, useState } from "react"
 import { Platform } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -109,6 +111,10 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
 
   const filterParams = useMemo(() => filterArtworksParams(appliedFilters), [appliedFilters])
+  const appliedFiltersCount = useMemo(
+    () => Object.values(getSelectedFiltersCounts(appliedFilters)).reduce((prev, value) => prev + value, 0),
+    [appliedFilters]
+  )
   const allowedFiltersForSavedSearch = useMemo(() => getAllowedFiltersForSavedSearchInput(appliedFilters), [
     appliedFilters,
   ])
@@ -172,6 +178,11 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
                   <Text variant="small" numberOfLines={1} color={color} ml={0.5}>
                     Sort & Filter
                   </Text>
+                  {appliedFiltersCount > 0 && (
+                    <Text variant="small" color="blue100">
+                      {` ${bullet} ${appliedFiltersCount}`}
+                    </Text>
+                  )}
                 </Flex>
               )}
             />
