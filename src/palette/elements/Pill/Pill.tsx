@@ -40,6 +40,7 @@ export const Pill: React.FC<PillProps> = ({
   iconPosition = "left",
   imageUrl,
   onPress,
+  testID,
   ...other
 }) => {
   const { color, space } = useTheme()
@@ -69,13 +70,17 @@ export const Pill: React.FC<PillProps> = ({
   )
 
   if (onPress) {
-    return <TouchableOpacity onPress={onPress}>{content}</TouchableOpacity>
+    return (
+      <TouchableOpacity onPress={onPress} testID={testID}>
+        {content}
+      </TouchableOpacity>
+    )
   }
 
   return content
 }
 
-const OpaqueImageViewContainer = styled(OpaqueImageView)`
+export const OpaqueImageViewContainer = styled(OpaqueImageView)`
   width: 30;
   height: 30;
   border-radius: 15;
