@@ -76,24 +76,24 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           eigen v{getVersion()}, build {getBuildNumber()} ({ArtsyNativeModule.gitCommitShortHash})
         </Text>
         {Platform.OS === "ios" && (
-          <>
-            <MenuItem
-              title="Go to old Admin menu"
-              onPress={() => {
-                navigate("/admin", { modal: true })
-              }}
-            />
-            <MenuItem
-              title="Go to Storybook"
-              onPress={() => {
-                navigate("/storybook")
-              }}
-            />
-            <Flex mx="2">
-              <Separator my="1" />
-            </Flex>
-          </>
+          <MenuItem
+            title="Go to old Admin menu"
+            onPress={() => {
+              navigate("/admin", { modal: true })
+            }}
+          />
         )}
+        <MenuItem
+          title="Go to Storybook"
+          onPress={() => {
+            navigate("/storybook")
+            onClose()
+          }}
+        />
+        <Flex mx="2">
+          <Separator my="1" />
+        </Flex>
+
         <EnvironmentOptions onClose={onClose} />
 
         <Flex mx="2">
