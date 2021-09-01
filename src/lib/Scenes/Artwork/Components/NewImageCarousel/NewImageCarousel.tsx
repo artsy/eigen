@@ -3,12 +3,11 @@ import { createGeminiUrl } from "lib/Components/OpaqueImageView/createGeminiUrl"
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import compact from "lodash/compact"
-import { Flex } from "palette"
 import React, { useMemo } from "react"
-import { FlatList, PixelRatio } from "react-native"
+import { PixelRatio } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import OpaqueImageView from "../../../../Components/OpaqueImageView/OpaqueImageView"
-import { fitInside, getBestImageVersionForThumbnail, getMeasurements } from "./helpers"
+import { fitInside, getBestImageVersionForThumbnail } from "./helpers"
+import { NewImagesCarouselEmbedded } from "./NewImagesCarouselEmbedded"
 
 interface NewImageCarouselProps {
   images: NewImageCarousel_images
@@ -42,47 +41,7 @@ export const NewImageCarousel: React.FC<NewImageCarouselProps> = ({ images: rawI
     return result
   }, [rawImages])
 
-  const measurements = useMemo(
-    () =>
-      getMeasurements({
-        // typescript is finding troubles finding out that height and width can not be null at this point
-        // @ts-ignore
-        images: images.map((image) => ({ height: image.height, width: image.width })),
-        boundingBox: embeddedCardBoundingBox,
-      }),
-    [images]
-  )
-
-  return (
-    <Flex>
-      <FlatList
-        data={images}
-        // contentContainerStyle={{ flex: 1, height: 100, width: 100 }}
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        keyExtractor={(item) => item.url}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        renderItem={({ item, index }) => {
-          const { cumulativeScrollOffset, ...styles } = measurements[index]
-          return (
-            <Flex>
-              <OpaqueImageView
-                useRawURL
-                imageURL={item?.url}
-                height={styles.height}
-                width={styles.width}
-                // style={{ width: item.width, height: item.height }}
-                // make sure first image loads first
-                highPriority={index === 0}
-                style={[styles, images.length === 1 ? { marginTop: 0, marginBottom: 0 } : {}]}
-              />
-            </Flex>
-          )
-        }}
-      />
-    </Flex>
-  )
+  return <NewImagesCarouselEmbedded images={images} />
 }
 
 export const NewImageCarouselFragmentContainer = createFragmentContainer(NewImageCarousel, {
