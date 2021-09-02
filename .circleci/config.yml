@@ -165,6 +165,7 @@ commands:
             - derived_data
             - node_modules/react-native-config
   build-app-android:
+    resource_class: medium+
     steps:
       - restore_cache:
           keys:
