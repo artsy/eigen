@@ -36,6 +36,16 @@ export const PhoneInput = React.forwardRef<
   const countryISO2Code = countryIndex[countryCode].iso2
   const phoneUtil = PhoneNumberUtil.getInstance()
 
+  useEffect(() => {
+    const cleanPhoneNumber = cleanUserPhoneNumber(value ?? "")
+    const formattedPhoneNumber = formatPhoneNumber({
+      current: cleanPhoneNumber.phoneNumber,
+      previous: initialValues.phoneNumber,
+      countryCode,
+    })
+    setPhoneNumber(formattedPhoneNumber)
+  }, [value])
+
   const isValidNumber = (number: string, code: string) => {
     try {
       number = replace(number, /[+()-\s]/g, "")

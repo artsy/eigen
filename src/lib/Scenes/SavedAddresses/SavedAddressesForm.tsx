@@ -86,19 +86,16 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
   const toast = useToast()
 
   const [state, actions] = useStore()
-  const [phoneNumber, setPhoneNumber] = useState(me?.phone)
+  const [phoneNumber, setPhoneNumber] = useState("")
   const [isDefaultAddress, setIsDefaultAddress] = useState(false)
   const { height } = useScreenDimensions()
   const offSetTop = 0.75
 
   useEffect(() => {
-    setPhoneNumber(me?.phone)
-  }, [me?.phone])
-
-  useEffect(() => {
     if (isEditForm) {
       const addresses = extractNodes(me.addressConnection)
       const selectedAddress = addresses!.find((address) => address.internalID === addressId)
+      setPhoneNumber(selectedAddress?.phoneNumber!)
       Object.keys(actions.fields).forEach((field) => {
         const fieldValue = selectedAddress?.[field as keyof FormFields] ?? ""
         actions.fields[field as keyof FormFields].setValue(fieldValue)
@@ -267,6 +264,7 @@ export const SavedAddressesFormContainer = createFragmentContainer(SavedAddresse
             city
             region
             postalCode
+            phoneNumber
             isDefault
           }
         }
