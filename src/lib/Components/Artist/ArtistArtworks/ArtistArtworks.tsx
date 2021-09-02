@@ -210,7 +210,15 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
         <Separator />
       </Box>
     )
-  }, [artworksTotal, filterParams, enableSavedSearch, enableSavedSearchV2, aggregations, allowedFiltersForSavedSearch])
+  }, [
+    artworksTotal,
+    filterParams,
+    enableSavedSearch,
+    enableSavedSearchV2,
+    aggregations,
+    allowedFiltersForSavedSearch,
+    appliedFiltersCount,
+  ])
 
   const filteredArtworks = () => {
     if (artworksCount === 0) {
