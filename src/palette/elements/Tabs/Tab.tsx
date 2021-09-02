@@ -1,8 +1,9 @@
 import { Text } from "palette"
+import { useColor } from "palette/hooks"
 import React from "react"
 import { TouchableOpacity, View, ViewStyle } from "react-native"
 
-interface TabProps {
+export interface TabProps {
   id?: string
   label: string
   active: boolean
@@ -10,11 +11,8 @@ interface TabProps {
   onPress: () => void
 }
 
-/**
- * The render method for an individual tab. Will underline the currently
- * active tab.
- */
-export const Tab: React.FC<TabProps> = ({ label, active, onPress, style }) => {
+export const TabV3: React.FC<TabProps> = ({ label, active, onPress, style }) => {
+  const color = useColor()
   return (
     <TouchableOpacity onPress={onPress}>
       <View
@@ -26,7 +24,7 @@ export const Tab: React.FC<TabProps> = ({ label, active, onPress, style }) => {
           ...style,
         }}
       >
-        <Text variant={active ? "mediumText" : "text"}>{label}</Text>
+        <Text color={active ? color("black100") : color("black60")}>{label}</Text>
       </View>
     </TouchableOpacity>
   )

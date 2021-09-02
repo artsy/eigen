@@ -1,11 +1,11 @@
 import { useAnimatedValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
+import { Tab } from "palette/elements/Tabs"
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import { MutableRefObject } from "react"
 import { View, ViewStyle } from "react-native"
 import Animated, { Easing, interpolate } from "react-native-reanimated"
 import { useColor } from "../../hooks"
 import { Box } from "../Box"
-import { Tab } from "./Tab"
 
 interface TabAttributes {
   width: number
@@ -45,12 +45,14 @@ const TabItem: React.FC<ItemProps> = ({ active, getTabAttributes, label, onPress
       })
     }
   }, [active])
+
   return (
     <View ref={boxRef}>
       <Tab style={{ paddingHorizontal: 8 }} label={label} onPress={onPress} active={active} />
     </View>
   )
 }
+
 export type ContentTabsType = Array<{
   label: string
   id: string
@@ -58,11 +60,11 @@ export type ContentTabsType = Array<{
 
 interface ContentTabsProps {
   setActiveTab: Dispatch<SetStateAction<string>>
-  activeTab: string
+  activeTabId: string
   tabs: ContentTabsType
 }
 
-export const ContentTabs: React.FC<ContentTabsProps> = ({ setActiveTab, activeTab, tabs }) => {
+export const ContentTabs: React.FC<ContentTabsProps> = ({ setActiveTab, activeTabId, tabs }) => {
   const initalTabAttributes = {
     x: 0,
     y: 0,
@@ -101,7 +103,7 @@ export const ContentTabs: React.FC<ContentTabsProps> = ({ setActiveTab, activeTa
     }
 
     const config = {
-      duration: 500,
+      duration: 300,
       toValue: new Value(1),
       easing: Easing.linear,
     }
@@ -163,7 +165,7 @@ export const ContentTabs: React.FC<ContentTabsProps> = ({ setActiveTab, activeTa
         horizontal
       >
         {tabs.map(({ label, id }) => {
-          const active = activeTab === id
+          const active = activeTabId === id
           return (
             <TabItem
               key={id}

@@ -1,6 +1,6 @@
 import { Box, Flex, useColor } from "palette"
+import { Tab } from "palette/elements/Tabs"
 import React, { Dispatch, SetStateAction } from "react"
-import { Tab } from "./Tab"
 
 export type TabsType = Array<{
   label: string

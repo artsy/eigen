@@ -24,7 +24,7 @@ export const Search: React.FC = () => {
   const [query, setQuery] = useState("")
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(query)
-  const [active, setActive] = useState("block1")
+
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <ArtsyKeyboardAvoidingView>
