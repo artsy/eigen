@@ -6,7 +6,7 @@ import { View, ViewStyle } from "react-native"
 import Animated, { interpolate } from "react-native-reanimated"
 import { useColor } from "../../hooks"
 import { Box } from "../Box"
-import { TabsProps, timingFunction, validateTabs } from "./tabHelpers"
+import { TabsProps, timingFunction } from "./tabHelpers"
 
 interface TabAttributes {
   width: number
@@ -57,7 +57,7 @@ const TabItem: React.FC<ItemProps> = ({ active, getTabAttributes, label, onPress
 /**
  * Renders a  scrollable list of tabs.
  */
-export const ContentTabs: React.FC<TabsProps> = ({ setActiveTab, activeTabId, tabs }) => {
+export const ContentTabs: React.FC<TabsProps> = ({ setActiveTab, activeTab, tabs }) => {
   const initalTabAttributes = {
     x: 0,
     y: 0,
@@ -85,10 +85,6 @@ export const ContentTabs: React.FC<TabsProps> = ({ setActiveTab, activeTabId, ta
     ;(activeTabRef as MutableRefObject<View>).current = current
   }
 
-  if (validateTabs(tabs)) {
-    console.error("Each tab object in the tabs array prop passed in ContentTabs much have a unique id")
-    return null
-  }
   return (
     <Box>
       <Box borderBottomWidth={1} borderBottomColor={color("black10")} top={currentTabAttributes.height ?? 55 - 0.8} />
@@ -109,16 +105,16 @@ export const ContentTabs: React.FC<TabsProps> = ({ setActiveTab, activeTabId, ta
         }}
         horizontal
       >
-        {tabs.map(({ label, id }) => {
-          const active = activeTabId === id
+        {tabs.map(({ label }, index) => {
+          const active = activeTab === index
           return (
             <TabItem
-              key={id}
+              key={label + index}
               active={active}
               style={{ paddingHorizontal: 8 }}
               label={label}
               onPress={() => {
-                setActiveTab(id)
+                setActiveTab(index)
               }}
               getTabAttributes={getAttributes}
               setActiveTabRef={setActiveTabRef}
