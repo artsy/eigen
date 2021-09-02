@@ -165,7 +165,6 @@ commands:
             - derived_data
             - node_modules/react-native-config
   build-app-android:
-    resource_class: medium+
     steps:
       - restore_cache:
           keys:
@@ -367,6 +366,8 @@ jobs:
   build-test-app-android:
     environment:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+
+    resource_class: medium+
 
     docker:
       - image: circleci/android:api-29-node
