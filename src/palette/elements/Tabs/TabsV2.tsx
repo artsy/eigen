@@ -16,7 +16,7 @@ interface TabProps {
  * The render method for an individual tab. Will underline the currently
  * active tab.
  */
-export const Tab: React.FC<TabProps> = ({ label, active, onPress }) => {
+export const TabV2: React.FC<TabProps> = ({ label, active, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View
