@@ -10,6 +10,8 @@ buildscript {
         targetSdkVersion = 29
         firebaseIidVersion = "21.1.0" // Needed for react-native-device-info
         googlePlayServicesAuthVersion = "16.0.1"
+        androidXCore = "1.6.0"
+
     }
     repositories {
         google()
