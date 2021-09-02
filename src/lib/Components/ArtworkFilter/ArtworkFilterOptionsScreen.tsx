@@ -199,23 +199,21 @@ export const ArtworkFilterOptionsScreen: React.FC<
 
           return (
             <TouchableRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
-              <OptionListItem>
-                <Flex p={2} pr={1.5} flexDirection="row" justifyContent="space-between" flexGrow={1}>
-                  <Flex flex={1}>
-                    <Text variant="caption">
-                      {item.displayText} {selectedFiltersCount ? `${bullet} ${selectedFiltersCount}` : ""}
-                    </Text>
+              <OptionListItem p={2} pr={1.5}>
+                <Flex minWidth="45%">
+                  <Text variant="caption" mr={2}>
+                    {item.displayText} {selectedFiltersCount ? `${bullet} ${selectedFiltersCount}` : ""}
+                  </Text>
+                </Flex>
+
+                <Flex flex={1} flexDirection="row" alignItems="center" justifyContent="flex-end">
+                  <Flex flex={1} alignItems="flex-end">
+                    <CurrentOption variant="caption" color="black60" ellipsizeMode="tail" numberOfLines={1}>
+                      {currentOption}
+                    </CurrentOption>
                   </Flex>
 
-                  <Flex flexDirection="row" alignItems="center" justifyContent="flex-end" flex={1}>
-                    <Flex flex={1} flexDirection="row" justifyContent="flex-end">
-                      <CurrentOption variant="caption" color="black60" ellipsizeMode="tail" numberOfLines={1}>
-                        {currentOption}
-                      </CurrentOption>
-                    </Flex>
-
-                    <ArrowRightIcon fill="black30" ml="1" />
-                  </Flex>
+                  <ArrowRightIcon fill="black30" ml={1} />
                 </Flex>
               </OptionListItem>
             </TouchableRow>
@@ -390,7 +388,6 @@ export const ClearAllButton = styled(TouchableOpacity)`
 export const OptionListItem = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
 `
 
 export const CurrentOption = styled(Text)``
