@@ -1,6 +1,7 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { goBack, navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
@@ -25,7 +26,7 @@ describe("EditSavedSearchAlert", () => {
   }
 
   it("renders without throwing an error", () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getAllByTestId, getByTestId } = renderWithWrappersTL(<TestRenderer />)
 
     mockEnvironmentPayload(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
@@ -34,6 +35,7 @@ describe("EditSavedSearchAlert", () => {
       FilterArtworksConnection: () => filterArtworks,
     })
 
+    expect(getAllByTestId("alert-pill").map(extractText)).toEqual(["Lithograph", "Paper"])
     expect(getByTestId("alert-input-name").props.value).toBe("unique-name")
   })
 
