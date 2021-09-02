@@ -26,6 +26,7 @@ upcoming:
     - Replace ios native analytics with segment analytics - kizito
   user_facing:
     - Add keyword search to artist auction reults - ole
+    - Prepopulate phone number field in edit address form - lily
 
 releases:
   - version: 6.10.0
