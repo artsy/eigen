@@ -17,27 +17,23 @@ storiesOf("Pill", module)
   .add("Filter", () => (
     <List>
       <Pill size="xs" rounded>
-        Selected
+        Filter Rounded
       </Pill>
-      <Pill size="xs" icon={<CheckIcon fill="black100" mr={1} />}>
+      <Pill size="xs" icon={<CheckIcon fill="black100" mr={0.5} />}>
         Checked
       </Pill>
-      <Pill size="xs" icon={<CloseIcon fill="black100" ml={1} />} iconPosition="right">
+      <Pill size="xs" icon={<CloseIcon fill="black100" ml={0.5} />} iconPosition="right">
         Crossed
       </Pill>
     </List>
   ))
   .add("Text", () => (
     <List>
-      <Pill size="xxs">Default</Pill>
-      <Pill size="xxs" selected>
-        Selected
+      <Pill selected={false}>Not Selected</Pill>
+      <Pill>Selected</Pill>
+      <Pill rounded selected={false}>
+        Not Selected
       </Pill>
-      <Pill size="xxs" rounded>
-        Default
-      </Pill>
-      <Pill size="xxs" rounded selected>
-        Selected
-      </Pill>
+      <Pill rounded>Selected</Pill>
     </List>
   ))

@@ -34,7 +34,7 @@ interface PillProps extends FlexProps {
 export const Pill: React.FC<PillProps> = ({
   children,
   size = "xxs",
-  selected,
+  selected = true,
   rounded,
   icon,
   iconPosition = "left",
@@ -42,7 +42,7 @@ export const Pill: React.FC<PillProps> = ({
   onPress,
   ...other
 }) => {
-  const { color, space } = useTheme()
+  const { colorV3, space } = useTheme()
   const { height, typeSize } = SIZES[size]
 
   const content = (
@@ -51,8 +51,8 @@ export const Pill: React.FC<PillProps> = ({
       justifyContent="center"
       alignItems="center"
       borderWidth={1}
-      borderRadius={icon || rounded ? 20 : 0}
-      borderColor={icon || selected ? color("black60") : color("black10")}
+      borderRadius={icon || rounded ? 50 : 0}
+      borderColor={icon || selected ? colorV3("black60") : colorV3("black15")}
       style={{
         paddingHorizontal: space(1),
         height,
