@@ -6,42 +6,40 @@ import { TouchableOpacity } from "react-native"
 import Animated, { interpolate } from "react-native-reanimated"
 import { useColor } from "../../hooks"
 import { Box } from "../Box"
-import { TabsProps, timingFunction, validateTabs } from "./tabHelpers"
+import { TabsProps, timingFunction } from "./tabHelpers"
 
 /**
  * Renders a list of tabs. Evenly-spaces them across the screen with
  * each tab label and chevron evenly spaced
  */
-export const StepTabs: React.FC<TabsProps> = ({ setActiveTab, activeTabId, tabs }) => {
+export const StepTabs: React.FC<TabsProps> = ({ setActiveTab, activeTab, tabs }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [prevIndex, setPrevIndex] = useState(0)
 
   const color = useColor()
 
-  const onTabPress = (id: string, index: number) => {
-    setPrevIndex(currentIndex)
-    setCurrentIndex(index)
-    setActiveTab(id)
+  const onTabPress = (index: number) => {
+    if (index === 0 || (index > 0 && tabs[index - 1].completed)) {
+      setPrevIndex(currentIndex)
+      setCurrentIndex(index)
+      setActiveTab(index)
+    }
   }
 
   const tabWidth = useScreenDimensions().width / tabs.length
 
-  if (validateTabs(tabs)) {
-    console.error("Each tab object in the tabs array prop passed in StepTabs much have a unique id")
-    return null
-  }
   return (
     <>
       <Box flexDirection={"row"}>
-        {tabs.map(({ label, id, completed }, index) => {
-          const active = activeTabId === id
+        {tabs.map(({ label, completed }, index) => {
+          const active = activeTab === index
           return (
-            <TouchableOpacity onPress={() => onTabPress(id, index)} key={id}>
+            <TouchableOpacity onPress={() => onTabPress(index)} key={label + index}>
               <Box width={tabWidth} justifyContent={"space-between"} flexDirection={"row"} alignItems={"center"}>
                 <Box flexDirection={"row"} alignItems={"center"}>
                   <Tab
                     label={label}
-                    onPress={() => onTabPress(id, index)}
+                    onPress={() => onTabPress(index)}
                     active={active}
                     style={{ paddingHorizontal: 0, paddingLeft: 8, paddingRight: 5 }}
                   />

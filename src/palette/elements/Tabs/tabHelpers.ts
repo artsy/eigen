@@ -3,28 +3,13 @@ import Animated, { Easing } from "react-native-reanimated"
 
 export type TabsType = Array<{
   label: string
-  id: string
   completed?: boolean
 }>
 
 export interface TabsProps {
-  setActiveTab: Dispatch<SetStateAction<string>>
-  activeTabId: string
+  setActiveTab: Dispatch<SetStateAction<number>>
+  activeTab: number
   tabs: TabsType
-}
-
-export const validateTabs = (tabs: TabsType): boolean => {
-  interface Obj {
-    [key: string]: boolean
-  }
-  const obj: Obj = {}
-  for (const tab of tabs) {
-    if (obj[tab.id]) {
-      return true
-    }
-    obj[tab.id] = true
-  }
-  return false
 }
 
 export const timingFunction = () => {

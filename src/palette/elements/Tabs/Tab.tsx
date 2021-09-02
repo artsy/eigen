@@ -3,15 +3,14 @@ import { useColor } from "palette/hooks"
 import React from "react"
 import { Pressable, View, ViewStyle } from "react-native"
 
-export interface TabProps {
-  id?: string
+export interface TabV3Props {
   label: string
   active: boolean
   style?: ViewStyle
   onPress: () => void
 }
 
-export const TabV3: React.FC<TabProps> = ({ label, active, onPress, style }) => {
+export const TabV3: React.FC<TabV3Props> = ({ label, active, onPress, style }) => {
   const color = useColor()
   return (
     <Pressable onPress={onPress}>

@@ -12,6 +12,8 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Flex, Separator, Spacer, Theme } from "palette"
+import { NavigationTabs, TabsType } from "palette/elements/Tabs"
+import { usePaletteFlagStore } from "palette/PaletteFlag"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -23,7 +25,7 @@ import { FairEmptyStateFragmentContainer } from "./Components/FairEmptyState"
 import { FairExhibitorsFragmentContainer } from "./Components/FairExhibitors"
 import { FairFollowedArtistsRailFragmentContainer } from "./Components/FairFollowedArtistsRail"
 import { FairHeaderFragmentContainer } from "./Components/FairHeader"
-import { Tabs, TabsType } from "./Components/SimpleTabs"
+import { Tabs } from "./Components/SimpleTabs"
 
 interface FairQueryRendererProps {
   fairID: string
@@ -164,6 +166,8 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
   const hideBackButtonOnScroll = useHideBackButtonOnScroll()
 
+  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
+
   return (
     <ProvideScreenTracking
       info={{
@@ -212,9 +216,10 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                   }
                   case "fairTabsAndFilter": {
                     const tabToShow = tabs ? tabs[activeTab] : null
+                    const TabVersionToUse = allowV3 ? NavigationTabs : Tabs
                     return (
                       <Box paddingTop={safeAreaInsets.top} backgroundColor="white">
-                        <Tabs
+                        <TabVersionToUse
                           setActiveTab={(index) => {
                             trackTappedNavigationTab(index as number)
                             setActiveTab(index)
