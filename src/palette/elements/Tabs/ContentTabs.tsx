@@ -1,11 +1,12 @@
 import { useAnimatedValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
 import { Tab } from "palette/elements/Tabs"
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { MutableRefObject } from "react"
 import { View, ViewStyle } from "react-native"
-import Animated, { Easing, interpolate } from "react-native-reanimated"
+import Animated, { interpolate } from "react-native-reanimated"
 import { useColor } from "../../hooks"
 import { Box } from "../Box"
+import { TabsProps, timingFunction, validateTabs } from "./tabHelpers"
 
 interface TabAttributes {
   width: number
@@ -53,18 +54,10 @@ const TabItem: React.FC<ItemProps> = ({ active, getTabAttributes, label, onPress
   )
 }
 
-export type ContentTabsType = Array<{
-  label: string
-  id: string
-}>
-
-interface ContentTabsProps {
-  setActiveTab: Dispatch<SetStateAction<string>>
-  activeTabId: string
-  tabs: ContentTabsType
-}
-
-export const ContentTabs: React.FC<ContentTabsProps> = ({ setActiveTab, activeTabId, tabs }) => {
+/**
+ * Renders a  scrollable list of tabs.
+ */
+export const ContentTabs: React.FC<TabsProps> = ({ setActiveTab, activeTabId, tabs }) => {
   const initalTabAttributes = {
     x: 0,
     y: 0,
@@ -92,55 +85,7 @@ export const ContentTabs: React.FC<ContentTabsProps> = ({ setActiveTab, activeTa
     ;(activeTabRef as MutableRefObject<View>).current = current
   }
 
-  const animation = () => {
-    const { Value, set, cond, startClock, clockRunning, timing, block, Clock } = Animated
-    const clock = new Clock()
-    const state = {
-      finished: new Value(0),
-      position: new Value(0),
-      time: new Value(0),
-      frameTime: new Value(0),
-    }
-
-    const config = {
-      duration: 300,
-      toValue: new Value(1),
-      easing: Easing.linear,
-    }
-
-    return block([
-      cond(
-        clockRunning(clock),
-        [set(config.toValue, 1)],
-        [
-          set(state.finished, 0),
-          set(state.time, 0),
-          set(state.position, 0),
-          set(state.frameTime, 0),
-          set(config.toValue, 1),
-          startClock(clock),
-        ]
-      ),
-      timing(clock, state, config),
-      state.position,
-    ])
-  }
-
-  const validateTabs = (): boolean => {
-    interface Obj {
-      [key: string]: boolean
-    }
-    const obj: Obj = {}
-    for (const tab of tabs) {
-      if (obj[tab.id]) {
-        return true
-      }
-      obj[tab.id] = true
-    }
-    return false
-  }
-
-  if (validateTabs()) {
+  if (validateTabs(tabs)) {
     console.error("Each tab object in the tabs array prop passed in ContentTabs much have a unique id")
     return null
   }
@@ -183,7 +128,7 @@ export const ContentTabs: React.FC<ContentTabsProps> = ({ setActiveTab, activeTa
       </Animated.ScrollView>
       <Animated.View
         style={{
-          width: interpolate(animation(), {
+          width: interpolate(timingFunction(), {
             inputRange: [0, 1],
             outputRange: [previousTabAttributes.width, currentTabAttributes.width],
           }),

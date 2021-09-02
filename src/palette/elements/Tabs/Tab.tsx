@@ -1,7 +1,7 @@
 import { Text } from "palette"
 import { useColor } from "palette/hooks"
 import React from "react"
-import { TouchableOpacity, View, ViewStyle } from "react-native"
+import { Pressable, View, ViewStyle } from "react-native"
 
 export interface TabProps {
   id?: string
@@ -14,18 +14,28 @@ export interface TabProps {
 export const TabV3: React.FC<TabProps> = ({ label, active, onPress, style }) => {
   const color = useColor()
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View
-        style={{
-          height: 55,
-          alignItems: "center",
-          justifyContent: "center",
-          paddingHorizontal: 15,
-          ...style,
-        }}
-      >
-        <Text color={active ? color("black100") : color("black60")}>{label}</Text>
-      </View>
-    </TouchableOpacity>
+    <Pressable onPress={onPress}>
+      {({ pressed }) => (
+        <View
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            paddingHorizontal: 15,
+            paddingVertical: 10,
+            ...style,
+          }}
+        >
+          <Text
+            fontSize={"16px"}
+            color={active ? color("black100") : pressed ? color("blue100") : color("black60")}
+            style={{
+              textDecorationLine: pressed ? "underline" : "none",
+            }}
+          >
+            {label}
+          </Text>
+        </View>
+      )}
+    </Pressable>
   )
 }
