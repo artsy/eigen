@@ -11952,7 +11952,7 @@ type UpdateAppSecondFactorPayload {
 
 input UpdateCollectorProfileInput {
   # List of affiliated auction house ids, referencing Galaxy.
-  affiliatedAuctionIds: [String]
+  affiliatedAuctionHouseIds: [String]
 
   # List of affiliated fair ids, referencing Galaxy.
   affiliatedFairIds: [String]
