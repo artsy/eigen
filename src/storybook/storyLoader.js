@@ -22,6 +22,7 @@ function loadStories() {
   require("../palette/elements/Text/TextV2.stories")
   require("../palette/space.stories")
   require("../palette/spaceV2.stories")
+  require("../palette/elements/Pill/Pill.stories")
 }
 
 const stories = [
@@ -43,6 +44,7 @@ const stories = [
   "../palette/elements/Text/TextV2.stories",
   "../palette/space.stories",
   "../palette/spaceV2.stories",
+  "../palette/elements/Pill/Pill.stories"
 ]
 
 module.exports = {
