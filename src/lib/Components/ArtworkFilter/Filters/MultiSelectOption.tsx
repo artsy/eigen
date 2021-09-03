@@ -68,7 +68,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
       {!!searchable && (
         <>
           <Flex m={2}>
-            <SearchInput onChangeText={setQuery} placeholder="Filter results" />
+            <SearchInput onChangeText={setQuery} testID="multi-select-search-input" placeholder="Filter results" />
           </Flex>
 
           {filteredOptions.length === 0 && (
@@ -95,6 +95,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
                     onSelect(item, !currentParamValue)
                   }}
                   disabled={disabled}
+                  testID="multi-select-option-button"
                 >
                   <OptionListItem>
                     <Text variant="caption" color="black100">
