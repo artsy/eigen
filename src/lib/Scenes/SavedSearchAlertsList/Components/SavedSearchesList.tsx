@@ -73,6 +73,8 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
       data={items}
       keyExtractor={(item) => item.internalID}
       contentContainerStyle={{ paddingVertical: space(1) }}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
       renderItem={({ item }) => {
         return (
           <SavedSearchListItem
