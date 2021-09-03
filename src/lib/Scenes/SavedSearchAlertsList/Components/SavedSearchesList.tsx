@@ -18,28 +18,31 @@ interface SavedSearchesListProps {
   relay: RelayPaginationProp
 }
 
+type RefreshType = "default" | "delete"
+
 export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   const { me, relay } = props
   const [fetchingMore, setFetchingMore] = useState(false)
-  const [refreshing, setRefreshing] = useState(false)
+  const [refreshMode, setRefreshMode] = useState<RefreshType | null>(null)
   const { space } = useTheme()
   const items = extractNodes(me.savedSearchesConnection)
-  const onRefresh = useRef(() => {
-    setRefreshing(true)
+  const onRefresh = useRef((type: RefreshType = "default") => {
+    setRefreshMode(type)
 
     relay.refetchConnection(SAVED_SERCHES_PAGE_SIZE, (error) => {
       if (error) {
         console.error(error)
       }
 
-      setRefreshing(false)
+      setRefreshMode(null)
     })
   }).current
 
   useEffect(() => {
-    navigationEvents.addListener("goBack", onRefresh)
+    const onDeleteRefresh = () => onRefresh("delete")
+    navigationEvents.addListener("goBack", onDeleteRefresh)
     return () => {
-      navigationEvents.removeListener("goBack", onRefresh)
+      navigationEvents.removeListener("goBack", onDeleteRefresh)
     }
   }, [])
 
@@ -56,7 +59,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
     })
   }
 
-  if (refreshing) {
+  if (refreshMode === "delete") {
     return (
       <ProvidePlaceholderContext>
         <SavedSearchAlertsListPlaceholder />
@@ -73,7 +76,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
       data={items}
       keyExtractor={(item) => item.internalID}
       contentContainerStyle={{ paddingVertical: space(1) }}
-      refreshing={refreshing}
+      refreshing={refreshMode !== null}
       onRefresh={onRefresh}
       renderItem={({ item }) => {
         return (
