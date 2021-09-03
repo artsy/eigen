@@ -1,10 +1,8 @@
-import AsyncStorage from "@react-native-community/async-storage"
 import { MenuItem } from "lib/Components/MenuItem"
 import { Text } from "palette"
 import React from "react"
 import { Alert } from "react-native"
 import create from "zustand"
-import { persist } from "zustand/middleware"
 
 interface PaletteFlagState {
   allowV3: boolean
@@ -12,16 +10,11 @@ interface PaletteFlagState {
   toggleAllowV3: () => void
 }
 
-export const usePaletteFlagStore = create<PaletteFlagState>(
-  persist(
-    (set) => ({
-      allowV3: __TEST__ || __STORYBOOK__,
-      setAllowV3: (value) => set((_state) => ({ allowV3: value })),
-      toggleAllowV3: () => set((state) => ({ allowV3: !state.allowV3 })),
-    }),
-    { name: "z-devtoggle-palette", getStorage: () => AsyncStorage }
-  )
-)
+export const usePaletteFlagStore = create<PaletteFlagState>((set) => ({
+  allowV3: true,
+  setAllowV3: (value) => set((_state) => ({ allowV3: value })),
+  toggleAllowV3: () => set((state) => ({ allowV3: !state.allowV3 })),
+}))
 
 export const DevTogglePaletteFlag = () => {
   const currentValue = usePaletteFlagStore((state) => state.allowV3)
