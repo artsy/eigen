@@ -1,4 +1,5 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { Spacer } from "palette"
 import React, { ReactNode } from "react"
 import { GestureResponderEvent, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
@@ -10,14 +11,20 @@ const SIZES = {
   xxs: {
     height: 28,
     typeSize: 13,
+    paddingRight: 10,
+    paddingLeft: 10,
   },
   xs: {
     height: 40,
     typeSize: 16,
+    paddingRight: 20,
+    paddingLeft: 20,
   },
   sm: {
     height: 50,
     typeSize: 16,
+    paddingRight: 20,
+    paddingLeft: 10,
   },
 }
 
@@ -42,8 +49,8 @@ export const Pill: React.FC<PillProps> = ({
   onPress,
   ...other
 }) => {
-  const { colorV3, space } = useTheme()
-  const { height, typeSize } = SIZES[size]
+  const { colorV3 } = useTheme()
+  const { height, typeSize, paddingLeft, paddingRight } = SIZES[size]
 
   const content = (
     <Flex
@@ -53,18 +60,27 @@ export const Pill: React.FC<PillProps> = ({
       borderWidth={1}
       borderRadius={icon || rounded ? 50 : 0}
       borderColor={icon || selected ? colorV3("black60") : colorV3("black15")}
-      style={{
-        paddingHorizontal: space(1),
-        height,
-      }}
+      paddingLeft={paddingLeft}
+      paddingRight={paddingRight}
+      height={height}
       {...other}
     >
-      {iconPosition === "left" && icon}
+      {iconPosition === "left" && !!icon && (
+        <>
+          {icon}
+          <Spacer ml={1} />
+        </>
+      )}
       {!!imageUrl && <OpaqueImageViewContainer imageURL={imageUrl} />}
       <Text variant="small" numberOfLines={1} fontSize={typeSize}>
         {children}
       </Text>
-      {iconPosition === "right" && icon}
+      {iconPosition === "right" && !!icon && (
+        <>
+          <Spacer mr={1} />
+          {icon}
+        </>
+      )}
     </Flex>
   )
 

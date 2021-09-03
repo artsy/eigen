@@ -19,10 +19,10 @@ storiesOf("Pill", module)
       <Pill selected={false} size="xs" rounded>
         Filter Rounded
       </Pill>
-      <Pill size="xs" icon={<CheckIcon fill="black100" mr={0.5} />}>
+      <Pill size="xs" icon={<CheckIcon fill="black100" />}>
         Checked
       </Pill>
-      <Pill size="xs" icon={<CloseIcon fill="black100" ml={0.5} />} iconPosition="right">
+      <Pill size="xs" icon={<CloseIcon fill="black100" />} iconPosition="right">
         Crossed
       </Pill>
     </List>
