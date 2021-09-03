@@ -8,16 +8,16 @@ import { Text } from "../Text"
 
 const SIZES = {
   xxs: {
-    height: 25,
-    typeSize: "12",
+    height: 28,
+    typeSize: 13,
   },
   xs: {
-    height: 35,
-    typeSize: "13",
+    height: 40,
+    typeSize: 16,
   },
   sm: {
-    height: 45,
-    typeSize: "16",
+    height: 50,
+    typeSize: 16,
   },
 }
 

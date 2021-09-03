@@ -9,14 +9,14 @@ storiesOf("Pill", module)
   .addDecorator(withThemeV3)
   .add("Artist", () => (
     <List>
-      <Pill size="sm" rounded imageUrl={"https://ychef.files.bbci.co.uk/976x549/p0400cts.jpg"}>
-        Default
+      <Pill size="sm" selected={false} rounded imageUrl={"https://ychef.files.bbci.co.uk/976x549/p0400cts.jpg"}>
+        Artist Name Pill
       </Pill>
     </List>
   ))
   .add("Filter", () => (
     <List>
-      <Pill size="xs" rounded>
+      <Pill selected={false} size="xs" rounded>
         Filter Rounded
       </Pill>
       <Pill size="xs" icon={<CheckIcon fill="black100" mr={0.5} />}>
