@@ -85,6 +85,8 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
           keyExtractor={(_item, index) => String(index)}
           data={filteredOptions}
           renderItem={({ item }) => {
+            const disabled = itemIsDisabled(item)
+
             return (
               <Box ml={0.5}>
                 <TouchableRow
@@ -92,13 +94,14 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
                     const currentParamValue = item.paramValue as boolean
                     onSelect(item, !currentParamValue)
                   }}
+                  disabled={disabled}
                 >
                   <OptionListItem>
                     <Text variant="caption" color="black100">
                       {item.displayText}
                     </Text>
 
-                    <Check selected={itemIsSelected(item)} disabled={itemIsDisabled(item)} />
+                    <Check selected={itemIsSelected(item)} disabled={disabled} />
                   </OptionListItem>
                 </TouchableRow>
               </Box>
