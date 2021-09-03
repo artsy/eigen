@@ -1,11 +1,3 @@
-// 1. Get first layout pass of grid view so we have a total width and calculate the column width (componentDidMount?).
-// 2. Possibly do artwork column layout now, as we can do so based just on the aspect ratio, assuming the text height
-//    won't be too different between artworks.
-// 3. Get artwork heights by either:
-//    - calculating the item size upfront with aspect ratio and a static height for the text labels.
-//    - leting the artwork component do a layout pass and calculate its own height based on the column width.
-// 4. Update height of grid to encompass all items.
-
 import React from "react"
 import { ActivityIndicator, Dimensions, LayoutChangeEvent, Platform, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, RelayPaginationProp } from "react-relay"
@@ -19,18 +11,10 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
+import { chunk } from "lodash"
 import { Box, Button, Flex, Theme } from "palette"
 import { graphql } from "relay-runtime"
 import ParentAwareScrollView from "../ParentAwareScrollView"
-
-/**
- * TODO:
- * - currently all the code assumes column layout
- *   - do no invert aspect ratios in row layout
- * - deal with edge-cases when calculating in which section an artwork should go
- *   - see ARMasonryCollectionViewLayout for details on how to deal with last works sticking out
- *   - the calculation currently only takes into account the size of the image, not if e.g. the sale message is present
- */
 
 export interface Props {
   /** The direction for the grid, currently only 'column' is supported . */
@@ -167,41 +151,19 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
   }
 
   sectionedArtworks() {
-    const sectionRatioSums: number[] = []
-    const artworks = extractNodes(this.props.connection)
+    const { sectionCount = 0, connection } = this.props
+    const artworks = extractNodes(connection)
     const sectionedArtworks: Array<typeof artworks> = []
+    const chunkedArtworksBySections = chunk(artworks, sectionCount)
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    for (let i = 0; i < this.props.sectionCount; i++) {
+    for (let i = 0; i < sectionCount; i++) {
       sectionedArtworks.push([])
-      sectionRatioSums.push(0)
     }
-    artworks.forEach((artwork) => {
-      // There are artworks without images and other ‘issues’. Like Force we’re just going to reject those for now.
-      // See: https://github.com/artsy/eigen/issues/1667
-      //
-      if (artwork.image) {
-        // Find section with lowest *inverted* aspect ratio sum, which is the shortest column.
-        let lowestRatioSum = Number.MAX_VALUE // Start higher, so we always find a
-        let sectionIndex: number | null = null
-        for (let j = 0; j < sectionRatioSums.length; j++) {
-          const ratioSum = sectionRatioSums[j]
-          if (ratioSum < lowestRatioSum) {
-            sectionIndex = j
-            lowestRatioSum = ratioSum
-          }
-        }
 
-        if (sectionIndex != null) {
-          const section = sectionedArtworks[sectionIndex]
-          section.push(artwork)
-
-          // Keep track of total section aspect ratio
-          const aspectRatio = artwork.image.aspectRatio || 1 // Ensure we never divide by null/0
-          // Invert the aspect ratio so that a lower value means a shorter section.
-          sectionRatioSums[sectionIndex] += 1 / aspectRatio
-        }
-      }
+    chunkedArtworksBySections.forEach((chunkedArtworksBySection) => {
+      chunkedArtworksBySection.forEach((artwork, sectionIndex) => {
+        sectionedArtworks[sectionIndex].push(artwork)
+      })
     })
 
     return sectionedArtworks
