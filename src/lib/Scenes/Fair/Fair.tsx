@@ -12,7 +12,7 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Flex, Separator, Spacer, Theme } from "palette"
-import { NavigationTabs, TabsType } from "palette/elements/Tabs"
+import { NavigationalTabs, TabsType } from "palette/elements/Tabs"
 import { usePaletteFlagStore } from "palette/PaletteFlag"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, View } from "react-native"
@@ -216,16 +216,17 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                   }
                   case "fairTabsAndFilter": {
                     const tabToShow = tabs ? tabs[activeTab] : null
-                    const TabVersionToUse = allowV3 ? NavigationTabs : Tabs
+                    const TabVersionToUse = allowV3 ? NavigationalTabs : Tabs
                     return (
                       <Box paddingTop={safeAreaInsets.top} backgroundColor="white">
                         <TabVersionToUse
-                          setActiveTab={(index) => {
+                          onTabPress={(index) => {
                             trackTappedNavigationTab(index as number)
                             setActiveTab(index)
                           }}
                           activeTab={activeTab}
                           tabs={tabs}
+                          setActiveTab={(i) => setActiveTab(i)}
                         />
                         {tabToShow?.label === "Artworks" && <HeaderArtworksFilter onPress={openFilterArtworksModal} />}
                       </Box>

@@ -1,15 +1,14 @@
 import { usePaletteFlagStore } from "palette/PaletteFlag"
 import React from "react"
 import { ContentTabs } from "./ContentTabs"
-import { NavigationTabs } from "./NavigationTabs"
+import { NavigationalTabs } from "./NavigationalTabs"
 import { StepTabs } from "./StepTabs"
-import { TabProps, TabV3 } from "./Tab"
-import { TabsType } from "./tabHelpers"
+import { TabV3, TabV3Props } from "./Tab"
 import { TabV2 } from "./TabsV2"
 
-export { NavigationTabs, ContentTabs, StepTabs }
+export { NavigationalTabs, ContentTabs, StepTabs }
 
-export const Tab = ({ ...props }: TabProps) => {
+export const Tab = ({ ...props }: TabV3Props) => {
   const allowV3 = usePaletteFlagStore((state) => state.allowV3)
   if (allowV3) {
     return <TabV3 {...props} />
@@ -17,4 +16,15 @@ export const Tab = ({ ...props }: TabProps) => {
   return <TabV2 {...props} />
 }
 
-export { TabsType }
+export const TAB_BAR_HEIGHT = 44
+
+export type TabsType = Array<{
+  label: string
+  completed?: boolean
+}>
+
+export interface TabsProps {
+  onTabPress: (tabIndex: number) => void
+  activeTab: number
+  tabs: TabsType
+}
