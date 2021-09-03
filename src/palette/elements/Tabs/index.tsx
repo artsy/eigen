@@ -24,7 +24,7 @@ export type TabsType = Array<{
 }>
 
 export interface TabsProps {
-  onTabPress: (tabIndex: number) => void
+  onTabPress: (tablabel: string, tabIndex: number) => void
   activeTab: number
   tabs: TabsType
 }

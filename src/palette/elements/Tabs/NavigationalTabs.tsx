@@ -9,18 +9,20 @@ import { TabBarContainer } from "./TabBarContainer"
  * Renders a list of tabs. Evenly-spaces them across the screen with
  * each tab label centered on the tab
  */
-
 export const NavigationalTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, tabs }) => {
   const [tabLayouts, setTabLayouts] = useState<Array<LayoutRectangle | null>>(tabs.map(() => null))
-  const tabWidth = useScreenDimensions().width / tabs.length
+
+  const screenWidth = useScreenDimensions().width
+  const tabWidth = screenWidth / tabs.length
+
   return (
-    <TabBarContainer scrollEnabled={false} activeTabIndex={activeTab} tabLayouts={tabLayouts}>
+    <TabBarContainer scrollEnabled activeTabIndex={activeTab} tabLayouts={tabLayouts}>
       {tabs.map(({ label }, index) => {
         return (
-          <Box width={tabWidth} key={label + index}>
+          <Box minWidth={tabWidth} key={label + index}>
             <Tab
               label={label}
-              onPress={() => onTabPress(index)}
+              onPress={() => onTabPress(label, index)}
               active={activeTab === index}
               onLayout={(e) => {
                 const layout = e.nativeEvent.layout

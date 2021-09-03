@@ -220,7 +220,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                     return (
                       <Box paddingTop={safeAreaInsets.top} backgroundColor="white">
                         <TabVersionToUse
-                          onTabPress={(index) => {
+                          onTabPress={(_, index) => {
                             trackTappedNavigationTab(index as number)
                             setActiveTab(index)
                           }}

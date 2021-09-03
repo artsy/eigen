@@ -12,6 +12,13 @@ export interface TabBarContainerProps {
   scrollEnabled: boolean
   tabLayouts: Array<LayoutRectangle | null>
 }
+
+/**
+ * Wraps the respective tabs. Based on StickyTabPageTabBar
+ * Usage: ```
+ * <TabBarContainer>{props.tabs.map((tab) => <Tab {...tab} />)}</TabContainer>
+ * ```
+ */
 export const TabBarContainer: React.FC<TabBarContainerProps> = ({
   children,
   activeTabIndex,
@@ -79,6 +86,9 @@ export function spring(node: Animated.Value, toValue: number) {
   return Animated.spring(node, { toValue, useNativeDriver: true, bounciness: -7, speed: 13 })
 }
 
+/**
+ * Underlines the Active Tab. Same implementation in StickyTabPageTabBar
+ */
 const ActiveTabBorder: React.FC<{ tabLayouts: LayoutRectangle[]; activeTabIndex: number }> = ({
   tabLayouts,
   activeTabIndex,
