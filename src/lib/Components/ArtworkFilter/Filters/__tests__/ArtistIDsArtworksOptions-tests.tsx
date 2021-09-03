@@ -96,7 +96,7 @@ describe("Artist options screen", () => {
         selectedFilters: [
           {
             paramName: FilterParamName.artistIDs,
-            paramValue: "artist-2",
+            paramValue: ["artist-2"],
             displayText: "Artist 2",
           },
         ],
@@ -153,7 +153,7 @@ describe("Artist options screen", () => {
         selectedFilters: [
           {
             paramName: FilterParamName.artistIDs,
-            paramValue: "artist-2",
+            paramValue: ["artist-2"],
             displayText: "Artist 2",
           },
         ],

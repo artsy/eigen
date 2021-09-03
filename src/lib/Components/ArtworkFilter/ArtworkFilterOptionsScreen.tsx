@@ -188,7 +188,6 @@ export const ArtworkFilterOptionsScreen: React.FC<
           const selectedCurrentOption = selectedOption({
             selectedOptions,
             filterScreen: item.filterType,
-            filterType: filterTypeState,
             aggregations: aggregationsState,
           })
 

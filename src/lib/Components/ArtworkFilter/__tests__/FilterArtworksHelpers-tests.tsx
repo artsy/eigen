@@ -330,7 +330,7 @@ describe("filterArtworksParams helper", () => {
     appliedFilters = [
       {
         displayText: "Artist 1",
-        paramValue: "artist-1",
+        paramValue: ["artist-1"],
         paramName: FilterParamName.artistIDs,
       },
       {
@@ -357,13 +357,8 @@ describe("filterArtworksParams helper", () => {
   it("maps correct applied filters when there are multiple artistID params", () => {
     appliedFilters = [
       {
-        displayText: "Artist 1",
-        paramValue: "artist-1",
-        paramName: FilterParamName.artistIDs,
-      },
-      {
-        displayText: "Artist 2",
-        paramValue: "artist-2",
+        displayText: "Artist 1, Artist 2",
+        paramValue: ["artist-1", "artist-2"],
         paramName: FilterParamName.artistIDs,
       },
     ]
@@ -539,54 +534,52 @@ describe("selectedOption", () => {
 
   describe("artists", () => {
     describe("artworks", () => {
+      const aggregations: Aggregations = [
+        {
+          slice: "ARTIST",
+          counts: [
+            { count: 21, name: "Artist 1", value: "artist-1" },
+            { count: 21, name: "Artist 2", value: "artist-2" },
+          ],
+        },
+      ]
+
       it("returns the correct value in the default case", () => {
         const selectedOptions = [] as FilterArray
 
-        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations: [] })).toEqual("All")
+        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations })).toEqual("All")
       })
 
       it("returns the correct value when one artist is selected", () => {
         const selectedOptions = [
           {
             paramName: FilterParamName.artistIDs,
-            paramValue: "artist-1",
+            paramValue: ["artist-1"],
             displayText: "Artist 1",
           },
         ]
 
-        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations: [] })).toEqual("Artist 1")
+        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations })).toEqual("Artist 1")
       })
 
       it("returns the correct value when multiple artists are selected", () => {
         const selectedOptions = [
           {
             paramName: FilterParamName.artistIDs,
-            paramValue: "artist-1",
-            displayText: "Z Artist 1",
-          },
-          {
-            paramName: FilterParamName.artistIDs,
-            paramValue: "artist-2",
-            displayText: "Artist 2",
+            paramValue: ["artist-1", "artist-2"],
+            displayText: "Artist 1, Artist 2",
           },
         ]
 
-        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations: [] })).toEqual(
-          "Artist 2, 1 more"
-        )
+        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations })).toEqual("Artist 1, 1 more")
       })
 
       it("returns the correct value when multiple artists and Artist I follow are selected", () => {
         const selectedOptions = [
           {
             paramName: FilterParamName.artistIDs,
-            paramValue: "artist-1",
-            displayText: "Z Artist 1",
-          },
-          {
-            paramName: FilterParamName.artistIDs,
-            paramValue: "artist-2",
-            displayText: "Artist 2",
+            paramValue: ["artist-1", "artist-2"],
+            displayText: "Artist 1, Artist 2",
           },
           {
             paramName: FilterParamName.artistsIFollow,
@@ -595,7 +588,7 @@ describe("selectedOption", () => {
           },
         ]
 
-        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations: [] })).toEqual(
+        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations })).toEqual(
           "All Artists I Follow, 2 more"
         )
       })
@@ -615,9 +608,7 @@ describe("selectedOption", () => {
       it("returns the correct value in the default case", () => {
         const selectedOptions = [] as FilterArray
 
-        expect(
-          selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations, filterType: "saleArtwork" })
-        ).toEqual("All")
+        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations })).toEqual("All")
       })
 
       it("returns the correct value when one artist is selected", () => {
@@ -629,9 +620,7 @@ describe("selectedOption", () => {
           },
         ]
 
-        expect(
-          selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations, filterType: "saleArtwork" })
-        ).toEqual("Banksy")
+        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations })).toEqual("Banksy")
       })
 
       it("returns the correct value when multiple artists are selected", () => {
@@ -643,9 +632,9 @@ describe("selectedOption", () => {
           },
         ]
 
-        expect(
-          selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations, filterType: "saleArtwork" })
-        ).toEqual("Andy Warhol, 1 more")
+        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations })).toEqual(
+          "Andy Warhol, 1 more"
+        )
       })
     })
   })
@@ -967,32 +956,7 @@ describe("getSelectedFiltersCounts helper", () => {
     {
       displayText: "Artists",
       paramName: FilterParamName.artistIDs,
-      paramValue: "alex-katz",
-    },
-    {
-      displayText: "Artists",
-      paramName: FilterParamName.artistIDs,
-      paramValue: "anne-siems",
-    },
-    {
-      displayText: "Artists",
-      paramName: FilterParamName.artistIDs,
-      paramValue: "cat-sirot",
-    },
-    {
-      displayText: "Artists",
-      paramName: FilterParamName.artistIDs,
-      paramValue: "brian-rutenberg",
-    },
-    {
-      displayText: "Artists",
-      paramName: FilterParamName.artistIDs,
-      paramValue: "ceravolo",
-    },
-    {
-      displayText: "Artists",
-      paramName: FilterParamName.artistIDs,
-      paramValue: "andy-warhol",
+      paramValue: ["alex-katz", "anne-siems", "cat-sirot", "brian-rutenberg", "ceravolo", "andy-warhol"],
     },
   ]
 
@@ -1221,22 +1185,7 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
       {
         displayText: "Artists",
         paramName: FilterParamName.artistIDs,
-        paramValue: "alex-katz",
-      },
-      {
-        displayText: "Artists",
-        paramName: FilterParamName.artistIDs,
-        paramValue: "anne-siems",
-      },
-      {
-        displayText: "Artists",
-        paramName: FilterParamName.artistIDs,
-        paramValue: "cat-sirot",
-      },
-      {
-        displayText: "Artists",
-        paramName: FilterParamName.artistIDs,
-        paramValue: "ceravolo",
+        paramValue: ["alex-katz", "anne-siems", "cat-sirot", "ceravolo"],
       },
     ]
 
@@ -1244,17 +1193,7 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
       {
         displayText: "Artists",
         paramName: FilterParamName.artistIDs,
-        paramValue: "anne-siems",
-      },
-      {
-        displayText: "Artists",
-        paramName: FilterParamName.artistIDs,
-        paramValue: "brian-rutenberg",
-      },
-      {
-        displayText: "Artists",
-        paramName: FilterParamName.artistIDs,
-        paramValue: "ceravolo",
+        paramValue: ["anne-siems", "brian-rutenberg", "ceravolo"],
       },
     ]
 
@@ -1269,17 +1208,7 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
         {
           displayText: "Artists",
           paramName: FilterParamName.artistIDs,
-          paramValue: "alex-katz",
-        },
-        {
-          displayText: "Artists",
-          paramName: FilterParamName.artistIDs,
-          paramValue: "brian-rutenberg",
-        },
-        {
-          displayText: "Artists",
-          paramName: FilterParamName.artistIDs,
-          paramValue: "cat-sirot",
+          paramValue: ["anne-siems", "brian-rutenberg", "ceravolo"],
         },
       ])
     )

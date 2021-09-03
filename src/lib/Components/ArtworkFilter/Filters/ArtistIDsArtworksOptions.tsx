@@ -12,6 +12,7 @@ import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { sortBy } from "lodash"
 import React from "react"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
+import { useMultiSelect } from "./useMultiSelect"
 
 interface ArtistIDsArtworksOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "ArtistIDsOptionsScreen"> {}
@@ -21,56 +22,49 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
 
-  const selectedArtistOptions = selectedOptions.filter((value) => {
-    return value.paramName === FilterParamName.artistIDs
-  })
-
-  const selectedArtistIFollowOptions = selectedOptions.filter((value) => {
+  const selectedArtistIFollowOption = selectedOptions.find((value) => {
     return value.paramName === FilterParamName.artistsIFollow
   })
 
   const aggregation = aggregationForFilter(FilterParamName.artistIDs, aggregations)
-  const artistDisplayOptions = aggregation?.counts.map((aggCount) => {
-    return {
-      displayText: aggCount.name,
-      paramName: FilterParamName.artistIDs,
-      paramValue: aggCount.value,
-      filterKey: "artist",
-    }
+  const artistDisplayOptions =
+    aggregation?.counts.map((aggCount) => {
+      return {
+        displayText: aggCount.name,
+        paramName: FilterParamName.artistIDs,
+        paramValue: aggCount.value,
+        filterKey: "artist",
+      }
+    }) ?? []
+
+  const { handleSelect, isSelected } = useMultiSelect({
+    options: artistDisplayOptions,
+    paramName: FilterParamName.artistIDs,
   })
 
-  const sortedArtistOptions = sortBy(artistDisplayOptions ?? [], ["displayText"])
+  const formattedArtistOptions = artistDisplayOptions.map((option) => ({ ...option, paramValue: isSelected(option) }))
+  const sortedArtistOptions = sortBy(formattedArtistOptions, ["displayText"])
 
   // Add in Artists I Follow at the start of the list
   const allOptions = [
     {
       displayText: "All Artists I Follow",
       paramName: FilterParamName.artistsIFollow,
-      paramValue: !!(selectedArtistIFollowOptions ?? [])[0]?.paramValue,
+      paramValue: !!selectedArtistIFollowOption?.paramValue,
     },
     ...sortedArtistOptions,
   ]
 
-  const selectOption = (option: FilterData) => {
-    // Send the paramValue directly if we're dealing with an artist filter.
-    // If we're selecting the "Artists I Follow" filter, instead
-    // send the opposite of the current val.
-    const selectedVal = option.paramName === FilterParamName.artistIDs ? option.paramValue : !option.paramValue
-
-    selectFiltersAction({
-      displayText: option.displayText,
-      paramValue: selectedVal,
-      paramName: option.paramName,
-      filterKey: option.filterKey,
-    })
-  }
-
-  const selectedValuesForParam = [...selectedArtistOptions, ...selectedArtistIFollowOptions]
-  const itemIsSelected = (item: FilterData): boolean => {
-    if (item.paramName === FilterParamName.artistIDs) {
-      return !!(selectedValuesForParam ?? []).find(({ paramValue }) => item.paramValue === paramValue)
+  const selectOption = (option: FilterData, updatedValue: boolean) => {
+    if (option.paramName === FilterParamName.artistsIFollow) {
+      selectFiltersAction({
+        displayText: "All Artists I Follow",
+        paramName: FilterParamName.artistsIFollow,
+        paramValue: !selectedArtistIFollowOption?.paramValue,
+      })
+    } else {
+      handleSelect(option, updatedValue)
     }
-    return !!item.paramValue
   }
 
   // If FOLLOWED_ARTISTS is included in the list of available aggregations, it means
@@ -86,7 +80,6 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
       filterOptions={allOptions}
       onSelect={selectOption}
       navigation={navigation}
-      isSelected={itemIsSelected}
       isDisabled={itemIsDisabled}
     />
   )
