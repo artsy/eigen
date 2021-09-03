@@ -4,7 +4,7 @@ import { LayoutRectangle } from "react-native"
 import { TabBarContainer } from "./TabBarContainer"
 
 /**
- * Renders a  scrollable list of tabs.
+ * Renders a  scrollable list of tabs. Tabs are not evenly spaced across screen
  */
 export const ContentTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, tabs }) => {
   const [tabLayouts, setTabLayouts] = useState<Array<LayoutRectangle | null>>(tabs.map(() => null))
@@ -28,7 +28,7 @@ export const ContentTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, tabs }
               })
             }}
             onPress={() => {
-              onTabPress(index)
+              onTabPress(label, index)
             }}
           />
         )

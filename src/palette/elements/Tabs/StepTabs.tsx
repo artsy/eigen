@@ -11,21 +11,20 @@ import { TabBarContainer } from "./TabBarContainer"
  * Renders a list of tabs. Evenly-spaces them across the screen with
  * each tab label and chevron evenly spaced
  */
-
 export const StepTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, tabs }) => {
   const [tabLayouts, setTabLayouts] = useState<Array<LayoutRectangle | null>>(tabs.map(() => null))
   const tabWidth = useScreenDimensions().width / tabs.length
-  const onTabSelect = (index: number) => {
+  const onTabSelect = (label: string, index: number) => {
     if (index > 0 && !tabs[index - 1].completed) {
       return
     }
-    onTabPress(index)
+    onTabPress(label, index)
   }
   return (
     <TabBarContainer scrollEnabled={false} activeTabIndex={activeTab} tabLayouts={tabLayouts}>
       {tabs.map(({ label, completed }, index) => {
         return (
-          <TouchableOpacity onPress={() => onTabSelect(index)} key={label + index}>
+          <TouchableOpacity onPress={() => onTabSelect(label, index)} key={label + index}>
             <Box
               width={tabWidth}
               justifyContent={"space-between"}
@@ -47,7 +46,7 @@ export const StepTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, tabs }) =
               <Box flexDirection={"row"} alignItems={"center"}>
                 <Tab
                   label={label}
-                  onPress={() => onTabSelect(index)}
+                  onPress={() => onTabSelect(label, index)}
                   active={activeTab === index}
                   style={{ paddingHorizontal: 0, paddingLeft: 8, paddingRight: 5 }}
                   onLayout={() => {
