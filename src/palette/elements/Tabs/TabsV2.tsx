@@ -1,3 +1,4 @@
+import { Tab } from "lib/Scenes/Fair/Components/SimpleTabs"
 import { Box, Flex, Text, useColor } from "palette"
 import React, { Dispatch, SetStateAction } from "react"
 import { TouchableOpacity, View } from "react-native"

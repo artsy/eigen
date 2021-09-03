@@ -81,6 +81,16 @@ export const Favorites: React.FC<Props> = ({ initialTab = Tab.works }) => {
               content: <FavoriteCategoriesQueryRenderer />,
               initial: initialTab === Tab.categories,
             },
+            {
+              title: Tab.shows,
+              content: <FavoriteShowsQueryRenderer />,
+              initial: initialTab === Tab.shows,
+            },
+            {
+              title: Tab.categories,
+              content: <FavoriteCategoriesQueryRenderer />,
+              initial: initialTab === Tab.categories,
+            },
           ]}
           staticHeaderContent={<></>}
           stickyHeaderContent={
