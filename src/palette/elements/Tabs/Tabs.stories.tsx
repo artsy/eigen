@@ -1,6 +1,6 @@
 import { storiesOf } from "@storybook/react-native"
-import React from "react"
-import { useState } from "react"
+import React, { useState } from "react"
+import { View } from "react-native"
 import { withThemeV3 } from "storybook/decorators"
 import { TabsProps, TabsType } from "."
 import { ContentTabs } from "./ContentTabs"
@@ -14,7 +14,11 @@ interface WrapperProps {
 
 const Wrapper: React.FC<WrapperProps> = ({ component: Component, tabs }) => {
   const [activeTab, setActiveTab] = useState(0)
-  return <Component tabs={tabs} onTabPress={(_, index) => setActiveTab(index)} activeTab={activeTab} />
+  return (
+    <View style={{ marginTop: 50 }}>
+      <Component tabs={tabs} onTabPress={(_, index) => setActiveTab(index)} activeTab={activeTab} />
+    </View>
+  )
 }
 
 storiesOf("Navigational Tabs", module)
