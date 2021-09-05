@@ -13,6 +13,7 @@ export interface FancyModalHeaderProps {
   rightButtonText?: string
   useXButton?: boolean
   useShareButton?: boolean
+  rightCloseButton?: boolean
 }
 
 export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
@@ -25,6 +26,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
   rightButtonDisabled,
   useXButton,
   useShareButton,
+  rightCloseButton,
 }) => {
   const { space } = useTheme()
   const leftButton = () => {
@@ -38,11 +40,13 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
   const rightButton = () => {
     if (useShareButton) {
       return <ShareIcon fill="black100" height="25px" width="25px" />
+    }
+    if (rightCloseButton) {
+      return <CloseIcon fill="black100" />
     } else {
       return <ArrowRightIcon fill="black100" />
     }
   }
-
   return (
     <Flex>
       <Container alignItems="center" justifyContent="center">

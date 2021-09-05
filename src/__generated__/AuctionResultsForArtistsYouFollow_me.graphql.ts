@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type AuctionResultsForYou_me = {
+export type AuctionResultsForArtistsYouFollow_me = {
     readonly auctionResultsByFollowedArtists: {
         readonly totalCount: number | null;
         readonly edges: ReadonlyArray<{
@@ -16,12 +16,12 @@ export type AuctionResultsForYou_me = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "AuctionResultsForYou_me";
+    readonly " $refType": "AuctionResultsForArtistsYouFollow_me";
 };
-export type AuctionResultsForYou_me$data = AuctionResultsForYou_me;
-export type AuctionResultsForYou_me$key = {
-    readonly " $data"?: AuctionResultsForYou_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"AuctionResultsForYou_me">;
+export type AuctionResultsForArtistsYouFollow_me$data = AuctionResultsForArtistsYouFollow_me;
+export type AuctionResultsForArtistsYouFollow_me$key = {
+    readonly " $data"?: AuctionResultsForArtistsYouFollow_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"AuctionResultsForArtistsYouFollow_me">;
 };
 
 
@@ -52,14 +52,14 @@ const node: ReaderFragment = {
       }
     ]
   },
-  "name": "AuctionResultsForYou_me",
+  "name": "AuctionResultsForArtistsYouFollow_me",
   "selections": [
     {
       "alias": "auctionResultsByFollowedArtists",
       "args": null,
       "concreteType": "AuctionResultConnection",
       "kind": "LinkedField",
-      "name": "__AuctionResultsForYouContainer_auctionResultsByFollowedArtists_connection",
+      "name": "__AuctionResultsForArtistsYouFollowContainer_auctionResultsByFollowedArtists_connection",
       "plural": false,
       "selections": [
         {
@@ -163,5 +163,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '706441a8ef66861bd0a8ea70753346af';
+(node as any).hash = 'f19b214a2f89c8576b7f8c53067ee9b1';
 export default node;

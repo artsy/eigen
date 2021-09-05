@@ -26,8 +26,6 @@ import Config from "react-native-config"
 import { getBuildNumber, getVersion } from "react-native-device-info"
 import { useScreenDimensions } from "./useScreenDimensions"
 
-export const ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY = "ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY"
-
 const configurableFeatureFlagKeys = sortBy(
   Object.entries(features).filter(([_, { showInAdminMenu }]) => showInAdminMenu),
   ([k, { description }]) => description ?? k
@@ -78,24 +76,23 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           eigen v{getVersion()}, build {getBuildNumber()} ({ArtsyNativeModule.gitCommitShortHash})
         </Text>
         {Platform.OS === "ios" && (
-          <>
-            <MenuItem
-              title="Go to old Admin menu"
-              onPress={() => {
-                navigate("/admin", { modal: true })
-              }}
-            />
-            <MenuItem
-              title="Go to Storybook"
-              onPress={() => {
-                navigate("/storybook")
-              }}
-            />
-            <Flex mx="2">
-              <Separator my="1" />
-            </Flex>
-          </>
+          <MenuItem
+            title="Go to old Admin menu"
+            onPress={() => {
+              navigate("/admin", { modal: true })
+            }}
+          />
         )}
+        <MenuItem
+          title="Go to Storybook"
+          onPress={() => {
+            navigate("/storybook")
+          }}
+        />
+        <Flex mx="2">
+          <Separator my="1" />
+        </Flex>
+
         <EnvironmentOptions onClose={onClose} />
 
         <Flex mx="2">
@@ -108,12 +105,6 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         {configurableFeatureFlagKeys.map((flagKey) => {
           return <FeatureFlagItem key={flagKey} flagKey={flagKey} />
         })}
-        {Platform.OS === "android" && (
-          <FeatureFlagItemFromAsyncStorage
-            flagKey={ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY}
-            title={"Enable Push Notifications"}
-          />
-        )}
         <Flex mx="2">
           <Separator my="1" />
         </Flex>
@@ -200,51 +191,6 @@ const Buttons: React.FC<{ onClose(): void }> = ({ onClose }) => {
         <CloseIcon />
       </TouchableOpacity>
     </Flex>
-  )
-}
-
-const FeatureFlagItemFromAsyncStorage: React.FC<{ flagKey: string; title: string }> = ({ flagKey, title }) => {
-  const [flagValue, setFlagValue] = useState<string>("")
-  useEffect(() => {
-    AsyncStorage.getItem(flagKey).then((value) => {
-      if (value) {
-        setFlagValue(value)
-      }
-    })
-  }, [])
-  return (
-    <MenuItem
-      title={title}
-      onPress={() => {
-        Alert.alert(title, "This change will take effect after reloading the App", [
-          {
-            text: "Override with 'Yes'",
-            onPress() {
-              AsyncStorage.setItem(flagKey, "true", (error) => {
-                if (!error) {
-                  setFlagValue("true")
-                }
-              })
-            },
-          },
-          {
-            text: "Override with 'No'",
-            onPress() {
-              AsyncStorage.setItem(flagKey, "false", (error) => {
-                if (!error) {
-                  setFlagValue("false")
-                }
-              })
-            },
-          },
-        ])
-      }}
-      value={
-        <Text variant="subtitle" color="black60">
-          {flagValue}
-        </Text>
-      }
-    />
   )
 }
 

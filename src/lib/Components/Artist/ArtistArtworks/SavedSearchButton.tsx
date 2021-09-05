@@ -1,4 +1,4 @@
-import { ActionType, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
+import { ActionType, OwnerType, TappedCreateAlert, ToggledSavedSearch } from "@artsy/cohesion"
 import { captureMessage } from "@sentry/react-native"
 import { SavedSearchButton_me } from "__generated__/SavedSearchButton_me.graphql"
 import { SavedSearchButtonQuery } from "__generated__/SavedSearchButtonQuery.graphql"
@@ -8,7 +8,10 @@ import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageH
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
-import { SavedSearchAlertFormPropsBase } from "lib/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+import {
+  SavedSearchAlertFormPropsBase,
+  SavedSearchAlertMutationResult,
+} from "lib/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { BellIcon, Box, Button } from "palette"
 import React, { useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -58,7 +61,9 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   const handleOpenForm = () => setVisibleForm(true)
   const handleCloseForm = () => setVisibleForm(false)
 
-  const handleComplete = () => {
+  const handleComplete = (result: SavedSearchAlertMutationResult) => {
+    tracking.trackEvent(tracks.toggleSavedSearch(true, artistId, artistSlug, result.id))
+
     refetch()
     handleCloseForm()
 
@@ -171,5 +176,19 @@ export const tracks = {
     context_screen_owner_type: OwnerType.artist,
     context_screen_owner_id: artistId,
     context_screen_owner_slug: artistSlug,
+  }),
+  toggleSavedSearch: (
+    enabled: boolean,
+    artistId: string,
+    artistSlug: string,
+    searchCriteriaId: string
+  ): ToggledSavedSearch => ({
+    action: ActionType.toggledSavedSearch,
+    context_screen_owner_type: OwnerType.artist,
+    context_screen_owner_id: artistId,
+    context_screen_owner_slug: artistSlug,
+    modified: enabled,
+    original: !enabled,
+    search_criteria_id: searchCriteriaId,
   }),
 }

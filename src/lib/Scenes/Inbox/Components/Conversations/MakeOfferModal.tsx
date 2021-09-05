@@ -9,7 +9,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { BorderBox, Button, Flex, Text } from "palette"
 import React, { useState } from "react"
-import { View } from "react-native"
+import { ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { InquiryMakeOfferButtonFragmentContainer as InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
 
@@ -40,55 +40,57 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
       <FancyModalHeader rightButtonDisabled hideBottomDivider>
         Make Offer
       </FancyModalHeader>
-      <Flex p={1.5}>
-        <Text variant="largeTitle">Confirm Artwork</Text>
-        <Text variant="small" color="black60">
-          Make sure the artwork below matches the intended work you're making an offer on.
-        </Text>
-        <BorderBox p={0} my={2}>
-          <CollapsibleArtworkDetails hasSeparator={false} artwork={artwork} />
-        </BorderBox>
-        {!!artwork.isEdition && artwork.editionSets!.length > 1 && (
-          <Flex mb={1}>
-            <Text color="black100" mb={1}>
-              Which edition are you interested in?
-            </Text>
-            {artwork.editionSets?.map((edition) => (
-              <EditionSelectBox
-                edition={edition!}
-                selected={edition!.internalID === selectedEdition}
-                onPress={selectEdition}
-                key={`edition-set-${edition?.internalID}`}
-              />
-            ))}
-          </Flex>
-        )}
-        <InquiryMakeOfferButton
-          variant="primaryBlack"
-          buttonText="Confirm"
-          artwork={artwork}
-          disabled={!!artwork.isEdition && !selectedEdition}
-          editionSetID={selectedEdition ? selectedEdition : null}
-          conversationID={conversationID}
-        />
-        <Button
-          mt={1}
-          size="large"
-          variant="secondaryOutline"
-          block
-          width={100}
-          onPress={() => {
-            dismissModal()
-          }}
-        >
-          Cancel
-        </Button>
-        <Flex bg="black5" p={1} mt={1}>
-          <Text variant="small">
-            Making an offer doesn’t guarantee you the work, as the seller might be receiving competing offers.
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Flex p={1.5}>
+          <Text variant="largeTitle">Confirm Artwork</Text>
+          <Text variant="small" color="black60">
+            Make sure the artwork below matches the intended work you're making an offer on.
           </Text>
+          <BorderBox p={0} my={2}>
+            <CollapsibleArtworkDetails hasSeparator={false} artwork={artwork} />
+          </BorderBox>
+          {!!artwork.isEdition && artwork.editionSets!.length > 1 && (
+            <Flex mb={1}>
+              <Text color="black100" mb={1}>
+                Which edition are you interested in?
+              </Text>
+              {artwork.editionSets?.map((edition) => (
+                <EditionSelectBox
+                  edition={edition!}
+                  selected={edition!.internalID === selectedEdition}
+                  onPress={selectEdition}
+                  key={`edition-set-${edition?.internalID}`}
+                />
+              ))}
+            </Flex>
+          )}
+          <InquiryMakeOfferButton
+            variant="primaryBlack"
+            buttonText="Confirm"
+            artwork={artwork}
+            disabled={!!artwork.isEdition && !selectedEdition}
+            editionSetID={selectedEdition ? selectedEdition : null}
+            conversationID={conversationID}
+          />
+          <Button
+            mt={1}
+            size="large"
+            variant="secondaryOutline"
+            block
+            width={100}
+            onPress={() => {
+              dismissModal()
+            }}
+          >
+            Cancel
+          </Button>
+          <Flex bg="black5" p={1} mt={1} mb={6}>
+            <Text variant="small">
+              Making an offer doesn’t guarantee you the work, as the seller might be receiving competing offers.
+            </Text>
+          </Flex>
         </Flex>
-      </Flex>
+      </ScrollView>
     </View>
   )
 }

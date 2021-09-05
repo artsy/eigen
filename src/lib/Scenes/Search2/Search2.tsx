@@ -7,25 +7,51 @@ import { SearchInput as SearchBox } from "lib/Components/SearchInput"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
+import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
-import { Flex, Spacer, Text, Touchable, useColor } from "palette"
+import { Flex, Pill, Spacer, Text, Touchable } from "palette"
 import React, { useRef, useState } from "react"
 import { connectHighlight, connectInfiniteHits, connectSearchBox, InstantSearch } from "react-instantsearch-native"
 import { FlatList, Platform, ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components"
+import { AutosuggestResults } from "../Search/AutosuggestResults"
 import { CityGuideCTA } from "../Search/CityGuideCTA"
+import { RecentSearches } from "../Search/RecentSearches"
+import { SearchContext, useSearchProviderValues } from "../Search/SearchContext"
 
 interface SearchInputProps {
   refine: (value: string) => any
+  placeholder: string
+  currentRefinement: string
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({ refine }) => {
+const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, refine, placeholder }) => {
+  const { trackEvent } = useTracking()
+  const searchProviderValues = useSearchProviderValues(currentRefinement)
   return (
     <SearchBox
-      placeholder="Search artists"
+      ref={searchProviderValues.inputRef}
+      enableCancelButton
+      placeholder={placeholder}
       onChangeText={(queryText) => {
         refine(queryText)
+        trackEvent({
+          action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
+          query: queryText,
+        })
+      }}
+      onFocus={() => {
+        trackEvent({
+          action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
+          currentRefinement,
+        })
+      }}
+      onClear={() => {
+        trackEvent({
+          action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
+        })
       }}
     />
   )
@@ -106,9 +132,9 @@ interface SearchState {
 }
 
 export const Search2: React.FC<Search2QueryResponse> = (props) => {
-  const color = useColor()
   const [searchState, setSearchState] = useState<SearchState>({})
-
+  const [selectedAlgoliaIndex, setSelectedAlgoliaIndex] = useState("")
+  const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
   const { system } = props
 
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
@@ -118,28 +144,53 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
     return null
   }
 
+  const renderResults = () =>
+    !!selectedAlgoliaIndex ? <SearchResultsContainer /> : <AutosuggestResults query={searchState.query!} />
+
+  const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 2
+
   return (
-    <ArtsyKeyboardAvoidingView>
-      <InstantSearch
-        searchClient={searchClient}
-        indexName="Artist_staging"
-        searchState={searchState}
-        onSearchStateChange={setSearchState}
-      >
-        <Flex p={2} pb={1} style={{ borderBottomWidth: 1, borderColor: color("black10") }}>
-          <SearchInputContainer />
-        </Flex>
-        {!!searchState?.query?.length && searchState?.query?.length >= 2 ? (
-          <SearchResultsContainer />
-        ) : (
-          <Scrollable>
-            <Spacer mb={3} />
-            {!isPad() && Platform.OS === "ios" ? <CityGuideCTA /> : null}
-            <Spacer mb="40px" />
-          </Scrollable>
-        )}
-      </InstantSearch>
-    </ArtsyKeyboardAvoidingView>
+    <SearchContext.Provider value={searchProviderValues}>
+      <ArtsyKeyboardAvoidingView>
+        <InstantSearch
+          searchClient={searchClient}
+          indexName={selectedAlgoliaIndex}
+          searchState={searchState}
+          onSearchStateChange={setSearchState}
+        >
+          <Flex p={2} pb={1}>
+            <SearchInputContainer
+              placeholder={!!selectedAlgoliaIndex ? "Search Artists" : "Search artists, artworks, galleries, etc"}
+            />
+          </Flex>
+
+          {!!shouldStartQuering ? (
+            <>
+              <Flex p={2} pb={1} flexDirection="row">
+                {system?.algolia?.indices.map(({ name, displayName }) => (
+                  <Pill
+                    key={name}
+                    rounded
+                    selected={selectedAlgoliaIndex === name}
+                    onPress={() => setSelectedAlgoliaIndex(selectedAlgoliaIndex === name ? "" : name)}
+                  >
+                    {displayName}
+                  </Pill>
+                ))}
+              </Flex>
+              {renderResults()}
+            </>
+          ) : (
+            <Scrollable>
+              <RecentSearches />
+              <Spacer mb={3} />
+              {!isPad() && Platform.OS === "ios" && <CityGuideCTA />}
+              <Spacer mb="40px" />
+            </Scrollable>
+          )}
+        </InstantSearch>
+      </ArtsyKeyboardAvoidingView>
+    </SearchContext.Provider>
   )
 }
 
@@ -150,9 +201,14 @@ export const Search2QueryRenderer: React.FC<{}> = ({}) => {
       query={graphql`
         query Search2Query {
           system {
+            __typename
             algolia {
               appID
               apiKey
+              indices {
+                name
+                displayName
+              }
             }
           }
         }

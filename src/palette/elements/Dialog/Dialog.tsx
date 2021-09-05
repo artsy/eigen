@@ -112,7 +112,7 @@ export const Dialog = (props: DialogProps) => {
               </Text>
             </ScrollView>
           )}
-          <Flex mt={0.5} mb={2} mx={2} flexDirection="row" justifyContent="flex-end">
+          <Flex mt={2} mb={2} mx={2} flexDirection="row" justifyContent="flex-end">
             {!!secondaryCta && (
               <Button
                 size="small"

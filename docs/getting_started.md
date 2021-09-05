@@ -8,7 +8,7 @@ You'll need [Node](https://nodejs.org/en/), [Yarn](https://yarnpkg.com/en/) and 
 
 ### Setting up iOS
 
-Currently we require developers to use Xcode 12, with the latest version (12.2.0) recommended. You can find all versions of Xcode from [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
+Currently we require developers to use Xcode 12 version (12.5.1). You can find all versions of Xcode from [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
 
 <details><summary>NOTE: After installing Xcode</summary>
 
@@ -49,6 +49,8 @@ gem install bundler
 bundle install
 
 ./scripts/setup-env-for-oss # or ./scripts/setup-env-for-artsy
+
+yarn install
 
 bundle exec pod install --repo-update
 ```

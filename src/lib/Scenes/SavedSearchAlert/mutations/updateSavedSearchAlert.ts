@@ -1,8 +1,14 @@
-import { updateSavedSearchAlertMutation } from "__generated__/updateSavedSearchAlertMutation.graphql"
+import {
+  updateSavedSearchAlertMutation,
+  updateSavedSearchAlertMutationResponse,
+} from "__generated__/updateSavedSearchAlertMutation.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
-export const updateSavedSearchAlert = (name: string, savedSearchAlertId: string) => {
+export const updateSavedSearchAlert = (
+  name: string,
+  savedSearchAlertId: string
+): Promise<updateSavedSearchAlertMutationResponse> => {
   return new Promise((resolve, reject) => {
     commitMutation<updateSavedSearchAlertMutation>(defaultEnvironment, {
       mutation: graphql`

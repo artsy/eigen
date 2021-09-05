@@ -12,14 +12,18 @@ import { extractPills, getNamePlaceholder } from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
 import { updateSavedSearchAlert } from "./mutations/updateSavedSearchAlert"
-import { SavedSearchAlertFormPropsBase, SavedSearchAlertFormValues } from "./SavedSearchAlertModel"
+import {
+  SavedSearchAlertFormPropsBase,
+  SavedSearchAlertFormValues,
+  SavedSearchAlertMutationResult,
+} from "./SavedSearchAlertModel"
 
 export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase {
   initialValues: {
     name: string
   }
   savedSearchAlertId?: string
-  onComplete?: () => void
+  onComplete?: (result: SavedSearchAlertMutationResult) => void
   onDeleteComplete?: () => void
 }
 
@@ -50,15 +54,25 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       }
 
       try {
+        let result: SavedSearchAlertMutationResult
+
         if (isUpdateForm) {
-          await updateSavedSearchAlert(alertName, savedSearchAlertId!)
+          const response = await updateSavedSearchAlert(alertName, savedSearchAlertId!)
           tracking.trackEvent(tracks.editedSavedSearch(savedSearchAlertId!, initialValues, values))
+
+          result = {
+            id: response.updateSavedSearch?.savedSearchOrErrors.internalID!,
+          }
         } else {
           const criteria = getSearchCriteriaFromFilters(artistId, filters)
-          await createSavedSearchAlert(alertName, criteria)
+          const response = await createSavedSearchAlert(alertName, criteria)
+
+          result = {
+            id: response.createSavedSearch?.savedSearchOrErrors.internalID!,
+          }
         }
 
-        onComplete?.()
+        onComplete?.(result)
       } catch (error) {
         console.error(error)
       }

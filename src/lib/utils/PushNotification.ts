@@ -7,7 +7,6 @@ import { PendingPushNotification } from "lib/store/PendingPushNotificationModel"
 import { Platform } from "react-native"
 import { getDeviceId } from "react-native-device-info"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
-import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "./AdminMenu"
 
 export const PUSH_NOTIFICATION_TOKEN = "PUSH_NOTIFICATION_TOKEN"
 export const HAS_PENDING_NOTIFICATION = "HAS_PENDING_NOTIFICATION"
@@ -184,59 +183,56 @@ export const handleReceivedNotification = (notification: Omit<ReceivedNotificati
 }
 
 export async function configure() {
-  const canInitPushNotification = await AsyncStorage.getItem(ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY)
-  if (canInitPushNotification === "true") {
-    PushNotification.configure({
-      // (optional) Called when Token is generated (iOS and Android)
-      onRegister: (token) => {
-        if (__DEV__) {
-          console.log("TOKEN:", token)
-        }
-        saveToken(token.token)
-      },
+  PushNotification.configure({
+    // (optional) Called when Token is generated (iOS and Android)
+    onRegister: (token) => {
+      if (__DEV__) {
+        console.log("TOKEN:", token)
+      }
+      saveToken(token.token)
+    },
 
-      // (required) Called when a remote is received or opened, or local notification is opened
-      onNotification: handleReceivedNotification,
+    // (required) Called when a remote is received or opened, or local notification is opened
+    onNotification: handleReceivedNotification,
 
-      // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
-      onAction: (notification) => {
-        if (__DEV__) {
-          console.log("ACTION:", notification.action)
-          console.log("NOTIFICATION:", notification)
-        }
+    // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
+    onAction: (notification) => {
+      if (__DEV__) {
+        console.log("ACTION:", notification.action)
+        console.log("NOTIFICATION:", notification)
+      }
 
-        // process the action
-      },
+      // process the action
+    },
 
-      // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
-      onRegistrationError: (err) => {
-        if (__DEV__) {
-          console.error(err?.message, err)
-        }
-      },
+    // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
+    onRegistrationError: (err) => {
+      if (__DEV__) {
+        console.error(err?.message, err)
+      }
+    },
 
-      // IOS ONLY (optional): default: all - Permissions to register.
-      // permissions: {
-      //   alert: true,
-      //   badge: true,
-      //   sound: true,
-      // },
+    // IOS ONLY (optional): default: all - Permissions to register.
+    // permissions: {
+    //   alert: true,
+    //   badge: true,
+    //   sound: true,
+    // },
 
-      // Should the initial notification be popped automatically
-      // default: true
-      popInitialNotification: true,
+    // Should the initial notification be popped automatically
+    // default: true
+    popInitialNotification: true,
 
-      /**
-       * (optional) default: true
-       * - Specified if permissions (ios) and token (android and ios) will requested or not,
-       * - if not, you must call PushNotificationsHandler.requestPermissions() later
-       * - if you are not using remote notification or do not have Firebase installed, use this:
-       *     requestPermissions: Platform.OS === 'ios'
-       */
-      // TODO:- Update this as required when implementing for ios
-      requestPermissions: true,
-    })
-  }
+    /**
+     * (optional) default: true
+     * - Specified if permissions (ios) and token (android and ios) will requested or not,
+     * - if not, you must call PushNotificationsHandler.requestPermissions() later
+     * - if you are not using remote notification or do not have Firebase installed, use this:
+     *     requestPermissions: Platform.OS === 'ios'
+     */
+    // TODO:- Update this as required when implementing for ios
+    requestPermissions: true,
+  })
 }
 
 export const getNotificationPermissionsStatus = (): Promise<PushAuthorizationStatus> => {

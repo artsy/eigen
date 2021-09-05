@@ -148,7 +148,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     new RouteMatcher("/inquiry/:artworkID", "Inquiry"),
     new RouteMatcher("/viewing-rooms", "ViewingRooms"),
-    new RouteMatcher("/auction-results-for-you", "AuctionResultsForYou"),
+    new RouteMatcher("/auction-results-for-artists-you-follow", "AuctionResultsForArtistsYouFollow"),
     new RouteMatcher("/viewing-room/:viewing_room_id", "ViewingRoom"),
     new RouteMatcher("/viewing-room/:viewing_room_id/artworks", "ViewingRoomArtworks"),
     new RouteMatcher("/viewing-room/:viewing_room_id/:artwork_id", "ViewingRoomArtwork"),
@@ -223,7 +223,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-profile/saved-search-alerts", "SavedSearchAlertsList"),
     new RouteMatcher("/my-profile/saved-search-alerts/:savedSearchAlertId", "EditSavedSearchAlert"),
     unsafe_getFeatureFlag("AROptionsUseReactNativeWebView")
-      ? webViewRoute("/orders/:orderID", { mimicBrowserBackButton: false })
+      ? webViewRoute("/orders/:orderID", { mimicBrowserBackButton: true, useRightCloseButton: true })
       : new RouteMatcher("/orders/:orderID", "Checkout"),
     __DEV__ && new RouteMatcher("/storybook", "Storybook"),
 

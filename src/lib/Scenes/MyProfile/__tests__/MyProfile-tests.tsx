@@ -1,12 +1,8 @@
-import AsyncStorage from "@react-native-community/async-storage"
 import { MyProfileTestsQuery } from "__generated__/MyProfileTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY } from "lib/utils/AdminMenu"
 import { Platform } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -74,19 +70,9 @@ describe(MyProfileQueryRenderer, () => {
     expect(extractText(tree.root)).toContain("Push notifications")
   })
 
-  it("doesn't render push notifications on Android", () => {
+  it("renders push notifications on Android", () => {
     Platform.OS = "android"
     const tree = getWrapper()
-    expect(extractText(tree.root)).not.toContain("Push notifications")
-  })
-
-  it("renders push notifications on Android if enabled", async () => {
-    await AsyncStorage.setItem(ASYNC_STORAGE_PUSH_NOTIFICATIONS_KEY, "true")
-    Platform.OS = "android"
-    const tree = getWrapper()
-
-    await flushPromiseQueue()
-    tree.update(<TestRenderer />)
     expect(extractText(tree.root)).toContain("Push notifications")
   })
 

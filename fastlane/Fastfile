@@ -170,7 +170,19 @@ lane :ship_beta_android do
     project_dir: "android/",
   )
 
+  firebase_app_distribution(
+    app: ENV["FIREBASE_APP_ID"],
+  )
+
   upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
+
+  # build again with flag set to false for release candidates
+  flag_android_beta(is_android_beta: false)
+  gradle(
+    task: "bundle",
+    build_type: "Release",
+    project_dir: "android/",
+  )
 
   supply(
     track: "alpha",
@@ -181,38 +193,21 @@ lane :ship_beta_android do
 end
 
 lane :promote_beta_android do
-  current_release_name = google_play_track_release_names(
-    track: "alpha"
-  ).first
   current_version_code = google_play_track_version_codes(
     track: "alpha",
   ).first
 
-  # checkout the tag corresponding to that version code
-  start_branch = git_branch
-  vname, vcode = set_build_version_android(version_code: current_version_code)
-  android_tag =  "android-#{vname}-#{vcode}"
-  sh("git", "checkout", android_tag)
-
-  flag_android_beta(is_android_beta: false)
-
-  gradle(
-    task: "bundle",
-    build_type: "Release",
-    project_dir: "android/",
-  )
-
   supply(
-    track: 'production',
+    track: 'alpha',
     version_code: current_version_code,
+    track_promote_to: 'production',
     skip_upload_metadata: true,
     skip_upload_images: true,
     skip_upload_screenshots: true,
   )
 
-  sh("git", "stash")
-
-  sh("git", "checkout", start_branch)
+  vname, vcode = set_build_version_android(version_code: current_version_code)
+  tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
 end
 
 lane :promote_beta_ios do
