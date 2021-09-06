@@ -6,7 +6,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Flex, Spinner, useTheme } from "palette"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { EmptyMessage } from "./EmptyMessage"
@@ -26,17 +26,20 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   const [refreshMode, setRefreshMode] = useState<RefreshType | null>(null)
   const { space } = useTheme()
   const items = extractNodes(me.savedSearchesConnection)
-  const onRefresh = useRef((type: RefreshType = "default") => {
-    setRefreshMode(type)
+  const onRefresh = useCallback(
+    (type: RefreshType = "default") => {
+      setRefreshMode(type)
 
-    relay.refetchConnection(SAVED_SERCHES_PAGE_SIZE, (error) => {
-      if (error) {
-        console.error(error)
-      }
+      relay.refetchConnection(SAVED_SERCHES_PAGE_SIZE, (error) => {
+        if (error) {
+          console.error(error)
+        }
 
-      setRefreshMode(null)
-    })
-  }).current
+        setRefreshMode(null)
+      })
+    },
+    [relay]
+  )
 
   useEffect(() => {
     const onDeleteRefresh = () => onRefresh("delete")
@@ -44,7 +47,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
     return () => {
       navigationEvents.removeListener("goBack", onDeleteRefresh)
     }
-  }, [])
+  }, [onRefresh])
 
   const loadMore = () => {
     if (!relay.hasMore() || relay.isLoading()) {
