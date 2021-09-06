@@ -956,7 +956,12 @@ describe("getSelectedFiltersCounts helper", () => {
     {
       displayText: "Artists",
       paramName: FilterParamName.artistIDs,
-      paramValue: ["alex-katz", "anne-siems", "cat-sirot", "brian-rutenberg", "ceravolo", "andy-warhol"],
+      paramValue: ["alex-katz", "anne-siems", "cat-sirot", "ceravolo", "andy-warhol"],
+    },
+    {
+      displayText: "Artists",
+      paramName: FilterParamName.artistsIFollow,
+      paramValue: true,
     },
   ]
 

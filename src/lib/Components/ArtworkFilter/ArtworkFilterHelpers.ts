@@ -621,15 +621,34 @@ export const getUnitedSelectedAndAppliedFilters = ({
 
 export const getSelectedFiltersCounts = (selectedFilters: FilterArray) => {
   const counts: Partial<SelectedFiltersCounts> = {}
+  let isAllArtistsIFollowSelected = false
+
   selectedFilters.forEach(({ paramName, paramValue }: FilterData) => {
-    if (waysToBuyFilterNames.includes(paramName)) {
-      counts.waysToBuy = (counts.waysToBuy ?? 0) + 1
-    } else if (createdYearsFilterNames.includes(paramName)) {
-      counts.year = 1
-    } else if (isArray(paramValue)) {
-      counts[paramName] = paramValue.length
-    } else {
-      counts[paramName] = 1
+    switch (true) {
+      case waysToBuyFilterNames.includes(paramName): {
+        counts.waysToBuy = (counts.waysToBuy ?? 0) + 1
+        break
+      }
+      case createdYearsFilterNames.includes(paramName): {
+        counts.year = 1
+        break
+      }
+      case paramName === FilterParamName.artistsIFollow: {
+        isAllArtistsIFollowSelected = true
+        counts.artistIDs = (counts.artistIDs ?? 0) + 1
+        break
+      }
+      case isArray(paramValue): {
+        if (paramName === FilterParamName.artistIDs && isAllArtistsIFollowSelected) {
+          counts.artistIDs = (paramValue as []).length + 1
+        } else {
+          counts[paramName] = (paramValue as []).length
+        }
+        break
+      }
+      default: {
+        counts[paramName] = 1
+      }
     }
   })
 
