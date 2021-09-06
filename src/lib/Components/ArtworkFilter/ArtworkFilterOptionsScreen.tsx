@@ -7,8 +7,7 @@ import {
   getSelectedFiltersCounts,
   getUnitedSelectedAndAppliedFilters,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { selectedOption } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
@@ -80,8 +79,6 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const clearFiltersZeroStateAction = ArtworksFiltersStore.useStoreActions(
     (action) => action.clearFiltersZeroStateAction
   )
-
-  const selectedOptions = useSelectedOptionsDisplay()
 
   const selectedFiltersCounts = useMemo(() => {
     const unitedFilters = getUnitedSelectedAndAppliedFilters({
@@ -185,15 +182,6 @@ export const ArtworkFilterOptionsScreen: React.FC<
         data={sortedFilterOptions}
         style={{ flexGrow: 1 }}
         renderItem={({ item }) => {
-          const selectedCurrentOption = selectedOption({
-            selectedOptions,
-            filterScreen: item.filterType,
-            aggregations: aggregationsState,
-          })
-
-          const currentOption =
-            selectedCurrentOption === "All" || selectedCurrentOption === "Default" ? null : selectedCurrentOption
-
           const selectedFiltersCount = selectedFiltersCounts[item.filterType as FilterParamName]
 
           return (
@@ -206,12 +194,6 @@ export const ArtworkFilterOptionsScreen: React.FC<
                 </Flex>
 
                 <Flex flex={1} flexDirection="row" alignItems="center" justifyContent="flex-end">
-                  <Flex flex={1} alignItems="flex-end">
-                    <CurrentOption variant="caption" color="black60" ellipsizeMode="tail" numberOfLines={1}>
-                      {currentOption}
-                    </CurrentOption>
-                  </Flex>
-
                   <ArrowRightIcon fill="black30" ml={1} />
                 </Flex>
               </OptionListItem>
