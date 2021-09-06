@@ -1424,6 +1424,7 @@ type Artwork implements Node & Searchable & Sellable {
   layers: [ArtworkLayer]
   listPrice: ListPrice
   literature(format: Format): String
+  location: Location
   manufacturer(format: Format): String
 
   # Represents the **materials** used in this work, such as _oil and acrylic on
