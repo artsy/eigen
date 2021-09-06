@@ -90,7 +90,7 @@ describe("Select Filters", () => {
     const filterArtworksStore = getFilterArtworksStore(filterState)
     filterArtworksStore.getActions().selectFiltersAction({
       paramName: FilterParamName.artistIDs,
-      paramValue: "artist-1",
+      paramValue: ["artist-1"],
       displayText: "Artist 1",
     })
 
@@ -101,7 +101,7 @@ describe("Select Filters", () => {
       selectedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
+          paramValue: ["artist-1"],
           displayText: "Artist 1",
         },
       ],
@@ -122,7 +122,7 @@ describe("Select Filters", () => {
       selectedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
+          paramValue: ["artist-1"],
           displayText: "Artist 1",
         },
       ],
@@ -137,8 +137,8 @@ describe("Select Filters", () => {
     const filterArtworksStore = getFilterArtworksStore(filterState)
     filterArtworksStore.getActions().selectFiltersAction({
       paramName: FilterParamName.artistIDs,
-      paramValue: "artist-2",
-      displayText: "Artist 2",
+      paramValue: ["artist-1", "artist-2"],
+      displayText: "Artist 1, Artist 2",
     })
 
     expect(filterArtworksStore.getState()).toEqual({
@@ -148,13 +148,8 @@ describe("Select Filters", () => {
       selectedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
-          displayText: "Artist 1",
-        },
-        {
-          paramName: FilterParamName.artistIDs,
-          paramValue: "artist-2",
-          displayText: "Artist 2",
+          paramValue: ["artist-1", "artist-2"],
+          displayText: "Artist 1, Artist 2",
         },
       ],
       aggregations: [],
@@ -174,13 +169,8 @@ describe("Select Filters", () => {
       selectedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
-          displayText: "Artist 1",
-        },
-        {
-          paramName: FilterParamName.artistIDs,
-          paramValue: "artist-2",
-          displayText: "Artist 2",
+          paramValue: ["artist-1", "artist-2"],
+          displayText: "Artist 1, Artist 2",
         },
         {
           paramName: FilterParamName.waysToBuyBid,
@@ -199,7 +189,7 @@ describe("Select Filters", () => {
     const filterArtworksStore = getFilterArtworksStore(filterState)
     filterArtworksStore.getActions().selectFiltersAction({
       paramName: FilterParamName.artistIDs,
-      paramValue: "artist-2",
+      paramValue: ["artist-2"],
       displayText: "Artist 2",
     })
 
@@ -210,8 +200,8 @@ describe("Select Filters", () => {
       selectedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
-          displayText: "Artist 1",
+          paramValue: ["artist-2"],
+          displayText: "Artist 2",
         },
         {
           paramName: FilterParamName.waysToBuyBid,
@@ -234,14 +224,14 @@ describe("Select Filters", () => {
       appliedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
+          paramValue: ["artist-1"],
           displayText: "Artist 1",
         },
       ],
       previouslyAppliedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
+          paramValue: ["artist-1"],
           displayText: "Artist 1",
         },
       ],
@@ -257,7 +247,7 @@ describe("Select Filters", () => {
     const filterArtworksStore = getFilterArtworksStore(filterState)
     filterArtworksStore.getActions().selectFiltersAction({
       paramName: FilterParamName.artistIDs,
-      paramValue: "artist-1",
+      paramValue: ["artist-1"],
       displayText: "Artist 1",
     })
 
@@ -266,21 +256,21 @@ describe("Select Filters", () => {
       appliedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
+          paramValue: ["artist-1"],
           displayText: "Artist 1",
         },
       ],
       previouslyAppliedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
+          paramValue: ["artist-1"],
           displayText: "Artist 1",
         },
       ],
       selectedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
+          paramValue: ["artist-1"],
           displayText: "Artist 1",
         },
       ],
@@ -798,7 +788,7 @@ describe("Apply Filters", () => {
       selectedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
+          paramValue: ["artist-1"],
           displayText: "Artist 1",
         },
       ],
@@ -818,14 +808,14 @@ describe("Apply Filters", () => {
       appliedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
+          paramValue: ["artist-1"],
           displayText: "Artist 1",
         },
       ],
       previouslyAppliedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
+          paramValue: ["artist-1"],
           displayText: "Artist 1",
         },
       ],
@@ -847,13 +837,8 @@ describe("Apply Filters", () => {
       selectedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
-          displayText: "Artist 1",
-        },
-        {
-          paramName: FilterParamName.artistIDs,
-          paramValue: "artist-2",
-          displayText: "Artist 2",
+          paramValue: ["artist-1", "artist-2"],
+          displayText: "Artist 1, Artist 2",
         },
       ],
       aggregations: [],
@@ -877,25 +862,15 @@ describe("Apply Filters", () => {
       appliedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
-          displayText: "Artist 1",
-        },
-        {
-          paramName: FilterParamName.artistIDs,
-          paramValue: "artist-2",
-          displayText: "Artist 2",
+          paramValue: ["artist-1", "artist-2"],
+          displayText: "Artist 1, Artist 2",
         },
       ],
       previouslyAppliedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
-          displayText: "Artist 1",
-        },
-        {
-          paramName: FilterParamName.artistIDs,
-          paramValue: "artist-2",
-          displayText: "Artist 2",
+          paramValue: ["artist-1", "artist-2"],
+          displayText: "Artist 1, Artist 2",
         },
       ],
       selectedFilters: [],
@@ -910,20 +885,15 @@ describe("Apply Filters", () => {
       previouslyAppliedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
+          paramValue: ["artist-1"],
           displayText: "Artist 1",
         },
       ],
       selectedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
-          displayText: "Artist 1",
-        },
-        {
-          paramName: FilterParamName.artistIDs,
-          paramValue: "artist-2",
-          displayText: "Artist 2",
+          paramValue: ["artist-1", "artist-2"],
+          displayText: "Artist 1, Artist 2",
         },
       ],
       aggregations: [],
@@ -947,15 +917,15 @@ describe("Apply Filters", () => {
       appliedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-2",
-          displayText: "Artist 2",
+          paramValue: ["artist-1", "artist-2"],
+          displayText: "Artist 1, Artist 2",
         },
       ],
       previouslyAppliedFilters: [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-2",
-          displayText: "Artist 2",
+          paramValue: ["artist-1", "artist-2"],
+          displayText: "Artist 1, Artist 2",
         },
       ],
       selectedFilters: [],
@@ -1068,7 +1038,7 @@ describe("SetInitialFilterState", () => {
 
 describe("selectedOptionsUnion", () => {
   describe("artworks", () => {
-    it("correctly unions non-artistID params", () => {
+    it("correctly unions params", () => {
       const previouslyAppliedFilters = [{ displayText: "Recently Updated", paramName: FilterParamName.sort }]
       const selectedFilters = [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }]
 
@@ -1171,12 +1141,12 @@ describe("selectedOptionsUnion", () => {
       ])
     })
 
-    it("correctly unions with a single artistID param", () => {
+    it("correctly unions with a single selected artist", () => {
       const previouslyAppliedFilters = [] as FilterArray
       const selectedFilters = [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
+          paramValue: ["artist-1"],
           displayText: "Artist 1",
         },
       ]
@@ -1184,7 +1154,7 @@ describe("selectedOptionsUnion", () => {
       expect(selectedOptionsUnion({ selectedFilters, previouslyAppliedFilters })).toEqual([
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
+          paramValue: ["artist-1"],
           displayText: "Artist 1",
         },
         {
@@ -1272,11 +1242,6 @@ describe("selectedOptionsUnion", () => {
           paramValue: false,
         },
         {
-          displayText: "All",
-          paramName: "artistIDs",
-          paramValue: [],
-        },
-        {
           displayText: "Grid",
           paramName: "viewAs",
           paramValue: false,
@@ -1289,31 +1254,21 @@ describe("selectedOptionsUnion", () => {
       ])
     })
 
-    it("correctly unions with a multiple artistID params", () => {
+    it("correctly unions with multiple selected artists", () => {
       const previouslyAppliedFilters = [] as FilterArray
       const selectedFilters = [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
-          displayText: "Artist 1",
-        },
-        {
-          paramName: FilterParamName.artistIDs,
-          paramValue: "artist-2",
-          displayText: "Artist 2",
+          paramValue: ["artist-1", "artist-2"],
+          displayText: "Artist 1, Artist 2",
         },
       ]
 
       expect(selectedOptionsUnion({ selectedFilters, previouslyAppliedFilters })).toEqual([
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
-          displayText: "Artist 1",
-        },
-        {
-          paramName: FilterParamName.artistIDs,
-          paramValue: "artist-2",
-          displayText: "Artist 2",
+          paramValue: ["artist-1", "artist-2"],
+          displayText: "Artist 1, Artist 2",
         },
         {
           displayText: "Default",
@@ -1400,11 +1355,6 @@ describe("selectedOptionsUnion", () => {
           paramValue: false,
         },
         {
-          displayText: "All",
-          paramName: "artistIDs",
-          paramValue: [],
-        },
-        {
           displayText: "Grid",
           paramName: "viewAs",
           paramValue: false,
@@ -1417,42 +1367,27 @@ describe("selectedOptionsUnion", () => {
       ])
     })
 
-    it("correctly unions with a multiple artistID params when an artistID has been previously applied", () => {
+    it("correctly unions with multiple selected artists when an artist has been previously applied", () => {
       const previouslyAppliedFilters = [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-3",
+          paramValue: ["artist-3"],
           displayText: "Artist 3",
         },
       ] as FilterArray
       const selectedFilters = [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
-          displayText: "Artist 1",
-        },
-        {
-          paramName: FilterParamName.artistIDs,
-          paramValue: "artist-2",
-          displayText: "Artist 2",
+          paramValue: ["artist-1", "artist-2"],
+          displayText: "Artist 1, Artist 2",
         },
       ]
 
       expect(selectedOptionsUnion({ selectedFilters, previouslyAppliedFilters })).toEqual([
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
-          displayText: "Artist 1",
-        },
-        {
-          paramName: FilterParamName.artistIDs,
-          paramValue: "artist-2",
-          displayText: "Artist 2",
-        },
-        {
-          paramName: FilterParamName.artistIDs,
-          paramValue: "artist-3",
-          displayText: "Artist 3",
+          paramValue: ["artist-1", "artist-2"],
+          displayText: "Artist 1, Artist 2",
         },
         {
           displayText: "Default",
@@ -1537,11 +1472,6 @@ describe("selectedOptionsUnion", () => {
           displayText: "All Artists I Follow",
           paramName: "includeArtworksByFollowedArtists",
           paramValue: false,
-        },
-        {
-          displayText: "All",
-          paramName: "artistIDs",
-          paramValue: [],
         },
         {
           displayText: "Grid",
@@ -1556,32 +1486,27 @@ describe("selectedOptionsUnion", () => {
       ])
     })
 
-    it("correctly unions with a multiple artistID params when a duplicate artistID has been previously applied", () => {
+    it("correctly unions with multiple selected artists when a duplicate artist has been previously applied", () => {
       const previouslyAppliedFilters = [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-2",
+          paramValue: ["artist-2"],
           displayText: "Artist 2",
         },
       ] as FilterArray
       const selectedFilters = [
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
-          displayText: "Artist 1",
-        },
-        {
-          paramName: FilterParamName.artistIDs,
-          paramValue: "artist-2",
-          displayText: "Artist 2",
+          paramValue: ["artist-1", "artist-2"],
+          displayText: "Artist 1, Artist 2",
         },
       ]
 
       expect(selectedOptionsUnion({ selectedFilters, previouslyAppliedFilters })).toEqual([
         {
           paramName: FilterParamName.artistIDs,
-          paramValue: "artist-1",
-          displayText: "Artist 1",
+          paramValue: ["artist-1", "artist-2"],
+          displayText: "Artist 1, Artist 2",
         },
         {
           displayText: "Default",
@@ -1668,9 +1593,128 @@ describe("selectedOptionsUnion", () => {
           paramValue: false,
         },
         {
+          displayText: "Grid",
+          paramName: "viewAs",
+          paramValue: false,
+        },
+        {
           displayText: "All",
+          paramName: "attributionClass",
+          paramValue: "",
+        },
+      ])
+    })
+
+    it("correctly unions params when an artistID has been previously applied", () => {
+      const previouslyAppliedFilters = [
+        {
+          paramName: FilterParamName.artistIDs,
+          paramValue: ["artist-1"],
+          displayText: "Artist 1",
+        },
+      ] as FilterArray
+      const selectedFilters = [
+        {
+          displayText: "2010-2020",
+          paramName: FilterParamName.timePeriod,
+          paramValue: ["2010-2020"],
+        },
+        {
+          displayText: "Buy Now",
+          paramName: FilterParamName.waysToBuyBuy,
+          paramValue: true,
+        },
+      ]
+
+      expect(selectedOptionsUnion({ selectedFilters, previouslyAppliedFilters })).toEqual([
+        {
+          displayText: "2010-2020",
+          paramName: "majorPeriods",
+          paramValue: ["2010-2020"],
+        },
+        {
+          displayText: "Buy Now",
+          paramName: "acquireable",
+          paramValue: true,
+        },
+        {
           paramName: "artistIDs",
+          paramValue: ["artist-1"],
+          displayText: "Artist 1",
+        },
+        {
+          displayText: "Default",
+          paramName: "sort",
+          paramValue: "-decayed_merch",
+        },
+        {
+          displayText: "All",
+          paramName: "estimateRange",
+          paramValue: "",
+        },
+        {
+          displayText: "All",
+          paramName: "medium",
+          paramValue: "*",
+        },
+        {
+          displayText: "All",
+          paramName: "materialsTerms",
           paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "organizations",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "priceRange",
+          paramValue: "*-*",
+        },
+        {
+          displayText: "All",
+          paramName: "dimensionRange",
+          paramValue: "*-*",
+        },
+        {
+          displayText: "All",
+          paramName: "partnerIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "keyword",
+          paramValue: "",
+        },
+        {
+          displayText: "All",
+          paramName: "locationCities",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
+          paramName: "colors",
+        },
+        {
+          displayText: "Inquire",
+          paramName: "inquireableOnly",
+          paramValue: false,
+        },
+        {
+          displayText: "Make Offer",
+          paramName: "offerable",
+          paramValue: false,
+        },
+        {
+          displayText: "Bid",
+          paramName: "atAuction",
+          paramValue: false,
+        },
+        {
+          displayText: "All Artists I Follow",
+          paramName: "includeArtworksByFollowedArtists",
+          paramValue: false,
         },
         {
           displayText: "Grid",

@@ -1,18 +1,5 @@
 import { FilterScreen } from "lib/Components/ArtworkFilter"
-import {
-  capitalize,
-  compact,
-  filter,
-  groupBy,
-  isArray,
-  isEmpty,
-  isEqual,
-  isUndefined,
-  pick,
-  pickBy,
-  sortBy,
-  unionBy,
-} from "lodash"
+import { capitalize, compact, filter, isArray, isEqual, isUndefined, pick, pickBy, sortBy, unionBy } from "lodash"
 import { LOCALIZED_UNIT } from "./Filters/helpers"
 
 export enum FilterDisplayName {
@@ -276,24 +263,6 @@ const waysToBuyFilterNames = [
   FilterParamName.waysToBuyInquire,
 ]
 
-const paramsFromAppliedFilters = (appliedFilters: FilterArray, filterParams: FilterParams, filterType: FilterType) => {
-  const groupedFilters = groupBy(appliedFilters, "paramName")
-
-  Object.keys(groupedFilters).forEach((paramName) => {
-    const paramValues = groupedFilters[paramName].map((item) => item.paramValue)
-    // If we add more filter options that can take arrays, we would include them here.
-    if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
-      // For the artistIDs param, we want to return an array
-      filterParams[paramName] = paramValues as string[]
-    } else {
-      // For other params, we just want to return the first value
-      filterParams[paramName as FilterParamName] = paramValues[0]
-    }
-  })
-
-  return filterParams
-}
-
 const getDefaultParamsByType = (filterType: FilterType) => {
   return {
     artwork: DEFAULT_ARTWORKS_PARAMS,
@@ -324,7 +293,16 @@ export const changedFiltersParams = (currentFilterParams: FilterParams, selected
 
 export const filterArtworksParams = (appliedFilters: FilterArray, filterType: FilterType = "artwork") => {
   const defaultFilterParams = getDefaultParamsByType(filterType)
-  return paramsFromAppliedFilters(appliedFilters, { ...defaultFilterParams }, filterType)
+  const appliedFilterParams: Partial<FilterParams> = {}
+
+  appliedFilters.forEach((filterParam) => {
+    appliedFilterParams[filterParam.paramName] = filterParam.paramValue
+  })
+
+  return {
+    ...defaultFilterParams,
+    ...appliedFilterParams,
+  }
 }
 
 export const extractCustomSizeLabel = (selectedOptions: FilterArray) => {
@@ -348,12 +326,10 @@ export const extractCustomSizeLabel = (selectedOptions: FilterArray) => {
 export const selectedOption = ({
   selectedOptions,
   filterScreen,
-  filterType = "artwork",
   aggregations,
 }: {
   selectedOptions: FilterArray
   filterScreen: FilterScreen
-  filterType?: FilterType
   aggregations: Aggregations
 }) => {
   if (filterScreen === "dimensionRange") {
@@ -441,30 +417,24 @@ export const selectedOption = ({
       return paramName === FilterParamName.artistsIFollow && paramValue === true
     })
 
-    let selectedArtistNames: string[]
+    let selectedArtistNames: string[] = []
+    const artistIDsFilter = selectedOptions.find(({ paramName }) => paramName === FilterParamName.artistIDs)
 
-    if (filterType === "saleArtwork") {
-      const saleArtworksArtistIDs = selectedOptions.find(({ paramName }) => paramName === FilterParamName.artistIDs)
-      // The user has selected one or more artist ids
-      if (saleArtworksArtistIDs && Array.isArray(saleArtworksArtistIDs?.paramValue)) {
-        const artistIDsAggregation = aggregationForFilter(FilterParamName.artistIDs, aggregations)
-
-        selectedArtistNames = compact(
-          saleArtworksArtistIDs.paramValue.map((artistID: string) => {
-            return artistIDsAggregation?.counts.find((artistAggregation) => artistAggregation.value === artistID)?.name
-          })
+    // The user has selected one or more artist ids
+    if (Array.isArray(artistIDsFilter?.paramValue)) {
+      const artistIDsAggregation = aggregationForFilter(FilterParamName.artistIDs, aggregations)
+      const artistNames = artistIDsFilter!.paramValue.map((artistID: string) => {
+        const aggregation = artistIDsAggregation?.counts.find(
+          (artistAggregation) => artistAggregation.value === artistID
         )
-      } else {
-        selectedArtistNames = []
-      }
-    } else {
-      selectedArtistNames = selectedOptions
-        // Filtering out paramValue with an empty array to remove default option "All"
-        .filter(({ paramName, paramValue }) => paramName === FilterParamName.artistIDs && !isEmpty(paramValue))
-        .map(({ displayText }) => displayText)
+
+        return aggregation?.name
+      })
+
+      selectedArtistNames = compact(artistNames)
     }
 
-    const alphabetizedArtistNames = sortBy(selectedArtistNames, (name) => name)
+    const alphabetizedArtistNames = sortBy(selectedArtistNames)
     const allArtistDisplayNames = hasArtistsIFollowChecked
       ? ["All Artists I Follow", ...alphabetizedArtistNames]
       : alphabetizedArtistNames
@@ -635,36 +605,9 @@ export const getUnitedSelectedAndAppliedFilters = ({
   }
 
   // replace previously applied options with currently selected options
-  const filtersToUnite = unionBy(selectedFilters, previouslyAppliedFilters, ({ paramValue, paramName }) => {
-    // We don't want to union the artistID params, as each entry corresponds to a
-    // different artist that may be selected. Instead we de-dupe based on the paramValue.
-    if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
-      return paramValue
-    } else {
-      return paramName
-    }
-  })
+  const filtersToUnite = unionBy(selectedFilters, previouslyAppliedFilters, "paramName")
 
   const unitedFilters = filter(filtersToUnite, ({ paramName, paramValue }) => {
-    // This logic is specific to filters that allow for multiple options. Right now
-    // it only applies to the artist filter, but this will likely change.
-    if (paramName === FilterParamName.artistIDs && filterType === "artwork") {
-      // See if we have an existing entry in previouslyAppliedFilters
-      const hasExistingPreviouslyAppliedFilter = previouslyAppliedFilters.find(
-        (previouslyAppliedFilter) =>
-          paramName === previouslyAppliedFilter.paramName && paramValue === previouslyAppliedFilter.paramValue
-      )
-
-      const hasExistingSelectedAppliedFilter = selectedFilters.find(
-        (selectedFilter) => paramName === selectedFilter.paramName && paramValue === selectedFilter.paramValue
-      )
-
-      // If so, it means that this filter had been previously applied and is now being de-selected.
-      // We need it to exist in the "selectedFilters" array so that our counts, etc. are correct,
-      // but it's technically de-selected.
-      return !(hasExistingPreviouslyAppliedFilter && hasExistingSelectedAppliedFilter)
-    }
-
     // The default sorting and lot ascending sorting at the saleArtwork filterType has the same paramValue
     // with a different displayText, we want to make sure that the user can still switch between the two.
     if (paramName === FilterParamName.sort && filterType === "saleArtwork") {
@@ -679,9 +622,7 @@ export const getUnitedSelectedAndAppliedFilters = ({
 export const getSelectedFiltersCounts = (selectedFilters: FilterArray) => {
   const counts: Partial<SelectedFiltersCounts> = {}
   selectedFilters.forEach(({ paramName, paramValue }: FilterData) => {
-    if (paramName === FilterParamName.artistIDs || paramName === FilterParamName.artistsIFollow) {
-      counts.artistIDs = (counts.artistIDs ?? 0) + 1
-    } else if (waysToBuyFilterNames.includes(paramName)) {
+    if (waysToBuyFilterNames.includes(paramName)) {
       counts.waysToBuy = (counts.waysToBuy ?? 0) + 1
     } else if (createdYearsFilterNames.includes(paramName)) {
       counts.year = 1

@@ -6143,13 +6143,23 @@ enum EventStatus {
 type External {
   auctionHouses(size: Int, term: String): [ExternalAuctionHouse!]!
   fairs(size: Int, term: String): [ExternalFair!]!
-  galleries(size: Int, term: String): [ExternalGallery!]!
+  galleries(
+    # Limit results to only galleries on Artsy
+    artsyOnly: Boolean = true
+    size: Int
+    term: String
+  ): [ExternalGallery!]!
 }
 
 type ExternalAuctionHouse {
   city: String
   country: String
-  id: Int!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
   name: String!
 }
 
@@ -6164,7 +6174,12 @@ type ExternalFair {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
-  id: Int!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
   name: String!
   startAt(
     format: String
@@ -6178,7 +6193,12 @@ type ExternalFair {
 
 type ExternalGallery {
   city: String
-  id: Int!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
   name: String!
   partner: Partner
   region: String
@@ -9993,7 +10013,7 @@ type Query {
   ): CreditCard
 
   # A namespace external partners (provided by Galaxy)
-  external: External
+  external: External!
 
   # A Fair
   fair(
@@ -11932,7 +11952,7 @@ type UpdateAppSecondFactorPayload {
 
 input UpdateCollectorProfileInput {
   # List of affiliated auction house ids, referencing Galaxy.
-  affiliatedAuctionIds: [String]
+  affiliatedAuctionHouseIds: [String]
 
   # List of affiliated fair ids, referencing Galaxy.
   affiliatedFairIds: [String]
@@ -12635,7 +12655,7 @@ type Viewer {
   ): CreditCard
 
   # A namespace external partners (provided by Galaxy)
-  external: External
+  external: External!
 
   # A Fair
   fair(

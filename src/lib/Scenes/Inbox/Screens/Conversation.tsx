@@ -76,14 +76,13 @@ export class Conversation extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    NetInfo.isConnected.addEventListener("connectionChange", this.handleConnectivityChange)
+    NetInfo.addEventListener(this.handleConnectivityChange)
     this.maybeMarkLastMessageAsRead()
     navigationEvents.addListener("modalDismissed", this.handleModalDismissed)
     navigationEvents.addListener("goBack", this.handleModalDismissed)
   }
 
   componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener("connectionChange", this.handleConnectivityChange)
     navigationEvents.removeListener("modalDismissed", this.handleModalDismissed)
     navigationEvents.removeListener("goBack", this.handleModalDismissed)
   }
