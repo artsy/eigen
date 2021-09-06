@@ -14,7 +14,7 @@ export interface SearchCriteriaAttributes {
   height?: string | null
   width?: string | null
   materialsTerms?: string[] | null
-  priceRange?: string | null
+  priceRange?: string[] | null
 }
 
 export type SearchCriteriaAttributeKeys = keyof SearchCriteriaAttributes

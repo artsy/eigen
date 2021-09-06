@@ -15,36 +15,48 @@ import { SearchCriteriaAttributes } from "../types"
 describe("convertPriceToFilterParam", () => {
   it("returns `$100–200` price range", () => {
     const result = convertPriceToFilterParam({
-      priceRange: "100-200",
+      priceRange: ["100-200"],
     })
 
     expect(result).toEqual({
       displayText: "$100–200",
-      paramValue: "100-200",
+      paramValue: ["100-200"],
       paramName: FilterParamName.priceRange,
     })
   })
 
   it("returns `$50,000+` price range", () => {
     const result = convertPriceToFilterParam({
-      priceRange: "50000-*",
+      priceRange: ["50000-*"],
     })
 
     expect(result).toEqual({
       displayText: "$50,000+",
-      paramValue: "50000-*",
+      paramValue: ["50000-*"],
       paramName: FilterParamName.priceRange,
     })
   })
 
   it("returns `$0–1,000` price range", () => {
     const result = convertPriceToFilterParam({
-      priceRange: "*-1000",
+      priceRange: ["*-1000"],
     })
 
     expect(result).toEqual({
       displayText: "$0–1,000",
-      paramValue: "*-1000",
+      paramValue: ["*-1000"],
+      paramName: FilterParamName.priceRange,
+    })
+  })
+
+  it("returns multiple price range", () => {
+    const result = convertPriceToFilterParam({
+      priceRange: ["*-1000", "50000-*"],
+    })
+
+    expect(result).toEqual({
+      displayText: "$0–1,000, $50,000+",
+      paramValue: ["*-1000", "50000-*"],
       paramName: FilterParamName.priceRange,
     })
   })
@@ -514,13 +526,13 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       materialsTerms: ["screen print"],
       offerable: true,
       partnerIDs: ["tate-ward-auctions"],
-      priceRange: "10000-50000",
+      priceRange: ["10000-50000"],
     }
     const result = convertSavedSearchCriteriaToFilterParams(criteria, aggregations)
 
     expect(result).toContainEqual({
       displayText: "$10,000–50,000",
-      paramValue: "10000-50000",
+      paramValue: ["10000-50000"],
       paramName: FilterParamName.priceRange,
     })
     expect(result).toContainEqual({
@@ -641,7 +653,7 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       materialsTerms: ["screen print"],
       offerable: true,
       partnerIDs: ["tate-ward-auctions"],
-      priceRange: "10000-50000",
+      priceRange: ["10000-50000"],
     }
     const result = convertSavedSearchCriteriaToFilterParams(criteria, aggregations)
 

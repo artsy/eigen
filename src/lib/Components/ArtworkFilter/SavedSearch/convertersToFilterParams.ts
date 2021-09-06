@@ -1,4 +1,4 @@
-import { Dictionary, isNil, keyBy, mapValues } from "lodash"
+import { compact, Dictionary, isNil, keyBy, mapValues } from "lodash"
 import {
   Aggregation,
   Aggregations,
@@ -22,15 +22,23 @@ export type AggregationByFilterParamName = Dictionary<Aggregation[]>
 export const convertPriceToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
   const priceRangeValue = criteria[FilterParamName.priceRange]
 
-  if (!isNil(priceRangeValue)) {
-    const { min, max } = parseRange(priceRangeValue)
+  if (Array.isArray(priceRangeValue)) {
+    const priceRanges = priceRangeValue.map((price) => {
+      const { min, max } = parseRange(price)
 
-    if (min !== "*" || max !== "*") {
-      return {
-        displayText: parsePriceRangeLabel(min, max),
-        paramValue: `${min}-${max}`,
-        paramName: FilterParamName.priceRange,
+      if (min !== "*" || max !== "*") {
+        return {
+          displayText: parsePriceRangeLabel(min, max),
+          paramValue: `${min}-${max}`,
+        }
       }
+    })
+    const compactPriceRanges = compact(priceRanges)
+
+    return {
+      displayText: compactPriceRanges.map((priceRange) => priceRange.displayText).join(", "),
+      paramValue: compactPriceRanges.map((priceRange) => priceRange.paramValue),
+      paramName: FilterParamName.priceRange,
     }
   }
 
