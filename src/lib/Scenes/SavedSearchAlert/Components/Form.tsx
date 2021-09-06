@@ -75,7 +75,7 @@ export const Form: React.FC<FormProps> = (props) => {
       <Spacer mt={4} />
       <Button
         testID="save-alert-button"
-        disabled={!!savedSearchAlertId && !dirty}
+        disabled={!!savedSearchAlertId && !(dirty || values.name.length === 0)}
         loading={isSubmitting}
         size="large"
         block
