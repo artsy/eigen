@@ -89,7 +89,7 @@ export function spring(node: Animated.Value, toValue: number) {
 /**
  * Underlines the Active Tab. Same implementation in StickyTabPageTabBar
  */
-const ActiveTabBorder: React.FC<{ tabLayouts: LayoutRectangle[]; activeTabIndex: number }> = ({
+export const ActiveTabBorder: React.FC<{ tabLayouts: LayoutRectangle[]; activeTabIndex: number }> = ({
   tabLayouts,
   activeTabIndex,
 }) => {

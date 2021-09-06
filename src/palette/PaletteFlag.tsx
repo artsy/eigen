@@ -16,6 +16,24 @@ export const usePaletteFlagStore = create<PaletteFlagState>((set) => ({
   toggleAllowV3: () => set((state) => ({ allowV3: !state.allowV3 })),
 }))
 
+// test util
+// tslint:disable-next-line:variable-name
+export const __paletteStoreTestUtils__ = {
+  __setAllowV3: (value: boolean) => {
+    if (__TEST__) {
+      usePaletteFlagStore.getState().setAllowV3(value)
+      return
+    }
+    console.log("__setAllowV3 is reserved for tests")
+  },
+}
+
+if (__TEST__) {
+  beforeEach(() => {
+    __paletteStoreTestUtils__.__setAllowV3(true)
+  })
+}
+
 export const DevTogglePaletteFlag = () => {
   const currentValue = usePaletteFlagStore((state) => state.allowV3)
   const setValue = usePaletteFlagStore((state) => state.setAllowV3)
