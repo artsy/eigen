@@ -488,7 +488,6 @@ export const getUnitedSelectedAndAppliedFilters = ({
 
 export const getSelectedFiltersCounts = (selectedFilters: FilterArray) => {
   const counts: Partial<SelectedFiltersCounts> = {}
-  let isAllArtistsIFollowSelected = false
 
   selectedFilters.forEach(({ paramName, paramValue }: FilterData) => {
     switch (true) {
@@ -501,16 +500,14 @@ export const getSelectedFiltersCounts = (selectedFilters: FilterArray) => {
         break
       }
       case paramName === FilterParamName.artistsIFollow: {
-        isAllArtistsIFollowSelected = true
         counts.artistIDs = (counts.artistIDs ?? 0) + 1
         break
       }
       case isArray(paramValue): {
-        if (paramName === FilterParamName.artistIDs && isAllArtistsIFollowSelected) {
-          counts.artistIDs = (paramValue as []).length + 1
-        } else {
-          counts[paramName] = (paramValue as []).length
-        }
+        const isArtistsFilter = paramName === FilterParamName.artistIDs
+        const countToAdd = isArtistsFilter ? counts.artistIDs ?? 0 : 0
+
+        counts[paramName] = (paramValue as []).length + countToAdd
         break
       }
       default: {
