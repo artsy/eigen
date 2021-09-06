@@ -1,6 +1,10 @@
 import { FairTestsQuery } from "__generated__/FairTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { NavigationalTabs, Tab } from "palette/elements/Tabs"
+import { TabV3 } from "palette/elements/Tabs/Tab"
+import { TabV2 } from "palette/elements/Tabs/TabsV2"
+import { __paletteStoreTestUtils__ } from "palette/PaletteFlag"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -12,7 +16,6 @@ import { FairEditorialFragmentContainer } from "../Components/FairEditorial"
 import { FairExhibitorsFragmentContainer } from "../Components/FairExhibitors"
 import { FairFollowedArtistsRailFragmentContainer } from "../Components/FairFollowedArtistsRail"
 import { FairHeaderFragmentContainer } from "../Components/FairHeader"
-import { Tab, Tabs } from "../Components/SimpleTabs"
 import { Fair, FairFragmentContainer } from "../Fair"
 
 jest.unmock("react-relay")
@@ -73,7 +76,7 @@ describe("Fair", () => {
     expect(wrapper.root.findAllByType(FairHeaderFragmentContainer)).toHaveLength(1)
     expect(wrapper.root.findAllByType(FairEditorialFragmentContainer)).toHaveLength(1)
     expect(wrapper.root.findAllByType(FairCollectionsFragmentContainer)).toHaveLength(1)
-    expect(wrapper.root.findAllByType(Tabs)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(NavigationalTabs)).toHaveLength(1)
     expect(wrapper.root.findAllByType(FairExhibitorsFragmentContainer)).toHaveLength(1)
     expect(wrapper.root.findAllByType(FairFollowedArtistsRailFragmentContainer)).toHaveLength(1)
   })
@@ -90,7 +93,7 @@ describe("Fair", () => {
     expect(extractText(wrapper.root)).toMatch("This fair is currently unavailable.")
 
     expect(wrapper.root.findAllByType(FairCollectionsFragmentContainer)).toHaveLength(0)
-    expect(wrapper.root.findAllByType(Tabs)).toHaveLength(0)
+    expect(wrapper.root.findAllByType(NavigationalTabs)).toHaveLength(0)
     expect(wrapper.root.findAllByType(FairExhibitorsFragmentContainer)).toHaveLength(0)
     expect(wrapper.root.findAllByType(FairFollowedArtistsRailFragmentContainer)).toHaveLength(0)
   })
@@ -111,7 +114,7 @@ describe("Fair", () => {
     expect(wrapper.root.findAllByType(FairHeaderFragmentContainer)).toHaveLength(1)
     expect(wrapper.root.findAllByType(FairEditorialFragmentContainer)).toHaveLength(0)
     expect(wrapper.root.findAllByType(FairCollectionsFragmentContainer)).toHaveLength(0)
-    expect(wrapper.root.findAllByType(Tabs)).toHaveLength(0)
+    expect(wrapper.root.findAllByType(NavigationalTabs)).toHaveLength(0)
     expect(wrapper.root.findAllByType(FairExhibitorsFragmentContainer)).toHaveLength(0)
     expect(wrapper.root.findAllByType(FairArtworksFragmentContainer)).toHaveLength(0)
   })
@@ -190,45 +193,86 @@ describe("Fair", () => {
         },
       }),
     })
-    expect(wrapper.root.findAllByType(Tabs)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(Tab)).toHaveLength(2)
     expect(wrapper.root.findAllByType(FairExhibitorsFragmentContainer)).toHaveLength(1)
     expect(wrapper.root.findAllByType(FairArtworksFragmentContainer)).toHaveLength(0)
   })
 
-  it("tracks taps navigating between the artworks tab and exhibitors tab", () => {
-    const wrapper = getWrapper({
-      Fair: () => ({
-        isActive: true,
-        slug: "art-basel-hong-kong-2020",
-        internalID: "fair1244",
-        counts: {
-          artworks: 100,
-          partnerShows: 20,
-        },
-      }),
-    })
-    const tabs = wrapper.root.findAllByType(Tab)
-    const exhibitorsTab = tabs[0]
-    const artworksTab = tabs[1]
+  describe("tracks taps navigating between the artworks tab and exhibitors tab", () => {
+    it("When Using Palette V2", () => {
+      __paletteStoreTestUtils__.__setAllowV3(false)
+      const wrapper = getWrapper({
+        Fair: () => ({
+          isActive: true,
+          slug: "art-basel-hong-kong-2020",
+          internalID: "fair1244",
+          counts: {
+            artworks: 100,
+            partnerShows: 20,
+          },
+        }),
+      })
+      const tabs = wrapper.root.findAllByType(TabV2)
+      const exhibitorsTab = tabs[0]
+      const artworksTab = tabs[1]
 
-    act(() => artworksTab.props.onPress())
-    expect(trackEvent).toHaveBeenCalledWith({
-      action: "tappedNavigationTab",
-      context_module: "exhibitorsTab",
-      context_screen_owner_type: "fair",
-      context_screen_owner_slug: "art-basel-hong-kong-2020",
-      context_screen_owner_id: "fair1244",
-      subject: "Artworks",
+      act(() => artworksTab.props.onPress())
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: "tappedNavigationTab",
+        context_module: "exhibitorsTab",
+        context_screen_owner_type: "fair",
+        context_screen_owner_slug: "art-basel-hong-kong-2020",
+        context_screen_owner_id: "fair1244",
+        subject: "Artworks",
+      })
+
+      act(() => exhibitorsTab.props.onPress())
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: "tappedNavigationTab",
+        context_module: "artworksTab",
+        context_screen_owner_type: "fair",
+        context_screen_owner_slug: "art-basel-hong-kong-2020",
+        context_screen_owner_id: "fair1244",
+        subject: "Exhibitors",
+      })
     })
 
-    act(() => exhibitorsTab.props.onPress())
-    expect(trackEvent).toHaveBeenCalledWith({
-      action: "tappedNavigationTab",
-      context_module: "artworksTab",
-      context_screen_owner_type: "fair",
-      context_screen_owner_slug: "art-basel-hong-kong-2020",
-      context_screen_owner_id: "fair1244",
-      subject: "Exhibitors",
+    it("When Using Palette V3", () => {
+      __paletteStoreTestUtils__.__setAllowV3(true)
+      const wrapper = getWrapper({
+        Fair: () => ({
+          isActive: true,
+          slug: "art-basel-hong-kong-2020",
+          internalID: "fair1244",
+          counts: {
+            artworks: 100,
+            partnerShows: 20,
+          },
+        }),
+      })
+      const tabs = wrapper.root.findAllByType(TabV3)
+      const exhibitorsTab = tabs[0]
+      const artworksTab = tabs[1]
+
+      act(() => artworksTab.props.onPress())
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: "tappedNavigationTab",
+        context_module: "exhibitorsTab",
+        context_screen_owner_type: "fair",
+        context_screen_owner_slug: "art-basel-hong-kong-2020",
+        context_screen_owner_id: "fair1244",
+        subject: "Artworks",
+      })
+
+      act(() => exhibitorsTab.props.onPress())
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: "tappedNavigationTab",
+        context_module: "artworksTab",
+        context_screen_owner_type: "fair",
+        context_screen_owner_slug: "art-basel-hong-kong-2020",
+        context_screen_owner_id: "fair1244",
+        subject: "Exhibitors",
+      })
     })
   })
 })
