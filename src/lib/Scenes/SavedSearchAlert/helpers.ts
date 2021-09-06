@@ -35,6 +35,7 @@ export const extractSizePill = (filters: FilterArray) => {
   return filters.find((filter) => filter.paramName === FilterParamName.dimensionRange)?.displayText
 }
 
+// TODO: Parse prices from array
 export const extractPills = (filters: FilterArray, aggregations: Aggregations) => {
   const pills = filters.map((filter) => {
     const { paramName, paramValue, displayText } = filter

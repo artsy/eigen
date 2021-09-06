@@ -63,8 +63,10 @@ export const useMultiSelect = ({ options, paramName }: { options: FilterData[]; 
   }
 
   const handleSelect = useCallback(
-    (option: FilterData, updatedValue: boolean) => {
-      if (updatedValue) {
+    (option: FilterData, updatedValue: boolean, shouldReplacePrevious = false) => {
+      if (shouldReplacePrevious) {
+        setNextParamValues([getParamValue(option)])
+      } else if (updatedValue) {
         // Append the paramValue
         setNextParamValues((prev) => {
           return [...prev, getParamValue(option)]

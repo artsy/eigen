@@ -18,6 +18,7 @@ import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "./types"
 
 export type AggregationByFilterParamName = Dictionary<Aggregation[]>
 
+// TODO: Parse prices from array
 export const convertPriceToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
   const priceRangeValue = criteria[FilterParamName.priceRange]
 

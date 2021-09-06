@@ -46,7 +46,7 @@ describe("extractPills", () => {
       },
       {
         displayText: "$5,000–10,000",
-        paramValue: "5000-10000",
+        paramValue: ["5000-10000"],
         paramName: FilterParamName.priceRange,
       },
       {

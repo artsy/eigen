@@ -1,17 +1,14 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
-import {
-  AggregateOption,
-  FilterData,
-  FilterDisplayName,
-  FilterParamName,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { Input } from "lib/Components/Input/Input"
+import { isUndefined } from "lodash"
 import { Flex, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { parsePriceRangeLabel, parseRange, Range } from "./helpers"
-import { SingleSelectOptionScreen } from "./SingleSelectOption"
+import { MultiSelectOptionScreen } from "./MultiSelectOption"
+import { useMultiSelect } from "./useMultiSelect"
 
 interface PriceRangeOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "PriceRangeOptionsScreen"> {}
@@ -27,7 +24,6 @@ export const CUSTOM_PRICE_OPTION = {
 }
 
 const PRICE_RANGE_OPTIONS: FilterData[] = [
-  { displayText: "All", paramValue: "*-*", paramName: PARAM_NAME },
   { displayText: "$50,000+", paramValue: "50000-*", paramName: PARAM_NAME },
   { displayText: "$10,000–50,000", paramValue: "10000-50000", paramName: PARAM_NAME },
   { displayText: "$5,000–10,000", paramValue: "5000-10000", paramName: PARAM_NAME },
@@ -35,6 +31,22 @@ const PRICE_RANGE_OPTIONS: FilterData[] = [
   { displayText: "$0–1,000", paramValue: "*-1000", paramName: PARAM_NAME },
   CUSTOM_PRICE_OPTION,
 ]
+
+const isCustomOption = (option: FilterData) => {
+  return option.displayText === CUSTOM_PRICE_OPTION.displayText
+}
+
+const shouldShowCustomPrice = (option: FilterData) => {
+  if (option.displayText !== "All") {
+    const defaultPriceRange = PRICE_RANGE_OPTIONS.find(
+      (priceOption) => priceOption.paramValue === (option.paramValue as string[])[0]
+    )
+
+    return isCustomOption(option) || isUndefined(defaultPriceRange)
+  }
+
+  return false
+}
 
 interface CustomPriceInputProps {
   initialValue: Range
@@ -90,51 +102,56 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
 
   const selectedOptions = useSelectedOptionsDisplay()
+  const { handleSelect, isSelected } = useMultiSelect({
+    options: PRICE_RANGE_OPTIONS,
+    paramName: PARAM_NAME,
+  })
   const selectedOption = selectedOptions.find((option) => option.paramName === PARAM_NAME)!
-
-  const isCustomPrice =
-    // Is the placeholder custom price option
-    selectedOption.displayText === CUSTOM_PRICE_OPTION.displayText ||
-    // Isn't a pre-defined price range option
-    PRICE_RANGE_OPTIONS.find((option) => option.paramValue === selectedOption.paramValue) === undefined
-
-  const [shouldShowCustomPrice, showCustomPrice] = useState(isCustomPrice)
-
-  const selectOption = (option: AggregateOption) => {
-    showCustomPrice(option.displayText === CUSTOM_PRICE_OPTION.displayText)
-
-    selectFiltersAction({
-      displayText: option.displayText,
-      paramValue: option.paramValue,
-      paramName: PARAM_NAME,
-    })
-  }
+  const showCustomPrice = shouldShowCustomPrice(selectedOption)
 
   const handleCustomPriceChange = (value: Range) => {
     selectFiltersAction({
       displayText: parsePriceRangeLabel(value.min, value.max),
-      paramValue: `${value.min}-${value.max}`,
+      paramValue: [`${value.min}-${value.max}`],
       paramName: PARAM_NAME,
     })
   }
 
+  const selectOption = (option: FilterData, updatedValue: boolean) => {
+    const isCustomPriceOption = isCustomOption(option)
+
+    handleSelect(option, updatedValue, isCustomPriceOption || showCustomPrice)
+  }
+
+  const options = PRICE_RANGE_OPTIONS.map((option) => {
+    if (isCustomOption(option)) {
+      return {
+        ...option,
+        paramValue: showCustomPrice,
+      }
+    }
+
+    return {
+      ...option,
+      paramValue: !showCustomPrice && isSelected(option),
+    }
+  })
+
   return (
-    <SingleSelectOptionScreen
+    <MultiSelectOptionScreen
       onSelect={selectOption}
       filterHeaderText={FilterDisplayName.priceRange}
-      useScrollView={true}
       filterOptions={[
-        ...PRICE_RANGE_OPTIONS,
-        ...(shouldShowCustomPrice
+        ...options,
+        ...(showCustomPrice
           ? [
               <CustomPriceInput
-                initialValue={parseRange(selectedOption.paramValue as string)}
+                initialValue={parseRange((selectedOption.paramValue as string[])[0])}
                 onChange={handleCustomPriceChange}
               />,
             ]
           : []),
       ]}
-      selectedOption={isCustomPrice ? CUSTOM_PRICE_OPTION : selectedOption}
       navigation={navigation}
     />
   )

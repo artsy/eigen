@@ -127,7 +127,7 @@ describe("changedFiltersParams helper", () => {
       { displayText: "All", paramValue: "*", paramName: FilterParamName.medium },
       {
         displayText: "All",
-        paramValue: "*-*",
+        paramValue: [],
         paramName: FilterParamName.priceRange,
       },
     ])
@@ -187,7 +187,7 @@ describe("filterArtworksParams helper", () => {
       { displayText: "All", paramValue: "*", paramName: FilterParamName.medium },
       {
         displayText: "All",
-        paramValue: "*-*",
+        paramValue: [],
         paramName: FilterParamName.priceRange,
       },
       {
@@ -277,7 +277,7 @@ describe("filterArtworksParams helper", () => {
       },
       {
         displayText: "$5,000-10,000",
-        paramValue: "5000-10000",
+        paramValue: ["5000-10000"],
         paramName: FilterParamName.priceRange,
       },
       {
@@ -388,7 +388,7 @@ describe("filterArtworksParams helper", () => {
         { displayText: "All", paramValue: "*", paramName: FilterParamName.medium },
         {
           displayText: "All",
-          paramValue: "*-*",
+          paramValue: [],
           paramName: FilterParamName.priceRange,
         },
         {
@@ -920,7 +920,7 @@ describe("getSelectedFiltersCounts helper", () => {
     {
       displayText: "Price",
       paramName: FilterParamName.priceRange,
-      paramValue: "10000-50000",
+      paramValue: ["10000-50000"],
     },
     {
       displayText: "Size",
@@ -1015,7 +1015,7 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
     {
       displayText: "Price",
       paramName: FilterParamName.priceRange,
-      paramValue: "*-1000",
+      paramValue: ["*-1000"],
     },
   ]
 
@@ -1073,7 +1073,7 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
       {
         displayText: "Price",
         paramName: FilterParamName.priceRange,
-        paramValue: "1000-5000",
+        paramValue: ["1000-5000"],
       },
       {
         displayText: "Material",
@@ -1086,7 +1086,7 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
       {
         displayText: "Price",
         paramName: FilterParamName.priceRange,
-        paramValue: "50000-*",
+        paramValue: ["50000-*"],
       },
       {
         displayText: "Material",
@@ -1110,7 +1110,7 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
         {
           displayText: "Price",
           paramName: FilterParamName.priceRange,
-          paramValue: "50000-*",
+          paramValue: ["50000-*"],
         },
         {
           displayText: "Material",
@@ -1219,7 +1219,7 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
       {
         displayText: "Price",
         paramName: FilterParamName.priceRange,
-        paramValue: "50000-*",
+        paramValue: ["50000-*"],
       },
       {
         displayText: "Size",
@@ -1237,7 +1237,7 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
       {
         displayText: "Price",
         paramName: FilterParamName.priceRange,
-        paramValue: "*-*",
+        paramValue: [],
       },
       {
         displayText: "Size",

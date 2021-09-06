@@ -13,7 +13,7 @@ interface MultiSelectOptionScreenProps extends FancyModalHeaderProps {
   navigation: StackNavigationProp<ParamListBase>
   filterHeaderText: string
   onSelect: (filterData: FilterData, updatedValue: boolean) => void
-  filterOptions: FilterData[]
+  filterOptions: Array<FilterData | JSX.Element>
   isSelected?: (item: FilterData) => boolean
   isDisabled?: (item: FilterData) => boolean
   /** Utilize a search input to further filter results */
@@ -21,6 +21,11 @@ interface MultiSelectOptionScreenProps extends FancyModalHeaderProps {
   noResultsLabel?: string
 }
 
+const isFilterData = (item: FilterData | JSX.Element): item is FilterData => {
+  return "paramValue" in item
+}
+
+// TODO: Add ability to render ScrollView instead of FlatList
 export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = ({
   filterHeaderText,
   onSelect,
@@ -55,9 +60,43 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
 
   const [query, setQuery] = useState("")
 
-  const filteredOptions = filterOptions.filter((option) =>
-    option.displayText.toLowerCase().includes(query.toLowerCase())
-  )
+  const filteredOptions = filterOptions.filter((option) => {
+    if (isFilterData(option)) {
+      return option.displayText.toLowerCase().includes(query.toLowerCase())
+    }
+
+    return !searchable
+  })
+
+  const renderItem = (item: FilterData | JSX.Element) => {
+    if (isFilterData(item)) {
+      const disabled = itemIsDisabled(item)
+
+      return (
+        <Box ml={0.5}>
+          <TouchableRow
+            onPress={() => {
+              const currentParamValue = item.paramValue as boolean
+              onSelect(item, !currentParamValue)
+            }}
+            disabled={disabled}
+            testID="multi-select-option-button"
+          >
+            <OptionListItem>
+              <Text variant="caption" color="black100">
+                {item.displayText}
+              </Text>
+
+              <Check selected={itemIsSelected(item)} disabled={disabled} />
+            </OptionListItem>
+          </TouchableRow>
+        </Box>
+      )
+    }
+
+    // Otherwise just return JSX.Element
+    return item
+  }
 
   return (
     <Flex flexGrow={1}>
@@ -84,30 +123,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
           style={{ flex: 1 }}
           keyExtractor={(_item, index) => String(index)}
           data={filteredOptions}
-          renderItem={({ item }) => {
-            const disabled = itemIsDisabled(item)
-
-            return (
-              <Box ml={0.5}>
-                <TouchableRow
-                  onPress={() => {
-                    const currentParamValue = item.paramValue as boolean
-                    onSelect(item, !currentParamValue)
-                  }}
-                  disabled={disabled}
-                  testID="multi-select-option-button"
-                >
-                  <OptionListItem>
-                    <Text variant="caption" color="black100">
-                      {item.displayText}
-                    </Text>
-
-                    <Check selected={itemIsSelected(item)} disabled={disabled} />
-                  </OptionListItem>
-                </TouchableRow>
-              </Box>
-            )
-          }}
+          renderItem={({ item }) => renderItem(item)}
         />
       </Flex>
     </Flex>
