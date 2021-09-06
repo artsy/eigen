@@ -6,7 +6,7 @@ import {
   FilterDisplayName,
   FilterParamName,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import React, { useState } from "react"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 
@@ -22,13 +22,13 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksO
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const aggregation = aggregationForFilter(paramName, aggregations)
 
-  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const selectedOptions = useSelectedOptionsDisplay()
 
-  const previouslyAppliedArtistFilters: FilterData | undefined = appliedFilters.find(
+  const previouslyAppliedArtistFilters: FilterData | undefined = selectedOptions.find(
     (filter) => filter.paramName === paramName
   )
 
-  const previouslyArtistIFollowFilters: FilterData | undefined = appliedFilters.find(
+  const previouslyArtistIFollowFilters: FilterData | undefined = selectedOptions.find(
     (filter) => filter.paramName === FilterParamName.artistsIFollow && filter.paramValue
   )
 
@@ -45,38 +45,39 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksO
   if (!previousSelectedOptions || (Array.isArray(previousSelectedOptions) && previousSelectedOptions.length === 0)) {
     previousSelectedOptions = ["all"]
   }
-  const [selectedOptions, setSelectedOptions] = useState<string[]>(previousSelectedOptions as string[])
+  const [selectedParamValues, setSelectedParamValues] = useState<string[]>(previousSelectedOptions as string[])
 
-  const options: FilterData[] | undefined = aggregation?.counts.map((aggCount) => {
-    return {
-      displayText: aggCount.name,
+  const options: FilterData[] | undefined =
+    aggregation?.counts.map((aggCount) => {
+      return {
+        displayText: aggCount.name,
+        paramName,
+        paramValue: aggCount.value,
+        count: aggCount.count,
+      }
+    }) ?? []
+
+  const displayOptions = [
+    {
+      displayText: "Artists You Follow",
+      paramName: FilterParamName.artistsIFollow,
+      paramValue: "artistsYouFollow",
+      count: counts.followedArtists,
+    },
+    {
+      displayText: "All Artists",
       paramName,
-      paramValue: aggCount.value,
-      count: aggCount.count,
-    }
-  })
-
-  const allOption: FilterData = {
-    displayText: "All Artists",
-    paramName,
-    paramValue: "all",
-  }
-
-  const artistsYouFollowOption: FilterData = {
-    displayText: "Artists You Follow",
-    paramName: FilterParamName.artistsIFollow,
-    paramValue: "artistsYouFollow",
-    count: counts.followedArtists,
-  }
-
-  const displayOptions = [artistsYouFollowOption, allOption].concat(options ?? [])
+      paramValue: "all",
+    },
+    ...options,
+  ]
 
   const selectOption = (option: FilterData) => {
     let updatedParamValue: string[] = []
 
     // If the user selected the artists I follow option
     if (option.paramName === FilterParamName.artistsIFollow) {
-      setSelectedOptions(["artistsYouFollow"])
+      setSelectedParamValues(["artistsYouFollow"])
       selectFiltersAction({
         displayText: option.displayText,
         paramValue: true,
@@ -94,21 +95,21 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksO
     // If the user did not select the all option
     if (option.paramValue !== "all") {
       // Add/Remove the new artist to the selectedOptions
-      if (selectedOptions.includes(option.paramValue as string)) {
-        updatedParamValue = selectedOptions.filter((paramValue) => paramValue !== option.paramValue)
+      if (selectedParamValues.includes(option.paramValue as string)) {
+        updatedParamValue = selectedParamValues.filter((paramValue) => paramValue !== option.paramValue)
       } else {
-        updatedParamValue = [...selectedOptions, option.paramValue as string]
+        updatedParamValue = [...selectedParamValues, option.paramValue as string]
       }
-      // Remove the "all artists" and "Artists you follow" filters from the selectedOptions
+      // Remove the "all artists" and "Artists you follow" filters from the selectedParamValues
       if (updatedParamValue.includes("all") || updatedParamValue.includes("artistsYouFollow")) {
         updatedParamValue = updatedParamValue.filter(
           (paramValue) => paramValue !== "all" && paramValue !== "artistsYouFollow"
         )
       }
-      setSelectedOptions(updatedParamValue)
+      setSelectedParamValues(updatedParamValue)
     } else {
       // The user selected the all artists option
-      setSelectedOptions(["all"])
+      setSelectedParamValues(["all"])
     }
 
     selectFiltersAction({
@@ -117,8 +118,13 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksO
       paramName: FilterParamName.artistsIFollow,
     })
 
+    const displayText = updatedParamValue.map((paramValue) => {
+      const optionItem = options.find((currentOption) => currentOption.paramValue === paramValue)
+      return optionItem?.displayText
+    })
+
     selectFiltersAction({
-      displayText: option.displayText,
+      displayText: displayText.join(", "),
       paramValue: updatedParamValue,
       paramName,
     })
@@ -129,7 +135,7 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksO
       onSelect={selectOption}
       filterHeaderText={FilterDisplayName.artistIDs}
       filterOptions={displayOptions}
-      selectedOptions={selectedOptions}
+      selectedOptions={selectedParamValues}
       navigation={navigation}
       withIndent
     />
