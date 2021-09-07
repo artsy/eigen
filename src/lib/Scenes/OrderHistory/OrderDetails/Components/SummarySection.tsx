@@ -10,7 +10,7 @@ interface Props {
 
 export const SummarySection: React.FC<Props> = ({ section }) => {
   const { buyerTotal, taxTotal, shippingTotal, totalListPrice, lineItems } = section
-  const { selectedShippingQuote } = extractNodes(lineItems)?.[0]
+  const { selectedShippingQuote } = extractNodes(lineItems)?.[0] || {}
   const shippingName = selectedShippingQuote?.displayName ? `${selectedShippingQuote.displayName} delivery` : "Shipping"
 
   return (
