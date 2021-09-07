@@ -34,7 +34,7 @@ export const TabBarContainer: React.FC<TabBarContainerProps> = ({
   useEffect(() => {
     if (allTabLayoutsArePresent) {
       // attempt to center the active tab
-      let left = 20
+      let left = 0
       for (let i = 0; i < activeTabIndex; i++) {
         left += tabLayouts[i]!.width
       }

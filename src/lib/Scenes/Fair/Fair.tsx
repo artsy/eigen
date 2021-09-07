@@ -227,7 +227,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                           activeTab={activeTab}
                           tabs={tabs}
                           setActiveTab={(i) => {
-                            // just to match v2tabs. Remove when retiring v2tabs
+                            /* TODO-PALETTE-V3 just to match v2tabs. Remove when retiring v2tabs & SimpleTabs */
                             trackTappedNavigationTab(i as number)
                             setActiveTab(i)
                           }}
