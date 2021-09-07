@@ -1,9 +1,11 @@
 import { useAnimatedValue } from "lib/utils/useAnimatedValue"
+import { Flex } from "palette"
 import React, { useCallback, useEffect } from "react"
 import { Animated, Easing, Modal, StyleSheet } from "react-native"
 import { NewImagesCarouselCloseButton } from "./NewImagesCarouselCloseButton"
 import { NewImagesCarouselStore } from "./NewImagesCarouselContext"
 import { useSpringFade } from "./useSpringFade"
+import { VerticalSwipeToDismiss } from "./VerticalSwipeToDismiss"
 
 export const NewImagesCarouselFullScreen = () => {
   const fullScreenState = NewImagesCarouselStore.useStoreState((state) => state.fullScreenState)
@@ -41,7 +43,7 @@ export const NewImagesCarouselFullScreen = () => {
   }
 
   return (
-    <Modal transparent animated={false} hardwareAccelerated statusBarTranslucent>
+    <Modal transparent animated={false} statusBarTranslucent hardwareAccelerated onRequestClose={onClose}>
       <Animated.View
         style={{
           ...StyleSheet.absoluteFillObject,
@@ -49,6 +51,16 @@ export const NewImagesCarouselFullScreen = () => {
         }}
       >
         <WhiteUnderlay />
+        <VerticalSwipeToDismiss>
+          <Flex justifyContent="center" alignItems="center">
+            <Flex height={100} width={200} backgroundColor="red" />
+            <Flex height={200} width={150} backgroundColor="blue" />
+            <Flex height={300} width={180} backgroundColor="green" />
+            <Flex height={250} width={250} backgroundColor="yellow" />
+            <Flex height={150} width={300} backgroundColor="pink" />
+          </Flex>
+        </VerticalSwipeToDismiss>
+
         <NewImagesCarouselCloseButton onClose={onClose} />
       </Animated.View>
     </Modal>

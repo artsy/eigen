@@ -36,6 +36,7 @@ import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHome
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
 import { RailScrollRef } from "./Components/types"
+import { Test } from "./Test"
 
 interface Props extends ViewProps {
   articlesConnection: Home_articlesConnection | null
@@ -444,6 +445,7 @@ const messages = {
 }
 
 export const HomeQueryRenderer: React.FC = () => {
+  return <Test />
   const { flash_message } = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.tabProps.home ?? {}) as {
     flash_message?: string
   }
