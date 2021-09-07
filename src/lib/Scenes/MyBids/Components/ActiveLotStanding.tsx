@@ -97,17 +97,3 @@ export const ActiveLotStandingFragmentContainer = createFragmentContainer(Active
     }
   `,
 })
-
-// isHighestBidder
-// estimate
-// artwork {
-//   internalID
-//   href
-//   slug
-// }
-// lotState {
-//   soldStatus
-//   sellingPrice {
-//     display
-//   }
-// }
