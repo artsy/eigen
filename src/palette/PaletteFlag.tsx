@@ -16,7 +16,7 @@ export const usePaletteFlagStore = create<PaletteFlagState>((set) => ({
   toggleAllowV3: () => set((state) => ({ allowV3: !state.allowV3 })),
 }))
 
-// test util
+/* TODO-PALETTE-V3 Test Util. If we no longer use this flag, locate and remove this util in tests */
 // tslint:disable-next-line:variable-name
 export const __paletteStoreTestUtils__ = {
   __setAllowV3: (value: boolean) => {
@@ -27,7 +27,7 @@ export const __paletteStoreTestUtils__ = {
     console.log("__setAllowV3 is reserved for tests")
   },
 }
-
+/* TODO-PALETTE-V3 Test Util */
 if (__TEST__) {
   beforeEach(() => {
     __paletteStoreTestUtils__.__setAllowV3(true)

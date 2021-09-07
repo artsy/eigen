@@ -8,6 +8,7 @@ import { TabBarContainer } from "./TabBarContainer"
  */
 export const ContentTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, tabs }) => {
   const [tabLayouts, setTabLayouts] = useState<Array<LayoutRectangle | null>>(tabs.map(() => null))
+
   return (
     <TabBarContainer scrollEnabled activeTabIndex={activeTab} tabLayouts={tabLayouts}>
       {tabs.map(({ label }, index) => {
