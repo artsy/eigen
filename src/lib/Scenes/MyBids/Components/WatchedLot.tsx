@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { WatchedLot_lot } from "__generated__/WatchedLot_lot.graphql"
+import { WatchedLot_saleArtwork } from "__generated__/WatchedLot_saleArtwork.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
 import { Flex, Text } from "palette"
@@ -11,25 +11,22 @@ import { Watching } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
 interface WatchedLotProps {
-  lot: WatchedLot_lot
+  saleArtwork: WatchedLot_saleArtwork
 }
 
-export const WatchedLot: React.FC<WatchedLotProps> = ({ lot }) => {
-  const { saleArtwork, lot: lotState } = lot
-  if (!lotState) {
-    return null
-  }
+export const WatchedLot: React.FC<WatchedLotProps> = ({ saleArtwork }) => {
+  const { lotState } = saleArtwork
 
-  const bidCount = lotState.bidCount
-  const sellingPrice = lotState?.sellingPrice?.display
+  const bidCount = lotState?.bidCount
+  const sellingPrice = saleArtwork?.currentBid?.display || saleArtwork?.estimate
   const tracking = useTracking()
 
   const displayBidCount = (): string | undefined => {
     if (isSmallScreen) {
       return
-    } else {
-      return `(${bidCount.toString() + (bidCount === 1 ? " bid" : " bids")})`
     }
+
+    return `(${bidCount?.toString() + (bidCount === 1 ? " bid" : " bids")})`
   }
 
   const handleLotTap = () => {
@@ -38,8 +35,8 @@ export const WatchedLot: React.FC<WatchedLotProps> = ({ lot }) => {
       context_module: ContextModule.inboxActiveBids,
       context_screen_owner_type: OwnerType.inboxBids,
       destination_screen_owner_typ: OwnerType.artwork,
-      destination_screen_owner_id: lot.saleArtwork?.artwork?.internalID,
-      destination_screen_owner_slug: lot.saleArtwork?.artwork?.slug,
+      destination_screen_owner_id: saleArtwork?.artwork?.internalID,
+      destination_screen_owner_slug: saleArtwork?.artwork?.slug,
     })
     navigate(saleArtwork?.artwork?.href as string)
   }
@@ -49,10 +46,12 @@ export const WatchedLot: React.FC<WatchedLotProps> = ({ lot }) => {
       <Lot saleArtwork={saleArtwork!} isSmallScreen={isSmallScreen}>
         <Flex flexDirection="row" justifyContent="flex-end">
           <Text variant="caption">{sellingPrice}</Text>
-          <Text variant="caption" color="black60">
-            {" "}
-            {displayBidCount()}
-          </Text>
+          {!!bidCount && (
+            <Text variant="caption" color="black60">
+              {" "}
+              {displayBidCount()}
+            </Text>
+          )}
         </Flex>
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
           <Watching />
@@ -63,29 +62,24 @@ export const WatchedLot: React.FC<WatchedLotProps> = ({ lot }) => {
 }
 
 export const WatchedLotFragmentContainer = createFragmentContainer(WatchedLot, {
-  lot: graphql`
-    fragment WatchedLot_lot on Lot {
-      lot {
-        internalID
+  saleArtwork: graphql`
+    fragment WatchedLot_saleArtwork on SaleArtwork {
+      ...Lot_saleArtwork
+      lotState {
         bidCount
         sellingPrice {
           display
         }
-        soldStatus
       }
-      saleArtwork {
-        ...Lot_saleArtwork
-        artwork {
-          internalID
-          href
-          slug
-        }
-        sale {
-          liveStartAt
-          endAt
-          status
-        }
+      artwork {
+        internalID
+        href
+        slug
       }
+      currentBid {
+        display
+      }
+      estimate
     }
   `,
 })

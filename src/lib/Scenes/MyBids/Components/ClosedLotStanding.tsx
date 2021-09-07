@@ -1,5 +1,4 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { ClosedLotStanding_lotStanding } from "__generated__/ClosedLotStanding_lotStanding.graphql"
 import { navigate } from "lib/navigation/navigate"
 import moment from "moment-timezone"
 import { Flex, Text } from "palette"
@@ -11,6 +10,8 @@ import { useTracking } from "react-tracking"
 import { TimelySale } from "../helpers/timely"
 import { Lost, Passed, Won } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
+
+import { ClosedLotStanding_saleArtwork } from "../../../../__generated__/ClosedLotStanding_saleArtwork.graphql"
 
 type BidderResult = "won" | "lost" | "passed"
 
@@ -25,20 +26,20 @@ const saleClosedMessage: (sale: { endAt: string | null; status: string | null })
 }
 
 export const ClosedLotStanding = ({
-  lotStanding,
+  saleArtwork,
   withTimelyInfo = true,
   inActiveSale = false,
 }: {
-  lotStanding: ClosedLotStanding_lotStanding
+  saleArtwork: ClosedLotStanding_saleArtwork
   withTimelyInfo?: boolean
   inActiveSale?: boolean
 }) => {
-  const sale = lotStanding?.saleArtwork?.sale!
-  const sellingPrice = lotStanding?.lot?.sellingPrice?.display
+  const sale = saleArtwork?.sale!
+  const sellingPrice = saleArtwork.lotState?.sellingPrice?.display || saleArtwork.estimate
   const subtitle = withTimelyInfo ? saleClosedMessage(sale) : undefined
 
   const result: BidderResult =
-    lotStanding?.lot.soldStatus === "Passed" ? "passed" : lotStanding?.isHighestBidder ? "won" : "lost"
+    saleArtwork?.lotState?.soldStatus! === "Passed" ? "passed" : saleArtwork?.isHighestBidder ? "won" : "lost"
   const Badge = result === "won" ? StarCircleFill : undefined
 
   const bidderMessages: { [k in BidderResult]: React.ComponentType } = {
@@ -56,15 +57,15 @@ export const ClosedLotStanding = ({
       context_module: inActiveSale ? ContextModule.inboxActiveBids : ContextModule.inboxClosedBids,
       context_screen_owner_type: OwnerType.inboxBids,
       destination_screen_owner_typ: OwnerType.artwork,
-      destination_screen_owner_id: lotStanding?.saleArtwork?.artwork?.internalID,
-      destination_screen_owner_slug: lotStanding?.saleArtwork?.artwork?.slug,
+      destination_screen_owner_id: saleArtwork?.artwork?.internalID,
+      destination_screen_owner_slug: saleArtwork?.artwork?.slug,
     })
-    navigate(lotStanding.saleArtwork?.artwork?.href as string)
+    navigate(saleArtwork?.artwork?.href as string)
   }
 
   return (
     <TouchableOpacity onPress={() => handleLotTap()} style={{ marginHorizontal: 0, width: "100%" }}>
-      <Lot saleArtwork={lotStanding.saleArtwork!} subtitle={subtitle} ArtworkBadge={Badge}>
+      <Lot saleArtwork={saleArtwork!} subtitle={subtitle} ArtworkBadge={Badge}>
         <Flex flexDirection="row">
           <Text variant="caption">{sellingPrice}</Text>
         </Flex>
@@ -77,30 +78,25 @@ export const ClosedLotStanding = ({
 }
 
 export const ClosedLotStandingFragmentContainer = createFragmentContainer(ClosedLotStanding, {
-  lotStanding: graphql`
-    fragment ClosedLotStanding_lotStanding on AuctionsLotStanding {
+  saleArtwork: graphql`
+    fragment ClosedLotStanding_saleArtwork on SaleArtwork {
+      ...Lot_saleArtwork
       isHighestBidder
-      lot {
+      estimate
+      artwork {
         internalID
-        saleId
-        bidCount
-        reserveStatus
+        href
+        slug
+      }
+      lotState {
         soldStatus
         sellingPrice {
           display
         }
       }
-      saleArtwork {
-        ...Lot_saleArtwork
-        artwork {
-          internalID
-          href
-          slug
-        }
-        sale {
-          endAt
-          status
-        }
+      sale {
+        endAt
+        status
       }
     }
   `,

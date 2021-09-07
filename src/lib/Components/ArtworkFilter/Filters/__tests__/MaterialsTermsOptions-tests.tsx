@@ -20,19 +20,19 @@ describe("Materials Options Screen", () => {
           {
             count: 44,
             name: "Acrylic",
-            value: "acrylic"
+            value: "acrylic",
           },
           {
             count: 30,
             name: "Canvas",
-            value: "canvas"
+            value: "canvas",
           },
           {
             count: 26,
             name: "Metal",
-            value: "metal"
+            value: "metal",
           },
-        ]
+        ],
       },
     ],
     appliedFilters: [],
@@ -46,11 +46,7 @@ describe("Materials Options Screen", () => {
     selectedFilters: [],
   }
 
-  const MockMaterialsTermsOptionsScreen = ({
-    initialData = initialState,
-  }: {
-    initialData?: ArtworkFiltersState
-  }) => {
+  const MockMaterialsTermsOptionsScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>
         <MaterialsTermsOptionsScreen {...getEssentialProps()} />
