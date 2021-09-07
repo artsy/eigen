@@ -14,6 +14,10 @@ export type OrderHistoryRow_order = {
     readonly lineItems: {
         readonly edges: ReadonlyArray<{
             readonly node: {
+                readonly shipment: {
+                    readonly trackingUrl: string | null;
+                    readonly trackingNumber: string | null;
+                } | null;
                 readonly artwork: {
                     readonly image: {
                         readonly resized: {
@@ -125,6 +129,31 @@ return {
               "name": "node",
               "plural": false,
               "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "CommerceShipment",
+                  "kind": "LinkedField",
+                  "name": "shipment",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "trackingUrl",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "trackingNumber",
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
+                },
                 {
                   "alias": null,
                   "args": null,
@@ -257,5 +286,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = '65a62c8226f67b79fbfcdbfc9d28d8c9';
+(node as any).hash = '052658d153233f49229a12ef1ca084b7';
 export default node;
