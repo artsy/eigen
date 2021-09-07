@@ -1483,7 +1483,7 @@ type Artwork implements Node & Searchable & Sellable {
   # Minimal location information describing from where artwork will be shipped.
   shippingOrigin: String
 
-  # Is this work available for shipping only within the Contenental US?
+  # Is this work available for shipping only within the Continental US?
   shipsToContinentalUSOnly: Boolean
     @deprecated(reason: "Prefer to use `onlyShipsDomestically`. [Will be removed in v2]")
   show(active: Boolean, atAFair: Boolean, sort: ShowSorts): Show
