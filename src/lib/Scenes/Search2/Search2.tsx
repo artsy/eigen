@@ -136,11 +136,9 @@ const SearchResults: React.FC<
       )}
       onEndReached={loadMore}
       ListFooterComponent={
-        loading ? (
-          <Flex alignItems="center" my={2}>
-            <Spinner />
-          </Flex>
-        ) : null
+        <Flex alignItems="center" my={2}>
+          {loading ? <Spinner /> : null}
+        </Flex>
       }
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="handled"
