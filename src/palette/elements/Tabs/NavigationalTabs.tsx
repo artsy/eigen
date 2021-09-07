@@ -27,8 +27,9 @@ export const NavigationalTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, t
               onLayout={(e) => {
                 const layout = e.nativeEvent.layout
                 setTabLayouts((layouts) => {
-                  if (!layouts.every((l) => l)) {
-                    const result = layouts.slice(0)
+                  // update layouts only once per tab
+                  const result = layouts.slice(0)
+                  if (!result[index]) {
                     result[index] = layout
                     return result
                   }
