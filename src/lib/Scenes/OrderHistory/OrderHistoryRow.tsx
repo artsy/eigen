@@ -14,7 +14,7 @@ interface OrderHistoryRowProps {
 
 export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const [lineItem] = extractNodes(order?.lineItems)
-  const { artwork } = lineItem
+  const { artwork } = lineItem || {}
   const trackingUrl = getTrackingUrl(lineItem)
   const orderIsInactive = order.state === "CANCELED" || order.state === "REFUNDED"
 
