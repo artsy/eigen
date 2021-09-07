@@ -91,7 +91,7 @@ describe("TimePeriodOptions Screen", () => {
       ],
     }
 
-    it("displays a comma-separated list of the selected filters on the filter modal screen", () => {
+    it("displays the number of the selected filters on the filter modal screen", () => {
       const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
 
       const items = tree.root.findAllByType(FilterModalOptionListItem)
@@ -99,7 +99,7 @@ describe("TimePeriodOptions Screen", () => {
 
       expect(item).not.toBeUndefined()
       if (item) {
-        expect(extractText(item)).toContain("2020–Today")
+        expect(extractText(item)).toContain("• 1")
       }
     })
 

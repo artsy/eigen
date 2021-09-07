@@ -81,7 +81,7 @@ describe("Galleries and Institutions Options Screen", () => {
       ],
     }
 
-    it("displays a comma-separated list of the selected filters on the filter modal screen", () => {
+    it("displays the number of the selected filters on the filter modal screen", () => {
       const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
 
       const items = tree.root.findAllByType(FilterModalOptionListItem)
@@ -89,7 +89,7 @@ describe("Galleries and Institutions Options Screen", () => {
 
       expect(item).not.toBeUndefined()
       if (item) {
-        expect(extractText(item)).toContain("Musée Picasso Paris")
+        expect(extractText(item)).toContain("• 1")
       }
     })
 

@@ -20,19 +20,19 @@ describe("Materials Options Screen", () => {
           {
             count: 44,
             name: "Acrylic",
-            value: "acrylic"
+            value: "acrylic",
           },
           {
             count: 30,
             name: "Canvas",
-            value: "canvas"
+            value: "canvas",
           },
           {
             count: 26,
             name: "Metal",
-            value: "metal"
+            value: "metal",
           },
-        ]
+        ],
       },
     ],
     appliedFilters: [],
@@ -46,11 +46,7 @@ describe("Materials Options Screen", () => {
     selectedFilters: [],
   }
 
-  const MockMaterialsTermsOptionsScreen = ({
-    initialData = initialState,
-  }: {
-    initialData?: ArtworkFiltersState
-  }) => {
+  const MockMaterialsTermsOptionsScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>
         <MaterialsTermsOptionsScreen {...getEssentialProps()} />
@@ -81,7 +77,7 @@ describe("Materials Options Screen", () => {
       ],
     }
 
-    it("displays a comma-separated list of the selected filters on the filter modal screen", () => {
+    it("displays the number of the selected filters on the filter modal screen", () => {
       const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
 
       const items = tree.root.findAllByType(FilterModalOptionListItem)
@@ -89,7 +85,7 @@ describe("Materials Options Screen", () => {
 
       expect(item).not.toBeUndefined()
       if (item) {
-        expect(extractText(item)).toContain("Acrylic")
+        expect(extractText(item)).toContain("• 1")
       }
     })
 

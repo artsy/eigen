@@ -371,8 +371,6 @@ export const OptionListItem = styled(Flex)`
   justify-content: space-between;
 `
 
-export const CurrentOption = styled(Text)``
-
 export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
   additionalGeneIDs: {
     displayText: FilterDisplayName.additionalGeneIDs,

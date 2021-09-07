@@ -1,6 +1,6 @@
 import { SavedSearchBanner } from "lib/Components/Artist/ArtistArtworks/SavedSearchBanner"
 import { SavedSearchButtonQueryRenderer } from "lib/Components/Artist/ArtistArtworks/SavedSearchButton"
-import { CurrentOption } from "lib/Components/ArtworkFilter"
+import { OptionListItem } from "lib/Components/ArtworkFilter"
 import { PopoverMessage } from "lib/Components/PopoverMessage/PopoverMessage"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
@@ -82,11 +82,11 @@ describe("Saved search banner on artist screen", () => {
 
     await flushPromiseQueue()
 
-    const filterTextValues = tree.root.findAllByType(CurrentOption).map(extractText)
+    const filterTextValues = tree.root.findAllByType(OptionListItem).map(extractText)
 
-    expect(filterTextValues).toContain("Recently Added")
-    expect(filterTextValues).toContain("Buy Now, Inquire")
-    expect(filterTextValues).toContain("Limited Edition, Open Edition")
+    expect(filterTextValues[0]).toContain("• 1")
+    expect(filterTextValues[1]).toContain("• 2")
+    expect(filterTextValues[2]).toContain("• 2")
   })
 
   it("should an error message when something went wrong during the search criteria query", async () => {
@@ -126,6 +126,8 @@ const MockSearchCriteriaQuery = {
         attributionClass: ["limited edition", "open edition"],
         acquireable: true,
         inquireableOnly: true,
+        offerable: null,
+        atAuction: null,
         width: null,
         height: null,
       },

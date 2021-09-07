@@ -8,8 +8,8 @@ import {
   ArtworkFilterOptionsScreen,
   ClearAllButton,
   CloseIconContainer,
-  CurrentOption,
   FilterModalMode,
+  OptionListItem,
 } from "lib/Components/ArtworkFilter"
 import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
@@ -223,7 +223,7 @@ describe("Filter modal navigation flow", () => {
 })
 
 describe("Filter modal states", () => {
-  it("displays the currently selected sort option on the filter screen", () => {
+  it("displays the currently selected sort option number on the filter screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [{ displayText: "Price (Low to High)", paramName: FilterParamName.sort }],
       appliedFilters: [],
@@ -238,10 +238,10 @@ describe("Filter modal states", () => {
     }
 
     const filterScreen = mount(<MockFilterScreen initialState={injectedState} />)
-    expect(filterScreen.find(CurrentOption).at(0).text()).toEqual("Price (Low to High)")
+    expect(filterScreen.find(OptionListItem).at(0).text()).toContain("• 1")
   })
 
-  it("displays the currently selected medium option on the filter screen", () => {
+  it("displays the currently selected medium option number on the filter screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
@@ -263,7 +263,7 @@ describe("Filter modal states", () => {
 
     const filterScreen = mount(<MockFilterScreen initialState={injectedState} />)
 
-    expect(filterScreen.find(CurrentOption).at(2).text()).toEqual("Performance Art")
+    expect(filterScreen.find(OptionListItem).at(2).text()).toContain("• 1")
   })
 
   it("displays the filter screen apply button correctly when no filters are selected", () => {
@@ -291,14 +291,11 @@ describe("Filter modal states", () => {
     expect(filterScreen.root.findByType(ApplyButton).props.disabled).toEqual(false)
   })
 
-  it("does not display default filters on the Filter modal", () => {
+  it("does not display default filters numbers on the Filter modal", () => {
     const filterScreen = mount(<MockFilterScreen initialState={initialState} />)
-
-    expect(filterScreen.find(CurrentOption).at(0).text()).not.toEqual("Default")
-
-    expect(filterScreen.find(CurrentOption).at(1).text()).not.toEqual("All")
-
-    expect(filterScreen.find(CurrentOption).at(2).text()).not.toEqual("All")
+    for (let i = 0; i < 3; i++) {
+      expect(filterScreen.find(OptionListItem).at(i).text()).not.toContain("•")
+    }
   })
 
   it("displays selected filters on the Filter modal", () => {
@@ -326,14 +323,13 @@ describe("Filter modal states", () => {
     }
 
     const filterScreen = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
-
-    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[0])).toEqual("Price (Low to High)")
-    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[1])).toEqual("")
-    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[2])).toEqual("Drawing")
-    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[3])).toEqual("$10,000-20,000")
-    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[4])).toEqual("Bid")
-    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[5])).toEqual("")
-    expect(filterScreen.root.findAllByType(CurrentOption)).toHaveLength(6)
+    expect(extractText(filterScreen.root.findAllByType(OptionListItem)[0])).toContain("• 1")
+    expect(extractText(filterScreen.root.findAllByType(OptionListItem)[1])).not.toContain("•")
+    expect(extractText(filterScreen.root.findAllByType(OptionListItem)[2])).toContain("• 1")
+    expect(extractText(filterScreen.root.findAllByType(OptionListItem)[3])).toContain("• 1")
+    expect(extractText(filterScreen.root.findAllByType(OptionListItem)[4])).toContain("• 1")
+    // expect(extractText(filterScreen.root.findAllByType(OptionListItem)[5])).not.toContain("•")
+    expect(filterScreen.root.findAllByType(OptionListItem)).toHaveLength(6)
   })
 })
 
@@ -360,11 +356,11 @@ describe("Clearing filters", () => {
 
     const filterScreen = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[0])).toEqual("Price (Low to High)")
+    expect(extractText(filterScreen.root.findAllByType(OptionListItem)[0])).toContain("• 1")
 
     filterScreen.root.findByType(ClearAllButton).props.onPress()
 
-    expect(extractText(filterScreen.root.findAllByType(CurrentOption)[0])).toEqual("")
+    expect(extractText(filterScreen.root.findAllByType(OptionListItem)[0])).not.toContain("•")
   })
 
   it("exits the modal when clear all button is pressed", () => {
@@ -383,15 +379,14 @@ describe("Clearing filters", () => {
 
     const filterModal = mount(<MockFilterModalNavigator initialData={injectedState} />)
 
-    expect(filterModal.find(CurrentOption).at(0).text()).toEqual("Recently Added")
     expect(filterModal.find(ApplyButton).props().disabled).toEqual(true)
 
     filterModal.find(ClearAllButton).at(0).props().onPress()
 
     filterModal.update()
 
-    expect(filterModal.find(CurrentOption).at(0).text()).toEqual("")
-    expect(filterModal.find(CurrentOption).at(1).text()).toEqual("")
+    expect(filterModal.find(OptionListItem).at(0).text()).not.toContain("•")
+    expect(filterModal.find(OptionListItem).at(1).text()).not.toContain("•")
   })
 })
 
