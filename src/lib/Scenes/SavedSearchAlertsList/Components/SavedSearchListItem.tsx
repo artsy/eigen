@@ -6,6 +6,8 @@ interface SavedSearchListItemProps {
   onPress?: () => void
 }
 
+const FALLBACK_TITLE = "Untitled Alert"
+
 export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) => {
   const { title, onPress } = props
   const color = useColor()
@@ -15,7 +17,7 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
       <Box px={2} py={1.5}>
         <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
           <Flex flex={1} flexDirection="row" mr="2">
-            <Text variant="text">{title}</Text>
+            <Text variant="text">{title ?? FALLBACK_TITLE}</Text>
           </Flex>
           <ChevronIcon direction="right" fill="black60" />
         </Flex>

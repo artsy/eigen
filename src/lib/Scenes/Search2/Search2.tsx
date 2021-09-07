@@ -170,8 +170,8 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
                 {system?.algolia?.indices.map(({ name, displayName }) => (
                   <Pill
                     key={name}
-                    variant="textRound"
-                    active={selectedAlgoliaIndex === name}
+                    rounded
+                    selected={selectedAlgoliaIndex === name}
                     onPress={() => setSelectedAlgoliaIndex(selectedAlgoliaIndex === name ? "" : name)}
                   >
                     {displayName}

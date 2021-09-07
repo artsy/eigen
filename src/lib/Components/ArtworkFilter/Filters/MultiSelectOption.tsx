@@ -68,7 +68,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
       {!!searchable && (
         <>
           <Flex m={2}>
-            <SearchInput onChangeText={setQuery} placeholder="Filter results" />
+            <SearchInput onChangeText={setQuery} testID="multi-select-search-input" placeholder="Filter results" />
           </Flex>
 
           {filteredOptions.length === 0 && (
@@ -85,6 +85,8 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
           keyExtractor={(_item, index) => String(index)}
           data={filteredOptions}
           renderItem={({ item }) => {
+            const disabled = itemIsDisabled(item)
+
             return (
               <Box ml={0.5}>
                 <TouchableRow
@@ -92,13 +94,15 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
                     const currentParamValue = item.paramValue as boolean
                     onSelect(item, !currentParamValue)
                   }}
+                  disabled={disabled}
+                  testID="multi-select-option-button"
                 >
                   <OptionListItem>
                     <Text variant="caption" color="black100">
                       {item.displayText}
                     </Text>
 
-                    <Check selected={itemIsSelected(item)} disabled={itemIsDisabled(item)} />
+                    <Check selected={itemIsSelected(item)} disabled={disabled} />
                   </OptionListItem>
                 </TouchableRow>
               </Box>

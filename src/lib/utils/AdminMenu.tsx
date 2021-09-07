@@ -87,7 +87,6 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           title="Go to Storybook"
           onPress={() => {
             navigate("/storybook")
-            onClose()
           }}
         />
         <Flex mx="2">

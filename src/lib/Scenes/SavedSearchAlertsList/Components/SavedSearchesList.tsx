@@ -6,7 +6,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Flex, Spinner, useTheme } from "palette"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { EmptyMessage } from "./EmptyMessage"
@@ -18,30 +18,36 @@ interface SavedSearchesListProps {
   relay: RelayPaginationProp
 }
 
+type RefreshType = "default" | "delete"
+
 export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   const { me, relay } = props
   const [fetchingMore, setFetchingMore] = useState(false)
-  const [refreshing, setRefreshing] = useState(false)
+  const [refreshMode, setRefreshMode] = useState<RefreshType | null>(null)
   const { space } = useTheme()
   const items = extractNodes(me.savedSearchesConnection)
-  const onRefresh = useRef(() => {
-    setRefreshing(true)
+  const onRefresh = useCallback(
+    (type: RefreshType = "default") => {
+      setRefreshMode(type)
 
-    relay.refetchConnection(SAVED_SERCHES_PAGE_SIZE, (error) => {
-      if (error) {
-        console.error(error)
-      }
+      relay.refetchConnection(SAVED_SERCHES_PAGE_SIZE, (error) => {
+        if (error) {
+          console.error(error)
+        }
 
-      setRefreshing(false)
-    })
-  }).current
+        setRefreshMode(null)
+      })
+    },
+    [relay]
+  )
 
   useEffect(() => {
-    navigationEvents.addListener("goBack", onRefresh)
+    const onDeleteRefresh = () => onRefresh("delete")
+    navigationEvents.addListener("goBack", onDeleteRefresh)
     return () => {
-      navigationEvents.removeListener("goBack", onRefresh)
+      navigationEvents.removeListener("goBack", onDeleteRefresh)
     }
-  }, [])
+  }, [onRefresh])
 
   const loadMore = () => {
     if (!relay.hasMore() || relay.isLoading()) {
@@ -56,7 +62,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
     })
   }
 
-  if (refreshing) {
+  if (refreshMode === "delete") {
     return (
       <ProvidePlaceholderContext>
         <SavedSearchAlertsListPlaceholder />
@@ -73,6 +79,8 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
       data={items}
       keyExtractor={(item) => item.internalID}
       contentContainerStyle={{ paddingVertical: space(1) }}
+      refreshing={refreshMode !== null}
+      onRefresh={onRefresh}
       renderItem={({ item }) => {
         return (
           <SavedSearchListItem
