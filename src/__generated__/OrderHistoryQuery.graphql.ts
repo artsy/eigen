@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c65c30a2a5b04a14c8ee4d5d9c5e6963 */
+/* @relayHash b554a86186b0cc1367d6f65a4c390681 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -42,6 +42,11 @@ fragment OrderHistoryRow_order on CommerceOrder {
   lineItems(first: 1) {
     edges {
       node {
+        shipment {
+          trackingUrl
+          trackingNumber
+          id
+        }
         artwork {
           image {
             resized(width: 55) {
@@ -295,6 +300,32 @@ return {
                                   {
                                     "alias": null,
                                     "args": null,
+                                    "concreteType": "CommerceShipment",
+                                    "kind": "LinkedField",
+                                    "name": "shipment",
+                                    "plural": false,
+                                    "selections": [
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "kind": "ScalarField",
+                                        "name": "trackingUrl",
+                                        "storageKey": null
+                                      },
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "kind": "ScalarField",
+                                        "name": "trackingNumber",
+                                        "storageKey": null
+                                      },
+                                      (v4/*: any*/)
+                                    ],
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
                                     "concreteType": "Artwork",
                                     "kind": "LinkedField",
                                     "name": "artwork",
@@ -477,7 +508,7 @@ return {
     ]
   },
   "params": {
-    "id": "c65c30a2a5b04a14c8ee4d5d9c5e6963",
+    "id": "b554a86186b0cc1367d6f65a4c390681",
     "metadata": {},
     "name": "OrderHistoryQuery",
     "operationKind": "query",

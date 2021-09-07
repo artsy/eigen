@@ -1,6 +1,7 @@
 import { OrderHistoryRow_order } from "__generated__/OrderHistoryRow_order.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
+import { getTrackingUrl } from "lib/utils/getTrackingUrl"
 import moment from "moment"
 import { Box, Button, Flex, Text } from "palette"
 import React from "react"
@@ -12,10 +13,9 @@ interface OrderHistoryRowProps {
 }
 
 export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
-  const [{ artwork, fulfillments }] = extractNodes(order?.lineItems)
-  const trackingId = fulfillments?.edges?.[0]?.node?.trackingId
-  // TODO: Add a transition to the real Track Order page when the trackingId will be available
-  const trackingURL = `https://google.com/search?q=${trackingId}`
+  const [lineItem] = extractNodes(order?.lineItems)
+  const { artwork } = lineItem || {}
+  const trackingUrl = getTrackingUrl(lineItem)
   const orderIsInactive = order.state === "CANCELED" || order.state === "REFUNDED"
 
   return (
@@ -60,7 +60,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
           </Flex>
         </Flex>
       </Flex>
-      {trackingId ? (
+      {trackingUrl ? (
         <Flex flexDirection="row" justifyContent="space-between" mb={1}>
           <Box width="50%" paddingRight={0.5}>
             <Button
@@ -78,7 +78,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               width="50%"
               block
               variant="primaryBlack"
-              onPress={() => Linking.openURL(trackingURL)}
+              onPress={() => Linking.openURL(trackingUrl)}
               data-test-id="track-package-button"
             >
               Track Package
@@ -115,6 +115,10 @@ export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow,
       lineItems(first: 1) {
         edges {
           node {
+            shipment {
+              trackingUrl
+              trackingNumber
+            }
             artwork {
               image {
                 resized(width: 55) {
