@@ -25,7 +25,7 @@ export const useArtworkFilters = ({
     }
 
     setAggregationsAction(aggregations)
-  }, [aggregations])
+  }, [])
 
   useEffect(() => {
     if (relay !== undefined && applyFilters) {
