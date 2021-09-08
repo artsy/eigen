@@ -1,6 +1,8 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { compact } from "lodash"
 import { Sans, useSpace, useTheme } from "palette"
+import { NavigationalTabs } from "palette/elements/Tabs"
+import { usePaletteFlagStore } from "palette/PaletteFlag"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, LayoutRectangle, ScrollView, TouchableOpacity, View, ViewProps } from "react-native"
 import { useStickyTabPageContext } from "./SitckyTabPageContext"
@@ -39,6 +41,20 @@ export const StickyTabPageTabBar: React.FC<{ onTabPress?(tab: { label: string; i
     }
   }, [activeTabIndex.current])
 
+  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
+  if (allowV3) {
+    const v3Tabs = tabLabels.map((label) => ({ label }))
+    return (
+      <NavigationalTabs
+        tabs={v3Tabs}
+        onTabPress={(label, index) => {
+          setActiveTabIndex(index)
+          onTabPress?.({ label, index })
+        }}
+        activeTab={activeTabIndex.current}
+      />
+    )
+  }
   return (
     <ScrollView
       ref={scrollViewRef}
