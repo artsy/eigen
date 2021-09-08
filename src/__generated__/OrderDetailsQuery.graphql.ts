@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 78eb6d7e16cf7bb8ecd2a69fc6f2710a */
+/* @relayHash ba21c54e71d49c3999c5dbe920b6ca34 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -157,6 +157,17 @@ fragment SummarySection_section on CommerceOrder {
   taxTotal(precision: 2)
   shippingTotal(precision: 2)
   totalListPrice(precision: 2)
+  lineItems(first: 1) {
+    edges {
+      node {
+        selectedShippingQuote {
+          displayName
+          id
+        }
+        id
+      }
+    }
+  }
 }
 */
 
@@ -468,6 +479,25 @@ return {
                       (v5/*: any*/),
                       {
                         "alias": null,
+                        "args": null,
+                        "concreteType": "CommerceShippingQuote",
+                        "kind": "LinkedField",
+                        "name": "selectedShippingQuote",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "displayName",
+                            "storageKey": null
+                          },
+                          (v5/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
                         "args": (v4/*: any*/),
                         "concreteType": "CommerceFulfillmentConnection",
                         "kind": "LinkedField",
@@ -598,7 +628,7 @@ return {
     ]
   },
   "params": {
-    "id": "78eb6d7e16cf7bb8ecd2a69fc6f2710a",
+    "id": "ba21c54e71d49c3999c5dbe920b6ca34",
     "metadata": {},
     "name": "OrderDetailsQuery",
     "operationKind": "query",

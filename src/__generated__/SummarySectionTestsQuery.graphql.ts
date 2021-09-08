@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 43c1c743703a64d1c8f08bfd0f130493 */
+/* @relayHash 325fb4e3614f6604bdab3d0153ba480f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -35,6 +35,17 @@ fragment SummarySection_section on CommerceOrder {
   taxTotal(precision: 2)
   shippingTotal(precision: 2)
   totalListPrice(precision: 2)
+  lineItems(first: 1) {
+    edges {
+      node {
+        selectedShippingQuote {
+          displayName
+          id
+        }
+        id
+      }
+    }
+  }
 }
 */
 
@@ -61,18 +72,25 @@ v2 = [
   }
 ],
 v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v4 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "String"
 },
-v4 = {
+v5 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v5 = {
+v6 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
@@ -162,18 +180,71 @@ return {
           },
           {
             "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "id",
-            "storageKey": null
-          }
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 1
+              }
+            ],
+            "concreteType": "CommerceLineItemConnection",
+            "kind": "LinkedField",
+            "name": "lineItems",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "CommerceLineItemEdge",
+                "kind": "LinkedField",
+                "name": "edges",
+                "plural": true,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "CommerceLineItem",
+                    "kind": "LinkedField",
+                    "name": "node",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "CommerceShippingQuote",
+                        "kind": "LinkedField",
+                        "name": "selectedShippingQuote",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "displayName",
+                            "storageKey": null
+                          },
+                          (v3/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      (v3/*: any*/)
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": "lineItems(first:1)"
+          },
+          (v3/*: any*/)
         ],
         "storageKey": "commerceOrder(id:\"some-id\")"
       }
     ]
   },
   "params": {
-    "id": "43c1c743703a64d1c8f08bfd0f130493",
+    "id": "325fb4e3614f6604bdab3d0153ba480f",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "commerceOrder": {
@@ -182,14 +253,41 @@ return {
           "plural": false,
           "type": "CommerceOrder"
         },
-        "commerceOrder.__isCommerceOrder": (v3/*: any*/),
-        "commerceOrder.__typename": (v3/*: any*/),
-        "commerceOrder.buyerTotal": (v4/*: any*/),
-        "commerceOrder.id": (v5/*: any*/),
-        "commerceOrder.internalID": (v5/*: any*/),
-        "commerceOrder.shippingTotal": (v4/*: any*/),
-        "commerceOrder.taxTotal": (v4/*: any*/),
-        "commerceOrder.totalListPrice": (v4/*: any*/)
+        "commerceOrder.__isCommerceOrder": (v4/*: any*/),
+        "commerceOrder.__typename": (v4/*: any*/),
+        "commerceOrder.buyerTotal": (v5/*: any*/),
+        "commerceOrder.id": (v6/*: any*/),
+        "commerceOrder.internalID": (v6/*: any*/),
+        "commerceOrder.lineItems": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceLineItemConnection"
+        },
+        "commerceOrder.lineItems.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "CommerceLineItemEdge"
+        },
+        "commerceOrder.lineItems.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceLineItem"
+        },
+        "commerceOrder.lineItems.edges.node.id": (v6/*: any*/),
+        "commerceOrder.lineItems.edges.node.selectedShippingQuote": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceShippingQuote"
+        },
+        "commerceOrder.lineItems.edges.node.selectedShippingQuote.displayName": (v4/*: any*/),
+        "commerceOrder.lineItems.edges.node.selectedShippingQuote.id": (v6/*: any*/),
+        "commerceOrder.shippingTotal": (v5/*: any*/),
+        "commerceOrder.taxTotal": (v5/*: any*/),
+        "commerceOrder.totalListPrice": (v5/*: any*/)
       }
     },
     "name": "SummarySectionTestsQuery",

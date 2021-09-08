@@ -9,6 +9,15 @@ export type SummarySection_section = {
     readonly taxTotal: string | null;
     readonly shippingTotal: string | null;
     readonly totalListPrice: string | null;
+    readonly lineItems: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly selectedShippingQuote: {
+                    readonly displayName: string;
+                } | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": "SummarySection_section";
 };
 export type SummarySection_section$data = SummarySection_section;
@@ -60,11 +69,68 @@ return {
       "kind": "ScalarField",
       "name": "totalListPrice",
       "storageKey": "totalListPrice(precision:2)"
+    },
+    {
+      "alias": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 1
+        }
+      ],
+      "concreteType": "CommerceLineItemConnection",
+      "kind": "LinkedField",
+      "name": "lineItems",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "CommerceLineItemEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "CommerceLineItem",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "CommerceShippingQuote",
+                  "kind": "LinkedField",
+                  "name": "selectedShippingQuote",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "displayName",
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": "lineItems(first:1)"
     }
   ],
   "type": "CommerceOrder",
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = 'a61ce7c329d32b415cb9bef93fa81e63';
+(node as any).hash = 'da9d714038b81677364c2b56750bcb6c';
 export default node;
