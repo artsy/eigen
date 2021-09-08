@@ -328,7 +328,6 @@ const VisibleTextContainer = styled(Box)`
   justify-content: center;
   display: flex;
   flex-direction: row;
-  width: 100%;
   height: 100%;
 `
 
