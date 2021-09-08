@@ -172,6 +172,7 @@ lane :ship_beta_android do
 
   firebase_app_distribution(
     app: ENV["FIREBASE_APP_ID"],
+    groups: 'artsy-people',
     android_artifact_path: "./android/app/build/outputs/bundle/release/app-release.aab"
   )
 
@@ -187,6 +188,7 @@ lane :ship_beta_android do
 
   supply(
     track: "alpha",
+    skip_upload_apk: true,
     skip_upload_metadata: true,
     skip_upload_images: true,
     skip_upload_screenshots: true,
