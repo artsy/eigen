@@ -1,5 +1,4 @@
-import { FilterScreen } from "lib/Components/ArtworkFilter"
-import { capitalize, compact, filter, isArray, isEqual, isUndefined, pick, pickBy, sortBy, unionBy } from "lodash"
+import { filter, isArray, isEqual, isUndefined, pick, pickBy, unionBy } from "lodash"
 import { LOCALIZED_UNIT } from "./Filters/helpers"
 
 export enum FilterDisplayName {
@@ -320,138 +319,6 @@ export const extractCustomSizeLabel = (selectedOptions: FilterArray) => {
   // Intentionally doesn't return anything
 }
 
-/**
- * Formats the display for the Filter Modal "home" screen.
- */
-export const selectedOption = ({
-  selectedOptions,
-  filterScreen,
-  aggregations,
-}: {
-  selectedOptions: FilterArray
-  filterScreen: FilterScreen
-  aggregations: Aggregations
-}) => {
-  if (filterScreen === "dimensionRange") {
-    const label = extractCustomSizeLabel(selectedOptions)
-
-    if (label) {
-      return label
-    }
-  }
-
-  if (filterScreen === "categories") {
-    const selectedCategoriesValues = selectedOptions.find(({ paramName }) => paramName === FilterParamName.categories)
-      ?.paramValue as string[] | undefined
-
-    if (selectedCategoriesValues?.length) {
-      const numSelectedCategoriesToDisplay = selectedCategoriesValues.length
-      if (numSelectedCategoriesToDisplay === 1) {
-        return selectedCategoriesValues[0]
-      }
-      return `${selectedCategoriesValues[0]}, ${numSelectedCategoriesToDisplay - 1} more`
-    }
-    return "All"
-  }
-
-  if (filterScreen === "sizes") {
-    const selectedSizesValues = selectedOptions.find(({ paramName }) => paramName === FilterParamName.sizes)
-      ?.paramValue as string[] | undefined
-    if (selectedSizesValues?.length) {
-      const numSelectedSizesToDisplay = selectedSizesValues.length
-      const firstSelectedSize = capitalize(selectedSizesValues[0].toLowerCase())
-      if (numSelectedSizesToDisplay === 1) {
-        return firstSelectedSize
-      }
-      return `${firstSelectedSize}, ${numSelectedSizesToDisplay - 1} more`
-    }
-    return "All"
-  }
-
-  // selected option display text for auction house filter
-  if (filterScreen === "organizations") {
-    const selectedOrganizationsValues = selectedOptions.find(
-      ({ paramName }) => paramName === FilterParamName.organizations
-    )?.paramValue as string[] | undefined
-    if (selectedOrganizationsValues?.length) {
-      const numSelectedOrganizationsToDisplay = selectedOrganizationsValues.length
-      const firstSelectedSize = capitalize(selectedOrganizationsValues[0].toLowerCase())
-      if (numSelectedOrganizationsToDisplay === 1) {
-        return firstSelectedSize
-      }
-      return `${firstSelectedSize}, ${numSelectedOrganizationsToDisplay - 1} more`
-    }
-    return "All"
-  }
-
-  if (filterScreen === "year") {
-    const selectedEarliestCreatedYear = selectedOptions.find(
-      ({ paramName }) => paramName === FilterParamName.earliestCreatedYear
-    )?.paramValue
-    const selectedLatestCreatedYear = selectedOptions.find(
-      ({ paramName }) => paramName === FilterParamName.latestCreatedYear
-    )?.paramValue
-
-    if (selectedEarliestCreatedYear && selectedLatestCreatedYear) {
-      return `${selectedEarliestCreatedYear} - ${selectedLatestCreatedYear}`
-    }
-    return "All"
-  }
-
-  if (filterScreen === "waysToBuy") {
-    const multiSelectedOptions = selectedOptions.filter((option) => option.paramValue === true)
-
-    const waysToBuyOptions = multiSelectedOptions
-      .filter((value) => waysToBuyFilterNames.includes(value.paramName))
-      .map((option) => option.displayText)
-
-    if (waysToBuyOptions.length === 0) {
-      return "All"
-    }
-
-    return waysToBuyOptions.join(", ")
-  }
-
-  if (filterScreen === "artistIDs") {
-    const hasArtistsIFollowChecked = !!selectedOptions.find(({ paramName, paramValue }) => {
-      return paramName === FilterParamName.artistsIFollow && paramValue === true
-    })
-
-    let selectedArtistNames: string[] = []
-    const artistIDsFilter = selectedOptions.find(({ paramName }) => paramName === FilterParamName.artistIDs)
-
-    // The user has selected one or more artist ids
-    if (Array.isArray(artistIDsFilter?.paramValue)) {
-      const artistIDsAggregation = aggregationForFilter(FilterParamName.artistIDs, aggregations)
-      const artistNames = artistIDsFilter!.paramValue.map((artistID: string) => {
-        const aggregation = artistIDsAggregation?.counts.find(
-          (artistAggregation) => artistAggregation.value === artistID
-        )
-
-        return aggregation?.name
-      })
-
-      selectedArtistNames = compact(artistNames)
-    }
-
-    const alphabetizedArtistNames = sortBy(selectedArtistNames)
-    const allArtistDisplayNames = hasArtistsIFollowChecked
-      ? ["All Artists I Follow", ...alphabetizedArtistNames]
-      : alphabetizedArtistNames
-
-    if (allArtistDisplayNames.length === 1) {
-      return allArtistDisplayNames[0]
-    } else if (allArtistDisplayNames.length > 1) {
-      const numArtistsToDisplay = allArtistDisplayNames.length - 1
-      return `${allArtistDisplayNames[0]}, ${numArtistsToDisplay} more`
-    } else {
-      return "All"
-    }
-  }
-
-  return selectedOptions.find((option) => option.paramName === filterScreen)?.displayText ?? "All"
-}
-
 // For most cases filter key can simply be FilterParamName, exception
 // is gallery and institution which share a paramName in metaphysics
 export const aggregationNameFromFilter: Record<string, AggregationName | undefined> = {
@@ -621,15 +488,31 @@ export const getUnitedSelectedAndAppliedFilters = ({
 
 export const getSelectedFiltersCounts = (selectedFilters: FilterArray) => {
   const counts: Partial<SelectedFiltersCounts> = {}
+
   selectedFilters.forEach(({ paramName, paramValue }: FilterData) => {
-    if (waysToBuyFilterNames.includes(paramName)) {
-      counts.waysToBuy = (counts.waysToBuy ?? 0) + 1
-    } else if (createdYearsFilterNames.includes(paramName)) {
-      counts.year = 1
-    } else if (isArray(paramValue)) {
-      counts[paramName] = paramValue.length
-    } else {
-      counts[paramName] = 1
+    switch (true) {
+      case waysToBuyFilterNames.includes(paramName): {
+        counts.waysToBuy = (counts.waysToBuy ?? 0) + 1
+        break
+      }
+      case createdYearsFilterNames.includes(paramName): {
+        counts.year = 1
+        break
+      }
+      case paramName === FilterParamName.artistsIFollow: {
+        counts.artistIDs = (counts.artistIDs ?? 0) + 1
+        break
+      }
+      case isArray(paramValue): {
+        const isArtistsFilter = paramName === FilterParamName.artistIDs
+        const countToAdd = isArtistsFilter ? counts.artistIDs ?? 0 : 0
+
+        counts[paramName] = (paramValue as []).length + countToAdd
+        break
+      }
+      default: {
+        counts[paramName] = 1
+      }
     }
   })
 
