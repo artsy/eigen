@@ -4,7 +4,7 @@ import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SearchInput as SearchBox } from "lib/Components/SearchInput"
-import { navigate } from "lib/navigation/navigate"
+import { navigate, navigateToPartner } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
@@ -75,27 +75,28 @@ const Highlight = connectHighlight(({ highlight, attribute, hit, highlightProper
   )
 })
 
-interface ArtistSearchResult {
-  objectID: string
-  name_exact: string
-  name: string
-  alternate_names: string
-  career_stage: number
-  follow_count: number
-  search_boost: number
-  nationality: string
-  visible_to_public: boolean
-  fair_ids: string[]
-  partner_ids: string[]
+interface AlgoliaSearchResult {
+  href: string
   image_url: string
-  birth_year: string
+  name: string
+  objectID: string
   slug: string
 }
 
-const SearchResults: React.FC<{ hits: ArtistSearchResult[] }> = ({ hits }) => {
-  const flatListRef = useRef<FlatList<ArtistSearchResult>>(null)
+const SearchResults: React.FC<{ hits: AlgoliaSearchResult[] }> = ({ hits }) => {
+  const onPress = (item: AlgoliaSearchResult): void => {
+    // TODO: I'm not sure why we need to use this `navigateToPartner` function but without it the header overlaps
+    // with the back button
+    if (item.href.startsWith("/partner/")) {
+      navigateToPartner(item.slug)
+    } else {
+      navigate(item.href)
+    }
+  }
+
+  const flatListRef = useRef<FlatList<AlgoliaSearchResult>>(null)
   return (
-    <AboveTheFoldFlatList<ArtistSearchResult>
+    <AboveTheFoldFlatList<AlgoliaSearchResult>
       listRef={flatListRef}
       initialNumToRender={isPad() ? 24 : 12}
       style={{ flex: 1, padding: 20 }}
@@ -103,7 +104,7 @@ const SearchResults: React.FC<{ hits: ArtistSearchResult[] }> = ({ hits }) => {
       keyExtractor={(item) => item.objectID}
       renderItem={({ item }) => (
         <Flex mb={2}>
-          <Touchable onPress={() => navigate(`/artist/${item.slug}`, { passProps: { initialTab: "Artworks" } })}>
+          <Touchable onPress={() => onPress(item)}>
             <Flex flexDirection="row" alignItems="center">
               <OpaqueImageView
                 imageURL={item.image_url}
@@ -159,9 +160,7 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
           onSearchStateChange={setSearchState}
         >
           <Flex p={2} pb={1}>
-            <SearchInputContainer
-              placeholder={!!selectedAlgoliaIndex ? "Search Artists" : "Search artists, artworks, galleries, etc"}
-            />
+            <SearchInputContainer placeholder="Search artists, artworks, galleries, etc" />
           </Flex>
 
           {!!shouldStartQuering ? (
@@ -169,6 +168,7 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
               <Flex p={2} pb={1} flexDirection="row">
                 {system?.algolia?.indices.map(({ name, displayName }) => (
                   <Pill
+                    ml={0.5}
                     key={name}
                     rounded
                     selected={selectedAlgoliaIndex === name}
