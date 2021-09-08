@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2a2112c6ef6818738e048d1629a5b99c */
+/* @relayHash 4d2bf866dd4db3dd447dba148f57b943 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -153,6 +153,17 @@ fragment SummarySection_section on CommerceOrder {
   taxTotal(precision: 2)
   shippingTotal(precision: 2)
   totalListPrice(precision: 2)
+  lineItems(first: 1) {
+    edges {
+      node {
+        selectedShippingQuote {
+          displayName
+          id
+        }
+        id
+      }
+    }
+  }
 }
 */
 
@@ -475,6 +486,25 @@ return {
                       (v4/*: any*/),
                       {
                         "alias": null,
+                        "args": null,
+                        "concreteType": "CommerceShippingQuote",
+                        "kind": "LinkedField",
+                        "name": "selectedShippingQuote",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "displayName",
+                            "storageKey": null
+                          },
+                          (v4/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
                         "args": (v3/*: any*/),
                         "concreteType": "CommerceFulfillmentConnection",
                         "kind": "LinkedField",
@@ -605,7 +635,7 @@ return {
     ]
   },
   "params": {
-    "id": "2a2112c6ef6818738e048d1629a5b99c",
+    "id": "4d2bf866dd4db3dd447dba148f57b943",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "commerceOrder": {
@@ -704,6 +734,14 @@ return {
         "commerceOrder.lineItems.edges.node.fulfillments.edges.node.estimatedDelivery": (v7/*: any*/),
         "commerceOrder.lineItems.edges.node.fulfillments.edges.node.id": (v8/*: any*/),
         "commerceOrder.lineItems.edges.node.id": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.selectedShippingQuote": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceShippingQuote"
+        },
+        "commerceOrder.lineItems.edges.node.selectedShippingQuote.displayName": (v6/*: any*/),
+        "commerceOrder.lineItems.edges.node.selectedShippingQuote.id": (v8/*: any*/),
         "commerceOrder.requestedFulfillment": {
           "enumValues": null,
           "nullable": true,

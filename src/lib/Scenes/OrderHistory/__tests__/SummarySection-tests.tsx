@@ -32,6 +32,7 @@ describe("SummarySection", () => {
       }}
     />
   )
+
   it("Render Order Summary Section ", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
     mockEnvironmentPayload(mockEnvironment, {
@@ -47,5 +48,47 @@ describe("SummarySection", () => {
     expect(tree.findByProps({ testID: "taxTotal" }).props.children).toBe("€0")
     expect(tree.findByProps({ testID: "shippingTotal" }).props.children).toBe("€200")
     expect(tree.findByProps({ testID: "totalListPrice" }).props.children).toBe("€11,000")
+  })
+
+  it("Render correct shipping name if shipping quote selected", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+    mockEnvironmentPayload(mockEnvironment, {
+      CommerceOrder: () => ({
+        lineItems: {
+          edges: [
+            {
+              node: {
+                selectedShippingQuote: {
+                  displayName: "Second Day Air",
+                },
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    expect(tree.findByProps({ testID: "shippingTotalLabel" }).props.children).toBe("Second Day Air delivery")
+  })
+
+  it("Render correct shipping name if shipping quote not selected", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+    mockEnvironmentPayload(mockEnvironment, {
+      CommerceOrder: () => ({
+        lineItems: {
+          edges: [
+            {
+              node: {
+                selectedShippingQuote: {
+                  displayName: null,
+                },
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    expect(tree.findByProps({ testID: "shippingTotalLabel" }).props.children).toBe("Shipping")
   })
 })
