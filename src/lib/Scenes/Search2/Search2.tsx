@@ -168,6 +168,7 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
               <Flex p={2} pb={1} flexDirection="row">
                 {system?.algolia?.indices.map(({ name, displayName }) => (
                   <Pill
+                    ml={0.5}
                     key={name}
                     rounded
                     selected={selectedAlgoliaIndex === name}
