@@ -309,7 +309,7 @@ describe("Filter modal states", () => {
           paramValue: true,
           paramName: FilterParamName.waysToBuyBid,
         },
-        { displayText: "All", paramName: FilterParamName.timePeriod },
+        { displayText: "All", paramValue: ["2020-Today", "1970-1979"], paramName: FilterParamName.timePeriod },
       ],
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -328,7 +328,7 @@ describe("Filter modal states", () => {
     expect(extractText(filterScreen.root.findAllByType(OptionListItem)[2])).toContain("• 1")
     expect(extractText(filterScreen.root.findAllByType(OptionListItem)[3])).toContain("• 1")
     expect(extractText(filterScreen.root.findAllByType(OptionListItem)[4])).toContain("• 1")
-    // expect(extractText(filterScreen.root.findAllByType(OptionListItem)[5])).not.toContain("•")
+    expect(extractText(filterScreen.root.findAllByType(OptionListItem)[5])).toContain("• 2")
     expect(filterScreen.root.findAllByType(OptionListItem)).toHaveLength(6)
   })
 })
