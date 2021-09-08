@@ -7,8 +7,6 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { postEventToProviders } from "lib/utils/track/providers"
 import _ from "lodash"
-import { Tab } from "palette/elements/Tabs"
-import { __paletteStoreTestUtils__ } from "palette/PaletteFlag"
 import React from "react"
 import "react-native"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -59,7 +57,6 @@ describe("availableTabs", () => {
   }
 
   it("returns an empty state if artist has no metadata, shows, insights, or works", async () => {
-    __paletteStoreTestUtils__.__setAllowV3(false)
     const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -80,7 +77,6 @@ describe("availableTabs", () => {
   })
 
   it("returns only About tab if artist has only metadata", async () => {
-    __paletteStoreTestUtils__.__setAllowV3(false)
     const tree = renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -165,26 +161,6 @@ describe("availableTabs", () => {
       context_screen_owner_id: '<mock-value-for-field-"internalID">',
       context_screen_owner_slug: '<mock-value-for-field-"slug">',
       context_screen_owner_type: "Artist",
-    })
-  })
-
-  describe("When using Palette V3", () => {
-    it("does not render StickyTab", () => {
-      __paletteStoreTestUtils__.__setAllowV3(true)
-      const tree = renderWithWrappers(<TestWrapper />)
-      mockMostRecentOperation("ArtistAboveTheFoldQuery", {
-        Artist() {
-          return {
-            has_metadata: false,
-            counts: { articles: 0, related_artists: 0, artworks: 0, partner_shows: 0 },
-            auctionResultsConnection: {
-              totalCount: 0,
-            },
-          }
-        },
-      })
-      expect(tree.root.findAllByType(StickyTab)).toHaveLength(0)
-      expect(tree.root.findAllByType(Tab)).toHaveLength(1)
     })
   })
 })

@@ -12,9 +12,6 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Flex, Separator, Spacer, Theme } from "palette"
-import { NavigationalTabs, TabsType } from "palette/elements/Tabs"
-import { V2Tabs } from "palette/elements/Tabs/TabsV2"
-import { usePaletteFlagStore } from "palette/PaletteFlag"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -26,6 +23,7 @@ import { FairEmptyStateFragmentContainer } from "./Components/FairEmptyState"
 import { FairExhibitorsFragmentContainer } from "./Components/FairExhibitors"
 import { FairFollowedArtistsRailFragmentContainer } from "./Components/FairFollowedArtistsRail"
 import { FairHeaderFragmentContainer } from "./Components/FairHeader"
+import { Tabs, TabsType } from "./Components/SimpleTabs"
 
 interface FairQueryRendererProps {
   fairID: string
@@ -166,8 +164,6 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
   const hideBackButtonOnScroll = useHideBackButtonOnScroll()
 
-  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
-
   return (
     <ProvideScreenTracking
       info={{
@@ -216,21 +212,15 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                   }
                   case "fairTabsAndFilter": {
                     const tabToShow = tabs ? tabs[activeTab] : null
-                    const TabVersionToUse = allowV3 ? NavigationalTabs : V2Tabs
                     return (
                       <Box paddingTop={safeAreaInsets.top} backgroundColor="white">
-                        <TabVersionToUse
-                          onTabPress={(_, index) => {
+                        <Tabs
+                          setActiveTab={(index) => {
                             trackTappedNavigationTab(index as number)
                             setActiveTab(index)
                           }}
                           activeTab={activeTab}
                           tabs={tabs}
-                          setActiveTab={(i) => {
-                            /* TODO-PALETTE-V3 just to match v2tabs. Remove when retiring v2tabs & SimpleTabs */
-                            trackTappedNavigationTab(i as number)
-                            setActiveTab(i)
-                          }}
                         />
                         {tabToShow?.label === "Artworks" && <HeaderArtworksFilter onPress={openFilterArtworksModal} />}
                       </Box>

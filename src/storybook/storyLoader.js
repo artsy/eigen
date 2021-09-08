@@ -17,12 +17,12 @@ function loadStories() {
   require("../palette/elements/Radio/RadioButton.stories")
   require("../palette/elements/Select/Select.stories")
   require("../palette/elements/Select/SelectV2.stories")
-  require("../palette/elements/Tabs/Tabs.stories")
   require("../palette/elements/Text/Text.stories")
   require("../palette/elements/Text/TextV1.stories")
   require("../palette/elements/Text/TextV2.stories")
   require("../palette/space.stories")
   require("../palette/spaceV2.stories")
+  require("../palette/elements/Pill/Pill.stories")
 }
 
 const stories = [
@@ -39,12 +39,12 @@ const stories = [
   "../palette/elements/Radio/RadioButton.stories",
   "../palette/elements/Select/Select.stories",
   "../palette/elements/Select/SelectV2.stories",
-  "../palette/elements/Tabs/Tabs.stories",
   "../palette/elements/Text/Text.stories",
   "../palette/elements/Text/TextV1.stories",
   "../palette/elements/Text/TextV2.stories",
   "../palette/space.stories",
   "../palette/spaceV2.stories",
+  "../palette/elements/Pill/Pill.stories"
 ]
 
 module.exports = {

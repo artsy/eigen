@@ -39,7 +39,6 @@ interface TabsProps {
   tabs: TabsType
 }
 
-/* TODO-PALETTE-V3 This is implemented as V2Tabs. When retiring v2Tabs, consider retiring this component too */
 /**
  * Renders a list of tabs. Evenly-spaces them across the screen.
  */
