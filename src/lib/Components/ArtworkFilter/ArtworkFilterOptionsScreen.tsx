@@ -7,8 +7,7 @@ import {
   getSelectedFiltersCounts,
   getUnitedSelectedAndAppliedFilters,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { selectedOption } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
@@ -80,8 +79,6 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const clearFiltersZeroStateAction = ArtworksFiltersStore.useStoreActions(
     (action) => action.clearFiltersZeroStateAction
   )
-
-  const selectedOptions = useSelectedOptionsDisplay()
 
   const selectedFiltersCounts = useMemo(() => {
     const unitedFilters = getUnitedSelectedAndAppliedFilters({
@@ -185,36 +182,24 @@ export const ArtworkFilterOptionsScreen: React.FC<
         data={sortedFilterOptions}
         style={{ flexGrow: 1 }}
         renderItem={({ item }) => {
-          const selectedCurrentOption = selectedOption({
-            selectedOptions,
-            filterScreen: item.filterType,
-            aggregations: aggregationsState,
-          })
-
-          const currentOption =
-            selectedCurrentOption === "All" || selectedCurrentOption === "Default" ? null : selectedCurrentOption
-
           const selectedFiltersCount = selectedFiltersCounts[item.filterType as FilterParamName]
 
           return (
             <TouchableRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
-              <OptionListItem>
-                <Flex p={2} pr={1.5} flexDirection="row" justifyContent="space-between" flexGrow={1}>
-                  <Flex flex={1}>
-                    <Text variant="caption">
-                      {item.displayText} {selectedFiltersCount ? `${bullet} ${selectedFiltersCount}` : ""}
-                    </Text>
-                  </Flex>
+              <OptionListItem p={2} pr={1.5}>
+                <Flex minWidth="45%">
+                  <Text variant="caption">
+                    {item.displayText}
+                    {!!selectedFiltersCount && (
+                      <Text variant="caption" color="blue100" ml={4}>
+                        {` ${bullet} ${selectedFiltersCount}`}
+                      </Text>
+                    )}
+                  </Text>
+                </Flex>
 
-                  <Flex flexDirection="row" alignItems="center" justifyContent="flex-end" flex={1}>
-                    <Flex flex={1} flexDirection="row" justifyContent="flex-end">
-                      <CurrentOption variant="caption" color="black60" ellipsizeMode="tail" numberOfLines={1}>
-                        {currentOption}
-                      </CurrentOption>
-                    </Flex>
-
-                    <ArrowRightIcon fill="black30" ml="1" />
-                  </Flex>
+                <Flex flex={1} flexDirection="row" alignItems="center" justifyContent="flex-end">
+                  <ArrowRightIcon fill="black30" ml={1} />
                 </Flex>
               </OptionListItem>
             </TouchableRow>
@@ -389,10 +374,7 @@ export const ClearAllButton = styled(TouchableOpacity)`
 export const OptionListItem = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
 `
-
-export const CurrentOption = styled(Text)``
 
 export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
   additionalGeneIDs: {

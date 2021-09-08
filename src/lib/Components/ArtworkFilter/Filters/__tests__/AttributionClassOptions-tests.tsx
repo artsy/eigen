@@ -68,7 +68,7 @@ describe("AttributionClassOptions Screen", () => {
     const tree = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
     const items = tree.root.findAllByType(FilterModalOptionListItem)
 
-    expect(extractText(items[1])).toContain("Unique, Unknown Edition")
+    expect(extractText(items[1])).toContain("• 2")
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {

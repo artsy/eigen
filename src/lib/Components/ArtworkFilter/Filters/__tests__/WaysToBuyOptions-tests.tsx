@@ -70,7 +70,7 @@ describe("Ways to Buy Options Screen", () => {
     expect(extractText(waysToBuyListItem)).not.toContain("All")
   })
 
-  it("displays all the selected filters on the filter modal screen", () => {
+  it("displays the number of the selected filters on the filter modal screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
@@ -102,7 +102,7 @@ describe("Ways to Buy Options Screen", () => {
 
     const tree = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-    expect(extractText(tree.root)).toContain("Buy Now, Inquire, Bid")
+    expect(extractText(tree.root)).toContain("• 3")
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {

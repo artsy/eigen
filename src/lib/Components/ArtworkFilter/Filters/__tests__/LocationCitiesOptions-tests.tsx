@@ -77,7 +77,7 @@ describe(LocationCitiesOptionsScreen, () => {
       ],
     }
 
-    it("displays a comma-separated list of the selected filters on the filter modal screen", () => {
+    it("displays the number of the selected filters on the filter modal screen", () => {
       const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
 
       const items = tree.root.findAllByType(FilterModalOptionListItem)
@@ -85,7 +85,7 @@ describe(LocationCitiesOptionsScreen, () => {
 
       expect(item).not.toBeUndefined()
       if (item) {
-        expect(extractText(item)).toContain("Paris, France, Milan, Italy")
+        expect(extractText(item)).toContain("• 2")
       }
     })
 

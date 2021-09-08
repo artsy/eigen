@@ -1,8 +1,4 @@
-import {
-  Aggregations,
-  FilterArray,
-  getUnitedSelectedAndAppliedFilters,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { FilterArray, getUnitedSelectedAndAppliedFilters } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   aggregationsWithFollowedArtists,
   changedFiltersParams,
@@ -12,7 +8,6 @@ import {
   getParamsForInputByFilterType,
   getSelectedFiltersCounts,
   prepareFilterArtworksParamsForInput,
-  selectedOption,
 } from "../ArtworkFilterHelpers"
 
 describe("changedFiltersParams helper", () => {
@@ -428,255 +423,6 @@ describe("filterArtworksParams helper", () => {
   })
 })
 
-describe("selectedOption", () => {
-  describe("waysToBuy", () => {
-    it("returns the correct result when nothing is selected", () => {
-      const selectedOptions = [
-        { paramName: FilterParamName.timePeriod, paramValue: "*-*", displayText: "All" },
-        {
-          paramName: FilterParamName.waysToBuyBuy,
-          paramValue: false,
-          displayText: "Buy Now",
-        },
-        {
-          paramName: FilterParamName.waysToBuyInquire,
-          paramValue: false,
-          displayText: "Inquire",
-        },
-        {
-          paramName: FilterParamName.waysToBuyMakeOffer,
-          paramValue: false,
-          displayText: "Make Offer",
-        },
-        {
-          paramName: FilterParamName.waysToBuyBid,
-          paramValue: false,
-          displayText: "Bid",
-        },
-      ]
-
-      expect(selectedOption({ selectedOptions, filterScreen: "waysToBuy", aggregations: [] })).toEqual("All")
-    })
-
-    it("returns the correct result when one item is selected", () => {
-      const selectedOptions = [
-        { paramName: FilterParamName.timePeriod, paramValue: "*-*", displayText: "All" },
-        {
-          paramName: FilterParamName.waysToBuyBuy,
-          paramValue: true,
-          displayText: "Buy Now",
-        },
-        {
-          paramName: FilterParamName.waysToBuyInquire,
-          paramValue: false,
-          displayText: "Inquire",
-        },
-        {
-          paramName: FilterParamName.waysToBuyMakeOffer,
-          paramValue: false,
-          displayText: "Make Offer",
-        },
-        {
-          paramName: FilterParamName.waysToBuyBid,
-          paramValue: false,
-          displayText: "Bid",
-        },
-      ]
-
-      expect(selectedOption({ selectedOptions, filterScreen: "waysToBuy", aggregations: [] })).toEqual("Buy Now")
-    })
-    it("returns the correct result when multiple items is selected", () => {
-      const selectedOptions = [
-        { paramName: FilterParamName.timePeriod, paramValue: "*-*", displayText: "All" },
-        {
-          paramName: FilterParamName.waysToBuyBuy,
-          paramValue: true,
-          displayText: "Buy Now",
-        },
-        {
-          paramName: FilterParamName.waysToBuyInquire,
-          paramValue: false,
-          displayText: "Inquire",
-        },
-        {
-          paramName: FilterParamName.waysToBuyMakeOffer,
-          paramValue: true,
-          displayText: "Make Offer",
-        },
-        {
-          paramName: FilterParamName.waysToBuyBid,
-          paramValue: false,
-          displayText: "Bid",
-        },
-      ]
-
-      expect(selectedOption({ selectedOptions, filterScreen: "waysToBuy", aggregations: [] })).toEqual(
-        "Buy Now, Make Offer"
-      )
-    })
-  })
-
-  describe("gallery", () => {
-    it("returns the correct value in the default case", () => {
-      const selectedOptions = [{ paramName: FilterParamName.partnerIDs, displayText: "All" }]
-
-      expect(selectedOption({ selectedOptions, filterScreen: "partnerIDs", aggregations: [] })).toEqual("All")
-    })
-
-    it("returns the correct value when an options is selected", () => {
-      const selectedOptions = [
-        { paramName: FilterParamName.partnerIDs, displayText: "Gallery One", filterKey: "gallery" },
-      ]
-
-      expect(selectedOption({ selectedOptions, filterScreen: "partnerIDs", aggregations: [] })).toEqual("Gallery One")
-    })
-  })
-
-  describe("artists", () => {
-    describe("artworks", () => {
-      const aggregations: Aggregations = [
-        {
-          slice: "ARTIST",
-          counts: [
-            { count: 21, name: "Artist 1", value: "artist-1" },
-            { count: 21, name: "Artist 2", value: "artist-2" },
-          ],
-        },
-      ]
-
-      it("returns the correct value in the default case", () => {
-        const selectedOptions = [] as FilterArray
-
-        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations })).toEqual("All")
-      })
-
-      it("returns the correct value when one artist is selected", () => {
-        const selectedOptions = [
-          {
-            paramName: FilterParamName.artistIDs,
-            paramValue: ["artist-1"],
-            displayText: "Artist 1",
-          },
-        ]
-
-        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations })).toEqual("Artist 1")
-      })
-
-      it("returns the correct value when multiple artists are selected", () => {
-        const selectedOptions = [
-          {
-            paramName: FilterParamName.artistIDs,
-            paramValue: ["artist-1", "artist-2"],
-            displayText: "Artist 1, Artist 2",
-          },
-        ]
-
-        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations })).toEqual("Artist 1, 1 more")
-      })
-
-      it("returns the correct value when multiple artists and Artist I follow are selected", () => {
-        const selectedOptions = [
-          {
-            paramName: FilterParamName.artistIDs,
-            paramValue: ["artist-1", "artist-2"],
-            displayText: "Artist 1, Artist 2",
-          },
-          {
-            paramName: FilterParamName.artistsIFollow,
-            paramValue: true,
-            displayText: "All Artists I Follow",
-          },
-        ]
-
-        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations })).toEqual(
-          "All Artists I Follow, 2 more"
-        )
-      })
-    })
-
-    describe("saleArtworks", () => {
-      const aggregations: Aggregations = [
-        {
-          slice: "ARTIST",
-          counts: [
-            { count: 21, name: "Banksy", value: "banksy" },
-            { count: 21, name: "Andy Warhol", value: "andy-warhol" },
-          ],
-        },
-        { slice: "MEDIUM", counts: [{ count: 21, name: "Prints", value: "prints" }] },
-      ]
-      it("returns the correct value in the default case", () => {
-        const selectedOptions = [] as FilterArray
-
-        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations })).toEqual("All")
-      })
-
-      it("returns the correct value when one artist is selected", () => {
-        const selectedOptions = [
-          {
-            paramName: FilterParamName.artistIDs,
-            paramValue: ["banksy"],
-            displayText: "Artists",
-          },
-        ]
-
-        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations })).toEqual("Banksy")
-      })
-
-      it("returns the correct value when multiple artists are selected", () => {
-        const selectedOptions = [
-          {
-            paramName: FilterParamName.artistIDs,
-            paramValue: ["banksy", "andy-warhol"],
-            displayText: "Artists",
-          },
-        ]
-
-        expect(selectedOption({ selectedOptions, filterScreen: "artistIDs", aggregations })).toEqual(
-          "Andy Warhol, 1 more"
-        )
-      })
-    })
-  })
-
-  describe("materialsTerms", () => {
-    it("returns the correct result when nothing is selected", () => {
-      const selectedOptions = [{ paramName: FilterParamName.materialsTerms, paramValue: [], displayText: "All" }]
-
-      expect(selectedOption({ selectedOptions, filterScreen: "materialsTerms", aggregations: [] })).toEqual("All")
-    })
-
-    it("returns the correct result when one item is selected", () => {
-      const selectedOptions = [
-        { paramName: FilterParamName.timePeriod, paramValue: "*-*", displayText: "All" },
-        {
-          paramName: FilterParamName.materialsTerms,
-          paramValue: ["screen print"],
-          displayText: "Screen Print",
-        },
-      ]
-
-      expect(selectedOption({ selectedOptions, filterScreen: "materialsTerms", aggregations: [] })).toEqual(
-        "Screen Print"
-      )
-    })
-    it("returns the correct result when multiple items is selected", () => {
-      const selectedOptions = [
-        { paramName: FilterParamName.timePeriod, paramValue: "*-*", displayText: "All" },
-        {
-          paramName: FilterParamName.materialsTerms,
-          paramValue: ["screen print", "paper"],
-          displayText: "Screen Print, Paper",
-        },
-      ]
-
-      expect(selectedOption({ selectedOptions, filterScreen: "materialsTerms", aggregations: [] })).toEqual(
-        "Screen Print, Paper"
-      )
-    })
-  })
-})
-
 describe("aggregationsWithFollowedArtists", () => {
   it("returns the correct structure if there are followed artists", () => {
     const existingAggregations = [
@@ -956,7 +702,12 @@ describe("getSelectedFiltersCounts helper", () => {
     {
       displayText: "Artists",
       paramName: FilterParamName.artistIDs,
-      paramValue: ["alex-katz", "anne-siems", "cat-sirot", "brian-rutenberg", "ceravolo", "andy-warhol"],
+      paramValue: ["alex-katz", "anne-siems", "cat-sirot", "ceravolo", "andy-warhol"],
+    },
+    {
+      displayText: "Artists",
+      paramName: FilterParamName.artistsIFollow,
+      paramValue: true,
     },
   ]
 
