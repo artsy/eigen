@@ -160,9 +160,7 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
           onSearchStateChange={setSearchState}
         >
           <Flex p={2} pb={1}>
-            <SearchInputContainer
-              placeholder={!!selectedAlgoliaIndex ? "Search Artists" : "Search artists, artworks, galleries, etc"}
-            />
+            <SearchInputContainer placeholder="Search artists, artworks, galleries, etc" />
           </Flex>
 
           {!!shouldStartQuering ? (
