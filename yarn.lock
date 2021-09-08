@@ -17128,6 +17128,11 @@ screenfull@^5.1.0:
   resolved "https://registry.yarnpkg.com/screenfull/-/screenfull-5.1.0.tgz#85c13c70f4ead4c1b8a935c70010dfdcd2c0e5c8"
   integrity sha512-dYaNuOdzr+kc6J6CFcBrzkLCfyGcMg+gWkJ8us93IQ7y1cevhQAugFsaCdMHb6lw8KV3xPzSxzH7zM1dQap9mA==
 
+search-insights@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/search-insights/-/search-insights-2.0.3.tgz#f1606cf9c409c9e37048b9b85592fd79aec6cb31"
+  integrity sha512-4Ek1YKDFYUV2l8F2dz4uVvsRPlxyfNLzyHf+NP59RlhAylMJUMvDWiLkHmn9d0M6SPkaljFlpi7lSyT0tKQ43w==
+
 select@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/select/-/select-1.1.2.tgz#0e7350acdec80b1108528786ec1d4418d11b396d"
