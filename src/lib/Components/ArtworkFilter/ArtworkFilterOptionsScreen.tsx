@@ -188,8 +188,13 @@ export const ArtworkFilterOptionsScreen: React.FC<
             <TouchableRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
               <OptionListItem p={2} pr={1.5}>
                 <Flex minWidth="45%">
-                  <Text variant="caption" mr={2}>
-                    {item.displayText} {selectedFiltersCount ? `${bullet} ${selectedFiltersCount}` : ""}
+                  <Text variant="caption">
+                    {item.displayText}
+                    {!!selectedFiltersCount && (
+                      <Text variant="caption" color="blue100" ml={4}>
+                        {` ${bullet} ${selectedFiltersCount}`}
+                      </Text>
+                    )}
                   </Text>
                 </Flex>
 
