@@ -1,6 +1,7 @@
 import { OrderHistoryRow_order } from "__generated__/OrderHistoryRow_order.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
+import { getOrderStatus, OrderState } from "lib/utils/getOrderStatus"
 import { getTrackingUrl } from "lib/utils/getTrackingUrl"
 import moment from "moment"
 import { Box, Button, Flex, Text } from "palette"
@@ -16,6 +17,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const [lineItem] = extractNodes(order?.lineItems)
   const { artwork } = lineItem || {}
   const trackingUrl = getTrackingUrl(lineItem)
+  const orderStatus = getOrderStatus(lineItem, order.state as OrderState)
   const orderIsInactive = order.state === "CANCELED" || order.state === "REFUNDED"
 
   return (
@@ -51,11 +53,11 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             <Text
               textAlign="right"
               variant="caption"
-              color={order.state === "CANCELED" ? "red100" : "black60"}
+              color={orderStatus === "Canceled" ? "red100" : "black60"}
               style={{ textTransform: "capitalize" }}
               data-test-id="order-status"
             >
-              {order.state.toLowerCase()}
+              {orderStatus}
             </Text>
           </Flex>
         </Flex>
@@ -116,6 +118,7 @@ export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow,
         edges {
           node {
             shipment {
+              status
               trackingUrl
               trackingNumber
             }
