@@ -10,7 +10,7 @@ import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
 import { Flex, Pill, Spacer, Spinner, Text, Touchable, useSpace } from "palette"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
 import {
   connectHighlight,
@@ -92,10 +92,14 @@ interface AlgoliaSearchResult {
 
 const SearchResults: React.FC<
   StateResultsProvided<AlgoliaSearchResult> & InfiniteHitsProvided<AlgoliaSearchResult>
-> = ({ hits, hasMore, searching, isSearchStalled, refineNext }) => {
+> = ({ hits, hasMore, searching, isSearchStalled, searchState, refineNext }) => {
   const flatListRef = useRef<FlatList<AlgoliaSearchResult>>(null)
   const loading = searching || isSearchStalled
   const space = useSpace()
+
+  useEffect(() => {
+    flatListRef.current?.scrollToOffset({ offset: 1, animated: true })
+  }, [searchState.query])
 
   const onPress = (item: AlgoliaSearchResult): void => {
     // TODO: I'm not sure why we need to use this `navigateToPartner` function but without it the header overlaps
