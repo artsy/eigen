@@ -4,15 +4,12 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FULFILLED" | "PENDING" | "REFUNDED" | "SUBMITTED" | "%future added value";
 export type OrderDetails_order = {
     readonly requestedFulfillment: ({
         readonly __typename: "CommerceShip";
         readonly name: string | null;
     } | {
         readonly __typename: "CommercePickup";
-    } | {
-        readonly __typename: "CommerceShipArta";
     } | {
         /*This will never be '%other', but we need some
         value in case none of the concrete values match.*/
@@ -26,16 +23,10 @@ export type OrderDetails_order = {
                         readonly name: string | null;
                     } | null;
                 } | null;
-                readonly shipment: {
-                    readonly status: string | null;
-                } | null;
             } | null;
         } | null> | null;
     } | null;
-    readonly createdAt: string;
-    readonly code: string;
-    readonly state: CommerceOrderStateEnum;
-    readonly " $fragmentRefs": FragmentRefs<"ArtworkInfoSection_artwork" | "SummarySection_section" | "OrderDetailsPayment_order" | "ShipsToSection_address" | "SoldBySection_soldBy">;
+    readonly " $fragmentRefs": FragmentRefs<"OrderDetailsHeader_info" | "ArtworkInfoSection_artwork" | "SummarySection_section" | "OrderDetailsPayment_order" | "ShipsToSection_address" | "SoldBySection_soldBy">;
     readonly " $refType": "OrderDetails_order";
 };
 export type OrderDetails_order$data = OrderDetails_order;
@@ -60,10 +51,7 @@ v1 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
-},
-v2 = [
-  (v0/*: any*/)
-];
+};
 return {
   "argumentDefinitions": [],
   "kind": "Fragment",
@@ -89,14 +77,10 @@ return {
         },
         {
           "kind": "InlineFragment",
-          "selections": (v2/*: any*/),
+          "selections": [
+            (v0/*: any*/)
+          ],
           "type": "CommercePickup",
-          "abstractKey": null
-        },
-        {
-          "kind": "InlineFragment",
-          "selections": (v2/*: any*/),
-          "type": "CommerceShipArta",
           "abstractKey": null
         }
       ],
@@ -154,24 +138,6 @@ return {
                     }
                   ],
                   "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "CommerceShipment",
-                  "kind": "LinkedField",
-                  "name": "shipment",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "status",
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
                 }
               ],
               "storageKey": null
@@ -183,25 +149,9 @@ return {
       "storageKey": "lineItems(first:1)"
     },
     {
-      "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "createdAt",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "code",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "state",
-      "storageKey": null
+      "kind": "FragmentSpread",
+      "name": "OrderDetailsHeader_info"
     },
     {
       "args": null,
@@ -233,5 +183,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = '699ce8fe541eef672d38b01ff49fd337';
+(node as any).hash = 'c2ffedb0d1171b42b00381ca162cdbb5';
 export default node;

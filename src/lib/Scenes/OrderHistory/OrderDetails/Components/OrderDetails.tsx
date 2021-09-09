@@ -11,7 +11,7 @@ import React from "react"
 import { SectionList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
-import { OrderDetailsHeader } from "./OrderDetailsHeader"
+import { OrderDetailsHeaderFragmentContainer } from "./OrderDetailsHeader"
 import { CreditCardSummaryItemFragmentContainer } from "./OrderDetailsPayment"
 import { ShipsToSectionFragmentContainer } from "./ShipsToSection"
 import { SoldBySectionFragmentContainer } from "./SoldBySection"
@@ -33,7 +33,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
   const DATA: SectionListItem[] = compact([
     {
       key: "OrderDetailsHeader",
-      data: [<OrderDetailsHeader info={order} />],
+      data: [<OrderDetailsHeaderFragmentContainer info={order} />],
     },
     {
       key: "Artwork_Info",
@@ -183,7 +183,7 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
           }
         }
       }
-      ...OrderDetailsHeader_info @relay(mask: false)
+      ...OrderDetailsHeader_info
       ...ArtworkInfoSection_artwork
       ...SummarySection_section
       ...OrderDetailsPayment_order

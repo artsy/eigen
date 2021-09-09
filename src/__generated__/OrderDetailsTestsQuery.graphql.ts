@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d18c308d5a29fe7e77e676307b29d7fe */
+/* @relayHash e1bf7f98ed59a1b583ac88d6561274ec */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -53,6 +53,36 @@ fragment ArtworkInfoSection_artwork on CommerceOrder {
   }
 }
 
+fragment OrderDetailsHeader_info on CommerceOrder {
+  __isCommerceOrder: __typename
+  createdAt
+  code
+  state
+  requestedFulfillment {
+    __typename
+    ... on CommerceShip {
+      __typename
+    }
+    ... on CommercePickup {
+      __typename
+    }
+    ... on CommerceShipArta {
+      __typename
+    }
+  }
+  lineItems(first: 1) {
+    edges {
+      node {
+        shipment {
+          status
+          id
+        }
+        id
+      }
+    }
+  }
+}
+
 fragment OrderDetailsPayment_order on CommerceOrder {
   __isCommerceOrder: __typename
   creditCard {
@@ -73,9 +103,6 @@ fragment OrderDetails_order on CommerceOrder {
     ... on CommercePickup {
       __typename
     }
-    ... on CommerceShipArta {
-      __typename
-    }
   }
   lineItems(first: 1) {
     edges {
@@ -88,16 +115,10 @@ fragment OrderDetails_order on CommerceOrder {
           id
         }
         id
-        shipment {
-          status
-          id
-        }
       }
     }
   }
-  createdAt
-  code
-  state
+  ...OrderDetailsHeader_info
   ...ArtworkInfoSection_artwork
   ...SummarySection_section
   ...OrderDetailsPayment_order
@@ -661,7 +682,7 @@ return {
     ]
   },
   "params": {
-    "id": "d18c308d5a29fe7e77e676307b29d7fe",
+    "id": "e1bf7f98ed59a1b583ac88d6561274ec",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "commerceOrder": {
