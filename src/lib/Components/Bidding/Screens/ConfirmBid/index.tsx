@@ -541,7 +541,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
             </Box>
           </ScrollView>
 
-          <Box>
+          <Box mx={4}>
             <Divider />
 
             {requiresCheckbox ? (
@@ -561,7 +561,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 </Serif>
               </Checkbox>
             ) : (
-              <Flex alignItems="center">
+              <Flex>
                 <Serif size="2" mt={2} color="black60">
                   You agree to{" "}
                   <LinkText onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}>
