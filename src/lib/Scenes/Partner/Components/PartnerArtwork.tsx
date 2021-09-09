@@ -13,7 +13,6 @@ export const PartnerArtwork: React.FC<{
   partner: PartnerArtwork_partner
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
-  // TODO: implement this hook to other pages with filters
   useArtworkFilters({ relay, aggregations: partner.artworks?.aggregations })
 
   const [isFilterArtworksModalVisible, setIsFilterArtworksModalVisible] = useState(false)
