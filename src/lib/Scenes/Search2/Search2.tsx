@@ -9,9 +9,16 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
-import { Flex, Pill, Spacer, Text, Touchable } from "palette"
-import React, { useRef, useState } from "react"
-import { connectHighlight, connectInfiniteHits, connectSearchBox, InstantSearch } from "react-instantsearch-native"
+import { Flex, Pill, Spacer, Spinner, Text, Touchable, useSpace } from "palette"
+import React, { useEffect, useRef, useState } from "react"
+import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
+import {
+  connectHighlight,
+  connectInfiniteHits,
+  connectSearchBox,
+  connectStateResults,
+  InstantSearch,
+} from "react-instantsearch-native"
 import { FlatList, Platform, ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -83,7 +90,29 @@ interface AlgoliaSearchResult {
   slug: string
 }
 
-const SearchResults: React.FC<{ hits: AlgoliaSearchResult[] }> = ({ hits }) => {
+interface SearchResultsProps
+  extends StateResultsProvided<AlgoliaSearchResult>,
+    InfiniteHitsProvided<AlgoliaSearchResult> {
+  indexName: string
+}
+
+const SearchResults: React.FC<SearchResultsProps> = ({
+  hits,
+  hasMore,
+  searching,
+  isSearchStalled,
+  searchState,
+  indexName,
+  refineNext,
+}) => {
+  const flatListRef = useRef<FlatList<AlgoliaSearchResult>>(null)
+  const loading = searching || isSearchStalled
+  const space = useSpace()
+
+  useEffect(() => {
+    flatListRef.current?.scrollToOffset({ offset: 1, animated: true })
+  }, [searchState.query, indexName])
+
   const onPress = (item: AlgoliaSearchResult): void => {
     // TODO: I'm not sure why we need to use this `navigateToPartner` function but without it the header overlaps
     // with the back button
@@ -94,30 +123,39 @@ const SearchResults: React.FC<{ hits: AlgoliaSearchResult[] }> = ({ hits }) => {
     }
   }
 
-  const flatListRef = useRef<FlatList<AlgoliaSearchResult>>(null)
+  const loadMore = () => {
+    if (hasMore && !loading) {
+      refineNext()
+    }
+  }
+
   return (
     <AboveTheFoldFlatList<AlgoliaSearchResult>
       listRef={flatListRef}
       initialNumToRender={isPad() ? 24 : 12}
-      style={{ flex: 1, padding: 20 }}
+      contentContainerStyle={{ paddingVertical: space(1) }}
       data={hits}
       keyExtractor={(item) => item.objectID}
       renderItem={({ item }) => (
-        <Flex mb={2}>
-          <Touchable onPress={() => onPress(item)}>
-            <Flex flexDirection="row" alignItems="center">
-              <OpaqueImageView
-                imageURL={item.image_url}
-                style={{ width: 40, height: 40, borderRadius: 20, overflow: "hidden" }}
-              />
-              <Spacer ml={1} />
-              <Flex>
-                <Highlight attribute="name" hit={item} />
-              </Flex>
+        <Touchable onPress={() => onPress(item)}>
+          <Flex py={space(1)} px={space(2)} flexDirection="row" alignItems="center">
+            <OpaqueImageView
+              imageURL={item.image_url}
+              style={{ width: 40, height: 40, borderRadius: 20, overflow: "hidden" }}
+            />
+            <Spacer ml={1} />
+            <Flex>
+              <Highlight attribute="name" hit={item} />
             </Flex>
-          </Touchable>
-        </Flex>
+          </Flex>
+        </Touchable>
       )}
+      onEndReached={loadMore}
+      ListFooterComponent={
+        <Flex alignItems="center" my={2}>
+          {loading ? <Spinner /> : null}
+        </Flex>
+      }
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="handled"
     />
@@ -125,7 +163,8 @@ const SearchResults: React.FC<{ hits: AlgoliaSearchResult[] }> = ({ hits }) => {
 }
 
 const SearchInputContainer = connectSearchBox(SearchInput)
-const SearchResultsContainer = connectInfiniteHits(SearchResults)
+const SearchResultsContainerWithState = connectStateResults(SearchResults)
+const SearchResultsContainer = connectInfiniteHits(SearchResultsContainerWithState)
 
 interface SearchState {
   query?: string
@@ -146,7 +185,11 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
   }
 
   const renderResults = () =>
-    !!selectedAlgoliaIndex ? <SearchResultsContainer /> : <AutosuggestResults query={searchState.query!} />
+    !!selectedAlgoliaIndex ? (
+      <SearchResultsContainer indexName={selectedAlgoliaIndex} />
+    ) : (
+      <AutosuggestResults query={searchState.query!} />
+    )
 
   const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 2
 
@@ -172,7 +215,10 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
                     key={name}
                     rounded
                     selected={selectedAlgoliaIndex === name}
-                    onPress={() => setSelectedAlgoliaIndex(selectedAlgoliaIndex === name ? "" : name)}
+                    onPress={() => {
+                      setSelectedAlgoliaIndex(selectedAlgoliaIndex === name ? "" : name)
+                      setSearchState((prevState) => ({ ...prevState, page: 1 }))
+                    }}
                   >
                     {displayName}
                   </Pill>
