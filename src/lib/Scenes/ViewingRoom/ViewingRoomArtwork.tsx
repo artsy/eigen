@@ -136,7 +136,6 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (p
           <Spacer mt="4" />
           <Button
             variant="primaryBlack"
-            size="medium"
             block
             onPress={() => {
               trackEvent(tracks.tap(vrInfo.internalID, vrInfo.slug, selectedArtwork.id, selectedArtwork.slug))
