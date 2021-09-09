@@ -18,7 +18,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const { artwork } = lineItem || {}
   const trackingUrl = getTrackingUrl(lineItem)
   const orderStatus = getOrderStatus(lineItem, order.state as OrderState)
-  const orderIsInactive = order.state === "CANCELED" || order.state === "REFUNDED"
+  const orderIsInactive = orderStatus === "canceled" || orderStatus === "refunded"
 
   return (
     <Flex width="100%" data-test-id="order-container">
