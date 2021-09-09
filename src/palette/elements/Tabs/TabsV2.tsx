@@ -16,7 +16,7 @@ interface TabProps {
  * The render method for an individual tab. Will underline the currently
  * active tab.
  */
-export const Tab: React.FC<TabProps> = ({ label, active, onPress }) => {
+export const TabV2: React.FC<TabProps> = ({ label, active, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View
@@ -39,11 +39,10 @@ interface TabsProps {
   tabs: TabsType
 }
 
-/* TODO-PALETTE-V3 This is implemented as V2Tabs. When retiring v2Tabs, consider retiring this component too */
 /**
  * Renders a list of tabs. Evenly-spaces them across the screen.
  */
-export const Tabs: React.FC<TabsProps> = ({ setActiveTab, activeTab, tabs }) => {
+export const V2Tabs: React.FC<TabsProps> = ({ setActiveTab, activeTab, tabs }) => {
   const color = useColor()
   const tabWidth = 100 / tabs.length
   return (
@@ -65,7 +64,7 @@ export const Tabs: React.FC<TabsProps> = ({ setActiveTab, activeTab, tabs }) => 
             bottom="-1px"
             key={label}
           >
-            <Tab label={label} onPress={() => setActiveTab(index)} active={active} />
+            <TabV2 label={label} onPress={() => setActiveTab(index)} active={active} />
           </Box>
         )
       })}

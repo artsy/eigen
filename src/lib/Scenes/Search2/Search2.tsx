@@ -4,14 +4,21 @@ import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SearchInput as SearchBox } from "lib/Components/SearchInput"
-import { navigate } from "lib/navigation/navigate"
+import { navigate, navigateToPartner } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
-import { Flex, Pill, Spacer, Text, Touchable } from "palette"
-import React, { useRef, useState } from "react"
-import { connectHighlight, connectInfiniteHits, connectSearchBox, InstantSearch } from "react-instantsearch-native"
+import { Flex, Pill, Spacer, Spinner, Text, Touchable, useSpace } from "palette"
+import React, { useEffect, useRef, useState } from "react"
+import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
+import {
+  connectHighlight,
+  connectInfiniteHits,
+  connectSearchBox,
+  connectStateResults,
+  InstantSearch,
+} from "react-instantsearch-native"
 import { FlatList, Platform, ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -75,48 +82,80 @@ const Highlight = connectHighlight(({ highlight, attribute, hit, highlightProper
   )
 })
 
-interface ArtistSearchResult {
-  objectID: string
-  name_exact: string
-  name: string
-  alternate_names: string
-  career_stage: number
-  follow_count: number
-  search_boost: number
-  nationality: string
-  visible_to_public: boolean
-  fair_ids: string[]
-  partner_ids: string[]
+interface AlgoliaSearchResult {
+  href: string
   image_url: string
-  birth_year: string
+  name: string
+  objectID: string
   slug: string
 }
 
-const SearchResults: React.FC<{ hits: ArtistSearchResult[] }> = ({ hits }) => {
-  const flatListRef = useRef<FlatList<ArtistSearchResult>>(null)
+interface SearchResultsProps
+  extends StateResultsProvided<AlgoliaSearchResult>,
+    InfiniteHitsProvided<AlgoliaSearchResult> {
+  indexName: string
+}
+
+const SearchResults: React.FC<SearchResultsProps> = ({
+  hits,
+  hasMore,
+  searching,
+  isSearchStalled,
+  searchState,
+  indexName,
+  refineNext,
+}) => {
+  const flatListRef = useRef<FlatList<AlgoliaSearchResult>>(null)
+  const loading = searching || isSearchStalled
+  const space = useSpace()
+
+  useEffect(() => {
+    flatListRef.current?.scrollToOffset({ offset: 1, animated: true })
+  }, [searchState.query, indexName])
+
+  const onPress = (item: AlgoliaSearchResult): void => {
+    // TODO: I'm not sure why we need to use this `navigateToPartner` function but without it the header overlaps
+    // with the back button
+    if (item.href.startsWith("/partner/")) {
+      navigateToPartner(item.slug)
+    } else {
+      navigate(item.href)
+    }
+  }
+
+  const loadMore = () => {
+    if (hasMore && !loading) {
+      refineNext()
+    }
+  }
+
   return (
-    <AboveTheFoldFlatList<ArtistSearchResult>
+    <AboveTheFoldFlatList<AlgoliaSearchResult>
       listRef={flatListRef}
       initialNumToRender={isPad() ? 24 : 12}
-      style={{ flex: 1, padding: 20 }}
+      contentContainerStyle={{ paddingVertical: space(1) }}
       data={hits}
       keyExtractor={(item) => item.objectID}
       renderItem={({ item }) => (
-        <Flex mb={2}>
-          <Touchable onPress={() => navigate(`/artist/${item.slug}`, { passProps: { initialTab: "Artworks" } })}>
-            <Flex flexDirection="row" alignItems="center">
-              <OpaqueImageView
-                imageURL={item.image_url}
-                style={{ width: 40, height: 40, borderRadius: 20, overflow: "hidden" }}
-              />
-              <Spacer ml={1} />
-              <Flex>
-                <Highlight attribute="name" hit={item} />
-              </Flex>
+        <Touchable onPress={() => onPress(item)}>
+          <Flex py={space(1)} px={space(2)} flexDirection="row" alignItems="center">
+            <OpaqueImageView
+              imageURL={item.image_url}
+              style={{ width: 40, height: 40, borderRadius: 20, overflow: "hidden" }}
+            />
+            <Spacer ml={1} />
+            <Flex>
+              <Highlight attribute="name" hit={item} />
             </Flex>
-          </Touchable>
-        </Flex>
+          </Flex>
+        </Touchable>
       )}
+      onEndReached={loadMore}
+      ListFooterComponent={
+        <Flex alignItems="center" my={2}>
+          {loading ? <Spinner /> : null}
+        </Flex>
+      }
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="handled"
     />
@@ -124,7 +163,8 @@ const SearchResults: React.FC<{ hits: ArtistSearchResult[] }> = ({ hits }) => {
 }
 
 const SearchInputContainer = connectSearchBox(SearchInput)
-const SearchResultsContainer = connectInfiniteHits(SearchResults)
+const SearchResultsContainerWithState = connectStateResults(SearchResults)
+const SearchResultsContainer = connectInfiniteHits(SearchResultsContainerWithState)
 
 interface SearchState {
   query?: string
@@ -145,7 +185,11 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
   }
 
   const renderResults = () =>
-    !!selectedAlgoliaIndex ? <SearchResultsContainer /> : <AutosuggestResults query={searchState.query!} />
+    !!selectedAlgoliaIndex ? (
+      <SearchResultsContainer indexName={selectedAlgoliaIndex} />
+    ) : (
+      <AutosuggestResults query={searchState.query!} />
+    )
 
   const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 2
 
@@ -159,9 +203,7 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
           onSearchStateChange={setSearchState}
         >
           <Flex p={2} pb={1}>
-            <SearchInputContainer
-              placeholder={!!selectedAlgoliaIndex ? "Search Artists" : "Search artists, artworks, galleries, etc"}
-            />
+            <SearchInputContainer placeholder="Search artists, artworks, galleries, etc" />
           </Flex>
 
           {!!shouldStartQuering ? (
@@ -169,10 +211,14 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
               <Flex p={2} pb={1} flexDirection="row">
                 {system?.algolia?.indices.map(({ name, displayName }) => (
                   <Pill
+                    ml={0.5}
                     key={name}
                     rounded
                     selected={selectedAlgoliaIndex === name}
-                    onPress={() => setSelectedAlgoliaIndex(selectedAlgoliaIndex === name ? "" : name)}
+                    onPress={() => {
+                      setSelectedAlgoliaIndex(selectedAlgoliaIndex === name ? "" : name)
+                      setSearchState((prevState) => ({ ...prevState, page: 1 }))
+                    }}
                   >
                     {displayName}
                   </Pill>
