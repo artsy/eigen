@@ -233,17 +233,15 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
             <>
               <Flex p={2} pb={1} flexDirection="row">
                 {pillsArray.map(({ name, displayName }) => (
-                  <>
-                    <Pill
-                      mr={0.5}
-                      key={name}
-                      rounded
-                      selected={selectedAlgoliaIndex === name || elasticSearchEntity === name}
-                      onPress={() => handlePillPress(name)}
-                    >
-                      {displayName}
-                    </Pill>
-                  </>
+                  <Pill
+                    mr={1}
+                    key={name}
+                    rounded
+                    selected={selectedAlgoliaIndex === name || elasticSearchEntity === name}
+                    onPress={() => handlePillPress(name)}
+                  >
+                    {displayName}
+                  </Pill>
                 ))}
               </Flex>
               {renderResults()}
