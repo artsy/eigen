@@ -1,7 +1,7 @@
 import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
-import { bullet, Flex, Text } from "palette"
+import { bullet, Flex, Sans, Text } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -18,6 +18,7 @@ import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { concat, take } from "lodash"
+import { usePaletteFlagStore } from "palette/PaletteFlag"
 import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
 
@@ -30,6 +31,7 @@ type FairItem = FairsRail_fairsModule["results"][0]
 const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
+  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
 
   useImperativeHandle(props.scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
@@ -94,20 +96,35 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
                   </View>
                 </ArtworkImageContainer>
                 <MetadataContainer>
-                  <Text numberOfLines={1} lineHeight="20" variant="mediumText">
-                    {result?.name}
-                  </Text>
-                  <Text
-                    numberOfLines={1}
-                    lineHeight="20"
-                    color="black60"
-                    variant="mediumText"
-                    data-test-id="card-subtitle"
-                    ellipsizeMode="middle"
-                  >
-                    {result?.exhibitionPeriod}
-                    {Boolean(location) && `  ${bullet}  ${location}`}
-                  </Text>
+                  {/* TODO-PALETTE-V3 remove V2 part */}
+                  {allowV3 ? (
+                    <>
+                      <Text numberOfLines={1} lineHeight="20" variant="mediumText">
+                        {result?.name}
+                      </Text>
+                      <Text
+                        numberOfLines={1}
+                        lineHeight="20"
+                        color="black60"
+                        variant="mediumText"
+                        data-test-id="card-subtitle"
+                        ellipsizeMode="middle"
+                      >
+                        {result?.exhibitionPeriod}
+                        {Boolean(location) && `  ${bullet}  ${location}`}
+                      </Text>
+                    </>
+                  ) : (
+                    <>
+                      <Sans numberOfLines={1} weight="medium" size="3t">
+                        {result?.name}
+                      </Sans>
+                      <Sans numberOfLines={1} size="3t" color="black60" data-test-id="card-subtitle">
+                        {result?.exhibitionPeriod}
+                        {Boolean(location) && `  ${bullet}  ${location}`}
+                      </Sans>
+                    </>
+                  )}
                 </MetadataContainer>
               </View>
             </CardRailCard>

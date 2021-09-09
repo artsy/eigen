@@ -51,6 +51,7 @@ const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress, showAr
             alignItems="center"
             justifyContent="center"
             overflow="hidden"
+            // To align the image with the text we have to add top margin to compensate the line height.
             style={{ marginTop: 3 }}
           >
             <OpaqueImageView width={60} height={60} imageURL={auctionResult.images.thumbnail.url} />

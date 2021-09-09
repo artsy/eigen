@@ -1,6 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
 import { ArtworkTileRailCard_artwork } from "__generated__/ArtworkTileRailCard_artwork.graphql"
-import { Box, Flex, Sans, useColor } from "palette"
+import { Box, Flex, Sans, Text, useColor } from "palette"
 import React from "react"
 import { GestureResponderEvent, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -92,34 +92,34 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
   )
 
   const artistNamesDisplay = artistNames ? (
-    <Sans size="3t" weight="medium" color="black100" numberOfLines={1}>
+    <Text numberOfLines={1} lineHeight="20" variant="mediumText">
       {artistNames}
-    </Sans>
+    </Text>
   ) : null
 
   const saleMessageDisplay = saleMessage ? (
-    <Sans size="3t" color="black60" numberOfLines={1}>
+    <Text lineHeight="20" variant="small" color="black60" numberOfLines={1}>
       {saleMessage}
-    </Sans>
+    </Text>
   ) : null
 
   const titleAndDateDisplay =
     title || date ? (
-      <Sans size="3t" color="black60" numberOfLines={1}>
+      <Text lineHeight="20" color="black60" numberOfLines={1}>
         {[title, date].filter(Boolean).join(", ")}
-      </Sans>
+      </Text>
     ) : null
 
   const partnerDisplay = partner?.name ? (
-    <Sans size="3t" color="black60" numberOfLines={1}>
+    <Text lineHeight="20" color="black60" numberOfLines={1}>
       {partner.name}
-    </Sans>
+    </Text>
   ) : null
 
   const lotNumber = lotLabel ? (
-    <Sans size="3t" color="black60" numberOfLines={1}>
+    <Text lineHeight="20" color="black60" numberOfLines={1}>
       Lot {lotLabel}
-    </Sans>
+    </Text>
   ) : null
 
   return (
