@@ -1,6 +1,8 @@
 import { Input } from "lib/Components/Input/Input"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React from "react"
 import { act } from "react-test-renderer"
@@ -9,10 +11,13 @@ import { PhoneInput } from "../PhoneInput"
 describe("PhoneInput", () => {
   let onChange = jest.fn()
   let onChangeText = jest.fn()
+
   beforeEach(() => {
     onChange = jest.fn()
     onChangeText = jest.fn()
+    __globalStoreTestUtils__?.injectFeatureFlags({ ARPhoneValidation: false })
   })
+
   it("renders an input with the phone number pre-filled", () => {
     const tree = renderWithWrappers(
       <PhoneInput value="+447825577664" onChange={onChange} onChangeText={onChangeText} />
@@ -56,5 +61,27 @@ describe("PhoneInput", () => {
     })
     expect(onChange).toHaveBeenCalledWith("+1 (999) ")
     expect(onChangeText).toHaveBeenCalledWith("+1 (999) ")
+  })
+
+  it("shows a validation message when a phone number is invalid", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ ARPhoneValidation: true })
+    const tree = renderWithWrappers(<PhoneInput value="447825577664" onChange={onChange} onChangeText={onChangeText} />)
+
+    act(() => {
+      tree.root.findByType(Input).props.onChangeText("")
+    })
+
+    expect(tree.root.findByType(Text).props.children).toBe("This phone number is incomplete")
+  })
+
+  it("does not show a validation message when a phone number is valid", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ ARPhoneValidation: true })
+    const tree = renderWithWrappers(<PhoneInput value="" onChange={onChange} onChangeText={onChangeText} />)
+
+    act(() => {
+      tree.root.findByType(Input).props.onChangeText("6466464646")
+    })
+
+    expect(tree.root.findByType(Text).props.children).toBe("")
   })
 })
