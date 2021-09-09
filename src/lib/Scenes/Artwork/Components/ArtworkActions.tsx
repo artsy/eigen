@@ -141,7 +141,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
             </Touchable>
           )}
 
-          {!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
+          {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
             <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
               <UtilButton pr={2}>
                 <Box mr={0.5}>
