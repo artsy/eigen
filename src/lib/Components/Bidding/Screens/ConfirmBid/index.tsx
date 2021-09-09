@@ -540,10 +540,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               />
             </Box>
           </ScrollView>
+          <Divider />
 
-          <Box mx={4}>
-            <Divider />
-
+          <Box px={4}>
             {requiresCheckbox ? (
               <Checkbox
                 mt={4}
