@@ -46,8 +46,8 @@ describe("ArtworkTileRailCard", () => {
       </GlobalStoreProvider>
     )
 
-    const sans = result.find("Sans")
-    expect(sans.at(1).prop("children")).toMatch("CoronaCats, 2020")
+    const text = result.find("Text")
+    expect(text.at(3).prop("children")).toMatch("CoronaCats, 2020")
   })
 
   it("renders the title when no date is given", () => {
@@ -64,8 +64,8 @@ describe("ArtworkTileRailCard", () => {
       </GlobalStoreProvider>
     )
 
-    const sans = result.find("Sans")
-    expect(sans.at(1).prop("children")).toMatch("CoronaCats")
+    const text = result.find("Text")
+    expect(text.at(3).prop("children")).toMatch("CoronaCats")
   })
 
   it("renders no image without imageURL", () => {
