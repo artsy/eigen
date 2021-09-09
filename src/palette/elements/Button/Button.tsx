@@ -80,12 +80,12 @@ export const Button: React.FC<ButtonProps> = ({
       ? DisplayState.Disabled
       : innerDisplayState) // otherwise use the inner state for pressed or enabled
 
-  const getSize = (): { height: number; px: number } => {
+  const getSize = (): { height: number; mx: number } => {
     switch (size) {
       case "small":
-        return { height: 30, px: 15 }
+        return { height: 30, mx: 15 }
       case "large":
-        return { height: 50, px: 30 }
+        return { height: 50, mx: 30 }
     }
   }
 
@@ -147,30 +147,34 @@ export const Button: React.FC<ButtonProps> = ({
             <AnimatedContainer
               {...rest}
               style={{
-                flexDirection: "row",
                 backgroundColor: springProps.backgroundColor,
                 borderColor: springProps.borderColor,
                 height: containerSize.height,
               }}
-              px={containerSize.px}
             >
-              <VisibleTextContainer>
-                {iconPosition === "left" && iconBox}
-                <AnimatedTextV3
-                  size={size === "small" ? "xs" : "sm"}
-                  style={{ color: springProps.textColor, textDecorationLine: springProps.textDecorationLine }}
-                >
-                  {children}
-                </AnimatedTextV3>
-                {iconPosition === "right" && iconBox}
-              </VisibleTextContainer>
+              <Box flex={1} mx={containerSize.mx}>
+                <VisibleTextContainer>
+                  {iconPosition === "left" && iconBox}
+                  <AnimatedTextV3
+                    size={size === "small" ? "xs" : "sm"}
+                    style={{ color: springProps.textColor, textDecorationLine: springProps.textDecorationLine }}
+                  >
+                    {children}
+                  </AnimatedTextV3>
+                  {iconPosition === "right" && iconBox}
+                </VisibleTextContainer>
 
-              <HiddenContainer>
-                {icon}
-                <TextV3 size={size === "small" ? "xs" : "sm"}>{longestText ? longestText : children}</TextV3>
-              </HiddenContainer>
+                <HiddenContainer>
+                  {icon}
+                  <TextV3 size={size === "small" ? "xs" : "sm"}>{longestText ? longestText : children}</TextV3>
+                </HiddenContainer>
 
-              {displayState === DisplayState.Loading ? <Spinner size={size} color={spinnerColor} /> : null}
+                {displayState === DisplayState.Loading ? (
+                  <SpinnerContainer>
+                    <Spinner size={size} color={spinnerColor} />
+                  </SpinnerContainer>
+                ) : null}
+              </Box>
             </AnimatedContainer>
           </Flex>
         </Pressable>
@@ -326,24 +330,33 @@ const VisibleTextContainer = styled(Box)`
   position: absolute;
   align-items: center;
   justify-content: center;
-  display: flex;
   flex-direction: row;
+  width: 100%;
   height: 100%;
 `
 
 const HiddenContainer = styled(Box)<ButtonProps>`
-  display: flex;
+  flex: 1;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
   opacity: 0;
 `
 
 const Container = styled(Box)<ButtonProps>`
-  align-items: center;
-  justify-content: center;
   position: relative;
   border-width: 1;
   border-radius: 50;
   width: ${(p) => (p.block ? "100%" : "auto")};
+  overflow: hidden;
+`
+
+const SpinnerContainer = styled(Box)<ButtonProps>`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
 `
 
 const AnimatedContainer = animated(Container)
