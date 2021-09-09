@@ -162,7 +162,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
             : 0}{" "}
           {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
         </SortMode>
-        <Separator borderColor={color("black5")} mt="2" />
+        <Separator mt="2" />
         {!!showKeywordFilter && (
           <KeywordFilter
             artistId={artist.internalID}
@@ -188,7 +188,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
           )}
           ItemSeparatorComponent={() => (
             <Flex px={2}>
-              <Separator borderColor={color("black5")} />
+              <Separator borderColor={color("black10")} />
             </Flex>
           )}
           style={{ width: useScreenDimensions().width, left: -20 }}

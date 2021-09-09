@@ -28,6 +28,7 @@ const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress, showAr
 
   return (
     <Touchable underlayColor={color("black5")} onPress={onPress}>
+      {/* TODO: Remove y margin and replace with a separator component between the items */}
       <Flex py="2" px={2} flexDirection="row">
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
@@ -50,6 +51,7 @@ const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress, showAr
             alignItems="center"
             justifyContent="center"
             overflow="hidden"
+            style={{ marginTop: 3 }}
           >
             <OpaqueImageView width={60} height={60} imageURL={auctionResult.images.thumbnail.url} />
           </Flex>

@@ -47,7 +47,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
         initialNumToRender={3}
         ItemSeparatorComponent={() => (
           <Flex px={2}>
-            <Separator borderColor={"black5"} />
+            <Separator borderColor={"black10"} />
           </Flex>
         )}
         renderItem={({ item, index }) => {

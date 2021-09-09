@@ -5,7 +5,7 @@ import LinearGradient from "react-native-linear-gradient"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spacer } from "../Spacer"
-import { Sans } from "../Text"
+import { Text } from "../Text"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface MediumCardProps extends BoxProps {
@@ -43,13 +43,13 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
           right: space(6),
         }}
       >
-        <Sans size="5t" color={color("white100")}>
+        <Text lineHeight="20" color={color("white100")} mb={0.5}>
           {title}
-        </Sans>
+        </Text>
         {!!subtitle && (
-          <Sans size="3t" color={color("white100")}>
+          <Text color={color("white100")} variant={"small"}>
             {subtitle}
-          </Sans>
+          </Text>
         )}
         <Spacer mt={15} />
       </Flex>

@@ -13,7 +13,7 @@ import { navigate } from "lib/navigation/navigate"
 import { formatDisplayTimelyAt } from "lib/Scenes/Sale/helpers"
 import { extractNodes } from "lib/utils/extractNodes"
 import { compact } from "lodash"
-import { bullet, Flex, Sans } from "palette"
+import { bullet, Flex, Text } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -102,12 +102,19 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
                   </View>
                 </ArtworkImageContainer>
                 <MetadataContainer>
-                  <Sans numberOfLines={2} weight="medium" size="3t">
+                  <Text numberOfLines={2} lineHeight="20" variant="mediumText">
                     {result?.name}
-                  </Sans>
-                  <Sans numberOfLines={1} size="3t" color="black60" data-test-id="sale-subtitle" ellipsizeMode="middle">
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    lineHeight="20"
+                    color="black60"
+                    variant="mediumText"
+                    data-test-id="sale-subtitle"
+                    ellipsizeMode="middle"
+                  >
                     {getSaleSubtitle(result?.liveStartAt, result?.displayTimelyAt).trim()}
-                  </Sans>
+                  </Text>
                 </MetadataContainer>
               </View>
             </CardRailCard>
