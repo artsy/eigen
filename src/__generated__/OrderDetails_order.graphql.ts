@@ -12,6 +12,8 @@ export type OrderDetails_order = {
     } | {
         readonly __typename: "CommercePickup";
     } | {
+        readonly __typename: "CommerceShipArta";
+    } | {
         /*This will never be '%other', but we need some
         value in case none of the concrete values match.*/
         readonly __typename: "%other";
@@ -24,12 +26,15 @@ export type OrderDetails_order = {
                         readonly name: string | null;
                     } | null;
                 } | null;
+                readonly shipment: {
+                    readonly status: string | null;
+                } | null;
             } | null;
         } | null> | null;
     } | null;
     readonly createdAt: string;
-    readonly state: CommerceOrderStateEnum;
     readonly code: string;
+    readonly state: CommerceOrderStateEnum;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkInfoSection_artwork" | "SummarySection_section" | "OrderDetailsPayment_order" | "ShipsToSection_address" | "SoldBySection_soldBy">;
     readonly " $refType": "OrderDetails_order";
 };
@@ -55,7 +60,10 @@ v1 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
-};
+},
+v2 = [
+  (v0/*: any*/)
+];
 return {
   "argumentDefinitions": [],
   "kind": "Fragment",
@@ -81,10 +89,14 @@ return {
         },
         {
           "kind": "InlineFragment",
-          "selections": [
-            (v0/*: any*/)
-          ],
+          "selections": (v2/*: any*/),
           "type": "CommercePickup",
+          "abstractKey": null
+        },
+        {
+          "kind": "InlineFragment",
+          "selections": (v2/*: any*/),
+          "type": "CommerceShipArta",
           "abstractKey": null
         }
       ],
@@ -142,6 +154,24 @@ return {
                     }
                   ],
                   "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "CommerceShipment",
+                  "kind": "LinkedField",
+                  "name": "shipment",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "status",
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
                 }
               ],
               "storageKey": null
@@ -163,14 +193,14 @@ return {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "state",
+      "name": "code",
       "storageKey": null
     },
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "code",
+      "name": "state",
       "storageKey": null
     },
     {

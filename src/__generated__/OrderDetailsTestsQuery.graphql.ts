@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4d2bf866dd4db3dd447dba148f57b943 */
+/* @relayHash d18c308d5a29fe7e77e676307b29d7fe */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -73,6 +73,9 @@ fragment OrderDetails_order on CommerceOrder {
     ... on CommercePickup {
       __typename
     }
+    ... on CommerceShipArta {
+      __typename
+    }
   }
   lineItems(first: 1) {
     edges {
@@ -85,12 +88,16 @@ fragment OrderDetails_order on CommerceOrder {
           id
         }
         id
+        shipment {
+          status
+          id
+        }
       }
     }
   }
   createdAt
-  state
   code
+  state
   ...ArtworkInfoSection_artwork
   ...SummarySection_section
   ...OrderDetailsPayment_order
@@ -487,6 +494,25 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "concreteType": "CommerceShipment",
+                        "kind": "LinkedField",
+                        "name": "shipment",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "status",
+                            "storageKey": null
+                          },
+                          (v4/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "CommerceShippingQuote",
                         "kind": "LinkedField",
                         "name": "selectedShippingQuote",
@@ -564,14 +590,14 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "state",
+            "name": "code",
             "storageKey": null
           },
           {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "code",
+            "name": "state",
             "storageKey": null
           },
           {
@@ -635,7 +661,7 @@ return {
     ]
   },
   "params": {
-    "id": "4d2bf866dd4db3dd447dba148f57b943",
+    "id": "d18c308d5a29fe7e77e676307b29d7fe",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "commerceOrder": {
@@ -742,6 +768,14 @@ return {
         },
         "commerceOrder.lineItems.edges.node.selectedShippingQuote.displayName": (v6/*: any*/),
         "commerceOrder.lineItems.edges.node.selectedShippingQuote.id": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceShipment"
+        },
+        "commerceOrder.lineItems.edges.node.shipment.id": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment.status": (v7/*: any*/),
         "commerceOrder.requestedFulfillment": {
           "enumValues": null,
           "nullable": true,

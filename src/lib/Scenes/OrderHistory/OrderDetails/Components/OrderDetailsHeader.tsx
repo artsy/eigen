@@ -1,4 +1,6 @@
 import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
+import { extractNodes } from "lib/utils/extractNodes"
+import { getOrderStatus, OrderState } from "lib/utils/getOrderStatus"
 import { DateTime } from "luxon"
 import { Flex, Text } from "palette"
 import React from "react"
@@ -12,8 +14,11 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
   if (!info) {
     return null
   }
+
+  const [lineItem] = extractNodes(info?.lineItems)
   const { createdAt, requestedFulfillment, code, state } = info
-  const isShippedOrder = requestedFulfillment?.__typename === "CommerceShip"
+  const orderStatus = getOrderStatus(lineItem, state as OrderState)
+  const isPickupOrder = requestedFulfillment?.__typename === "CommercePickup"
 
   return (
     <Flex flexDirection="row">
@@ -39,10 +44,10 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
           {code}
         </Text>
         <Text testID="status" color="black60" variant="text" mb={1} style={{ textTransform: "capitalize" }}>
-          {state.toLowerCase()}
+          {orderStatus}
         </Text>
         <Text testID="commerceShip" color="black60" variant="text">
-          {isShippedOrder ? "Delivery" : "Pickup"}
+          {!isPickupOrder ? "Delivery" : "Pickup"}
         </Text>
       </Flex>
     </Flex>
@@ -53,6 +58,7 @@ export const OrderDetailsHeaderFragmentContainer = createFragmentContainer(Order
   info: graphql`
     fragment OrderDetailsHeader_info on CommerceOrder {
       createdAt
+      code
       state
       requestedFulfillment {
         ... on CommerceShip {
@@ -61,8 +67,19 @@ export const OrderDetailsHeaderFragmentContainer = createFragmentContainer(Order
         ... on CommercePickup {
           __typename
         }
+        ... on CommerceShipArta {
+          __typename
+        }
       }
-      code
+      lineItems(first: 1) {
+        edges {
+          node {
+            shipment {
+              status
+            }
+          }
+        }
+      }
     }
   `,
 })

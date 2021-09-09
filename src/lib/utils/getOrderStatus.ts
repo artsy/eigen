@@ -1,4 +1,9 @@
+import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
 import { OrderHistoryRowLineItem } from "./getTrackingUrl"
+
+export type OrderDetailsHeaderLineItem = NonNullable<
+  NonNullable<NonNullable<OrderDetails_order["lineItems"]>["edges"]>[0]
+>["node"]
 
 export type OrderState = "APPROVED" | "CANCELED" | "FULFILLED" | "REFUNDED" | "SUBMITTED"
 export type ShipmentStatus = "PENDING" | "CONFIRMED" | "COLLECTED" | "IN_TRANSIT" | "COMPLETED" | "CANCELED"
@@ -32,7 +37,10 @@ const orderStatusesMap = {
   CANCELED: SHIPMENT_STATUSES.Canceled,
 }
 
-export function getOrderStatus(orderLineItem: OrderHistoryRowLineItem, orderState: OrderState): string {
+export function getOrderStatus(
+  orderLineItem: OrderHistoryRowLineItem | OrderDetailsHeaderLineItem,
+  orderState: OrderState
+): string {
   if (orderState === "CANCELED" || orderState === "REFUNDED" || !orderLineItem?.shipment?.status) {
     return orderStatusesMap[orderState].toLowerCase()
   }

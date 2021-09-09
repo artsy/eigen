@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ba21c54e71d49c3999c5dbe920b6ca34 */
+/* @relayHash 56713a6a241b2d058abdb87ae701575e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -77,6 +77,9 @@ fragment OrderDetails_order on CommerceOrder {
     ... on CommercePickup {
       __typename
     }
+    ... on CommerceShipArta {
+      __typename
+    }
   }
   lineItems(first: 1) {
     edges {
@@ -89,12 +92,16 @@ fragment OrderDetails_order on CommerceOrder {
           id
         }
         id
+        shipment {
+          status
+          id
+        }
       }
     }
   }
   createdAt
-  state
   code
+  state
   ...ArtworkInfoSection_artwork
   ...SummarySection_section
   ...OrderDetailsPayment_order
@@ -480,6 +487,25 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "concreteType": "CommerceShipment",
+                        "kind": "LinkedField",
+                        "name": "shipment",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "status",
+                            "storageKey": null
+                          },
+                          (v5/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "CommerceShippingQuote",
                         "kind": "LinkedField",
                         "name": "selectedShippingQuote",
@@ -557,14 +583,14 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "state",
+            "name": "code",
             "storageKey": null
           },
           {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "code",
+            "name": "state",
             "storageKey": null
           },
           {
@@ -628,7 +654,7 @@ return {
     ]
   },
   "params": {
-    "id": "ba21c54e71d49c3999c5dbe920b6ca34",
+    "id": "56713a6a241b2d058abdb87ae701575e",
     "metadata": {},
     "name": "OrderDetailsQuery",
     "operationKind": "query",
