@@ -215,7 +215,10 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
                     key={name}
                     rounded
                     selected={selectedAlgoliaIndex === name}
-                    onPress={() => setSelectedAlgoliaIndex(selectedAlgoliaIndex === name ? "" : name)}
+                    onPress={() => {
+                      setSelectedAlgoliaIndex(selectedAlgoliaIndex === name ? "" : name)
+                      setSearchState((prevState) => ({ ...prevState, page: 1 }))
+                    }}
                   >
                     {displayName}
                   </Pill>
