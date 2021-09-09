@@ -28,7 +28,7 @@ const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress, showAr
 
   return (
     <Touchable underlayColor={color("black5")} onPress={onPress}>
-      <Flex py="2" px={2} flexDirection="row">
+      <Flex px={2} flexDirection="row">
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
           <Flex
@@ -50,6 +50,8 @@ const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress, showAr
             alignItems="center"
             justifyContent="center"
             overflow="hidden"
+            // To align the image with the text we have to add top margin to compensate the line height.
+            style={{ marginTop: 3 }}
           >
             <OpaqueImageView width={60} height={60} imageURL={auctionResult.images.thumbnail.url} />
           </Flex>

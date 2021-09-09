@@ -1,4 +1,5 @@
 import { ArrowRightIcon, Flex, Text, useSpace } from "palette"
+import { usePaletteFlagStore } from "palette/PaletteFlag"
 import React from "react"
 import { TouchableOpacity, View } from "react-native"
 
@@ -21,17 +22,35 @@ export const SectionTitle: React.FC<{
   RightButtonContent?: React.ComponentType<any> | null
 }> = ({ title, subtitle, onPress, RightButtonContent }) => {
   const space = useSpace()
+  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
+
   return (
     <Wrapper onPress={onPress}>
-      <Flex mb="1" flexDirection="row" alignItems="center">
+      <Flex mb={2} flexDirection="row" alignItems="center">
         <View style={{ overflow: "hidden", flex: 1 }}>
-          <Text variant="subtitle" ellipsizeMode="tail" numberOfLines={1} data-test-id="title">
-            {title}
-          </Text>
-          {Boolean(subtitle) && (
-            <Text variant="text" color="black60" data-test-id="subtitle">
-              {subtitle}
-            </Text>
+          {/* TODO-PALETTE-V3 remove V2 part */}
+          {allowV3 ? (
+            <>
+              <Text lineHeight="20" variant="mediumText" ellipsizeMode="tail" numberOfLines={1} data-test-id="title">
+                {title}
+              </Text>
+              {Boolean(subtitle) && (
+                <Text variant="mediumText" color="black60" lineHeight="20" data-test-id="subtitle">
+                  {subtitle}
+                </Text>
+              )}
+            </>
+          ) : (
+            <>
+              <Text variant="subtitle" ellipsizeMode="tail" numberOfLines={1} data-test-id="title">
+                {title}
+              </Text>
+              {Boolean(subtitle) && (
+                <Text variant="text" color="black60" data-test-id="subtitle">
+                  {subtitle}
+                </Text>
+              )}
+            </>
           )}
         </View>
         {!!onPress && (

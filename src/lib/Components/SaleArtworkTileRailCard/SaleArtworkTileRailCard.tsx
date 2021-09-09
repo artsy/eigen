@@ -1,7 +1,7 @@
 import { ContextModule, OwnerType, ScreenOwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
 import { themeGet } from "@styled-system/theme-get"
 import { SaleArtworkTileRailCard_saleArtwork } from "__generated__/SaleArtworkTileRailCard_saleArtwork.graphql"
-import { Box, Flex, Sans, useColor } from "palette"
+import { Box, Flex, Text, useColor } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -75,15 +75,15 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   )
 
   const artistNamesDisplay = artwork.artistNames ? (
-    <Sans size="3t" weight="medium" color="black100" numberOfLines={1}>
+    <Text color="black60" lineHeight="20" numberOfLines={1}>
       {artwork.artistNames}
-    </Sans>
+    </Text>
   ) : null
 
   const saleMessageDisplay = artwork.saleMessage ? (
-    <Sans size="3t" color="black60" numberOfLines={1}>
+    <Text variant="small" lineHeight="20" numberOfLines={1}>
       {artwork.saleMessage}
-    </Sans>
+    </Text>
   ) : null
 
   const customSaleMessage = saleMessageOrBidInfo({
@@ -96,22 +96,22 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   })
 
   const customSaleMessageDisplay = useCustomSaleMessage ? (
-    <Sans size="3t" color="black60" numberOfLines={1}>
+    <Text variant="small" lineHeight="20" numberOfLines={1}>
       {customSaleMessage}
-    </Sans>
+    </Text>
   ) : null
 
   const titleAndDateDisplay =
     artwork.title || artwork.date ? (
-      <Sans size="3t" color="black60" numberOfLines={1}>
+      <Text color="black60" lineHeight="20" numberOfLines={1}>
         {[artwork.title, artwork.date].filter(Boolean).join(", ")}
-      </Sans>
+      </Text>
     ) : null
 
   const lotNumber = saleArtwork.lotLabel ? (
-    <Sans size="3t" color="black60" numberOfLines={1}>
+    <Text numberOfLines={1} lineHeight="20" variant="mediumText">
       Lot {saleArtwork.lotLabel}
-    </Sans>
+    </Text>
   ) : null
 
   return (

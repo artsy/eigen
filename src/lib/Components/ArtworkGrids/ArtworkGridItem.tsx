@@ -6,7 +6,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { getUrgencyTag } from "lib/utils/getUrgencyTag"
 import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
-import { Box, Flex, Sans, Spacer, Touchable } from "palette"
+import { Box, Flex, Sans, Spacer, Text, Touchable } from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -111,30 +111,30 @@ export const Artwork: React.FC<ArtworkProps> = ({
         )}
         <Box mt={1}>
           {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
-            <Sans size="3t" color="black60" numberOfLines={1}>
+            <Text color="black60" numberOfLines={1}>
               Lot {artwork.saleArtwork.lotLabel}
-            </Sans>
+            </Text>
           )}
           {!!artwork.artistNames && (
-            <Sans size="3t" weight="medium" numberOfLines={1}>
+            <Text numberOfLines={1} lineHeight="20" variant="mediumText">
               {artwork.artistNames}
-            </Sans>
+            </Text>
           )}
           {!!artwork.title && (
-            <Sans size="3t" color="black60" numberOfLines={1}>
+            <Text lineHeight="20" color="black60" numberOfLines={1}>
               {artwork.title}
               {!!artwork.date && `, ${artwork.date}`}
-            </Sans>
+            </Text>
           )}
           {!hidePartner && !!artwork.partner?.name && (
-            <Sans size="3t" color="black60" numberOfLines={1}>
+            <Text lineHeight="20" color="black60" numberOfLines={1}>
               {artwork.partner.name}
-            </Sans>
+            </Text>
           )}
           {!!saleInfo && (
-            <Sans color="black60" size="3t" numberOfLines={1}>
+            <Text variant="small" lineHeight="20" numberOfLines={1}>
               {saleInfo}
-            </Sans>
+            </Text>
           )}
         </Box>
       </View>
