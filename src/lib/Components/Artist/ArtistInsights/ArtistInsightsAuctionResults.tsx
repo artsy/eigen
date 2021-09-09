@@ -174,28 +174,36 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         )}
       </Flex>
       {auctionResults.length ? (
-        <FlatList
-          data={auctionResults}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <AuctionResultFragmentContainer
-              auctionResult={item}
-              onPress={() => {
-                tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))
-                navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
-              }}
-            />
-          )}
-          ItemSeparatorComponent={() => (
-            <Flex px={2}>
-              <Separator borderColor={color("black10")} />
-            </Flex>
-          )}
-          style={{ width: useScreenDimensions().width, left: -20 }}
-          onEndReached={loadMoreAuctionResults}
-          ListFooterComponent={loadingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null}
-          contentContainerStyle={{ paddingBottom: 20 }}
-        />
+        <Flex py={2}>
+          <FlatList
+            data={auctionResults}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <AuctionResultFragmentContainer
+                auctionResult={item}
+                onPress={() => {
+                  tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))
+                  navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
+                }}
+              />
+            )}
+            ItemSeparatorComponent={() => (
+              <Flex px={2} py={2}>
+                <Separator borderColor={color("black10")} />
+              </Flex>
+            )}
+            style={{ width: useScreenDimensions().width, left: -20 }}
+            onEndReached={loadMoreAuctionResults}
+            ListFooterComponent={
+              loadingMoreData ? (
+                <Flex my={4}>
+                  <Spinner />
+                </Flex>
+              ) : null
+            }
+            contentContainerStyle={{ paddingBottom: 20 }}
+          />
+        </Flex>
       ) : (
         <Box my="80px">
           <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} hideClearButton={isKeywordFilterActive} />
