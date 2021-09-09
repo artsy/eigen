@@ -105,7 +105,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
         <Flex flexDirection="row">
           {isOpenSale ? (
             <Touchable haptic onPress={() => this.handleArtworkSave()}>
-              <UtilButton pr={3}>
+              <UtilButton pr={2}>
                 <Box mr={0.5}>
                   {is_saved ? <BellFillIcon fill="purple100" /* TODO-PALETTE-V3 "blue100" */ /> : <BellIcon />}
                 </Box>
@@ -123,7 +123,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
             </Touchable>
           ) : (
             <Touchable haptic onPress={() => this.handleArtworkSave()}>
-              <UtilButton pr={3}>
+              <UtilButton pr={2}>
                 <Box mr={0.5}>
                   {is_saved ? <HeartFillIcon fill="purple100" /* TODO-PALETTE-V3 "blue100" */ /> : <HeartIcon />}
                 </Box>
@@ -141,9 +141,9 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
             </Touchable>
           )}
 
-          {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
+          {!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
             <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
-              <UtilButton pr={3}>
+              <UtilButton pr={2}>
                 <Box mr={0.5}>
                   <EyeOpenedIcon />
                 </Box>
