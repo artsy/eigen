@@ -240,7 +240,7 @@ export const tracks = {
   pageView: (slug: string) => {
     return {
       auction_slug: slug,
-      name: "Auctions Pageview",
+      name: "Auction Screenview",
     }
   },
   openFilter: (id: string, slug: string) => {
