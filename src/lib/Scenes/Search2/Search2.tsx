@@ -90,16 +90,28 @@ interface AlgoliaSearchResult {
   slug: string
 }
 
-const SearchResults: React.FC<
-  StateResultsProvided<AlgoliaSearchResult> & InfiniteHitsProvided<AlgoliaSearchResult>
-> = ({ hits, hasMore, searching, isSearchStalled, searchState, refineNext }) => {
+interface SearchResultsProps
+  extends StateResultsProvided<AlgoliaSearchResult>,
+    InfiniteHitsProvided<AlgoliaSearchResult> {
+  indexName: string
+}
+
+const SearchResults: React.FC<SearchResultsProps> = ({
+  hits,
+  hasMore,
+  searching,
+  isSearchStalled,
+  searchState,
+  indexName,
+  refineNext,
+}) => {
   const flatListRef = useRef<FlatList<AlgoliaSearchResult>>(null)
   const loading = searching || isSearchStalled
   const space = useSpace()
 
   useEffect(() => {
     flatListRef.current?.scrollToOffset({ offset: 1, animated: true })
-  }, [searchState.query])
+  }, [searchState.query, indexName])
 
   const onPress = (item: AlgoliaSearchResult): void => {
     // TODO: I'm not sure why we need to use this `navigateToPartner` function but without it the header overlaps
@@ -173,7 +185,11 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
   }
 
   const renderResults = () =>
-    !!selectedAlgoliaIndex ? <SearchResultsContainer /> : <AutosuggestResults query={searchState.query!} />
+    !!selectedAlgoliaIndex ? (
+      <SearchResultsContainer indexName={selectedAlgoliaIndex} />
+    ) : (
+      <AutosuggestResults query={searchState.query!} />
+    )
 
   const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 2
 
