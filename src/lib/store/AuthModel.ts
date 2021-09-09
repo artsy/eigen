@@ -17,9 +17,11 @@ const afterSocialAuthLogin = (res: any, reject: (reason?: any) => void, provider
   const providerName = capitalize(provider)
   if (res.error_description) {
     if (res.error_description.includes("no account linked to oauth token")) {
-      reject(`We could not find a user account linked to your ${providerName} account, try signing up`)
+      reject(
+        `There is no email associated with your ${providerName} account. Please log in using your email and password instead.`
+      )
     } else {
-      reject("Could not log you in")
+      reject("Login attempt failed")
     }
   }
 }
@@ -388,17 +390,14 @@ export const getAuthModel = (): AuthModel => ({
       let message = ""
       const providerName = capitalize(oauthProvider)
       if (resultJson?.error === "User Already Exists") {
-        message =
-          `${providerName} account previously linked to Artsy. ` +
-          "Log in to your Artsy account via email and password and link " +
-          `${providerName} in your settings instead.`
+        message = `Your ${providerName} email account is linked to an Artsy user account please Log in using your email and password instead.`
       } else if (resultJson?.error === "Another Account Already Linked") {
         message =
-          `${providerName} account already linked to another Artsy account. ` +
+          `Your ${providerName} account already linked to another Artsy account. ` +
           `Try logging out and back in with ${providerName}. Then consider ` +
           `deleting that user account and re-linking ${providerName}. `
       } else if (resultJson.message && resultJson.message.match("Unauthorized source IP address")) {
-        message = `Your IP address was blocked by ${providerName}.`
+        message = `You could not create an account because your IP address was blocked by ${providerName}`
       } else {
         message = "Failed to sign up"
       }
@@ -427,7 +426,7 @@ export const getAuthModel = (): AuthModel => ({
         }
         if (!facebookInfo.email) {
           reject(
-            "We can’t find an email associated with your Facebook account. Please sign up with your email and password."
+            "There is no email associated with your Facebook account. Please log in using your email and password instead."
           )
           return
         }
