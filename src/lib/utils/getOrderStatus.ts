@@ -1,8 +1,8 @@
-import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
+import { OrderDetailsHeader_info } from "__generated__/OrderDetailsHeader_info.graphql"
 import { OrderHistoryRowLineItem } from "./getTrackingUrl"
 
 export type OrderDetailsHeaderLineItem = NonNullable<
-  NonNullable<NonNullable<OrderDetails_order["lineItems"]>["edges"]>[0]
+  NonNullable<NonNullable<OrderDetailsHeader_info["lineItems"]>["edges"]>[0]
 >["node"]
 
 export type OrderState = "APPROVED" | "CANCELED" | "FULFILLED" | "REFUNDED" | "SUBMITTED"

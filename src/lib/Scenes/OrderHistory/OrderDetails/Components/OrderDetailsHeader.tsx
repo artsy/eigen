@@ -1,4 +1,4 @@
-import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
+import { OrderDetailsHeader_info } from "__generated__/OrderDetailsHeader_info.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
 import { getOrderStatus, OrderState } from "lib/utils/getOrderStatus"
 import { DateTime } from "luxon"
@@ -7,7 +7,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  info: OrderDetails_order
+  info: OrderDetailsHeader_info
 }
 
 export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
@@ -46,7 +46,7 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
         <Text testID="status" color="black60" variant="text" mb={1} style={{ textTransform: "capitalize" }}>
           {orderStatus}
         </Text>
-        <Text testID="commerceShip" color="black60" variant="text">
+        <Text testID="fulfillment" color="black60" variant="text">
           {!isPickupOrder ? "Delivery" : "Pickup"}
         </Text>
       </Flex>
