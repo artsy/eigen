@@ -2,7 +2,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { useAnimatedValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Button, Flex, Spacer, Text, TextV2, Touchable, useTheme } from "palette"
+import { Button, Flex, Spacer, Text, Touchable, useTheme } from "palette"
 import React, { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
@@ -120,15 +120,14 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
       </Animated.View>
 
       <Animated.View style={{ flex: 1, padding: space(2), justifyContent: "flex-end", opacity }}>
-        {/* <Flex flex={1} p={2} justifyContent="flex-end"> */}
-        <TextV2 color="white" fontSize="48px" lineHeight={48}>
+        <Text color="white" fontSize="48px" lineHeight={48}>
           Collect Art{"\n"}by the World’s{"\n"}
           Leading Artists
-        </TextV2>
+        </Text>
         <Spacer mt={1} />
-        <TextV2 variant="text" color="white">
+        <Text variant="text" color="white">
           Build your personalized profile, get market insights, and buy and sell art with confidence.
-        </TextV2>
+        </Text>
         <Spacer mt={2} />
         <Button
           variant="primaryWhite"
