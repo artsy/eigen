@@ -5,13 +5,13 @@ import {
   Aggregations,
   filterArtworksParams,
   getSelectedFiltersCounts,
-  prepareFilterArtworksParamsForInput,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ORDERED_ARTWORK_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
 import { getAllowedFiltersForSavedSearchInput } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader"
 import {
@@ -20,7 +20,6 @@ import {
 } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
-import { PAGE_SIZE } from "lib/data/constants"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { Box, FilterIcon, Flex, Separator, Spacer, Text, TouchableHighlightColor } from "palette"
@@ -105,10 +104,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
 
-  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
-
-  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
 
   const filterParams = useMemo(() => filterArtworksParams(appliedFilters), [appliedFilters])
   const appliedFiltersCount = useMemo(
@@ -122,23 +118,13 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const artworksCount = artworks?.edges?.length
   const artworksTotal = artworks?.counts?.total ?? 0
 
-  useEffect(() => {
-    if (applyFilters) {
-      relay.refetchConnection(
-        PAGE_SIZE,
-        (error) => {
-          if (error) {
-            throw new Error("ArtistArtworks/ArtistArtworks filter error: " + error.message)
-          }
-        },
-        { input: prepareFilterArtworksParamsForInput(filterParams) }
-      )
-    }
-  }, [appliedFilters])
+  useArtworkFilters({
+    relay,
+    aggregations: artist.aggregations?.aggregations,
+    componentPath: "ArtistArtworks/ArtistArtworks",
+  })
 
   useEffect(() => {
-    setAggregationsAction(artist.aggregations?.aggregations)
-
     if (searchCriteria && artist.aggregations?.aggregations) {
       const params = convertSavedSearchCriteriaToFilterParams(
         searchCriteria,

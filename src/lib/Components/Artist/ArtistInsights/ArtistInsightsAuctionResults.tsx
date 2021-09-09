@@ -3,6 +3,7 @@ import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsight
 import { filterArtworksParams, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
+import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import Spinner from "lib/Components/Spinner"
@@ -33,44 +34,58 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
 
   const showKeywordFilter = useFeatureFlag("AREnableAuctionResultsKeywordFilter")
 
-  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
+  const auctionResults = extractNodes(artist.auctionResultsConnection)
+
   const setFilterTypeAction = ArtworksFiltersStore.useStoreActions((state) => state.setFilterTypeAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
   const filterParams = filterArtworksParams(appliedFilters, "auctionResult")
 
   const keywordFilterValue = appliedFilters?.find((filter) => filter.paramName === FilterParamName.keyword)?.paramValue
   const isKeywordFilterActive = !!keywordFilterValue
 
+  const [loadingMoreData, setLoadingMoreData] = useState(false)
   const [keywordFilterRefetching, setKeywordFilterRefetching] = useState(false)
+
   const endKeywordFilterRefetching = useMemo(
     () => debounce(() => setKeywordFilterRefetching(false), DEBOUNCE_DELAY),
     []
   )
 
+  // We are using the same logic used in Force but it might be useful
+  // to adjust metaphysics to support aggregations like other filters in the app
+  const aggregations = [
+    {
+      slice: "earliestCreatedYear",
+      counts: [
+        {
+          value: artist.auctionResultsConnection?.createdYearRange?.startAt || artist.birthday,
+          name: "earliestCreatedYear",
+        },
+      ],
+    },
+    {
+      slice: "latestCreatedYear",
+      counts: [
+        {
+          value: artist.auctionResultsConnection?.createdYearRange?.endAt || new Date().getFullYear(),
+          name: "latestCreatedYear",
+        },
+      ],
+    },
+  ]
+
+  useArtworkFilters({
+    relay,
+    aggregations,
+    componentPath: "ArtistInsights/ArtistAuctionResults",
+    refetchVariables: filterParams,
+    onApply: () => scrollToTop(),
+    onRefetch: () => endKeywordFilterRefetching(),
+  })
+
   useEffect(() => {
     setFilterTypeAction("auctionResult")
   }, [])
-
-  useEffect(() => {
-    if (applyFilters) {
-      relay.refetchConnection(
-        PAGE_SIZE,
-        (error) => {
-          endKeywordFilterRefetching()
-
-          if (error) {
-            throw new Error("ArtistInsights/ArtistAuctionResults filter error: " + error.message)
-          }
-        },
-        filterParams
-      )
-      scrollToTop()
-    }
-  }, [appliedFilters])
-
-  const auctionResults = extractNodes(artist.auctionResultsConnection)
-  const [loadingMoreData, setLoadingMoreData] = useState(false)
 
   const getSortDescription = useCallback(() => {
     const sortMode = ORDERED_AUCTION_RESULTS_SORTS.find((sort) => sort.paramValue === filterParams?.sort)
@@ -91,31 +106,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
       setLoadingMoreData(false)
     })
   }
-
-  // We are using the same logic used in Force but it might be useful
-  // to adjust metaphysics to support aggregations like other filters in the app
-  useEffect(() => {
-    setAggregationsAction([
-      {
-        slice: "earliestCreatedYear",
-        counts: [
-          {
-            value: artist.auctionResultsConnection?.createdYearRange?.startAt || artist.birthday,
-            name: "earliestCreatedYear",
-          },
-        ],
-      },
-      {
-        slice: "latestCreatedYear",
-        counts: [
-          {
-            value: artist.auctionResultsConnection?.createdYearRange?.endAt || new Date().getFullYear(),
-            name: "latestCreatedYear",
-          },
-        ],
-      },
-    ])
-  }, [])
 
   const renderAuctionResultsModal = () => (
     <>

@@ -4,10 +4,9 @@ import {
   aggregationsType,
   aggregationsWithFollowedArtists,
   FilterArray,
-  filterArtworksParams,
-  prepareFilterArtworksParamsForInput,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FAIR2_ARTWORKS_PAGE_SIZE } from "lib/data/constants"
@@ -33,19 +32,37 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
   aggregations,
   followedArtistCount,
 }) => {
+  const tracking = useTracking()
+
+  const screenWidth = useScreenDimensions().width
+
   const artworks = fair.fairArtworks!
   const artworksTotal = artworks?.counts?.total ?? 0
 
-  const tracking = useTracking()
-
-  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((state) => state.setFiltersCountAction)
-  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
   const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
 
-  const filterParams = filterArtworksParams(appliedFilters)
+  const dispatchFollowedArtistCount = (followedArtistCount || artworks?.counts?.followedArtists) ?? 0
+  const artworkAggregations = ((aggregations || artworks?.aggregations) ?? []) as aggregationsType
+  const dispatchAggregations = aggregationsWithFollowedArtists(dispatchFollowedArtistCount, artworkAggregations)
+
+  useArtworkFilters({
+    relay,
+    aggregations: dispatchAggregations,
+    componentPath: "Fair/FairArtworks",
+    pageSize: FAIR2_ARTWORKS_PAGE_SIZE,
+  })
+
+  useEffect(() => {
+    if (initiallyAppliedFilter) {
+      setInitialFilterStateAction(initiallyAppliedFilter)
+    }
+  }, [])
+
+  useEffect(() => {
+    setFiltersCountAction({ ...counts, total: artworksTotal })
+  }, [artworksTotal])
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
@@ -57,40 +74,6 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
       action_type: Schema.ActionTypes.Tap,
     })
   }
-
-  useEffect(() => {
-    if (initiallyAppliedFilter) {
-      setInitialFilterStateAction(initiallyAppliedFilter)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (applyFilters) {
-      relay.refetchConnection(
-        FAIR2_ARTWORKS_PAGE_SIZE,
-        (error) => {
-          if (error) {
-            throw new Error("Fair/FairArtworks filter error: " + error.message)
-          }
-        },
-        { input: prepareFilterArtworksParamsForInput(filterParams) }
-      )
-    }
-  }, [appliedFilters])
-
-  const dispatchFollowedArtistCount = (followedArtistCount || artworks?.counts?.followedArtists) ?? 0
-  const artworkAggregations = ((aggregations || artworks?.aggregations) ?? []) as aggregationsType
-  const dispatchAggregations = aggregationsWithFollowedArtists(dispatchFollowedArtistCount, artworkAggregations)
-
-  useEffect(() => {
-    setAggregationsAction(dispatchAggregations)
-  }, [])
-
-  useEffect(() => {
-    setFiltersCountAction({ ...counts, total: artworksTotal })
-  }, [artworksTotal])
-
-  const screenWidth = useScreenDimensions().width
 
   if (artworksTotal === 0) {
     return (
