@@ -39,5 +39,5 @@ export function getOrderStatus(orderLineItem: OrderHistoryRowLineItem, orderStat
 
   const shipment: ShipmentStatus = orderLineItem.shipment.status.toUpperCase() as ShipmentStatus
 
-  return orderStatusesMap[shipment]
+  return orderStatusesMap[shipment].toLowerCase()
 }

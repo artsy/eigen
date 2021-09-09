@@ -53,7 +53,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             <Text
               textAlign="right"
               variant="caption"
-              color={orderStatus === "Canceled" ? "red100" : "black60"}
+              color={orderStatus === "canceled" ? "red100" : "black60"}
               style={{ textTransform: "capitalize" }}
               data-test-id="order-status"
             >
