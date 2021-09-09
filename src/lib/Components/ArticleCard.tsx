@@ -37,7 +37,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
             ))}
           <Spacer mb={1} />
           <Text variant={"small"}>{article.vertical || " "}</Text>
-          <Text numberOfLines={3} ellipsizeMode="tail" variant={"title"}>
+          <Text numberOfLines={3} ellipsizeMode="tail" variant="largeTitle">
             {article.thumbnailTitle}
           </Text>
           {!!article.author && (

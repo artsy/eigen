@@ -199,7 +199,7 @@ const Home = (props: Props) => {
                 <Spacer mb="2" />
               </Box>
             }
-            ItemSeparatorComponent={({ hideSeparator }) => (!hideSeparator ? <Spacer mb={3} /> : null)}
+            ItemSeparatorComponent={({ hideSeparator }) => (!hideSeparator ? <Spacer mb={6} /> : null)}
             ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
             keyExtractor={(_item, index) => String(index)}
           />
