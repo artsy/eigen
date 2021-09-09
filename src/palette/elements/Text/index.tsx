@@ -194,7 +194,7 @@ const transformTextV2PropsToV3 = (props: TextV2Props): TextV3Props => {
   }
 
   if (typeof fontSize === "string") {
-    ;(newProps as TextV3Props).fontSize = TEXT_FONT_SIZES[fontSize as keyof typeof TEXT_FONT_SIZES] ?? undefined
+    ;(newProps as TextV3Props).fontSize = TEXT_FONT_SIZES[fontSize as keyof typeof TEXT_FONT_SIZES] ?? fontSize
   }
 
   return {

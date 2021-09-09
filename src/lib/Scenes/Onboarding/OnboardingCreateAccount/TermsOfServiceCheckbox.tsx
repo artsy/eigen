@@ -23,6 +23,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({ 
               onPress={() => {
                 Linking.openURL(`${webURL}/terms`)
               }}
+              variant="small"
               style={{ textDecorationLine: "underline" }}
             >
               Terms of Use
@@ -32,6 +33,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({ 
               onPress={() => {
                 Linking.openURL(`${webURL}/privacy`)
               }}
+              variant="small"
               style={{ textDecorationLine: "underline" }}
             >
               Privacy Policy
@@ -41,6 +43,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({ 
               onPress={() => {
                 Linking.openURL(`${webURL}/conditions-of-sale`)
               }}
+              variant="small"
               style={{ textDecorationLine: "underline" }}
             >
               Conditions of Sale
