@@ -84,7 +84,7 @@ const Home = (props: Props) => {
   Please make sure to keep this page in sync with the home screen.
   */
   const promoSpaceRow = artworkRails[0]
-  const newWorksByArtistYouFollowRow = artworkRails[1]
+  // const newWorksByArtistYouFollowRow = artworkRails[1]
   const recentlyViewedArtworkRow = artworkRails[4]
 
   // Works From Galleries You Follow
