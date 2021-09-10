@@ -361,6 +361,7 @@ jobs:
           branch: beta-ios
       - run:
           name: Deploy if beta
+          no_output_timeout: 20m
           command: ./scripts/deploy-if-beta-branch-ios
 
   build-test-app-android:
