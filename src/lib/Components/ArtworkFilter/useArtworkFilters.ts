@@ -17,7 +17,7 @@ interface UseArtworkFiltersOptions {
   type?: "filter" | "sort"
   refetchVariables?: Variables | null
   onApply?: () => void
-  onRefetch?: () => void
+  onRefetch?: (error?: Error | null) => void
 }
 
 export const useArtworkFilters = ({
@@ -50,7 +50,7 @@ export const useArtworkFilters = ({
         pageSize,
         (error) => {
           if (onRefetch) {
-            onRefetch()
+            onRefetch(error)
           }
           if (error) {
             const errorMessage = componentPath ? `${componentPath} ${type} error: ${error.message}` : error.message
