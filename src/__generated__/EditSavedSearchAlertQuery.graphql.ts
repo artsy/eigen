@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0a2b84bed3047d9e1542e92a6d3fcee2 */
+/* @relayHash 79caa0c330d4c63b9272ec4f52ac8cf6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,7 +31,7 @@ query EditSavedSearchAlertQuery(
     ...EditSavedSearchAlert_artist
     id
   }
-  artworksConnection(first: 0, artistID: $artistID, aggregations: [ARTIST, LOCATION_CITY, MATERIALS_TERMS, MEDIUM, PARTNER]) {
+  artworksConnection(first: 0, artistID: $artistID, aggregations: [ARTIST, LOCATION_CITY, MATERIALS_TERMS, MEDIUM, PARTNER, COLOR]) {
     ...EditSavedSearchAlert_artworksConnection
     id
   }
@@ -78,7 +78,8 @@ v2 = [
       "LOCATION_CITY",
       "MATERIALS_TERMS",
       "MEDIUM",
-      "PARTNER"
+      "PARTNER",
+      "COLOR"
     ]
   },
   {
@@ -234,7 +235,7 @@ return {
     ]
   },
   "params": {
-    "id": "0a2b84bed3047d9e1542e92a6d3fcee2",
+    "id": "79caa0c330d4c63b9272ec4f52ac8cf6",
     "metadata": {},
     "name": "EditSavedSearchAlertQuery",
     "operationKind": "query",
@@ -242,5 +243,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'b09597a37ec5416b20c3b18833bb47a4';
+(node as any).hash = 'b7ba8ea3f6d77b3e8cb1436877763543';
 export default node;
