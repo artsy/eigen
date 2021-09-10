@@ -31,12 +31,10 @@ export class ContextGridCTA extends React.Component<ContextGridCTAProps> {
       return (
         <TouchableWithoutFeedback onPress={() => this.openLink()}>
           <Flex flexDirection="row" alignContent="center">
-            <Flex justifyContent="center">
-              <Sans size="3" textAlign="left" weight="medium">
-                {label}
-              </Sans>
-            </Flex>
-            <Flex justifyContent="center">
+            <Sans size="3" textAlign="left" weight="medium">
+              {label}
+            </Sans>
+            <Flex alignSelf="center">
               <ArrowRightIcon fill="black30" ml={1} />
             </Flex>
           </Flex>
