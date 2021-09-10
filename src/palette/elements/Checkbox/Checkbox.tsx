@@ -81,22 +81,22 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       }}
     >
       <Flex flexDirection="row" {...restProps}>
-        <CssTransition
-          style={[styles.container, checkboxStyle]}
-          animate={["backgroundColor", "borderColor"]}
-          duration={DURATION}
-        >
-          {!!isChecked && (!!disabled ? <DisabledMark size={CHECKBOX_SIZE} /> : <CheckMark size={CHECKBOX_SIZE} />)}
-        </CssTransition>
-
-        <Flex style={{ marginTop: !!children ? 0 : 2 }}>
+        <Flex justifyContent="center">
+          <CssTransition
+            style={[styles.container, checkboxStyle]}
+            animate={["backgroundColor", "borderColor"]}
+            duration={DURATION}
+          >
+            {!!isChecked && (!!disabled ? <DisabledMark size={CHECKBOX_SIZE} /> : <CheckMark size={CHECKBOX_SIZE} />)}
+          </CssTransition>
+        </Flex>
+        <Flex justifyContent="center">
           {!!text && <Text color={textColor}>{text}</Text>}
           {!!subtitle && (
             <Text variant="small" color={subtitleColor}>
               {subtitle}
             </Text>
           )}
-          {/* TODO: Remove once the migration from V2 to V3 is completed. */}
           {children}
         </Flex>
       </Flex>

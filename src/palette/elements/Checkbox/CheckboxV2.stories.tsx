@@ -10,6 +10,10 @@ storiesOf("CheckboxV2", module).add("Variants", () => (
     <Checkbox>
       <Text>Checkbox</Text>
     </Checkbox>
+    <Checkbox>
+      <Text>{`Multiline
+Text`}</Text>
+    </Checkbox>
     <Checkbox checked>
       <Text>checked</Text>
     </Checkbox>
