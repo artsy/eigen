@@ -84,7 +84,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       }}
     >
       <Flex flexDirection="row" {...restProps}>
-        <Flex>
+        <Flex mt={0.2}>
           <CssTransition
             style={[styles(fontScale).container, checkboxStyle]}
             animate={["backgroundColor", "borderColor"]}
