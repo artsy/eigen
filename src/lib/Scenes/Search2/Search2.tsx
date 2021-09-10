@@ -234,8 +234,8 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
           </Flex>
           {!!shouldStartQuering ? (
             <>
-              <Flex p={2} pb={1} flexDirection="row">
-                <ScrollView horizontal>
+              <Flex p={2} pb={1}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                   {pillsArray.map(({ name, displayName }) => (
                     <Pill
                       mr={1}
