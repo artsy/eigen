@@ -38,8 +38,8 @@ const orderStatusesMap = {
 }
 
 export function getOrderStatus(
-  orderLineItem: OrderHistoryRowLineItem | OrderDetailsHeaderLineItem,
-  orderState: OrderState
+  orderState: OrderState,
+  orderLineItem?: OrderHistoryRowLineItem | OrderDetailsHeaderLineItem
 ): string {
   if (orderState === "CANCELED" || orderState === "REFUNDED" || !orderLineItem?.shipment?.status) {
     return orderStatusesMap[orderState].toLowerCase()

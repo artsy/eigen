@@ -17,7 +17,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const [lineItem] = extractNodes(order?.lineItems)
   const { artwork } = lineItem || {}
   const trackingUrl = getTrackingUrl(lineItem)
-  const orderStatus = getOrderStatus(lineItem, order.state as OrderState)
+  const orderStatus = getOrderStatus(order.state as OrderState, lineItem)
   const orderIsInactive = orderStatus === "canceled" || orderStatus === "refunded"
 
   return (

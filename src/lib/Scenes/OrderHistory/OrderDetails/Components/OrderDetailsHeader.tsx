@@ -17,7 +17,7 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
 
   const [lineItem] = extractNodes(info?.lineItems)
   const { createdAt, requestedFulfillment, code, state } = info
-  const orderStatus = getOrderStatus(lineItem, state as OrderState)
+  const orderStatus = getOrderStatus(state as OrderState, lineItem)
   const isPickupOrder = requestedFulfillment?.__typename === "CommercePickup"
 
   return (
