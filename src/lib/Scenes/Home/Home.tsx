@@ -230,7 +230,7 @@ const Home = (props: Props) => {
                 <Spacer mb="2" />
               </Box>
             }
-            ItemSeparatorComponent={({ hideSeparator }) => (!hideSeparator ? <Spacer mb={6} /> : null)}
+            ItemSeparatorComponent={({ hideSeparator }) => (!hideSeparator ? <ModuleSeparator /> : null)}
             ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
             keyExtractor={(_item, index) => String(index)}
           />
@@ -347,6 +347,8 @@ export const HomeFragmentContainer = createRefetchContainer(
   `
 )
 
+const ModuleSeparator = () => <Spacer mb={6} />
+
 const BelowTheFoldPlaceholder: React.FC<{}> = () => {
   const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
 
@@ -366,10 +368,10 @@ const BelowTheFoldPlaceholder: React.FC<{}> = () => {
           )}
           {times(2).map((r) => (
             <Box key={r}>
-              <Spacer mb={3} />
+              <ModuleSeparator />
               <Box ml={2} mr={2}>
                 <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-                <Flex flexDirection="row" mt={1}>
+                <Flex flexDirection="row">
                   <Join separator={<Spacer width={15} />}>
                     {times(10).map((index) => (
                       <PlaceholderBox key={index} height={270} width={270} />
@@ -397,12 +399,12 @@ const HomePlaceholder: React.FC<{}> = () => {
             <ArtsyLogoIcon scale={0.75} />
           </Flex>
         </Box>
+        <Spacer mb={4} />
 
         {
           // Small tiles to mimic the artwork rails
           times(2).map((r) => (
             <Box key={r} ml={2} mr={2}>
-              <Spacer mb={3} />
               <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
               <Flex flexDirection="row" mt={1}>
                 <Join separator={<Spacer width={15} />}>
@@ -412,10 +414,10 @@ const HomePlaceholder: React.FC<{}> = () => {
                       <Spacer mb={2} />
                       <PlaceholderText width={120} />
                       <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
+                      <ModuleSeparator />
                     </Flex>
                   ))}
                 </Join>
-                <Spacer mb={2} />
               </Flex>
             </Box>
           ))
@@ -423,7 +425,6 @@ const HomePlaceholder: React.FC<{}> = () => {
 
         {/* Larger tiles to mimic the fairs, sales, and collections rails */}
         <Box ml={2} mr={2}>
-          <Spacer mb={3} />
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
           <Flex flexDirection="row" mt={1}>
             <Join separator={<Spacer width={15} />}>
@@ -431,7 +432,7 @@ const HomePlaceholder: React.FC<{}> = () => {
                 <PlaceholderBox key={index} height={270} width={270} />
               ))}
             </Join>
-            <Spacer mb={2} />
+            <ModuleSeparator />
           </Flex>
         </Box>
 
