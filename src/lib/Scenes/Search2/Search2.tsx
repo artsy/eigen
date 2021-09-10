@@ -10,7 +10,7 @@ import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
 import { Flex, Pill, Spacer, Spinner, Text, Touchable, useSpace } from "palette"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
 import {
   connectHighlight,
@@ -180,13 +180,16 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
   const [elasticSearchEntity, setElasticSearchEntity] = useState("")
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
   const { system } = props
-  const [pillsArray, setPillsArray] = useState(pills)
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
 
-  useEffect(() => {
-    if (system?.algolia?.indices !== undefined && system?.algolia?.indices.length > 0) {
-      setPillsArray([...pills, ...system.algolia.indices!])
+  const pillsArray = useMemo(() => {
+    const indices = system?.algolia?.indices
+
+    if (Array.isArray(indices) && indices.length > 0) {
+      return [...pills, ...indices]
     }
+
+    return pills
   }, [system?.algolia?.indices])
 
   if (!searchClient) {
@@ -232,17 +235,19 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
           {!!shouldStartQuering ? (
             <>
               <Flex p={2} pb={1} flexDirection="row">
-                {pillsArray.map(({ name, displayName }) => (
-                  <Pill
-                    mr={1}
-                    key={name}
-                    rounded
-                    selected={selectedAlgoliaIndex === name || elasticSearchEntity === name}
-                    onPress={() => handlePillPress(name)}
-                  >
-                    {displayName}
-                  </Pill>
-                ))}
+                <ScrollView horizontal>
+                  {pillsArray.map(({ name, displayName }) => (
+                    <Pill
+                      mr={1}
+                      key={name}
+                      rounded
+                      selected={selectedAlgoliaIndex === name || elasticSearchEntity === name}
+                      onPress={() => handlePillPress(name)}
+                    >
+                      {displayName}
+                    </Pill>
+                  ))}
+                </ScrollView>
               </Flex>
               {renderResults()}
             </>
