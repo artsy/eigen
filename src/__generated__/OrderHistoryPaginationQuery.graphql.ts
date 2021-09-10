@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 733e00697387b5c540ebeac7be659941 */
+/* @relayHash aef96d6f2f7af85dac00bf922586b5fe */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -46,6 +46,7 @@ fragment OrderHistoryRow_order on CommerceOrder {
     edges {
       node {
         shipment {
+          status
           trackingUrl
           trackingNumber
           id
@@ -319,6 +320,13 @@ return {
                                         "alias": null,
                                         "args": null,
                                         "kind": "ScalarField",
+                                        "name": "status",
+                                        "storageKey": null
+                                      },
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "kind": "ScalarField",
                                         "name": "trackingUrl",
                                         "storageKey": null
                                       },
@@ -524,7 +532,7 @@ return {
     ]
   },
   "params": {
-    "id": "733e00697387b5c540ebeac7be659941",
+    "id": "aef96d6f2f7af85dac00bf922586b5fe",
     "metadata": {},
     "name": "OrderHistoryPaginationQuery",
     "operationKind": "query",
