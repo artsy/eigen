@@ -1,6 +1,7 @@
 import { MyAccountEditPhoneQuery } from "__generated__/MyAccountEditPhoneQuery.graphql"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React, { useEffect, useState } from "react"
@@ -14,7 +15,13 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me }> = ({ me }) => 
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
   const [isValidNumber, setIsValidNumber] = useState<boolean>(false)
 
+  const performValidation = useFeatureFlag("ARPhoneValidation")
+
   const canSave = () => {
+    if (!performValidation) {
+      return true
+    }
+
     if (!isValidNumber && !!phone.trim()) {
       return false
     } else {
