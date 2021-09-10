@@ -395,7 +395,6 @@ const HomePlaceholder: React.FC<{}> = () => {
 
         {/* Larger tiles to mimic the fairs, sales, and collections rails */}
         <Box ml={2} mr={2}>
-          <ModuleSeparator />
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
           <Flex flexDirection="row" mt={1}>
             <Join separator={<Spacer width={15} />}>
@@ -403,7 +402,7 @@ const HomePlaceholder: React.FC<{}> = () => {
                 <PlaceholderBox key={index} height={270} width={270} />
               ))}
             </Join>
-            <Spacer mb={2} />
+            <ModuleSeparator />
           </Flex>
         </Box>
 
