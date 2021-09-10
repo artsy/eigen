@@ -1,11 +1,9 @@
-import { themeGet } from "@styled-system/theme-get"
 import { CommercialEditionSetInformation_artwork } from "__generated__/CommercialEditionSetInformation_artwork.graphql"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { Box, Flex, Sans, Spacer } from "palette"
+import { Box, Flex, RadioButton, Sans, Spacer } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components/native"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -72,13 +70,14 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
             const selected = internalID === selectedEdition.internalID
             return (
               <TouchableWithoutFeedback key={id} onPress={() => this.selectEdition(internalID)}>
-                <EditionSelector px={2} height={26} mt={1} mr={1} selected={selected}>
+                <Box height={26} mt={1} mr={2} flexDirection="row">
+                  <RadioButton selected={selected} onPress={() => this.selectEdition(internalID)} />
                   <Sans size="2" weight="medium" color="black100">
                     {LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
                       ? dimensions.in
                       : dimensions.cm}
                   </Sans>
-                </EditionSelector>
+                </Box>
               </TouchableWithoutFeedback>
             )
           })}
@@ -134,15 +133,3 @@ export const CommercialEditionSetInformationFragmentContainer = createFragmentCo
     `,
   }
 )
-
-interface EditionSelectorProps {
-  selected: boolean
-}
-
-const EditionSelector = styled(Box)<EditionSelectorProps>`
-  border-radius: 3;
-  align-items: center;
-  justify-content: center;
-  border: ${(props: any /* STRICTNESS_MIGRATION */) =>
-    props.selected ? `2px solid ${themeGet("colors.black100")}` : `2px solid ${themeGet("colors.black30")}`};
-`
