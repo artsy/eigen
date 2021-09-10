@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 54fcb20a39fab79fda2c99bf3595670d */
+/* @relayHash 9c38cf3be8a97c02da189d02c1da34bd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,6 +30,7 @@ query OrderDetailsHeaderTestsQuery {
 fragment OrderDetailsHeader_info on CommerceOrder {
   __isCommerceOrder: __typename
   createdAt
+  code
   state
   requestedFulfillment {
     __typename
@@ -39,8 +40,21 @@ fragment OrderDetailsHeader_info on CommerceOrder {
     ... on CommercePickup {
       __typename
     }
+    ... on CommerceShipArta {
+      __typename
+    }
   }
-  code
+  lineItems(first: 1) {
+    edges {
+      node {
+        shipment {
+          status
+          id
+        }
+        id
+      }
+    }
+  }
 }
 */
 
@@ -60,10 +74,23 @@ v1 = {
   "storageKey": null
 },
 v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v3 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "String"
+},
+v4 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
 };
 return {
   "fragment": {
@@ -122,6 +149,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "code",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "state",
             "storageKey": null
           },
@@ -139,25 +173,71 @@ return {
           },
           {
             "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "code",
-            "storageKey": null
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 1
+              }
+            ],
+            "concreteType": "CommerceLineItemConnection",
+            "kind": "LinkedField",
+            "name": "lineItems",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "CommerceLineItemEdge",
+                "kind": "LinkedField",
+                "name": "edges",
+                "plural": true,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "CommerceLineItem",
+                    "kind": "LinkedField",
+                    "name": "node",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "CommerceShipment",
+                        "kind": "LinkedField",
+                        "name": "shipment",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "status",
+                            "storageKey": null
+                          },
+                          (v2/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      (v2/*: any*/)
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": "lineItems(first:1)"
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "id",
-            "storageKey": null
-          }
+          (v2/*: any*/)
         ],
         "storageKey": "commerceOrder(id:\"some-id\")"
       }
     ]
   },
   "params": {
-    "id": "54fcb20a39fab79fda2c99bf3595670d",
+    "id": "9c38cf3be8a97c02da189d02c1da34bd",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "commerceOrder": {
@@ -166,15 +246,42 @@ return {
           "plural": false,
           "type": "CommerceOrder"
         },
-        "commerceOrder.__isCommerceOrder": (v2/*: any*/),
-        "commerceOrder.__typename": (v2/*: any*/),
-        "commerceOrder.code": (v2/*: any*/),
-        "commerceOrder.createdAt": (v2/*: any*/),
-        "commerceOrder.id": {
+        "commerceOrder.__isCommerceOrder": (v3/*: any*/),
+        "commerceOrder.__typename": (v3/*: any*/),
+        "commerceOrder.code": (v3/*: any*/),
+        "commerceOrder.createdAt": (v3/*: any*/),
+        "commerceOrder.id": (v4/*: any*/),
+        "commerceOrder.lineItems": {
           "enumValues": null,
-          "nullable": false,
+          "nullable": true,
           "plural": false,
-          "type": "ID"
+          "type": "CommerceLineItemConnection"
+        },
+        "commerceOrder.lineItems.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "CommerceLineItemEdge"
+        },
+        "commerceOrder.lineItems.edges.node": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceLineItem"
+        },
+        "commerceOrder.lineItems.edges.node.id": (v4/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceShipment"
+        },
+        "commerceOrder.lineItems.edges.node.shipment.id": (v4/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment.status": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "String"
         },
         "commerceOrder.requestedFulfillment": {
           "enumValues": null,
@@ -182,7 +289,7 @@ return {
           "plural": false,
           "type": "CommerceRequestedFulfillmentUnion"
         },
-        "commerceOrder.requestedFulfillment.__typename": (v2/*: any*/),
+        "commerceOrder.requestedFulfillment.__typename": (v3/*: any*/),
         "commerceOrder.state": {
           "enumValues": [
             "ABANDONED",

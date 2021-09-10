@@ -4,7 +4,6 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FULFILLED" | "PENDING" | "REFUNDED" | "SUBMITTED" | "%future added value";
 export type OrderDetails_order = {
     readonly requestedFulfillment: ({
         readonly __typename: "CommerceShip";
@@ -27,10 +26,7 @@ export type OrderDetails_order = {
             } | null;
         } | null> | null;
     } | null;
-    readonly createdAt: string;
-    readonly state: CommerceOrderStateEnum;
-    readonly code: string;
-    readonly " $fragmentRefs": FragmentRefs<"ArtworkInfoSection_artwork" | "SummarySection_section" | "OrderDetailsPayment_order" | "ShipsToSection_address" | "SoldBySection_soldBy">;
+    readonly " $fragmentRefs": FragmentRefs<"OrderDetailsHeader_info" | "ArtworkInfoSection_artwork" | "SummarySection_section" | "OrderDetailsPayment_order" | "ShipsToSection_address" | "SoldBySection_soldBy">;
     readonly " $refType": "OrderDetails_order";
 };
 export type OrderDetails_order$data = OrderDetails_order;
@@ -153,25 +149,9 @@ return {
       "storageKey": "lineItems(first:1)"
     },
     {
-      "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "createdAt",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "state",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "code",
-      "storageKey": null
+      "kind": "FragmentSpread",
+      "name": "OrderDetailsHeader_info"
     },
     {
       "args": null,
@@ -203,5 +183,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = '699ce8fe541eef672d38b01ff49fd337';
+(node as any).hash = 'c2ffedb0d1171b42b00381ca162cdbb5';
 export default node;
