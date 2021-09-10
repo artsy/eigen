@@ -6,6 +6,7 @@
 import { ConcreteRequest } from "relay-runtime";
 export type SubmitInquiryRequestMutationInput = {
     clientMutationId?: string | null;
+    contactGallery?: boolean | null;
     inquireableID: string;
     inquireableType: string;
     message?: string | null;

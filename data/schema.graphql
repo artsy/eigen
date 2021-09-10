@@ -7508,6 +7508,8 @@ input InquiryQuestionInput {
 
 # A request to inquire on an artwork
 type InquiryRequest {
+  contactGallery: Boolean
+
   # A globally unique ID.
   id: ID!
   inquireable: InquiryItemType
@@ -11799,6 +11801,9 @@ type SubmissionEdge {
 
 input SubmitInquiryRequestMutationInput {
   clientMutationId: String
+
+  # Whether or not to contact the gallery (for instance, for specialist questions)
+  contactGallery: Boolean
 
   # The inquireable object id (Artwork ID or Show ID)
   inquireableID: String!
