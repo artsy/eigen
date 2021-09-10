@@ -76,18 +76,18 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
                 <Text my="2" variant="title">
                   {sectionTitle}
                 </Text>
-                <Separator borderColor={"black5"} />
+                <Separator borderColor={"black10"} />
               </Flex>
             )}
             renderSectionFooter={() => <Flex mt="2" />}
             ItemSeparatorComponent={() => (
               <Flex px={2}>
-                <Separator borderColor={"black5"} />
+                <Separator borderColor={"black10"} />
               </Flex>
             )}
             renderItem={({ item }) =>
               item ? (
-                <Flex px={1}>
+                <Flex px={1} py={2}>
                   <AuctionResultFragmentContainer
                     auctionResult={item}
                     showArtistName
@@ -229,7 +229,7 @@ const LoadingSkeleton = () => {
           </Flex>
         </Flex>
         <Spacer height={10} />
-        <Separator borderColor={"black5"} />
+        <Separator borderColor={"black10"} />
       </React.Fragment>
     )
   }
@@ -240,7 +240,7 @@ const LoadingSkeleton = () => {
         <Spacer height={20} />
         <PlaceholderText height={24} width={100 + Math.random() * 50} />
         <Spacer height={10} />
-        <Separator borderColor={"black5"} />
+        <Separator borderColor={"black10"} />
         {placeholderResults}
       </Flex>
     </PageWithSimpleHeader>
