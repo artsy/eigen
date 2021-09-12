@@ -37,6 +37,10 @@ export const PhoneInput = React.forwardRef<
   const phoneUtil = PhoneNumberUtil.getInstance()
 
   useEffect(() => {
+    if (isFirstRun.current) {
+      return
+    }
+
     const cleanPhoneNumber = cleanUserPhoneNumber(value ?? "")
     const formattedPhoneNumber = formatPhoneNumber({
       current: cleanPhoneNumber.phoneNumber,
@@ -44,11 +48,7 @@ export const PhoneInput = React.forwardRef<
       countryCode: cleanPhoneNumber.countryCode,
     })
 
-    if (formattedPhoneNumber?.match(/[\D]$/)) {
-      return;
-    }
-
-    setPhoneNumber(formattedPhoneNumber)
+    setPhoneNumber(formattedPhoneNumber.replace(/[\D]$/, ""))
     setCountryCode(cleanPhoneNumber.countryCode);
   }, [value])
 
