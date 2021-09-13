@@ -157,6 +157,7 @@
     "relay-hooks": "3.5.2",
     "remove-markdown": "0.1.0",
     "rn-fetch-blob": "0.12.0",
+    "search-insights": "^2.0.3",
     "semver": "^7.3.4",
     "simple-markdown": "0.7.2",
     "styled-components": "4.2.1",
