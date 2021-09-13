@@ -10,6 +10,9 @@ import { Search2 } from "../Search2"
 jest.mock("lib/utils/hardware", () => ({
   isPad: jest.fn(),
 }))
+jest.mock("lib/utils/useSearchInsightsConfig", () => ({
+  useSearchInsightsConfig: () => true,
+}))
 
 jest.mock("../../Search/AutosuggestResults.tsx", () => ({ AutosuggestResults: () => null }))
 jest.mock("../../Search/RecentSearches", () => ({
