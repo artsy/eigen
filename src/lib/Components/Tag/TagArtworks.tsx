@@ -2,7 +2,6 @@ import { TagArtworks_tag } from "__generated__/TagArtworks_tag.graphql"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { PAGE_SIZE } from "lib/data/constants"
 import { Schema } from "lib/utils/track"
 import { Box, Message, Separator, Spacer } from "palette"
 import React, { useContext, useRef, useState } from "react"
@@ -10,9 +9,9 @@ import { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtworkFilterNavigator } from "../ArtworkFilter/ArtworkFilter"
-import { filterArtworksParams, prepareFilterArtworksParamsForInput } from "../ArtworkFilter/ArtworkFilterHelpers"
 import { FilterModalMode } from "../ArtworkFilter/ArtworkFilterOptionsScreen"
-import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "../ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFiltersStoreProvider } from "../ArtworkFilter/ArtworkFilterStore"
+import { useArtworkFilters } from "../ArtworkFilter/useArtworkFilters"
 import { StickyTabPageFlatListContext } from "../StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
 
@@ -25,13 +24,8 @@ interface TagArtworksProps extends TagArtworksContainerProps {
   openFilterModal: () => void
 }
 
-export const TagArtworks: React.FC<TagArtworksProps> = (props) => {
-  const { tag, relay, openFilterModal } = props
+export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilterModal }) => {
   const tracking = useTracking()
-  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
-  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
-  const filterParams = filterArtworksParams(appliedFilters, "tagArtwork")
   const artworksTotal = tag.artworks?.counts?.total ?? 0
   const initialArtworksTotal = useRef(artworksTotal)
 
@@ -41,25 +35,11 @@ export const TagArtworks: React.FC<TagArtworksProps> = (props) => {
     tracking.trackEvent(tracks.clearFilters(tag.id, tag.slug))
   }
 
-  useEffect(() => {
-    if (applyFilters) {
-      relay.refetchConnection(
-        PAGE_SIZE,
-        (error) => {
-          if (error) {
-            throw new Error("Tag/TagArtworks filter error: " + error.message)
-          }
-        },
-        { input: prepareFilterArtworksParamsForInput(filterParams) }
-      )
-    }
-  }, [appliedFilters])
-
-  useEffect(() => {
-    if (tag.artworks?.aggregations) {
-      setAggregationsAction(tag.artworks.aggregations)
-    }
-  }, [])
+  useArtworkFilters({
+    relay,
+    aggregations: tag.artworks?.aggregations,
+    componentPath: "Tag/TagArtworks",
+  })
 
   useEffect(() => {
     setJSX(
@@ -91,8 +71,8 @@ export const TagArtworks: React.FC<TagArtworksProps> = (props) => {
       <Spacer mb={1} />
       <InfiniteScrollArtworksGridContainer
         connection={tag.artworks!}
-        hasMore={props.relay.hasMore}
-        loadMore={props.relay.loadMore}
+        hasMore={relay.hasMore}
+        loadMore={relay.loadMore}
       />
     </>
   )

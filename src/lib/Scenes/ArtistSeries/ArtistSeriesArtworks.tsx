@@ -1,10 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistSeriesArtworks_artistSeries } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
-import {
-  filterArtworksParams,
-  prepareFilterArtworksParamsForInput,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ARTIST_SERIES_PAGE_SIZE } from "lib/data/constants"
@@ -22,16 +19,26 @@ interface ArtistSeriesArtworksProps {
 const PAGE_SIZE = 20
 
 export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ artistSeries, relay }) => {
-  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
-  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((state) => state.setFiltersCountAction)
-  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
-
   const tracking = useTracking()
-  const filterParams = filterArtworksParams(appliedFilters)
 
   const artworks = artistSeries?.artistSeriesArtworks!
   const artworksTotal = artworks?.counts?.total ?? 0
+
+  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((state) => state.setFiltersCountAction)
+
+  useArtworkFilters({
+    relay,
+    aggregations: artworks?.aggregations,
+    componentPath: "ArtistSeries/ArtistSeriesArtworks",
+    pageSize: PAGE_SIZE,
+  })
+
+  useEffect(() => {
+    setFiltersCountAction({
+      total: artworksTotal,
+      followedArtists: null,
+    })
+  }, [artworksTotal])
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
@@ -43,31 +50,6 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
       action_type: Schema.ActionTypes.Tap,
     })
   }
-
-  useEffect(() => {
-    if (applyFilters) {
-      relay.refetchConnection(
-        PAGE_SIZE,
-        (error) => {
-          if (error) {
-            throw new Error("ArtistSeries/ArtistSeriesArtworks filter error: " + error.message)
-          }
-        },
-        { input: prepareFilterArtworksParamsForInput(filterParams) }
-      )
-    }
-  }, [appliedFilters])
-
-  useEffect(() => {
-    setAggregationsAction(artworks?.aggregations)
-  }, [])
-
-  useEffect(() => {
-    setFiltersCountAction({
-      total: artworksTotal,
-      followedArtists: null,
-    })
-  }, [artworksTotal])
 
   if (artworksTotal === 0) {
     return (
