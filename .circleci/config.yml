@@ -368,8 +368,6 @@ jobs:
     environment:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
 
-    resource_class: medium+
-
     docker:
       - image: circleci/android:api-29-node
 
