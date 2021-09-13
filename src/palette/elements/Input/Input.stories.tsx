@@ -1,4 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
+import SearchIcon from "lib/Icons/SearchIcon"
 import { Flex } from "palette"
 import { Input } from "palette/elements/Input/Input"
 import React from "react"
@@ -19,6 +20,18 @@ storiesOf("InputV3", module)
         </Flex>
         <Flex width={200}>
           <Input title="Title" description="Subtitle" />
+        </Flex>
+        <Flex width={200}>
+          <Input icon={<SearchIcon />} />
+        </Flex>
+        <Flex width={200}>
+          <Input title="With Error" error="this is an error" />
+        </Flex>
+        <Flex width={200}>
+          <Input title="Required" required />
+        </Flex>
+        <Flex width={200}>
+          <Input title="Disabled" disabled />
         </Flex>
       </List>
     </View>
