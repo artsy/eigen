@@ -2,10 +2,10 @@ import { SearchArtworksGrid_viewer } from "__generated__/SearchArtworksGrid_view
 import { SearchArtworksGridQuery } from "__generated__/SearchArtworksGridQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { PlaceholderGrid } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Flex } from "palette"
 import React from "react"
-import { View } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 export interface SearchArtworksGridProps {
@@ -29,7 +29,7 @@ export const SearchArtworksGridQueryRenderer: React.FC<{ keyword: string }> = ({
       query={SEARCH_ARTWORKS_GRID_QUERY}
       render={renderWithPlaceholder({
         Container: SearchArtworksGridPaginationContainer,
-        renderPlaceholder: () => <View />,
+        renderPlaceholder: () => <PlaceholderGrid />,
       })}
       variables={{ count: 20, keyword }}
       cacheConfig={{ force: true }}
