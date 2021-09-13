@@ -2,7 +2,7 @@ import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { Box, CheckIcon, Flex, Sans, Separator } from "palette"
+import { Box, CheckIcon, Flex, Separator, Text } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
@@ -101,15 +101,15 @@ export const CheckMarkOptionListItem = ({
         pr={2}
         height={60}
       >
-        <Sans color="black100" size="3t">
+        <Text color="black100" variant="caption">
           {item.displayText}
           {!!item.count && (
-            <Sans color="black60" size="3t">
+            <Text color="black60" variant="caption">
               {" "}
               ({item.count})
-            </Sans>
+            </Text>
           )}
-        </Sans>
+        </Text>
 
         {!!selected && (
           <Box mb={0.1}>
