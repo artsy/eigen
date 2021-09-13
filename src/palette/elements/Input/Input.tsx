@@ -24,8 +24,8 @@ import {
   View,
 } from "react-native"
 import styled from "styled-components/native"
-import { InputTitle } from "../../../lib/Components/Input/InputTitle"
 import { EyeClosedIcon } from "../../svgs/EyeClosedIcon"
+import { InputTitle } from "./InputTitle"
 
 export const INPUT_HEIGHT = 50
 
@@ -38,7 +38,6 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   disabled?: boolean
   required?: boolean
   title?: string
-
   /**
    * The placeholder can be an array of string, specifically for android, because of a bug.
    * On ios, the longest string will always be picked, as ios can add ellipsis.
@@ -230,7 +229,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 {icon}
               </Flex>
             )}
-            <Flex>
+            <Flex flex={1}>
               {placeholderMeasuringHack}
               <StyledInput
                 onLayout={(event) => {

@@ -1,6 +1,6 @@
 import { useFormikContext } from "formik"
-import { InputTitle } from "lib/Components/Input/InputTitle"
 import { navigate } from "lib/navigation/navigate"
+import { InputTitle } from "palette"
 import { Box, Button, Flex, Pill, Spacer, Text, Touchable } from "palette"
 import { Input } from "palette/elements/Input/Input"
 import React from "react"
