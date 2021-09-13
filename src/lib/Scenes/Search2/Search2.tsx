@@ -202,7 +202,7 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
       return <SearchResultsContainer indexName={selectedAlgoliaIndex} />
     }
     if (!!elasticSearchEntity) {
-      return <SearchArtworksGridQueryRenderer />
+      return <SearchArtworksGridQueryRenderer keyword={searchState.query!} />
     }
     return <AutosuggestResults query={searchState.query!} />
   }
