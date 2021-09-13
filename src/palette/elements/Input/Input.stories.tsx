@@ -33,6 +33,9 @@ storiesOf("InputV3", module)
         <Flex width={200}>
           <Input title="Disabled" disabled />
         </Flex>
+        <Flex width={200}>
+          <Input placeholder="I'm a placeholder" />
+        </Flex>
       </List>
     </View>
   ))
