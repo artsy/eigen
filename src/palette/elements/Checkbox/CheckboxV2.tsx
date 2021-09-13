@@ -101,7 +101,7 @@ export class Checkbox extends Component<CheckboxProps, CheckboxState> {
               (!!disabled ? <DisabledMark size={this.checkboxSize} /> : <CheckMark size={this.checkboxSize} />)}
           </CssTransition>
 
-          <Flex>{children}</Flex>
+          <Flex flex={1}>{children}</Flex>
         </Flex>
       </TouchableWithoutFeedback>
     )
