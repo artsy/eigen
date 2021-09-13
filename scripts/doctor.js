@@ -43,7 +43,7 @@ const checkEnvVariablesAreUpToDate = () => {
   }
 
   if (updatedEnv !== localEnv) {
-    NO(`Your ${r`env file`} does not match the one in AWS.`, `Run ${g`make artsy`}.`)
+    NO(`Your ${r`env file`} does not match the one in AWS.`, `Run ${g`yarn setup:artsy`}.`)
   } else {
     YES(`Your ${g`env file`} seems to be valid.`)
   }
@@ -100,7 +100,7 @@ const checkBundlerDependenciesAreUpToDate = () => {
     exec("bundle check")
     YES(`Your ${g`bundler dependencies`} are ready to go.`)
   } catch (e) {
-    NO(`Your ${r`bundle dependencies`} are out of sync.`, `Run ${g`make install`} or ${g`bundle install`} first.`)
+    NO(`Your ${r`bundle dependencies`} are out of sync.`, `Run ${g`yarn install:all`} or ${g`bundle install`} first.`)
   }
 }
 
@@ -108,7 +108,7 @@ const checkNodeDependenciesAreUpToDate = async () => {
   const res = await checkDependencies()
 
   if (res.error.length > 0) {
-    NO(`Your ${r`node dependencies`} are out of sync.`, `Run ${g`make install`} or ${g`yarn install`} first.`)
+    NO(`Your ${r`node dependencies`} are out of sync.`, `Run ${g`yarn install:all`} or ${g`yarn install`} first.`)
   } else {
     YES(`Your ${g`node dependencies`} match the ones specifed in package.json.`)
   }
@@ -119,7 +119,10 @@ const checkPodDependenciesAreUpToDate = () => {
     exec("bundle exec pod check")
     YES(`Your ${g`pod dependencies`} are ready to go.`)
   } catch (e) {
-    NO(`Your ${r`pod dependencies`} are out of sync.`, `Run ${g`make install`} or ${g`bundle exec pod install`} first.`)
+    NO(
+      `Your ${r`pod dependencies`} are out of sync.`,
+      `Run ${g`yarn install:all`} or ${g`bundle exec pod install`} first.`
+    )
   }
 }
 
@@ -128,7 +131,7 @@ const checkPythonDependenciesAreUpToDate = () => {
   if (output.includes("is not installed")) {
     NO(
       `Your ${r`python dependencies`} are out of sync.`,
-      `Run ${g`make install`} or ${g`pip install -r requirements.txt`} first.`
+      `Run ${g`yarn install:all`} or ${g`pip install -r requirements.txt`} first.`
     )
   } else {
     YES(`Your ${g`python dependencies`} are ready to go.`)
@@ -142,7 +145,7 @@ const checkDetectSecretsExists = () => {
   } catch (e) {
     NO(
       `Your ${r`detect-secrets`} is missing or not linked.`,
-      `Run ${g`make install`} or ${g`pip install -r requirements.txt`} to install, and then make sure it's in your $PATH.`
+      `Run ${g`yarn install:all`} or ${g`pip install -r requirements.txt`} to install, and then make sure it's in your $PATH.`
     )
   }
 }

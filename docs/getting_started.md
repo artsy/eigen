@@ -12,8 +12,8 @@ Currently we require developers to use Xcode 12 version (12.5.1). You can find a
 
 <details><summary>NOTE: After installing Xcode</summary>
 
-  Check that Command Line Tools version is added in the Locations tab. Xcode>Preferences>Locations:
-  <img width="375" alt="" src="https://user-images.githubusercontent.com/29984068/123970729-6009cf00-d987-11eb-933a-1603ba4d6ae8.png">
+Check that Command Line Tools version is added in the Locations tab. Xcode>Preferences>Locations:
+<img width="375" alt="" src="https://user-images.githubusercontent.com/29984068/123970729-6009cf00-d987-11eb-933a-1603ba4d6ae8.png">
 
 </details>
 
@@ -38,7 +38,7 @@ cd eigen
 
 <details><summary>Work at Artsy?</summary>
 
-1. Instead of `./scripts/setup-env-for-oss` below, run `./scripts/setup-env-for-artsy`. You will need [awscli](https://formulae.brew.sh/formula/awscli) to get our ENV vars.
+1. Instead of `yarn setup:oss` below, run `yarn setup:artsy`. You will need [awscli](https://formulae.brew.sh/formula/awscli) to get our ENV vars.
 
 2. The file `Artsy/App/EchoNew.json`, which is used to toggle features, is not checked in (a sample file is included for OSS contributors). When you run `pod install`, the latest `EchoNew.json` file will be downloaded for you.
 </details>
@@ -48,7 +48,7 @@ gem install bundler
 
 bundle install
 
-./scripts/setup-env-for-oss # or ./scripts/setup-env-for-artsy
+yarn setup:oss # or `yarn setup:artsy` if working at Artsy
 
 yarn install
 
