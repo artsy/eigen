@@ -1,7 +1,7 @@
-import { Input } from "lib/Components/Input/Input"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Input } from "palette/elements/Input/Input"
 import React from "react"
 import { Text } from "react-native"
 import { act } from "react-test-renderer"

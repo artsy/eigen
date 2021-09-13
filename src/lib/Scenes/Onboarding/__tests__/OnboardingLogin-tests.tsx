@@ -1,4 +1,4 @@
-import { Input } from "lib/Components/Input/Input"
+import { Input } from "palette/elements/Input/Input"
 import { Touchable } from "palette/elements/Touchable/Touchable"
 import React from "react"
 import { renderWithWrappers } from "../../../tests/renderWithWrappers"

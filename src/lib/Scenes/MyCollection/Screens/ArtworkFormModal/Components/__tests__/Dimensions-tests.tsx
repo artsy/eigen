@@ -1,6 +1,6 @@
 import { useFormikContext } from "formik"
-import { Input } from "lib/Components/Input/Input"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Input } from "palette/elements/Input/Input"
 import React from "react"
 import { Dimensions } from "../Dimensions"
 
