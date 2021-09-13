@@ -2,13 +2,9 @@ import { OwnerType } from "@artsy/cohesion"
 import { Show_show } from "__generated__/Show_show.graphql"
 import { ShowArtworks_show } from "__generated__/ShowArtworks_show.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
-import {
-  aggregationsType,
-  FilterArray,
-  filterArtworksParams,
-  prepareFilterArtworksParamsForInput,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { aggregationsType, FilterArray } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { SHOW2_ARTWORKS_PAGE_SIZE } from "lib/data/constants"
@@ -46,19 +42,22 @@ export const ShowArtworksWithNavigation = (props: ArtworkProps) => {
 }
 
 const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) => {
+  const { internalID, slug } = show
   const artworks = show.showArtworks!
   const artworksTotal = artworks?.counts?.total ?? 0
-  const { internalID, slug } = show
+  const artworkAggregations = (artworks?.aggregations ?? []) as aggregationsType
 
-  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
-  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
   const setFilterTypeAction = ArtworksFiltersStore.useStoreActions((state) => state.setFilterTypeAction)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((state) => state.setFiltersCountAction)
-  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
 
-  const filterParams = filterArtworksParams(appliedFilters, "showArtwork")
+  useArtworkFilters({
+    relay,
+    aggregations: artworkAggregations,
+    componentPath: "Show/ShowArtworks",
+    pageSize: SHOW2_ARTWORKS_PAGE_SIZE,
+  })
 
   useEffect(() => {
     setFilterTypeAction("showArtwork")
@@ -66,26 +65,6 @@ const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) 
     if (initiallyAppliedFilter) {
       setInitialFilterStateAction(initiallyAppliedFilter)
     }
-  }, [])
-
-  useEffect(() => {
-    if (applyFilters) {
-      relay.refetchConnection(
-        SHOW2_ARTWORKS_PAGE_SIZE,
-        (error) => {
-          if (error) {
-            throw new Error("Show/ShowArtworks filter error: " + error.message)
-          }
-        },
-        { input: prepareFilterArtworksParamsForInput(filterParams) }
-      )
-    }
-  }, [appliedFilters])
-
-  const artworkAggregations = (artworks?.aggregations ?? []) as aggregationsType
-
-  useEffect(() => {
-    setAggregationsAction(artworkAggregations)
   }, [])
 
   useEffect(() => {

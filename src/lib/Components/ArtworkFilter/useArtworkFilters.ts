@@ -1,5 +1,6 @@
+import { PAGE_SIZE } from "lib/data/constants"
 import { useEffect } from "react"
-import { RelayPaginationProp } from "react-relay"
+import { RelayPaginationProp, Variables } from "react-relay"
 import {
   aggregationForFilter,
   filterArtworksParams,
@@ -8,10 +9,27 @@ import {
 } from "./ArtworkFilterHelpers"
 import { ArtworksFiltersStore, selectedOptionsUnion } from "./ArtworkFilterStore"
 
+interface UseArtworkFiltersOptions {
+  relay?: RelayPaginationProp
+  aggregations?: unknown
+  pageSize?: number
+  componentPath?: string
+  type?: "filter" | "sort"
+  refetchVariables?: Variables | null
+  onApply?: () => void
+  onRefetch?: (error?: Error | null) => void
+}
+
 export const useArtworkFilters = ({
   relay,
   aggregations,
-}: { relay?: RelayPaginationProp; aggregations?: unknown } = {}) => {
+  pageSize = PAGE_SIZE,
+  componentPath,
+  refetchVariables,
+  onApply,
+  onRefetch,
+  type = "filter",
+}: UseArtworkFiltersOptions) => {
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
@@ -23,27 +41,29 @@ export const useArtworkFilters = ({
     if (!aggregations) {
       return
     }
-
     setAggregationsAction(aggregations)
   }, [])
 
   useEffect(() => {
     if (relay !== undefined && applyFilters) {
       relay.refetchConnection(
-        30,
+        pageSize,
         (error) => {
+          if (onRefetch) {
+            onRefetch(error)
+          }
           if (error) {
-            throw error
+            const errorMessage = componentPath ? `${componentPath} ${type} error: ${error.message}` : error.message
+            throw new Error(errorMessage)
           }
         },
-        { input: prepareFilterArtworksParamsForInput(filterParams) }
+        refetchVariables ?? { input: prepareFilterArtworksParamsForInput(filterParams) }
       )
+      if (onApply) {
+        onApply()
+      }
     }
   }, [relay, appliedFilters, filterParams])
-
-  return {
-    filterParams,
-  }
 }
 
 export const useArtworkFiltersAggregation = ({ paramName }: { paramName: FilterParamName }) => {

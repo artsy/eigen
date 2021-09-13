@@ -10,6 +10,7 @@ import {
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ORDERED_SALE_ARTWORK_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
+import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Schema } from "lib/utils/track"
@@ -70,9 +71,7 @@ export const SaleLotsList: React.FC<Props> = ({
   const tracking = useTracking()
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-  const applyFiltersState = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
-  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((action) => action.setAggregationsAction)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((action) => action.setFiltersCountAction)
   const setFilterTypeAction = ArtworksFiltersStore.useStoreActions((action) => action.setFilterTypeAction)
 
@@ -80,37 +79,28 @@ export const SaleLotsList: React.FC<Props> = ({
   const viewAsFilter = appliedFiltersState.find((filter) => filter.paramName === FilterParamName.viewAs)
   const counts = saleArtworksConnection.saleArtworksConnection?.counts
 
+  // Add the new medium to geneIDs array
+  const refetchVariables = {
+    ...filterParams,
+    saleID: saleSlug,
+    geneIDs: filterParams.additionalGeneIDs || [],
+    includeArtworksByFollowedArtists: !!filterParams.includeArtworksByFollowedArtists,
+  }
+
+  useArtworkFilters({
+    relay,
+    aggregations: saleArtworksConnection.saleArtworksConnection?.aggregations,
+    componentPath: "Sale/SaleLotsList",
+    refetchVariables,
+    onApply: () => scrollToTop(),
+  })
+
   useEffect(() => {
     setFilterTypeAction("saleArtwork")
   }, [])
 
   useEffect(() => {
     setTotalCount(saleArtworksConnection.saleArtworksConnection?.counts?.total || 0)
-  }, [])
-
-  useEffect(() => {
-    if (applyFiltersState) {
-      // Add the new medium to geneIDs array
-      relay.refetchConnection(
-        10,
-        (error) => {
-          if (error) {
-            throw new Error("Sale/SaleLotsList filter error: " + error.message)
-          }
-        },
-        {
-          ...filterParams,
-          saleID: saleSlug,
-          geneIDs: filterParams.additionalGeneIDs || [],
-          includeArtworksByFollowedArtists: !!filterParams.includeArtworksByFollowedArtists,
-        }
-      )
-      scrollToTop()
-    }
-  }, [appliedFiltersState])
-
-  useEffect(() => {
-    setAggregationsAction(saleArtworksConnection.saleArtworksConnection?.aggregations)
   }, [])
 
   useEffect(() => {
