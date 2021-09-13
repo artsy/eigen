@@ -24,10 +24,10 @@ import {
   View,
 } from "react-native"
 import styled from "styled-components/native"
-import { EyeClosedIcon } from "../../../palette/svgs/EyeClosedIcon"
-import { InputTitle } from "./InputTitle"
+import { InputTitle } from "../../../lib/Components/Input/InputTitle"
+import { EyeClosedIcon } from "../../svgs/EyeClosedIcon"
 
-export const INPUT_HEIGHT = 43
+export const INPUT_HEIGHT = 50
 
 export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   containerStyle?: React.ComponentProps<typeof Flex>["style"]
@@ -230,7 +230,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 {icon}
               </Flex>
             )}
-            <Flex flexGrow={1}>
+            <Flex>
               {placeholderMeasuringHack}
               <StyledInput
                 onLayout={(event) => {
@@ -243,7 +243,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 }}
                 ref={input}
                 placeholderTextColor={color("black60")}
-                style={{ flex: 1, fontSize: 15, ...inputTextStyle }}
+                style={{ flex: 1, fontSize: 16, ...inputTextStyle }}
                 numberOfLines={1}
                 secureTextEntry={!showPassword}
                 textAlignVertical="center"
@@ -301,7 +301,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
   }
 )
 
-interface InputStatus {
+export interface InputStatus {
   disabled?: boolean
   error?: boolean
   focused?: boolean
@@ -314,15 +314,15 @@ export const computeBorderColor = (inputStatus: InputStatus): Color => {
   const { disabled, error, focused } = inputStatus
 
   if (disabled) {
-    return "black10"
+    return "black30"
   }
   if (error) {
     return "red100"
   }
   if (focused) {
-    return "black100"
+    return "black60"
   }
-  return "black10"
+  return "black30"
 }
 
 const StyledInput = styled(TextInput)`

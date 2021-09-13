@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
-import { Input } from "lib/Components/Input/Input"
 import { Flex } from "palette"
+import { Input } from "palette/elements/Input/Input"
 import { useColor } from "palette/hooks"
 import React, { useState } from "react"
 import { Keyboard } from "react-native"

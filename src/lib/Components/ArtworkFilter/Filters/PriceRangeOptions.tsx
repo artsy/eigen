@@ -7,8 +7,8 @@ import {
   FilterParamName,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { Input } from "lib/Components/Input/Input"
 import { Flex, Text } from "palette"
+import { Input } from "palette/elements/Input/Input"
 import React, { useEffect, useRef, useState } from "react"
 import { parsePriceRangeLabel, parseRange, Range } from "./helpers"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"

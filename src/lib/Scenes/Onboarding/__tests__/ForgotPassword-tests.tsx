@@ -1,4 +1,4 @@
-import { Input } from "lib/Components/Input/Input"
+import { Input } from "palette/elements/Input/Input"
 import React from "react"
 import { act } from "react-test-renderer"
 import { renderWithWrappers } from "../../../tests/renderWithWrappers"

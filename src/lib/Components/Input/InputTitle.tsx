@@ -1,4 +1,4 @@
-import { Text, ThemeV2, useColor } from "palette"
+import { Text, ThemeV3, useColor } from "palette"
 import React from "react"
 
 export const InputTitle: React.FC<{ required?: boolean }> = ({ children: title, required }) => {
@@ -8,15 +8,15 @@ export const InputTitle: React.FC<{ required?: boolean }> = ({ children: title, 
   }
 
   return (
-    <ThemeV2>
-      <Text variant="text" mb={0.5}>
+    <ThemeV3>
+      <Text variant="text" mb={0.5} style={{ fontSize: 13, textTransform: "uppercase" }}>
         {title}
         {!!required && (
-          <Text variant="mediumText" color={color("purple100" /* TODO-PALETTE-V3 "blue100" */)}>
+          <Text variant="mediumText" color={color("blue100")}>
             *
           </Text>
         )}
       </Text>
-    </ThemeV2>
+    </ThemeV3>
   )
 }
