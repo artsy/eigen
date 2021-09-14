@@ -1,7 +1,6 @@
 import { TextInputProps as RNTextInputProps } from "react-native"
 import styled from "styled-components/native"
 import { borderColor, borders, color, flex, fontSize, height, space, width } from "styled-system"
-import { Fonts } from "../../../data/fonts"
 import {
   BorderColorProps,
   BorderProps,
