@@ -1,7 +1,7 @@
 import { InterestingArtworksRail_me } from "__generated__/InterestingArtworksRail_me.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Flex, Theme } from "palette"
+import { Flex, Spinner, Theme } from "palette"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import { FlatList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -30,10 +30,10 @@ const InterestingArtworksRail: React.FC<InterestingArtworksRailProps & RailScrol
 
   const { hasMore, isLoading, loadMore } = relay
   // TODO: Add spinner when loading more data
-  const [_loadingMoreData, setLoadingMoreData] = useState(false)
+  const [loadingMoreData, setLoadingMoreData] = useState(false)
 
   // This is to satisfy the TypeScript compiler based on Metaphysics types.
-  const artworks = extractNodes(me.newWorksByInterestingArtists)
+  const artworks = extractNodes(me?.newWorksByInterestingArtists)
 
   const loadMoreArtworks = () => {
     if (!hasMore() || isLoading()) {
@@ -64,6 +64,13 @@ const InterestingArtworksRail: React.FC<InterestingArtworksRailProps & RailScrol
             contextModule={HomeAnalytics.artworkRailContextModule("a-key")}
             onEndReached={loadMoreArtworks}
             onEndReachedThreshold={0.1}
+            ListFooterComponent={
+              loadingMoreData ? (
+                <Flex justifyContent="center" ml={3} mr={5} height="120">
+                  <Spinner />
+                </Flex>
+              ) : undefined
+            }
           />
         }
       </View>
