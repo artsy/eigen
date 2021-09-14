@@ -18,7 +18,7 @@ import { groupBy } from "lodash"
 import moment from "moment"
 import { Flex, Separator, Spacer, Spinner, Text } from "palette"
 import React, { useState } from "react"
-import { SectionList } from "react-native"
+import { RefreshControl, SectionList } from "react-native"
 import { RelayPaginationProp } from "react-relay"
 import { createPaginationContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -30,8 +30,9 @@ interface Props {
 }
 
 export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }) => {
-  const { hasMore, isLoading, loadMore } = relay
+  const { hasMore, isLoading, loadMore, refetchConnection } = relay
   const [loadingMoreData, setLoadingMoreData] = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
 
   const { trackEvent } = useTracking()
   const allAuctionResults = extractNodes(me?.auctionResultsByFollowedArtists)
@@ -51,10 +52,20 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
     setLoadingMoreData(true)
     loadMore(PAGE_SIZE, (error) => {
       if (error) {
-        console.error(error.message)
+        console.error("AuctionResultsForArtistsYouFollow.tsx #loadMoreArtworks", error.message)
       }
       setLoadingMoreData(false)
     })
+  }
+
+  const handleRefresh = () => {
+    setRefreshing(true)
+    refetchConnection(PAGE_SIZE, (error) => {
+      if (error) {
+        console.error("AuctionResultsForArtistsYouFollow.tsx #handleRefresh", error.message)
+      }
+    })
+    setRefreshing(false)
   }
 
   return (
@@ -67,6 +78,7 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
         <ArtworkFiltersStoreProvider>
           <SectionList
             sections={groupedAuctionResultSections}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
             onEndReached={loadMoreArtworks}
             keyExtractor={(item) => item.internalID}
             stickySectionHeadersEnabled
