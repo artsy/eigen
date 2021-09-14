@@ -1,70 +1,100 @@
+import { SearchArtworksGrid_viewer } from "__generated__/SearchArtworksGrid_viewer.graphql"
 import { SearchArtworksGridQuery } from "__generated__/SearchArtworksGridQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { PlaceholderGrid } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Flex } from "palette"
 import React from "react"
-import { createRefetchContainer, graphql, QueryRenderer } from "react-relay"
+import { FlatList } from "react-native"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
-const SearchArtworksGrid = (props: any) => {
-  return (
-    <Flex p={2} pb={0}>
-      <InfiniteScrollArtworksGridContainer connection={props?.artworksConnection ?? null} {...props} />
-    </Flex>
-  )
+export interface SearchArtworksGridProps {
+  viewer: SearchArtworksGrid_viewer
+  relay: RelayPaginationProp
 }
 
-export const SearchArtworksGridQueryRenderer: React.FC<{}> = ({}) => {
+export const SEARCH_ARTWORKS_GRID_QUERY = graphql`
+  query SearchArtworksGridQuery($count: Int!, $cursor: String, $keyword: String) {
+    viewer {
+      ...SearchArtworksGrid_viewer @arguments(count: $count, cursor: $cursor, keyword: $keyword)
+    }
+  }
+`
+
+export const SearchArtworksGridQueryRenderer: React.FC<{ keyword: string }> = ({ keyword }) => {
   return (
     <QueryRenderer<SearchArtworksGridQuery>
       environment={defaultEnvironment}
-      query={graphql`
-        query SearchArtworksGridQuery {
-          artworksConnection(first: 10) {
-            edges {
-              node {
-                id
-                image {
-                  aspect_ratio: aspectRatio
-                }
-                ...ArtworkGridItem_artwork
-              }
-            }
-          }
-        }
-      `}
+      // tslint:disable-next-line:relay-operation-generics
+      query={SEARCH_ARTWORKS_GRID_QUERY}
       render={renderWithPlaceholder({
-        Container: SearchArtworksGridContainer,
-        renderPlaceholder: () => <SearchArtworksGrid />,
+        Container: SearchArtworksGridPaginationContainer,
+        renderPlaceholder: () => <PlaceholderGrid />,
       })}
-      variables={{}}
+      variables={{ count: 20, keyword }}
       cacheConfig={{ force: true }}
     />
   )
 }
 
-export const SearchArtworksGridContainer = createRefetchContainer(
+interface ArtworkSection {
+  key: string
+  content: JSX.Element
+}
+
+const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }) => {
+  const content: ArtworkSection[] = [
+    {
+      key: "ARTWORKS",
+      content: (
+        <InfiniteScrollArtworksGridContainer
+          shouldAddPadding
+          connection={viewer.artworksConnection!}
+          loadMore={relay.loadMore}
+          hasMore={relay.hasMore}
+        />
+      ),
+    },
+  ]
+
+  return (
+    <FlatList<ArtworkSection> data={content} renderItem={({ item }) => item.content} keyExtractor={({ key }) => key} />
+  )
+}
+
+export const SearchArtworksGridPaginationContainer = createPaginationContainer(
   SearchArtworksGrid,
   {
-    artworks: graphql`
-      fragment SearchArtworksGrid_artworks on Artwork @relay(plural: true) {
-        id
-        image {
-          aspect_ratio: aspectRatio
+    viewer: graphql`
+      fragment SearchArtworksGrid_viewer on Viewer
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 20 }
+        cursor: { type: "String" }
+        keyword: { type: "String" }
+      ) {
+        artworksConnection(first: $count, after: $cursor, keyword: $keyword)
+          @connection(key: "SearchArtworksGrid_artworksConnection") {
+          edges {
+            node {
+              id
+            }
+          }
+          ...InfiniteScrollArtworksGrid_connection
         }
-        ...ArtworkGridItem_artwork
       }
     `,
   },
-  graphql`
-    query SearchArtworksGridRefetchQuery {
-      artworksConnection(first: 10) {
-        edges {
-          node {
-            ...SearchArtworksGrid_artworks
-          }
-        }
+  {
+    getConnectionFromProps(props) {
+      return props.viewer && props.viewer.artworksConnection
+    },
+    getVariables(_props, { count, cursor }, fragmentVariables) {
+      return {
+        ...fragmentVariables,
+        count,
+        cursor,
       }
-    }
-  `
+    },
+    query: SEARCH_ARTWORKS_GRID_QUERY,
+  }
 )
