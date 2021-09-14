@@ -4,8 +4,8 @@ import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderGrid } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Flex } from "palette"
 import React from "react"
+import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 export interface SearchArtworksGridProps {
@@ -37,15 +37,31 @@ export const SearchArtworksGridQueryRenderer: React.FC<{ keyword: string }> = ({
   )
 }
 
+interface ArtworkSection {
+  key: string
+  content: JSX.Element
+}
+
 const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }) => {
+  const content: ArtworkSection[] = [
+    {
+      key: "ARTWORKS",
+      content: (
+        <InfiniteScrollArtworksGridContainer
+          connection={viewer.artworksConnection!}
+          loadMore={relay.loadMore}
+          hasMore={relay.hasMore}
+        />
+      ),
+    },
+  ]
+
   return (
-    <Flex paddingX={2} pb={100}>
-      <InfiniteScrollArtworksGridContainer
-        connection={viewer.artworksConnection!}
-        loadMore={relay.loadMore}
-        hasMore={relay.hasMore}
-      />
-    </Flex>
+    <FlatList<ArtworkSection>
+      contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
+      data={content}
+      renderItem={({ item }) => item.content}
+    />
   )
 }
 
