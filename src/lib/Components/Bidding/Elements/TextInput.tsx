@@ -25,7 +25,6 @@ export interface TextInputProps
     RNTextInputProps {}
 
 export const TextInput = styled.TextInput.attrs<TextInputProps>({})`
-  font-family: "${Fonts.Unica77LLRegular}";
   height: 40px;
 
   ${borders};
