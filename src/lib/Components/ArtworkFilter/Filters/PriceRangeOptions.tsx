@@ -9,7 +9,7 @@ import {
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { Input } from "lib/Components/Input/Input"
 import { Flex, Text } from "palette"
-import React, { useEffect, useRef, useState } from "react"
+import React from "react"
 import { parsePriceRangeLabel, parseRange, Range } from "./helpers"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
@@ -27,38 +27,22 @@ const PRICE_RANGE_OPTIONS: FilterData[] = [
 ]
 
 interface CustomPriceInputProps {
-  initialValue: Range
+  value: Range
   onChange(value: Range): void
 }
 
-export const CustomPriceInput: React.FC<CustomPriceInputProps> = ({
-  initialValue = { min: "*", max: "*" },
-  onChange,
-}) => {
-  const isMounted = useRef(false)
-  const [state, setState] = useState<Range>(initialValue)
-
+export const CustomPriceInput: React.FC<CustomPriceInputProps> = ({ value = { min: "*", max: "*" }, onChange }) => {
   const handleChange = (key: "min" | "max") => (text: string) => {
     const parsed = parseInt(text, 10)
-    const value = isNaN(parsed) ? "*" : parsed
-    setState((prevState) => ({ ...prevState, [key]: value }))
+    const parsedValue = isNaN(parsed) ? "*" : parsed
+    onChange({ ...value, [key]: parsedValue })
   }
-
-  useEffect(() => {
-    // Ignore initial mount
-    if (!isMounted.current) {
-      isMounted.current = true
-      return
-    }
-
-    onChange(state)
-  }, [state])
 
   return (
     <Flex flexDirection="row" alignItems="center" mt={2} mb={1} mx={2}>
       <Input
         placeholder="$ USD minimum"
-        defaultValue={state.min === "*" || state.min === 0 ? undefined : String(state.min)}
+        value={value.min === "*" || value.min === 0 ? undefined : String(value.min)}
         keyboardType="number-pad"
         onChangeText={handleChange("min")}
         autoFocus
@@ -68,7 +52,7 @@ export const CustomPriceInput: React.FC<CustomPriceInputProps> = ({
 
       <Input
         placeholder="$ USD maximum"
-        defaultValue={state.max === "*" ? undefined : String(state.max)}
+        value={value.max === "*" ? undefined : String(value.max)}
         keyboardType="number-pad"
         onChangeText={handleChange("max")}
       />
@@ -81,6 +65,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
 
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedOption = selectedOptions.find((option) => option.paramName === PARAM_NAME)!
+  const customPriceValue = parseRange(selectedOption.paramValue as string)
 
   const selectOption = (option: AggregateOption) => {
     selectFiltersAction({
@@ -104,10 +89,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
       filterHeaderText={FilterDisplayName.priceRange}
       useScrollView={true}
       filterOptions={[
-        <CustomPriceInput
-          initialValue={parseRange(selectedOption.paramValue as string)}
-          onChange={handleCustomPriceChange}
-        />,
+        <CustomPriceInput value={customPriceValue} onChange={handleCustomPriceChange} />,
         ...PRICE_RANGE_OPTIONS,
       ]}
       selectedOption={selectedOption}
