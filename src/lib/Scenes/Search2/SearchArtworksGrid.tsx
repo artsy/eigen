@@ -48,6 +48,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }
       key: "ARTWORKS",
       content: (
         <InfiniteScrollArtworksGridContainer
+          shouldAddPadding
           connection={viewer.artworksConnection!}
           loadMore={relay.loadMore}
           hasMore={relay.hasMore}
@@ -57,12 +58,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }
   ]
 
   return (
-    <FlatList<ArtworkSection>
-      contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
-      data={content}
-      renderItem={({ item }) => item.content}
-      keyExtractor={({ key }) => key}
-    />
+    <FlatList<ArtworkSection> data={content} renderItem={({ item }) => item.content} keyExtractor={({ key }) => key} />
   )
 }
 
