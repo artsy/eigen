@@ -332,7 +332,7 @@ const StyledInput = styled(TextInput)`
   position: absolute;
   left: 10;
   right: 10;
-  top: ${Platform.OS === "ios" ? 12 : 6}; /* to center the text nicely */
+  top: ${Platform.OS === "ios" ? 14 : 7}; /* to center the text nicely */
   padding-bottom: 30;
 
   /* to center the text */
