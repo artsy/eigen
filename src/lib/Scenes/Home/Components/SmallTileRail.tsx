@@ -16,12 +16,16 @@ interface Props {
   artworks: SmallTileRail_artworks
   listRef: React.RefObject<FlatList<any>>
   contextModule: Analytics.ContextModule | undefined
+  onEndReached?: () => void
+  onEndReachedThreshold?: number
 }
 
-const SmallTileRail: React.FC<Props> = ({ artworks, listRef, contextModule }) => {
+const SmallTileRail: React.FC<Props> = ({ artworks, listRef, contextModule, onEndReached, onEndReachedThreshold }) => {
   const tracking = useTracking()
   return (
     <AboveTheFoldFlatList
+      onEndReached={onEndReached}
+      onEndReachedThreshold={onEndReachedThreshold}
       listRef={listRef}
       horizontal
       ListHeaderComponent={() => <Spacer mr={2}></Spacer>}

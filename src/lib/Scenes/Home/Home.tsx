@@ -35,6 +35,7 @@ import { _FragmentRefs, createRefetchContainer, graphql, RelayRefetchProp } from
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
+import { InterestingArtworksRailContainer } from "./Components/InterestingArtworksRail"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProps {
@@ -84,6 +85,7 @@ const Home = (props: Props) => {
 
   const rowData = compact([
     // Above-the-fold modules (make sure to include enough modules in the above-the-fold query to cover the whole screen.)
+    { type: "interestingWorks" } as const,
     artworkRails[0],
     { type: "lotsByFollowedArtists" } as const,
     artworkRails[1],
@@ -191,6 +193,13 @@ const Home = (props: Props) => {
                   ) : (
                     <></>
                   )
+                case "interestingWorks":
+                  return meAbove ? (
+                    <InterestingArtworksRailContainer me={meAbove} scrollRef={scrollRefs.current[index]} />
+                  ) : (
+                    <></>
+                  )
+
                 case "lotsByFollowedArtists":
                   return meAbove ? (
                     <SaleArtworksHomeRailContainer
@@ -276,6 +285,7 @@ export const HomeFragmentContainer = createRefetchContainer(
       fragment Home_meAbove on Me {
         ...EmailConfirmationBanner_me
         ...SaleArtworksHomeRail_me
+        ...InterestingArtworksRail_me
       }
     `,
     meBelow: graphql`
@@ -305,6 +315,7 @@ export const HomeFragmentContainer = createRefetchContainer(
       me @optionalField {
         ...Home_meAbove
         ...AuctionResultsRail_me
+        ...InterestingArtworksRail_me
       }
       meBelow: me @optionalField {
         ...Home_meBelow
@@ -493,6 +504,7 @@ export const HomeQueryRenderer: React.FC = () => {
                 }
                 me @optionalField {
                   ...Home_meAbove
+                  ...InterestingArtworksRail_me
                 }
                 articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
                   ...Home_articlesConnection
