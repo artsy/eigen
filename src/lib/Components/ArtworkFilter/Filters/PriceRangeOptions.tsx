@@ -18,22 +18,12 @@ interface PriceRangeOptionsScreenProps
 
 const PARAM_NAME = FilterParamName.priceRange
 
-export const CUSTOM_PRICE_OPTION = {
-  displayText: "Custom Price",
-  // Values need to be unique and we can't use "*-*" which is used by "All."
-  // This essentially means the same thing.
-  paramValue: "0-*",
-  paramName: PARAM_NAME,
-}
-
 const PRICE_RANGE_OPTIONS: FilterData[] = [
-  { displayText: "All", paramValue: "*-*", paramName: PARAM_NAME },
   { displayText: "$50,000+", paramValue: "50000-*", paramName: PARAM_NAME },
   { displayText: "$10,000–50,000", paramValue: "10000-50000", paramName: PARAM_NAME },
   { displayText: "$5,000–10,000", paramValue: "5000-10000", paramName: PARAM_NAME },
   { displayText: "$1,000–5,000", paramValue: "1000-5000", paramName: PARAM_NAME },
   { displayText: "$0–1,000", paramValue: "*-1000", paramName: PARAM_NAME },
-  CUSTOM_PRICE_OPTION,
 ]
 
 interface CustomPriceInputProps {
@@ -65,7 +55,7 @@ export const CustomPriceInput: React.FC<CustomPriceInputProps> = ({
   }, [state])
 
   return (
-    <Flex flexDirection="row" alignItems="center" mt={1} mx={2} mb={2}>
+    <Flex flexDirection="row" alignItems="center" mt={2} mb={1} mx={2}>
       <Input
         placeholder="$ USD minimum"
         defaultValue={state.min === "*" || state.min === 0 ? undefined : String(state.min)}
@@ -92,17 +82,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedOption = selectedOptions.find((option) => option.paramName === PARAM_NAME)!
 
-  const isCustomPrice =
-    // Is the placeholder custom price option
-    selectedOption.displayText === CUSTOM_PRICE_OPTION.displayText ||
-    // Isn't a pre-defined price range option
-    PRICE_RANGE_OPTIONS.find((option) => option.paramValue === selectedOption.paramValue) === undefined
-
-  const [shouldShowCustomPrice, showCustomPrice] = useState(isCustomPrice)
-
   const selectOption = (option: AggregateOption) => {
-    showCustomPrice(option.displayText === CUSTOM_PRICE_OPTION.displayText)
-
     selectFiltersAction({
       displayText: option.displayText,
       paramValue: option.paramValue,
@@ -124,17 +104,13 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
       filterHeaderText={FilterDisplayName.priceRange}
       useScrollView={true}
       filterOptions={[
+        <CustomPriceInput
+          initialValue={parseRange(selectedOption.paramValue as string)}
+          onChange={handleCustomPriceChange}
+        />,
         ...PRICE_RANGE_OPTIONS,
-        ...(shouldShowCustomPrice
-          ? [
-              <CustomPriceInput
-                initialValue={parseRange(selectedOption.paramValue as string)}
-                onChange={handleCustomPriceChange}
-              />,
-            ]
-          : []),
       ]}
-      selectedOption={isCustomPrice ? CUSTOM_PRICE_OPTION : selectedOption}
+      selectedOption={selectedOption}
       navigation={navigation}
     />
   )
