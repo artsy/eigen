@@ -2,7 +2,7 @@ import { MyAccountEditEmailQuery } from "__generated__/MyAccountEditEmailQuery.g
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Input } from "palette/elements/Input/Input"
+import { Input } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { string } from "yup"

@@ -4,7 +4,7 @@ import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilter
 import SearchIcon from "lib/Icons/SearchIcon"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import { debounce, throttle } from "lodash"
-import { Input } from "palette/elements/Input/Input"
+import { Input } from "palette"
 import React, { useEffect, useMemo, useRef } from "react"
 import { Platform } from "react-native"
 import { useTracking } from "react-tracking"

@@ -8,8 +8,7 @@ import {
   ParamDefaultValues,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { Flex, Spacer, Text } from "palette"
-import { Input } from "palette/elements/Input/Input"
+import { Flex, Input, Spacer, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { IS_USA, LOCALIZED_UNIT, localizeDimension, parseRange, Range, toIn } from "./helpers"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"

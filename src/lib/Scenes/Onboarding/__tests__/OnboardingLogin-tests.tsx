@@ -1,5 +1,4 @@
-import { Input } from "palette/elements/Input/Input"
-import { Touchable } from "palette/elements/Touchable/Touchable"
+import { Input, Touchable } from "palette"
 import React from "react"
 import { renderWithWrappers } from "../../../tests/renderWithWrappers"
 import { OnboardingLoginWithEmailForm } from "../OnboardingLogin"
