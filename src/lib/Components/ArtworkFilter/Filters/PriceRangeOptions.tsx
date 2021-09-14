@@ -45,7 +45,6 @@ export const CustomPriceInput: React.FC<CustomPriceInputProps> = ({ value = { mi
         value={value.min === "*" || value.min === 0 ? undefined : String(value.min)}
         keyboardType="number-pad"
         onChangeText={handleChange("min")}
-        autoFocus
       />
 
       <Text mx={2}>to</Text>
