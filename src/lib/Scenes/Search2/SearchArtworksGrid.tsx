@@ -61,6 +61,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }
       contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
       data={content}
       renderItem={({ item }) => item.content}
+      keyExtractor={({ key }) => key}
     />
   )
 }
