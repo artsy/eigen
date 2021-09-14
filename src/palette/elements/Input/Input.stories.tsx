@@ -1,7 +1,6 @@
 import { storiesOf } from "@storybook/react-native"
 import SearchIcon from "lib/Icons/SearchIcon"
-import { Flex } from "palette"
-import { Input } from "palette/elements/Input/Input"
+import { Flex, Input } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { withThemeV3 } from "storybook/decorators"

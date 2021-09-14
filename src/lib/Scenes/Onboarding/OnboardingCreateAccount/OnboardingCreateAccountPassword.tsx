@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
-import { Input } from "palette/elements/Input/Input"
+import { Input } from "palette"
 import { useColor } from "palette/hooks"
 import React from "react"
 import {
