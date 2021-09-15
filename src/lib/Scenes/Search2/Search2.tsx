@@ -28,7 +28,7 @@ import { RecentSearches } from "../Search/RecentSearches"
 import { SearchContext, useSearchProviderValues } from "../Search/SearchContext"
 import { SearchPlaceholder } from "./components/SearchPlaceholder"
 import { RefetchWhenApiKeyExpiredContainer } from "./containers/RefetchWhenApiKeyExpired"
-import { SearchArtworksGridQueryRenderer } from "./SearchArtworksGrid"
+import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 import { SearchResults } from "./SearchResults"
 
 interface SearchInputProps {
@@ -122,7 +122,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
       return <SearchResultsContainer indexName={selectedAlgoliaIndex} categoryDisplayName={categoryDisplayName} />
     }
     if (!!elasticSearchEntity) {
-      return <SearchArtworksGridQueryRenderer keyword={searchState.query!} />
+      return <SearchArtworksQueryRenderer keyword={searchState.query!} />
     }
     return <AutosuggestResults query={searchState.query!} />
   }

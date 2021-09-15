@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash babc0b48ce11ce223983aa43d0a88cce */
+/* @relayHash b33399fcb2162689d869634be2335cbe */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -56,26 +56,26 @@ export type FilterArtworksInput = {
     tagID?: string | null;
     width?: string | null;
 };
-export type SearchArtworksGridQueryVariables = {
+export type SearchArtworksContainerQueryVariables = {
     count: number;
     cursor?: string | null;
     keyword?: string | null;
     input?: FilterArtworksInput | null;
 };
-export type SearchArtworksGridQueryResponse = {
+export type SearchArtworksContainerQueryResponse = {
     readonly viewer: {
         readonly " $fragmentRefs": FragmentRefs<"SearchArtworksGrid_viewer">;
     } | null;
 };
-export type SearchArtworksGridQuery = {
-    readonly response: SearchArtworksGridQueryResponse;
-    readonly variables: SearchArtworksGridQueryVariables;
+export type SearchArtworksContainerQuery = {
+    readonly response: SearchArtworksContainerQueryResponse;
+    readonly variables: SearchArtworksContainerQueryVariables;
 };
 
 
 
 /*
-query SearchArtworksGridQuery(
+query SearchArtworksContainerQuery(
   $count: Int!
   $cursor: String
   $keyword: String
@@ -251,7 +251,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "SearchArtworksGridQuery",
+    "name": "SearchArtworksContainerQuery",
     "selections": [
       {
         "alias": null,
@@ -295,7 +295,7 @@ return {
       (v2/*: any*/)
     ],
     "kind": "Operation",
-    "name": "SearchArtworksGridQuery",
+    "name": "SearchArtworksContainerQuery",
     "selections": [
       {
         "alias": null,
@@ -713,13 +713,13 @@ return {
     ]
   },
   "params": {
-    "id": "babc0b48ce11ce223983aa43d0a88cce",
+    "id": "b33399fcb2162689d869634be2335cbe",
     "metadata": {},
-    "name": "SearchArtworksGridQuery",
+    "name": "SearchArtworksContainerQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '4caf4e58a31b5ee2f4dd92981f351205';
+(node as any).hash = 'ad6306e066b254662ab502bfc67b548b';
 export default node;

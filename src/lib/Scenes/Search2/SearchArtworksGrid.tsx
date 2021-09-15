@@ -1,47 +1,18 @@
 import { SearchArtworksGrid_viewer } from "__generated__/SearchArtworksGrid_viewer.graphql"
-import { SearchArtworksGridQuery } from "__generated__/SearchArtworksGridQuery.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { getSelectedFiltersCounts } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { PlaceholderGrid } from "lib/utils/placeholders"
-import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Box, bullet, FilterIcon, Flex, Separator, Spacer, Text, TouchableHighlightColor } from "palette"
+import { Box, bullet, FilterIcon, Flex, Separator, Text, TouchableHighlightColor } from "palette"
 import React, { useMemo, useState } from "react"
 import { FlatList } from "react-native"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { SEARCH_ARTWORKS_QUERY } from "./SearchArtworksContainer"
 
 export interface SearchArtworksGridProps {
   viewer: SearchArtworksGrid_viewer
   relay: RelayPaginationProp
-}
-
-export const SEARCH_ARTWORKS_GRID_QUERY = graphql`
-  query SearchArtworksGridQuery($count: Int!, $cursor: String, $keyword: String, $input: FilterArtworksInput) {
-    viewer {
-      ...SearchArtworksGrid_viewer @arguments(count: $count, cursor: $cursor, keyword: $keyword, input: $input)
-    }
-  }
-`
-
-export const SearchArtworksGridQueryRenderer: React.FC<{ keyword: string }> = ({ keyword }) => {
-  return (
-    <ArtworkFiltersStoreProvider>
-      <QueryRenderer<SearchArtworksGridQuery>
-        environment={defaultEnvironment}
-        // tslint:disable-next-line:relay-operation-generics
-        query={SEARCH_ARTWORKS_GRID_QUERY}
-        render={renderWithPlaceholder({
-          Container: SearchArtworksGridPaginationContainer,
-          renderPlaceholder: () => <PlaceholderGrid />,
-        })}
-        variables={{ count: 20, keyword }}
-        cacheConfig={{ force: true }}
-      />
-    </ArtworkFiltersStoreProvider>
-  )
 }
 
 interface ArtworkSection {
@@ -190,6 +161,6 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
         cursor,
       }
     },
-    query: SEARCH_ARTWORKS_GRID_QUERY,
+    query: SEARCH_ARTWORKS_QUERY,
   }
 )
