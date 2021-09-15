@@ -9,10 +9,12 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
 import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
+import { searchInsights, useSearchInsightsConfig } from "lib/utils/useSearchInsightsConfig"
 import { Flex, Pill, Spacer, Spinner, Text, Touchable, useSpace } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
 import {
+  Configure,
   connectHighlight,
   connectInfiniteHits,
   connectSearchBox,
@@ -89,6 +91,8 @@ interface AlgoliaSearchResult {
   name: string
   objectID: string
   slug: string
+  __position: number
+  __queryID: string
 }
 
 interface SearchResultsProps
@@ -122,6 +126,14 @@ const SearchResults: React.FC<SearchResultsProps> = ({
     } else {
       navigate(item.href)
     }
+
+    searchInsights("clickedObjectIDsAfterSearch", {
+      index: indexName,
+      eventName: "Search item clicked",
+      positions: [item.__position],
+      queryID: item.__queryID,
+      objectIDs: [item.objectID],
+    })
   }
 
   const loadMore = () => {
@@ -181,6 +193,7 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
   const { system } = props
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
+  const searchInsightsConfigured = useSearchInsightsConfig(system?.algolia?.appID, system?.algolia?.apiKey)
 
   const pillsArray = useMemo(() => {
     const indices = system?.algolia?.indices
@@ -192,7 +205,7 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
     return pills
   }, [system?.algolia?.indices])
 
-  if (!searchClient) {
+  if (!searchClient || !searchInsightsConfigured) {
     // error handling in case appID or apiKey is not set ??
     return null
   }
@@ -202,7 +215,7 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
       return <SearchResultsContainer indexName={selectedAlgoliaIndex} />
     }
     if (!!elasticSearchEntity) {
-      return <SearchArtworksGridQueryRenderer />
+      return <SearchArtworksGridQueryRenderer keyword={searchState.query!} />
     }
     return <AutosuggestResults query={searchState.query!} />
   }
@@ -229,6 +242,7 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
           searchState={searchState}
           onSearchStateChange={setSearchState}
         >
+          <Configure clickAnalytics />
           <Flex p={2} pb={1}>
             <SearchInputContainer placeholder="Search artists, artworks, galleries, etc" />
           </Flex>

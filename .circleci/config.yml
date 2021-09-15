@@ -43,7 +43,7 @@ commands:
             scripts/generate-manifest.js .manifests/js_test_results '^\.manifests/js_transform' '^data/' '^src/'
             ls -lR emission > .manifests/emission_pod_file_list
             scripts/generate-manifest.js .manifests/cocoapods '^Podfile' '^Gemfile' '^\.manifests/emission_pod_file_list'
-            scripts/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^Podfile' '^Makefile' '^Gemfile' '^emission/' '^Artsy' '^patches/react-native' '^\.env\.example'
+            scripts/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^Podfile' '^Gemfile' '^emission/' '^Artsy' '^patches/react-native' '^\.env\.example'
             scripts/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
   setup-env-file:
     steps:
@@ -367,8 +367,6 @@ jobs:
   build-test-app-android:
     environment:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
-
-    resource_class: medium+
 
     docker:
       - image: circleci/android:api-29-node

@@ -59,7 +59,7 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
         testID="nameInput"
       />
 
-      <Flex width="100%" pr={3} my={2}>
+      <Flex width="100%" my={2}>
         <TermsOfServiceCheckbox
           setChecked={() => setFieldValue("acceptedTerms", !values.acceptedTerms)}
           checked={values.acceptedTerms}
