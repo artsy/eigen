@@ -168,6 +168,7 @@ lane :ship_beta_android do
     task: "bundle",
     build_type: "Release",
     project_dir: "android/",
+    flags: "--no-daemon --max-workers=1",
   )
 
   firebase_app_distribution(
@@ -184,6 +185,7 @@ lane :ship_beta_android do
     task: "bundle",
     build_type: "Release",
     project_dir: "android/",
+    flags: "--no-daemon --max-workers=1",
   )
 
   supply(
