@@ -32,6 +32,9 @@ export interface ArtworkProps {
   hidePartner?: boolean
   // Show the lot number (Lot 213)
   showLotLabel?: boolean
+  // enableMyCollection apply different styling for myCollection enabled users
+  // TODO: Remove this prop when launching MyCollection
+  enableMyCollection?: boolean
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
@@ -45,6 +48,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideUrgencyTags = false,
   hidePartner = false,
   showLotLabel = false,
+  enableMyCollection,
 }) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
@@ -116,7 +120,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             </Sans>
           )}
           {!!artwork.artistNames && (
-            <Sans size="3t" weight="medium" numberOfLines={1}>
+            <Sans size="3t" weight={enableMyCollection ? "regular" : "medium"} numberOfLines={1}>
               {artwork.artistNames}
             </Sans>
           )}
@@ -132,7 +136,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
             </Sans>
           )}
           {!!saleInfo && (
-            <Sans color="black60" size="3t" numberOfLines={1}>
+            <Sans
+              color={enableMyCollection ? "black100" : "black60"}
+              size="3t"
+              numberOfLines={1}
+              weight={enableMyCollection ? "medium" : "regular"}
+            >
               {saleInfo}
             </Sans>
           )}

@@ -69,6 +69,7 @@ export class SavedWorks extends Component<Props, State> {
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
     const artworks = extractNodes(this.props.me.followsAndSaves?.artworks)
+    const isEnabledForMyCollection = this.props.me.labFeatures?.includes("My Collection")
 
     if (artworks.length === 0) {
       return (
@@ -105,7 +106,12 @@ export class SavedWorks extends Component<Props, State> {
               <RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />
             }
           >
-            <GenericGrid artworks={artworks} isLoading={this.state.fetchingMoreData} />
+            <GenericGrid
+              artworks={artworks}
+              isLoading={this.state.fetchingMoreData}
+              hidePartner={isEnabledForMyCollection}
+              enableMyCollection={isEnabledForMyCollection}
+            />
           </StickyTabPageScrollView>
         )}
       </ClassTheme>
@@ -119,6 +125,7 @@ const FavoriteArtworksContainer = createPaginationContainer(
     me: graphql`
       fragment FavoriteArtworks_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
+        labFeatures
         # TODO: This should move into followsAndSaves
         followsAndSaves {
           artworks: artworksConnection(private: true, first: $count, after: $cursor)
