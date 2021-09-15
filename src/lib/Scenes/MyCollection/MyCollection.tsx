@@ -3,26 +3,22 @@ import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { EventEmitter } from "events"
 import MyCollectionGrid from "lib/Components/ArtworkGrids/MyCollectionArtworkGrid"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { GlobalStore } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
-import { isCloseToBottom } from "lib/utils/isCloseToBottom"
-import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
-import { Box, Button, Flex, Join, Separator, Spacer, Text, useSpace } from "palette"
+import { Button, Flex, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import { FlatList, RefreshControl, ScrollView, View } from "react-native"
+import { RefreshControl, ScrollView, View } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { MyCollectionAndSavedWorksGridPlaceHolder } from "./MyCollectionGridPlaceHolder"
 import { MyCollectionArtworkFormModal } from "./Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
-import { MyCollectionArtworkListItemFragmentContainer } from "./Screens/ArtworkList/MyCollectionArtworkListItem"
 
 const RefreshEvents = new EventEmitter()
 const REFRESH_KEY = "refresh"
@@ -88,7 +84,7 @@ const MyCollection: React.FC<{
         >
           <Button
             size="small"
-            variant="fillDark"
+            variant="primaryBlack"
             onPress={() => {
               setShowModal(true)
               trackEvent(tracks.addCollectedArtwork())
@@ -215,40 +211,9 @@ export const MyCollectionQueryRenderer: React.FC = () => {
       cacheConfig={{ force: true }}
       render={renderWithPlaceholder({
         Container: MyCollectionContainer,
-        renderPlaceholder: LoadingSkeleton,
+        renderPlaceholder: () => <MyCollectionAndSavedWorksGridPlaceHolder />,
       })}
     />
-  )
-}
-
-const LoadingSkeleton = () => {
-  return (
-    <>
-      <Text variant="largeTitle" ml={2} mb={2} mt={6}>
-        My Collection
-      </Text>
-
-      <Box>
-        <Spacer mb={2} />
-
-        {/* List items  */}
-        <Flex flexDirection="column" pl={2}>
-          <Join separator={<Spacer mr={0.5} />}>
-            {[...new Array(8)].map((_, index) => {
-              return (
-                <Flex key={index} flexDirection="row" mb={1} alignItems="center">
-                  <PlaceholderBox width={90} height={90} marginRight={10} />
-                  <Box>
-                    <PlaceholderText width={200} />
-                    <PlaceholderRaggedText numLines={2} />
-                  </Box>
-                </Flex>
-              )
-            })}
-          </Join>
-        </Flex>
-      </Box>
-    </>
   )
 }
 

@@ -13,7 +13,7 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 import { MyCollectionAndSavedWorks, Tab } from "./MyCollectionAndSavedWorks"
 import { MyProfileSettingsQueryRenderer } from "./MyProfileSettings"
 
-export const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
+export const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me }) => {
   const shouldDisplayMyCollection = me?.labFeatures?.includes("My Collection")
   if (shouldDisplayMyCollection) {
     return <MyCollectionAndSavedWorks me={me} initialTab={Tab.collections} />

@@ -263,7 +263,7 @@ const NewMyProfileSettings: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp
       <Separator my={1} borderColor={separatorColor} />
 
       <Flex flexDirection="row" alignItems="center" justifyContent="center" py={7.5} px="2" pr="15px">
-        <Button variant="fillDark" haptic onPress={confirmLogout} minWidth={"100%"}>
+        <Button variant="primaryBlack" haptic onPress={confirmLogout} minWidth={"100%"}>
           Log Out{" "}
         </Button>
       </Flex>

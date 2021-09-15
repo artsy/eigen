@@ -6,8 +6,7 @@ import { navigate } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { artworkMediumCategories } from "lib/utils/artworkMediumCategories"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { capitalize } from "lodash"
-import { Box, Flex, Sans, useColor } from "palette"
+import { Box, Sans, useColor } from "palette"
 import React from "react"
 import { Image as RNImage, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -23,10 +22,6 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
   const { trackEvent } = useTracking()
   const imageURL = artwork.images?.find((i: any) => i?.isDefault)?.url || (artwork.images && artwork.images[0]?.url)
   const { width } = useScreenDimensions()
-  const mediums: { [medium: string]: string } = artworkMediumCategories.reduce(
-    (acc, cur) => ({ ...acc, [cur.value]: cur.label }),
-    {}
-  )
 
   const { artist, artistNames, internalID, medium, slug, title, image, date } = artwork
 
