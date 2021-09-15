@@ -3,7 +3,7 @@ import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/Artwor
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderButton, PlaceholderGrid } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Flex, Spacer } from "palette"
+import { Flex, Separator } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { SearchArtworksGridPaginationContainer } from "./SearchArtworksGrid"
@@ -28,11 +28,13 @@ export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ key
           Container: SearchArtworksGridPaginationContainer,
           renderPlaceholder: () => (
             <>
-              <Flex height={28} flex={1} px={2} pt={0.5} my={2} flexDirection="row" alignItems="center">
-                <PlaceholderButton width={20} height={20} />
-                <PlaceholderButton marginLeft={5} width={70} height={20} />
+              <Flex height={28} my={1} px={2} justifyContent="space-between">
+                <Flex flex={1} flexDirection="row">
+                  <PlaceholderButton width={20} height={20} />
+                  <PlaceholderButton marginLeft={5} width={70} height={20} />
+                </Flex>
               </Flex>
-              <Spacer mt={0.9} mb={2} />
+              <Separator mb={2} />
               <PlaceholderGrid />
             </>
           ),
