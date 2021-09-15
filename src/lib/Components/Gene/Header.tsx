@@ -135,7 +135,6 @@ class Header extends React.Component<Props, State> {
           variant={gene.isFollowed ? "secondaryOutline" : "primaryBlack"}
           block
           width={100}
-          loading={this.state.isFollowedChanging}
           onPress={() => this.handleFollowChange()}
         >
           {gene.isFollowed ? "Following" : "Follow"}
