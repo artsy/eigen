@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0f2973e8e64be60d1f3d089b9f62ddec */
+/* @relayHash d39904ad97b794fd699ce89fa7109d0d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -178,7 +178,7 @@ fragment Home_articlesConnection on ArticleConnection {
 }
 
 fragment Home_homePageAbove_1IwJ0h on HomePage {
-  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [FOLLOWED_ARTISTS, ACTIVE_BIDS, LIVE_AUCTIONS], include: [FOLLOWED_ARTISTS, ACTIVE_BIDS, LIVE_AUCTIONS]) {
+  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [FOLLOWED_ARTISTS, ACTIVE_BIDS], include: [FOLLOWED_ARTISTS, ACTIVE_BIDS]) {
     id
     ...ArtworkRail_rail
   }
@@ -331,8 +331,7 @@ v1 = [
 ],
 v2 = [
   "FOLLOWED_ARTISTS",
-  "ACTIVE_BIDS",
-  "LIVE_AUCTIONS"
+  "ACTIVE_BIDS"
 ],
 v3 = {
   "alias": null,
@@ -821,7 +820,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "artworkModules(include:[\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\",\"LIVE_AUCTIONS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\",\"LIVE_AUCTIONS\"])"
+            "storageKey": "artworkModules(include:[\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\"])"
           },
           {
             "alias": null,
@@ -1240,7 +1239,7 @@ return {
     ]
   },
   "params": {
-    "id": "0f2973e8e64be60d1f3d089b9f62ddec",
+    "id": "d39904ad97b794fd699ce89fa7109d0d",
     "metadata": {},
     "name": "HomeAboveTheFoldQuery",
     "operationKind": "query",

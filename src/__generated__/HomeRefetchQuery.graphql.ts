@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 723ab066f260c0a75502c2208ca8a4e6 */
+/* @relayHash 236d357a89ec72a895db57417cec9c3c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -349,7 +349,7 @@ fragment Home_featured on ViewingRoomConnection {
 }
 
 fragment Home_homePageAbove_1IwJ0h on HomePage {
-  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [FOLLOWED_ARTISTS, ACTIVE_BIDS, LIVE_AUCTIONS], include: [FOLLOWED_ARTISTS, ACTIVE_BIDS, LIVE_AUCTIONS]) {
+  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [FOLLOWED_ARTISTS, ACTIVE_BIDS], include: [FOLLOWED_ARTISTS, ACTIVE_BIDS]) {
     id
     ...ArtworkRail_rail
   }
@@ -360,7 +360,7 @@ fragment Home_homePageAbove_1IwJ0h on HomePage {
 }
 
 fragment Home_homePageBelow_1IwJ0h on HomePage {
-  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [RECOMMENDED_WORKS, FOLLOWED_GALLERIES], exclude: [ACTIVE_BIDS, FOLLOWED_ARTISTS, SAVED_WORKS, GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]) {
+  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [RECOMMENDED_WORKS, FOLLOWED_GALLERIES, RECENTLY_VIEWED_WORKS], exclude: [ACTIVE_BIDS, FOLLOWED_ARTISTS, FOLLOWED_GALLERIES, SAVED_WORKS, GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]) {
     id
     ...ArtworkRail_rail
   }
@@ -560,8 +560,7 @@ v3 = [
 ],
 v4 = [
   "FOLLOWED_ARTISTS",
-  "ACTIVE_BIDS",
-  "LIVE_AUCTIONS"
+  "ACTIVE_BIDS"
 ],
 v5 = {
   "kind": "Literal",
@@ -1446,7 +1445,7 @@ return {
             "name": "artworkModules",
             "plural": true,
             "selections": (v31/*: any*/),
-            "storageKey": "artworkModules(include:[\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\",\"LIVE_AUCTIONS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\",\"LIVE_AUCTIONS\"])"
+            "storageKey": "artworkModules(include:[\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\"])"
           },
           {
             "alias": null,
@@ -1555,6 +1554,7 @@ return {
                 "value": [
                   "ACTIVE_BIDS",
                   "FOLLOWED_ARTISTS",
+                  "FOLLOWED_GALLERIES",
                   "SAVED_WORKS",
                   "GENERIC_GENES",
                   "LIVE_AUCTIONS",
@@ -1570,7 +1570,8 @@ return {
                 "name": "order",
                 "value": [
                   "RECOMMENDED_WORKS",
-                  "FOLLOWED_GALLERIES"
+                  "FOLLOWED_GALLERIES",
+                  "RECENTLY_VIEWED_WORKS"
                 ]
               }
             ],
@@ -1579,7 +1580,7 @@ return {
             "name": "artworkModules",
             "plural": true,
             "selections": (v31/*: any*/),
-            "storageKey": "artworkModules(exclude:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"SAVED_WORKS\",\"GENERIC_GENES\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"RELATED_ARTISTS\",\"FOLLOWED_GENES\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"RECOMMENDED_WORKS\",\"FOLLOWED_GALLERIES\"])"
+            "storageKey": "artworkModules(exclude:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"GENERIC_GENES\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"RELATED_ARTISTS\",\"FOLLOWED_GENES\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"RECOMMENDED_WORKS\",\"FOLLOWED_GALLERIES\",\"RECENTLY_VIEWED_WORKS\"])"
           },
           {
             "alias": null,
@@ -2173,7 +2174,7 @@ return {
     ]
   },
   "params": {
-    "id": "723ab066f260c0a75502c2208ca8a4e6",
+    "id": "236d357a89ec72a895db57417cec9c3c",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",

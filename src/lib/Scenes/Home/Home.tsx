@@ -59,7 +59,6 @@ const Home = (props: Props) => {
 
   const enableAuctionResultsByFollowedArtists = useFeatureFlag("ARHomeAuctionResultsByFollowedArtists")
 
-  //
   const artworkRails = artworkModules.map(
     (module) =>
       module &&
@@ -83,21 +82,24 @@ const Home = (props: Props) => {
   Ordering is defined in https://www.notion.so/artsy/App-Home-Screen-4841255ded3f47c9bcdb73185ee3f335.
   Please make sure to keep this page in sync with the home screen.
   */
-  const promoSpaceRow = artworkRails[0]
-  // const newWorksByArtistYouFollowRow = artworkRails[1]
-  const recentlyViewedArtworkRow = artworkRails[4]
 
-  // Works From Galleries You Follow
-  // const savedWorksRow = artworkRails[3]
-  // const recommendedArtistsRow = artistRails[0]
-  // const trendingArtistsRow = artistRails[1]
-  const popularArtistsRow = artistRails[2]
-  const activeBidsRow = { type: "lotsByFollowedArtists" } as const
+  const newWorksByArtistYouFollowRow = artworkRails[0]
+  const yourActiveBidsRow = artworkRails.length > 3 ? artworkRails[1] : null
+  const recentlyViewedArtworksRow = artworkRails.length > 3 ? artworkRails[2] : artworkRails[1]
+  const similarToRecentlyViewedRow = artworkRails.length > 3 ? artworkRails[3] : artworkRails[2]
+
+  // Artists rails
+  // const recommendedArtistsRow = artistRails.length > 2 ? artistRails[0] : null
+  // const trendingArtistsRow = artistRails.length > 2 ? artistRails[1] : artistRails[0]
+  const popularArtistsRow = artistRails.length > 2 ? artistRails[2] : artistRails[1]
+  // const savedWorksRow = artistRails.length > 2 ? artistRails[3] : artistRails[2]
+
+  const lotsByFollowedArtistsRow = { type: "lotsByFollowedArtists" } as const
   // Market news
-  const articlesRow = !!articlesConnection && ({ type: "articles" } as const)
+  const marketingNewsRow = !!articlesConnection && ({ type: "articles" } as const)
   const viewingRoomsRow = !!viewingRoomsEchoFlag && !!featured && ({ type: "viewing-rooms" } as const)
   // auction sales module
-  const salesModuleRow =
+  const auctionsRow =
     salesModule &&
     ({
       type: "sales",
@@ -121,26 +123,22 @@ const Home = (props: Props) => {
       type: "auction-results",
     } as const)
 
-  console.log("artistRails ", artistRails)
-
   const rowData = compact([
     // Above-the-fold modules (make sure to include enough modules in the above-the-fold query to cover the whole screen.)
-    promoSpaceRow,
-    // newWorksByArtistYouFollowRow,
-    activeBidsRow,
-    salesModuleRow,
+    newWorksByArtistYouFollowRow,
+    lotsByFollowedArtistsRow,
+    auctionsRow,
+
     // Below-the-fold modules
     autionResultsForArtistsYouFollowRow,
-    articlesRow,
+    marketingNewsRow,
     viewingRoomsRow,
     collectionsRow,
     featuredFairsRow,
-    // savedWorksRow,
-    // recommendedArtistsRow,
-    // trendingArtistsRow,
     popularArtistsRow,
-    recentlyViewedArtworkRow,
-    // ...artworkRails,
+    yourActiveBidsRow,
+    recentlyViewedArtworksRow,
+    similarToRecentlyViewedRow,
   ])
 
   const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(rowData.map((_) => createRef()))
@@ -251,8 +249,8 @@ export const HomeFragmentContainer = createRefetchContainer(
         artworkModules(
           maxRails: -1
           maxFollowedGeneRails: -1
-          order: [FOLLOWED_ARTISTS, ACTIVE_BIDS, LIVE_AUCTIONS]
-          include: [FOLLOWED_ARTISTS, ACTIVE_BIDS, LIVE_AUCTIONS]
+          order: [FOLLOWED_ARTISTS, ACTIVE_BIDS]
+          include: [FOLLOWED_ARTISTS, ACTIVE_BIDS]
         ) {
           id
           ...ArtworkRail_rail
@@ -270,12 +268,13 @@ export const HomeFragmentContainer = createRefetchContainer(
         artworkModules(
           maxRails: -1
           maxFollowedGeneRails: -1
-          order: [RECOMMENDED_WORKS, FOLLOWED_GALLERIES]
+          order: [RECOMMENDED_WORKS, FOLLOWED_GALLERIES, RECENTLY_VIEWED_WORKS]
           # LIVE_AUCTIONS and CURRENT_FAIRS both have their own modules, below.
           # Make sure to exclude all modules that are part of "homePageAbove"
           exclude: [
             ACTIVE_BIDS
             FOLLOWED_ARTISTS
+            FOLLOWED_GALLERIES
             SAVED_WORKS
             GENERIC_GENES
             LIVE_AUCTIONS
