@@ -83,13 +83,12 @@ export class PartnerFollowButton extends React.Component<Props, State> {
 
   render() {
     const { partner } = this.props
-    const { isFollowedChanging } = this.state
+
     return (
       <Button
         variant={partner.profile?.isFollowed ? "secondaryOutline" : "primaryBlack"}
         onPress={this.handleFollowPartner.bind(this)}
         longestText="Following"
-        loading={isFollowedChanging}
         size="small"
         haptic
       >

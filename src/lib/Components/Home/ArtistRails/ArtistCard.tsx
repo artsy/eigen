@@ -113,7 +113,6 @@ export class ArtistCard extends React.Component<Props, State> {
                 onPress={this.handleFollowChange}
                 size="small"
                 block
-                loading={this.state.processingChange}
                 haptic
               >
                 {this.state.following ? "Following" : "Follow"}
