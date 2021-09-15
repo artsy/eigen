@@ -1,32 +1,32 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7151483e0bd1be7eeb78a9a29a1fa086 */
+/* @relayHash 340613683e07905b5ca45538b658fab5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyProfileTestsQueryVariables = {};
-export type MyProfileTestsQueryResponse = {
+export type MyProfileSettingsQueryVariables = {};
+export type MyProfileSettingsQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"MyProfile_me">;
+        readonly " $fragmentRefs": FragmentRefs<"MyProfileSettings_me">;
     } | null;
 };
-export type MyProfileTestsQuery = {
-    readonly response: MyProfileTestsQueryResponse;
-    readonly variables: MyProfileTestsQueryVariables;
+export type MyProfileSettingsQuery = {
+    readonly response: MyProfileSettingsQueryResponse;
+    readonly variables: MyProfileSettingsQueryVariables;
 };
 
 
 
 /*
-query MyProfileTestsQuery {
-  me {
-    ...MyProfile_me
+query MyProfileSettingsQuery {
+  me @optionalField {
+    ...MyProfileSettings_me
     id
   }
 }
 
-fragment MyProfile_me on Me {
+fragment MyProfileSettings_me on Me {
   name
   labFeatures
   createdAt
@@ -94,7 +94,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyProfileTestsQuery",
+    "name": "MyProfileSettingsQuery",
     "selections": [
       {
         "alias": null,
@@ -107,7 +107,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "MyProfile_me"
+            "name": "MyProfileSettings_me"
           }
         ],
         "storageKey": null
@@ -120,7 +120,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "MyProfileTestsQuery",
+    "name": "MyProfileSettingsQuery",
     "selections": [
       {
         "alias": null,
@@ -362,13 +362,13 @@ return {
     ]
   },
   "params": {
-    "id": "7151483e0bd1be7eeb78a9a29a1fa086",
+    "id": "340613683e07905b5ca45538b658fab5",
     "metadata": {},
-    "name": "MyProfileTestsQuery",
+    "name": "MyProfileSettingsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'bbdb47a61b7051637efeb160f28e098c';
+(node as any).hash = '878ea74ba98872181e78fd1bb5c39e84';
 export default node;

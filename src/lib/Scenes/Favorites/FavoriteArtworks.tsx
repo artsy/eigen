@@ -81,11 +81,11 @@ export class SavedWorks extends Component<Props, State> {
             subtitle="Tap the heart on an artwork to save for later."
             callToAction={
               <Button
-                variant="secondaryOutline"
                 size="large"
                 onPress={() => {
                   navigate("/")
                 }}
+                minWidth={"100%"}
               >
                 Browse works for you
               </Button>

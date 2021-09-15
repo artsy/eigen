@@ -8,7 +8,8 @@ import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageTabBar } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import { useIsStaging } from "lib/store/GlobalStore"
-import { Sans, SettingsIcon as _SettingsIcon } from "palette"
+import { compact } from "lodash"
+import { Sans, SettingsIcon as _SettingsIcon, useSpace } from "palette"
 import { useTracking } from "react-tracking"
 import { FavoriteArtistsQueryRenderer } from "./FavoriteArtists"
 import { FavoriteArtworksQueryRenderer } from "./FavoriteArtworks"
@@ -24,9 +25,14 @@ export enum Tab {
 
 interface Props extends ViewProps {
   initialTab: Tab
+  // We use a different layout design for users enabled for My Collection lab feature
+  enableMyCollection: boolean
 }
 
-export const Favorites: React.FC<Props> = ({ initialTab = Tab.works }) => {
+export const Favorites: React.FC<Props> = ({
+  enableMyCollection = false,
+  initialTab = enableMyCollection ? Tab.artists : Tab.works,
+}) => {
   const tracking = useTracking()
   const isStaging = useIsStaging()
 
@@ -51,6 +57,57 @@ export const Favorites: React.FC<Props> = ({ initialTab = Tab.works }) => {
       action_type: Schema.ActionTypes.Tap,
     })
   }
+
+  const tabs = compact([
+    enableMyCollection
+      ? null
+      : {
+          title: Tab.works,
+          content: <FavoriteArtworksQueryRenderer />,
+          initial: initialTab === Tab.works,
+        },
+    {
+      title: Tab.artists,
+      content: <FavoriteArtistsQueryRenderer />,
+      initial: initialTab === Tab.artists,
+    },
+    {
+      title: Tab.shows,
+      content: <FavoriteShowsQueryRenderer />,
+      initial: initialTab === Tab.shows,
+    },
+    {
+      title: Tab.categories,
+      content: <FavoriteCategoriesQueryRenderer />,
+      initial: initialTab === Tab.categories,
+    },
+  ])
+
+  const space = useSpace()
+  const StickyHeaderContent = () => {
+    return (
+      <View style={{ marginTop: enableMyCollection ? space(6) : space(2) }}>
+        {enableMyCollection ? (
+          <Sans size="8" m={space(2)}>
+            Follows
+          </Sans>
+        ) : (
+          <Sans size="4" weight="medium" textAlign="center">
+            Saves and Follows
+          </Sans>
+        )}
+        <StickyTabPageTabBar
+          onTabPress={({ label }) => {
+            fireTabSelectionAnalytics(label as Tab)
+          }}
+        />
+      </View>
+    )
+  }
+
+  if (enableMyCollection && initialTab === Tab.works) {
+    throw new Error("Works Tab is not available for users enabled for My Collection lab feature")
+  }
   return (
     <ProvideScreenTracking
       info={{
@@ -59,43 +116,7 @@ export const Favorites: React.FC<Props> = ({ initialTab = Tab.works }) => {
       }}
     >
       <View style={{ flex: 1 }}>
-        <StickyTabPage
-          tabs={[
-            {
-              title: Tab.works,
-              content: <FavoriteArtworksQueryRenderer />,
-              initial: initialTab === Tab.works,
-            },
-            {
-              title: Tab.artists,
-              content: <FavoriteArtistsQueryRenderer />,
-              initial: initialTab === Tab.artists,
-            },
-            {
-              title: Tab.shows,
-              content: <FavoriteShowsQueryRenderer />,
-              initial: initialTab === Tab.shows,
-            },
-            {
-              title: Tab.categories,
-              content: <FavoriteCategoriesQueryRenderer />,
-              initial: initialTab === Tab.categories,
-            },
-          ]}
-          staticHeaderContent={<></>}
-          stickyHeaderContent={
-            <View style={{ marginTop: 20 }}>
-              <Sans size="4" weight="medium" textAlign="center">
-                Saves and Follows
-              </Sans>
-              <StickyTabPageTabBar
-                onTabPress={({ label }) => {
-                  fireTabSelectionAnalytics(label as Tab)
-                }}
-              />
-            </View>
-          }
-        />
+        <StickyTabPage tabs={tabs} staticHeaderContent={<></>} stickyHeaderContent={<StickyHeaderContent />} />
         {!!isStaging && <DarkNavigationButton title="Warning: on staging, favourites don't migrate" />}
       </View>
     </ProvideScreenTracking>

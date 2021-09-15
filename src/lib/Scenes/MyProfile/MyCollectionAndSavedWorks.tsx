@@ -1,11 +1,13 @@
 import React from "react"
-import { View, ViewProps } from "react-native"
+import { ViewProps } from "react-native"
 
+import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
-import { SettingsIcon as _SettingsIcon } from "palette"
+import { navigate } from "lib/navigation/navigate"
+import { Box, Sans, SettingsIcon as _SettingsIcon, useColor, useSpace } from "palette"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
-import { MyProfileHeaderFragmentContainer } from "./MyProfileHeader"
 
 export enum Tab {
   collections = "Collections",
@@ -14,26 +16,50 @@ export enum Tab {
 
 interface Props extends ViewProps {
   initialTab: Tab
+  me: MyProfile_me
 }
 
-export const MyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab = Tab.collections }) => {
+export const MyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab = Tab.collections, me }) => {
   return (
-    <View style={{ flex: 1 }}>
-      <StickyTabPage
-        tabs={[
-          {
-            title: Tab.collections,
-            content: <MyCollectionQueryRenderer />,
-            initial: initialTab === Tab.collections,
-          },
-          {
-            title: Tab.savedWorks,
-            content: <FavoriteArtworksQueryRenderer />,
-            initial: initialTab === Tab.savedWorks,
-          },
-        ]}
-        staticHeaderContent={<MyProfileHeaderFragmentContainer />}
-      />
-    </View>
+    <StickyTabPage
+      disableBackButtonUpdate
+      tabs={[
+        {
+          title: Tab.collections,
+          content: <MyCollectionQueryRenderer />,
+          initial: initialTab === Tab.collections,
+        },
+        {
+          title: Tab.savedWorks,
+          content: <FavoriteArtworksQueryRenderer />,
+          initial: initialTab === Tab.savedWorks,
+        },
+      ]}
+      staticHeaderContent={<MyProfileHeader name={me.name} createdAt={me.createdAt} />}
+    />
+  )
+}
+
+const MyProfileHeader: React.FC<{ name: string | null; createdAt: string | null }> = ({ name, createdAt }) => {
+  const space = useSpace()
+  const color = useColor()
+  return (
+    <>
+      <FancyModalHeader
+        rightButtonText="Settings"
+        hideBottomDivider
+        onRightButtonPress={() => {
+          navigate("/my-profile/settings")
+        }}
+      ></FancyModalHeader>
+      <Box px={space(2)} pb={space(6)}>
+        <Sans size="8" color={color("black100")}>
+          {name}
+        </Sans>
+        <Sans size="2" color={color("black60")}>{`Member since ${
+          createdAt ? new Date(createdAt).getFullYear() : "----"
+        }`}</Sans>
+      </Box>
+    </>
   )
 }

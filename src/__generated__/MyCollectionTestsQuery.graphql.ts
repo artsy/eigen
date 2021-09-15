@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e5566ac02aaf5aac9a5451f12bd75217 */
+/* @relayHash 033734df1f69e2cbf3bdabf1be2b3e56 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,6 +26,14 @@ query MyCollectionTestsQuery {
   }
 }
 
+fragment MyCollectionArtworkGrid_artworks on Artwork {
+  id
+  image {
+    aspect_ratio: aspectRatio
+  }
+  ...MyCollectionArtworkListItem_artwork
+}
+
 fragment MyCollectionArtworkListItem_artwork on Artwork {
   internalID
   artist {
@@ -36,10 +44,14 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
     url
     isDefault
   }
+  image {
+    aspectRatio
+  }
   artistNames
   medium
   slug
   title
+  date
 }
 
 fragment MyCollection_me on Me {
@@ -53,7 +65,7 @@ fragment MyCollection_me on Me {
       node {
         id
         slug
-        ...MyCollectionArtworkListItem_artwork
+        ...MyCollectionArtworkGrid_artworks
         __typename
       }
       cursor
@@ -106,6 +118,12 @@ v5 = {
   "nullable": true,
   "plural": false,
   "type": "String"
+},
+v6 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "Float"
 };
 return {
   "fragment": {
@@ -206,6 +224,31 @@ return {
                         "name": "slug",
                         "storageKey": null
                       },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "kind": "LinkedField",
+                        "name": "image",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": "aspect_ratio",
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "aspectRatio",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "aspectRatio",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
                       (v2/*: any*/),
                       {
                         "alias": null,
@@ -270,6 +313,13 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "date",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "__typename",
                         "storageKey": null
                       }
@@ -304,7 +354,7 @@ return {
     ]
   },
   "params": {
-    "id": "e5566ac02aaf5aac9a5451f12bd75217",
+    "id": "033734df1f69e2cbf3bdabf1be2b3e56",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -343,7 +393,16 @@ return {
         "me.myCollectionConnection.edges.node.artist.id": (v3/*: any*/),
         "me.myCollectionConnection.edges.node.artist.internalID": (v3/*: any*/),
         "me.myCollectionConnection.edges.node.artistNames": (v5/*: any*/),
+        "me.myCollectionConnection.edges.node.date": (v5/*: any*/),
         "me.myCollectionConnection.edges.node.id": (v3/*: any*/),
+        "me.myCollectionConnection.edges.node.image": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Image"
+        },
+        "me.myCollectionConnection.edges.node.image.aspectRatio": (v6/*: any*/),
+        "me.myCollectionConnection.edges.node.image.aspect_ratio": (v6/*: any*/),
         "me.myCollectionConnection.edges.node.images": {
           "enumValues": null,
           "nullable": true,

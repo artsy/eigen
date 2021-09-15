@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a7c2ee60fecf0fac7cad4fb91e27acd5 */
+/* @relayHash e1625d6bb3465f2db587e2d71109a852 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,6 +26,14 @@ query MyCollectionQuery {
   }
 }
 
+fragment MyCollectionArtworkGrid_artworks on Artwork {
+  id
+  image {
+    aspect_ratio: aspectRatio
+  }
+  ...MyCollectionArtworkListItem_artwork
+}
+
 fragment MyCollectionArtworkListItem_artwork on Artwork {
   internalID
   artist {
@@ -36,10 +44,14 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
     url
     isDefault
   }
+  image {
+    aspectRatio
+  }
   artistNames
   medium
   slug
   title
+  date
 }
 
 fragment MyCollection_me on Me {
@@ -53,7 +65,7 @@ fragment MyCollection_me on Me {
       node {
         id
         slug
-        ...MyCollectionArtworkListItem_artwork
+        ...MyCollectionArtworkGrid_artworks
         __typename
       }
       cursor
@@ -188,6 +200,31 @@ return {
                         "name": "slug",
                         "storageKey": null
                       },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "kind": "LinkedField",
+                        "name": "image",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": "aspect_ratio",
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "aspectRatio",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "aspectRatio",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
                       (v2/*: any*/),
                       {
                         "alias": null,
@@ -252,6 +289,13 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "date",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "__typename",
                         "storageKey": null
                       }
@@ -286,7 +330,7 @@ return {
     ]
   },
   "params": {
-    "id": "a7c2ee60fecf0fac7cad4fb91e27acd5",
+    "id": "e1625d6bb3465f2db587e2d71109a852",
     "metadata": {},
     "name": "MyCollectionQuery",
     "operationKind": "query",

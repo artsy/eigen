@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyProfile_me = {
+export type MyProfileSettings_me = {
     readonly name: string | null;
     readonly labFeatures: ReadonlyArray<string>;
     readonly createdAt: string | null;
@@ -18,12 +18,12 @@ export type MyProfile_me = {
             } | null> | null;
         } | null;
     } | null;
-    readonly " $refType": "MyProfile_me";
+    readonly " $refType": "MyProfileSettings_me";
 };
-export type MyProfile_me$data = MyProfile_me;
-export type MyProfile_me$key = {
-    readonly " $data"?: MyProfile_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"MyProfile_me">;
+export type MyProfileSettings_me$data = MyProfileSettings_me;
+export type MyProfileSettings_me$key = {
+    readonly " $data"?: MyProfileSettings_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"MyProfileSettings_me">;
 };
 
 
@@ -32,7 +32,7 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "MyProfile_me",
+  "name": "MyProfileSettings_me",
   "selections": [
     {
       "alias": null,
@@ -126,5 +126,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'f3315541853656190fbeca35654286fb';
+(node as any).hash = 'db01d12dbd8e73a729f318c25caf0196';
 export default node;

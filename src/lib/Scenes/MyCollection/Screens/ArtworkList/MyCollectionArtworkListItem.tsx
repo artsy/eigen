@@ -9,7 +9,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { capitalize } from "lodash"
 import { Box, Flex, Sans, useColor } from "palette"
 import React from "react"
-import { Image as RNImage } from "react-native"
+import { Image as RNImage, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -28,7 +28,7 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
     {}
   )
 
-  const { artist, artistNames, internalID, medium, slug, title } = artwork
+  const { artist, artistNames, internalID, medium, slug, title, image, date } = artwork
 
   const lastUploadedPhoto = GlobalStore.useAppState(
     (state) => state.myCollection.artwork.sessionState.lastUploadedPhoto
@@ -39,8 +39,7 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
         <OpaqueImageView
           data-test-id="Image"
           imageURL={imageURL.replace(":version", "square")}
-          width={90}
-          height={90}
+          aspectRatio={image?.aspectRatio ?? 1}
         />
       )
     } else if (lastUploadedPhoto) {
@@ -72,32 +71,18 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
         }
       }}
     >
-      <Flex
-        my={1}
-        mx={2}
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="space-between"
-        maxWidth={width}
-        overflow="hidden"
-      >
-        <Flex flexDirection="row" alignItems="center">
-          {renderImage()}
-          <Box m={1} maxWidth={width} style={{ flex: 1 }}>
-            <Sans size="4">{artistNames}</Sans>
-            {!!title ? (
-              <Sans size="3t" color="black60" numberOfLines={2} style={{ flex: 1 }}>
-                {title}
-              </Sans>
-            ) : null}
-            {!!medium ? (
-              <Sans size="3t" color="black60" numberOfLines={2} style={{ flex: 1 }}>
-                {mediums[medium] || capitalize(medium)}
-              </Sans>
-            ) : null}
-          </Box>
-        </Flex>
-      </Flex>
+      <View>
+        {renderImage()}
+        <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
+          <Sans size="4">{artistNames}</Sans>
+          {!!title ? (
+            <Sans size="3t" color="black60" numberOfLines={2} style={{ flex: 1 }}>
+              {title}
+              {date ? `, ${date}` : null}
+            </Sans>
+          ) : null}
+        </Box>
+      </View>
     </TouchElement>
   )
 }
@@ -113,10 +98,14 @@ export const MyCollectionArtworkListItemFragmentContainer = createFragmentContai
         url
         isDefault
       }
+      image {
+        aspectRatio
+      }
       artistNames
       medium
       slug
       title
+      date
     }
   `,
 })

@@ -2,8 +2,11 @@ import { addCollectedArtwork, OwnerType } from "@artsy/cohesion"
 import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { EventEmitter } from "events"
+import MyCollectionGrid from "lib/Components/ArtworkGrids/MyCollectionArtworkGrid"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ZeroState } from "lib/Components/States/ZeroState"
+import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStore } from "lib/store/GlobalStore"
@@ -13,8 +16,8 @@ import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/util
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
-import { Box, Button, Flex, Join, Separator, Spacer, Text } from "palette"
-import React, { useEffect, useState } from "react"
+import { Box, Button, Flex, Join, Separator, Spacer, Text, useSpace } from "palette"
+import React, { useContext, useEffect, useState } from "react"
 import { FlatList, RefreshControl, ScrollView, View } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -40,20 +43,21 @@ const MyCollection: React.FC<{
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   useEffect(() => {
-    const refetch = () => {
-      setIsRefreshing(true)
-      relay.refetchConnection(PAGE_SIZE, (err) => {
-        setIsRefreshing(false)
-        if (err && __DEV__) {
-          console.error(err)
-        }
-      })
-    }
     RefreshEvents.addListener(REFRESH_KEY, refetch)
     return () => {
       RefreshEvents.removeListener(REFRESH_KEY, refetch)
     }
   }, [])
+
+  const refetch = () => {
+    setIsRefreshing(true)
+    relay.refetchConnection(PAGE_SIZE, (err) => {
+      setIsRefreshing(false)
+      if (err && __DEV__) {
+        console.error(err)
+      }
+    })
+  }
 
   const fetchNextPage = () => {
     if (!hasMore() || isLoading()) {
@@ -67,81 +71,89 @@ const MyCollection: React.FC<{
     })
   }
 
+  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
+
+  const space = useSpace()
+
+  useEffect(() => {
+    if (artworks.length) {
+      setJSX(
+        <View
+          style={{
+            flexDirection: "row",
+            alignSelf: "flex-end",
+            paddingHorizontal: space(2),
+            paddingVertical: space(1),
+          }}
+        >
+          <Button
+            size="small"
+            variant="fillDark"
+            onPress={() => {
+              setShowModal(true)
+              trackEvent(tracks.addCollectedArtwork())
+            }}
+            haptic
+          >
+            {"Add Works"}
+          </Button>
+        </View>
+      )
+    }
+  }, [artworks.length])
+
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
         context_screen_owner_type: OwnerType.myCollection,
       })}
     >
-      <View style={{ flex: 1 }}>
-        <MyCollectionArtworkFormModal
-          mode="add"
-          visible={showModal}
-          onDismiss={() => setShowModal(false)}
-          onSuccess={() => setShowModal(false)}
-        />
-        <FancyModalHeader
-          rightButtonText="Add artwork"
-          hideBottomDivider
-          onRightButtonPress={() => {
-            trackEvent(tracks.addCollectedArtwork())
-            GlobalStore.actions.myCollection.artwork.resetForm()
-            setShowModal(true)
-          }}
-        ></FancyModalHeader>
-        <Text variant="largeTitle" ml={2} mb={2}>
-          My Collection
-        </Text>
-        {artworks.length === 0 ? (
-          <ScrollView
-            refreshControl={
-              <RefreshControl
-                refreshing={isRefreshing}
-                onRefresh={() => {
-                  refreshMyCollection()
-                }}
-              />
-            }
-            contentContainerStyle={{ flex: 1 }}
-          >
-            <Flex>
-              <ZeroState
-                subtitle="Add details about an artwork from your collection to access price and market insights."
-                callToAction={
-                  <Button
-                    data-test-id="add-artwork-button-zero-state"
-                    onPress={() => {
-                      setShowModal(true)
-                      trackEvent(tracks.addCollectedArtwork())
-                    }}
-                  >
-                    Add artwork
-                  </Button>
-                }
-              />
-            </Flex>
-          </ScrollView>
-        ) : (
-          <FlatList
-            refreshControl={
-              <RefreshControl
-                refreshing={isRefreshing}
-                onRefresh={() => {
-                  refreshMyCollection()
-                }}
-              />
-            }
-            data={artworks}
-            showsVerticalScrollIndicator={false}
-            ItemSeparatorComponent={() => <Separator />}
-            keyExtractor={(node) => node.id}
-            onScroll={isCloseToBottom(fetchNextPage)}
-            renderItem={({ item }) => {
-              return <MyCollectionArtworkListItemFragmentContainer artwork={item} />
-            }}
-          />
-        )}
-      </View>
+      <MyCollectionArtworkFormModal
+        mode="add"
+        visible={showModal}
+        onDismiss={() => setShowModal(false)}
+        onSuccess={() => setShowModal(false)}
+      />
+      {artworks.length === 0 ? (
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={() => {
+                refreshMyCollection()
+              }}
+            />
+          }
+          contentContainerStyle={{ flex: 1 }}
+        >
+          <Flex>
+            <ZeroState
+              title={"Primed and ready for artworks."}
+              subtitle="Add a work from your collection to access price and market insights."
+              callToAction={
+                <Button
+                  data-test-id="add-artwork-button-zero-state"
+                  onPress={() => {
+                    setShowModal(true)
+                    trackEvent(tracks.addCollectedArtwork())
+                  }}
+                  minWidth={"100%"}
+                >
+                  Add artwork
+                </Button>
+              }
+            />
+          </Flex>
+        </ScrollView>
+      ) : (
+        <StickyTabPageScrollView
+          contentContainerStyle={{ paddingBottom: space(2) }}
+          onEndReached={fetchNextPage}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
+        >
+          <MyCollectionGrid artworks={artworks} />
+        </StickyTabPageScrollView>
+      )}
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
@@ -163,7 +175,7 @@ export const MyCollectionContainer = createPaginationContainer(
             node {
               id
               slug
-              ...MyCollectionArtworkListItem_artwork
+              ...MyCollectionArtworkGrid_artworks
             }
           }
         }

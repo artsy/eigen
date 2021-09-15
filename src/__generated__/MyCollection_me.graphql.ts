@@ -15,7 +15,7 @@ export type MyCollection_me = {
             readonly node: {
                 readonly id: string;
                 readonly slug: string;
-                readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkListItem_artwork">;
+                readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkGrid_artworks">;
             } | null;
         } | null> | null;
     } | null;
@@ -133,7 +133,7 @@ return {
                 {
                   "args": null,
                   "kind": "FragmentSpread",
-                  "name": "MyCollectionArtworkListItem_artwork"
+                  "name": "MyCollectionArtworkGrid_artworks"
                 }
               ],
               "storageKey": null
@@ -156,5 +156,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '6e386eb1d964237aaeea5006cf89cba8';
+(node as any).hash = '859deabc5950135b6e697d78dd7244a4';
 export default node;
