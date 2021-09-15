@@ -1,16 +1,14 @@
+import { SalesRail_salesModule } from "__generated__/SalesRail_salesModule.graphql"
+import { CardRailCard } from "lib/Components/Home/CardRailCard"
+import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { SectionTitle } from "lib/Components/SectionTitle"
+import { navigate } from "lib/navigation/navigate"
+import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
 import { first, last } from "lodash"
 import React from "react"
 import "react-native"
-
-import { SalesRail_salesModule } from "__generated__/SalesRail_salesModule.graphql"
-import { extractText } from "lib/tests/extractText"
-
-import { CardRailCard } from "lib/Components/Home/CardRailCard"
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { SectionTitle } from "lib/Components/SectionTitle"
-import { navigate } from "lib/navigation/navigate"
 import { useTracking } from "react-tracking"
 import HomeAnalytics from "../../homeAnalytics"
 import { SalesRailFragmentContainer } from "../SalesRail"
@@ -56,9 +54,17 @@ const salesModule: Omit<SalesRail_salesModule, " $refType"> = {
   ],
 }
 
+const artworksRails: Array<{ type: string; data: object } | null> = []
+
 it("doesn't throw when rendered", () => {
   expect(() =>
-    renderWithWrappers(<SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />)
+    renderWithWrappers(
+      <SalesRailFragmentContainer
+        salesModule={salesModule as any}
+        scrollRef={mockScrollRef}
+        artworkRails={artworksRails}
+      />
+    )
   ).not.toThrow()
 })
 
@@ -69,7 +75,13 @@ it("looks correct when rendered with sales missing artworks", () => {
     result.saleArtworksConnection.edges = []
   })
   expect(() =>
-    renderWithWrappers(<SalesRailFragmentContainer salesModule={salesCopy as any} scrollRef={mockScrollRef} />)
+    renderWithWrappers(
+      <SalesRailFragmentContainer
+        salesModule={salesCopy as any}
+        scrollRef={mockScrollRef}
+        artworkRails={artworksRails}
+      />
+    )
   ).not.toThrow()
 })
 
@@ -80,7 +92,11 @@ describe("image handling", () => {
     // @ts-ignore
     sale!.saleArtworksConnection!.edges = edges
     return renderWithWrappers(
-      <SalesRailFragmentContainer salesModule={{ results: [sale] } as any} scrollRef={mockScrollRef} />
+      <SalesRailFragmentContainer
+        salesModule={{ results: [sale] } as any}
+        scrollRef={mockScrollRef}
+        artworkRails={artworksRails}
+      />
     )
   }
 
@@ -121,7 +137,11 @@ describe("image handling", () => {
 
 it("renders the correct subtitle based on auction type", async () => {
   const tree = renderWithWrappers(
-    <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
+    <SalesRailFragmentContainer
+      salesModule={salesModule as any}
+      scrollRef={mockScrollRef}
+      artworkRails={artworksRails}
+    />
   )
   const subtitles = tree.root.findAllByProps({ "data-test-id": "sale-subtitle" })
   // Timed sale
@@ -134,7 +154,11 @@ it("renders the correct subtitle based on auction type", async () => {
 
 it("routes to live URL if present, otherwise href", () => {
   const tree = renderWithWrappers(
-    <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
+    <SalesRailFragmentContainer
+      salesModule={salesModule as any}
+      scrollRef={mockScrollRef}
+      artworkRails={artworksRails}
+    />
   )
   // Timed sale
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -157,7 +181,11 @@ describe("analytics", () => {
 
   it("tracks auction header taps", () => {
     const tree = renderWithWrappers(
-      <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
+      <SalesRailFragmentContainer
+        salesModule={salesModule as any}
+        scrollRef={mockScrollRef}
+        artworkRails={artworksRails}
+      />
     )
     tree.root.findByType(SectionTitle as any).props.onPress()
     expect(trackEvent).toHaveBeenCalledWith(HomeAnalytics.auctionHeaderTapEvent())
@@ -165,7 +193,11 @@ describe("analytics", () => {
 
   it("tracks auction thumbnail taps", () => {
     const tree = renderWithWrappers(
-      <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
+      <SalesRailFragmentContainer
+        salesModule={salesModule as any}
+        scrollRef={mockScrollRef}
+        artworkRails={artworksRails}
+      />
     )
     const cards = tree.root.findAllByType(CardRailCard)
     cards[0].props.onPress()

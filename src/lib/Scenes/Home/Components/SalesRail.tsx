@@ -15,7 +15,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { compact } from "lodash"
 import { bullet, Flex, Sans, Text } from "palette"
 import { usePaletteFlagStore } from "palette/PaletteFlag"
-import React, { useImperativeHandle, useRef } from "react"
+import React, { useEffect, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -24,11 +24,15 @@ import { RailScrollProps } from "./types"
 
 interface Props {
   salesModule: SalesRail_salesModule
+  artworkRails: Array<{ type: string; data: object } | null>
+  onHide?: () => void
+  onShow?: () => void
 }
 
 type Sale = SalesRail_salesModule["results"][0]
 
 const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
+  const { scrollRef, salesModule, onHide, onShow, artworkRails } = props
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
   const allowV3 = usePaletteFlagStore((state) => state.allowV3)
@@ -39,11 +43,16 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
     return `${subtitle} ${bullet} ${dateAt}`
   }
 
-  useImperativeHandle(props.scrollRef, () => ({
+  useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
-  if (!props.salesModule.results?.length) {
+  // Checks to see if the artworks rail is being rendered and hides the separator accordingly
+  useEffect(() => {
+    artworkRails.length ? onShow?.() : onHide?.()
+  }, [artworkRails.length])
+
+  if (!salesModule.results?.length) {
     return null
   }
 
@@ -61,7 +70,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
       </Flex>
       <CardRailFlatList<Sale>
         listRef={listRef}
-        data={props.salesModule.results}
+        data={salesModule.results}
         renderItem={({ item: result, index }) => {
           // Sales are expected to always have >= 2 artworks, but we should
           // still be cautious to avoid crashes if this assumption is broken.
