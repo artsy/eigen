@@ -16,8 +16,8 @@ const Container: React.FC<ContainerProps> = (props) => {
       null,
       (relayError) => {
         if (relayError) {
-          console.log("[debug] error", relayError)
-          // TODO: Handle error (for example, show error message)
+          // TODO: Handle error (for example, show toast message)
+          console.error(relayError)
         }
       },
       { force: true }
