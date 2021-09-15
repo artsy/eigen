@@ -83,6 +83,7 @@ const Home = (props: Props) => {
   Please make sure to keep this page in sync with the home screen.
   */
 
+  // Artwork rails
   const newWorksByArtistYouFollowRow = artworkRails[0]
   const yourActiveBidsRow = artworkRails.length > 3 ? artworkRails[1] : null
   const recentlyViewedArtworksRow = artworkRails.length > 3 ? artworkRails[2] : artworkRails[1]
