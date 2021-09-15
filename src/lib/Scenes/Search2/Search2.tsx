@@ -8,6 +8,7 @@ import { SearchInput as SearchBox } from "lib/Components/SearchInput"
 import { navigate, navigateToPartner } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
+import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
 import { searchInsights, useSearchInsightsConfig } from "lib/utils/useSearchInsightsConfig"
@@ -30,6 +31,7 @@ import { AutosuggestResults } from "../Search/AutosuggestResults"
 import { CityGuideCTA } from "../Search/CityGuideCTA"
 import { RecentSearches } from "../Search/RecentSearches"
 import { SearchContext, useSearchProviderValues } from "../Search/SearchContext"
+import { SearchPlaceholder } from "./components/SearchPlaceholder"
 import { RefetchWhenApiKeyExpiredContainer } from "./containers/RefetchWhenApiKeyExpired"
 import { SearchArtworksGridQueryRenderer } from "./SearchArtworksGrid"
 import { AlgoliaSearchResult } from "./types"
@@ -205,8 +207,11 @@ export const Search2: React.FC<Search2Props> = (props) => {
   }, [system?.algolia?.indices])
 
   if (!searchClient || !searchInsightsConfigured) {
-    // error handling in case appID or apiKey is not set ??
-    return null
+    return (
+      <ProvidePlaceholderContext>
+        <SearchPlaceholder />
+      </ProvidePlaceholderContext>
+    )
   }
 
   const renderResults = () => {
