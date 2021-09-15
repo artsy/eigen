@@ -4,7 +4,6 @@ import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionA
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
-import { artworkMediumCategories } from "lib/utils/artworkMediumCategories"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Sans, useColor } from "palette"
 import React from "react"
