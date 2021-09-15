@@ -232,6 +232,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
             <Flex flex={1}>
               {placeholderMeasuringHack}
               <StyledInput
+                editable={!disabled}
                 onLayout={(event) => {
                   const newWidth = event.nativeEvent.layout.width
                   if (newWidth > inputWidth) {
