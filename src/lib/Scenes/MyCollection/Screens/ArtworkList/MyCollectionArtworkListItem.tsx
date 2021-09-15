@@ -1,9 +1,11 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
 import { themeGet } from "@styled-system/theme-get"
 import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
+import { DEFAULT_SECTION_MARGIN } from "lib/Components/ArtworkGrids/MyCollectionArtworkGrid"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
+import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Sans, useColor } from "palette"
 import React from "react"
@@ -27,6 +29,13 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
   const lastUploadedPhoto = GlobalStore.useAppState(
     (state) => state.myCollection.artwork.sessionState.lastUploadedPhoto
   )
+
+  // consistent with how sections are derived in MyCollectionGrid
+  const screen = useScreenDimensions()
+  const isPadHorizontal = isPad() && screen.width > screen.height
+  const sectionCount = isPad() ? (isPadHorizontal ? 4 : 3) : 2
+  const imageWidth = screen.width / sectionCount - (DEFAULT_SECTION_MARGIN * sectionCount - DEFAULT_SECTION_MARGIN / 2)
+
   const renderImage = () => {
     if (!!imageURL) {
       return (
@@ -40,12 +49,12 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
       return (
         <RNImage
           data-test-id="Image"
-          style={{ width: 90, height: 90, resizeMode: "cover" }}
+          style={{ width: imageWidth, height: 120, resizeMode: "cover" }}
           source={{ uri: lastUploadedPhoto.path }}
         />
       )
     } else {
-      return <Box data-test-id="Image" bg={color("black30")} width={90} height={90} />
+      return <Box data-test-id="Image" bg={color("black30")} width={imageWidth} height={120} />
     }
   }
 
