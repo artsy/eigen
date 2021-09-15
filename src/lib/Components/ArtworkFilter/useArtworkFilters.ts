@@ -35,8 +35,6 @@ export const useArtworkFilters = ({
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
   const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
 
-  const filterParams = filterArtworksParams(appliedFilters, filterType)
-
   useEffect(() => {
     if (!aggregations) {
       return
@@ -46,6 +44,8 @@ export const useArtworkFilters = ({
 
   useEffect(() => {
     if (relay !== undefined && applyFilters) {
+      const filterParams = filterArtworksParams(appliedFilters, filterType)
+
       relay.refetchConnection(
         pageSize,
         (error) => {
@@ -63,7 +63,7 @@ export const useArtworkFilters = ({
         onApply()
       }
     }
-  }, [relay, appliedFilters, filterParams])
+  }, [relay, appliedFilters])
 }
 
 export const useArtworkFiltersAggregation = ({ paramName }: { paramName: FilterParamName }) => {
