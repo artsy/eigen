@@ -1,5 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
-import { Search2Query, Search2QueryResponse } from "__generated__/Search2Query.graphql"
+import { Search2_system } from "__generated__/Search2_system.graphql"
+import { Search2Query } from "__generated__/Search2Query.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -22,24 +23,27 @@ import {
   InstantSearch,
 } from "react-instantsearch-native"
 import { FlatList, Platform, ScrollView } from "react-native"
-import { graphql, QueryRenderer } from "react-relay"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components"
 import { AutosuggestResults } from "../Search/AutosuggestResults"
 import { CityGuideCTA } from "../Search/CityGuideCTA"
 import { RecentSearches } from "../Search/RecentSearches"
 import { SearchContext, useSearchProviderValues } from "../Search/SearchContext"
+import { RefetchWhenApiKeyExpiredContainer } from "./containers/RefetchWhenApiKeyExpired"
 import { SearchArtworksGridQueryRenderer } from "./SearchArtworksGrid"
+import { AlgoliaSearchResult } from "./types"
 
 interface SearchInputProps {
-  refine: (value: string) => any
   placeholder: string
   currentRefinement: string
+  refine: (value: string) => any
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, refine, placeholder }) => {
+const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholder, refine }) => {
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
+
   return (
     <SearchBox
       ref={searchProviderValues.inputRef}
@@ -84,16 +88,6 @@ const Highlight = connectHighlight(({ highlight, attribute, hit, highlightProper
     </Text>
   )
 })
-
-interface AlgoliaSearchResult {
-  href: string
-  image_url: string
-  name: string
-  objectID: string
-  slug: string
-  __position: number
-  __queryID: string
-}
 
 interface SearchResultsProps
   extends StateResultsProvided<AlgoliaSearchResult>,
@@ -186,12 +180,17 @@ interface SearchState {
 
 const pills = [{ name: "ARTWORK", displayName: "Artworks" }]
 
-export const Search2: React.FC<Search2QueryResponse> = (props) => {
+interface Search2Props {
+  relay: RelayRefetchProp
+  system: Search2_system | null
+}
+
+export const Search2: React.FC<Search2Props> = (props) => {
+  const { system, relay } = props
   const [searchState, setSearchState] = useState<SearchState>({})
   const [selectedAlgoliaIndex, setSelectedAlgoliaIndex] = useState("")
   const [elasticSearchEntity, setElasticSearchEntity] = useState("")
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
-  const { system } = props
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
   const searchInsightsConfigured = useSearchInsightsConfig(system?.algolia?.appID, system?.algolia?.apiKey)
 
@@ -243,6 +242,7 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
           onSearchStateChange={setSearchState}
         >
           <Configure clickAnalytics />
+          <RefetchWhenApiKeyExpiredContainer relay={relay} />
           <Flex p={2} pb={1}>
             <SearchInputContainer placeholder="Search artists, artworks, galleries, etc" />
           </Flex>
@@ -279,6 +279,32 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
   )
 }
 
+const Search2RefetchContainer = createRefetchContainer(
+  Search2,
+  {
+    system: graphql`
+      fragment Search2_system on System {
+        __typename
+        algolia {
+          appID
+          apiKey
+          indices {
+            name
+            displayName
+          }
+        }
+      }
+    `,
+  },
+  graphql`
+    query Search2RefetchQuery {
+      system {
+        ...Search2_system
+      }
+    }
+  `
+)
+
 export const Search2QueryRenderer: React.FC<{}> = ({}) => {
   return (
     <QueryRenderer<Search2Query>
@@ -286,15 +312,7 @@ export const Search2QueryRenderer: React.FC<{}> = ({}) => {
       query={graphql`
         query Search2Query {
           system {
-            __typename
-            algolia {
-              appID
-              apiKey
-              indices {
-                name
-                displayName
-              }
-            }
+            ...Search2_system
           }
         }
       `}
@@ -307,7 +325,7 @@ export const Search2QueryRenderer: React.FC<{}> = ({}) => {
           }
         }
 
-        return <Search2 system={props?.system ?? null} />
+        return <Search2RefetchContainer system={props?.system ?? null} />
       }}
       variables={{}}
     />
