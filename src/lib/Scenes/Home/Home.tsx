@@ -27,7 +27,7 @@ import {
   useMemoizedRandom,
 } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { compact, drop, flatten, times, zip } from "lodash"
+import { compact, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, Platform, RefreshControl, View, ViewProps } from "react-native"
@@ -82,34 +82,64 @@ const Home = (props: Props) => {
   Ordering is defined in https://www.notion.so/artsy/App-Home-Screen-4841255ded3f47c9bcdb73185ee3f335.
   Please make sure to keep this page in sync with the home screen.
   */
+
+  // Artwork rails
+  const newWorksByArtistYouFollowRow = artworkRails[0]
+  const yourActiveBidsRow = artworkRails.length > 3 ? artworkRails[1] : null
+  const recentlyViewedArtworksRow = artworkRails.length > 3 ? artworkRails[2] : artworkRails[1]
+  const similarToRecentlyViewedRow = artworkRails.length > 3 ? artworkRails[3] : artworkRails[2]
+
+  // Artists rails
+  // const recommendedArtistsRow = artistRails.length > 2 ? artistRails[0] : null
+  // const trendingArtistsRow = artistRails.length > 2 ? artistRails[1] : artistRails[0]
+  const popularArtistsRow = artistRails.length > 2 ? artistRails[2] : artistRails[1]
+  // const savedWorksRow = artistRails.length > 2 ? artistRails[3] : artistRails[2]
+
+  const lotsByFollowedArtistsRow = { type: "lotsByFollowedArtists" } as const
+  // Market news
+  const marketingNewsRow = !!articlesConnection && ({ type: "articles" } as const)
+  const viewingRoomsRow = !!viewingRoomsEchoFlag && !!featured && ({ type: "viewing-rooms" } as const)
+  // auction sales module
+  const auctionsRow =
+    salesModule &&
+    ({
+      type: "sales",
+      data: salesModule,
+    } as const)
+  const featuredFairsRow =
+    fairsModule &&
+    ({
+      type: "fairs",
+      data: fairsModule,
+    } as const)
+  const collectionsRow =
+    collectionsModule &&
+    ({
+      type: "collections",
+      data: collectionsModule,
+    } as const)
+  const autionResultsForArtistsYouFollowRow =
+    enableAuctionResultsByFollowedArtists &&
+    ({
+      type: "auction-results",
+    } as const)
+
   const rowData = compact([
     // Above-the-fold modules (make sure to include enough modules in the above-the-fold query to cover the whole screen.)
-    artworkRails[0],
-    { type: "lotsByFollowedArtists" } as const,
-    artworkRails[1],
-    salesModule &&
-      ({
-        type: "sales",
-        data: salesModule,
-      } as const),
+    newWorksByArtistYouFollowRow,
+    lotsByFollowedArtistsRow,
+    auctionsRow,
+
     // Below-the-fold modules
-    !!articlesConnection && ({ type: "articles" } as const),
-    !!viewingRoomsEchoFlag && !!featured && ({ type: "viewing-rooms" } as const),
-    fairsModule &&
-      ({
-        type: "fairs",
-        data: fairsModule,
-      } as const),
-    collectionsModule &&
-      ({
-        type: "collections",
-        data: collectionsModule,
-      } as const),
-    enableAuctionResultsByFollowedArtists &&
-      ({
-        type: "auction-results",
-      } as const),
-    ...flatten(zip(drop(artworkRails, 2), artistRails)),
+    autionResultsForArtistsYouFollowRow,
+    marketingNewsRow,
+    viewingRoomsRow,
+    collectionsRow,
+    featuredFairsRow,
+    popularArtistsRow,
+    yourActiveBidsRow,
+    recentlyViewedArtworksRow,
+    similarToRecentlyViewedRow,
   ])
 
   const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(rowData.map((_) => createRef()))
@@ -220,8 +250,8 @@ export const HomeFragmentContainer = createRefetchContainer(
         artworkModules(
           maxRails: -1
           maxFollowedGeneRails: -1
-          order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS]
-          include: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS]
+          order: [FOLLOWED_ARTISTS, ACTIVE_BIDS]
+          include: [FOLLOWED_ARTISTS, ACTIVE_BIDS]
         ) {
           id
           ...ArtworkRail_rail
@@ -239,13 +269,13 @@ export const HomeFragmentContainer = createRefetchContainer(
         artworkModules(
           maxRails: -1
           maxFollowedGeneRails: -1
-          order: [RECOMMENDED_WORKS, FOLLOWED_GALLERIES]
+          order: [RECOMMENDED_WORKS, FOLLOWED_GALLERIES, RECENTLY_VIEWED_WORKS]
           # LIVE_AUCTIONS and CURRENT_FAIRS both have their own modules, below.
           # Make sure to exclude all modules that are part of "homePageAbove"
           exclude: [
-            RECENTLY_VIEWED_WORKS
             ACTIVE_BIDS
             FOLLOWED_ARTISTS
+            FOLLOWED_GALLERIES
             SAVED_WORKS
             GENERIC_GENES
             LIVE_AUCTIONS
