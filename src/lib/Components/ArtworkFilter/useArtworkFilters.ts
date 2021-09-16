@@ -1,10 +1,11 @@
 import { PAGE_SIZE } from "lib/data/constants"
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { RelayPaginationProp, Variables } from "react-relay"
 import {
   aggregationForFilter,
   filterArtworksParams,
   FilterParamName,
+  getSelectedFiltersCounts,
   prepareFilterArtworksParamsForInput,
 } from "./ArtworkFilterHelpers"
 import { ArtworksFiltersStore, selectedOptionsUnion } from "./ArtworkFilterStore"
@@ -86,4 +87,12 @@ export const useArtworkFiltersAggregation = ({ paramName }: { paramName: FilterP
     aggregation,
     selectedOption,
   }
+}
+
+export const useSelectedFiltersCount = () => {
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  return useMemo(
+    () => Object.values(getSelectedFiltersCounts(appliedFilters)).reduce((prev, value) => prev + value, 0),
+    [appliedFilters]
+  )
 }
