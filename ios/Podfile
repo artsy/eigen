@@ -9,15 +9,15 @@ end
 
 
 require 'dotenv'
-Dotenv.load('.env.shared')
+Dotenv.load('../.env.shared')
 
 
 source 'https://github.com/artsy/Specs.git'
 source 'https://cdn.cocoapods.org/'
 
 
-require_relative './node_modules/react-native/scripts/react_native_pods'
-require_relative './node_modules/@react-native-community/cli-platform-ios/native_modules'
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 platform :ios, '12.1'
 inhibit_all_warnings!
@@ -65,7 +65,7 @@ end
 target 'Artsy' do
   config = use_native_modules!
   use_react_native!(
-    :path => './node_modules/react-native',
+    :path => '../node_modules/react-native',
     :production => ENV['CIRCLE_BUILD_NUM'],
   )
 
