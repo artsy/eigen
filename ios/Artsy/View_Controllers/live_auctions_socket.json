@@ -1,0 +1,648 @@
+{
+  "currentLotId": "54c7ed2a7261692bfa910200",
+  "fullLotStateById": {
+    "54c7fbca7261694b0c661600": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 350000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 350000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 350000,
+        "floorSellingPriceCents": 350000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7fb9c7261692b55d30200": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 700000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 700000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 700000,
+        "floorSellingPriceCents": 700000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7f6bb7261692bc1e11000": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 1600000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 1600000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 1600000,
+        "floorSellingPriceCents": 1600000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7f0f0726169330f821900": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 180000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 180000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 180000,
+        "floorSellingPriceCents": 180000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7f82d7261692c59d21900": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 450000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 450000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 450000,
+        "floorSellingPriceCents": 450000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7fa6d7261692b572d0700": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 300000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 300000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 300000,
+        "floorSellingPriceCents": 300000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7fb317261692b43300300": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 100000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 100000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 100000,
+        "floorSellingPriceCents": 100000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7f7a57261692bcc220100": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 180000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 180000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 180000,
+        "floorSellingPriceCents": 180000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7fabc7261693304eb1900": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 350000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 350000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 350000,
+        "floorSellingPriceCents": 350000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7ed2a7261692bfa910200": {
+      "events": {
+        "cd14de0f-26da-41c7-be18-601e8b7c583e": {
+          "lotId": "54c7ed2a7261692bfa910200",
+          "eventId": "cd14de0f-26da-41c7-be18-601e8b7c583e",
+          "createdAt": "2016-05-09T14:58:39.647Z",
+          "type": "BiddingOpened"
+        }
+      },
+      "fullEventOrder": ["cd14de0f-26da-41c7-be18-601e8b7c583e"],
+      "eventHistory": [
+        {
+          "lotId": "54c7ed2a7261692bfa910200",
+          "eventId": "cd14de0f-26da-41c7-be18-601e8b7c583e",
+          "createdAt": "2016-05-09T14:58:39.647Z",
+          "type": "BiddingOpened"
+        }
+      ],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 180000,
+        "floorIsComplete": false,
+        "onlineBidCount": 4,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 180000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": true,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 180000,
+        "floorSellingPriceCents": 180000,
+        "biddingStatus": "OnBlock"
+      }
+    },
+    "54c7ecc27261692b5e420600": {
+      "events": {
+        "e5798599-8b78-4544-b96f-321385f4b2b8": {
+          "lotId": "54c7ecc27261692b5e420600",
+          "eventId": "e5798599-8b78-4544-b96f-321385f4b2b8",
+          "amountCents": 180000,
+          "createdAt": "2016-05-09T14:58:20.622Z",
+          "type": "FirstPriceBidPlaced",
+          "bidder": {
+            "type": "OfflineBidder"
+          }
+        },
+        "6526a2d5-08c8-4a08-83eb-6a2aafa9b994": {
+          "lotId": "54c7ecc27261692b5e420600",
+          "eventId": "6526a2d5-08c8-4a08-83eb-6a2aafa9b994",
+          "createdAt": "2016-05-09T14:58:19.480Z",
+          "type": "BiddingOpened"
+        },
+        "a74b0aeb-8a59-4253-8b28-70991000206c": {
+          "lotId": "54c7ecc27261692b5e420600",
+          "eventId": "a74b0aeb-8a59-4253-8b28-70991000206c",
+          "createdAt": "2016-05-09T14:58:30.684Z",
+          "type": "BiddingClosed"
+        },
+        "69e4560f-c15a-4818-99b4-3a658ccd3fc9": {
+          "lotId": "54c7ecc27261692b5e420600",
+          "eventId": "69e4560f-c15a-4818-99b4-3a658ccd3fc9",
+          "amountCents": 230000,
+          "createdAt": "2016-05-09T14:58:20.758Z",
+          "type": "FirstPriceBidPlaced",
+          "bidder": {
+            "type": "OfflineBidder"
+          }
+        },
+        "1113462d-8d10-4d74-827b-04648896d2aa": {
+          "lotId": "54c7ecc27261692b5e420600",
+          "eventId": "1113462d-8d10-4d74-827b-04648896d2aa",
+          "createdAt": "2016-05-09T14:58:27.330Z",
+          "type": "FairWarning"
+        },
+        "2202d3d0-51b8-4521-a47d-072656fee7f7": {
+          "lotId": "54c7ecc27261692b5e420600",
+          "eventId": "2202d3d0-51b8-4521-a47d-072656fee7f7",
+          "amountCents": 330000,
+          "createdAt": "2016-05-09T14:58:24.786Z",
+          "type": "FirstPriceBidPlaced",
+          "bidder": {
+            "type": "OfflineBidder"
+          }
+        },
+        "7b61f890-ba57-479f-aad2-49327013a5a8": {
+          "lotId": "54c7ecc27261692b5e420600",
+          "eventId": "7b61f890-ba57-479f-aad2-49327013a5a8",
+          "amountCents": 280000,
+          "createdAt": "2016-05-09T14:58:22.338Z",
+          "type": "FirstPriceBidPlaced",
+          "bidder": {
+            "type": "ArtsyBidder",
+            "bidderId": "968527"
+          }
+        },
+        "43c14a72-daa2-47ed-84f6-076309c6d28e": {
+          "lotId": "54c7ecc27261692b5e420600",
+          "eventId": "43c14a72-daa2-47ed-84f6-076309c6d28e",
+          "createdAt": "2016-05-09T14:58:27.782Z",
+          "type": "FinalCall"
+        }
+      },
+      "fullEventOrder": [
+        "6526a2d5-08c8-4a08-83eb-6a2aafa9b994",
+        "e5798599-8b78-4544-b96f-321385f4b2b8",
+        "69e4560f-c15a-4818-99b4-3a658ccd3fc9",
+        "7b61f890-ba57-479f-aad2-49327013a5a8",
+        "2202d3d0-51b8-4521-a47d-072656fee7f7",
+        "1113462d-8d10-4d74-827b-04648896d2aa",
+        "43c14a72-daa2-47ed-84f6-076309c6d28e",
+        "a74b0aeb-8a59-4253-8b28-70991000206c"
+      ],
+      "eventHistory": [
+        {
+          "lotId": "54c7ecc27261692b5e420600",
+          "eventId": "6526a2d5-08c8-4a08-83eb-6a2aafa9b994",
+          "createdAt": "2016-05-09T14:58:19.480Z",
+          "type": "BiddingOpened"
+        },
+        {
+          "lotId": "54c7ecc27261692b5e420600",
+          "eventId": "e5798599-8b78-4544-b96f-321385f4b2b8",
+          "amountCents": 180000,
+          "createdAt": "2016-05-09T14:58:20.622Z",
+          "type": "FirstPriceBidPlaced",
+          "bidder": {
+            "type": "OfflineBidder"
+          }
+        },
+        {
+          "lotId": "54c7ecc27261692b5e420600",
+          "eventId": "69e4560f-c15a-4818-99b4-3a658ccd3fc9",
+          "amountCents": 230000,
+          "createdAt": "2016-05-09T14:58:20.758Z",
+          "type": "FirstPriceBidPlaced",
+          "bidder": {
+            "type": "OfflineBidder"
+          }
+        },
+        {
+          "lotId": "54c7ecc27261692b5e420600",
+          "eventId": "7b61f890-ba57-479f-aad2-49327013a5a8",
+          "amountCents": 280000,
+          "createdAt": "2016-05-09T14:58:22.338Z",
+          "type": "FirstPriceBidPlaced",
+          "bidder": {
+            "type": "ArtsyBidder",
+            "bidderId": "968527"
+          }
+        },
+        {
+          "lotId": "54c7ecc27261692b5e420600",
+          "eventId": "2202d3d0-51b8-4521-a47d-072656fee7f7",
+          "amountCents": 330000,
+          "createdAt": "2016-05-09T14:58:24.786Z",
+          "type": "FirstPriceBidPlaced",
+          "bidder": {
+            "type": "OfflineBidder"
+          }
+        },
+        {
+          "lotId": "54c7ecc27261692b5e420600",
+          "eventId": "1113462d-8d10-4d74-827b-04648896d2aa",
+          "createdAt": "2016-05-09T14:58:27.330Z",
+          "type": "FairWarning"
+        },
+        {
+          "lotId": "54c7ecc27261692b5e420600",
+          "eventId": "43c14a72-daa2-47ed-84f6-076309c6d28e",
+          "createdAt": "2016-05-09T14:58:27.782Z",
+          "type": "FinalCall"
+        },
+        {
+          "lotId": "54c7ecc27261692b5e420600",
+          "eventId": "a74b0aeb-8a59-4253-8b28-70991000206c",
+          "createdAt": "2016-05-09T14:58:30.684Z",
+          "type": "BiddingClosed"
+        }
+      ],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "floorWinningBidEventId": "2202d3d0-51b8-4521-a47d-072656fee7f7",
+        "askingPriceCents": 380000,
+        "floorIsComplete": true,
+        "onlineBidCount": 4,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 330000,
+        "soldStatus": "Sold",
+        "floorWinningBidder": {
+          "type": "OfflineBidder"
+        },
+        "floorIsOpen": false,
+        "winningBidEventId": "2202d3d0-51b8-4521-a47d-072656fee7f7",
+        "isOpen": false,
+        "winningBidder": {
+          "type": "OfflineBidder"
+        },
+        "isComplete": true,
+        "floorAskingPriceCents": 380000,
+        "floorSellingPriceCents": 330000,
+        "biddingStatus": "Complete"
+      }
+    },
+    "54c7fbeb7261692b604a0300": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 800000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 800000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 800000,
+        "floorSellingPriceCents": 800000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7f91a7261692c69871b00": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 800000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 800000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 800000,
+        "floorSellingPriceCents": 800000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7f0667261692b60c10600": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 200000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 200000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 200000,
+        "floorSellingPriceCents": 200000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7fb767261692b5cb20600": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 450000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 450000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 450000,
+        "floorSellingPriceCents": 450000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7f12e7261692b60e20200": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 300000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 300000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 300000,
+        "floorSellingPriceCents": 300000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7f9887261692b71b00600": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 180000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 180000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 180000,
+        "floorSellingPriceCents": 180000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7eff17261692b51460200": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 500000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 500000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 500000,
+        "floorSellingPriceCents": 500000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7f1f17261692be4f60100": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 600000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 600000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 600000,
+        "floorSellingPriceCents": 600000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7f8cf7261692bdd510100": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 100000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 100000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 100000,
+        "floorSellingPriceCents": 100000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7f9517261690cfdfa1800": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 350000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 350000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 350000,
+        "floorSellingPriceCents": 350000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7f7ea7261692b66510700": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 1000000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 1000000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 1000000,
+        "floorSellingPriceCents": 1000000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7fb087261692bbd3c1100": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 400000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 400000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 400000,
+        "floorSellingPriceCents": 400000,
+        "biddingStatus": "Open"
+      }
+    },
+    "54c7f8907261692b43170300": {
+      "events": {},
+      "fullEventOrder": [],
+      "eventHistory": [],
+      "derivedLotState": {
+        "floorReserveStatus": "NoReserve",
+        "askingPriceCents": 2000000,
+        "floorIsComplete": false,
+        "onlineBidCount": 0,
+        "reserveStatus": "NoReserve",
+        "sellingPriceCents": 2000000,
+        "soldStatus": "ForSale",
+        "floorIsOpen": false,
+        "isOpen": true,
+        "isComplete": false,
+        "floorAskingPriceCents": 2000000,
+        "floorSellingPriceCents": 2000000,
+        "biddingStatus": "Open"
+      }
+    }
+  }
+}
