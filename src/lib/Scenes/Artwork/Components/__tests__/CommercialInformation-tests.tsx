@@ -271,7 +271,7 @@ describe("CommercialInformation", () => {
     // Expect the component to default to first edition set's internalID
     expect(component.find(CommercialButtons).props().editionSetID).toEqual("5bbb9777ce2fc3002c179013")
 
-    const secondEditionButton = component.find(CommercialEditionSetInformation).find(TouchableWithoutFeedback).at(1)
+    const secondEditionButton = component.find(CommercialEditionSetInformation).find(TouchableWithoutFeedback).at(2)
     secondEditionButton.props().onPress()
     component.update()
 

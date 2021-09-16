@@ -194,6 +194,9 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     webViewRoute("/conditions-of-sale"),
     new RouteMatcher("/artwork-classifications", "ArtworkAttributionClassFAQ"),
 
+    new RouteMatcher("/partner/:partnerID", "Partner"),
+    new RouteMatcher("/partner/:partnerID/works", "Partner"),
+    new RouteMatcher("/partner/:partnerID/artists/:artistID", "Partner"),
     new RouteMatcher("/partner-locations/:partnerID", "PartnerLocations"),
 
     new RouteMatcher("/fair/:fairID", "Fair"),

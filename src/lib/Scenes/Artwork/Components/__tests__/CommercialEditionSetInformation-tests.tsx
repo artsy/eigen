@@ -57,7 +57,7 @@ describe("CommercialEditionSetInformation", () => {
       </GlobalStoreProvider>
     )
 
-    const secondEditionSelect = component.find(TouchableWithoutFeedback).at(1)
+    const secondEditionSelect = component.find(TouchableWithoutFeedback).at(2)
     secondEditionSelect.props().onPress()
     expect(component.html()).toContain("$2")
   })

@@ -84,7 +84,7 @@ const useStore = createComponentStore<Store>({
 export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId?: string }> = ({ me, addressId }) => {
   const isEditForm = !!addressId
   const toast = useToast()
-
+  const [isValidNumber, setIsValidNumber] = useState<boolean>(false)
   const [state, actions] = useStore()
   const [phoneNumber, setPhoneNumber] = useState(me?.phone)
   const [isDefaultAddress, setIsDefaultAddress] = useState(false)
@@ -218,6 +218,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
           onChangeText={actions.fields.region.setValue}
         />
         <PhoneInput
+          setValidation={setIsValidNumber}
           title="Phone number"
           description="Required for shipping logistics"
           value={phoneNumber ?? ""}
@@ -242,8 +243,8 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
 
         <AddAddressButton
           handleOnPress={isEditForm ? () => editUserAddress(addressId!) : submitAddAddress}
-          title={`${isEditForm ? "Save" : "Add"} address`}
-          disabled={!state.allPresent}
+          title={isEditForm ? "Add" : "Add Address"}
+          disabled={!isValidNumber || !state.allPresent}
         />
       </Stack>
     </MyAccountFieldEditScreen>

@@ -27,7 +27,7 @@ import {
   useMemoizedRandom,
 } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { compact, drop, flatten, times, zip } from "lodash"
+import { compact, drop, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, Platform, RefreshControl, View, ViewProps } from "react-native"
@@ -93,23 +93,24 @@ const Home = (props: Props) => {
         data: salesModule,
       } as const),
     // Below-the-fold modules
+    enableAuctionResultsByFollowedArtists &&
+      ({
+        type: "auction-results",
+      } as const),
     !!articlesConnection && ({ type: "articles" } as const),
     !!viewingRoomsEchoFlag && !!featured && ({ type: "viewing-rooms" } as const),
-    fairsModule &&
-      ({
-        type: "fairs",
-        data: fairsModule,
-      } as const),
     collectionsModule &&
       ({
         type: "collections",
         data: collectionsModule,
       } as const),
-    enableAuctionResultsByFollowedArtists &&
+    fairsModule &&
       ({
-        type: "auction-results",
+        type: "fairs",
+        data: fairsModule,
       } as const),
-    ...flatten(zip(drop(artworkRails, 2), artistRails)),
+    ...drop(artistRails, 1),
+    ...drop(artworkRails, 2),
   ])
 
   const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(rowData.map((_) => createRef()))
@@ -199,7 +200,7 @@ const Home = (props: Props) => {
                 <Spacer mb="2" />
               </Box>
             }
-            ItemSeparatorComponent={({ hideSeparator }) => (!hideSeparator ? <Spacer mb={3} /> : null)}
+            ItemSeparatorComponent={({ hideSeparator }) => (!hideSeparator ? <ModuleSeparator /> : null)}
             ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
             keyExtractor={(_item, index) => String(index)}
           />
@@ -220,8 +221,8 @@ export const HomeFragmentContainer = createRefetchContainer(
         artworkModules(
           maxRails: -1
           maxFollowedGeneRails: -1
-          order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS]
-          include: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS]
+          order: [FOLLOWED_ARTISTS, ACTIVE_BIDS]
+          include: [FOLLOWED_ARTISTS, ACTIVE_BIDS]
         ) {
           id
           ...ArtworkRail_rail
@@ -239,20 +240,8 @@ export const HomeFragmentContainer = createRefetchContainer(
         artworkModules(
           maxRails: -1
           maxFollowedGeneRails: -1
-          order: [RECOMMENDED_WORKS, FOLLOWED_GALLERIES]
-          # LIVE_AUCTIONS and CURRENT_FAIRS both have their own modules, below.
-          # Make sure to exclude all modules that are part of "homePageAbove"
-          exclude: [
-            RECENTLY_VIEWED_WORKS
-            ACTIVE_BIDS
-            FOLLOWED_ARTISTS
-            SAVED_WORKS
-            GENERIC_GENES
-            LIVE_AUCTIONS
-            CURRENT_FAIRS
-            RELATED_ARTISTS
-            FOLLOWED_GENES
-          ]
+          order: [POPULAR_ARTISTS, RECENTLY_VIEWED_WORKS, SIMILAR_TO_RECENTLY_VIEWED]
+          include: [POPULAR_ARTISTS, RECENTLY_VIEWED_WORKS, SIMILAR_TO_RECENTLY_VIEWED]
         ) {
           id
           ...ArtworkRail_rail
@@ -317,6 +306,8 @@ export const HomeFragmentContainer = createRefetchContainer(
   `
 )
 
+const ModuleSeparator = () => <Spacer mb={6} />
+
 const BelowTheFoldPlaceholder: React.FC<{}> = () => {
   const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
 
@@ -336,10 +327,10 @@ const BelowTheFoldPlaceholder: React.FC<{}> = () => {
           )}
           {times(2).map((r) => (
             <Box key={r}>
-              <Spacer mb={3} />
+              <ModuleSeparator />
               <Box ml={2} mr={2}>
                 <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-                <Flex flexDirection="row" mt={1}>
+                <Flex flexDirection="row">
                   <Join separator={<Spacer width={15} />}>
                     {times(10).map((index) => (
                       <PlaceholderBox key={index} height={270} width={270} />
@@ -367,12 +358,12 @@ const HomePlaceholder: React.FC<{}> = () => {
             <ArtsyLogoIcon scale={0.75} />
           </Flex>
         </Box>
+        <Spacer mb={4} />
 
         {
           // Small tiles to mimic the artwork rails
           times(2).map((r) => (
             <Box key={r} ml={2} mr={2}>
-              <Spacer mb={3} />
               <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
               <Flex flexDirection="row" mt={1}>
                 <Join separator={<Spacer width={15} />}>
@@ -382,10 +373,10 @@ const HomePlaceholder: React.FC<{}> = () => {
                       <Spacer mb={2} />
                       <PlaceholderText width={120} />
                       <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
+                      <ModuleSeparator />
                     </Flex>
                   ))}
                 </Join>
-                <Spacer mb={2} />
               </Flex>
             </Box>
           ))
@@ -393,7 +384,6 @@ const HomePlaceholder: React.FC<{}> = () => {
 
         {/* Larger tiles to mimic the fairs, sales, and collections rails */}
         <Box ml={2} mr={2}>
-          <Spacer mb={3} />
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
           <Flex flexDirection="row" mt={1}>
             <Join separator={<Spacer width={15} />}>
@@ -401,7 +391,7 @@ const HomePlaceholder: React.FC<{}> = () => {
                 <PlaceholderBox key={index} height={270} width={270} />
               ))}
             </Join>
-            <Spacer mb={2} />
+            <ModuleSeparator />
           </Flex>
         </Box>
 

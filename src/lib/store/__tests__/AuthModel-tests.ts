@@ -268,7 +268,7 @@ describe("AuthModel", () => {
         .catch((e) => e)
 
       expect(result).toBe(
-        "We can’t find an email associated with your Facebook account. Please sign up with your email and password."
+        "There is no email associated with your Facebook account. Please log in using your email and password instead."
       )
     })
 
@@ -335,7 +335,7 @@ describe("AuthModel", () => {
 
       const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" }).catch((e) => e)
 
-      expect(result).toBe("Could not log you in")
+      expect(result).toBe("Login attempt failed")
     })
   })
 
@@ -407,7 +407,7 @@ describe("AuthModel", () => {
 
       const result = await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signIn" }).catch((e) => e)
 
-      expect(result).toBe("Could not log you in")
+      expect(result).toBe("Login attempt failed")
     })
   })
 
@@ -466,7 +466,7 @@ describe("AuthModel", () => {
 
       const result = await GlobalStore.actions.auth.authApple({}).catch((e) => e)
 
-      expect(result).toBe("Could not log you in")
+      expect(result).toBe("Login attempt failed")
     })
   })
 })

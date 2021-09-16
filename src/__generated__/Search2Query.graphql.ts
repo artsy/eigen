@@ -1,21 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 29fc6f1745014e053d0ae718d1f4200d */
+/* @relayHash c4d0fc386f01dd4003c84d2e66df9c49 */
 
 import { ConcreteRequest } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type Search2QueryVariables = {};
 export type Search2QueryResponse = {
     readonly system: {
-        readonly __typename: string;
-        readonly algolia: {
-            readonly appID: string;
-            readonly apiKey: string;
-            readonly indices: ReadonlyArray<{
-                readonly name: string;
-                readonly displayName: string;
-            }>;
-        } | null;
+        readonly " $fragmentRefs": FragmentRefs<"Search2_system">;
     } | null;
 };
 export type Search2Query = {
@@ -28,97 +21,47 @@ export type Search2Query = {
 /*
 query Search2Query {
   system {
-    __typename
-    algolia {
-      appID
-      apiKey
-      indices {
-        name
-        displayName
-      }
+    ...Search2_system
+  }
+}
+
+fragment Search2_system on System {
+  __typename
+  algolia {
+    appID
+    apiKey
+    indices {
+      name
+      displayName
     }
   }
 }
 */
 
-const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "alias": null,
-    "args": null,
-    "concreteType": "System",
-    "kind": "LinkedField",
-    "name": "system",
-    "plural": false,
-    "selections": [
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "__typename",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "Algolia",
-        "kind": "LinkedField",
-        "name": "algolia",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "appID",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "apiKey",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "AlgoliaIndex",
-            "kind": "LinkedField",
-            "name": "indices",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "name",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "displayName",
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      }
-    ],
-    "storageKey": null
-  }
-];
-return {
+const node: ConcreteRequest = {
   "fragment": {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
     "name": "Search2Query",
-    "selections": (v0/*: any*/),
+    "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "System",
+        "kind": "LinkedField",
+        "name": "system",
+        "plural": false,
+        "selections": [
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "Search2_system"
+          }
+        ],
+        "storageKey": null
+      }
+    ],
     "type": "Query",
     "abstractKey": null
   },
@@ -127,16 +70,84 @@ return {
     "argumentDefinitions": [],
     "kind": "Operation",
     "name": "Search2Query",
-    "selections": (v0/*: any*/)
+    "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "System",
+        "kind": "LinkedField",
+        "name": "system",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "__typename",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Algolia",
+            "kind": "LinkedField",
+            "name": "algolia",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "appID",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "apiKey",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "AlgoliaIndex",
+                "kind": "LinkedField",
+                "name": "indices",
+                "plural": true,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "name",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "displayName",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      }
+    ]
   },
   "params": {
-    "id": "29fc6f1745014e053d0ae718d1f4200d",
+    "id": "c4d0fc386f01dd4003c84d2e66df9c49",
     "metadata": {},
     "name": "Search2Query",
     "operationKind": "query",
     "text": null
   }
 };
-})();
-(node as any).hash = '5293287bb06a36f2e10be5cb9a5eadb7';
+(node as any).hash = '22980005b6452d9524844982c3dbe540';
 export default node;

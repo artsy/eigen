@@ -15,6 +15,7 @@ export type OrderHistoryRow_order = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly shipment: {
+                    readonly status: string | null;
                     readonly trackingUrl: string | null;
                     readonly trackingNumber: string | null;
                 } | null;
@@ -137,6 +138,13 @@ return {
                   "name": "shipment",
                   "plural": false,
                   "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "status",
+                      "storageKey": null
+                    },
                     {
                       "alias": null,
                       "args": null,
@@ -286,5 +294,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = '052658d153233f49229a12ef1ca084b7';
+(node as any).hash = 'ade3075cc8b76862b86775d12b05ed98';
 export default node;

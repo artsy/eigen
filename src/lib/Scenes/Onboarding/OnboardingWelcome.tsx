@@ -120,7 +120,6 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
       </Animated.View>
 
       <Animated.View style={{ flex: 1, padding: space(2), justifyContent: "flex-end", opacity }}>
-        {/* <Flex flex={1} p={2} justifyContent="flex-end"> */}
         <Text color="white" fontSize="48px" lineHeight={48}>
           Collect Art{"\n"}by the World’s{"\n"}
           Leading Artists

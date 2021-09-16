@@ -897,6 +897,37 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes to Partner", () => {
+    expect(matchRoute("/partner/:partnerID")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Partner",
+        "params": Object {
+          "partnerID": ":partnerID",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("/partner/:partnerID/works")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Partner",
+        "params": Object {
+          "partnerID": ":partnerID",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("/partner/:partnerID/artists/:artistID")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Partner",
+        "params": Object {
+          "artistID": ":artistID",
+          "partnerID": ":partnerID",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes to PartnerLocations", () => {
     expect(matchRoute("/partner-locations/:partnerID")).toMatchInlineSnapshot(`
       Object {

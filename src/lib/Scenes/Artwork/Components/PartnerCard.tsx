@@ -90,7 +90,6 @@ export class PartnerCard extends React.Component<Props, State> {
     if (partner.type === "Auction House" || galleryOrBenefitAuction) {
       return null
     }
-    const { isFollowedChanging } = this.state
     let locationNames = null
     const imageUrl = partner.profile && partner.profile.icon ? partner.profile.icon.url : null
     if (partner.cities) {
@@ -121,7 +120,6 @@ export class PartnerCard extends React.Component<Props, State> {
                   onPress={this.handleFollowPartner.bind(this)}
                   size="small"
                   longestText="Following"
-                  loading={isFollowedChanging}
                   haptic
                 >
                   {partner!.profile.is_followed ? "Following" : "Follow"}

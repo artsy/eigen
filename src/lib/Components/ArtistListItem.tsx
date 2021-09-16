@@ -105,7 +105,6 @@ export class ArtistListItem extends React.Component<Props, State> {
   }
 
   render() {
-    const { isFollowedChanging } = this.state
     const { artist, withFeedback, containerStyle, disableNavigation, enableMyCollection } = this.props
     const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
     const imageURl = image && image.url
@@ -144,7 +143,6 @@ export class ArtistListItem extends React.Component<Props, State> {
                   variant={buttonVariant}
                   onPress={this.handleFollowArtist.bind(this)}
                   size="small"
-                  loading={isFollowedChanging}
                   longestText="Following"
                   haptic
                 >

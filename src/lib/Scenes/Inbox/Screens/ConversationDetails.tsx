@@ -53,7 +53,7 @@ export const ConversationDetails: React.FC<Props> = (props) => {
           navigate("https://support.artsy.net/hc/en-us/sections/360008203054-Contact-a-gallery", { modal: true })
         }}
       >
-        <Flex mb={1} flexDirection="row">
+        <Flex mb={1} alignItems="center" flexDirection="row">
           <QuestionCircleIcon mr={1} />
           <Text variant="text">Inquiries FAQ</Text>
         </Flex>

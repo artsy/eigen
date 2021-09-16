@@ -1,7 +1,7 @@
 import { themeGet } from "@styled-system/theme-get"
 import { Text, useColor } from "palette"
 import React, { useState } from "react"
-import { StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from "react-native"
+import { PixelRatio, StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from "react-native"
 import styled from "styled-components/native"
 
 import { CssTransition } from "../../../lib/Components/Bidding/Components/Animation/CssTransition"
@@ -32,6 +32,9 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   ...restProps
 }) => {
   const color = useColor()
+
+  const fontScale = PixelRatio.getFontScale()
+  const checkboxSize = CHECKBOX_SIZE * fontScale
 
   const [checked, setChecked] = useState(checkedProp)
   const isChecked = checkedProp ?? checked
@@ -81,22 +84,22 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       }}
     >
       <Flex flexDirection="row" {...restProps}>
-        <CssTransition
-          style={[styles.container, checkboxStyle]}
-          animate={["backgroundColor", "borderColor"]}
-          duration={DURATION}
-        >
-          {!!isChecked && (!!disabled ? <DisabledMark size={CHECKBOX_SIZE} /> : <CheckMark size={CHECKBOX_SIZE} />)}
-        </CssTransition>
-
-        <Flex style={{ marginTop: !!children ? 0 : 2 }}>
+        <Flex mt={0.2}>
+          <CssTransition
+            style={[styles(fontScale).container, checkboxStyle]}
+            animate={["backgroundColor", "borderColor"]}
+            duration={DURATION}
+          >
+            {!!isChecked && (!!disabled ? <DisabledMark size={checkboxSize} /> : <CheckMark size={checkboxSize} />)}
+          </CssTransition>
+        </Flex>
+        <Flex justifyContent="center" flex={1}>
           {!!text && <Text color={textColor}>{text}</Text>}
           {!!subtitle && (
             <Text variant="small" color={subtitleColor}>
               {subtitle}
             </Text>
           )}
-          {/* TODO: Remove once the migration from V2 to V3 is completed. */}
           {children}
         </Flex>
       </Flex>
@@ -105,18 +108,19 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 }
 
 // styled-component does not have support for Animated.View
-const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderStyle: "solid",
-    marginRight: theme.space[3],
-    width: 20,
-    height: 20,
-  },
-})
+const styles = (fontScale: number) =>
+  StyleSheet.create({
+    container: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      borderWidth: 1,
+      borderStyle: "solid",
+      marginRight: theme.space[3] * fontScale,
+      width: CHECKBOX_SIZE * fontScale,
+      height: CHECKBOX_SIZE * fontScale,
+    },
+  })
 
 interface CheckMarkProps {
   size: number

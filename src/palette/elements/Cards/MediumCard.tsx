@@ -1,11 +1,12 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { usePaletteFlagStore } from "palette/PaletteFlag"
 import { useTheme } from "palette/Theme"
 import React from "react"
 import LinearGradient from "react-native-linear-gradient"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spacer } from "../Spacer"
-import { Sans } from "../Text"
+import { Sans, Text } from "../Text"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface MediumCardProps extends BoxProps {
@@ -21,6 +22,8 @@ export interface MediumCardProps extends BoxProps {
  */
 export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, tag, ...rest }) => {
   const { color, space } = useTheme()
+  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
+
   return (
     <Box width={280} height={370} flexDirection="row" borderRadius={4} overflow="hidden" {...rest}>
       <Flex flex={2} background={color("black10")}>
@@ -43,13 +46,29 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
           right: space(6),
         }}
       >
-        <Sans size="5t" color={color("white100")}>
-          {title}
-        </Sans>
-        {!!subtitle && (
-          <Sans size="3t" color={color("white100")}>
-            {subtitle}
-          </Sans>
+        {/* TODO-PALETTE-V3 remove V2 part */}
+        {allowV3 ? (
+          <>
+            <Text lineHeight="20" color={color("white100")} mb={0.5}>
+              {title}
+            </Text>
+            {!!subtitle && (
+              <Text color={color("white100")} variant={"small"}>
+                {subtitle}
+              </Text>
+            )}
+          </>
+        ) : (
+          <>
+            <Sans size="5t" color={color("white100")}>
+              {title}
+            </Sans>
+            {!!subtitle && (
+              <Sans size="3t" color={color("white100")}>
+                {subtitle}
+              </Sans>
+            )}
+          </>
         )}
         <Spacer mt={15} />
       </Flex>

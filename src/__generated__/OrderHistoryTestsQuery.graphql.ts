@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 26afedc52667307b8828d051a8c6ce15 */
+/* @relayHash 91a570dc7d3dba25a64140ccee4c2a39 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -41,6 +41,7 @@ fragment OrderHistoryRow_order on CommerceOrder {
     edges {
       node {
         shipment {
+          status
           trackingUrl
           trackingNumber
           id
@@ -316,6 +317,13 @@ return {
                                         "alias": null,
                                         "args": null,
                                         "kind": "ScalarField",
+                                        "name": "status",
+                                        "storageKey": null
+                                      },
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "kind": "ScalarField",
                                         "name": "trackingUrl",
                                         "storageKey": null
                                       },
@@ -521,7 +529,7 @@ return {
     ]
   },
   "params": {
-    "id": "26afedc52667307b8828d051a8c6ce15",
+    "id": "91a570dc7d3dba25a64140ccee4c2a39",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -634,6 +642,7 @@ return {
           "type": "CommerceShipment"
         },
         "me.orders.edges.node.lineItems.edges.node.shipment.id": (v4/*: any*/),
+        "me.orders.edges.node.lineItems.edges.node.shipment.status": (v6/*: any*/),
         "me.orders.edges.node.lineItems.edges.node.shipment.trackingNumber": (v6/*: any*/),
         "me.orders.edges.node.lineItems.edges.node.shipment.trackingUrl": (v6/*: any*/),
         "me.orders.edges.node.state": {

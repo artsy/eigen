@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ba21c54e71d49c3999c5dbe920b6ca34 */
+/* @relayHash ccc0673ed041a582a7acc5c2e49169a2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -57,6 +57,36 @@ fragment ArtworkInfoSection_artwork on CommerceOrder {
   }
 }
 
+fragment OrderDetailsHeader_info on CommerceOrder {
+  __isCommerceOrder: __typename
+  createdAt
+  code
+  state
+  requestedFulfillment {
+    __typename
+    ... on CommerceShip {
+      __typename
+    }
+    ... on CommercePickup {
+      __typename
+    }
+    ... on CommerceShipArta {
+      __typename
+    }
+  }
+  lineItems(first: 1) {
+    edges {
+      node {
+        shipment {
+          status
+          id
+        }
+        id
+      }
+    }
+  }
+}
+
 fragment OrderDetailsPayment_order on CommerceOrder {
   __isCommerceOrder: __typename
   creditCard {
@@ -92,9 +122,7 @@ fragment OrderDetails_order on CommerceOrder {
       }
     }
   }
-  createdAt
-  state
-  code
+  ...OrderDetailsHeader_info
   ...ArtworkInfoSection_artwork
   ...SummarySection_section
   ...OrderDetailsPayment_order
@@ -480,6 +508,25 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "concreteType": "CommerceShipment",
+                        "kind": "LinkedField",
+                        "name": "shipment",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "status",
+                            "storageKey": null
+                          },
+                          (v5/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "CommerceShippingQuote",
                         "kind": "LinkedField",
                         "name": "selectedShippingQuote",
@@ -557,14 +604,14 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "state",
+            "name": "code",
             "storageKey": null
           },
           {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "code",
+            "name": "state",
             "storageKey": null
           },
           {
@@ -628,7 +675,7 @@ return {
     ]
   },
   "params": {
-    "id": "ba21c54e71d49c3999c5dbe920b6ca34",
+    "id": "ccc0673ed041a582a7acc5c2e49169a2",
     "metadata": {},
     "name": "OrderDetailsQuery",
     "operationKind": "query",

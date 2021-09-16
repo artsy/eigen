@@ -1,10 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_collection.graphql"
-import {
-  filterArtworksParams,
-  prepareFilterArtworksParamsForInput,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { get } from "lib/utils/get"
@@ -21,41 +18,22 @@ interface CollectionArtworksProps {
   scrollToTop: () => void
 }
 
-const PAGE_SIZE = 10
-
 export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collection, relay, scrollToTop }) => {
+  useArtworkFilters({
+    relay,
+    aggregations: collection.collectionArtworks!.aggregations,
+    componentPath: "Collection/CollectionArtworks",
+    type: "sort",
+    onApply: () => scrollToTop(),
+  })
+
   const tracking = useTracking()
   const { isDepartment } = collection
   const artworks = get(collection, (p) => p.collectionArtworks)
   const artworksTotal = artworks?.counts?.total
 
-  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((action) => action.setFiltersCountAction)
   const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
-  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
-
-  const filterParams = filterArtworksParams(appliedFilters)
-
-  useEffect(() => {
-    if (applyFilters) {
-      scrollToTop()
-
-      relay.refetchConnection(
-        PAGE_SIZE,
-        (error) => {
-          if (error) {
-            throw new Error("Collection/CollectionArtworks sort: " + error.message)
-          }
-        },
-        { input: prepareFilterArtworksParamsForInput(filterParams) }
-      )
-    }
-  }, [appliedFilters])
-
-  useEffect(() => {
-    setAggregationsAction(collection.collectionArtworks!.aggregations)
-  }, [])
 
   useEffect(() => {
     // for use by CollectionArtworksFilter to keep count

@@ -7508,6 +7508,8 @@ input InquiryQuestionInput {
 
 # A request to inquire on an artwork
 type InquiryRequest {
+  contactGallery: Boolean
+
   # A globally unique ID.
   id: ID!
   inquireable: InquiryItemType
@@ -8797,7 +8799,7 @@ type OrderedSetEdge {
   node: OrderedSet
 }
 
-union OrderedSetItem = Artist | Artwork | FeaturedLink | Gene | Sale | Show
+union OrderedSetItem = Artist | Artwork | FeaturedLink | Gene | Profile | Sale | Show
 
 # A connection to a list of items.
 type OrderedSetItemConnection {
@@ -9587,6 +9589,7 @@ type Profile {
   isFollowed: Boolean
   isPubliclyVisible: Boolean
   isPublished: Boolean
+  location: String
   name: String
   profileArtistsLayout: String @deprecated(reason: "Prefer profileArtistsLayout in Partner type")
 
@@ -11799,6 +11802,9 @@ type SubmissionEdge {
 
 input SubmitInquiryRequestMutationInput {
   clientMutationId: String
+
+  # Whether or not to contact the gallery (for instance, for specialist questions)
+  contactGallery: Boolean
 
   # The inquireable object id (Artwork ID or Show ID)
   inquireableID: String!

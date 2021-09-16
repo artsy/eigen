@@ -115,6 +115,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             onPress={() => {
               Linking.openURL(`${webURL}/terms`)
             }}
+            variant="small"
             style={{ textDecorationLine: "underline" }}
           >
             Terms of Use
@@ -124,6 +125,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             onPress={() => {
               Linking.openURL(`${webURL}/privacy`)
             }}
+            variant="small"
             style={{ textDecorationLine: "underline" }}
           >
             Privacy Policy

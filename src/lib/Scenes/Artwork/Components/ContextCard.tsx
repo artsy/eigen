@@ -102,7 +102,6 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
 
   followButton = (show: Show) => {
     const { isFollowed } = show
-    const { isSaving } = this.state
 
     return (
       <Button
@@ -110,7 +109,6 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
         onPress={() => this.handleFollowShow(show)}
         size="small"
         longestText="Following"
-        loading={isSaving}
         haptic
       >
         {isFollowed ? "Following" : "Follow"}

@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.artsy.app">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="net.artsy.app">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -8,41 +7,22 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.camera.front"
-        android:required="false" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.front" android:required="false" />
 
-    <application
-        android:name=".MainApplication"
-        android:launchMode="singleTask"
-        android:label="@string/app_name"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:allowBackup="false"
-        android:theme="@style/AppTheme">
+    <application android:name=".MainApplication" android:launchMode="singleTask" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme">
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 
-        <meta-data  android:name="com.google.firebase.messaging.default_notification_icon"
-                    android:resource="@mipmap/ic_notification" />
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notification" />
 
-        <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground"
-                    android:value="false"/>
+        <meta-data android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="false"/>
 
-        <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color"
-                    android:resource="@color/white"/>
+        <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/white"/>
 
 
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
+        <activity android:name="com.facebook.FacebookActivity" android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" android:label="@string/app_name" />
 
-        <activity
-            android:name="com.facebook.CustomTabActivity"
-            android:exported="true">
+        <activity android:name="com.facebook.CustomTabActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -51,24 +31,15 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
-            android:launchMode="singleTask"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode" android:launchMode="singleTask" android:exported="true" android:windowSoftInputMode="adjustResize" />
 
-        <activity
-            android:name="com.zoontek.rnbootsplash.RNBootSplashActivity"
-            android:theme="@style/BootTheme"
-            android:launchMode="singleTask">
+        <activity android:name="com.zoontek.rnbootsplash.RNBootSplashActivity" android:theme="@style/BootTheme" android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-              <!-- Handle Deep Links -->
+            <!-- Handle Deep Links -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -113,6 +84,7 @@
                 <data android:pathPrefix="/my-profile" />
                 <data android:pathPrefix="/my-profile/saved-addresses" />
                 <data android:pathPrefix="/orders" />
+                <data android:pathPrefix="/partner" />
                 <data android:pathPrefix="/privacy-request" />
                 <data android:pathPrefix="/privacy" />
                 <data android:pathPrefix="/sales" />
@@ -139,9 +111,7 @@
             </intent-filter>
         </receiver>
 
-        <service
-            android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService"
-            android:exported="false">
+        <service android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService" android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

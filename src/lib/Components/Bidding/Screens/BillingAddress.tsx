@@ -32,11 +32,11 @@ interface StyledInputProps extends InputProps {
 }
 const StyledInput: React.FC<StyledInputProps> = ({ label, errorMessage, onLayout, ...props }) => (
   <Flex mb={4} onLayout={onLayout}>
-    <Serif size="3" mb={2}>
+    <Serif size="3" mb={1}>
       {label}
     </Serif>
-    <Input mb={3} error={Boolean(errorMessage)} {...props} />
-    <Flex height={15}>
+    <Input mb={2} error={Boolean(errorMessage)} {...props} />
+    <Flex height={18}>
       {!!errorMessage && (
         <Sans size="2" color="red100">
           {errorMessage}

@@ -1,6 +1,7 @@
 import { MyAccountEditPhoneQuery } from "__generated__/MyAccountEditPhoneQuery.graphql"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React, { useEffect, useState } from "react"
@@ -12,6 +13,21 @@ import { updateMyUserProfile } from "./updateMyUserProfile"
 const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me }> = ({ me }) => {
   const [phone, setPhone] = useState<string>(me.phone ?? "")
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
+  const [isValidNumber, setIsValidNumber] = useState<boolean>(false)
+
+  const performValidation = useFeatureFlag("ARPhoneValidation")
+
+  const canSave = () => {
+    if (!performValidation) {
+      return true
+    }
+
+    if (!isValidNumber && !!phone.trim()) {
+      return false
+    } else {
+      return true
+    }
+  }
 
   useEffect(() => {
     setReceivedError(undefined)
@@ -20,7 +36,7 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me }> = ({ me }) => 
   return (
     <MyAccountFieldEditScreen
       title={"Phone"}
-      canSave={!!phone.trim()}
+      canSave={canSave()}
       onSave={async (dismiss) => {
         try {
           await updateMyUserProfile({ phone })
@@ -30,7 +46,14 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me }> = ({ me }) => 
         }
       }}
     >
-      <PhoneInput enableClearButton value={phone} onChangeText={setPhone} autoFocus error={receivedError} />
+      <PhoneInput
+        setValidation={setIsValidNumber}
+        enableClearButton
+        value={phone}
+        onChangeText={setPhone}
+        autoFocus
+        error={receivedError}
+      />
     </MyAccountFieldEditScreen>
   )
 }
