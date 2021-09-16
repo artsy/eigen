@@ -76,7 +76,7 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
   )
 }
 
-const ListItem = ({
+export const ListItem = ({
   item,
   onSelect,
   selectedOption,
@@ -85,7 +85,7 @@ const ListItem = ({
   item: FilterData
   onSelect: (any: any) => void
   selectedOption: FilterData
-  withExtraPadding: boolean
+  withExtraPadding?: boolean
 }) => {
   const selected = item.displayText === selectedOption.displayText
 
