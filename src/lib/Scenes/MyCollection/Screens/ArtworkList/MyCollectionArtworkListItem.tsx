@@ -34,7 +34,7 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
   const screen = useScreenDimensions()
   const isPadHorizontal = isPad() && screen.width > screen.height
   const sectionCount = isPad() ? (isPadHorizontal ? 4 : 3) : 2
-  const imageWidth = screen.width / sectionCount - (DEFAULT_SECTION_MARGIN * sectionCount - DEFAULT_SECTION_MARGIN / 2)
+  const imageWidth = (screen.width - DEFAULT_SECTION_MARGIN * (sectionCount + 1)) / sectionCount
 
   const renderImage = () => {
     if (!!imageURL) {

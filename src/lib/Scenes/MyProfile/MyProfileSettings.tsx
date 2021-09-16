@@ -108,33 +108,50 @@ const MyProfileSettings: React.FC<{ me: MyProfileSettings_me; relay: RelayRefetc
   )
 }
 
-export const MyProfileSettingsPlaceholder: React.FC<{}> = () => (
-  <Flex pt="3" px="2">
-    <Join separator={<Separator my={2} />}>
-      <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
-      <Flex>
-        <PlaceholderText width={100 + Math.random() * 100} />
-        <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
-        <Flex flexDirection="row" py={2}>
-          {times(3).map((index: number) => (
-            <Flex key={index} marginRight={1}>
-              <PlaceholderBox height={120} width={120} />
-              <PlaceholderText marginTop={20} key={index} width={40 + Math.random() * 80} />
-            </Flex>
-          ))}
-        </Flex>
-      </Flex>
-      <Flex>
-        <PlaceholderText width={100 + Math.random() * 100} />
-        {times(3).map((index: number) => (
-          <Flex key={index} py={1}>
-            <PlaceholderText width={200 + Math.random() * 100} />
-          </Flex>
-        ))}
-      </Flex>
-    </Join>
-  </Flex>
-)
+export const MyProfileSettingsPlaceholder: React.FC<{}> = () => {
+  const color = useColor()
+  const separatorColor = color("black5")
+  // random num between 100 and 150
+  const randomWidth = () => Math.floor(Math.random() * (150 - 100 + 1)) + 100
+  return (
+    <Flex ml={20}>
+      <Sans size="8" mx="2" mt="6">
+        {"Settings"}
+      </Sans>
+      <Spacer mt={3} mb={2} />
+      <SectionHeading title="FAVORITES" />
+      <Spacer my={1} />
+      <PlaceholderText width={randomWidth()} />
+      <Separator my={1} borderColor={separatorColor} />
+      <PlaceholderText width={randomWidth()} />
+      <Separator my={1} borderColor={separatorColor} />
+
+      <Spacer my={2} />
+      <SectionHeading title="ACCOUNT SETTINGS" />
+      <Spacer my={1} />
+      <PlaceholderText width={randomWidth()} />
+      <Separator my={1} borderColor={separatorColor} />
+      <PlaceholderText width={randomWidth()} />
+      <Separator my={1} borderColor={separatorColor} />
+      <PlaceholderText width={randomWidth()} />
+      <Separator my={1} borderColor={separatorColor} />
+
+      <PlaceholderText width={randomWidth()} />
+      <Separator my={1} borderColor={separatorColor} />
+
+      <PlaceholderText width={randomWidth()} />
+
+      <Separator my={1} borderColor={separatorColor} />
+
+      <PlaceholderText width={randomWidth()} />
+      <Separator my={1} borderColor={separatorColor} />
+
+      <PlaceholderText width={randomWidth()} />
+      <Separator my={1} borderColor={separatorColor} />
+      <Spacer mb={1} />
+    </Flex>
+  )
+}
 
 const SectionHeading: React.FC<{ title: string }> = ({ title }) => (
   <Sans size="3" color="black100" mb="1" mx="2">
