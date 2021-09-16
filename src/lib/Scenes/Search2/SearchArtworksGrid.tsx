@@ -3,8 +3,9 @@ import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkF
 import { useArtworkFilters, useSelectedFiltersCount } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 
+import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader2"
-import { Box, Separator, Text, useTheme } from "palette"
+import { Box, Separator, useTheme } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -68,8 +69,13 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }
       <Separator />
       {artworksCount === 0 ? (
         <Box mb="80px" pt={1}>
-          {/* TODO: Change that with no results message for artwork grid??? Design? */}
-          <Text>{`We couldn't find anything for`}</Text>
+          <Box mb="80px" pt={1}>
+            <FilteredArtworkGridZeroState
+              // TODO: use appropriate id and slug for our case same as above
+              id={"artist.id"}
+              slug={"artist.slug"}
+            />
+          </Box>
         </Box>
       ) : (
         <FlatList<ArtworkSection>
