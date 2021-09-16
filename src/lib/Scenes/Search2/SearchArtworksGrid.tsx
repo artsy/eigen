@@ -59,6 +59,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }
   return (
     <>
       <ArtworkFilterNavigator
+        // TODO: use appropriate id and slug for our case
         id={"artist.internalID"}
         slug={"artist.slug"}
         isFilterArtworksModalVisible={isFilterArtworksModalVisible}
