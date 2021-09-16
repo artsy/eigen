@@ -7,8 +7,8 @@ import {
   FilterParamName,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { Input } from "lib/Components/Input/Input"
-import { Flex, Text } from "palette"
+import { Input, InputProps } from "lib/Components/Input/Input"
+import { Flex, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { parsePriceRangeLabel, parseRange, Range } from "./helpers"
 import { ListItem, SingleSelectOptionScreen } from "./SingleSelectOption"
@@ -38,6 +38,21 @@ interface CustomPriceInputProps {
   onFocus: () => void
 }
 
+interface InputLabelProps extends InputProps {
+  label: string
+}
+
+const InputLabel: React.FC<InputLabelProps> = ({ label, ...other }) => {
+  return (
+    <Flex flex={1}>
+      <Text color="black60" variant="small" mb={0.5}>
+        {label}
+      </Text>
+      <Input {...other} />
+    </Flex>
+  )
+}
+
 export const CustomPriceInput: React.FC<CustomPriceInputProps> = ({ value, onChange, onFocus }) => {
   const handleChange = (key: "min" | "max") => (text: string) => {
     const parsed = parseInt(text, 10)
@@ -47,18 +62,20 @@ export const CustomPriceInput: React.FC<CustomPriceInputProps> = ({ value, onCha
 
   return (
     <Flex flexDirection="row" alignItems="center" mb={1} mx={2}>
-      <Input
-        placeholder="$ USD minimum"
+      <InputLabel
+        label="Min"
+        placeholder="$USD"
         value={value.min === "*" ? undefined : String(value.min)}
         keyboardType="number-pad"
         onChangeText={handleChange("min")}
         onFocus={onFocus}
       />
 
-      <Text mx={2}>to</Text>
+      <Spacer mx={2} />
 
-      <Input
-        placeholder="$ USD maximum"
+      <InputLabel
+        label="Max"
+        placeholder="$USD"
         value={value.max === "*" ? undefined : String(value.max)}
         keyboardType="number-pad"
         onChangeText={handleChange("max")}
