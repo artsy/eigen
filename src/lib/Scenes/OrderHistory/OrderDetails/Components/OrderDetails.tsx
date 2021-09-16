@@ -20,7 +20,7 @@ import { SummarySectionFragmentContainer } from "./SummarySection"
 export interface OrderDetailsProps {
   order: OrderDetails_order
 }
-interface SectionListItem {
+export interface SectionListItem {
   key: string
   title?: string
   data: readonly JSX.Element[]
@@ -67,16 +67,16 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
       data: [<ShipsToSectionFragmentContainer address={order} />],
     },
     !!partnerName && {
-      key: "Sold By",
+      key: "Sold_By",
       title: `Sold by ${partnerName?.name}`,
-      data: [<SoldBySectionFragmentContainer testID="ShipsToSection" soldBy={order} />],
+      data: [<SoldBySectionFragmentContainer soldBy={order} />],
     },
   ])
 
   return (
     <PageWithSimpleHeader title="Order Details">
       <SectionList
-        initialNumToRender={15}
+        initialNumToRender={18}
         contentContainerStyle={{ paddingHorizontal: 20, marginTop: 20, paddingBottom: 47 }}
         sections={DATA}
         keyExtractor={(item, index) => item.key + index.toString()}
