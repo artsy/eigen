@@ -8,7 +8,7 @@ import { Box, bullet, FilterIcon, Flex, Separator, Text, TouchableHighlightColor
 import React, { useMemo, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { SEARCH_ARTWORKS_QUERY } from "./SearchArtworksContainer"
+import { SEARCH_ARTWORKS_QUERY } from "./containers/SearchArtworksContainer"
 
 export interface SearchArtworksGridProps {
   viewer: SearchArtworksGrid_viewer

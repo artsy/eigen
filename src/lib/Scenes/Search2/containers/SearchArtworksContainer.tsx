@@ -6,7 +6,7 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Flex, Separator } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { SearchArtworksGridPaginationContainer } from "./SearchArtworksGrid"
+import { SearchArtworksGridPaginationContainer } from "../SearchArtworksGrid"
 
 export const SEARCH_ARTWORKS_QUERY = graphql`
   query SearchArtworksContainerQuery($count: Int!, $cursor: String, $keyword: String, $input: FilterArtworksInput) {

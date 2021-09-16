@@ -28,7 +28,7 @@ import { RecentSearches } from "../Search/RecentSearches"
 import { SearchContext, useSearchProviderValues } from "../Search/SearchContext"
 import { SearchPlaceholder } from "./components/SearchPlaceholder"
 import { RefetchWhenApiKeyExpiredContainer } from "./containers/RefetchWhenApiKeyExpired"
-import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
+import { SearchArtworksQueryRenderer } from "./containers/SearchArtworksContainer"
 import { SearchResults } from "./SearchResults"
 
 interface SearchInputProps {
