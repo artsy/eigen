@@ -10,6 +10,7 @@ import { PopoverMessageProvider } from "./Components/PopoverMessage/PopoverMessa
 import { ToastProvider } from "./Components/Toast/toastHook"
 import { defaultEnvironment } from "./relay/createEnvironment"
 import { GlobalStoreProvider, useDevToggle } from "./store/GlobalStore"
+import { NetworkAwareProvider } from "./utils/NetworkAwareProvider"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
 
 // TODO-PALETTE-V3 this can be removed after we turn things to v3 by default
@@ -37,15 +38,17 @@ export const AppProviders = ({ children }: { children: ReactNode }) => (
           <Theme>
             <ActionSheetProvider>
               <PopoverMessageProvider>
-                <_FancyModalPageWrapper>
-                  <ToastProvider>
-                    <V3Toggle>
-                      {/*  */}
-                      {children}
-                      {/*  */}
-                    </V3Toggle>
-                  </ToastProvider>
-                </_FancyModalPageWrapper>
+                <NetworkAwareProvider>
+                  <_FancyModalPageWrapper>
+                    <ToastProvider>
+                      <V3Toggle>
+                        {/*  */}
+                        {children}
+                        {/*  */}
+                      </V3Toggle>
+                    </ToastProvider>
+                  </_FancyModalPageWrapper>
+                </NetworkAwareProvider>
               </PopoverMessageProvider>
             </ActionSheetProvider>
           </Theme>
