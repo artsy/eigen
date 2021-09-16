@@ -8,21 +8,18 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { SearchArtworksGridPaginationContainer } from "../SearchArtworksGrid"
 
-export const SEARCH_ARTWORKS_QUERY = graphql`
-  query SearchArtworksContainerQuery($count: Int!, $cursor: String, $keyword: String, $input: FilterArtworksInput) {
-    viewer {
-      ...SearchArtworksGrid_viewer @arguments(count: $count, cursor: $cursor, keyword: $keyword, input: $input)
-    }
-  }
-`
-
 export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ keyword }) => {
   return (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<SearchArtworksContainerQuery>
         environment={defaultEnvironment}
-        // tslint:disable-next-line:relay-operation-generics
-        query={SEARCH_ARTWORKS_QUERY}
+        query={graphql`
+          query SearchArtworksContainerQuery($count: Int!, $cursor: String, $keyword: String) {
+            viewer {
+              ...SearchArtworksGrid_viewer @arguments(count: $count, cursor: $cursor, keyword: $keyword)
+            }
+          }
+        `}
         render={renderWithPlaceholder({
           Container: SearchArtworksGridPaginationContainer,
           renderPlaceholder: () => <SearchArtworksGridSkeleton />,

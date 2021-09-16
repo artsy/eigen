@@ -9,7 +9,6 @@ import { Box, Separator, useTheme } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { SEARCH_ARTWORKS_QUERY } from "./containers/SearchArtworksContainer"
 
 export interface SearchArtworksGridProps {
   viewer: SearchArtworksGrid_viewer
@@ -147,6 +146,12 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
         cursor,
       }
     },
-    query: SEARCH_ARTWORKS_QUERY,
+    query: graphql`
+      query SearchArtworksGridQuery($count: Int!, $cursor: String, $keyword: String, $input: FilterArtworksInput) {
+        viewer {
+          ...SearchArtworksGrid_viewer @arguments(count: $count, cursor: $cursor, keyword: $keyword, input: $input)
+        }
+      }
+    `,
   }
 )

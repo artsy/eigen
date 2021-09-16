@@ -1,35 +1,88 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2fe4571d55f8c8a06188f20dc5460ba9 */
+/* @relayHash babc0b48ce11ce223983aa43d0a88cce */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SearchArtworksContainerQueryVariables = {
+export type ArtworkAggregation = "ARTIST" | "ARTIST_NATIONALITY" | "ATTRIBUTION_CLASS" | "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "LOCATION_CITY" | "MAJOR_PERIOD" | "MATERIALS_TERMS" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
+export type ArtworkSizes = "LARGE" | "MEDIUM" | "SMALL" | "%future added value";
+export type FilterArtworksInput = {
+    acquireable?: boolean | null;
+    additionalGeneIDs?: Array<string | null> | null;
+    after?: string | null;
+    aggregationPartnerCities?: Array<string | null> | null;
+    aggregations?: Array<ArtworkAggregation | null> | null;
+    artistID?: string | null;
+    artistIDs?: Array<string | null> | null;
+    artistNationalities?: Array<string | null> | null;
+    artistSeriesID?: string | null;
+    atAuction?: boolean | null;
+    attributionClass?: Array<string | null> | null;
+    before?: string | null;
+    color?: string | null;
+    colors?: Array<string | null> | null;
+    dimensionRange?: string | null;
+    excludeArtworkIDs?: Array<string | null> | null;
+    extraAggregationGeneIDs?: Array<string | null> | null;
+    first?: number | null;
+    forSale?: boolean | null;
+    geneID?: string | null;
+    geneIDs?: Array<string | null> | null;
+    height?: string | null;
+    includeArtworksByFollowedArtists?: boolean | null;
+    includeMediumFilterInAggregation?: boolean | null;
+    inquireableOnly?: boolean | null;
+    keyword?: string | null;
+    keywordMatchExact?: boolean | null;
+    last?: number | null;
+    locationCities?: Array<string | null> | null;
+    majorPeriods?: Array<string | null> | null;
+    marketable?: boolean | null;
+    materialsTerms?: Array<string | null> | null;
+    medium?: string | null;
+    offerable?: boolean | null;
+    page?: number | null;
+    partnerCities?: Array<string | null> | null;
+    partnerID?: string | null;
+    partnerIDs?: Array<string | null> | null;
+    period?: string | null;
+    periods?: Array<string | null> | null;
+    priceRange?: string | null;
+    saleID?: string | null;
+    size?: number | null;
+    sizes?: Array<ArtworkSizes | null> | null;
+    sort?: string | null;
+    tagID?: string | null;
+    width?: string | null;
+};
+export type SearchArtworksGridQueryVariables = {
     count: number;
     cursor?: string | null;
     keyword?: string | null;
+    input?: FilterArtworksInput | null;
 };
-export type SearchArtworksContainerQueryResponse = {
+export type SearchArtworksGridQueryResponse = {
     readonly viewer: {
         readonly " $fragmentRefs": FragmentRefs<"SearchArtworksGrid_viewer">;
     } | null;
 };
-export type SearchArtworksContainerQuery = {
-    readonly response: SearchArtworksContainerQueryResponse;
-    readonly variables: SearchArtworksContainerQueryVariables;
+export type SearchArtworksGridQuery = {
+    readonly response: SearchArtworksGridQueryResponse;
+    readonly variables: SearchArtworksGridQueryVariables;
 };
 
 
 
 /*
-query SearchArtworksContainerQuery(
+query SearchArtworksGridQuery(
   $count: Int!
   $cursor: String
   $keyword: String
+  $input: FilterArtworksInput
 ) {
   viewer {
-    ...SearchArtworksGrid_viewer_2BDVGC
+    ...SearchArtworksGrid_viewer_wRDQt
   }
 }
 
@@ -92,7 +145,7 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
   }
 }
 
-fragment SearchArtworksGrid_viewer_2BDVGC on Viewer {
+fragment SearchArtworksGrid_viewer_wRDQt on Viewer {
   aggregations: artworksConnection(first: 0, aggregations: [ARTIST, MEDIUM, PRICE_RANGE, DIMENSION_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY, LOCATION_CITY, MAJOR_PERIOD, COLOR, PARTNER]) {
     aggregations {
       slice
@@ -104,7 +157,7 @@ fragment SearchArtworksGrid_viewer_2BDVGC on Viewer {
     }
     id
   }
-  artworks: artworksConnection(first: $count, after: $cursor, keyword: $keyword) {
+  artworks: artworksConnection(first: $count, after: $cursor, keyword: $keyword, input: $input) {
     edges {
       node {
         id
@@ -123,43 +176,51 @@ fragment SearchArtworksGrid_viewer_2BDVGC on Viewer {
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "count"
-  },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "cursor"
-  },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "keyword"
-  }
-],
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "count"
+},
 v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "cursor"
+},
+v2 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "input"
+},
+v3 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "keyword"
+},
+v4 = {
+  "kind": "Variable",
+  "name": "input",
+  "variableName": "input"
+},
+v5 = {
   "kind": "Variable",
   "name": "keyword",
   "variableName": "keyword"
 },
-v2 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v3 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v4 = [
+v8 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -170,9 +231,10 @@ v4 = [
     "name": "first",
     "variableName": "count"
   },
-  (v1/*: any*/)
+  (v4/*: any*/),
+  (v5/*: any*/)
 ],
-v5 = {
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -181,10 +243,15 @@ v5 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/),
+      (v2/*: any*/),
+      (v3/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "SearchArtworksContainerQuery",
+    "name": "SearchArtworksGridQuery",
     "selections": [
       {
         "alias": null,
@@ -206,7 +273,8 @@ return {
                 "name": "cursor",
                 "variableName": "cursor"
               },
-              (v1/*: any*/)
+              (v4/*: any*/),
+              (v5/*: any*/)
             ],
             "kind": "FragmentSpread",
             "name": "SearchArtworksGrid_viewer"
@@ -220,9 +288,14 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/),
+      (v3/*: any*/),
+      (v2/*: any*/)
+    ],
     "kind": "Operation",
-    "name": "SearchArtworksContainerQuery",
+    "name": "SearchArtworksGridQuery",
     "selections": [
       {
         "alias": null,
@@ -292,7 +365,7 @@ return {
                         "name": "count",
                         "storageKey": null
                       },
-                      (v2/*: any*/),
+                      (v6/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -306,13 +379,13 @@ return {
                 ],
                 "storageKey": null
               },
-              (v3/*: any*/)
+              (v7/*: any*/)
             ],
             "storageKey": "artworksConnection(aggregations:[\"ARTIST\",\"MEDIUM\",\"PRICE_RANGE\",\"DIMENSION_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"COLOR\",\"PARTNER\"],first:0)"
           },
           {
             "alias": "artworks",
-            "args": (v4/*: any*/),
+            "args": (v8/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "kind": "LinkedField",
             "name": "artworksConnection",
@@ -334,8 +407,8 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v3/*: any*/),
-                      (v5/*: any*/)
+                      (v7/*: any*/),
+                      (v9/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -374,7 +447,7 @@ return {
                 ],
                 "storageKey": null
               },
-              (v3/*: any*/),
+              (v7/*: any*/),
               {
                 "kind": "InlineFragment",
                 "selections": [
@@ -404,7 +477,7 @@ return {
                     "name": "edges",
                     "plural": true,
                     "selections": [
-                      (v5/*: any*/),
+                      (v9/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -529,7 +602,7 @@ return {
                                 "name": "endAt",
                                 "storageKey": null
                               },
-                              (v3/*: any*/)
+                              (v7/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -584,7 +657,7 @@ return {
                                 "name": "lotLabel",
                                 "storageKey": null
                               },
-                              (v3/*: any*/)
+                              (v7/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -596,8 +669,8 @@ return {
                             "name": "partner",
                             "plural": false,
                             "selections": [
-                              (v2/*: any*/),
-                              (v3/*: any*/)
+                              (v6/*: any*/),
+                              (v7/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -607,7 +680,7 @@ return {
                       {
                         "kind": "InlineFragment",
                         "selections": [
-                          (v3/*: any*/)
+                          (v7/*: any*/)
                         ],
                         "type": "Node",
                         "abstractKey": "__isNode"
@@ -624,7 +697,7 @@ return {
           },
           {
             "alias": "artworks",
-            "args": (v4/*: any*/),
+            "args": (v8/*: any*/),
             "filters": [
               "keyword",
               "input"
@@ -640,13 +713,13 @@ return {
     ]
   },
   "params": {
-    "id": "2fe4571d55f8c8a06188f20dc5460ba9",
+    "id": "babc0b48ce11ce223983aa43d0a88cce",
     "metadata": {},
-    "name": "SearchArtworksContainerQuery",
+    "name": "SearchArtworksGridQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '7a4788aac9642ad276e238a7bf81faa8';
+(node as any).hash = '4caf4e58a31b5ee2f4dd92981f351205';
 export default node;
