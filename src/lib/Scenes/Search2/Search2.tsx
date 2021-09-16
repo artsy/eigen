@@ -12,7 +12,7 @@ import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
 import { searchInsights, useSearchInsightsConfig } from "lib/utils/useSearchInsightsConfig"
-import { Flex, Pill, Spacer, Spinner, Text, Touchable, useSpace } from "palette"
+import { Box, Flex, Pill, Spacer, Spinner, Text, Touchable, useSpace } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
 import {
@@ -95,6 +95,7 @@ interface SearchResultsProps
   extends StateResultsProvided<AlgoliaSearchResult>,
     InfiniteHitsProvided<AlgoliaSearchResult> {
   indexName: string
+  categoryDisplayName: string
 }
 
 const SearchResults: React.FC<SearchResultsProps> = ({
@@ -105,6 +106,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   searchState,
   indexName,
   refineNext,
+  categoryDisplayName,
 }) => {
   const flatListRef = useRef<FlatList<AlgoliaSearchResult>>(null)
   const loading = searching || isSearchStalled
@@ -136,6 +138,20 @@ const SearchResults: React.FC<SearchResultsProps> = ({
     if (hasMore && !loading) {
       refineNext()
     }
+  }
+
+  if (!hits.length) {
+    return (
+      <Box px={2} py={1}>
+        <Spacer mt={4} />
+        <Text variant="subtitle">
+          No {categoryDisplayName} found for “{searchState.query}”.
+        </Text>
+        <Text variant="subtitle" color="black60">
+          Look at a different category or try another search term.
+        </Text>
+      </Box>
+    )
   }
 
   return (
@@ -180,7 +196,12 @@ interface SearchState {
   page?: number
 }
 
-const pills = [{ name: "ARTWORK", displayName: "Artworks" }]
+interface PillType {
+  name: string
+  displayName: string
+}
+
+const pills: PillType[] = [{ name: "ARTWORK", displayName: "Artworks" }]
 
 interface Search2Props {
   relay: RelayRefetchProp
@@ -193,10 +214,11 @@ export const Search2: React.FC<Search2Props> = (props) => {
   const [selectedAlgoliaIndex, setSelectedAlgoliaIndex] = useState("")
   const [elasticSearchEntity, setElasticSearchEntity] = useState("")
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
+  const [activePillDisplayName, setActivePillDisplayName] = useState("")
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
   const searchInsightsConfigured = useSearchInsightsConfig(system?.algolia?.appID, system?.algolia?.apiKey)
 
-  const pillsArray = useMemo(() => {
+  const pillsArray = useMemo<PillType[]>(() => {
     const indices = system?.algolia?.indices
 
     if (Array.isArray(indices) && indices.length > 0) {
@@ -214,9 +236,9 @@ export const Search2: React.FC<Search2Props> = (props) => {
     )
   }
 
-  const renderResults = () => {
+  const renderResults = (categoryDisplayName: string) => {
     if (!!selectedAlgoliaIndex) {
-      return <SearchResultsContainer indexName={selectedAlgoliaIndex} />
+      return <SearchResultsContainer indexName={selectedAlgoliaIndex} categoryDisplayName={categoryDisplayName} />
     }
     if (!!elasticSearchEntity) {
       return <SearchArtworksGridQueryRenderer keyword={searchState.query!} />
@@ -226,7 +248,8 @@ export const Search2: React.FC<Search2Props> = (props) => {
 
   const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 2
 
-  const handlePillPress = (name: string) => {
+  const handlePillPress = ({ name, displayName }: PillType) => {
+    setActivePillDisplayName(displayName)
     setSearchState((prevState) => ({ ...prevState, page: 1 }))
     if (name === "ARTWORK") {
       setSelectedAlgoliaIndex("")
@@ -255,20 +278,23 @@ export const Search2: React.FC<Search2Props> = (props) => {
             <>
               <Flex p={2} pb={1}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  {pillsArray.map(({ name, displayName }) => (
-                    <Pill
-                      mr={1}
-                      key={name}
-                      rounded
-                      selected={selectedAlgoliaIndex === name || elasticSearchEntity === name}
-                      onPress={() => handlePillPress(name)}
-                    >
-                      {displayName}
-                    </Pill>
-                  ))}
+                  {pillsArray.map((pill) => {
+                    const { name, displayName } = pill
+                    return (
+                      <Pill
+                        mr={1}
+                        key={name}
+                        rounded
+                        selected={selectedAlgoliaIndex === name || elasticSearchEntity === name}
+                        onPress={() => handlePillPress(pill)}
+                      >
+                        {displayName}
+                      </Pill>
+                    )
+                  })}
                 </ScrollView>
               </Flex>
-              {renderResults()}
+              {renderResults(activePillDisplayName)}
             </>
           ) : (
             <Scrollable>
