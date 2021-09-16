@@ -27,7 +27,7 @@ import {
   useMemoizedRandom,
 } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { compact, drop, flatten, times, zip } from "lodash"
+import { compact, drop, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, Platform, RefreshControl, View, ViewProps } from "react-native"
@@ -93,23 +93,24 @@ const Home = (props: Props) => {
         data: salesModule,
       } as const),
     // Below-the-fold modules
+    enableAuctionResultsByFollowedArtists &&
+      ({
+        type: "auction-results",
+      } as const),
     !!articlesConnection && ({ type: "articles" } as const),
     !!viewingRoomsEchoFlag && !!featured && ({ type: "viewing-rooms" } as const),
-    fairsModule &&
-      ({
-        type: "fairs",
-        data: fairsModule,
-      } as const),
     collectionsModule &&
       ({
         type: "collections",
         data: collectionsModule,
       } as const),
-    enableAuctionResultsByFollowedArtists &&
+    fairsModule &&
       ({
-        type: "auction-results",
+        type: "fairs",
+        data: fairsModule,
       } as const),
-    ...flatten(zip(drop(artworkRails, 2), artistRails)),
+    ...drop(artistRails, 1),
+    ...drop(artworkRails, 2),
   ])
 
   const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(rowData.map((_) => createRef()))
@@ -220,8 +221,8 @@ export const HomeFragmentContainer = createRefetchContainer(
         artworkModules(
           maxRails: -1
           maxFollowedGeneRails: -1
-          order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS]
-          include: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS]
+          order: [FOLLOWED_ARTISTS, ACTIVE_BIDS]
+          include: [FOLLOWED_ARTISTS, ACTIVE_BIDS]
         ) {
           id
           ...ArtworkRail_rail
@@ -239,20 +240,8 @@ export const HomeFragmentContainer = createRefetchContainer(
         artworkModules(
           maxRails: -1
           maxFollowedGeneRails: -1
-          order: [RECOMMENDED_WORKS, FOLLOWED_GALLERIES]
-          # LIVE_AUCTIONS and CURRENT_FAIRS both have their own modules, below.
-          # Make sure to exclude all modules that are part of "homePageAbove"
-          exclude: [
-            RECENTLY_VIEWED_WORKS
-            ACTIVE_BIDS
-            FOLLOWED_ARTISTS
-            SAVED_WORKS
-            GENERIC_GENES
-            LIVE_AUCTIONS
-            CURRENT_FAIRS
-            RELATED_ARTISTS
-            FOLLOWED_GENES
-          ]
+          order: [POPULAR_ARTISTS, RECENTLY_VIEWED_WORKS, SIMILAR_TO_RECENTLY_VIEWED]
+          include: [POPULAR_ARTISTS, RECENTLY_VIEWED_WORKS, SIMILAR_TO_RECENTLY_VIEWED]
         ) {
           id
           ...ArtworkRail_rail
