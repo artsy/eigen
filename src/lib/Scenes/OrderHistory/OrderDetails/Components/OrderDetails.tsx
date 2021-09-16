@@ -28,8 +28,19 @@ interface SectionListItem {
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
   const partnerName = extractNodes(order?.lineItems)?.[0]?.artwork?.partner
-  const shippingName =
-    order?.requestedFulfillment?.__typename === "CommerceShip" ? order?.requestedFulfillment.name : null
+  const fulfillmentType = order.requestedFulfillment?.__typename
+  const isShipping = fulfillmentType === "CommerceShipArta" || fulfillmentType === "CommerceShip"
+
+  const getShippingName = () => {
+    if (
+      order.requestedFulfillment?.__typename === "CommerceShipArta" ||
+      order.requestedFulfillment?.__typename === "CommerceShip"
+    ) {
+      return order?.requestedFulfillment?.name
+    }
+    return null
+  }
+
   const DATA: SectionListItem[] = compact([
     {
       key: "OrderDetailsHeader",
@@ -50,9 +61,9 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
       title: "Payment Method",
       data: [<CreditCardSummaryItemFragmentContainer order={order} />],
     },
-    order.requestedFulfillment?.__typename !== "CommercePickup" && {
+    isShipping && {
       key: "ShipTo_Section",
-      title: `Ships to ${shippingName}`,
+      title: `Ships to ${getShippingName()}`,
       data: [<ShipsToSectionFragmentContainer address={order} />],
     },
     !!partnerName && {
@@ -167,6 +178,10 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
           __typename
           name
         }
+        ... on CommerceShipArta {
+          __typename
+          name
+        }
         ... on CommercePickup {
           __typename
         }
@@ -183,6 +198,7 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
           }
         }
       }
+
       ...OrderDetailsHeader_info
       ...ArtworkInfoSection_artwork
       ...SummarySection_section
@@ -192,6 +208,7 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
     }
   `,
 })
+
 export const OrderDetailsQueryRender: React.FC<{ orderID: string }> = ({ orderID: orderID }) => {
   return (
     <QueryRenderer<OrderDetailsQuery>

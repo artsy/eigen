@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e1bf7f98ed59a1b583ac88d6561274ec */
+/* @relayHash 0600489ff0ebffe46be054de734764a8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -100,6 +100,10 @@ fragment OrderDetails_order on CommerceOrder {
       __typename
       name
     }
+    ... on CommerceShipArta {
+      __typename
+      name
+    }
     ... on CommercePickup {
       __typename
     }
@@ -130,6 +134,9 @@ fragment ShipsToSection_address on CommerceOrder {
   __isCommerceOrder: __typename
   requestedFulfillment {
     __typename
+    ... on CommercePickup {
+      __typename
+    }
     ... on CommerceShip {
       __typename
       addressLine1
@@ -140,8 +147,15 @@ fragment ShipsToSection_address on CommerceOrder {
       postalCode
       region
     }
-    ... on CommercePickup {
+    ... on CommerceShipArta {
       __typename
+      addressLine1
+      addressLine2
+      city
+      country
+      phoneNumber
+      postalCode
+      region
     }
   }
 }
@@ -218,39 +232,91 @@ v2 = {
   "storageKey": null
 },
 v3 = [
+  (v2/*: any*/),
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "addressLine1",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "addressLine2",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "city",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "country",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "phoneNumber",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "postalCode",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "region",
+    "storageKey": null
+  }
+],
+v4 = [
   {
     "kind": "Literal",
     "name": "first",
     "value": 1
   }
 ],
-v4 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v5 = [
+v6 = [
   {
     "kind": "Literal",
     "name": "precision",
     "value": 2
   }
 ],
-v6 = {
+v7 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "String"
 },
-v7 = {
+v8 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v8 = {
+v9 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
@@ -313,59 +379,14 @@ return {
               (v1/*: any*/),
               {
                 "kind": "InlineFragment",
-                "selections": [
-                  (v2/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "addressLine1",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "addressLine2",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "city",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "country",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "phoneNumber",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "postalCode",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "region",
-                    "storageKey": null
-                  }
-                ],
+                "selections": (v3/*: any*/),
                 "type": "CommerceShip",
+                "abstractKey": null
+              },
+              {
+                "kind": "InlineFragment",
+                "selections": (v3/*: any*/),
+                "type": "CommerceShipArta",
                 "abstractKey": null
               }
             ],
@@ -373,7 +394,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v3/*: any*/),
+            "args": (v4/*: any*/),
             "concreteType": "CommerceLineItemConnection",
             "kind": "LinkedField",
             "name": "lineItems",
@@ -412,11 +433,11 @@ return {
                             "plural": false,
                             "selections": [
                               (v2/*: any*/),
-                              (v4/*: any*/)
+                              (v5/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v4/*: any*/),
+                          (v5/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -511,7 +532,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v4/*: any*/),
+                      (v5/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -527,7 +548,7 @@ return {
                             "name": "status",
                             "storageKey": null
                           },
-                          (v4/*: any*/)
+                          (v5/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -546,13 +567,13 @@ return {
                             "name": "displayName",
                             "storageKey": null
                           },
-                          (v4/*: any*/)
+                          (v5/*: any*/)
                         ],
                         "storageKey": null
                       },
                       {
                         "alias": null,
-                        "args": (v3/*: any*/),
+                        "args": (v4/*: any*/),
                         "concreteType": "CommerceFulfillmentConnection",
                         "kind": "LinkedField",
                         "name": "fulfillments",
@@ -581,7 +602,7 @@ return {
                                     "name": "estimatedDelivery",
                                     "storageKey": null
                                   },
-                                  (v4/*: any*/)
+                                  (v5/*: any*/)
                                 ],
                                 "storageKey": null
                               }
@@ -623,28 +644,28 @@ return {
           },
           {
             "alias": null,
-            "args": (v5/*: any*/),
+            "args": (v6/*: any*/),
             "kind": "ScalarField",
             "name": "buyerTotal",
             "storageKey": "buyerTotal(precision:2)"
           },
           {
             "alias": null,
-            "args": (v5/*: any*/),
+            "args": (v6/*: any*/),
             "kind": "ScalarField",
             "name": "taxTotal",
             "storageKey": "taxTotal(precision:2)"
           },
           {
             "alias": null,
-            "args": (v5/*: any*/),
+            "args": (v6/*: any*/),
             "kind": "ScalarField",
             "name": "shippingTotal",
             "storageKey": "shippingTotal(precision:2)"
           },
           {
             "alias": null,
-            "args": (v5/*: any*/),
+            "args": (v6/*: any*/),
             "kind": "ScalarField",
             "name": "totalListPrice",
             "storageKey": "totalListPrice(precision:2)"
@@ -671,18 +692,18 @@ return {
                 "name": "lastDigits",
                 "storageKey": null
               },
-              (v4/*: any*/)
+              (v5/*: any*/)
             ],
             "storageKey": null
           },
-          (v4/*: any*/)
+          (v5/*: any*/)
         ],
         "storageKey": "commerceOrder(id:\"order-id\")"
       }
     ]
   },
   "params": {
-    "id": "e1bf7f98ed59a1b583ac88d6561274ec",
+    "id": "0600489ff0ebffe46be054de734764a8",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "commerceOrder": {
@@ -691,21 +712,21 @@ return {
           "plural": false,
           "type": "CommerceOrder"
         },
-        "commerceOrder.__isCommerceOrder": (v6/*: any*/),
-        "commerceOrder.__typename": (v6/*: any*/),
-        "commerceOrder.buyerTotal": (v7/*: any*/),
-        "commerceOrder.code": (v6/*: any*/),
-        "commerceOrder.createdAt": (v6/*: any*/),
+        "commerceOrder.__isCommerceOrder": (v7/*: any*/),
+        "commerceOrder.__typename": (v7/*: any*/),
+        "commerceOrder.buyerTotal": (v8/*: any*/),
+        "commerceOrder.code": (v7/*: any*/),
+        "commerceOrder.createdAt": (v7/*: any*/),
         "commerceOrder.creditCard": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "CreditCard"
         },
-        "commerceOrder.creditCard.brand": (v6/*: any*/),
-        "commerceOrder.creditCard.id": (v8/*: any*/),
-        "commerceOrder.creditCard.lastDigits": (v6/*: any*/),
-        "commerceOrder.id": (v8/*: any*/),
+        "commerceOrder.creditCard.brand": (v7/*: any*/),
+        "commerceOrder.creditCard.id": (v9/*: any*/),
+        "commerceOrder.creditCard.lastDigits": (v7/*: any*/),
+        "commerceOrder.id": (v9/*: any*/),
         "commerceOrder.lineItems": {
           "enumValues": null,
           "nullable": true,
@@ -730,36 +751,36 @@ return {
           "plural": false,
           "type": "Artwork"
         },
-        "commerceOrder.lineItems.edges.node.artwork.artistNames": (v7/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.date": (v7/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.artistNames": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.date": (v8/*: any*/),
         "commerceOrder.lineItems.edges.node.artwork.dimensions": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "dimensions"
         },
-        "commerceOrder.lineItems.edges.node.artwork.dimensions.cm": (v7/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.dimensions.in": (v7/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.editionOf": (v7/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.id": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.dimensions.cm": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.dimensions.in": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.editionOf": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.id": (v9/*: any*/),
         "commerceOrder.lineItems.edges.node.artwork.image": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Image"
         },
-        "commerceOrder.lineItems.edges.node.artwork.image.url": (v7/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.medium": (v7/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.image.url": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.medium": (v8/*: any*/),
         "commerceOrder.lineItems.edges.node.artwork.partner": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Partner"
         },
-        "commerceOrder.lineItems.edges.node.artwork.partner.id": (v8/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.partner.name": (v7/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.shippingOrigin": (v7/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.title": (v7/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.partner.id": (v9/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.partner.name": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.shippingOrigin": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.title": (v8/*: any*/),
         "commerceOrder.lineItems.edges.node.fulfillments": {
           "enumValues": null,
           "nullable": true,
@@ -778,41 +799,41 @@ return {
           "plural": false,
           "type": "CommerceFulfillment"
         },
-        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.estimatedDelivery": (v7/*: any*/),
-        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.id": (v8/*: any*/),
-        "commerceOrder.lineItems.edges.node.id": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.estimatedDelivery": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.id": (v9/*: any*/),
+        "commerceOrder.lineItems.edges.node.id": (v9/*: any*/),
         "commerceOrder.lineItems.edges.node.selectedShippingQuote": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "CommerceShippingQuote"
         },
-        "commerceOrder.lineItems.edges.node.selectedShippingQuote.displayName": (v6/*: any*/),
-        "commerceOrder.lineItems.edges.node.selectedShippingQuote.id": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.selectedShippingQuote.displayName": (v7/*: any*/),
+        "commerceOrder.lineItems.edges.node.selectedShippingQuote.id": (v9/*: any*/),
         "commerceOrder.lineItems.edges.node.shipment": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "CommerceShipment"
         },
-        "commerceOrder.lineItems.edges.node.shipment.id": (v8/*: any*/),
-        "commerceOrder.lineItems.edges.node.shipment.status": (v7/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment.id": (v9/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment.status": (v8/*: any*/),
         "commerceOrder.requestedFulfillment": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "CommerceRequestedFulfillmentUnion"
         },
-        "commerceOrder.requestedFulfillment.__typename": (v6/*: any*/),
-        "commerceOrder.requestedFulfillment.addressLine1": (v7/*: any*/),
-        "commerceOrder.requestedFulfillment.addressLine2": (v7/*: any*/),
-        "commerceOrder.requestedFulfillment.city": (v7/*: any*/),
-        "commerceOrder.requestedFulfillment.country": (v7/*: any*/),
-        "commerceOrder.requestedFulfillment.name": (v7/*: any*/),
-        "commerceOrder.requestedFulfillment.phoneNumber": (v7/*: any*/),
-        "commerceOrder.requestedFulfillment.postalCode": (v7/*: any*/),
-        "commerceOrder.requestedFulfillment.region": (v7/*: any*/),
-        "commerceOrder.shippingTotal": (v7/*: any*/),
+        "commerceOrder.requestedFulfillment.__typename": (v7/*: any*/),
+        "commerceOrder.requestedFulfillment.addressLine1": (v8/*: any*/),
+        "commerceOrder.requestedFulfillment.addressLine2": (v8/*: any*/),
+        "commerceOrder.requestedFulfillment.city": (v8/*: any*/),
+        "commerceOrder.requestedFulfillment.country": (v8/*: any*/),
+        "commerceOrder.requestedFulfillment.name": (v8/*: any*/),
+        "commerceOrder.requestedFulfillment.phoneNumber": (v8/*: any*/),
+        "commerceOrder.requestedFulfillment.postalCode": (v8/*: any*/),
+        "commerceOrder.requestedFulfillment.region": (v8/*: any*/),
+        "commerceOrder.shippingTotal": (v8/*: any*/),
         "commerceOrder.state": {
           "enumValues": [
             "ABANDONED",
@@ -827,8 +848,8 @@ return {
           "plural": false,
           "type": "CommerceOrderStateEnum"
         },
-        "commerceOrder.taxTotal": (v7/*: any*/),
-        "commerceOrder.totalListPrice": (v7/*: any*/)
+        "commerceOrder.taxTotal": (v8/*: any*/),
+        "commerceOrder.totalListPrice": (v8/*: any*/)
       }
     },
     "name": "OrderDetailsTestsQuery",
