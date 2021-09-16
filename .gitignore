@@ -37,7 +37,7 @@ net.artsy.artsy.dev.pem
 
 # See note in Podfile
 Artsy/App/Echo.json
-Artsy/App/EchoNew.json
+data/EchoNew.json
 
 # Fastlane
 Preview.html
