@@ -1,29 +1,24 @@
 import { captureMessage } from "@sentry/react-native"
 import { Search2_system } from "__generated__/Search2_system.graphql"
 import { Search2Query } from "__generated__/Search2Query.graphql"
-import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SearchInput as SearchBox } from "lib/Components/SearchInput"
-import { navigate, navigateToPartner } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
-import { searchInsights, useSearchInsightsConfig } from "lib/utils/useSearchInsightsConfig"
-import { Box, Flex, Pill, Spacer, Spinner, Text, Touchable, useSpace } from "palette"
-import React, { useEffect, useMemo, useRef, useState } from "react"
-import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
+import { useSearchInsightsConfig } from "lib/utils/useSearchInsightsConfig"
+import { Flex, Pill, Spacer } from "palette"
+import React, { useMemo, useState } from "react"
 import {
   Configure,
-  connectHighlight,
   connectInfiniteHits,
   connectSearchBox,
   connectStateResults,
   InstantSearch,
 } from "react-instantsearch-native"
-import { FlatList, Platform, ScrollView } from "react-native"
+import { Platform, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components"
@@ -34,7 +29,7 @@ import { SearchContext, useSearchProviderValues } from "../Search/SearchContext"
 import { SearchPlaceholder } from "./components/SearchPlaceholder"
 import { RefetchWhenApiKeyExpiredContainer } from "./containers/RefetchWhenApiKeyExpired"
 import { SearchArtworksGridQueryRenderer } from "./SearchArtworksGrid"
-import { AlgoliaSearchResult } from "./types"
+import { SearchResults } from "./SearchResults"
 
 interface SearchInputProps {
   placeholder: string
@@ -69,120 +64,6 @@ const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholde
           action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
         })
       }}
-    />
-  )
-}
-
-const Highlight = connectHighlight(({ highlight, attribute, hit, highlightProperty = "_highlightResult" }) => {
-  const parsedHit = highlight({ attribute, hit, highlightProperty })
-
-  return (
-    <Text>
-      {parsedHit.map(({ isHighlighted, value }, index) =>
-        isHighlighted ? (
-          <Text key={index} color="blue100" fontWeight="600" padding={0} margin={0}>
-            {value}
-          </Text>
-        ) : (
-          <Text key={index}>{value}</Text>
-        )
-      )}
-    </Text>
-  )
-})
-
-interface SearchResultsProps
-  extends StateResultsProvided<AlgoliaSearchResult>,
-    InfiniteHitsProvided<AlgoliaSearchResult> {
-  indexName: string
-  categoryDisplayName: string
-}
-
-const SearchResults: React.FC<SearchResultsProps> = ({
-  hits,
-  hasMore,
-  searching,
-  isSearchStalled,
-  searchState,
-  indexName,
-  refineNext,
-  categoryDisplayName,
-}) => {
-  const flatListRef = useRef<FlatList<AlgoliaSearchResult>>(null)
-  const loading = searching || isSearchStalled
-  const space = useSpace()
-
-  useEffect(() => {
-    flatListRef.current?.scrollToOffset({ offset: 1, animated: true })
-  }, [searchState.query, indexName])
-
-  const onPress = (item: AlgoliaSearchResult): void => {
-    // TODO: I'm not sure why we need to use this `navigateToPartner` function but without it the header overlaps
-    // with the back button
-    if (item.href.startsWith("/partner/")) {
-      navigateToPartner(item.slug)
-    } else {
-      navigate(item.href)
-    }
-
-    searchInsights("clickedObjectIDsAfterSearch", {
-      index: indexName,
-      eventName: "Search item clicked",
-      positions: [item.__position],
-      queryID: item.__queryID,
-      objectIDs: [item.objectID],
-    })
-  }
-
-  const loadMore = () => {
-    if (hasMore && !loading) {
-      refineNext()
-    }
-  }
-
-  if (!hits.length) {
-    return (
-      <Box px={2} py={1}>
-        <Spacer mt={4} />
-        <Text variant="subtitle">
-          No {categoryDisplayName} found for “{searchState.query}”.
-        </Text>
-        <Text variant="subtitle" color="black60">
-          Look at a different category or try another search term.
-        </Text>
-      </Box>
-    )
-  }
-
-  return (
-    <AboveTheFoldFlatList<AlgoliaSearchResult>
-      listRef={flatListRef}
-      initialNumToRender={isPad() ? 24 : 12}
-      contentContainerStyle={{ paddingVertical: space(1) }}
-      data={hits}
-      keyExtractor={(item) => item.objectID}
-      renderItem={({ item }) => (
-        <Touchable onPress={() => onPress(item)}>
-          <Flex py={space(1)} px={space(2)} flexDirection="row" alignItems="center">
-            <OpaqueImageView
-              imageURL={item.image_url}
-              style={{ width: 40, height: 40, borderRadius: 20, overflow: "hidden" }}
-            />
-            <Spacer ml={1} />
-            <Flex>
-              <Highlight attribute="name" hit={item} />
-            </Flex>
-          </Flex>
-        </Touchable>
-      )}
-      onEndReached={loadMore}
-      ListFooterComponent={
-        <Flex alignItems="center" my={2}>
-          {loading ? <Spinner /> : null}
-        </Flex>
-      }
-      keyboardDismissMode="on-drag"
-      keyboardShouldPersistTaps="handled"
     />
   )
 }
