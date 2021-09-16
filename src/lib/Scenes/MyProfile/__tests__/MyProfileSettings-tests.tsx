@@ -1,4 +1,4 @@
-import { MyProfileTestsQuery } from "__generated__/MyProfileTestsQuery.graphql"
+import { MyProfileSettingsTestsQuery } from "__generated__/MyProfileSettingsTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -7,28 +7,26 @@ import { Platform } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MyProfileContainer } from "../MyProfile"
+import { MyProfileSettingsContainer, MyProfileSettingsQueryRenderer } from "../MyProfileSettings"
 
 jest.mock("../LoggedInUserInfo")
 jest.unmock("react-relay")
 
-describe("MyProfile: With My Collections Disabled", () => {
-  // Tests with MyCollections enabled are in MyProfileSettings-tests
-
+describe(MyProfileSettingsQueryRenderer, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <QueryRenderer<MyProfileTestsQuery>
+    <QueryRenderer<MyProfileSettingsTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query MyProfileTestsQuery {
+        query MyProfileSettingsTestsQuery {
           me {
-            ...MyProfile_me
+            ...MyProfileSettings_me
           }
         }
       `}
       render={({ props }) => {
         if (props?.me) {
-          return <MyProfileContainer me={props.me} />
+          return <MyProfileSettingsContainer me={props.me} />
         }
       }}
       variables={{}}

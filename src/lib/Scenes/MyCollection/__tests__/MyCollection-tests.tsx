@@ -1,11 +1,10 @@
 import { addCollectedArtwork } from "@artsy/cohesion"
 import { MyCollectionTestsQuery } from "__generated__/MyCollectionTestsQuery.graphql"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { MyCollectionArtworkListItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
+import MyCollectionGrid from "lib/Components/ArtworkGrids/MyCollectionArtworkGrid"
+import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { useTracking } from "react-tracking"
@@ -80,9 +79,8 @@ describe("MyCollection", () => {
     })
 
     it("shows zerostate", () => {
-      expect(extractText(tree.root)).toContain(
-        "Add details about an artwork from your collection to access price and market insights."
-      )
+      expect(extractText(tree.root)).toContain("Primed and ready for artworks.")
+      expect(extractText(tree.root)).toContain("Add a work from your collection to access price and market insights")
     })
 
     it("shows form modal when Add Artwork is pressed", () => {
@@ -110,23 +108,8 @@ describe("MyCollection", () => {
     })
 
     it("renders without throwing an error", () => {
-      expect(tree.root.findByType(FancyModalHeader)).toBeDefined()
-      expect(tree.root.findByType(FlatList)).toBeDefined()
-      expect(tree.root.findByType(MyCollectionArtworkListItemFragmentContainer)).toBeDefined()
-    })
-
-    it("shows form modal when Add Artwork is pressed", () => {
-      tree.root.findByType(FancyModalHeader).props.onRightButtonPress()
-      const artworkModal = tree.root.findByType(MyCollectionArtworkFormModal)
-      expect(artworkModal).toBeDefined()
-      expect(artworkModal.props.visible).toBeTruthy()
-    })
-
-    it("tracks analytics event when Add Artwork is pressed", () => {
-      tree.root.findByType(FancyModalHeader).props.onRightButtonPress()
-
-      expect(trackEvent).toHaveBeenCalledTimes(1)
-      expect(trackEvent).toHaveBeenCalledWith(addCollectedArtwork())
+      expect(tree.root.findByType(StickyTabPageScrollView)).toBeDefined()
+      expect(tree.root.findByType(MyCollectionGrid)).toBeDefined()
     })
   })
 })

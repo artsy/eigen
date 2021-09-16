@@ -1,26 +1,26 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d33d72de2a10c5c3cebf2267b2d22cf7 */
+/* @relayHash d2fd6e28db63106c549fa5e62c0b0bcd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyProfileSettingsQueryVariables = {};
-export type MyProfileSettingsQueryResponse = {
+export type MyProfileSettingsTestsQueryVariables = {};
+export type MyProfileSettingsTestsQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"MyProfileSettings_me">;
     } | null;
 };
-export type MyProfileSettingsQuery = {
-    readonly response: MyProfileSettingsQueryResponse;
-    readonly variables: MyProfileSettingsQueryVariables;
+export type MyProfileSettingsTestsQuery = {
+    readonly response: MyProfileSettingsTestsQueryResponse;
+    readonly variables: MyProfileSettingsTestsQueryVariables;
 };
 
 
 
 /*
-query MyProfileSettingsQuery {
-  me @optionalField {
+query MyProfileSettingsTestsQuery {
+  me {
     ...MyProfileSettings_me
     id
   }
@@ -36,7 +36,7 @@ const node: ConcreteRequest = {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyProfileSettingsQuery",
+    "name": "MyProfileSettingsTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -62,7 +62,7 @@ const node: ConcreteRequest = {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "MyProfileSettingsQuery",
+    "name": "MyProfileSettingsTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -92,12 +92,12 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "d33d72de2a10c5c3cebf2267b2d22cf7",
+    "id": "d2fd6e28db63106c549fa5e62c0b0bcd",
     "metadata": {},
-    "name": "MyProfileSettingsQuery",
+    "name": "MyProfileSettingsTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
-(node as any).hash = '878ea74ba98872181e78fd1bb5c39e84';
+(node as any).hash = '6dc82964d7990f731522bbc7e711391b';
 export default node;

@@ -40,7 +40,7 @@ export const MyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab = Tab.co
   )
 }
 
-const MyProfileHeader: React.FC<{ name: string | null; createdAt: string | null }> = ({ name, createdAt }) => {
+export const MyProfileHeader: React.FC<{ name: string | null; createdAt: string | null }> = ({ name, createdAt }) => {
   const space = useSpace()
   const color = useColor()
   return (
@@ -56,9 +56,9 @@ const MyProfileHeader: React.FC<{ name: string | null; createdAt: string | null 
         <Sans size="8" color={color("black100")}>
           {name}
         </Sans>
-        <Sans size="2" color={color("black60")}>{`Member since ${
-          createdAt ? new Date(createdAt).getFullYear() : "----"
-        }`}</Sans>
+        {!!createdAt && (
+          <Sans size="2" color={color("black60")}>{`Member since ${new Date(createdAt).getFullYear()}`}</Sans>
+        )}
       </Box>
     </>
   )

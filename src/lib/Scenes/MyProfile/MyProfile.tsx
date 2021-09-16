@@ -11,14 +11,14 @@ import { Flex, Join, Separator } from "palette"
 import React from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { MyCollectionAndSavedWorks, Tab } from "./MyCollectionAndSavedWorks"
-import { MyProfileSettingsQueryRenderer } from "./MyProfileSettings"
+import { OldMyProfileSettings } from "./MyProfileSettings"
 
-export const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me }) => {
+export const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const shouldDisplayMyCollection = me?.labFeatures?.includes("My Collection")
   if (shouldDisplayMyCollection) {
     return <MyCollectionAndSavedWorks me={me} initialTab={Tab.collections} />
   }
-  return <MyProfileSettingsQueryRenderer />
+  return <OldMyProfileSettings me={me} relay={relay} />
 }
 
 export const MyProfilePlaceholder: React.FC<{}> = () => (
