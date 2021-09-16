@@ -134,4 +134,39 @@ describe("PriceRangeOptions", () => {
       `{"displayText":"$1,111–98,765","paramValue":"1111-98765","paramName":"priceRange"}`
     )
   })
+
+  it('should display the "clear" button if a custom price is entered', () => {
+    const { getByTestId, getByText } = getTree()
+
+    fireEvent.changeText(getByTestId("price-min-input"), "1111")
+
+    expect(getByText("Clear")).toBeTruthy()
+  })
+
+  it('should display the "clear" button if a predefined value is selected', () => {
+    const { getByText } = getTree()
+
+    fireEvent.press(getByText("$10,000–50,000"))
+
+    expect(getByText("Clear")).toBeTruthy()
+  })
+
+  it('should not display the "clear" button if the default value is selected', () => {
+    const { queryByText, getByText } = getTree()
+
+    fireEvent.press(getByText("$10,000–50,000"))
+    fireEvent.press(getByText("Custom"))
+
+    expect(queryByText("Clear")).toBeNull()
+  })
+
+  it('selected value should be cleared when the "clear" button is pressed', () => {
+    const { getByTestId, getByText } = getTree()
+    const minInput = getByTestId("price-min-input")
+
+    fireEvent.changeText(minInput, "1111")
+    fireEvent.press(getByText("Clear"))
+
+    expect(minInput.props.value).toBeUndefined()
+  })
 })

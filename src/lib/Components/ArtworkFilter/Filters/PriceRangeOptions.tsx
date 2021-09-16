@@ -18,7 +18,7 @@ interface PriceRangeOptionsScreenProps
 
 const PARAM_NAME = FilterParamName.priceRange
 
-const CUSTOM_PRICE_OPTION = {
+const DEFAULT_PRICE_OPTION = {
   displayText: "Custom",
   paramValue: "*-*",
   paramName: PARAM_NAME,
@@ -95,10 +95,11 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   const isCustomOption =
     PRICE_RANGE_OPTIONS.find((option) => option.paramValue === selectedFilterOption.paramValue) === undefined
   const [customPriceValue, setCustomPriceValue] = useState(
-    parseRange(isCustomOption ? (selectedFilterOption.paramValue as string) : CUSTOM_PRICE_OPTION.paramValue)
+    parseRange(isCustomOption ? (selectedFilterOption.paramValue as string) : DEFAULT_PRICE_OPTION.paramValue)
   )
   const [customSelected, setCustomSelected] = useState(isCustomOption)
-  const selectedOption = customSelected ? CUSTOM_PRICE_OPTION : selectedFilterOption
+  const selectedOption = customSelected ? DEFAULT_PRICE_OPTION : selectedFilterOption
+  const isActive = selectedFilterOption.paramValue !== DEFAULT_PRICE_OPTION.paramValue
 
   const selectOption = (option: AggregateOption) => {
     setCustomSelected(false)
@@ -123,13 +124,18 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
     })
   }
 
+  const handleClear = () => {
+    const defaultRangeValue = parseRange(DEFAULT_PRICE_OPTION.paramValue)
+    handleCustomPriceChange(defaultRangeValue)
+  }
+
   return (
     <SingleSelectOptionScreen
       onSelect={selectOption}
       filterHeaderText={FilterDisplayName.priceRange}
       useScrollView={true}
       filterOptions={[
-        <ListItem item={CUSTOM_PRICE_OPTION} selectedOption={selectedOption} onSelect={handleSelectCustomOption} />,
+        <ListItem item={DEFAULT_PRICE_OPTION} selectedOption={selectedOption} onSelect={handleSelectCustomOption} />,
         <CustomPriceInput
           value={customPriceValue}
           onChange={handleCustomPriceChange}
@@ -139,6 +145,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
       ]}
       selectedOption={selectedOption}
       navigation={navigation}
+      {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
     />
   )
 }
