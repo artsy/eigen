@@ -1,12 +1,12 @@
 import { fireEvent } from "@testing-library/react-native"
-import { Search } from "lib/Scenes/Search"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
-import { CatchErrors } from "lib/utils/CatchErrors"
-import { Theme } from "palette"
 import React from "react"
-import { Search2 } from "../Search2"
+import { createMockEnvironment } from "relay-test-utils"
+import { Search2QueryRenderer } from "../Search2"
 
+jest.unmock("react-relay")
 jest.mock("lib/utils/hardware", () => ({
   isPad: jest.fn(),
 }))
@@ -24,28 +24,27 @@ jest.mock("../../Search/RecentSearches", () => ({
   getRecentSearches: jest.fn(() => []),
 }))
 
-const TestWrapper: typeof Search = () => {
-  return (
-    <GlobalStoreProvider>
-      <Theme>
-        <CatchErrors>
-          <GlobalStoreProvider>
-            <Search2
-              system={{
-                __typename: "System",
-                algolia: { appID: "", apiKey: "", indices: [{ name: "Artist_staging", displayName: "Artists" }] },
-              }}
-            />
-          </GlobalStoreProvider>
-        </CatchErrors>
-      </Theme>
-    </GlobalStoreProvider>
-  )
-}
-
 describe("Search2 Screen", () => {
+  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+
+  beforeEach(() => {
+    mockEnvironment.mockClear()
+  })
+
+  const TestRenderer = () => {
+    return <Search2QueryRenderer />
+  }
+
   it("should render a text input with placeholder", async () => {
-    const { getByPlaceholderText, getByText, queryByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByPlaceholderText, getByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Algolia: () => ({
+        appID: "",
+        apiKey: "",
+        indices: [{ name: "Artist_staging", displayName: "Artists" }],
+      }),
+    })
 
     const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
