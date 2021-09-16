@@ -135,6 +135,29 @@ describe("PriceRangeOptions", () => {
     )
   })
 
+  it("dispatches the last entered price", () => {
+    const { getByTestId, getByText } = getTree()
+
+    fireEvent.changeText(getByTestId("price-min-input"), "1111")
+    fireEvent.press(getByText("$10,000–50,000"))
+    fireEvent.changeText(getByTestId("price-min-input"), "2222")
+
+    expect(extractText(getByTestId("debug"))).toContain(
+      `{"displayText":"$2,222+","paramValue":"2222-*","paramName":"priceRange"}`
+    )
+  })
+
+  it("dispatches the last selected price", () => {
+    const { getByTestId, getByText } = getTree()
+
+    fireEvent.press(getByText("$10,000–50,000"))
+    fireEvent.press(getByText("$1,000–5,000"))
+
+    expect(extractText(getByTestId("debug"))).toContain(
+      `{"displayText":"$1,000–5,000","paramValue":"1000-5000","paramName":"priceRange"}`
+    )
+  })
+
   it('should display the "clear" button if a custom price is entered', () => {
     const { getByTestId, getByText } = getTree()
 
