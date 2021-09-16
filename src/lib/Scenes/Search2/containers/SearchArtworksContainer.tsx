@@ -25,18 +25,7 @@ export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ key
         query={SEARCH_ARTWORKS_QUERY}
         render={renderWithPlaceholder({
           Container: SearchArtworksGridPaginationContainer,
-          renderPlaceholder: () => (
-            <>
-              <Flex height={28} my={1} px={2} justifyContent="space-between">
-                <Flex flex={1} flexDirection="row">
-                  <PlaceholderButton width={20} height={20} />
-                  <PlaceholderButton marginLeft={5} width={70} height={20} />
-                </Flex>
-              </Flex>
-              <Separator mb={2} />
-              <PlaceholderGrid />
-            </>
-          ),
+          renderPlaceholder: () => <SearchArtworksGridSkeleton />,
         })}
         variables={{ count: 20, keyword }}
         cacheConfig={{ force: true }}
@@ -44,3 +33,16 @@ export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ key
     </ArtworkFiltersStoreProvider>
   )
 }
+
+const SearchArtworksGridSkeleton: React.FC = () => (
+  <Flex>
+    <Flex height={28} my={1} px={2} justifyContent="space-between">
+      <Flex flex={1} flexDirection="row">
+        <PlaceholderButton width={20} height={20} />
+        <PlaceholderButton marginLeft={5} width={70} height={20} />
+      </Flex>
+    </Flex>
+    <Separator mb={2} />
+    <PlaceholderGrid />
+  </Flex>
+)
