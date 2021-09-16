@@ -2,6 +2,7 @@ import { ActionType, OwnerType, TappedCreateAlert, ToggledSavedSearch } from "@a
 import { captureMessage } from "@sentry/react-native"
 import { SavedSearchButton_me } from "__generated__/SavedSearchButton_me.graphql"
 import { SavedSearchButtonQuery } from "__generated__/SavedSearchButtonQuery.graphql"
+import { EventEmitter } from "events"
 import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
@@ -13,7 +14,7 @@ import {
   SavedSearchAlertMutationResult,
 } from "lib/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { BellIcon, Box, Button } from "palette"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -27,6 +28,12 @@ interface SavedSearchButtonProps extends SavedSearchAlertFormPropsBase {
 
 interface SavedSearchButtonQueryRendererProps extends SavedSearchAlertFormPropsBase {
   artistSlug: string
+}
+
+export const savedSearchEvents = new EventEmitter()
+
+export const emitSavedSearchRefetchEvent = () => {
+  savedSearchEvents.emit("refetch")
 }
 
 export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
@@ -82,6 +89,13 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
     handleOpenForm()
     tracking.trackEvent(tracks.tappedCreateAlert(artistId, artistSlug))
   }
+
+  useEffect(() => {
+    savedSearchEvents.addListener("refetch", refetch)
+    return () => {
+      savedSearchEvents.removeListener("refetch", refetch)
+    }
+  }, [])
 
   return (
     <Box>

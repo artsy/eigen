@@ -4,6 +4,7 @@ import { EditSavedSearchAlert_artworksConnection } from "__generated__/EditSaved
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
 import { SavedSearchAlertQueryResponse } from "__generated__/SavedSearchAlertQuery.graphql"
 import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerCreateSavedSearchMutation.graphql"
+import { emitSavedSearchRefetchEvent } from "lib/Components/Artist/ArtistArtworks/SavedSearchButton"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { Aggregations } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
@@ -43,6 +44,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
 
   const onComplete = () => {
     goBack()
+    emitSavedSearchRefetchEvent()
   }
 
   return (
