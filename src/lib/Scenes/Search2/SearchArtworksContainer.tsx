@@ -9,7 +9,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { SearchArtworksGridPaginationContainer } from "./SearchArtworksGrid"
 
 export const SEARCH_ARTWORKS_QUERY = graphql`
-  # TODO: revisit the name
   query SearchArtworksContainerQuery($count: Int!, $cursor: String, $keyword: String, $input: FilterArtworksInput) {
     viewer {
       ...SearchArtworksGrid_viewer @arguments(count: $count, cursor: $cursor, keyword: $keyword, input: $input)
