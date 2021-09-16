@@ -1,11 +1,11 @@
 import { SearchArtworksGrid_viewer } from "__generated__/SearchArtworksGrid_viewer.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
-import { getSelectedFiltersCounts } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
+import { useArtworkFilters, useSelectedFiltersCount } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { Box, bullet, FilterIcon, Flex, Separator, Text, TouchableHighlightColor } from "palette"
-import React, { useMemo, useState } from "react"
+
+import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader2"
+import { Box, Separator, Text, useTheme } from "palette"
+import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { SEARCH_ARTWORKS_QUERY } from "./containers/SearchArtworksContainer"
@@ -21,16 +21,13 @@ interface ArtworkSection {
 }
 
 const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }) => {
+  const { space } = useTheme()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
   const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
   const artworksCount = viewer.artworks?.edges?.length
-  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
-  const appliedFiltersCount = useMemo(
-    () => Object.values(getSelectedFiltersCounts(appliedFilters)).reduce((prev, value) => prev + value, 0),
-    [appliedFilters]
-  )
+  const appliedFiltersCount = useSelectedFiltersCount()
 
   useArtworkFilters({
     relay,
@@ -67,25 +64,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }
         closeModal={closeFilterArtworksModal}
         mode={FilterModalMode.Artworks}
       />
-      <Flex flexDirection="row" height={28} my={1} px={2} justifyContent="space-between" alignItems="center">
-        <TouchableHighlightColor
-          haptic
-          onPress={handleOpenFilterArtworksModal}
-          render={({ color }) => (
-            <Flex flex={1} flexDirection="row" alignItems="center">
-              <FilterIcon fill={color} width="20px" height="20px" />
-              <Text variant="small" numberOfLines={1} color={color} ml={0.5}>
-                Sort & Filter
-              </Text>
-              {appliedFiltersCount > 0 && (
-                <Text variant="small" color="blue100">
-                  {` ${bullet} ${appliedFiltersCount}`}
-                </Text>
-              )}
-            </Flex>
-          )}
-        />
-      </Flex>
+      <ArtworksFilterHeader selectedFiltersCount={appliedFiltersCount} onFilterPress={handleOpenFilterArtworksModal} />
       <Separator />
       {artworksCount === 0 ? (
         <Box mb="80px" pt={1}>
@@ -95,7 +74,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }
       ) : (
         <FlatList<ArtworkSection>
           data={content}
-          contentContainerStyle={{ paddingTop: 20 }}
+          contentContainerStyle={{ paddingTop: space(2) }}
           renderItem={({ item }) => item.content}
           keyExtractor={({ key }) => key}
         />
