@@ -69,6 +69,7 @@ export const CustomPriceInput: React.FC<CustomPriceInputProps> = ({ value, onCha
         keyboardType="number-pad"
         onChangeText={handleChange("min")}
         onFocus={onFocus}
+        testID="price-min-input"
       />
 
       <Spacer mx={2} />
@@ -80,6 +81,7 @@ export const CustomPriceInput: React.FC<CustomPriceInputProps> = ({ value, onCha
         keyboardType="number-pad"
         onChangeText={handleChange("max")}
         onFocus={onFocus}
+        testID="price-max-input"
       />
     </Flex>
   )

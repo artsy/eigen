@@ -1,46 +1,63 @@
-import { Input } from "lib/Components/Input/Input"
-import { TouchableRow } from "lib/Components/TouchableRow"
+import { fireEvent } from "@testing-library/react-native"
 import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Text } from "react-native"
-import { act } from "react-test-renderer"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider, useSelectedOptionsDisplay } from "../../ArtworkFilterStore"
+import { Range } from "../helpers"
 import { CustomPriceInput, PriceRangeOptionsScreen } from "../PriceRangeOptions"
 import { getEssentialProps } from "./helper"
 
+const DEFAULT_RANGE: Range = {
+  min: "*",
+  max: "*",
+}
+
 describe("CustomPriceInput", () => {
   it("renders without error", () => {
-    const tree = renderWithWrappers(<CustomPriceInput onChange={jest.fn()} {...getEssentialProps()} />)
-    expect(extractText(tree.root)).toEqual("to")
+    renderWithWrappersTL(<CustomPriceInput value={DEFAULT_RANGE} onChange={jest.fn()} {...getEssentialProps()} />)
   })
 
-  it("renders the initialValue", () => {
-    const tree = renderWithWrappers(
-      <CustomPriceInput initialValue={{ min: 444, max: 99999 }} onChange={jest.fn()} {...getEssentialProps()} />
+  it("renders the value", () => {
+    const { getByTestId } = renderWithWrappersTL(
+      <CustomPriceInput value={{ min: 444, max: 99999 }} onChange={jest.fn()} {...getEssentialProps()} />
     )
-    expect(extractText(tree.root)).toEqual("444to99999")
+
+    expect(getByTestId("price-min-input").props.value).toBe("444")
+    expect(getByTestId("price-max-input").props.value).toBe("99999")
   })
 
-  it("calls onChange with the min/max when either is updated", () => {
+  it("calls onChange with the min when either is updated", () => {
     const handleChange = jest.fn()
-    const tree = renderWithWrappers(<CustomPriceInput onChange={handleChange} {...getEssentialProps()} />)
+    const { getByTestId } = renderWithWrappersTL(
+      <CustomPriceInput value={DEFAULT_RANGE} onChange={handleChange} {...getEssentialProps()} />
+    )
 
-    const [minInput, maxInput] = tree.root.findAllByType(Input)
+    fireEvent.changeText(getByTestId("price-min-input"), "777")
 
-    act(() => {
-      minInput.props.onChangeText("777")
-    })
+    expect(handleChange).toHaveBeenCalledWith({ min: 777, max: "*" })
+  })
 
-    expect(handleChange).toHaveBeenCalledTimes(1)
-    expect(handleChange).toHaveBeenLastCalledWith({ min: 777, max: "*" })
+  it("calls onChange with the max when either is updated", () => {
+    const handleChange = jest.fn()
+    const { getByTestId } = renderWithWrappersTL(
+      <CustomPriceInput value={DEFAULT_RANGE} onChange={handleChange} {...getEssentialProps()} />
+    )
 
-    act(() => {
-      maxInput.props.onChangeText("12345")
-    })
+    fireEvent.changeText(getByTestId("price-max-input"), "12345")
 
-    expect(handleChange).toHaveBeenCalledTimes(2)
-    expect(handleChange).toHaveBeenLastCalledWith({ min: 777, max: 12345 })
+    expect(handleChange).toHaveBeenLastCalledWith({ min: "*", max: 12345 })
+  })
+
+  it("should return the default value if not a number is entered", () => {
+    const handleChange = jest.fn()
+    const { getByTestId } = renderWithWrappersTL(
+      <CustomPriceInput value={DEFAULT_RANGE} onChange={handleChange} {...getEssentialProps()} />
+    )
+
+    fireEvent.changeText(getByTestId("price-min-input"), "hello")
+
+    expect(handleChange).toHaveBeenLastCalledWith({ min: "*", max: "*" })
   })
 })
 
@@ -62,14 +79,14 @@ describe("PriceRangeOptions", () => {
     const selected = useSelectedOptionsDisplay()
     return (
       <>
-        <Text>{JSON.stringify(selected)}</Text>
+        <Text testID="debug">{JSON.stringify(selected)}</Text>
         <PriceRangeOptionsScreen {...getEssentialProps()} />
       </>
     )
   }
 
   const getTree = () => {
-    return renderWithWrappers(
+    return renderWithWrappersTL(
       <ArtworkFiltersStoreProvider initialData={INITIAL_DATA}>
         <MockPriceRangeOptionsScreen />
       </ArtworkFiltersStoreProvider>
@@ -77,37 +94,43 @@ describe("PriceRangeOptions", () => {
   }
 
   it("renders the options", () => {
-    const tree = getTree()
-    const text = extractText(tree.root)
+    const { getByText } = getTree()
 
-    expect(text).toContain("All")
-    expect(text).toContain("$50,000+")
-    expect(text).toContain("$10,000–50,000")
-    expect(text).toContain("$5,000–10,000")
-    expect(text).toContain("$1,000–5,000")
-    expect(text).toContain("$0–1,000")
-    expect(text).toContain("Custom Price")
+    expect(getByText("Custom")).toBeTruthy()
+    expect(getByText("$50,000+")).toBeTruthy()
+    expect(getByText("$10,000–50,000")).toBeTruthy()
+    expect(getByText("$5,000–10,000")).toBeTruthy()
+    expect(getByText("$1,000–5,000")).toBeTruthy()
+    expect(getByText("$0–1,000")).toBeTruthy()
+  })
+
+  it("renders the min and max input by default", () => {
+    const { getByTestId } = getTree()
+
+    expect(getByTestId("price-min-input")).toBeTruthy()
+    expect(getByTestId("price-max-input")).toBeTruthy()
+  })
+
+  it("custom price values should not be cleared if a predefined value is selected", () => {
+    const { getByTestId, getByText } = getTree()
+    const minInput = getByTestId("price-min-input")
+    const maxInput = getByTestId("price-max-input")
+
+    fireEvent.changeText(minInput, "1000")
+    fireEvent.changeText(maxInput, "5000")
+    fireEvent.press(getByText("$10,000–50,000"))
+
+    expect(minInput.props.value).toBe("1000")
+    expect(maxInput.props.value).toBe("5000")
   })
 
   it("dispatches a custom price", () => {
-    const tree = getTree()
-    const options = tree.root.findAllByType(TouchableRow)
-    const customPriceOption = options.find((node) => extractText(node) === "Custom Price")!
+    const { getByTestId } = getTree()
 
-    // Tap the Custom price option to display the inputs
-    act(() => {
-      customPriceOption.props.onPress()
-    })
+    fireEvent.changeText(getByTestId("price-min-input"), "1111")
+    fireEvent.changeText(getByTestId("price-max-input"), "98765")
 
-    const [minInput, maxInput] = tree.root.findAllByType(Input)
-
-    // Input min and max
-    act(() => {
-      minInput.props.onChangeText("1111")
-      maxInput.props.onChangeText("98765")
-    })
-
-    expect(extractText(tree.root.findAllByType(Text)[0])).toContain(
+    expect(extractText(getByTestId("debug"))).toContain(
       `{"displayText":"$1,111–98,765","paramValue":"1111-98765","paramName":"priceRange"}`
     )
   })
