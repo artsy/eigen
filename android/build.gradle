@@ -5,7 +5,7 @@ buildscript {
         googlePlayServicesVersion = "17.0.0"
         firebaseMessagingVersion = "21.1.0" // matching firebaseIidVersion to avoid duplicate class error
         buildToolsVersion = "29.0.2"
-        minSdkVersion = 16
+        minSdkVersion = 21
         compileSdkVersion = 29
         targetSdkVersion = 29
         firebaseIidVersion = "21.1.0" // Needed for react-native-device-info
