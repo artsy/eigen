@@ -9,7 +9,7 @@ import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
 import { useSearchInsightsConfig } from "lib/utils/useSearchInsightsConfig"
-import { Flex, Pill, Spacer } from "palette"
+import { Box, Flex, Pill, Spacer, useSpace } from "palette"
 import React, { useMemo, useState } from "react"
 import {
   Configure,
@@ -91,6 +91,7 @@ interface Search2Props {
 
 export const Search2: React.FC<Search2Props> = (props) => {
   const { system, relay } = props
+  const space = useSpace()
   const [searchState, setSearchState] = useState<SearchState>({})
   const [selectedAlgoliaIndex, setSelectedAlgoliaIndex] = useState("")
   const [elasticSearchEntity, setElasticSearchEntity] = useState("")
@@ -157,8 +158,12 @@ export const Search2: React.FC<Search2Props> = (props) => {
           </Flex>
           {!!shouldStartQuering ? (
             <>
-              <Flex p={2} pb={1}>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <Box pt={2} pb={1}>
+                <ScrollView
+                  horizontal
+                  contentContainerStyle={{ paddingHorizontal: space(2) }}
+                  showsHorizontalScrollIndicator={false}
+                >
                   {pillsArray.map((pill) => {
                     const { name, displayName } = pill
                     return (
@@ -174,7 +179,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
                     )
                   })}
                 </ScrollView>
-              </Flex>
+              </Box>
               {renderResults(activePillDisplayName)}
             </>
           ) : (
