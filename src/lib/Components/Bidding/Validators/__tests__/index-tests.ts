@@ -1,18 +1,12 @@
-import { validatePresence } from "../index"
+import { mockFullAddress, mockPartiallyEmptyAddress } from "../../__mocks__/billingAddress"
+import { validateAddressFieldsPresence } from "../index"
 
 describe("Presence validator", () => {
-  it("returns null when the input is present", () => {
-    expect(validatePresence("Yuki Nishijima")).toEqual(null)
-    expect(validatePresence(["url/to/uploaded/image.jpg"])).toEqual(null)
-    expect(validatePresence({ firstName: "Yuki", lastName: "Nishijima" })).toEqual(null)
+  it("returns empty array when all required address fields present", () => {
+    expect(validateAddressFieldsPresence(mockFullAddress)).toEqual([])
   })
 
-  it("returns an error message when the input is not present", () => {
-    expect(validatePresence(null)).toEqual("This field is required")
-    expect(validatePresence(undefined)).toEqual("This field is required")
-    expect(validatePresence(false)).toEqual("This field is required")
-    expect(validatePresence("")).toEqual("This field is required")
-    expect(validatePresence([])).toEqual("This field is required")
-    expect(validatePresence({})).toEqual("This field is required")
+  it("correctly returns missing fields' keys as string[]", () => {
+    expect(validateAddressFieldsPresence(mockPartiallyEmptyAddress)).toEqual(["fullName", "state", "country"])
   })
 })
