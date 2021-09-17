@@ -1,5 +1,5 @@
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import InAppReview from "react-native-in-app-review"
 
 // Whether we have requested during the current session or not.
 let hasRequested = false
@@ -8,7 +8,7 @@ let hasRequested = false
  * This method is designed to be called often, and it encapsulates all logic necessary for
  * deciding whether or not to prompt the user for an app rating.
  */
-export function userHadMeaningfulInteraction() {
+export async function userHadMeaningfulInteraction() {
   const launchCount = getCurrentEmissionState().launchCount
 
   // We choose to ask the user on their second session, as well as their 22nd, 42nd, etc.
@@ -17,7 +17,12 @@ export function userHadMeaningfulInteraction() {
   if (launchCount % 20 === 2) {
     if (!hasRequested) {
       hasRequested = true
-      LegacyNativeModules.AREventsModule.requestAppStoreRating()
+      try {
+        await InAppReview.RequestInAppReview()
+      } catch (error) {
+        console.log("something went wrong while prompting for review")
+        console.log(error)
+      }
     }
   }
 }
