@@ -223,7 +223,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({ onSubmit, naviga
                       value={address.country.shortName}
                       hasError={!!countryErr}
                     />
-                    {!!countryErr && (
+                    {!!countryError && (
                       <Sans size="2" mt="1" color="red100">
                         {countryErr}
                       </Sans>
