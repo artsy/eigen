@@ -58,8 +58,10 @@ export const Favorites: React.FC<Props> = ({
     })
   }
 
+  const showFavoriteArtworksTab = !enableMyCollection
+
   const tabs = compact([
-    !enableMyCollection && {
+    showFavoriteArtworksTab && {
       title: Tab.works,
       content: <FavoriteArtworksQueryRenderer />,
       initial: initialTab === Tab.works,
