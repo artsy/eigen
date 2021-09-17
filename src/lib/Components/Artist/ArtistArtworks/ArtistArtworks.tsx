@@ -1,19 +1,16 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
-import {
-  Aggregations,
-  filterArtworksParams,
-  getSelectedFiltersCounts,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { Aggregations, filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ORDERED_ARTWORK_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
 import { getAllowedFiltersForSavedSearchInput } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
-import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
+import { useArtworkFilters, useSelectedFiltersCount } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader"
+import { ArtworksFilterHeader as FilterHeader } from "lib/Components/ArtworkGrids/FilterHeader2"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
@@ -22,8 +19,7 @@ import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/Stick
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
-import { Box, FilterIcon, Flex, Separator, Spacer, Text, TouchableHighlightColor } from "palette"
-import { bullet } from "palette"
+import { Box, Separator, Spacer } from "palette"
 import React, { useContext, useEffect, useMemo, useState } from "react"
 import { Platform } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -107,10 +103,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
 
   const filterParams = useMemo(() => filterArtworksParams(appliedFilters), [appliedFilters])
-  const appliedFiltersCount = useMemo(
-    () => Object.values(getSelectedFiltersCounts(appliedFilters)).reduce((prev, value) => prev + value, 0),
-    [appliedFilters]
-  )
+  const appliedFiltersCount = useSelectedFiltersCount()
   const allowedFiltersForSavedSearch = useMemo(() => getAllowedFiltersForSavedSearchInput(appliedFilters), [
     appliedFilters,
   ])
@@ -154,24 +147,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     setJSX(
       <Box backgroundColor="white">
         {enableSavedSearchV2 || enableSavedSearch ? (
-          <Flex flexDirection="row" height={28} my={1} px={2} justifyContent="space-between" alignItems="center">
-            <TouchableHighlightColor
-              haptic
-              onPress={openFilterModal}
-              render={({ color }) => (
-                <Flex flex={1} flexDirection="row" alignItems="center">
-                  <FilterIcon fill={color} width="20px" height="20px" />
-                  <Text variant="small" numberOfLines={1} color={color} ml={0.5}>
-                    Sort & Filter
-                  </Text>
-                  {appliedFiltersCount > 0 && (
-                    <Text variant="small" color="blue100">
-                      {` ${bullet} ${appliedFiltersCount}`}
-                    </Text>
-                  )}
-                </Flex>
-              )}
-            />
+          <FilterHeader onFilterPress={openFilterModal} selectedFiltersCount={appliedFiltersCount}>
             {allowedFiltersForSavedSearch.length > 0 ? (
               !!enableSavedSearchV2 ? (
                 <SavedSearchButtonQueryRenderer
@@ -189,7 +165,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
                 />
               )
             ) : null}
-          </Flex>
+          </FilterHeader>
         ) : (
           <ArtworksFilterHeader count={artworksTotal} onFilterPress={openFilterModal} />
         )}
