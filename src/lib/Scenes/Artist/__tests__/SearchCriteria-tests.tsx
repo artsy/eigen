@@ -16,6 +16,7 @@ describe("SearchCriteria", () => {
 
   it("should not query the search criteria when `SavedSearchBanner` flag is set to false", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: false })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchV2: false })
     const mockRenderComponent = jest.fn(() => <></>)
 
     renderWithWrappers(

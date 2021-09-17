@@ -62,6 +62,7 @@ describe("Saved search banner on artist screen", () => {
 
   it("should not render saved search button when AREnableSavedSearch flag set to false", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: false })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchV2: false })
 
     const tree = getTree("search-criteria-id")
 
