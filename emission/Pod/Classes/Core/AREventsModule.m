@@ -1,7 +1,5 @@
 #import "AREventsModule.h"
 
-#import <StoreKit/SKStoreReviewController.h>
-
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 #import <React/UIView+React.h>
@@ -12,10 +10,5 @@
 @synthesize bridge = _bridge;
 
 RCT_EXPORT_MODULE();
-
-RCT_EXPORT_METHOD(requestAppStoreRating)
-{
-    [SKStoreReviewController requestReview];
-}
 
 @end
