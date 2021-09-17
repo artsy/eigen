@@ -1,4 +1,3 @@
-import { OwnerType } from "@artsy/cohesion"
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileSettings_me } from "__generated__/MyProfileSettings_me.graphql"
 import { MyProfileSettingsQuery } from "__generated__/MyProfileSettingsQuery.graphql"
@@ -10,8 +9,6 @@ import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
-import { screen } from "lib/utils/track/helpers"
 import { Button, Flex, Sans, Separator, Spacer, useColor } from "palette"
 import React, { useCallback, useRef, useState } from "react"
 import { Alert, FlatList, RefreshControl, ScrollView } from "react-native"
@@ -177,23 +174,22 @@ export const MyProfileSettingsContainer = createRefetchContainer(
 )
 
 export const MyProfileSettingsQueryRenderer: React.FC<{}> = ({}) => (
-  <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.profile })}>
-    <QueryRenderer<MyProfileSettingsQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query MyProfileSettingsQuery {
-          me @optionalField {
-            ...MyProfileSettings_me
-          }
+  // TODO:- Add Screen Tracking For MyProfileSettings
+  <QueryRenderer<MyProfileSettingsQuery>
+    environment={defaultEnvironment}
+    query={graphql`
+      query MyProfileSettingsQuery {
+        me @optionalField {
+          ...MyProfileSettings_me
         }
-      `}
-      render={renderWithPlaceholder({
-        Container: MyProfileSettingsContainer,
-        renderPlaceholder: () => <MyProfileSettingsPlaceholder />,
-      })}
-      variables={{}}
-    />
-  </ProvideScreenTrackingWithCohesionSchema>
+      }
+    `}
+    render={renderWithPlaceholder({
+      Container: MyProfileSettingsContainer,
+      renderPlaceholder: () => <MyProfileSettingsPlaceholder />,
+    })}
+    variables={{}}
+  />
 )
 
 export function confirmLogout() {

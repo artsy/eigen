@@ -109,7 +109,10 @@ const MyCollection: React.FC<{
         mode="add"
         visible={showModal}
         onDismiss={() => setShowModal(false)}
-        onSuccess={() => setShowModal(false)}
+        onSuccess={() => {
+          setShowModal(false)
+          refreshMyCollection()
+        }}
       />
       {artworks.length === 0 ? (
         <ScrollView

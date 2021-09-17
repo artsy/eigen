@@ -126,7 +126,6 @@ const FavoriteArtworksContainer = createPaginationContainer(
       fragment FavoriteArtworks_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         labFeatures
-        # TODO: This should move into followsAndSaves
         followsAndSaves {
           artworks: artworksConnection(private: true, first: $count, after: $cursor)
             @connection(key: "GenericGrid_artworks") {
