@@ -1,0 +1,34 @@
+diff --git a/node_modules/react-native-config/react-native-config.podspec b/node_modules/react-native-config/react-native-config.podspec
+index 2864c53..d861fd3 100644
+--- a/node_modules/react-native-config/react-native-config.podspec
++++ b/node_modules/react-native-config/react-native-config.podspec
+@@ -22,6 +22,14 @@ Pod::Spec.new do |s|
+     script: %(
+ set -ex
+ HOST_PATH="$SRCROOT/../.."
++# Use CI or shared env file.
++if [ -z ${CI+x} ]; then
++  echo "Not running on CI, using shared env file";
++  export ENVFILE=".env.shared";
++else
++  echo "Running on CI, using CI env file";
++  export ENVFILE=".env.ci";
++fi
+ "${PODS_TARGET_SRCROOT}/ios/ReactNativeConfig/BuildDotenvConfig.rb" "$HOST_PATH" "${PODS_TARGET_SRCROOT}/ios/ReactNativeConfig"
+ ),
+     execution_position: :before_compile,
+@@ -44,6 +52,14 @@ HOST_PATH="$SRCROOT/../.."
+       script: %(
+         set -ex
+         HOST_PATH="$SRCROOT/../.."
++        # Use CI or shared env file.
++        if [ -z ${CI+x} ]; then
++          echo "Not running on CI, using shared env file";
++          export ENVFILE=".env.shared";
++        else
++          echo "Running on CI, using CI env file";
++          export ENVFILE=".env.ci";
++        fi
+         "${PODS_TARGET_SRCROOT}/ios/ReactNativeConfig/BuildDotenvConfig.rb" "$HOST_PATH" "${PODS_TARGET_SRCROOT}/ios/ReactNativeConfig"
+         ),
+       execution_position: :before_compile,
