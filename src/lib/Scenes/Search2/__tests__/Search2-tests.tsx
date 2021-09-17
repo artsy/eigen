@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, waitFor } from "@testing-library/react-native"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { RecentSearch } from "lib/Scenes/Search/SearchModel"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
@@ -64,9 +64,11 @@ describe("Search2 Screen", () => {
     fireEvent.changeText(searchInput, "Ba")
     expect(searchInput).toHaveProp("value", "Ba")
 
-    // Pill should be visible
-    expect(getByText("Artworks")).toBeTruthy()
-    expect(getByText("Artists")).toBeTruthy()
+    // Pills should be visible
+    await waitFor(() => {
+      getByText("Artworks")
+      getByText("Artists")
+    })
   })
 
   it("does not show city guide entrance when on iPad", () => {

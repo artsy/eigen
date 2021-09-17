@@ -2,6 +2,7 @@ import { captureMessage } from "@sentry/react-native"
 import { Search2_system } from "__generated__/Search2_system.graphql"
 import { Search2Query } from "__generated__/Search2Query.graphql"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
+import { DEBOUNCE_DELAY } from "lib/Components/ArtworkFilter/Filters/KeywordFilter"
 import { SearchInput as SearchBox } from "lib/Components/SearchInput"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
@@ -9,6 +10,7 @@ import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
 import { useSearchInsightsConfig } from "lib/utils/useSearchInsightsConfig"
+import { debounce } from "lodash"
 import { Box, Flex, Spacer } from "palette"
 import React, { useMemo, useState } from "react"
 import {
@@ -43,18 +45,22 @@ const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholde
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
 
+  const onChangeTextHandler = (queryText: string) => {
+    refine(queryText)
+    trackEvent({
+      action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
+      query: queryText,
+    })
+  }
+
+  const debouncedEventHandler = useMemo(() => debounce(onChangeTextHandler, DEBOUNCE_DELAY), [])
+
   return (
     <SearchBox
       ref={searchProviderValues.inputRef}
       enableCancelButton
       placeholder={placeholder}
-      onChangeText={(queryText) => {
-        refine(queryText)
-        trackEvent({
-          action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
-          query: queryText,
-        })
-      }}
+      onChangeText={debouncedEventHandler}
       onFocus={() => {
         trackEvent({
           action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
