@@ -9,7 +9,7 @@ import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
 import { useSearchInsightsConfig } from "lib/utils/useSearchInsightsConfig"
-import { Flex, Pill, Spacer } from "palette"
+import { Box, Flex, Spacer } from "palette"
 import React, { useMemo, useState } from "react"
 import {
   Configure,
@@ -26,10 +26,12 @@ import { AutosuggestResults } from "../Search/AutosuggestResults"
 import { CityGuideCTA } from "../Search/CityGuideCTA"
 import { RecentSearches } from "../Search/RecentSearches"
 import { SearchContext, useSearchProviderValues } from "../Search/SearchContext"
+import { SearchPills } from "./components/SearchPills"
 import { SearchPlaceholder } from "./components/SearchPlaceholder"
 import { RefetchWhenApiKeyExpiredContainer } from "./containers/RefetchWhenApiKeyExpired"
 import { SearchArtworksQueryRenderer } from "./containers/SearchArtworksContainer"
 import { SearchResults } from "./SearchResults"
+import { PillType } from "./types"
 
 interface SearchInputProps {
   placeholder: string
@@ -75,11 +77,6 @@ const SearchResultsContainer = connectInfiniteHits(SearchResultsContainerWithSta
 interface SearchState {
   query?: string
   page?: number
-}
-
-interface PillType {
-  name: string
-  displayName: string
 }
 
 const pills: PillType[] = [{ name: "ARTWORK", displayName: "Artworks" }]
@@ -141,6 +138,11 @@ export const Search2: React.FC<Search2Props> = (props) => {
     setSelectedAlgoliaIndex(selectedAlgoliaIndex === name ? "" : name)
   }
 
+  const isSelected = (pill: PillType) => {
+    const { name } = pill
+    return selectedAlgoliaIndex === name || elasticSearchEntity === name
+  }
+
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <ArtsyKeyboardAvoidingView>
@@ -157,24 +159,9 @@ export const Search2: React.FC<Search2Props> = (props) => {
           </Flex>
           {!!shouldStartQuering ? (
             <>
-              <Flex p={2} pb={1}>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  {pillsArray.map((pill) => {
-                    const { name, displayName } = pill
-                    return (
-                      <Pill
-                        mr={1}
-                        key={name}
-                        rounded
-                        selected={selectedAlgoliaIndex === name || elasticSearchEntity === name}
-                        onPress={() => handlePillPress(pill)}
-                      >
-                        {displayName}
-                      </Pill>
-                    )
-                  })}
-                </ScrollView>
-              </Flex>
+              <Box pt={2} pb={1}>
+                <SearchPills pills={pillsArray} onPillPress={handlePillPress} isSelected={isSelected} />
+              </Box>
               {renderResults(activePillDisplayName)}
             </>
           ) : (
