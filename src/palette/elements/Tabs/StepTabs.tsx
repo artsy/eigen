@@ -33,13 +33,9 @@ export const StepTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, tabs }) =
               onLayout={(e) => {
                 const layout = e.nativeEvent.layout
                 setTabLayouts((layouts) => {
-                  // update layouts only once per tab
                   const result = layouts.slice(0)
-                  if (!result[index]) {
-                    result[index] = layout
-                    return result
-                  }
-                  return layouts
+                  result[index] = layout
+                  return result
                 })
               }}
             >
