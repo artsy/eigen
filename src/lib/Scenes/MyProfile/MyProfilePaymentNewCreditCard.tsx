@@ -145,7 +145,6 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
 
           <LiteCreditCardInput
             ref={paymentInfoRef}
-            inputStyle={{ height: INPUT_HEIGHT, border: 10 }}
             onChange={(e) => {
               actions.fields.creditCard.setValue({
                 valid: e.valid,

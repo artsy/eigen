@@ -86,11 +86,11 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({ onSubmit, naviga
 
   // validates required fields & submits address
   const handleAddBillingAddressClick = (): void => {
-    const errs = validateAddressFieldsPresence(address)
+    const errors = validateAddressFieldsPresence(address)
 
-    setAddressFieldsWithError(errs)
+    setAddressFieldsWithError(errors)
 
-    if (!errs.length) {
+    if (!errors.length) {
       onSubmit(address)
       navigator?.pop()
       track({
@@ -212,7 +212,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({ onSubmit, naviga
 
             <ScreenDimensionsContext.Consumer>
               {({ height }) => {
-                const countryErr = checkFieldError("country")
+                const countryError = checkFieldError("country")
 
                 return (
                   <Flex mb={4}>
@@ -221,11 +221,11 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({ onSubmit, naviga
                       maxModalHeight={height * 0.95}
                       onSelectValue={(value: string) => handleCountrySelection(value)}
                       value={address.country.shortName}
-                      hasError={!!countryErr}
+                      hasError={!!countryError}
                     />
-                    {!!countryErr && (
+                    {!!countryError && (
                       <Sans size="2" mt="1" color="red100">
-                        {countryErr}
+                        {countryError}
                       </Sans>
                     )}
                   </Flex>
