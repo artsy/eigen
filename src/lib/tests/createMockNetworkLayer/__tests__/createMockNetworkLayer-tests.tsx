@@ -1,5 +1,5 @@
 import { graphql } from "react-relay"
-import { Environment, fetchQuery, GraphQLTaggedNode, RecordSource, Store } from "relay-runtime"
+import { Environment, fetchQuery_DEPRECATED, GraphQLTaggedNode, RecordSource, Store } from "relay-runtime"
 import { createMockNetworkLayer2 } from "../index"
 
 jest.unmock("react-relay")
@@ -12,7 +12,7 @@ describe("createMockNetworkLayer", () => {
     const store = new Store(source)
     const environment = new Environment({ network, store })
 
-    return fetchQuery<{ variables: {}; response: any }>(
+    return fetchQuery_DEPRECATED<{ variables: {}; response: any }>(
       environment,
       query ||
         graphql`
