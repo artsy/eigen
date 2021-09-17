@@ -92,8 +92,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
 
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedFilterOption = selectedOptions.find((option) => option.paramName === PARAM_NAME)!
-  const isCustomOption =
-    PRICE_RANGE_OPTIONS.find((option) => option.paramValue === selectedFilterOption.paramValue) === undefined
+  const isCustomOption = PRICE_RANGE_OPTIONS.every((option) => option.paramValue !== selectedFilterOption.paramValue)
   const [customPriceValue, setCustomPriceValue] = useState(
     parseRange(isCustomOption ? (selectedFilterOption.paramValue as string) : DEFAULT_PRICE_OPTION.paramValue)
   )
