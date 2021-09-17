@@ -228,6 +228,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
       loading={inProcess}
       longestText="Remove Alert"
       haptic
+      testID="create-saved-search-banner"
     >
       {enabled ? "Remove Alert" : "Create Alert"}
     </Button>
