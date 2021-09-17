@@ -47,15 +47,13 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       >
         <Flex flex={1} px={1.5} paddingTop={60} justifyContent="flex-start">
           <Text variant="largeTitle">Reset password</Text>
-          <Text pt={1.5} variant="caption" color="black60">
+          <Text pt={1.5} color="black60">
             Please enter the email address associated with your Artsy account to receive a reset link.
           </Text>
           <Spacer mt={100} />
 
           {!!requestedPasswordReset ? (
-            <Text variant="caption" color="black60">
-              Password reset link sent. Check your email.
-            </Text>
+            <Text color="black60">Password reset link sent. Check your email.</Text>
           ) : (
             <Input
               ref={inputRef}
