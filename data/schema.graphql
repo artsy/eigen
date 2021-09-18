@@ -8169,6 +8169,9 @@ type Me implements Node {
     sort: MyCollectionArtworkSorts
   ): MyCollectionConnection
   name: String
+
+  # A connection of new works by artists the user interacted with (sorted by publication date).
+  newWorksByInterestingArtists(after: String, before: String, first: Int, last: Int, page: Int): ArtworkConnection
   orders(
     after: String
     before: String
