@@ -10,7 +10,6 @@ import { MyCollectionArtworkArtistArticlesFragmentContainer } from "./MyCollecti
 import { MyCollectionArtworkArtistAuctionResultsFragmentContainer } from "./MyCollectionArtworkArtistAuctionResults"
 import { MyCollectionArtworkArtistMarketFragmentContainer } from "./MyCollectionArtworkArtistMarket"
 import { MyCollectionArtworkDemandIndexFragmentContainer } from "./MyCollectionArtworkDemandIndex"
-import { MyCollectionArtworkPriceEstimateFragmentContainer } from "./MyCollectionArtworkPriceEstimate"
 
 interface MyCollectionArtworkInsightsProps {
   artwork: MyCollectionArtworkInsights_artwork
@@ -38,13 +37,6 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
           </ScreenMargin>
           <Spacer mt={3} />
           <MyCollectionArtworkDemandIndexFragmentContainer
-            artwork={artwork}
-            marketPriceInsights={marketPriceInsights}
-          />
-          <ScreenMargin my={3}>
-            <Separator />
-          </ScreenMargin>
-          <MyCollectionArtworkPriceEstimateFragmentContainer
             artwork={artwork}
             marketPriceInsights={marketPriceInsights}
           />
