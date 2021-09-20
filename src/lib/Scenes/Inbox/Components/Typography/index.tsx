@@ -3,14 +3,11 @@ import { StyleSheet, Text, TextProps, TextStyle } from "react-native"
 
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
-import { ThemeV2Type, ThemeV3Type, useTheme, useThemeConfig } from "palette"
+import { useTheme } from "palette"
 
 const LargeHeadline: React.FC<TextProps> = (props) => {
   const { theme } = useTheme()
-  const fontFamily = useThemeConfig({
-    v2: (theme as ThemeV2Type).fonts.sans,
-    v3: (theme as ThemeV3Type).fonts.sans.regular,
-  })
+  const fontFamily = theme.fonts.sans.regular
   const children: string = (props as any).children
   const style = [styles.largeDefault, props.style || {}, { fontFamily }]
   return (
@@ -22,10 +19,7 @@ const LargeHeadline: React.FC<TextProps> = (props) => {
 
 const SmallHeadline: React.FC<TextProps & { disabled?: boolean }> = (props) => {
   const { theme } = useTheme()
-  const fontFamily = useThemeConfig({
-    v2: (theme as ThemeV2Type).fonts.sans,
-    v3: (theme as ThemeV3Type).fonts.sans.regular,
-  })
+  const fontFamily = theme.fonts.sans.regular
   const children: string = (props as any).children
   const style = [styles.smallDefault, props.disabled && styles.disabled, props.style || {}, { fontFamily }]
   return (
@@ -57,10 +51,7 @@ const FromSignatureText: React.FC<TextProps> = (props) => {
 
 const MetadataText: React.FC<TextProps> = (props) => {
   const { theme } = useTheme()
-  const fontFamily = useThemeConfig({
-    v2: (theme as ThemeV2Type).fonts.sans,
-    v3: (theme as ThemeV3Type).fonts.sans.regular,
-  })
+  const fontFamily = theme.fonts.sans.regular
   const children: string = (props as any).children
   const style = [styles.metadataDefault, props.style || {}, { fontFamily }]
   return (

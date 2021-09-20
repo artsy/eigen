@@ -165,7 +165,7 @@ const THEMES = {
 
 export type ThemeV2Type = typeof THEMES.v2
 export type ThemeV3Type = typeof THEMES.v3
-export type ThemeType = ThemeV2Type | ThemeV3Type
+export type ThemeType = ThemeV3Type
 
 /**
  * Do not use this!! Use any the hooks instead!
