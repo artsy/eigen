@@ -90,7 +90,7 @@ const ListItem = ({
   const selected = item.displayText === selectedOption.displayText
 
   return (
-    <TouchableRow onPress={() => onSelect(item)}>
+    <TouchableRow accessibilityState={{ selected }} onPress={() => onSelect(item)}>
       <OptionListItem>
         <InnerOptionListItem px={withExtraPadding && item.displayText !== "All" ? 3 : 2}>
           <Text color="black100" variant="caption">

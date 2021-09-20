@@ -91,6 +91,7 @@ const CustomSizeInput: React.FC<CustomSizeInputProps> = ({ initialValue, onChang
           defaultValue={state.width.min === "*" || state.width.min === 0 ? undefined : String(state.width.min)}
           keyboardType="number-pad"
           onChangeText={handleChange("width")("min")}
+          testID="minimum-width-input"
         />
 
         <Text mx={2}>to</Text>
@@ -100,6 +101,7 @@ const CustomSizeInput: React.FC<CustomSizeInputProps> = ({ initialValue, onChang
           defaultValue={state.width.max === "*" ? undefined : String(state.width.max)}
           keyboardType="number-pad"
           onChangeText={handleChange("width")("max")}
+          testID="maximum-width-input"
         />
       </Flex>
 
@@ -115,6 +117,7 @@ const CustomSizeInput: React.FC<CustomSizeInputProps> = ({ initialValue, onChang
           defaultValue={state.height.min === "*" || state.height.min === 0 ? undefined : String(state.height.min)}
           keyboardType="number-pad"
           onChangeText={handleChange("height")("min")}
+          testID="minimum-height-input"
         />
 
         <Text mx={2}>to</Text>
@@ -124,6 +127,7 @@ const CustomSizeInput: React.FC<CustomSizeInputProps> = ({ initialValue, onChang
           defaultValue={state.height.max === "*" ? undefined : String(state.height.max)}
           keyboardType="number-pad"
           onChangeText={handleChange("height")("max")}
+          testID="maximum-height-input"
         />
       </Flex>
     </Flex>
