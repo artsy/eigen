@@ -179,6 +179,27 @@ describe(SearchResult, () => {
     expect(extractText(tree.root)).toContain("Artworks")
   })
 
+  it(`does not show navigation buttons when disabled`, async () => {
+    const tree = renderWithWrappers(
+      <TestWrapper
+        result={{
+          displayLabel: "Banksy",
+          href: "/artist/anto-carte",
+          imageUrl: "blah",
+          __typename: "Artist",
+          counts: {
+            artworks: 12,
+            auctionResults: 4,
+          },
+        }}
+        showQuickNavigationButtons={false}
+      />
+    )
+
+    expect(extractText(tree.root)).not.toContain("Auction Results")
+    expect(extractText(tree.root)).not.toContain("Artworks")
+  })
+
   it(`does not show navigation buttons when enabled, but unavailable`, async () => {
     const tree = renderWithWrappers(
       <TestWrapper
