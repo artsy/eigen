@@ -35,7 +35,7 @@ import { _FragmentRefs, createRefetchContainer, graphql, RelayRefetchProp } from
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
-import { InterestingArtworksRailContainer } from "./Components/InterestingArtworksRail"
+import { NewWorksForYouRailContainer } from "./Components/NewWorksForYouRail"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProps {
@@ -203,7 +203,7 @@ const Home = (props: Props) => {
                   )
                 case "newWorksForYou":
                   return meAbove ? (
-                    <InterestingArtworksRailContainer me={meAbove} scrollRef={scrollRefs.current[index]} />
+                    <NewWorksForYouRailContainer me={meAbove} scrollRef={scrollRefs.current[index]} />
                   ) : (
                     <></>
                   )
@@ -293,7 +293,7 @@ export const HomeFragmentContainer = createRefetchContainer(
       fragment Home_meAbove on Me {
         ...EmailConfirmationBanner_me
         ...SaleArtworksHomeRail_me
-        ...InterestingArtworksRail_me
+        ...NewWorksForYouRail_me
       }
     `,
     meBelow: graphql`
@@ -323,7 +323,7 @@ export const HomeFragmentContainer = createRefetchContainer(
       me @optionalField {
         ...Home_meAbove
         ...AuctionResultsRail_me
-        ...InterestingArtworksRail_me
+        ...NewWorksForYouRail_me
       }
       meBelow: me @optionalField {
         ...Home_meBelow
@@ -512,7 +512,7 @@ export const HomeQueryRenderer: React.FC = () => {
                 }
                 me @optionalField {
                   ...Home_meAbove
-                  ...InterestingArtworksRail_me
+                  ...NewWorksForYouRail_me
                 }
                 articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
                   ...Home_articlesConnection

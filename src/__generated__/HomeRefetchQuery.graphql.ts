@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 53b8a81b628eaaa4b89bcabbb4952dcf */
+/* @relayHash 772ac72bf5e8a15c0801e6576a706d37 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -17,7 +17,7 @@ export type HomeRefetchQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"Home_homePageBelow">;
     } | null;
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"Home_meAbove" | "AuctionResultsRail_me" | "InterestingArtworksRail_me">;
+        readonly " $fragmentRefs": FragmentRefs<"Home_meAbove" | "AuctionResultsRail_me" | "NewWorksForYouRail_me">;
     } | null;
     readonly meBelow: {
         readonly " $fragmentRefs": FragmentRefs<"Home_meBelow">;
@@ -49,7 +49,7 @@ query HomeRefetchQuery(
   me @optionalField {
     ...Home_meAbove
     ...AuctionResultsRail_me
-    ...InterestingArtworksRail_me
+    ...NewWorksForYouRail_me
     id
   }
   meBelow: me @optionalField {
@@ -381,14 +381,14 @@ fragment Home_homePageBelow_1IwJ0h on HomePage {
 fragment Home_meAbove on Me {
   ...EmailConfirmationBanner_me
   ...SaleArtworksHomeRail_me
-  ...InterestingArtworksRail_me
+  ...NewWorksForYouRail_me
 }
 
 fragment Home_meBelow on Me {
   ...AuctionResultsRail_me
 }
 
-fragment InterestingArtworksRail_me on Me {
+fragment NewWorksForYouRail_me on Me {
   newWorksByInterestingArtists(first: 6) {
     pageInfo {
       hasNextPage
@@ -1421,7 +1421,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "InterestingArtworksRail_me"
+            "name": "NewWorksForYouRail_me"
           }
         ],
         "storageKey": null
@@ -2093,7 +2093,7 @@ return {
             "args": (v49/*: any*/),
             "filters": null,
             "handle": "connection",
-            "key": "InterestingArtworksRail_newWorksByInterestingArtists",
+            "key": "NewWorksForYouRail_newWorksByInterestingArtists",
             "kind": "LinkedHandle",
             "name": "newWorksByInterestingArtists"
           },
@@ -2276,7 +2276,7 @@ return {
     ]
   },
   "params": {
-    "id": "53b8a81b628eaaa4b89bcabbb4952dcf",
+    "id": "772ac72bf5e8a15c0801e6576a706d37",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",
@@ -2284,5 +2284,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'b7281b059671307a7ad57a1d4cdfb774';
+(node as any).hash = '5d1c1715e0b167d5c752f4682be84ba9';
 export default node;

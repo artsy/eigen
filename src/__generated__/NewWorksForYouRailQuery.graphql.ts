@@ -1,38 +1,38 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6c002549bf93896be303237e7f10d3d6 */
+/* @relayHash e5a3c3f31d5c73ae34ae834bf4bc900f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type InterestingArtworksRailQueryVariables = {
+export type NewWorksForYouRailQueryVariables = {
     cursor?: string | null;
     count: number;
 };
-export type InterestingArtworksRailQueryResponse = {
+export type NewWorksForYouRailQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"InterestingArtworksRail_me">;
+        readonly " $fragmentRefs": FragmentRefs<"NewWorksForYouRail_me">;
     } | null;
 };
-export type InterestingArtworksRailQuery = {
-    readonly response: InterestingArtworksRailQueryResponse;
-    readonly variables: InterestingArtworksRailQueryVariables;
+export type NewWorksForYouRailQuery = {
+    readonly response: NewWorksForYouRailQueryResponse;
+    readonly variables: NewWorksForYouRailQueryVariables;
 };
 
 
 
 /*
-query InterestingArtworksRailQuery(
+query NewWorksForYouRailQuery(
   $cursor: String
   $count: Int!
 ) {
   me {
-    ...InterestingArtworksRail_me_1G22uz
+    ...NewWorksForYouRail_me_1G22uz
     id
   }
 }
 
-fragment InterestingArtworksRail_me_1G22uz on Me {
+fragment NewWorksForYouRail_me_1G22uz on Me {
   newWorksByInterestingArtists(first: $count, after: $cursor) {
     pageInfo {
       hasNextPage
@@ -120,7 +120,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "InterestingArtworksRailQuery",
+    "name": "NewWorksForYouRailQuery",
     "selections": [
       {
         "alias": null,
@@ -144,7 +144,7 @@ return {
               }
             ],
             "kind": "FragmentSpread",
-            "name": "InterestingArtworksRail_me"
+            "name": "NewWorksForYouRail_me"
           }
         ],
         "storageKey": null
@@ -160,7 +160,7 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "InterestingArtworksRailQuery",
+    "name": "NewWorksForYouRailQuery",
     "selections": [
       {
         "alias": null,
@@ -415,7 +415,7 @@ return {
             "args": (v2/*: any*/),
             "filters": null,
             "handle": "connection",
-            "key": "InterestingArtworksRail_newWorksByInterestingArtists",
+            "key": "NewWorksForYouRail_newWorksByInterestingArtists",
             "kind": "LinkedHandle",
             "name": "newWorksByInterestingArtists"
           },
@@ -426,13 +426,13 @@ return {
     ]
   },
   "params": {
-    "id": "6c002549bf93896be303237e7f10d3d6",
+    "id": "e5a3c3f31d5c73ae34ae834bf4bc900f",
     "metadata": {},
-    "name": "InterestingArtworksRailQuery",
+    "name": "NewWorksForYouRailQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '319e08d16ee309c833718d90f0018a89';
+(node as any).hash = '3ca133779de35482c427c6135fc2a0dc';
 export default node;

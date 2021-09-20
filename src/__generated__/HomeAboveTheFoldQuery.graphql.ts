@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 99948caee7b06dfbecc909f3fd2a814d */
+/* @relayHash f0989c89ba88d188d9e75538774d4549 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -14,7 +14,7 @@ export type HomeAboveTheFoldQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"Home_homePageAbove">;
     } | null;
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"Home_meAbove" | "InterestingArtworksRail_me">;
+        readonly " $fragmentRefs": FragmentRefs<"Home_meAbove" | "NewWorksForYouRail_me">;
     } | null;
     readonly articlesConnection: {
         readonly " $fragmentRefs": FragmentRefs<"Home_articlesConnection">;
@@ -36,7 +36,7 @@ query HomeAboveTheFoldQuery(
   }
   me @optionalField {
     ...Home_meAbove
-    ...InterestingArtworksRail_me
+    ...NewWorksForYouRail_me
     id
   }
   articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
@@ -192,10 +192,10 @@ fragment Home_homePageAbove_1IwJ0h on HomePage {
 fragment Home_meAbove on Me {
   ...EmailConfirmationBanner_me
   ...SaleArtworksHomeRail_me
-  ...InterestingArtworksRail_me
+  ...NewWorksForYouRail_me
 }
 
-fragment InterestingArtworksRail_me on Me {
+fragment NewWorksForYouRail_me on Me {
   newWorksByInterestingArtists(first: 6) {
     pageInfo {
       hasNextPage
@@ -666,7 +666,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "InterestingArtworksRail_me"
+            "name": "NewWorksForYouRail_me"
           }
         ],
         "storageKey": null
@@ -1270,7 +1270,7 @@ return {
             "args": (v31/*: any*/),
             "filters": null,
             "handle": "connection",
-            "key": "InterestingArtworksRail_newWorksByInterestingArtists",
+            "key": "NewWorksForYouRail_newWorksByInterestingArtists",
             "kind": "LinkedHandle",
             "name": "newWorksByInterestingArtists"
           },
@@ -1352,7 +1352,7 @@ return {
     ]
   },
   "params": {
-    "id": "99948caee7b06dfbecc909f3fd2a814d",
+    "id": "f0989c89ba88d188d9e75538774d4549",
     "metadata": {},
     "name": "HomeAboveTheFoldQuery",
     "operationKind": "query",
@@ -1360,5 +1360,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'e69eb209434e0fb00821216cd9885dda';
+(node as any).hash = '7769f818211c9939dfc0ce7c40d7c4de';
 export default node;

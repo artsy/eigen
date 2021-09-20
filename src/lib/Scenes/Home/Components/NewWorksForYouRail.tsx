@@ -1,4 +1,4 @@
-import { InterestingArtworksRail_me } from "__generated__/InterestingArtworksRail_me.graphql"
+import { NewWorksForYouRail_me } from "__generated__/NewWorksForYouRail_me.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spinner, Theme } from "palette"
@@ -11,14 +11,14 @@ import { RailScrollProps } from "./types"
 
 const PAGE_SIZE = 10
 
-interface InterestingArtworksRailProps {
-  me: InterestingArtworksRail_me
+interface NewWorksForYouRailProps {
+  me: NewWorksForYouRail_me
   relay: RelayPaginationProp
   onHide?: () => void
   onShow?: () => void
 }
 
-const InterestingArtworksRail: React.FC<InterestingArtworksRailProps & RailScrollProps> = ({
+const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = ({
   me,
   relay,
   scrollRef,
@@ -92,14 +92,14 @@ const InterestingArtworksRail: React.FC<InterestingArtworksRailProps & RailScrol
   )
 }
 
-export const InterestingArtworksRailContainer = createPaginationContainer(
-  InterestingArtworksRail,
+export const NewWorksForYouRailContainer = createPaginationContainer(
+  NewWorksForYouRail,
   {
     me: graphql`
-      fragment InterestingArtworksRail_me on Me
+      fragment NewWorksForYouRail_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 6 }, cursor: { type: "String" }) {
         newWorksByInterestingArtists(first: $count, after: $cursor)
-          @connection(key: "InterestingArtworksRail_newWorksByInterestingArtists") {
+          @connection(key: "NewWorksForYouRail_newWorksByInterestingArtists") {
           pageInfo {
             hasNextPage
             startCursor
@@ -132,9 +132,9 @@ export const InterestingArtworksRailContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query InterestingArtworksRailQuery($cursor: String, $count: Int!) {
+      query NewWorksForYouRailQuery($cursor: String, $count: Int!) {
         me {
-          ...InterestingArtworksRail_me @arguments(cursor: $cursor, count: $count)
+          ...NewWorksForYouRail_me @arguments(cursor: $cursor, count: $count)
         }
       }
     `,

@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type InterestingArtworksRail_me = {
+export type NewWorksForYouRail_me = {
     readonly newWorksByInterestingArtists: {
         readonly pageInfo: {
             readonly hasNextPage: boolean;
@@ -17,12 +17,12 @@ export type InterestingArtworksRail_me = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "InterestingArtworksRail_me";
+    readonly " $refType": "NewWorksForYouRail_me";
 };
-export type InterestingArtworksRail_me$data = InterestingArtworksRail_me;
-export type InterestingArtworksRail_me$key = {
-    readonly " $data"?: InterestingArtworksRail_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"InterestingArtworksRail_me">;
+export type NewWorksForYouRail_me$data = NewWorksForYouRail_me;
+export type NewWorksForYouRail_me$key = {
+    readonly " $data"?: NewWorksForYouRail_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"NewWorksForYouRail_me">;
 };
 
 
@@ -53,14 +53,14 @@ const node: ReaderFragment = {
       }
     ]
   },
-  "name": "InterestingArtworksRail_me",
+  "name": "NewWorksForYouRail_me",
   "selections": [
     {
       "alias": "newWorksByInterestingArtists",
       "args": null,
       "concreteType": "ArtworkConnection",
       "kind": "LinkedField",
-      "name": "__InterestingArtworksRail_newWorksByInterestingArtists_connection",
+      "name": "__NewWorksForYouRail_newWorksByInterestingArtists_connection",
       "plural": false,
       "selections": [
         {
@@ -143,5 +143,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'f41f228a814798f5a5f0afdaad90af2d';
+(node as any).hash = 'fda5fb0fb53b2bd3a28d66bbe234b582';
 export default node;
