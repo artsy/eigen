@@ -142,12 +142,13 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
 
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedOption = selectedOptions.find((option) => option.paramName === PARAM_NAME)!
-  const appliedOption = appliedFilters.find((option) => option.paramName === PARAM_NAME) ?? DEFAULT_SIZE_OPTION
+  const appliedOption = appliedFilters.find((option) => option.paramName === PARAM_NAME)
+  const defaultOption = appliedOption ?? DEFAULT_SIZE_OPTION
   const selectedCustomOptions = selectedOptions.filter((option) =>
     CUSTOM_SIZE_OPTION_KEYS.includes(option.paramName as keyof CustomSize)
   )
-
-  const [shouldShowCustomSize, showCustomSize] = useState(selectedOption.displayText === CUSTOM_SIZE_OPTION.displayText)
+  const isCustomSize = selectedOption.displayText === CUSTOM_SIZE_OPTION.displayText
+  const [shouldShowCustomSize, showCustomSize] = useState(isCustomSize)
 
   const customInitialValue = selectedCustomOptions.reduce((acc, option) => {
     const { min, max } = parseRange(String(option.paramValue))
@@ -164,7 +165,7 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
   const selectOption = (option: AggregateOption) => {
     if (option.displayText === CUSTOM_SIZE_OPTION.displayText) {
       showCustomSize(true)
-      selectFiltersAction(appliedOption)
+      selectFiltersAction(defaultOption)
     } else {
       showCustomSize(false)
       resetCustomPrice()
@@ -192,8 +193,9 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
       return paramValue.min === "*" && paramValue.max === "*"
     })
 
+    // Populate the custom size filter only when we have at least one filled input
     if (isEmptyCustomValues) {
-      selectFiltersAction(appliedOption)
+      selectFiltersAction(defaultOption)
     } else {
       selectFiltersAction(CUSTOM_SIZE_OPTION)
     }
