@@ -1,5 +1,5 @@
 import { useNetInfo } from "@react-native-community/netinfo"
-import { Text } from "palette"
+import { Text, Theme } from "palette"
 import React from "react"
 import { Modal } from "react-native"
 import ReactTestRenderer from "react-test-renderer"
@@ -13,9 +13,11 @@ describe("NetworkAwareProvider", () => {
 
     // tslint:disable-next-line:use-wrapped-components
     const tree = ReactTestRenderer.create(
-      <NetworkAwareProvider>
-        <Text>Test</Text>
-      </NetworkAwareProvider>
+      <Theme>
+        <NetworkAwareProvider>
+          <Text>Test</Text>
+        </NetworkAwareProvider>
+      </Theme>
     )
 
     expect(tree.root.findAllByType(Modal)[0].props.visible).toEqual(true)
@@ -28,9 +30,11 @@ describe("NetworkAwareProvider", () => {
 
     // tslint:disable-next-line:use-wrapped-components
     const tree = ReactTestRenderer.create(
-      <NetworkAwareProvider>
-        <Text>Test</Text>
-      </NetworkAwareProvider>
+      <Theme>
+        <NetworkAwareProvider>
+          <Text>Test</Text>
+        </NetworkAwareProvider>
+      </Theme>
     )
 
     expect(tree.root.findAllByType(Modal)[0].props.visible).toEqual(false)
