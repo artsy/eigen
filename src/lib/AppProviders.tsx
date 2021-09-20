@@ -8,6 +8,7 @@ import { PopoverMessageProvider } from "./Components/PopoverMessage/PopoverMessa
 import { ToastProvider } from "./Components/Toast/toastHook"
 import { defaultEnvironment } from "./relay/createEnvironment"
 import { GlobalStoreProvider } from "./store/GlobalStore"
+import { NetworkAwareProvider } from "./utils/NetworkAwareProvider"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
 
 export const AppProviders = ({ children }: { children: ReactNode }) => (
@@ -18,13 +19,15 @@ export const AppProviders = ({ children }: { children: ReactNode }) => (
           <Theme>
             <ActionSheetProvider>
               <PopoverMessageProvider>
-                <_FancyModalPageWrapper>
-                  <ToastProvider>
-                    {/*  */}
-                    {children}
-                    {/*  */}
-                  </ToastProvider>
-                </_FancyModalPageWrapper>
+                <NetworkAwareProvider>
+                  <_FancyModalPageWrapper>
+                    <ToastProvider>
+                      {/*  */}
+                      {children}
+                      {/*  */}
+                    </ToastProvider>
+                  </_FancyModalPageWrapper>
+                </NetworkAwareProvider>
               </PopoverMessageProvider>
             </ActionSheetProvider>
           </Theme>
