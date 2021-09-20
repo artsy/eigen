@@ -1,16 +1,9 @@
-import { SavedSearchBanner } from "lib/Components/Artist/ArtistArtworks/SavedSearchBanner"
-import { SavedSearchButtonQueryRenderer } from "lib/Components/Artist/ArtistArtworks/SavedSearchButton"
-import { OptionListItem } from "lib/Components/ArtworkFilter"
-import { PopoverMessage } from "lib/Components/PopoverMessage/PopoverMessage"
+import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { extractText } from "lib/tests/extractText"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import _ from "lodash"
-import { Text, TouchableHighlightColor } from "palette"
 import React from "react"
 import "react-native"
-import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { ArtistQueryRenderer } from "../Artist"
@@ -27,6 +20,7 @@ describe("Saved search banner on artist screen", () => {
   let environment = createMockEnvironment()
 
   beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchV2: true })
     environment = createMockEnvironment()
     console.error = jest.fn()
     console.warn = jest.fn()
@@ -55,67 +49,52 @@ describe("Saved search banner on artist screen", () => {
   }
 
   const getTree = (searchCriteriaID?: string) => {
-    return renderWithWrappers(
+    return renderWithWrappersTL(
       <ArtistQueryRenderer artistID="ignored" environment={environment} searchCriteriaID={searchCriteriaID} />
     )
   }
 
-  it("should not render saved search button when AREnableSavedSearch flag set to false", () => {
+  it("should not render saved search button when AREnableSavedSearch flag set to false", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: false })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchV2: false })
 
-    const tree = getTree("search-criteria-id")
+    const { queryByText } = getTree("search-criteria-id")
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
-
-    expect(tree.root.findAllByType(SavedSearchBanner)).toHaveLength(0)
+    expect(queryByText("Create Alert")).toBeNull()
   })
 
   it("should convert the criteria attributes to the filter params format", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: true })
-
-    const tree = getTree("search-criteria-id")
+    const { getByText } = getTree("search-criteria-id")
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
-    act(() => tree.root.findByType(TouchableHighlightColor).props.onPress())
+    fireEvent.press(getByText("Sort & Filter"))
 
-    await flushPromiseQueue()
-
-    const filterTextValues = tree.root.findAllByType(OptionListItem).map(extractText)
-
-    expect(filterTextValues[0]).toContain("• 1")
-    expect(filterTextValues[1]).toContain("• 2")
-    expect(filterTextValues[2]).toContain("• 2")
+    expect(getByText("Sort By • 1")).toBeTruthy()
+    expect(getByText("Rarity • 2")).toBeTruthy()
+    expect(getByText("Ways to Buy • 2")).toBeTruthy()
   })
 
   it("should an error message when something went wrong during the search criteria query", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: true })
-
-    const tree = getTree("something")
+    const { getByText } = getTree("something")
 
     environment.mock.rejectMostRecentOperation(new Error())
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
-    const popoverMessageInstance = tree.root.findByType(PopoverMessage)
-    const textInstances = popoverMessageInstance.findAllByType(Text)
-
-    expect(textInstances[0].props.children).toEqual("Sorry, an error occured")
-    expect(textInstances[1].props.children).toEqual("Failed to get saved search criteria")
+    expect(getByText("Sorry, an error occured")).toBeTruthy()
+    expect(getByText("Failed to get saved search criteria")).toBeTruthy()
   })
 
   it("should render new saved search component if AREnableSavedSearchV2 flag set to true", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchV2: true })
-
-    const tree = getTree("search-criteria-id")
+    const { queryByTestId } = getTree("search-criteria-id")
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
-    await flushPromiseQueue()
-
-    expect(tree.root.findAllByType(SavedSearchButtonQueryRenderer)).toHaveLength(1)
-    expect(tree.root.findAllByType(SavedSearchBanner)).toHaveLength(0)
+    expect(queryByTestId("create-saved-search-button")).toBeTruthy()
+    expect(queryByTestId("create-saved-search-banner")).toBeNull()
   })
 })
 

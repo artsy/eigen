@@ -1,10 +1,24 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, waitFor } from "@testing-library/react-native"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { RecentSearch } from "lib/Scenes/Search/SearchModel"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { isPad } from "lib/utils/hardware"
 import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
 import { Search2QueryRenderer } from "../Search2"
+
+const banksy: RecentSearch = {
+  type: "AUTOSUGGEST_RESULT_TAPPED",
+  props: {
+    displayLabel: "Banksy",
+    displayType: "Artist",
+    href: "https://artsy.com/artist/banksy",
+    imageUrl: "https://org-name.my-cloud-provider.com/bucket-hash/content-hash.jpg",
+    __typename: "Artist",
+  },
+}
 
 jest.unmock("react-relay")
 jest.mock("lib/utils/hardware", () => ({
@@ -15,14 +29,6 @@ jest.mock("lib/utils/useSearchInsightsConfig", () => ({
 }))
 
 jest.mock("../../Search/AutosuggestResults.tsx", () => ({ AutosuggestResults: () => null }))
-jest.mock("../../Search/RecentSearches", () => ({
-  RecentSearches: () => null,
-  ProvideRecentSearches: ({ children }: any) => children,
-  RecentSearchContext: {
-    useStoreState: () => [],
-  },
-  getRecentSearches: jest.fn(() => []),
-}))
 
 describe("Search2 Screen", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
@@ -51,10 +57,47 @@ describe("Search2 Screen", () => {
     // Pill should not be visible
     expect(queryByText("Artists")).toBeFalsy()
 
+    // should show City Guide
+    expect(getByText("City Guide")).toBeTruthy()
+    expect(getByText("Recent searches")).toBeTruthy()
+
     fireEvent.changeText(searchInput, "Ba")
     expect(searchInput).toHaveProp("value", "Ba")
 
-    // Pill should be visible
-    expect(getByText("Artists")).toBeTruthy()
+    // Pills should be visible
+    await waitFor(() => {
+      getByText("Artworks")
+      getByText("Artists")
+    })
+  })
+
+  it("does not show city guide entrance when on iPad", () => {
+    const isPadMock = isPad as jest.Mock
+    isPadMock.mockImplementationOnce(() => true)
+    const { queryByText } = renderWithWrappersTL(<TestRenderer />)
+    expect(queryByText("City Guide")).toBeFalsy()
+  })
+
+  it("shows city guide entrance when there are recent searches", () => {
+    __globalStoreTestUtils__?.injectState({
+      search: {
+        recentSearches: [banksy],
+      },
+    })
+    const isPadMock = isPad as jest.Mock
+    isPadMock.mockImplementationOnce(() => false)
+    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    expect(getByText("Explore art on view")).toBeTruthy()
+  })
+
+  it("shows the cancel button when the input focuses", () => {
+    const { queryByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+
+    expect(queryByText("Cancel")).toBeFalsy()
+
+    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+    fireEvent(searchInput, "focus")
+    expect(queryByText("Cancel")).toBeTruthy()
   })
 })
