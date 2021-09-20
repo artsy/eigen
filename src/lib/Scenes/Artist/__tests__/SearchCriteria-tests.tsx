@@ -1,6 +1,6 @@
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
 import { SearchCriteriaQueryRenderer } from "../SearchCriteria"
@@ -11,14 +11,16 @@ describe("SearchCriteria", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchV2: true })
     mockEnvironment = createMockEnvironment()
   })
 
   it("should not query the search criteria when `SavedSearchBanner` flag is set to false", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: false })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchV2: false })
     const mockRenderComponent = jest.fn(() => <></>)
 
-    renderWithWrappers(
+    renderWithWrappersTL(
       <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
@@ -32,10 +34,9 @@ describe("SearchCriteria", () => {
   })
 
   it("should not query the search criteria when searchCriteriaId is not passed", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: true })
     const mockRenderComponent = jest.fn(() => <></>)
 
-    renderWithWrappers(
+    renderWithWrappersTL(
       <SearchCriteriaQueryRenderer render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }} />
     )
 
@@ -46,10 +47,9 @@ describe("SearchCriteria", () => {
   })
 
   it("should query the search criteria", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: true })
     const mockRenderComponent = jest.fn(() => <></>)
 
-    renderWithWrappers(
+    renderWithWrappersTL(
       <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
@@ -66,10 +66,9 @@ describe("SearchCriteria", () => {
   })
 
   it("should call renderPlaceholder when query is loading", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: true })
     const mockRenderPlaceholder = jest.fn(() => <></>)
 
-    renderWithWrappers(
+    renderWithWrappersTL(
       <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: jest.fn(() => <></>), renderPlaceholder: mockRenderPlaceholder }}
@@ -81,10 +80,9 @@ describe("SearchCriteria", () => {
   })
 
   it("should return error if something went wrong during query", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: true })
     const mockRenderComponent = jest.fn(() => <></>)
 
-    renderWithWrappers(
+    renderWithWrappersTL(
       <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}

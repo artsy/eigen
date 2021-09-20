@@ -1,25 +1,25 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c4d0fc386f01dd4003c84d2e66df9c49 */
+/* @relayHash 0f90c59e1dd1064179bd7039812752f4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Search2QueryVariables = {};
-export type Search2QueryResponse = {
+export type Search2RefetchQueryVariables = {};
+export type Search2RefetchQueryResponse = {
     readonly system: {
         readonly " $fragmentRefs": FragmentRefs<"Search2_system">;
     } | null;
 };
-export type Search2Query = {
-    readonly response: Search2QueryResponse;
-    readonly variables: Search2QueryVariables;
+export type Search2RefetchQuery = {
+    readonly response: Search2RefetchQueryResponse;
+    readonly variables: Search2RefetchQueryVariables;
 };
 
 
 
 /*
-query Search2Query {
+query Search2RefetchQuery {
   system {
     ...Search2_system
   }
@@ -43,7 +43,7 @@ const node: ConcreteRequest = {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "Search2Query",
+    "name": "Search2RefetchQuery",
     "selections": [
       {
         "alias": null,
@@ -69,7 +69,7 @@ const node: ConcreteRequest = {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "Search2Query",
+    "name": "Search2RefetchQuery",
     "selections": [
       {
         "alias": null,
@@ -142,12 +142,12 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "c4d0fc386f01dd4003c84d2e66df9c49",
+    "id": "0f90c59e1dd1064179bd7039812752f4",
     "metadata": {},
-    "name": "Search2Query",
+    "name": "Search2RefetchQuery",
     "operationKind": "query",
     "text": null
   }
 };
-(node as any).hash = '22980005b6452d9524844982c3dbe540';
+(node as any).hash = '8be4fc61c5d5d631fba2b529b6633d45';
 export default node;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b19f5bc61f2579c1d761394ee5ee71da */
+/* @relayHash df4201a3df0d4cac3b1b3f21ea73accc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -349,7 +349,7 @@ fragment Home_featured on ViewingRoomConnection {
 }
 
 fragment Home_homePageAbove_1IwJ0h on HomePage {
-  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS], include: [ACTIVE_BIDS, FOLLOWED_ARTISTS, RECENTLY_VIEWED_WORKS]) {
+  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [FOLLOWED_ARTISTS, ACTIVE_BIDS], include: [FOLLOWED_ARTISTS, ACTIVE_BIDS]) {
     id
     ...ArtworkRail_rail
   }
@@ -360,7 +360,7 @@ fragment Home_homePageAbove_1IwJ0h on HomePage {
 }
 
 fragment Home_homePageBelow_1IwJ0h on HomePage {
-  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [RECOMMENDED_WORKS, FOLLOWED_GALLERIES], exclude: [RECENTLY_VIEWED_WORKS, ACTIVE_BIDS, FOLLOWED_ARTISTS, SAVED_WORKS, GENERIC_GENES, LIVE_AUCTIONS, CURRENT_FAIRS, RELATED_ARTISTS, FOLLOWED_GENES]) {
+  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [POPULAR_ARTISTS, RECENTLY_VIEWED_WORKS, SIMILAR_TO_RECENTLY_VIEWED], include: [POPULAR_ARTISTS, RECENTLY_VIEWED_WORKS, SIMILAR_TO_RECENTLY_VIEWED]) {
     id
     ...ArtworkRail_rail
   }
@@ -559,9 +559,8 @@ v3 = [
   }
 ],
 v4 = [
-  "ACTIVE_BIDS",
   "FOLLOWED_ARTISTS",
-  "RECENTLY_VIEWED_WORKS"
+  "ACTIVE_BIDS"
 ],
 v5 = {
   "kind": "Literal",
@@ -1011,13 +1010,18 @@ v36 = {
   "storageKey": "heroUnits(platform:\"MOBILE\")"
 },
 v37 = [
+  "POPULAR_ARTISTS",
+  "RECENTLY_VIEWED_WORKS",
+  "SIMILAR_TO_RECENTLY_VIEWED"
+],
+v38 = [
   {
     "kind": "Literal",
     "name": "version",
     "value": "small"
   }
 ],
-v38 = [
+v39 = [
   {
     "alias": null,
     "args": null,
@@ -1029,26 +1033,26 @@ v38 = [
     "storageKey": null
   }
 ],
-v39 = {
+v40 = {
   "kind": "Literal",
   "name": "first",
   "value": 2
 },
-v40 = {
+v41 = {
   "alias": null,
   "args": null,
   "concreteType": "FilterArtworksEdge",
   "kind": "LinkedField",
   "name": "edges",
   "plural": true,
-  "selections": (v38/*: any*/),
+  "selections": (v39/*: any*/),
   "storageKey": null
 },
-v41 = [
-  (v40/*: any*/),
+v42 = [
+  (v41/*: any*/),
   (v7/*: any*/)
 ],
-v42 = [
+v43 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -1070,14 +1074,14 @@ v42 = [
     "value": true
   }
 ],
-v43 = {
+v44 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "cursor",
   "storageKey": null
 },
-v44 = {
+v45 = {
   "alias": null,
   "args": (v32/*: any*/),
   "concreteType": "AuctionResultConnection",
@@ -1100,7 +1104,7 @@ v44 = {
       "name": "edges",
       "plural": true,
       "selections": [
-        (v43/*: any*/),
+        (v44/*: any*/),
         {
           "alias": null,
           "args": null,
@@ -1292,7 +1296,7 @@ v44 = {
   ],
   "storageKey": "auctionResultsByFollowedArtists(first:3)"
 },
-v45 = [
+v46 = [
   {
     "kind": "Literal",
     "name": "short",
@@ -1446,7 +1450,7 @@ return {
             "name": "artworkModules",
             "plural": true,
             "selections": (v31/*: any*/),
-            "storageKey": "artworkModules(include:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"RECENTLY_VIEWED_WORKS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"RECENTLY_VIEWED_WORKS\"])"
+            "storageKey": "artworkModules(include:[\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\"])"
           },
           {
             "alias": null,
@@ -1551,28 +1555,15 @@ return {
             "args": [
               {
                 "kind": "Literal",
-                "name": "exclude",
-                "value": [
-                  "RECENTLY_VIEWED_WORKS",
-                  "ACTIVE_BIDS",
-                  "FOLLOWED_ARTISTS",
-                  "SAVED_WORKS",
-                  "GENERIC_GENES",
-                  "LIVE_AUCTIONS",
-                  "CURRENT_FAIRS",
-                  "RELATED_ARTISTS",
-                  "FOLLOWED_GENES"
-                ]
+                "name": "include",
+                "value": (v37/*: any*/)
               },
               (v5/*: any*/),
               (v6/*: any*/),
               {
                 "kind": "Literal",
                 "name": "order",
-                "value": [
-                  "RECOMMENDED_WORKS",
-                  "FOLLOWED_GALLERIES"
-                ]
+                "value": (v37/*: any*/)
               }
             ],
             "concreteType": "HomePageArtworkModule",
@@ -1580,7 +1571,7 @@ return {
             "name": "artworkModules",
             "plural": true,
             "selections": (v31/*: any*/),
-            "storageKey": "artworkModules(exclude:[\"RECENTLY_VIEWED_WORKS\",\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"SAVED_WORKS\",\"GENERIC_GENES\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"RELATED_ARTISTS\",\"FOLLOWED_GENES\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"RECOMMENDED_WORKS\",\"FOLLOWED_GALLERIES\"])"
+            "storageKey": "artworkModules(include:[\"POPULAR_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SIMILAR_TO_RECENTLY_VIEWED\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"POPULAR_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SIMILAR_TO_RECENTLY_VIEWED\"])"
           },
           {
             "alias": null,
@@ -1622,7 +1613,7 @@ return {
                     "selections": [
                       {
                         "alias": null,
-                        "args": (v37/*: any*/),
+                        "args": (v38/*: any*/),
                         "kind": "ScalarField",
                         "name": "url",
                         "storageKey": "url(version:\"small\")"
@@ -1653,7 +1644,7 @@ return {
                         "kind": "LinkedField",
                         "name": "edges",
                         "plural": true,
-                        "selections": (v38/*: any*/),
+                        "selections": (v39/*: any*/),
                         "storageKey": null
                       }
                     ],
@@ -1735,7 +1726,7 @@ return {
                   {
                     "alias": "followedArtistArtworks",
                     "args": [
-                      (v39/*: any*/),
+                      (v40/*: any*/),
                       {
                         "kind": "Literal",
                         "name": "input",
@@ -1748,19 +1739,19 @@ return {
                     "kind": "LinkedField",
                     "name": "filterArtworksConnection",
                     "plural": false,
-                    "selections": (v41/*: any*/),
+                    "selections": (v42/*: any*/),
                     "storageKey": "filterArtworksConnection(first:2,input:{\"includeArtworksByFollowedArtists\":true})"
                   },
                   {
                     "alias": "otherArtworks",
                     "args": [
-                      (v39/*: any*/)
+                      (v40/*: any*/)
                     ],
                     "concreteType": "FilterArtworksConnection",
                     "kind": "LinkedField",
                     "name": "filterArtworksConnection",
                     "plural": false,
-                    "selections": (v41/*: any*/),
+                    "selections": (v42/*: any*/),
                     "storageKey": "filterArtworksConnection(first:2)"
                   }
                 ],
@@ -1813,7 +1804,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v40/*: any*/),
+                      (v41/*: any*/),
                       (v7/*: any*/)
                     ],
                     "storageKey": "artworksConnection(first:3)"
@@ -1846,7 +1837,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v42/*: any*/),
+            "args": (v43/*: any*/),
             "concreteType": "SaleArtworksConnection",
             "kind": "LinkedField",
             "name": "lotsByFollowedArtistsConnection",
@@ -1931,7 +1922,7 @@ return {
                                 "selections": [
                                   {
                                     "alias": "imageURL",
-                                    "args": (v37/*: any*/),
+                                    "args": (v38/*: any*/),
                                     "kind": "ScalarField",
                                     "name": "url",
                                     "storageKey": "url(version:\"small\")"
@@ -1974,7 +1965,7 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v43/*: any*/),
+                  (v44/*: any*/),
                   (v7/*: any*/)
                 ],
                 "storageKey": null
@@ -1984,7 +1975,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v42/*: any*/),
+            "args": (v43/*: any*/),
             "filters": [
               "includeArtworksByFollowedArtists",
               "isAuction",
@@ -1995,7 +1986,7 @@ return {
             "kind": "LinkedHandle",
             "name": "lotsByFollowedArtistsConnection"
           },
-          (v44/*: any*/),
+          (v45/*: any*/),
           (v7/*: any*/)
         ],
         "storageKey": null
@@ -2008,7 +1999,7 @@ return {
         "name": "me",
         "plural": false,
         "selections": [
-          (v44/*: any*/),
+          (v45/*: any*/),
           (v7/*: any*/)
         ],
         "storageKey": null
@@ -2078,14 +2069,14 @@ return {
                   },
                   {
                     "alias": null,
-                    "args": (v45/*: any*/),
+                    "args": (v46/*: any*/),
                     "kind": "ScalarField",
                     "name": "distanceToOpen",
                     "storageKey": "distanceToOpen(short:true)"
                   },
                   {
                     "alias": null,
-                    "args": (v45/*: any*/),
+                    "args": (v46/*: any*/),
                     "kind": "ScalarField",
                     "name": "distanceToClose",
                     "storageKey": "distanceToClose(short:true)"
@@ -2174,7 +2165,7 @@ return {
     ]
   },
   "params": {
-    "id": "b19f5bc61f2579c1d761394ee5ee71da",
+    "id": "df4201a3df0d4cac3b1b3f21ea73accc",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",

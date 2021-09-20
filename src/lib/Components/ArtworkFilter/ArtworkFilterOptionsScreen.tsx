@@ -53,6 +53,7 @@ export interface FilterDisplayConfig {
 export enum FilterModalMode {
   ArtistArtworks = "ArtistArtworks",
   ArtistSeries = "ArtistSeries",
+  Artworks = "Artworks",
   AuctionResults = "AuctionResults",
   Collection = "Collection",
   Fair = "Fair",
@@ -253,6 +254,9 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
       break
     case FilterModalMode.ArtistSeries:
       sortOrder = ArtistSeriesFiltersSorted
+      break
+    case FilterModalMode.Artworks:
+      sortOrder = ArtworksFiltersSorted
       break
     case FilterModalMode.Show:
       sortOrder = ShowFiltersSorted
@@ -518,6 +522,21 @@ const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "dimensionRange",
   "waysToBuy",
   "materialsTerms",
+  "locationCities",
+  "majorPeriods",
+  "colors",
+  "partnerIDs",
+]
+const ArtworksFiltersSorted: FilterScreen[] = [
+  "sort",
+  "artistIDs",
+  "attributionClass",
+  "additionalGeneIDs",
+  "priceRange",
+  "dimensionRange",
+  "waysToBuy",
+  "materialsTerms",
+  "artistNationalities",
   "locationCities",
   "majorPeriods",
   "colors",

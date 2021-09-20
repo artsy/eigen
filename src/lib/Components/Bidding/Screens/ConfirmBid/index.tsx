@@ -27,7 +27,7 @@ import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { get, isEmpty } from "lodash"
-import { Box, Button, Serif, Theme } from "palette"
+import { Box, Button, Serif, Text, Theme } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
 import { Image, ScrollView, ViewProps } from "react-native"
@@ -540,32 +540,31 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               />
             </Box>
           </ScrollView>
+          <Divider />
 
           <Box>
-            <Divider />
-
             {requiresCheckbox ? (
               <Checkbox
                 mt={4}
-                mx={5}
+                mx={3}
                 justifyContent="center"
                 onPress={() => this.onConditionsOfSaleCheckboxPressed()}
                 disabled={isLoading}
               >
-                <Serif size="2" mt={2} color="black60">
+                <Text color="black60">
                   You agree to{" "}
                   <LinkText onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}>
-                    {partnerName(sale! /* STRICTNESS_MIGRATION */)} Conditions of Sale
+                    {partnerName(sale!)} Conditions of Sale
                   </LinkText>
                   .
-                </Serif>
+                </Text>
               </Checkbox>
             ) : (
-              <Flex alignItems="center">
+              <Flex alignItems="center" px={4}>
                 <Serif size="2" mt={2} color="black60">
                   You agree to{" "}
                   <LinkText onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}>
-                    {partnerName(sale! /* STRICTNESS_MIGRATION */)} Conditions of Sale
+                    {partnerName(sale!)} Conditions of Sale
                   </LinkText>
                   .
                 </Serif>

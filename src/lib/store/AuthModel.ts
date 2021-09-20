@@ -393,7 +393,7 @@ export const getAuthModel = (): AuthModel => ({
         message = `Your ${providerName} email account is linked to an Artsy user account please Log in using your email and password instead.`
       } else if (resultJson?.error === "Another Account Already Linked") {
         message =
-          `Your ${providerName} account already linked to another Artsy account. ` +
+          `Your ${providerName} account is already linked to another Artsy account. ` +
           `Try logging out and back in with ${providerName}. Then consider ` +
           `deleting that user account and re-linking ${providerName}. `
       } else if (resultJson.message && resultJson.message.match("Unauthorized source IP address")) {

@@ -1,57 +1,66 @@
 import { captureMessage } from "@sentry/react-native"
-import { Search2Query, Search2QueryResponse } from "__generated__/Search2Query.graphql"
-import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
+import { Search2_system } from "__generated__/Search2_system.graphql"
+import { Search2Query } from "__generated__/Search2Query.graphql"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { DEBOUNCE_DELAY } from "lib/Components/ArtworkFilter/Filters/KeywordFilter"
 import { SearchInput as SearchBox } from "lib/Components/SearchInput"
-import { navigate, navigateToPartner } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
+import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
-import { searchInsights, useSearchInsightsConfig } from "lib/utils/useSearchInsightsConfig"
-import { Flex, Pill, Spacer, Spinner, Text, Touchable, useSpace } from "palette"
-import React, { useEffect, useMemo, useRef, useState } from "react"
-import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
+import { useSearchInsightsConfig } from "lib/utils/useSearchInsightsConfig"
+import { debounce } from "lodash"
+import { Box, Flex, Spacer } from "palette"
+import React, { useMemo, useState } from "react"
 import {
   Configure,
-  connectHighlight,
   connectInfiniteHits,
   connectSearchBox,
   connectStateResults,
   InstantSearch,
 } from "react-instantsearch-native"
-import { FlatList, Platform, ScrollView } from "react-native"
-import { graphql, QueryRenderer } from "react-relay"
+import { Platform, ScrollView } from "react-native"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components"
 import { AutosuggestResults } from "../Search/AutosuggestResults"
 import { CityGuideCTA } from "../Search/CityGuideCTA"
 import { RecentSearches } from "../Search/RecentSearches"
 import { SearchContext, useSearchProviderValues } from "../Search/SearchContext"
-import { SearchArtworksGridQueryRenderer } from "./SearchArtworksGrid"
+import { SearchPills } from "./components/SearchPills"
+import { SearchPlaceholder } from "./components/SearchPlaceholder"
+import { RefetchWhenApiKeyExpiredContainer } from "./containers/RefetchWhenApiKeyExpired"
+import { SearchArtworksQueryRenderer } from "./containers/SearchArtworksContainer"
+import { SearchResults } from "./SearchResults"
+import { PillType } from "./types"
 
 interface SearchInputProps {
-  refine: (value: string) => any
   placeholder: string
   currentRefinement: string
+  refine: (value: string) => any
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, refine, placeholder }) => {
+const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholder, refine }) => {
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
+
+  const onChangeTextHandler = (queryText: string) => {
+    refine(queryText)
+    trackEvent({
+      action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
+      query: queryText,
+    })
+  }
+
+  const debouncedEventHandler = useMemo(() => debounce(onChangeTextHandler, DEBOUNCE_DELAY), [])
+
   return (
     <SearchBox
       ref={searchProviderValues.inputRef}
       enableCancelButton
       placeholder={placeholder}
-      onChangeText={(queryText) => {
-        refine(queryText)
-        trackEvent({
-          action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
-          query: queryText,
-        })
-      }}
+      onChangeText={debouncedEventHandler}
       onFocus={() => {
         trackEvent({
           action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
@@ -67,114 +76,6 @@ const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, refine, pl
   )
 }
 
-const Highlight = connectHighlight(({ highlight, attribute, hit, highlightProperty = "_highlightResult" }) => {
-  const parsedHit = highlight({ attribute, hit, highlightProperty })
-
-  return (
-    <Text>
-      {parsedHit.map(({ isHighlighted, value }, index) =>
-        isHighlighted ? (
-          <Text key={index} color="blue100" fontWeight="600" padding={0} margin={0}>
-            {value}
-          </Text>
-        ) : (
-          <Text key={index}>{value}</Text>
-        )
-      )}
-    </Text>
-  )
-})
-
-interface AlgoliaSearchResult {
-  href: string
-  image_url: string
-  name: string
-  objectID: string
-  slug: string
-  __position: number
-  __queryID: string
-}
-
-interface SearchResultsProps
-  extends StateResultsProvided<AlgoliaSearchResult>,
-    InfiniteHitsProvided<AlgoliaSearchResult> {
-  indexName: string
-}
-
-const SearchResults: React.FC<SearchResultsProps> = ({
-  hits,
-  hasMore,
-  searching,
-  isSearchStalled,
-  searchState,
-  indexName,
-  refineNext,
-}) => {
-  const flatListRef = useRef<FlatList<AlgoliaSearchResult>>(null)
-  const loading = searching || isSearchStalled
-  const space = useSpace()
-
-  useEffect(() => {
-    flatListRef.current?.scrollToOffset({ offset: 1, animated: true })
-  }, [searchState.query, indexName])
-
-  const onPress = (item: AlgoliaSearchResult): void => {
-    // TODO: I'm not sure why we need to use this `navigateToPartner` function but without it the header overlaps
-    // with the back button
-    if (item.href.startsWith("/partner/")) {
-      navigateToPartner(item.slug)
-    } else {
-      navigate(item.href)
-    }
-
-    searchInsights("clickedObjectIDsAfterSearch", {
-      index: indexName,
-      eventName: "Search item clicked",
-      positions: [item.__position],
-      queryID: item.__queryID,
-      objectIDs: [item.objectID],
-    })
-  }
-
-  const loadMore = () => {
-    if (hasMore && !loading) {
-      refineNext()
-    }
-  }
-
-  return (
-    <AboveTheFoldFlatList<AlgoliaSearchResult>
-      listRef={flatListRef}
-      initialNumToRender={isPad() ? 24 : 12}
-      contentContainerStyle={{ paddingVertical: space(1) }}
-      data={hits}
-      keyExtractor={(item) => item.objectID}
-      renderItem={({ item }) => (
-        <Touchable onPress={() => onPress(item)}>
-          <Flex py={space(1)} px={space(2)} flexDirection="row" alignItems="center">
-            <OpaqueImageView
-              imageURL={item.image_url}
-              style={{ width: 40, height: 40, borderRadius: 20, overflow: "hidden" }}
-            />
-            <Spacer ml={1} />
-            <Flex>
-              <Highlight attribute="name" hit={item} />
-            </Flex>
-          </Flex>
-        </Touchable>
-      )}
-      onEndReached={loadMore}
-      ListFooterComponent={
-        <Flex alignItems="center" my={2}>
-          {loading ? <Spinner /> : null}
-        </Flex>
-      }
-      keyboardDismissMode="on-drag"
-      keyboardShouldPersistTaps="handled"
-    />
-  )
-}
-
 const SearchInputContainer = connectSearchBox(SearchInput)
 const SearchResultsContainerWithState = connectStateResults(SearchResults)
 const SearchResultsContainer = connectInfiniteHits(SearchResultsContainerWithState)
@@ -184,18 +85,24 @@ interface SearchState {
   page?: number
 }
 
-const pills = [{ name: "ARTWORK", displayName: "Artworks" }]
+const pills: PillType[] = [{ name: "ARTWORK", displayName: "Artworks" }]
 
-export const Search2: React.FC<Search2QueryResponse> = (props) => {
+interface Search2Props {
+  relay: RelayRefetchProp
+  system: Search2_system | null
+}
+
+export const Search2: React.FC<Search2Props> = (props) => {
+  const { system, relay } = props
   const [searchState, setSearchState] = useState<SearchState>({})
   const [selectedAlgoliaIndex, setSelectedAlgoliaIndex] = useState("")
   const [elasticSearchEntity, setElasticSearchEntity] = useState("")
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
-  const { system } = props
+  const [activePillDisplayName, setActivePillDisplayName] = useState("")
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
   const searchInsightsConfigured = useSearchInsightsConfig(system?.algolia?.appID, system?.algolia?.apiKey)
 
-  const pillsArray = useMemo(() => {
+  const pillsArray = useMemo<PillType[]>(() => {
     const indices = system?.algolia?.indices
 
     if (Array.isArray(indices) && indices.length > 0) {
@@ -206,23 +113,27 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
   }, [system?.algolia?.indices])
 
   if (!searchClient || !searchInsightsConfigured) {
-    // error handling in case appID or apiKey is not set ??
-    return null
+    return (
+      <ProvidePlaceholderContext>
+        <SearchPlaceholder />
+      </ProvidePlaceholderContext>
+    )
   }
 
-  const renderResults = () => {
+  const renderResults = (categoryDisplayName: string) => {
     if (!!selectedAlgoliaIndex) {
-      return <SearchResultsContainer indexName={selectedAlgoliaIndex} />
+      return <SearchResultsContainer indexName={selectedAlgoliaIndex} categoryDisplayName={categoryDisplayName} />
     }
     if (!!elasticSearchEntity) {
-      return <SearchArtworksGridQueryRenderer keyword={searchState.query!} />
+      return <SearchArtworksQueryRenderer keyword={searchState.query!} />
     }
     return <AutosuggestResults query={searchState.query!} />
   }
 
   const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 2
 
-  const handlePillPress = (name: string) => {
+  const handlePillPress = ({ name, displayName }: PillType) => {
+    setActivePillDisplayName(displayName)
     setSearchState((prevState) => ({ ...prevState, page: 1 }))
     if (name === "ARTWORK") {
       setSelectedAlgoliaIndex("")
@@ -231,6 +142,11 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
     }
     setElasticSearchEntity("")
     setSelectedAlgoliaIndex(selectedAlgoliaIndex === name ? "" : name)
+  }
+
+  const isSelected = (pill: PillType) => {
+    const { name } = pill
+    return selectedAlgoliaIndex === name || elasticSearchEntity === name
   }
 
   return (
@@ -243,27 +159,16 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
           onSearchStateChange={setSearchState}
         >
           <Configure clickAnalytics />
+          <RefetchWhenApiKeyExpiredContainer relay={relay} />
           <Flex p={2} pb={1}>
             <SearchInputContainer placeholder="Search artists, artworks, galleries, etc" />
           </Flex>
           {!!shouldStartQuering ? (
             <>
-              <Flex p={2} pb={1}>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  {pillsArray.map(({ name, displayName }) => (
-                    <Pill
-                      mr={1}
-                      key={name}
-                      rounded
-                      selected={selectedAlgoliaIndex === name || elasticSearchEntity === name}
-                      onPress={() => handlePillPress(name)}
-                    >
-                      {displayName}
-                    </Pill>
-                  ))}
-                </ScrollView>
-              </Flex>
-              {renderResults()}
+              <Box pt={2} pb={1}>
+                <SearchPills pills={pillsArray} onPillPress={handlePillPress} isSelected={isSelected} />
+              </Box>
+              {renderResults(activePillDisplayName)}
             </>
           ) : (
             <Scrollable>
@@ -279,6 +184,32 @@ export const Search2: React.FC<Search2QueryResponse> = (props) => {
   )
 }
 
+const Search2RefetchContainer = createRefetchContainer(
+  Search2,
+  {
+    system: graphql`
+      fragment Search2_system on System {
+        __typename
+        algolia {
+          appID
+          apiKey
+          indices {
+            name
+            displayName
+          }
+        }
+      }
+    `,
+  },
+  graphql`
+    query Search2RefetchQuery {
+      system {
+        ...Search2_system
+      }
+    }
+  `
+)
+
 export const Search2QueryRenderer: React.FC<{}> = ({}) => {
   return (
     <QueryRenderer<Search2Query>
@@ -286,15 +217,7 @@ export const Search2QueryRenderer: React.FC<{}> = ({}) => {
       query={graphql`
         query Search2Query {
           system {
-            __typename
-            algolia {
-              appID
-              apiKey
-              indices {
-                name
-                displayName
-              }
-            }
+            ...Search2_system
           }
         }
       `}
@@ -307,7 +230,7 @@ export const Search2QueryRenderer: React.FC<{}> = ({}) => {
           }
         }
 
-        return <Search2 system={props?.system ?? null} />
+        return <Search2RefetchContainer system={props?.system ?? null} />
       }}
       variables={{}}
     />
