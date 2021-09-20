@@ -82,7 +82,7 @@ describe("SizeOptions", () => {
   })
 
   describe("Custom Size", () => {
-    it("returns the default filter option if width and height are not entered", () => {
+    it("returns the default filter option if width and height are not specified", () => {
       const { getByTestId, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
@@ -98,7 +98,7 @@ describe("SizeOptions", () => {
       expect(heightFilter).toBeUndefined()
     })
 
-    it("returns the custom filter option if only minimum width is entered", () => {
+    it("returns the custom filter option if only minimum width is specified", () => {
       const { getByTestId, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
@@ -115,7 +115,7 @@ describe("SizeOptions", () => {
       expect(heightFilter).toBeUndefined()
     })
 
-    it("returns the custom filter option if only maximum width is entered", () => {
+    it("returns the custom filter option if only maximum width is specified", () => {
       const { getByTestId, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
@@ -132,7 +132,7 @@ describe("SizeOptions", () => {
       expect(heightFilter).toBeUndefined()
     })
 
-    it("returns the custom filter option if minimum and maximum width are entered", () => {
+    it("returns the custom filter option if minimum and maximum width are specified", () => {
       const { getByTestId, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
@@ -150,7 +150,7 @@ describe("SizeOptions", () => {
       expect(heightFilter).toBeUndefined()
     })
 
-    it("returns the custom filter option if only minimum height is entered", () => {
+    it("returns the custom filter option if only minimum height is specified", () => {
       const { getByTestId, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
@@ -167,7 +167,7 @@ describe("SizeOptions", () => {
       expect(widthFilter).toBeUndefined()
     })
 
-    it("returns the custom filter option if only maximum height is entered", () => {
+    it("returns the custom filter option if only maximum height is specified", () => {
       const { getByTestId, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
@@ -184,7 +184,7 @@ describe("SizeOptions", () => {
       expect(widthFilter).toBeUndefined()
     })
 
-    it("returns the custom filter option if maximum and maximum height are entered", () => {
+    it("returns the custom filter option if maximum and maximum height are specified", () => {
       const { getByTestId, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
@@ -202,7 +202,7 @@ describe("SizeOptions", () => {
       expect(widthFilter).toBeUndefined()
     })
 
-    it("returns the custom filter option if minimum width and the maximum height are entered", () => {
+    it("returns the custom filter option if minimum width and the maximum height are specified", () => {
       const { getByTestId, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
@@ -220,7 +220,7 @@ describe("SizeOptions", () => {
       expect(heightFilter?.paramValue).toBe("*-10")
     })
 
-    it("returns the default filter option if nothing is entered in width or height", () => {
+    it("returns the default filter option if nothing is specified in width or height", () => {
       const { getByTestId, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
@@ -239,7 +239,7 @@ describe("SizeOptions", () => {
       expect(currentSizeFilter?.paramValue).toBe("*-*")
     })
 
-    it("returns the previously applied filter option if the invalid custom values are entered", () => {
+    it("returns the previously applied filter option if the invalid custom values are specified", () => {
       const option: FilterData = {
         displayText: "Small (under 40cm)",
         paramValue: "*-16.0",

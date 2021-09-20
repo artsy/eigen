@@ -193,7 +193,7 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
       return paramValue.min === "*" && paramValue.max === "*"
     })
 
-    // Populate the custom size filter only when we have at least one filled input
+    // Populate the custom size filter only when we have at least one specified input
     if (isEmptyCustomValues) {
       selectFiltersAction(defaultOption)
     } else {
