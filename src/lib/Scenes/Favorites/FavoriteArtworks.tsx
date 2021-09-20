@@ -81,7 +81,7 @@ export class SavedWorks extends Component<Props, State> {
             subtitle="Tap the heart on an artwork to save for later."
             callToAction={
               <Button
-                variant="secondaryOutline"
+                variant="outline"
                 size="large"
                 onPress={() => {
                   navigate("/")

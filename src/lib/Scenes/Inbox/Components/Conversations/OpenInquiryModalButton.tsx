@@ -45,7 +45,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ 
             })
           }}
           size="large"
-          variant="primaryBlack"
+          variant="fillDark"
           block
           width={100}
         >

@@ -29,7 +29,7 @@ export const NoMessages: React.FC = () => {
       </Text>
       <Flex width="100%" justifyContent="center" flexDirection="row">
         <Button
-          variant="primaryBlack"
+          variant="fillDark"
           onPress={() => {
             handleViewWorks()
           }}

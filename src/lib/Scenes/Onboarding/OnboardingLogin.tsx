@@ -161,7 +161,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
           disabled={!(isValid && dirty) || isSubmitting} // isSubmitting to prevent weird appearances of the errors caused by async submiting
           loading={isSubmitting}
           testID="loginButton"
-          variant="primaryBlack"
+          variant="fillDark"
           mb={safeAreaInsets.bottom}
         >
           Log in

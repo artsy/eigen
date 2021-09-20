@@ -150,7 +150,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
       </ScrollView>
       <Flex p={2} position="absolute" bottom={0} backgroundColor="white">
         <Button
-          variant="primaryBlack"
+          variant="fillDark"
           block
           testID="doneButton"
           mb={safeAreaInsets.bottom}

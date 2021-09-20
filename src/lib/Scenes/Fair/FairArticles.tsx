@@ -129,7 +129,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
 
           {totalCount > FAIR2_ARTICLES_PAGE_SIZE && (
             <Button
-              variant="secondaryGray"
+              variant="fillGray"
               block
               width="100%"
               loading={isLoading}

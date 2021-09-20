@@ -84,7 +84,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       <Flex px={1.5} paddingBottom={1.5}>
         {!!requestedPasswordReset ? (
           <Button
-            variant="secondaryGray"
+            variant="fillGray"
             onPress={() => navigation.goBack()}
             block
             haptic="impactMedium"

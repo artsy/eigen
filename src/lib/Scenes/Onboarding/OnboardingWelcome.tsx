@@ -130,7 +130,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
         </Text>
         <Spacer mt={2} />
         <Button
-          variant="primaryWhite"
+          variant="fillLight"
           block
           haptic="impactMedium"
           onPress={() =>

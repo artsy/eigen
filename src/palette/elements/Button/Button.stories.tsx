@@ -4,11 +4,11 @@ import { LinkIcon } from "palette"
 import React, { useState } from "react"
 import { Button as RNButton } from "react-native"
 import { DList, List } from "storybook/helpers"
-import { ButtonV3, ButtonV3Props } from "."
+import { Button, ButtonProps } from "."
 import { _test_DisplayState } from "./Button"
 
-const sizes: Array<ButtonV3Props["size"]> = ["small", "large"]
-const variants: Array<ButtonV3Props["variant"]> = ["fillDark", "fillLight", "fillGray", "outline", "text"]
+const sizes: Array<ButtonProps["size"]> = ["small", "large"]
+const variants: Array<ButtonProps["variant"]> = ["fillDark", "fillLight", "fillGray", "outline", "text"]
 const states: Array<_test_DisplayState | undefined> = [
   undefined,
   _test_DisplayState.Enabled,
@@ -22,9 +22,9 @@ storiesOf("ButtonV3", module)
     <DList
       data={sizes}
       renderItem={({ item: size }) => (
-        <ButtonV3 size={size} onPress={() => console.log(`tapped ${size}`)}>
+        <Button size={size} onPress={() => console.log(`tapped ${size}`)}>
           {size}
-        </ButtonV3>
+        </Button>
       )}
     />
   ))
@@ -32,9 +32,9 @@ storiesOf("ButtonV3", module)
     <DList
       data={states}
       renderItem={({ item: state }) => (
-        <ButtonV3 variant="fillLight" testOnly_state={state} onPress={() => action(`tapped ${state}`)}>
+        <Button variant="fillLight" testOnly_state={state} onPress={() => action(`tapped ${state}`)}>
           {state ?? "regular button"}
-        </ButtonV3>
+        </Button>
       )}
     />
   ))
@@ -42,9 +42,9 @@ storiesOf("ButtonV3", module)
     <DList
       data={variants}
       renderItem={({ item: variant }) => (
-        <ButtonV3 variant={variant} onPress={() => action(`tapped ${variant}`)}>
+        <Button variant={variant} onPress={() => action(`tapped ${variant}`)}>
           {variant}
-        </ButtonV3>
+        </Button>
       )}
     />
   ))
@@ -52,9 +52,9 @@ storiesOf("ButtonV3", module)
     <DList
       data={variants}
       renderItem={({ item: variant }) => (
-        <ButtonV3 variant={variant} loading onPress={() => action(`tapped ${variant}`)}>
+        <Button variant={variant} loading onPress={() => action(`tapped ${variant}`)}>
           {variant}
-        </ButtonV3>
+        </Button>
       )}
     />
   ))
@@ -62,24 +62,24 @@ storiesOf("ButtonV3", module)
     <DList
       data={variants}
       renderItem={({ item: variant }) => (
-        <ButtonV3 variant={variant} disabled onPress={() => action(`tapped ${variant}`)}>
+        <Button variant={variant} disabled onPress={() => action(`tapped ${variant}`)}>
           {variant}
-        </ButtonV3>
+        </Button>
       )}
     />
   ))
   .add("Miscellaneous", () => (
     <List>
-      <ButtonV3 loading>loading</ButtonV3>
-      <ButtonV3 disabled>disabled</ButtonV3>
-      <ButtonV3 loading disabled>
+      <Button loading>loading</Button>
+      <Button disabled>disabled</Button>
+      <Button loading disabled>
         loading and disabled
-      </ButtonV3>
-      <ButtonV3 block>block</ButtonV3>
-      <ButtonV3 icon={<LinkIcon />}>left icon</ButtonV3>
-      <ButtonV3 icon={<LinkIcon />} iconPosition="right">
+      </Button>
+      <Button block>block</Button>
+      <Button icon={<LinkIcon />}>left icon</Button>
+      <Button icon={<LinkIcon />} iconPosition="right">
         right icon
-      </ButtonV3>
+      </Button>
     </List>
   ))
   .add("Playground", () => {
@@ -93,10 +93,10 @@ storiesOf("ButtonV3", module)
         <RNButton title="disabled" onPress={() => setDisabled((v) => !v)} />
         <RNButton title="block" onPress={() => setBlock((v) => !v)} />
         <List>
-          <ButtonV3 loading={loading} disabled={disabled} block={block}>
+          <Button loading={loading} disabled={disabled} block={block}>
             loading {loading ? "true" : "false"}, disabled {disabled ? "true" : "false"}, block{" "}
             {block ? "true" : "false"}
-          </ButtonV3>
+          </Button>
         </List>
       </>
     )

@@ -48,7 +48,7 @@ export const ClosedNotice: React.FC<{ status: string; partnerHref: string }> = (
       <Sans mt="3" size="3t" mx="4" textAlign="center">
         {finalText}
       </Sans>
-      <Button variant="secondaryGray" onPress={() => navigate(partnerHref)} mt={2}>
+      <Button variant="fillGray" onPress={() => navigate(partnerHref)} mt={2}>
         Visit gallery
       </Button>
     </Flex>
