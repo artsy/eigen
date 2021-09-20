@@ -50,7 +50,6 @@ interface Props extends ViewProps {
 
 const Home = (props: Props) => {
   const { homePageAbove, homePageBelow, meAbove, meBelow, articlesConnection, featured, loading } = props
-
   const artworkModules = (homePageAbove?.artworkModules || []).concat(homePageBelow?.artworkModules || [])
   const salesModule = homePageAbove?.salesModule
   const collectionsModule = homePageBelow?.marketingCollectionsModule
@@ -82,6 +81,7 @@ const Home = (props: Props) => {
   Ordering is defined in https://www.notion.so/artsy/App-Home-Screen-4841255ded3f47c9bcdb73185ee3f335.
   Please make sure to keep this page in sync with the home screen.
   */
+
   const rowData = compact([
     // Above-the-fold modules (make sure to include enough modules in the above-the-fold query to cover the whole screen.)
     artworkRails[0],
@@ -162,8 +162,16 @@ const Home = (props: Props) => {
                 case "fairs":
                   return <FairsRailFragmentContainer fairsModule={item.data} scrollRef={scrollRefs.current[index]} />
                 case "sales":
-                  return <SalesRailFragmentContainer salesModule={item.data} scrollRef={scrollRefs.current[index]} />
+                  return (
+                    <SalesRailFragmentContainer
+                      salesModule={item.data}
+                      scrollRef={scrollRefs.current[index]}
+                      onShow={() => separators.updateProps("leading", { hideSeparator: false })}
+                      onHide={() => separators.updateProps("leading", { hideSeparator: true })}
+                    />
+                  )
                 case "collections":
+                  separators.updateProps("leading", { hideSeparator: false })
                   return (
                     <CollectionsRailFragmentContainer
                       collectionsModule={item.data}
@@ -174,7 +182,12 @@ const Home = (props: Props) => {
                   return featured ? <ViewingRoomsHomeRail featured={featured} /> : <></>
                 case "auction-results":
                   return meBelow ? (
-                    <AuctionResultsRailFragmentContainer me={meBelow} scrollRef={scrollRefs.current[index]} />
+                    <AuctionResultsRailFragmentContainer
+                      me={meBelow}
+                      scrollRef={scrollRefs.current[index]}
+                      onShow={() => separators.updateProps("leading", { hideSeparator: false })}
+                      onHide={() => separators.updateProps("leading", { hideSeparator: true })}
+                    />
                   ) : (
                     <></>
                   )
