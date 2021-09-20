@@ -4,7 +4,7 @@ import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/Ar
 import { InquiryTypes } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Schema } from "lib/utils/track"
-import { Button, ButtonVariant } from "palette"
+import { Button, ButtonProps } from "palette"
 import React, { useContext, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -13,7 +13,7 @@ export interface InquiryButtonsProps {
   artwork: InquiryButtons_artwork
   // EditionSetID is passed down from the edition selected by the user
   editionSetID?: string
-  variant?: ButtonVariant
+  variant?: ButtonProps["variant"]
 }
 
 export interface InquiryButtonsState {
