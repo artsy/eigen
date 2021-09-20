@@ -41,6 +41,7 @@ export const ArtistAutosuggest: React.FC = () => {
                   query={artistQuery}
                   entities={["ARTIST"]}
                   showResultType={false}
+                  showQuickNavigationButtons={false}
                   onResultPress={GlobalStore.actions.myCollection.artwork.setArtistSearchResult}
                 />
               </Box>
