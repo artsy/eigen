@@ -4055,6 +4055,8 @@ type CommerceShipment {
     timezone: String
   ): String
   deliveryWindowModifier: String
+  estimatedDeliveryWindow: String
+  estimatedPickupWindow: String
   id: ID!
   pickupEnd(
     format: String
