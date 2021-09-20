@@ -2,7 +2,7 @@ import { InterestingArtworksRail_me } from "__generated__/InterestingArtworksRai
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spinner, Theme } from "palette"
-import React, { useImperativeHandle, useRef, useState } from "react"
+import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import { FlatList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import HomeAnalytics from "../homeAnalytics"
@@ -14,12 +14,16 @@ const PAGE_SIZE = 10
 interface InterestingArtworksRailProps {
   me: InterestingArtworksRail_me
   relay: RelayPaginationProp
+  onHide?: () => void
+  onShow?: () => void
 }
 
 const InterestingArtworksRail: React.FC<InterestingArtworksRailProps & RailScrollProps> = ({
   me,
   relay,
   scrollRef,
+  onHide,
+  onShow,
 }) => {
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)
@@ -51,11 +55,21 @@ const InterestingArtworksRail: React.FC<InterestingArtworksRailProps & RailScrol
     })
   }
 
-  return artworks.length ? (
+  const hasArtworks = artworks.length
+
+  useEffect(() => {
+    hasArtworks ? onShow?.() : onHide?.()
+  }, [hasArtworks])
+
+  if (!hasArtworks) {
+    return null
+  }
+
+  return (
     <Theme>
       <View ref={railRef}>
         <Flex pl="2" pr="2">
-          <SectionTitle title={"New Works For You"} subtitle="Discover Artworks From Artists You Love" />
+          <SectionTitle title={"New Works For You"} />
         </Flex>
         {
           <SmallTileRailContainer
@@ -75,7 +89,7 @@ const InterestingArtworksRail: React.FC<InterestingArtworksRailProps & RailScrol
         }
       </View>
     </Theme>
-  ) : null
+  )
 }
 
 export const InterestingArtworksRailContainer = createPaginationContainer(
