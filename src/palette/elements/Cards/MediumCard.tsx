@@ -1,5 +1,4 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { usePaletteFlagStore } from "palette/PaletteFlag"
 import { useTheme } from "palette/Theme"
 import React from "react"
 import LinearGradient from "react-native-linear-gradient"
@@ -22,7 +21,6 @@ export interface MediumCardProps extends BoxProps {
  */
 export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, tag, ...rest }) => {
   const { color, space } = useTheme()
-  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
 
   return (
     <Box width={280} height={370} flexDirection="row" borderRadius={4} overflow="hidden" {...rest}>
@@ -46,29 +44,13 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
           right: space(6),
         }}
       >
-        {/* TODO-PALETTE-V3 remove V2 part */}
-        {allowV3 ? (
-          <>
-            <Text lineHeight="20" color={color("white100")} mb={0.5}>
-              {title}
-            </Text>
-            {!!subtitle && (
-              <Text color={color("white100")} variant={"small"}>
-                {subtitle}
-              </Text>
-            )}
-          </>
-        ) : (
-          <>
-            <Sans size="5t" color={color("white100")}>
-              {title}
-            </Sans>
-            {!!subtitle && (
-              <Sans size="3t" color={color("white100")}>
-                {subtitle}
-              </Sans>
-            )}
-          </>
+        <Text lineHeight="20" color={color("white100")} mb={0.5}>
+          {title}
+        </Text>
+        {!!subtitle && (
+          <Text color={color("white100")} variant={"small"}>
+            {subtitle}
+          </Text>
         )}
         <Spacer mt={15} />
       </Flex>

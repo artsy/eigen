@@ -1,12 +1,10 @@
-import { usePaletteFlagStore } from "./PaletteFlag"
 import { useTheme } from "./Theme"
 
 export const useColor = () => useTheme().color
 export const useSpace = () => useTheme().space
 
 /** Returns a config specific to the current theme. */
-export const useThemeConfig = <T, U>({ v2, v3 }: { v2: T; v3: U }): U | T => {
-  const { theme = { id: "v2" } } = useTheme()
-  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
-  return theme.id === "v2" ? v2 : allowV3 ? v3 : v2
+export const useThemeConfig = <T, U>({ v3 }: { v3: U }): U | T => {
+  // const { theme = { id: "v2" } } = useTheme()
+  return v3
 }

@@ -2,7 +2,6 @@ import { THEME_V2, THEME_V3 } from "@artsy/palette-tokens"
 import _ from "lodash"
 import React, { useContext } from "react"
 import { ThemeContext, ThemeProvider } from "styled-components/native"
-import { usePaletteFlagStore } from "./PaletteFlag"
 
 /**
  * All of the config for the Artsy theming system, based on the
@@ -174,14 +173,8 @@ export type ThemeType = ThemeV2Type | ThemeV3Type
 export const themeProps = THEMES.v2
 
 const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
-  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
-
   if (!_.isString(theme)) {
     return theme
-  }
-
-  if (!allowV3) {
-    return THEMES.v2
   }
 
   // forcing v3 colors, unless specifically requiring v2, in which case we use `colorV2`

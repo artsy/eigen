@@ -3,7 +3,6 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { NavigationalTabs, Tab } from "palette/elements/Tabs"
 import { TabV3 } from "palette/elements/Tabs/Tab"
-import { TabV2 } from "palette/elements/Tabs/TabsV2"
 import { __paletteStoreTestUtils__ } from "palette/PaletteFlag"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -199,44 +198,6 @@ describe("Fair", () => {
   })
 
   describe("tracks taps navigating between the artworks tab and exhibitors tab", () => {
-    it("When Using Palette V2", () => {
-      __paletteStoreTestUtils__.__setAllowV3(false)
-      const wrapper = getWrapper({
-        Fair: () => ({
-          isActive: true,
-          slug: "art-basel-hong-kong-2020",
-          internalID: "fair1244",
-          counts: {
-            artworks: 100,
-            partnerShows: 20,
-          },
-        }),
-      })
-      const tabs = wrapper.root.findAllByType(TabV2)
-      const exhibitorsTab = tabs[0]
-      const artworksTab = tabs[1]
-
-      act(() => artworksTab.props.onPress())
-      expect(trackEvent).toHaveBeenCalledWith({
-        action: "tappedNavigationTab",
-        context_module: "exhibitorsTab",
-        context_screen_owner_type: "fair",
-        context_screen_owner_slug: "art-basel-hong-kong-2020",
-        context_screen_owner_id: "fair1244",
-        subject: "Artworks",
-      })
-
-      act(() => exhibitorsTab.props.onPress())
-      expect(trackEvent).toHaveBeenCalledWith({
-        action: "tappedNavigationTab",
-        context_module: "artworksTab",
-        context_screen_owner_type: "fair",
-        context_screen_owner_slug: "art-basel-hong-kong-2020",
-        context_screen_owner_id: "fair1244",
-        subject: "Exhibitors",
-      })
-    })
-
     it("When Using Palette V3", () => {
       __paletteStoreTestUtils__.__setAllowV3(true)
       const wrapper = getWrapper({
