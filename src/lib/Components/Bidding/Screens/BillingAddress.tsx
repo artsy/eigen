@@ -1,347 +1,241 @@
-import { Button, Sans, Text, Theme } from "palette"
-import React from "react"
-
-import { Schema, screenTrack, track } from "../../../utils/track"
-
-import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
-import { Dimensions, EmitterSubscription, Keyboard, LayoutRectangle, Platform, ScrollView } from "react-native"
-
-import { Flex } from "../Elements/Flex"
-
-import { validatePresence } from "../Validators"
-
-import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { Container } from "../Components/Containers"
-import { Input, InputProps } from "../Components/Input"
-import { Address, Country } from "../types"
-
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
-import { COUNTRY_SELECT_OPTIONS, CountrySelect } from "lib/Components/CountrySelect"
+import { CountrySelect } from "lib/Components/CountrySelect"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { Stack } from "lib/Components/Stack"
+import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
-import { usePaletteFlagStore } from "palette/PaletteFlag"
-
-interface StyledInputInterface {
-  /** The object which styled components wraps */
-  focus?: () => void
-  blur?: () => void
-}
-
-interface StyledInputProps extends InputProps {
-  label: string
-  errorMessage?: string
-}
-const StyledInput: React.FC<StyledInputProps> = ({ label, errorMessage, onLayout, ...props }) => {
-  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
-
-  return (
-    <Flex mb={4} onLayout={onLayout}>
-      <Text mb={allowV3 ? 0.5 : 3}>{allowV3 ? label.toLocaleUpperCase() : label}</Text>
-      <Input mb={2} error={Boolean(errorMessage)} {...props} />
-      <Flex height={18}>
-        {!!errorMessage && (
-          <Sans size="2" color="red100">
-            {errorMessage}
-          </Sans>
-        )}
-      </Flex>
-    </Flex>
-  )
-}
-
-const iOSAccessoryViewHeight = 60
+import { Button, Flex, Input, Sans, Theme } from "palette"
+import React, { useEffect, useRef, useState } from "react"
+import { ScrollView } from "react-native"
+import { Schema, screenTrack, track } from "../../../utils/track"
+import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
+import { Address } from "../types"
+import findCountryNameByCountryCode from "../Utils/findCountryNameByCountryCode"
+import { validateAddressFieldsPresence } from "../Validators/validateAddressFieldsPresence"
 
 interface BillingAddressProps {
-  onSubmit?: (values: Address) => void
-  navigator?: NavigatorIOS
+  onSubmit: (values: Address) => void
+  navigator: NavigatorIOS
   billingAddress?: Address
 }
 
-interface BillingAddressState {
-  values: Address
-  errors: {
-    fullName?: string
-    addressLine1?: string
-    addressLine2?: string
-    city?: string
-    state?: string
-    country?: string
-    postalCode?: string
-  }
-}
-
-@screenTrack({
+screenTrack({
   context_screen: Schema.PageNames.BidFlowBillingAddressPage,
   context_screen_owner_type: null,
 })
-export class BillingAddress extends React.Component<BillingAddressProps, BillingAddressState> {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private addressLine1: StyledInputInterface
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private addressLine2: StyledInputInterface
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private city: StyledInputInterface
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private stateProvinceRegion: StyledInputInterface
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private postalCode: StyledInputInterface
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private phoneNumber: StyledInputInterface
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private fullNameLayout: LayoutRectangle
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private addressLine1Layout: LayoutRectangle
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private addressLine2Layout: LayoutRectangle
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private cityLayout: LayoutRectangle
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private stateProvinceRegionLayout: LayoutRectangle
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private postalCodeLayout: LayoutRectangle
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private phoneNumberLayout: LayoutRectangle
+export const BillingAddress: React.FC<BillingAddressProps> = ({ onSubmit, navigator, billingAddress }) => {
+  const scrollViewRef = useRef<ScrollView>(null)
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private keyboardDidShowListener: EmitterSubscription
+  const fullNameRef = useRef<Input>(null)
+  const addressLine1Ref = useRef<Input>(null)
+  const addressLine2Ref = useRef<Input>(null)
+  const cityRef = useRef<Input>(null)
+  const stateRef = useRef<Input>(null)
+  const postalCodeRef = useRef<Input>(null)
+  const phoneRef = useRef<Input>(null)
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private keyboardHeight: number
+  const [address, setAddress] = useState<Address>({
+    fullName: "",
+    addressLine1: "",
+    addressLine2: "",
+    city: "",
+    state: "",
+    country: {
+      longName: "",
+      shortName: "",
+    },
+    postalCode: "",
+    phoneNumber: "",
+  })
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private scrollView: ScrollView
+  const [addressFieldsWithError, setAddressFieldsWithError] = useState<string[]>([])
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  constructor(props) {
-    super(props)
+  // focus on the initial input on mount
+  useEffect(() => {
+    fullNameRef.current?.focus()
+  }, [])
 
-    this.state = {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      values: { ...this.props.billingAddress },
-      errors: {},
+  // set billing address, if passed as prop
+  useEffect(() => {
+    if (billingAddress) {
+      setAddress(billingAddress)
     }
-  }
+  }, [])
 
-  validateAddress(address: Address) {
-    const { fullName, addressLine1, city, state, country, postalCode, phoneNumber } = address
-
-    return {
-      fullName: validatePresence(fullName),
-      addressLine1: validatePresence(addressLine1),
-      city: validatePresence(city),
-      state: validatePresence(state),
-      country: validatePresence(country && country.shortName),
-      postalCode: validatePresence(postalCode),
-      phoneNumber: validatePresence(phoneNumber),
-    }
-  }
-
-  validateField(field: string) {
-    this.setState({
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      errors: { ...this.state.errors, [field]: this.validateAddress(this.state.values)[field] },
+  // fired on each input change -> updates the relevant field in local state
+  const handleInputTextChange = (inputName: string, value: string): void => {
+    setAddress({
+      ...address,
+      [inputName]: value,
     })
   }
 
-  onSubmit() {
-    const errors = this.validateAddress(this.state.values)
-
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    if (Object.keys(errors).filter((key) => errors[key]).length > 0) {
-      this.setState({ errors })
-    } else {
-      this.submitValidAddress()
-    }
-  }
-
-  onCountrySelected(country: Country) {
-    const values = { ...this.state.values, country }
-
-    this.setState({
-      values,
-      errors: {
-        ...this.state.errors,
-        country: this.validateAddress(values).country,
+  // updates the country field in local state with short & long names
+  const handleCountrySelection = (countryCode: string): void => {
+    setAddress({
+      ...address,
+      country: {
+        shortName: countryCode,
+        longName: findCountryNameByCountryCode(countryCode),
       },
     })
   }
 
-  @track({
-    action_type: Schema.ActionTypes.Success,
-    action_name: Schema.ActionNames.BidFlowSaveBillingAddress,
-  })
-  submitValidAddress() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.onSubmit(this.state.values)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.navigator.pop()
-  }
+  // validates required fields & submits address
+  const handleAddBillingAddressClick = (): void => {
+    const errors = validateAddressFieldsPresence(address)
 
-  UNSAFE_componentWillMount() {
-    this.keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      ({ endCoordinates }) => (this.keyboardHeight = endCoordinates.height)
-    )
-  }
+    setAddressFieldsWithError(errors)
 
-  componentWillUnmount() {
-    this.keyboardDidShowListener.remove()
-  }
-
-  scrollToPosition(layout: LayoutRectangle) {
-    // The scroll is handled by default on android since we are using adjustPan as a windowSoftInputMode
-    if (Platform.OS === "ios") {
-      this.scrollView.scrollTo({ x: 0, y: this.yPosition(layout) })
+    if (!errors.length) {
+      onSubmit(address)
+      navigator?.pop()
+      track({
+        action_type: Schema.ActionTypes.Success,
+        action_name: Schema.ActionNames.BidFlowSaveBillingAddress,
+      })
     }
   }
 
-  render() {
-    const errorForCountry = this.state.errors.country
+  // checks if the passed address field is empty & return appropriate str
+  const checkFieldError = (field: string): string => {
+    return addressFieldsWithError.includes(field) ? "*This field is required" : ""
+  }
 
-    return (
-      <BiddingThemeProvider>
-        <ArtsyKeyboardAvoidingView>
-          <Theme>
-            <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
-              Add billing address
-            </FancyModalHeader>
-          </Theme>
-          <ScrollView
-            keyboardDismissMode="on-drag"
-            keyboardShouldPersistTaps="handled"
-            ref={(scrollView) => (this.scrollView = scrollView as any)}
-          >
-            <Container>
-              <StyledInput
-                {...this.defaultPropsForInput("fullName")}
-                label="Full name"
-                placeholder="Add your full name"
-                autoFocus={true}
-                textContentType="name"
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                onSubmitEditing={() => this.addressLine1.focus()}
-                testID="input-full-name"
-              />
+  return (
+    <BiddingThemeProvider>
+      <ArtsyKeyboardAvoidingView>
+        <Theme>
+          <FancyModalHeader onLeftButtonPress={() => navigator?.pop()}>Add billing address</FancyModalHeader>
+        </Theme>
+        <ScrollView
+          ref={scrollViewRef}
+          contentContainerStyle={{ padding: 20, paddingBottom: 50 }}
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
+        >
+          <Stack spacing={3}>
+            <Input
+              ref={fullNameRef}
+              title="Full name"
+              placeholder="Add your full name"
+              textContentType="name"
+              returnKeyType="next"
+              enableClearButton
+              error={checkFieldError("fullName")}
+              value={address.fullName}
+              onChangeText={(e) => handleInputTextChange("fullName", e)}
+              testID="input-full-name"
+            />
 
-              <StyledInput
-                {...this.defaultPropsForInput("addressLine1")}
-                label="Address line 1"
-                placeholder="Add your street address"
-                textContentType="streetAddressLine1"
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                onSubmitEditing={() => this.addressLine2.focus()}
-                testID="input-address-1"
-              />
+            <Input
+              ref={addressLine1Ref}
+              title="Address line 1"
+              required
+              placeholder="Add your street address"
+              textContentType="streetAddressLine1"
+              returnKeyType="next"
+              enableClearButton
+              error={checkFieldError("addressLine1")}
+              value={address.addressLine1}
+              onChangeText={(e) => handleInputTextChange("addressLine1", e)}
+              testID="input-address-1"
+            />
 
-              <StyledInput
-                {...this.defaultPropsForInput("addressLine2")}
-                label="Address line 2 (optional)"
-                placeholder="Add your apt, floor, suite, etc."
-                textContentType="streetAddressLine2"
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                onSubmitEditing={() => this.city.focus()}
-                testID="input-address-2"
-              />
+            <Input
+              ref={addressLine2Ref}
+              title="Address line 2 (optional)"
+              placeholder="Add your apt, floor, suite, etc."
+              textContentType="streetAddressLine2"
+              returnKeyType="next"
+              enableClearButton
+              value={address.addressLine2}
+              onChangeText={(e) => handleInputTextChange("addressLine2", e)}
+              testID="input-address-2"
+            />
 
-              <StyledInput
-                {...this.defaultPropsForInput("city")}
-                label="City"
-                placeholder="Add your city"
-                textContentType="addressCity"
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                onSubmitEditing={() => this.stateProvinceRegion.focus()}
-                testID="input-city"
-              />
+            <Input
+              ref={cityRef}
+              title="City"
+              placeholder="Add your city"
+              textContentType="addressCity"
+              returnKeyType="next"
+              enableClearButton
+              error={checkFieldError("city")}
+              value={address.city}
+              onChangeText={(e) => handleInputTextChange("city", e)}
+              testID="input-city"
+            />
 
-              <StyledInput
-                {...this.defaultPropsForInput("state")}
-                label="State, Province, or Region"
-                placeholder="Add state, province, or region"
-                textContentType="addressState"
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                onSubmitEditing={() => this.postalCode.focus()}
-                inputRef={(el) => (this.stateProvinceRegion = el)}
-                testID="input-state-province-region"
-              />
+            <Input
+              ref={stateRef}
+              title="State, Province, or Region"
+              placeholder="Add state, province, or region"
+              textContentType="addressState"
+              returnKeyType="next"
+              enableClearButton
+              error={checkFieldError("state")}
+              value={address.state}
+              onChangeText={(e) => handleInputTextChange("state", e)}
+              testID="input-state-province-region"
+            />
 
-              <StyledInput
-                {...this.defaultPropsForInput("postalCode")}
-                label="Postal code"
-                placeholder="Add your postal code"
-                textContentType="postalCode"
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                onSubmitEditing={() => this.phoneNumber.focus()}
-                testID="input-post-code"
-              />
+            <Input
+              ref={postalCodeRef}
+              title="Postal code"
+              placeholder="Add your postal code"
+              textContentType="postalCode"
+              returnKeyType="next"
+              enableClearButton
+              error={checkFieldError("postalCode")}
+              value={address.postalCode}
+              onChangeText={(e) => handleInputTextChange("postalCode", e)}
+              testID="input-post-code"
+            />
 
-              <StyledInput
-                {...this.defaultPropsForInput("phoneNumber")}
-                label="Phone"
-                placeholder="Add your phone number"
-                keyboardType="phone-pad"
-                textContentType="telephoneNumber"
-                testID="input-phone"
-              />
+            <Input
+              ref={phoneRef}
+              title="Phone"
+              placeholder="Add your phone number"
+              keyboardType="phone-pad"
+              textContentType="telephoneNumber"
+              returnKeyType="next"
+              enableClearButton
+              error={checkFieldError("phoneNumber")}
+              value={address.phoneNumber}
+              onChangeText={(e) => handleInputTextChange("phoneNumber", e)}
+              testID="input-phone"
+            />
 
-              <ScreenDimensionsContext.Consumer>
-                {({ height }) => (
+            <ScreenDimensionsContext.Consumer>
+              {({ height }) => {
+                const countryError = checkFieldError("country")
+
+                return (
                   <Flex mb={4}>
                     <CountrySelect
                       maxModalHeight={height * 0.95}
-                      onSelectValue={(value) => {
-                        this.onCountrySelected({
-                          shortName: value,
-                          longName: COUNTRY_SELECT_OPTIONS.find((opt) => opt.value === value)!.label,
-                        } as Country)
-                      }}
-                      value={this.state.values.country?.shortName}
-                      hasError={!!errorForCountry}
+                      onSelectValue={(value: string) => handleCountrySelection(value)}
+                      value={address.country.shortName}
+                      hasError={!!countryError}
                     />
-                    {!!errorForCountry && (
-                      <Sans size="2" color="red100">
-                        {errorForCountry}
+                    {!!countryError && (
+                      <Sans size="2" mt="1" color="red100">
+                        {countryError}
                       </Sans>
                     )}
                   </Flex>
-                )}
-              </ScreenDimensionsContext.Consumer>
+                )
+              }}
+            </ScreenDimensionsContext.Consumer>
 
-              <Button block width={100} onPress={() => this.onSubmit()} testID="button-add">
-                Add billing address
-              </Button>
-            </Container>
-          </ScrollView>
-        </ArtsyKeyboardAvoidingView>
-      </BiddingThemeProvider>
-    )
-  }
-
-  private defaultPropsForInput(field: string): Partial<StyledInputProps> {
-    return {
-      autoCapitalize: "words",
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      errorMessage: this.state.errors[field],
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      inputRef: (el) => (this[field] = el),
-      onBlur: () => this.validateField(field),
-      onChangeText: (value) => this.setState({ values: { ...this.state.values, [field]: value } }),
-      returnKeyType: "next",
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      value: this.state.values[field],
-    }
-  }
-
-  private yPosition({ y, height }: LayoutRectangle) {
-    const windowHeight = Dimensions.get("window").height
-
-    return Math.max(0, y - windowHeight + height + iOSAccessoryViewHeight + this.keyboardHeight + this.iPhoneXOffset)
-  }
-
-  // TODO: Remove this once React Native has been updated
-  private get iPhoneXOffset() {
-    const isPhoneX = Dimensions.get("window").height === 812 && Dimensions.get("window").width === 375
-
-    return isPhoneX ? 15 : 0
-  }
+            <Button block width={100} onPress={handleAddBillingAddressClick} testID="button-add">
+              Add billing address
+            </Button>
+          </Stack>
+        </ScrollView>
+      </ArtsyKeyboardAvoidingView>
+    </BiddingThemeProvider>
+  )
 }
