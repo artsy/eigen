@@ -61,7 +61,7 @@ const transformSerifPropsToV3 = (props: SerifV1Props): TextV3Props => {
   }
 
   return {
-    ...newProps,
+    ...(newProps as any),
     size: sizeMap[actualSize],
   }
 }
@@ -108,7 +108,7 @@ const transformSansPropsToV3 = (props: SansV1Props): TextV3Props => {
   }
 
   return {
-    ...newProps,
+    ...(newProps as any),
     size: sizeMap[actualSize],
   }
 }
@@ -177,7 +177,7 @@ const transformTextV2PropsToV3 = (props: TextV2Props): TextV3Props => {
   }
 
   return {
-    ...newProps,
+    ...(newProps as any),
     size: variantMap[variant ?? "text"],
   }
 }
