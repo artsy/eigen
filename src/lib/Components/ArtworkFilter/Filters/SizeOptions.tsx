@@ -138,9 +138,11 @@ interface SizeOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigatio
 
 export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation }) => {
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedOption = selectedOptions.find((option) => option.paramName === PARAM_NAME)!
+  const appliedOption = appliedFilters.find((option) => option.paramName === PARAM_NAME) ?? DEFAULT_SIZE_OPTION
   const selectedCustomOptions = selectedOptions.filter((option) =>
     CUSTOM_SIZE_OPTION_KEYS.includes(option.paramName as keyof CustomSize)
   )
@@ -162,7 +164,7 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
   const selectOption = (option: AggregateOption) => {
     if (option.displayText === CUSTOM_SIZE_OPTION.displayText) {
       showCustomSize(true)
-      selectFiltersAction(DEFAULT_SIZE_OPTION)
+      selectFiltersAction(appliedOption)
     } else {
       showCustomSize(false)
       resetCustomPrice()
@@ -191,7 +193,7 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
     })
 
     if (isEmptyCustomValues) {
-      selectFiltersAction(DEFAULT_SIZE_OPTION)
+      selectFiltersAction(appliedOption)
     } else {
       selectFiltersAction(CUSTOM_SIZE_OPTION)
     }

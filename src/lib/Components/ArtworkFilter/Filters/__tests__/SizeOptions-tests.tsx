@@ -1,5 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { FilterArray, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { Text } from "palette"
@@ -236,6 +237,31 @@ describe("SizeOptions", () => {
       const currentSizeFilter = getSizeFilterOption(currentFilters)
 
       expect(currentSizeFilter?.paramValue).toBe("*-*")
+    })
+
+    it("returns the previously applied filter option if the invalid custom values are entered", () => {
+      const option: FilterData = {
+        displayText: "Small (under 40cm)",
+        paramValue: "*-16.0",
+        paramName: FilterParamName.size,
+      }
+      const { getByTestId, getByText } = getTree({
+        initialData: {
+          ...INITIAL_DATA,
+          appliedFilters: [option],
+          previouslyAppliedFilters: [option],
+        },
+      })
+
+      fireEvent.press(getByText("Custom Size"))
+      fireEvent.changeText(getByTestId("minimum-width-input"), "5")
+      fireEvent.changeText(getByTestId("minimum-width-input"), "")
+
+      const filters = getFilters(getByTestId("debug"))
+      const sizeFilter = getSizeFilterOption(filters)
+
+      expect(sizeFilter?.displayText).toBe("Small (under 40cm)")
+      expect(sizeFilter?.paramValue).toBe("*-16.0")
     })
   })
 })
