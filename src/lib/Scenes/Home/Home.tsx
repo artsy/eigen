@@ -164,7 +164,6 @@ const Home = (props: Props) => {
                 case "sales":
                   return (
                     <SalesRailFragmentContainer
-                      artworkRails={artworkRails}
                       salesModule={item.data}
                       scrollRef={scrollRefs.current[index]}
                       onShow={() => separators.updateProps("leading", { hideSeparator: false })}

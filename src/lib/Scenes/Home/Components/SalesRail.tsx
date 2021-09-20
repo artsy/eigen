@@ -24,7 +24,6 @@ import { RailScrollProps } from "./types"
 
 interface Props {
   salesModule: SalesRail_salesModule
-  artworkRails: Array<{ type: string; data: object } | null>
   onHide?: () => void
   onShow?: () => void
 }
@@ -32,7 +31,7 @@ interface Props {
 type Sale = SalesRail_salesModule["results"][0]
 
 const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
-  const { scrollRef, salesModule, onHide, onShow, artworkRails } = props
+  const { scrollRef, salesModule, onHide, onShow } = props
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
   const allowV3 = usePaletteFlagStore((state) => state.allowV3)
@@ -49,8 +48,8 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
 
   // Checks to see if the artworks rail is being rendered and hides the separator accordingly
   useEffect(() => {
-    artworkRails.length ? onShow?.() : onHide?.()
-  }, [artworkRails.length])
+    salesModule.results?.length ? onShow?.() : onHide?.()
+  }, [salesModule.results])
 
   if (!salesModule.results?.length) {
     return null
