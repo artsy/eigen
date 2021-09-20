@@ -108,7 +108,6 @@ export const features = defineFeatures({
   },
   AREnableNewNewWorksForYou: {
     readyForRelease: false,
-    echoFlagKey: "AREnableNewNewWorksForYou",
     description: "Enable new 'New Works For You' rail",
     showInAdminMenu: true,
   },
