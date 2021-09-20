@@ -5,6 +5,10 @@ export const validateAddressFieldsPresence = (address: Address): string[] => {
   const errs = []
 
   for (const field of Object.entries(address)) {
+    if (field[0] === "addressLine2") {
+      continue
+    }
+
     if (field[0] === "country" && (!field[1].longName || !field[1].shortName)) {
       errs.push(field[0])
       continue

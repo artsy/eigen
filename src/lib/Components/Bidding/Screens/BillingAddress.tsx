@@ -5,14 +5,13 @@ import { Stack } from "lib/Components/Stack"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
 import { Button, Flex, Input, Sans, Theme } from "palette"
-import { Select } from "palette/elements/Select/SelectV2"
 import React, { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { Schema, screenTrack, track } from "../../../utils/track"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Address } from "../types"
 import findCountryNameByCountryCode from "../Utils/findCountryNameByCountryCode"
-import { validateAddressFieldsPresence } from "../Validators/index"
+import { validateAddressFieldsPresence } from "../Validators/validateAddressFieldsPresence"
 
 interface BillingAddressProps {
   onSubmit: (values: Address) => void
@@ -35,7 +34,6 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({ onSubmit, naviga
   const stateRef = useRef<Input>(null)
   const postalCodeRef = useRef<Input>(null)
   const phoneRef = useRef<Input>(null)
-  const countryRef = useRef<Select<any>>(null)
 
   const [address, setAddress] = useState<Address>({
     fullName: "",
@@ -217,7 +215,6 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({ onSubmit, naviga
                 return (
                   <Flex mb={4}>
                     <CountrySelect
-                      ref={countryRef}
                       maxModalHeight={height * 0.95}
                       onSelectValue={(value: string) => handleCountrySelection(value)}
                       value={address.country.shortName}
