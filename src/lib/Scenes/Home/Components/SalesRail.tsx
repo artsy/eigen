@@ -14,7 +14,7 @@ import { formatDisplayTimelyAt } from "lib/Scenes/Sale/helpers"
 import { extractNodes } from "lib/utils/extractNodes"
 import { compact } from "lodash"
 import { bullet, Flex, Text } from "palette"
-import React, { useImperativeHandle, useRef } from "react"
+import React, { useEffect, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -23,11 +23,14 @@ import { RailScrollProps } from "./types"
 
 interface Props {
   salesModule: SalesRail_salesModule
+  onHide?: () => void
+  onShow?: () => void
 }
 
 type Sale = SalesRail_salesModule["results"][0]
 
 const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
+  const { scrollRef, salesModule, onHide, onShow } = props
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
 
@@ -37,11 +40,17 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
     return `${subtitle} ${bullet} ${dateAt}`
   }
 
-  useImperativeHandle(props.scrollRef, () => ({
+  useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
-  if (!props.salesModule.results?.length) {
+  const hasSales = salesModule.results?.length
+
+  useEffect(() => {
+    hasSales ? onShow?.() : onHide?.()
+  }, [hasSales])
+
+  if (!hasSales) {
     return null
   }
 
@@ -59,7 +68,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
       </Flex>
       <CardRailFlatList<Sale>
         listRef={listRef}
-        data={props.salesModule.results}
+        data={salesModule.results}
         renderItem={({ item: result, index }) => {
           // Sales are expected to always have >= 2 artworks, but we should
           // still be cautious to avoid crashes if this assumption is broken.
